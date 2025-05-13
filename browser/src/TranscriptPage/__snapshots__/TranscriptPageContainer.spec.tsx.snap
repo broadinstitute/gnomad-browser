@@ -549,7 +549,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -568,7 +568,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -586,7 +586,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -596,7 +596,7 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -2003,7 +2003,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene?dataset=gnomad_sv_r4"
                 onClick={[Function]}
               >
@@ -2022,7 +2022,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321?dataset=gnomad_sv_r4"
                 onClick={[Function]}
               >
@@ -2040,7 +2040,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -2050,7 +2050,7 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -3457,7 +3457,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -3476,7 +3476,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -3494,7 +3494,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -3504,7 +3504,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -4911,7 +4911,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -4930,7 +4930,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -4948,7 +4948,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -4958,7 +4958,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -6365,7 +6365,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -6384,7 +6384,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -6402,7 +6402,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -6412,7 +6412,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -7819,7 +7819,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -7838,7 +7838,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -7856,7 +7856,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -7866,7 +7866,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -9273,7 +9273,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -9292,7 +9292,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -9310,7 +9310,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -9320,7 +9320,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -10727,7 +10727,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -10746,7 +10746,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -10764,7 +10764,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -10774,7 +10774,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -12182,7 +12182,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -12201,7 +12201,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -12219,7 +12219,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -12229,7 +12229,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -13637,7 +13637,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -13656,7 +13656,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -13674,7 +13674,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -13684,7 +13684,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -15092,7 +15092,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -15111,7 +15111,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -15129,7 +15129,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -15139,7 +15139,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -16547,7 +16547,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -16566,7 +16566,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -16584,7 +16584,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -16594,7 +16594,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -18002,7 +18002,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene"
                 onClick={[Function]}
               >
@@ -18021,7 +18021,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -18039,7 +18039,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -18049,7 +18049,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -19457,7 +19457,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene?dataset=gnomad_sv_r4"
                 onClick={[Function]}
               >
@@ -19476,7 +19476,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321?dataset=gnomad_sv_r4"
                 onClick={[Function]}
               >
@@ -19494,7 +19494,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -19504,7 +19504,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -20911,7 +20911,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4_non_ukb has no unexpecte
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/gene/dummy_gene?dataset=gnomad_sv_r4"
                 onClick={[Function]}
               >
@@ -20930,7 +20930,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4_non_ukb has no unexpecte
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321?dataset=gnomad_sv_r4"
                 onClick={[Function]}
               >
@@ -20948,7 +20948,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4_non_ukb has no unexpecte
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Transcript/Summary?t=dummy_transcript"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -20958,7 +20958,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r4_non_ukb has no unexpecte
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"

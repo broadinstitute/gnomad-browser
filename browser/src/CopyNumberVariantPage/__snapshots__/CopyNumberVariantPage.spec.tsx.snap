@@ -260,7 +260,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -303,7 +303,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -316,7 +316,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"
@@ -712,7 +712,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           </dt>
           <dd>
             <a
-              className="Link-sc-14lgydv-0-Link jBvaYQ"
+              className="Link-sc-14lgydv-0-Link csqFBR"
               href="/region/21-123-456"
               onClick={[Function]}
             >
@@ -755,7 +755,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
           className="List__ListItem-sc-4j87st-1 gGPLUe"
         >
           <a
-            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+            className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
             href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr21%3A123-456"
             rel="noopener noreferrer"
             target="_blank"
@@ -768,7 +768,7 @@ exports[`CopyNumberVariantPage with dataset gnomad_cnv_r4 with variant of type D
         Feedback
       </h2>
       <a
-        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+        className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
         href="mailto:gnomad@broadinstitute.org"
         rel="noopener noreferrer"
         target="_blank"

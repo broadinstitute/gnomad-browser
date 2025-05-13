@@ -5,6 +5,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type BND has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -63,6 +64,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type CPX has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -109,6 +111,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type CTX has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -167,6 +170,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type DEL has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -213,6 +217,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type DUP has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -259,6 +264,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type INS has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -305,6 +311,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type INV has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -351,6 +358,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type MCNV has no u
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -397,6 +405,7 @@ exports[`SVReferenceList with dataset exac selected for SV of type OTH has no un
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -443,6 +452,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type BND 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -501,6 +511,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type CPX 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -547,6 +558,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type CTX 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -605,6 +617,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type DEL 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -651,6 +664,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type DUP 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -697,6 +711,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type INS 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -743,6 +758,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type INV 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -789,6 +805,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type MCNV
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -835,6 +852,7 @@ exports[`SVReferenceList with dataset gnomad_cnv_r4 selected for SV of type OTH 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -881,6 +899,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type BND ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -939,6 +958,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type CPX ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -985,6 +1005,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type CTX ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1043,6 +1064,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type DEL ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1089,6 +1111,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type DUP ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1135,6 +1158,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type INS ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1181,6 +1205,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type INV ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1227,6 +1252,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type MCNV h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1273,6 +1299,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1 selected for SV of type OTH ha
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1319,6 +1346,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1377,6 +1405,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1423,6 +1452,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1481,6 +1511,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1527,6 +1558,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1573,6 +1605,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1619,6 +1652,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1665,6 +1699,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1711,6 +1746,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_controls selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1757,6 +1793,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1815,6 +1852,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1861,6 +1899,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1919,6 +1958,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -1965,6 +2005,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2011,6 +2052,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2057,6 +2099,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2103,6 +2146,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2149,6 +2193,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_cancer selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2195,6 +2240,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2253,6 +2299,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2299,6 +2346,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2357,6 +2405,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2403,6 +2452,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2449,6 +2499,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2495,6 +2546,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2541,6 +2593,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2587,6 +2640,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_neuro selected for SV of t
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2633,6 +2687,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2691,6 +2746,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2737,6 +2793,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2795,6 +2852,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2841,6 +2899,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2887,6 +2946,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2933,6 +2993,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -2979,6 +3040,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3025,6 +3087,7 @@ exports[`SVReferenceList with dataset gnomad_r2_1_non_topmed selected for SV of 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3071,6 +3134,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type BND has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3129,6 +3193,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type CPX has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3175,6 +3240,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type CTX has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3233,6 +3299,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type DEL has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3279,6 +3346,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type DUP has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3325,6 +3393,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type INS has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3371,6 +3440,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type INV has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3417,6 +3487,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type MCNV has
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3463,6 +3534,7 @@ exports[`SVReferenceList with dataset gnomad_r3 selected for SV of type OTH has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3509,6 +3581,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3567,6 +3640,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3613,6 +3687,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3671,6 +3746,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3717,6 +3793,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3763,6 +3840,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3809,6 +3887,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3855,6 +3934,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3901,6 +3981,7 @@ exports[`SVReferenceList with dataset gnomad_r3_controls_and_biobanks selected f
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -3947,6 +4028,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4005,6 +4087,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4051,6 +4134,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4109,6 +4193,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4155,6 +4240,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4201,6 +4287,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4247,6 +4334,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4293,6 +4381,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4339,6 +4428,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_cancer selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4385,6 +4475,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4443,6 +4534,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4489,6 +4581,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4547,6 +4640,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4593,6 +4687,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4639,6 +4734,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4685,6 +4781,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4731,6 +4828,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4777,6 +4875,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_neuro selected for SV of typ
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4823,6 +4922,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4881,6 +4981,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4927,6 +5028,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -4985,6 +5087,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5031,6 +5134,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5077,6 +5181,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5123,6 +5228,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5169,6 +5275,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5215,6 +5322,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_topmed selected for SV of ty
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5261,6 +5369,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type B
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5319,6 +5428,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type C
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5365,6 +5475,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type C
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5423,6 +5534,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type D
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5469,6 +5581,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type D
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5515,6 +5628,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type I
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5561,6 +5675,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type I
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5607,6 +5722,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type M
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5653,6 +5769,7 @@ exports[`SVReferenceList with dataset gnomad_r3_non_v2 selected for SV of type O
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5699,6 +5816,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type BND has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5757,6 +5875,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type CPX has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5803,6 +5922,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type CTX has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5861,6 +5981,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type DEL has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5907,6 +6028,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type DUP has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5953,6 +6075,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type INS has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -5999,6 +6122,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type INV has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6045,6 +6169,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type MCNV has
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6091,6 +6216,7 @@ exports[`SVReferenceList with dataset gnomad_r4 selected for SV of type OTH has 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6137,6 +6263,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6195,6 +6322,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6241,6 +6369,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6299,6 +6428,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6345,6 +6475,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6391,6 +6522,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6437,6 +6569,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6483,6 +6616,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6529,6 +6663,7 @@ exports[`SVReferenceList with dataset gnomad_r4_non_ukb selected for SV of type 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6575,6 +6710,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type BND
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6633,6 +6769,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type CPX
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6679,6 +6816,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type CTX
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6737,6 +6875,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type DEL
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6783,6 +6922,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type DUP
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6829,6 +6969,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type INS
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6875,6 +7016,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type INV
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6921,6 +7063,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type MCN
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -6967,6 +7110,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1 selected for SV of type OTH
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7013,6 +7157,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7071,6 +7216,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7117,6 +7263,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7175,6 +7322,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7221,6 +7369,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7267,6 +7416,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7313,6 +7463,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7359,6 +7510,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7405,6 +7557,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_controls selected for SV of
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7451,6 +7604,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7509,6 +7663,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7555,6 +7710,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7613,6 +7769,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7659,6 +7816,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7705,6 +7863,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7751,6 +7910,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7797,6 +7957,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7843,6 +8004,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r2_1_non_neuro selected for SV o
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7889,6 +8051,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type BND h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7947,6 +8110,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type CPX h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -7993,6 +8157,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type CTX h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -8051,6 +8216,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type DEL h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -8097,6 +8263,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type DUP h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -8143,6 +8310,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type INS h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -8189,6 +8357,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type INV h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -8235,6 +8404,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type MCNV 
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,
@@ -8281,6 +8451,7 @@ exports[`SVReferenceList with dataset gnomad_sv_r4 selected for SV of type OTH h
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c2:visited,

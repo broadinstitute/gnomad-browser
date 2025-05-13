@@ -580,7 +580,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -596,7 +596,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -614,7 +614,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -624,7 +624,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -2097,7 +2097,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -2113,7 +2113,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -2131,7 +2131,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -2141,7 +2141,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -3603,7 +3603,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -3619,7 +3619,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -3637,7 +3637,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -3647,7 +3647,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -5109,7 +5109,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -5125,7 +5125,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -5143,7 +5143,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -5153,7 +5153,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -6615,7 +6615,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -6631,7 +6631,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -6649,7 +6649,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -6659,7 +6659,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -8121,7 +8121,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -8137,7 +8137,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -8155,7 +8155,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -8165,7 +8165,7 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -9661,7 +9661,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -9677,7 +9677,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -9695,7 +9695,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -9705,7 +9705,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -11178,7 +11178,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -11194,7 +11194,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -11212,7 +11212,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -11222,7 +11222,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -12184,7 +12184,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                     fill="#0000ff"
                   >
                     <a
-                      className="Link-sc-14lgydv-0-Link jBvaYQ"
+                      className="Link-sc-14lgydv-0-Link csqFBR"
                       href="/help"
                       onClick={[Function]}
                     >
@@ -12813,7 +12813,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -12829,7 +12829,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -12847,7 +12847,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -12857,7 +12857,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -13819,7 +13819,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                     fill="#0000ff"
                   >
                     <a
-                      className="Link-sc-14lgydv-0-Link jBvaYQ"
+                      className="Link-sc-14lgydv-0-Link csqFBR"
                       href="/help"
                       onClick={[Function]}
                     >
@@ -14448,7 +14448,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -14464,7 +14464,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -14482,7 +14482,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -14492,7 +14492,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -15454,7 +15454,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                     fill="#0000ff"
                   >
                     <a
-                      className="Link-sc-14lgydv-0-Link jBvaYQ"
+                      className="Link-sc-14lgydv-0-Link csqFBR"
                       href="/help"
                       onClick={[Function]}
                     >
@@ -16083,7 +16083,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -16099,7 +16099,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -16117,7 +16117,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -16127,7 +16127,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -17089,7 +17089,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                     fill="#0000ff"
                   >
                     <a
-                      className="Link-sc-14lgydv-0-Link jBvaYQ"
+                      className="Link-sc-14lgydv-0-Link csqFBR"
                       href="/help"
                       onClick={[Function]}
                     >
@@ -17718,7 +17718,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -17734,7 +17734,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -17752,7 +17752,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -17762,7 +17762,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -18724,7 +18724,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                     fill="#0000ff"
                   >
                     <a
-                      className="Link-sc-14lgydv-0-Link jBvaYQ"
+                      className="Link-sc-14lgydv-0-Link csqFBR"
                       href="/help"
                       onClick={[Function]}
                     >
@@ -19353,7 +19353,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -19369,7 +19369,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -19387,7 +19387,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -19397,7 +19397,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -20894,7 +20894,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -20910,7 +20910,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -20928,7 +20928,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -20938,7 +20938,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -22435,7 +22435,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -22451,7 +22451,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -22469,7 +22469,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -22479,7 +22479,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -23976,7 +23976,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -23992,7 +23992,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -24010,7 +24010,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -24020,7 +24020,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -25517,7 +25517,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -25533,7 +25533,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -25551,7 +25551,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -25561,7 +25561,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -27058,7 +27058,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -27074,7 +27074,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -27092,7 +27092,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -27102,7 +27102,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -28599,7 +28599,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -28615,7 +28615,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -28633,7 +28633,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -28643,7 +28643,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -30139,7 +30139,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -30155,7 +30155,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/13-123-321"
                 onClick={[Function]}
               >
@@ -30173,7 +30173,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -30183,7 +30183,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr13%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -31485,7 +31485,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/transcript/transcript-999"
                 onClick={[Function]}
               >
@@ -31501,7 +31501,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0-Link jBvaYQ"
+                className="Link-sc-14lgydv-0-Link csqFBR"
                 href="/region/M-123-321"
                 onClick={[Function]}
               >
@@ -31519,7 +31519,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
             </dt>
             <dd>
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=dummy_gene-1"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -31529,7 +31529,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
               ,
                
               <a
-                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 haNmsP"
+                className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
                 href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chrM%3A123-321"
                 rel="noopener noreferrer"
                 target="_blank"
