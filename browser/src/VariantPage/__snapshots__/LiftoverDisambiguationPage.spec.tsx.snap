@@ -101,7 +101,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -110,7 +110,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -162,7 +162,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -171,7 +171,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -223,7 +223,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -232,7 +232,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -284,7 +284,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -293,7 +293,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -345,7 +345,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -354,7 +354,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -772,7 +772,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -781,7 +781,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link jBvaYQ"
+          className="Link-sc-14lgydv-0-Link csqFBR"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >

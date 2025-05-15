@@ -302,7 +302,6 @@ const VariantCoocurrence = ({ cooccurrenceData }: VariantCoocurrenceProps) => {
                   <Badge level="warning">Note</Badge> Probability values are not well calibrated,
                   particularly where both variants are extremely rare. Interpret with caution.
                   Please see{' '}
-                  {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
                   <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
                     our blog post on variant co-occurrence
                   </ExternalLink>{' '}
@@ -597,7 +596,6 @@ const VariantCoocurrencePage = ({ datasetId }: VariantCoocurrencePageProps) => {
         <>
           <p>
             For more information about co-occurrence data and how to use this tool, see our{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-07-variant-co-occurrence-phasing-information-in-gnomad/">
               &ldquo;Variant Co-Occurrence (Phasing) Information in gnomAD&rdquo; blog post
             </ExternalLink>

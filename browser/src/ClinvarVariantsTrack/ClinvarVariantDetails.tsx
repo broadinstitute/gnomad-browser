@@ -105,7 +105,6 @@ const ClinvarVariantDetails = ({
       <h3>ClinVar</h3>
 
       <p>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink
           href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${clinvarVariant.clinvar_variation_id}/`}
         >
@@ -121,7 +120,6 @@ const ClinvarVariantDetails = ({
           {Object.values(conditions)
             .map((condition: any) =>
               condition.medgen_id ? (
-                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink
                   key={condition.medgen_id}
                   href={`https://www.ncbi.nlm.nih.gov/medgen/${condition.medgen_id}/`}

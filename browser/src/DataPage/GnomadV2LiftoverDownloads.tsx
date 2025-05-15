@@ -175,7 +175,6 @@ const Gnomadv2LiftoverDownloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://www.ncbi.nlm.nih.gov/sites/dbvarapp/studies/nstd166/">
               nstd166 (gnomAD Structural Variants)
             </ExternalLink>

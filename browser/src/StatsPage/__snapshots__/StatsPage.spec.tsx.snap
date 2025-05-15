@@ -5,6 +5,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c35:visited,
@@ -87,6 +88,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
   color: #1173bb;
   -webkit-text-decoration: none;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .c29:visited,
@@ -977,7 +979,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                           y1={0}
                           y2={0}
                         />
-                        
                       </g>
                       <g
                         className="visx-group visx-axis visx-axis-left"
@@ -5059,7 +5060,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         y1={0}
                         y2={0}
                       />
-                      
                     </g>
                     <g
                       className="visx-group visx-axis visx-axis-left"
@@ -6430,7 +6430,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
                         y1={0}
                         y2={0}
                       />
-                      
                     </g>
                     <g
                       className="visx-group visx-axis visx-axis-left"

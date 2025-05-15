@@ -28,7 +28,6 @@ const RegionInfo = ({ region }: Props) => {
         {(stop - start + 1).toLocaleString()} BP
       </AttributeListItem>
       <AttributeListItem label="External resources">
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
       </AttributeListItem>
     </AttributeList>

@@ -43,7 +43,6 @@ const TranscriptInfo = ({ transcriptConsequence }: TranscriptInfoProps) => {
     if (transcriptConsequence.is_mane_select_version) {
       return (
         <TranscriptInfoWrapper>
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink> Select
           transcript for {transcriptConsequence.gene_symbol}
         </TranscriptInfoWrapper>
@@ -53,7 +52,6 @@ const TranscriptInfo = ({ transcriptConsequence }: TranscriptInfoProps) => {
     return (
       <TranscriptInfoWrapper>
         Different version of{' '}
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://www.ncbi.nlm.nih.gov/refseq/MANE/">MANE</ExternalLink> Select
         transcript for {transcriptConsequence.gene_symbol}
       </TranscriptInfoWrapper>

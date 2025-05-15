@@ -28,17 +28,14 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
       {variant.rsids && NcbiReference(variant.rsids)}
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={mitomapURL}>Mitomap</ExternalLink>
       </ListItem>
       {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href={mseqdrURL}>MSeqDR</ExternalLink>
       </ListItem>
       {/* Show MitoVisualize links only for RNA gene variants */}
@@ -47,7 +44,6 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
       ) && (
         // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
         <ListItem>
-          {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
           <ExternalLink href={`https://www.mitovisualize.org/variant/${variant.variant_id}`}>
             MitoVisualize
           </ExternalLink>

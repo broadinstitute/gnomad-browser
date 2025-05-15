@@ -114,7 +114,7 @@ const StructuralVariantTracks = ({
   </div>
 )
 
-export default React.forwardRef(
+export default React.forwardRef<typeof StructuralVariantTracks, StructuralVariantTracksProps>(
   (props: Omit<StructuralVariantTracksProps, 'forwardedRef'>, ref) => (
     <StructuralVariantTracks {...props} forwardedRef={ref} />
   )

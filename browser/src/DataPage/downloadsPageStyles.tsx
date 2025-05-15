@@ -360,7 +360,6 @@ export const DownloadLinks = ({
             Download {associatedFileType.toUpperCase()} from{' '}
             {renderDownloadOptions([
               includeGCP && (
-                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink
                   key="gcp"
                   aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Google`}
@@ -370,7 +369,6 @@ export const DownloadLinks = ({
                 </ExternalLink>
               ),
               includeAWS && (
-                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink
                   key="aws"
                   aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Amazon`}
@@ -380,7 +378,6 @@ export const DownloadLinks = ({
                 </ExternalLink>
               ),
               includeAzure && (
-                // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                 <ExternalLink
                   key="azure"
                   aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Microsoft`}

@@ -69,24 +69,18 @@ const DataPage = () => {
           </SectionTitle>
           <StyledParagraph>
             gnomAD data is available for download through{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://cloud.google.com/public-datasets">
               Google Cloud Public Datasets
             </ExternalLink>
             , the{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://registry.opendata.aws/">
               Registry of Open Data on AWS
             </ExternalLink>
             , and{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://azure.microsoft.com/en-us/services/open-datasets/">
               Azure Open Datasets
             </ExternalLink>
-            . We recommend using{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-            <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
+            . We recommend using <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
             <ExternalLink href="https://github.com/broadinstitute/gnomad_methods">
               Hail utilities for gnomAD
             </ExternalLink>{' '}
@@ -94,9 +88,7 @@ const DataPage = () => {
           </StyledParagraph>
           <StyledParagraph>
             In addition to the files listed below,{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://terra.bio">Terra</ExternalLink> has{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://terra.bio/a-demo-workspace-for-working-with-gnomad-data-in-terra/">
               a demo workspace for working with gnomAD data
             </ExternalLink>
@@ -108,7 +100,6 @@ const DataPage = () => {
             records as needed may be more suitable than working with downloaded gnomAD data. If
             you&apos;re unsure which would be better for your use case, please reach out to the
             browser team on the{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://discuss.gnomad.broadinstitute.org/">
               gnomAD forum
             </ExternalLink>
@@ -118,7 +109,6 @@ const DataPage = () => {
           <h3>Google Cloud Public Datasets</h3>
           <p>
             Files can be browsed and downloaded using{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://cloud.google.com/storage/docs/gsutil">gsutil</ExternalLink>.
           </p>
 
@@ -128,7 +118,6 @@ const DataPage = () => {
 
           <p>
             gnomAD variants are also available as a{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://console.cloud.google.com/marketplace/product/broad-institute/gnomad">
               BigQuery dataset
             </ExternalLink>
@@ -146,7 +135,6 @@ const DataPage = () => {
 
           <p>
             Files can be browsed and downloaded using the{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://docs.aws.amazon.com/cli/">
               AWS Command Line Interface
             </ExternalLink>
@@ -161,12 +149,10 @@ const DataPage = () => {
 
           <p>
             Files can be browsed and downloaded using{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10">
               AzCopy
             </ExternalLink>{' '}
             or{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://azure.microsoft.com/en-us/features/storage-explorer/">
               Azure Storage Explorer
             </ExternalLink>
@@ -179,7 +165,6 @@ const DataPage = () => {
 
           <StyledParagraph>
             gnomAD variants are also available in Parquet format.{' '}
-            {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
             <ExternalLink href="https://docs.microsoft.com/en-us/azure/open-datasets/dataset-gnomad">
               Find more information on the Azure website
             </ExternalLink>
@@ -199,12 +184,11 @@ const DataPage = () => {
           <StyledParagraph>
             Within a versioned release, datasets available for download fall under two categories.
             The Core Dataset is the gnomAD database and analyses created and maintained by the{' '}
-            {/* @ts-expect-error */}
             <ExternalLink href="https://gnomad.broadinstitute.org/team#production-staff">
               gnomAD production team
             </ExternalLink>
             . Secondary Analyses are additional analyses developed in collaboration with
-            laboratories of the {/* @ts-expect-error */}
+            laboratories of the{' '}
             <ExternalLink href="https://gnomad.broadinstitute.org/team#steering-committee">
               gnomAD steering committee
             </ExternalLink>

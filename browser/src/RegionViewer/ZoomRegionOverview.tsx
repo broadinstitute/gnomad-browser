@@ -106,6 +106,11 @@ const SliderTrack = styled.div`
   background: ${(props: any) => (props.index === 1 ? '#428bca' : '#f8f9fa')};
 `
 
+export type ZoomRegion = {
+  start: number
+  stop: number
+}
+
 type ZoomRegionOverviewProps = {
   readOnly?: boolean
   regions: {
@@ -113,10 +118,7 @@ type ZoomRegionOverviewProps = {
     stop: number
   }[]
   renderOverview: (...args: any[]) => any
-  zoomRegion: {
-    start: number
-    stop: number
-  }
+  zoomRegion: ZoomRegion
   onChangeZoomRegion: (...args: any[]) => any
   onChangeZoomRegionDebounceDelay?: number
 }
@@ -150,7 +152,7 @@ const ZoomRegionOverview = forwardRef<any, ZoomRegionOverviewProps>(
     )
 
     const onChangeZoomRegion = useCallback(
-      (newZoomRegion) => {
+      (newZoomRegion: ZoomRegion) => {
         setZoomRegion(newZoomRegion)
         debouncedOnChangeZoomRegionCallback(newZoomRegion)
       },

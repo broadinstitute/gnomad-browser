@@ -29,7 +29,6 @@ const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }: Props) 
               <th scope="row">{disease.name}</th>
               <td>
                 {disease.omim_id && (
-                  // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
                   <ExternalLink href={`https://omim.org/entry/${disease.omim_id}`}>
                     {disease.omim_id}
                   </ExternalLink>
