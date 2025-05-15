@@ -174,13 +174,19 @@ const VariantInSilicoPredictors = ({ variant, datasetId }: Props) => {
       </List>
       {isV4(datasetId) && (
         <>
-          <Badge level="info">Note</Badge> For more detailed and up to date SpliceAI and Pangolin
-          predictions, please visit our {/* @ts-expect-error */}
+          <Badge level="info">Note</Badge> The SpliceAI and Pangolin predictions displayed here were
+          precomputed by {/* @ts-expect-error */}
+          <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0/#variant-annotations">
+            Illumina and Invitae
+          </ExternalLink>
+          . For more detailed and up to date SpliceAI and Pangolin predictions, please visit our{' '}
+          {/* @ts-expect-error */}
           <ExternalLink
             href={`https://spliceailookup.broadinstitute.org/#variant=chr${variant.variant_id}&hg=38&distance=500&mask=0&ra=0}`}
           >
             SpliceAI Lookup browser
           </ExternalLink>
+          .
         </>
       )}
     </div>
