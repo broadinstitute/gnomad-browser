@@ -14269,7 +14269,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         >
           Admixed American
         </a>
+         
         and
+         
         <a
           className="c11"
           href="https://gnomad.broadinstitute.org/news/2024-10-local-ancestry-inference-for-african-african-american-samples-in-gnomad/"
@@ -14278,6 +14280,7 @@ exports[`Data Page has no unexpected changes 1`] = `
         >
           African/African American
         </a>
+         
         samples in gnomAD.
       </p>
       <ul
