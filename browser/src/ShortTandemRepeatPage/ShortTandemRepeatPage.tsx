@@ -324,6 +324,23 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                   Data download
                 </ExternalLink>
               </ListItem>
+              {/* @ts-expect-error */}
+              <ListItem>
+                {/* @ts-expect-error */}
+                <ExternalLink href="https://gnomad.broadinstitute.org/news/2022-01-the-addition-of-short-tandem-repeat-calls-to-gnomad/">
+                  Blog post
+                </ExternalLink> and 
+                <ExternalLink href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/">
+                  change log (March 2025)
+                </ExternalLink>
+              </ListItem>               
+              {/* @ts-expect-error */}
+              <ListItem>
+                {/* @ts-expect-error */}
+                <ExternalLink href="https://github.com/broadinstitute/str-analysis/blob/62569a4/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json">
+                  ExpansionHunter catalog
+                </ExternalLink>
+              </ListItem>
             </List>
           </p>
         </ResponsiveSection>
