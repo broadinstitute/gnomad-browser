@@ -299,12 +299,12 @@ const GnomadV3Downloads = () => (
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
           Admixed American
-        </ExternalLink>
-        and
+        </ExternalLink>{' '}
+        and{' '}
         {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2024-10-local-ancestry-inference-for-african-african-american-samples-in-gnomad/">
           African/African American
-        </ExternalLink>
+        </ExternalLink>{' '}
         samples in gnomAD.
       </p>
 
