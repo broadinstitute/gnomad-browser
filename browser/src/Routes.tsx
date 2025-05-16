@@ -21,6 +21,7 @@ const MOUPage = lazy(() => import('./MOUPage'))
 const StatsPage = lazy(() => import('./StatsPage/StatsPage'))
 const PublicationsPage = lazy(() => import('./PublicationsPage'))
 const PoliciesPage = lazy(() => import('./PoliciesPage'))
+const EthicsContactPage = lazy(() => import('./EthicsContactPage'))
 
 const GenePageContainer = lazy(() => import('./GenePage/GenePageContainer'))
 const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'))
@@ -180,6 +181,8 @@ const Routes = () => {
       <Redirect from="/terms" to="/policies" />
 
       <Route exact path="/policies" component={PoliciesPage} />
+
+      <Route exact path="/ethics-contact" component={EthicsContactPage} />
 
       <Route exact path="/publications" component={PublicationsPage} />
 

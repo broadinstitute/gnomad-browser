@@ -1,6 +1,6 @@
 ## OurDNA Browser Ethics Policy
 
-Data included in the OurDNA Browser database has received rigorous ethical review and approval, guided by the principles of the [National Statement on ethical conduct in human research](https://www.nhmrc.gov.au/about-us/publications/national-statement-ethical-conduct-human-research-2023) (‘National Statement’). The guidelines under the National Statement have been developed jointly by the National Health and Medical Research Council (NHMRC), the Australian Research Council (ARC) and Universities Australia.
+Data included in the OurDNA Browser database [has received rigorous ethical review and approval](/ethics-contact), guided by the principles of the [National Statement on ethical conduct in human research](https://www.nhmrc.gov.au/about-us/publications/national-statement-ethical-conduct-human-research-2023) (‘National Statement’). The guidelines under the National Statement have been developed jointly by the National Health and Medical Research Council (NHMRC), the Australian Research Council (ARC) and Universities Australia.
 
 The ARC, NHMRC and Universities Australia have also developed a supplementary guide designed to support institutions and researchers to implement and comply with the National Statement, including the [Australian Code for the Responsible Conduct of Research](https://www.nhmrc.gov.au/about-us/publications/australian-code-responsible-conduct-research-2018). All data generation, analysis and aggregation Is conducted in accordance with participants’ consent choices.
 

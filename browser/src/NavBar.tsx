@@ -105,6 +105,11 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
+          <Link to="/team" onClick={closeMenu}>
+            Team
+          </Link>
+        </li>
+        <li>
           <Link to="/federated" onClick={closeMenu}>
             Federated
           </Link>
