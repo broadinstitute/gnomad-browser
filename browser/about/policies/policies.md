@@ -21,7 +21,7 @@ This resource is designed for researchers and clinicians with formal training in
 
 2. **Context matters**: The effect of any single genetic variant depends on the broader genetic background in which it exists. A variant's association with a trait in one ancestry group may not translate to similar effects in another.
 
-3. **Many studies are biased**: Published associations between variants and traits often derive from studies with limited population diversity and sample sizes, which makes generalisations across populations scientifically unsound.
+3. **Many studies contain bias**: Published associations between variants and traits often derive from studies with limited population diversity and sample sizes, which makes generalisations across populations scientifically unsound.
 
 4. **Population labels are overly simplistic**: The ancestry categories used in this database are practical groupings, not biologically distinct entities. Human genetic variation is continuous across populations, and these categories oversimplify this complexity.
 
@@ -32,15 +32,11 @@ This data should not be used to:
 
 * Make any attempt to identify individual research participants from whom the data were obtained
 
-* Make claims about inherent biological differences between ancestry groups
-
 * Infer that certain populations have greater or lesser predisposition to specific traits based on allele frequencies alone
-
-* Support racial or ethnic stereotypes
 
 * Make clinical decisions without appropriate medical expertise and additional evidence
 
-Misuse or misinterpretation of this data can perpetuate harmful stereotypes and lead to scientific conclusions that are not supported by evidence. Use of these data in ways that violate these terms of use will be reported to the relevant institutions and funding agencies (where applicable), and may result in the public naming of the individuals and organisations responsible for this misuse. While we will also block IP addresses associated with violations, we recognise that such technical measures have limitations and do not provide absolute protection against determined bad actors.
+Misuse or misinterpretation of this data can perpetuate harmful stereotypes and lead to scientific conclusions that are not supported by evidence. Use of these data in ways that violate these terms of use will be reported to the relevant institutions and funding agencies (where applicable), and may result in the public naming of the individuals and organisations responsible for this misuse. We may also choose to block IP addresses associated with violations, acknowledging that this approach has substantial limitations.
 
 ### Guidelines for Responsible Use of the Data
 The OurDNA Browser includes data that have been collected in partnership with communities whose genetic ancestries are underrepresented in genomics research. Community leaders have championed the program within their communities and advocated for community members’ participation to ensure their access to genomic advances. *We take community members’ entrustment of their data to us and our promise to deliver benefits to communities seriously*. We share these data with the expectation that they will be used in the spirit of the trust that communities have placed in CPG.

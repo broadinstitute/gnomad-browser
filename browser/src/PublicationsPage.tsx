@@ -31,7 +31,7 @@ const datasets: Dataset[] = [
   },
   {
     resource: 'OurDNA browser (software)',
-    description: '        <td>Descriptions of software functionality; data access methods; comparisons of OurDNA browser to gnomAD browser; references to statistics or visualisations listed in the browser.'
+    description: 'Descriptions of software functionality; data access methods; comparisons of OurDNA browser to gnomAD browser; references to statistics or visualisations listed in the browser.'
   }
 ]
 
