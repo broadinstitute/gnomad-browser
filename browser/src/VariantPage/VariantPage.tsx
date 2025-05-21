@@ -328,12 +328,20 @@ export type Variant = {
   non_coding_constraint: NonCodingConstraint | null
 }
 
+export type GlobalData = {
+  age_distribution: {
+    exome: Histogram | null
+    genome: Histogram | null
+  }
+}
+
 type VariantPageContentProps = {
   datasetId: DatasetId
   variant: Variant
+  globalData: GlobalData
 }
 
-export const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
+export const VariantPageContent = ({ datasetId, variant, globalData }: VariantPageContentProps) => {
   return (
     <FlexWrapper>
       <ResponsiveSection>
@@ -461,7 +469,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
                   Age distribution is based on the full gnomAD dataset, not the selected subset.
                 </p>
               )}
-              <GnomadAgeDistribution datasetId={datasetId} variant={variant} />
+              <GnomadAgeDistribution datasetId={datasetId} variant={variant} globalData={globalData} />
             </React.Fragment>
           )}
         </ResponsiveSection>
@@ -792,6 +800,21 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
   meta {
     clinvar_release_date
   }
+
+  age_distribution(dataset: $datasetId, query: "") {
+    exome {
+      n_smaller
+      n_larger
+      bin_freq
+      bin_edges
+    }
+    genome {
+      n_smaller
+      n_larger
+      bin_freq
+      bin_edges
+    }
+  }
 }
 `
 
@@ -897,6 +920,10 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               liftover_sources: data.liftover_sources,
             }
 
+            const global_data = {
+              age_distribution: data.age_distribution
+            }
+
             // In this branch, a variant was successfully loaded. Check the symbol
             //   and ensemble ID to create a 'Gene page' button with the correct link
             const geneData = checkGeneLink(variant.transcript_consequences)
@@ -904,7 +931,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               gene.ensembleId = geneData.ensembleId
             }
 
-            pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />
+            pageContent = <VariantPageContent datasetId={datasetId} variant={variant} globalData={global_data} />
           }
 
           const datasetLinkWithLiftover: URLBuilder = (currentLocation, toDatasetId) => {

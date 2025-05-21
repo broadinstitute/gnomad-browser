@@ -50,6 +50,8 @@ const datasetQueries: Record<string, any> = {
       gnomadV4VariantQueries.fetchVariantsByTranscript(...args, 'all'),
     fetchMatchingVariants: (...args: QueryArgs) =>
       gnomadV4VariantQueries.fetchMatchingVariants(...args, 'all'),
+    fetchVariantsAgeDistribution: (...args: QueryArgs) =>
+      gnomadV4VariantQueries.fetchVariantsAgeDistribution(...args),
   },
   gnomad_r3: {
     countVariantsInRegion: (...args: QueryArgs) =>
@@ -170,4 +172,9 @@ export const fetchVariantsByTranscript = withCache(
 export const fetchMatchingVariants = (esClient: any, datasetId: DatasetId, search: any) => {
   const query = datasetQueries[datasetId].fetchMatchingVariants
   return query(esClient, search)
+}
+
+export const fetchVariantsAgeDistribution = (esClient: any, datasetId: DatasetId) => {
+  const query = datasetQueries[datasetId].fetchVariantsAgeDistribution
+  return query(esClient)
 }

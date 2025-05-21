@@ -5,6 +5,7 @@ on:
     branches:
       - ourdna-browser
       - ourdna-browser-dev
+      - age-distribution-dynamic
 
 permissions:
   id-token: write

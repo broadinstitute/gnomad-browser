@@ -11,6 +11,7 @@ import {
   fetchVariantsByRegion,
   fetchVariantsByTranscript,
   fetchMatchingVariants,
+  fetchVariantsAgeDistribution,
 } from '../../queries/variant-queries'
 
 import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-queries'
@@ -146,10 +147,19 @@ const resolveVariantSearch = async (_obj: any, args: any, ctx: any) => {
   )
 }
 
+const resolveAgeDistribution = async (_obj: any, args: any, ctx: any) => {
+  const { dataset } = args
+  if (!dataset) {
+    throw new UserVisibleError('Dataset is required')
+  }
+  return fetchVariantsAgeDistribution(ctx.esClient, dataset)
+}
+
 const resolvers = {
   Query: {
     variant: resolveVariant,
     variant_search: resolveVariantSearch,
+    age_distribution: resolveAgeDistribution, 
   },
   Gene: {
     variants: resolveVariantsInGene,

@@ -20,7 +20,7 @@ import {
 import Legend, { StripedSwatch } from '../Legend'
 import StackedHistogram from '../StackedHistogram'
 import ControlSection from './ControlSection'
-import { Variant } from './VariantPage'
+import { Variant, GlobalData } from './VariantPage'
 
 const LegendWrapper = styled.div`
   display: flex;
@@ -82,25 +82,26 @@ const prepareVariantData = ({
   ]
 }
 
-const prepareOverallData = ({ datasetId, includeExomes, includeGenomes }: any) => {
-  let overallAgeDistribution = null
-  if (isV4(datasetId)) {
-    overallAgeDistribution = gnomadV4AgeDistribution
-  } else if (isV3(datasetId)) {
-    overallAgeDistribution = gnomadV3AgeDistribution
-  } else if (isV2(datasetId)) {
-    overallAgeDistribution = gnomadV2AgeDistribution
+const prepareOverallData = ({ datasetId, includeExomes, includeGenomes, globalAgeDistribution }: any) => {
+  let overallAgeDistribution = globalAgeDistribution
+
+  if (!overallAgeDistribution) {
+    if (isV4(datasetId)) {
+      overallAgeDistribution = gnomadV4AgeDistribution
+    } else if (isV3(datasetId)) {
+      overallAgeDistribution = gnomadV3AgeDistribution
+    } else if (isV2(datasetId)) {
+      overallAgeDistribution = gnomadV2AgeDistribution
+    }
   }
 
   if (!overallAgeDistribution) {
     return null
   }
 
-  // @ts-expect-error
   const nBins = (overallAgeDistribution.exome || overallAgeDistribution.genome).bin_freq.length
 
   const exomeData =
-    // @ts-expect-error
     includeExomes && overallAgeDistribution.exome ? overallAgeDistribution.exome : null
   const genomeData =
     includeGenomes && overallAgeDistribution.genome ? overallAgeDistribution.genome : null
@@ -131,9 +132,11 @@ const getDefaultSelectedSequencingType = (variant: any) => {
 type GnomadAgeDistributionProps = {
   datasetId: DatasetId
   variant: Variant
+  globalData: GlobalData
 }
 
-const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProps) => {
+const GnomadAgeDistribution = ({ datasetId, variant, globalData }: GnomadAgeDistributionProps) => {
+
   const [selectedSequencingType, setSelectedSequencingType] = useState(
     getDefaultSelectedSequencingType(variant)
   )
@@ -174,6 +177,7 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
     datasetId,
     includeExomes: selectedSequencingType.includes('e'),
     includeGenomes: selectedSequencingType.includes('g'),
+    globalAgeDistribution: globalData.age_distribution,
   })
 
   return (

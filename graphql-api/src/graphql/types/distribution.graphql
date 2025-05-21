@@ -1,0 +1,4 @@
+type Distribution {
+  exome: Histogram!
+  genome: Histogram!
+}

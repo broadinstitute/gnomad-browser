@@ -5,7 +5,8 @@ import { isRsId } from '@gnomad/identifiers'
 import { UserVisibleError } from '../../errors'
 
 import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-queries'
-import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
+import { fetchAllSearchResults, fetchIndexMetadata } from '../helpers/elasticsearch-helpers'
+
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
 
 import { getFlagsForContext } from './shared/flags'
@@ -635,6 +636,28 @@ const fetchMatchingVariants = async (
     }))
 }
 
+// ================================================================================================
+// Age Distribution
+// ================================================================================================
+
+const fetchVariantsAgeDistribution = async (esClient: any, _subset: Subset) => {
+
+  const metadata = await Promise.all([
+    fetchIndexMetadata(esClient, GNOMAD_V4_VARIANT_INDEX),
+  ])
+
+  const age_distribution = metadata.map((m) => m.table_globals.age_distribution)
+
+  logger.info(`age_distribution: ${JSON.stringify(age_distribution)}`)
+
+  // TODO, update once age_distribution contains genome/exome records, 
+  // ATM it is all combined, so we mockup those 2 records
+  return {
+      exome: age_distribution[0],
+      genome: age_distribution[0],
+  }
+}
+
 const gnomadV4VariantQueries = {
   countVariantsInRegion,
   fetchVariantById,
@@ -642,6 +665,7 @@ const gnomadV4VariantQueries = {
   fetchVariantsByRegion,
   fetchVariantsByTranscript,
   fetchMatchingVariants,
+  fetchVariantsAgeDistribution,
 }
 
 export default gnomadV4VariantQueries
