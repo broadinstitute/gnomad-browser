@@ -67,7 +67,7 @@ Aggregate data download is currently under development. Please check back for a 
 
 ## Funding
 
-Garvan Institute of Medical Research (https://ror.org/01b3dvp57 ) and Murdoch Children’s Research Institute (https://ror.org/048fyec77 ) contribute to the development of this resource via their significant funding support for the Centre for Population Genomics, enabled through the generosity of donors.
+Garvan Institute of Medical Research (https://ror.org/01b3dvp57) and Murdoch Children’s Research Institute (https://ror.org/048fyec77) contribute to the development of this resource via their significant funding support for the Centre for Population Genomics, enabled through the generosity of donors.
 
 Funding for this research has also been provided by the Australian Government’s Medical Research Future Fund (MRFF) grant 2015969 (CIA Daniel MacArthur; 2022-2027) from the Genomics Health Futures Mission and by the National Health and Medical Research Council (NHMRC) investigator grant 2009982 (CIA Daniel MacArthur; 2022-2026).
 

@@ -72,6 +72,6 @@ The CPG is firmly committed to Open Science and maximising the community benefit
 
 The OurDNA aggregate data is available free under the [Creative Commons BY-SA](https://creativecommons.org/licenses/by-sa/4.0/deed.en). We request that you actively acknowledge and give attribution to the CPG with appropriate credit linking back to the project’s page. We also request that you provide a link to the licence, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the CPG endorses you or your use. If you remix, transform, or build upon the material, you must distribute your contributions under the same licence as the original. Attribution supports future efforts to release other data. It also reduces the amount of "orphaned data", helping retain links to authoritative sources.
 
-Citation instructions are provided on our Publications page.
+Citation instructions are provided on our [Publications page](/publications).
 
 
