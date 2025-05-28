@@ -34,13 +34,24 @@ app.get('/health/ready', (_request: any, response: any) => {
 // Log requests
 // Add logging here to avoid logging health checks
 app.use(function requestLogMiddleware(request: any, response: any, next: any) {
+  let memoryBefore: any
   request.startAt = process.hrtime()
   response.startAt = undefined
   onHeaders(response, () => {
+    memoryBefore = process.memoryUsage()
     response.startAt = process.hrtime()
   })
 
   onFinished(response, () => {
+    const memoryAfter = process.memoryUsage()
+    const memoryDelta: NodeJS.MemoryUsage = {
+      rss: memoryAfter.rss - memoryBefore.rss,
+      heapTotal: memoryAfter.heapTotal - memoryBefore.heapTotal,
+      heapUsed: memoryAfter.heapUsed - memoryBefore.heapUsed,
+      external: memoryAfter.external - memoryBefore.external,
+      arrayBuffers: memoryAfter.arrayBuffers - memoryBefore.arrayBuffers,
+    }
+
     logger.info({
       httpRequest: {
         requestMethod: request.method,
@@ -59,6 +70,7 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
                 (response.startAt[1] - request.startAt[1]) * 1e-9
               ).toFixed(3)}s`
             : undefined,
+        memory: { before: memoryBefore, after: memoryAfter, delta: memoryDelta },
         protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
       },
       graphqlRequest: request.graphqlParams
