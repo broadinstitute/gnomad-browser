@@ -34,7 +34,7 @@ app.get('/health/ready', (_request: any, response: any) => {
 // Log requests
 // Add logging here to avoid logging health checks
 app.use(function requestLogMiddleware(request: any, response: any, next: any) {
-  let memoryBefore: any
+  let memoryBefore: NodeJS.MemoryUsage | undefined
   request.startAt = process.hrtime()
   response.startAt = undefined
   onHeaders(response, () => {
@@ -44,7 +44,7 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
 
   onFinished(response, () => {
     const memoryAfter = process.memoryUsage()
-    const memoryDelta: NodeJS.MemoryUsage = {
+    const memoryDelta: NodeJS.MemoryUsage | undefined = memoryBefore && {
       rss: memoryAfter.rss - memoryBefore.rss,
       heapTotal: memoryAfter.heapTotal - memoryBefore.heapTotal,
       heapUsed: memoryAfter.heapUsed - memoryBefore.heapUsed,
