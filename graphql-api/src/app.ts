@@ -53,6 +53,7 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
     }
 
     logger.info({
+      memory: { before: memoryBefore, after: memoryAfter, delta: memoryDelta },
       httpRequest: {
         requestMethod: request.method,
         requestUrl: `${request.protocol}://${request.hostname}${
@@ -70,7 +71,6 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
                 (response.startAt[1] - request.startAt[1]) * 1e-9
               ).toFixed(3)}s`
             : undefined,
-        memory: { before: memoryBefore, after: memoryAfter, delta: memoryDelta },
         protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
       },
       graphqlRequest: request.graphqlParams
