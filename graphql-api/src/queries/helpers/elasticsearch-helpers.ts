@@ -6,7 +6,7 @@
  * @return {Object[]} Combined list of hits from all responses
  */
 export const fetchAllSearchResults = async (client: any, searchParams: any) => {
-  let allResults: any = []
+  const allResults: any = []
   const responseQueue = []
 
   const size = searchParams.size || 1000
@@ -22,7 +22,7 @@ export const fetchAllSearchResults = async (client: any, searchParams: any) => {
 
   while (responseQueue.length) {
     const response = responseQueue.shift()
-    allResults = allResults.concat(response.body.hits.hits)
+    allResults.push(...response.body.hits.hits)
 
     if (allResults.length === response.body.hits.total.value) {
       // eslint-disable-next-line no-await-in-loop
