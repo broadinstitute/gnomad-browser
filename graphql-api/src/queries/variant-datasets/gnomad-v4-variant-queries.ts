@@ -12,6 +12,9 @@ import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 import largeGenes from '../helpers/large-genes'
 
+import { performance } from 'node:perf_hooks'
+import logger from '../../logger'
+
 const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
 
 type Subset = 'all' | 'non_ukb'
@@ -461,10 +464,13 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
 // ================================================================================================
 
 const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset) => {
+  const fetchTag = Math.random().toString()
+  const pre_query_tag = `pre_query-${fetchTag}`
+  performance.mark(pre_query_tag)
+
   const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
-
   const hits = await fetchAllSearchResults(esClient, {
     index: GNOMAD_V4_VARIANT_INDEX,
     type: '_doc',
@@ -489,15 +495,59 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
       sort: [{ 'locus.position': { order: 'asc' } }],
     },
   })
+  const elasticsearch_query_tag = `elasticsearch_query-${fetchTag}`
+  const post_query_tag = `post_query-${fetchTag}`
+  performance.mark(post_query_tag)
+  performance.measure(elasticsearch_query_tag, pre_query_tag, post_query_tag)
 
-  return hits
-    .map((hit: any) => hit._source.value)
-    .filter(
-      (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome.freq[subset].ac_raw > 0
-    )
-    .map(shapeVariantSummary(subset, { type: 'region' }))
+  const resultValues = hits.map((hit: any) => hit._source.value)
+  const extract_values_tag = `extract_values-${fetchTag}`
+  const post_extract_values_tag = `post_extract_values-${fetchTag}`
+  performance.mark(post_extract_values_tag)
+  performance.measure(extract_values_tag, post_query_tag, post_extract_values_tag)
+
+  const filteredResultValues = resultValues.filter(
+    (variant: any) =>
+      (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
+      variant.exome.freq[subset].ac_raw > 0
+  )
+  const post_filter_ac_present_tag = `post_filter_ac_present-${fetchTag}`
+  performance.mark(post_filter_ac_present_tag)
+  const filter_ac_present_tag = `filter_ac_present-${fetchTag}`
+  performance.measure(filter_ac_present_tag, post_extract_values_tag, post_filter_ac_present_tag)
+
+  const result = filteredResultValues.map(shapeVariantSummary(subset, { type: 'region' }))
+  const post_shaping_tag = `post_shaping-${fetchTag}`
+  performance.mark(post_shaping_tag)
+  const variant_summary_shaping_tag = `variant_summary_shaping-${fetchTag}`
+  performance.measure(variant_summary_shaping_tag, post_filter_ac_present_tag, post_shaping_tag)
+
+  logger.info({
+    region_query_profile: {
+      elasticsearch_query: performance.getEntriesByName(elasticsearch_query_tag)[0].duration,
+      extract_values: performance.getEntriesByName(extract_values_tag)[0].duration,
+      filter_ac: performance.getEntriesByName(filter_ac_present_tag)[0].duration,
+      variant_summary_shaping: performance.getEntriesByName(variant_summary_shaping_tag)[0]
+        .duration,
+    },
+  })
+
+  const markTags = [
+    pre_query_tag,
+    post_query_tag,
+    post_extract_values_tag,
+    post_filter_ac_present_tag,
+    post_shaping_tag,
+  ]
+  const measureTags = [
+    elasticsearch_query_tag,
+    extract_values_tag,
+    filter_ac_present_tag,
+    variant_summary_shaping_tag,
+  ]
+  markTags.forEach(performance.clearMarks)
+  measureTags.forEach(performance.clearMeasures)
+  return result
 }
 
 // ================================================================================================
