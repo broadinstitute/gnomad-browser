@@ -4,6 +4,7 @@
 !graphql-api/src
 !tsconfig.json
 !tsconfig.build.json
+!tsconfig.build-instrumentation.json
 !pnpm-lock.yaml
 !pnpm-workspace-api-docker.yaml
 !package.json
