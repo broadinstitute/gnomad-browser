@@ -4,3 +4,5 @@ resources:
   - ./api.deployment.yaml
   - ./api.service.yaml
   - ./browser.deployment.yaml
+  - ./opentelemetry.deployment.yaml
+  - ./opentelemetry.service.yaml

@@ -1,0 +1,254 @@
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: otel-agent-conf
+  labels:
+    app: opentelemetry
+    component: otel-agent-conf
+data:
+  otel-agent-config: |
+    exporters:
+      googlecloud:
+        log:
+          default_log_name: opentelemetry-collector
+        user_agent: Google-Cloud-OTLP manifests:0.3.0 OpenTelemetry Collector Built By Google/0.127.0 (linux/amd64)
+      googlemanagedprometheus:
+        user_agent: Google-Cloud-OTLP manifests:0.3.0 OpenTelemetry Collector Built By Google/0.127.0 (linux/amd64)
+      # The otlphttp exporter is used to send traces to Google Cloud Trace using OTLP http/proto
+      # The otlp exporter could also be used to send them using OTLP grpc
+      otlphttp:
+        encoding: proto
+        endpoint: https://telemetry.googleapis.com
+        # Use the googleclientauth extension to authenticate with Google credentials
+        auth:
+          authenticator: googleclientauth
+        tls:
+          insecure: true
+    extensions:
+      health_check:
+        endpoint: ${env:MY_POD_IP}:13133
+      googleclientauth:
+    processors:
+      filter/self-metrics:
+        metrics:
+          include:
+            match_type: strict
+            metric_names:
+            - otelcol_process_uptime
+            - otelcol_process_memory_rss
+            - otelcol_grpc_io_client_completed_rpcs
+            - otelcol_googlecloudmonitoring_point_count
+      batch:
+        send_batch_max_size: 200
+        send_batch_size: 200
+        timeout: 5s
+      k8sattributes:
+        extract:
+          metadata:
+          - k8s.namespace.name
+          - k8s.deployment.name
+          - k8s.statefulset.name
+          - k8s.daemonset.name
+          - k8s.cronjob.name
+          - k8s.job.name
+          - k8s.replicaset.name
+          - k8s.node.name
+          - k8s.pod.name
+          - k8s.pod.uid
+          - k8s.pod.start_time
+        passthrough: false
+        pod_association:
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.ip
+        - sources:
+          - from: resource_attribute
+            name: k8s.pod.uid
+        - sources:
+          - from: connection
+      memory_limiter:
+        check_interval: 1s
+        limit_percentage: 65
+        spike_limit_percentage: 20
+
+      metricstransform/self-metrics:
+        transforms:
+        - action: update
+          include: otelcol_process_uptime
+          operations:
+          - action: add_label
+            new_label: version
+            new_value: Google-Cloud-OTLP manifests:0.3.0 OpenTelemetry Collector Built By Google/0.127.0 (linux/amd64)
+
+      resourcedetection:
+        detectors: [gcp]
+        timeout: 10s
+
+      transform/collision:
+        metric_statements:
+        - context: datapoint
+          statements:
+          - set(attributes["exported_location"], attributes["location"])
+          - delete_key(attributes, "location")
+          - set(attributes["exported_cluster"], attributes["cluster"])
+          - delete_key(attributes, "cluster")
+          - set(attributes["exported_namespace"], attributes["namespace"])
+          - delete_key(attributes, "namespace")
+          - set(attributes["exported_job"], attributes["job"])
+          - delete_key(attributes, "job")
+          - set(attributes["exported_instance"], attributes["instance"])
+          - delete_key(attributes, "instance")
+          - set(attributes["exported_project_id"], attributes["project_id"])
+          - delete_key(attributes, "project_id")
+
+      # The relative ordering of statements between ReplicaSet & Deployment and Job & CronJob are important.
+      # The ordering of these controllers is decided based on the k8s controller documentation available at
+      # https://kubernetes.io/docs/concepts/workloads/controllers.
+      # The relative ordering of the other controllers in this list is inconsequential since they directly
+      # create pods.
+      transform/aco-gke:
+        metric_statements:
+        - context: datapoint
+          statements:
+          - set(attributes["top_level_controller_type"], "ReplicaSet") where resource.attributes["k8s.replicaset.name"] != nil
+          - set(attributes["top_level_controller_name"], resource.attributes["k8s.replicaset.name"]) where resource.attributes["k8s.replicaset.name"] != nil
+          - set(attributes["top_level_controller_type"], "Deployment") where resource.attributes["k8s.deployment.name"] != nil
+          - set(attributes["top_level_controller_name"], resource.attributes["k8s.deployment.name"]) where resource.attributes["k8s.deployment.name"] != nil
+          - set(attributes["top_level_controller_type"], "DaemonSet") where resource.attributes["k8s.daemonset.name"] != nil
+          - set(attributes["top_level_controller_name"], resource.attributes["k8s.daemonset.name"]) where resource.attributes["k8s.daemonset.name"] != nil
+          - set(attributes["top_level_controller_type"], "StatefulSet") where resource.attributes["k8s.statefulset.name"] != nil
+          - set(attributes["top_level_controller_name"], resource.attributes["k8s.statefulset.name"]) where resource.attributes["k8s.statefulset.name"] != nil
+          - set(attributes["top_level_controller_type"], "Job") where resource.attributes["k8s.job.name"] != nil
+          - set(attributes["top_level_controller_name"], resource.attributes["k8s.job.name"]) where resource.attributes["k8s.job.name"] != nil
+          - set(attributes["top_level_controller_type"], "CronJob") where resource.attributes["k8s.cronjob.name"] != nil
+          - set(attributes["top_level_controller_name"], resource.attributes["k8s.cronjob.name"]) where resource.attributes["k8s.cronjob.name"] != nil
+
+    # When sending telemetry to the GCP OTLP endpoint, the gcp.project_id resource attribute is required to be set to your project ID.
+      resource/gcp_project_id:
+        attributes:
+        - key: gcp.project_id
+          # MAKE SURE YOU REPLACE THIS WITH YOUR PROJECT ID
+          value: exac-gnomad
+          action: insert
+    receivers:
+      otlp:
+        protocols:
+          http:
+            cors:
+              allowed_origins:
+              - http://*
+              - https://*
+            endpoint: ${env:MY_POD_IP}:4318
+    service:
+      extensions:
+      - health_check
+      - googleclientauth
+      pipelines:
+        logs:
+          exporters:
+          - googlecloud
+          processors:
+          - k8sattributes
+          - resourcedetection
+          - memory_limiter
+          - batch
+          receivers:
+          - otlp
+        metrics/otlp:
+          exporters:
+          - googlecloud
+          processors:
+          - k8sattributes
+          - memory_limiter
+          - resourcedetection
+          - transform/collision
+          - transform/aco-gke
+          - batch
+          receivers:
+          - otlp
+        metrics/self-metrics:
+          exporters:
+          - googlemanagedprometheus
+          processors:
+          - filter/self-metrics
+          - metricstransform/self-metrics
+          - k8sattributes
+          - memory_limiter
+          - resourcedetection
+          - transform/collision
+          - batch
+          receivers:
+          - otlp
+        traces:
+          exporters:
+          - otlphttp
+          processors:
+          - k8sattributes
+          - memory_limiter
+          - resource/gcp_project_id
+          - resourcedetection
+          - batch
+          receivers:
+          - otlp
+      telemetry:
+        logs:
+          encoding: json
+        metrics:
+          readers:
+          - periodic:
+              exporter:
+                otlp:
+                  protocol: http/protobuf
+                  endpoint: http://${env:MY_POD_IP}:4318
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: opentelemetry-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opentelemetry-collector
+  template:
+    metadata:
+      labels:
+        app: opentelemetry-collector
+    spec:
+      serviceAccountName: gnomad-api
+      containers:
+        - name: opentelemetry-collector
+          image: us-docker.pkg.dev/cloud-ops-agents-artifacts/google-cloud-opentelemetry-collector/otelcol-google:0.127.0
+          command:
+            - '/otelcol-google'
+            - '--config=/conf/otel-agent-config.yaml'
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 55679 # ZPages endpoint.
+            - containerPort: 4318 # Default OpenTelemetry HTTP receiver port.
+            - containerPort: 8888 # Metrics.
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: GOMEMLIMIT
+              value: 400MiB
+          volumeMounts:
+            - name: otel-agent-config-vol
+              mountPath: /conf
+      volumes:
+        - configMap:
+            name: otel-agent-conf
+            items:
+              - key: otel-agent-config
+                path: otel-agent-config.yaml
+          name: otel-agent-config-vol
