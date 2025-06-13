@@ -50,6 +50,7 @@ const config: Record<string, any> = {
 
   // OpenTelemetry collector endpoint
   OPENTELEMETRY_COLLECTOR_URL: env.OPENTELEMETRY_COLLECTOR_URL,
+  OPENTELEMETRY_SERVICE_NAME: env.OPENTELEMETRY_SERVICE_NAME,
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']
