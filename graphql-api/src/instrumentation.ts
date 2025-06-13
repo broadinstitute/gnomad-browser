@@ -17,6 +17,7 @@ if (config.OPENTELEMETRY_COLLECTOR_URL !== undefined) {
       }),
     }),
     instrumentations: [getNodeAutoInstrumentations()],
+    serviceName: config.OPENTELEMETRY_SERVICE_NAME,
   })
   sdk.start()
 }
