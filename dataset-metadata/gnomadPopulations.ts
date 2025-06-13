@@ -15,8 +15,15 @@ export const GNOMAD_POPULATION_NAMES = {
   sas: 'South Asian',
   rmi: 'Remaining',
   remaining: 'Remaining',
-  European: 'European',
+
+  // Custom OurDNA definitions
+  CSA: 'CSA (Central South Asian)',
+  EAS: 'EAS (East Asian)',
+  EUR: 'EUR (European)',
+  FIL: 'FIL (Filipino)',
+  MID: 'MID (Middle Eastern)',
   Unclassified: 'Unclassified',
+
 
   // EAS subpopulations
   eas_jpn: 'Japanese',
@@ -67,18 +74,12 @@ const v3Populations: PopulationId[] = [
   'oth',
 ]
 const v4Populations: PopulationId[] = [
-  // 'afr',
-  // 'amr',
-  // 'asj',
-  // 'eas',
-  // 'fin',
-  // 'mid',
-  // 'nfe',
-  // 'ami', // v4 does not directly include amish, but v3 does and v4 genomes are from v3
-  // 'sas',
-  // 'remaining',
-  'European',
   'Unclassified',
+  'CSA',
+  'EAS',
+  'EUR',
+  'FIL',
+  'MID'
 ]
 
 export const populationsInDataset = {

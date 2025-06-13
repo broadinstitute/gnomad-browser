@@ -20,7 +20,7 @@ export const datasetLabels = {
   gnomad_cnv_r4: 'gnomAD CNVs v4.1.0',
   gnomad_r4: 'gnomAD v4.1.0',
   gnomad_r4_non_ukb: 'gnomAD v4.1.0 (non-UKB)',
-  gnomad_r4_ourdna: 'gnomAD v4.1.0 (OurDNA)',
+  gnomad_r4_ourdna: 'OurDNA v1.0',
 } as const
 export type DatasetId = keyof typeof datasetLabels
 

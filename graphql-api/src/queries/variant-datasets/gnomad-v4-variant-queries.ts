@@ -646,15 +646,17 @@ const fetchVariantsAgeDistribution = async (esClient: any, _subset: Subset) => {
     fetchIndexMetadata(esClient, GNOMAD_V4_VARIANT_INDEX),
   ])
 
-  const age_distribution = metadata.map((m) => m.table_globals.age_distribution)
+  const genome_age_distribution = metadata.map((m) => m.table_globals.genome_age_distribution)
+  const exome_age_distribution = metadata.map((m) => m.table_globals.exome_age_distribution)
 
-  logger.info(`age_distribution: ${JSON.stringify(age_distribution)}`)
+  logger.info(`genome age_distribution: ${JSON.stringify(genome_age_distribution)}`)
+  logger.info(`exome age_distribution: ${JSON.stringify(exome_age_distribution)}`)
 
   // TODO, update once age_distribution contains genome/exome records, 
   // ATM it is all combined, so we mockup those 2 records
   return {
-      exome: age_distribution[0],
-      genome: age_distribution[0],
+      exome: exome_age_distribution[0],
+      genome: genome_age_distribution[0],
   }
 }
 
