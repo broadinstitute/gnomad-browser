@@ -6,9 +6,9 @@ export const GNOMAD_POPULATION_NAMES = {
   ami: 'Amish',
   amr: 'Admixed American',
   asj: 'Ashkenazi Jewish',
-  eas: 'East Asian',
-  mid: 'Middle Eastern',
-  eur: 'European',
+  // eas: 'East Asian',
+  // mid: 'Middle Eastern',
+  // eur: 'European',
   nfe: 'European (non-Finnish)',
   fin: 'European (Finnish)',
   oth: 'Remaining individuals',
@@ -17,11 +17,11 @@ export const GNOMAD_POPULATION_NAMES = {
   remaining: 'Remaining',
 
   // Custom OurDNA definitions
-  CSA: 'CSA (Central South Asian)',
-  EAS: 'EAS (East Asian)',
-  EUR: 'EUR (European)',
-  FIL: 'FIL (Filipino)',
-  MID: 'MID (Middle Eastern)',
+  csa: 'CSA (Central South Asian)',
+  eas: 'EAS (East Asian)',
+  eur: 'EUR (European)',
+  fil: 'FIL (Filipino)',
+  mid: 'MID (Middle Eastern)',
   Unclassified: 'Unclassified',
 
 
@@ -75,11 +75,11 @@ const v3Populations: PopulationId[] = [
 ]
 const v4Populations: PopulationId[] = [
   'Unclassified',
-  'CSA',
-  'EAS',
-  'EUR',
-  'FIL',
-  'MID'
+  'csa',
+  'eas',
+  'eur',
+  'fil',
+  'mid'
 ]
 
 export const populationsInDataset = {
