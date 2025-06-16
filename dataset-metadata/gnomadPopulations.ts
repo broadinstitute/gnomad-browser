@@ -22,7 +22,7 @@ export const GNOMAD_POPULATION_NAMES = {
   eur: 'EUR (European)',
   fil: 'FIL (Filipino)',
   mid: 'MID (Middle Eastern)',
-  Unclassified: 'Unclassified',
+  unclassified: 'Unclassified',
 
 
   // EAS subpopulations
@@ -57,7 +57,7 @@ export type PopulationIdAndChromosome =
   | 'XY'
 
 export const populationName = (populationId: string) =>
-  textOrMissingTextWarning('genetic ancestry group name', GNOMAD_POPULATION_NAMES, populationId)
+  textOrMissingTextWarning('genetic ancestry group name', GNOMAD_POPULATION_NAMES, populationId.toLowerCase())
 
 const ExACPopulations: PopulationId[] = ['sas', 'afr', 'amr', 'eas', 'fin', 'nfe', 'remaining']
 const v2Populations: PopulationId[] = ['amr', 'nfe', 'afr', 'asj', 'eas', 'fin', 'sas', 'oth']
@@ -74,7 +74,7 @@ const v3Populations: PopulationId[] = [
   'oth',
 ]
 const v4Populations: PopulationId[] = [
-  'Unclassified',
+  'unclassified',
   'csa',
   'eas',
   'eur',
