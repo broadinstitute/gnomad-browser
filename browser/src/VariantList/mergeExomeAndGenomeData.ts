@@ -18,7 +18,7 @@ const findAncestries = (
   target: PopulationId,
   candidates: Population[]
 ): Population[] | undefined => {
-  const foundAncestries = candidates.filter((ancestry) => ancestry.id.startsWith(target))
+  const foundAncestries = candidates.filter((ancestry) => ancestry.id.toLower().startsWith(target))
   return foundAncestries.length > 0 ? foundAncestries : undefined
 }
 
