@@ -394,6 +394,14 @@ const getMultiVariantSourceFields = (
 // Gene query
 // ================================================================================================
 
+export const getFilteredRegions = (gene: any) => {
+  const hasCDS = gene.exons.some((exon: any) => exon.feature_type === 'CDS')
+  const filteredRegions = hasCDS
+    ? gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
+    : gene.exons.filter((exon: any) => exon.feature_type === 'exon')
+  return filteredRegions
+}
+
 const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => {
   const exomeSubset = subset
   const genomeSubset = 'all'
@@ -404,7 +412,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
   const pageSize = isLargeGene ? 500 : 10000
 
   try {
-    const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
+    const filteredRegions = getFilteredRegions(gene)
     const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
     const padding = 75
     const paddedRegions = sortedRegions.map((r: any) => ({
