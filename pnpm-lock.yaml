@@ -366,6 +366,9 @@ importers:
 
   graphql-api:
     dependencies:
+      '@duckdb/node-api':
+        specifier: 1.2.2-alpha.19
+        version: 1.2.2-alpha.19
       '@elastic/elasticsearch':
         specifier: '6'
         version: 6.8.8
@@ -447,6 +450,9 @@ importers:
       http-errors:
         specifier: 1.8.0
         version: 1.8.0
+      immer:
+        specifier: ^10.1.1
+        version: 10.1.1
       ioredis:
         specifier: ^5.3.2
         version: 5.3.2
@@ -2790,6 +2796,62 @@ packages:
   /@discoveryjs/json-ext@0.5.7:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
+
+  /@duckdb/node-api@1.2.2-alpha.19:
+    resolution: {integrity: sha512-qH/PqK+Kp7TDZJU5SdS9+2jrYOJGHME4NcDsgrcbZk7fKTlXsDI8f8F0CnPxGCsBD35B+BEgphz9TTLoj1/vNA==}
+    dependencies:
+      '@duckdb/node-bindings': 1.2.2-alpha.19
+    dev: false
+
+  /@duckdb/node-bindings-darwin-arm64@1.2.2-alpha.19:
+    resolution: {integrity: sha512-r+MDv7XFxl4eCZEthmHWV2mxnczUFVc+w2cH0KzdTWmCgtjT3jpDhEulDekOG9SP9lFvfsTRTRgKatE2TTqu6w==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@duckdb/node-bindings-darwin-x64@1.2.2-alpha.19:
+    resolution: {integrity: sha512-WibHtKNQVDFr8AQumML9HLdgkYIRiC0B+MSrLvfojcrYmupoHB0Nwyn/T2UoTXNnTsn3NOrZECHUZGwRFmmF9g==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@duckdb/node-bindings-linux-arm64@1.2.2-alpha.19:
+    resolution: {integrity: sha512-TfQ/k4YMAsDFpI5Y/nvA7yXs7KqzKsOZX4XzCyqWdfNPDQvheW+wRCxJVUE8kWqniMep62EkvbuX94yFtTZb8A==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@duckdb/node-bindings-linux-x64@1.2.2-alpha.19:
+    resolution: {integrity: sha512-KDGD50H/sA/HWZFVuZhZTVZEKB3N8+ZPhHxxPs67p46WNm/fiQ6/FlaLasQ/gEmOY+I3bWcwjrba4h6LhFXnAQ==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@duckdb/node-bindings-win32-x64@1.2.2-alpha.19:
+    resolution: {integrity: sha512-jsHu/tORVBfJ6QQ02c1vVKEJM6aVSNwwmFtd1G7n9HGjJeE1Wclewpfp3k7R7qU9vxtQtHoAMHeTVsnC2d3ymQ==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@duckdb/node-bindings@1.2.2-alpha.19:
+    resolution: {integrity: sha512-EZpUPCPNJaQVmI3jWa/SIrs7lV9SJYS5a1bV3SRSQ6ZBJYFMrr2Mik2RjCVepA9cIwD2KIrXaWV7jiSVM29zJA==}
+    optionalDependencies:
+      '@duckdb/node-bindings-darwin-arm64': 1.2.2-alpha.19
+      '@duckdb/node-bindings-darwin-x64': 1.2.2-alpha.19
+      '@duckdb/node-bindings-linux-arm64': 1.2.2-alpha.19
+      '@duckdb/node-bindings-linux-x64': 1.2.2-alpha.19
+      '@duckdb/node-bindings-win32-x64': 1.2.2-alpha.19
+    dev: false
 
   /@elastic/elasticsearch@6.8.8:
     resolution: {integrity: sha512-51Jp3ZZ0oPqYPNlPG58XJ773MqJBx91rGNWCgVvy2UtxjxHsExAJooesOyLcoADnW0Dhyxu6yB8tziHnmyl8Vw==}
@@ -9785,6 +9847,10 @@ packages:
 
   /igv@2.15.11:
     resolution: {integrity: sha512-oJs6z4ogv1GefIWaMdG5s4jFRuFQ/PjUgrGBMn12SbeeIC/VgHkHr56K5yIaC8ZSyameq/7IFDQaXu0qIu6cpA==}
+    dev: false
+
+  /immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
     dev: false
 
   /import-fresh@3.3.0:

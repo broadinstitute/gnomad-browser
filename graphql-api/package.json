@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "dependencies": {
+    "@duckdb/node-api": "1.2.2-alpha.19",
     "@elastic/elasticsearch": "6",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.0",
@@ -30,6 +31,7 @@
     "graphql": "^15.3.0",
     "graphql-query-complexity": "^0.7.2",
     "http-errors": "1.8.0",
+    "immer": "^10.1.1",
     "ioredis": "^5.3.2",
     "lodash": "^4.17.21",
     "node-fetch": "^2.6.7",

@@ -11,8 +11,23 @@ import { mergeOverlappingRegions } from '../helpers/region-helpers'
 import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 import largeGenes from '../helpers/large-genes'
+import { DuckDBInstance } from '@duckdb/node-api'
+import { produce } from 'immer'
 
 const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
+
+const duckDBInstance = DuckDBInstance.create(':memory:')
+
+let _duckDBConnection: any = null
+const duckDBConnection = async () => {
+  if (_duckDBConnection === null) {
+    const _duckDBInstance = await duckDBInstance
+    _duckDBConnection = await _duckDBInstance.connect()
+  }
+  return _duckDBConnection
+}
+const variantParquetPath =
+  'gs://gnomad-browser-data-pipeline/phil-scratch/output/small_sample_parquet_chr22/*.parquet'
 
 type Subset = 'all' | 'non_ukb'
 
@@ -460,8 +475,442 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
 // Region query
 // ================================================================================================
 
+const normalizeLeafStructs = (hit: any) => {
+  const normalized = produce(hit, (draft: any) => {
+    draft.colocated_variants =
+      draft.colocated_variants === null || draft.colocated_variants === undefined
+        ? {}
+        : draft.colocated_variants
+    draft.exome.colocated_variants =
+      draft.exome.colocated_variants === null || draft.exome.colocated_variants === undefined
+        ? {}
+        : draft.exome.colocated_variants
+    draft.exome.faf95 =
+      draft.exome.faf95 === null || draft.exome.faf95 === undefined ? {} : draft.exome.faf95
+    draft.exome.faf99 =
+      draft.exome.faf99 === null || draft.exome.faf99 === undefined ? {} : draft.exome.faf99
+    draft.genome.colocated_variants =
+      draft.genome.colocated_variants === null || draft.genome.colocated_variants === undefined
+        ? {}
+        : draft.genome.colocated_variants
+    draft.genome.faf95 =
+      draft.genome.faf95 === null || draft.genome.faf95 === undefined ? {} : draft.genome.faf95
+    draft.genome.faf99 =
+      draft.genome.faf99 === null || draft.genome.faf99 === undefined ? {} : draft.genome.faf99
+    draft.genome.fafmax =
+      draft.genome.fafmax === null || draft.genome.fafmax === undefined ? {} : draft.genome.fafmax
+    draft.in_silico_predictors.cadd =
+      draft.in_silico_predictors.cadd === null || draft.in_silico_predictors.cadd === undefined
+        ? {}
+        : draft.in_silico_predictors.cadd
+    draft.joint.fafmax =
+      draft.joint.fafmax === null || draft.joint.fafmax === undefined ? {} : draft.joint.fafmax
+    draft.joint.grpmax =
+      draft.joint.grpmax === null || draft.joint.grpmax === undefined ? {} : draft.joint.grpmax
+    draft.joint.faf95_joint =
+      draft.joint.faf95_joint === null || draft.joint.faf95_joint === undefined
+        ? {}
+        : draft.joint.faf95_joint
+    draft.joint.faf99_joint =
+      draft.joint.faf99_joint === null || draft.joint.faf99_joint === undefined
+        ? {}
+        : draft.joint.faf99_joint
+    draft.coverage.exome =
+      draft.coverage.exome === null || draft.coverage.exome === undefined
+        ? {}
+        : draft.coverage.exome
+    draft.coverage.genome =
+      draft.coverage.genome === null || draft.coverage.genome === undefined
+        ? {}
+        : draft.coverage.genome
+    draft.vrs.ref = draft.vrs.ref === null || draft.vrs.ref === undefined ? {} : draft.vrs.ref
+    draft.vrs.alt = draft.vrs.alt === null || draft.vrs.alt === undefined ? {} : draft.vrs.alt
+    draft.exome.freq.all =
+      draft.exome.freq.all === null || draft.exome.freq.all === undefined
+        ? {}
+        : draft.exome.freq.all
+    draft.exome.freq.non_ukb =
+      draft.exome.freq.non_ukb === null || draft.exome.freq.non_ukb === undefined
+        ? {}
+        : draft.exome.freq.non_ukb
+    draft.exome.fafmax.gnomad =
+      draft.exome.fafmax.gnomad === null || draft.exome.fafmax.gnomad === undefined
+        ? {}
+        : draft.exome.fafmax.gnomad
+    draft.exome.fafmax.non_ukb =
+      draft.exome.fafmax.non_ukb === null || draft.exome.fafmax.non_ukb === undefined
+        ? {}
+        : draft.exome.fafmax.non_ukb
+    draft.exome.age_distribution.het =
+      draft.exome.age_distribution.het === null || draft.exome.age_distribution.het === undefined
+        ? {}
+        : draft.exome.age_distribution.het
+    draft.exome.age_distribution.hom =
+      draft.exome.age_distribution.hom === null || draft.exome.age_distribution.hom === undefined
+        ? {}
+        : draft.exome.age_distribution.hom
+    draft.genome.freq.hgdp =
+      draft.genome.freq.hgdp === null || draft.genome.freq.hgdp === undefined
+        ? {}
+        : draft.genome.freq.hgdp
+    draft.genome.freq.tgp =
+      draft.genome.freq.tgp === null || draft.genome.freq.tgp === undefined
+        ? {}
+        : draft.genome.freq.tgp
+    draft.genome.freq.all =
+      draft.genome.freq.all === null || draft.genome.freq.all === undefined
+        ? {}
+        : draft.genome.freq.all
+    draft.genome.age_distribution.het =
+      draft.genome.age_distribution.het === null || draft.genome.age_distribution.het === undefined
+        ? {}
+        : draft.genome.age_distribution.het
+    draft.genome.age_distribution.hom =
+      draft.genome.age_distribution.hom === null || draft.genome.age_distribution.hom === undefined
+        ? {}
+        : draft.genome.age_distribution.hom
+    draft.joint.freq.all =
+      draft.joint.freq.all === null || draft.joint.freq.all === undefined
+        ? {}
+        : draft.joint.freq.all
+    draft.joint.freq_comparison_stats.cochran_mantel_haenszel_test =
+      draft.joint.freq_comparison_stats.cochran_mantel_haenszel_test === null ||
+      draft.joint.freq_comparison_stats.cochran_mantel_haenszel_test === undefined
+        ? {}
+        : draft.joint.freq_comparison_stats.cochran_mantel_haenszel_test
+    draft.joint.freq_comparison_stats.stat_union =
+      draft.joint.freq_comparison_stats.stat_union === null ||
+      draft.joint.freq_comparison_stats.stat_union === undefined
+        ? {}
+        : draft.joint.freq_comparison_stats.stat_union
+    draft.exome.quality_metrics.allele_balance.alt_adj =
+      draft.exome.quality_metrics.allele_balance.alt_adj === null ||
+      draft.exome.quality_metrics.allele_balance.alt_adj === undefined
+        ? {}
+        : draft.exome.quality_metrics.allele_balance.alt_adj
+    draft.exome.quality_metrics.allele_balance.alt_raw =
+      draft.exome.quality_metrics.allele_balance.alt_raw === null ||
+      draft.exome.quality_metrics.allele_balance.alt_raw === undefined
+        ? {}
+        : draft.exome.quality_metrics.allele_balance.alt_raw
+    draft.exome.quality_metrics.genotype_depth.all_adj =
+      draft.exome.quality_metrics.genotype_depth.all_adj === null ||
+      draft.exome.quality_metrics.genotype_depth.all_adj === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_depth.all_adj
+    draft.exome.quality_metrics.genotype_depth.all_raw =
+      draft.exome.quality_metrics.genotype_depth.all_raw === null ||
+      draft.exome.quality_metrics.genotype_depth.all_raw === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_depth.all_raw
+    draft.exome.quality_metrics.genotype_depth.alt_adj =
+      draft.exome.quality_metrics.genotype_depth.alt_adj === null ||
+      draft.exome.quality_metrics.genotype_depth.alt_adj === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_depth.alt_adj
+    draft.exome.quality_metrics.genotype_depth.alt_raw =
+      draft.exome.quality_metrics.genotype_depth.alt_raw === null ||
+      draft.exome.quality_metrics.genotype_depth.alt_raw === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_depth.alt_raw
+    draft.exome.quality_metrics.genotype_quality.all_adj =
+      draft.exome.quality_metrics.genotype_quality.all_adj === null ||
+      draft.exome.quality_metrics.genotype_quality.all_adj === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_quality.all_adj
+    draft.exome.quality_metrics.genotype_quality.all_raw =
+      draft.exome.quality_metrics.genotype_quality.all_raw === null ||
+      draft.exome.quality_metrics.genotype_quality.all_raw === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_quality.all_raw
+    draft.exome.quality_metrics.genotype_quality.alt_adj =
+      draft.exome.quality_metrics.genotype_quality.alt_adj === null ||
+      draft.exome.quality_metrics.genotype_quality.alt_adj === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_quality.alt_adj
+    draft.exome.quality_metrics.genotype_quality.alt_raw =
+      draft.exome.quality_metrics.genotype_quality.alt_raw === null ||
+      draft.exome.quality_metrics.genotype_quality.alt_raw === undefined
+        ? {}
+        : draft.exome.quality_metrics.genotype_quality.alt_raw
+    draft.genome.quality_metrics.allele_balance.alt_adj =
+      draft.genome.quality_metrics.allele_balance.alt_adj === null ||
+      draft.genome.quality_metrics.allele_balance.alt_adj === undefined
+        ? {}
+        : draft.genome.quality_metrics.allele_balance.alt_adj
+    draft.genome.quality_metrics.allele_balance.alt_raw =
+      draft.genome.quality_metrics.allele_balance.alt_raw === null ||
+      draft.genome.quality_metrics.allele_balance.alt_raw === undefined
+        ? {}
+        : draft.genome.quality_metrics.allele_balance.alt_raw
+    draft.genome.quality_metrics.genotype_depth.all_adj =
+      draft.genome.quality_metrics.genotype_depth.all_adj === null ||
+      draft.genome.quality_metrics.genotype_depth.all_adj === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_depth.all_adj
+    draft.genome.quality_metrics.genotype_depth.all_raw =
+      draft.genome.quality_metrics.genotype_depth.all_raw === null ||
+      draft.genome.quality_metrics.genotype_depth.all_raw === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_depth.all_raw
+    draft.genome.quality_metrics.genotype_depth.alt_adj =
+      draft.genome.quality_metrics.genotype_depth.alt_adj === null ||
+      draft.genome.quality_metrics.genotype_depth.alt_adj === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_depth.alt_adj
+    draft.genome.quality_metrics.genotype_depth.alt_raw =
+      draft.genome.quality_metrics.genotype_depth.alt_raw === null ||
+      draft.genome.quality_metrics.genotype_depth.alt_raw === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_depth.alt_raw
+    draft.genome.quality_metrics.genotype_quality.all_adj =
+      draft.genome.quality_metrics.genotype_quality.all_adj === null ||
+      draft.genome.quality_metrics.genotype_quality.all_adj === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_quality.all_adj
+    draft.genome.quality_metrics.genotype_quality.all_raw =
+      draft.genome.quality_metrics.genotype_quality.all_raw === null ||
+      draft.genome.quality_metrics.genotype_quality.all_raw === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_quality.all_raw
+    draft.genome.quality_metrics.genotype_quality.alt_adj =
+      draft.genome.quality_metrics.genotype_quality.alt_adj === null ||
+      draft.genome.quality_metrics.genotype_quality.alt_adj === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_quality.alt_adj
+    draft.genome.quality_metrics.genotype_quality.alt_raw =
+      draft.genome.quality_metrics.genotype_quality.alt_raw === null ||
+      draft.genome.quality_metrics.genotype_quality.alt_raw === undefined
+        ? {}
+        : draft.genome.quality_metrics.genotype_quality.alt_raw
+    draft.joint.histograms.qual_hists.dp_hist_all =
+      draft.joint.histograms.qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_all
+    draft.joint.histograms.qual_hists.gq_hist_alt =
+      draft.joint.histograms.qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.gq_hist_alt
+    draft.joint.histograms.qual_hists.dp_hist_alt =
+      draft.joint.histograms.qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_alt
+    draft.joint.histograms.qual_hists.ab_hist_alt =
+      draft.joint.histograms.qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.ab_hist_alt
+    draft.joint.histograms.raw_qual_hists.gq_hist_all =
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_all
+    draft.joint.histograms.raw_qual_hists.dp_hist_all =
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_all
+    draft.joint.histograms.raw_qual_hists.gq_hist_alt =
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_alt
+    draft.joint.histograms.raw_qual_hists.dp_hist_alt =
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_alt
+    draft.joint.histograms.raw_qual_hists.ab_hist_alt =
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.ab_hist_alt
+    draft.joint.histograms.age_hists.age_hist_het =
+      draft.joint.histograms.age_hists.age_hist_het === null ||
+      draft.joint.histograms.age_hists.age_hist_het === undefined
+        ? {}
+        : draft.joint.histograms.age_hists.age_hist_het
+    draft.joint.histograms.qual_hists.gq_hist_all =
+      draft.joint.histograms.qual_hists.gq_hist_all === null ||
+      draft.joint.histograms.qual_hists.gq_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.gq_hist_all
+    draft.joint.histograms.qual_hists.dp_hist_all =
+      draft.joint.histograms.qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_all
+    draft.joint.histograms.qual_hists.gq_hist_alt =
+      draft.joint.histograms.qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.gq_hist_alt
+    draft.joint.histograms.qual_hists.dp_hist_alt =
+      draft.joint.histograms.qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_alt
+    draft.joint.histograms.qual_hists.ab_hist_alt =
+      draft.joint.histograms.qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.ab_hist_alt
+    draft.joint.histograms.raw_qual_hists.gq_hist_all =
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_all
+    draft.joint.histograms.raw_qual_hists.dp_hist_all =
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_all
+    draft.joint.histograms.raw_qual_hists.gq_hist_alt =
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_alt
+    draft.joint.histograms.raw_qual_hists.dp_hist_alt =
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_alt
+    draft.joint.histograms.raw_qual_hists.ab_hist_alt =
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.ab_hist_alt
+    draft.joint.histograms.age_hists.age_hist_het =
+      draft.joint.histograms.age_hists.age_hist_het === null ||
+      draft.joint.histograms.age_hists.age_hist_het === undefined
+        ? {}
+        : draft.joint.histograms.age_hists.age_hist_het
+    draft.joint.histograms.qual_hists.gq_hist_all =
+      draft.joint.histograms.qual_hists.gq_hist_all === null ||
+      draft.joint.histograms.qual_hists.gq_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.gq_hist_all
+    draft.joint.histograms.qual_hists.dp_hist_all =
+      draft.joint.histograms.qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_all
+    draft.joint.histograms.qual_hists.gq_hist_alt =
+      draft.joint.histograms.qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.gq_hist_alt
+    draft.joint.histograms.qual_hists.dp_hist_alt =
+      draft.joint.histograms.qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_alt
+    draft.joint.histograms.qual_hists.ab_hist_alt =
+      draft.joint.histograms.qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.ab_hist_alt
+    draft.joint.histograms.raw_qual_hists.gq_hist_all =
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_all
+    draft.joint.histograms.raw_qual_hists.dp_hist_all =
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_all
+    draft.joint.histograms.raw_qual_hists.gq_hist_alt =
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_alt
+    draft.joint.histograms.raw_qual_hists.dp_hist_alt =
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_alt
+    draft.joint.histograms.raw_qual_hists.ab_hist_alt =
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.ab_hist_alt
+    draft.joint.histograms.age_hists.age_hist_het =
+      draft.joint.histograms.age_hists.age_hist_het === null ||
+      draft.joint.histograms.age_hists.age_hist_het === undefined
+        ? {}
+        : draft.joint.histograms.age_hists.age_hist_het
+    draft.joint.histograms.qual_hists.dp_hist_all =
+      draft.joint.histograms.qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_all
+    draft.joint.histograms.qual_hists.gq_hist_alt =
+      draft.joint.histograms.qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.gq_hist_alt
+    draft.joint.histograms.qual_hists.dp_hist_alt =
+      draft.joint.histograms.qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.dp_hist_alt
+    draft.joint.histograms.qual_hists.ab_hist_alt =
+      draft.joint.histograms.qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.qual_hists.ab_hist_alt
+    draft.joint.histograms.raw_qual_hists.gq_hist_all =
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_all
+    draft.joint.histograms.raw_qual_hists.dp_hist_all =
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_all === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_all
+    draft.joint.histograms.raw_qual_hists.gq_hist_alt =
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.gq_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.gq_hist_alt
+    draft.joint.histograms.raw_qual_hists.dp_hist_alt =
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.dp_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.dp_hist_alt
+    draft.joint.histograms.raw_qual_hists.ab_hist_alt =
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === null ||
+      draft.joint.histograms.raw_qual_hists.ab_hist_alt === undefined
+        ? {}
+        : draft.joint.histograms.raw_qual_hists.ab_hist_alt
+    draft.joint.histograms.age_hists.age_hist_het =
+      draft.joint.histograms.age_hists.age_hist_het === null ||
+      draft.joint.histograms.age_hists.age_hist_het === undefined
+        ? {}
+        : draft.joint.histograms.age_hists.age_hist_het
+    draft.joint.histograms.age_hists.age_hist_hom =
+      draft.joint.histograms.age_hists.age_hist_hom === null ||
+      draft.joint.histograms.age_hists.age_hist_hom === undefined
+        ? {}
+        : draft.joint.histograms.age_hists.age_hist_hom
+  })
+  return normalized
+}
+
 const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset) => {
-  const exomeSubset = subset
+  const prequeryTime = Date.now()
+  console.log('ABOUT TO FETCH')
+  const connection = await duckDBConnection()
+  const response = await connection.run(
+    `SELECT * FROM read_parquet('${variantParquetPath}') WHERE locus.contig == 'chr${region.chrom}' AND locus.position >= ${region.start} AND locus.position <= ${region.stop};`
+  )
+  const hits = await response.getRowObjectsJS()
+  /*  const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
 
@@ -489,15 +938,31 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
       sort: [{ 'locus.position': { order: 'asc' } }],
     },
   })
-
-  return hits
+  console.log(`FETCHING TOOK ${Date.now() - prequeryTime} MS`)
+  const preParseTime = Date.now()
+  const result = hits
     .map((hit: any) => hit._source.value)
+
     .filter(
       (variant: any) =>
         (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
         variant.exome.freq[subset].ac_raw > 0
     )
     .map(shapeVariantSummary(subset, { type: 'region' }))
+  console.log(`PARSING AND NORMALIZING TOOK ${Date.now() - preParseTime} MS`)
+  return result*/
+  console.log(`FETCHING TOOK ${Date.now() - prequeryTime} MS`)
+  const preParseTime = Date.now()
+  const result = hits
+    .map(normalizeLeafStructs)
+    .filter(
+      (variant: any) =>
+        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
+        variant.exome.freq[subset].ac_raw > 0
+    )
+    .map(shapeVariantSummary(subset, { type: 'region' }))
+  console.log(`PARSING AND NORMALIZING TOOK ${Date.now() - preParseTime} MS`)
+  return result
 }
 
 // ================================================================================================

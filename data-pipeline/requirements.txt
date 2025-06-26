@@ -8,3 +8,5 @@ pytest
 ruff
 black
 pyright
+pyspark-nested-functions
+duckdb
