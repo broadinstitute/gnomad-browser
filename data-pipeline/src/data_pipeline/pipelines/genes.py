@@ -322,7 +322,9 @@ pipeline.add_task(
     prepare_gnomad_regional_missense_constraint,
     f"/{constraint_subdir}/gnomad_v2_regional_missense_constraint.ht",
     {
-        "path": "gs://gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht",
+        # "path": "gs://gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht",
+        # "path": "gs://gcp-public-data--gnomad/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht",
+        "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2025-05-19_gnomad_v2_regional_missense_constraint.ht",
     },
 )
 
@@ -331,7 +333,8 @@ pipeline.add_task(
     prepare_gnomad_regional_missense_constraint,
     f"/{constraint_subdir}/gnomad_v4_regional_missense_constraint.ht",
     {
-        "path": "gs://gnomad-v4-data-pipeline/inputs/regional_missense_constraint/rmc_browser.ht",
+        # "path": "gs://gnomad-v4-data-pipeline/inputs/regional_missense_constraint/rmc_browser.ht",
+        "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2025-05-19_gnomad_v4_regional_missense_constraint.ht",
     },
 )
 
@@ -503,6 +506,7 @@ pipeline.add_task(
     {
         "table_path": pipeline.get_task("annotate_grch38_genes_step_5"),
         "gnomad_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v4_regional_missense_constraint"),
+        "gnomad_v2_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint"),
     },
     {"join_on": "preferred_transcript_id"},
 )
