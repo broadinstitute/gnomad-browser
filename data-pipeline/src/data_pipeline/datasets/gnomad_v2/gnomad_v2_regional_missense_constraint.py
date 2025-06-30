@@ -1,7 +1,7 @@
 import hail as hl
 
 
-def prepare_gnomad_regional_missense_constraint(path):
+def prepare_gnomad_regional_missense_constraint(path, liftover=False):
     ds = hl.read_table(path)
 
     # rename key field transcript_id to transcript to allow merging in genes pipeline
@@ -25,6 +25,22 @@ def prepare_gnomad_regional_missense_constraint(path):
             p_value=ds_with_rmc.regions.p,
         ),
     )
+
+    if liftover:
+        rg37 = hl.get_reference("GRCh37")
+        rg38 = hl.get_reference("GRCh38")
+
+        if not rg37.has_liftover(rg38):
+            chain_file_path = "gs://hail-common-references/grch38_to_grch38.over.chain.gz"
+            rg37.add_liftover(chain_file_path, rg38)
+
+        ds_with_rmc = ds_with_rmc.annotate(
+            start=hl.liftover(ds_with_rmc.start, "GRCh38"),
+            stop=hl.liftover(ds_with_rmc.stop, "GRCh38"),
+            start_grch37=ds_with_rmc.start,
+            stop_grch38=ds_with_rmc.stop,
+        )
+
     ds_with_rmc = ds_with_rmc.group_by("transcript_id").aggregate(regions=hl.agg.collect(ds_with_rmc.row_value).regions)
 
     ds_with_rmc = ds_with_rmc.group_by("transcript_id").aggregate(regions_array=hl.agg.collect(ds_with_rmc.row_value))
