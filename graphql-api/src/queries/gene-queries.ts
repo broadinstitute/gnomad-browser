@@ -13,7 +13,7 @@ const GENE_INDICES = {
   // GRCh38: 'genes_grch38-2024-11-25--19-00',
   // TODO: June 2025 v4 RMC indices
   GRCh37: 'genes_grch37-2025-06-30--21-15',
-  GRCh38: 'genes_grch38-2025-06-30--21-13',
+  GRCh38: 'genes_grch38-2025-07-01--16-53',
 }
 
 const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {
