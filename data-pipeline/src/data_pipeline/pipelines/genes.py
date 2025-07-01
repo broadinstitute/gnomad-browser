@@ -25,6 +25,7 @@ from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepar
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_constraint import prepare_gnomad_v2_constraint
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_regional_missense_constraint import (
     prepare_gnomad_regional_missense_constraint,
+    prepare_gnomad_regional_missense_constraint_liftover,
 )
 
 from data_pipeline.pipelines.variant_cooccurrence_counts import (
@@ -327,6 +328,16 @@ pipeline.add_task(
     },
 )
 
+
+pipeline.add_task(
+    "prepare_gnomad_v2_regional_missense_constraint_liftover",
+    prepare_gnomad_regional_missense_constraint_liftover,
+    f"/{constraint_subdir}/gnomad_v2_regional_missense_constraint_liftover.ht",
+    {
+        "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2025-05-19_gnomad_v2_regional_missense_constraint.ht",
+    },
+)
+
 pipeline.add_task(
     "prepare_gnomad_v4_regional_missense_constraint",
     prepare_gnomad_regional_missense_constraint,
@@ -491,26 +502,39 @@ pipeline.add_task(
     {
         "table_path": pipeline.get_task("annotate_grch38_genes_step_5"),
         "gnomad_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v4_regional_missense_constraint"),
-        "gnomad_v2_regional_missense_constraint": pipeline.get_task("prepare_gnomad_v2_regional_missense_constraint"),
     },
     {"join_on": "preferred_transcript_id"},
 )
 
+
 pipeline.add_task(
     "annotate_grch38_genes_step_7",
-    reject_par_y_genes,
+    annotate_table,
     f"/{genes_subdir}/genes_grch38_annotated_7.ht",
     {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_6"),
+        "table_path": pipeline.get_task("annotate_grch38_genes_step_6"),
+        "gnomad_v2_regional_missense_constraint": pipeline.get_task(
+            "prepare_gnomad_v2_regional_missense_constraint_liftover"
+        ),
+    },
+    # {"join_on": "gene_id"},
+)
+
+pipeline.add_task(
+    "annotate_grch38_genes_step_8",
+    reject_par_y_genes,
+    f"/{genes_subdir}/genes_grch38_annotated_8.ht",
+    {
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_7"),
     },
 )
 
 pipeline.add_task(
     "remove_grch38_genes_constraint_for_release",
     remove_gnomad_v4_constraint,
-    f"/{genes_subdir}/genes_grch38_annotate_7_removed_constraint",
+    f"/{genes_subdir}/genes_grch38_annotate_8_removed_constraint",
     {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_7"),
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_8"),
     },
 )
 
@@ -577,7 +601,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "genes_grch37": "annotate_grch37_genes_step_5",
-        "genes_grch38": "annotate_grch38_genes_step_7",
+        "genes_grch38": "annotate_grch38_genes_step_8",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",
