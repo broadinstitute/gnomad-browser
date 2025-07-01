@@ -69,7 +69,6 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
             graphqlQueryCost: request.graphqlQueryCost,
           }
         : undefined,
-      otelConfig: config.OPENTELEMETRY_COLLECTOR_URL,
     })
   })
 
