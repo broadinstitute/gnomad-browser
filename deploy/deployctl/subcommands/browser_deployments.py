@@ -56,10 +56,6 @@ patches:
                 env:
                   - name: JSON_CACHE_PATH
                     value: 'gs://{cluster_name}-gene-cache/2024-04-24'
-                  - name: OPENTELEMETRY_COLLECTOR_URL
-                    value: http://opentelemetry-collector-{deployment_name}:4318
-                  - name: OPENTELEMETRY_SERVICE_NAME
-                    value: gnomad-api-{deployment_name}
 """
 
 DEMO_DEPLOYMENT_KUSTOMIZATION = """
