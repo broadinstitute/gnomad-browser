@@ -119,9 +119,14 @@ const printAAorNA = (aa: string | null) => {
 type RegionTooltipProps = {
   region: RegionWithUnclamped<RegionalMissenseConstraintRegion>
   isTranscriptWide: boolean
+  includeLiftover: boolean
 }
 
-export const RegionTooltip = ({ region, isTranscriptWide }: RegionTooltipProps) => {
+export const RegionTooltip = ({
+  region,
+  isTranscriptWide,
+  includeLiftover,
+}: RegionTooltipProps) => {
   if (isTranscriptWide) {
     return (
       <RegionAttributeList>
@@ -173,6 +178,7 @@ const formattedOE = (region: RegionalMissenseConstraintRegion) =>
   region.obs_exp ? region.obs_exp.toFixed(2) : ''
 
 type Props = {
+  trackTitle: string
   regionalMissenseConstraint: RegionalMissenseConstraint | null
   gene: Gene
 }
@@ -206,7 +212,11 @@ const NoRMCConstraint = () => (
   </Track>
 )
 
-const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: Props) => {
+const RegionalMissenseConstraintTrack = ({
+  trackTitle,
+  regionalMissenseConstraint,
+  gene,
+}: Props) => {
   if (
     !regionalMissenseConstraint ||
     regionalMissenseConstraint.regions === null ||
@@ -250,7 +260,7 @@ const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: P
 
   return (
     <ConstraintTrack
-      trackTitle="Regional missense constraint"
+      trackTitle={trackTitle}
       allRegions={regionalMissenseConstraint.regions}
       constrainedRegions={constraintInCodingSections}
       infobuttonTopic="regional-constraint"
