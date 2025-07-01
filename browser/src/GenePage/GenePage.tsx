@@ -611,7 +611,16 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
         {(isV2(datasetId) || isV4(datasetId)) && (
           <RegionalMissenseConstraintTrack
+            trackTitle={isV4(datasetId) ? 'v4 RMC' : 'Regional Missense Constraint'}
             regionalMissenseConstraint={gene.gnomad_regional_missense_constraint}
+            gene={gene}
+          />
+        )}
+
+        {isV4(datasetId) && (
+          <RegionalMissenseConstraintTrack
+            trackTitle="v2 RMC (lifted over)"
+            regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
             gene={gene}
           />
         )}
