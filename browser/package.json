@@ -81,9 +81,9 @@
     "react-test-renderer": "^18.0.0",
     "ts-loader": "^9.3.1",
     "ts-migrate": "^0.1.30",
-    "webpack": "^5.0.0",
+    "webpack": "^5.94.0",
     "webpack-cli": "^5.0.0",
-    "webpack-dev-server": "^5.0.0"
+    "webpack-dev-server": "^5.2.1"
   },
   "volta": {
     "node": "14.21.3"
