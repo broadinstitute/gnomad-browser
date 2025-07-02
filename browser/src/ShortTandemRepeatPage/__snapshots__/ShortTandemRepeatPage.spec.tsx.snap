@@ -281,6 +281,12 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -1249,6 +1255,12 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -2219,6 +2231,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -3187,6 +3205,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -4157,6 +4181,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -5125,6 +5155,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -6095,6 +6131,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -7063,6 +7105,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -8033,6 +8081,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -9001,6 +9055,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -9971,6 +10031,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -10939,6 +11005,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -11909,6 +11981,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -12877,6 +12955,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -13847,6 +13931,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -14815,6 +14905,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
@@ -15785,6 +15881,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -16754,6 +16856,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
             >
               Data download
             </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
           </List__ListItem>
         </List>
       </p>
@@ -17722,6 +17830,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
               href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
             >
               Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
             </Link__ExternalLink>
           </List__ListItem>
         </List>
