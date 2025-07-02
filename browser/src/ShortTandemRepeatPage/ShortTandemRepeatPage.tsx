@@ -334,6 +334,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
                 <ExternalLink href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats">
                   Data download
                 </ExternalLink>
+                , &nbsp;
+                <ExternalLink href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json">
+                  ExpansionHunter catalog
+                </ExternalLink>
               </ListItem>
             </List>
           </p>
