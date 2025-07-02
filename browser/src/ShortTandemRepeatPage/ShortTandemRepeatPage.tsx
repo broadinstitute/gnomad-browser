@@ -152,9 +152,9 @@ type ShortTandemRepeatPageProps = {
 const logScaleAllowed = (colorBy: ColorBy | null) => colorBy === null
 
 const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTandemRepeat }) => {
-  const { stripy_id, strchive_id } = shortTandemRepeat
+  const { stripy_id, strchive_id, gene } = shortTandemRepeat
 
-  if (!stripy_id && !strchive_id) {
+  if (!stripy_id && !strchive_id && !gene) {
     return null
   }
 
@@ -182,6 +182,20 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
               <ListItem>
                 <ExternalLink href={`https://stripy.org/database/${stripy_id}`}>
                   STRipy
+                </ExternalLink>
+              </ListItem>
+            </>
+          )}
+        </>
+        <>
+          {gene && (
+            <>
+              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+              <ListItem>
+                <ExternalLink
+                  href={`https://trexplorer.broadinstitute.org/#sc=isPathogenic&sd=DESC&showRs=1&searchQuery=${gene.symbol}&showColumns=0i1i2i3i4i7i21i17`}
+                >
+                  TRExplorer
                 </ExternalLink>
               </ListItem>
             </>
