@@ -1557,6 +1557,33 @@ question: 'How do you pronounce gnomAD?'
                 </div>
               </details>
             </li>
+            <li>
+              <details>
+                <summary>
+                  <h4>
+                    what-is-the-minimum-number-of-allele-counts-you-need-to-release-a-variant.md
+                  </h4>
+                </summary>
+                <div
+                  className="c17"
+                >
+                  <div
+                    className="c18"
+                    dangerouslySetInnerHTML={
+                      {
+                        "__html": "---
+question: 'What is the minimum number of allele counts you need to release a variant?'
+---
+
+Our policy is to release allele counts (AC) as they are observed in the database, including if it is only seen in a single individual (AC=1). Follow [this link](/AC1) to read our full statement supporting public release of low frequency allele count summary statistics.
+",
+                      }
+                    }
+                    onClick={[Function]}
+                  />
+                </div>
+              </details>
+            </li>
           </ul>
         </div>
         <div>
