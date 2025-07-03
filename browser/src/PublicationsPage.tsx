@@ -13,6 +13,7 @@ const Citation = styled.cite`
 type PaperCitationProps = {
   prefix?: string
   authorList: string
+  etAl?: boolean
   title: string
   journal: string
   issue?: string
@@ -24,9 +25,10 @@ type PaperCitationProps = {
   pmcid?: string
 }
 
-const PaperCitation = ({
+export const PaperCitation = ({
   prefix,
   authorList,
+  etAl = false,
   title,
   journal,
   issue,
@@ -46,7 +48,9 @@ const PaperCitation = ({
             <b>{prefix}</b>:{' '}
           </>
         )}
-        <>{`${authorList} ${title} `}</>
+        <>
+          {authorList} {etAl && <i>et al.</i>} {title}{' '}
+        </>
         <em>{journal}</em>
         <>{`. ${issue ? `${issue}, ` : ''}${pages || ''} (${year}).`}</>
         <>
