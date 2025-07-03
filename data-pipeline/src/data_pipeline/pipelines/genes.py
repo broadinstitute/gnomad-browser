@@ -344,7 +344,8 @@ pipeline.add_task(
     f"/{constraint_subdir}/gnomad_v4_regional_missense_constraint.ht",
     {
         # "path": "gs://gnomad-v4-data-pipeline/inputs/regional_missense_constraint/rmc_browser.ht",
-        "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2025-05-19_gnomad_v4_regional_missense_constraint.ht",
+        # "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2025-05-19_gnomad_v4_regional_missense_constraint.ht",
+        "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2025-07-02_gnomad_v4_regional_missense_constraint.ht",
     },
 )
 
