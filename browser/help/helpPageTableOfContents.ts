@@ -40,6 +40,7 @@ const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
         'should-i-switch-to-the-latest-version-of-gnomad',
         'how-do-evaluate-variants-in-a-gene-that-has-a-pseudogene',
         'how-do-you-pronounce-gnomad',
+        'what-is-the-minimum-number-of-allele-counts-you-need-to-release-a-variant',
       ],
     },
     {
