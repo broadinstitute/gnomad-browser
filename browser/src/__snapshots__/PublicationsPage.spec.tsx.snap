@@ -139,7 +139,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q., Alföldi, J., Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W., Tarasova, Y., Phu, W., Grant, R., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E., Donnelly, S., Gabriel, S., Gupta, N., Ferriera, S., Tolonen, C., Novod, S., Bergelson, L., Roazen, D., Ruano-Rubio, V., Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G., Jeandet, T., Munshi, R., Tibbetts, K., Genome Aggregation Database (gnomAD) Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C., Martin, A. R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M.†, MacArthur, D. G.† & Karczewski, K. J. A genomic mutational constraint map using variation in 76,156 human genomes. 
+          Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q., Alföldi, J., Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W., Tarasova, Y., Phu, W., Grant, R., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E., Donnelly, S., Gabriel, S., Gupta, N., Ferriera, S., Tolonen, C., Novod, S., Bergelson, L., Roazen, D., Ruano-Rubio, V., Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G., Jeandet, T., Munshi, R., Tibbetts, K., Genome Aggregation Database (gnomAD) Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C., Martin, A. R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M.†, MacArthur, D. G.† & Karczewski, K. J.
+           
+           
+          A genomic mutational constraint map using variation in 76,156 human genomes.
+           
           <em>
             Nature
           </em>
@@ -193,7 +197,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
           </b>
           :
            
-          Karczewski, K. J., Francioli, L. C., Tiao, G., Cummings, B. B., Alföldi, J., Wang, Q., Collins, R. L., Laricchia, K. M., Ganna, A., Birnbaum, D. P., Gauthier, L. D., Brand, H., Solomonson, M., Watts, N. A., Rhodes, D., Singer-Berk, M., England, E. M., Seaby, E. G., Kosmicki, J. A., … MacArthur, D. G. The mutational constraint spectrum quantified from variation in 141,456 humans. 
+          Karczewski, K. J., Francioli, L. C., Tiao, G., Cummings, B. B., Alföldi, J., Wang, Q., Collins, R. L., Laricchia, K. M., Ganna, A., Birnbaum, D. P., Gauthier, L. D., Brand, H., Solomonson, M., Watts, N. A., Rhodes, D., Singer-Berk, M., England, E. M., Seaby, E. G., Kosmicki, J. A., … MacArthur, D. G.
+           
+           
+          The mutational constraint spectrum quantified from variation in 141,456 humans.
+           
           <em>
             Nature
           </em>
@@ -236,7 +244,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
           </b>
           :
            
-          Lek, M., Karczewski, K. J.*, Minikel, E. V.*, Samocha, K. E.*, Banks, E., Fennell, T., O’Donnell-Luria, A. H., Ware, J. S., Hill, A. J., Cummings, B. B., Tukiainen, T., Birnbaum, D. P., Kosmicki, J. A., Duncan, L. E., Estrada, K., Zhao, F., Zou, J., Pierce-Hoffman, E., … Daly, M. J., MacArthur, D. G. & Exome Aggregation Consortium. Analysis of protein-coding genetic variation in 60,706 humans 
+          Lek, M., Karczewski, K. J.*, Minikel, E. V.*, Samocha, K. E.*, Banks, E., Fennell, T., O’Donnell-Luria, A. H., Ware, J. S., Hill, A. J., Cummings, B. B., Tukiainen, T., Birnbaum, D. P., Kosmicki, J. A., Duncan, L. E., Estrada, K., Zhao, F., Zou, J., Pierce-Hoffman, E., … Daly, M. J., MacArthur, D. G. & Exome Aggregation Consortium.
+           
+           
+          Analysis of protein-coding genetic variation in 60,706 humans
+           
           <em>
             Nature
           </em>
@@ -282,7 +294,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Poterba, T., Vittal, C., King, D., Goldstein, D., Goldstein, J. I., Schultz, P., Karczewski, K. J., Seed, C., Neale, B. M. The Scalable Variant Call Representation: Enabling Genetic Analysis Beyond One Million Genomes. 
+          Poterba, T., Vittal, C., King, D., Goldstein, D., Goldstein, J. I., Schultz, P., Karczewski, K. J., Seed, C., Neale, B. M.
+           
+           
+          The Scalable Variant Call Representation: Enabling Genetic Analysis Beyond One Million Genomes.
+           
           <em>
             Bioinformatics
           </em>
@@ -309,7 +325,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Gudmundsson, S., Carlston, C. M., O'Donnell-Luria, A. Interpreting variants in genes affected by clonal hematopoiesis in population data. 
+          Gudmundsson, S., Carlston, C. M., O'Donnell-Luria, A.
+           
+           
+          Interpreting variants in genes affected by clonal hematopoiesis in population data.
+           
           <em>
             Human Genetics
           </em>
@@ -340,7 +360,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Fowler, D. M., Rehm, H. L. Will variants of uncertain significance still exist in 2030? 
+          Fowler, D. M., Rehm, H. L.
+           
+           
+          Will variants of uncertain significance still exist in 2030?
+           
           <em>
             American Journal of Human Genetics
           </em>
@@ -371,7 +395,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Guo, M. H.*, Francioli, L. C.*, Stenton, S. L., Goodrich, J. K., Watts, N. A., Singer-Berk, M., Groopman, E., Darnowsky, P. W., Solomonson, M., Baxter, S., gnomAD Project Consortium, Tiao, G., Neale, B. M., Hirschhorn, J. N., Rehm, H., Daly, M. J., O’Donnell-Luria, A., Karczewski, K., MacArthur, D. G., Samocha, K. E. Inferring compound heterozygosity from large-scale exome sequencing data. 
+          Guo, M. H.*, Francioli, L. C.*, Stenton, S. L., Goodrich, J. K., Watts, N. A., Singer-Berk, M., Groopman, E., Darnowsky, P. W., Solomonson, M., Baxter, S., gnomAD Project Consortium, Tiao, G., Neale, B. M., Hirschhorn, J. N., Rehm, H., Daly, M. J., O’Donnell-Luria, A., Karczewski, K., MacArthur, D. G., Samocha, K. E.
+           
+           
+          Inferring compound heterozygosity from large-scale exome sequencing data.
+           
           <em>
             Nature Genetics
           </em>
@@ -402,7 +430,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Lu, W., Gauthier, L. D., Poterba, T., Giacopuzzi, E., Goodrich, J. K., Stevens, C. R., King, D., Daly, M. J., Neale, B. M., Karczewski, K. J. CHARR efficiently estimates contamination from DNA sequencing data. 
+          Lu, W., Gauthier, L. D., Poterba, T., Giacopuzzi, E., Goodrich, J. K., Stevens, C. R., King, D., Daly, M. J., Neale, B. M., Karczewski, K. J.
+           
+           
+          CHARR efficiently estimates contamination from DNA sequencing data.
+           
           <em>
             American Journal of Human Genetics
           </em>
@@ -433,7 +465,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Singer-Berk, M.*, Gudmundsson, S.*, Baxter, S., Seaby, E. G., England, E., Wood, J. C., Son, R. G., Watts, N. A., Karczewski, K. J., Harrison, S. M., MacArthur, D. G., Rehm, H. L., O'Donnell-Luria, A. Advanced variant classification framework reduces the false positive rate of predicted loss-of-function variants in population sequencing data. 
+          Singer-Berk, M.*, Gudmundsson, S.*, Baxter, S., Seaby, E. G., England, E., Wood, J. C., Son, R. G., Watts, N. A., Karczewski, K. J., Harrison, S. M., MacArthur, D. G., Rehm, H. L., O'Donnell-Luria, A.
+           
+           
+          Advanced variant classification framework reduces the false positive rate of predicted loss-of-function variants in population sequencing data.
+           
           <em>
             American Journal of Human Genetics
           </em>
@@ -464,7 +500,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Babadi, M.*, Fu, J. M.*, Lee, S. K.*, Smirnov, A. N.*, Gauthier, L. D., Walker, M., Benjamin, D. I., Zhao, X., Karczewski, K. J., Wong, I., Collins, R. L., Sanchis-Juan, A., Brand, H., Banks, E., Talkowski, M. E. GATK-gCNV enables the discovery of rare copy number variants from exome sequencing data. 
+          Babadi, M.*, Fu, J. M.*, Lee, S. K.*, Smirnov, A. N.*, Gauthier, L. D., Walker, M., Benjamin, D. I., Zhao, X., Karczewski, K. J., Wong, I., Collins, R. L., Sanchis-Juan, A., Brand, H., Banks, E., Talkowski, M. E.
+           
+           
+          GATK-gCNV enables the discovery of rare copy number variants from exome sequencing data.
+           
           <em>
             Nature Genetics
           </em>
@@ -495,7 +535,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Karczewski, K. J., Gauthier, L. D., & Daly, M. J. Technical artifact drives apparent deviation from Hardy-Weinberg equilibrium at CCR5-∆32 and other variants in gnomAD. 
+          Karczewski, K. J., Gauthier, L. D., & Daly, M. J.
+           
+           
+          Technical artifact drives apparent deviation from Hardy-Weinberg equilibrium at CCR5-∆32 and other variants in gnomAD.
+           
           <em>
             bioRxiv
           </em>
@@ -520,7 +564,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Atkinson, E. G.*, Artomov, M.*, Loboda, A. A., Rehm, H. L., MacArthur, D. G., Karczewski, K. J., Neale, B. M.†, Daly, M. J.†. Discordant calls across genotype discovery approaches elucidate variants with systematic errors. 
+          Atkinson, E. G.*, Artomov, M.*, Loboda, A. A., Rehm, H. L., MacArthur, D. G., Karczewski, K. J., Neale, B. M.†, Daly, M. J.†.
+           
+           
+          Discordant calls across genotype discovery approaches elucidate variants with systematic errors.
+           
           <em>
             Genome Research
           </em>
@@ -551,7 +599,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Seaby, E. G., Thomas, N. S., Webb, A., Brittain, H., Taylor Tavares, A. L.; Genomics England Consortium; Baralle, D., Rehm, H. L., O'Donnell-Luria, A.†, Ennis, S.†. Targeting de novo loss-of-function variants in constrained disease genes improves diagnostic rates in the 100,000 Genomes Project. 
+          Seaby, E. G., Thomas, N. S., Webb, A., Brittain, H., Taylor Tavares, A. L.; Genomics England Consortium; Baralle, D., Rehm, H. L., O'Donnell-Luria, A.†, Ennis, S.†.
+           
+           
+          Targeting de novo loss-of-function variants in constrained disease genes improves diagnostic rates in the 100,000 Genomes Project.
+           
           <em>
             Human Genetics
           </em>
@@ -582,7 +634,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Pejaver, V. Byrne, A. B., Feng, B. J., Pagel, K. A., Mooney, S. D., Karchin, R., O'Donnell-Luria, A., Harrison, S. M., Tavtigian, S. V., Greenblatt, M. S., Biesecker, L. G., Radivojac, P., Brenner, S. E. ClinGen Sequence Variant Interpretation Working Group. Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria. 
+          Pejaver, V. Byrne, A. B., Feng, B. J., Pagel, K. A., Mooney, S. D., Karchin, R., O'Donnell-Luria, A., Harrison, S. M., Tavtigian, S. V., Greenblatt, M. S., Biesecker, L. G., Radivojac, P., Brenner, S. E.
+           
+           
+          ClinGen Sequence Variant Interpretation Working Group. Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria.
+           
           <em>
             American Journal of Human Genetics
           </em>
@@ -613,7 +669,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Seaby, E.G., Smedley, D., Taylor Tavares, A. L., Brittain, H., van Jaarsveld, R. H., Baralle, D., Rehm, H. L., O'Donnell-Luria, A., Ennis, S. Genomics England Research Consortium. A gene-to-patient approach uplifts novel disease gene discovery and identifies 18 putative novel disease genes. 
+          Seaby, E.G., Smedley, D., Taylor Tavares, A. L., Brittain, H., van Jaarsveld, R. H., Baralle, D., Rehm, H. L., O'Donnell-Luria, A., Ennis, S.
+           
+           
+          Genomics England Research Consortium. A gene-to-patient approach uplifts novel disease gene discovery and identifies 18 putative novel disease genes.
+           
           <em>
             Genetics Medicine
           </em>
@@ -640,7 +700,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Laricchia, K. M.*, Lake, N. J.*, Watts, N. A., Shand, M., Haessly, A., Gauthier, L. D., Benjamin, D., Banks, E., Soto, J., Garimella, K., Emery, J., Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., Tiao, G.†, Lek, M.†, Mootha, V. K.†, Calvo, S. E.† Mitochondrial DNA variation across 56,434 individuals in gnomAD. 
+          Laricchia, K. M.*, Lake, N. J.*, Watts, N. A., Shand, M., Haessly, A., Gauthier, L. D., Benjamin, D., Banks, E., Soto, J., Garimella, K., Emery, J., Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., Tiao, G.†, Lek, M.†, Mootha, V. K.†, Calvo, S. E.†
+           
+           
+          Mitochondrial DNA variation across 56,434 individuals in gnomAD.
+           
           <em>
             Genome Research
           </em>
@@ -667,7 +731,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Gudmundsson, S., Singer-Berk, M., Watts, N. A., Phu, W., Goodrich, J. K., Solomonson, M., Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., O’Donnell-Luria, A. Variant interpretation using population databases: Lessons from gnomAD. 
+          Gudmundsson, S., Singer-Berk, M., Watts, N. A., Phu, W., Goodrich, J. K., Solomonson, M., Genome Aggregation Database (gnomAD) Consortium, Rehm, H. L., MacArthur, D. G., O’Donnell-Luria, A.
+           
+           
+          Variant interpretation using population databases: Lessons from gnomAD.
+           
           <em>
             Human Mutation
           </em>
@@ -694,7 +762,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Whiffin, N., Karczewski, K. J., Zhang, X., Chothani, S., Smith, M. J., Gareth Evans, D., Roberts, A. M., Quaife, N. M., Schafer, S., Rackham, O., Alföldi, J., O’Donnell-Luria, A. H., Francioli, L. C., Genome Aggregation Database (gnomAD) Production Team, Genome Aggregation Database (gnomAD) Consortium, Cook, S. A., Barton, P. J. R., MacArthur, D. G.†, & Ware, J. S.† Characterising the loss-of-function impact of 5’ untranslated region variants in 15,708 individuals. 
+          Whiffin, N., Karczewski, K. J., Zhang, X., Chothani, S., Smith, M. J., Gareth Evans, D., Roberts, A. M., Quaife, N. M., Schafer, S., Rackham, O., Alföldi, J., O’Donnell-Luria, A. H., Francioli, L. C., Genome Aggregation Database (gnomAD) Production Team, Genome Aggregation Database (gnomAD) Consortium, Cook, S. A., Barton, P. J. R., MacArthur, D. G.†, & Ware, J. S.†
+           
+           
+          Characterising the loss-of-function impact of 5’ untranslated region variants in 15,708 individuals.
+           
           <em>
             Nature Communications
           </em>
@@ -721,7 +793,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Whiffin, N.*, Armean, I. M.*, Kleinman, A.*, Marshall, J. L., Minikel, E. V., Goodrich, J. K., Quaife, N. M., Cole, J. B., Wang, Q., Karczewski, K. J., Cummings, B. B., Francioli, L., Laricchia, K., Guan, A., Alipanahi, B., Morrison, P., Baptista, M. A. S., Merchant, K. M., Genome Aggregation Database Production Team, … Cannon, P.†, MacArthur, D. G.† The effect of LRRK2 loss-of-function variants in humans. 
+          Whiffin, N.*, Armean, I. M.*, Kleinman, A.*, Marshall, J. L., Minikel, E. V., Goodrich, J. K., Quaife, N. M., Cole, J. B., Wang, Q., Karczewski, K. J., Cummings, B. B., Francioli, L., Laricchia, K., Guan, A., Alipanahi, B., Morrison, P., Baptista, M. A. S., Merchant, K. M., Genome Aggregation Database Production Team, … Cannon, P.†, MacArthur, D. G.†
+           
+           
+          The effect of LRRK2 loss-of-function variants in humans.
+           
           <em>
             Nature Medicine
           </em>
@@ -748,7 +824,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Wang, Q., Pierce-Hoffman, E., Cummings, B. B., Karczewski, K. J., Alföldi, J., Francioli, L. C., Gauthier, L. D., Hill, A. J., O’Donnell-Luria, A. H., Genome Aggregation Database (gnomAD) Production Team, Genome Aggregation Database (gnomAD) Consortium, & MacArthur, D. G. Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes. 
+          Wang, Q., Pierce-Hoffman, E., Cummings, B. B., Karczewski, K. J., Alföldi, J., Francioli, L. C., Gauthier, L. D., Hill, A. J., O’Donnell-Luria, A. H., Genome Aggregation Database (gnomAD) Production Team, Genome Aggregation Database (gnomAD) Consortium, & MacArthur, D. G.
+           
+           
+          Landscape of multi-nucleotide variants in 125,748 human exomes and 15,708 genomes.
+           
           <em>
             Nature Communications
           </em>
@@ -775,7 +855,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Minikel, E. V., Karczewski, K. J., Martin, H. C., Cummings, B. B., Whiffin, N., Rhodes, D., Alföldi, J., Trembath, R. C., van Heel, D. A., Daly, M. J., Genome Aggregation Database Production Team, Genome Aggregation Database Consortium, Schreiber, S. L., & MacArthur, D. G. Evaluating potential drug targets through human loss-of-function genetic variation. 
+          Minikel, E. V., Karczewski, K. J., Martin, H. C., Cummings, B. B., Whiffin, N., Rhodes, D., Alföldi, J., Trembath, R. C., van Heel, D. A., Daly, M. J., Genome Aggregation Database Production Team, Genome Aggregation Database Consortium, Schreiber, S. L., & MacArthur, D. G.
+           
+           
+          Evaluating potential drug targets through human loss-of-function genetic variation.
+           
           <em>
             Nature
           </em>
@@ -802,7 +886,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Cummings, B. B., Karczewski, K. J., Kosmicki, J. A., Seaby, E. G., Watts, N. A., Singer-Berk, M., Mudge, J. M., Karjalainen, J., Kyle Satterstrom, F., O’Donnell-Luria, A., Poterba, T., Seed, C., Solomonson, M., Alföldi, J., The Genome Aggregation Database Production Team, The Genome Aggregation Database Consortium, Daly, M. J., & MacArthur, D. G. Transcript expression-aware annotation improves rare variant interpretation. 
+          Cummings, B. B., Karczewski, K. J., Kosmicki, J. A., Seaby, E. G., Watts, N. A., Singer-Berk, M., Mudge, J. M., Karjalainen, J., Kyle Satterstrom, F., O’Donnell-Luria, A., Poterba, T., Seed, C., Solomonson, M., Alföldi, J., The Genome Aggregation Database Production Team, The Genome Aggregation Database Consortium, Daly, M. J., & MacArthur, D. G.
+           
+           
+          Transcript expression-aware annotation improves rare variant interpretation.
+           
           <em>
             Nature
           </em>
@@ -829,7 +917,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Collins, R. L.*, Brand, H.*, Karczewski, K. J., Zhao, X., Alföldi, J., Francioli, L. C., Khera, A. V., Lowther, C., Gauthier, L. D., Wang, H., Watts, N. A., Solomonson, M., O’Donnell-Luria, A., Baumann, A., Munshi, R., Walker, M., Whelan, C., Huang, Y., Brookings, T., … Talkowski, M. E. A structural variation reference for medical and population genetics. 
+          Collins, R. L.*, Brand, H.*, Karczewski, K. J., Zhao, X., Alföldi, J., Francioli, L. C., Khera, A. V., Lowther, C., Gauthier, L. D., Wang, H., Watts, N. A., Solomonson, M., O’Donnell-Luria, A., Baumann, A., Munshi, R., Walker, M., Whelan, C., Huang, Y., Brookings, T., … Talkowski, M. E.
+           
+           
+          A structural variation reference for medical and population genetics.
+           
           <em>
             Nature
           </em>
@@ -856,7 +948,11 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
-          Karczewski, K. J., Weisburd, B., Thomas, B., Solomonson, M., Ruderfer, D. M., Kavanagh, D., Hamamsy, T., Lek, M., Samocha, K. E., Cummings, B. B., Birnbaum, D., The Exome Aggregation Consortium, Daly, M. J., MacArthur, D. G. The ExAC browser: displaying reference data information from over 60000 exomes. 
+          Karczewski, K. J., Weisburd, B., Thomas, B., Solomonson, M., Ruderfer, D. M., Kavanagh, D., Hamamsy, T., Lek, M., Samocha, K. E., Cummings, B. B., Birnbaum, D., The Exome Aggregation Consortium, Daly, M. J., MacArthur, D. G.
+           
+           
+          The ExAC browser: displaying reference data information from over 60000 exomes.
+           
           <em>
             Nucleic Acids Research
           </em>
