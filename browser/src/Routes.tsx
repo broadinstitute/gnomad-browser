@@ -9,6 +9,7 @@ import DocumentTitle from './DocumentTitle'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 // Content pages
+const AcOfOnePage = lazy(() => import('./AcOfOnePage'))
 const AboutPage = lazy(() => import('./AboutPage'))
 const TeamPage = lazy(() => import('./TeamPage/TeamPage'))
 const ContactPage = lazy(() => import('./ContactPage'))
@@ -165,6 +166,8 @@ const Routes = () => {
           return <ShortTandemRepeatPageContainer datasetId={datasetId} strId={match.params.strId} />
         }}
       />
+
+      <Route exact path="/AC1" component={AcOfOnePage} />
 
       <Route exact path="/about" component={AboutPage} />
 
