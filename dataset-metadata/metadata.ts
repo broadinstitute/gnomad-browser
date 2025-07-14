@@ -1032,7 +1032,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     isSubset: true,
     hasConstraints: true,
     hasVariantCoocurrence: false,
-    hasNonCodingConstraints: true,
+    hasNonCodingConstraints: false,
     hasExome: true,
     genesHaveExomeCoverage: true,
     genesHaveGenomeCoverage: true,

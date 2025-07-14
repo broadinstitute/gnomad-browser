@@ -14,5 +14,5 @@ export const variantFeedbackUrl = (variant: any, datasetId: any) => {
     }
     return `${process.env.REPORT_VARIANT_URL}?${queryString.stringify(params)}`
   }
-  return 'mailto:gnomad@broadinstitute.org'
+  return 'mailto:servicedesk@populationgenomics.org.au'
 }

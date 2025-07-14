@@ -267,7 +267,7 @@ const Variants = ({
   if (variants.length === 0) {
     return (
       <TrackPageSection>
-        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+        <h2 style={{ margin: '2em 0 0.25em' }}>OurDNA variants</h2>
         <p>No gnomAD variants found.</p>
       </TrackPageSection>
     )
@@ -276,7 +276,7 @@ const Variants = ({
   return (
     <div>
       <TrackPageSection>
-        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+        <h2 style={{ margin: '2em 0 0.25em' }}>OurDNA variants</h2>
       </TrackPageSection>
       <Cursor onClick={onNavigatorClick}>
         <VariantTrack

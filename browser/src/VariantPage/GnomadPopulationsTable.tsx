@@ -113,7 +113,7 @@ export class GnomadPopulationsTable extends Component<
     } = this.props
     const { includeExomes, includeGenomes } = this.state
 
-    console.log('Ex & Ge Pops', exomePopulations, genomePopulations)
+    // console.log('Ex & Ge Pops', exomePopulations, genomePopulations)
 
     const mergedPopulations = mergeExomeGenomeAndJointPopulationData({
       datasetId,
@@ -123,14 +123,14 @@ export class GnomadPopulationsTable extends Component<
         includeExomes && includeGenomes && jointPopulations ? jointPopulations : null,
     }).filter((mergedAncestry) => (mergedAncestry.id as string) !== '')
 
-    console.log('MERGED POPULATIONS', mergedPopulations);
+    // console.log('MERGED POPULATIONS', mergedPopulations);
 
     const mergedPopulationsWithNames = addPopulationNames(mergedPopulations)
 
-    console.log('MERGED POPULATIONS WITH NAMES', mergedPopulationsWithNames)
+    // console.log('MERGED POPULATIONS WITH NAMES', mergedPopulationsWithNames)
     const mergedNestedPopulationsWithNames = nestPopulations(mergedPopulationsWithNames)
 
-    console.log('MERGED NESTED POPULATIONS WITH NAMES', mergedNestedPopulationsWithNames)
+    // console.log('MERGED NESTED POPULATIONS WITH NAMES', mergedNestedPopulationsWithNames)
     let populations = mergedNestedPopulationsWithNames
 
     if (hasV2Genome(datasetId) && includeGenomes) {

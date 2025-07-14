@@ -13,7 +13,7 @@ import {
   hasLocalAncestryPopulations,
   isLiftoverSource,
   isLiftoverTarget,
-  usesGrch37,
+  // usesGrch37,
   isV3,
   isV3Subset,
   isV4,
@@ -957,15 +957,18 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               <GnomadPageHeading
                 datasetOptions={{
                   // Include ExAC for GRCh37 datasets
-                  includeExac: usesGrch37(datasetId),
+                  includeExac: false,
                   // Include gnomAD versions based on the same reference genome as the current dataset
-                  includeGnomad2: true,
-                  includeGnomad3: true,
+                  includeGnomad2: false,
+                  includeGnomad3: false,
                   includeGnomad4Subsets: true,
                   // Variant ID not valid for SVs
                   includeStructuralVariants: false,
                   includeCopyNumberVariants: false,
                   urlBuilder: datasetLinkWithLiftover,
+
+                  includeShortVariants: true,
+                  includeGnomad3Subsets: false,
                 }}
                 selectedDataset={datasetId}
                 extra={

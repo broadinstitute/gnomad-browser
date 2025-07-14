@@ -2,7 +2,7 @@
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
-import React, { useState, Dispatch, SetStateAction } from 'react'
+import React, { useState } from 'react' // , Dispatch, SetStateAction
 import styled from 'styled-components'
 
 // @ts-expect-error TS(7016) FIXME: Could not find a declaration file for module '@gno... Remove this comment to see the full error message
@@ -23,15 +23,16 @@ import {
   hasCopyNumberVariants,
   isV2,
 } from '@gnomad/dataset-metadata/metadata'
-import ConstraintTable from '../ConstraintTable/ConstraintTable'
-import VariantCooccurrenceCountsTable, {
+// import ConstraintTable from '../ConstraintTable/ConstraintTable'
+// import VariantCooccurrenceCountsTable, 
+import {
   HeterozygousVariantCooccurrenceCountsPerSeverityAndAf,
   HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
 } from './VariantCooccurrenceCountsTable'
 
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
-import InfoButton from '../help/InfoButton'
+// import InfoButton from '../help/InfoButton'
 import Link from '../Link'
 import RegionalConstraintTrack from '../RegionalConstraintTrack'
 import RegionalMissenseConstraintTrack, {
@@ -70,7 +71,7 @@ import {
   CheckboxInput,
   LegendSwatch,
 } from '../ChartStyles'
-import { logButtonClick } from '../analytics'
+// import { logButtonClick } from '../analytics'
 import { GtexTissueExpression } from './TranscriptsTissueExpression'
 
 export type Strand = '+' | '-'
@@ -176,48 +177,48 @@ const GeneInfoColumn = styled.div`
   }
 `
 
-const ConstraintOrCooccurrenceColumn = styled.div`
-  width: 55%;
+// const ConstraintOrCooccurrenceColumn = styled.div`
+//   width: 55%;
 
-  @media (max-width: 1200px) {
-    width: 100%;
-  }
-`
+//   @media (max-width: 1200px) {
+//     width: 100%;
+//   }
+// `
 
-type TableName = 'constraint' | 'cooccurrence'
+// type TableName = 'constraint' | 'cooccurrence'
 
-type TableSelectorProps = {
-  ownTableName: TableName
-  selectedTableName: TableName
-  setSelectedTableName: Dispatch<SetStateAction<TableName>>
-}
+// type TableSelectorProps = {
+//   ownTableName: TableName
+//   selectedTableName: TableName
+//   setSelectedTableName: Dispatch<SetStateAction<TableName>>
+// }
 
 // prettier-ignore
-const BaseTableSelector = styled.div<TableSelectorProps>
+// const BaseTableSelector = styled.div<TableSelectorProps>
 
-const TableSelector = BaseTableSelector.attrs(
-  ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
-    onClick: () => {
-      if (ownTableName === 'cooccurrence') {
-        logButtonClick('User selected variant co-occurrence table on Gene page')
-      }
-      setSelectedTableName(ownTableName)
-    },
-  })
-)`
-  border: 1px solid black;
-  border-radius: 0.5em;
-  cursor: pointer;
-  margin-right: 0.5em;
-  padding: 0.25em;
+// const TableSelector = BaseTableSelector.attrs(
+//   ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
+//     onClick: () => {
+//       if (ownTableName === 'cooccurrence') {
+//         logButtonClick('User selected variant co-occurrence table on Gene page')
+//       }
+//       setSelectedTableName(ownTableName)
+//     },
+//   })
+// )`
+//   border: 1px solid black;
+//   border-radius: 0.5em;
+//   cursor: pointer;
+//   margin-right: 0.5em;
+//   padding: 0.25em;
 
-  background-color: ${({ ownTableName, selectedTableName }: TableSelectorProps) =>
-    ownTableName === selectedTableName ? '#cbd3da' : 'transparent'};
-`
+//   background-color: ${({ ownTableName, selectedTableName }: TableSelectorProps) =>
+//     ownTableName === selectedTableName ? '#cbd3da' : 'transparent'};
+// `
 
-const TableSelectorWrapper = styled.div`
-  display: flex;
-`
+// const TableSelectorWrapper = styled.div`
+//   display: flex;
+// `
 
 const TrackWrapper = styled.div`
   margin-bottom: 1em;
@@ -277,7 +278,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const [includeNonCodingTranscripts, setIncludeNonCodingTranscripts] = useState(!hasCDS)
   const [includeUTRs, setIncludeUTRs] = useState(false)
   const [showTranscripts, setShowTranscripts] = useState(false)
-  const [selectedTableName, setSelectedTableName] = useState<TableName>('constraint')
+  // const [selectedTableName, setSelectedTableName] = useState<TableName>('constraint')
 
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
@@ -323,12 +324,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           selectedDataset={datasetId}
           datasetOptions={{
             includeShortVariants: true,
-            includeStructuralVariants: gene.chrom !== 'M',
-            includeCopyNumberVariants: true,
-            includeExac: gene.chrom !== 'M',
-            includeGnomad2: gene.chrom !== 'M',
-            includeGnomad3: true,
-            includeGnomad3Subsets: gene.chrom !== 'M',
+            includeStructuralVariants: false,
+            includeCopyNumberVariants: false,
+            includeExac: false,
+            includeGnomad2: false,
+            includeGnomad3: false,
+            includeGnomad3Subsets: false,
             includeGnomad4Subsets: true,
           }}
         >
@@ -349,7 +350,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
               </p>
             )}
           </GeneInfoColumn>
-          <ConstraintOrCooccurrenceColumn>
+          {/* <ConstraintOrCooccurrenceColumn>
             <TableSelectorWrapper>
               <TableSelector
                 selectedTableName={selectedTableName}
@@ -379,7 +380,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 }
               />
             )}
-          </ConstraintOrCooccurrenceColumn>
+          </ConstraintOrCooccurrenceColumn> */}
         </GeneInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
