@@ -4,8 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"sort"
-	"strings"
 
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
@@ -119,12 +117,15 @@ func (f *GnomadV4VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 	}
 
 	// Extract variant info from locus and alleles
-	if doc.Locus.Contig != "" && len(doc.Alleles) >= 2 {
-		doc.Chrom = strings.TrimPrefix(doc.Locus.Contig, "chr")
-		doc.Pos = doc.Locus.Position
-		doc.Ref = doc.Alleles[0]
-		doc.Alt = doc.Alleles[1]
+	locus := map[string]interface{}{
+		"contig":   doc.Locus.Contig,
+		"position": float64(doc.Locus.Position),
 	}
+	alleles := make([]interface{}, len(doc.Alleles))
+	for i, a := range doc.Alleles {
+		alleles[i] = a
+	}
+	doc.Chrom, doc.Pos, doc.Ref, doc.Alt = ExtractVariantInfo(locus, alleles)
 
 	// Shape the data
 	variant := &model.VariantDetails{
@@ -152,21 +153,24 @@ func (f *GnomadV4VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 		variant.Joint = f.shapeJointData(doc.Joint, f.Subset)
 	}
 
+	// Convert document to map for flag processing
+	docMap := f.convertDocumentToMap(&doc)
+
 	// Add flags with proper context
 	context := FlagContext{
-		IsGene:       false, // Will be set based on query context
-		IsRegion:     false,
-		IsTranscript: false,
+		Type: "region", // Default to region context for single variant queries
 	}
-	variant.Flags = f.getFlagsForContext(&doc, context)
+	variant.Flags = GetFlagsForContext(docMap, context, f.Subset)
 
 	// Add other fields
 	variant.ColocatedVariants = f.getColocatedVariants(doc.ColocatedVariants)
-	variant.TranscriptConsequences = f.shapeTranscriptConsequences(doc.TranscriptConsequences)
+	variant.TranscriptConsequences = ShapeTranscriptConsequences(doc.TranscriptConsequences, TranscriptConsequenceOptions{
+		IncludeENSEMBLOnly: true,
+	})
 
 	// Transform in_silico_predictors from map to list
 	if doc.InSilicoPredictors != nil {
-		variant.InSilicoPredictors = f.createInSilicoPredictorsList(doc.InSilicoPredictors)
+		variant.InSilicoPredictors = CreateInSilicoPredictorsList(doc.InSilicoPredictors)
 	}
 
 	// Add VRS data
@@ -180,7 +184,7 @@ func (f *GnomadV4VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 	}
 
 	// Multi-nucleotide variants
-	variant.MultiNucleotideVariants = f.shapeMultiNucleotideVariants(doc.MultiNucleotideVariants)
+	variant.MultiNucleotideVariants = ShapeMultiNucleotideVariants(doc.MultiNucleotideVariants)
 
 	// LOF curation
 	if doc.LofCuration != nil {
@@ -222,12 +226,24 @@ func (f *GnomadV4VariantFetcher) shapeExomeData(data *GnomadV4SequencingData, su
 	}
 
 	// Add AC=0 filter if needed
-	if freqData.AC == 0 && !contains(shaped.Filters, "AC0") {
-		shaped.Filters = append(shaped.Filters, "AC0")
+	shaped.Filters = AddAC0FilterIfNeeded(shaped.Filters, freqData.AC)
+
+	// Convert ancestry groups to generic format
+	basePopulations := f.convertAncestryGroupsToMaps(freqData.AncestryGroups)
+
+	// Prepare additional population sources
+	additionalSources := make(map[string]interface{})
+	if data.Freq["all"] != nil {
+		if data.Freq["all"].HGDP != nil {
+			additionalSources["hgdp"] = f.convertSubPopulationToMap(data.Freq["all"].HGDP)
+		}
+		if data.Freq["all"].TGP != nil {
+			additionalSources["tgp"] = f.convertSubPopulationToMap(data.Freq["all"].TGP)
+		}
 	}
 
-	// Shape populations with prefix merging (hgdp: and 1kg: prefixes)
-	shaped.Populations = f.shapeAndMergePopulations(freqData.AncestryGroups, data.Freq, "exome")
+	// Shape populations with prefix merging
+	shaped.Populations = ShapeAndMergePopulations(basePopulations, additionalSources, "exome")
 
 	// Shape FAF95/FAF99 - transform from grpmax to popmax format
 	if data.FAF95 != nil {
@@ -272,16 +288,16 @@ func (f *GnomadV4VariantFetcher) shapeExomeData(data *GnomadV4SequencingData, su
 					BinFreq:  data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
 				},
 			},
-			SiteQualityMetrics: f.shapeSiteQualityMetrics(data.QualityMetrics.SiteQualityMetrics),
+			SiteQualityMetrics: ShapeSiteQualityMetrics(f.convertSiteQualityMetricsToMaps(data.QualityMetrics.SiteQualityMetrics)),
 		}
 	}
 
 	// Add age distribution
 	if data.AgeDistribution != nil {
-		shaped.AgeDistribution = &model.AgeDistribution{
-			Het: f.shapeAgeHistogramFromBins(data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq),
-			Hom: f.shapeAgeHistogramFromBins(data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq),
-		}
+		shaped.AgeDistribution = ShapeAgeDistribution(
+			data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq,
+			data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq,
+		)
 	}
 
 	return shaped
@@ -302,12 +318,24 @@ func (f *GnomadV4VariantFetcher) shapeGenomeData(data *GnomadV4SequencingData) *
 	}
 
 	// Add AC=0 filter if needed
-	if freqData.AC == 0 && !contains(shaped.Filters, "AC0") {
-		shaped.Filters = append(shaped.Filters, "AC0")
+	shaped.Filters = AddAC0FilterIfNeeded(shaped.Filters, freqData.AC)
+
+	// Convert ancestry groups to generic format
+	basePopulations := f.convertAncestryGroupsToMaps(freqData.AncestryGroups)
+
+	// Prepare additional population sources
+	additionalSources := make(map[string]interface{})
+	if data.Freq["all"] != nil {
+		if data.Freq["all"].HGDP != nil {
+			additionalSources["hgdp"] = f.convertSubPopulationToMap(data.Freq["all"].HGDP)
+		}
+		if data.Freq["all"].TGP != nil {
+			additionalSources["tgp"] = f.convertSubPopulationToMap(data.Freq["all"].TGP)
+		}
 	}
 
-	// Shape populations with prefix merging (hgdp: and 1kg: prefixes)
-	shaped.Populations = f.shapeAndMergePopulations(freqData.AncestryGroups, data.Freq, "genome")
+	// Shape populations with prefix merging
+	shaped.Populations = ShapeAndMergePopulations(basePopulations, additionalSources, "genome")
 
 	// Shape FAF95/FAF99 - transform from grpmax to popmax format
 	if data.FAF95 != nil {
@@ -352,77 +380,153 @@ func (f *GnomadV4VariantFetcher) shapeGenomeData(data *GnomadV4SequencingData) *
 					BinFreq:  data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
 				},
 			},
-			SiteQualityMetrics: f.shapeSiteQualityMetrics(data.QualityMetrics.SiteQualityMetrics),
+			SiteQualityMetrics: ShapeSiteQualityMetrics(f.convertSiteQualityMetricsToMaps(data.QualityMetrics.SiteQualityMetrics)),
 		}
 	}
 
 	// Add age distribution
 	if data.AgeDistribution != nil {
-		shaped.AgeDistribution = &model.AgeDistribution{
-			Het: f.shapeAgeHistogramFromBins(data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq),
-			Hom: f.shapeAgeHistogramFromBins(data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq),
-		}
+		shaped.AgeDistribution = ShapeAgeDistribution(
+			data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq,
+			data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq,
+		)
 	}
 
 	return shaped
 }
 
-func (f *GnomadV4VariantFetcher) shapeAndMergePopulations(basePopulations []GnomadV4PopulationData, freqMap map[string]*GnomadV4FrequencyData, sequenceType string) []*model.PopulationAlleleFrequencies {
-	// Create map to track populations
-	popMap := make(map[string]*model.PopulationAlleleFrequencies)
+// convertDocumentToMap converts a GnomadV4VariantDocument to a generic map for flag processing
+func (f *GnomadV4VariantFetcher) convertDocumentToMap(doc *GnomadV4VariantDocument) map[string]interface{} {
+	result := make(map[string]interface{})
 
-	// Add base populations
-	for _, pop := range basePopulations {
-		popMap[pop.ID] = &model.PopulationAlleleFrequencies{
-			ID:              pop.ID,
-			Ac:              pop.AC,
-			An:              pop.AN,
-			HomozygoteCount: pop.HomozygoteCount,
-			HemizygoteCount: &pop.HemizygoteCount,
-		}
+	// Add base flags
+	result["flags"] = doc.Flags
+
+	// Add transcript consequences
+	if doc.TranscriptConsequences != nil {
+		result["transcript_consequences"] = doc.TranscriptConsequences
 	}
 
-	// For genome data, merge HGDP and 1KG populations with prefixes
-	if sequenceType == "genome" && freqMap["all"] != nil {
-		// Add HGDP populations with "hgdp:" prefix
-		if freqMap["all"].HGDP != nil && freqMap["all"].HGDP.ACRaw > 0 {
-			for _, pop := range freqMap["all"].HGDP.AncestryGroups {
-				prefixedID := "hgdp:" + pop.ID
-				popMap[prefixedID] = &model.PopulationAlleleFrequencies{
-					ID:              prefixedID,
-					Ac:              pop.AC,
-					An:              pop.AN,
-					HomozygoteCount: pop.HomozygoteCount,
-					HemizygoteCount: &pop.HemizygoteCount,
+	// Add exome data
+	if doc.Exome != nil {
+		exomeMap := make(map[string]interface{})
+		if doc.Exome.Freq != nil {
+			freqMap := make(map[string]interface{})
+			for subset, freq := range doc.Exome.Freq {
+				if freq != nil {
+					// Convert filters to interface slice
+					filters := make([]interface{}, len(freq.Filters))
+					for i, f := range freq.Filters {
+						filters[i] = f
+					}
+					freqMap[subset] = map[string]interface{}{
+						"ac":      float64(freq.AC),
+						"filters": filters,
+					}
 				}
 			}
+			exomeMap["freq"] = freqMap
 		}
+		result["exome"] = exomeMap
+	}
 
-		// Add 1KG populations with "1kg:" prefix
-		if freqMap["all"].TGP != nil && freqMap["all"].TGP.ACRaw > 0 {
-			for _, pop := range freqMap["all"].TGP.AncestryGroups {
-				prefixedID := "1kg:" + pop.ID
-				popMap[prefixedID] = &model.PopulationAlleleFrequencies{
-					ID:              prefixedID,
-					Ac:              pop.AC,
-					An:              pop.AN,
-					HomozygoteCount: pop.HomozygoteCount,
-					HemizygoteCount: &pop.HemizygoteCount,
+	// Add genome data
+	if doc.Genome != nil {
+		genomeMap := make(map[string]interface{})
+		if doc.Genome.Freq != nil {
+			freqMap := make(map[string]interface{})
+			for subset, freq := range doc.Genome.Freq {
+				if freq != nil {
+					// Convert filters to interface slice
+					filters := make([]interface{}, len(freq.Filters))
+					for i, f := range freq.Filters {
+						filters[i] = f
+					}
+					freqMap[subset] = map[string]interface{}{
+						"ac":      float64(freq.AC),
+						"filters": filters,
+					}
 				}
 			}
+			genomeMap["freq"] = freqMap
+		}
+		result["genome"] = genomeMap
+	}
+
+	// Add joint data
+	if doc.Joint != nil {
+		jointMap := make(map[string]interface{})
+		if doc.Joint.Freq != nil {
+			freqMap := make(map[string]interface{})
+			for subset, freq := range doc.Joint.Freq {
+				if freq != nil {
+					freqMap[subset] = map[string]interface{}{
+						"ac": float64(freq.AC),
+					}
+				}
+			}
+			jointMap["freq"] = freqMap
+		}
+		result["joint"] = jointMap
+	}
+
+	return result
+}
+
+// convertAncestryGroupsToMaps converts v4 ancestry groups to generic map format
+func (f *GnomadV4VariantFetcher) convertAncestryGroupsToMaps(groups []GnomadV4PopulationData) []map[string]interface{} {
+	result := make([]map[string]interface{}, len(groups))
+	for i, group := range groups {
+		result[i] = map[string]interface{}{
+			"id":               group.ID,
+			"ac":               float64(group.AC),
+			"an":               float64(group.AN),
+			"homozygote_count": float64(group.HomozygoteCount),
+			"hemizygote_count": float64(group.HemizygoteCount),
 		}
 	}
+	return result
+}
 
-	// Convert to sorted slice
-	result := make([]*model.PopulationAlleleFrequencies, 0, len(popMap))
-	for _, pop := range popMap {
-		result = append(result, pop)
+// convertSubPopulationToMap converts HGDP/TGP sub-population data to generic map
+func (f *GnomadV4VariantFetcher) convertSubPopulationToMap(subPop *struct {
+	AC             int                      `json:"ac"`
+	AN             int                      `json:"an"`
+	ACRaw          int                      `json:"ac_raw"`
+	ANRaw          int                      `json:"an_raw"`
+	AncestryGroups []GnomadV4PopulationData `json:"ancestry_groups"`
+}) map[string]interface{} {
+	result := map[string]interface{}{
+		"ac_raw": float64(subPop.ACRaw),
 	}
 
-	sort.Slice(result, func(i, j int) bool {
-		return result[i].ID < result[j].ID
-	})
+	ancestryGroups := make([]interface{}, len(subPop.AncestryGroups))
+	for i, group := range subPop.AncestryGroups {
+		ancestryGroups[i] = map[string]interface{}{
+			"id":               group.ID,
+			"ac":               float64(group.AC),
+			"an":               float64(group.AN),
+			"homozygote_count": float64(group.HomozygoteCount),
+			"hemizygote_count": float64(group.HemizygoteCount),
+		}
+	}
+	result["ancestry_groups"] = ancestryGroups
 
+	return result
+}
+
+// convertSiteQualityMetricsToMaps converts site quality metrics to generic map format
+func (f *GnomadV4VariantFetcher) convertSiteQualityMetricsToMaps(metrics []struct {
+	Metric string  `json:"metric"`
+	Value  float64 `json:"value"`
+}) []map[string]interface{} {
+	result := make([]map[string]interface{}, len(metrics))
+	for i, m := range metrics {
+		result[i] = map[string]interface{}{
+			"metric": m.Metric,
+			"value":  m.Value,
+		}
+	}
 	return result
 }
 
@@ -441,9 +545,7 @@ func (f *GnomadV4VariantFetcher) shapeJointData(data *GnomadV4JointData, subset 
 	}
 
 	// Add AC=0 filter if needed
-	if jointData.AC == 0 && !contains(shaped.Filters, "AC0") {
-		shaped.Filters = append(shaped.Filters, "AC0")
-	}
+	shaped.Filters = AddAC0FilterIfNeeded(shaped.Filters, jointData.AC)
 
 	// Shape populations
 	shaped.Populations = make([]*model.PopulationAlleleFrequencies, len(jointData.AncestryGroups))
@@ -460,267 +562,12 @@ func (f *GnomadV4VariantFetcher) shapeJointData(data *GnomadV4JointData, subset 
 	return shaped
 }
 
-func (f *GnomadV4VariantFetcher) shapeAgeHistogramFromBins(binEdges, binFreq []float64) *model.Histogram {
-	if len(binEdges) == 0 || len(binFreq) == 0 {
-		return nil
-	}
-
-	return &model.Histogram{
-		BinEdges: binEdges,
-		BinFreq:  binFreq,
-	}
-}
-
-func (f *GnomadV4VariantFetcher) shapeSiteQualityMetrics(metrics []struct {
-	Metric string  `json:"metric"`
-	Value  float64 `json:"value"`
-}) []*model.VariantSiteQualityMetric {
-	// Map from ES metric names to expected GraphQL metric names
-	metricMapping := map[string]string{
-		"AS_VarDP":           "DP",
-		"AS_FS":              "FS",
-		"inbreeding_coeff":   "InbreedingCoeff",
-		"AS_MQ":              "MQ",
-		"AS_MQRankSum":       "MQRankSum",
-		"AS_QD":              "QD",
-		"AS_ReadPosRankSum":  "ReadPosRankSum",
-		"AS_SOR":             "SOR",
-		"AS_VQSLOD":          "VQSLOD",
-	}
-
-	var result []*model.VariantSiteQualityMetric
-	for _, m := range metrics {
-		if mappedName, ok := metricMapping[m.Metric]; ok {
-			result = append(result, &model.VariantSiteQualityMetric{
-				Metric: mappedName,
-				Value:  &m.Value,
-			})
-		}
-	}
-
-	return result
-}
-
-
-func (f *GnomadV4VariantFetcher) getFlagsForContext(doc *GnomadV4VariantDocument, context FlagContext) []string {
-	var flags []string
-
-	// Base flags from document
-	flags = append(flags, doc.Flags...)
-
-	// Add regional flags hoisted from exome/genome
-	regionalFlags := []string{"par", "segdup", "lcr"}
-	for _, flag := range regionalFlags {
-		// Check exome flags
-		if doc.Exome != nil && doc.Exome.Freq != nil && doc.Exome.Freq[f.Subset] != nil {
-			if contains(doc.Exome.Freq[f.Subset].Filters, flag) && !contains(flags, flag) {
-				flags = append(flags, flag)
-			}
-		}
-		// Check genome flags
-		if doc.Genome != nil && doc.Genome.Freq != nil && doc.Genome.Freq["all"] != nil {
-			if contains(doc.Genome.Freq["all"].Filters, flag) && !contains(flags, flag) {
-				flags = append(flags, flag)
-			}
-		}
-	}
-
-	// Add subset-specific flags
-	if f.Subset != "all" {
-		// Check for AC discrepancies
-		if doc.Joint != nil && doc.Joint.Freq != nil && doc.Joint.Freq[f.Subset] != nil &&
-			doc.Exome != nil && doc.Exome.Freq != nil && doc.Exome.Freq[f.Subset] != nil &&
-			doc.Genome != nil && doc.Genome.Freq != nil && doc.Genome.Freq["all"] != nil {
-
-			jointAC := doc.Joint.Freq[f.Subset].AC
-			exomeGenomeAC := doc.Exome.Freq[f.Subset].AC + doc.Genome.Freq["all"].AC
-
-			if jointAC != exomeGenomeAC {
-				flags = append(flags, "discrepant_ac")
-			}
-		}
-	}
-
-	// Context-dependent flags (gene vs region vs transcript)
-	if context.IsGene && context.GeneID != "" {
-		// Add gene-specific flags - only check consequences for the specific gene
-		for _, tc := range doc.TranscriptConsequences {
-			// Filter by gene ID
-			if geneID, ok := tc["gene_id"].(string); !ok || geneID != context.GeneID {
-				continue
-			}
-			
-			// Check for lc_lof flag
-			if lof, ok := tc["lof"].(string); ok && lof == "LC" {
-				flags = append(flags, "lc_lof")
-			}
-
-			// Check for lof_flag
-			if lofFlags, ok := tc["lof_flags"].(string); ok && lofFlags != "" {
-				flags = append(flags, "lof_flag")
-			}
-
-			// Check for nc_transcript
-			if biotype, ok := tc["biotype"].(string); ok && biotype != "protein_coding" {
-				flags = append(flags, "nc_transcript")
-			}
-		}
-	}
-	
-	if context.IsTranscript && context.TranscriptID != "" {
-		// Add transcript-specific flags - only check consequences for the specific transcript
-		for _, tc := range doc.TranscriptConsequences {
-			// Filter by transcript ID
-			if transcriptID, ok := tc["transcript_id"].(string); !ok || transcriptID != context.TranscriptID {
-				continue
-			}
-			
-			// Check for lc_lof flag
-			if lof, ok := tc["lof"].(string); ok && lof == "LC" {
-				flags = append(flags, "lc_lof")
-			}
-
-			// Check for lof_flag
-			if lofFlags, ok := tc["lof_flags"].(string); ok && lofFlags != "" {
-				flags = append(flags, "lof_flag")
-			}
-
-			// Check for nc_transcript
-			if biotype, ok := tc["biotype"].(string); ok && biotype != "protein_coding" {
-				flags = append(flags, "nc_transcript")
-			}
-		}
-	}
-
-	return uniqueStrings(flags)
-}
-
 func (f *GnomadV4VariantFetcher) getColocatedVariants(colocatedMap map[string][]string) []string {
 	if f.Subset == "" || colocatedMap == nil {
 		return nil
 	}
 
 	return colocatedMap[f.Subset]
-}
-
-func (f *GnomadV4VariantFetcher) shapeTranscriptConsequences(consequences []map[string]any) []*model.TranscriptConsequence {
-	if len(consequences) == 0 {
-		return nil
-	}
-
-	var result []*model.TranscriptConsequence
-	for _, csq := range consequences {
-		// Only include ENSEMBL transcripts (filter out RefSeq)
-		geneID, _ := csq["gene_id"].(string)
-		if !strings.HasPrefix(geneID, "ENSG") {
-			continue
-		}
-
-		tc := &model.TranscriptConsequence{
-			MajorConsequence:    toStringPtr(csq["major_consequence"]),
-			ConsequenceTerms:    toStringSlice(csq["consequence_terms"]),
-			GeneID:              geneID,
-			GeneSymbol:          toStringPtr(csq["gene_symbol"]),
-			TranscriptID:        toString(csq["transcript_id"]),
-			TranscriptVersion:   toStringPtr(csq["transcript_version"]),
-			Hgvsc:               toStringPtr(csq["hgvsc"]),
-			Hgvsp:               toStringPtr(csq["hgvsp"]),
-			IsCanonical:         toBoolPtr(csq["canonical"]),
-			IsManeSelect:        toBoolPtr(csq["mane_select"]),
-			IsManeSelectVersion: toBoolPtr(csq["mane_select_version"]),
-			RefseqID:            toStringPtr(csq["refseq_id"]),
-			RefseqVersion:       toStringPtr(csq["refseq_version"]),
-			Lof:                 toStringPtr(csq["lof"]),
-			LofFilter:           toStringPtr(csq["lof_filter"]),
-			LofFlags:            toStringPtr(csq["lof_flags"]),
-		}
-
-		result = append(result, tc)
-	}
-
-	return result
-}
-
-func (f *GnomadV4VariantFetcher) createInSilicoPredictorsList(predictorsMap map[string]any) []*model.VariantInSilicoPredictor {
-	// Define the predictor IDs and their display names
-	predictorInfo := []struct {
-		id   string
-		name string
-	}{
-		{"cadd", "CADD"},
-		{"revel_max", "REVEL"},
-		{"spliceai_ds_max", "SpliceAI"},
-		{"pangolin_largest_ds", "Pangolin"},
-		{"phylop", "phyloP"},
-		{"sift_max", "SIFT"},
-		{"polyphen_max", "PolyPhen"},
-		{"primate_ai", "PrimateAI"},
-	}
-
-	var predictors []*model.VariantInSilicoPredictor
-
-	for _, info := range predictorInfo {
-		predData, exists := predictorsMap[info.id]
-		if !exists {
-			continue
-		}
-
-		predictor := &model.VariantInSilicoPredictor{
-			ID:    info.name,
-			Flags: []string{},
-		}
-
-		// Special handling for CADD (uses nested phred value)
-		if info.id == "cadd" {
-			if caddMap, ok := predData.(map[string]any); ok {
-				if phred, ok := caddMap["phred"].(float64); ok {
-					predictor.Value = fmt.Sprintf("%.3g", phred)
-				}
-			}
-		} else {
-			// Standard predictors
-			if predMap, ok := predData.(map[string]any); ok {
-				if prediction, ok := predMap["prediction"]; ok {
-					predictor.Value = toString(prediction)
-				}
-
-				// Add flags if present
-				if flags, ok := predMap["flags"].([]any); ok {
-					for _, flag := range flags {
-						predictor.Flags = append(predictor.Flags, toString(flag))
-					}
-				}
-			} else {
-				// Simple value
-				predictor.Value = toString(predData)
-			}
-		}
-
-		if predictor.Value != "" {
-			predictors = append(predictors, predictor)
-		}
-	}
-
-	return predictors
-}
-
-func (f *GnomadV4VariantFetcher) shapeMultiNucleotideVariants(mnvs []map[string]any) []*model.MultiNucleotideVariant {
-	if len(mnvs) == 0 {
-		return nil
-	}
-
-	var result []*model.MultiNucleotideVariant
-	for _, mnv := range mnvs {
-		shaped := &model.MultiNucleotideVariant{
-			CombinedVariantID:    toString(mnv["combined_variant_id"]),
-			OtherConstituentSnvs: toStringSlice(mnv["constituent_snvs"]),
-			ChangesAminoAcids:    toBool(mnv["changes_amino_acids"]),
-			NIndividuals:         toInt(mnv["n_individuals"]),
-		}
-		result = append(result, shaped)
-	}
-
-	return result
 }
 
 // Batch fetching methods.
@@ -735,4 +582,3 @@ func (f *GnomadV4VariantFetcher) FetchVariantsByRegion(ctx context.Context, clie
 func (f *GnomadV4VariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.VariantDetails, error) {
 	return nil, fmt.Errorf("gnomAD v4 transcript variant fetching not yet implemented")
 }
-

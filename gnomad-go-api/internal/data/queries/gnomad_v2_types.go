@@ -10,20 +10,20 @@ type GnomadV2VariantDocument struct {
 	Alt             string   `json:"alt"`
 	CAID            string   `json:"caid"`
 	RSIDs           []string `json:"rsids"`
-	
+
 	// Position info
 	Locus struct {
-		Contig   string `json:"contig"`   // chr-prefixed
+		Contig   string `json:"contig"` // chr-prefixed
 		Position int    `json:"position"`
 	} `json:"locus"`
-	
+
 	// Alleles array (ref is first, alts follow)
 	Alleles []string `json:"alleles"`
-	
+
 	// Frequency data (v2 has both exome and genome data)
 	Exome  *GnomadV2ExomeData  `json:"exome"`
 	Genome *GnomadV2GenomeData `json:"genome"`
-	
+
 	// Annotations
 	TranscriptConsequences []map[string]interface{} `json:"transcript_consequences"`
 	ColocatedVariants      map[string][]string      `json:"colocated_variants"` // subset-specific arrays
@@ -34,7 +34,7 @@ type GnomadV2VariantDocument struct {
 type GnomadV2ExomeData struct {
 	// Subset-specific frequency data (main subsets: gnomad, non_neuro, non_cancer, controls_only)
 	Freq map[string]*GnomadV2FrequencyData `json:"freq"`
-	
+
 	// Quality metrics - v2 has only raw histograms
 	QualityMetrics struct {
 		AlleleBalance struct {
@@ -68,10 +68,10 @@ type GnomadV2ExomeData struct {
 			Value  float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	} `json:"quality_metrics"`
-	
+
 	// Age distribution by subset
 	AgeDistribution map[string]*GnomadV2AgeDistribution `json:"age_distribution"`
-	
+
 	// Filters applied at exome level
 	Filters []string `json:"filters"`
 	Flags   []string `json:"flags"`
@@ -81,7 +81,7 @@ type GnomadV2ExomeData struct {
 type GnomadV2GenomeData struct {
 	// Subset-specific frequency data (gnomad subset converts to gnomad for non_cancer)
 	Freq map[string]*GnomadV2FrequencyData `json:"freq"`
-	
+
 	// Quality metrics - v2 has only raw histograms
 	QualityMetrics struct {
 		AlleleBalance struct {
@@ -115,10 +115,10 @@ type GnomadV2GenomeData struct {
 			Value  float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	} `json:"quality_metrics"`
-	
+
 	// Age distribution by subset
 	AgeDistribution map[string]*GnomadV2AgeDistribution `json:"age_distribution"`
-	
+
 	// Filters applied at genome level
 	Filters []string `json:"filters"`
 	Flags   []string `json:"flags"`
@@ -133,7 +133,7 @@ type GnomadV2FrequencyData struct {
 	HomozygoteCount int      `json:"homozygote_count"`
 	HemizygoteCount int      `json:"hemizygote_count"`
 	Filters         []string `json:"filters"`
-	
+
 	// Population data
 	Populations []GnomadV2PopulationData `json:"populations"`
 }

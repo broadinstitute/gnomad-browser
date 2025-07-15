@@ -137,7 +137,7 @@ func (f *ExacVariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.VariantD
 	// Add exome data if present
 	if variant.Exome != nil {
 		result.Exome = f.buildExomeData(variant.Exome)
-		
+
 		// Get flags for context
 		var exomeFlags []string
 		if variant.Exome.Flags != nil {
@@ -165,7 +165,7 @@ func (f *ExacVariantFetcher) buildExomeData(exomeData *ExacExomeData) *model.Var
 
 	// Build filters (add AC0 if needed)
 	filters := make([]string, 0)
-	
+
 	// Add original filters from the exome data
 	if exomeData.Filters != nil {
 		filters = append(filters, exomeData.Filters...)

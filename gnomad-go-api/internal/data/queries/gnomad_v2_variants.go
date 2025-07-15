@@ -142,16 +142,16 @@ func (f *GnomadV2VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 
 	// Build result
 	result := &model.VariantDetails{
-		VariantID:       variant.VariantID,
-		ReferenceGenome: model.ReferenceGenomeIDGRCh37,
-		Chrom:           variant.Chrom,
-		Pos:             variant.Pos,
-		Ref:             variant.Ref,
-		Alt:             variant.Alt,
-		Caid:            toStringPtr(variant.CAID),
-		Rsids:           nullIfEmpty(variant.RSIDs),
+		VariantID:         variant.VariantID,
+		ReferenceGenome:   model.ReferenceGenomeIDGRCh37,
+		Chrom:             variant.Chrom,
+		Pos:               variant.Pos,
+		Ref:               variant.Ref,
+		Alt:               variant.Alt,
+		Caid:              toStringPtr(variant.CAID),
+		Rsids:             nullIfEmpty(variant.RSIDs),
 		ColocatedVariants: f.getColocatedVariants(variant.ColocatedVariants),
-		Flags:           nullIfEmpty(variant.Flags),
+		Flags:             nullIfEmpty(variant.Flags),
 	}
 
 	// Add exome data if present
@@ -159,7 +159,7 @@ func (f *GnomadV2VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 		result.Exome = f.buildExomeData(variant.Exome.Freq[exomeSubset], variant.Exome, exomeSubset)
 	}
 
-	// Add genome data if present  
+	// Add genome data if present
 	if hasGenomeData {
 		result.Genome = f.buildGenomeData(variant.Genome.Freq[genomeSubset], variant.Genome, genomeSubset)
 	}
@@ -187,7 +187,7 @@ func (f *GnomadV2VariantFetcher) buildExomeData(freqData *GnomadV2FrequencyData,
 
 	// Build filters (add AC0 if needed)
 	filters := make([]string, 0)
-	
+
 	// Add original filters from the exome data
 	if exomeData.Filters != nil {
 		filters = append(filters, exomeData.Filters...)
@@ -247,7 +247,7 @@ func (f *GnomadV2VariantFetcher) buildGenomeData(freqData *GnomadV2FrequencyData
 
 	// Build filters (add AC0 if needed)
 	filters := make([]string, 0)
-	
+
 	// Add original filters from the genome data
 	if genomeData.Filters != nil {
 		filters = append(filters, genomeData.Filters...)

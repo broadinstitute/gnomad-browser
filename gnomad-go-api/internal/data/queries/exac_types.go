@@ -10,19 +10,19 @@ type ExacVariantDocument struct {
 	Alt             string   `json:"alt"`
 	CAID            string   `json:"caid"`
 	RSIDs           []string `json:"rsids"`
-	
+
 	// Position info
 	Locus struct {
-		Contig   string `json:"contig"`   // chr-prefixed
+		Contig   string `json:"contig"` // chr-prefixed
 		Position int    `json:"position"`
 	} `json:"locus"`
-	
+
 	// Alleles array (ref is first, alts follow)
 	Alleles []string `json:"alleles"`
-	
+
 	// ExAC only has exome data
 	Exome *ExacExomeData `json:"exome"`
-	
+
 	// Annotations
 	TranscriptConsequences []map[string]interface{} `json:"transcript_consequences"`
 	Flags                  []string                 `json:"flags"`
@@ -35,7 +35,7 @@ type ExacExomeData struct {
 	AN              int `json:"an"`
 	HomozygoteCount int `json:"homozygote_count"`
 	HemizygoteCount int `json:"hemizygote_count"`
-	
+
 	// Quality metrics - ExAC has only raw histograms
 	QualityMetrics struct {
 		AlleleBalance struct {
@@ -69,10 +69,10 @@ type ExacExomeData struct {
 			Value  float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	} `json:"quality_metrics"`
-	
+
 	// Population data
 	Populations []ExacPopulationData `json:"populations"`
-	
+
 	// Filters and flags
 	Filters []string `json:"filters"`
 	Flags   []string `json:"flags"`

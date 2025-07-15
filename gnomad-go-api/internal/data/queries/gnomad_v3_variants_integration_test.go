@@ -43,7 +43,7 @@ func TestGnomadV3VariantFetcher_Integration_FetchVariantByID(t *testing.T) {
 				assert.Equal(t, "C", result.Ref)
 				assert.Equal(t, "T", result.Alt)
 				assert.Equal(t, model.ReferenceGenomeIDGRCh38, result.ReferenceGenome)
-				
+
 				// V3 should have genome data but no exome or joint data
 				assert.NotNil(t, result.Genome, "V3 should have genome data")
 				assert.Nil(t, result.Exome, "V3 should not have exome data")
@@ -142,7 +142,7 @@ func TestGnomadV3VariantFetcher_Integration_FetchVariantByRSID(t *testing.T) {
 	require.NotNil(t, result)
 	assert.NotEmpty(t, result.VariantID)
 	assert.Equal(t, model.ReferenceGenomeIDGRCh38, result.ReferenceGenome)
-	
+
 	// Should have genome data but no exome or joint data
 	assert.NotNil(t, result.Genome, "V3 should have genome data")
 	assert.Nil(t, result.Exome, "V3 should not have exome data")
@@ -184,7 +184,7 @@ func TestGnomadV3VariantFetcher_Integration_AllSubsets(t *testing.T) {
 			require.NotNil(t, result)
 			assert.Equal(t, testVariantID, result.VariantID)
 			assert.Equal(t, model.ReferenceGenomeIDGRCh38, result.ReferenceGenome)
-			
+
 			// Should have genome data but no exome or joint data
 			assert.NotNil(t, result.Genome, "V3 should have genome data")
 			assert.Nil(t, result.Exome, "V3 should not have exome data")
@@ -225,7 +225,7 @@ func TestGnomadV3VariantFetcher_Integration_InSilicoPredictors(t *testing.T) {
 			assert.NotEmpty(t, predictor.ID, "Predictor ID should not be empty")
 			assert.NotEmpty(t, predictor.Value, "Predictor value should not be empty")
 			assert.NotNil(t, predictor.Flags, "Predictor flags should not be nil")
-			
+
 			// Check that V3 predictors match expected format
 			switch predictor.ID {
 			case "revel", "cadd", "primate_ai":
@@ -283,7 +283,7 @@ func TestGnomadV3VariantFetcher_Integration_PopulationMerging(t *testing.T) {
 		}
 
 		assert.True(t, baseFound, "Should have base populations")
-		
+
 		// HGDP and 1KG populations are conditional on data availability
 		if hgdpFound {
 			t.Log("HGDP populations found with proper prefix")

@@ -43,7 +43,7 @@ func TestGnomadV2VariantFetcher_Integration_FetchVariantByID(t *testing.T) {
 				assert.Equal(t, "G", result.Ref)
 				assert.Equal(t, "GA", result.Alt)
 				assert.Equal(t, model.ReferenceGenomeIDGRCh37, result.ReferenceGenome)
-				
+
 				// V2 should have both exome and genome data for this variant
 				assert.NotNil(t, result.Exome, "This variant should have exome data")
 				assert.NotNil(t, result.Genome, "This variant should have genome data")
@@ -69,7 +69,7 @@ func TestGnomadV2VariantFetcher_Integration_FetchVariantByID(t *testing.T) {
 				t.Helper()
 				assert.NotNil(t, result)
 				assert.Equal(t, "1-55505447-C-T", result.VariantID, "VariantID should match")
-				
+
 				// This variant only has genome data
 				assert.Nil(t, result.Exome, "This variant should not have exome data")
 				assert.NotNil(t, result.Genome, "This variant should have genome data")
@@ -79,7 +79,7 @@ func TestGnomadV2VariantFetcher_Integration_FetchVariantByID(t *testing.T) {
 
 				// Basic frequency data validation from snapshot
 				assert.Equal(t, 2846, result.Genome.Ac, "AC should match snapshot")
-				assert.Equal(t, 31384, result.Genome.An, "AN should match snapshot")  
+				assert.Equal(t, 31384, result.Genome.An, "AN should match snapshot")
 				assert.Equal(t, 0, result.Genome.AcHemi, "AC_hemi should be 0")
 				assert.Equal(t, 144, result.Genome.AcHom, "AC_hom should match snapshot")
 			},
@@ -156,7 +156,7 @@ func TestGnomadV2VariantFetcher_Integration_FetchVariantByRSID(t *testing.T) {
 			},
 		},
 		{
-			name:          "fetch variant by non-existent rsID", 
+			name:          "fetch variant by non-existent rsID",
 			rsid:          "rs111222333444555666777888999",
 			expectedError: true,
 			validate: func(t *testing.T, result *model.VariantDetails) {
@@ -207,7 +207,7 @@ func TestGnomadV2VariantFetcher_Integration_QualityMetrics(t *testing.T) {
 	// Test both exome and genome quality metrics if available
 	if result.Exome != nil && result.Exome.QualityMetrics != nil {
 		qm := result.Exome.QualityMetrics
-		
+
 		// V2 should have allele balance with alt data only
 		if qm.AlleleBalance != nil {
 			assert.NotNil(t, qm.AlleleBalance.Alt, "V2 should have alt allele balance histogram")
@@ -224,11 +224,11 @@ func TestGnomadV2VariantFetcher_Integration_QualityMetrics(t *testing.T) {
 			}
 		}
 	}
-	
+
 	// Also test genome quality metrics
 	if result.Genome != nil && result.Genome.QualityMetrics != nil {
 		qm := result.Genome.QualityMetrics
-		
+
 		// V2 should have allele balance with alt data only
 		if qm.AlleleBalance != nil {
 			assert.NotNil(t, qm.AlleleBalance.Alt, "V2 genome should have alt allele balance histogram")

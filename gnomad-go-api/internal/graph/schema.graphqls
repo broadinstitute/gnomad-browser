@@ -444,6 +444,308 @@ type VariantDetails {
   rsid: String
 }
 
+# Gene Types
+type Exon {
+  feature_type: String!
+  start: Int!
+  stop: Int!
+}
+
+type GeneTranscript {
+  reference_genome: ReferenceGenomeId!
+  transcript_id: String!
+  transcript_version: String!
+  chrom: String!
+  start: Int!
+  stop: Int!
+  exons: [Exon!]!
+  strand: String!
+  gtex_tissue_expression: [GtexTissue!]
+}
+
+type ManeSelectTranscript {
+  ensembl_id: String!
+  ensembl_version: String!
+  refseq_id: String!
+  refseq_version: String!
+}
+
+# Constraint Types
+type GnomadConstraint {
+  exp_lof: Float
+  exp_mis: Float!
+  exp_syn: Float
+  
+  obs_lof: Int
+  obs_mis: Int
+  obs_syn: Int
+  
+  oe_lof: Float
+  oe_lof_lower: Float
+  oe_lof_upper: Float
+  
+  oe_mis: Float!
+  oe_mis_lower: Float
+  oe_mis_upper: Float
+  
+  oe_syn: Float
+  oe_syn_lower: Float
+  oe_syn_upper: Float
+  
+  lof_z: Float
+  mis_z: Float!
+  syn_z: Float!
+  
+  pli: Float
+  flags: [String!]
+  
+  # Deprecated fields
+  pLI: Float
+}
+
+type ExacConstraint {
+  exp_syn: Float
+  exp_mis: Float
+  exp_lof: Float
+  
+  obs_syn: Int
+  obs_mis: Int
+  obs_lof: Int
+  
+  mu_syn: Float
+  mu_mis: Float
+  mu_lof: Float
+  
+  syn_z: Float!
+  mis_z: Float!
+  lof_z: Float
+  
+  pli: Float
+  
+  # Deprecated fields
+  pLI: Float!
+}
+
+type ProteinMitochondrialGeneConstraint {
+  exp_lof: Float!
+  exp_mis: Float!
+  exp_syn: Float!
+  
+  obs_lof: Float!
+  obs_mis: Float!
+  obs_syn: Float!
+  
+  oe_lof: Float!
+  oe_lof_lower: Float!
+  oe_lof_upper: Float!
+  
+  oe_mis: Float!
+  oe_mis_lower: Float!
+  oe_mis_upper: Float!
+  
+  oe_syn: Float!
+  oe_syn_lower: Float!
+  oe_syn_upper: Float!
+}
+
+type RNAMitochondrialGeneConstraint {
+  observed: Float!
+  expected: Float!
+  oe: Float!
+  oe_upper: Float!
+  oe_lower: Float!
+}
+
+union MitochondrialGeneConstraint = ProteinMitochondrialGeneConstraint | RNAMitochondrialGeneConstraint
+
+type MitochondrialRegionConstraint {
+  start: Int!
+  stop: Int!
+  oe: Float!
+  oe_upper: Float!
+  oe_lower: Float!
+}
+
+type GnomadV2RegionalMissenseConstraint {
+  has_no_rmc_evidence: Boolean
+  passed_qc: Boolean
+  regions: [GnomadV2RegionalMissenseConstraintRegion]
+}
+
+type GnomadV2RegionalMissenseConstraintRegion {
+  chrom: String
+  start: Int
+  stop: Int
+  aa_start: String
+  aa_stop: String
+  obs_mis: Int
+  exp_mis: Float
+  obs_exp: Float
+  chisq_diff_null: Float
+  p_value: Float
+}
+
+type ExacRegionalMissenseConstraintRegion {
+  start: Int!
+  stop: Int!
+  obs_mis: Int
+  exp_mis: Float
+  obs_exp: Float
+  chisq_diff_null: Float
+}
+
+# Pext Types
+type Pext {
+  regions: [PextRegion!]!
+  flags: [String!]!
+}
+
+type PextRegion {
+  start: Int!
+  stop: Int!
+  mean: Float!
+  tissues: [PextRegionTissue!]!
+}
+
+type PextRegionTissue {
+  tissue: String
+  value: Float
+}
+
+# GTEx Types (placeholder for now)
+type GtexTissue {
+  tissue: String!
+  value: Float!
+}
+
+# Variant Cooccurrence Types
+type HeterozygousVariantCooccurrenceCountsData {
+  in_cis: Int!
+  in_trans: Int!
+  unphased: Int!
+  two_het_total: Int!
+}
+
+type HomozygousVariantCooccurrenceCountsData {
+  hom_total: Int!
+}
+
+type HeterozygousVariantCooccurrenceCounts {
+  csq: String!
+  af_cutoff: String!
+  data: HeterozygousVariantCooccurrenceCountsData!
+}
+
+type HomozygousVariantCooccurrenceCounts {
+  csq: String!
+  af_cutoff: String!
+  data: HomozygousVariantCooccurrenceCountsData!
+}
+
+# Other dataset IDs for nested resolvers
+enum StructuralVariantDatasetId {
+  gnomad_sv_r2_1
+  gnomad_sv_r4
+}
+
+enum CopyNumberVariantDatasetId {
+  gnomad_cnv_r4
+}
+
+# Placeholder types for nested resolvers (to be implemented later)
+type Variant {
+  variant_id: String!
+}
+
+type StructuralVariant {
+  variant_id: String!
+}
+
+type MitochondrialVariant {
+  variant_id: String!
+}
+
+type ClinVarVariant {
+  variant_id: String!
+}
+
+type FeatureCoverage {
+  region: String!
+}
+
+type MitochondrialCoverageBin {
+  pos: Int!
+  mean: Float!
+}
+
+type CNVTrackCallableCoverageBin {
+  pos: Int!
+  callable: Float!
+}
+
+type ShortTandemRepeat {
+  id: String!
+}
+
+type CopyNumberVariant {
+  variant_id: String!
+}
+
+# Gene Type
+type Gene {
+  reference_genome: ReferenceGenomeId!
+  gene_id: String!
+  gene_version: String!
+  symbol: String!
+  gencode_symbol: String!
+  hgnc_id: String
+  ncbi_id: String
+  omim_id: String
+  name: String
+  chrom: String!
+  start: Int!
+  stop: Int!
+  strand: String!
+  exons: [Exon!]!
+  transcripts: [GeneTranscript!]!
+  canonical_transcript_id: String
+  mane_select_transcript: ManeSelectTranscript
+
+  flags: [String!]!
+
+  pext: Pext
+
+  gnomad_constraint: GnomadConstraint
+  gnomad_v2_regional_missense_constraint: GnomadV2RegionalMissenseConstraint
+
+  exac_constraint: ExacConstraint
+  exac_regional_missense_constraint_regions: [ExacRegionalMissenseConstraintRegion!]
+
+  mitochondrial_constraint: MitochondrialGeneConstraint
+  mitochondrial_missense_constraint_regions: [MitochondrialRegionConstraint]
+
+  variants(dataset: DatasetId!): [Variant!]!
+  structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]!
+  mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]!
+
+  clinvar_variants: [ClinVarVariant!]
+
+  coverage(dataset: DatasetId): FeatureCoverage!
+  mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!]
+  cnv_track_callable_coverage(dataset: CopyNumberVariantDatasetId!): [CNVTrackCallableCoverageBin!]
+
+  short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]!
+  heterozygous_variant_cooccurrence_counts: [HeterozygousVariantCooccurrenceCounts!]!
+  homozygous_variant_cooccurrence_counts: [HomozygousVariantCooccurrenceCounts!]!
+  copy_number_variants(dataset: CopyNumberVariantDatasetId!): [CopyNumberVariant!]!
+}
+
+type GeneSearchResult {
+  ensembl_id: String!
+  ensembl_version: String!
+  symbol: String
+}
+
 # Query
 type Query {
   variant(
@@ -452,4 +754,15 @@ type Query {
     vrsId: String
     dataset: DatasetId!
   ): VariantDetails
+  
+  gene(
+    gene_id: String
+    gene_symbol: String
+    reference_genome: ReferenceGenomeId!
+  ): Gene
+  
+  gene_search(
+    query: String!
+    reference_genome: ReferenceGenomeId!
+  ): [GeneSearchResult!]!
 }

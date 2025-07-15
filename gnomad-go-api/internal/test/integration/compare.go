@@ -101,7 +101,7 @@ func sortObjectKeys(obj interface{}) interface{} {
 			keys = append(keys, k)
 		}
 		sort.Strings(keys)
-		
+
 		// Create new map with sorted keys
 		result := make(map[string]interface{})
 		for _, key := range keys {
@@ -123,7 +123,7 @@ func sortObjectKeys(obj interface{}) interface{} {
 func NormalizeResponse(data map[string]interface{}) map[string]interface{} {
 	// First sort all keys recursively for deterministic comparison
 	sorted := sortObjectKeys(data).(map[string]interface{})
-	
+
 	normalized := make(map[string]interface{})
 
 	for key, value := range sorted {

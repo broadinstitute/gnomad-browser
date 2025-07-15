@@ -13,6 +13,31 @@ import (
 	"strings"
 )
 
+// Pli is the resolver for the pli field.
+func (r *exacConstraintResolver) Pli(ctx context.Context, obj *model.ExacConstraint) (*float64, error) {
+	return obj.Pli, nil
+}
+
+// PLi is the resolver for the pLI field.
+func (r *exacConstraintResolver) PLi(ctx context.Context, obj *model.ExacConstraint) (float64, error) {
+	// This is a deprecated field - return pli value or 0
+	if obj.Pli != nil {
+		return *obj.Pli, nil
+	}
+	return 0, nil
+}
+
+// Pli is the resolver for the pli field.
+func (r *gnomadConstraintResolver) Pli(ctx context.Context, obj *model.GnomadConstraint) (*float64, error) {
+	return obj.Pli, nil
+}
+
+// PLi is the resolver for the pLI field.
+func (r *gnomadConstraintResolver) PLi(ctx context.Context, obj *model.GnomadConstraint) (*float64, error) {
+	// This is a deprecated field - return the same as pli
+	return obj.Pli, nil
+}
+
 // Variant is the resolver for the variant field.
 func (r *queryResolver) Variant(ctx context.Context, variantID *string, rsid *string, vrsID *string, dataset model.DatasetID) (*model.VariantDetails, error) {
 	// Get Elasticsearch client from context
@@ -57,7 +82,74 @@ func (r *queryResolver) Variant(ctx context.Context, variantID *string, rsid *st
 	return nil, fmt.Errorf("no variant ID provided")
 }
 
+// Gene is the resolver for the gene field.
+func (r *queryResolver) Gene(ctx context.Context, geneID *string, geneSymbol *string, referenceGenome model.ReferenceGenomeID) (*model.Gene, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Check that at least one identifier is provided
+	if geneID == nil && geneSymbol == nil {
+		return nil, fmt.Errorf("one of 'gene_id' or 'gene_symbol' is required")
+	}
+
+	// Convert reference genome ID to string
+	refGenomeStr := string(referenceGenome)
+
+	// Fetch by gene ID if provided
+	if geneID != nil {
+		gene, err := queries.FetchGeneByID(ctx, esClient, *geneID, refGenomeStr)
+		if err != nil {
+			return nil, err
+		}
+		if gene == nil {
+			return nil, fmt.Errorf("gene not found")
+		}
+		return gene, nil
+	}
+
+	// Otherwise, fetch by gene symbol
+	gene, err := queries.FetchGeneBySymbol(ctx, esClient, *geneSymbol, refGenomeStr)
+	if err != nil {
+		return nil, err
+	}
+	if gene == nil {
+		return nil, fmt.Errorf("gene not found")
+	}
+	return gene, nil
+}
+
+// GeneSearch is the resolver for the gene_search field.
+func (r *queryResolver) GeneSearch(ctx context.Context, query string, referenceGenome model.ReferenceGenomeID) ([]*model.GeneSearchResult, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome ID to string
+	refGenomeStr := string(referenceGenome)
+
+	// Fetch genes matching the query
+	results, err := queries.FetchGenesMatchingText(ctx, esClient, query, refGenomeStr)
+	if err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
+// ExacConstraint returns ExacConstraintResolver implementation.
+func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
+
+// GnomadConstraint returns GnomadConstraintResolver implementation.
+func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadConstraintResolver{r} }
+
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+type exacConstraintResolver struct{ *Resolver }
+type gnomadConstraintResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

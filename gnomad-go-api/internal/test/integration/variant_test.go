@@ -34,7 +34,7 @@ func TestVariantQueriesAgainstSnapshots(t *testing.T) {
 	for _, snapshot := range snapshots {
 		t.Run(snapshot.Name, func(t *testing.T) {
 			t.Logf("Running test: %s", snapshot.Name)
-			
+
 			// Execute query
 			actual, err := ts.ExecuteGraphQLQuery(snapshot.Query, snapshot.Variables)
 			if err != nil {

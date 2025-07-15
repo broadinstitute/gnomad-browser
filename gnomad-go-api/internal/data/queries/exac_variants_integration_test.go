@@ -50,16 +50,16 @@ func TestExacVariantFetcher_Integration_FetchVariantByID(t *testing.T) {
 				assert.Equal(t, "G", result.Ref)
 				assert.Equal(t, "A", result.Alt)
 				assert.Equal(t, model.ReferenceGenomeIDGRCh37, result.ReferenceGenome)
-				
+
 				// ExAC only has exome data
 				assert.NotNil(t, result.Exome, "ExAC should have exome data")
 				assert.Nil(t, result.Genome, "ExAC should not have genome data")
-				
+
 				// Check rsID if present
 				if result.Rsids != nil {
 					assert.Greater(t, len(result.Rsids), 0, "Should have rsID")
 				}
-				
+
 				// Check populations exist
 				assert.Greater(t, len(result.Exome.Populations), 0, "Should have population data")
 			},
@@ -117,7 +117,7 @@ func TestExacVariantFetcher_Integration_FetchVariantByRSID(t *testing.T) {
 		// TODO: Find a valid ExAC rsID for testing
 		// {
 		// 	name:          "fetch existing variant by rsID",
-		// 	rsid:          "rs121913340", 
+		// 	rsid:          "rs121913340",
 		// 	expectedError: false,
 		// 	validate: func(t *testing.T, result *model.VariantDetails) {
 		// 		t.Helper()
@@ -203,7 +203,7 @@ func TestExacVariantFetcher_Integration_DataQuality(t *testing.T) {
 	// Verify population data
 	if result.Exome != nil {
 		assert.Greater(t, len(result.Exome.Populations), 0, "Should have population data")
-		
+
 		// Verify population IDs are correct (no underscores, no XX/XY)
 		for _, pop := range result.Exome.Populations {
 			assert.NotContains(t, pop.ID, "_", "Population ID should not contain underscores")

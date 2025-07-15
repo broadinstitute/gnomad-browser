@@ -2,44 +2,44 @@ package queries
 
 // GnomadV4VariantDocument represents the ES document structure for gnomAD v4 variants
 type GnomadV4VariantDocument struct {
-	VariantID       string   `json:"variant_id"`
-	ReferenceGenome string   `json:"reference_genome"`
-	Chrom           string   `json:"chrom"`
-	Pos             int      `json:"pos"`
-	Ref             string   `json:"ref"`
-	Alt             string   `json:"alt"`
-	AlleleID        string   `json:"allele_id"` // VRS ID (ga4gh: prefixed)
-	RSIDs           []string `json:"rsids"`
+	VariantID       string                 `json:"variant_id"`
+	ReferenceGenome string                 `json:"reference_genome"`
+	Chrom           string                 `json:"chrom"`
+	Pos             int                    `json:"pos"`
+	Ref             string                 `json:"ref"`
+	Alt             string                 `json:"alt"`
+	AlleleID        string                 `json:"allele_id"` // VRS ID (ga4gh: prefixed)
+	RSIDs           []string               `json:"rsids"`
 	VRS             map[string]interface{} `json:"vrs"`
-	
+
 	// Position info
 	Locus struct {
-		Contig   string `json:"contig"`   // chr-prefixed
+		Contig   string `json:"contig"` // chr-prefixed
 		Position int    `json:"position"`
 	} `json:"locus"`
-	
+
 	// Alleles array (ref is first, alts follow)
 	Alleles []string `json:"alleles"`
-	
+
 	// Frequency data
 	Exome  *GnomadV4SequencingData `json:"exome"`
 	Genome *GnomadV4SequencingData `json:"genome"`
 	Joint  *GnomadV4JointData      `json:"joint"`
-	
+
 	// Annotations
 	TranscriptConsequences  []map[string]interface{} `json:"transcript_consequences"`
-	InSilicoPredictors     map[string]interface{}   `json:"in_silico_predictors"`
-	ColocatedVariants      map[string][]string      `json:"colocated_variants"` // subset-specific arrays
+	InSilicoPredictors      map[string]interface{}   `json:"in_silico_predictors"`
+	ColocatedVariants       map[string][]string      `json:"colocated_variants"` // subset-specific arrays
 	MultiNucleotideVariants []map[string]interface{} `json:"multi_nucleotide_variants"`
 	Flags                   []string                 `json:"flags"`
-	LofCuration            map[string]interface{}   `json:"lof_curation"`
+	LofCuration             map[string]interface{}   `json:"lof_curation"`
 }
 
 // GnomadV4SequencingData represents exome/genome frequency data
 type GnomadV4SequencingData struct {
 	// Top-level frequency data
 	Freq map[string]*GnomadV4FrequencyData `json:"freq"` // keyed by subset: "all", "non_ukb"
-	
+
 	// Quality metrics
 	QualityMetrics struct {
 		AlleleBalance struct {
@@ -73,7 +73,7 @@ type GnomadV4SequencingData struct {
 			Value  float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	} `json:"quality_metrics"`
-	
+
 	// Age distribution
 	AgeDistribution *struct {
 		Het struct {
@@ -89,7 +89,7 @@ type GnomadV4SequencingData struct {
 			NSmaller int       `json:"n_smaller"`
 		} `json:"hom"`
 	} `json:"age_distribution"`
-	
+
 	// FAF data (grpmax format)
 	FAF95 *GnomadV4FAFData `json:"faf95"`
 	FAF99 *GnomadV4FAFData `json:"faf99"`
@@ -104,10 +104,10 @@ type GnomadV4FrequencyData struct {
 	HomozygoteCount int      `json:"homozygote_count"`
 	HemizygoteCount int      `json:"hemizygote_count"`
 	Filters         []string `json:"filters"`
-	
+
 	// Standard ancestry groups
 	AncestryGroups []GnomadV4PopulationData `json:"ancestry_groups"`
-	
+
 	// Special population subsets for genome data
 	HGDP *struct {
 		AC             int                      `json:"ac"`
@@ -116,7 +116,7 @@ type GnomadV4FrequencyData struct {
 		ANRaw          int                      `json:"an_raw"`
 		AncestryGroups []GnomadV4PopulationData `json:"ancestry_groups"`
 	} `json:"hgdp,omitempty"`
-	
+
 	TGP *struct {
 		AC             int                      `json:"ac"`
 		AN             int                      `json:"an"`

@@ -159,20 +159,24 @@ func (f *GnomadV3VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 	// V3 has no joint data
 	variant.Joint = nil
 
+	// Convert document to map for flag processing
+	docMap := f.convertDocumentToMap(&doc)
+
 	// Add flags with proper context
 	context := FlagContext{
-		IsGene:       false,
-		IsRegion:     false,
-		IsTranscript: false,
+		Type: "region", // Default to region context for single variant queries
 	}
-	variant.Flags = f.getFlagsForContext(&doc, context)
+	variant.Flags = GetFlagsForContext(docMap, context, f.Subset)
 
 	// Add other fields
 	variant.ColocatedVariants = f.getColocatedVariants(doc.ColocatedVariants)
-	variant.TranscriptConsequences = f.shapeTranscriptConsequences(doc.TranscriptConsequences)
+	variant.TranscriptConsequences = ShapeTranscriptConsequences(doc.TranscriptConsequences, TranscriptConsequenceOptions{
+		IncludeENSEMBLOnly: true,
+	})
 
-	// Transform in_silico_predictors
-	variant.InSilicoPredictors = f.createInSilicoPredictorsList(doc.InSilicoPredictors)
+	// Transform in_silico_predictors from struct to map
+	predictorsMap := f.convertInSilicoPredictorsToMap(doc.InSilicoPredictors)
+	variant.InSilicoPredictors = CreateInSilicoPredictorsList(predictorsMap)
 
 	return variant, nil
 }
@@ -197,9 +201,7 @@ func (f *GnomadV3VariantFetcher) shapeGenomeData(data *GnomadV3GenomeData, subse
 	filters := mergeStringSlices(data.Filters, freqData.Filters)
 
 	// Add AC=0 filter if needed
-	if freqData.AC == 0 && !contains(filters, "AC0") {
-		filters = append(filters, "AC0")
-	}
+	filters = AddAC0FilterIfNeeded(filters, freqData.AC)
 
 	shaped := &model.VariantDetailsGenomeData{
 		Ac:      freqData.AC,
@@ -321,73 +323,6 @@ func (f *GnomadV3VariantFetcher) shapeSiteQualityMetrics(metrics []struct {
 	return result
 }
 
-func (f *GnomadV3VariantFetcher) getFlagsForContext(doc *GnomadV3VariantDocument, context FlagContext) []string {
-	var flags []string
-
-	// Base flags from document
-	flags = append(flags, doc.Flags...)
-
-	// Add regional flags hoisted from genome
-	if doc.Genome != nil && doc.Genome.Freq != nil && doc.Genome.Freq[f.Subset] != nil {
-		regionalFlags := []string{"par", "segdup", "lcr"}
-		for _, flag := range regionalFlags {
-			if contains(doc.Genome.Freq[f.Subset].Filters, flag) && !contains(flags, flag) {
-				flags = append(flags, flag)
-			}
-		}
-	}
-
-	// Add genome-level flags
-	if doc.Genome != nil {
-		flags = append(flags, doc.Genome.Flags...)
-	}
-
-	// Context-dependent flags (gene vs region vs transcript)
-	if context.IsGene && context.GeneID != "" {
-		// Add gene-specific flags
-		for _, tc := range doc.TranscriptConsequences {
-			if geneID, ok := tc["gene_id"].(string); !ok || geneID != context.GeneID {
-				continue
-			}
-			
-			if lof, ok := tc["lof"].(string); ok && lof == "LC" {
-				flags = append(flags, "lc_lof")
-			}
-
-			if lofFlags, ok := tc["lof_flags"].(string); ok && lofFlags != "" {
-				flags = append(flags, "lof_flag")
-			}
-
-			if biotype, ok := tc["biotype"].(string); ok && biotype != "protein_coding" {
-				flags = append(flags, "nc_transcript")
-			}
-		}
-	}
-	
-	if context.IsTranscript && context.TranscriptID != "" {
-		// Add transcript-specific flags
-		for _, tc := range doc.TranscriptConsequences {
-			if transcriptID, ok := tc["transcript_id"].(string); !ok || transcriptID != context.TranscriptID {
-				continue
-			}
-			
-			if lof, ok := tc["lof"].(string); ok && lof == "LC" {
-				flags = append(flags, "lc_lof")
-			}
-
-			if lofFlags, ok := tc["lof_flags"].(string); ok && lofFlags != "" {
-				flags = append(flags, "lof_flag")
-			}
-
-			if biotype, ok := tc["biotype"].(string); ok && biotype != "protein_coding" {
-				flags = append(flags, "nc_transcript")
-			}
-		}
-	}
-
-	return uniqueStrings(flags)
-}
-
 func (f *GnomadV3VariantFetcher) getColocatedVariants(colocatedMap map[string][]string) []string {
 	if f.Subset == "" || colocatedMap == nil {
 		return nil
@@ -396,101 +331,60 @@ func (f *GnomadV3VariantFetcher) getColocatedVariants(colocatedMap map[string][]
 	return colocatedMap[f.Subset]
 }
 
-func (f *GnomadV3VariantFetcher) shapeTranscriptConsequences(consequences []map[string]any) []*model.TranscriptConsequence {
-	if len(consequences) == 0 {
-		return nil
-	}
-
-	var result []*model.TranscriptConsequence
-	for _, csq := range consequences {
-		// Only include ENSEMBL transcripts (filter out RefSeq)
-		geneID, _ := csq["gene_id"].(string)
-		if !strings.HasPrefix(geneID, "ENSG") {
-			continue
-		}
-
-		tc := &model.TranscriptConsequence{
-			MajorConsequence:    toStringPtr(csq["major_consequence"]),
-			ConsequenceTerms:    toStringSlice(csq["consequence_terms"]),
-			GeneID:              geneID,
-			GeneSymbol:          toStringPtr(csq["gene_symbol"]),
-			TranscriptID:        toString(csq["transcript_id"]),
-			TranscriptVersion:   toStringPtr(csq["transcript_version"]),
-			Hgvsc:               toStringPtr(csq["hgvsc"]),
-			Hgvsp:               toStringPtr(csq["hgvsp"]),
-			IsCanonical:         toBoolPtr(csq["canonical"]),
-			IsManeSelect:        toBoolPtr(csq["mane_select"]),
-			IsManeSelectVersion: toBoolPtr(csq["mane_select_version"]),
-			RefseqID:            toStringPtr(csq["refseq_id"]),
-			RefseqVersion:       toStringPtr(csq["refseq_version"]),
-			Lof:                 toStringPtr(csq["lof"]),
-			LofFilter:           toStringPtr(csq["lof_filter"]),
-			LofFlags:            toStringPtr(csq["lof_flags"]),
-		}
-
-		result = append(result, tc)
-	}
-
-	return result
-}
-
-func (f *GnomadV3VariantFetcher) createInSilicoPredictorsList(predictors GnomadV3InSilicoPredictors) []*model.VariantInSilicoPredictor {
-	var result []*model.VariantInSilicoPredictor
+// convertInSilicoPredictorsToMap converts V3 in silico predictors struct to generic map
+func (f *GnomadV3VariantFetcher) convertInSilicoPredictorsToMap(predictors GnomadV3InSilicoPredictors) map[string]interface{} {
+	result := make(map[string]interface{})
 
 	// REVEL
 	if predictors.REVEL != nil && predictors.REVEL.REVELScore != nil {
-		flags := []string{}
-		if predictors.REVEL.HasDuplicate {
-			flags = append(flags, "has_duplicate")
-		}
-		result = append(result, &model.VariantInSilicoPredictor{
-			ID:    "revel",
-			Value: fmt.Sprintf("%.3g", *predictors.REVEL.REVELScore),
-			Flags: flags,
-		})
+		result["revel"] = *predictors.REVEL.REVELScore
 	}
 
 	// CADD
 	if predictors.CADD != nil && predictors.CADD.Phred != nil {
-		flags := []string{}
-		if predictors.CADD.HasDuplicate {
-			flags = append(flags, "has_duplicate")
+		result["cadd"] = map[string]interface{}{
+			"phred": *predictors.CADD.Phred,
 		}
-		result = append(result, &model.VariantInSilicoPredictor{
-			ID:    "cadd",
-			Value: fmt.Sprintf("%.3g", *predictors.CADD.Phred),
-			Flags: flags,
-		})
 	}
 
 	// SpliceAI
 	if predictors.SpliceAI != nil && predictors.SpliceAI.SpliceAIScore != nil {
-		flags := []string{}
-		if predictors.SpliceAI.HasDuplicate {
-			flags = append(flags, "has_duplicate")
-		}
-		value := fmt.Sprintf("%.3g", *predictors.SpliceAI.SpliceAIScore)
-		if predictors.SpliceAI.SpliceConsequence != "" {
-			value += " (" + predictors.SpliceAI.SpliceConsequence + ")"
-		}
-		result = append(result, &model.VariantInSilicoPredictor{
-			ID:    "splice_ai",
-			Value: value,
-			Flags: flags,
-		})
+		result["spliceai"] = *predictors.SpliceAI.SpliceAIScore
 	}
 
-	// PrimateAI
-	if predictors.PrimateAI != nil && predictors.PrimateAI.PrimateAIScore != nil {
-		flags := []string{}
-		if predictors.PrimateAI.HasDuplicate {
-			flags = append(flags, "has_duplicate")
+	// Note: The shared helper CreateInSilicoPredictorsList handles the formatting
+	// and flags based on the predictor names in the map
+
+	return result
+}
+
+// convertDocumentToMap converts a GnomadV3VariantDocument to a generic map for flag processing
+func (f *GnomadV3VariantFetcher) convertDocumentToMap(doc *GnomadV3VariantDocument) map[string]interface{} {
+	result := make(map[string]interface{})
+
+	// Add base flags
+	result["flags"] = doc.Flags
+
+	// Add transcript consequences
+	if doc.TranscriptConsequences != nil {
+		result["transcript_consequences"] = doc.TranscriptConsequences
+	}
+
+	// Add genome data
+	if doc.Genome != nil && doc.Genome.Freq != nil {
+		genomeMap := make(map[string]interface{})
+		// V3 has freq data keyed by subset
+		freqMap := make(map[string]interface{})
+		for subset, freq := range doc.Genome.Freq {
+			if freq != nil {
+				freqMap[subset] = map[string]interface{}{
+					"ac":      float64(freq.AC),
+					"filters": freq.Filters,
+				}
+			}
 		}
-		result = append(result, &model.VariantInSilicoPredictor{
-			ID:    "primate_ai",
-			Value: fmt.Sprintf("%.3g", *predictors.PrimateAI.PrimateAIScore),
-			Flags: flags,
-		})
+		genomeMap["freq"] = freqMap
+		result["genome"] = genomeMap
 	}
 
 	return result

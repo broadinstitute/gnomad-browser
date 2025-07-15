@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"testing"
 
-	"gnomad-browser/gnomad-go-api/internal/elastic"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"gnomad-browser/gnomad-go-api/internal/elastic"
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 func TestGnomadV4VariantFetcher_FetchVariantByID(t *testing.T) {
@@ -48,7 +48,7 @@ func TestGnomadV4VariantFetcher_SubsetFiltering(t *testing.T) {
 			expected: true,
 		},
 		{
-			name:    "variant exists in joint data",
+			name: "variant exists in joint data",
 			doc: &GnomadV4VariantDocument{
 				Joint: &GnomadV4JointData{
 					Freq: map[string]*GnomadV4JointFrequencyData{
@@ -102,7 +102,7 @@ func TestGnomadV4VariantFetcher_FlagGeneration(t *testing.T) {
 					},
 				},
 			},
-			context:       FlagContext{IsRegion: true},
+			context:       FlagContext{Type: "region"},
 			expectedFlags: []string{"monoallelic", "lcr", "segdup"},
 		},
 		{
@@ -174,7 +174,7 @@ func TestGnomadV4VariantFetcher_FlagGeneration(t *testing.T) {
 					},
 				},
 			},
-			context:       FlagContext{IsGene: true, GeneID: "ENSG00000123456"},
+			context:       FlagContext{Type: "gene", GeneID: "ENSG00000123456"},
 			expectedFlags: []string{"lc_lof", "lof_flag", "nc_transcript"},
 		},
 		{
@@ -193,14 +193,17 @@ func TestGnomadV4VariantFetcher_FlagGeneration(t *testing.T) {
 					},
 				},
 			},
-			context:       FlagContext{IsTranscript: true, TranscriptID: "ENST00000123456"},
+			context:       FlagContext{Type: "transcript", TranscriptID: "ENST00000123456"},
 			expectedFlags: []string{"lc_lof"},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			flags := fetcher.getFlagsForContext(tt.doc, tt.context)
+			// Convert document to map for flag processing
+			docMap := fetcher.convertDocumentToMap(tt.doc)
+			flags := GetFlagsForContext(docMap, tt.context, fetcher.Subset)
+			t.Logf("Test: %s, Expected: %v, Got: %v", tt.name, tt.expectedFlags, flags)
 			assert.ElementsMatch(t, tt.expectedFlags, flags)
 		})
 	}
@@ -215,19 +218,20 @@ func TestGnomadV4VariantFetcher_PopulationMerging(t *testing.T) {
 	}
 
 	// Create frequency data with properly initialized HGDP and TGP
-	allFreq := &GnomadV4FrequencyData{}
-	
 	// For this test, we'll just verify the base populations are returned
 	// since we can't easily initialize the anonymous structs
-	freqMap := map[string]*GnomadV4FrequencyData{
-		"all": allFreq,
-	}
 
-	result := fetcher.shapeAndMergePopulations(basePopulations, freqMap, "genome")
+	// Convert to generic format
+	basePopulationsMap := fetcher.convertAncestryGroupsToMaps(basePopulations)
+
+	// Since we can't easily initialize anonymous structs, we'll create empty additional sources
+	additionalSources := make(map[string]interface{})
+
+	result := ShapeAndMergePopulations(basePopulationsMap, additionalSources, "genome")
 
 	// Should have just base populations without HGDP/1KG data
 	expectedIDs := []string{"afr", "eur"}
-	
+
 	actualIDs := make([]string, len(result))
 	for i, pop := range result {
 		actualIDs[i] = pop.ID
@@ -237,7 +241,6 @@ func TestGnomadV4VariantFetcher_PopulationMerging(t *testing.T) {
 }
 
 func TestGnomadV4VariantFetcher_InSilicoPredictors(t *testing.T) {
-	fetcher := &GnomadV4VariantFetcher{}
 
 	predictorsMap := map[string]interface{}{
 		"cadd": map[string]interface{}{
@@ -254,7 +257,7 @@ func TestGnomadV4VariantFetcher_InSilicoPredictors(t *testing.T) {
 		"unknown_predictor": "should_be_ignored",
 	}
 
-	result := fetcher.createInSilicoPredictorsList(predictorsMap)
+	result := CreateInSilicoPredictorsList(predictorsMap)
 
 	// Should only include known predictors
 	assert.Len(t, result, 4)

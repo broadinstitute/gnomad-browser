@@ -320,4 +320,3 @@ func TestGnomadV4VariantFetcher_Integration_SubsetBehavior(t *testing.T) {
 		t.Log("Variant exists in 'all' subset but not in 'non_ukb' subset")
 	}
 }
-
