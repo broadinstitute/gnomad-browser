@@ -94,13 +94,14 @@ func InitializeFetchers() {
 		Subset: "controls_and_biobanks",
 	})
 
-	// gnomAD v2 datasets
+	// gnomAD v2 datasets  
 	RegisterDatasetFetcher("gnomad_r2_1", &GnomadV2VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{
 			DatasetID:       "gnomad_r2_1",
 			ReferenceGenome: model.ReferenceGenomeIDGRCh37,
-			ESIndex:         "gnomad_v2_1_1_variants",
+			ESIndex:         GnomadV2Index,
 		},
+		Subset: "gnomad",
 	})
 }
 
