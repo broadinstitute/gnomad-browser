@@ -13,6 +13,7 @@
     "strict": true,
     "skipLibCheck": true
   },
+  "include": ["browser/about/**/*.ts"],
   "exclude": ["browser/dist/**/*"],
   "ts-node": { "files": true }
 }
