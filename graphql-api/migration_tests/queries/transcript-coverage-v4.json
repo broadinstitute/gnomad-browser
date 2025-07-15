@@ -1,0 +1,7 @@
+{
+  "transcriptId": "ENST00000302118",
+  "datasetId": "gnomad_r4",
+  "referenceGenome": "GRCh38",
+  "includeExomeCoverage": true,
+  "includeGenomeCoverage": true
+}

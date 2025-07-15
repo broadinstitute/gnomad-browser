@@ -1,0 +1,80 @@
+query VariantCooccurrence($variants: [String!]!, $variant1: String!, $variant2: String, $datasetId: DatasetId!) {
+  variant_cooccurrence(variants: $variants, dataset: $datasetId) {
+    variant_ids
+    genotype_counts
+    haplotype_counts
+    p_compound_heterozygous
+    populations {
+      id
+      genotype_counts
+      haplotype_counts
+      p_compound_heterozygous
+    }
+  }
+  variant1: variant(variantId: $variant1, dataset: $datasetId) {
+    exome {
+      ac
+      an
+    }
+    genome {
+      ac
+      an
+    }
+    multi_nucleotide_variants {
+      combined_variant_id
+      other_constituent_snvs
+    }
+    transcript_consequences {
+      gene_id
+      gene_version
+      gene_symbol
+      hgvs
+      hgvsc
+      hgvsp
+      is_canonical
+      is_mane_select
+      is_mane_select_version
+      lof
+      lof_flags
+      lof_filter
+      major_consequence
+      polyphen_prediction
+      sift_prediction
+      transcript_id
+      transcript_version
+    }
+  }
+  variant2: variant(variantId: $variant2, dataset: $datasetId) {
+    exome {
+      ac
+      an
+    }
+    genome {
+      ac
+      an
+    }
+    multi_nucleotide_variants {
+      combined_variant_id
+      other_constituent_snvs
+    }
+    transcript_consequences {
+      gene_id
+      gene_version
+      gene_symbol
+      hgvs
+      hgvsc
+      hgvsp
+      is_canonical
+      is_mane_select
+      is_mane_select_version
+      lof
+      lof_flags
+      lof_filter
+      major_consequence
+      polyphen_prediction
+      sift_prediction
+      transcript_id
+      transcript_version
+    }
+  }
+}

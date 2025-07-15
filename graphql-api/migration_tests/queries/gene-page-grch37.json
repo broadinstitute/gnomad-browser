@@ -1,0 +1,6 @@
+{
+  "geneId": "ENSG00000169174",
+  "referenceGenome": "GRCh37",
+  "shortTandemRepeatDatasetId": "gnomad_r3",
+  "includeShortTandemRepeats": false
+}

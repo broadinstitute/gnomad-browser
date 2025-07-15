@@ -1,0 +1,7 @@
+{
+  "datasetId": "gnomad_r3",
+  "includeLiftoverAsSource": false,
+  "includeLiftoverAsTarget": true,
+  "referenceGenome": "GRCh38",
+  "variantId": "1-55039774-C-T"
+}

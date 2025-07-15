@@ -1,0 +1,34 @@
+query TranscriptCoverage($transcriptId: String!, $referenceGenome: ReferenceGenomeId!, $datasetId: DatasetId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
+  transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
+    coverage(dataset: $datasetId) {
+      exome @include(if: $includeExomeCoverage) {
+        pos
+        mean
+        median
+        over_1
+        over_5
+        over_10
+        over_15
+        over_20
+        over_25
+        over_30
+        over_50
+        over_100
+      }
+      genome @include(if: $includeGenomeCoverage) {
+        pos
+        mean
+        median
+        over_1
+        over_5
+        over_10
+        over_15
+        over_20
+        over_25
+        over_30
+        over_50
+        over_100
+      }
+    }
+  }
+}

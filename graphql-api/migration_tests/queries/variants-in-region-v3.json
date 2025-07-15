@@ -1,0 +1,7 @@
+{
+  "chrom": "19",
+  "start": 11078371,
+  "stop": 11144910,
+  "datasetId": "gnomad_r3",
+  "referenceGenome": "GRCh38"
+}

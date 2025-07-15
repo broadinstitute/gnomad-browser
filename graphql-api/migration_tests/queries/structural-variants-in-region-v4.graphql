@@ -1,0 +1,22 @@
+query StructuralVariantsInRegion($datasetId: StructuralVariantDatasetId!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+  region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+    structural_variants(dataset: $datasetId) {
+      ac
+      ac_hemi
+      ac_hom
+      an
+      af
+      chrom
+      chrom2
+      end
+      end2
+      consequence
+      filters
+      length
+      pos
+      pos2
+      type
+      variant_id
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "chrom": "1",
+  "start": 55505221,
+  "stop": 55530525,
+  "datasetId": "gnomad_r2_1",
+  "referenceGenome": "GRCh37",
+  "includeExomeCoverage": true,
+  "includeGenomeCoverage": true
+}

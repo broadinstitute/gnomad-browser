@@ -1,0 +1,8 @@
+{
+  "datasetId": "gnomad_r4",
+  "includeLocalAncestry": true,
+  "includeLiftoverAsSource": false,
+  "includeLiftoverAsTarget": true,
+  "referenceGenome": "GRCh38",
+  "variantId": "1-55051215-G-GA"
+}

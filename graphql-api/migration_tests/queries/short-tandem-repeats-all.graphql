@@ -1,0 +1,23 @@
+query ShortTandemRepeats($datasetId: DatasetId!) {
+  short_tandem_repeats(dataset: $datasetId) {
+    id
+    gene {
+      ensembl_id
+      symbol
+      region
+    }
+    main_reference_region {
+      chrom
+      start
+      stop
+    }
+    reference_repeat_unit
+    strchive_id
+    associated_diseases {
+      symbol
+      name
+      omim_id
+      inheritance_mode
+    }
+  }
+}

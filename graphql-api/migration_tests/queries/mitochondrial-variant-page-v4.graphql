@@ -1,0 +1,120 @@
+query MitochondrialVariant($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
+  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
+    clinical_significance
+    clinvar_variation_id
+    gold_stars
+    last_evaluated
+    review_status
+    submissions {
+      clinical_significance
+      conditions {
+        name
+        medgen_id
+      }
+      last_evaluated
+      review_status
+      submitter_name
+    }
+  }
+  mitochondrial_variant(variant_id: $variantId, dataset: $datasetId) {
+    ac_het
+    ac_hom
+    ac_hom_mnv
+    age_distribution {
+      het {
+        bin_freq
+        bin_edges
+        n_smaller
+        n_larger
+      }
+      hom {
+        bin_freq
+        bin_edges
+        n_smaller
+        n_larger
+      }
+    }
+    alt
+    an
+    excluded_ac
+    filters
+    flags
+    genotype_quality_metrics {
+      name
+      all {
+        bin_freq
+        bin_edges
+        n_smaller
+        n_larger
+      }
+      alt {
+        bin_freq
+        bin_edges
+        n_smaller
+        n_larger
+      }
+    }
+    genotype_quality_filters {
+      name
+      filtered {
+        bin_freq
+        bin_edges
+      }
+    }
+    haplogroup_defining
+    haplogroups {
+      id
+      an
+      ac_het
+      ac_hom
+      faf
+      faf_hom
+    }
+    heteroplasmy_distribution {
+      bin_freq
+      bin_edges
+      n_smaller
+      n_larger
+    }
+    max_heteroplasmy
+    mitotip_score
+    mitotip_trna_prediction
+    pon_ml_probability_of_pathogenicity
+    pon_mt_trna_prediction
+    populations {
+      id
+      ac_het
+      ac_hom
+      an
+    }
+    pos
+    ref
+    reference_genome
+    rsids
+    site_quality_metrics {
+      name
+      value
+    }
+    transcript_consequences {
+      canonical
+      gene_id
+      gene_version
+      gene_symbol
+      hgvs
+      hgvsc
+      hgvsp
+      lof
+      lof_flags
+      lof_filter
+      major_consequence
+      polyphen_prediction
+      sift_prediction
+      transcript_id
+      transcript_version
+    }
+    variant_id
+  }
+}

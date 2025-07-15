@@ -1,0 +1,7 @@
+{
+  "geneId": "ENSG00000169174",
+  "datasetId": "gnomad_r2_1",
+  "referenceGenome": "GRCh37",
+  "includeExomeCoverage": true,
+  "includeGenomeCoverage": true
+}

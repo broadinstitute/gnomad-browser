@@ -1,0 +1,8 @@
+{
+  "chrom": "1",
+  "start": 55039447,
+  "stop": 55064852,
+  "referenceGenome": "GRCh38",
+  "includeShortTandemRepeats": true,
+  "shortTandemRepeatDatasetId": "gnomad_r3"
+}

@@ -1,0 +1,85 @@
+query VariantsInTranscript($transcriptId: String!, $referenceGenome: ReferenceGenomeId!, $datasetId: DatasetId!) {
+  meta {
+    clinvar_release_date
+  }
+  transcript(transcript_id: $transcriptId, reference_genome: $referenceGenome) {
+    clinvar_variants {
+      clinical_significance
+      clinvar_variation_id
+      gnomad {
+        exome {
+          ac
+          an
+          filters
+        }
+        genome {
+          ac
+          an
+          filters
+        }
+      }
+      gold_stars
+      in_gnomad
+      major_consequence
+      pos
+      review_status
+      transcript_id
+      variant_id
+    }
+    variants(dataset: $datasetId) {
+      consequence
+      flags
+      hgvs
+      hgvsc
+      hgvsp
+      lof
+      lof_filter
+      lof_flags
+      pos
+      rsid
+      transcript_id
+      transcript_version
+      variant_id
+      exome {
+        ac
+        ac_hemi
+        ac_hom
+        an
+        af
+        filters
+        populations {
+          id
+          ac
+          ac_hemi
+          ac_hom
+          an
+        }
+      }
+      genome {
+        ac
+        ac_hemi
+        ac_hom
+        an
+        af
+        filters
+        populations {
+          id
+          ac
+          ac_hemi
+          ac_hom
+          an
+        }
+      }
+      joint {
+        ac
+        an
+        filters
+        populations {
+          id
+          ac
+          an
+        }
+      }
+    }
+  }
+}

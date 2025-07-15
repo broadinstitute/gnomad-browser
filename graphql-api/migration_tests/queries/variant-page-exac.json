@@ -1,0 +1,7 @@
+{
+  "datasetId": "exac",
+  "includeLiftoverAsSource": true,
+  "includeLiftoverAsTarget": false,
+  "referenceGenome": "GRCh37",
+  "variantId": "1-55512194-A-C"
+}

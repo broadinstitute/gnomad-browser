@@ -6,17 +6,17 @@ This directory contains GraphQL query tests and snapshots for the gnomAD API mig
 
 - `queries/` - GraphQL query files and their variables
 - `snapshots/` - Generated JSON snapshots of query responses
-- `test-variants.json` - Central configuration for test variant IDs
-- `generate_variables.ts` - Script to generate variable JSON files from test-variants.json
+- `test-identifiers.json` - Central configuration for test identifiers (variants, genes, regions, etc.)
+- `generate_variables.ts` - Script to generate variable JSON files from test-identifiers.json
 - `generate_snapshots.ts` - Script to execute queries and save snapshots
 
 ## Central Test Data Management
 
-All test variant IDs and datasets are defined in `test-variants.json`. This ensures consistency across tests and makes it easy to update test data.
+All test identifiers (variant IDs, gene IDs, regions, etc.) and datasets are defined in `test-identifiers.json`. This ensures consistency across tests and makes it easy to update test data.
 
 ### Adding New Test Variants
 
-1. Edit `test-variants.json` to add new variants or modify existing ones
+1. Edit `test-identifiers.json` to add new test identifiers or modify existing ones
 2. Update `generate_variables.ts` to use the new variants
 3. Run `npm run generate-variables` to regenerate all variable files
 
@@ -26,7 +26,7 @@ All test variant IDs and datasets are defined in `test-variants.json`. This ensu
 ```bash
 npm run generate-variables
 ```
-This generates all `*.json` variable files in the `queries/` directory from `test-variants.json`.
+This generates all `*.json` variable files in the `queries/` directory from `test-identifiers.json`.
 
 ### Generate Snapshots
 ```bash

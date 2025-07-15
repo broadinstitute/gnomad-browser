@@ -1,0 +1,110 @@
+{
+  "datasets": {
+    "gnomad_r4": "gnomad_r4",
+    "gnomad_r4_non_ukb": "gnomad_r4_non_ukb",
+    "gnomad_r3": "gnomad_r3",
+    "gnomad_r2_1": "gnomad_r2_1",
+    "gnomad_sv_r4": "gnomad_sv_r4",
+    "exac": "exac"
+  },
+  "reference_genomes": {
+    "grch38": "GRCh38",
+    "grch37": "GRCh37"
+  },
+  "variants": {
+    "gnomad_v4_standard": {
+      "variantId": "1-55051215-G-GA",
+      "rsid": "rs527413419",
+      "vrsId": "ga4gh:VA.hingrE1dTh6sN0lzvUD-vpatd6ukTP3S",
+      "description": "Standard gnomAD v4 variant with good coverage"
+    },
+    "gnomad_v2_standard": {
+      "variantId": "1-55516888-G-GA",
+      "rsid": "rs527413419",
+      "description": "Standard gnomAD v2 variant"
+    },
+    "clinvar_variant": {
+      "variantId": "X-18564493-T-G",
+      "description": "Variant with ClinVar annotation"
+    },
+    "non_existent": {
+      "variantId": "1-999999999-A-T",
+      "description": "Non-existent variant for error testing"
+    },
+    "invalid_format": {
+      "variantId": "invalid-variant-id",
+      "description": "Invalid variant ID format for error testing"
+    },
+    "caid_example": {
+      "caid": "CA123456",
+      "description": "ClinGen Allele ID for search testing"
+    },
+    "v4_liftover_target": {
+      "variantId": "1-55051215-G-GA",
+      "rsid": "rs527413419",
+      "vrsId": "ga4gh:VA.hingrE1dTh6sN0lzvUD-vpatd6ukTP3S",
+      "description": "V4 variant for liftover testing (GRCh38 target)"
+    },
+    "v3_liftover_target": {
+      "variantId": "1-55039774-C-T",
+      "description": "V3 variant for liftover testing (GRCh38 target)"
+    },
+    "v2_liftover_source": {
+      "variantId": "1-55516888-G-GA",
+      "description": "V2 variant for liftover testing (GRCh37 source)"
+    },
+    "exac_liftover_source": {
+      "variantId": "1-55512194-A-C",
+      "description": "ExAC variant for liftover testing (GRCh37 source)"
+    }
+  },
+  "genes": {
+    "pcsk9": {
+      "geneId": "ENSG00000169174",
+      "symbol": "PCSK9",
+      "description": "PCSK9 gene for gene page testing"
+    }
+  },
+  "transcripts": {
+    "pcsk9_canonical": {
+      "transcriptId": "ENST00000302118",
+      "description": "Canonical PCSK9 transcript"
+    }
+  },
+  "regions": {
+    "grch38_pcs_k9_locus": {
+      "chrom": "1",
+      "start": 55039447,
+      "stop": 55064852,
+      "description": "PCSK9 locus on GRCh38"
+    },
+    "grch37_pcsk9_locus": {
+      "chrom": "1",
+      "start": 55505221,
+      "stop": 55530525,
+      "description": "PCSK9 locus on GRCh37"
+    }
+  },
+  "structural_variant_regions": {
+    "grch38_example": {
+      "chrom": "19",
+      "start": 11078371,
+      "stop": 11144910,
+      "description": "Example region for structural variant testing"
+    }
+  },
+  "mitochondrial_variants": {
+    "example": {
+      "variantId": "M-8602-T-C",
+      "description": "Example mitochondrial variant"
+    }
+  },
+  "cooccurrence_variants": {
+    "example": {
+      "variants": ["1-55505647-G-T", "1-55523855-G-A"],
+      "variant1": "1-55505647-G-T",
+      "variant2": "1-55523855-G-A",
+      "description": "Example variant pair for cooccurrence testing"
+    }
+  }
+}
