@@ -1,0 +1,14 @@
+{
+  "name": "migration-tests",
+  "private": true,
+  "scripts": {
+    "generate-snapshots": "ts-node generate_snapshots.ts"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "typescript": "^5.0.4",
+    "ts-node": "^10.9.1",
+    "@types/node": "^18.15.11",
+    "@types/node-fetch": "^2.6.2"
+  }
+}

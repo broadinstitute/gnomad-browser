@@ -1,0 +1,7 @@
+query TestQuery {
+  gene(gene_id: "ENSG00000139618", reference_genome: GRCh38) {
+    gene_id
+    symbol
+    name
+  }
+}
