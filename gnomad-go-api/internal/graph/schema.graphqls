@@ -652,6 +652,50 @@ enum CopyNumberVariantDatasetId {
   gnomad_cnv_r4
 }
 
+# Region Types
+type Region {
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  start: Int!
+  stop: Int!
+
+  genes: [RegionGene!]!
+  non_coding_constraints: [NonCodingConstraintRegion!]
+
+  variants(dataset: DatasetId!): [Variant!]!
+  structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]!
+  mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]!
+  copy_number_variants(dataset: CopyNumberVariantDatasetId!): [CopyNumberVariant!]!
+
+  clinvar_variants: [ClinVarVariant!]
+
+  coverage(dataset: DatasetId!): RegionCoverage!
+  mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!]
+
+  short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]!
+}
+
+type RegionGene {
+  gene_id: String!
+  symbol: String!
+  start: Int!
+  stop: Int!
+  exons: [Exon!]!
+  transcripts: [RegionGeneTranscript!]!
+}
+
+type RegionGeneTranscript {
+  transcript_id: String!
+  start: Int!
+  stop: Int!
+  exons: [Exon!]!
+}
+
+type RegionCoverage {
+  exome: [CoverageBin!]!
+  genome: [CoverageBin!]!
+}
+
 # Placeholder types for nested resolvers (to be implemented later)
 type Variant {
   variant_id: String!
@@ -746,6 +790,10 @@ type GeneSearchResult {
   symbol: String
 }
 
+type VariantSearchResult {
+  variant_id: String!
+}
+
 # Query
 type Query {
   variant(
@@ -761,8 +809,20 @@ type Query {
     reference_genome: ReferenceGenomeId!
   ): Gene
   
+  region(
+    chrom: String!
+    start: Int!
+    stop: Int!
+    reference_genome: ReferenceGenomeId!
+  ): Region!
+  
   gene_search(
     query: String!
     reference_genome: ReferenceGenomeId!
   ): [GeneSearchResult!]!
+  
+  variant_search(
+    query: String!
+    dataset: DatasetId!
+  ): [VariantSearchResult!]!
 }

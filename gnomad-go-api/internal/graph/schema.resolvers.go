@@ -121,6 +121,26 @@ func (r *queryResolver) Gene(ctx context.Context, geneID *string, geneSymbol *st
 	return gene, nil
 }
 
+// Region is the resolver for the region field.
+func (r *queryResolver) Region(ctx context.Context, chrom string, start int, stop int, referenceGenome model.ReferenceGenomeID) (*model.Region, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome ID to string
+	refGenomeStr := string(referenceGenome)
+
+	// Fetch the region
+	region, err := queries.FetchRegion(ctx, esClient, chrom, start, stop, refGenomeStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching region: %w", err)
+	}
+
+	return region, nil
+}
+
 // GeneSearch is the resolver for the gene_search field.
 func (r *queryResolver) GeneSearch(ctx context.Context, query string, referenceGenome model.ReferenceGenomeID) ([]*model.GeneSearchResult, error) {
 	// Get Elasticsearch client from context
@@ -141,6 +161,117 @@ func (r *queryResolver) GeneSearch(ctx context.Context, query string, referenceG
 	return results, nil
 }
 
+// VariantSearch is the resolver for the variant_search field.
+func (r *queryResolver) VariantSearch(ctx context.Context, query string, dataset model.DatasetID) ([]*model.VariantSearchResult, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset ID to string
+	datasetStr := string(dataset)
+
+	// Fetch matching variants
+	results, err := queries.FetchMatchingVariants(ctx, esClient, query, datasetStr)
+	if err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
+// Genes is the resolver for the genes field.
+func (r *regionResolver) Genes(ctx context.Context, obj *model.Region) ([]*model.RegionGene, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome to string
+	refGenomeStr := string(obj.ReferenceGenome)
+
+	// Fetch genes in the region
+	genes, err := queries.FetchGenesInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching genes in region: %w", err)
+	}
+
+	return genes, nil
+}
+
+// NonCodingConstraints is the resolver for the non_coding_constraints field.
+func (r *regionResolver) NonCodingConstraints(ctx context.Context, obj *model.Region) ([]*model.NonCodingConstraintRegion, error) {
+	// TODO: Implement non-coding constraints fetching
+	return []*model.NonCodingConstraintRegion{}, nil
+}
+
+// Variants is the resolver for the variants field.
+func (r *regionResolver) Variants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.Variant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset to string
+	datasetStr := string(dataset)
+
+	// Fetch variants in the region
+	variants, err := queries.FetchVariantsInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching variants in region: %w", err)
+	}
+
+	return variants, nil
+}
+
+// StructuralVariants is the resolver for the structural_variants field.
+func (r *regionResolver) StructuralVariants(ctx context.Context, obj *model.Region, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
+	// TODO: Implement structural variants fetching
+	return []*model.StructuralVariant{}, nil
+}
+
+// MitochondrialVariants is the resolver for the mitochondrial_variants field.
+func (r *regionResolver) MitochondrialVariants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
+	// TODO: Implement mitochondrial variants fetching
+	return []*model.MitochondrialVariant{}, nil
+}
+
+// CopyNumberVariants is the resolver for the copy_number_variants field.
+func (r *regionResolver) CopyNumberVariants(ctx context.Context, obj *model.Region, dataset model.CopyNumberVariantDatasetID) ([]*model.CopyNumberVariant, error) {
+	// TODO: Implement copy number variants fetching
+	return []*model.CopyNumberVariant{}, nil
+}
+
+// ClinvarVariants is the resolver for the clinvar_variants field.
+func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
+	// TODO: Implement ClinVar variants fetching
+	return []*model.ClinVarVariant{}, nil
+}
+
+// Coverage is the resolver for the coverage field.
+func (r *regionResolver) Coverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) (*model.RegionCoverage, error) {
+	// TODO: Implement coverage fetching
+	return &model.RegionCoverage{
+		Exome:  []*model.CoverageBin{},
+		Genome: []*model.CoverageBin{},
+	}, nil
+}
+
+// MitochondrialCoverage is the resolver for the mitochondrial_coverage field.
+func (r *regionResolver) MitochondrialCoverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialCoverageBin, error) {
+	// TODO: Implement mitochondrial coverage fetching
+	return []*model.MitochondrialCoverageBin{}, nil
+}
+
+// ShortTandemRepeats is the resolver for the short_tandem_repeats field.
+func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
+	// TODO: Implement short tandem repeats fetching
+	return []*model.ShortTandemRepeat{}, nil
+}
+
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
 
@@ -150,6 +281,10 @@ func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadC
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Region returns RegionResolver implementation.
+func (r *Resolver) Region() RegionResolver { return &regionResolver{r} }
+
 type exacConstraintResolver struct{ *Resolver }
 type gnomadConstraintResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type regionResolver struct{ *Resolver }
