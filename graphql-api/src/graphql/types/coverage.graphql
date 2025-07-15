@@ -2,6 +2,7 @@ type CoverageBin {
   pos: Int!
   mean: Float
   median: Float
+  median_approx: Float
   over_1: Float
   over_5: Float
   over_10: Float
