@@ -2,24 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link, PageHeading } from '@gnomad/ui'
 
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import FederatedGnomadMap from '../about/federation/FederatedGnomadMap.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import AustralianGeneticDiversityDatabaseLogo from '../about/federation/AustralianGeneticDiversityDatabaseLogo.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import CanadaGnomadLogo from '../about/federation/CanadaGnomadLogo.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import EuropeanGenomePhenomeArchiveLogo from '../about/federation/EuropeanGenomePhenomeArchiveLogo.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import InstituteForGenomicsStatisticsAndBioinformaticsLogo from '../about/federation/InsituteForGenomicsStatisticsAndBioinformaticsLogo.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import PrecisionHealthResearchSingaporeLogo from '../about/federation/PrecisionHealthResearchSingaporeLogo.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import SingaporeGnomadLogo from '../about/federation/SingaporeGnomadLogo.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import QatarGenomeLogo from '../about/federation/QatarGenomeLogo.png'
 
-// @ts-expect-error
 import federationContent from '../about/federation/federation.md'
 
 import DocumentTitle from './DocumentTitle'

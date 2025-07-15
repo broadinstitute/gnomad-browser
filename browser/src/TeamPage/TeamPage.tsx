@@ -10,23 +10,15 @@ import teamMembers from './TeamMembers.json'
 import headshotImages from './headshotLoader'
 
 // Members of the "Contributors" section
-// @ts-expect-error
 import dataGenerationContributors from '../../about/contributors/data-generation.md'
-// @ts-expect-error
 import productionAndAnalysisContributors from '../../about/contributors/production-and-analysis.md'
-// @ts-expect-error
 import structuralVariantsContributors from '../../about/contributors/structural-variation.md'
-// @ts-expect-error
 import mitochondrialVariantsContributors from '../../about/contributors/mitochondrial-variation.md'
-// @ts-expect-error
 import broadGenomicsPlatformContributors from '../../about/contributors/broad-genomics-platform.md'
-// @ts-expect-error
 import ethicsContributors from '../../about/contributors/ethics.md'
-// @ts-expect-error
 import tandemRepeatContributors from '../../about/contributors/tandem-repeats.md'
 
 // Members of the 'Alumni' Section
-// @ts-expect-error
 import alumni from '../../about/contributors/alumni.md'
 
 import DocumentTitle from '../DocumentTitle'
