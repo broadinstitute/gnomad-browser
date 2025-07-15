@@ -5,6 +5,7 @@ on:
     branches:
       - ourdna-browser
       - ourdna-browser-dev
+      - coverage-type-minor-fix-v3
 
 permissions:
   id-token: write
