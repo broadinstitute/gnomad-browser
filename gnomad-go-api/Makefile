@@ -35,10 +35,12 @@ test-integration-gnomad-v4:
 	@if [ -n "${ELASTICSEARCH_PASSWORD}" ]; then echo "Using password: [REDACTED]"; fi
 	@ELASTICSEARCH_URL=${ELASTICSEARCH_URL} ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME} ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD} go test -tags=integration -run "TestGnomadV4.*Integration" ./internal/data/queries -v
 
+# Run snapshot-based integration tests
+test-integration-snapshots:
+	go test -v ./internal/test/integration/... -run TestVariantQueriesAgainstSnapshots
+
 # Run all tests including integration tests
-test-all:
-	@echo "Running all tests including integration tests"
-	ELASTICSEARCH_URL=${ELASTICSEARCH_URL} go test -tags=integration ./...
+test-all: test test-integration test-integration-snapshots
 
 lint:
 	golangci-lint run
