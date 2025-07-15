@@ -11,6 +11,7 @@ const formatCoverageBins = (bins: any) =>
     pos: bin.pos,
     mean: bin.mean,
     median: bin.median,
+    median_approx: bin.median_approx,
     over_1: bin.over_x[0],
     over_5: bin.over_x[1],
     over_10: bin.over_x[2],
