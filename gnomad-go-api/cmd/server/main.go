@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gnomad-browser/gnomad-go-api/internal/config"
+	"gnomad-browser/gnomad-go-api/internal/data/queries"
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph"
 )
@@ -28,6 +29,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// Initialize dataset fetchers
+	queries.InitializeFetchers()
 
 	r := gin.Default()
 

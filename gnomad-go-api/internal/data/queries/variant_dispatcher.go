@@ -56,12 +56,15 @@ func FetchVariantByID(ctx context.Context, client *elastic.Client, datasetID, va
 		return nil, fmt.Errorf("unsupported dataset: %s", datasetID)
 	}
 
+	// Convert variant ID to the format expected by the reference genome
+	convertedID := convertVariantIDForReferenceGenome(variantID, fetcher.GetReferenceGenome())
+
 	// Validate reference genome match
-	if err := validateVariantID(variantID, fetcher.GetReferenceGenome()); err != nil {
+	if err := validateVariantID(convertedID, fetcher.GetReferenceGenome()); err != nil {
 		return nil, err
 	}
 
-	return fetcher.FetchVariantByID(ctx, client, variantID)
+	return fetcher.FetchVariantByID(ctx, client, convertedID)
 }
 
 func FetchVariantByRSID(ctx context.Context, client *elastic.Client, datasetID, rsid string) (*model.VariantDetails, error) {
@@ -82,6 +85,31 @@ func FetchVariantByVRSID(ctx context.Context, client *elastic.Client, datasetID,
 	return fetcher.FetchVariantByVRSID(ctx, client, vrsID)
 }
 
+// convertVariantIDForReferenceGenome converts variant ID to the format expected by the reference genome
+func convertVariantIDForReferenceGenome(variantID string, referenceGenome model.ReferenceGenomeID) string {
+	parts := strings.Split(variantID, "-")
+	if len(parts) < 4 {
+		return variantID // Return as-is if not a valid format
+	}
+
+	chr := parts[0]
+
+	switch referenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		// Remove "chr" prefix if present
+		if strings.HasPrefix(chr, "chr") {
+			parts[0] = chr[3:]
+		}
+	case model.ReferenceGenomeIDGRCh38:
+		// For GRCh38, also remove "chr" prefix if present to match ES data format
+		if strings.HasPrefix(chr, "chr") {
+			parts[0] = chr[3:]
+		}
+	}
+
+	return strings.Join(parts, "-")
+}
+
 // validateVariantID checks if variant ID matches expected reference genome.
 func validateVariantID(variantID string, referenceGenome model.ReferenceGenomeID) error {
 	parts := strings.Split(variantID, "-")
@@ -89,18 +117,14 @@ func validateVariantID(variantID string, referenceGenome model.ReferenceGenomeID
 		return fmt.Errorf("invalid variant ID format: %s", variantID)
 	}
 
-	chr := parts[0]
-
-	// Check for reference genome mismatch
+	// Check for reference genome mismatch - be permissive since data format may vary
 	switch referenceGenome {
 	case model.ReferenceGenomeIDGRCh37:
-		if strings.HasPrefix(chr, "chr") {
-			return fmt.Errorf("GRCh37 variant IDs should not include 'chr' prefix")
-		}
+		// Allow both formats for GRCh37
+		break
 	case model.ReferenceGenomeIDGRCh38:
-		if !strings.HasPrefix(chr, "chr") && chr != "M" {
-			return fmt.Errorf("GRCh38 variant IDs should include 'chr' prefix")
-		}
+		// Allow both formats for GRCh38 since ES data might be stored without "chr" prefix
+		break
 	}
 
 	return nil

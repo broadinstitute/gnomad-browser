@@ -3,10 +3,10 @@ package integration
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -14,6 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"gnomad-browser/gnomad-go-api/internal/config"
+	"gnomad-browser/gnomad-go-api/internal/data/queries"
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph"
 )
@@ -29,9 +30,28 @@ func SetupTestServer(t *testing.T) *TestServer {
 	cfg, err := config.Load()
 	require.NoError(t, err)
 
-	// Create Elasticsearch client
-	esClient, err := elastic.NewClient([]string{cfg.ElasticsearchURL})
+	// Get Elasticsearch URL from environment or use config default
+	esURL := os.Getenv("ELASTICSEARCH_URL")
+	if esURL == "" {
+		esURL = cfg.ElasticsearchURL
+	}
+	if esURL == "" {
+		esURL = "http://localhost:9200"
+	}
+
+	// Get authentication credentials from environment
+	username := os.Getenv("ELASTICSEARCH_USERNAME")
+	if username == "" {
+		username = "elastic" // Default username
+	}
+	password := os.Getenv("ELASTICSEARCH_PASSWORD")
+
+	// Create Elasticsearch client with authentication
+	esClient, err := elastic.NewClientWithAuth([]string{esURL}, username, password)
 	require.NoError(t, err)
+
+	// Initialize dataset fetchers
+	queries.InitializeFetchers()
 
 	// Create Gin router
 	gin.SetMode(gin.TestMode)
