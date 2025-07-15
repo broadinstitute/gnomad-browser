@@ -63,6 +63,7 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
             aggregations: {
               mean: { avg: { field: 'mean' } },
               median: { avg: { field: 'median' } },
+              median_approx: { avg: { field: 'median_approx' } },
               over_1: { avg: { field: 'over_1' } },
               over_5: { avg: { field: 'over_5' } },
               over_10: { avg: { field: 'over_10' } },
@@ -82,6 +83,7 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
       pos: bucket.key,
       mean: bucket.mean.value || 0,
       median: bucket.median.value || 0,
+      median_approx: bucket.median_approx.value || 0,
 
       over_x: [
         Math.ceil((bucket.over_1.value || 0) * 100) / 100,
