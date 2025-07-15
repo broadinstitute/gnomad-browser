@@ -7,6 +7,8 @@ import (
 	"log"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
+	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gin-gonic/gin"
 
@@ -21,10 +23,37 @@ func main() {
 	}
 
 	r := gin.Default()
+	
+	// Add CORS middleware
+	r.Use(func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+		
+		c.Next()
+	})
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	
+	// Add transports
+	srv.AddTransport(transport.Options{})
+	srv.AddTransport(transport.GET{})
+	srv.AddTransport(transport.POST{})
+	srv.AddTransport(transport.MultipartForm{})
+	
+	// Enable introspection
+	srv.Use(extension.Introspection{})
 
 	r.POST("/api", gin.WrapH(srv))
+	r.GET("/api", gin.WrapH(srv))
+	r.OPTIONS("/api", func(c *gin.Context) {
+		c.Status(204)
+	})
 
 	if cfg.EnablePlayground {
 		r.GET("/", gin.WrapH(playground.Handler("GraphQL playground", "/api")))

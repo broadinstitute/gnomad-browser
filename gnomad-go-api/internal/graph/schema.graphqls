@@ -1,16 +1,24 @@
-type Query {
-  variant(
-    variantId: String
-    rsid: String
-    vrsId: String
-    dataset: DatasetId!
-  ): VariantDetails
-}
-
+# Enums
 enum DatasetId {
+  exac
+  gnomad_r2_1
+  gnomad_r2_1_controls
+  gnomad_r2_1_non_cancer
+  gnomad_r2_1_non_neuro
+  gnomad_r2_1_non_topmed
+  gnomad_r3
+  gnomad_r3_controls_and_biobanks
+  gnomad_r3_non_cancer
+  gnomad_r3_non_neuro
+  gnomad_r3_non_topmed
+  gnomad_r3_non_v2
+  gnomad_sv_r2_1
+  gnomad_sv_r2_1_controls
+  gnomad_sv_r2_1_non_neuro
+  gnomad_sv_r4
+  gnomad_cnv_r4
   gnomad_r4
   gnomad_r4_non_ukb
-  gnomad_r2_1
 }
 
 enum ReferenceGenomeId {
@@ -18,7 +26,430 @@ enum ReferenceGenomeId {
   GRCh38
 }
 
+enum VepConsequence {
+  transcript_ablation
+  splice_acceptor_variant
+  splice_donor_variant
+  stop_gained
+  frameshift_variant
+  stop_lost
+  start_lost
+  transcript_amplification
+  inframe_insertion
+  inframe_deletion
+  missense_variant
+  protein_altering_variant
+  splice_region_variant
+  incomplete_terminal_codon_variant
+  stop_retained_variant
+  synonymous_variant
+  coding_sequence_variant
+  mature_miRNA_variant
+  five_prime_UTR_variant
+  three_prime_UTR_variant
+  non_coding_transcript_exon_variant
+  intron_variant
+  NMD_transcript_variant
+  non_coding_transcript_variant
+  upstream_gene_variant
+  downstream_gene_variant
+  TFBS_ablation
+  TFBS_amplification
+  TF_binding_site_variant
+  regulatory_region_ablation
+  regulatory_region_amplification
+  feature_elongation
+  regulatory_region_variant
+  feature_truncation
+  intergenic_variant
+}
+
+# Basic Types
+type Histogram {
+  bin_edges: [Float!]!
+  bin_freq: [Float!]!
+  n_smaller: Int
+  n_larger: Int
+}
+
+type AgeDistribution {
+  het: Histogram
+  hom: Histogram
+}
+
+type AlleleBalanceHistogram {
+  alt: Histogram
+}
+
+type GenotypeDepthHistogram {
+  all: Histogram
+  alt: Histogram
+}
+
+type GenotypeQualityHistogram {
+  all: Histogram
+  alt: Histogram
+}
+
+# Population Types
+type PopulationAlleleFrequencies {
+  id: String!
+  ac: Int!
+  an: Int!
+  ac_hemi: Int
+  ac_hom: Int!
+  hemizygote_count: Int
+  homozygote_count: Int!
+}
+
+type LocalAncestryPopulations {
+  id: String!
+  ac: Int!
+  an: Int!
+}
+
+# Coverage Types
+type CoverageBin {
+  pos: Float!
+  mean: Float
+}
+
+type Coverage {
+  exome: [CoverageBin!]
+  genome: [CoverageBin!]
+}
+
+type VariantCoverage {
+  mean: Float
+  median: Float
+  over_1: Float
+  over_5: Float
+  over_10: Float
+  over_15: Float
+  over_20: Float
+  over_25: Float
+  over_30: Float
+  over_50: Float
+  over_100: Float
+}
+
+type VariantCoverageDetails {
+  exome: VariantCoverage
+  genome: VariantCoverage
+}
+
+# Quality Metrics
+type VariantSiteQualityMetric {
+  metric: String!
+  value: Float
+}
+
+type VariantQualityMetrics {
+  allele_balance: AlleleBalanceHistogram
+  genotype_depth: GenotypeDepthHistogram
+  genotype_quality: GenotypeQualityHistogram
+  site_quality_metrics: [VariantSiteQualityMetric!]!
+}
+
+# Filtering Allele Frequency
+type VariantFilteringAlleleFrequency {
+  popmax: Float
+  popmax_population: String
+}
+
+# FAF Max
+type Fafmax {
+  faf95_max: Float
+  faf95_max_gen_anc: String
+  faf99_max: Float
+  faf99_max_gen_anc: String
+}
+
+# Variant Subset Types
+type VariantDetailsExomeData {
+  ac: Int!
+  an: Int!
+  ac_hemi: Int!
+  ac_hom: Int!
+  hemizygote_count: Int
+  homozygote_count: Int
+  af: Float
+  faf95: VariantFilteringAlleleFrequency
+  faf99: VariantFilteringAlleleFrequency
+  fafmax: Fafmax
+  filters: [String!]!
+  populations: [PopulationAlleleFrequencies!]!
+  local_ancestry_populations: [LocalAncestryPopulations!]
+  age_distribution: AgeDistribution
+  quality_metrics: VariantQualityMetrics
+  flags: [String!]
+}
+
+type VariantDetailsGenomeData {
+  ac: Int!
+  an: Int!
+  ac_hemi: Int!
+  ac_hom: Int!
+  hemizygote_count: Int
+  homozygote_count: Int
+  af: Float
+  faf95: VariantFilteringAlleleFrequency
+  faf99: VariantFilteringAlleleFrequency
+  fafmax: Fafmax
+  filters: [String!]!
+  populations: [PopulationAlleleFrequencies!]!
+  local_ancestry_populations: [LocalAncestryPopulations!]
+  age_distribution: AgeDistribution
+  quality_metrics: VariantQualityMetrics
+  flags: [String!]
+}
+
+# Joint Frequency Comparison Stats
+type ContingencyTableTest {
+  p_value: Float
+  odds_ratio: String
+}
+
+type CochranMantelHaenszelTest {
+  chisq: Float
+  p_value: Float
+}
+
+type StatUnion {
+  p_value: Float
+  stat_test_name: String
+  gen_ancs: [String!]
+}
+
+type VariantJointFrequencyComparisonStats {
+  contingency_table_test: [ContingencyTableTest!]
+  cochran_mantel_haenszel_test: CochranMantelHaenszelTest
+  stat_union: StatUnion
+}
+
+type VariantDetailsJointData {
+  ac: Int!
+  an: Int!
+  filters: [String!]!
+  hemizygote_count: Int
+  homozygote_count: Int
+  populations: [PopulationAlleleFrequencies!]!
+  faf95: VariantFilteringAlleleFrequency
+  faf99: VariantFilteringAlleleFrequency
+  fafmax: Fafmax
+  age_distribution: AgeDistribution
+  quality_metrics: VariantQualityMetrics
+  freq_comparison_stats: VariantJointFrequencyComparisonStats
+}
+
+# Transcript Consequence
+type TranscriptConsequence {
+  biotype: String
+  consequence_terms: [String!]
+  domains: [String!]
+  gene_id: String!
+  gene_version: String
+  gene_symbol: String
+  hgvs: String
+  hgvsc: String
+  hgvsp: String
+  is_canonical: Boolean
+  is_mane_select: Boolean
+  is_mane_select_version: Boolean
+  lof: String
+  lof_filter: String
+  lof_flags: String
+  major_consequence: String
+  polyphen_prediction: String
+  refseq_id: String
+  refseq_version: String
+  sift_prediction: String
+  transcript_id: String!
+  transcript_version: String
+  canonical: Boolean
+}
+
+# LoF Curation
+type VariantLofCuration {
+  gene_id: String!
+  gene_version: String!
+  gene_symbol: String
+  verdict: String!
+  flags: [String!]
+  project: String!
+}
+
+# Multi-nucleotide Variant
+type MultiNucleotideVariant {
+  combined_variant_id: String!
+  changes_amino_acids: Boolean!
+  n_individuals: Int!
+  other_constituent_snvs: [String!]!
+}
+
+# In Silico Predictors
+type VariantInSilicoPredictor {
+  id: String!
+  value: String!
+  flags: [String!]!
+}
+
+# Non-coding Constraint
+type NonCodingConstraintRegion {
+  chrom: String!
+  start: Int!
+  stop: Int!
+  element_id: String!
+  possible: Float!
+  observed: Float!
+  expected: Float!
+  oe: Float!
+  z: Float!
+}
+
+# VRS Types
+type VANumber {
+  value: Float!
+}
+
+type VADefiniteRange {
+  min: Float!
+  max: Float!
+}
+
+type VAIndefiniteRange {
+  comparator: String!
+  value: Float!
+}
+
+union VANumberlike = VANumber | VADefiniteRange | VAIndefiniteRange
+
+type VASequenceInterval {
+  start: VANumberlike!
+  end: VANumberlike!
+}
+
+type VACytobandInterval {
+  start: String!
+  end: String!
+}
+
+type VASequenceLocation {
+  id: String!
+  sequence_id: String!
+  interval: VASequenceInterval!
+}
+
+type VALiteralSequenceExpression {
+  sequence: String!
+}
+
+type VAAllele {
+  id: String!
+  location: VASequenceLocation!
+  state: VALiteralSequenceExpression!
+}
+
+type VAGrpMaxFAF95 {
+  frequency: Float!
+  gen_anc: String!
+}
+
+type VAAncillaryResults {
+  grpMaxFAF95: VAGrpMaxFAF95
+  homozygotes: Int
+  hemizygotes: Int
+}
+
+type VAQualityMeasures {
+  meanDepth: Float
+  fractionCoverage20x: Float
+}
+
+type VACohortCharacteristic {
+  id: String!
+  label: String!
+  characteristics: String
+}
+
+type VACohort {
+  id: String!
+  label: String!
+  characteristics: [VACohortCharacteristic!]
+}
+
+type VACohortAlleleFrequencyDerivation {
+  id: String!
+  type: String!
+  label: String!
+  description: String!
+  cohort: VACohort!
+}
+
+type VACohortAlleleFrequencyData {
+  id: String!
+  label: String!
+  alleleCount: Int!
+  alleleNumber: Int!
+  alleleFrequency: Float!
+  ancillaryResults: VAAncillaryResults
+  qualityMeasures: VAQualityMeasures
+  subcohortFrequency: [VACohortAlleleFrequencyData!]
+  derivedFrom: VACohortAlleleFrequencyDerivation
+}
+
+type VACohortAlleleFrequency {
+  id: String!
+  altAllele: VAAllele!
+  refAllele: VAAllele!
+  cohortAlleleFrequency: [VACohortAlleleFrequencyData!]!
+  ancillaryResults: VAAncillaryResults
+}
+
+# Local Ancestry Grouped Data
+type LocalAncestryPopulationGroupedData {
+  genome: [LocalAncestryPopulations!]
+  exome: [LocalAncestryPopulations!]
+  joint: [LocalAncestryPopulations!]
+}
+
+# Main Variant Type
 type VariantDetails {
   variant_id: String!
   reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  caid: String
+  colocated_variants: [String!]
+  coverage: VariantCoverageDetails!
+  exome: VariantDetailsExomeData
+  genome: VariantDetailsGenomeData
+  joint: VariantDetailsJointData
+  flags: [String!]
+  lof_curations: [VariantLofCuration!]
+  multi_nucleotide_variants: [MultiNucleotideVariant!]
+  rsids: [String!]
+  transcript_consequences: [TranscriptConsequence!]
+  in_silico_predictors: [VariantInSilicoPredictor!]
+  local_ancestry_populations: LocalAncestryPopulationGroupedData
+  non_coding_constraint: NonCodingConstraintRegion
+  
+  # VRS fields
+  va: VACohortAlleleFrequency!
+  vrs: VAAllele
+  
+  # Deprecated fields for compatibility
+  rsid: String
+}
+
+# Query
+type Query {
+  variant(
+    variantId: String
+    rsid: String
+    vrsId: String
+    dataset: DatasetId!
+  ): VariantDetails
 }

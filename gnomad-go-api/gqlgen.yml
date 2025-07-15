@@ -16,3 +16,9 @@ models:
     model: gnomad-browser/gnomad-go-api/internal/graph/model.DatasetID
   ReferenceGenomeId:
     model: gnomad-browser/gnomad-go-api/internal/graph/model.ReferenceGenomeID
+  Int:
+    model: github.com/99designs/gqlgen/graphql.Int
+  Int64:
+    model: github.com/99designs/gqlgen/graphql.Int64
+  Float:
+    model: github.com/99designs/gqlgen/graphql.Float
