@@ -5,6 +5,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
@@ -24,8 +25,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Initialize Elasticsearch client
-	esClient, err := elastic.NewClient([]string{cfg.ElasticsearchURL})
+	// Initialize Elasticsearch client with authentication
+	esURL := cfg.ElasticsearchURL
+	if esURL == "" {
+		esURL = "http://localhost:9200"
+	}
+
+	// Get authentication credentials from environment
+	username := os.Getenv("ELASTICSEARCH_USERNAME")
+	if username == "" {
+		username = "elastic" // Default username
+	}
+	password := os.Getenv("ELASTICSEARCH_PASSWORD")
+
+	esClient, err := elastic.NewClientWithAuth([]string{esURL}, username, password)
 	if err != nil {
 		log.Fatal(err)
 	}
