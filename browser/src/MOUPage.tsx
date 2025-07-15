@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { Button } from '@gnomad/ui'
 
-// @ts-expect-error TS(2307) FIXME: Cannot find module '../about/mou.md' or its corres... Remove this comment to see the full error message
 import mou from '../about/mou.md'
 
 import DocumentTitle from './DocumentTitle'
