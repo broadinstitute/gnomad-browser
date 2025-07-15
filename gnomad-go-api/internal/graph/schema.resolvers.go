@@ -7,13 +7,59 @@ package graph
 import (
 	"context"
 	"fmt"
+	"gnomad-browser/gnomad-go-api/internal/data/queries"
+	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
+	"strings"
 )
+
+// Initialize fetchers on startup
+func init() {
+	queries.InitializeFetchers()
+}
 
 // Variant is the resolver for the variant field.
 func (r *queryResolver) Variant(ctx context.Context, variantID *string, rsid *string, vrsID *string, dataset model.DatasetID) (*model.VariantDetails, error) {
-	// TODO: Implement actual variant lookup logic
-	return nil, fmt.Errorf("variant query not yet implemented")
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Validate that exactly one ID is provided
+	idCount := 0
+	if variantID != nil {
+		idCount++
+	}
+	if rsid != nil {
+		idCount++
+	}
+	if vrsID != nil {
+		idCount++
+	}
+
+	if idCount != 1 {
+		return nil, fmt.Errorf("exactly one of variantId, rsid, or vrsId must be provided")
+	}
+
+	// Dispatch to appropriate fetcher
+	datasetStr := string(dataset)
+
+	if variantID != nil {
+		normalizedID := queries.NormalizeVariantID(*variantID)
+		return queries.FetchVariantByID(ctx, esClient, datasetStr, normalizedID)
+	}
+
+	if rsid != nil {
+		normalizedRSID := strings.ToLower(*rsid)
+		return queries.FetchVariantByRSID(ctx, esClient, datasetStr, normalizedRSID)
+	}
+
+	if vrsID != nil {
+		return queries.FetchVariantByVRSID(ctx, esClient, datasetStr, *vrsID)
+	}
+
+	return nil, fmt.Errorf("no variant ID provided")
 }
 
 // Query returns QueryResolver implementation.
