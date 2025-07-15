@@ -1,0 +1,126 @@
+# golangci-lint configuration
+# https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+  tests: true
+
+linters:
+  enable:
+    - gofmt
+    - goimports
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - gosimple
+    - ineffassign
+    - typecheck
+    - gosec
+    - gocritic
+    - revive
+    - misspell
+    - unparam
+    - prealloc
+    - unconvert
+    - cyclop
+    - gocyclo
+    - gocognit
+    - godot
+    - godox
+    - dupl
+    - funlen
+    - whitespace
+    - wsl
+    - goprintffuncname
+    - nilerr
+    - exhaustive
+    - sqlclosecheck
+    - noctx
+    - bodyclose
+
+  disable:
+    - depguard
+    - dogsled
+    - gochecknoglobals
+    - gochecknoinits
+    - goconst
+    - err113
+    - lll
+    - nakedret
+    - nlreturn
+    - nolintlint
+    - rowserrcheck
+    - testpackage
+    - wrapcheck
+
+linters-settings:
+  gofmt:
+    simplify: true
+  
+  goimports:
+    local-prefixes: gnomad-browser/gnomad-go-api
+  
+  govet:
+    enable:
+      - shadow
+  
+  revive:
+    confidence: 0.8
+  
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+  
+  funlen:
+    lines: 100
+    statements: 60
+  
+  cyclop:
+    max-complexity: 15
+  
+  gocyclo:
+    min-complexity: 15
+  
+  gocognit:
+    min-complexity: 20
+
+issues:
+  exclude-dirs:
+    - internal/graph/generated.go
+    - internal/graph/model/models_gen.go
+  
+  exclude-rules:
+    # Exclude generated files
+    - path: _gen\.go$
+      linters:
+        - all
+    
+    # Exclude test files from some linters
+    - path: _test\.go$
+      linters:
+        - dupl
+        - funlen
+        - gocognit
+        - gocyclo
+    
+    # Exclude specific files
+    - path: internal/graph/generated.go
+      linters:
+        - all
+    
+    - path: internal/graph/model/models_gen.go
+      linters:
+        - all
+
+  max-issues-per-linter: 0
+  max-same-issues: 0
