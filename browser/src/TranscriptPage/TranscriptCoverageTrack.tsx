@@ -13,7 +13,7 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
       exome @include(if: $includeExomeCoverage) {
         pos
         mean
-        median
+        median: median_approx
         over_1
         over_5
         over_10
@@ -27,7 +27,7 @@ query ${operationName}($transcriptId: String!, $datasetId: DatasetId!, $referenc
       genome @include(if: $includeGenomeCoverage) {
         pos
         mean
-        median
+        median: median_approx
         over_1
         over_5
         over_10
