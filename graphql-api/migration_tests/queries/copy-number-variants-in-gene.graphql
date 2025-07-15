@@ -1,0 +1,25 @@
+query getGeneWithCNVs($geneSymbol: String!, $referenceGenome: ReferenceGenomeId!, $dataset: CopyNumberVariantDatasetId!) {
+  gene(gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
+    gene_id
+    symbol
+    chrom
+    start
+    stop
+    copy_number_variants(dataset: $dataset) {
+      variant_id
+      chrom
+      pos
+      end
+      length
+      type
+      posmin
+      posmax
+      endmin
+      endmax
+      filters
+      sc
+      sn
+      sf
+    }
+  }
+}

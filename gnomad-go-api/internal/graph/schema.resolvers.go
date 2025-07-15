@@ -193,6 +193,30 @@ func (r *queryResolver) VariantCooccurrence(ctx context.Context, variants []stri
 	return queries.FetchVariantCooccurrence(ctx, esClient, variants, string(dataset))
 }
 
+// CopyNumberVariant is the resolver for the copy_number_variant field.
+func (r *queryResolver) CopyNumberVariant(ctx context.Context, variantID string, dataset model.CopyNumberVariantDatasetID) (*model.CopyNumberVariantDetails, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset ID to string
+	datasetStr := string(dataset)
+
+	// Fetch CNV details
+	cnvDetails, err := queries.FetchCopyNumberVariant(ctx, esClient, variantID, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching copy number variant: %w", err)
+	}
+
+	if cnvDetails == nil {
+		return nil, fmt.Errorf("copy number variant not found")
+	}
+
+	return cnvDetails, nil
+}
+
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
 
@@ -205,85 +229,3 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 type exacConstraintResolver struct{ *Resolver }
 type gnomadConstraintResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
-
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.
-/*
-	func (r *regionResolver) Genes(ctx context.Context, obj *model.Region) ([]*model.RegionGene, error) {
-	// Get Elasticsearch client from context
-	esClient := elastic.FromContext(ctx)
-	if esClient == nil {
-		return nil, fmt.Errorf("elasticsearch client not found in context")
-	}
-
-	// Convert reference genome to string
-	refGenomeStr := string(obj.ReferenceGenome)
-
-	// Fetch genes in the region
-	genes, err := queries.FetchGenesInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching genes in region: %w", err)
-	}
-
-	return genes, nil
-}
-func (r *regionResolver) NonCodingConstraints(ctx context.Context, obj *model.Region) ([]*model.NonCodingConstraintRegion, error) {
-	// TODO: Implement non-coding constraints fetching
-	return []*model.NonCodingConstraintRegion{}, nil
-}
-func (r *regionResolver) Variants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.Variant, error) {
-	// Get Elasticsearch client from context
-	esClient := elastic.FromContext(ctx)
-	if esClient == nil {
-		return nil, fmt.Errorf("elasticsearch client not found in context")
-	}
-
-	// Convert dataset to string
-	datasetStr := string(dataset)
-
-	// Fetch variants in the region
-	variants, err := queries.FetchVariantsInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching variants in region: %w", err)
-	}
-
-	return variants, nil
-}
-func (r *regionResolver) StructuralVariants(ctx context.Context, obj *model.Region, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
-	// TODO: Implement structural variants fetching
-	return []*model.StructuralVariant{}, nil
-}
-func (r *regionResolver) MitochondrialVariants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
-	// TODO: Implement mitochondrial variants fetching
-	return []*model.MitochondrialVariant{}, nil
-}
-func (r *regionResolver) CopyNumberVariants(ctx context.Context, obj *model.Region, dataset model.CopyNumberVariantDatasetID) ([]*model.CopyNumberVariant, error) {
-	// TODO: Implement copy number variants fetching
-	return []*model.CopyNumberVariant{}, nil
-}
-func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
-	// TODO: Implement ClinVar variants fetching
-	return []*model.ClinVarVariant{}, nil
-}
-func (r *regionResolver) Coverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) (*model.RegionCoverage, error) {
-	// TODO: Implement coverage fetching
-	return &model.RegionCoverage{
-		Exome:  []*model.CoverageBin{},
-		Genome: []*model.CoverageBin{},
-	}, nil
-}
-func (r *regionResolver) MitochondrialCoverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialCoverageBin, error) {
-	// TODO: Implement mitochondrial coverage fetching
-	return []*model.MitochondrialCoverageBin{}, nil
-}
-func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
-	// TODO: Implement short tandem repeats fetching
-	return []*model.ShortTandemRepeat{}, nil
-}
-func (r *Resolver) Region() RegionResolver { return &regionResolver{r} }
-type regionResolver struct{ *Resolver }
-*/

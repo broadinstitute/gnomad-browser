@@ -1,0 +1,8 @@
+query getCopyNumberVariant($variantId: String!, $dataset: CopyNumberVariantDatasetId!) {
+  copy_number_variant(variantId: $variantId, dataset: $dataset) {
+    variant_id
+    chrom
+    pos
+    end
+  }
+}

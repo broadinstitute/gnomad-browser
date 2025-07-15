@@ -1,0 +1,20 @@
+query CopyNumberVariantsInRegion($datasetId: CopyNumberVariantDatasetId!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+  region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+    copy_number_variants(dataset: $datasetId) {
+      sc
+      sn
+      sf
+      chrom
+      end
+      filters
+      length
+      pos
+      posmin
+      posmax
+      endmin
+      endmax
+      type
+      variant_id
+    }
+  }
+}

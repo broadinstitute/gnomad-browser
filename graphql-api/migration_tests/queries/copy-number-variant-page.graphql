@@ -1,0 +1,28 @@
+query getCopyNumberVariant($variantId: String!, $dataset: CopyNumberVariantDatasetId!) {
+  copy_number_variant(variantId: $variantId, dataset: $dataset) {
+    variant_id
+    reference_genome
+    chrom
+    pos
+    end
+    length
+    type
+    posmin
+    posmax
+    endmin
+    endmax
+    filters
+    alts
+    genes
+    qual
+    sc
+    sn
+    sf
+    populations {
+      id
+      sc
+      sn
+      sf
+    }
+  }
+}

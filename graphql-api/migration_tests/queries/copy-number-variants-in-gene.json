@@ -1,0 +1,5 @@
+{
+  "geneSymbol": "BRCA1",
+  "referenceGenome": "GRCh38",
+  "dataset": "gnomad_cnv_r4"
+}

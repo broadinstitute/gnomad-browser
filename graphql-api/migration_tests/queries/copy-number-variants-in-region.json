@@ -1,0 +1,7 @@
+{
+  "datasetId": "gnomad_cnv_r4",
+  "chrom": "1",
+  "start": 55039447,
+  "stop": 55064852,
+  "referenceGenome": "GRCh38"
+}
