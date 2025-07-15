@@ -103,6 +103,15 @@ func InitializeFetchers() {
 		},
 		Subset: "gnomad",
 	})
+
+	// ExAC dataset
+	RegisterDatasetFetcher("exac", &ExacVariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID:       "exac",
+			ReferenceGenome: model.ReferenceGenomeIDGRCh37,
+			ESIndex:         ExacVariantIndex,
+		},
+	})
 }
 
 // Main dispatcher function.
