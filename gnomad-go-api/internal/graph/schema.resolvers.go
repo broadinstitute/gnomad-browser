@@ -165,6 +165,30 @@ func (r *queryResolver) Gene(ctx context.Context, geneID *string, geneSymbol *st
 	return gene, nil
 }
 
+// Transcript is the resolver for the transcript field.
+func (r *queryResolver) Transcript(ctx context.Context, transcriptID string, referenceGenome model.ReferenceGenomeID) (*model.Transcript, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome ID to string
+	refGenomeStr := string(referenceGenome)
+
+	// Fetch the transcript
+	transcript, err := queries.FetchTranscript(ctx, esClient, transcriptID, refGenomeStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching transcript: %w", err)
+	}
+
+	if transcript == nil {
+		return nil, fmt.Errorf("transcript not found")
+	}
+
+	return transcript, nil
+}
+
 // Region is the resolver for the region field.
 func (r *queryResolver) Region(ctx context.Context, chrom string, start int, stop int, referenceGenome model.ReferenceGenomeID) (*model.Region, error) {
 	// Get Elasticsearch client from context
@@ -340,7 +364,6 @@ func (r *regionResolver) StructuralVariants(ctx context.Context, obj *model.Regi
 
 	return variants, nil
 }
-
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
 

@@ -1008,6 +1008,61 @@ type VariantCooccurrence {
   populations: [VariantCooccurrenceInPopulation!]!
 }
 
+# Transcript Types
+type TranscriptGene {
+  reference_genome: ReferenceGenomeId!
+  gene_id: String!
+  gene_version: String!
+  symbol: String!
+  hgnc_id: String
+  ncbi_id: String
+  omim_id: String
+  name: String
+  chrom: String!
+  start: Int!
+  stop: Int!
+  strand: String!
+  exons: [Exon!]!
+  canonical_transcript_id: String
+  transcripts: [GeneTranscript!]!
+  mane_select_transcript: ManeSelectTranscript
+
+  flags: [String!]!
+
+  pext: Pext
+
+  gnomad_constraint: GnomadConstraint
+  exac_constraint: ExacConstraint
+  exac_regional_missense_constraint_regions: [ExacRegionalMissenseConstraintRegion!]
+}
+
+type Transcript {
+  reference_genome: ReferenceGenomeId!
+  transcript_id: String!
+  transcript_version: String!
+  chrom: String!
+  start: Int!
+  stop: Int!
+  exons: [Exon!]!
+  strand: String!
+
+  gene_id: String!
+  gene: TranscriptGene!
+
+  gtex_tissue_expression: [GtexTissue]
+
+  gnomad_constraint: GnomadConstraint
+  exac_constraint: ExacConstraint
+
+  variants(dataset: DatasetId!): [Variant!]!
+  mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]!
+
+  clinvar_variants: [ClinVarVariant!]
+
+  coverage(dataset: DatasetId): FeatureCoverage!
+  mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!]
+}
+
 # Query
 type Query {
   variant(
@@ -1027,6 +1082,11 @@ type Query {
     gene_symbol: String
     reference_genome: ReferenceGenomeId!
   ): Gene
+  
+  transcript(
+    transcript_id: String!
+    reference_genome: ReferenceGenomeId!
+  ): Transcript
   
   region(
     chrom: String!
