@@ -1,0 +1,23 @@
+{
+  "data": {
+    "variant": {
+      "alt": "GA",
+      "chrom": "1",
+      "exome": {
+        "ac": 192,
+        "an": 303936,
+        "filters": []
+      },
+      "flags": [],
+      "genome": {
+        "ac": 727,
+        "an": 152324,
+        "filters": []
+      },
+      "pos": 55051215,
+      "ref": "G",
+      "reference_genome": "GRCh38",
+      "variant_id": "1-55051215-G-GA"
+    }
+  }
+}

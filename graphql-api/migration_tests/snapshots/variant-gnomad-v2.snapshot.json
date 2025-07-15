@@ -1,0 +1,30 @@
+{
+  "data": {
+    "variant": {
+      "alt": "GA",
+      "chrom": "1",
+      "exome": {
+        "ac": 121,
+        "ac_hemi": 0,
+        "ac_hom": 2,
+        "an": 128230,
+        "filters": []
+      },
+      "flags": [],
+      "genome": {
+        "ac": 156,
+        "ac_hemi": 0,
+        "ac_hom": 0,
+        "an": 31382,
+        "filters": []
+      },
+      "pos": 55516888,
+      "ref": "G",
+      "reference_genome": "GRCh37",
+      "rsids": [
+        "rs527413419"
+      ],
+      "variant_id": "1-55516888-G-GA"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "data": {
+    "variant": {
+      "alt": "GA",
+      "chrom": "1",
+      "exome": {
+        "ac": 192,
+        "ac_hemi": 0,
+        "ac_hom": 2,
+        "an": 303936,
+        "filters": []
+      },
+      "flags": [],
+      "genome": {
+        "ac": 727,
+        "ac_hemi": 0,
+        "ac_hom": 9,
+        "an": 152324,
+        "filters": []
+      },
+      "joint": {
+        "ac": 919,
+        "an": 456260,
+        "filters": []
+      },
+      "pos": 55051215,
+      "ref": "G",
+      "reference_genome": "GRCh38",
+      "rsids": [
+        "rs527413419"
+      ],
+      "variant_id": "1-55051215-G-GA"
+    }
+  }
+}

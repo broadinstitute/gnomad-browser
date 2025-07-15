@@ -1,0 +1,10 @@
+{
+  "data": {
+    "variant": null
+  },
+  "errors": [
+    {
+      "message": "Variant not found"
+    }
+  ]
+}

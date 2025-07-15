@@ -1,0 +1,5 @@
+query searchVariant($query: String!, $dataset: DatasetId!) {
+  variant_search(query: $query, dataset: $dataset) {
+    variant_id
+  }
+}

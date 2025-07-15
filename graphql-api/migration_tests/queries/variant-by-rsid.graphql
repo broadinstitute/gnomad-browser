@@ -1,0 +1,31 @@
+query getVariantByRsid($rsid: String!, $dataset: DatasetId!) {
+  variant(rsid: $rsid, dataset: $dataset) {
+    variant_id
+    reference_genome
+    chrom
+    pos
+    ref
+    alt
+    exome {
+      ac
+      an
+      ac_hemi
+      ac_hom
+      filters
+    }
+    genome {
+      ac
+      an
+      ac_hemi
+      ac_hom
+      filters
+    }
+    joint {
+      ac
+      an
+      filters
+    }
+    flags
+    rsids
+  }
+}

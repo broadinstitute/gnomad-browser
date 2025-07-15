@@ -1,0 +1,6 @@
+query getVariant($variantId: String!, $dataset: DatasetId!) {
+  variant(variantId: $variantId, dataset: $dataset) {
+    variant_id
+    reference_genome
+  }
+}
