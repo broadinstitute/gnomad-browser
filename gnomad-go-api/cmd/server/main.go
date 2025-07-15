@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gnomad-browser/gnomad-go-api/internal/config"
+	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph"
 )
 
@@ -22,30 +23,39 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Initialize Elasticsearch client
+	esClient, err := elastic.NewClient([]string{cfg.ElasticsearchURL})
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	r := gin.Default()
-	
+
 	// Add CORS middleware
 	r.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		
+
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
 		}
-		
+
 		c.Next()
 	})
 
+	// Add Elasticsearch middleware
+	r.Use(elastic.Middleware(esClient))
+
 	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
-	
+
 	// Add transports
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})
 	srv.AddTransport(transport.POST{})
 	srv.AddTransport(transport.MultipartForm{})
-	
+
 	// Enable introspection
 	srv.Use(extension.Introspection{})
 
