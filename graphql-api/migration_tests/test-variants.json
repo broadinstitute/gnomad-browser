@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "gnomad_v4_standard": {
+      "variantId": "1-55051215-G-GA",
+      "rsid": "rs527413419",
+      "vrsId": "ga4gh:VA.hingrE1dTh6sN0lzvUD-vpatd6ukTP3S",
+      "description": "Standard gnomAD v4 variant with good coverage"
+    },
+    "gnomad_v2_standard": {
+      "variantId": "1-55516888-G-GA",
+      "rsid": "rs527413419",
+      "description": "Standard gnomAD v2 variant"
+    },
+    "clinvar_variant": {
+      "variantId": "X-18564493-T-G",
+      "description": "Variant with ClinVar annotation"
+    },
+    "non_existent": {
+      "variantId": "1-999999999-A-T",
+      "description": "Non-existent variant for error testing"
+    },
+    "invalid_format": {
+      "variantId": "invalid-variant-id",
+      "description": "Invalid variant ID format for error testing"
+    },
+    "caid_example": {
+      "caid": "CA123456",
+      "description": "ClinGen Allele ID for search testing"
+    }
+  },
+  "datasets": {
+    "gnomad_v4": "gnomad_r4",
+    "gnomad_v4_non_ukb": "gnomad_r4_non_ukb",
+    "gnomad_v2": "gnomad_r2_1"
+  }
+}

@@ -2,7 +2,9 @@
   "name": "migration-tests",
   "private": true,
   "scripts": {
-    "generate-snapshots": "ts-node generate_snapshots.ts"
+    "generate-variables": "ts-node generate_variables.ts",
+    "generate-snapshots": "ts-node generate_snapshots.ts",
+    "update-tests": "npm run generate-variables && npm run generate-snapshots"
   },
   "dependencies": {
     "node-fetch": "^2.6.7",
