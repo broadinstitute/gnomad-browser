@@ -11,7 +11,6 @@ import PrecisionHealthResearchSingaporeLogo from '../about/federation/PrecisionH
 import SingaporeGnomadLogo from '../about/federation/SingaporeGnomadLogo.png'
 import QatarGenomeLogo from '../about/federation/QatarGenomeLogo.png'
 
-// @ts-expect-error
 import federationContent from '../about/federation/federation.md'
 
 import DocumentTitle from './DocumentTitle'
