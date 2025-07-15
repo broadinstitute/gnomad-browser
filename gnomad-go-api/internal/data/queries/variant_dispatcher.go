@@ -39,6 +39,61 @@ func InitializeFetchers() {
 		Subset: "non_ukb",
 	})
 
+	// gnomAD v3 datasets
+	RegisterDatasetFetcher("gnomad_r3_genomes", &GnomadV3VariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID:       "gnomad_r3_genomes",
+			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
+			ESIndex:         "gnomad_v3_variants",
+		},
+		Subset: "all",
+	})
+
+	RegisterDatasetFetcher("gnomad_r3_genomes_non_v2", &GnomadV3VariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID:       "gnomad_r3_genomes_non_v2",
+			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
+			ESIndex:         "gnomad_v3_variants",
+		},
+		Subset: "non_v2",
+	})
+
+	RegisterDatasetFetcher("gnomad_r3_genomes_non_cancer", &GnomadV3VariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID:       "gnomad_r3_genomes_non_cancer",
+			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
+			ESIndex:         "gnomad_v3_variants",
+		},
+		Subset: "non_cancer",
+	})
+
+	RegisterDatasetFetcher("gnomad_r3_genomes_non_neuro", &GnomadV3VariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID:       "gnomad_r3_genomes_non_neuro",
+			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
+			ESIndex:         "gnomad_v3_variants",
+		},
+		Subset: "non_neuro",
+	})
+
+	RegisterDatasetFetcher("gnomad_r3_genomes_non_topmed", &GnomadV3VariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID:       "gnomad_r3_genomes_non_topmed",
+			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
+			ESIndex:         "gnomad_v3_variants",
+		},
+		Subset: "non_topmed",
+	})
+
+	RegisterDatasetFetcher("gnomad_r3_genomes_controls_and_biobanks", &GnomadV3VariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID:       "gnomad_r3_genomes_controls_and_biobanks",
+			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
+			ESIndex:         "gnomad_v3_variants",
+		},
+		Subset: "controls_and_biobanks",
+	})
+
 	// gnomAD v2 datasets
 	RegisterDatasetFetcher("gnomad_r2_1", &GnomadV2VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{

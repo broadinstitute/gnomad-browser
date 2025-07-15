@@ -234,10 +234,10 @@ func TestGnomadV4VariantFetcher_Integration_DataShaping(t *testing.T) {
 		// Check for HGDP/1KG prefixed populations
 		var hasHGDPPop, has1KGPop bool
 		for _, pop := range result.Genome.Populations {
-			if len(pop.ID) > 5 && pop.ID[:5] == "hgdp:" {
+			if len(pop.ID) >= 5 && pop.ID[:5] == "hgdp:" {
 				hasHGDPPop = true
 			}
-			if len(pop.ID) > 4 && pop.ID[:4] == "1kg:" {
+			if len(pop.ID) >= 4 && pop.ID[:4] == "1kg:" {
 				has1KGPop = true
 			}
 		}

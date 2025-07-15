@@ -147,8 +147,8 @@ func (f *GnomadV4VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 		variant.Genome = f.shapeGenomeData(doc.Genome)
 	}
 
-	// Shape joint data - only for the full gnomad_r4 dataset, not for non_ukb subset
-	if f.DatasetID == "gnomad_r4" && doc.Joint != nil && doc.Joint.Freq != nil && doc.Joint.Freq[f.Subset] != nil {
+	// Shape joint data - only for the full "all" subset, not for non_ukb subset
+	if f.Subset == "all" && doc.Joint != nil && doc.Joint.Freq != nil && doc.Joint.Freq[f.Subset] != nil {
 		variant.Joint = f.shapeJointData(doc.Joint, f.Subset)
 	}
 
