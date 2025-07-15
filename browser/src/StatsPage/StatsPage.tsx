@@ -4,13 +4,9 @@ import styled from 'styled-components'
 import gnomadV4AgeDistribution from '@gnomad/dataset-metadata/datasets/gnomad-v4/ageDistribution.json'
 import { ExternalLink, PageHeading } from '@gnomad/ui'
 
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import BrowserPageviews from '../../about/stats/browser_pageviews.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import BrowserWorld from '../../about/stats/browser_world.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import DiversityBadge from '../../about/stats/diversity_badge.png'
-// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
 import SnvsPerBPAvg from '../../about/stats/snvs_per_bp_avg.png'
 
 import DocumentTitle from '../DocumentTitle'

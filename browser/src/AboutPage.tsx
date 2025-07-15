@@ -2,15 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { PageHeading } from '@gnomad/ui'
 
-// @ts-expect-error
 import aboutContent from '../about/about.md'
-// @ts-expect-error
 import contributingProjectsList from '../about/contributors/contributing-projects.md'
-// @ts-expect-error
 import fundingSources from '../about/contributors/funding.md'
-// @ts-expect-error
 import dataContributorsList from '../about/contributors/data-contributors.md'
-// @ts-expect-error
 import gcbrContent from '../about/contributors/gcbr/gcbr.md'
 
 import DocumentTitle from './DocumentTitle'
