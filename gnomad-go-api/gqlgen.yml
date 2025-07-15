@@ -1,0 +1,18 @@
+schema:
+  - internal/graph/schema.graphqls
+exec:
+  filename: internal/graph/generated.go
+  package: graph
+model:
+  filename: internal/graph/model/models_gen.go
+  package: model
+resolver:
+  layout: follow-schema
+  dir: internal/graph
+  package: graph
+  filename: schema.resolvers.go
+models:
+  DatasetId:
+    model: gnomad-browser/gnomad-go-api/internal/graph/model.DatasetId
+  ReferenceGenomeId:
+    model: gnomad-browser/gnomad-go-api/internal/graph/model.ReferenceGenomeId
