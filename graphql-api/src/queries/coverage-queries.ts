@@ -117,6 +117,8 @@ export const fetchExomeCoverageForRegion = (esClient: any, datasetId: any, regio
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
 
+  logger.info(`exomeCoverageIndex ${exomeCoverageIndex}`)
+
   const regionSize = region.stop - region.start + 150
   const bucketSize = Math.max(Math.floor(regionSize / 500), 1)
 
@@ -139,6 +141,8 @@ export const fetchGenomeCoverageForRegion = (esClient: any, datasetId: any, regi
 
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
+
+  logger.info(`genomeCoverageIndex ${genomeCoverageIndex}`)
 
   const regionSize = region.stop - region.start + 150
   const bucketSize = Math.max(Math.floor(regionSize / 500), 1)
@@ -235,6 +239,9 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
+
+  logger.info(`exomeCoverageIndex ${exomeCoverageIndex}`)
+  logger.info(`genomeCoverageIndex ${genomeCoverageIndex}`)
 
   const exomeCoverage = exomeCoverageIndex
     ? await fetchCoverage(esClient, {
