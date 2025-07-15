@@ -1,3 +1,6 @@
+// Package main provides the entry point for the gnomAD GraphQL API server.
+// It initializes the server configuration, sets up the GraphQL handler,
+// and starts the HTTP server on the configured port.
 package main
 
 import (

@@ -13,6 +13,6 @@ resolver:
   filename: schema.resolvers.go
 models:
   DatasetId:
-    model: gnomad-browser/gnomad-go-api/internal/graph/model.DatasetId
+    model: gnomad-browser/gnomad-go-api/internal/graph/model.DatasetID
   ReferenceGenomeId:
-    model: gnomad-browser/gnomad-go-api/internal/graph/model.ReferenceGenomeId
+    model: gnomad-browser/gnomad-go-api/internal/graph/model.ReferenceGenomeID

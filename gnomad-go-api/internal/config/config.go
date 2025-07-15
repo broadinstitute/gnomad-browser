@@ -1,3 +1,6 @@
+// Package config handles application configuration management using Viper.
+// It provides a centralized way to load and access configuration values
+// from environment variables with sensible defaults.
 package config
 
 import (

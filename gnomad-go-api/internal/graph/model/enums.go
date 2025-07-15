@@ -1,16 +1,19 @@
+// Package model contains the GraphQL model types for the gnomAD API.
 package model
 
-type DatasetId string
+// DatasetID represents the available gnomAD dataset identifiers.
+type DatasetID string
 
 const (
-	DatasetIdGnomadR4       DatasetId = "gnomad_r4"
-	DatasetIdGnomadR4NonUkb DatasetId = "gnomad_r4_non_ukb"
-	DatasetIdGnomadR21      DatasetId = "gnomad_r2_1"
+	DatasetIDGnomadR4       DatasetID = "gnomad_r4"
+	DatasetIDGnomadR4NonUkb DatasetID = "gnomad_r4_non_ukb"
+	DatasetIDGnomadR21      DatasetID = "gnomad_r2_1"
 )
 
-type ReferenceGenomeId string
+// ReferenceGenomeID represents the available reference genome identifiers.
+type ReferenceGenomeID string
 
 const (
-	ReferenceGenomeIdGRCh37 ReferenceGenomeId = "GRCh37"
-	ReferenceGenomeIdGRCh38 ReferenceGenomeId = "GRCh38"
+	ReferenceGenomeIDGRCh37 ReferenceGenomeID = "GRCh37"
+	ReferenceGenomeIDGRCh38 ReferenceGenomeID = "GRCh38"
 )

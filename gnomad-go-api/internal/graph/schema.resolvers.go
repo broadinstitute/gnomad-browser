@@ -11,7 +11,7 @@ import (
 )
 
 // Variant is the resolver for the variant field.
-func (r *queryResolver) Variant(ctx context.Context, variantID *string, rsid *string, vrsID *string, dataset model.DatasetId) (*model.VariantDetails, error) {
+func (r *queryResolver) Variant(ctx context.Context, variantID *string, rsid *string, vrsID *string, dataset model.DatasetID) (*model.VariantDetails, error) {
 	panic(fmt.Errorf("not implemented: Variant - variant"))
 }
 
