@@ -105,6 +105,27 @@ func (r *queryResolver) Variant(ctx context.Context, variantID *string, rsid *st
 	return nil, fmt.Errorf("no variant ID provided")
 }
 
+// StructuralVariant is the resolver for the structural_variant field.
+func (r *queryResolver) StructuralVariant(ctx context.Context, variantID string, dataset model.StructuralVariantDatasetID) (*model.StructuralVariantDetails, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Fetch the structural variant
+	variant, err := queries.FetchStructuralVariant(ctx, esClient, variantID, dataset)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch structural variant: %w", err)
+	}
+
+	if variant == nil {
+		return nil, fmt.Errorf("structural variant not found: %s", variantID)
+	}
+
+	return variant, nil
+}
+
 // Gene is the resolver for the gene field.
 func (r *queryResolver) Gene(ctx context.Context, geneID *string, geneSymbol *string, referenceGenome model.ReferenceGenomeID) (*model.Gene, error) {
 	// Get Elasticsearch client from context
@@ -263,6 +284,23 @@ func (r *queryResolver) ClinvarVariant(ctx context.Context, variantID string, re
 	return queries.FetchClinVarVariant(ctx, esClient, variantID, refGenomeStr)
 }
 
+// StructuralVariants is the resolver for the structural_variants field.
+func (r *geneResolver) StructuralVariants(ctx context.Context, obj *model.Gene, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Fetch structural variants for this gene
+	variants, err := queries.FetchStructuralVariantsByGene(ctx, esClient, obj.Symbol, dataset)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch structural variants for gene %s: %w", obj.Symbol, err)
+	}
+
+	return variants, nil
+}
+
 // ClinvarVariants is the resolver for the clinvar_variants field.
 func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
 	// Get Elasticsearch client from context
@@ -284,6 +322,23 @@ func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region)
 
 	// Fetch ClinVar variants for region
 	return queries.FetchClinVarVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
+}
+
+// StructuralVariants is the resolver for the structural_variants field.
+func (r *regionResolver) StructuralVariants(ctx context.Context, obj *model.Region, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Fetch structural variants in this region
+	variants, err := queries.FetchStructuralVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, dataset)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch structural variants for region %s:%d-%d: %w", obj.Chrom, obj.Start, obj.Stop, err)
+	}
+
+	return variants, nil
 }
 
 // ExacConstraint returns ExacConstraintResolver implementation.
