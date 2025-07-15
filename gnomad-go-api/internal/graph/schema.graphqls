@@ -709,8 +709,66 @@ type MitochondrialVariant {
   variant_id: String!
 }
 
+# ClinVar Types
+type ClinVarVariantGnomadSequencingTypeData {
+  ac: Int!
+  an: Int!
+  filters: [String!]!
+}
+
+type ClinVarVariantGnomadData {
+  exome: ClinVarVariantGnomadSequencingTypeData
+  genome: ClinVarVariantGnomadSequencingTypeData
+}
+
 type ClinVarVariant {
   variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  clinical_significance: String!
+  clinvar_variation_id: String!
+  gnomad: ClinVarVariantGnomadData
+  gold_stars: Int!
+  hgvsc: String
+  hgvsp: String
+  in_gnomad: Boolean
+  major_consequence: String
+  review_status: String!
+  transcript_id: String
+}
+
+type ClinVarCondition {
+  name: String!
+  medgen_id: String
+}
+
+type ClinVarSubmission {
+  clinical_significance: String
+  last_evaluated: String
+  review_status: String!
+  submitter_name: String!
+  conditions: [ClinVarCondition!]!
+}
+
+type ClinVarVariantDetails {
+  variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  clinical_significance: String!
+  clinvar_variation_id: String!
+  gnomad: ClinVarVariantGnomadData
+  gold_stars: Int!
+  in_gnomad: Boolean!
+  last_evaluated: String
+  review_status: String!
+  rsid: String
+  submissions: [ClinVarSubmission!]!
 }
 
 type FeatureCoverage {
@@ -894,4 +952,9 @@ type Query {
     variantId: String!
     dataset: CopyNumberVariantDatasetId!
   ): CopyNumberVariantDetails
+  
+  clinvar_variant(
+    variant_id: String!
+    reference_genome: ReferenceGenomeId!
+  ): ClinVarVariantDetails
 }

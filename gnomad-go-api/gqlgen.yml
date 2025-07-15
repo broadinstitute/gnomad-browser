@@ -22,3 +22,11 @@ models:
     model: github.com/99designs/gqlgen/graphql.Int64
   Float:
     model: github.com/99designs/gqlgen/graphql.Float
+  Gene:
+    fields:
+      clinvar_variants:
+        resolver: true
+  Region:
+    fields:
+      clinvar_variants:
+        resolver: true

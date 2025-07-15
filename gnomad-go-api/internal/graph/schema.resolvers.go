@@ -27,6 +27,29 @@ func (r *exacConstraintResolver) PLi(ctx context.Context, obj *model.ExacConstra
 	return 0, nil
 }
 
+// ClinvarVariants is the resolver for the clinvar_variants field.
+func (r *geneResolver) ClinvarVariants(ctx context.Context, obj *model.Gene) ([]*model.ClinVarVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome enum to string
+	var refGenomeStr string
+	switch obj.ReferenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", obj.ReferenceGenome)
+	}
+
+	// Fetch ClinVar variants for gene
+	return queries.FetchClinVarVariantsByGene(ctx, esClient, obj.GeneID, refGenomeStr)
+}
+
 // Pli is the resolver for the pli field.
 func (r *gnomadConstraintResolver) Pli(ctx context.Context, obj *model.GnomadConstraint) (*float64, error) {
 	return obj.Pli, nil
@@ -217,8 +240,57 @@ func (r *queryResolver) CopyNumberVariant(ctx context.Context, variantID string,
 	return cnvDetails, nil
 }
 
+// ClinvarVariant is the resolver for the clinvar_variant field.
+func (r *queryResolver) ClinvarVariant(ctx context.Context, variantID string, referenceGenome model.ReferenceGenomeID) (*model.ClinVarVariantDetails, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome enum to string
+	var refGenomeStr string
+	switch referenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", referenceGenome)
+	}
+
+	// Fetch ClinVar variant
+	return queries.FetchClinVarVariant(ctx, esClient, variantID, refGenomeStr)
+}
+
+// ClinvarVariants is the resolver for the clinvar_variants field.
+func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome enum to string
+	var refGenomeStr string
+	switch obj.ReferenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", obj.ReferenceGenome)
+	}
+
+	// Fetch ClinVar variants for region
+	return queries.FetchClinVarVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
+}
+
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
+
+// Gene returns GeneResolver implementation.
+func (r *Resolver) Gene() GeneResolver { return &geneResolver{r} }
 
 // GnomadConstraint returns GnomadConstraintResolver implementation.
 func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadConstraintResolver{r} }
@@ -227,5 +299,6 @@ func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadC
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type exacConstraintResolver struct{ *Resolver }
+type geneResolver struct{ *Resolver }
 type gnomadConstraintResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
