@@ -13,11 +13,6 @@ import (
 	"strings"
 )
 
-// Initialize fetchers on startup
-func init() {
-	queries.InitializeFetchers()
-}
-
 // Variant is the resolver for the variant field.
 func (r *queryResolver) Variant(ctx context.Context, variantID *string, rsid *string, vrsID *string, dataset model.DatasetID) (*model.VariantDetails, error) {
 	// Get Elasticsearch client from context

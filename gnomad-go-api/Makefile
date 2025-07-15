@@ -1,4 +1,7 @@
-.PHONY: generate build run test lint lint-fix install-tools
+.PHONY: generate build run test test-unit test-integration test-all lint lint-fix install-tools
+
+# Default Elasticsearch URL for integration tests
+ELASTICSEARCH_URL ?= http://localhost:9200
 
 generate:
 	@echo "Running GraphQL code generation..."
@@ -11,8 +14,31 @@ build: generate
 run: generate
 	go run cmd/server/main.go
 
-test:
-	go test ./...
+# Run all tests except integration tests
+test: test-unit
+
+# Run only unit tests (excludes integration tests)
+test-unit:
+	go test -short ./...
+
+# Run only integration tests (requires Elasticsearch)
+test-integration:
+	@echo "Running integration tests against Elasticsearch at ${ELASTICSEARCH_URL}"
+	@echo "Using username: ${ELASTICSEARCH_USERNAME:-elastic}"
+	@if [ -n "${ELASTICSEARCH_PASSWORD}" ]; then echo "Using password: [REDACTED]"; fi
+	@ELASTICSEARCH_URL=${ELASTICSEARCH_URL} ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME} ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD} go test -tags=integration -run Integration ./internal/data/queries
+
+# Run specific gnomAD v4 integration tests
+test-integration-gnomad-v4:
+	@echo "Running gnomAD v4 integration tests against Elasticsearch at ${ELASTICSEARCH_URL}"
+	@echo "Using username: ${ELASTICSEARCH_USERNAME:-elastic}"
+	@if [ -n "${ELASTICSEARCH_PASSWORD}" ]; then echo "Using password: [REDACTED]"; fi
+	@ELASTICSEARCH_URL=${ELASTICSEARCH_URL} ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME} ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD} go test -tags=integration -run "TestGnomadV4.*Integration" ./internal/data/queries -v
+
+# Run all tests including integration tests
+test-all:
+	@echo "Running all tests including integration tests"
+	ELASTICSEARCH_URL=${ELASTICSEARCH_URL} go test -tags=integration ./...
 
 lint:
 	golangci-lint run

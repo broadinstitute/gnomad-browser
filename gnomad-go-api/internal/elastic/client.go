@@ -45,6 +45,11 @@ type Hit struct {
 }
 
 func NewClient(addresses []string) (*Client, error) {
+	return NewClientWithAuth(addresses, "", "")
+}
+
+// NewClientWithAuth creates a new Elasticsearch client with optional authentication
+func NewClientWithAuth(addresses []string, username, password string) (*Client, error) {
 	cfg := elasticsearch.Config{
 		Addresses: addresses,
 		Transport: &http.Transport{
@@ -55,6 +60,12 @@ func NewClient(addresses []string) (*Client, error) {
 		RetryOnStatus: []int{502, 503, 504, 429},
 		RetryBackoff:  func(i int) time.Duration { return time.Duration(i) * 100 * time.Millisecond },
 		MaxRetries:    3,
+	}
+
+	// Add authentication if provided
+	if username != "" && password != "" {
+		cfg.Username = username
+		cfg.Password = password
 	}
 
 	es, err := elasticsearch.NewClient(cfg)
@@ -144,4 +155,33 @@ func (c *Client) SearchByID(ctx context.Context, index, field, id string) (*Hit,
 	}
 
 	return &response.Hits.Hits[0], nil
+}
+
+// InfoResponse represents Elasticsearch cluster info
+type InfoResponse struct {
+	Name    string `json:"name"`
+	Version struct {
+		Number string `json:"number"`
+	} `json:"version"`
+}
+
+// Info returns information about the Elasticsearch cluster
+func (c *Client) Info(ctx context.Context) (*InfoResponse, error) {
+	req := esapi.InfoRequest{}
+	res, err := req.Do(ctx, c.es)
+	if err != nil {
+		return nil, fmt.Errorf("error getting cluster info: %w", err)
+	}
+	defer res.Body.Close()
+
+	if res.IsError() {
+		return nil, fmt.Errorf("info request failed: %s", res.String())
+	}
+
+	var info InfoResponse
+	if err := json.NewDecoder(res.Body).Decode(&info); err != nil {
+		return nil, fmt.Errorf("error parsing info response: %w", err)
+	}
+
+	return &info, nil
 }
