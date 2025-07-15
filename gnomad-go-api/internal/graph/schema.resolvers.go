@@ -181,8 +181,39 @@ func (r *queryResolver) VariantSearch(ctx context.Context, query string, dataset
 	return results, nil
 }
 
-// Genes is the resolver for the genes field.
-func (r *regionResolver) Genes(ctx context.Context, obj *model.Region) ([]*model.RegionGene, error) {
+// VariantCooccurrence is the resolver for the variant_cooccurrence field.
+func (r *queryResolver) VariantCooccurrence(ctx context.Context, variants []string, dataset model.DatasetID) (*model.VariantCooccurrence, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Call the variant co-occurrence query function
+	return queries.FetchVariantCooccurrence(ctx, esClient, variants, string(dataset))
+}
+
+// ExacConstraint returns ExacConstraintResolver implementation.
+func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
+
+// GnomadConstraint returns GnomadConstraintResolver implementation.
+func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadConstraintResolver{r} }
+
+// Query returns QueryResolver implementation.
+func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
+
+type exacConstraintResolver struct{ *Resolver }
+type gnomadConstraintResolver struct{ *Resolver }
+type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+/*
+	func (r *regionResolver) Genes(ctx context.Context, obj *model.Region) ([]*model.RegionGene, error) {
 	// Get Elasticsearch client from context
 	esClient := elastic.FromContext(ctx)
 	if esClient == nil {
@@ -200,14 +231,10 @@ func (r *regionResolver) Genes(ctx context.Context, obj *model.Region) ([]*model
 
 	return genes, nil
 }
-
-// NonCodingConstraints is the resolver for the non_coding_constraints field.
 func (r *regionResolver) NonCodingConstraints(ctx context.Context, obj *model.Region) ([]*model.NonCodingConstraintRegion, error) {
 	// TODO: Implement non-coding constraints fetching
 	return []*model.NonCodingConstraintRegion{}, nil
 }
-
-// Variants is the resolver for the variants field.
 func (r *regionResolver) Variants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.Variant, error) {
 	// Get Elasticsearch client from context
 	esClient := elastic.FromContext(ctx)
@@ -226,32 +253,22 @@ func (r *regionResolver) Variants(ctx context.Context, obj *model.Region, datase
 
 	return variants, nil
 }
-
-// StructuralVariants is the resolver for the structural_variants field.
 func (r *regionResolver) StructuralVariants(ctx context.Context, obj *model.Region, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
 	// TODO: Implement structural variants fetching
 	return []*model.StructuralVariant{}, nil
 }
-
-// MitochondrialVariants is the resolver for the mitochondrial_variants field.
 func (r *regionResolver) MitochondrialVariants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
 	// TODO: Implement mitochondrial variants fetching
 	return []*model.MitochondrialVariant{}, nil
 }
-
-// CopyNumberVariants is the resolver for the copy_number_variants field.
 func (r *regionResolver) CopyNumberVariants(ctx context.Context, obj *model.Region, dataset model.CopyNumberVariantDatasetID) ([]*model.CopyNumberVariant, error) {
 	// TODO: Implement copy number variants fetching
 	return []*model.CopyNumberVariant{}, nil
 }
-
-// ClinvarVariants is the resolver for the clinvar_variants field.
 func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
 	// TODO: Implement ClinVar variants fetching
 	return []*model.ClinVarVariant{}, nil
 }
-
-// Coverage is the resolver for the coverage field.
 func (r *regionResolver) Coverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) (*model.RegionCoverage, error) {
 	// TODO: Implement coverage fetching
 	return &model.RegionCoverage{
@@ -259,32 +276,14 @@ func (r *regionResolver) Coverage(ctx context.Context, obj *model.Region, datase
 		Genome: []*model.CoverageBin{},
 	}, nil
 }
-
-// MitochondrialCoverage is the resolver for the mitochondrial_coverage field.
 func (r *regionResolver) MitochondrialCoverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialCoverageBin, error) {
 	// TODO: Implement mitochondrial coverage fetching
 	return []*model.MitochondrialCoverageBin{}, nil
 }
-
-// ShortTandemRepeats is the resolver for the short_tandem_repeats field.
 func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
 	// TODO: Implement short tandem repeats fetching
 	return []*model.ShortTandemRepeat{}, nil
 }
-
-// ExacConstraint returns ExacConstraintResolver implementation.
-func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
-
-// GnomadConstraint returns GnomadConstraintResolver implementation.
-func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadConstraintResolver{r} }
-
-// Query returns QueryResolver implementation.
-func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
-
-// Region returns RegionResolver implementation.
 func (r *Resolver) Region() RegionResolver { return &regionResolver{r} }
-
-type exacConstraintResolver struct{ *Resolver }
-type gnomadConstraintResolver struct{ *Resolver }
-type queryResolver struct{ *Resolver }
 type regionResolver struct{ *Resolver }
+*/

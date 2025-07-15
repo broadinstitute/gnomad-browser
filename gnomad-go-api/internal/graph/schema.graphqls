@@ -794,6 +794,22 @@ type VariantSearchResult {
   variant_id: String!
 }
 
+# Variant Cooccurrence Types
+type VariantCooccurrenceInPopulation {
+  id: String!
+  genotype_counts: [Int!]!
+  haplotype_counts: [Float!]!
+  p_compound_heterozygous: Float
+}
+
+type VariantCooccurrence {
+  variant_ids: [String!]!
+  genotype_counts: [Int!]!
+  haplotype_counts: [Float!]!
+  p_compound_heterozygous: Float
+  populations: [VariantCooccurrenceInPopulation!]!
+}
+
 # Query
 type Query {
   variant(
@@ -825,4 +841,9 @@ type Query {
     query: String!
     dataset: DatasetId!
   ): [VariantSearchResult!]!
+  
+  variant_cooccurrence(
+    variants: [String!]!
+    dataset: DatasetId!
+  ): VariantCooccurrence
 }
