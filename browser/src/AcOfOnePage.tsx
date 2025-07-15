@@ -3,18 +3,12 @@ import styled from 'styled-components'
 import { ExternalLink, ListItem, OrderedList, PageHeading } from '@gnomad/ui'
 import { PaperCitation } from './PublicationsPage'
 
-// @ts-expect-error
 import exac_frequencies_bar_graph from '../about/acofone/exac_frequencies.png'
-// @ts-expect-error
 import gnomad_v4_frequencies_bar_graph from '../about/acofone/gnomad_v4_frequencies.png'
-// @ts-expect-error
 import gnomad_v4_sv_figures from '../about/acofone/gnomad_v4_sv_figures.png'
 
-// @ts-expect-error
 import acOfOnePartOne from '../about/acofone/ac-of-one-part-one.md'
-// @ts-expect-error
 import acOfOnePartTwo from '../about/acofone/ac-of-one-part-two.md'
-// @ts-expect-error
 import acOfOnePartThree from '../about/acofone/ac-of-one-part-three.md'
 
 import DocumentTitle from './DocumentTitle'
@@ -120,7 +114,6 @@ const AcOfOnePage = () => {
           <ExternalLink href="https://genebass.org">https://genebass.org</ExternalLink>
         </ListItem>
 
-        {/* TODO: FIX THIS ONE */}
         <PaperCitation
           authorList="Azzariti, D. R., Riggs, E. R., Niehaus, A., Rodriguez, L. L., Ramos, E. M., Kattman, B., Landrum, M. J., Martin, C. L., & Rehm, H. L."
           title="Points to consider for sharing variant-level information from clinical genetic testing with ClinVar."
