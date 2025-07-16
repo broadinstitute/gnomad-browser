@@ -367,7 +367,6 @@ func (r *queryResolver) ShortTandemRepeats(ctx context.Context, dataset model.Da
 
 	return strs, nil
 }
-
 // ClinvarVariants is the resolver for the clinvar_variants field.
 func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
 	// Get Elasticsearch client from context
@@ -410,7 +409,6 @@ func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Regi
 
 	return strs, nil
 }
-
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
 

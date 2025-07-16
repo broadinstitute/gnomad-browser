@@ -37,10 +37,14 @@ type GeneDocumentValue struct {
 	Transcripts           []TranscriptDocument `json:"transcripts" mapstructure:"transcripts"`
 	CanonicalTranscriptID *string              `json:"canonical_transcript_id" mapstructure:"canonical_transcript_id"`
 	ManeSelectTranscript  *ManeSelectDocument  `json:"mane_select_transcript" mapstructure:"mane_select_transcript"`
-	Flags                 []string             `json:"flags" mapstructure:"flags"`
-	Pext                  *PextDocument        `json:"pext" mapstructure:"pext"`
-	GnomadConstraint      *GnomadConstraintDoc `json:"gnomad_constraint" mapstructure:"gnomad_constraint"`
-	ExacConstraint        *ExacConstraintDoc   `json:"exac_constraint" mapstructure:"exac_constraint"`
+	Flags                                       []string                                     `json:"flags" mapstructure:"flags"`
+	Pext                                        *PextDocument                                `json:"pext" mapstructure:"pext"`
+	GnomadConstraint                            *GnomadConstraintDoc                         `json:"gnomad_constraint" mapstructure:"gnomad_constraint"`
+	GnomadV2RegionalMissenseConstraint          *GnomadV2RegionalMissenseConstraintDocument  `json:"gnomad_v2_regional_missense_constraint" mapstructure:"gnomad_v2_regional_missense_constraint"`
+	ExacConstraint                              *ExacConstraintDoc                           `json:"exac_constraint" mapstructure:"exac_constraint"`
+	ExacRegionalMissenseConstraintRegions       []*ExacRegionalMissenseConstraintRegionData  `json:"exac_regional_missense_constraint_regions" mapstructure:"exac_regional_missense_constraint_regions"`
+	MitochondrialConstraint                     *MitochondrialConstraintDocument             `json:"mitochondrial_constraint" mapstructure:"mitochondrial_constraint"`
+	MitochondrialMissenseConstraintRegions      []*MitochondrialRegionConstraintData         `json:"mitochondrial_missense_constraint_regions" mapstructure:"mitochondrial_missense_constraint_regions"`
 }
 
 type ExonDocument struct {
@@ -121,6 +125,7 @@ type ExacConstraintDoc struct {
 	LofZ   *float64 `json:"lof_z" mapstructure:"lof_z"`
 	Pli    *float64 `json:"pli" mapstructure:"pli"`
 }
+
 
 // FetchGeneByID fetches a gene by its ID from Elasticsearch
 func FetchGeneByID(ctx context.Context, esClient *elastic.Client, geneID string, referenceGenome string) (*model.Gene, error) {
@@ -369,11 +374,11 @@ func convertGeneDocumentToGraphQL(doc *GeneDocument, referenceGenome string) *mo
 		Flags:                                  val.Flags,
 		Pext:                                   pext,
 		GnomadConstraint:                       gnomadConstraint,
-		GnomadV2RegionalMissenseConstraint:     nil, // To be implemented later
+		GnomadV2RegionalMissenseConstraint:     ConvertGnomadV2RegionalMissenseConstraint(val.GnomadV2RegionalMissenseConstraint),
 		ExacConstraint:                         exacConstraint,
-		ExacRegionalMissenseConstraintRegions:  nil, // To be implemented later
-		MitochondrialConstraint:                nil, // To be implemented later
-		MitochondrialMissenseConstraintRegions: nil, // To be implemented later
+		ExacRegionalMissenseConstraintRegions:  ConvertExacRegionalMissenseConstraintRegions(val.ExacRegionalMissenseConstraintRegions),
+		MitochondrialConstraint:                ConvertMitochondrialConstraintDoc(val.MitochondrialConstraint),
+		MitochondrialMissenseConstraintRegions: ConvertMitochondrialRegionConstraints(val.MitochondrialMissenseConstraintRegions),
 		HeterozygousVariantCooccurrenceCounts:  hetCounts,
 		HomozygousVariantCooccurrenceCounts:    homCounts,
 	}
@@ -466,3 +471,4 @@ func FetchGenesMatchingText(ctx context.Context, esClient *elastic.Client, query
 
 	return results, nil
 }
+
