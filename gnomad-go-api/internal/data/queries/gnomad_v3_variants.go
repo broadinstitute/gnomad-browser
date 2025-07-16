@@ -32,7 +32,7 @@ func (f *GnomadV3VariantFetcher) FetchVariantByID(ctx context.Context, client *e
 	}
 
 	// Parse and shape data
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV3VariantFetcher) FetchVariantByRSID(ctx context.Context, client *elastic.Client, rsid string) (*model.VariantDetails, error) {
@@ -47,7 +47,7 @@ func (f *GnomadV3VariantFetcher) FetchVariantByRSID(ctx context.Context, client 
 		return nil, &VariantNotFoundError{ID: rsid, Dataset: f.DatasetID}
 	}
 
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV3VariantFetcher) FetchVariantByVRSID(ctx context.Context, client *elastic.Client, vrsID string) (*model.VariantDetails, error) {
@@ -63,7 +63,7 @@ func (f *GnomadV3VariantFetcher) FetchVariantByVRSID(ctx context.Context, client
 		return nil, &VariantNotFoundError{ID: vrsID, Dataset: f.DatasetID}
 	}
 
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV3VariantFetcher) buildVariantQuery(field, value string) map[string]any {
@@ -102,7 +102,7 @@ func (f *GnomadV3VariantFetcher) executeSearch(ctx context.Context, client *elas
 	return &response.Hits.Hits[0], nil
 }
 
-func (f *GnomadV3VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.VariantDetails, error) {
+func (f *GnomadV3VariantFetcher) shapeVariantData(ctx context.Context, client *elastic.Client, hit *elastic.Hit) (*model.VariantDetails, error) {
 	// Extract the 'value' field from _source
 	value, ok := hit.Source["value"].(map[string]any)
 	if !ok {
@@ -177,6 +177,18 @@ func (f *GnomadV3VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 	// Transform in_silico_predictors from struct to map
 	predictorsMap := f.convertInSilicoPredictorsToMap(doc.InSilicoPredictors)
 	variant.InSilicoPredictors = CreateInSilicoPredictorsList(predictorsMap)
+
+	// Coverage - fetch actual coverage data
+	// Use the original contig with chr prefix for coverage queries
+	coverage, err := FetchVariantCoverage(ctx, client, doc.Locus.Contig, doc.Pos)
+	if err != nil {
+		// Log error but don't fail - return empty coverage instead
+		coverage = &model.VariantCoverageDetails{
+			Exome:  &model.VariantCoverage{},
+			Genome: &model.VariantCoverage{},
+		}
+	}
+	variant.Coverage = coverage
 
 	return variant, nil
 }

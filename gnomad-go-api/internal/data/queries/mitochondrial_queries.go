@@ -363,12 +363,22 @@ func convertMitochondrialVariantToModel(doc *MitochondrialVariantDocument) *mode
 		ExcludedAc:                      &doc.ExcludedAC,
 		MaxHeteroplasmy:                 &doc.MaxHetP,
 		HaplogroupDefining:              &doc.HaplogroupDefining,
-		MitotipScore:                    &doc.MitotipScore,
-		MitotipTrnaPrediction:           &doc.MitotipTrnaPrediction,
-		PonMlProbabilityOfPathogenicity: &doc.PONMLProbabilityOfPathogenicity,
-		PonMtTrnaPrediction:             &doc.PONMtTrnaPrediction,
 		Filters:                         doc.Filters,
 		Flags:                           doc.Flags,
+	}
+	
+	// Only set prediction scores if they have meaningful values
+	if doc.MitotipScore > 0 {
+		variant.MitotipScore = &doc.MitotipScore
+	}
+	if doc.MitotipTrnaPrediction != "" {
+		variant.MitotipTrnaPrediction = &doc.MitotipTrnaPrediction
+	}
+	if doc.PONMLProbabilityOfPathogenicity > 0 {
+		variant.PonMlProbabilityOfPathogenicity = &doc.PONMLProbabilityOfPathogenicity
+	}
+	if doc.PONMtTrnaPrediction != "" {
+		variant.PonMtTrnaPrediction = &doc.PONMtTrnaPrediction
 	}
 
 	// Handle optional RSID
@@ -398,14 +408,18 @@ func convertMitochondrialVariantToModel(doc *MitochondrialVariantDocument) *mode
 	// Convert haplogroups
 	haplogroups := make([]*model.MitochondrialVariantHaplogroup, len(doc.Haplogroups))
 	for i, hap := range doc.Haplogroups {
-		haplogroups[i] = &model.MitochondrialVariantHaplogroup{
+		hapGroup := &model.MitochondrialVariantHaplogroup{
 			ID:     &hap.ID,
 			An:     &hap.AN,
 			AcHet:  &hap.ACHet,
 			AcHom:  &hap.ACHom,
-			Faf:    &hap.FAF,
 			FafHom: &hap.FAFHom,
 		}
+		// Only set FAF if it's non-zero
+		if hap.FAF > 0 {
+			hapGroup.Faf = &hap.FAF
+		}
+		haplogroups[i] = hapGroup
 	}
 	variant.Haplogroups = haplogroups
 
@@ -554,8 +568,44 @@ func convertTranscriptConsequences(consequences []map[string]interface{}) []*mod
 		if geneSymbol, ok := csq["gene_symbol"].(string); ok {
 			tc.GeneSymbol = &geneSymbol
 		}
+		if geneVersion, ok := csq["gene_version"].(string); ok {
+			tc.GeneVersion = &geneVersion
+		}
 		if transcriptID, ok := csq["transcript_id"].(string); ok {
 			tc.TranscriptID = transcriptID
+		}
+		if transcriptVersion, ok := csq["transcript_version"].(string); ok {
+			tc.TranscriptVersion = &transcriptVersion
+		}
+		
+		// Major consequence
+		if majorConsequence, ok := csq["major_consequence"].(string); ok {
+			tc.MajorConsequence = &majorConsequence
+		}
+		
+		// Canonical flag - check both "canonical" and "is_canonical"
+		if canonical, ok := csq["canonical"].(bool); ok {
+			tc.Canonical = &canonical
+			tc.IsCanonical = &canonical
+		} else if isCanonical, ok := csq["is_canonical"].(bool); ok {
+			tc.Canonical = &isCanonical
+			tc.IsCanonical = &isCanonical
+		}
+		
+		// MANE select flags (mitochondrial variants likely don't have these, but include for consistency)
+		if isManeSelect, ok := csq["is_mane_select"].(bool); ok {
+			tc.IsManeSelect = &isManeSelect
+		}
+		if isManeSelectVersion, ok := csq["is_mane_select_version"].(bool); ok {
+			tc.IsManeSelectVersion = &isManeSelectVersion
+		}
+		
+		// In silico predictions
+		if siftPrediction, ok := csq["sift_prediction"].(string); ok {
+			tc.SiftPrediction = &siftPrediction
+		}
+		if polyphenPrediction, ok := csq["polyphen_prediction"].(string); ok {
+			tc.PolyphenPrediction = &polyphenPrediction
 		}
 
 		// Consequences
@@ -575,6 +625,13 @@ func convertTranscriptConsequences(consequences []map[string]interface{}) []*mod
 		}
 		if hgvsp, ok := csq["hgvsp"].(string); ok {
 			tc.Hgvsp = &hgvsp
+		}
+		
+		// Set Hgvs: use hgvsp if it exists (coding variants), otherwise use hgvsc
+		if hgvsp, ok := csq["hgvsp"].(string); ok && hgvsp != "" {
+			tc.Hgvs = &hgvsp
+		} else if hgvsc, ok := csq["hgvsc"].(string); ok {
+			tc.Hgvs = &hgvsc
 		}
 
 		// LoF annotations

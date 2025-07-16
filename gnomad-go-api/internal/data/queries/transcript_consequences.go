@@ -104,18 +104,27 @@ func shapeTranscriptConsequence(csq map[string]interface{}) *model.TranscriptCon
 		ConsequenceTerms:    toStringSlice(csq["consequence_terms"]),
 		GeneID:              toString(csq["gene_id"]),
 		GeneSymbol:          toStringPtr(csq["gene_symbol"]),
+		GeneVersion:         toStringPtr(csq["gene_version"]),
 		TranscriptID:        toString(csq["transcript_id"]),
 		TranscriptVersion:   toStringPtr(csq["transcript_version"]),
 		Hgvsc:               toStringPtr(csq["hgvsc"]),
 		Hgvsp:               toStringPtr(csq["hgvsp"]),
-		IsCanonical:         toBoolPtr(csq["canonical"]),
-		IsManeSelect:        toBoolPtr(csq["mane_select"]),
-		IsManeSelectVersion: toBoolPtr(csq["mane_select_version"]),
+		IsCanonical:         toBoolPtr(csq["is_canonical"]),
+		IsManeSelect:        toBoolPtr(csq["is_mane_select"]),
+		IsManeSelectVersion: toBoolPtr(csq["is_mane_select_version"]),
 		RefseqID:            toStringPtr(csq["refseq_id"]),
 		RefseqVersion:       toStringPtr(csq["refseq_version"]),
 		Lof:                 toStringPtr(csq["lof"]),
 		LofFilter:           toStringPtr(csq["lof_filter"]),
 		LofFlags:            toStringPtr(csq["lof_flags"]),
+		Canonical:           toBoolPtr(csq["is_canonical"]), // Add deprecated field for compatibility
+	}
+	
+	// Set Hgvs: use hgvsp if it exists (coding variants), otherwise use hgvsc
+	if hgvsp := toStringPtr(csq["hgvsp"]); hgvsp != nil && *hgvsp != "" {
+		tc.Hgvs = hgvsp
+	} else {
+		tc.Hgvs = toStringPtr(csq["hgvsc"])
 	}
 
 	// Add additional fields specific to certain datasets
@@ -129,6 +138,11 @@ func shapeTranscriptConsequence(csq map[string]interface{}) *model.TranscriptCon
 
 	if polyphenPrediction, ok := csq["polyphen_prediction"].(string); ok {
 		tc.PolyphenPrediction = &polyphenPrediction
+	}
+
+	// Add domains if present
+	if domains, ok := csq["domains"].([]interface{}); ok {
+		tc.Domains = toStringSlice(domains)
 	}
 
 	return tc

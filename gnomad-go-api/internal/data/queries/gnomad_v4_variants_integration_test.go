@@ -47,6 +47,83 @@ func getTestESClient(t *testing.T) *elastic.Client {
 	return client
 }
 
+func TestDebugACHom(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping integration test in short mode")
+	}
+
+	client := getTestESClient(t)
+
+	fetcher := &GnomadV4VariantFetcher{
+		BaseVariantFetcher: BaseVariantFetcher{
+			DatasetID: "gnomad_r4_0",
+			ESIndex:   "gnomad_v4_variants",
+		},
+		Subset: "all",
+	}
+
+	variantID := "1-55051215-G-GA"
+	result, err := fetcher.FetchVariantByID(context.Background(), client, variantID)
+	if err != nil {
+		t.Fatalf("Failed to fetch variant: %v", err)
+	}
+
+	if result.Exome != nil && result.Exome.Populations != nil {
+		t.Log("Exome population ac_hom values:")
+		for _, pop := range result.Exome.Populations {
+			if pop.AcHom > 0 || pop.HomozygoteCount > 0 {
+				t.Logf("  %s: ac_hom=%d, homozygote_count=%d", pop.ID, pop.AcHom, pop.HomozygoteCount)
+			}
+		}
+	}
+
+	if result.Genome != nil && result.Genome.Populations != nil {
+		t.Log("Genome population ac_hom values:")
+		for _, pop := range result.Genome.Populations {
+			if pop.AcHom > 0 || pop.HomozygoteCount > 0 {
+				t.Logf("  %s: ac_hom=%d, homozygote_count=%d", pop.ID, pop.AcHom, pop.HomozygoteCount)
+			}
+		}
+	}
+
+	// Check specific populations mentioned in the test
+	if result.Exome != nil && result.Exome.Populations != nil {
+		var afr, afrXX, afrXY, XX, XY *model.PopulationAlleleFrequencies
+		for _, pop := range result.Exome.Populations {
+			switch pop.ID {
+			case "afr":
+				afr = pop
+			case "afr_XX":
+				afrXX = pop
+			case "afr_XY":
+				afrXY = pop
+			case "XX":
+				XX = pop
+			case "XY":
+				XY = pop
+			}
+		}
+
+		// Check the values
+		t.Log("\nChecking specific populations:")
+		if afr != nil {
+			t.Logf("afr: ac_hom=%d (expected 2), homozygote_count=%d", afr.AcHom, afr.HomozygoteCount)
+		}
+		if afrXX != nil {
+			t.Logf("afr_XX: ac_hom=%d (expected 1), homozygote_count=%d", afrXX.AcHom, afrXX.HomozygoteCount)
+		}
+		if afrXY != nil {
+			t.Logf("afr_XY: ac_hom=%d (expected 1), homozygote_count=%d", afrXY.AcHom, afrXY.HomozygoteCount)
+		}
+		if XX != nil {
+			t.Logf("XX: ac_hom=%d (expected 1), homozygote_count=%d", XX.AcHom, XX.HomozygoteCount)
+		}
+		if XY != nil {
+			t.Logf("XY: ac_hom=%d (expected 1), homozygote_count=%d", XY.AcHom, XY.HomozygoteCount)
+		}
+	}
+}
+
 func TestGnomadV4VariantFetcher_Integration_FetchVariantByID(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")

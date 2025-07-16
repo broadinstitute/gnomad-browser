@@ -3,6 +3,7 @@ package queries
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
@@ -33,6 +34,8 @@ func ShapeAndMergePopulations(basePopulations []map[string]interface{}, addition
 			An:              an,
 			HomozygoteCount: homCount,
 			HemizygoteCount: &hemiCount,
+			AcHemi:          &hemiCount, // Set AcHemi to ensure it's always non-nil
+			AcHom:           homCount,   // Set AcHom to match HomozygoteCount
 		}
 	}
 
@@ -64,9 +67,8 @@ func ShapeAndMergePopulations(basePopulations []map[string]interface{}, addition
 
 // addPrefixedPopulations adds populations with a prefix to the population map
 func addPrefixedPopulations(source map[string]interface{}, prefix string, popMap map[string]*model.PopulationAlleleFrequencies) {
-	// Check if this source has data
-	acRaw, hasAC := source["ac_raw"].(float64)
-	if !hasAC || acRaw <= 0 {
+	// Check if this source exists
+	if source == nil {
 		return
 	}
 
@@ -99,6 +101,8 @@ func addPrefixedPopulations(source map[string]interface{}, prefix string, popMap
 			An:              an,
 			HomozygoteCount: homCount,
 			HemizygoteCount: &hemiCount,
+			AcHemi:          &hemiCount, // Set AcHemi to ensure it's always non-nil
+			AcHom:           homCount,   // Set AcHom to match HomozygoteCount
 		}
 	}
 }
@@ -107,40 +111,16 @@ func addPrefixedPopulations(source map[string]interface{}, prefix string, popMap
 
 // ShapeSiteQualityMetrics converts raw site quality metrics to GraphQL model
 func ShapeSiteQualityMetrics(metrics []map[string]interface{}) []*model.VariantSiteQualityMetric {
-	// Map from ES metric names to expected GraphQL metric names
-	metricMapping := map[string]string{
-		"AS_VarDP":          "DP",
-		"AS_FS":             "FS",
-		"inbreeding_coeff":  "InbreedingCoeff",
-		"AS_MQ":             "MQ",
-		"AS_MQRankSum":      "MQRankSum",
-		"AS_QD":             "QD",
-		"AS_ReadPosRankSum": "ReadPosRankSum",
-		"AS_SOR":            "SOR",
-		"AS_VQSLOD":         "VQSLOD",
-		// V2/V3 specific mappings
-		"DP":              "DP",
-		"FS":              "FS",
-		"InbreedingCoeff": "InbreedingCoeff",
-		"MQ":              "MQ",
-		"MQRankSum":       "MQRankSum",
-		"QD":              "QD",
-		"ReadPosRankSum":  "ReadPosRankSum",
-		"SOR":             "SOR",
-		"VQSLOD":          "VQSLOD",
-	}
-
+	// For v4, we want to preserve the raw ES metric names
 	var result []*model.VariantSiteQualityMetric
 	for _, m := range metrics {
 		metricName := toString(m["metric"])
-		if mappedName, ok := metricMapping[metricName]; ok {
-			value := toFloat64Ptr(m["value"])
-			if value != nil {
-				result = append(result, &model.VariantSiteQualityMetric{
-					Metric: mappedName,
-					Value:  value,
-				})
-			}
+		value := toFloat64Ptr(m["value"])
+		if value != nil {
+			result = append(result, &model.VariantSiteQualityMetric{
+				Metric: metricName, // Use raw ES metric name
+				Value:  value,
+			})
 		}
 	}
 
@@ -159,10 +139,25 @@ func ShapeHistogram(binEdges, binFreq []float64) *model.Histogram {
 	}
 }
 
+// ShapeHistogramWithCounts creates histogram with n_smaller and n_larger counts
+func ShapeHistogramWithCounts(binEdges, binFreq []float64, nSmaller, nLarger int) *model.Histogram {
+	if len(binEdges) == 0 || len(binFreq) == 0 {
+		return nil
+	}
+
+	return &model.Histogram{
+		BinEdges: binEdges,
+		BinFreq:  binFreq,
+		NSmaller: &nSmaller,
+		NLarger:  &nLarger,
+	}
+}
+
 // ShapeAgeDistribution creates age distribution from het/hom data
-func ShapeAgeDistribution(hetBinEdges, hetBinFreq, homBinEdges, homBinFreq []float64) *model.AgeDistribution {
-	het := ShapeHistogram(hetBinEdges, hetBinFreq)
-	hom := ShapeHistogram(homBinEdges, homBinFreq)
+func ShapeAgeDistribution(hetBinEdges, hetBinFreq []float64, hetNSmaller, hetNLarger int,
+	homBinEdges, homBinFreq []float64, homNSmaller, homNLarger int) *model.AgeDistribution {
+	het := ShapeHistogramWithCounts(hetBinEdges, hetBinFreq, hetNSmaller, hetNLarger)
+	hom := ShapeHistogramWithCounts(homBinEdges, homBinFreq, homNSmaller, homNLarger)
 
 	if het == nil && hom == nil {
 		return nil
@@ -207,6 +202,16 @@ func ExtractVariantInfo(locus map[string]interface{}, alleles []interface{}) (ch
 
 // In silico predictor helpers
 
+// formatPredictorValue formats a predictor value with appropriate precision
+func formatPredictorValue(predictorID string, value float64) string {
+	// Use 4 decimal places for these specific predictors to preserve trailing zeros
+	if predictorID == "pangolin_largest_ds" || predictorID == "spliceai_ds_max" {
+		return fmt.Sprintf("%.4f", value)
+	}
+	// For other predictors, use %.3g to remove trailing zeros
+	return fmt.Sprintf("%.3g", value)
+}
+
 // CreateInSilicoPredictorsList creates a list of in silico predictors from a map
 func CreateInSilicoPredictorsList(predictorsMap map[string]interface{}) []*model.VariantInSilicoPredictor {
 	// Define the predictor IDs and their display names
@@ -217,10 +222,10 @@ func CreateInSilicoPredictorsList(predictorsMap map[string]interface{}) []*model
 		useRawValue bool
 	}{
 		{"cadd", "CADD", true, false},
-		{"revel_max", "REVEL", false, false},
 		{"spliceai_ds_max", "SpliceAI", false, false},
 		{"pangolin_largest_ds", "Pangolin", false, false},
 		{"phylop", "phyloP", false, false},
+		{"revel_max", "REVEL", false, false},
 		{"sift_max", "SIFT", false, false},
 		{"polyphen_max", "PolyPhen", false, false},
 		{"primate_ai", "PrimateAI", false, false},
@@ -240,7 +245,7 @@ func CreateInSilicoPredictorsList(predictorsMap map[string]interface{}) []*model
 		}
 
 		predictor := &model.VariantInSilicoPredictor{
-			ID:    info.name,
+			ID:    info.id,  // Use lowercase ID instead of display name
 			Flags: []string{},
 		}
 
@@ -248,19 +253,31 @@ func CreateInSilicoPredictorsList(predictorsMap map[string]interface{}) []*model
 		if info.isCADD {
 			if caddMap, ok := predData.(map[string]interface{}); ok {
 				if phred, ok := caddMap["phred"].(float64); ok {
-					predictor.Value = fmt.Sprintf("%.3g", phred)
+					predictor.Value = formatPredictorValue(info.id, phred)
 				}
 			}
 		} else if info.useRawValue {
 			// For predictors that store raw float values
 			if val, ok := predData.(float64); ok {
-				predictor.Value = fmt.Sprintf("%.3g", val)
+				predictor.Value = formatPredictorValue(info.id, val)
 			}
 		} else {
 			// Standard predictors with prediction field
 			if predMap, ok := predData.(map[string]interface{}); ok {
 				if prediction, ok := predMap["prediction"]; ok {
-					predictor.Value = toString(prediction)
+					// For numeric predictions, format with appropriate precision
+					if val, ok := prediction.(float64); ok {
+						predictor.Value = formatPredictorValue(info.id, val)
+					} else if val, ok := prediction.(string); ok {
+						// Try to parse string as float for formatting
+						if floatVal, err := strconv.ParseFloat(val, 64); err == nil {
+							predictor.Value = formatPredictorValue(info.id, floatVal)
+						} else {
+							predictor.Value = val
+						}
+					} else {
+						predictor.Value = toString(prediction)
+					}
 				}
 
 				// Add flags if present
@@ -270,8 +287,12 @@ func CreateInSilicoPredictorsList(predictorsMap map[string]interface{}) []*model
 					}
 				}
 			} else {
-				// Simple value
-				predictor.Value = toString(predData)
+				// Simple value - try to format as float if possible
+				if val, ok := predData.(float64); ok {
+					predictor.Value = formatPredictorValue(info.id, val)
+				} else {
+					predictor.Value = toString(predData)
+				}
 			}
 		}
 

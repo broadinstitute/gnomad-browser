@@ -9,6 +9,7 @@ type GnomadV4VariantDocument struct {
 	Ref             string                 `json:"ref"`
 	Alt             string                 `json:"alt"`
 	AlleleID        string                 `json:"allele_id"` // VRS ID (ga4gh: prefixed)
+	CAID            string                 `json:"caid"`      // CAID (Canonical Allele ID)
 	RSIDs           []string               `json:"rsids"`
 	VRS             map[string]interface{} `json:"vrs"`
 
@@ -46,26 +47,36 @@ type GnomadV4SequencingData struct {
 			AltAdj struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NLarger  int       `json:"n_larger"`
+				NSmaller int       `json:"n_smaller"`
 			} `json:"alt_adj"`
 		} `json:"allele_balance"`
 		GenotypeDepth struct {
 			AllAdj struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NLarger  int       `json:"n_larger"`
+				NSmaller int       `json:"n_smaller"`
 			} `json:"all_adj"`
 			AltAdj struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NLarger  int       `json:"n_larger"`
+				NSmaller int       `json:"n_smaller"`
 			} `json:"alt_adj"`
 		} `json:"genotype_depth"`
 		GenotypeQuality struct {
 			AllAdj struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NLarger  int       `json:"n_larger"`
+				NSmaller int       `json:"n_smaller"`
 			} `json:"all_adj"`
 			AltAdj struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NLarger  int       `json:"n_larger"`
+				NSmaller int       `json:"n_smaller"`
 			} `json:"alt_adj"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
@@ -138,7 +149,18 @@ type GnomadV4JointFrequencyData struct {
 
 // GnomadV4JointData represents joint (exome+genome) frequency data
 type GnomadV4JointData struct {
-	Freq map[string]*GnomadV4JointFrequencyData `json:"freq"` // keyed by subset: "all", "non_ukb"
+	Freq               map[string]*GnomadV4JointFrequencyData `json:"freq"` // keyed by subset: "all", "non_ukb"
+	Fafmax             *GnomadV4JointFAFData                   `json:"fafmax"`
+	Flags              []string                                `json:"flags"`
+	FreqComparisonStats map[string]interface{}                 `json:"freq_comparison_stats"`
+}
+
+// GnomadV4JointFAFData represents joint FAF data
+type GnomadV4JointFAFData struct {
+	Faf95Max       float64 `json:"faf95_max"`
+	Faf95MaxGenAnc string  `json:"faf95_max_gen_anc"`
+	Faf99Max       float64 `json:"faf99_max"`
+	Faf99MaxGenAnc string  `json:"faf99_max_gen_anc"`
 }
 
 // GnomadV4PopulationData represents population-specific frequency data

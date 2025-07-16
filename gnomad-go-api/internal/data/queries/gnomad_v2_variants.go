@@ -33,7 +33,7 @@ func (f *GnomadV2VariantFetcher) FetchVariantByID(ctx context.Context, client *e
 	}
 
 	// Parse and shape data
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV2VariantFetcher) FetchVariantByRSID(ctx context.Context, client *elastic.Client, rsid string) (*model.VariantDetails, error) {
@@ -48,7 +48,7 @@ func (f *GnomadV2VariantFetcher) FetchVariantByRSID(ctx context.Context, client 
 		return nil, &VariantNotFoundError{ID: rsid, Dataset: f.DatasetID}
 	}
 
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV2VariantFetcher) FetchVariantByVRSID(ctx context.Context, client *elastic.Client, vrsID string) (*model.VariantDetails, error) {
@@ -64,7 +64,7 @@ func (f *GnomadV2VariantFetcher) FetchVariantByVRSID(ctx context.Context, client
 		return nil, &VariantNotFoundError{ID: vrsID, Dataset: f.DatasetID}
 	}
 
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV2VariantFetcher) buildVariantQuery(field, value string) map[string]any {
@@ -103,7 +103,7 @@ func (f *GnomadV2VariantFetcher) executeSearch(ctx context.Context, client *elas
 	return &response.Hits.Hits[0], nil
 }
 
-func (f *GnomadV2VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.VariantDetails, error) {
+func (f *GnomadV2VariantFetcher) shapeVariantData(ctx context.Context, client *elastic.Client, hit *elastic.Hit) (*model.VariantDetails, error) {
 	// Extract the 'value' field from _source
 	value, ok := hit.Source["value"].(map[string]any)
 	if !ok {
@@ -166,6 +166,18 @@ func (f *GnomadV2VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 
 	// Add transcript consequences
 	result.TranscriptConsequences = f.buildTranscriptConsequences(variant.TranscriptConsequences)
+
+	// Coverage - fetch actual coverage data
+	// Use the original contig with chr prefix for coverage queries
+	coverage, err := FetchVariantCoverage(ctx, client, variant.Locus.Contig, variant.Pos)
+	if err != nil {
+		// Log error but don't fail - return empty coverage instead
+		coverage = &model.VariantCoverageDetails{
+			Exome:  &model.VariantCoverage{},
+			Genome: &model.VariantCoverage{},
+		}
+	}
+	result.Coverage = coverage
 
 	return result, nil
 }

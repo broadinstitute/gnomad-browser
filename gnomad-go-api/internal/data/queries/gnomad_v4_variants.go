@@ -30,7 +30,7 @@ func (f *GnomadV4VariantFetcher) FetchVariantByID(ctx context.Context, client *e
 	}
 
 	// Parse and shape data
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV4VariantFetcher) FetchVariantByRSID(ctx context.Context, client *elastic.Client, rsid string) (*model.VariantDetails, error) {
@@ -45,7 +45,7 @@ func (f *GnomadV4VariantFetcher) FetchVariantByRSID(ctx context.Context, client 
 		return nil, &VariantNotFoundError{ID: rsid, Dataset: f.DatasetID}
 	}
 
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV4VariantFetcher) FetchVariantByVRSID(ctx context.Context, client *elastic.Client, vrsID string) (*model.VariantDetails, error) {
@@ -60,7 +60,7 @@ func (f *GnomadV4VariantFetcher) FetchVariantByVRSID(ctx context.Context, client
 		return nil, &VariantNotFoundError{ID: vrsID, Dataset: f.DatasetID}
 	}
 
-	return f.shapeVariantData(hit)
+	return f.shapeVariantData(ctx, client, hit)
 }
 
 func (f *GnomadV4VariantFetcher) buildVariantQuery(field, value string) map[string]any {
@@ -94,7 +94,7 @@ func (f *GnomadV4VariantFetcher) executeSearch(ctx context.Context, client *elas
 	return &response.Hits.Hits[0], nil
 }
 
-func (f *GnomadV4VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.VariantDetails, error) {
+func (f *GnomadV4VariantFetcher) shapeVariantData(ctx context.Context, client *elastic.Client, hit *elastic.Hit) (*model.VariantDetails, error) {
 	// Extract the 'value' field from _source
 	value, ok := hit.Source["value"].(map[string]any)
 	if !ok {
@@ -173,12 +173,15 @@ func (f *GnomadV4VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 		variant.InSilicoPredictors = CreateInSilicoPredictorsList(doc.InSilicoPredictors)
 	}
 
-	// Add VRS data
-	if doc.VRS != nil {
-		if vrs, ok := doc.VRS["GA4GH:VA.Bfr3v-E0eFbBx_5NrpJlh6PmloPr6x7E"]; ok {
-			if vrsMap, ok := vrs.(map[string]any); ok {
-				caid := toString(vrsMap["id"])
-				variant.Caid = &caid
+	// Add CAID (VRS allele ID)
+	// The CAID is available directly in the document
+	if doc.CAID != "" {
+		variant.Caid = &doc.CAID
+	} else if doc.VRS != nil {
+		// Try to extract CAID from VRS data if direct field is empty
+		if altData, ok := doc.VRS["alt"].(map[string]interface{}); ok {
+			if alleleID, ok := altData["allele_id"].(string); ok && alleleID != "" {
+				variant.Caid = &alleleID
 			}
 		}
 	}
@@ -191,6 +194,18 @@ func (f *GnomadV4VariantFetcher) shapeVariantData(hit *elastic.Hit) (*model.Vari
 		// TODO: Map LOF curation data when structure is determined
 		variant.LofCurations = []*model.VariantLofCuration{}
 	}
+
+	// Coverage - fetch actual coverage data
+	// Use the original contig with chr prefix for coverage query
+	coverage, err := FetchVariantCoverage(ctx, client, doc.Locus.Contig, doc.Locus.Position)
+	if err != nil {
+		// Log error but don't fail - return empty coverage instead
+		coverage = &model.VariantCoverageDetails{
+			Exome:  &model.VariantCoverage{},
+			Genome: &model.VariantCoverage{},
+		}
+	}
+	variant.Coverage = coverage
 
 	return variant, nil
 }
@@ -230,6 +245,14 @@ func (f *GnomadV4VariantFetcher) shapeExomeData(data *GnomadV4SequencingData, su
 
 	// Convert ancestry groups to generic format
 	basePopulations := f.convertAncestryGroupsToMaps(freqData.AncestryGroups)
+	
+	// DEBUG: Print raw ancestry groups data
+	// fmt.Printf("DEBUG: Exome freqData.HomozygoteCount = %d\n", freqData.HomozygoteCount)
+	// for _, ag := range freqData.AncestryGroups {
+	//     if ag.HomozygoteCount > 0 {
+	//         fmt.Printf("DEBUG: Ancestry group %s has homozygote_count = %d\n", ag.ID, ag.HomozygoteCount)
+	//     }
+	// }
 
 	// Prepare additional population sources
 	additionalSources := make(map[string]interface{})
@@ -263,30 +286,40 @@ func (f *GnomadV4VariantFetcher) shapeExomeData(data *GnomadV4SequencingData, su
 	if len(data.QualityMetrics.AlleleBalance.AltAdj.BinEdges) > 0 {
 		shaped.QualityMetrics = &model.VariantQualityMetrics{
 			AlleleBalance: &model.AlleleBalanceHistogram{
-				Alt: &model.Histogram{
-					BinEdges: data.QualityMetrics.AlleleBalance.AltAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.AlleleBalance.AltAdj.BinFreq,
-				},
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.AlleleBalance.AltAdj.BinEdges,
+					data.QualityMetrics.AlleleBalance.AltAdj.BinFreq,
+					data.QualityMetrics.AlleleBalance.AltAdj.NSmaller,
+					data.QualityMetrics.AlleleBalance.AltAdj.NLarger,
+				),
 			},
 			GenotypeDepth: &model.GenotypeDepthHistogram{
-				All: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeDepth.AllAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeDepth.AllAdj.BinFreq,
-				},
-				Alt: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeDepth.AltAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeDepth.AltAdj.BinFreq,
-				},
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NLarger,
+				),
 			},
 			GenotypeQuality: &model.GenotypeQualityHistogram{
-				All: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeQuality.AllAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeQuality.AllAdj.BinFreq,
-				},
-				Alt: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeQuality.AltAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
-				},
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NLarger,
+				),
 			},
 			SiteQualityMetrics: ShapeSiteQualityMetrics(f.convertSiteQualityMetricsToMaps(data.QualityMetrics.SiteQualityMetrics)),
 		}
@@ -296,7 +329,9 @@ func (f *GnomadV4VariantFetcher) shapeExomeData(data *GnomadV4SequencingData, su
 	if data.AgeDistribution != nil {
 		shaped.AgeDistribution = ShapeAgeDistribution(
 			data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq,
+			data.AgeDistribution.Het.NSmaller, data.AgeDistribution.Het.NLarger,
 			data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq,
+			data.AgeDistribution.Hom.NSmaller, data.AgeDistribution.Hom.NLarger,
 		)
 	}
 
@@ -355,30 +390,40 @@ func (f *GnomadV4VariantFetcher) shapeGenomeData(data *GnomadV4SequencingData) *
 	if len(data.QualityMetrics.AlleleBalance.AltAdj.BinEdges) > 0 {
 		shaped.QualityMetrics = &model.VariantQualityMetrics{
 			AlleleBalance: &model.AlleleBalanceHistogram{
-				Alt: &model.Histogram{
-					BinEdges: data.QualityMetrics.AlleleBalance.AltAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.AlleleBalance.AltAdj.BinFreq,
-				},
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.AlleleBalance.AltAdj.BinEdges,
+					data.QualityMetrics.AlleleBalance.AltAdj.BinFreq,
+					data.QualityMetrics.AlleleBalance.AltAdj.NSmaller,
+					data.QualityMetrics.AlleleBalance.AltAdj.NLarger,
+				),
 			},
 			GenotypeDepth: &model.GenotypeDepthHistogram{
-				All: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeDepth.AllAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeDepth.AllAdj.BinFreq,
-				},
-				Alt: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeDepth.AltAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeDepth.AltAdj.BinFreq,
-				},
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NLarger,
+				),
 			},
 			GenotypeQuality: &model.GenotypeQualityHistogram{
-				All: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeQuality.AllAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeQuality.AllAdj.BinFreq,
-				},
-				Alt: &model.Histogram{
-					BinEdges: data.QualityMetrics.GenotypeQuality.AltAdj.BinEdges,
-					BinFreq:  data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
-				},
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NLarger,
+				),
 			},
 			SiteQualityMetrics: ShapeSiteQualityMetrics(f.convertSiteQualityMetricsToMaps(data.QualityMetrics.SiteQualityMetrics)),
 		}
@@ -388,7 +433,9 @@ func (f *GnomadV4VariantFetcher) shapeGenomeData(data *GnomadV4SequencingData) *
 	if data.AgeDistribution != nil {
 		shaped.AgeDistribution = ShapeAgeDistribution(
 			data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq,
+			data.AgeDistribution.Het.NSmaller, data.AgeDistribution.Het.NLarger,
 			data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq,
+			data.AgeDistribution.Hom.NSmaller, data.AgeDistribution.Hom.NLarger,
 		)
 	}
 
@@ -496,6 +543,10 @@ func (f *GnomadV4VariantFetcher) convertSubPopulationToMap(subPop *struct {
 	ANRaw          int                      `json:"an_raw"`
 	AncestryGroups []GnomadV4PopulationData `json:"ancestry_groups"`
 }) map[string]interface{} {
+	if subPop == nil {
+		return nil
+	}
+	
 	result := map[string]interface{}{
 		"ac_raw": float64(subPop.ACRaw),
 	}
@@ -556,6 +607,87 @@ func (f *GnomadV4VariantFetcher) shapeJointData(data *GnomadV4JointData, subset 
 			An:              pop.AN,
 			HomozygoteCount: pop.HomozygoteCount,
 			HemizygoteCount: &pop.HemizygoteCount,
+			AcHemi:          &pop.HemizygoteCount, // Set AcHemi to ensure it's always non-nil
+			AcHom:           pop.HomozygoteCount,   // Set AcHom to match HomozygoteCount
+		}
+	}
+
+	// Add FAF95 data if available
+	if data.Fafmax != nil {
+		shaped.Faf95 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.Fafmax.Faf95Max,
+			PopmaxPopulation: &data.Fafmax.Faf95MaxGenAnc,
+		}
+		shaped.Faf99 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.Fafmax.Faf99Max,
+			PopmaxPopulation: &data.Fafmax.Faf99MaxGenAnc,
+		}
+	}
+
+	// Add freq_comparison_stats if available
+	if data.FreqComparisonStats != nil {
+		shaped.FreqComparisonStats = shapeFreqComparisonStats(data.FreqComparisonStats)
+	}
+
+	return shaped
+}
+
+// shapeFreqComparisonStats converts raw freq comparison stats to GraphQL model
+func shapeFreqComparisonStats(stats map[string]interface{}) *model.VariantJointFrequencyComparisonStats {
+	shaped := &model.VariantJointFrequencyComparisonStats{}
+
+	// Shape contingency table test
+	if ctTest, ok := stats["contingency_table_test"].([]interface{}); ok {
+		var contingencyTests []*model.ContingencyTableTest
+		for _, test := range ctTest {
+			if testMap, ok := test.(map[string]interface{}); ok {
+				ct := &model.ContingencyTableTest{}
+				if pValue, ok := testMap["p_value"].(float64); ok {
+					ct.PValue = &pValue
+				}
+				if oddsRatio, ok := testMap["odds_ratio"].(float64); ok {
+					oddsRatioStr := fmt.Sprintf("%f", oddsRatio)
+					ct.OddsRatio = &oddsRatioStr
+				}
+				contingencyTests = append(contingencyTests, ct)
+			}
+		}
+		shaped.ContingencyTableTest = contingencyTests
+	} else if ctTest, ok := stats["contingency_table_test"].(map[string]interface{}); ok {
+		// Handle single test case
+		ct := &model.ContingencyTableTest{}
+		if pValue, ok := ctTest["p_value"].(float64); ok {
+			ct.PValue = &pValue
+		}
+		if oddsRatio, ok := ctTest["odds_ratio"].(float64); ok {
+			oddsRatioStr := fmt.Sprintf("%f", oddsRatio)
+			ct.OddsRatio = &oddsRatioStr
+		}
+		shaped.ContingencyTableTest = []*model.ContingencyTableTest{ct}
+	}
+
+	// Shape Cochran-Mantel-Haenszel test
+	if cmhTest, ok := stats["cochran_mantel_haenszel_test"].(map[string]interface{}); ok {
+		shaped.CochranMantelHaenszelTest = &model.CochranMantelHaenszelTest{}
+		if pValue, ok := cmhTest["p_value"].(float64); ok {
+			shaped.CochranMantelHaenszelTest.PValue = &pValue
+		}
+		if chisq, ok := cmhTest["chisq"].(float64); ok {
+			shaped.CochranMantelHaenszelTest.Chisq = &chisq
+		}
+	}
+
+	// Shape stat union
+	if statUnion, ok := stats["stat_union"].(map[string]interface{}); ok {
+		shaped.StatUnion = &model.StatUnion{}
+		if pValue, ok := statUnion["p_value"].(float64); ok {
+			shaped.StatUnion.PValue = &pValue
+		}
+		if genAncs, ok := statUnion["gen_ancs"].([]interface{}); ok {
+			shaped.StatUnion.GenAncs = toStringSlice(genAncs)
+		}
+		if statTestName, ok := statUnion["stat_test_name"].(string); ok {
+			shaped.StatUnion.StatTestName = &statTestName
 		}
 	}
 

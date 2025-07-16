@@ -11,6 +11,15 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
+// roundFloat64Ptr rounds a float64 pointer to 5 decimal places
+func roundFloat64Ptr(value *float64) *float64 {
+	if value == nil {
+		return nil
+	}
+	rounded := math.Round(*value*100000) / 100000
+	return &rounded
+}
+
 // Coverage indices mapping based on the TypeScript implementation
 var coverageIndices = map[string]map[string]string{
 	"gnomad_r4": {
