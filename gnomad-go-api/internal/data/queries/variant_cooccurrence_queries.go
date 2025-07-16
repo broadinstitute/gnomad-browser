@@ -15,37 +15,37 @@ const VariantCooccurrenceIndex = "gnomad_v2_variant_cooccurrence"
 
 // VEP consequences considered coding and UTR variants
 var codingAndUTRVepConsequences = map[string]bool{
-	"transcript_ablation":                    true,
-	"splice_acceptor_variant":                true,
-	"splice_donor_variant":                   true,
-	"stop_gained":                            true,
-	"frameshift_variant":                     true,
-	"stop_lost":                              true,
-	"start_lost":                             true,
-	"initiator_codon_variant":                true,
-	"transcript_amplification":               true,
-	"inframe_insertion":                      true,
-	"inframe_deletion":                       true,
-	"missense_variant":                       true,
-	"protein_altering_variant":               true,
-	"splice_region_variant":                  true,
-	"incomplete_terminal_codon_variant":      true,
-	"start_retained_variant":                 true,
-	"stop_retained_variant":                  true,
-	"synonymous_variant":                     true,
-	"coding_sequence_variant":                true,
-	"mature_miRNA_variant":                   true,
-	"five_prime_UTR_variant":                 true,
-	"three_prime_UTR_variant":                true,
+	"transcript_ablation":               true,
+	"splice_acceptor_variant":           true,
+	"splice_donor_variant":              true,
+	"stop_gained":                       true,
+	"frameshift_variant":                true,
+	"stop_lost":                         true,
+	"start_lost":                        true,
+	"initiator_codon_variant":           true,
+	"transcript_amplification":          true,
+	"inframe_insertion":                 true,
+	"inframe_deletion":                  true,
+	"missense_variant":                  true,
+	"protein_altering_variant":          true,
+	"splice_region_variant":             true,
+	"incomplete_terminal_codon_variant": true,
+	"start_retained_variant":            true,
+	"stop_retained_variant":             true,
+	"synonymous_variant":                true,
+	"coding_sequence_variant":           true,
+	"mature_miRNA_variant":              true,
+	"five_prime_UTR_variant":            true,
+	"three_prime_UTR_variant":           true,
 }
 
 // VariantCooccurrenceDocument represents the Elasticsearch document structure
 type VariantCooccurrenceDocument struct {
-	VariantIDs            []string                         `json:"variant_ids"`
-	GenotypeCounts        []int                            `json:"genotype_counts"`
-	HaplotypeCounts       []float64                        `json:"haplotype_counts"`
-	PCompoundHeterozygous *float64                         `json:"p_compound_heterozygous"`
-	Populations           []VariantCooccurrenceInPopDoc    `json:"populations"`
+	VariantIDs            []string                      `json:"variant_ids"`
+	GenotypeCounts        []int                         `json:"genotype_counts"`
+	HaplotypeCounts       []float64                     `json:"haplotype_counts"`
+	PCompoundHeterozygous *float64                      `json:"p_compound_heterozygous"`
+	Populations           []VariantCooccurrenceInPopDoc `json:"populations"`
 }
 
 type VariantCooccurrenceInPopDoc struct {
@@ -117,7 +117,7 @@ func FetchVariantCooccurrence(ctx context.Context, client *elastic.Client, varia
 func fetchVariantForCooccurrence(ctx context.Context, client *elastic.Client, variantID string, datasetID string) (*model.VariantDetails, error) {
 	// Normalize the variant ID like the main resolver does
 	normalizedID := NormalizeVariantID(variantID)
-	
+
 	// Use the variant dispatcher to fetch the variant
 	variant, err := FetchVariantByID(ctx, client, datasetID, normalizedID)
 	if err != nil {
@@ -254,7 +254,7 @@ func fetchPrecomputedCooccurrence(ctx context.Context, client *elastic.Client, v
 	}
 
 	result := convertToModelVariantCooccurrence(&doc)
-	
+
 	// Check if the result has valid data
 	if len(result.GenotypeCounts) == 0 || len(result.HaplotypeCounts) == 0 {
 		// Pre-computed data is empty, return nil to force computation
@@ -281,14 +281,14 @@ func computeCooccurrenceFromVariants(variants []*model.VariantDetails, variantID
 	// where A/B are reference alleles and a/b are alternate alleles of variants.
 	genotypeCounts := []int{
 		min(variantCounts[0].NHomRef, variantCounts[1].NHomRef), // AABB
-		variantCounts[1].NHet,                                   // AABb
-		variantCounts[1].NHomAlt,                                // AAbb
-		variantCounts[0].NHet,                                   // AaBB
-		0,                                                       // AaBb
-		0,                                                       // Aabb
-		variantCounts[0].NHomAlt,                                // aaBB
-		0,                                                       // aaBb
-		0,                                                       // aabb
+		variantCounts[1].NHet,    // AABb
+		variantCounts[1].NHomAlt, // AAbb
+		variantCounts[0].NHet,    // AaBB
+		0,                        // AaBb
+		0,                        // Aabb
+		variantCounts[0].NHomAlt, // aaBB
+		0,                        // aaBb
+		0,                        // aabb
 	}
 
 	haplotypeCounts := estimateHaplotypeCounts(genotypeCounts)
@@ -296,13 +296,13 @@ func computeCooccurrenceFromVariants(variants []*model.VariantDetails, variantID
 
 	// Compute population-specific data
 	populations := make([]*model.VariantCooccurrenceInPopulation, 0)
-	
+
 	// Ensure both variants have the same populations in the same order
 	if len(variantCounts[0].Populations) == len(variantCounts[1].Populations) {
 		for i := 0; i < len(variantCounts[0].Populations); i++ {
 			pop0 := variantCounts[0].Populations[i]
 			pop1 := variantCounts[1].Populations[i]
-			
+
 			if pop0.ID == pop1.ID {
 				popGenotypeCounts := []int{
 					min(pop0.NHomRef, pop1.NHomRef), // AABB
@@ -345,7 +345,7 @@ func getCategoryCounts(variant *model.VariantDetails) (*VariantCategoryCounts, e
 	}
 
 	exome := variant.Exome
-	
+
 	// Calculate total individuals
 	var nIndividuals int
 	if variant.Chrom == "X" {
@@ -546,7 +546,7 @@ func getProbabilityCompoundHeterozygous(haplotypeCounts []float64) *float64 {
 	}
 
 	// P(compound het) = (n.aB * n.Ab) / (n.AB * n.ab + n.aB * n.Ab)
-	numerator := haplotypeCounts[1] * haplotypeCounts[2]     // aB * Ab
+	numerator := haplotypeCounts[1] * haplotypeCounts[2]             // aB * Ab
 	denominator := haplotypeCounts[0]*haplotypeCounts[3] + numerator // AB * ab + aB * Ab
 
 	if denominator == 0 {

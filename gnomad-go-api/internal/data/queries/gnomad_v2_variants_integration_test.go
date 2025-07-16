@@ -7,9 +7,10 @@ import (
 	"context"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with gnomAD v2 data

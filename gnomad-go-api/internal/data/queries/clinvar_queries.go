@@ -17,25 +17,25 @@ var ClinVarVariantIndices = map[string]string{
 
 // ClinVarVariantDocument represents the ES document structure for ClinVar variants
 type ClinVarVariantDocument struct {
-	VariantID           string                 `json:"variant_id"`
-	ReferenceGenome     string                 `json:"reference_genome"`
-	Chrom               string                 `json:"chrom"`
-	Pos                 int                    `json:"pos"`
-	Ref                 string                 `json:"ref"`
-	Alt                 string                 `json:"alt"`
+	VariantID            string                 `json:"variant_id"`
+	ReferenceGenome      string                 `json:"reference_genome"`
+	Chrom                string                 `json:"chrom"`
+	Pos                  int                    `json:"pos"`
+	Ref                  string                 `json:"ref"`
+	Alt                  string                 `json:"alt"`
 	ClinicalSignificance string                 `json:"clinical_significance"`
-	ClinVarVariationID  string                 `json:"clinvar_variation_id"`
-	GoldStars           int                    `json:"gold_stars"`
-	HGVSC               *string                `json:"hgvsc"`
-	HGVSP               *string                `json:"hgvsp"`
-	InGnomAD            *bool                  `json:"in_gnomad"`
-	MajorConsequence    *string                `json:"major_consequence"`
-	ReviewStatus        string                 `json:"review_status"`
-	TranscriptID        *string                `json:"transcript_id"`
-	RSID                *string                `json:"rsid"`
-	LastEvaluated       *string                `json:"last_evaluated"`
-	GnomAD              *ClinVarGnomADData     `json:"gnomad"`
-	Submissions         []ClinVarSubmissionDoc `json:"submissions"`
+	ClinVarVariationID   string                 `json:"clinvar_variation_id"`
+	GoldStars            int                    `json:"gold_stars"`
+	HGVSC                *string                `json:"hgvsc"`
+	HGVSP                *string                `json:"hgvsp"`
+	InGnomAD             *bool                  `json:"in_gnomad"`
+	MajorConsequence     *string                `json:"major_consequence"`
+	ReviewStatus         string                 `json:"review_status"`
+	TranscriptID         *string                `json:"transcript_id"`
+	RSID                 *string                `json:"rsid"`
+	LastEvaluated        *string                `json:"last_evaluated"`
+	GnomAD               *ClinVarGnomADData     `json:"gnomad"`
+	Submissions          []ClinVarSubmissionDoc `json:"submissions"`
 }
 
 // ClinVarGnomADData represents gnomAD data within ClinVar variants
@@ -53,17 +53,17 @@ type ClinVarGnomADSequencingData struct {
 
 // ClinVarSubmissionDoc represents a ClinVar submission
 type ClinVarSubmissionDoc struct {
-	ClinicalSignificance *string                   `json:"clinical_significance"`
-	LastEvaluated        *string                   `json:"last_evaluated"`
-	ReviewStatus         string                    `json:"review_status"`
-	SubmitterName        string                    `json:"submitter_name"`
-	Conditions           []ClinVarConditionDoc     `json:"conditions"`
+	ClinicalSignificance *string               `json:"clinical_significance"`
+	LastEvaluated        *string               `json:"last_evaluated"`
+	ReviewStatus         string                `json:"review_status"`
+	SubmitterName        string                `json:"submitter_name"`
+	Conditions           []ClinVarConditionDoc `json:"conditions"`
 }
 
 // ClinVarConditionDoc represents a ClinVar condition
 type ClinVarConditionDoc struct {
-	Name      string  `json:"name"`
-	MedGenID  *string `json:"medgen_id"`
+	Name     string  `json:"name"`
+	MedGenID *string `json:"medgen_id"`
 }
 
 // FetchClinVarVariant retrieves a ClinVar variant by variant ID and reference genome
@@ -119,17 +119,17 @@ func FetchClinVarVariant(ctx context.Context, client *elastic.Client, variantID 
 
 	// Convert to GraphQL model
 	result := &model.ClinVarVariantDetails{
-		VariantID:           doc.VariantID,
-		ReferenceGenome:     mapReferenceGenome(doc.ReferenceGenome),
-		Chrom:               doc.Chrom,
-		Pos:                 doc.Pos,
-		Ref:                 doc.Ref,
-		Alt:                 doc.Alt,
+		VariantID:            doc.VariantID,
+		ReferenceGenome:      mapReferenceGenome(doc.ReferenceGenome),
+		Chrom:                doc.Chrom,
+		Pos:                  doc.Pos,
+		Ref:                  doc.Ref,
+		Alt:                  doc.Alt,
 		ClinicalSignificance: doc.ClinicalSignificance,
-		ClinvarVariationID:  doc.ClinVarVariationID,
-		GoldStars:           doc.GoldStars,
-		InGnomad:            doc.InGnomAD != nil && *doc.InGnomAD,
-		ReviewStatus:        doc.ReviewStatus,
+		ClinvarVariationID:   doc.ClinVarVariationID,
+		GoldStars:            doc.GoldStars,
+		InGnomad:             doc.InGnomAD != nil && *doc.InGnomAD,
+		ReviewStatus:         doc.ReviewStatus,
 	}
 
 	// Optional fields
@@ -140,9 +140,14 @@ func FetchClinVarVariant(ctx context.Context, client *elastic.Client, variantID 
 		result.LastEvaluated = doc.LastEvaluated
 	}
 
-	// Convert gnomAD data if present
+	// Convert gnomAD data - always return structure with null fields when no data
 	if doc.GnomAD != nil {
 		result.Gnomad = convertClinVarGnomADData(doc.GnomAD)
+	} else {
+		result.Gnomad = &model.ClinVarVariantGnomadData{
+			Exome:  nil,
+			Genome: nil,
+		}
 	}
 
 	// Convert submissions
@@ -159,23 +164,23 @@ func FetchClinVarVariant(ctx context.Context, client *elastic.Client, variantID 
 // convertClinVarGnomADData converts ClinVar gnomAD data to GraphQL model
 func convertClinVarGnomADData(data *ClinVarGnomADData) *model.ClinVarVariantGnomadData {
 	result := &model.ClinVarVariantGnomadData{}
-	
-	if data.Exome != nil {
+
+	if data.Exome != nil && (data.Exome.AC > 0 || data.Exome.AN > 0 || len(data.Exome.Filters) > 0) {
 		result.Exome = &model.ClinVarVariantGnomadSequencingTypeData{
 			Ac:      data.Exome.AC,
 			An:      data.Exome.AN,
 			Filters: data.Exome.Filters,
 		}
 	}
-	
-	if data.Genome != nil {
+
+	if data.Genome != nil && (data.Genome.AC > 0 || data.Genome.AN > 0 || len(data.Genome.Filters) > 0) {
 		result.Genome = &model.ClinVarVariantGnomadSequencingTypeData{
 			Ac:      data.Genome.AC,
 			An:      data.Genome.AN,
 			Filters: data.Genome.Filters,
 		}
 	}
-	
+
 	return result
 }
 
@@ -376,16 +381,16 @@ func convertHitToClinVarVariant(hit elastic.Hit) (*model.ClinVarVariant, error) 
 
 	// Convert to GraphQL model
 	result := &model.ClinVarVariant{
-		VariantID:           doc.VariantID,
-		ReferenceGenome:     mapReferenceGenome(doc.ReferenceGenome),
-		Chrom:               doc.Chrom,
-		Pos:                 doc.Pos,
-		Ref:                 doc.Ref,
-		Alt:                 doc.Alt,
+		VariantID:            doc.VariantID,
+		ReferenceGenome:      mapReferenceGenome(doc.ReferenceGenome),
+		Chrom:                doc.Chrom,
+		Pos:                  doc.Pos,
+		Ref:                  doc.Ref,
+		Alt:                  doc.Alt,
 		ClinicalSignificance: doc.ClinicalSignificance,
-		ClinvarVariationID:  doc.ClinVarVariationID,
-		GoldStars:           doc.GoldStars,
-		ReviewStatus:        doc.ReviewStatus,
+		ClinvarVariationID:   doc.ClinVarVariationID,
+		GoldStars:            doc.GoldStars,
+		ReviewStatus:         doc.ReviewStatus,
 	}
 
 	// Optional fields
@@ -405,10 +410,16 @@ func convertHitToClinVarVariant(hit elastic.Hit) (*model.ClinVarVariant, error) 
 		result.TranscriptID = doc.TranscriptID
 	}
 
-	// Convert gnomAD data if present
+	// Convert gnomAD data - always return structure with null fields when no data
 	if doc.GnomAD != nil {
 		result.Gnomad = convertClinVarGnomADData(doc.GnomAD)
+	} else {
+		result.Gnomad = &model.ClinVarVariantGnomadData{
+			Exome:  nil,
+			Genome: nil,
+		}
 	}
 
 	return result, nil
 }
+

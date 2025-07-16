@@ -58,9 +58,9 @@ type MitochondrialVariantDocument struct {
 
 	// Prediction scores
 	MitotipScore                    float64 `json:"mitotip_score"`
-	MitotipTrnaPrediction          string  `json:"mitotip_trna_prediction"`
+	MitotipTrnaPrediction           string  `json:"mitotip_trna_prediction"`
 	PONMLProbabilityOfPathogenicity float64 `json:"pon_ml_probability_of_pathogenicity"`
-	PONMtTrnaPrediction            string  `json:"pon_mt_trna_prediction"`
+	PONMtTrnaPrediction             string  `json:"pon_mt_trna_prediction"`
 
 	// Annotations
 	TranscriptConsequences []map[string]interface{} `json:"transcript_consequences"`
@@ -163,7 +163,7 @@ func FetchMitochondrialVariant(ctx context.Context, client *elastic.Client, vari
 	// Parse the hit
 	hit := response.Hits.Hits[0]
 	source := hit.Source
-	
+
 	// Handle nested value structure (similar to TypeScript implementation)
 	var docData map[string]interface{}
 	if value, exists := source["value"]; exists {
@@ -228,7 +228,7 @@ func FetchMitochondrialVariantsByGene(ctx context.Context, client *elastic.Clien
 	variants := make([]*model.MitochondrialVariant, len(response.Hits.Hits))
 	for i, hit := range response.Hits.Hits {
 		source := hit.Source
-		
+
 		// Handle nested value structure
 		var docData map[string]interface{}
 		if value, exists := source["value"]; exists {
@@ -303,7 +303,7 @@ func FetchMitochondrialVariantsByRegion(ctx context.Context, client *elastic.Cli
 	variants := make([]*model.MitochondrialVariant, len(response.Hits.Hits))
 	for i, hit := range response.Hits.Hits {
 		source := hit.Source
-		
+
 		// Handle nested value structure
 		var docData map[string]interface{}
 		if value, exists := source["value"]; exists {
@@ -351,24 +351,24 @@ func convertMitochondrialVariantToModel(doc *MitochondrialVariantDocument) *mode
 	}
 
 	variant := &model.MitochondrialVariantDetails{
-		VariantID:       doc.VariantID,
-		ReferenceGenome: referenceGenome,
-		Pos:             doc.Pos,
-		Ref:             doc.Ref,
-		Alt:             doc.Alt,
-		AcHet:           &doc.ACHet,
-		AcHom:           &doc.ACHom,
-		AcHomMnv:        &doc.ACHomMNV,
-		An:              &doc.AN,
-		ExcludedAc:      &doc.ExcludedAC,
-		MaxHeteroplasmy: &doc.MaxHetP,
-		HaplogroupDefining: &doc.HaplogroupDefining,
-		MitotipScore:       &doc.MitotipScore,
-		MitotipTrnaPrediction: &doc.MitotipTrnaPrediction,
+		VariantID:                       doc.VariantID,
+		ReferenceGenome:                 referenceGenome,
+		Pos:                             doc.Pos,
+		Ref:                             doc.Ref,
+		Alt:                             doc.Alt,
+		AcHet:                           &doc.ACHet,
+		AcHom:                           &doc.ACHom,
+		AcHomMnv:                        &doc.ACHomMNV,
+		An:                              &doc.AN,
+		ExcludedAc:                      &doc.ExcludedAC,
+		MaxHeteroplasmy:                 &doc.MaxHetP,
+		HaplogroupDefining:              &doc.HaplogroupDefining,
+		MitotipScore:                    &doc.MitotipScore,
+		MitotipTrnaPrediction:           &doc.MitotipTrnaPrediction,
 		PonMlProbabilityOfPathogenicity: &doc.PONMLProbabilityOfPathogenicity,
-		PonMtTrnaPrediction: &doc.PONMtTrnaPrediction,
-		Filters: doc.Filters,
-		Flags:   doc.Flags,
+		PonMtTrnaPrediction:             &doc.PONMtTrnaPrediction,
+		Filters:                         doc.Filters,
+		Flags:                           doc.Flags,
 	}
 
 	// Handle optional RSID
@@ -413,10 +413,10 @@ func convertMitochondrialVariantToModel(doc *MitochondrialVariantDocument) *mode
 	populations := make([]*model.MitochondrialVariantPopulation, len(doc.Populations))
 	for i, pop := range doc.Populations {
 		populations[i] = &model.MitochondrialVariantPopulation{
-			ID:    pop.ID,
-			An:    pop.AN,
-			AcHet: pop.ACHet,
-			AcHom: pop.ACHom,
+			ID:                       pop.ID,
+			An:                       pop.AN,
+			AcHet:                    pop.ACHet,
+			AcHom:                    pop.ACHom,
 			HeteroplasmyDistribution: convertHistogramToModel(pop.HeteroplasmyDistribution),
 		}
 	}

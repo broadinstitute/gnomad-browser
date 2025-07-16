@@ -24,17 +24,67 @@ models:
     model: github.com/99designs/gqlgen/graphql.Float
   Gene:
     fields:
+      variants:
+        resolver: true
+      structural_variants:
+        resolver: true
       clinvar_variants:
         resolver: true
       mitochondrial_variants:
+        resolver: true
+      copy_number_variants:
+        resolver: true
+      short_tandem_repeats:
+        resolver: true
+      coverage:
+        resolver: true
+      mitochondrial_coverage:
+        resolver: true
+      cnv_track_callable_coverage:
+        resolver: true
+      heterozygous_variant_cooccurrence_counts:
+        resolver: true
+      homozygous_variant_cooccurrence_counts:
         resolver: true
   Region:
     fields:
+      genes:
+        resolver: true
+      non_coding_constraints:
+        resolver: true
+      variants:
+        resolver: true
+      structural_variants:
+        resolver: true
       clinvar_variants:
         resolver: true
       mitochondrial_variants:
         resolver: true
+      copy_number_variants:
+        resolver: true
+      coverage:
+        resolver: true
+      mitochondrial_coverage:
+        resolver: true
+      short_tandem_repeats:
+        resolver: true
   Transcript:
     fields:
+      gene:
+        resolver: true
+      variants:
+        resolver: true
+      clinvar_variants:
+        resolver: true
       mitochondrial_variants:
+        resolver: true
+      gtex_tissue_expression:
+        resolver: true
+      coverage:
+        resolver: true
+      mitochondrial_coverage:
+        resolver: true
+  GeneTranscript:
+    fields:
+      gtex_tissue_expression:
         resolver: true

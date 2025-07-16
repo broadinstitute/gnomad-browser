@@ -3,9 +3,10 @@ package queries
 import (
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 func TestGnomadV3VariantFetcher_variantExistsInSubset(t *testing.T) {

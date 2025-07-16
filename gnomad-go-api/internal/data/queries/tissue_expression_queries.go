@@ -3,6 +3,7 @@ package queries
 import (
 	"context"
 	"fmt"
+	"sort"
 
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
@@ -74,7 +75,7 @@ func FetchGtexTissueExpression(ctx context.Context, esClient *elastic.Client, tr
 			default:
 				continue // Skip invalid values
 			}
-			
+
 			gtexTissues = append(gtexTissues, &model.GtexTissue{
 				Tissue: tissue,
 				Value:  value,
@@ -88,7 +89,7 @@ func FetchGtexTissueExpression(ctx context.Context, esClient *elastic.Client, tr
 				// Handle tissue/value object structure
 				tissue, tissueOk := itemMap["tissue"].(string)
 				value, valueOk := itemMap["value"].(float64)
-				
+
 				if tissueOk && valueOk {
 					gtexTissues = append(gtexTissues, &model.GtexTissue{
 						Tissue: tissue,
@@ -101,6 +102,11 @@ func FetchGtexTissueExpression(ctx context.Context, esClient *elastic.Client, tr
 	default:
 		return nil, nil // Unsupported format
 	}
+
+	// Sort tissues alphabetically for consistent ordering
+	sort.Slice(gtexTissues, func(i, j int) bool {
+		return gtexTissues[i].Tissue < gtexTissues[j].Tissue
+	})
 
 	return gtexTissues, nil
 }
@@ -123,13 +129,7 @@ func FetchPextData(ctx context.Context, esClient *elastic.Client, geneID string,
 
 // FetchPextRegion fetches Pext region data for a genomic region
 func FetchPextRegion(ctx context.Context, esClient *elastic.Client, chrom string, start int, stop int, referenceGenome string) ([]*model.PextRegion, error) {
-	// Use gene indices map (defined in genes.go)
-	var geneIndices = map[string]string{
-		"GRCh37": "genes_grch37",
-		"GRCh38": "genes_grch38",
-	}
-
-	// Get the gene index for the reference genome
+	// Get the gene index for the reference genome (using global geneIndices from genes.go)
 	index, ok := geneIndices[referenceGenome]
 	if !ok {
 		return nil, fmt.Errorf("unsupported reference genome: %s", referenceGenome)
@@ -197,34 +197,34 @@ func FetchPextRegion(ctx context.Context, esClient *elastic.Client, chrom string
 						regionStart, startOk := regionMap["start"].(float64)
 						regionStop, stopOk := regionMap["stop"].(float64)
 						regionMean, meanOk := regionMap["mean"].(float64)
-						
+
 						if startOk && stopOk && meanOk {
 							// Check if this pext region overlaps with the requested region
 							if int(regionStart) <= stop && int(regionStop) >= start {
 								var tissues []*model.PextRegionTissue
-								
+
 								// Handle tissues array
 								if tissuesData, tissuesOk := regionMap["tissues"].([]interface{}); tissuesOk {
 									for _, tissueData := range tissuesData {
 										if tissueMap, tissueMapOk := tissueData.(map[string]interface{}); tissueMapOk {
 											tissueNameInterface, tissueNameOk := tissueMap["tissue"]
 											tissueValueInterface, tissueValueOk := tissueMap["value"]
-											
+
 											var tissueName *string
 											var tissueValue *float64
-											
+
 											if tissueNameOk && tissueNameInterface != nil {
 												if tn, ok := tissueNameInterface.(string); ok {
 													tissueName = &tn
 												}
 											}
-											
+
 											if tissueValueOk && tissueValueInterface != nil {
 												if tv, ok := tissueValueInterface.(float64); ok {
 													tissueValue = &tv
 												}
 											}
-											
+
 											tissues = append(tissues, &model.PextRegionTissue{
 												Tissue: tissueName,
 												Value:  tissueValue,
@@ -232,7 +232,7 @@ func FetchPextRegion(ctx context.Context, esClient *elastic.Client, chrom string
 										}
 									}
 								}
-								
+
 								allPextRegions = append(allPextRegions, &model.PextRegion{
 									Start:   int(regionStart),
 									Stop:    int(regionStop),
@@ -249,3 +249,4 @@ func FetchPextRegion(ctx context.Context, esClient *elastic.Client, chrom string
 
 	return allPextRegions, nil
 }
+

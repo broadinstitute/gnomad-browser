@@ -8,10 +8,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // These tests require a running Elasticsearch instance with gene data
@@ -70,7 +71,7 @@ func TestGeneConstraints_Integration_FetchGeneWithConstraints(t *testing.T) {
 				assert.NotNil(t, result)
 				assert.Equal(t, "ENSG00000169174", result.GeneID)
 				assert.Equal(t, "PCSK9", result.Symbol)
-				
+
 				// Test gnomAD constraint fields
 				if result.GnomadConstraint != nil {
 					t.Logf("Found gnomAD constraint data for %s", result.Symbol)
@@ -79,11 +80,11 @@ func TestGeneConstraints_Integration_FetchGeneWithConstraints(t *testing.T) {
 					assert.NotZero(t, result.GnomadConstraint.OeMis)
 					assert.NotZero(t, result.GnomadConstraint.MisZ)
 					assert.NotZero(t, result.GnomadConstraint.SynZ)
-					
+
 					// Validate reasonable constraint values
 					assert.Greater(t, result.GnomadConstraint.ExpMis, float64(0))
 					assert.Greater(t, result.GnomadConstraint.OeMis, float64(0))
-					
+
 					// Check for pLI (probability of loss-of-function intolerance)
 					if result.GnomadConstraint.Pli != nil {
 						assert.GreaterOrEqual(t, *result.GnomadConstraint.Pli, float64(0))
@@ -92,14 +93,14 @@ func TestGeneConstraints_Integration_FetchGeneWithConstraints(t *testing.T) {
 				} else {
 					t.Logf("No gnomAD constraint data found for %s", result.Symbol)
 				}
-				
+
 				// Test ExAC constraint fields
 				if result.ExacConstraint != nil {
 					t.Logf("Found ExAC constraint data for %s", result.Symbol)
 					assert.NotZero(t, result.ExacConstraint.MisZ)
 					assert.NotZero(t, result.ExacConstraint.SynZ)
 					assert.NotZero(t, result.ExacConstraint.PLi)
-					
+
 					// Validate reasonable constraint values
 					if result.ExacConstraint.ExpMis != nil {
 						assert.Greater(t, *result.ExacConstraint.ExpMis, float64(0))
@@ -122,7 +123,7 @@ func TestGeneConstraints_Integration_FetchGeneWithConstraints(t *testing.T) {
 				t.Helper()
 				assert.NotNil(t, result)
 				assert.Equal(t, "ENSG00000169174", result.GeneID)
-				
+
 				// Test regional missense constraint regions
 				if result.ExacRegionalMissenseConstraintRegions != nil && len(result.ExacRegionalMissenseConstraintRegions) > 0 {
 					t.Logf("Found %d ExAC regional constraint regions", len(result.ExacRegionalMissenseConstraintRegions))
@@ -133,7 +134,7 @@ func TestGeneConstraints_Integration_FetchGeneWithConstraints(t *testing.T) {
 						}
 					}
 				}
-				
+
 				// Test gnomAD v2 regional missense constraints
 				if result.GnomadV2RegionalMissenseConstraint != nil {
 					t.Logf("Found gnomAD v2 regional missense constraint data")
@@ -160,11 +161,11 @@ func TestGeneConstraints_Integration_FetchGeneWithConstraints(t *testing.T) {
 				t.Helper()
 				assert.NotNil(t, result)
 				assert.Equal(t, "ENSG00000198888", result.GeneID)
-				
+
 				// Test mitochondrial constraint
 				if result.MitochondrialConstraint != nil {
 					t.Logf("Found mitochondrial constraint data")
-					
+
 					// Check if it's a protein constraint
 					if proteinConstraint, ok := result.MitochondrialConstraint.(*model.ProteinMitochondrialGeneConstraint); ok {
 						t.Logf("Found protein mitochondrial constraint")
@@ -183,7 +184,7 @@ func TestGeneConstraints_Integration_FetchGeneWithConstraints(t *testing.T) {
 				} else {
 					t.Logf("No mitochondrial constraint data found")
 				}
-				
+
 				// Test mitochondrial missense constraint regions
 				if result.MitochondrialMissenseConstraintRegions != nil && len(result.MitochondrialMissenseConstraintRegions) > 0 {
 					t.Logf("Found %d mitochondrial constraint regions", len(result.MitochondrialMissenseConstraintRegions))
@@ -219,15 +220,15 @@ func TestGeneConstraints_Integration_MultipleGenes(t *testing.T) {
 
 	// Test multiple genes to ensure constraint data is properly loaded
 	geneTests := []struct {
-		geneID          string
-		symbol          string
-		referenceGenome string
+		geneID           string
+		symbol           string
+		referenceGenome  string
 		expectConstraint bool
 	}{
-		{"ENSG00000169174", "PCSK9", "GRCh38", true},     // Well-known gene with constraints
-		{"ENSG00000198712", "MT-CO2", "GRCh38", false},   // Mitochondrial gene
-		{"ENSG00000141510", "TP53", "GRCh38", true},      // Tumor suppressor gene
-		{"ENSG00000012048", "BRCA1", "GRCh38", true},     // DNA repair gene
+		{"ENSG00000169174", "PCSK9", "GRCh38", true},   // Well-known gene with constraints
+		{"ENSG00000198712", "MT-CO2", "GRCh38", false}, // Mitochondrial gene
+		{"ENSG00000141510", "TP53", "GRCh38", true},    // Tumor suppressor gene
+		{"ENSG00000012048", "BRCA1", "GRCh38", true},   // DNA repair gene
 	}
 
 	constraintFields := make(map[string]bool)
@@ -236,10 +237,10 @@ func TestGeneConstraints_Integration_MultipleGenes(t *testing.T) {
 			result, err := FetchGeneByID(context.Background(), client, test.geneID, test.referenceGenome)
 			require.NoError(t, err)
 			require.NotNil(t, result)
-			
+
 			assert.Equal(t, test.geneID, result.GeneID)
 			assert.Equal(t, test.symbol, result.Symbol)
-			
+
 			// Track which constraint types are found across genes
 			if result.GnomadConstraint != nil {
 				constraintFields["gnomad"] = true
@@ -284,18 +285,18 @@ func TestConstraintConversionFunctions_Integration(t *testing.T) {
 	if result.GnomadConstraint != nil {
 		t.Run("gnomad_constraint_fields", func(t *testing.T) {
 			constraint := result.GnomadConstraint
-			
+
 			// Required fields should be non-nil
 			assert.NotNil(t, constraint.ExpMis, "exp_mis should be present")
-			assert.NotNil(t, constraint.OeMis, "oe_mis should be present") 
+			assert.NotNil(t, constraint.OeMis, "oe_mis should be present")
 			assert.NotNil(t, constraint.MisZ, "mis_z should be present")
 			assert.NotNil(t, constraint.SynZ, "syn_z should be present")
-			
+
 			// Deprecated field should match pli
 			if constraint.Pli != nil {
 				assert.Equal(t, constraint.Pli, constraint.PLi, "pLI should match pli")
 			}
-			
+
 			// Validate constraint field relationships
 			if constraint.ObsMis != nil && constraint.ExpMis > 0 {
 				calculatedOe := float64(*constraint.ObsMis) / constraint.ExpMis
@@ -308,12 +309,12 @@ func TestConstraintConversionFunctions_Integration(t *testing.T) {
 	if result.ExacConstraint != nil {
 		t.Run("exac_constraint_fields", func(t *testing.T) {
 			constraint := result.ExacConstraint
-			
+
 			// Required fields should be non-zero
 			assert.NotZero(t, constraint.MisZ, "mis_z should be non-zero")
 			assert.NotZero(t, constraint.SynZ, "syn_z should be non-zero")
 			assert.NotZero(t, constraint.PLi, "pLI should be non-zero")
-			
+
 			// PLi should be between 0 and 1 if it represents a probability
 			if constraint.Pli != nil {
 				assert.GreaterOrEqual(t, *constraint.Pli, float64(0))

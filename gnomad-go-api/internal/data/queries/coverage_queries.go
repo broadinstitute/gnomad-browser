@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/mitchellh/mapstructure"
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 // Coverage indices mapping based on the TypeScript implementation
@@ -32,16 +33,16 @@ type CoverageDocument struct {
 		Contig   string `json:"contig"`
 		Position int    `json:"position"`
 	} `json:"locus"`
-	Mean   *float64 `json:"mean"`
-	Median *float64 `json:"median"`
-	Over1  *float64 `json:"over_1"`
-	Over5  *float64 `json:"over_5"`
-	Over10 *float64 `json:"over_10"`
-	Over15 *float64 `json:"over_15"`
-	Over20 *float64 `json:"over_20"`
-	Over25 *float64 `json:"over_25"`
-	Over30 *float64 `json:"over_30"`
-	Over50 *float64 `json:"over_50"`
+	Mean    *float64 `json:"mean"`
+	Median  *float64 `json:"median"`
+	Over1   *float64 `json:"over_1"`
+	Over5   *float64 `json:"over_5"`
+	Over10  *float64 `json:"over_10"`
+	Over15  *float64 `json:"over_15"`
+	Over20  *float64 `json:"over_20"`
+	Over25  *float64 `json:"over_25"`
+	Over30  *float64 `json:"over_30"`
+	Over50  *float64 `json:"over_50"`
 	Over100 *float64 `json:"over_100"`
 }
 
@@ -76,6 +77,14 @@ func FetchFeatureCoverage(ctx context.Context, esClient *elastic.Client, feature
 		if err != nil {
 			return nil, fmt.Errorf("error fetching genome coverage: %w", err)
 		}
+	}
+
+	// Ensure arrays are not nil (GraphQL expects non-nil arrays)
+	if exomeCoverage == nil {
+		exomeCoverage = []*model.CoverageBin{}
+	}
+	if genomeCoverage == nil {
+		genomeCoverage = []*model.CoverageBin{}
 	}
 
 	return &model.FeatureCoverage{
@@ -113,7 +122,91 @@ func FetchRegionCoverage(ctx context.Context, esClient *elastic.Client, chrom st
 		}
 	}
 
+	// Ensure arrays are not nil (GraphQL expects non-nil arrays)
+	if exomeCoverage == nil {
+		exomeCoverage = []*model.CoverageBin{}
+	}
+	if genomeCoverage == nil {
+		genomeCoverage = []*model.CoverageBin{}
+	}
+
 	return &model.RegionCoverage{
+		Exome:  exomeCoverage,
+		Genome: genomeCoverage,
+	}, nil
+}
+
+// FetchVariantCoverage fetches coverage data for a specific variant position
+func FetchVariantCoverage(ctx context.Context, esClient *elastic.Client, chrom string, pos int) (*model.VariantCoverageDetails, error) {
+	// Use gnomad_r4 as default dataset for variant coverage
+	datasetIndices, ok := coverageIndices["gnomad_r4"]
+	if !ok {
+		return nil, fmt.Errorf("unknown dataset: gnomad_r4")
+	}
+
+	// Create region for single position
+	regions := []CoverageRegion{{Start: pos, Stop: pos}}
+
+	var exomeCoverage *model.VariantCoverage
+	var genomeCoverage *model.VariantCoverage
+
+	// Fetch exome coverage if index exists
+	if exomeIndex := datasetIndices["exome"]; exomeIndex != "" {
+		exomeBins, err := fetchCoverageForRegions(ctx, esClient, exomeIndex, chrom, regions)
+		if err != nil {
+			return nil, fmt.Errorf("error fetching exome coverage: %w", err)
+		}
+		if len(exomeBins) > 0 {
+			bin := exomeBins[0]
+			exomeCoverage = &model.VariantCoverage{
+				Mean:    bin.Mean,
+				Median:  bin.Median,
+				Over1:   bin.Over1,
+				Over5:   bin.Over5,
+				Over10:  bin.Over10,
+				Over15:  bin.Over15,
+				Over20:  bin.Over20,
+				Over25:  bin.Over25,
+				Over30:  bin.Over30,
+				Over50:  bin.Over50,
+				Over100: bin.Over100,
+			}
+		}
+	}
+
+	// Fetch genome coverage if index exists
+	if genomeIndex := datasetIndices["genome"]; genomeIndex != "" {
+		genomeBins, err := fetchCoverageForRegions(ctx, esClient, genomeIndex, chrom, regions)
+		if err != nil {
+			return nil, fmt.Errorf("error fetching genome coverage: %w", err)
+		}
+		if len(genomeBins) > 0 {
+			bin := genomeBins[0]
+			genomeCoverage = &model.VariantCoverage{
+				Mean:    bin.Mean,
+				Median:  bin.Median,
+				Over1:   bin.Over1,
+				Over5:   bin.Over5,
+				Over10:  bin.Over10,
+				Over15:  bin.Over15,
+				Over20:  bin.Over20,
+				Over25:  bin.Over25,
+				Over30:  bin.Over30,
+				Over50:  bin.Over50,
+				Over100: bin.Over100,
+			}
+		}
+	}
+
+	// Ensure we always return valid coverage objects
+	if exomeCoverage == nil {
+		exomeCoverage = &model.VariantCoverage{}
+	}
+	if genomeCoverage == nil {
+		genomeCoverage = &model.VariantCoverage{}
+	}
+
+	return &model.VariantCoverageDetails{
 		Exome:  exomeCoverage,
 		Genome: genomeCoverage,
 	}, nil
@@ -130,10 +223,18 @@ func fetchCoverageForRegions(ctx context.Context, esClient *elastic.Client, inde
 	for _, region := range regions {
 		totalSize += region.Stop - region.Start + 1
 	}
-	
-	// For now, without aggregation support, return empty coverage
-	// TODO: Implement aggregation support in the elastic client
-	return []*model.CoverageBin{}, fmt.Errorf("coverage aggregation not yet implemented - requires aggregation support in elastic client")
+
+	bucketSize := calculateBucketSize(totalSize)
+
+	// Build and execute query
+	query := buildCoverageQuery(chrom, regions, bucketSize)
+	response, err := esClient.Search(ctx, indexName, query)
+	if err != nil {
+		return nil, fmt.Errorf("error executing coverage search: %w", err)
+	}
+
+	// Parse aggregation results
+	return parseCoverageAggregation(response, bucketSize)
 }
 
 // calculateBucketSize determines the appropriate bucket size for aggregation
@@ -248,10 +349,67 @@ func buildCoverageQuery(chrom string, regions []CoverageRegion, bucketSize int) 
 }
 
 // parseCoverageAggregation parses the Elasticsearch aggregation response
-// TODO: Implement this once aggregation support is added to the elastic client
 func parseCoverageAggregation(response *elastic.SearchResponse, bucketSize int) ([]*model.CoverageBin, error) {
-	// Placeholder for aggregation parsing
-	return []*model.CoverageBin{}, fmt.Errorf("aggregation parsing not implemented")
+	if response.Aggregations == nil {
+		return []*model.CoverageBin{}, nil
+	}
+
+	// Get the coverage aggregation
+	coverageAgg, ok := response.Aggregations["coverage"].(map[string]interface{})
+	if !ok {
+		return nil, fmt.Errorf("coverage aggregation not found in response")
+	}
+
+	// Get the buckets
+	bucketsInterface, ok := coverageAgg["buckets"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("buckets not found in coverage aggregation")
+	}
+
+	// Parse buckets into CoverageBin structs
+	var coverageBins []*model.CoverageBin
+	for _, bucketInterface := range bucketsInterface {
+		bucket, ok := bucketInterface.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Get the key (position)
+		keyInterface, ok := bucket["key"]
+		if !ok {
+			continue
+		}
+
+		var pos int
+		switch key := keyInterface.(type) {
+		case float64:
+			pos = int(key)
+		case int:
+			pos = key
+		default:
+			continue
+		}
+
+		// Create coverage bin
+		bin := &model.CoverageBin{
+			Pos:     pos,
+			Mean:    extractFloatValue(bucket, "mean"),
+			Median:  extractFloatValue(bucket, "median"),
+			Over1:   extractFloatValue(bucket, "over_1"),
+			Over5:   extractFloatValue(bucket, "over_5"),
+			Over10:  extractFloatValue(bucket, "over_10"),
+			Over15:  extractFloatValue(bucket, "over_15"),
+			Over20:  extractFloatValue(bucket, "over_20"),
+			Over25:  extractFloatValue(bucket, "over_25"),
+			Over30:  extractFloatValue(bucket, "over_30"),
+			Over50:  extractFloatValue(bucket, "over_50"),
+			Over100: extractFloatValue(bucket, "over_100"),
+		}
+
+		coverageBins = append(coverageBins, bin)
+	}
+
+	return coverageBins, nil
 }
 
 // extractFloatValue extracts a float value from an aggregation bucket
@@ -351,8 +509,8 @@ func parseMitochondrialCoverageHits(response *elastic.SearchResponse) ([]*model.
 
 		if doc.Mean != nil {
 			bin := &model.MitochondrialCoverageBin{
-				Pos:  doc.Locus.Position,
-				Mean: *doc.Mean,
+				Pos:  float64(doc.Locus.Position),
+				Mean: doc.Mean,
 			}
 			coverageBins = append(coverageBins, bin)
 		}
@@ -365,3 +523,4 @@ func parseMitochondrialCoverageHits(response *elastic.SearchResponse) ([]*model.
 func mapToStruct(data map[string]interface{}, result interface{}) error {
 	return mapstructure.Decode(data, result)
 }
+

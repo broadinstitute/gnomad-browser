@@ -37,19 +37,19 @@ type STRElasticsearchDoc struct {
 
 // STRValueDoc represents the value field in STR Elasticsearch documents
 type STRValueDoc struct {
-	ID                    string                               `json:"id"`
-	Gene                  STRGeneDoc                           `json:"gene"`
-	AssociatedDiseases    []STRAssociatedDiseaseDoc            `json:"associated_diseases"`
-	StripyID              *string                              `json:"stripy_id"`
-	StrchiveID            *string                              `json:"strchive_id"`
-	MainReferenceRegion   STRReferenceRegionDoc                `json:"main_reference_region"`
-	ReferenceRegions      []STRReferenceRegionDoc              `json:"reference_regions"`
-	ReferenceRepeatUnit   string                               `json:"reference_repeat_unit"`
-	RepeatUnits           []STRRepeatUnitDoc                   `json:"repeat_units"`
+	ID                     string                               `json:"id"`
+	Gene                   STRGeneDoc                           `json:"gene"`
+	AssociatedDiseases     []STRAssociatedDiseaseDoc            `json:"associated_diseases"`
+	StripyID               *string                              `json:"stripy_id"`
+	StrchiveID             *string                              `json:"strchive_id"`
+	MainReferenceRegion    STRReferenceRegionDoc                `json:"main_reference_region"`
+	ReferenceRegions       []STRReferenceRegionDoc              `json:"reference_regions"`
+	ReferenceRepeatUnit    string                               `json:"reference_repeat_unit"`
+	RepeatUnits            []STRRepeatUnitDoc                   `json:"repeat_units"`
 	AlleleSizeDistribution []STRAlleleSizeDistributionCohortDoc `json:"allele_size_distribution"`
-	GenotypeDistribution  []STRGenotypeDistributionCohortDoc   `json:"genotype_distribution"`
-	AgeDistribution       []STRAgeDistributionBinDoc           `json:"age_distribution"`
-	AdjacentRepeats       []STRAdjacentRepeatDoc               `json:"adjacent_repeats"`
+	GenotypeDistribution   []STRGenotypeDistributionCohortDoc   `json:"genotype_distribution"`
+	AgeDistribution        []STRAgeDistributionBinDoc           `json:"age_distribution"`
+	AdjacentRepeats        []STRAdjacentRepeatDoc               `json:"adjacent_repeats"`
 }
 
 // STRGeneDoc represents gene information for STR
@@ -61,12 +61,12 @@ type STRGeneDoc struct {
 
 // STRAssociatedDiseaseDoc represents disease association data
 type STRAssociatedDiseaseDoc struct {
-	Name                      string                                     `json:"name"`
-	Symbol                    string                                     `json:"symbol"`
-	OmimID                    *string                                    `json:"omim_id"`
-	InheritanceMode           string                                     `json:"inheritance_mode"`
-	RepeatSizeClassifications []STRRepeatSizeClassificationDoc          `json:"repeat_size_classifications"`
-	Notes                     *string                                    `json:"notes"`
+	Name                      string                           `json:"name"`
+	Symbol                    string                           `json:"symbol"`
+	OmimID                    *string                          `json:"omim_id"`
+	InheritanceMode           string                           `json:"inheritance_mode"`
+	RepeatSizeClassifications []STRRepeatSizeClassificationDoc `json:"repeat_size_classifications"`
+	Notes                     *string                          `json:"notes"`
 }
 
 // STRRepeatSizeClassificationDoc represents repeat size classification
@@ -98,12 +98,12 @@ type STRAgeDistributionBinDoc struct {
 
 // STRAlleleSizeDistributionCohortDoc represents allele size distribution data
 type STRAlleleSizeDistributionCohortDoc struct {
-	AncestryGroup      string                   `json:"ancestry_group"`
-	Sex                string                   `json:"sex"`
-	Repunit            string                   `json:"repunit"`
-	QualityDescription string                   `json:"quality_description"`
-	QScore             float64                  `json:"q_score"`
-	Distribution       []STRAlleleSizeItemDoc   `json:"distribution"`
+	AncestryGroup      string                 `json:"ancestry_group"`
+	Sex                string                 `json:"sex"`
+	Repunit            string                 `json:"repunit"`
+	QualityDescription string                 `json:"quality_description"`
+	QScore             float64                `json:"q_score"`
+	Distribution       []STRAlleleSizeItemDoc `json:"distribution"`
 }
 
 // STRAlleleSizeItemDoc represents individual allele size item
@@ -114,13 +114,13 @@ type STRAlleleSizeItemDoc struct {
 
 // STRGenotypeDistributionCohortDoc represents genotype distribution data
 type STRGenotypeDistributionCohortDoc struct {
-	AncestryGroup      string                 `json:"ancestry_group"`
-	Sex                string                 `json:"sex"`
-	ShortAlleleRepunit string                 `json:"short_allele_repunit"`
-	LongAlleleRepunit  string                 `json:"long_allele_repunit"`
-	QualityDescription string                 `json:"quality_description"`
-	QScore             float64                `json:"q_score"`
-	Distribution       []STRGenotypeItemDoc   `json:"distribution"`
+	AncestryGroup      string               `json:"ancestry_group"`
+	Sex                string               `json:"sex"`
+	ShortAlleleRepunit string               `json:"short_allele_repunit"`
+	LongAlleleRepunit  string               `json:"long_allele_repunit"`
+	QualityDescription string               `json:"quality_description"`
+	QScore             float64              `json:"q_score"`
+	Distribution       []STRGenotypeItemDoc `json:"distribution"`
 }
 
 // STRGenotypeItemDoc represents individual genotype item
@@ -233,7 +233,7 @@ func FetchShortTandemRepeats(ctx context.Context, esClient *elastic.Client, data
 			log.Printf("Warning: failed to unmarshal STR document %s: %v", hit.ID, err)
 			continue
 		}
-		
+
 		strs = append(strs, convertSTRDocToSummary(&doc))
 	}
 
@@ -302,7 +302,7 @@ func FetchShortTandemRepeatsByGene(ctx context.Context, esClient *elastic.Client
 			log.Printf("Warning: failed to unmarshal STR document %s: %v", hit.ID, err)
 			continue
 		}
-		
+
 		strs = append(strs, convertSTRDocToSummary(&doc))
 	}
 
@@ -366,7 +366,7 @@ func FetchShortTandemRepeatsByRegion(ctx context.Context, esClient *elastic.Clie
 	if err != nil {
 		return nil, fmt.Errorf("failed to search STRs by region: %w", err)
 	}
-	
+
 	// Debug: log the query and response
 	// log.Printf("Region query for %s:%d-%d returned %d hits", chrom, start, stop, len(searchResponse.Hits.Hits))
 
@@ -390,7 +390,7 @@ func FetchShortTandemRepeatsByRegion(ctx context.Context, esClient *elastic.Clie
 			log.Printf("Warning: failed to unmarshal STR document %s: %v", hit.ID, err)
 			continue
 		}
-		
+
 		strs = append(strs, convertSTRDocToSummary(&doc))
 	}
 

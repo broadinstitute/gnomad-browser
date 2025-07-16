@@ -7,8 +7,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
+	"github.com/stretchr/testify/assert"
 )
 
 // These tests require a running Elasticsearch instance with gene and variant data

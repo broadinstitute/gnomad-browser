@@ -19,7 +19,7 @@ func FetchMatchingVariants(ctx context.Context, esClient *elastic.Client, query 
 
 	// Detect query type and dispatch to appropriate search logic
 	queryType := detectQueryType(query)
-	
+
 	switch queryType {
 	case "variant_id":
 		return searchVariantsByID(ctx, esClient, fetcher, query)

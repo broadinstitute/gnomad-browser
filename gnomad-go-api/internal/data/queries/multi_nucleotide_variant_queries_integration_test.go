@@ -7,9 +7,10 @@ import (
 	"context"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with gnomAD MNV data
@@ -47,7 +48,7 @@ func TestMNVIndexConnectivity_Integration(t *testing.T) {
 
 	if len(response.Hits.Hits) > 0 {
 		t.Logf("MNV index contains %d total documents", response.Hits.Total.Value)
-		
+
 		// Check document structure
 		hit := response.Hits.Hits[0]
 		if value, ok := hit.Source["value"].(map[string]any); ok {
@@ -85,7 +86,7 @@ func TestFetchMultiNucleotideVariant_Integration(t *testing.T) {
 					t.Skip("Test MNV variant not found in data - this is expected if the ES instance doesn't have this specific MNV")
 					return
 				}
-				
+
 				// If the result exists, validate its structure
 				assert.Equal(t, "1-55516888-GA-TT", result.VariantID, "VariantID should match")
 				assert.Equal(t, model.ReferenceGenomeIDGRCh37, result.ReferenceGenome)
@@ -93,14 +94,14 @@ func TestFetchMultiNucleotideVariant_Integration(t *testing.T) {
 				assert.Equal(t, 55516888, result.Pos)
 				assert.Equal(t, "GA", result.Ref)
 				assert.Equal(t, "TT", result.Alt)
-				
+
 				// Check that constituent SNVs are present
 				assert.NotNil(t, result.ConstituentSnvs)
 				assert.Greater(t, len(result.ConstituentSnvs), 0, "Should have constituent SNVs")
-				
+
 				// Check that consequences are present
 				assert.NotNil(t, result.Consequences)
-				
+
 				// Check that related MNVs list is present (can be empty)
 				assert.NotNil(t, result.RelatedMnvs)
 			},
@@ -159,7 +160,7 @@ func TestMNVDataStructure_Integration(t *testing.T) {
 		t.Run("constituent_snvs_structure", func(t *testing.T) {
 			for i, snv := range result.ConstituentSnvs {
 				assert.NotEmpty(t, snv.VariantID, "Constituent SNV %d should have variant_id", i)
-				
+
 				// Check sequencing data - either exome or genome (or both) should have data
 				hasExome := snv.Exome != nil && snv.Exome.Ac != nil
 				hasGenome := snv.Genome != nil && snv.Genome.Ac != nil
@@ -173,7 +174,7 @@ func TestMNVDataStructure_Integration(t *testing.T) {
 				assert.NotEmpty(t, cons.GeneName, "Consequence %d should have gene_name", i)
 				assert.NotEmpty(t, cons.TranscriptID, "Consequence %d should have transcript_id", i)
 				assert.NotEmpty(t, cons.Consequence, "Consequence %d should have consequence", i)
-				
+
 				// Check SNV consequences
 				assert.NotNil(t, cons.SnvConsequences, "Consequence %d should have snv_consequences", i)
 				for j, snvCons := range cons.SnvConsequences {

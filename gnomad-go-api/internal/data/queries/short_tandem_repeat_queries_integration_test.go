@@ -7,9 +7,10 @@ import (
 	"context"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with STR data
@@ -44,22 +45,22 @@ func TestFetchShortTandemRepeat_Integration(t *testing.T) {
 				assert.Equal(t, "HTT", result.Gene.Symbol)
 				// Log HTT location for debugging
 				if result.MainReferenceRegion != nil {
-					t.Logf("HTT actual location: %s:%d-%d", 
-						result.MainReferenceRegion.Chrom, 
-						result.MainReferenceRegion.Start, 
+					t.Logf("HTT actual location: %s:%d-%d",
+						result.MainReferenceRegion.Chrom,
+						result.MainReferenceRegion.Start,
 						result.MainReferenceRegion.Stop)
 				}
 				assert.NotEmpty(t, result.Gene.EnsemblID)
-				
+
 				// Check reference region
 				assert.NotNil(t, result.MainReferenceRegion)
 				assert.Equal(t, "4", result.MainReferenceRegion.Chrom)
 				assert.NotNil(t, result.ReferenceRegions)
 				assert.NotEmpty(t, result.ReferenceRegions)
-				
+
 				// Check repeat unit
 				assert.NotEmpty(t, result.ReferenceRepeatUnit)
-				
+
 				// Check disease associations
 				assert.NotNil(t, result.AssociatedDiseases)
 				if len(result.AssociatedDiseases) > 0 {
@@ -75,11 +76,11 @@ func TestFetchShortTandemRepeat_Integration(t *testing.T) {
 					}
 					assert.True(t, found, "Expected to find Huntington disease association")
 				}
-				
+
 				// Check distributions
 				assert.NotNil(t, result.AlleleSizeDistribution)
 				assert.NotNil(t, result.GenotypeDistribution)
-				
+
 				// Check repeat units
 				assert.NotNil(t, result.RepeatUnits)
 				assert.NotEmpty(t, result.RepeatUnits)
@@ -97,7 +98,7 @@ func TestFetchShortTandemRepeat_Integration(t *testing.T) {
 				assert.Equal(t, "FMR1", result.ID)
 				assert.NotNil(t, result.Gene)
 				assert.Equal(t, "FMR1", result.Gene.Symbol)
-				
+
 				// Check disease associations
 				assert.NotNil(t, result.AssociatedDiseases)
 				// FMR1 is associated with Fragile X syndrome
@@ -175,7 +176,7 @@ func TestFetchShortTandemRepeats_Integration(t *testing.T) {
 				assert.NotNil(t, results)
 				assert.NotEmpty(t, results)
 				t.Logf("Found %d STRs", len(results))
-				
+
 				// Check a few STRs
 				for i, str := range results {
 					if i >= 5 {
@@ -188,7 +189,7 @@ func TestFetchShortTandemRepeats_Integration(t *testing.T) {
 					assert.NotNil(t, str.MainReferenceRegion)
 					assert.NotEmpty(t, str.ReferenceRepeatUnit)
 				}
-				
+
 				// Check that we have known STRs
 				strMap := make(map[string]bool)
 				for _, str := range results {
@@ -257,7 +258,7 @@ func TestFetchShortTandemRepeatsByGene_Integration(t *testing.T) {
 				t.Helper()
 				assert.NotNil(t, results)
 				assert.GreaterOrEqual(t, len(results), 1)
-				
+
 				// Verify all results are for HTT gene
 				for _, str := range results {
 					assert.NotNil(t, str.Gene)
@@ -308,7 +309,7 @@ func TestFetchShortTandemRepeatsByGene_Integration(t *testing.T) {
 
 func TestFetchShortTandemRepeatsByRegion_Integration(t *testing.T) {
 	t.Skip("TODO: Fix STR region queries - field paths need investigation")
-	
+
 	if testing.Short() {
 		t.Skip("Skipping integration test in short mode")
 	}
@@ -334,7 +335,7 @@ func TestFetchShortTandemRepeatsByRegion_Integration(t *testing.T) {
 			validate: func(t *testing.T, results []*model.ShortTandemRepeat) {
 				t.Helper()
 				assert.NotNil(t, results)
-				
+
 				// Verify all results are within the region
 				for _, str := range results {
 					assert.NotNil(t, str.MainReferenceRegion)
@@ -342,7 +343,7 @@ func TestFetchShortTandemRepeatsByRegion_Integration(t *testing.T) {
 					assert.GreaterOrEqual(t, str.MainReferenceRegion.Stop, 3074876)
 					assert.LessOrEqual(t, str.MainReferenceRegion.Start, 3074933)
 				}
-				
+
 				// Check if HTT STR is found
 				found := false
 				for _, str := range results {
@@ -434,7 +435,7 @@ func TestSTRDataStructures_Integration(t *testing.T) {
 			assert.NotEmpty(t, cohort.Repunit)
 			assert.NotEmpty(t, cohort.QualityDescription)
 			assert.GreaterOrEqual(t, cohort.QScore, 0.0)
-			
+
 			assert.NotNil(t, cohort.Distribution)
 			if len(cohort.Distribution) > 0 {
 				item := cohort.Distribution[0]
@@ -452,7 +453,7 @@ func TestSTRDataStructures_Integration(t *testing.T) {
 			assert.NotEmpty(t, cohort.Sex)
 			assert.NotEmpty(t, cohort.ShortAlleleRepunit)
 			assert.NotEmpty(t, cohort.LongAlleleRepunit)
-			
+
 			assert.NotNil(t, cohort.Distribution)
 			if len(cohort.Distribution) > 0 {
 				item := cohort.Distribution[0]
@@ -491,7 +492,7 @@ func TestSTRDataStructures_Integration(t *testing.T) {
 			assert.NotEmpty(t, disease.Name)
 			assert.NotEmpty(t, disease.Symbol)
 			assert.NotEmpty(t, disease.InheritanceMode)
-			
+
 			assert.NotNil(t, disease.RepeatSizeClassifications)
 			if len(disease.RepeatSizeClassifications) > 0 {
 				classification := disease.RepeatSizeClassifications[0]

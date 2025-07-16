@@ -711,6 +711,40 @@ type RegionCoverage {
 # Placeholder types for nested resolvers (to be implemented later)
 type Variant {
   variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  caid: String
+  colocated_variants: [String!]
+  coverage: VariantCoverageDetails!
+  exome: VariantDetailsExomeData
+  genome: VariantDetailsGenomeData
+  joint: VariantDetailsJointData
+  flags: [String!]
+  lof_curations: [VariantLofCuration!]
+  multi_nucleotide_variants: [MultiNucleotideVariant!]
+  rsids: [String!]
+  transcript_consequences: [TranscriptConsequence!]
+  in_silico_predictors: [VariantInSilicoPredictor!]
+  non_coding_constraint: NonCodingConstraintRegion
+  
+  # Deprecated fields for compatibility
+  rsid: String
+  
+  # Fields from the failure analysis that might be flattened from TranscriptConsequence
+  consequence: String
+  gene_id: String
+  gene_symbol: String
+  hgvs: String
+  hgvsc: String
+  hgvsp: String
+  lof: String
+  lof_filter: String
+  lof_flags: String
+  transcript_id: String
+  transcript_version: String
 }
 
 # Structural Variant Types
@@ -1210,8 +1244,15 @@ type Transcript {
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!]
 }
 
+# Meta Types
+type Meta {
+  clinvar_release_date: String
+}
+
 # Query
 type Query {
+  meta: Meta
+  
   variant(
     variantId: String
     rsid: String

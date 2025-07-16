@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/mitchellh/mapstructure"
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
+	"github.com/mitchellh/mapstructure"
 )
 
 var transcriptIndices = map[string]string{
@@ -20,40 +21,40 @@ type TranscriptESDocument struct {
 }
 
 type TranscriptDocumentValue struct {
-	TranscriptID      string                  `json:"transcript_id" mapstructure:"transcript_id"`
-	TranscriptVersion string                  `json:"transcript_version" mapstructure:"transcript_version"`
-	Chrom             string                  `json:"chrom" mapstructure:"chrom"`
-	Start             int                     `json:"start" mapstructure:"start"`
-	Stop              int                     `json:"stop" mapstructure:"stop"`
-	Exons             []ExonDocument          `json:"exons" mapstructure:"exons"`
-	Strand            string                  `json:"strand" mapstructure:"strand"`
-	GeneID            string                  `json:"gene_id" mapstructure:"gene_id"`
-	Gene              *TranscriptGeneDocument `json:"gene" mapstructure:"gene"`
-	GtexTissueExpression map[string]float64 `json:"gtex_tissue_expression" mapstructure:"gtex_tissue_expression"`
-	GnomadConstraint  *GnomadConstraintDoc    `json:"gnomad_constraint" mapstructure:"gnomad_constraint"`
-	ExacConstraint    *ExacConstraintDoc      `json:"exac_constraint" mapstructure:"exac_constraint"`
+	TranscriptID         string                  `json:"transcript_id" mapstructure:"transcript_id"`
+	TranscriptVersion    string                  `json:"transcript_version" mapstructure:"transcript_version"`
+	Chrom                string                  `json:"chrom" mapstructure:"chrom"`
+	Start                int                     `json:"start" mapstructure:"start"`
+	Stop                 int                     `json:"stop" mapstructure:"stop"`
+	Exons                []ExonDocument          `json:"exons" mapstructure:"exons"`
+	Strand               string                  `json:"strand" mapstructure:"strand"`
+	GeneID               string                  `json:"gene_id" mapstructure:"gene_id"`
+	Gene                 *TranscriptGeneDocument `json:"gene" mapstructure:"gene"`
+	GtexTissueExpression map[string]float64      `json:"gtex_tissue_expression" mapstructure:"gtex_tissue_expression"`
+	GnomadConstraint     *GnomadConstraintDoc    `json:"gnomad_constraint" mapstructure:"gnomad_constraint"`
+	ExacConstraint       *ExacConstraintDoc      `json:"exac_constraint" mapstructure:"exac_constraint"`
 }
 
 type TranscriptGeneDocument struct {
-	GeneID                string               `json:"gene_id" mapstructure:"gene_id"`
-	GeneVersion           string               `json:"gene_version" mapstructure:"gene_version"`
-	Symbol                string               `json:"symbol" mapstructure:"symbol"`
-	HgncID                *string              `json:"hgnc_id" mapstructure:"hgnc_id"`
-	NcbiID                *string              `json:"ncbi_id" mapstructure:"ncbi_id"`
-	OmimID                *string              `json:"omim_id" mapstructure:"omim_id"`
-	Name                  *string              `json:"name" mapstructure:"name"`
-	Chrom                 string               `json:"chrom" mapstructure:"chrom"`
-	Start                 int                  `json:"start" mapstructure:"start"`
-	Stop                  int                  `json:"stop" mapstructure:"stop"`
-	Strand                string               `json:"strand" mapstructure:"strand"`
-	Exons                 []ExonDocument       `json:"exons" mapstructure:"exons"`
-	CanonicalTranscriptID *string              `json:"canonical_transcript_id" mapstructure:"canonical_transcript_id"`
-	Transcripts           []TranscriptDocument `json:"transcripts" mapstructure:"transcripts"`
-	ManeSelectTranscript  *ManeSelectDocument  `json:"mane_select_transcript" mapstructure:"mane_select_transcript"`
-	Flags                 []string             `json:"flags" mapstructure:"flags"`
-	Pext                  *TranscriptPextDocument        `json:"pext" mapstructure:"pext"`
-	GnomadConstraint      *GnomadConstraintDoc `json:"gnomad_constraint" mapstructure:"gnomad_constraint"`
-	ExacConstraint        *ExacConstraintDoc   `json:"exac_constraint" mapstructure:"exac_constraint"`
+	GeneID                string                  `json:"gene_id" mapstructure:"gene_id"`
+	GeneVersion           string                  `json:"gene_version" mapstructure:"gene_version"`
+	Symbol                string                  `json:"symbol" mapstructure:"symbol"`
+	HgncID                *string                 `json:"hgnc_id" mapstructure:"hgnc_id"`
+	NcbiID                *string                 `json:"ncbi_id" mapstructure:"ncbi_id"`
+	OmimID                *string                 `json:"omim_id" mapstructure:"omim_id"`
+	Name                  *string                 `json:"name" mapstructure:"name"`
+	Chrom                 string                  `json:"chrom" mapstructure:"chrom"`
+	Start                 int                     `json:"start" mapstructure:"start"`
+	Stop                  int                     `json:"stop" mapstructure:"stop"`
+	Strand                string                  `json:"strand" mapstructure:"strand"`
+	Exons                 []ExonDocument          `json:"exons" mapstructure:"exons"`
+	CanonicalTranscriptID *string                 `json:"canonical_transcript_id" mapstructure:"canonical_transcript_id"`
+	Transcripts           []TranscriptDocument    `json:"transcripts" mapstructure:"transcripts"`
+	ManeSelectTranscript  *ManeSelectDocument     `json:"mane_select_transcript" mapstructure:"mane_select_transcript"`
+	Flags                 []string                `json:"flags" mapstructure:"flags"`
+	Pext                  *TranscriptPextDocument `json:"pext" mapstructure:"pext"`
+	GnomadConstraint      *GnomadConstraintDoc    `json:"gnomad_constraint" mapstructure:"gnomad_constraint"`
+	ExacConstraint        *ExacConstraintDoc      `json:"exac_constraint" mapstructure:"exac_constraint"`
 	// ExacRegionalMissenseConstraintRegions - to be implemented later
 	// ExacRegionalMissenseConstraintRegions []*ExacRegionalMissenseConstraintRegionDoc `json:"exac_regional_missense_constraint_regions" mapstructure:"exac_regional_missense_constraint_regions"`
 }

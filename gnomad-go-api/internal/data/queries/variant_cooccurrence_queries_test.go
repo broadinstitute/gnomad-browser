@@ -33,7 +33,7 @@ func TestEstimateHaplotypeCounts(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			result := estimateHaplotypeCounts(tt.genotypeCounts)
 			assert.Equal(t, tt.expectedLength, len(result), "Should return 4 haplotype counts")
-			
+
 			// All counts should be non-negative
 			for i, count := range result {
 				assert.GreaterOrEqual(t, count, 0.0, "Haplotype count %d should be non-negative", i)
@@ -73,7 +73,7 @@ func TestHaplotypeFreqEM(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			result := haplotypeFreqEM(tt.genotypeCounts)
 			assert.Equal(t, tt.expectedLength, len(result), "Should return 4 haplotype counts")
-			
+
 			// All counts should be non-negative
 			for i, count := range result {
 				assert.GreaterOrEqual(t, count, 0.0, "Haplotype count %d should be non-negative", i)
@@ -132,7 +132,7 @@ func TestGetProbabilityCompoundHeterozygous(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := getProbabilityCompoundHeterozygous(tt.haplotypeCounts)
-			
+
 			if tt.expectNil {
 				assert.Nil(t, result, "Should return nil for invalid input")
 			} else {
@@ -196,7 +196,7 @@ func TestCodingAndUTRVepConsequences(t *testing.T) {
 
 	for _, consequence := range expectedConsequences {
 		t.Run("has_"+consequence, func(t *testing.T) {
-			assert.True(t, codingAndUTRVepConsequences[consequence], 
+			assert.True(t, codingAndUTRVepConsequences[consequence],
 				"Should include %s as a coding/UTR consequence", consequence)
 		})
 	}
@@ -211,7 +211,7 @@ func TestCodingAndUTRVepConsequences(t *testing.T) {
 
 	for _, consequence := range nonCodingConsequences {
 		t.Run("excludes_"+consequence, func(t *testing.T) {
-			assert.False(t, codingAndUTRVepConsequences[consequence], 
+			assert.False(t, codingAndUTRVepConsequences[consequence],
 				"Should not include %s as a coding/UTR consequence", consequence)
 		})
 	}

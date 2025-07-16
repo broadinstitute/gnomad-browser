@@ -7,9 +7,10 @@ import (
 	"context"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with gnomAD structural variant data
@@ -24,16 +25,16 @@ func TestFetchStructuralVariant_Integration(t *testing.T) {
 	ctx := context.Background()
 
 	tests := []struct {
-		name      string
-		variantID string
-		dataset   model.StructuralVariantDatasetID
-		shouldFind bool
+		name        string
+		variantID   string
+		dataset     model.StructuralVariantDatasetID
+		shouldFind  bool
 		checkFields func(t *testing.T, variant *model.StructuralVariantDetails)
 	}{
 		{
-			name:      "Fetch SV from gnomAD v2.1",
-			variantID: "DEL_1_100000_200000", // Example SV ID - replace with real test data
-			dataset:   model.StructuralVariantDatasetIDGnomadSvR2_1,
+			name:       "Fetch SV from gnomAD v2.1",
+			variantID:  "DEL_1_100000_200000", // Example SV ID - replace with real test data
+			dataset:    model.StructuralVariantDatasetIDGnomadSvR2_1,
 			shouldFind: false, // Set to true when you have test data
 			checkFields: func(t *testing.T, variant *model.StructuralVariantDetails) {
 				assert.NotEmpty(t, variant.VariantID)
@@ -46,9 +47,9 @@ func TestFetchStructuralVariant_Integration(t *testing.T) {
 			},
 		},
 		{
-			name:      "Fetch SV from gnomAD v4",
-			variantID: "DEL_1_100000_200000", // Example SV ID - replace with real test data
-			dataset:   model.StructuralVariantDatasetIDGnomadSvR4,
+			name:       "Fetch SV from gnomAD v4",
+			variantID:  "DEL_1_100000_200000", // Example SV ID - replace with real test data
+			dataset:    model.StructuralVariantDatasetIDGnomadSvR4,
 			shouldFind: false, // Set to true when you have test data
 			checkFields: func(t *testing.T, variant *model.StructuralVariantDetails) {
 				assert.NotEmpty(t, variant.VariantID)
@@ -102,9 +103,9 @@ func TestFetchStructuralVariantsByGene_Integration(t *testing.T) {
 	ctx := context.Background()
 
 	tests := []struct {
-		name       string
-		geneSymbol string
-		dataset    model.StructuralVariantDatasetID
+		name         string
+		geneSymbol   string
+		dataset      model.StructuralVariantDatasetID
 		checkResults func(t *testing.T, variants []*model.StructuralVariant)
 	}{
 		{
@@ -115,7 +116,7 @@ func TestFetchStructuralVariantsByGene_Integration(t *testing.T) {
 				// We expect BRCA1 to have some structural variants
 				// But we'll be flexible since we don't know the exact count
 				t.Logf("Found %d structural variants for BRCA1", len(variants))
-				
+
 				for _, variant := range variants {
 					assert.NotEmpty(t, variant.VariantID)
 					assert.NotEmpty(t, variant.Chrom)
@@ -124,7 +125,7 @@ func TestFetchStructuralVariantsByGene_Integration(t *testing.T) {
 					assert.GreaterOrEqual(t, variant.Ac, 0)
 					assert.Greater(t, variant.An, 0)
 					assert.Equal(t, model.ReferenceGenomeIDGRCh38, variant.ReferenceGenome)
-					
+
 					// Major consequence should be set for gene-based queries
 					assert.NotNil(t, variant.MajorConsequence, "Major consequence should be set for gene queries")
 				}
@@ -145,7 +146,7 @@ func TestFetchStructuralVariantsByGene_Integration(t *testing.T) {
 			variants, err := FetchStructuralVariantsByGene(ctx, client, tt.geneSymbol, tt.dataset)
 			require.NoError(t, err)
 			require.NotNil(t, variants, "Variants slice should not be nil")
-			
+
 			tt.checkResults(t, variants)
 		})
 	}
@@ -160,11 +161,11 @@ func TestFetchStructuralVariantsByRegion_Integration(t *testing.T) {
 	ctx := context.Background()
 
 	tests := []struct {
-		name    string
-		chrom   string
-		start   int
-		stop    int
-		dataset model.StructuralVariantDatasetID
+		name         string
+		chrom        string
+		start        int
+		stop         int
+		dataset      model.StructuralVariantDatasetID
 		checkResults func(t *testing.T, variants []*model.StructuralVariant)
 	}{
 		{
@@ -175,14 +176,14 @@ func TestFetchStructuralVariantsByRegion_Integration(t *testing.T) {
 			dataset: model.StructuralVariantDatasetIDGnomadSvR4,
 			checkResults: func(t *testing.T, variants []*model.StructuralVariant) {
 				t.Logf("Found %d structural variants in region 1:1000000-2000000", len(variants))
-				
+
 				for _, variant := range variants {
 					assert.NotEmpty(t, variant.VariantID)
 					assert.Equal(t, "1", variant.Chrom)
 					assert.GreaterOrEqual(t, variant.Ac, 0)
 					assert.Greater(t, variant.An, 0)
 					assert.Equal(t, model.ReferenceGenomeIDGRCh38, variant.ReferenceGenome)
-					
+
 					// Verify the variant overlaps with the requested region
 					// For simple variants, pos should be within the region
 					if variant.Type != nil && (*variant.Type == "INS" || *variant.Type == "DEL") {
@@ -210,7 +211,7 @@ func TestFetchStructuralVariantsByRegion_Integration(t *testing.T) {
 			variants, err := FetchStructuralVariantsByRegion(ctx, client, tt.chrom, tt.start, tt.stop, tt.dataset)
 			require.NoError(t, err)
 			require.NotNil(t, variants, "Variants slice should not be nil")
-			
+
 			tt.checkResults(t, variants)
 		})
 	}
@@ -244,20 +245,20 @@ func TestStructuralVariantDatasetParams_ReferenceGenomes(t *testing.T) {
 		model.StructuralVariantDatasetIDGnomadSvR2_1Controls,
 		model.StructuralVariantDatasetIDGnomadSvR2_1NonNeuro,
 	}
-	
+
 	for _, dataset := range v2Datasets {
 		params := structuralVariantDatasetParams[dataset]
-		assert.Equal(t, model.ReferenceGenomeIDGRCh37, params.ReferenceGenome, 
+		assert.Equal(t, model.ReferenceGenomeIDGRCh37, params.ReferenceGenome,
 			"v2 datasets should use GRCh37")
 	}
-	
+
 	v4Datasets := []model.StructuralVariantDatasetID{
 		model.StructuralVariantDatasetIDGnomadSvR4,
 	}
-	
+
 	for _, dataset := range v4Datasets {
 		params := structuralVariantDatasetParams[dataset]
-		assert.Equal(t, model.ReferenceGenomeIDGRCh38, params.ReferenceGenome, 
+		assert.Equal(t, model.ReferenceGenomeIDGRCh38, params.ReferenceGenome,
 			"v4 datasets should use GRCh38")
 	}
 }

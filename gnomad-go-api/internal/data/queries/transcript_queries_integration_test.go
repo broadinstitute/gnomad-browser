@@ -7,9 +7,10 @@ import (
 	"context"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with transcript data
@@ -44,7 +45,7 @@ func TestTranscriptFetcher_Integration_FetchTranscript(t *testing.T) {
 				assert.NotEmpty(t, result.Exons)
 				assert.NotEmpty(t, result.GeneID)
 				assert.Equal(t, model.ReferenceGenomeIDGRCh38, result.ReferenceGenome)
-				
+
 				// Check that gene is populated
 				if result.Gene != nil {
 					assert.NotEmpty(t, result.Gene.GeneID)
@@ -162,7 +163,7 @@ func TestTranscriptFetcher_Integration_TranscriptStructure(t *testing.T) {
 			assert.NotEmpty(t, result.Gene.Symbol)
 			assert.NotEmpty(t, result.Gene.Exons)
 			assert.NotEmpty(t, result.Gene.Transcripts)
-			
+
 			// Validate that this transcript is in the gene's transcript list
 			found := false
 			for _, transcript := range result.Gene.Transcripts {

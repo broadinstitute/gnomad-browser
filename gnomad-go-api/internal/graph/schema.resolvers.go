@@ -27,6 +27,38 @@ func (r *exacConstraintResolver) PLi(ctx context.Context, obj *model.ExacConstra
 	return 0, nil
 }
 
+// Variants is the resolver for the variants field.
+func (r *geneResolver) Variants(ctx context.Context, obj *model.Gene, dataset model.DatasetID) ([]*model.Variant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset to string
+	datasetStr := string(dataset)
+
+	// Use efficient gene-based variant fetching instead of looping through exons
+	variants, err := queries.FetchVariantsByGene(ctx, esClient, obj.GeneID, obj.Chrom, obj.Exons, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching variants for gene: %w", err)
+	}
+
+	return variants, nil
+}
+
+// StructuralVariants is the resolver for the structural_variants field.
+func (r *geneResolver) StructuralVariants(ctx context.Context, obj *model.Gene, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Fetch structural variants for this gene
+	return queries.FetchStructuralVariantsByGene(ctx, esClient, obj.Symbol, dataset)
+}
+
 // MitochondrialVariants is the resolver for the mitochondrial_variants field.
 func (r *geneResolver) MitochondrialVariants(ctx context.Context, obj *model.Gene, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
 	// Mitochondrial variants are only available for mitochondrial genes (chromosome M)
@@ -81,6 +113,68 @@ func (r *geneResolver) ClinvarVariants(ctx context.Context, obj *model.Gene) ([]
 	return queries.FetchClinVarVariantsByGene(ctx, esClient, obj.GeneID, refGenomeStr)
 }
 
+// Coverage is the resolver for the coverage field.
+func (r *geneResolver) Coverage(ctx context.Context, obj *model.Gene, dataset *model.DatasetID) (*model.FeatureCoverage, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Use provided dataset or default to gnomad_r4
+	datasetStr := "gnomad_r4"
+	if dataset != nil {
+		datasetStr = string(*dataset)
+	}
+
+	// Get gene exons to define coverage regions
+	regions := make([]queries.CoverageRegion, len(obj.Exons))
+	for i, exon := range obj.Exons {
+		regions[i] = queries.CoverageRegion{
+			Start: exon.Start,
+			Stop:  exon.Stop,
+		}
+	}
+
+	// Fetch coverage for gene exons
+	coverage, err := queries.FetchFeatureCoverage(ctx, esClient, obj.GeneID, datasetStr, regions, obj.Chrom)
+	if err != nil {
+		return nil, err
+	}
+
+	// Ensure coverage is not nil and has the required structure
+	if coverage == nil {
+		coverage = &model.FeatureCoverage{
+			Exome:  []*model.CoverageBin{},
+			Genome: []*model.CoverageBin{},
+		}
+	}
+
+	// Ensure arrays are not nil
+	if coverage.Exome == nil {
+		coverage.Exome = []*model.CoverageBin{}
+	}
+	if coverage.Genome == nil {
+		coverage.Genome = []*model.CoverageBin{}
+	}
+
+	return coverage, nil
+}
+
+// MitochondrialCoverage is the resolver for the mitochondrial_coverage field.
+func (r *geneResolver) MitochondrialCoverage(ctx context.Context, obj *model.Gene, dataset model.DatasetID) ([]*model.MitochondrialCoverageBin, error) {
+	// TODO: Implement mitochondrial coverage
+	// For now, return empty array to avoid panic
+	return []*model.MitochondrialCoverageBin{}, nil
+}
+
+// CnvTrackCallableCoverage is the resolver for the cnv_track_callable_coverage field.
+func (r *geneResolver) CnvTrackCallableCoverage(ctx context.Context, obj *model.Gene, dataset model.CopyNumberVariantDatasetID) ([]*model.CNVTrackCallableCoverageBin, error) {
+	// TODO: Implement CNV track callable coverage
+	// For now, return empty array to avoid panic
+	return []*model.CNVTrackCallableCoverageBin{}, nil
+}
+
 // ShortTandemRepeats is the resolver for the short_tandem_repeats field.
 func (r *geneResolver) ShortTandemRepeats(ctx context.Context, obj *model.Gene, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
 	// Get Elasticsearch client from context
@@ -89,16 +183,82 @@ func (r *geneResolver) ShortTandemRepeats(ctx context.Context, obj *model.Gene, 
 		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	// Convert dataset ID to string
-	datasetStr := string(dataset)
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.DatasetIDGnomadR3:
+		datasetStr = "gnomad_r3"
+	case model.DatasetIDGnomadR4:
+		datasetStr = "gnomad_r4"
+	default:
+		return nil, fmt.Errorf("short tandem repeats are not available for dataset: %v", dataset)
+	}
 
-	// Fetch STRs for this gene using the ensembl gene ID
+	// Fetch short tandem repeats for this gene
 	strs, err := queries.FetchShortTandemRepeatsByGene(ctx, esClient, obj.GeneID, datasetStr)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching short tandem repeats for gene %s: %w", obj.GeneID, err)
 	}
 
 	return strs, nil
+}
+
+// HeterozygousVariantCooccurrenceCounts is the resolver for the heterozygous_variant_cooccurrence_counts field.
+func (r *geneResolver) HeterozygousVariantCooccurrenceCounts(ctx context.Context, obj *model.Gene) ([]*model.HeterozygousVariantCooccurrenceCounts, error) {
+	// TODO: Implement variant cooccurrence counts
+	// For now, return empty array to avoid panic
+	return []*model.HeterozygousVariantCooccurrenceCounts{}, nil
+}
+
+// HomozygousVariantCooccurrenceCounts is the resolver for the homozygous_variant_cooccurrence_counts field.
+func (r *geneResolver) HomozygousVariantCooccurrenceCounts(ctx context.Context, obj *model.Gene) ([]*model.HomozygousVariantCooccurrenceCounts, error) {
+	// TODO: Implement variant cooccurrence counts
+	// For now, return empty array to avoid panic
+	return []*model.HomozygousVariantCooccurrenceCounts{}, nil
+}
+
+// CopyNumberVariants is the resolver for the copy_number_variants field.
+func (r *geneResolver) CopyNumberVariants(ctx context.Context, obj *model.Gene, dataset model.CopyNumberVariantDatasetID) ([]*model.CopyNumberVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.CopyNumberVariantDatasetIDGnomadCnvR4:
+		datasetStr = "gnomad_cnv_r4"
+	default:
+		return nil, fmt.Errorf("copy number variants are not available for dataset: %v", dataset)
+	}
+
+	// Fetch copy number variants for this gene
+	return queries.FetchCopyNumberVariantsByGene(ctx, esClient, obj.Symbol, datasetStr)
+}
+
+// GtexTissueExpression is the resolver for the gtex_tissue_expression field.
+func (r *geneTranscriptResolver) GtexTissueExpression(ctx context.Context, obj *model.GeneTranscript) ([]*model.GtexTissue, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome enum to string
+	var refGenomeStr string
+	switch obj.ReferenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", obj.ReferenceGenome)
+	}
+
+	// Fetch GTEx tissue expression for this transcript
+	return queries.FetchGtexTissueExpression(ctx, esClient, obj.TranscriptID, refGenomeStr)
 }
 
 // Pli is the resolver for the pli field.
@@ -110,6 +270,16 @@ func (r *gnomadConstraintResolver) Pli(ctx context.Context, obj *model.GnomadCon
 func (r *gnomadConstraintResolver) PLi(ctx context.Context, obj *model.GnomadConstraint) (*float64, error) {
 	// This is a deprecated field - return the same as pli
 	return obj.Pli, nil
+}
+
+// Meta is the resolver for the meta field.
+func (r *queryResolver) Meta(ctx context.Context) (*model.Meta, error) {
+	// For now, return a hardcoded ClinVar release date
+	// TODO: Fetch this from a configuration file or database
+	clinvarDate := "2025-04-29"
+	return &model.Meta{
+		ClinvarReleaseDate: &clinvarDate,
+	}, nil
 }
 
 // Variant is the resolver for the variant field.
@@ -353,7 +523,7 @@ func (r *queryResolver) CopyNumberVariant(ctx context.Context, variantID string,
 	}
 
 	if cnvDetails == nil {
-		return nil, fmt.Errorf("copy number variant not found")
+		return nil, fmt.Errorf("Variant not found")
 	}
 
 	return cnvDetails, nil
@@ -421,6 +591,7 @@ func (r *queryResolver) ShortTandemRepeats(ctx context.Context, dataset model.Da
 
 	return strs, nil
 }
+
 // MultiNucleotideVariant is the resolver for the multi_nucleotide_variant field.
 func (r *queryResolver) MultiNucleotideVariant(ctx context.Context, variantID string, dataset model.DatasetID) (*model.MultiNucleotideVariantDetails, error) {
 	// Get Elasticsearch client from context
@@ -472,6 +643,63 @@ func (r *queryResolver) MitochondrialVariant(ctx context.Context, variantID stri
 	return variant, nil
 }
 
+// Genes is the resolver for the genes field.
+func (r *regionResolver) Genes(ctx context.Context, obj *model.Region) ([]*model.RegionGene, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome to string
+	var refGenomeStr string
+	switch obj.ReferenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", obj.ReferenceGenome)
+	}
+
+	// Fetch genes in the region
+	return queries.FetchGenesInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
+}
+
+// NonCodingConstraints is the resolver for the non_coding_constraints field.
+func (r *regionResolver) NonCodingConstraints(ctx context.Context, obj *model.Region) ([]*model.NonCodingConstraintRegion, error) {
+	// TODO: Implement non-coding constraints
+	// For now, return empty array to avoid panic
+	return []*model.NonCodingConstraintRegion{}, nil
+}
+
+// Variants is the resolver for the variants field.
+func (r *regionResolver) Variants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.Variant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset to string
+	datasetStr := string(dataset)
+
+	// Fetch variants in the region
+	return queries.FetchVariantsInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
+}
+
+// StructuralVariants is the resolver for the structural_variants field.
+func (r *regionResolver) StructuralVariants(ctx context.Context, obj *model.Region, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Fetch structural variants for this region
+	return queries.FetchStructuralVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, dataset)
+}
+
 // MitochondrialVariants is the resolver for the mitochondrial_variants field.
 func (r *regionResolver) MitochondrialVariants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
 	// Mitochondrial variants are only available for mitochondrial regions (chromosome M)
@@ -502,6 +730,32 @@ func (r *regionResolver) MitochondrialVariants(ctx context.Context, obj *model.R
 
 	return variants, nil
 }
+
+// CopyNumberVariants is the resolver for the copy_number_variants field.
+func (r *regionResolver) CopyNumberVariants(ctx context.Context, obj *model.Region, dataset model.CopyNumberVariantDatasetID) ([]*model.CopyNumberVariant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.CopyNumberVariantDatasetIDGnomadCnvR4:
+		datasetStr = "gnomad_cnv_r4"
+	default:
+		return nil, fmt.Errorf("copy number variants are not available for dataset: %v", dataset)
+	}
+
+	// Calculate xpos values
+	xstart := float64(queries.XPosition(obj.Chrom, obj.Start))
+	xstop := float64(queries.XPosition(obj.Chrom, obj.Stop))
+
+	// Fetch copy number variants for this region
+	return queries.FetchCopyNumberVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, xstart, xstop, datasetStr)
+}
+
 // ClinvarVariants is the resolver for the clinvar_variants field.
 func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
 	// Get Elasticsearch client from context
@@ -525,24 +779,131 @@ func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region)
 	return queries.FetchClinVarVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
 }
 
-// ShortTandemRepeats is the resolver for the short_tandem_repeats field.
-func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
+// Coverage is the resolver for the coverage field.
+func (r *regionResolver) Coverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) (*model.RegionCoverage, error) {
 	// Get Elasticsearch client from context
 	esClient := elastic.FromContext(ctx)
 	if esClient == nil {
 		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	// Convert dataset ID to string
+	// Convert dataset enum to string
 	datasetStr := string(dataset)
 
-	// Fetch STRs within this genomic region
-	strs, err := queries.FetchShortTandemRepeatsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching short tandem repeats for region %s:%d-%d: %w", obj.Chrom, obj.Start, obj.Stop, err)
+	// Fetch coverage for region
+	return queries.FetchRegionCoverage(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
+}
+
+// MitochondrialCoverage is the resolver for the mitochondrial_coverage field.
+func (r *regionResolver) MitochondrialCoverage(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialCoverageBin, error) {
+	// TODO: Implement mitochondrial coverage for region
+	// For now, return empty array to avoid panic
+	return []*model.MitochondrialCoverageBin{}, nil
+}
+
+// ShortTandemRepeats is the resolver for the short_tandem_repeats field.
+func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
+	// TODO: Implement STR fetching for region
+	// For now, return empty array to avoid panic
+	return []*model.ShortTandemRepeat{}, nil
+}
+
+// Gene is the resolver for the gene field.
+func (r *transcriptResolver) Gene(ctx context.Context, obj *model.Transcript) (*model.TranscriptGene, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	return strs, nil
+	// Convert reference genome enum to string
+	var refGenomeStr string
+	switch obj.ReferenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", obj.ReferenceGenome)
+	}
+
+	// Fetch the gene for this transcript
+	gene, err := queries.FetchGeneByID(ctx, esClient, obj.GeneID, refGenomeStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching gene for transcript: %w", err)
+	}
+
+	// Convert Gene to TranscriptGene
+	if gene == nil {
+		// Return empty TranscriptGene instead of nil to satisfy non-nullable schema
+		return &model.TranscriptGene{
+			ReferenceGenome: obj.ReferenceGenome,
+			GeneID:          obj.GeneID,
+			GeneVersion:     "",
+			Symbol:          "",
+			Chrom:           obj.Chrom,
+			Start:           obj.Start,
+			Stop:            obj.Stop,
+		}, nil
+	}
+
+	// Map Gene fields to TranscriptGene fields
+	return &model.TranscriptGene{
+		ReferenceGenome: gene.ReferenceGenome,
+		GeneID:          gene.GeneID,
+		GeneVersion:     gene.GeneVersion,
+		Symbol:          gene.Symbol,
+		HgncID:          gene.HgncID,
+		NcbiID:          gene.NcbiID,
+		OmimID:          gene.OmimID,
+		Name:            gene.Name,
+		Chrom:           gene.Chrom,
+		Start:           gene.Start,
+		Stop:            gene.Stop,
+	}, nil
+}
+
+// GtexTissueExpression is the resolver for the gtex_tissue_expression field.
+func (r *transcriptResolver) GtexTissueExpression(ctx context.Context, obj *model.Transcript) ([]*model.GtexTissue, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome enum to string
+	var refGenomeStr string
+	switch obj.ReferenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", obj.ReferenceGenome)
+	}
+
+	// Fetch GTEx tissue expression for this transcript
+	return queries.FetchGtexTissueExpression(ctx, esClient, obj.TranscriptID, refGenomeStr)
+}
+
+// Variants is the resolver for the variants field.
+func (r *transcriptResolver) Variants(ctx context.Context, obj *model.Transcript, dataset model.DatasetID) ([]*model.Variant, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset to string
+	datasetStr := string(dataset)
+
+	// Use efficient gene-based variant fetching (transcript GeneID matches gene_id field)
+	variants, err := queries.FetchVariantsByGene(ctx, esClient, obj.GeneID, obj.Chrom, obj.Exons, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching variants for transcript: %w", err)
+	}
+
+	return variants, nil
 }
 
 // MitochondrialVariants is the resolver for the mitochondrial_variants field.
@@ -575,11 +936,56 @@ func (r *transcriptResolver) MitochondrialVariants(ctx context.Context, obj *mod
 
 	return variants, nil
 }
+
+// ClinvarVariants is the resolver for the clinvar_variants field.
+func (r *transcriptResolver) ClinvarVariants(ctx context.Context, obj *model.Transcript) ([]*model.ClinVarVariant, error) {
+	// TODO: Implement ClinVar variant fetching for transcript
+	// For now, return empty array to avoid panic
+	return []*model.ClinVarVariant{}, nil
+}
+
+// Coverage is the resolver for the coverage field.
+func (r *transcriptResolver) Coverage(ctx context.Context, obj *model.Transcript, dataset *model.DatasetID) (*model.FeatureCoverage, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Use provided dataset or default to gnomad_r4
+	datasetStr := "gnomad_r4"
+	if dataset != nil {
+		datasetStr = string(*dataset)
+	}
+
+	// Get transcript exons to define coverage regions
+	regions := make([]queries.CoverageRegion, len(obj.Exons))
+	for i, exon := range obj.Exons {
+		regions[i] = queries.CoverageRegion{
+			Start: exon.Start,
+			Stop:  exon.Stop,
+		}
+	}
+
+	// Fetch coverage for transcript exons
+	return queries.FetchFeatureCoverage(ctx, esClient, obj.TranscriptID, datasetStr, regions, obj.Chrom)
+}
+
+// MitochondrialCoverage is the resolver for the mitochondrial_coverage field.
+func (r *transcriptResolver) MitochondrialCoverage(ctx context.Context, obj *model.Transcript, dataset model.DatasetID) ([]*model.MitochondrialCoverageBin, error) {
+	// TODO: Implement mitochondrial coverage for transcript
+	// For now, return empty array to avoid panic
+	return []*model.MitochondrialCoverageBin{}, nil
+}
+
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
 
 // Gene returns GeneResolver implementation.
 func (r *Resolver) Gene() GeneResolver { return &geneResolver{r} }
+
+// GeneTranscript returns GeneTranscriptResolver implementation.
+func (r *Resolver) GeneTranscript() GeneTranscriptResolver { return &geneTranscriptResolver{r} }
 
 // GnomadConstraint returns GnomadConstraintResolver implementation.
 func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadConstraintResolver{r} }
@@ -595,6 +1001,7 @@ func (r *Resolver) Transcript() TranscriptResolver { return &transcriptResolver{
 
 type exacConstraintResolver struct{ *Resolver }
 type geneResolver struct{ *Resolver }
+type geneTranscriptResolver struct{ *Resolver }
 type gnomadConstraintResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type regionResolver struct{ *Resolver }

@@ -112,7 +112,7 @@ func TestGetIndexForFetcher(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			fetcher, ok := datasetFetchers[tt.datasetID]
 			assert.True(t, ok, "Dataset fetcher should exist for %s", tt.datasetID)
-			
+
 			if ok {
 				result := getIndexForFetcher(fetcher)
 				assert.Equal(t, tt.expectedIdx, result)

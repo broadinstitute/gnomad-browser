@@ -373,7 +373,7 @@ func uniqueStrings(strings []string) []string {
 	if len(strings) == 0 {
 		return []string{}
 	}
-	
+
 	seen := make(map[string]bool)
 	var result []string
 

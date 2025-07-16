@@ -7,9 +7,10 @@ import (
 	"context"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with gnomAD mitochondrial data
@@ -405,7 +406,7 @@ func TestMitochondrialVariant_Integration_DataStructure(t *testing.T) {
 	t.Run("quality_metrics", func(t *testing.T) {
 		// Quality metrics should be present
 		assert.NotNil(t, result.GenotypeQualityMetrics, "Should have genotype quality metrics")
-		
+
 		if len(result.GenotypeQualityMetrics) > 0 {
 			for _, metric := range result.GenotypeQualityMetrics {
 				assert.NotEmpty(t, metric.Name, "Quality metric should have name")
@@ -421,7 +422,7 @@ func TestMitochondrialVariant_Integration_DataStructure(t *testing.T) {
 
 	t.Run("transcript_consequences", func(t *testing.T) {
 		assert.NotNil(t, result.TranscriptConsequences, "Should have transcript consequences")
-		
+
 		if len(result.TranscriptConsequences) > 0 {
 			for _, csq := range result.TranscriptConsequences {
 				assert.NotEmpty(t, csq.GeneID, "Consequence should have gene ID")
@@ -456,7 +457,7 @@ func TestMitochondrialVariant_Integration_EdgeCases(t *testing.T) {
 		result, err := FetchMitochondrialVariantsByRegion(context.Background(), client, "M", 300, 400, "gnomad_r4")
 		require.NoError(t, err, "Should not return error")
 		assert.NotNil(t, result, "Result should not be nil")
-		
+
 		// Just verify we can handle whatever variants are in this region
 		for _, variant := range result {
 			assert.NotEmpty(t, variant.VariantID, "Each variant should have a variant ID")

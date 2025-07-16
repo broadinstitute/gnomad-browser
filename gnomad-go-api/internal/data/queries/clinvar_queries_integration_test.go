@@ -9,10 +9,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // These tests require a running Elasticsearch instance with ClinVar data
@@ -27,10 +28,10 @@ func TestClinVarIndicesExist_Integration(t *testing.T) {
 
 	// Check if ClinVar indices exist
 	ctx := context.Background()
-	
+
 	// First, let's see what indices exist that might be ClinVar related
 	t.Log("Checking for ClinVar-related indices...")
-	
+
 	for refGenome, indexName := range ClinVarVariantIndices {
 		t.Run("check_index_"+refGenome, func(t *testing.T) {
 			// Try to get index info
@@ -40,7 +41,7 @@ func TestClinVarIndicesExist_Integration(t *testing.T) {
 				},
 				"size": 3, // Get a few samples
 			}
-			
+
 			response, err := client.Search(ctx, indexName, query)
 			if err != nil {
 				t.Logf("Index %s (%s) not available or accessible: %v", indexName, refGenome, err)
@@ -51,7 +52,7 @@ func TestClinVarIndicesExist_Integration(t *testing.T) {
 					"clinvar_" + strings.ToLower(refGenome),
 					"clinvar_variants",
 				}
-				
+
 				for _, altName := range altNames {
 					altResponse, altErr := client.Search(ctx, altName, query)
 					if altErr == nil {
@@ -69,10 +70,10 @@ func TestClinVarIndicesExist_Integration(t *testing.T) {
 				}
 				return
 			}
-			
-			t.Logf("Index %s (%s) exists with %d total documents", 
+
+			t.Logf("Index %s (%s) exists with %d total documents",
 				indexName, refGenome, response.Hits.Total.Value)
-			
+
 			// If we found documents, log some samples
 			for i, hit := range response.Hits.Hits {
 				if value, ok := hit.Source["value"].(map[string]any); ok {
@@ -244,7 +245,7 @@ func TestFetchClinVarVariant_Integration_DataStructure(t *testing.T) {
 			assert.NotEmpty(t, submission.ReviewStatus)
 			assert.NotEmpty(t, submission.SubmitterName)
 			assert.NotNil(t, submission.Conditions)
-			
+
 			// Test conditions
 			for _, condition := range submission.Conditions {
 				assert.NotEmpty(t, condition.Name)
@@ -291,7 +292,7 @@ func TestFetchClinVarVariantsByGene_Integration(t *testing.T) {
 			if tt.expectVariants {
 				if len(result) > 0 {
 					t.Logf("Found %d ClinVar variants for gene %s", len(result), tt.geneID)
-					
+
 					// Validate first variant structure
 					variant := result[0]
 					assert.NotEmpty(t, variant.VariantID)
@@ -352,12 +353,12 @@ func TestFetchClinVarVariantsByRegion_Integration(t *testing.T) {
 			if tt.expectVariants {
 				if len(result) > 0 {
 					t.Logf("Found %d ClinVar variants in region %s:%d-%d", len(result), tt.chrom, tt.start, tt.stop)
-					
+
 					// Validate variants are sorted by position
 					for i := 1; i < len(result); i++ {
 						assert.LessOrEqual(t, result[i-1].Pos, result[i].Pos, "Variants should be sorted by position")
 					}
-					
+
 					// Validate first variant structure
 					variant := result[0]
 					assert.NotEmpty(t, variant.VariantID)
@@ -413,7 +414,7 @@ func TestFetchClinVarVariantsByTranscript_Integration(t *testing.T) {
 			if tt.expectVariants {
 				if len(result) > 0 {
 					t.Logf("Found %d ClinVar variants for transcript %s", len(result), tt.transcriptID)
-					
+
 					// Validate first variant structure
 					variant := result[0]
 					assert.NotEmpty(t, variant.VariantID)

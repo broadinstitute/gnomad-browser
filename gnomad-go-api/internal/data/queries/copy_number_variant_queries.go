@@ -32,23 +32,23 @@ type CNVElasticsearchDoc struct {
 
 // CNVValueDoc represents the 'value' field in CNV Elasticsearch documents
 type CNVValueDoc struct {
-	VariantID       string                   `json:"variant_id"`
-	Chrom           string                   `json:"chrom"`
-	Pos             int                      `json:"pos"`
-	End             int                      `json:"end"`
-	Length          *int                     `json:"length"`
-	Type            *string                  `json:"type"`
-	PosMin          *int                     `json:"posmin"`
-	PosMax          *int                     `json:"posmax"`
-	EndMin          *int                     `json:"endmin"`
-	EndMax          *int                     `json:"endmax"`
-	Filters         []string                 `json:"filters"`
-	Alts            []string                 `json:"alts"`
-	Genes           []string                 `json:"genes"`
-	Qual            *float64                 `json:"qual"`
-	ReferenceGenome string                   `json:"reference_genome"`
-	Freq            CNVFrequencyData         `json:"freq"`
-	Populations     []CNVPopulationData      `json:"populations"`
+	VariantID       string              `json:"variant_id"`
+	Chrom           string              `json:"chrom"`
+	Pos             int                 `json:"pos"`
+	End             int                 `json:"end"`
+	Length          *int                `json:"length"`
+	Type            *string             `json:"type"`
+	PosMin          *int                `json:"posmin"`
+	PosMax          *int                `json:"posmax"`
+	EndMin          *int                `json:"endmin"`
+	EndMax          *int                `json:"endmax"`
+	Filters         []string            `json:"filters"`
+	Alts            []string            `json:"alts"`
+	Genes           []string            `json:"genes"`
+	Qual            *float64            `json:"qual"`
+	ReferenceGenome string              `json:"reference_genome"`
+	Freq            CNVFrequencyData    `json:"freq"`
+	Populations     []CNVPopulationData `json:"populations"`
 }
 
 // CNVFrequencyData represents frequency data for the CNV
@@ -101,7 +101,7 @@ func FetchCopyNumberVariant(ctx context.Context, client *elastic.Client, variant
 	}
 
 	hit := response.Hits.Hits[0]
-	
+
 	// Extract the 'value' field from _source
 	value, ok := hit.Source["value"].(map[string]any)
 	if !ok {
@@ -355,17 +355,17 @@ func shapeCNVDetailsData(doc *CNVValueDoc) *model.CopyNumberVariantDetails {
 // fetchAllSearchResults is a helper to fetch all results with pagination
 func fetchAllSearchResults(ctx context.Context, client *elastic.Client, index string, query map[string]any) ([]elastic.Hit, error) {
 	var allHits []elastic.Hit
-	
+
 	response, err := client.Search(ctx, index, query)
 	if err != nil {
 		return nil, err
 	}
-	
+
 	allHits = append(allHits, response.Hits.Hits...)
-	
+
 	// For simplicity, we're just taking the first batch
 	// In a production system, you might want to implement proper pagination
 	// if the number of results exceeds the size limit
-	
+
 	return allHits, nil
 }

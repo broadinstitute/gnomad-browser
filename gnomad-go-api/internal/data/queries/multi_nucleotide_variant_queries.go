@@ -14,50 +14,50 @@ const MNVVariantIndex = "gnomad_v2_mnvs"
 
 // MNVDocument represents the ES document structure for multi-nucleotide variants
 type MNVDocument struct {
-	VariantID       string                          `json:"variant_id"`
-	ReferenceGenome string                          `json:"reference_genome"`
-	Chrom           string                          `json:"chrom"`
-	Pos             int                             `json:"pos"`
-	Ref             string                          `json:"ref"`
-	Alt             string                          `json:"alt"`
-	ConstituentSNVs []MNVConstituentSNVDoc          `json:"constituent_snvs"`
-	Exome           *MNVSequencingDataDoc           `json:"exome"`
-	Genome          *MNVSequencingDataDoc           `json:"genome"`
-	Consequences    []MNVConsequenceDoc             `json:"consequences"`
-	RelatedMNVs     []MNVSummaryDoc                 `json:"related_mnvs"`
+	VariantID       string                 `json:"variant_id"`
+	ReferenceGenome string                 `json:"reference_genome"`
+	Chrom           string                 `json:"chrom"`
+	Pos             int                    `json:"pos"`
+	Ref             string                 `json:"ref"`
+	Alt             string                 `json:"alt"`
+	ConstituentSNVs []MNVConstituentSNVDoc `json:"constituent_snvs"`
+	Exome           *MNVSequencingDataDoc  `json:"exome"`
+	Genome          *MNVSequencingDataDoc  `json:"genome"`
+	Consequences    []MNVConsequenceDoc    `json:"consequences"`
+	RelatedMNVs     []MNVSummaryDoc        `json:"related_mnvs"`
 }
 
 // MNVConstituentSNVDoc represents a constituent SNV document
 type MNVConstituentSNVDoc struct {
-	VariantID string                    `json:"variant_id"`
-	Exome     *MNVConstituentSNVSeqDoc  `json:"exome"`
-	Genome    *MNVConstituentSNVSeqDoc  `json:"genome"`
+	VariantID string                   `json:"variant_id"`
+	Exome     *MNVConstituentSNVSeqDoc `json:"exome"`
+	Genome    *MNVConstituentSNVSeqDoc `json:"genome"`
 }
 
 // MNVConstituentSNVSeqDoc represents sequencing data for constituent SNVs
 type MNVConstituentSNVSeqDoc struct {
-	AC      *int       `json:"ac"`
-	AN      *int       `json:"an"`
-	Filters []string   `json:"filters"`
+	AC      *int     `json:"ac"`
+	AN      *int     `json:"an"`
+	Filters []string `json:"filters"`
 }
 
 // MNVSequencingDataDoc represents sequencing data for the MNV
 type MNVSequencingDataDoc struct {
-	AC           *int  `json:"ac"`
-	ACHom        *int  `json:"ac_hom"`
-	NIndividuals *int  `json:"n_individuals"`
+	AC           *int `json:"ac"`
+	ACHom        *int `json:"ac_hom"`
+	NIndividuals *int `json:"n_individuals"`
 }
 
 // MNVConsequenceDoc represents consequence data for the MNV
 type MNVConsequenceDoc struct {
-	GeneID           string                            `json:"gene_id"`
-	GeneName         string                            `json:"gene_name"`
-	TranscriptID     string                            `json:"transcript_id"`
-	Category         *string                           `json:"category"`
-	AminoAcids       string                            `json:"amino_acids"`
-	Codons           string                            `json:"codons"`
-	Consequence      string                            `json:"consequence"`
-	SNVConsequences  []MNVConstituentSNVConsequenceDoc `json:"snv_consequences"`
+	GeneID          string                            `json:"gene_id"`
+	GeneName        string                            `json:"gene_name"`
+	TranscriptID    string                            `json:"transcript_id"`
+	Category        *string                           `json:"category"`
+	AminoAcids      string                            `json:"amino_acids"`
+	Codons          string                            `json:"codons"`
+	Consequence     string                            `json:"consequence"`
+	SNVConsequences []MNVConstituentSNVConsequenceDoc `json:"snv_consequences"`
 }
 
 // MNVConstituentSNVConsequenceDoc represents consequence data for constituent SNVs

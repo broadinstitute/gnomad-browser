@@ -18,10 +18,10 @@ const (
 
 // StructuralVariantDatasetParams holds dataset-specific configuration for SV queries
 type StructuralVariantDatasetParams struct {
-	Index            string
-	Subset           string
-	VariantIDParams  func(variantID string) map[string]any
-	ReferenceGenome  model.ReferenceGenomeID
+	Index           string
+	Subset          string
+	VariantIDParams func(variantID string) map[string]any
+	ReferenceGenome model.ReferenceGenomeID
 }
 
 var structuralVariantDatasetParams = map[model.StructuralVariantDatasetID]StructuralVariantDatasetParams{
@@ -453,35 +453,35 @@ func shapeStructuralVariantDetails(value, subsetData map[string]any, referenceGe
 	acHemi := getIntPtr(subsetData["ac_hemi"])
 
 	return &model.StructuralVariantDetails{
-		VariantID:         variantID,
-		ReferenceGenome:   referenceGenome,
-		Chrom:             chrom,
-		Pos:               pos,
-		End:               end,
-		Chrom2:            chrom2,
-		End2:              end2,
-		Pos2:              pos2,
-		Length:            length,
-		Type:              variantType,
-		Ac:                ac,
-		An:                an,
-		Af:                af,
-		HomozygoteCount:   homozygoteCount,
-		HemizygoteCount:   hemizygoteCount,
-		Qual:              qual,
-		MajorConsequence:  majorConsequence,
-		AgeDistribution:   ageDistribution,
-		GenotypeQuality:   genotypeQuality,
-		Populations:       populations,
-		Consequences:      consequences,
-		CopyNumbers:       copyNumbers,
-		Algorithms:        algorithms,
-		Alts:              alts,
-		Evidence:          evidence,
-		Filters:           filters,
-		Genes:             genes,
-		CpxIntervals:      cpxIntervals,
-		CpxType:           cpxType,
+		VariantID:        variantID,
+		ReferenceGenome:  referenceGenome,
+		Chrom:            chrom,
+		Pos:              pos,
+		End:              end,
+		Chrom2:           chrom2,
+		End2:             end2,
+		Pos2:             pos2,
+		Length:           length,
+		Type:             variantType,
+		Ac:               ac,
+		An:               an,
+		Af:               af,
+		HomozygoteCount:  homozygoteCount,
+		HemizygoteCount:  hemizygoteCount,
+		Qual:             qual,
+		MajorConsequence: majorConsequence,
+		AgeDistribution:  ageDistribution,
+		GenotypeQuality:  genotypeQuality,
+		Populations:      populations,
+		Consequences:     consequences,
+		CopyNumbers:      copyNumbers,
+		Algorithms:       algorithms,
+		Alts:             alts,
+		Evidence:         evidence,
+		Filters:          filters,
+		Genes:            genes,
+		CpxIntervals:     cpxIntervals,
+		CpxType:          cpxType,
 		// Deprecated fields
 		AcHom:  acHom,
 		AcHemi: acHemi,
@@ -518,23 +518,23 @@ func shapeStructuralVariant(value, subsetData map[string]any, referenceGenome mo
 	acHemi := getIntPtr(subsetData["ac_hemi"])
 
 	return &model.StructuralVariant{
-		VariantID:         variantID,
-		ReferenceGenome:   referenceGenome,
-		Chrom:             chrom,
-		Pos:               pos,
-		End:               end,
-		Chrom2:            chrom2,
-		End2:              end2,
-		Pos2:              pos2,
-		Length:            length,
-		Type:              variantType,
-		Ac:                ac,
-		An:                an,
-		Af:                af,
-		HomozygoteCount:   homozygoteCount,
-		HemizygoteCount:   hemizygoteCount,
-		MajorConsequence:  majorConsequence,
-		Filters:           filters,
+		VariantID:        variantID,
+		ReferenceGenome:  referenceGenome,
+		Chrom:            chrom,
+		Pos:              pos,
+		End:              end,
+		Chrom2:           chrom2,
+		End2:             end2,
+		Pos2:             pos2,
+		Length:           length,
+		Type:             variantType,
+		Ac:               ac,
+		An:               an,
+		Af:               af,
+		HomozygoteCount:  homozygoteCount,
+		HemizygoteCount:  hemizygoteCount,
+		MajorConsequence: majorConsequence,
+		Filters:          filters,
 		// Deprecated fields
 		Consequence: majorConsequence, // For backward compatibility
 		AcHom:       acHom,
@@ -591,10 +591,10 @@ func shapeHistogram(hist map[string]any) *model.Histogram {
 	}
 
 	return &model.Histogram{
-		BinEdges:  binEdges,
-		BinFreq:   binFreq,
-		NSmaller:  getIntPtr(hist["n_smaller"]),
-		NLarger:   getIntPtr(hist["n_larger"]),
+		BinEdges: binEdges,
+		BinFreq:  binFreq,
+		NSmaller: getIntPtr(hist["n_smaller"]),
+		NLarger:  getIntPtr(hist["n_larger"]),
 	}
 }
 

@@ -8,9 +8,10 @@ import (
 	"strings"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with gnomAD v2 data and co-occurrence data
@@ -44,12 +45,12 @@ func TestFetchVariantCooccurrence_Integration_ValidPairs(t *testing.T) {
 				assert.Equal(t, 9, len(result.GenotypeCounts), "Should have 9 genotype counts")
 				assert.Equal(t, 4, len(result.HaplotypeCounts), "Should have 4 haplotype counts")
 				assert.NotNil(t, result.Populations, "Should have population data")
-				
+
 				// Verify that all genotype counts are non-negative
 				for i, count := range result.GenotypeCounts {
 					assert.GreaterOrEqual(t, count, 0, "Genotype count %d should be non-negative", i)
 				}
-				
+
 				// Verify that all haplotype counts are non-negative
 				for i, count := range result.HaplotypeCounts {
 					assert.GreaterOrEqual(t, count, 0.0, "Haplotype count %d should be non-negative", i)
@@ -164,7 +165,7 @@ func TestFetchVariantCooccurrence_Integration_PopulationData(t *testing.T) {
 	client := getTestESClient(t)
 
 	ctx := context.Background()
-	
+
 	// Test with a known variant pair that should have population data
 	result, err := FetchVariantCooccurrence(ctx, client, []string{"1-55505647-G-T", "1-55523855-G-A"}, "gnomad_r2_1")
 	if err != nil {
@@ -174,31 +175,31 @@ func TestFetchVariantCooccurrence_Integration_PopulationData(t *testing.T) {
 	if result != nil && result.Populations != nil {
 		t.Run("validate population structure", func(t *testing.T) {
 			assert.Greater(t, len(result.Populations), 0, "Should have population data")
-			
+
 			for i, pop := range result.Populations {
 				assert.NotEmpty(t, pop.ID, "Population %d should have ID", i)
 				assert.Equal(t, 9, len(pop.GenotypeCounts), "Population %d should have 9 genotype counts", i)
 				assert.Equal(t, 4, len(pop.HaplotypeCounts), "Population %d should have 4 haplotype counts", i)
-				
+
 				// Verify that all population genotype counts are non-negative
 				for j, count := range pop.GenotypeCounts {
 					assert.GreaterOrEqual(t, count, 0, "Population %d genotype count %d should be non-negative", i, j)
 				}
-				
+
 				// Verify that all population haplotype counts are non-negative
 				for j, count := range pop.HaplotypeCounts {
 					assert.GreaterOrEqual(t, count, 0.0, "Population %d haplotype count %d should be non-negative", i, j)
 				}
 			}
 		})
-		
+
 		t.Run("validate common populations", func(t *testing.T) {
 			// Check for common gnomAD v2 populations
 			popIDs := make(map[string]bool)
 			for _, pop := range result.Populations {
 				popIDs[pop.ID] = true
 			}
-			
+
 			expectedPops := []string{"afr", "amr", "asj", "eas", "fin", "nfe", "oth", "sas"}
 			foundExpected := 0
 			for _, expectedPop := range expectedPops {
@@ -206,7 +207,7 @@ func TestFetchVariantCooccurrence_Integration_PopulationData(t *testing.T) {
 					foundExpected++
 				}
 			}
-			
+
 			assert.Greater(t, foundExpected, 0, "Should find at least some expected populations")
 		})
 	}
@@ -220,7 +221,7 @@ func TestFetchVariantCooccurrence_Integration_MathematicalConsistency(t *testing
 	client := getTestESClient(t)
 
 	ctx := context.Background()
-	
+
 	// Test with a known variant pair
 	result, err := FetchVariantCooccurrence(ctx, client, []string{"1-55505647-G-T", "1-55523855-G-A"}, "gnomad_r2_1")
 	if err != nil {
@@ -236,25 +237,25 @@ func TestFetchVariantCooccurrence_Integration_MathematicalConsistency(t *testing
 			}
 			assert.Greater(t, totalSamples, 0, "Total samples should be positive")
 		})
-		
+
 		t.Run("haplotype counts sum consistency", func(t *testing.T) {
 			// Sum of haplotype counts should equal 2 * total samples
 			totalSamples := 0
 			for _, count := range result.GenotypeCounts {
 				totalSamples += count
 			}
-			
+
 			totalHaplotypes := 0.0
 			for _, count := range result.HaplotypeCounts {
 				totalHaplotypes += count
 			}
-			
+
 			if totalSamples > 0 {
 				expectedHaplotypes := float64(totalSamples * 2)
 				assert.InDelta(t, expectedHaplotypes, totalHaplotypes, 1.0, "Haplotype counts should sum to 2x sample count")
 			}
 		})
-		
+
 		t.Run("compound heterozygous probability bounds", func(t *testing.T) {
 			if result.PCompoundHeterozygous != nil {
 				prob := *result.PCompoundHeterozygous

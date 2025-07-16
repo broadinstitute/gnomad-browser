@@ -8,10 +8,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // These tests require a running Elasticsearch instance with coverage data
@@ -69,7 +70,7 @@ func TestGeneCoverage_Integration_FetchFeatureCoverage(t *testing.T) {
 			datasetID:      "gnomad_r4",
 			chrom:          "1",
 			regions:        []CoverageRegion{{Start: 55039447, Stop: 55064852}}, // PCSK9 coordinates
-			expectedError:  true, // Expected due to aggregation not implemented
+			expectedError:  true,                                                // Expected due to aggregation not implemented
 			shouldHaveData: false,
 			validate: func(t *testing.T, result *model.FeatureCoverage, err error) {
 				// Currently returns error due to aggregation not implemented
@@ -79,11 +80,11 @@ func TestGeneCoverage_Integration_FetchFeatureCoverage(t *testing.T) {
 		},
 		{
 			name:           "fetch coverage for PCSK9 gene - gnomAD v2",
-			featureID:      "ENSG00000169174", 
+			featureID:      "ENSG00000169174",
 			datasetID:      "gnomad_r2_1",
 			chrom:          "1",
 			regions:        []CoverageRegion{{Start: 55505221, Stop: 55530525}}, // PCSK9 GRCh37 coordinates
-			expectedError:  true, // Expected due to aggregation not implemented
+			expectedError:  true,                                                // Expected due to aggregation not implemented
 			shouldHaveData: false,
 			validate: func(t *testing.T, result *model.FeatureCoverage, err error) {
 				// Currently returns error due to aggregation not implemented
@@ -95,7 +96,7 @@ func TestGeneCoverage_Integration_FetchFeatureCoverage(t *testing.T) {
 			name:           "fetch coverage for ExAC dataset",
 			featureID:      "ENSG00000169174",
 			datasetID:      "exac",
-			chrom:          "1", 
+			chrom:          "1",
 			regions:        []CoverageRegion{{Start: 55505221, Stop: 55530525}},
 			expectedError:  true, // Expected due to aggregation not implemented
 			shouldHaveData: false,
@@ -165,7 +166,7 @@ func TestRegionCoverage_Integration_FetchRegionCoverage(t *testing.T) {
 		},
 		{
 			name:          "fetch region coverage - PCSK9 region gnomAD v2",
-			chrom:         "1", 
+			chrom:         "1",
 			start:         55505221,
 			stop:          55530525,
 			datasetID:     "gnomad_r2_1",
@@ -247,7 +248,7 @@ func TestMitochondrialCoverage_Integration(t *testing.T) {
 			chrom:         "M",
 			start:         1,
 			stop:          1000,
-			datasetID:     "gnomad_r2_1", 
+			datasetID:     "gnomad_r2_1",
 			expectedError: false,
 			validate: func(t *testing.T, result []*model.MitochondrialCoverageBin, err error) {
 				if err != nil {
@@ -297,22 +298,22 @@ func TestCoverageIndicesMapping_Integration(t *testing.T) {
 
 	// Test that our coverage indices mapping matches expected datasets
 	expectedDatasets := []string{"gnomad_r4", "gnomad_r2_1", "exac"}
-	
+
 	for _, dataset := range expectedDatasets {
 		t.Run(dataset, func(t *testing.T) {
 			indices, exists := coverageIndices[dataset]
 			assert.True(t, exists, "Dataset %s should exist in coverageIndices", dataset)
-			
+
 			// Check exome index exists (all datasets should have exome)
 			assert.NotEmpty(t, indices["exome"], "Dataset %s should have exome index", dataset)
-			
+
 			// Check genome index (ExAC doesn't have genome)
 			if dataset == "exac" {
 				assert.Empty(t, indices["genome"], "ExAC should not have genome index")
 			} else {
 				assert.NotEmpty(t, indices["genome"], "Dataset %s should have genome index", dataset)
 			}
-			
+
 			t.Logf("Dataset %s indices: exome=%s, genome=%s", dataset, indices["exome"], indices["genome"])
 		})
 	}
@@ -356,17 +357,17 @@ func TestCoveragePlaceholder_Integration(t *testing.T) {
 	// when aggregation support is added to the elastic client
 	t.Run("coverage_aggregation_placeholder", func(t *testing.T) {
 		// Test that coverage queries return appropriate placeholder errors
-		_, err := FetchFeatureCoverage(context.Background(), client, "ENSG00000169174", "gnomad_r4", 
+		_, err := FetchFeatureCoverage(context.Background(), client, "ENSG00000169174", "gnomad_r4",
 			[]CoverageRegion{{Start: 55039447, Stop: 55064852}}, "1")
-		
+
 		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "aggregation not yet implemented", 
+		assert.Contains(t, err.Error(), "aggregation not yet implemented",
 			"Coverage should return aggregation not implemented error until elastic client supports aggregations")
 	})
 
 	t.Run("region_coverage_placeholder", func(t *testing.T) {
 		_, err := FetchRegionCoverage(context.Background(), client, "1", 55039447, 55064852, "gnomad_r4")
-		
+
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "aggregation not yet implemented",
 			"Region coverage should return aggregation not implemented error until elastic client supports aggregations")
@@ -376,7 +377,7 @@ func TestCoveragePlaceholder_Integration(t *testing.T) {
 // Test the GraphQL query pattern that would be used once coverage is fully implemented
 func TestCoverageModelPatterns_Integration(t *testing.T) {
 	if testing.Short() {
-		t.Skip("Skipping integration test in short mode")  
+		t.Skip("Skipping integration test in short mode")
 	}
 
 	// This test documents the expected query patterns based on the real browser queries
@@ -389,13 +390,13 @@ func TestCoverageModelPatterns_Integration(t *testing.T) {
 			name:    "gene_coverage_v4",
 			dataset: "gnomad_r4",
 			expected: []string{
-				"pos", "mean", "median", "over_1", "over_5", "over_10", 
+				"pos", "mean", "median", "over_1", "over_5", "over_10",
 				"over_15", "over_20", "over_25", "over_30", "over_50", "over_100",
 			},
 		},
 		{
 			name:    "gene_coverage_v2",
-			dataset: "gnomad_r2_1", 
+			dataset: "gnomad_r2_1",
 			expected: []string{
 				"pos", "mean", "median", "over_1", "over_5", "over_10",
 				"over_15", "over_20", "over_25", "over_30", "over_50", "over_100",

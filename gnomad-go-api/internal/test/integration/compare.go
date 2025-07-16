@@ -12,7 +12,44 @@ import (
 func CompareResults(expected, actual map[string]interface{}) error {
 	diffs := compareValues("", expected, actual)
 	if len(diffs) > 0 {
-		return fmt.Errorf("response differs from snapshot:\n%s", strings.Join(diffs, "\n"))
+		// Group diffs by type for better readability
+		missingFields := []string{}
+		unexpectedFields := []string{}
+		valueMismatches := []string{}
+		otherDiffs := []string{}
+
+		for _, diff := range diffs {
+			switch {
+			case strings.Contains(diff, "missing in actual"):
+				missingFields = append(missingFields, diff)
+			case strings.Contains(diff, "unexpected in actual"):
+				unexpectedFields = append(unexpectedFields, diff)
+			case strings.Contains(diff, "expected") && strings.Contains(diff, "got"):
+				valueMismatches = append(valueMismatches, diff)
+			default:
+				otherDiffs = append(otherDiffs, diff)
+			}
+		}
+
+		var summary []string
+		if len(missingFields) > 0 {
+			summary = append(summary, "=== Missing Fields ===")
+			summary = append(summary, missingFields...)
+		}
+		if len(unexpectedFields) > 0 {
+			summary = append(summary, "\n=== Unexpected Fields ===")
+			summary = append(summary, unexpectedFields...)
+		}
+		if len(valueMismatches) > 0 {
+			summary = append(summary, "\n=== Value Mismatches ===")
+			summary = append(summary, valueMismatches...)
+		}
+		if len(otherDiffs) > 0 {
+			summary = append(summary, "\n=== Other Differences ===")
+			summary = append(summary, otherDiffs...)
+		}
+
+		return fmt.Errorf("response differs from snapshot:\n%s", strings.Join(summary, "\n"))
 	}
 	return nil
 }

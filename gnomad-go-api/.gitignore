@@ -37,3 +37,5 @@ internal/graph/model/models_gen.go
 # OS specific files
 .DS_Store
 Thumbs.db
+
+test_logs

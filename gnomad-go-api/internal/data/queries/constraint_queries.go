@@ -16,49 +16,49 @@ var constraintIndices = map[string]string{
 
 // Mitochondrial constraint data structures
 type MitochondrialConstraintDocument struct {
-	GeneID               string   `json:"gene_id"`
-	ExpLof               *float64 `json:"exp_lof"`
-	ExpMis               *float64 `json:"exp_mis"`
-	ExpSyn               *float64 `json:"exp_syn"`
-	ObsLof               *float64 `json:"obs_lof"`
-	ObsMis               *float64 `json:"obs_mis"`
-	ObsSyn               *float64 `json:"obs_syn"`
-	OeLof                *float64 `json:"oe_lof"`
-	OeLofLower           *float64 `json:"oe_lof_lower"`
-	OeLofUpper           *float64 `json:"oe_lof_upper"`
-	OeMis                *float64 `json:"oe_mis"`
-	OeMisLower           *float64 `json:"oe_mis_lower"`
-	OeMisUpper           *float64 `json:"oe_mis_upper"`
-	OeSyn                *float64 `json:"oe_syn"`
-	OeSynLower           *float64 `json:"oe_syn_lower"`
-	OeSynUpper           *float64 `json:"oe_syn_upper"`
-	TranscriptType       string   `json:"transcript_type"`
+	GeneID         string   `json:"gene_id"`
+	ExpLof         *float64 `json:"exp_lof"`
+	ExpMis         *float64 `json:"exp_mis"`
+	ExpSyn         *float64 `json:"exp_syn"`
+	ObsLof         *float64 `json:"obs_lof"`
+	ObsMis         *float64 `json:"obs_mis"`
+	ObsSyn         *float64 `json:"obs_syn"`
+	OeLof          *float64 `json:"oe_lof"`
+	OeLofLower     *float64 `json:"oe_lof_lower"`
+	OeLofUpper     *float64 `json:"oe_lof_upper"`
+	OeMis          *float64 `json:"oe_mis"`
+	OeMisLower     *float64 `json:"oe_mis_lower"`
+	OeMisUpper     *float64 `json:"oe_mis_upper"`
+	OeSyn          *float64 `json:"oe_syn"`
+	OeSynLower     *float64 `json:"oe_syn_lower"`
+	OeSynUpper     *float64 `json:"oe_syn_upper"`
+	TranscriptType string   `json:"transcript_type"`
 	// For RNA genes
-	Observed             *float64 `json:"observed"`
-	Expected             *float64 `json:"expected"`
-	Oe                   *float64 `json:"oe"`
-	OeUpper              *float64 `json:"oe_upper"`
-	OeLower              *float64 `json:"oe_lower"`
+	Observed *float64 `json:"observed"`
+	Expected *float64 `json:"expected"`
+	Oe       *float64 `json:"oe"`
+	OeUpper  *float64 `json:"oe_upper"`
+	OeLower  *float64 `json:"oe_lower"`
 }
 
 // Regional constraint data structures
 type GnomadV2RegionalMissenseConstraintDocument struct {
-	HasNoRmcEvidence *bool                                             `json:"has_no_rmc_evidence"`
-	PassedQC         *bool                                             `json:"passed_qc"`
-	Regions          []*GnomadV2RegionalMissenseConstraintRegionData   `json:"regions"`
+	HasNoRmcEvidence *bool                                           `json:"has_no_rmc_evidence"`
+	PassedQC         *bool                                           `json:"passed_qc"`
+	Regions          []*GnomadV2RegionalMissenseConstraintRegionData `json:"regions"`
 }
 
 type GnomadV2RegionalMissenseConstraintRegionData struct {
-	Chrom          *string  `json:"chrom"`
-	Start          *int     `json:"start"`
-	Stop           *int     `json:"stop"`
-	AaStart        *string  `json:"aa_start"`
-	AaStop         *string  `json:"aa_stop"`
-	ObsMis         *int     `json:"obs_mis"`
-	ExpMis         *float64 `json:"exp_mis"`
-	ObsExp         *float64 `json:"obs_exp"`
-	ChisqDiffNull  *float64 `json:"chisq_diff_null"`
-	PValue         *float64 `json:"p_value"`
+	Chrom         *string  `json:"chrom"`
+	Start         *int     `json:"start"`
+	Stop          *int     `json:"stop"`
+	AaStart       *string  `json:"aa_start"`
+	AaStop        *string  `json:"aa_stop"`
+	ObsMis        *int     `json:"obs_mis"`
+	ExpMis        *float64 `json:"exp_mis"`
+	ObsExp        *float64 `json:"obs_exp"`
+	ChisqDiffNull *float64 `json:"chisq_diff_null"`
+	PValue        *float64 `json:"p_value"`
 }
 
 type ExacRegionalMissenseConstraintRegionData struct {
@@ -71,11 +71,11 @@ type ExacRegionalMissenseConstraintRegionData struct {
 }
 
 type MitochondrialRegionConstraintData struct {
-	Start    int     `json:"start"`
-	Stop     int     `json:"stop"`
-	Oe       float64 `json:"oe"`
-	OeUpper  float64 `json:"oe_upper"`
-	OeLower  float64 `json:"oe_lower"`
+	Start   int     `json:"start"`
+	Stop    int     `json:"stop"`
+	Oe      float64 `json:"oe"`
+	OeUpper float64 `json:"oe_upper"`
+	OeLower float64 `json:"oe_lower"`
 }
 
 // FetchGnomadConstraint fetches gnomAD constraint data for a gene
@@ -85,7 +85,7 @@ func FetchGnomadConstraint(ctx context.Context, esClient *elastic.Client, geneID
 	return nil, fmt.Errorf("gnomAD constraint should be fetched as part of gene document")
 }
 
-// FetchExacConstraint fetches ExAC constraint data for a gene  
+// FetchExacConstraint fetches ExAC constraint data for a gene
 func FetchExacConstraint(ctx context.Context, esClient *elastic.Client, geneID string) (*model.ExacConstraint, error) {
 	// For this implementation, we're assuming constraints are already embedded in the gene document
 	// This matches the pattern from genes.go where constraints are part of the gene document
@@ -127,7 +127,7 @@ func ConvertGnomadConstraintDoc(doc *GnomadConstraintDoc) *model.GnomadConstrain
 	if doc == nil {
 		return nil
 	}
-	
+
 	return &model.GnomadConstraint{
 		ExpLof:     doc.ExpLof,
 		ExpMis:     doc.ExpMis,
@@ -158,7 +158,7 @@ func ConvertExacConstraintDoc(doc *ExacConstraintDoc) *model.ExacConstraint {
 	if doc == nil {
 		return nil
 	}
-	
+
 	return &model.ExacConstraint{
 		ExpSyn: doc.ExpSyn,
 		ExpMis: doc.ExpMis,
@@ -182,7 +182,7 @@ func ConvertMitochondrialConstraintDoc(doc *MitochondrialConstraintDocument) mod
 	if doc == nil {
 		return nil
 	}
-	
+
 	// Check if this is a protein-coding gene (has exp_lof, exp_mis, exp_syn)
 	if doc.ExpLof != nil && doc.ExpMis != nil && doc.ExpSyn != nil {
 		return &model.ProteinMitochondrialGeneConstraint{
@@ -203,7 +203,7 @@ func ConvertMitochondrialConstraintDoc(doc *MitochondrialConstraintDocument) mod
 			OeSynUpper: *doc.OeSynUpper,
 		}
 	}
-	
+
 	// Otherwise it's an RNA gene
 	if doc.Observed != nil && doc.Expected != nil && doc.Oe != nil {
 		return &model.RNAMitochondrialGeneConstraint{
@@ -214,7 +214,7 @@ func ConvertMitochondrialConstraintDoc(doc *MitochondrialConstraintDocument) mod
 			OeLower:  *doc.OeLower,
 		}
 	}
-	
+
 	return nil
 }
 
@@ -223,7 +223,7 @@ func ConvertMitochondrialRegionConstraints(regions []*MitochondrialRegionConstra
 	if regions == nil {
 		return nil
 	}
-	
+
 	result := make([]*model.MitochondrialRegionConstraint, len(regions))
 	for i, region := range regions {
 		result[i] = &model.MitochondrialRegionConstraint{
@@ -242,7 +242,7 @@ func ConvertGnomadV2RegionalMissenseConstraint(doc *GnomadV2RegionalMissenseCons
 	if doc == nil {
 		return nil
 	}
-	
+
 	var regions []*model.GnomadV2RegionalMissenseConstraintRegion
 	if doc.Regions != nil {
 		regions = make([]*model.GnomadV2RegionalMissenseConstraintRegion, len(doc.Regions))
@@ -261,7 +261,7 @@ func ConvertGnomadV2RegionalMissenseConstraint(doc *GnomadV2RegionalMissenseCons
 			}
 		}
 	}
-	
+
 	return &model.GnomadV2RegionalMissenseConstraint{
 		HasNoRmcEvidence: doc.HasNoRmcEvidence,
 		PassedQc:         doc.PassedQC,
@@ -274,7 +274,7 @@ func ConvertExacRegionalMissenseConstraintRegions(regions []*ExacRegionalMissens
 	if regions == nil {
 		return nil
 	}
-	
+
 	result := make([]*model.ExacRegionalMissenseConstraintRegion, len(regions))
 	for i, region := range regions {
 		result[i] = &model.ExacRegionalMissenseConstraintRegion{

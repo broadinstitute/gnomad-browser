@@ -7,9 +7,10 @@ import (
 	"context"
 	"testing"
 
+	"gnomad-browser/gnomad-go-api/internal/graph/model"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"gnomad-browser/gnomad-go-api/internal/graph/model"
 )
 
 // These tests require a running Elasticsearch instance with tissue expression data
@@ -42,7 +43,7 @@ func TestTissueExpressionFetcher_Integration_FetchGtexTissueExpression(t *testin
 					for _, tissue := range result {
 						assert.NotEmpty(t, tissue.Tissue)
 						assert.GreaterOrEqual(t, tissue.Value, 0.0)
-						
+
 						// Check for expected tissue names (should be snake_case)
 						assert.Regexp(t, `^[a-z][a-z0-9_]*$`, tissue.Tissue)
 					}
@@ -120,12 +121,12 @@ func TestTissueExpressionFetcher_Integration_FetchPextData(t *testing.T) {
 				if result != nil {
 					assert.NotEmpty(t, result.Regions)
 					assert.NotNil(t, result.Flags)
-					
+
 					for _, region := range result.Regions {
 						assert.Greater(t, region.Stop, region.Start)
 						assert.GreaterOrEqual(t, region.Mean, 0.0)
 						assert.LessOrEqual(t, region.Mean, 1.0) // Pext values should be between 0 and 1
-						
+
 						for _, tissue := range region.Tissues {
 							if tissue.Tissue != nil {
 								assert.NotEmpty(t, *tissue.Tissue)
@@ -206,14 +207,14 @@ func TestTissueExpressionFetcher_Integration_FetchPextRegion(t *testing.T) {
 				// Query region coordinates for validation
 				queryStart := 43044295
 				queryStop := 43125364
-				
+
 				// Should find some Pext regions in this gene-rich area
 				if result != nil && len(result) > 0 {
 					for _, region := range result {
 						assert.Greater(t, region.Stop, region.Start)
 						assert.GreaterOrEqual(t, region.Mean, 0.0)
 						assert.LessOrEqual(t, region.Mean, 1.0)
-						
+
 						// Check that the region overlaps with our query region
 						assert.True(t, region.Start <= queryStop && region.Stop >= queryStart,
 							"Pext region should overlap with query region")
@@ -271,7 +272,7 @@ func TestTissueExpressionFetcher_Integration_TissueNames(t *testing.T) {
 		// Some expected tissue types (based on GTEx v8)
 		expectedTissues := []string{
 			"whole_blood",
-			"muscle_skeletal", 
+			"muscle_skeletal",
 			"lung",
 			"skin_sun_exposed_lower_leg",
 			"adipose_subcutaneous",
@@ -293,7 +294,7 @@ func TestTissueExpressionFetcher_Integration_TissueNames(t *testing.T) {
 
 		// All tissue names should follow snake_case convention
 		for tissueName := range tissueNames {
-			assert.Regexp(t, `^[a-z][a-z0-9_]*$`, tissueName, 
+			assert.Regexp(t, `^[a-z][a-z0-9_]*$`, tissueName,
 				"Tissue name should be in snake_case format: %s", tissueName)
 		}
 	}
