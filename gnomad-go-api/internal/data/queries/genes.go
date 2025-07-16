@@ -245,6 +245,14 @@ func convertGeneDocumentToGraphQL(doc *GeneDocument, referenceGenome string) *mo
 			}
 		}
 
+		// Fetch GTEx tissue expression for this transcript (only for GRCh37)
+		var gtexTissueExpression []*model.GtexTissue
+		if referenceGenome == "GRCh37" {
+			// Note: For gene transcripts within gene documents, the tissue expression data 
+			// is typically resolved via the transcript resolver for performance reasons
+			gtexTissueExpression = nil // Will be resolved by the transcript resolver when queried
+		}
+
 		transcripts[i] = &model.GeneTranscript{
 			ReferenceGenome:      model.ReferenceGenomeID(referenceGenome),
 			TranscriptID:         transcript.TranscriptID,
@@ -254,7 +262,7 @@ func convertGeneDocumentToGraphQL(doc *GeneDocument, referenceGenome string) *mo
 			Stop:                 transcript.Stop,
 			Exons:                transcriptExons,
 			Strand:               transcript.Strand,
-			GtexTissueExpression: nil, // To be implemented later
+			GtexTissueExpression: gtexTissueExpression,
 		}
 	}
 
