@@ -390,6 +390,27 @@ func (r *queryResolver) ShortTandemRepeats(ctx context.Context, dataset model.Da
 
 	return strs, nil
 }
+
+// MultiNucleotideVariant is the resolver for the multi_nucleotide_variant field.
+func (r *queryResolver) MultiNucleotideVariant(ctx context.Context, variantID string, dataset model.DatasetID) (*model.MultiNucleotideVariantDetails, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.DatasetIDGnomadR21:
+		datasetStr = "gnomad_r2_1"
+	default:
+		return nil, fmt.Errorf("multi-nucleotide variants are only available for gnomAD r2.1")
+	}
+
+	// Fetch multi-nucleotide variant
+	return queries.FetchMultiNucleotideVariant(ctx, esClient, variantID, datasetStr)
+}
 // ClinvarVariants is the resolver for the clinvar_variants field.
 func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
 	// Get Elasticsearch client from context
