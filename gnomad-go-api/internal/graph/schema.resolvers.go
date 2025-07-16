@@ -50,6 +50,26 @@ func (r *geneResolver) ClinvarVariants(ctx context.Context, obj *model.Gene) ([]
 	return queries.FetchClinVarVariantsByGene(ctx, esClient, obj.GeneID, refGenomeStr)
 }
 
+// ShortTandemRepeats is the resolver for the short_tandem_repeats field.
+func (r *geneResolver) ShortTandemRepeats(ctx context.Context, obj *model.Gene, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset ID to string
+	datasetStr := string(dataset)
+
+	// Fetch STRs for this gene using the ensembl gene ID
+	strs, err := queries.FetchShortTandemRepeatsByGene(ctx, esClient, obj.GeneID, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching short tandem repeats for gene %s: %w", obj.GeneID, err)
+	}
+
+	return strs, nil
+}
+
 // Pli is the resolver for the pli field.
 func (r *gnomadConstraintResolver) Pli(ctx context.Context, obj *model.GnomadConstraint) (*float64, error) {
 	return obj.Pli, nil
@@ -308,21 +328,44 @@ func (r *queryResolver) ClinvarVariant(ctx context.Context, variantID string, re
 	return queries.FetchClinVarVariant(ctx, esClient, variantID, refGenomeStr)
 }
 
-// StructuralVariants is the resolver for the structural_variants field.
-func (r *geneResolver) StructuralVariants(ctx context.Context, obj *model.Gene, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
+// ShortTandemRepeat is the resolver for the short_tandem_repeat field.
+func (r *queryResolver) ShortTandemRepeat(ctx context.Context, id string, dataset model.DatasetID) (*model.ShortTandemRepeatDetails, error) {
 	// Get Elasticsearch client from context
 	esClient := elastic.FromContext(ctx)
 	if esClient == nil {
 		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	// Fetch structural variants for this gene
-	variants, err := queries.FetchStructuralVariantsByGene(ctx, esClient, obj.Symbol, dataset)
+	// Convert dataset ID to string
+	datasetStr := string(dataset)
+
+	// Fetch STR details
+	strDetails, err := queries.FetchShortTandemRepeat(ctx, esClient, id, datasetStr)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch structural variants for gene %s: %w", obj.Symbol, err)
+		return nil, fmt.Errorf("error fetching short tandem repeat: %w", err)
 	}
 
-	return variants, nil
+	return strDetails, nil
+}
+
+// ShortTandemRepeats is the resolver for the short_tandem_repeats field.
+func (r *queryResolver) ShortTandemRepeats(ctx context.Context, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset ID to string
+	datasetStr := string(dataset)
+
+	// Fetch all STRs
+	strs, err := queries.FetchShortTandemRepeats(ctx, esClient, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching short tandem repeats: %w", err)
+	}
+
+	return strs, nil
 }
 
 // ClinvarVariants is the resolver for the clinvar_variants field.
@@ -348,22 +391,26 @@ func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region)
 	return queries.FetchClinVarVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
 }
 
-// StructuralVariants is the resolver for the structural_variants field.
-func (r *regionResolver) StructuralVariants(ctx context.Context, obj *model.Region, dataset model.StructuralVariantDatasetID) ([]*model.StructuralVariant, error) {
+// ShortTandemRepeats is the resolver for the short_tandem_repeats field.
+func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
 	// Get Elasticsearch client from context
 	esClient := elastic.FromContext(ctx)
 	if esClient == nil {
 		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	// Fetch structural variants in this region
-	variants, err := queries.FetchStructuralVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, dataset)
+	// Convert dataset ID to string
+	datasetStr := string(dataset)
+
+	// Fetch STRs within this genomic region
+	strs, err := queries.FetchShortTandemRepeatsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
 	if err != nil {
-		return nil, fmt.Errorf("failed to fetch structural variants for region %s:%d-%d: %w", obj.Chrom, obj.Start, obj.Stop, err)
+		return nil, fmt.Errorf("error fetching short tandem repeats for region %s:%d-%d: %w", obj.Chrom, obj.Start, obj.Stop, err)
 	}
 
-	return variants, nil
+	return strs, nil
 }
+
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
 
@@ -376,7 +423,11 @@ func (r *Resolver) GnomadConstraint() GnomadConstraintResolver { return &gnomadC
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
+// Region returns RegionResolver implementation.
+func (r *Resolver) Region() RegionResolver { return &regionResolver{r} }
+
 type exacConstraintResolver struct{ *Resolver }
 type geneResolver struct{ *Resolver }
 type gnomadConstraintResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+type regionResolver struct{ *Resolver }

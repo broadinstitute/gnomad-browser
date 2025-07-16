@@ -882,8 +882,110 @@ type CNVTrackCallableCoverageBin {
   percent_callable: Float
 }
 
+# Short Tandem Repeat Types
+type ShortTandemRepeatGene {
+  ensembl_id: String!
+  symbol: String!
+  region: String!
+}
+
+type ShortTandemRepeatAssociatedDiseaseRepeatSizeClassification {
+  classification: String!
+  min: Int
+  max: Int
+}
+
+type ShortTandemRepeatAssociatedDisease {
+  name: String!
+  symbol: String!
+  omim_id: String
+  inheritance_mode: String!
+  repeat_size_classifications: [ShortTandemRepeatAssociatedDiseaseRepeatSizeClassification!]!
+  notes: String
+}
+
+type ShortTandemRepeatReferenceRegion {
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  start: Int!
+  stop: Int!
+}
+
+type ShortTandemRepeatRepeatUnit {
+  repeat_unit: String!
+  classification: String!
+}
+
+type ShortTandemRepeatAgeDistributionBin {
+  age_range: [Int]!
+  distribution: [[Int!]!]!
+}
+
+type ShortTandemRepeatAlleleSizeItem {
+  repunit_count: Int!
+  frequency: Int!
+}
+
+type ShortTandemRepeatAlleleSizeDistributionCohort {
+  ancestry_group: String!
+  sex: String!
+  repunit: String!
+  quality_description: String!
+  q_score: Float!
+  distribution: [ShortTandemRepeatAlleleSizeItem!]!
+}
+
+type ShortTandemRepeatGenotypeItem {
+  short_allele_repunit_count: Int!
+  long_allele_repunit_count: Int!
+  frequency: Int!
+}
+
+type ShortTandemRepeatGenotypeDistributionCohort {
+  ancestry_group: String!
+  sex: String!
+  short_allele_repunit: String!
+  long_allele_repunit: String!
+  quality_description: String!
+  q_score: Float!
+  distribution: [ShortTandemRepeatGenotypeItem!]!
+}
+
+type ShortTandemRepeatAdjacentRepeat {
+  id: String!
+  reference_region: ShortTandemRepeatReferenceRegion!
+  reference_repeat_unit: String!
+  repeat_units: [String!]!
+  allele_size_distribution: [ShortTandemRepeatAlleleSizeDistributionCohort!]!
+  genotype_distribution: [ShortTandemRepeatGenotypeDistributionCohort!]!
+  age_distribution: [ShortTandemRepeatAgeDistributionBin!]
+}
+
 type ShortTandemRepeat {
   id: String!
+  gene: ShortTandemRepeatGene!
+  associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
+  stripy_id: String
+  strchive_id: String
+  main_reference_region: ShortTandemRepeatReferenceRegion!
+  reference_regions: [ShortTandemRepeatReferenceRegion!]!
+  reference_repeat_unit: String!
+}
+
+type ShortTandemRepeatDetails {
+  id: String!
+  gene: ShortTandemRepeatGene!
+  associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
+  stripy_id: String
+  strchive_id: String
+  main_reference_region: ShortTandemRepeatReferenceRegion!
+  reference_regions: [ShortTandemRepeatReferenceRegion!]!
+  reference_repeat_unit: String!
+  repeat_units: [ShortTandemRepeatRepeatUnit!]!
+  allele_size_distribution: [ShortTandemRepeatAlleleSizeDistributionCohort!]!
+  genotype_distribution: [ShortTandemRepeatGenotypeDistributionCohort!]!
+  age_distribution: [ShortTandemRepeatAgeDistributionBin!]
+  adjacent_repeats: [ShortTandemRepeatAdjacentRepeat!]!
 }
 
 type CopyNumberVariantPopulation {
@@ -1119,4 +1221,13 @@ type Query {
     variant_id: String!
     reference_genome: ReferenceGenomeId!
   ): ClinVarVariantDetails
+  
+  short_tandem_repeat(
+    id: String!
+    dataset: DatasetId!
+  ): ShortTandemRepeatDetails
+  
+  short_tandem_repeats(
+    dataset: DatasetId!
+  ): [ShortTandemRepeat!]!
 }

@@ -1,0 +1,43 @@
+query getGeneWithSTRs($geneSymbol: String!, $referenceGenome: ReferenceGenomeId!, $dataset: DatasetId!) {
+  gene(gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
+    gene_id
+    symbol
+    chrom
+    start
+    stop
+    short_tandem_repeats(dataset: $dataset) {
+      id
+      gene {
+        ensembl_id
+        symbol
+        region
+      }
+      associated_diseases {
+        name
+        symbol
+        omim_id
+        inheritance_mode
+        repeat_size_classifications {
+          classification
+          min
+          max
+        }
+      }
+      stripy_id
+      strchive_id
+      main_reference_region {
+        reference_genome
+        chrom
+        start
+        stop
+      }
+      reference_regions {
+        reference_genome
+        chrom
+        start
+        stop
+      }
+      reference_repeat_unit
+    }
+  }
+}

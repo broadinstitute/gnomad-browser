@@ -1,4 +1,4 @@
-query ShortTandemRepeats($datasetId: DatasetId!) {
+query ShortTandemRepeatsR3($datasetId: DatasetId!) {
   short_tandem_repeats(dataset: $datasetId) {
     id
     gene {
@@ -16,17 +16,10 @@ query ShortTandemRepeats($datasetId: DatasetId!) {
         min
         max
       }
-      notes
     }
     stripy_id
     strchive_id
     main_reference_region {
-      reference_genome
-      chrom
-      start
-      stop
-    }
-    reference_regions {
       reference_genome
       chrom
       start

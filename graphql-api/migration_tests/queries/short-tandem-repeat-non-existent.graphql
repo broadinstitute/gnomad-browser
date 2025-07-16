@@ -1,5 +1,5 @@
-query ShortTandemRepeats($datasetId: DatasetId!) {
-  short_tandem_repeats(dataset: $datasetId) {
+query getNonExistentShortTandemRepeat($strId: String!, $dataset: DatasetId!) {
+  short_tandem_repeat(id: $strId, dataset: $dataset) {
     id
     gene {
       ensembl_id
@@ -11,22 +11,10 @@ query ShortTandemRepeats($datasetId: DatasetId!) {
       symbol
       omim_id
       inheritance_mode
-      repeat_size_classifications {
-        classification
-        min
-        max
-      }
-      notes
     }
     stripy_id
     strchive_id
     main_reference_region {
-      reference_genome
-      chrom
-      start
-      stop
-    }
-    reference_regions {
       reference_genome
       chrom
       start

@@ -1,0 +1,7 @@
+{
+  "chrom": "4",
+  "start": 3070000,
+  "stop": 3080000,
+  "referenceGenome": "GRCh38",
+  "dataset": "gnomad_r4"
+}

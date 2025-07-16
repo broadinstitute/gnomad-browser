@@ -139,7 +139,7 @@ func FetchStructuralVariantsByGene(ctx context.Context, client *elastic.Client, 
 	}
 
 	// Fetch all results
-	hits, err := fetchAllSearchResults(ctx, client, params.Index, query)
+	hits, err := fetchAllStructuralVariantSearchResults(ctx, client, params.Index, query)
 	if err != nil {
 		return []*model.StructuralVariant{}, fmt.Errorf("failed to fetch structural variants by gene: %w", err)
 	}
@@ -220,7 +220,7 @@ func FetchStructuralVariantsByRegion(ctx context.Context, client *elastic.Client
 	}
 
 	// Fetch all results
-	hits, err := fetchAllSearchResults(ctx, client, params.Index, query)
+	hits, err := fetchAllStructuralVariantSearchResults(ctx, client, params.Index, query)
 	if err != nil {
 		return []*model.StructuralVariant{}, fmt.Errorf("failed to fetch structural variants by region: %w", err)
 	}
@@ -283,7 +283,7 @@ func getESFieldsToFetch(subset string) []string {
 	}
 }
 
-func fetchAllSearchResults(ctx context.Context, client *elastic.Client, index string, query map[string]any) ([]elastic.Hit, error) {
+func fetchAllStructuralVariantSearchResults(ctx context.Context, client *elastic.Client, index string, query map[string]any) ([]elastic.Hit, error) {
 	// For simplicity, we'll do a single search with a large size limit
 	// In a production system, you might want to implement scrolling for very large result sets
 	response, err := client.Search(ctx, index, query)
