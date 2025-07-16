@@ -1,0 +1,106 @@
+{
+  "data": {
+    "transcript": {
+      "chrom": "11",
+      "exac_constraint": null,
+      "exons": [
+        {
+          "feature_type": "UTR",
+          "start": 107578109,
+          "stop": 107578563
+        },
+        {
+          "feature_type": "CDS",
+          "start": 107578564,
+          "stop": 107578656
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107578657,
+          "stop": 107578731
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107582689,
+          "stop": 107582787
+        }
+      ],
+      "gene": {
+        "canonical_transcript_id": "ENST00000531293",
+        "chrom": "11",
+        "exons": [
+          {
+            "feature_type": "CDS",
+            "start": 107578564,
+            "stop": 107578656
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107578104,
+            "stop": 107578563
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107578657,
+            "stop": 107578731
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107582689,
+            "stop": 107582888
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107590342,
+            "stop": 107590419
+          }
+        ],
+        "flags": [],
+        "gene_id": "ENSG00000170290",
+        "gene_version": "3",
+        "hgnc_id": "HGNC:11089",
+        "mane_select_transcript": null,
+        "name": "sarcolipin",
+        "omim_id": "602203",
+        "reference_genome": "GRCh37",
+        "start": 107578104,
+        "stop": 107590419,
+        "strand": "-",
+        "symbol": "SLN"
+      },
+      "gnomad_constraint": {
+        "exp_lof": 0.06338761878373153,
+        "exp_mis": 17.199994830489327,
+        "exp_syn": 7.0090166778655,
+        "flags": [],
+        "lof_z": 0.2333037143636877,
+        "mis_z": 0.18850513653533096,
+        "obs_lof": 0,
+        "obs_mis": 15,
+        "obs_syn": 6,
+        "oe_lof": 0,
+        "oe_lof_lower": 0,
+        "oe_lof_upper": 1.893,
+        "oe_mis": 0.8720932853660202,
+        "oe_mis_lower": 0.582,
+        "oe_mis_upper": 1.342,
+        "oe_syn": 0.856040194475214,
+        "oe_syn_lower": 0.466,
+        "oe_syn_upper": 1.627,
+        "pLI": 0.2870128986367163,
+        "syn_z": 0.29959602758863246
+      },
+      "reference_genome": "GRCh37",
+      "start": 107578109,
+      "stop": 107582787,
+      "strand": "-",
+      "transcript_id": "ENST00000305991",
+      "transcript_version": "2"
+    }
+  },
+  "errors": [
+    {
+      "message": "An unknown error occurred"
+    }
+  ]
+}

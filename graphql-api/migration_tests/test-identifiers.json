@@ -56,6 +56,16 @@
     "exac_liftover_source": {
       "variantId": "1-55505520-G-A",
       "description": "ExAC variant for liftover testing (GRCh37 source)"
+    },
+    "sln_missense_variant_grch38": {
+      "variantId": "11-107707866-A-G",
+      "rsid": "rs758589460",
+      "description": "Missense variant in SLN, in both exomes/genomes, Clinvar VUS"
+    },
+    "sln_missense_variant_grch37": {
+      "variantId": "11-107578592-A-G",
+      "rsid": "rs758589460",
+      "description": "Missense variant in SLN, only exome, Clinvar VUS"
     }
   },
   "genes": {
@@ -63,12 +73,21 @@
       "geneId": "ENSG00000169174",
       "symbol": "PCSK9",
       "description": "PCSK9 gene for gene page testing"
+    },
+    "sln": {
+      "geneId": "ENSG00000170290",
+      "symbol": "SLN",
+      "description": "A tiny gene for gene page testing"
     }
   },
   "transcripts": {
     "pcsk9_canonical": {
       "transcriptId": "ENST00000302118",
       "description": "Canonical PCSK9 transcript"
+    },
+    "sln_canonical_grch38": {
+      "transcriptId": "ENST00000305991",
+      "description": "MANE SLN transcript"
     }
   },
   "regions": {
@@ -83,6 +102,18 @@
       "start": 55505221,
       "stop": 55530525,
       "description": "PCSK9 locus on GRCh37"
+    },
+    "grch38_sln_small_region": {
+      "chrom": "11",
+      "start": 107707841,
+      "stop": 107707881,
+      "description": "Tiny region in SLN, GRCH38"
+    },
+    "grch37_sln_small_region": {
+      "chrom": "11",
+      "start": 107578572,
+      "stop": 107578612,
+      "description": "Tiny region in SLN, GRCH37"
     }
   },
   "structural_variant_regions": {

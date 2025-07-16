@@ -1,0 +1,2786 @@
+{
+  "data": {
+    "short_tandem_repeats": [
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Oculopharyngodistal myopathy",
+            "omim_id": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 44,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 118
+              }
+            ],
+            "symbol": "OPDM"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000117528",
+          "region": "5'-UTR",
+          "symbol": "ABCD3"
+        },
+        "id": "ABCD3",
+        "main_reference_region": {
+          "chrom": "1",
+          "reference_genome": "GRCh38",
+          "start": 94418421,
+          "stop": 94418442
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": "OPDM_ABCD3",
+        "stripy_id": "ABCD3"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "FRAXE mental retardation",
+            "omim_id": "309548",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 39,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 200
+              }
+            ],
+            "symbol": "FRAXE"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000155966",
+          "region": "5'-UTR",
+          "symbol": "AFF2"
+        },
+        "id": "AFF2",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 148500631,
+          "stop": 148500691
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": "FRAXE_AFF2",
+        "stripy_id": "AFF2"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000144218",
+          "region": "intron",
+          "symbol": "AFF3"
+        },
+        "id": "AFF3",
+        "main_reference_region": {
+          "chrom": "2",
+          "reference_genome": "GRCh38",
+          "start": 100104798,
+          "stop": 100104822
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": "FRA2A_AFF3",
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "Spinal and bulbar muscular atrophy",
+            "omim_id": "313200",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 35,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 38
+              }
+            ],
+            "symbol": "SBMA"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000169083",
+          "region": "coding: polyglutamine",
+          "symbol": "AR"
+        },
+        "id": "AR",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 67545316,
+          "stop": 67545385
+        },
+        "reference_repeat_unit": "GCA",
+        "strchive_id": "SBMA_AR",
+        "stripy_id": "AR"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "Developmental and epileptic encephalopathy 1",
+            "omim_id": "308350",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 16,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 23
+              }
+            ],
+            "symbol": "DEE1"
+          },
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "X-linked mental retardation with or without seizures",
+            "omim_id": "300419",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 16,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 17
+              }
+            ],
+            "symbol": "MRXARX"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000004848",
+          "region": "coding: polyalanine",
+          "symbol": "ARX"
+        },
+        "id": "ARX_1",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 25013649,
+          "stop": 25013697
+        },
+        "reference_repeat_unit": "NGC",
+        "strchive_id": "PRTS_ARX",
+        "stripy_id": "ARX_1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "Developmental and epileptic encephalopathy-1",
+            "omim_id": "308350",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 12,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 20
+              }
+            ],
+            "symbol": "DEE1"
+          },
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "Partington syndrome",
+            "omim_id": "309510",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 12,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 20
+              }
+            ],
+            "symbol": "PRTS"
+          },
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "X-linked mental retardation with or without seizures",
+            "omim_id": "300419",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 12,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 23
+              }
+            ],
+            "symbol": "MRXARX"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000004848",
+          "region": "coding: polyalanine",
+          "symbol": "ARX"
+        },
+        "id": "ARX_2",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 25013529,
+          "stop": 25013565
+        },
+        "reference_repeat_unit": "NGC",
+        "strchive_id": "PRTS_ARX",
+        "stripy_id": "ARX_2"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Dentatorubral-pallidoluysian atrophy",
+            "omim_id": "125370",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 35,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 48
+              }
+            ],
+            "symbol": "DRPLA"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000111676",
+          "region": "coding: polyglutamine",
+          "symbol": "ATN1"
+        },
+        "id": "ATN1",
+        "main_reference_region": {
+          "chrom": "12",
+          "reference_genome": "GRCh38",
+          "start": 6936716,
+          "stop": 6936773
+        },
+        "reference_repeat_unit": "CAG",
+        "strchive_id": "DRPLA_ATN1",
+        "stripy_id": "ATN1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 1",
+            "omim_id": "164400",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 35,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 38,
+                "min": 36
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 39
+              }
+            ],
+            "symbol": "SCA1"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000124788",
+          "region": "coding: polyglutamine",
+          "symbol": "ATXN1"
+        },
+        "id": "ATXN1",
+        "main_reference_region": {
+          "chrom": "6",
+          "reference_genome": "GRCh38",
+          "start": 16327633,
+          "stop": 16327723
+        },
+        "reference_repeat_unit": "TGC",
+        "strchive_id": "SCA1_ATXN1",
+        "stripy_id": "ATXN1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 10",
+            "omim_id": "603516",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 32,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 799,
+                "min": 30
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 800
+              }
+            ],
+            "symbol": "SCA10"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000130638",
+          "region": "intron",
+          "symbol": "ATXN10"
+        },
+        "id": "ATXN10",
+        "main_reference_region": {
+          "chrom": "22",
+          "reference_genome": "GRCh38",
+          "start": 45795354,
+          "stop": 45795424
+        },
+        "reference_repeat_unit": "ATTCT",
+        "strchive_id": "SCA10_ATXN10",
+        "stripy_id": "ATXN10"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 2",
+            "omim_id": "183090",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 31,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 34,
+                "min": 32
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 35
+              }
+            ],
+            "symbol": "SCA2"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000204842",
+          "region": "coding: polyglutamine",
+          "symbol": "ATXN2"
+        },
+        "id": "ATXN2",
+        "main_reference_region": {
+          "chrom": "12",
+          "reference_genome": "GRCh38",
+          "start": 111598949,
+          "stop": 111599018
+        },
+        "reference_repeat_unit": "GCT",
+        "strchive_id": "SCA2_ATXN2",
+        "stripy_id": "ATXN2"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 3",
+            "omim_id": "109150",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 44,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 55,
+                "min": 45
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 56
+              }
+            ],
+            "symbol": "SCA3"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000066427",
+          "region": "coding: polyglutamine",
+          "symbol": "ATXN3"
+        },
+        "id": "ATXN3",
+        "main_reference_region": {
+          "chrom": "14",
+          "reference_genome": "GRCh38",
+          "start": 92071010,
+          "stop": 92071040
+        },
+        "reference_repeat_unit": "CTG",
+        "strchive_id": "SCA3_ATXN3",
+        "stripy_id": "ATXN3"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 7",
+            "omim_id": "164500",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 33,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 36,
+                "min": 34
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 37
+              }
+            ],
+            "symbol": "SCA7"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000163635",
+          "region": "coding: polyglutamine",
+          "symbol": "ATXN7"
+        },
+        "id": "ATXN7",
+        "main_reference_region": {
+          "chrom": "3",
+          "reference_genome": "GRCh38",
+          "start": 63912684,
+          "stop": 63912714
+        },
+        "reference_repeat_unit": "GCA",
+        "strchive_id": "SCA7_ATXN7",
+        "stripy_id": "ATXN7"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 8",
+            "omim_id": "608768",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 50,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 79,
+                "min": 38
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 71
+              }
+            ],
+            "symbol": "SCA8"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000230223",
+          "region": "3'-UTR",
+          "symbol": "ATXN8OS"
+        },
+        "id": "ATXN8OS",
+        "main_reference_region": {
+          "chrom": "13",
+          "reference_genome": "GRCh38",
+          "start": 70139383,
+          "stop": 70139428
+        },
+        "reference_repeat_unit": "CTG",
+        "strchive_id": "SCA8_ATXN8OS",
+        "stripy_id": "ATXN8OS"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENST00000379682",
+          "region": "5'-UTR",
+          "symbol": "BCLAF3"
+        },
+        "id": "BCLAF3",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 19990922,
+          "stop": 19990973
+        },
+        "reference_repeat_unit": "CCG",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 31",
+            "omim_id": "117210",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 110
+              }
+            ],
+            "symbol": "SCA31"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000166546",
+          "region": "intron",
+          "symbol": "BEAN1"
+        },
+        "id": "BEAN1",
+        "main_reference_region": {
+          "chrom": "16",
+          "reference_genome": "GRCh38",
+          "start": 66490398,
+          "stop": 66490453
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "SCA31_BEAN1",
+        "stripy_id": "BEAN1"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000173715",
+          "region": "coding: polyalanine",
+          "symbol": "C11ORF80"
+        },
+        "id": "C11ORF80",
+        "main_reference_region": {
+          "chrom": "11",
+          "reference_genome": "GRCh38",
+          "start": 66744819,
+          "stop": 66744843
+        },
+        "reference_repeat_unit": "GGC",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Amyotrophic lateral sclerosis and/or frontotemporal dementia",
+            "omim_id": "105550",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 23,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 31
+              }
+            ],
+            "symbol": "FTDALS1"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000147894",
+          "region": "intron",
+          "symbol": "C9ORF72"
+        },
+        "id": "C9ORF72",
+        "main_reference_region": {
+          "chrom": "9",
+          "reference_genome": "GRCh38",
+          "start": 27573528,
+          "stop": 27573546
+        },
+        "reference_repeat_unit": "GGCCCC",
+        "strchive_id": "FTDALS1_C9ORF72",
+        "stripy_id": "C9ORF72"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 6",
+            "omim_id": "183086",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 18,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 19,
+                "min": 19
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 20
+              }
+            ],
+            "symbol": "SCA6"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000141837",
+          "region": "coding: polyglutamine",
+          "symbol": "CACNA1A"
+        },
+        "id": "CACNA1A",
+        "main_reference_region": {
+          "chrom": "19",
+          "reference_genome": "GRCh38",
+          "start": 13207858,
+          "stop": 13207897
+        },
+        "reference_repeat_unit": "CTG",
+        "strchive_id": "SCA6_CACNA1A",
+        "stripy_id": "CACNA1A"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000110395",
+          "region": "promoter",
+          "symbol": "CBL"
+        },
+        "id": "CBL",
+        "main_reference_region": {
+          "chrom": "11",
+          "reference_genome": "GRCh38",
+          "start": 119206289,
+          "stop": 119206322
+        },
+        "reference_repeat_unit": "CGG",
+        "strchive_id": "JBS_CBL",
+        "stripy_id": "CBL"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Myotonic dystrophy 2",
+            "omim_id": "602668",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 54,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 55
+              }
+            ],
+            "symbol": "DM2"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000169714",
+          "region": "intron",
+          "symbol": "CNBP"
+        },
+        "id": "CNBP",
+        "main_reference_region": {
+          "chrom": "3",
+          "reference_genome": "GRCh38",
+          "start": 129172576,
+          "stop": 129172656
+        },
+        "reference_repeat_unit": "CAGG",
+        "strchive_id": "DM2_CNBP",
+        "stripy_id": "CNBP"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Multiple epiphyseal dysplasia",
+            "omim_id": "132400",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 6
+              }
+            ],
+            "symbol": "EDM1"
+          },
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Pseudoachondroplasia",
+            "omim_id": "177170",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 7
+              }
+            ],
+            "symbol": "PSACH"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000105664",
+          "region": "coding: poly-aspartic-acid",
+          "symbol": "COMP"
+        },
+        "id": "COMP",
+        "main_reference_region": {
+          "chrom": "19",
+          "reference_genome": "GRCh38",
+          "start": 18786034,
+          "stop": 18786049
+        },
+        "reference_repeat_unit": "GTC",
+        "strchive_id": "EDM1-PSACH_COMP",
+        "stripy_id": "COMP"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENST00000396832",
+          "region": "5'-UTR",
+          "symbol": "CSNK1E"
+        },
+        "id": "CSNK1E",
+        "main_reference_region": {
+          "chrom": "22",
+          "reference_genome": "GRCh38",
+          "start": 38317282,
+          "stop": 38317306
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Progressive myoclonic epilepsy type 1",
+            "omim_id": "254800",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 3,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 30
+              }
+            ],
+            "symbol": "EPM1"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000160213",
+          "region": "promoter",
+          "symbol": "CSTB"
+        },
+        "id": "CSTB",
+        "main_reference_region": {
+          "chrom": "21",
+          "reference_genome": "GRCh38",
+          "start": 43776443,
+          "stop": 43776479
+        },
+        "reference_repeat_unit": "CGCGGGGCGGGG",
+        "strchive_id": "EPM1_CSTB",
+        "stripy_id": "CSTB"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 37",
+            "omim_id": "615945",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 31
+              }
+            ],
+            "symbol": "SCA37"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000173406",
+          "region": "intron",
+          "symbol": "DAB1"
+        },
+        "id": "DAB1",
+        "main_reference_region": {
+          "chrom": "1",
+          "reference_genome": "GRCh38",
+          "start": 57367043,
+          "stop": 57367118
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "SCA37_DAB1",
+        "stripy_id": "DAB1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Mental retardation, FRA12A type",
+            "omim_id": "136630",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 23,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 273
+              }
+            ],
+            "symbol": "MRFRA12A"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000066084",
+          "region": "5'-UTR",
+          "symbol": "DIP2B"
+        },
+        "id": "DIP2B",
+        "main_reference_region": {
+          "chrom": "12",
+          "reference_genome": "GRCh38",
+          "start": 50505001,
+          "stop": 50505022
+        },
+        "reference_repeat_unit": "GGC",
+        "strchive_id": "FRA12A_DIP2B",
+        "stripy_id": "DIP2B"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000198947",
+          "region": "intron",
+          "symbol": "DMD"
+        },
+        "id": "DMD",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 31284557,
+          "stop": 31284605
+        },
+        "reference_repeat_unit": "TTC",
+        "strchive_id": "DMD_DMD",
+        "stripy_id": "DMD"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Myotonic dystrophy 1",
+            "omim_id": "160900",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 34,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 49,
+                "min": 35
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 50
+              }
+            ],
+            "symbol": "DM1"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000104936",
+          "region": "3'-UTR",
+          "symbol": "DMPK"
+        },
+        "id": "DMPK",
+        "main_reference_region": {
+          "chrom": "19",
+          "reference_genome": "GRCh38",
+          "start": 45770204,
+          "stop": 45770264
+        },
+        "reference_repeat_unit": "CAG",
+        "strchive_id": "DM1_DMPK",
+        "stripy_id": "DMPK"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Richieri-Costa-Pereira syndrome",
+            "omim_id": "268305",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 11,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 14
+              }
+            ],
+            "symbol": "RCPS"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000141543",
+          "region": "5'-UTR",
+          "symbol": "EIF4A3"
+        },
+        "id": "EIF4A3",
+        "main_reference_region": {
+          "chrom": "17",
+          "reference_genome": "GRCh38",
+          "start": 80147059,
+          "stop": 80147139
+        },
+        "reference_repeat_unit": "CCTCGCTGTGCCGCTGCCGA",
+        "strchive_id": "RCPS_EIF4A3",
+        "stripy_id": "EIF4A3"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Cerebellar Ataxia",
+            "omim_id": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 70
+              }
+            ],
+            "symbol": "EP400"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENST00000389561",
+          "region": "coding: polyglutamine",
+          "symbol": "EP400"
+        },
+        "id": "EP400",
+        "main_reference_region": {
+          "chrom": "12",
+          "reference_genome": "GRCh38",
+          "start": 132062524,
+          "stop": 132062611
+        },
+        "reference_repeat_unit": "CAG",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": " Oculopharyngodistal myopathy",
+            "omim_id": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 190
+              }
+            ],
+            "symbol": "OPDM"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000146067",
+          "region": "5'-UTR",
+          "symbol": "FAM193B"
+        },
+        "id": "FAM193B",
+        "main_reference_region": {
+          "chrom": "5",
+          "reference_genome": "GRCh38",
+          "start": 177554489,
+          "stop": 177554531
+        },
+        "reference_repeat_unit": "CGC",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 27B",
+            "omim_id": "620174",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 250,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 335,
+                "min": 250
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 320
+              }
+            ],
+            "symbol": "SCA27B"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000102466",
+          "region": "intron",
+          "symbol": "FGF14"
+        },
+        "id": "FGF14",
+        "main_reference_region": {
+          "chrom": "13",
+          "reference_genome": "GRCh38",
+          "start": 102161574,
+          "stop": 102161724
+        },
+        "reference_repeat_unit": "AAG",
+        "strchive_id": "SCA27B_FGF14",
+        "stripy_id": "FGF14"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "X-linked dominant",
+            "name": "Fragile X tremor/ataxia syndrome",
+            "omim_id": "300623",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 44,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 54,
+                "min": 41
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 55
+              }
+            ],
+            "symbol": "FXTAS"
+          },
+          {
+            "inheritance_mode": "X-linked dominant",
+            "name": "Fragile X syndrome",
+            "omim_id": "300624",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 44,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 54,
+                "min": 41
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 201
+              }
+            ],
+            "symbol": "FXS"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000102081",
+          "region": "5'-UTR",
+          "symbol": "FMR1"
+        },
+        "id": "FMR1",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 147912050,
+          "stop": 147912110
+        },
+        "reference_repeat_unit": "CGG",
+        "strchive_id": "FXS_FMR1",
+        "stripy_id": "FMR1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Blepharophimosis, ptosis, and epicanthus inversus syndrome",
+            "omim_id": "110100",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 14,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 15
+              }
+            ],
+            "symbol": "BPES"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000183770",
+          "region": "coding: polyalanine",
+          "symbol": "FOXL2"
+        },
+        "id": "FOXL2",
+        "main_reference_region": {
+          "chrom": "3",
+          "reference_genome": "GRCh38",
+          "start": 138946020,
+          "stop": 138946062
+        },
+        "reference_repeat_unit": "NGC",
+        "strchive_id": "BPES_FOXL2",
+        "stripy_id": "FOXL2"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000148690",
+          "region": "5'-UTR",
+          "symbol": "FRA10AC1"
+        },
+        "id": "FRA10AC1",
+        "main_reference_region": {
+          "chrom": "10",
+          "reference_genome": "GRCh38",
+          "start": 93702522,
+          "stop": 93702546
+        },
+        "reference_repeat_unit": "CCG",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Friedreich ataxia",
+            "omim_id": "229300",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 33,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 66
+              }
+            ],
+            "symbol": "FRDA"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000165060",
+          "region": "intron",
+          "symbol": "FXN"
+        },
+        "id": "FXN",
+        "main_reference_region": {
+          "chrom": "9",
+          "reference_genome": "GRCh38",
+          "start": 69037286,
+          "stop": 69037304
+        },
+        "reference_repeat_unit": "GAA",
+        "strchive_id": "FRDA_FXN",
+        "stripy_id": "FXN"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Oculopharyngodistal myopathy 2",
+            "omim_id": "618940",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 32,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 73
+              }
+            ],
+            "symbol": "OPDM2"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000123159",
+          "region": "5'-UTR",
+          "symbol": "GIPC1"
+        },
+        "id": "GIPC1",
+        "main_reference_region": {
+          "chrom": "19",
+          "reference_genome": "GRCh38",
+          "start": 14496041,
+          "stop": 14496074
+        },
+        "reference_repeat_unit": "CCG",
+        "strchive_id": "OPDM2_GIPC1",
+        "stripy_id": "GIPC1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Glutaminase deficiency with impaired intellectual development and progressive ataxia",
+            "omim_id": "618412",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 38,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 680
+              }
+            ],
+            "symbol": "GD"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000115419",
+          "region": "5'-UTR",
+          "symbol": "GLS"
+        },
+        "id": "GLS",
+        "main_reference_region": {
+          "chrom": "2",
+          "reference_genome": "GRCh38",
+          "start": 190880872,
+          "stop": 190880920
+        },
+        "reference_repeat_unit": "GCA",
+        "strchive_id": "GDPAG_GLS",
+        "stripy_id": "GLS"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Hand-foot-genital syndrome",
+            "omim_id": "140000",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 14,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 22
+              }
+            ],
+            "symbol": "HFG"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000106031",
+          "region": "coding: polyalanine",
+          "symbol": "HOXA13"
+        },
+        "id": "HOXA13_1",
+        "main_reference_region": {
+          "chrom": "7",
+          "reference_genome": "GRCh38",
+          "start": 27199924,
+          "stop": 27199966
+        },
+        "reference_repeat_unit": "NGC",
+        "strchive_id": "HFG_HOXA13-III",
+        "stripy_id": "HOXA13_1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Hand-foot-genital syndrome",
+            "omim_id": "140000",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 12,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 18
+              }
+            ],
+            "symbol": "HFG"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000106031",
+          "region": "coding: polyalanine",
+          "symbol": "HOXA13"
+        },
+        "id": "HOXA13_2",
+        "main_reference_region": {
+          "chrom": "7",
+          "reference_genome": "GRCh38",
+          "start": 27199825,
+          "stop": 27199861
+        },
+        "reference_repeat_unit": "NGC",
+        "strchive_id": "HFG_HOXA13-III",
+        "stripy_id": "HOXA13_2"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Hand-foot-genital syndrome",
+            "omim_id": "140000",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 18,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 22
+              }
+            ],
+            "symbol": "HFG"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000106031",
+          "region": "coding: polyalanine",
+          "symbol": "HOXA13"
+        },
+        "id": "HOXA13_3",
+        "main_reference_region": {
+          "chrom": "7",
+          "reference_genome": "GRCh38",
+          "start": 27199678,
+          "stop": 27199732
+        },
+        "reference_repeat_unit": "NGC",
+        "strchive_id": "HFG_HOXA13-III",
+        "stripy_id": "HOXA13_3"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Synpolydactyly",
+            "omim_id": "186300",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 15,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 22
+              }
+            ],
+            "symbol": "SPD"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000128714",
+          "region": "coding: polyalanine",
+          "symbol": "HOXD13"
+        },
+        "id": "HOXD13",
+        "main_reference_region": {
+          "chrom": "2",
+          "reference_genome": "GRCh38",
+          "start": 176093058,
+          "stop": 176093103
+        },
+        "reference_repeat_unit": "GCG",
+        "strchive_id": "SD5_HOXD13",
+        "stripy_id": "HOXD13"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Huntington's disease",
+            "omim_id": "143100",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 26,
+                "min": null
+              },
+              {
+                "classification": "Intermediate",
+                "max": 35,
+                "min": 27
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 36
+              }
+            ],
+            "symbol": "HD"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000197386",
+          "region": "coding: polyglutamine",
+          "symbol": "HTT"
+        },
+        "id": "HTT",
+        "main_reference_region": {
+          "chrom": "4",
+          "reference_genome": "GRCh38",
+          "start": 3074876,
+          "stop": 3074933
+        },
+        "reference_repeat_unit": "CAG",
+        "strchive_id": "HD_HTT",
+        "stripy_id": "HTT"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Huntington disease-like 2",
+            "omim_id": "606438",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 28,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 40
+              }
+            ],
+            "symbol": "HDL2"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000154118",
+          "region": "coding: polyglutamine",
+          "symbol": "JPH3"
+        },
+        "id": "JPH3",
+        "main_reference_region": {
+          "chrom": "16",
+          "reference_genome": "GRCh38",
+          "start": 87604287,
+          "stop": 87604329
+        },
+        "reference_repeat_unit": "CTG",
+        "strchive_id": "HDL2_JPH3",
+        "stripy_id": "JPH3"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Oculopharyngodistal myopathy 1",
+            "omim_id": "164310",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 45,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 85
+              }
+            ],
+            "symbol": "OPDM1"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000147650",
+          "region": "5'-UTR",
+          "symbol": "LRP12"
+        },
+        "id": "LRP12",
+        "main_reference_region": {
+          "chrom": "8",
+          "reference_genome": "GRCh38",
+          "start": 104588970,
+          "stop": 104588997
+        },
+        "reference_repeat_unit": "CGC",
+        "strchive_id": "OPDM1_LRP12",
+        "stripy_id": "LRP12"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Familial adult myoclonic epilepsy 3",
+            "omim_id": "613608",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 668
+              }
+            ],
+            "symbol": "FAME3"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000145495",
+          "region": "intron",
+          "symbol": "MARCHF6"
+        },
+        "id": "MARCHF6",
+        "main_reference_region": {
+          "chrom": "5",
+          "reference_genome": "GRCh38",
+          "start": 10356346,
+          "stop": 10356411
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "FAME3_MARCHF6",
+        "stripy_id": "MARCHF6"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "NAXE-related mitochondrial encephalopathy",
+            "omim_id": "617186",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 7,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 200
+              }
+            ],
+            "symbol": "NME"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000163382",
+          "region": "5'-UTR",
+          "symbol": "NAXE"
+        },
+        "id": "NAXE",
+        "main_reference_region": {
+          "chrom": "1",
+          "reference_genome": "GRCh38",
+          "start": 156591765,
+          "stop": 156591780
+        },
+        "reference_repeat_unit": "GGGCC",
+        "strchive_id": "NME_NAXE",
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Amyotrophic lateral sclerosis",
+            "omim_id": "105400",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 10,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 11
+              }
+            ],
+            "symbol": "ALS"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000170113",
+          "region": "coding: polyalanine",
+          "symbol": "NIPA1"
+        },
+        "id": "NIPA1",
+        "main_reference_region": {
+          "chrom": "15",
+          "reference_genome": "GRCh38",
+          "start": 22786677,
+          "stop": 22786701
+        },
+        "reference_repeat_unit": "GCG",
+        "strchive_id": "ALS1_NIPA1",
+        "stripy_id": "NIPA1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 36",
+            "omim_id": "614153",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 14,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 650
+              }
+            ],
+            "symbol": "SCA36"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000101361",
+          "region": "intron",
+          "symbol": "NOP56"
+        },
+        "id": "NOP56",
+        "main_reference_region": {
+          "chrom": "20",
+          "reference_genome": "GRCh38",
+          "start": 2652733,
+          "stop": 2652757
+        },
+        "reference_repeat_unit": "GGCCTG",
+        "strchive_id": "SCA36_NOP56",
+        "stripy_id": "NOP56"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000264343",
+          "region": "5'-UTR",
+          "symbol": "NOTCH2NLA"
+        },
+        "id": "NOTCH2NLA",
+        "main_reference_region": {
+          "chrom": "1",
+          "reference_genome": "GRCh38",
+          "start": 146228800,
+          "stop": 146228821
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Neuronal intranuclear inclusion disease",
+            "omim_id": "603472",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 39,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 90
+              }
+            ],
+            "symbol": "NIID"
+          },
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Hereditary essential tremor type 6",
+            "omim_id": "618866",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 41,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 60
+              }
+            ],
+            "symbol": "ETM6"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000286219",
+          "region": "coding: polyglycine",
+          "symbol": "NOTCH2NLC"
+        },
+        "id": "NOTCH2NLC",
+        "main_reference_region": {
+          "chrom": "1",
+          "reference_genome": "GRCh38",
+          "start": 149390802,
+          "stop": 149390841
+        },
+        "reference_repeat_unit": "GGC",
+        "strchive_id": "NIID_NOTCH2NLC",
+        "stripy_id": "NOTCH2NLC"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Oculopharyngeal myopathy with leukoencephalopathy 1",
+            "omim_id": "618637",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 16,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 161
+              }
+            ],
+            "symbol": "OPML1"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000272447",
+          "region": "non-coding RNA",
+          "symbol": "NUTM2B-AS1"
+        },
+        "id": "NUTM2B-AS1",
+        "main_reference_region": {
+          "chrom": "10",
+          "reference_genome": "GRCh38",
+          "start": 79826383,
+          "stop": 79826404
+        },
+        "reference_repeat_unit": "GGC",
+        "strchive_id": "OPML1_NUTM2B-AS1",
+        "stripy_id": "NUTM2B-AS1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Oculopharyngeal muscular dystrophy",
+            "omim_id": "164300",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 6,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 7
+              }
+            ],
+            "symbol": "OPMD"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000100836",
+          "region": "coding: polyalanine",
+          "symbol": "PABPN1"
+        },
+        "id": "PABPN1",
+        "main_reference_region": {
+          "chrom": "14",
+          "reference_genome": "GRCh38",
+          "start": 23321472,
+          "stop": 23321490
+        },
+        "reference_repeat_unit": "GCG",
+        "strchive_id": "OPMD_PABPN1",
+        "stripy_id": "PABPN1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Central hypoventilation syndrome",
+            "omim_id": "209880",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 20,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 24
+              }
+            ],
+            "symbol": "CCHS"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000109132",
+          "region": "coding: polyalanine",
+          "symbol": "PHOX2B"
+        },
+        "id": "PHOX2B",
+        "main_reference_region": {
+          "chrom": "4",
+          "reference_genome": "GRCh38",
+          "start": 41745972,
+          "stop": 41746032
+        },
+        "reference_repeat_unit": "GCN",
+        "strchive_id": "CCHS_PHOX2B",
+        "stripy_id": "PHOX2B"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 12",
+            "omim_id": "604326",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 32,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 51
+              }
+            ],
+            "symbol": "SCA12"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000156475",
+          "region": "coding: polyserine",
+          "symbol": "PPP2R2B"
+        },
+        "id": "PPP2R2B",
+        "main_reference_region": {
+          "chrom": "5",
+          "reference_genome": "GRCh38",
+          "start": 146878727,
+          "stop": 146878757
+        },
+        "reference_repeat_unit": "GCT",
+        "strchive_id": "SCA12_PPP2R2B",
+        "stripy_id": "PPP2R2B"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Hereditary sensory and autonomic neuropathy type 8",
+            "omim_id": "616488",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 14,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 18
+              }
+            ],
+            "symbol": "HSAN8"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000130711",
+          "region": "coding: polyalanine",
+          "symbol": "PRDM12"
+        },
+        "id": "PRDM12",
+        "main_reference_region": {
+          "chrom": "9",
+          "reference_genome": "GRCh38",
+          "start": 130681606,
+          "stop": 130681639
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": "HSAN-VIII_PRDM12",
+        "stripy_id": "PRDM12"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Nongoitrous congenital hypothyroidism-3",
+            "omim_id": "609893",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 3
+              }
+            ],
+            "symbol": "CHNG3"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "",
+          "region": "intergenic",
+          "symbol": "PRE-MIR7-2"
+        },
+        "id": "PRE-MIR7-2",
+        "main_reference_region": {
+          "chrom": "15",
+          "reference_genome": "GRCh38",
+          "start": 88569433,
+          "stop": 88569449
+        },
+        "reference_repeat_unit": "TTTG",
+        "strchive_id": "PRE-MIR7-2_CHNG3",
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Creutzfeldt-Jakob disease",
+            "omim_id": "123400",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 4,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 9
+              }
+            ],
+            "symbol": "CJD"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000171867",
+          "region": "coding: other",
+          "symbol": "PRNP"
+        },
+        "id": "PRNP",
+        "main_reference_region": {
+          "chrom": "20",
+          "reference_genome": "GRCh38",
+          "start": 4699397,
+          "stop": 4699493
+        },
+        "reference_repeat_unit": "CCTCATGGTGGTGGCTGGGGGCAG",
+        "strchive_id": "CJD_PRNP",
+        "stripy_id": "PRNP"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Familial adult myoclonic epilepsy 7",
+            "omim_id": "618075",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 60
+              }
+            ],
+            "symbol": "FAME7"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000109756",
+          "region": "intron",
+          "symbol": "RAPGEF2"
+        },
+        "id": "RAPGEF2",
+        "main_reference_region": {
+          "chrom": "4",
+          "reference_genome": "GRCh38",
+          "start": 159342526,
+          "stop": 159342616
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "FAME7_RAPGEF2",
+        "stripy_id": "RAPGEF2"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Cerebellar ataxia, neuropathy, and vestibular areflexia syndrome",
+            "omim_id": "614575",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 11,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 400
+              }
+            ],
+            "symbol": "CANVAS"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000035928",
+          "region": "intron",
+          "symbol": "RFC1"
+        },
+        "id": "RFC1",
+        "main_reference_region": {
+          "chrom": "4",
+          "reference_genome": "GRCh38",
+          "start": 39348424,
+          "stop": 39348479
+        },
+        "reference_repeat_unit": "AAAAG",
+        "strchive_id": "CANVAS_RFC1",
+        "stripy_id": "RFC1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Oculopharyngodistal myopathy type 4",
+            "omim_id": "619790",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 20,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 120
+              }
+            ],
+            "symbol": "OPDM4"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000188026",
+          "region": "5'-UTR",
+          "symbol": "RILPL1"
+        },
+        "id": "RILPL1",
+        "main_reference_region": {
+          "chrom": "12",
+          "reference_genome": "GRCh38",
+          "start": 123533720,
+          "stop": 123533750
+        },
+        "reference_repeat_unit": "GGC",
+        "strchive_id": "OPDM4_RILPL1",
+        "stripy_id": "RILPL1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Cleidocranial dysplasia",
+            "omim_id": "119600",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 17,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 20
+              }
+            ],
+            "symbol": "CCD"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000124813",
+          "region": "coding: polyalanine",
+          "symbol": "RUNX2"
+        },
+        "id": "RUNX2",
+        "main_reference_region": {
+          "chrom": "6",
+          "reference_genome": "GRCh38",
+          "start": 45422750,
+          "stop": 45422792
+        },
+        "reference_repeat_unit": "GCN",
+        "strchive_id": "CCD_RUNX2",
+        "stripy_id": "RUNX2"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Familial adult myoclonic epilepsy 1",
+            "omim_id": "601068",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 100
+              }
+            ],
+            "symbol": "FAME1"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000177570",
+          "region": "intron",
+          "symbol": "SAMD12"
+        },
+        "id": "SAMD12",
+        "main_reference_region": {
+          "chrom": "8",
+          "reference_genome": "GRCh38",
+          "start": 118366812,
+          "stop": 118366918
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "FAME1_SAMD12",
+        "stripy_id": "SAMD12"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "X-linked mental retardation with isolated growth hormone",
+            "omim_id": "300123",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 15,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 26
+              }
+            ],
+            "symbol": "XLMR"
+          },
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "X-linked panhypopituitarism",
+            "omim_id": "312000",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 15,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 22
+              }
+            ],
+            "symbol": "PHPX"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000134595",
+          "region": "coding: polyalanine",
+          "symbol": "SOX3"
+        },
+        "id": "SOX3",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 140504316,
+          "stop": 140504361
+        },
+        "reference_repeat_unit": "NGC",
+        "strchive_id": "XLMR_SOX3",
+        "stripy_id": "SOX3"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Familial adult myoclonic epilepsy 2",
+            "omim_id": "607876",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 274
+              }
+            ],
+            "symbol": "FAME2"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000084090",
+          "region": "intron",
+          "symbol": "STARD7"
+        },
+        "id": "STARD7",
+        "main_reference_region": {
+          "chrom": "2",
+          "reference_genome": "GRCh38",
+          "start": 96197066,
+          "stop": 96197121
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "FAME2_STARD7",
+        "stripy_id": "STARD7"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 17",
+            "omim_id": "607136",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 42,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 43
+              }
+            ],
+            "symbol": "SCA17"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000112592",
+          "region": "coding: polyglutamine",
+          "symbol": "TBP"
+        },
+        "id": "TBP",
+        "main_reference_region": {
+          "chrom": "6",
+          "reference_genome": "GRCh38",
+          "start": 170561906,
+          "stop": 170562017
+        },
+        "reference_repeat_unit": "GCA",
+        "strchive_id": "SCA17_TBP",
+        "stripy_id": "TBP"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Tetralogy of Fallot",
+            "omim_id": "187500",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 15,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 25
+              }
+            ],
+            "symbol": "TOF"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000184058",
+          "region": "coding: polyalanine",
+          "symbol": "TBX1"
+        },
+        "id": "TBX1",
+        "main_reference_region": {
+          "chrom": "22",
+          "reference_genome": "GRCh38",
+          "start": 19766762,
+          "stop": 19766807
+        },
+        "reference_repeat_unit": "GCN",
+        "strchive_id": "TOF_TBX1",
+        "stripy_id": "TBX1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Fuchs endothelial corneal dystrophy 3",
+            "omim_id": "613267",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 39,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 50
+              }
+            ],
+            "symbol": "FECD3"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000196628",
+          "region": "intron",
+          "symbol": "TCF4"
+        },
+        "id": "TCF4",
+        "main_reference_region": {
+          "chrom": "18",
+          "reference_genome": "GRCh38",
+          "start": 55586155,
+          "stop": 55586227
+        },
+        "reference_repeat_unit": "CAG",
+        "strchive_id": "FECD3_TCF4",
+        "stripy_id": "TCF4"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia",
+            "omim_id": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 38,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 45
+              }
+            ],
+            "symbol": "SCA"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000168286",
+          "region": "coding: polyglutamine",
+          "symbol": "THAP11"
+        },
+        "id": "THAP11",
+        "main_reference_region": {
+          "chrom": "16",
+          "reference_genome": "GRCh38",
+          "start": 67842863,
+          "stop": 67842950
+        },
+        "reference_repeat_unit": "CAG",
+        "strchive_id": "SCA_THAP11",
+        "stripy_id": "THAP11"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000269556",
+          "region": "5'-UTR",
+          "symbol": "TMEM185A"
+        },
+        "id": "TMEM185A",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 149631735,
+          "stop": 149631780
+        },
+        "reference_repeat_unit": "CGC",
+        "strchive_id": null,
+        "stripy_id": null
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Familial adult myoclonic epilepsy 6",
+            "omim_id": "618074",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 1100
+              }
+            ],
+            "symbol": "FAME6"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000090905",
+          "region": "intron",
+          "symbol": "TNRC6A"
+        },
+        "id": "TNRC6A",
+        "main_reference_region": {
+          "chrom": "16",
+          "reference_genome": "GRCh38",
+          "start": 24613439,
+          "stop": 24613529
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "FAME6_TNRC6A",
+        "stripy_id": "TNRC6A"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Hereditary motor neuropathy",
+            "omim_id": "619216",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 2,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 3
+              }
+            ],
+            "symbol": "HMN"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000179403",
+          "region": "coding: other",
+          "symbol": "VWA1"
+        },
+        "id": "VWA1",
+        "main_reference_region": {
+          "chrom": "1",
+          "reference_genome": "GRCh38",
+          "start": 1435798,
+          "stop": 1435818
+        },
+        "reference_repeat_unit": "GGCGCGGAGC",
+        "strchive_id": "HMNR7_VWA1",
+        "stripy_id": "VWA1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal recessive",
+            "name": "Desbuquois dysplasia 2",
+            "omim_id": "615777",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 20,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 110
+              }
+            ],
+            "symbol": "DBQD2"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000103489",
+          "region": "5'-UTR",
+          "symbol": "XYLT1"
+        },
+        "id": "XYLT1",
+        "main_reference_region": {
+          "chrom": "16",
+          "reference_genome": "GRCh38",
+          "start": 17470907,
+          "stop": 17470922
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": "DBQD2_XYLT1",
+        "stripy_id": "XYLT1"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Familial adult myoclonic epilepsy 4",
+            "omim_id": "615127",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 1000
+              }
+            ],
+            "symbol": "FAME4"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000163872",
+          "region": "intron",
+          "symbol": "YEATS2"
+        },
+        "id": "YEATS2",
+        "main_reference_region": {
+          "chrom": "3",
+          "reference_genome": "GRCh38",
+          "start": 183712187,
+          "stop": 183712222
+        },
+        "reference_repeat_unit": "AAAAT",
+        "strchive_id": "FAME4_YEATS2",
+        "stripy_id": "YEATS2"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Spinocerebellar ataxia 4",
+            "omim_id": "600223",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 26,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 41
+              }
+            ],
+            "symbol": "SCA4"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENST00000268489",
+          "region": "coding: polyglycine",
+          "symbol": "ZFHX3"
+        },
+        "id": "ZFHX3",
+        "main_reference_region": {
+          "chrom": "16",
+          "reference_genome": "GRCh38",
+          "start": 72787694,
+          "stop": 72787757
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": "SCA4_ZFHX3",
+        "stripy_id": "ZFHX3"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "Autosomal dominant",
+            "name": "Holoprosencephaly 5",
+            "omim_id": "609637",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 15,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 25
+              }
+            ],
+            "symbol": "HPE5"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000043355",
+          "region": "coding: polyalanine",
+          "symbol": "ZIC2"
+        },
+        "id": "ZIC2",
+        "main_reference_region": {
+          "chrom": "13",
+          "reference_genome": "GRCh38",
+          "start": 99985448,
+          "stop": 99985493
+        },
+        "reference_repeat_unit": "GCN",
+        "strchive_id": "HPE5_ZIC2",
+        "stripy_id": "ZIC2"
+      },
+      {
+        "associated_diseases": [
+          {
+            "inheritance_mode": "X-linked recessive",
+            "name": "X-linked VACTERL syndrome",
+            "omim_id": "314390",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "max": 10,
+                "min": null
+              },
+              {
+                "classification": "Pathogenic",
+                "max": null,
+                "min": 12
+              }
+            ],
+            "symbol": "VACTERLX"
+          }
+        ],
+        "gene": {
+          "ensembl_id": "ENSG00000156925",
+          "region": "coding: polyalanine",
+          "symbol": "ZIC3"
+        },
+        "id": "ZIC3",
+        "main_reference_region": {
+          "chrom": "X",
+          "reference_genome": "GRCh38",
+          "start": 137566826,
+          "stop": 137566856
+        },
+        "reference_repeat_unit": "GCC",
+        "strchive_id": "VACTERLX_ZIC3",
+        "stripy_id": "ZIC3"
+      },
+      {
+        "associated_diseases": [],
+        "gene": {
+          "ensembl_id": "ENSG00000178665",
+          "region": "5'-UTR",
+          "symbol": "ZNF713"
+        },
+        "id": "ZNF713",
+        "main_reference_region": {
+          "chrom": "7",
+          "reference_genome": "GRCh38",
+          "start": 55887600,
+          "stop": 55887639
+        },
+        "reference_repeat_unit": "GCG",
+        "strchive_id": "FRA7A_ZNF713",
+        "stripy_id": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "data": {
+    "region": {
+      "genes": [
+        {
+          "exons": [
+            {
+              "feature_type": "CDS",
+              "start": 107707838,
+              "stop": 107707930
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107707378,
+              "stop": 107707837
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107707931,
+              "stop": 107708005
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107711963,
+              "stop": 107712162
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107719616,
+              "stop": 107719693
+            }
+          ],
+          "gene_id": "ENSG00000170290",
+          "start": 107707378,
+          "stop": 107719693,
+          "symbol": "SLN",
+          "transcripts": [
+            {
+              "exons": [
+                {
+                  "feature_type": "UTR",
+                  "start": 107707378,
+                  "stop": 107707837
+                },
+                {
+                  "feature_type": "CDS",
+                  "start": 107707838,
+                  "stop": 107707930
+                },
+                {
+                  "feature_type": "UTR",
+                  "start": 107707931,
+                  "stop": 107708005
+                },
+                {
+                  "feature_type": "UTR",
+                  "start": 107711963,
+                  "stop": 107712056
+                }
+              ],
+              "transcript_id": "ENST00000305991"
+            },
+            {
+              "exons": [
+                {
+                  "feature_type": "UTR",
+                  "start": 107707612,
+                  "stop": 107707837
+                },
+                {
+                  "feature_type": "CDS",
+                  "start": 107707838,
+                  "stop": 107707930
+                },
+                {
+                  "feature_type": "UTR",
+                  "start": 107707931,
+                  "stop": 107708005
+                },
+                {
+                  "feature_type": "UTR",
+                  "start": 107719616,
+                  "stop": 107719657
+                }
+              ],
+              "transcript_id": "ENST00000525934"
+            },
+            {
+              "exons": [
+                {
+                  "feature_type": "UTR",
+                  "start": 107707378,
+                  "stop": 107707837
+                },
+                {
+                  "feature_type": "CDS",
+                  "start": 107707838,
+                  "stop": 107707930
+                },
+                {
+                  "feature_type": "UTR",
+                  "start": 107707931,
+                  "stop": 107708005
+                },
+                {
+                  "feature_type": "UTR",
+                  "start": 107711963,
+                  "stop": 107712162
+                },
+                {
+                  "feature_type": "UTR",
+                  "start": 107719616,
+                  "stop": 107719693
+                }
+              ],
+              "transcript_id": "ENST00000531293"
+            }
+          ]
+        }
+      ],
+      "non_coding_constraints": null,
+      "short_tandem_repeats": []
+    }
+  }
+}

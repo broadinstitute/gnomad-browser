@@ -1,0 +1,72 @@
+{
+  "data": {
+    "region": {
+      "copy_number_variants": [
+        {
+          "chrom": "1",
+          "end": 55083986,
+          "endmax": 55093014,
+          "endmin": 55083986,
+          "filters": [],
+          "length": 283486,
+          "pos": 54800500,
+          "posmax": 54800500,
+          "posmin": 54800500,
+          "sc": 18,
+          "sf": 0.000038768288401605,
+          "sn": 464297,
+          "type": "DUP",
+          "variant_id": "18714__DUP"
+        },
+        {
+          "chrom": "1",
+          "end": 55178230,
+          "endmax": 55178230,
+          "endmin": 55178230,
+          "filters": [],
+          "length": 197682,
+          "pos": 54980548,
+          "posmax": 54980548,
+          "posmin": 54980548,
+          "sc": 1,
+          "sf": 0.00000215379380008917,
+          "sn": 464297,
+          "type": "DUP",
+          "variant_id": "18772__DUP"
+        },
+        {
+          "chrom": "1",
+          "end": 55064950,
+          "endmax": 55083986,
+          "endmin": 55061654,
+          "filters": [],
+          "length": 25600,
+          "pos": 55039350,
+          "posmax": 55046426,
+          "posmin": 55039350,
+          "sc": 3,
+          "sf": 0.00000646139531678067,
+          "sn": 464296,
+          "type": "DUP",
+          "variant_id": "18789__DUP"
+        },
+        {
+          "chrom": "1",
+          "end": 55059761,
+          "endmax": 55059761,
+          "endmin": 55059761,
+          "filters": [],
+          "length": 2527,
+          "pos": 55057234,
+          "posmax": 55057234,
+          "posmin": 55057234,
+          "sc": 1,
+          "sf": 0.00000215379380008917,
+          "sn": 464297,
+          "type": "DEL",
+          "variant_id": "18813__DEL"
+        }
+      ]
+    }
+  }
+}

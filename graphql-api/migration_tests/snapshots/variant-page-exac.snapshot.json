@@ -1,0 +1,538 @@
+{
+  "data": {
+    "clinvar_variant": {
+      "clinical_significance": "Conflicting classifications of pathogenicity",
+      "clinvar_variation_id": "492230",
+      "gold_stars": 1,
+      "last_evaluated": "2025-01-23",
+      "review_status": "criteria provided, conflicting classifications",
+      "submissions": [
+        {
+          "clinical_significance": "Uncertain significance",
+          "conditions": [
+            {
+              "medgen_id": "C0020445",
+              "name": "Familial hypercholesterolemia"
+            }
+          ],
+          "last_evaluated": "2017-09-25",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Color Diagnostics, LLC DBA Color Health"
+        },
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "medgen_id": "C0020445",
+              "name": "Familial hypercholesterolemia"
+            }
+          ],
+          "last_evaluated": "2018-04-27",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Color Diagnostics, LLC DBA Color Health"
+        },
+        {
+          "clinical_significance": "Uncertain significance",
+          "conditions": [
+            {
+              "medgen_id": "C1863551",
+              "name": "Hypercholesterolemia, autosomal dominant, 3"
+            }
+          ],
+          "last_evaluated": "2019-05-29",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Illumina Laboratory Services, Illumina"
+        },
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "medgen_id": "CN230736",
+              "name": "Cardiovascular phenotype"
+            }
+          ],
+          "last_evaluated": "2020-09-30",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Ambry Genetics"
+        },
+        {
+          "clinical_significance": "Likely benign",
+          "conditions": [
+            {
+              "medgen_id": "C1863551",
+              "name": "Hypercholesterolemia, autosomal dominant, 3"
+            }
+          ],
+          "last_evaluated": "2025-01-23",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Labcorp Genetics (formerly Invitae), Labcorp"
+        }
+      ]
+    },
+    "liftover": [
+      {
+        "datasets": [
+          "gnomad_r2_1",
+          "gnomad_r4"
+        ],
+        "liftover": {
+          "reference_genome": "GRCh38",
+          "variant_id": "1-55039847-G-A"
+        }
+      }
+    ],
+    "meta": {
+      "clinvar_release_date": "2025-04-29"
+    },
+    "variant": {
+      "alt": "A",
+      "caid": "CA35116",
+      "chrom": "1",
+      "colocated_variants": [
+        "1-55505520-G-T"
+      ],
+      "coverage": {
+        "exome": {
+          "mean": 14.88,
+          "over_20": 0.126
+        }
+      },
+      "exome": {
+        "ac": 7,
+        "ac_hemi": 0,
+        "ac_hom": 0,
+        "age_distribution": {
+          "het": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              0,
+              1,
+              0,
+              1,
+              1,
+              1,
+              2,
+              0,
+              0
+            ],
+            "n_larger": 0,
+            "n_smaller": 0
+          },
+          "hom": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "n_larger": 0,
+            "n_smaller": 0
+          }
+        },
+        "an": 26168,
+        "faf95": null,
+        "filters": [],
+        "flags": [],
+        "populations": [
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 3060,
+            "id": "afr"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 736,
+            "id": "amr"
+          },
+          {
+            "ac": 7,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1734,
+            "id": "eas"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 264,
+            "id": "fin"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 11748,
+            "id": "nfe"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 204,
+            "id": "oth"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 8422,
+            "id": "sas"
+          }
+        ],
+        "quality_metrics": {
+          "allele_balance": null,
+          "genotype_depth": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                22991,
+                21734,
+                4805,
+                588,
+                811,
+                822,
+                864,
+                839,
+                842,
+                843,
+                719,
+                625,
+                489,
+                345,
+                218,
+                156,
+                117,
+                76,
+                51,
+                219
+              ],
+              "n_larger": null,
+              "n_smaller": null
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                2,
+                5,
+                5,
+                2,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "n_larger": null,
+              "n_smaller": null
+            }
+          },
+          "genotype_quality": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                1568,
+                23407,
+                2659,
+                2714,
+                18053,
+                905,
+                586,
+                190,
+                41,
+                34,
+                32,
+                31,
+                1241,
+                485,
+                249,
+                350,
+                376,
+                235,
+                341,
+                4657
+              ],
+              "n_larger": null,
+              "n_smaller": null
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                1,
+                0,
+                0,
+                1,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                2,
+                0,
+                0,
+                2,
+                1,
+                1,
+                5
+              ],
+              "n_larger": null,
+              "n_smaller": null
+            }
+          },
+          "site_quality_metrics": [
+            {
+              "metric": "BaseQRankSum",
+              "value": -1.221
+            },
+            {
+              "metric": "ClippingRankSum",
+              "value": 0.209
+            },
+            {
+              "metric": "DP",
+              "value": 658222
+            },
+            {
+              "metric": "FS",
+              "value": 0
+            },
+            {
+              "metric": "InbreedingCoeff",
+              "value": 0.0384
+            },
+            {
+              "metric": "MQ",
+              "value": 60
+            },
+            {
+              "metric": "MQRankSum",
+              "value": -0.15
+            },
+            {
+              "metric": "QD",
+              "value": 8.29
+            },
+            {
+              "metric": "ReadPosRankSum",
+              "value": -0.55
+            },
+            {
+              "metric": "SiteQuality",
+              "value": 1226.36
+            },
+            {
+              "metric": "VQSLOD",
+              "value": -0.7178
+            }
+          ]
+        }
+      },
+      "flags": [],
+      "in_silico_predictors": null,
+      "lof_curations": null,
+      "multi_nucleotide_variants": null,
+      "non_coding_constraint": {
+        "expected": 176.88027484494137,
+        "observed": 208,
+        "oe": 1.1759366621424527,
+        "possible": 2988,
+        "start": 55505000,
+        "stop": 55506000,
+        "z": -2.3398932818766625
+      },
+      "pos": 55505520,
+      "ref": "G",
+      "reference_genome": "GRCh37",
+      "rsids": [
+        "rs186669805"
+      ],
+      "transcript_consequences": [
+        {
+          "domains": [
+            "Cleavage_site_(Signalp):SignalP-noTM"
+          ],
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "9",
+          "hgvs": "p.Val4Ile",
+          "hgvsc": "c.10G>A",
+          "hgvsp": "p.Val4Ile",
+          "is_canonical": true,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "missense_variant",
+          "polyphen_prediction": "benign",
+          "sift_prediction": "tolerated_low_confidence",
+          "transcript_id": "ENST00000302118",
+          "transcript_version": "5"
+        },
+        {
+          "domains": [
+            "Cleavage_site_(Signalp):SignalP-noTM",
+            "hmmpanther:PTHR10795"
+          ],
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "9",
+          "hgvs": "p.Val4Ile",
+          "hgvsc": "c.10G>A",
+          "hgvsp": "p.Val4Ile",
+          "is_canonical": null,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "missense_variant",
+          "polyphen_prediction": "benign",
+          "sift_prediction": "tolerated_low_confidence",
+          "transcript_id": "ENST00000452118",
+          "transcript_version": "2"
+        }
+      ],
+      "variant_id": "1-55505520-G-A"
+    }
+  }
+}

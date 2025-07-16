@@ -1,0 +1,714 @@
+{
+  "data": {
+    "clinvar_variant": {
+      "clinical_significance": "Benign",
+      "clinvar_variation_id": "692920",
+      "gold_stars": 1,
+      "last_evaluated": "2019-10-17",
+      "review_status": "criteria provided, single submitter",
+      "submissions": [
+        {
+          "clinical_significance": "Benign",
+          "conditions": [
+            {
+              "medgen_id": "C2931891",
+              "name": "Leigh syndrome"
+            }
+          ],
+          "last_evaluated": "2019-10-17",
+          "review_status": "criteria provided, single submitter",
+          "submitter_name": "Wong Mito Lab, Molecular and Human Genetics, Baylor College of Medicine"
+        }
+      ]
+    },
+    "meta": {
+      "clinvar_release_date": "2025-04-29"
+    },
+    "mitochondrial_variant": {
+      "ac_het": 4,
+      "ac_hom": 87,
+      "ac_hom_mnv": 0,
+      "age_distribution": {
+        "het": {
+          "bin_edges": [
+            30,
+            35,
+            40,
+            45,
+            50,
+            55,
+            60,
+            65,
+            70,
+            75,
+            80
+          ],
+          "bin_freq": [
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "n_larger": 0,
+          "n_smaller": 0
+        },
+        "hom": {
+          "bin_edges": [
+            30,
+            35,
+            40,
+            45,
+            50,
+            55,
+            60,
+            65,
+            70,
+            75,
+            80
+          ],
+          "bin_freq": [
+            2,
+            0,
+            2,
+            4,
+            6,
+            2,
+            4,
+            5,
+            2,
+            1
+          ],
+          "n_larger": 0,
+          "n_smaller": 7
+        }
+      },
+      "alt": "C",
+      "an": 56430,
+      "excluded_ac": 4,
+      "filters": [],
+      "flags": [],
+      "genotype_quality_filters": [
+        {
+          "filtered": {
+            "bin_edges": [
+              0,
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.9,
+              1
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "name": "Base Quality"
+        },
+        {
+          "filtered": {
+            "bin_edges": [
+              0,
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.9,
+              1
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "name": "Contamination"
+        },
+        {
+          "filtered": {
+            "bin_edges": [
+              0,
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.9,
+              1
+            ],
+            "bin_freq": [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "name": "Heteroplasmy below minimum heteroplasmy threshold"
+        },
+        {
+          "filtered": {
+            "bin_edges": [
+              0,
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.9,
+              1
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "name": "Position"
+        },
+        {
+          "filtered": {
+            "bin_edges": [
+              0,
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.9,
+              1
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "name": "Strand Bias"
+        },
+        {
+          "filtered": {
+            "bin_edges": [
+              0,
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.9,
+              1
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "name": "Weak Evidence"
+        }
+      ],
+      "genotype_quality_metrics": [
+        {
+          "all": {
+            "bin_edges": [
+              0,
+              200,
+              400,
+              600,
+              800,
+              1000,
+              1200,
+              1400,
+              1600,
+              1800,
+              2000
+            ],
+            "bin_freq": [
+              0,
+              0,
+              128,
+              753,
+              1834,
+              2177,
+              2299,
+              2729,
+              3079,
+              3433
+            ],
+            "n_larger": 39998,
+            "n_smaller": 0
+          },
+          "alt": {
+            "bin_edges": [
+              0,
+              200,
+              400,
+              600,
+              800,
+              1000,
+              1200,
+              1400,
+              1600,
+              1800,
+              2000
+            ],
+            "bin_freq": [
+              0,
+              0,
+              0,
+              0,
+              2,
+              4,
+              3,
+              0,
+              4,
+              1
+            ],
+            "n_larger": 77,
+            "n_smaller": 0
+          },
+          "name": "Depth"
+        }
+      ],
+      "haplogroup_defining": true,
+      "haplogroups": [
+        {
+          "ac_het": 0,
+          "ac_hom": 4,
+          "an": 2679,
+          "faf": null,
+          "faf_hom": 0.000509220000000004,
+          "id": "A"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 1537,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "B"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 1,
+          "an": 868,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "C"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 603,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "D"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 34,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "E"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 282,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "F"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 91,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "G"
+        },
+        {
+          "ac_het": 3,
+          "ac_hom": 78,
+          "an": 14784,
+          "faf": null,
+          "faf_hom": 0.0043330000000000035,
+          "id": "H"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 701,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "HV"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 933,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "I"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 3144,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "J"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 2732,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "K"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 663,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "L0"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 2977,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "L1"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 2,
+          "an": 4724,
+          "faf": null,
+          "faf_hom": 0.00007438999999999998,
+          "id": "L2"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 5671,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "L3"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 126,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "L4"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 1,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "L5"
+        },
+        {
+          "ac_het": 1,
+          "ac_hom": 0,
+          "an": 1298,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "M"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 366,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "N"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 7,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "P"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 393,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "R"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 1,
+          "an": 3080,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "T"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 1,
+          "an": 6036,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "U"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 1234,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "V"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 819,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "W"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 546,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "X"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 12,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "Y"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 89,
+          "faf": null,
+          "faf_hom": 0,
+          "id": "Z"
+        }
+      ],
+      "heteroplasmy_distribution": {
+        "bin_edges": [
+          0,
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.9,
+          1
+        ],
+        "bin_freq": [
+          0,
+          2,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          87
+        ],
+        "n_larger": 0,
+        "n_smaller": 0
+      },
+      "max_heteroplasmy": 1,
+      "mitotip_score": null,
+      "mitotip_trna_prediction": null,
+      "pon_ml_probability_of_pathogenicity": null,
+      "pon_mt_trna_prediction": null,
+      "populations": [
+        {
+          "ac_het": 0,
+          "ac_hom": 6,
+          "an": 14347,
+          "id": "afr"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 392,
+          "id": "ami"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 4,
+          "an": 5716,
+          "id": "amr"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 1415,
+          "id": "asj"
+        },
+        {
+          "ac_het": 1,
+          "ac_hom": 1,
+          "an": 1482,
+          "id": "eas"
+        },
+        {
+          "ac_het": 2,
+          "ac_hom": 0,
+          "an": 4892,
+          "id": "fin"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 20,
+          "id": "mid"
+        },
+        {
+          "ac_het": 1,
+          "ac_hom": 74,
+          "an": 25847,
+          "id": "nfe"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 2,
+          "an": 826,
+          "id": "oth"
+        },
+        {
+          "ac_het": 0,
+          "ac_hom": 0,
+          "an": 1493,
+          "id": "sas"
+        }
+      ],
+      "pos": 8602,
+      "ref": "T",
+      "reference_genome": "GRCh38",
+      "rsids": [
+        "rs1556423501"
+      ],
+      "site_quality_metrics": [
+        {
+          "name": "Mean Depth",
+          "value": 2824.8346978557506
+        },
+        {
+          "name": "Mean MQ",
+          "value": 60
+        },
+        {
+          "name": "Mean TLOD",
+          "value": 10862.6422826087
+        }
+      ],
+      "transcript_consequences": [
+        {
+          "canonical": true,
+          "gene_id": "ENSG00000198899",
+          "gene_symbol": "MT-ATP6",
+          "gene_version": "2",
+          "hgvs": "p.Phe26Leu",
+          "hgvsc": "c.76T>C",
+          "hgvsp": "p.Phe26Leu",
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "missense_variant",
+          "polyphen_prediction": "benign",
+          "sift_prediction": "tolerated",
+          "transcript_id": "ENST00000361899",
+          "transcript_version": "2"
+        }
+      ],
+      "variant_id": "M-8602-T-C"
+    }
+  }
+}

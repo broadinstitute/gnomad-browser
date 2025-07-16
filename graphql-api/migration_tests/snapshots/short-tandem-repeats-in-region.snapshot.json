@@ -1,0 +1,11 @@
+{
+  "data": {
+    "region": {
+      "chrom": "4",
+      "reference_genome": "GRCh38",
+      "short_tandem_repeats": [],
+      "start": 3070000,
+      "stop": 3080000
+    }
+  }
+}

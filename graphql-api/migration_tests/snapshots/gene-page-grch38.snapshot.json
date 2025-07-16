@@ -1,0 +1,974 @@
+{
+  "data": {
+    "gene": {
+      "canonical_transcript_id": "ENST00000305991",
+      "chrom": "11",
+      "exac_constraint": null,
+      "exac_regional_missense_constraint_regions": null,
+      "exons": [
+        {
+          "feature_type": "CDS",
+          "start": 107707838,
+          "stop": 107707930
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107707378,
+          "stop": 107707837
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107707931,
+          "stop": 107708005
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107711963,
+          "stop": 107712162
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107719616,
+          "stop": 107719693
+        }
+      ],
+      "flags": [],
+      "gencode_symbol": "SLN",
+      "gene_id": "ENSG00000170290",
+      "gene_version": "4",
+      "gnomad_constraint": {
+        "exp_lof": 1.279145605644124,
+        "exp_mis": 37.129702699212984,
+        "exp_syn": 14.52787874461706,
+        "flags": [],
+        "lof_z": 0.9582726552989718,
+        "mis_z": 0.24750411462831537,
+        "obs_lof": 0,
+        "obs_mis": 33,
+        "obs_syn": 18,
+        "oe_lof": 0,
+        "oe_lof_lower": 0,
+        "oe_lof_upper": 1.634,
+        "oe_mis": 0.8887763057876432,
+        "oe_mis_lower": 0.673,
+        "oe_mis_upper": 1.188,
+        "oe_syn": 1.2389971252113765,
+        "oe_syn_lower": 0.853,
+        "oe_syn_upper": 1.779,
+        "pLI": 0.4457502929526292,
+        "syn_z": -0.49650594862577124
+      },
+      "gnomad_v2_regional_missense_constraint": null,
+      "heterozygous_variant_cooccurrence_counts": [],
+      "hgnc_id": "HGNC:11089",
+      "homozygous_variant_cooccurrence_counts": [],
+      "mane_select_transcript": {
+        "ensembl_id": "ENST00000305991",
+        "ensembl_version": "3",
+        "refseq_id": "NM_003063",
+        "refseq_version": "3"
+      },
+      "mitochondrial_constraint": null,
+      "mitochondrial_missense_constraint_regions": null,
+      "name": "sarcolipin",
+      "ncbi_id": "6588",
+      "omim_id": "602203",
+      "pext": {
+        "flags": [],
+        "regions": [
+          {
+            "mean": 1,
+            "start": 107707838,
+            "stop": 107707930,
+            "tissues": [
+              {
+                "tissue": "adipose_subcutaneous",
+                "value": 1
+              },
+              {
+                "tissue": "adipose_visceral_omentum",
+                "value": 1
+              },
+              {
+                "tissue": "adrenal_gland",
+                "value": 1
+              },
+              {
+                "tissue": "artery_aorta",
+                "value": 1
+              },
+              {
+                "tissue": "artery_coronary",
+                "value": 1
+              },
+              {
+                "tissue": "artery_tibial",
+                "value": 1
+              },
+              {
+                "tissue": "brain_amygdala",
+                "value": 1
+              },
+              {
+                "tissue": "brain_anterior_cingulate_cortex_ba24",
+                "value": 1
+              },
+              {
+                "tissue": "brain_caudate_basal_ganglia",
+                "value": 1
+              },
+              {
+                "tissue": "brain_cerebellar_hemisphere",
+                "value": 1
+              },
+              {
+                "tissue": "brain_cerebellum",
+                "value": 1
+              },
+              {
+                "tissue": "brain_cortex",
+                "value": 1
+              },
+              {
+                "tissue": "brain_frontal_cortex_ba9",
+                "value": 1
+              },
+              {
+                "tissue": "brain_hippocampus",
+                "value": 1
+              },
+              {
+                "tissue": "brain_hypothalamus",
+                "value": 1
+              },
+              {
+                "tissue": "brain_nucleus_accumbens_basal_ganglia",
+                "value": 1
+              },
+              {
+                "tissue": "brain_putamen_basal_ganglia",
+                "value": 1
+              },
+              {
+                "tissue": "brain_spinal_cord_cervical_c_1",
+                "value": 1
+              },
+              {
+                "tissue": "brain_substantia_nigra",
+                "value": 1
+              },
+              {
+                "tissue": "breast_mammary_tissue",
+                "value": 1
+              },
+              {
+                "tissue": "cells_cultured_fibroblasts",
+                "value": 1
+              },
+              {
+                "tissue": "cells_ebv_transformed_lymphocytes",
+                "value": 1
+              },
+              {
+                "tissue": "colon_sigmoid",
+                "value": 1
+              },
+              {
+                "tissue": "colon_transverse",
+                "value": 1
+              },
+              {
+                "tissue": "esophagus_gastroesophageal_junction",
+                "value": 1
+              },
+              {
+                "tissue": "esophagus_mucosa",
+                "value": 1
+              },
+              {
+                "tissue": "esophagus_muscularis",
+                "value": 1
+              },
+              {
+                "tissue": "heart_atrial_appendage",
+                "value": 1
+              },
+              {
+                "tissue": "heart_left_ventricle",
+                "value": 1
+              },
+              {
+                "tissue": "kidney_cortex",
+                "value": 1
+              },
+              {
+                "tissue": "liver",
+                "value": 1
+              },
+              {
+                "tissue": "lung",
+                "value": 1
+              },
+              {
+                "tissue": "minor_salivary_gland",
+                "value": 1
+              },
+              {
+                "tissue": "muscle_skeletal",
+                "value": 1
+              },
+              {
+                "tissue": "nerve_tibial",
+                "value": 1
+              },
+              {
+                "tissue": "ovary",
+                "value": 1
+              },
+              {
+                "tissue": "pancreas",
+                "value": 1
+              },
+              {
+                "tissue": "pituitary",
+                "value": 1
+              },
+              {
+                "tissue": "prostate",
+                "value": 1
+              },
+              {
+                "tissue": "skin_not_sun_exposed_suprapubic",
+                "value": 1
+              },
+              {
+                "tissue": "skin_sun_exposed_lower_leg",
+                "value": 1
+              },
+              {
+                "tissue": "small_intestine_terminal_ileum",
+                "value": 1
+              },
+              {
+                "tissue": "spleen",
+                "value": 1
+              },
+              {
+                "tissue": "stomach",
+                "value": 1
+              },
+              {
+                "tissue": "testis",
+                "value": 1
+              },
+              {
+                "tissue": "thyroid",
+                "value": 1
+              },
+              {
+                "tissue": "uterus",
+                "value": 1
+              },
+              {
+                "tissue": "vagina",
+                "value": 1
+              },
+              {
+                "tissue": "whole_blood",
+                "value": 1
+              }
+            ]
+          }
+        ]
+      },
+      "reference_genome": "GRCh38",
+      "short_tandem_repeats": [],
+      "start": 107707378,
+      "stop": 107719693,
+      "strand": "-",
+      "symbol": "SLN",
+      "transcripts": [
+        {
+          "exons": [
+            {
+              "feature_type": "UTR",
+              "start": 107707378,
+              "stop": 107707837
+            },
+            {
+              "feature_type": "CDS",
+              "start": 107707838,
+              "stop": 107707930
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107707931,
+              "stop": 107708005
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107711963,
+              "stop": 107712056
+            }
+          ],
+          "gtex_tissue_expression": [
+            {
+              "tissue": "adipose_subcutaneous",
+              "value": 0.81
+            },
+            {
+              "tissue": "adipose_visceral_omentum",
+              "value": 1.14
+            },
+            {
+              "tissue": "adrenal_gland",
+              "value": 0.35
+            },
+            {
+              "tissue": "artery_aorta",
+              "value": 0.59
+            },
+            {
+              "tissue": "artery_coronary",
+              "value": 1.52
+            },
+            {
+              "tissue": "artery_tibial",
+              "value": 1.38
+            },
+            {
+              "tissue": "brain_amygdala",
+              "value": 0.68
+            },
+            {
+              "tissue": "brain_anterior_cingulate_cortex_ba24",
+              "value": 10.17
+            },
+            {
+              "tissue": "brain_caudate_basal_ganglia",
+              "value": 0.76
+            },
+            {
+              "tissue": "brain_cerebellar_hemisphere",
+              "value": 5.32
+            },
+            {
+              "tissue": "brain_cerebellum",
+              "value": 4.97
+            },
+            {
+              "tissue": "brain_cortex",
+              "value": 1.61
+            },
+            {
+              "tissue": "brain_frontal_cortex_ba9",
+              "value": 1.98
+            },
+            {
+              "tissue": "brain_hippocampus",
+              "value": 0.46
+            },
+            {
+              "tissue": "brain_hypothalamus",
+              "value": 0.31
+            },
+            {
+              "tissue": "brain_nucleus_accumbens_basal_ganglia",
+              "value": 1.8
+            },
+            {
+              "tissue": "brain_putamen_basal_ganglia",
+              "value": 0.47
+            },
+            {
+              "tissue": "brain_spinal_cord_cervical_c_1",
+              "value": 0.31
+            },
+            {
+              "tissue": "brain_substantia_nigra",
+              "value": 0.23
+            },
+            {
+              "tissue": "breast_mammary_tissue",
+              "value": 0.32
+            },
+            {
+              "tissue": "cells_cultured_fibroblasts",
+              "value": 0.07
+            },
+            {
+              "tissue": "cells_ebv_transformed_lymphocytes",
+              "value": 0.09
+            },
+            {
+              "tissue": "colon_sigmoid",
+              "value": 1.16
+            },
+            {
+              "tissue": "colon_transverse",
+              "value": 0.38
+            },
+            {
+              "tissue": "esophagus_gastroesophageal_junction",
+              "value": 2.37
+            },
+            {
+              "tissue": "esophagus_mucosa",
+              "value": 0.17
+            },
+            {
+              "tissue": "esophagus_muscularis",
+              "value": 1.59
+            },
+            {
+              "tissue": "heart_atrial_appendage",
+              "value": 480.61
+            },
+            {
+              "tissue": "heart_left_ventricle",
+              "value": 1.83
+            },
+            {
+              "tissue": "kidney_cortex",
+              "value": 0.08
+            },
+            {
+              "tissue": "liver",
+              "value": 0.07
+            },
+            {
+              "tissue": "lung",
+              "value": 1.59
+            },
+            {
+              "tissue": "minor_salivary_gland",
+              "value": 1.87
+            },
+            {
+              "tissue": "muscle_skeletal",
+              "value": 1472.34
+            },
+            {
+              "tissue": "nerve_tibial",
+              "value": 2.35
+            },
+            {
+              "tissue": "ovary",
+              "value": 0.13
+            },
+            {
+              "tissue": "pancreas",
+              "value": 0.07
+            },
+            {
+              "tissue": "pituitary",
+              "value": 0.39
+            },
+            {
+              "tissue": "prostate",
+              "value": 0.44
+            },
+            {
+              "tissue": "skin_not_sun_exposed_suprapubic",
+              "value": 1.45
+            },
+            {
+              "tissue": "skin_sun_exposed_lower_leg",
+              "value": 1.28
+            },
+            {
+              "tissue": "small_intestine_terminal_ileum",
+              "value": 0.29
+            },
+            {
+              "tissue": "spleen",
+              "value": 0.1
+            },
+            {
+              "tissue": "stomach",
+              "value": 0.15
+            },
+            {
+              "tissue": "testis",
+              "value": 1.25
+            },
+            {
+              "tissue": "thyroid",
+              "value": 0.47
+            },
+            {
+              "tissue": "uterus",
+              "value": 0.13
+            },
+            {
+              "tissue": "vagina",
+              "value": 0.31
+            },
+            {
+              "tissue": "whole_blood",
+              "value": 0.09
+            }
+          ],
+          "strand": "-",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3"
+        },
+        {
+          "exons": [
+            {
+              "feature_type": "UTR",
+              "start": 107707612,
+              "stop": 107707837
+            },
+            {
+              "feature_type": "CDS",
+              "start": 107707838,
+              "stop": 107707930
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107707931,
+              "stop": 107708005
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107719616,
+              "stop": 107719657
+            }
+          ],
+          "gtex_tissue_expression": [
+            {
+              "tissue": "adipose_subcutaneous",
+              "value": 0
+            },
+            {
+              "tissue": "adipose_visceral_omentum",
+              "value": 0
+            },
+            {
+              "tissue": "adrenal_gland",
+              "value": 0
+            },
+            {
+              "tissue": "artery_aorta",
+              "value": 0
+            },
+            {
+              "tissue": "artery_coronary",
+              "value": 0
+            },
+            {
+              "tissue": "artery_tibial",
+              "value": 0
+            },
+            {
+              "tissue": "brain_amygdala",
+              "value": 0
+            },
+            {
+              "tissue": "brain_anterior_cingulate_cortex_ba24",
+              "value": 0
+            },
+            {
+              "tissue": "brain_caudate_basal_ganglia",
+              "value": 0
+            },
+            {
+              "tissue": "brain_cerebellar_hemisphere",
+              "value": 0
+            },
+            {
+              "tissue": "brain_cerebellum",
+              "value": 0
+            },
+            {
+              "tissue": "brain_cortex",
+              "value": 0
+            },
+            {
+              "tissue": "brain_frontal_cortex_ba9",
+              "value": 0
+            },
+            {
+              "tissue": "brain_hippocampus",
+              "value": 0
+            },
+            {
+              "tissue": "brain_hypothalamus",
+              "value": 0
+            },
+            {
+              "tissue": "brain_nucleus_accumbens_basal_ganglia",
+              "value": 0.38
+            },
+            {
+              "tissue": "brain_putamen_basal_ganglia",
+              "value": 0
+            },
+            {
+              "tissue": "brain_spinal_cord_cervical_c_1",
+              "value": 0
+            },
+            {
+              "tissue": "brain_substantia_nigra",
+              "value": 0
+            },
+            {
+              "tissue": "breast_mammary_tissue",
+              "value": 0
+            },
+            {
+              "tissue": "cells_cultured_fibroblasts",
+              "value": 0
+            },
+            {
+              "tissue": "cells_ebv_transformed_lymphocytes",
+              "value": 0
+            },
+            {
+              "tissue": "colon_sigmoid",
+              "value": 0
+            },
+            {
+              "tissue": "colon_transverse",
+              "value": 0
+            },
+            {
+              "tissue": "esophagus_gastroesophageal_junction",
+              "value": 0
+            },
+            {
+              "tissue": "esophagus_mucosa",
+              "value": 0
+            },
+            {
+              "tissue": "esophagus_muscularis",
+              "value": 0
+            },
+            {
+              "tissue": "heart_atrial_appendage",
+              "value": 0
+            },
+            {
+              "tissue": "heart_left_ventricle",
+              "value": 0
+            },
+            {
+              "tissue": "kidney_cortex",
+              "value": 0
+            },
+            {
+              "tissue": "liver",
+              "value": 0
+            },
+            {
+              "tissue": "lung",
+              "value": 0
+            },
+            {
+              "tissue": "minor_salivary_gland",
+              "value": 0
+            },
+            {
+              "tissue": "muscle_skeletal",
+              "value": 10.47
+            },
+            {
+              "tissue": "nerve_tibial",
+              "value": 0
+            },
+            {
+              "tissue": "ovary",
+              "value": 0
+            },
+            {
+              "tissue": "pancreas",
+              "value": 0
+            },
+            {
+              "tissue": "pituitary",
+              "value": 0
+            },
+            {
+              "tissue": "prostate",
+              "value": 0
+            },
+            {
+              "tissue": "skin_not_sun_exposed_suprapubic",
+              "value": 0
+            },
+            {
+              "tissue": "skin_sun_exposed_lower_leg",
+              "value": 0
+            },
+            {
+              "tissue": "small_intestine_terminal_ileum",
+              "value": 0
+            },
+            {
+              "tissue": "spleen",
+              "value": 0
+            },
+            {
+              "tissue": "stomach",
+              "value": 0
+            },
+            {
+              "tissue": "testis",
+              "value": 0
+            },
+            {
+              "tissue": "thyroid",
+              "value": 0
+            },
+            {
+              "tissue": "uterus",
+              "value": 0
+            },
+            {
+              "tissue": "vagina",
+              "value": 0
+            },
+            {
+              "tissue": "whole_blood",
+              "value": 0
+            }
+          ],
+          "strand": "-",
+          "transcript_id": "ENST00000525934",
+          "transcript_version": "1"
+        },
+        {
+          "exons": [
+            {
+              "feature_type": "UTR",
+              "start": 107707378,
+              "stop": 107707837
+            },
+            {
+              "feature_type": "CDS",
+              "start": 107707838,
+              "stop": 107707930
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107707931,
+              "stop": 107708005
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107711963,
+              "stop": 107712162
+            },
+            {
+              "feature_type": "UTR",
+              "start": 107719616,
+              "stop": 107719693
+            }
+          ],
+          "gtex_tissue_expression": [
+            {
+              "tissue": "adipose_subcutaneous",
+              "value": 0
+            },
+            {
+              "tissue": "adipose_visceral_omentum",
+              "value": 0
+            },
+            {
+              "tissue": "adrenal_gland",
+              "value": 0
+            },
+            {
+              "tissue": "artery_aorta",
+              "value": 0
+            },
+            {
+              "tissue": "artery_coronary",
+              "value": 0
+            },
+            {
+              "tissue": "artery_tibial",
+              "value": 0
+            },
+            {
+              "tissue": "brain_amygdala",
+              "value": 0
+            },
+            {
+              "tissue": "brain_anterior_cingulate_cortex_ba24",
+              "value": 0.37
+            },
+            {
+              "tissue": "brain_caudate_basal_ganglia",
+              "value": 0
+            },
+            {
+              "tissue": "brain_cerebellar_hemisphere",
+              "value": 0
+            },
+            {
+              "tissue": "brain_cerebellum",
+              "value": 0
+            },
+            {
+              "tissue": "brain_cortex",
+              "value": 0
+            },
+            {
+              "tissue": "brain_frontal_cortex_ba9",
+              "value": 0
+            },
+            {
+              "tissue": "brain_hippocampus",
+              "value": 0
+            },
+            {
+              "tissue": "brain_hypothalamus",
+              "value": 0
+            },
+            {
+              "tissue": "brain_nucleus_accumbens_basal_ganglia",
+              "value": 0.37
+            },
+            {
+              "tissue": "brain_putamen_basal_ganglia",
+              "value": 0
+            },
+            {
+              "tissue": "brain_spinal_cord_cervical_c_1",
+              "value": 0
+            },
+            {
+              "tissue": "brain_substantia_nigra",
+              "value": 0
+            },
+            {
+              "tissue": "breast_mammary_tissue",
+              "value": 0
+            },
+            {
+              "tissue": "cells_cultured_fibroblasts",
+              "value": 0
+            },
+            {
+              "tissue": "cells_ebv_transformed_lymphocytes",
+              "value": 0
+            },
+            {
+              "tissue": "colon_sigmoid",
+              "value": 0
+            },
+            {
+              "tissue": "colon_transverse",
+              "value": 0
+            },
+            {
+              "tissue": "esophagus_gastroesophageal_junction",
+              "value": 0
+            },
+            {
+              "tissue": "esophagus_mucosa",
+              "value": 0
+            },
+            {
+              "tissue": "esophagus_muscularis",
+              "value": 0
+            },
+            {
+              "tissue": "heart_atrial_appendage",
+              "value": 1.32
+            },
+            {
+              "tissue": "heart_left_ventricle",
+              "value": 0
+            },
+            {
+              "tissue": "kidney_cortex",
+              "value": 0
+            },
+            {
+              "tissue": "liver",
+              "value": 0
+            },
+            {
+              "tissue": "lung",
+              "value": 0
+            },
+            {
+              "tissue": "minor_salivary_gland",
+              "value": 0
+            },
+            {
+              "tissue": "muscle_skeletal",
+              "value": 24.53
+            },
+            {
+              "tissue": "nerve_tibial",
+              "value": 0
+            },
+            {
+              "tissue": "ovary",
+              "value": 0
+            },
+            {
+              "tissue": "pancreas",
+              "value": 0
+            },
+            {
+              "tissue": "pituitary",
+              "value": 0
+            },
+            {
+              "tissue": "prostate",
+              "value": 0
+            },
+            {
+              "tissue": "skin_not_sun_exposed_suprapubic",
+              "value": 0
+            },
+            {
+              "tissue": "skin_sun_exposed_lower_leg",
+              "value": 0
+            },
+            {
+              "tissue": "small_intestine_terminal_ileum",
+              "value": 0
+            },
+            {
+              "tissue": "spleen",
+              "value": 0
+            },
+            {
+              "tissue": "stomach",
+              "value": 0
+            },
+            {
+              "tissue": "testis",
+              "value": 0
+            },
+            {
+              "tissue": "thyroid",
+              "value": 0
+            },
+            {
+              "tissue": "uterus",
+              "value": 0
+            },
+            {
+              "tissue": "vagina",
+              "value": 0
+            },
+            {
+              "tissue": "whole_blood",
+              "value": 0
+            }
+          ],
+          "strand": "-",
+          "transcript_id": "ENST00000531293",
+          "transcript_version": "1"
+        }
+      ]
+    }
+  }
+}

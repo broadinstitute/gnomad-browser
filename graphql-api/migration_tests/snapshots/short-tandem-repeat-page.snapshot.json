@@ -1,0 +1,10 @@
+{
+  "data": {
+    "short_tandem_repeat": null
+  },
+  "errors": [
+    {
+      "message": "Tandem repeat not found"
+    }
+  ]
+}

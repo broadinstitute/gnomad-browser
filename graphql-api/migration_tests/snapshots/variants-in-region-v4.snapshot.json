@@ -1,0 +1,4730 @@
+{
+  "data": {
+    "meta": {
+      "clinvar_release_date": "2025-04-29"
+    },
+    "region": {
+      "clinvar_variants": [
+        {
+          "clinical_significance": "Uncertain significance",
+          "clinvar_variation_id": "2475286",
+          "gnomad": {
+            "exome": null,
+            "genome": null
+          },
+          "gold_stars": 1,
+          "in_gnomad": false,
+          "major_consequence": "missense_variant",
+          "pos": 107707858,
+          "review_status": "criteria provided, single submitter",
+          "transcript_id": "ENST00000305991",
+          "variant_id": "11-107707858-G-T"
+        },
+        {
+          "clinical_significance": "Uncertain significance",
+          "clinvar_variation_id": "2590379",
+          "gnomad": {
+            "exome": {
+              "ac": 24,
+              "an": 1461742,
+              "filters": []
+            },
+            "genome": {
+              "ac": 4,
+              "an": 152116,
+              "filters": []
+            }
+          },
+          "gold_stars": 1,
+          "in_gnomad": true,
+          "major_consequence": "missense_variant",
+          "pos": 107707866,
+          "review_status": "criteria provided, single submitter",
+          "transcript_id": "ENST00000305991",
+          "variant_id": "11-107707866-A-G"
+        },
+        {
+          "clinical_significance": "Uncertain significance",
+          "clinvar_variation_id": "3166161",
+          "gnomad": {
+            "exome": {
+              "ac": 19,
+              "an": 1461746,
+              "filters": []
+            },
+            "genome": {
+              "ac": 6,
+              "an": 152206,
+              "filters": []
+            }
+          },
+          "gold_stars": 1,
+          "in_gnomad": true,
+          "major_consequence": "missense_variant",
+          "pos": 107707878,
+          "review_status": "criteria provided, single submitter",
+          "transcript_id": "ENST00000305991",
+          "variant_id": "11-107707878-G-A"
+        }
+      ],
+      "variants": [
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 7,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.0000047927807028955245,
+            "an": 1460530,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60336,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44708,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53414,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5668,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1110908,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86232,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26124,
+                "id": "asj"
+              },
+              {
+                "ac": 6,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39692,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33448,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006567971941623865,
+            "an": 152254,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2114,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15296,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10620,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5154,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 294,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4820,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3466,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41560,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68018,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Gln30Pro",
+          "hgvsc": "c.89A>C",
+          "hgvsp": "p.Gln30Pro",
+          "joint": {
+            "ac": 8,
+            "an": 1612784,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 1,
+                "an": 62450,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 60004,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64034,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 7,
+                "an": 44846,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 5962,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91052,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29590,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75008,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1178926,
+                "id": "nfe"
+              },
+              {
+                "ac": 8,
+                "an": 1612784,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707842,
+          "rsid": "rs757010127",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707842-T-G"
+        },
+        {
+          "consequence": "synonymous_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.845676544521542e-7,
+            "an": 1460776,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60348,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44710,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53414,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5678,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111108,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86236,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26130,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39694,
+                "id": "eas"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33458,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Tyr29Tyr",
+          "hgvsc": "c.87T>C",
+          "hgvsp": "p.Tyr29Tyr",
+          "joint": {
+            "ac": 1,
+            "an": 1613024,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62458,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 60002,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64020,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44854,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 5972,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91060,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29598,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "an": 75018,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1179130,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613024,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707844,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707844-A-G"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.862306448646616e-7,
+            "an": 1457236,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60242,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44712,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53412,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5676,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1107872,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86158,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26108,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39676,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33380,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Tyr29Ser",
+          "hgvsc": "c.86A>C",
+          "hgvsp": "p.Tyr29Ser",
+          "joint": {
+            "ac": 1,
+            "an": 1609438,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62354,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 60008,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64012,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44840,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 5970,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 90970,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29574,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74924,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "an": 1175874,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1609438,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707845,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707845-T-G"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000002058691934593985,
+            "an": 1457236,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60242,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44712,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53412,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5676,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1107872,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86158,
+                "id": "sas"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26108,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39676,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33380,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Tyr29Cys",
+          "hgvsc": "c.86A>G",
+          "hgvsp": "p.Tyr29Cys",
+          "joint": {
+            "ac": 3,
+            "an": 1609438,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 1,
+                "an": 62354,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 60008,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64012,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 1,
+                "an": 44840,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 5970,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 90970,
+                "id": "sas"
+              },
+              {
+                "ac": 1,
+                "an": 29574,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74924,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1175874,
+                "id": "nfe"
+              },
+              {
+                "ac": 3,
+                "an": 1609438,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707845,
+          "rsid": "rs1461531709",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707845-T-C"
+        },
+        {
+          "consequence": "synonymous_variant",
+          "exome": null,
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006574276172193441,
+            "an": 152108,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2090,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15274,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10608,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5168,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4820,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3468,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41434,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68018,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Ser28Ser",
+          "hgvsc": "c.84C>G",
+          "hgvsp": "p.Ser28Ser",
+          "joint": {
+            "ac": 1,
+            "an": 1612842,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62438,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59984,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64024,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44868,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6012,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91054,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29594,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74890,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "an": 1179066,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1612842,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707847,
+          "rsid": "rs888314727",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707847-G-C"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000004107096652305519,
+            "an": 1460886,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60354,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44712,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53416,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5702,
+                "id": "mid"
+              },
+              {
+                "ac": 6,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111184,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86232,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26130,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33456,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006575486586007364,
+            "an": 152080,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2092,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15262,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10612,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5168,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4818,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3468,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41410,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68022,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Ser28Phe",
+          "hgvsc": "c.83C>T",
+          "hgvsp": "p.Ser28Phe",
+          "joint": {
+            "ac": 7,
+            "an": 1612966,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62446,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59974,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64028,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44868,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6018,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91050,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29598,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74866,
+                "id": "afr"
+              },
+              {
+                "ac": 7,
+                "an": 1179206,
+                "id": "nfe"
+              },
+              {
+                "ac": 7,
+                "an": 1612966,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707848,
+          "rsid": "rs1405092472",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707848-G-A"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000002053419011100783,
+            "an": 1460978,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60354,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44712,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53414,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5696,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111280,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86236,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26130,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39698,
+                "id": "eas"
+              },
+              {
+                "ac": 3,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33458,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Ser28Pro",
+          "hgvsc": "c.82T>C",
+          "hgvsp": "p.Ser28Pro",
+          "joint": {
+            "ac": 3,
+            "an": 1613186,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62468,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 60002,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64022,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44858,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 5990,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91056,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29602,
+                "id": "asj"
+              },
+              {
+                "ac": 3,
+                "an": 74992,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1179284,
+                "id": "nfe"
+              },
+              {
+                "ac": 3,
+                "an": 1613186,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707849,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707849-A-G"
+        },
+        {
+          "consequence": "synonymous_variant",
+          "exome": {
+            "ac": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000004105146485310417,
+            "an": 1461580,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60380,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44714,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53418,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5738,
+                "id": "mid"
+              },
+              {
+                "ac": 6,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111778,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86252,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26134,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33466,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Leu25Leu",
+          "hgvsc": "c.75T>C",
+          "hgvsp": "p.Leu25Leu",
+          "joint": {
+            "ac": 6,
+            "an": 1613812,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62492,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 60008,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64042,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44866,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6032,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91074,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29602,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75002,
+                "id": "afr"
+              },
+              {
+                "ac": 6,
+                "an": 1179782,
+                "id": "nfe"
+              },
+              {
+                "ac": 6,
+                "an": 1613812,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707856,
+          "rsid": "rs745725364",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707856-A-G"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000005473468728704786,
+            "an": 1461596,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60376,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44714,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5740,
+                "id": "mid"
+              },
+              {
+                "ac": 8,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111790,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86256,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26130,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39698,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33472,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Leu25Phe",
+          "hgvsc": "c.73C>T",
+          "hgvsp": "p.Leu25Phe",
+          "joint": {
+            "ac": 8,
+            "an": 1613804,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62490,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59994,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64030,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 910,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44864,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6034,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91078,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29600,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75008,
+                "id": "afr"
+              },
+              {
+                "ac": 8,
+                "an": 1179796,
+                "id": "nfe"
+              },
+              {
+                "ac": 8,
+                "an": 1613804,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707858,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707858-G-A"
+        },
+        {
+          "consequence": "synonymous_variant",
+          "exome": {
+            "ac": 5,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.0000034208290173873897,
+            "an": 1461634,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60378,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44714,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5742,
+                "id": "mid"
+              },
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111820,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86256,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26132,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33472,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000013151492036771571,
+            "an": 152074,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2086,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15268,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10602,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5170,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4822,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3470,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41414,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68014,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Leu24Leu",
+          "hgvsc": "c.72C>T",
+          "hgvsp": "p.Leu24Leu",
+          "joint": {
+            "ac": 7,
+            "an": 1613708,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 2,
+                "an": 62464,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59982,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64022,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44870,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6058,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "an": 91078,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29602,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "an": 74886,
+                "id": "afr"
+              },
+              {
+                "ac": 3,
+                "an": 1179834,
+                "id": "nfe"
+              },
+              {
+                "ac": 7,
+                "an": 1613708,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707859,
+          "rsid": "rs939920966",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707859-G-A"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.84165803477478e-7,
+            "an": 1461634,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60380,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5744,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111816,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86254,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26132,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33472,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Leu24His",
+          "hgvsc": "c.71T>A",
+          "hgvsp": "p.Leu24His",
+          "joint": {
+            "ac": 1,
+            "an": 1613878,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62492,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 60006,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64036,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44866,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6038,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91072,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29602,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75024,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "an": 1179830,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613878,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707860,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707860-A-T"
+        },
+        {
+          "consequence": "frameshift_variant",
+          "exome": null,
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006573584707212537,
+            "an": 152124,
+            "filters": [
+              "AS_VQSR"
+            ],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2092,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15272,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10608,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5174,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4826,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3468,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41430,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68026,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Leu24ThrfsTer49",
+          "hgvsc": "c.69_70insA",
+          "hgvsp": "p.Leu24ThrfsTer49",
+          "joint": {
+            "ac": 1,
+            "an": 1613734,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62476,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "an": 59988,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64028,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44874,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6058,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91072,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29598,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74898,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1179830,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613734,
+                "id": ""
+              }
+            ]
+          },
+          "lof": "HC",
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707861,
+          "rsid": "rs1867171436",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707861-G-GT"
+        },
+        {
+          "consequence": "stop_gained",
+          "exome": null,
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006573584707212537,
+            "an": 152124,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2092,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15272,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10608,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5174,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4826,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3468,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41430,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68026,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Leu24ArgfsTer5",
+          "hgvsc": "c.69_70insAGGGTGTTCCTTTGAGATGTTTCATCAGTGACATCACAGTGATTGCCAGCTTCCACGGACTACTTTAGGCGCTGTCCAGAGTCCAGGAGTCCAGACAGCCTGGA",
+          "hgvsp": "p.Leu24ArgfsTer5",
+          "joint": {
+            "ac": 1,
+            "an": 1613734,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62476,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "an": 59988,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64028,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44874,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6058,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91072,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29598,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74898,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1179830,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613734,
+                "id": ""
+              }
+            ]
+          },
+          "lof": "HC",
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707861,
+          "rsid": "rs1867171436",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707861-G-GTCCAGGCTGTCTGGACTCCTGGACTCTGGACAGCGCCTAAAGTAGTCCGTGGAAGCTGGCAATCACTGTGATGTCACTGATGAAACATCTCAAAGGAACACCCT"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000002052494601939197,
+            "an": 1461636,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60376,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53418,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5738,
+                "id": "mid"
+              },
+              {
+                "ac": 3,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111828,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86256,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26132,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33472,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006577995290155372,
+            "an": 152022,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2092,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15232,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10604,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5176,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4808,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3470,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41398,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68014,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Trp23Cys",
+          "hgvsc": "c.69G>C",
+          "hgvsp": "p.Trp23Cys",
+          "joint": {
+            "ac": 4,
+            "an": 1613658,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62468,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59948,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64022,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44876,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6054,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91064,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29602,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74870,
+                "id": "afr"
+              },
+              {
+                "ac": 4,
+                "an": 1179842,
+                "id": "nfe"
+              },
+              {
+                "ac": 4,
+                "an": 1613658,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707862,
+          "rsid": "rs1162318094",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707862-C-G"
+        },
+        {
+          "consequence": "stop_gained",
+          "exome": null,
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006575659538651727,
+            "an": 152076,
+            "filters": [
+              "AS_VQSR"
+            ],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2092,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15264,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10612,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5168,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4820,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3470,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41394,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68028,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Trp23PhefsTer3",
+          "hgvsc": "c.67_68insTCCTTTGAGATGTTTCATCAGTGACATCACAGTGATTGCCAGCTTCCACGGACTACTTTAGGCGCTGTCCAGAGTCCAGGAGTCCAGACAGCCT",
+          "hgvsp": "p.Trp23PhefsTer3",
+          "joint": {
+            "ac": 1,
+            "an": 1613778,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62478,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "an": 59980,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64032,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44866,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6064,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91074,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29600,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74866,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1179906,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613778,
+                "id": ""
+              }
+            ]
+          },
+          "lof": "HC",
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707863,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707863-C-CAGGCTGTCTGGACTCCTGGACTCTGGACAGCGCCTAAAGTAGTCCGTGGAAGCTGGCAATCACTGTGATGTCACTGATGAAACATCTCAAAGGA"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 24,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000016418766102362796,
+            "an": 1461742,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60390,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 4,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5750,
+                "id": "mid"
+              },
+              {
+                "ac": 10,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111910,
+                "id": "nfe"
+              },
+              {
+                "ac": 8,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86250,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26132,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000026295721686081675,
+            "an": 152116,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2092,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15244,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10608,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5174,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4828,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3468,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41444,
+                "id": "afr"
+              },
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68030,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Met22Thr",
+          "hgvsc": "c.65T>C",
+          "hgvsp": "p.Met22Thr",
+          "joint": {
+            "ac": 28,
+            "an": 1613858,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 2,
+                "an": 62482,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "an": 59960,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64028,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44874,
+                "id": "eas"
+              },
+              {
+                "ac": 4,
+                "an": 6066,
+                "id": "mid"
+              },
+              {
+                "ac": 9,
+                "an": 91078,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29600,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74918,
+                "id": "afr"
+              },
+              {
+                "ac": 12,
+                "an": 1179940,
+                "id": "nfe"
+              },
+              {
+                "ac": 28,
+                "an": 1613858,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707866,
+          "rsid": "rs758589460",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707866-A-G"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.840984061875333e-7,
+            "an": 1461778,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60392,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5758,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111932,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86254,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26132,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Ile20Asn",
+          "hgvsc": "c.59T>A",
+          "hgvsp": "p.Ile20Asn",
+          "joint": {
+            "ac": 1,
+            "an": 1614048,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62504,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59982,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64036,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44870,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6052,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91076,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29602,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75044,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "an": 1179970,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1614048,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707872,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707872-A-T"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.840984061875333e-7,
+            "an": 1461778,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60392,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5758,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111932,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86254,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26132,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Ile20Thr",
+          "hgvsc": "c.59T>C",
+          "hgvsp": "p.Ile20Thr",
+          "joint": {
+            "ac": 1,
+            "an": 1614048,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62504,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59982,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64036,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44870,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6052,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91076,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29602,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75044,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "an": 1179970,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1614048,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707872,
+          "rsid": "rs1318713028",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707872-A-G"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": null,
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006576178451178451,
+            "an": 152064,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2086,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15254,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10600,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5172,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4826,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3472,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41412,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68014,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Ile20Val",
+          "hgvsc": "c.58A>G",
+          "hgvsp": "p.Ile20Val",
+          "joint": {
+            "ac": 1,
+            "an": 1613830,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62474,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59970,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64020,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44872,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6074,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91084,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29598,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "an": 74886,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1179940,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613830,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707873,
+          "rsid": "rs1867171625",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707873-T-C"
+        },
+        {
+          "consequence": "synonymous_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.841030861258421e-7,
+            "an": 1461768,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60394,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53418,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5758,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111918,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86258,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26134,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33472,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Val19Val",
+          "hgvsc": "c.57T>C",
+          "hgvsp": "p.Val19Val",
+          "joint": {
+            "ac": 1,
+            "an": 1613998,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62506,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59982,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64032,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44864,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6052,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91080,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29606,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75022,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "an": 1179942,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613998,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707874,
+          "rsid": "rs1591158103",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707874-A-G"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.840899824599329e-7,
+            "an": 1461796,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60394,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5758,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111946,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86254,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26134,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Val19Ala",
+          "hgvsc": "c.56T>C",
+          "hgvsp": "p.Val19Ala",
+          "joint": {
+            "ac": 1,
+            "an": 1613992,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62504,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59982,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64034,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44864,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6050,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91076,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29606,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74998,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "an": 1179966,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613992,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707875,
+          "rsid": null,
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707875-A-G"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 6.840871745968332e-7,
+            "an": 1461802,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60394,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5756,
+                "id": "mid"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111950,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86258,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26134,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006576091960069969,
+            "an": 152066,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2088,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15228,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10608,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 910,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5176,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4816,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3472,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41422,
+                "id": "afr"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68030,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Val19Ile",
+          "hgvsc": "c.55G>A",
+          "hgvsp": "p.Val19Ile",
+          "joint": {
+            "ac": 2,
+            "an": 1613868,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62482,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59944,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64028,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 910,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44876,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6072,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91074,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29606,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74896,
+                "id": "afr"
+              },
+              {
+                "ac": 2,
+                "an": 1179980,
+                "id": "nfe"
+              },
+              {
+                "ac": 2,
+                "an": 1613868,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707876,
+          "rsid": "rs1867171683",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707876-C-T"
+        },
+        {
+          "consequence": "synonymous_variant",
+          "exome": {
+            "ac": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000008209169642490662,
+            "an": 1461780,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60392,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44716,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5754,
+                "id": "mid"
+              },
+              {
+                "ac": 6,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111936,
+                "id": "nfe"
+              },
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86254,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26134,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000013149416823363884,
+            "an": 152098,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2086,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15260,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10600,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5176,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4826,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3472,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41420,
+                "id": "afr"
+              },
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68030,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Thr18Thr",
+          "hgvsc": "c.54G>A",
+          "hgvsp": "p.Thr18Thr",
+          "joint": {
+            "ac": 14,
+            "an": 1613878,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 1,
+                "an": 62478,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "an": 59976,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64020,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 1,
+                "an": 44876,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6070,
+                "id": "mid"
+              },
+              {
+                "ac": 2,
+                "an": 91080,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29606,
+                "id": "asj"
+              },
+              {
+                "ac": 1,
+                "an": 74894,
+                "id": "afr"
+              },
+              {
+                "ac": 8,
+                "an": 1179966,
+                "id": "nfe"
+              },
+              {
+                "ac": 14,
+                "an": 1613878,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707877,
+          "rsid": "rs780287040",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707877-C-T"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 19,
+            "ac_hemi": 0,
+            "ac_hom": 1,
+            "af": 0.000012998154262094782,
+            "an": 1461746,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60394,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44714,
+                "id": "amr"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53420,
+                "id": "fin"
+              },
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 1,
+                "an": 5756,
+                "id": "mid"
+              },
+              {
+                "ac": 10,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111898,
+                "id": "nfe"
+              },
+              {
+                "ac": 5,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86256,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26134,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.00003942025938530676,
+            "an": 152206,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2110,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15256,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10616,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5168,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 294,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4816,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3472,
+                "id": "asj"
+              },
+              {
+                "ac": 4,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41540,
+                "id": "afr"
+              },
+              {
+                "ac": 2,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68022,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Thr18Met",
+          "hgvsc": "c.53C>T",
+          "hgvsp": "p.Thr18Met",
+          "joint": {
+            "ac": 25,
+            "an": 1613952,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62504,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59970,
+                "id": "amr"
+              },
+              {
+                "ac": 1,
+                "an": 64036,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44868,
+                "id": "eas"
+              },
+              {
+                "ac": 2,
+                "an": 6050,
+                "id": "mid"
+              },
+              {
+                "ac": 5,
+                "an": 91072,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29606,
+                "id": "asj"
+              },
+              {
+                "ac": 5,
+                "an": 75014,
+                "id": "afr"
+              },
+              {
+                "ac": 12,
+                "an": 1179920,
+                "id": "nfe"
+              },
+              {
+                "ac": 25,
+                "an": 1613952,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707878,
+          "rsid": "rs375547331",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707878-G-A"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": {
+            "ac": 7,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000004788616773840471,
+            "an": 1461800,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 60392,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 44714,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 53418,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5758,
+                "id": "mid"
+              },
+              {
+                "ac": 7,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 1111954,
+                "id": "nfe"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 86256,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 26134,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 39700,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 33474,
+                "id": "afr"
+              }
+            ]
+          },
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": null,
+          "hgvs": "p.Thr18Ala",
+          "hgvsc": "c.52A>G",
+          "hgvsp": "p.Thr18Ala",
+          "joint": {
+            "ac": 7,
+            "an": 1613988,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62504,
+                "id": "remaining"
+              },
+              {
+                "ac": 0,
+                "an": 59976,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64024,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44858,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6052,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91068,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29606,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 75022,
+                "id": "afr"
+              },
+              {
+                "ac": 7,
+                "an": 1179966,
+                "id": "nfe"
+              },
+              {
+                "ac": 7,
+                "an": 1613988,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707879,
+          "rsid": "rs1867171840",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707879-T-C"
+        },
+        {
+          "consequence": "missense_variant",
+          "exome": null,
+          "flags": [],
+          "gene_id": "ENSG00000170290",
+          "gene_symbol": "SLN",
+          "genome": {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "af": 0.000006573757559821194,
+            "an": 152120,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 2090,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 15236,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 10616,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 5172,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 316,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 4828,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 3470,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 41444,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "ac_hemi": 0,
+                "ac_hom": 0,
+                "an": 68036,
+                "id": "nfe"
+              }
+            ]
+          },
+          "hgvs": "p.Ile17Thr",
+          "hgvsc": "c.50T>C",
+          "hgvsp": "p.Ile17Thr",
+          "joint": {
+            "ac": 1,
+            "an": 1613922,
+            "filters": [],
+            "populations": [
+              {
+                "ac": 0,
+                "an": 62482,
+                "id": "remaining"
+              },
+              {
+                "ac": 1,
+                "an": 59952,
+                "id": "amr"
+              },
+              {
+                "ac": 0,
+                "an": 64036,
+                "id": "fin"
+              },
+              {
+                "ac": 0,
+                "an": 912,
+                "id": "ami"
+              },
+              {
+                "ac": 0,
+                "an": 44872,
+                "id": "eas"
+              },
+              {
+                "ac": 0,
+                "an": 6074,
+                "id": "mid"
+              },
+              {
+                "ac": 0,
+                "an": 91086,
+                "id": "sas"
+              },
+              {
+                "ac": 0,
+                "an": 29604,
+                "id": "asj"
+              },
+              {
+                "ac": 0,
+                "an": 74918,
+                "id": "afr"
+              },
+              {
+                "ac": 0,
+                "an": 1179986,
+                "id": "nfe"
+              },
+              {
+                "ac": 1,
+                "an": 1613922,
+                "id": ""
+              }
+            ]
+          },
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "pos": 107707881,
+          "rsid": "rs1867171911",
+          "transcript_id": "ENST00000305991",
+          "transcript_version": "3",
+          "variant_id": "11-107707881-A-G"
+        }
+      ]
+    }
+  }
+}

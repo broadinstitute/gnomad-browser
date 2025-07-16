@@ -1,0 +1,2169 @@
+{
+  "data": {
+    "clinvar_variant": null,
+    "liftover_sources": [
+      {
+        "datasets": [
+          "gnomad_r2_1",
+          "gnomad_r4"
+        ],
+        "source": {
+          "reference_genome": "GRCh37",
+          "variant_id": "1-55516888-G-GA"
+        }
+      }
+    ],
+    "meta": {
+      "clinvar_release_date": "2025-04-29"
+    },
+    "variant": {
+      "alt": "GA",
+      "caid": "CA871474",
+      "chrom": "1",
+      "colocated_variants": [
+        "1-55051215-G-A",
+        "1-55051215-G-T"
+      ],
+      "coverage": {
+        "exome": {
+          "mean": 6.826644065848823,
+          "over_20": 0.20684673444175844
+        },
+        "genome": {
+          "mean": 32.80872221137486,
+          "over_20": 0.97544
+        }
+      },
+      "exome": {
+        "ac": 192,
+        "ac_hemi": 0,
+        "ac_hom": 2,
+        "age_distribution": {
+          "het": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              4,
+              12,
+              17,
+              17,
+              12,
+              5,
+              3,
+              4,
+              2
+            ],
+            "n_larger": 1,
+            "n_smaller": 8
+          },
+          "hom": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "n_larger": 0,
+            "n_smaller": 0
+          }
+        },
+        "an": 303936,
+        "faf95": {
+          "popmax": 0.01436439999999997,
+          "popmax_population": "afr"
+        },
+        "filters": [],
+        "flags": [],
+        "local_ancestry_populations": [],
+        "populations": [
+          {
+            "ac": 16,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 14228,
+            "id": "remaining"
+          },
+          {
+            "ac": 10,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 6888,
+            "id": "remaining_XX"
+          },
+          {
+            "ac": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 7340,
+            "id": "remaining_XY"
+          },
+          {
+            "ac": 19,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 27270,
+            "id": "amr"
+          },
+          {
+            "ac": 12,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 15612,
+            "id": "amr_XX"
+          },
+          {
+            "ac": 7,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 11658,
+            "id": "amr_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 12364,
+            "id": "fin"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 6434,
+            "id": "fin_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 5930,
+            "id": "fin_XY"
+          },
+          {
+            "ac": 5,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 2782,
+            "id": "mid"
+          },
+          {
+            "ac": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1350,
+            "id": "mid_XX"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1432,
+            "id": "mid_XY"
+          },
+          {
+            "ac": 7,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 158924,
+            "id": "nfe"
+          },
+          {
+            "ac": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 74462,
+            "id": "nfe_XX"
+          },
+          {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 84462,
+            "id": "nfe_XY"
+          },
+          {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 59744,
+            "id": "sas"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 11660,
+            "id": "sas_XX"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 48084,
+            "id": "sas_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 10788,
+            "id": "asj"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 5164,
+            "id": "asj_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 5624,
+            "id": "asj_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 9210,
+            "id": "eas"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 4158,
+            "id": "eas_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 5052,
+            "id": "eas_XY"
+          },
+          {
+            "ac": 143,
+            "ac_hemi": 0,
+            "ac_hom": 2,
+            "an": 8626,
+            "id": "afr"
+          },
+          {
+            "ac": 98,
+            "ac_hemi": 0,
+            "ac_hom": 1,
+            "an": 5150,
+            "id": "afr_XX"
+          },
+          {
+            "ac": 45,
+            "ac_hemi": 0,
+            "ac_hom": 1,
+            "an": 3476,
+            "id": "afr_XY"
+          },
+          {
+            "ac": 129,
+            "ac_hemi": 0,
+            "ac_hom": 1,
+            "an": 130878,
+            "id": "XX"
+          },
+          {
+            "ac": 63,
+            "ac_hemi": 0,
+            "ac_hom": 1,
+            "an": 173058,
+            "id": "XY"
+          }
+        ],
+        "quality_metrics": {
+          "allele_balance": {
+            "alt": {
+              "bin_edges": [
+                0,
+                0.05,
+                0.1,
+                0.15,
+                0.2,
+                0.25,
+                0.3,
+                0.35,
+                0.4,
+                0.45,
+                0.5,
+                0.55,
+                0.6,
+                0.65,
+                0.7,
+                0.75,
+                0.8,
+                0.85,
+                0.9,
+                0.95,
+                1
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                7,
+                17,
+                35,
+                43,
+                40,
+                32,
+                7,
+                5,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "n_larger": 0,
+              "n_smaller": 0
+            }
+          },
+          "genotype_depth": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                139,
+                636,
+                14602,
+                68920,
+                59794,
+                6625,
+                625,
+                153,
+                67,
+                59,
+                50,
+                38,
+                37,
+                34,
+                37,
+                28,
+                18,
+                19
+              ],
+              "n_larger": 87,
+              "n_smaller": 0
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                2,
+                15,
+                25,
+                29,
+                39,
+                23,
+                13,
+                4,
+                5,
+                4,
+                5,
+                3,
+                3,
+                2,
+                3,
+                2,
+                2
+              ],
+              "n_larger": 11,
+              "n_smaller": 0
+            }
+          },
+          "genotype_quality": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                61,
+                0,
+                487,
+                0,
+                151205,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                215
+              ],
+              "n_larger": 0,
+              "n_smaller": 0
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                190
+              ],
+              "n_larger": 0,
+              "n_smaller": 0
+            }
+          },
+          "site_quality_metrics": [
+            {
+              "metric": "SiteQuality",
+              "value": 293068
+            },
+            {
+              "metric": "inbreeding_coeff",
+              "value": 0.07736763911586997
+            },
+            {
+              "metric": "AS_MQ",
+              "value": 60
+            },
+            {
+              "metric": "AS_FS",
+              "value": 1.1533321422838378
+            },
+            {
+              "metric": "AS_MQRankSum",
+              "value": 0
+            },
+            {
+              "metric": "AS_pab_max",
+              "value": 1
+            },
+            {
+              "metric": "AS_QUALapprox",
+              "value": 262031
+            },
+            {
+              "metric": "AS_QD",
+              "value": 16.694125891946992
+            },
+            {
+              "metric": "AS_ReadPosRankSum",
+              "value": -0.123
+            },
+            {
+              "metric": "AS_SOR",
+              "value": 0.7624929152072811
+            },
+            {
+              "metric": "AS_VarDP",
+              "value": 15696
+            },
+            {
+              "metric": "AS_VQSLOD",
+              "value": 7.1245
+            }
+          ]
+        }
+      },
+      "flags": [],
+      "genome": {
+        "ac": 727,
+        "ac_hemi": 0,
+        "ac_hom": 9,
+        "age_distribution": {
+          "het": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              15,
+              14,
+              18,
+              25,
+              29,
+              37,
+              23,
+              33,
+              14,
+              6
+            ],
+            "n_larger": 6,
+            "n_smaller": 78
+          },
+          "hom": {
+            "bin_edges": [
+              30,
+              35,
+              40,
+              45,
+              50,
+              55,
+              60,
+              65,
+              70,
+              75,
+              80
+            ],
+            "bin_freq": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            "n_larger": 0,
+            "n_smaller": 0
+          }
+        },
+        "an": 152324,
+        "faf95": {
+          "popmax": 0.015410029999999998,
+          "popmax_population": "afr"
+        },
+        "filters": [],
+        "flags": [],
+        "local_ancestry_populations": [],
+        "populations": [
+          {
+            "ac": 10,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 2114,
+            "id": "remaining"
+          },
+          {
+            "ac": 8,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1048,
+            "id": "remaining_XX"
+          },
+          {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1066,
+            "id": "remaining_XY"
+          },
+          {
+            "ac": 27,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 15296,
+            "id": "amr"
+          },
+          {
+            "ac": 14,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 6788,
+            "id": "amr_XX"
+          },
+          {
+            "ac": 13,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 8508,
+            "id": "amr_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 10630,
+            "id": "fin"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 2574,
+            "id": "fin_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 8056,
+            "id": "fin_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 912,
+            "id": "ami"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 470,
+            "id": "ami_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 442,
+            "id": "ami_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 5176,
+            "id": "eas"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 2266,
+            "id": "eas_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 2910,
+            "id": "eas_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 294,
+            "id": "mid"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 144,
+            "id": "mid_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 150,
+            "id": "mid_XY"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 4834,
+            "id": "sas"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1154,
+            "id": "sas_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 3680,
+            "id": "sas_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 3472,
+            "id": "asj"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1868,
+            "id": "asj_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 1604,
+            "id": "asj_XY"
+          },
+          {
+            "ac": 683,
+            "ac_hemi": 0,
+            "ac_hom": 9,
+            "an": 41568,
+            "id": "afr"
+          },
+          {
+            "ac": 369,
+            "ac_hemi": 0,
+            "ac_hom": 7,
+            "an": 22166,
+            "id": "afr_XX"
+          },
+          {
+            "ac": 314,
+            "ac_hemi": 0,
+            "ac_hom": 2,
+            "an": 19402,
+            "id": "afr_XY"
+          },
+          {
+            "ac": 6,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 68028,
+            "id": "nfe"
+          },
+          {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 39348,
+            "id": "nfe_XX"
+          },
+          {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 28680,
+            "id": "nfe_XY"
+          },
+          {
+            "ac": 395,
+            "ac_hemi": 0,
+            "ac_hom": 7,
+            "an": 77826,
+            "id": "XX"
+          },
+          {
+            "ac": 332,
+            "ac_hemi": 0,
+            "ac_hom": 2,
+            "an": 74498,
+            "id": "XY"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 206,
+            "id": "1kg:esn"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 94,
+            "id": "1kg:esn_XX"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 112,
+            "id": "1kg:esn_XY"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 198,
+            "id": "1kg:pur"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 94,
+            "id": "1kg:pur_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 104,
+            "id": "1kg:pur_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 192,
+            "id": "1kg:pjl"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 92,
+            "id": "1kg:pjl_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 100,
+            "id": "1kg:pjl_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 188,
+            "id": "1kg:clm"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 102,
+            "id": "1kg:clm_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 86,
+            "id": "1kg:clm_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 204,
+            "id": "1kg:jpt"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 92,
+            "id": "1kg:jpt_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 112,
+            "id": "1kg:jpt_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 204,
+            "id": "1kg:chb"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 114,
+            "id": "1kg:chb_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 90,
+            "id": "1kg:chb_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 196,
+            "id": "1kg:stu"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 84,
+            "id": "1kg:stu_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 112,
+            "id": "1kg:stu_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 204,
+            "id": "1kg:itu"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 84,
+            "id": "1kg:itu_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 120,
+            "id": "1kg:itu_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 206,
+            "id": "1kg:tsi"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 100,
+            "id": "1kg:tsi_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 106,
+            "id": "1kg:tsi_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 124,
+            "id": "1kg:mxl"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 60,
+            "id": "1kg:mxl_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 64,
+            "id": "1kg:mxl_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 238,
+            "id": "1kg:ceu"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 118,
+            "id": "1kg:ceu_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 120,
+            "id": "1kg:ceu_XY"
+          },
+          {
+            "ac": 4,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 160,
+            "id": "1kg:msl"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 80,
+            "id": "1kg:msl_XX"
+          },
+          {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 80,
+            "id": "1kg:msl_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 198,
+            "id": "1kg:beb"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 102,
+            "id": "1kg:beb_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 96,
+            "id": "1kg:beb_XY"
+          },
+          {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 232,
+            "id": "1kg:yri"
+          },
+          {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 114,
+            "id": "1kg:yri_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 118,
+            "id": "1kg:yri_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 196,
+            "id": "1kg:fin"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 120,
+            "id": "1kg:fin_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 76,
+            "id": "1kg:fin_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 202,
+            "id": "1kg:khv"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 108,
+            "id": "1kg:khv_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 94,
+            "id": "1kg:khv_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 176,
+            "id": "1kg:cdx"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 92,
+            "id": "1kg:cdx_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 84,
+            "id": "1kg:cdx_XY"
+          },
+          {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 172,
+            "id": "1kg:lwk"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 92,
+            "id": "1kg:lwk_XX"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 80,
+            "id": "1kg:lwk_XY"
+          },
+          {
+            "ac": 3,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 184,
+            "id": "1kg:acb"
+          },
+          {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 94,
+            "id": "1kg:acb_XX"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 90,
+            "id": "1kg:acb_XY"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 102,
+            "id": "1kg:asw"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 56,
+            "id": "1kg:asw_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 46,
+            "id": "1kg:asw_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 208,
+            "id": "1kg:ibs"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 104,
+            "id": "1kg:ibs_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 104,
+            "id": "1kg:ibs_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 174,
+            "id": "1kg:gbr"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 84,
+            "id": "1kg:gbr_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 90,
+            "id": "1kg:gbr_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 170,
+            "id": "1kg:pel"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 86,
+            "id": "1kg:pel_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 84,
+            "id": "1kg:pel_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 200,
+            "id": "1kg:gih"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 92,
+            "id": "1kg:gih_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 108,
+            "id": "1kg:gih_XY"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 204,
+            "id": "1kg:chs"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 102,
+            "id": "1kg:chs_XX"
+          },
+          {
+            "ac": 0,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 102,
+            "id": "1kg:chs_XY"
+          },
+          {
+            "ac": 2,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 230,
+            "id": "1kg:gwd"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 116,
+            "id": "1kg:gwd_XX"
+          },
+          {
+            "ac": 1,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 114,
+            "id": "1kg:gwd_XY"
+          },
+          {
+            "ac": 9,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 2476,
+            "id": "1kg:XX"
+          },
+          {
+            "ac": 7,
+            "ac_hemi": 0,
+            "ac_hom": 0,
+            "an": 2492,
+            "id": "1kg:XY"
+          }
+        ],
+        "quality_metrics": {
+          "allele_balance": {
+            "alt": {
+              "bin_edges": [
+                0,
+                0.05,
+                0.1,
+                0.15,
+                0.2,
+                0.25,
+                0.3,
+                0.35,
+                0.4,
+                0.45,
+                0.5,
+                0.55,
+                0.6,
+                0.65,
+                0.7,
+                0.75,
+                0.8,
+                0.85,
+                0.9,
+                0.95,
+                1
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                1,
+                8,
+                27,
+                66,
+                140,
+                117,
+                161,
+                94,
+                54,
+                29,
+                10,
+                2,
+                1,
+                0,
+                0,
+                0
+              ],
+              "n_larger": 0,
+              "n_smaller": 0
+            }
+          },
+          "genotype_depth": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                168,
+                1723,
+                6504,
+                12004,
+                26291,
+                20691,
+                5497,
+                1339,
+                838,
+                512,
+                266,
+                135,
+                67,
+                24,
+                16,
+                8,
+                4,
+                8
+              ],
+              "n_larger": 8,
+              "n_smaller": 0
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                8,
+                44,
+                113,
+                154,
+                160,
+                107,
+                71,
+                38,
+                18,
+                4,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "n_larger": 0,
+              "n_smaller": 0
+            }
+          },
+          "genotype_quality": {
+            "all": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                9372,
+                8252,
+                7334,
+                6115,
+                7308,
+                6196,
+                5474,
+                5694,
+                4634,
+                3666,
+                3273,
+                2269,
+                1817,
+                1323,
+                795,
+                2581
+              ],
+              "n_larger": 0,
+              "n_smaller": 0
+            },
+            "alt": {
+              "bin_edges": [
+                0,
+                5,
+                10,
+                15,
+                20,
+                25,
+                30,
+                35,
+                40,
+                45,
+                50,
+                55,
+                60,
+                65,
+                70,
+                75,
+                80,
+                85,
+                90,
+                95,
+                100
+              ],
+              "bin_freq": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                1,
+                1,
+                0,
+                2,
+                1,
+                713
+              ],
+              "n_larger": 0,
+              "n_smaller": 0
+            }
+          },
+          "site_quality_metrics": [
+            {
+              "metric": "SiteQuality",
+              "value": 769302
+            },
+            {
+              "metric": "inbreeding_coeff",
+              "value": 0.01996344141957096
+            },
+            {
+              "metric": "AS_MQ",
+              "value": 59.994661226481355
+            },
+            {
+              "metric": "AS_FS",
+              "value": 0
+            },
+            {
+              "metric": "AS_MQRankSum",
+              "value": 0.024
+            },
+            {
+              "metric": "AS_pab_max",
+              "value": 1
+            },
+            {
+              "metric": "AS_QUALapprox",
+              "value": 767451
+            },
+            {
+              "metric": "AS_QD",
+              "value": 16.92209815979004
+            },
+            {
+              "metric": "AS_ReadPosRankSum",
+              "value": -0.048
+            },
+            {
+              "metric": "AS_SOR",
+              "value": 0.6973802806278822
+            },
+            {
+              "metric": "AS_VarDP",
+              "value": 45352
+            },
+            {
+              "metric": "AS_VQSLOD",
+              "value": 20.9109
+            }
+          ]
+        }
+      },
+      "in_silico_predictors": [
+        {
+          "flags": [],
+          "id": "cadd",
+          "value": "0.791"
+        },
+        {
+          "flags": [],
+          "id": "spliceai_ds_max",
+          "value": "0.0100"
+        },
+        {
+          "flags": [],
+          "id": "pangolin_largest_ds",
+          "value": "0.0200"
+        },
+        {
+          "flags": [],
+          "id": "phylop",
+          "value": "-0.344"
+        }
+      ],
+      "joint": {
+        "ac": 919,
+        "age_distribution": null,
+        "an": 456260,
+        "faf95": {
+          "popmax": 0.015524919999999998,
+          "popmax_population": "afr"
+        },
+        "filters": [],
+        "freq_comparison_stats": {
+          "stat_union": {
+            "gen_ancs": [
+              "amr",
+              "mid",
+              "nfe",
+              "sas",
+              "afr"
+            ],
+            "p_value": 0.3199243537262247,
+            "stat_test_name": "cochran_mantel_haenszel_test"
+          }
+        },
+        "hemizygote_count": 0,
+        "homozygote_count": 11,
+        "populations": [
+          {
+            "ac": 26,
+            "an": 16342,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "remaining"
+          },
+          {
+            "ac": 18,
+            "an": 7936,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "remaining_XX"
+          },
+          {
+            "ac": 8,
+            "an": 8406,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "remaining_XY"
+          },
+          {
+            "ac": 46,
+            "an": 42566,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "amr"
+          },
+          {
+            "ac": 26,
+            "an": 22400,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "amr_XX"
+          },
+          {
+            "ac": 20,
+            "an": 20166,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "amr_XY"
+          },
+          {
+            "ac": 0,
+            "an": 22994,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "fin"
+          },
+          {
+            "ac": 0,
+            "an": 9008,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "fin_XX"
+          },
+          {
+            "ac": 0,
+            "an": 13986,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "fin_XY"
+          },
+          {
+            "ac": 0,
+            "an": 912,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "ami"
+          },
+          {
+            "ac": 0,
+            "an": 470,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "ami_XX"
+          },
+          {
+            "ac": 0,
+            "an": 442,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "ami_XY"
+          },
+          {
+            "ac": 0,
+            "an": 14386,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "eas"
+          },
+          {
+            "ac": 0,
+            "an": 6424,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "eas_XX"
+          },
+          {
+            "ac": 0,
+            "an": 7962,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "eas_XY"
+          },
+          {
+            "ac": 5,
+            "an": 3076,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "mid"
+          },
+          {
+            "ac": 4,
+            "an": 1494,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "mid_XX"
+          },
+          {
+            "ac": 1,
+            "an": 1582,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "mid_XY"
+          },
+          {
+            "ac": 3,
+            "an": 64578,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "sas"
+          },
+          {
+            "ac": 2,
+            "an": 12814,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "sas_XX"
+          },
+          {
+            "ac": 1,
+            "an": 51764,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "sas_XY"
+          },
+          {
+            "ac": 0,
+            "an": 14260,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "asj"
+          },
+          {
+            "ac": 0,
+            "an": 7032,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "asj_XX"
+          },
+          {
+            "ac": 0,
+            "an": 7228,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "asj_XY"
+          },
+          {
+            "ac": 826,
+            "an": 50194,
+            "hemizygote_count": 0,
+            "homozygote_count": 11,
+            "id": "afr"
+          },
+          {
+            "ac": 467,
+            "an": 27316,
+            "hemizygote_count": 0,
+            "homozygote_count": 8,
+            "id": "afr_XX"
+          },
+          {
+            "ac": 359,
+            "an": 22878,
+            "hemizygote_count": 0,
+            "homozygote_count": 3,
+            "id": "afr_XY"
+          },
+          {
+            "ac": 13,
+            "an": 226952,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "nfe"
+          },
+          {
+            "ac": 7,
+            "an": 113810,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "nfe_XX"
+          },
+          {
+            "ac": 6,
+            "an": 113142,
+            "hemizygote_count": 0,
+            "homozygote_count": 0,
+            "id": "nfe_XY"
+          },
+          {
+            "ac": 919,
+            "an": 456260,
+            "hemizygote_count": 0,
+            "homozygote_count": 11,
+            "id": ""
+          },
+          {
+            "ac": 524,
+            "an": 208704,
+            "hemizygote_count": 0,
+            "homozygote_count": 8,
+            "id": "XX"
+          },
+          {
+            "ac": 395,
+            "an": 247556,
+            "hemizygote_count": 0,
+            "homozygote_count": 3,
+            "id": "XY"
+          },
+          {
+            "ac": 524,
+            "an": 208704,
+            "hemizygote_count": 0,
+            "homozygote_count": 8,
+            "id": "XX"
+          },
+          {
+            "ac": 395,
+            "an": 247556,
+            "hemizygote_count": 0,
+            "homozygote_count": 3,
+            "id": "XY"
+          }
+        ]
+      },
+      "lof_curations": null,
+      "multi_nucleotide_variants": null,
+      "non_coding_constraint": null,
+      "pos": 55051215,
+      "ref": "G",
+      "reference_genome": "GRCh38",
+      "rsids": [
+        "rs527413419"
+      ],
+      "transcript_consequences": [
+        {
+          "domains": null,
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "11",
+          "hgvs": "c.524-1063_524-1062insA",
+          "hgvsc": "c.524-1063_524-1062insA",
+          "hgvsp": null,
+          "is_canonical": true,
+          "is_mane_select": true,
+          "is_mane_select_version": true,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "intron_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000302118",
+          "transcript_version": "5"
+        },
+        {
+          "domains": null,
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "11",
+          "hgvs": "c.149-1063_149-1062insA",
+          "hgvsc": "c.149-1063_149-1062insA",
+          "hgvsp": null,
+          "is_canonical": null,
+          "is_mane_select": false,
+          "is_mane_select_version": false,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "intron_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000673903",
+          "transcript_version": "1"
+        },
+        {
+          "domains": null,
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "11",
+          "hgvs": "n.282_283insA",
+          "hgvsc": "n.282_283insA",
+          "hgvsp": null,
+          "is_canonical": null,
+          "is_mane_select": false,
+          "is_mane_select_version": false,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "non_coding_transcript_exon_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000490692",
+          "transcript_version": "1"
+        },
+        {
+          "domains": null,
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "11",
+          "hgvs": "c.524-128_524-127insA",
+          "hgvsc": "c.524-128_524-127insA",
+          "hgvsp": null,
+          "is_canonical": null,
+          "is_mane_select": false,
+          "is_mane_select_version": false,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "intron_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000673726",
+          "transcript_version": "1"
+        }
+      ],
+      "variant_id": "1-55051215-G-GA"
+    }
+  }
+}

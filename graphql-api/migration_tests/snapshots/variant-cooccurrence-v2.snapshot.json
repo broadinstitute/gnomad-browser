@@ -1,0 +1,319 @@
+{
+  "data": {
+    "variant1": {
+      "exome": {
+        "ac": 2341,
+        "an": 196220
+      },
+      "genome": {
+        "ac": 441,
+        "an": 31400
+      },
+      "multi_nucleotide_variants": null,
+      "transcript_consequences": [
+        {
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "9",
+          "hgvs": "p.Arg46Leu",
+          "hgvsc": "c.137G>T",
+          "hgvsp": "p.Arg46Leu",
+          "is_canonical": true,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "missense_variant",
+          "polyphen_prediction": "benign",
+          "sift_prediction": "tolerated",
+          "transcript_id": "ENST00000302118",
+          "transcript_version": "5"
+        },
+        {
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "9",
+          "hgvs": "p.Arg46Leu",
+          "hgvsc": "c.137G>T",
+          "hgvsp": "p.Arg46Leu",
+          "is_canonical": null,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "missense_variant",
+          "polyphen_prediction": "benign",
+          "sift_prediction": "tolerated_low_confidence",
+          "transcript_id": "ENST00000452118",
+          "transcript_version": "2"
+        }
+      ]
+    },
+    "variant2": {
+      "exome": {
+        "ac": 1797,
+        "an": 249780
+      },
+      "genome": {
+        "ac": 832,
+        "an": 31378
+      },
+      "multi_nucleotide_variants": null,
+      "transcript_consequences": [
+        {
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "9",
+          "hgvs": "p.Ala443Thr",
+          "hgvsc": "c.1327G>A",
+          "hgvsp": "p.Ala443Thr",
+          "is_canonical": true,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "missense_variant",
+          "polyphen_prediction": "benign",
+          "sift_prediction": "tolerated",
+          "transcript_id": "ENST00000302118",
+          "transcript_version": "5"
+        },
+        {
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "9",
+          "hgvs": "c.702+25G>A",
+          "hgvsc": "c.702+25G>A",
+          "hgvsp": null,
+          "is_canonical": null,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "intron_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000543384",
+          "transcript_version": "1"
+        },
+        {
+          "gene_id": "ENSG00000169174",
+          "gene_symbol": "PCSK9",
+          "gene_version": "9",
+          "hgvs": "n.2051G>A",
+          "hgvsc": "n.2051G>A",
+          "hgvsp": null,
+          "is_canonical": null,
+          "is_mane_select": null,
+          "is_mane_select_version": null,
+          "lof": null,
+          "lof_filter": null,
+          "lof_flags": null,
+          "major_consequence": "non_coding_transcript_exon_variant",
+          "polyphen_prediction": null,
+          "sift_prediction": null,
+          "transcript_id": "ENST00000490692",
+          "transcript_version": "1"
+        }
+      ]
+    },
+    "variant_cooccurrence": {
+      "genotype_counts": [
+        94121,
+        1180,
+        44,
+        2273,
+        4,
+        0,
+        29,
+        0,
+        0
+      ],
+      "haplotype_counts": [
+        191695.00195945142,
+        1271.9980405485912,
+        2334.9980405485912,
+        0.0019594514088096975
+      ],
+      "p_compound_heterozygous": 0.999873550415894,
+      "populations": [
+        {
+          "genotype_counts": [
+            4623,
+            992,
+            43,
+            25,
+            3,
+            0,
+            0,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            10263.095346390863,
+            1080.904653609137,
+            27.90465360913714,
+            0.09534639086286255
+          ],
+          "id": "afr",
+          "p_compound_heterozygous": 0.968576642156309
+        },
+        {
+          "genotype_counts": [
+            14360,
+            113,
+            1,
+            185,
+            1,
+            0,
+            1,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            29018.258497011975,
+            115.7415029880246,
+            187.74150298802462,
+            0.2584970119753754
+          ],
+          "id": "amr",
+          "p_compound_heterozygous": 0.7433809503772635
+        },
+        {
+          "genotype_counts": [
+            4443,
+            24,
+            0,
+            42,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            8952,
+            24,
+            42,
+            0
+          ],
+          "id": "asj",
+          "p_compound_heterozygous": 1
+        },
+        {
+          "genotype_counts": [
+            7346,
+            13,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            14705,
+            13,
+            0,
+            0
+          ],
+          "id": "eas",
+          "p_compound_heterozygous": null
+        },
+        {
+          "genotype_counts": [
+            7892,
+            0,
+            0,
+            678,
+            0,
+            0,
+            19,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            16462,
+            0,
+            716,
+            0
+          ],
+          "id": "fin",
+          "p_compound_heterozygous": null
+        },
+        {
+          "genotype_counts": [
+            40493,
+            26,
+            0,
+            1248,
+            0,
+            0,
+            9,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            82260,
+            26,
+            1266,
+            0
+          ],
+          "id": "nfe",
+          "p_compound_heterozygous": 1
+        },
+        {
+          "genotype_counts": [
+            2482,
+            10,
+            0,
+            66,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            5040,
+            10,
+            66,
+            0
+          ],
+          "id": "oth",
+          "p_compound_heterozygous": 1
+        },
+        {
+          "genotype_counts": [
+            12482,
+            2,
+            0,
+            29,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "haplotype_counts": [
+            24995,
+            2,
+            29,
+            0
+          ],
+          "id": "sas",
+          "p_compound_heterozygous": 1
+        }
+      ],
+      "variant_ids": [
+        "1-55505647-G-T",
+        "1-55523855-G-A"
+      ]
+    }
+  }
+}

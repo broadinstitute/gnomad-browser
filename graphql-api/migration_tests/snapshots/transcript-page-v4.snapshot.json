@@ -1,0 +1,111 @@
+{
+  "data": {
+    "transcript": {
+      "chrom": "11",
+      "exac_constraint": null,
+      "exons": [
+        {
+          "feature_type": "UTR",
+          "start": 107707378,
+          "stop": 107707837
+        },
+        {
+          "feature_type": "CDS",
+          "start": 107707838,
+          "stop": 107707930
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107707931,
+          "stop": 107708005
+        },
+        {
+          "feature_type": "UTR",
+          "start": 107711963,
+          "stop": 107712056
+        }
+      ],
+      "gene": {
+        "canonical_transcript_id": "ENST00000305991",
+        "chrom": "11",
+        "exons": [
+          {
+            "feature_type": "CDS",
+            "start": 107707838,
+            "stop": 107707930
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107707378,
+            "stop": 107707837
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107707931,
+            "stop": 107708005
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107711963,
+            "stop": 107712162
+          },
+          {
+            "feature_type": "UTR",
+            "start": 107719616,
+            "stop": 107719693
+          }
+        ],
+        "flags": [],
+        "gene_id": "ENSG00000170290",
+        "gene_version": "4",
+        "hgnc_id": "HGNC:11089",
+        "mane_select_transcript": {
+          "ensembl_id": "ENST00000305991",
+          "ensembl_version": "3",
+          "refseq_id": "NM_003063",
+          "refseq_version": "3"
+        },
+        "name": "sarcolipin",
+        "omim_id": "602203",
+        "reference_genome": "GRCh38",
+        "start": 107707378,
+        "stop": 107719693,
+        "strand": "-",
+        "symbol": "SLN"
+      },
+      "gnomad_constraint": {
+        "exp_lof": 1.2779416067341949,
+        "exp_mis": 37.09432949303212,
+        "exp_syn": 14.514213724748458,
+        "flags": [],
+        "lof_z": 0.956789372624851,
+        "mis_z": 0.24541998366219045,
+        "obs_lof": 0,
+        "obs_mis": 33,
+        "obs_syn": 18,
+        "oe_lof": 0,
+        "oe_lof_lower": 0,
+        "oe_lof_upper": 1.635,
+        "oe_mis": 0.8896238441565251,
+        "oe_mis_lower": 0.673,
+        "oe_mis_upper": 1.19,
+        "oe_syn": 1.2401636314137956,
+        "oe_syn_lower": 0.854,
+        "oe_syn_upper": 1.78,
+        "pLI": 0.44618534247409897,
+        "syn_z": -0.49894064617481004
+      },
+      "reference_genome": "GRCh38",
+      "start": 107707378,
+      "stop": 107712056,
+      "strand": "-",
+      "transcript_id": "ENST00000305991",
+      "transcript_version": "3"
+    }
+  },
+  "errors": [
+    {
+      "message": "ExAC constraint is not available on GRCh38"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "data": {
+    "copy_number_variant": null
+  },
+  "errors": [
+    {
+      "message": "Variant not found"
+    }
+  ]
+}
