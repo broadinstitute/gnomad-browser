@@ -2,15 +2,39 @@ import React from 'react'
 
 import { Badge, ExternalLink } from '@gnomad/ui'
 
+import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
+
 type Props = {
   gene: {
     flags: string[]
+    symbol: string
+    reference_genome: ReferenceGenome
   }
 }
 
+const allOfUsCMRGGenes = ['CBS', 'KCNE1', 'CRYAA']
+
 const GeneFlags = ({ gene }: Props) => {
+  const shouldDisplayCMRGWarning =
+    gene.reference_genome === 'GRCh38' && allOfUsCMRGGenes.includes(gene.symbol)
+
   return (
     <>
+      {shouldDisplayCMRGWarning && (
+        <p>
+          <Badge level="warning">Warning</Badge> Variant calls in this gene may be missing or
+          unreliable due to{' '}
+          <ExternalLink href="https://www.nature.com/articles/s41587-021-01158-1">
+            false duplications in the GRCh38 reference
+          </ExternalLink>
+          . We will be working on integrating data from the All of Us challenging medically relevant
+          genes (
+          <ExternalLink href="https://support.researchallofus.org/hc/en-us/articles/29475228181908-How-the-All-of-Us-Genomic-data-are-organized#01JQ7ES9YM8KS6PZBF03C8J399">
+            CMRG
+          </ExternalLink>
+          ) callset to remedy this issue in the future.
+        </p>
+      )}
       {gene.flags.includes('chip') && (
         <p>
           <Badge level="warning">Note</Badge> Analysis of allele balance and age data indicates that

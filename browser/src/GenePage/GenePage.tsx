@@ -115,6 +115,7 @@ export type GeneMetadata = {
   gene_id: string
   gene_version: string
   symbol: string
+  reference_genome: ReferenceGenome
   mane_select_transcript: {
     ensembl_id: string
     ensembl_version: string
@@ -152,6 +153,7 @@ export type Pext = {
 export type Gene = GeneMetadata & {
   reference_genome: ReferenceGenome
   name: string | null
+  symbol: string
   chrom: string
   strand: Strand
   start: number
