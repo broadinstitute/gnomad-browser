@@ -26,7 +26,15 @@ models:
     fields:
       clinvar_variants:
         resolver: true
+      mitochondrial_variants:
+        resolver: true
   Region:
     fields:
       clinvar_variants:
+        resolver: true
+      mitochondrial_variants:
+        resolver: true
+  Transcript:
+    fields:
+      mitochondrial_variants:
         resolver: true

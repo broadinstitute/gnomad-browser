@@ -27,6 +27,37 @@ func (r *exacConstraintResolver) PLi(ctx context.Context, obj *model.ExacConstra
 	return 0, nil
 }
 
+// MitochondrialVariants is the resolver for the mitochondrial_variants field.
+func (r *geneResolver) MitochondrialVariants(ctx context.Context, obj *model.Gene, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
+	// Mitochondrial variants are only available for mitochondrial genes (chromosome M)
+	if obj.Chrom != "M" {
+		return nil, fmt.Errorf("mitochondrial variants are only available for mitochondrial genes")
+	}
+
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.DatasetIDGnomadR4:
+		datasetStr = "gnomad_r4"
+	default:
+		return nil, fmt.Errorf("mitochondrial variants are not available for dataset: %v", dataset)
+	}
+
+	// Fetch mitochondrial variants for this gene
+	variants, err := queries.FetchMitochondrialVariantsByGene(ctx, esClient, obj.GeneID, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch mitochondrial variants for gene %s: %w", obj.GeneID, err)
+	}
+
+	return variants, nil
+}
+
 // ClinvarVariants is the resolver for the clinvar_variants field.
 func (r *geneResolver) ClinvarVariants(ctx context.Context, obj *model.Gene) ([]*model.ClinVarVariant, error) {
 	// Get Elasticsearch client from context
@@ -390,7 +421,6 @@ func (r *queryResolver) ShortTandemRepeats(ctx context.Context, dataset model.Da
 
 	return strs, nil
 }
-
 // MultiNucleotideVariant is the resolver for the multi_nucleotide_variant field.
 func (r *queryResolver) MultiNucleotideVariant(ctx context.Context, variantID string, dataset model.DatasetID) (*model.MultiNucleotideVariantDetails, error) {
 	// Get Elasticsearch client from context
@@ -410,6 +440,67 @@ func (r *queryResolver) MultiNucleotideVariant(ctx context.Context, variantID st
 
 	// Fetch multi-nucleotide variant
 	return queries.FetchMultiNucleotideVariant(ctx, esClient, variantID, datasetStr)
+}
+
+// MitochondrialVariant is the resolver for the mitochondrial_variant field.
+func (r *queryResolver) MitochondrialVariant(ctx context.Context, variantID string, dataset model.DatasetID) (*model.MitochondrialVariantDetails, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.DatasetIDGnomadR4:
+		datasetStr = "gnomad_r4"
+	default:
+		return nil, fmt.Errorf("mitochondrial variants are not available for dataset: %v", dataset)
+	}
+
+	// Fetch mitochondrial variant
+	variant, err := queries.FetchMitochondrialVariant(ctx, esClient, variantID, datasetStr)
+	if err != nil {
+		// Check if it's a not found error
+		if _, ok := err.(*queries.VariantNotFoundError); ok {
+			return nil, fmt.Errorf("mitochondrial variant not found: %s", variantID)
+		}
+		return nil, fmt.Errorf("failed to fetch mitochondrial variant %s: %w", variantID, err)
+	}
+
+	return variant, nil
+}
+
+// MitochondrialVariants is the resolver for the mitochondrial_variants field.
+func (r *regionResolver) MitochondrialVariants(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
+	// Mitochondrial variants are only available for mitochondrial regions (chromosome M)
+	if obj.Chrom != "M" {
+		return nil, fmt.Errorf("mitochondrial variants are only available for mitochondrial regions")
+	}
+
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.DatasetIDGnomadR4:
+		datasetStr = "gnomad_r4"
+	default:
+		return nil, fmt.Errorf("mitochondrial variants are not available for dataset: %v", dataset)
+	}
+
+	// Fetch mitochondrial variants in this region
+	variants, err := queries.FetchMitochondrialVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch mitochondrial variants for region %s:%d-%d: %w", obj.Chrom, obj.Start, obj.Stop, err)
+	}
+
+	return variants, nil
 }
 // ClinvarVariants is the resolver for the clinvar_variants field.
 func (r *regionResolver) ClinvarVariants(ctx context.Context, obj *model.Region) ([]*model.ClinVarVariant, error) {
@@ -453,6 +544,37 @@ func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Regi
 
 	return strs, nil
 }
+
+// MitochondrialVariants is the resolver for the mitochondrial_variants field.
+func (r *transcriptResolver) MitochondrialVariants(ctx context.Context, obj *model.Transcript, dataset model.DatasetID) ([]*model.MitochondrialVariant, error) {
+	// Mitochondrial variants are only available for mitochondrial transcripts (chromosome M)
+	if obj.Chrom != "M" {
+		return nil, fmt.Errorf("mitochondrial variants are only available for mitochondrial transcripts")
+	}
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.DatasetIDGnomadR4:
+		datasetStr = "gnomad_r4"
+	default:
+		return nil, fmt.Errorf("mitochondrial variants are not available for dataset: %v", dataset)
+	}
+
+	// For mitochondrial genes, transcript and gene queries are equivalent.
+	// Fetch mitochondrial variants for the transcript's gene
+	variants, err := queries.FetchMitochondrialVariantsByTranscript(ctx, esClient, obj.TranscriptID, obj.GeneID, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch mitochondrial variants for transcript %s: %w", obj.TranscriptID, err)
+	}
+
+	return variants, nil
+}
 // ExacConstraint returns ExacConstraintResolver implementation.
 func (r *Resolver) ExacConstraint() ExacConstraintResolver { return &exacConstraintResolver{r} }
 
@@ -468,8 +590,12 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 // Region returns RegionResolver implementation.
 func (r *Resolver) Region() RegionResolver { return &regionResolver{r} }
 
+// Transcript returns TranscriptResolver implementation.
+func (r *Resolver) Transcript() TranscriptResolver { return &transcriptResolver{r} }
+
 type exacConstraintResolver struct{ *Resolver }
 type geneResolver struct{ *Resolver }
 type gnomadConstraintResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 type regionResolver struct{ *Resolver }
+type transcriptResolver struct{ *Resolver }
