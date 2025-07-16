@@ -35,16 +35,14 @@ func (r *geneResolver) Variants(ctx context.Context, obj *model.Gene, dataset mo
 		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	// Convert dataset to string
-	datasetStr := string(dataset)
-
-	// Use efficient gene-based variant fetching instead of looping through exons
-	variants, err := queries.FetchVariantsByGene(ctx, esClient, obj.GeneID, obj.Chrom, obj.Exons, datasetStr)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching variants for gene: %w", err)
+	// Use the dispatcher to get the correct fetcher
+	fetcher, ok := queries.GetDatasetFetcher(string(dataset))
+	if !ok {
+		return nil, fmt.Errorf("unsupported dataset: %s", dataset)
 	}
 
-	return variants, nil
+	// Call the dataset-specific implementation
+	return fetcher.FetchVariantsByGene(ctx, esClient, obj)
 }
 
 // StructuralVariants is the resolver for the structural_variants field.
@@ -662,8 +660,10 @@ func (r *regionResolver) Genes(ctx context.Context, obj *model.Region) ([]*model
 		return nil, fmt.Errorf("unsupported reference genome: %v", obj.ReferenceGenome)
 	}
 
-	// Fetch genes in the region
-	return queries.FetchGenesInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, refGenomeStr)
+	// Fetch genes in the region using xstart and xstop for efficient querying
+	xstart := queries.XPosition(obj.Chrom, obj.Start)
+	xstop := queries.XPosition(obj.Chrom, obj.Stop)
+	return queries.FetchGenesInRegion(ctx, esClient, obj.Chrom, xstart, xstop, refGenomeStr)
 }
 
 // NonCodingConstraints is the resolver for the non_coding_constraints field.
@@ -681,11 +681,14 @@ func (r *regionResolver) Variants(ctx context.Context, obj *model.Region, datase
 		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	// Convert dataset to string
-	datasetStr := string(dataset)
+	// Use the dispatcher to get the correct fetcher
+	fetcher, ok := queries.GetDatasetFetcher(string(dataset))
+	if !ok {
+		return nil, fmt.Errorf("unsupported dataset: %s", dataset)
+	}
 
-	// Fetch variants in the region
-	return queries.FetchVariantsInRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
+	// Call the dataset-specific implementation
+	return fetcher.FetchVariantsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop)
 }
 
 // StructuralVariants is the resolver for the structural_variants field.
@@ -894,16 +897,14 @@ func (r *transcriptResolver) Variants(ctx context.Context, obj *model.Transcript
 		return nil, fmt.Errorf("elasticsearch client not found in context")
 	}
 
-	// Convert dataset to string
-	datasetStr := string(dataset)
-
-	// Use efficient gene-based variant fetching (transcript GeneID matches gene_id field)
-	variants, err := queries.FetchVariantsByGene(ctx, esClient, obj.GeneID, obj.Chrom, obj.Exons, datasetStr)
-	if err != nil {
-		return nil, fmt.Errorf("error fetching variants for transcript: %w", err)
+	// Use the dispatcher to get the correct fetcher
+	fetcher, ok := queries.GetDatasetFetcher(string(dataset))
+	if !ok {
+		return nil, fmt.Errorf("unsupported dataset: %s", dataset)
 	}
 
-	return variants, nil
+	// Call the dataset-specific implementation using FetchVariantsByTranscript
+	return fetcher.FetchVariantsByTranscript(ctx, esClient, obj.TranscriptID)
 }
 
 // MitochondrialVariants is the resolver for the mitochondrial_variants field.

@@ -1,10 +1,22 @@
 === INTEGRATION TEST SUMMARY ===
-Overall: 0 passed, 1 failed
+Overall: 1 passed, 4 failed
 
 === RESULTS BY CATEGORY ===
 
-Variant Pages:
+Copy Number Variants:
+  Passed: 1
+  Failed: 0
+
+Structural Variants:
   Passed: 0
   Failed: 1
   Failed tests:
-    - variant-page-full-ancestry-v4
+    - structural-variants-in-region-v4
+
+Variants in Region/Gene/Transcript:
+  Passed: 0
+  Failed: 3
+  Failed tests:
+    - variants-in-region-v2
+    - variants-in-region-v3
+    - variants-in-region-v4

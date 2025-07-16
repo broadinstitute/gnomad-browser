@@ -17,25 +17,26 @@ var ClinVarVariantIndices = map[string]string{
 
 // ClinVarVariantDocument represents the ES document structure for ClinVar variants
 type ClinVarVariantDocument struct {
-	VariantID            string                 `json:"variant_id"`
-	ReferenceGenome      string                 `json:"reference_genome"`
-	Chrom                string                 `json:"chrom"`
-	Pos                  int                    `json:"pos"`
-	Ref                  string                 `json:"ref"`
-	Alt                  string                 `json:"alt"`
-	ClinicalSignificance string                 `json:"clinical_significance"`
-	ClinVarVariationID   string                 `json:"clinvar_variation_id"`
-	GoldStars            int                    `json:"gold_stars"`
-	HGVSC                *string                `json:"hgvsc"`
-	HGVSP                *string                `json:"hgvsp"`
-	InGnomAD             *bool                  `json:"in_gnomad"`
-	MajorConsequence     *string                `json:"major_consequence"`
-	ReviewStatus         string                 `json:"review_status"`
-	TranscriptID         *string                `json:"transcript_id"`
-	RSID                 *string                `json:"rsid"`
-	LastEvaluated        *string                `json:"last_evaluated"`
-	GnomAD               *ClinVarGnomADData     `json:"gnomad"`
-	Submissions          []ClinVarSubmissionDoc `json:"submissions"`
+	VariantID               string                   `json:"variant_id"`
+	ReferenceGenome         string                   `json:"reference_genome"`
+	Chrom                   string                   `json:"chrom"`
+	Pos                     int                      `json:"pos"`
+	Ref                     string                   `json:"ref"`
+	Alt                     string                   `json:"alt"`
+	ClinicalSignificance    string                   `json:"clinical_significance"`
+	ClinVarVariationID      string                   `json:"clinvar_variation_id"`
+	GoldStars               int                      `json:"gold_stars"`
+	HGVSC                   *string                  `json:"hgvsc"`
+	HGVSP                   *string                  `json:"hgvsp"`
+	InGnomAD                *bool                    `json:"in_gnomad"`
+	MajorConsequence        *string                  `json:"major_consequence"`
+	ReviewStatus            string                   `json:"review_status"`
+	TranscriptID            *string                  `json:"transcript_id"`
+	RSID                    *string                  `json:"rsid"`
+	LastEvaluated           *string                  `json:"last_evaluated"`
+	TranscriptConsequences  []map[string]interface{} `json:"transcript_consequences"`
+	GnomAD                  *ClinVarGnomADData       `json:"gnomad"`
+	Submissions             []ClinVarSubmissionDoc   `json:"submissions"`
 }
 
 // ClinVarGnomADData represents gnomAD data within ClinVar variants
@@ -258,9 +259,15 @@ func FetchClinVarVariantsByGene(ctx context.Context, client *elastic.Client, gen
 		return []*model.ClinVarVariant{}, fmt.Errorf("elasticsearch search failed: %w", err)
 	}
 
+	// Create gene context for transcript consequence selection
+	context := FlagContext{
+		Type:   "gene",
+		GeneID: geneID,
+	}
+
 	results := make([]*model.ClinVarVariant, 0, len(response.Hits.Hits))
 	for _, hit := range response.Hits.Hits {
-		variant, err := convertHitToClinVarVariant(hit)
+		variant, err := convertHitToClinVarVariantWithContext(hit, &context)
 		if err != nil {
 			continue // Skip invalid variants
 		}
@@ -362,6 +369,12 @@ func FetchClinVarVariantsByTranscript(ctx context.Context, client *elastic.Clien
 
 // convertHitToClinVarVariant converts an Elasticsearch hit to a ClinVarVariant model
 func convertHitToClinVarVariant(hit elastic.Hit) (*model.ClinVarVariant, error) {
+	// Use empty context for backward compatibility
+	return convertHitToClinVarVariantWithContext(hit, nil)
+}
+
+// convertHitToClinVarVariantWithContext converts an Elasticsearch hit to a ClinVarVariant model with context
+func convertHitToClinVarVariantWithContext(hit elastic.Hit, context *FlagContext) (*model.ClinVarVariant, error) {
 	// Extract the 'value' field from _source
 	value, ok := hit.Source["value"].(map[string]any)
 	if !ok {
@@ -403,11 +416,27 @@ func convertHitToClinVarVariant(hit elastic.Hit) (*model.ClinVarVariant, error) 
 	if doc.InGnomAD != nil {
 		result.InGnomad = doc.InGnomAD
 	}
-	if doc.MajorConsequence != nil {
-		result.MajorConsequence = doc.MajorConsequence
-	}
-	if doc.TranscriptID != nil {
-		result.TranscriptID = doc.TranscriptID
+
+	// Handle transcript consequences with context
+	if context != nil && len(doc.TranscriptConsequences) > 0 {
+		// Use GetConsequenceForContext to get the appropriate transcript consequence
+		if consequence := GetConsequenceForContext(doc.TranscriptConsequences, *context); consequence != nil {
+			// Extract major_consequence and transcript_id from the selected consequence
+			if majorConsequence, ok := consequence["major_consequence"].(string); ok {
+				result.MajorConsequence = &majorConsequence
+			}
+			if transcriptID, ok := consequence["transcript_id"].(string); ok {
+				result.TranscriptID = &transcriptID
+			}
+		}
+	} else {
+		// Fall back to document-level fields for backward compatibility
+		if doc.MajorConsequence != nil {
+			result.MajorConsequence = doc.MajorConsequence
+		}
+		if doc.TranscriptID != nil {
+			result.TranscriptID = doc.TranscriptID
+		}
 	}
 
 	// Convert gnomAD data - always return structure with null fields when no data

@@ -229,6 +229,7 @@ func (f *ExacVariantFetcher) buildPopulations(pops []ExacPopulationData) []*mode
 			ID:              pop.ID,
 			Ac:              pop.AC,
 			An:              pop.AN,
+			AcHemi:          toIntPtrAlways(pop.HemizygoteCount),  // Always return pointer, even for 0
 			AcHom:           pop.HomozygoteCount,
 			HomozygoteCount: pop.HomozygoteCount,
 			HemizygoteCount: toIntPtr(pop.HemizygoteCount),
@@ -344,15 +345,189 @@ func (f *ExacVariantFetcher) buildTranscriptConsequences(consequences []map[stri
 	return result
 }
 
-// Batch fetching methods - not yet implemented for ExAC
-func (f *ExacVariantFetcher) FetchVariantsByGene(ctx context.Context, client *elastic.Client, geneID string, transcriptID *string) ([]*model.VariantDetails, error) {
-	return nil, fmt.Errorf("ExAC gene variant fetching not yet implemented")
+// Batch fetching methods.
+func (f *ExacVariantFetcher) FetchVariantsByGene(ctx context.Context, client *elastic.Client, gene *model.Gene) ([]*model.Variant, error) {
+	if gene == nil {
+		return nil, fmt.Errorf("gene object is required")
+	}
+
+	// Filter exons to CDS regions (or all if no CDS)
+	filteredRegions := gene.Exons
+	cdsExons := make([]*model.Exon, 0)
+	for _, exon := range gene.Exons {
+		if exon.FeatureType == "CDS" {
+			cdsExons = append(cdsExons, exon)
+		}
+	}
+	if len(cdsExons) > 0 {
+		filteredRegions = cdsExons
+	}
+
+	// Add padding to regions
+	const padding = 75
+	rangeQueries := make([]map[string]interface{}, 0)
+	for _, region := range filteredRegions {
+		rangeQueries = append(rangeQueries, map[string]interface{}{
+			"range": map[string]interface{}{
+				"locus.position": map[string]interface{}{
+					"gte": region.Start - padding,
+					"lte": region.Stop + padding,
+				},
+			},
+		})
+	}
+
+	// Build query
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"filter": []map[string]interface{}{
+					{"term": map[string]interface{}{"gene_id": gene.GeneID}},
+					{"bool": map[string]interface{}{"should": rangeQueries}},
+				},
+			},
+		},
+		"_source": []string{"value"},
+		"sort":    []map[string]interface{}{{"locus.position": map[string]string{"order": "asc"}}},
+		"size":    10000,
+	}
+
+	// Execute search
+	resp, err := client.Search(ctx, f.ESIndex, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch ExAC variants by gene: %w", err)
+	}
+
+	// Convert to variant models
+	variants := make([]*model.Variant, 0)
+	for _, hit := range resp.Hits.Hits {
+		value, ok := hit.Source["value"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Parse document
+		jsonBytes, err := json.Marshal(value)
+		if err != nil {
+			continue
+		}
+		var doc ExacVariantDocument
+		if err := json.Unmarshal(jsonBytes, &doc); err != nil {
+			continue
+		}
+
+		// Check if variant has data - ExAC only has exome data
+		if doc.Exome == nil || doc.Exome.AC == 0 {
+			continue
+		}
+
+		// Shape variant summary
+		variant := f.shapeVariantSummary(&doc, gene.GeneID)
+		if variant != nil {
+			variants = append(variants, variant)
+		}
+	}
+
+	return variants, nil
 }
 
-func (f *ExacVariantFetcher) FetchVariantsByRegion(ctx context.Context, client *elastic.Client, chrom string, start, stop int) ([]*model.VariantDetails, error) {
+// shapeVariantSummary converts an ExAC document to a summary Variant model for lists
+func (f *ExacVariantFetcher) shapeVariantSummary(doc *ExacVariantDocument, geneID string) *model.Variant {
+	if doc == nil {
+		return nil
+	}
+
+	// Build exome data
+	var exomeData *model.VariantDetailsExomeData
+	if doc.Exome != nil && doc.Exome.AC > 0 {
+		exomeData = f.buildExomeData(doc.Exome)
+	}
+
+	// Create the variant
+	variant := &model.Variant{
+		VariantID:       doc.VariantID,
+		ReferenceGenome: model.ReferenceGenomeIDGRCh37,
+		Chrom:           doc.Chrom,
+		Pos:             doc.Pos,
+		Ref:             doc.Ref,
+		Alt:             doc.Alt,
+		Exome:           exomeData,
+		Genome:          nil, // ExAC has no genome data
+		Flags:           ensureEmptyArray(doc.Flags),
+		Rsids:           ensureEmptyArray(doc.RSIDs),
+		Rsid:            getFirstRsid(doc.RSIDs),
+		Caid:            toStringPtr(doc.CAID),
+		Coverage: &model.VariantCoverageDetails{
+			Exome:  &model.VariantCoverage{},
+			Genome: &model.VariantCoverage{},
+		},
+	}
+
+	// Add flattened transcript consequence fields from the first relevant consequence
+	if len(doc.TranscriptConsequences) > 0 {
+		// Find the first consequence for this gene
+		var relevantConsequence map[string]interface{}
+		for _, csq := range doc.TranscriptConsequences {
+			if csqGeneID, ok := csq["gene_id"].(string); ok && csqGeneID == geneID {
+				relevantConsequence = csq
+				break
+			}
+		}
+
+		// If no gene-specific consequence found, use the first one
+		if relevantConsequence == nil && len(doc.TranscriptConsequences) > 0 {
+			relevantConsequence = doc.TranscriptConsequences[0]
+		}
+
+		if relevantConsequence != nil {
+			if consequence, ok := relevantConsequence["major_consequence"].(string); ok {
+				variant.Consequence = &consequence
+			}
+			if geneSymbol, ok := relevantConsequence["gene_symbol"].(string); ok {
+				variant.GeneSymbol = &geneSymbol
+			}
+			if hgvsc, ok := relevantConsequence["hgvsc"].(string); ok {
+				variant.Hgvsc = &hgvsc
+			}
+			if hgvsp, ok := relevantConsequence["hgvsp"].(string); ok {
+				variant.Hgvsp = &hgvsp
+			}
+			// Set hgvs to hgvsp if available, otherwise hgvsc
+			if hgvsp, ok := relevantConsequence["hgvsp"].(string); ok && hgvsp != "" {
+				variant.Hgvs = &hgvsp
+			} else if hgvsc, ok := relevantConsequence["hgvsc"].(string); ok {
+				variant.Hgvs = &hgvsc
+			}
+			if lof, ok := relevantConsequence["lof"].(string); ok {
+				variant.Lof = &lof
+			}
+			if lofFilter, ok := relevantConsequence["lof_filter"].(string); ok {
+				variant.LofFilter = &lofFilter
+			}
+			if lofFlags, ok := relevantConsequence["lof_flags"].(string); ok {
+				variant.LofFlags = &lofFlags
+			}
+			if transcriptID, ok := relevantConsequence["transcript_id"].(string); ok {
+				variant.TranscriptID = &transcriptID
+			}
+			if transcriptVersion, ok := relevantConsequence["transcript_version"].(string); ok {
+				variant.TranscriptVersion = &transcriptVersion
+			}
+			// Set the gene ID
+			variant.GeneID = &geneID
+		}
+	}
+
+	// Add full transcript consequences
+	variant.TranscriptConsequences = f.buildTranscriptConsequences(doc.TranscriptConsequences)
+
+	return variant
+}
+
+func (f *ExacVariantFetcher) FetchVariantsByRegion(ctx context.Context, client *elastic.Client, chrom string, start, stop int) ([]*model.Variant, error) {
 	return nil, fmt.Errorf("ExAC region variant fetching not yet implemented")
 }
 
-func (f *ExacVariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.VariantDetails, error) {
+func (f *ExacVariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.Variant, error) {
 	return nil, fmt.Errorf("ExAC transcript variant fetching not yet implemented")
 }

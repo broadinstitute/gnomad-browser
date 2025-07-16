@@ -18,6 +18,12 @@ func RegisterDatasetFetcher(datasetID string, fetcher VariantFetcher) {
 	datasetFetchers[datasetID] = fetcher
 }
 
+// GetDatasetFetcher returns a fetcher for a given dataset ID
+func GetDatasetFetcher(datasetID string) (VariantFetcher, bool) {
+	fetcher, ok := datasetFetchers[datasetID]
+	return fetcher, ok
+}
+
 // InitializeFetchers sets up all dataset-specific fetchers.
 func InitializeFetchers() {
 	// gnomAD v4 datasets

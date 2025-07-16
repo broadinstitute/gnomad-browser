@@ -403,14 +403,14 @@ func (f *GnomadV3VariantFetcher) convertDocumentToMap(doc *GnomadV3VariantDocume
 }
 
 // Batch fetching methods (not yet implemented for v3)
-func (f *GnomadV3VariantFetcher) FetchVariantsByGene(ctx context.Context, client *elastic.Client, geneID string, transcriptID *string) ([]*model.VariantDetails, error) {
+func (f *GnomadV3VariantFetcher) FetchVariantsByGene(ctx context.Context, client *elastic.Client, gene *model.Gene) ([]*model.Variant, error) {
 	return nil, fmt.Errorf("gnomAD v3 gene variant fetching not yet implemented")
 }
 
-func (f *GnomadV3VariantFetcher) FetchVariantsByRegion(ctx context.Context, client *elastic.Client, chrom string, start, stop int) ([]*model.VariantDetails, error) {
+func (f *GnomadV3VariantFetcher) FetchVariantsByRegion(ctx context.Context, client *elastic.Client, chrom string, start, stop int) ([]*model.Variant, error) {
 	return nil, fmt.Errorf("gnomAD v3 region variant fetching not yet implemented")
 }
 
-func (f *GnomadV3VariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.VariantDetails, error) {
+func (f *GnomadV3VariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.Variant, error) {
 	return nil, fmt.Errorf("gnomAD v3 transcript variant fetching not yet implemented")
 }
