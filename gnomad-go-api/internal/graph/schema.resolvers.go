@@ -281,6 +281,29 @@ func (r *queryResolver) VariantCooccurrence(ctx context.Context, variants []stri
 	return queries.FetchVariantCooccurrence(ctx, esClient, variants, string(dataset))
 }
 
+// Liftover is the resolver for the liftover field.
+func (r *queryResolver) Liftover(ctx context.Context, sourceVariantID *string, liftoverVariantID *string, referenceGenome model.ReferenceGenomeID) ([]*model.LiftoverResult, error) {
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert reference genome enum to string
+	var refGenomeStr string
+	switch referenceGenome {
+	case model.ReferenceGenomeIDGRCh37:
+		refGenomeStr = "GRCh37"
+	case model.ReferenceGenomeIDGRCh38:
+		refGenomeStr = "GRCh38"
+	default:
+		return nil, fmt.Errorf("unsupported reference genome: %v", referenceGenome)
+	}
+
+	// Fetch liftover data
+	return queries.FetchLiftover(ctx, esClient, sourceVariantID, liftoverVariantID, refGenomeStr)
+}
+
 // CopyNumberVariant is the resolver for the copy_number_variant field.
 func (r *queryResolver) CopyNumberVariant(ctx context.Context, variantID string, dataset model.CopyNumberVariantDatasetID) (*model.CopyNumberVariantDetails, error) {
 	// Get Elasticsearch client from context
