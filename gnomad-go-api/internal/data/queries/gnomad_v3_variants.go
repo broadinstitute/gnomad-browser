@@ -370,6 +370,97 @@ func (f *GnomadV3VariantFetcher) convertInSilicoPredictorsToMap(predictors Gnoma
 	return result
 }
 
+// shapeVariantSummary converts a gnomAD v3 document to a summary Variant model for lists
+func (f *GnomadV3VariantFetcher) shapeVariantSummary(doc *GnomadV3VariantDocument, geneID string) *model.Variant {
+	if doc == nil {
+		return nil
+	}
+	
+	// Build genome data
+	var genomeData *model.VariantDetailsGenomeData
+	if doc.Genome != nil && doc.Genome.Freq[f.Subset] != nil && doc.Genome.Freq[f.Subset].ACRaw > 0 {
+		genomeData = f.shapeGenomeData(doc.Genome, f.Subset)
+	}
+	
+	// To match TS, filter populations here to remove XX/XY and sub-pops
+	if genomeData != nil && genomeData.Populations != nil {
+		filteredPops := []*model.PopulationAlleleFrequencies{}
+		for _, pop := range genomeData.Populations {
+			if !strings.Contains(pop.ID, "_") && pop.ID != "XX" && pop.ID != "XY" {
+				filteredPops = append(filteredPops, pop)
+			}
+		}
+		genomeData.Populations = filteredPops
+	}
+	
+	// Create the variant
+	variant := &model.Variant{
+		VariantID:       doc.VariantID,
+		ReferenceGenome: model.ReferenceGenomeIDGRCh38,
+		Chrom:           doc.Chrom,
+		Pos:             doc.Pos,
+		Ref:             doc.Ref,
+		Alt:             doc.Alt,
+		Genome:          genomeData,
+		Flags:           ensureEmptyArray(doc.Flags),
+		Rsids:           ensureEmptyArray(doc.RSIDs),
+		Rsid:            getFirstRsid(doc.RSIDs),
+		Caid:            toStringPtr(doc.CAID),
+	}
+	
+	// Add flattened transcript consequence fields
+	if len(doc.TranscriptConsequences) > 0 {
+		// Region/Gene/Transcript-aware consequence selection
+		var context FlagContext
+		if geneID != "" {
+			context = FlagContext{Type: "gene", GeneID: geneID}
+		} else {
+			context = FlagContext{Type: "region"}
+		}
+		
+		relevantConsequence := GetConsequenceForContext(doc.TranscriptConsequences, context)
+		if relevantConsequence != nil {		
+			if consequence, ok := relevantConsequence["major_consequence"].(string); ok {
+				variant.Consequence = &consequence
+			}
+			if geneSymbol, ok := relevantConsequence["gene_symbol"].(string); ok {
+				variant.GeneSymbol = &geneSymbol
+			}
+			if hgvsc, ok := relevantConsequence["hgvsc"].(string); ok {
+				variant.Hgvsc = &hgvsc
+			}
+			if hgvsp, ok := relevantConsequence["hgvsp"].(string); ok {
+				variant.Hgvsp = &hgvsp
+			}
+			if hgvsp, ok := relevantConsequence["hgvsp"].(string); ok && hgvsp != "" {
+				variant.Hgvs = &hgvsp
+			} else if hgvsc, ok := relevantConsequence["hgvsc"].(string); ok {
+				variant.Hgvs = &hgvsc
+			}
+			if lof, ok := relevantConsequence["lof"].(string); ok {
+				variant.Lof = &lof
+			}
+			if lofFilter, ok := relevantConsequence["lof_filter"].(string); ok {
+				variant.LofFilter = &lofFilter
+			}
+			if lofFlags, ok := relevantConsequence["lof_flags"].(string); ok {
+				variant.LofFlags = &lofFlags
+			}
+			if transcriptID, ok := relevantConsequence["transcript_id"].(string); ok {
+				variant.TranscriptID = &transcriptID
+			}
+
+			if csqGeneID, ok := relevantConsequence["gene_id"].(string); ok {
+				variant.GeneID = &csqGeneID
+			}
+		}
+	}
+
+	return variant
+}
+
+// Helper functions (defined in gnomad_v2_variants.go)
+
 // convertDocumentToMap converts a GnomadV3VariantDocument to a generic map for flag processing
 func (f *GnomadV3VariantFetcher) convertDocumentToMap(doc *GnomadV3VariantDocument) map[string]interface{} {
 	result := make(map[string]interface{})
@@ -402,15 +493,253 @@ func (f *GnomadV3VariantFetcher) convertDocumentToMap(doc *GnomadV3VariantDocume
 	return result
 }
 
-// Batch fetching methods (not yet implemented for v3)
+// Batch fetching methods
 func (f *GnomadV3VariantFetcher) FetchVariantsByGene(ctx context.Context, client *elastic.Client, gene *model.Gene) ([]*model.Variant, error) {
-	return nil, fmt.Errorf("gnomAD v3 gene variant fetching not yet implemented")
+	if gene == nil {
+		return nil, fmt.Errorf("gene object is required")
+	}
+
+	// Filter exons to CDS regions (or all if no CDS)
+	filteredRegions := gene.Exons
+	cdsExons := make([]*model.Exon, 0)
+	for _, exon := range gene.Exons {
+		if exon.FeatureType == "CDS" {
+			cdsExons = append(cdsExons, exon)
+		}
+	}
+	if len(cdsExons) > 0 {
+		filteredRegions = cdsExons
+	}
+
+	// Add padding to regions
+	const padding = 75
+	rangeQueries := make([]map[string]interface{}, 0)
+	for _, region := range filteredRegions {
+		rangeQueries = append(rangeQueries, map[string]interface{}{
+			"range": map[string]interface{}{
+				"locus.position": map[string]interface{}{
+					"gte": region.Start - padding,
+					"lte": region.Stop + padding,
+				},
+			},
+		})
+	}
+
+	// Build query
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"filter": []map[string]interface{}{
+					{"term": map[string]interface{}{"gene_id": gene.GeneID}},
+					{"bool": map[string]interface{}{"should": rangeQueries}},
+				},
+			},
+		},
+		"_source": []string{"value"},
+		"sort":    []map[string]interface{}{{"locus.position": map[string]string{"order": "asc"}}},
+		"size":    10000,
+	}
+
+	// Execute search
+	resp, err := client.Search(ctx, f.ESIndex, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch gnomAD v3 variants by gene: %w", err)
+	}
+
+	// Convert to variant models
+	variants := make([]*model.Variant, 0)
+	for _, hit := range resp.Hits.Hits {
+		value, ok := hit.Source["value"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Parse document
+		jsonBytes, err := json.Marshal(value)
+		if err != nil {
+			continue
+		}
+		var doc GnomadV3VariantDocument
+		if err := json.Unmarshal(jsonBytes, &doc); err != nil {
+			continue
+		}
+
+		// Check if variant has data in subset
+		if doc.Genome == nil || doc.Genome.Freq == nil || doc.Genome.Freq[f.Subset] == nil || doc.Genome.Freq[f.Subset].ACRaw <= 0 {
+			continue
+		}
+
+		// Shape variant summary
+		variant := f.shapeVariantSummary(&doc, gene.GeneID)
+		if variant != nil {
+			variants = append(variants, variant)
+		}
+	}
+
+	return variants, nil
 }
 
 func (f *GnomadV3VariantFetcher) FetchVariantsByRegion(ctx context.Context, client *elastic.Client, chrom string, start, stop int) ([]*model.Variant, error) {
-	return nil, fmt.Errorf("gnomAD v3 region variant fetching not yet implemented")
+	// Build the query to find variants in the region
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"filter": []map[string]interface{}{
+					{
+						"term": map[string]interface{}{
+							"locus.contig": "chr" + chrom,
+						},
+					},
+					{
+						"range": map[string]interface{}{
+							"locus.position": map[string]interface{}{
+								"gte": start,
+								"lte": stop,
+							},
+						},
+					},
+				},
+			},
+		},
+		"_source": []string{"value"},
+		"size":    10000, // Limit results
+		"sort": []interface{}{
+			map[string]interface{}{
+				"locus.position": map[string]interface{}{
+					"order": "asc",
+				},
+			},
+		},
+	}
+
+	// Execute search
+	resp, err := client.Search(ctx, f.ESIndex, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch gnomAD v3 variants by region: %w", err)
+	}
+
+	// Convert to variant models
+	variants := make([]*model.Variant, 0)
+	for _, hit := range resp.Hits.Hits {
+		value, ok := hit.Source["value"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Parse document
+		jsonBytes, err := json.Marshal(value)
+		if err != nil {
+			continue
+		}
+		var doc GnomadV3VariantDocument
+		if err := json.Unmarshal(jsonBytes, &doc); err != nil {
+			continue
+		}
+		
+		if doc.Chrom == "" && doc.Locus.Contig != "" {
+			doc.Chrom, doc.Pos, doc.Ref, doc.Alt = ExtractVariantInfo(map[string]interface{}{
+				"contig":   doc.Locus.Contig,
+				"position": float64(doc.Locus.Position),
+			}, []interface{}{doc.Alleles[0], doc.Alleles[1]})
+		}
+
+		// Check if variant has data in subset
+		if doc.Genome == nil || doc.Genome.Freq == nil || doc.Genome.Freq[f.Subset] == nil || doc.Genome.Freq[f.Subset].ACRaw <= 0 {
+			continue
+		}
+
+		// Shape variant summary
+		variant := f.shapeVariantSummary(&doc, "")
+		if variant != nil {
+			variants = append(variants, variant)
+		}
+	}
+
+	return variants, nil
 }
 
 func (f *GnomadV3VariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.Variant, error) {
-	return nil, fmt.Errorf("gnomAD v3 transcript variant fetching not yet implemented")
+	// Build the query to find variants for this transcript
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"filter": []map[string]interface{}{
+					{
+						"term": map[string]interface{}{
+							"transcript_id": transcriptID,
+						},
+					},
+				},
+			},
+		},
+		"_source": []string{"value"},
+		"size":    10000,
+		"sort": []interface{}{
+			map[string]interface{}{
+				"locus.position": map[string]interface{}{
+					"order": "asc",
+				},
+			},
+		},
+	}
+
+	// Execute search
+	resp, err := client.Search(ctx, f.ESIndex, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch gnomAD v3 variants by transcript: %w", err)
+	}
+
+	// Convert to variant models
+	variants := make([]*model.Variant, 0)
+	for _, hit := range resp.Hits.Hits {
+		value, ok := hit.Source["value"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Parse document
+		jsonBytes, err := json.Marshal(value)
+		if err != nil {
+			continue
+		}
+		var doc GnomadV3VariantDocument
+		if err := json.Unmarshal(jsonBytes, &doc); err != nil {
+			continue
+		}
+
+		// Re-extract locus info
+		if doc.Chrom == "" && doc.Locus.Contig != "" {
+			doc.Chrom, doc.Pos, doc.Ref, doc.Alt = ExtractVariantInfo(map[string]interface{}{
+				"contig":   doc.Locus.Contig,
+				"position": float64(doc.Locus.Position),
+			}, []interface{}{doc.Alleles[0], doc.Alleles[1]})
+		}
+		
+		// Check if variant has data in subset
+		if doc.Genome == nil || doc.Genome.Freq == nil || doc.Genome.Freq[f.Subset] == nil || doc.Genome.Freq[f.Subset].ACRaw <= 0 {
+			continue
+		}
+
+		// For transcript variants, we need to find the specific transcript consequence
+		// and use that gene_id for context
+		var geneID string
+		if doc.TranscriptConsequences != nil {
+			for _, tc := range doc.TranscriptConsequences {
+				if tid, ok := tc["transcript_id"].(string); ok && tid == transcriptID {
+					if gid, ok := tc["gene_id"].(string); ok {
+						geneID = gid
+						break
+					}
+				}
+			}
+		}
+		
+		// Shape variant summary
+		variant := f.shapeVariantSummary(&doc, geneID)
+		if variant != nil {
+			variants = append(variants, variant)
+		}
+	}
+
+	return variants, nil
 }
