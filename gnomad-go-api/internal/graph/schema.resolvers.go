@@ -806,9 +806,30 @@ func (r *regionResolver) MitochondrialCoverage(ctx context.Context, obj *model.R
 
 // ShortTandemRepeats is the resolver for the short_tandem_repeats field.
 func (r *regionResolver) ShortTandemRepeats(ctx context.Context, obj *model.Region, dataset model.DatasetID) ([]*model.ShortTandemRepeat, error) {
-	// TODO: Implement STR fetching for region
-	// For now, return empty array to avoid panic
-	return []*model.ShortTandemRepeat{}, nil
+	// Get Elasticsearch client from context
+	esClient := elastic.FromContext(ctx)
+	if esClient == nil {
+		return nil, fmt.Errorf("elasticsearch client not found in context")
+	}
+
+	// Convert dataset enum to string
+	var datasetStr string
+	switch dataset {
+	case model.DatasetIDGnomadR3:
+		datasetStr = "gnomad_r3"
+	case model.DatasetIDGnomadR4:
+		datasetStr = "gnomad_r4"
+	default:
+		return nil, fmt.Errorf("short tandem repeats are not available for dataset: %v", dataset)
+	}
+
+	// Fetch short tandem repeats for this region
+	strs, err := queries.FetchShortTandemRepeatsByRegion(ctx, esClient, obj.Chrom, obj.Start, obj.Stop, datasetStr)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching short tandem repeats for region %s:%d-%d: %w", obj.Chrom, obj.Start, obj.Stop, err)
+	}
+
+	return strs, nil
 }
 
 // Gene is the resolver for the gene field.

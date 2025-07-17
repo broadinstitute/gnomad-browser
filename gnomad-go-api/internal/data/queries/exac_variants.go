@@ -305,7 +305,7 @@ func (f *ExacVariantFetcher) buildQualityMetrics(exomeData *ExacExomeData) *mode
 	for _, sqm := range qm.SiteQualityMetrics {
 		site = append(site, &model.VariantSiteQualityMetric{
 			Metric: sqm.Metric,
-			Value:  &sqm.Value,
+			Value:  sqm.Value,
 		})
 	}
 

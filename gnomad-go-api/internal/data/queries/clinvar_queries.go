@@ -312,9 +312,14 @@ func FetchClinVarVariantsByRegion(ctx context.Context, client *elastic.Client, c
 		return []*model.ClinVarVariant{}, fmt.Errorf("elasticsearch search failed: %w", err)
 	}
 
+	// Create region context for transcript consequence selection
+	context := FlagContext{
+		Type: "region",
+	}
+
 	results := make([]*model.ClinVarVariant, 0, len(response.Hits.Hits))
 	for _, hit := range response.Hits.Hits {
-		variant, err := convertHitToClinVarVariant(hit)
+		variant, err := convertHitToClinVarVariantWithContext(hit, &context)
 		if err != nil {
 			continue // Skip invalid variants
 		}

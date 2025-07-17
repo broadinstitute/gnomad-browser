@@ -121,10 +121,14 @@ func fetchVariantForCooccurrence(ctx context.Context, client *elastic.Client, va
 	// Use the variant dispatcher to fetch the variant
 	variant, err := FetchVariantByID(ctx, client, datasetID, normalizedID)
 	if err != nil {
-		if strings.Contains(err.Error(), "not found") {
+		if strings.Contains(err.Error(), "not found") || strings.Contains(err.Error(), "Variant not found") {
 			return nil, fmt.Errorf("variant co-occurrence is only available for variants found in gnomAD")
 		}
 		return nil, err
+	}
+
+	if variant == nil {
+		return nil, fmt.Errorf("variant co-occurrence is only available for variants found in gnomAD")
 	}
 
 	return variant, nil
@@ -184,13 +188,20 @@ func fetchRawVariantForCooccurrence(ctx context.Context, client *elastic.Client,
 
 // validateCooccurrenceAvailability validates that co-occurrence analysis should be available
 func validateCooccurrenceAvailability(variants []*model.VariantDetails) error {
+	// Ensure we have valid variants
+	for i, variant := range variants {
+		if variant == nil {
+			return fmt.Errorf("variant %d is nil", i)
+		}
+	}
+
 	// Check that variants are in the same gene
 	variantGenes := make([]map[string]bool, len(variants))
 	for i, variant := range variants {
 		genes := make(map[string]bool)
 		if variant.TranscriptConsequences != nil {
 			for _, csq := range variant.TranscriptConsequences {
-				if csq.GeneID != "" {
+				if csq != nil && csq.GeneID != "" {
 					genes[csq.GeneID] = true
 				}
 			}
@@ -226,9 +237,9 @@ func validateCooccurrenceAvailability(variants []*model.VariantDetails) error {
 		allHaveValidConsequence := true
 		for _, variant := range variants {
 			hasValidConsequenceInGene := false
-			if variant.TranscriptConsequences != nil {
+			if variant != nil && variant.TranscriptConsequences != nil {
 				for _, csq := range variant.TranscriptConsequences {
-					if csq.GeneID == gene && csq.MajorConsequence != nil {
+					if csq != nil && csq.GeneID == gene && csq.MajorConsequence != nil {
 						if codingAndUTRVepConsequences[string(*csq.MajorConsequence)] {
 							hasValidConsequenceInGene = true
 							break
@@ -501,8 +512,19 @@ func getRawCategoryCounts(variant *GnomadV2VariantDocument) (*VariantCategoryCou
 				if populationFrequencies[popID] == nil {
 					populationFrequencies[popID] = make(map[string]GnomadV2PopulationData)
 				}
-				popMap := populationFrequencies[popID].(map[string]GnomadV2PopulationData)
-				popMap[subPopID] = pop
+				// Safely cast to map, handling potential type conflicts
+				if popMap, ok := populationFrequencies[popID].(map[string]GnomadV2PopulationData); ok {
+					popMap[subPopID] = pop
+				} else {
+					// If there's a conflict, create a new map and migrate existing data
+					newMap := make(map[string]GnomadV2PopulationData)
+					if existingPop, ok := populationFrequencies[popID].(GnomadV2PopulationData); ok {
+						// This case shouldn't normally happen, but handle it gracefully
+						newMap["main"] = existingPop
+					}
+					newMap[subPopID] = pop
+					populationFrequencies[popID] = newMap
+				}
 			}
 		} else {
 			populationFrequencies[pop.ID] = pop
@@ -561,11 +583,10 @@ func getRawCategoryCounts(variant *GnomadV2VariantDocument) (*VariantCategoryCou
 					return xyPop.AN
 				}
 			}
-		} else {
-			// popFreq.an / 2
-			if pop, ok := popFreq.(GnomadV2PopulationData); ok {
-				return pop.AN / 2
-			}
+		}
+		// For autosomal chromosomes or as fallback
+		if pop, ok := popFreq.(GnomadV2PopulationData); ok {
+			return pop.AN / 2
 		}
 		return 0
 	}

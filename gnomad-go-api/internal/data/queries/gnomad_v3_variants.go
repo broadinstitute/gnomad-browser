@@ -319,16 +319,16 @@ func (f *GnomadV3VariantFetcher) shapeAndMergePopulations(basePopulations []Gnom
 }
 
 func (f *GnomadV3VariantFetcher) shapeSiteQualityMetrics(metrics []struct {
-	Metric string  `json:"metric"`
-	Value  float64 `json:"value"`
+	Metric string   `json:"metric"`
+	Value  *float64 `json:"value"`
 }) []*model.VariantSiteQualityMetric {
 	var result []*model.VariantSiteQualityMetric
 	for _, m := range metrics {
 		// Only include metrics with finite values
-		if m.Value != 0 {
+		if m.Value != nil && *m.Value != 0 {
 			result = append(result, &model.VariantSiteQualityMetric{
 				Metric: m.Metric,
-				Value:  &m.Value,
+				Value:  m.Value,
 			})
 		}
 	}

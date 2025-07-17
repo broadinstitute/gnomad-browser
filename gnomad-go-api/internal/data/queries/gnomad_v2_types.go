@@ -77,8 +77,8 @@ type GnomadV2ExomeData struct {
 			} `json:"alt_raw"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
-			Metric string  `json:"metric"`
-			Value  float64 `json:"value"`
+			Metric string   `json:"metric"`
+			Value  *float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	} `json:"quality_metrics"`
 
@@ -137,8 +137,8 @@ type GnomadV2GenomeData struct {
 			} `json:"alt_raw"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
-			Metric string  `json:"metric"`
-			Value  float64 `json:"value"`
+			Metric string   `json:"metric"`
+			Value  *float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	} `json:"quality_metrics"`
 

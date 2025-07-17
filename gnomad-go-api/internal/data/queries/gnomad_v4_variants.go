@@ -568,14 +568,20 @@ func (f *GnomadV4VariantFetcher) convertSubPopulationToMap(subPop *struct {
 
 // convertSiteQualityMetricsToMaps converts site quality metrics to generic map format
 func (f *GnomadV4VariantFetcher) convertSiteQualityMetricsToMaps(metrics []struct {
-	Metric string  `json:"metric"`
-	Value  float64 `json:"value"`
+	Metric string   `json:"metric"`
+	Value  *float64 `json:"value"`
 }) []map[string]interface{} {
 	result := make([]map[string]interface{}, len(metrics))
 	for i, m := range metrics {
+		var value interface{}
+		if m.Value != nil {
+			value = *m.Value
+		} else {
+			value = nil
+		}
 		result[i] = map[string]interface{}{
 			"metric": m.Metric,
-			"value":  m.Value,
+			"value":  value,
 		}
 	}
 	return result
