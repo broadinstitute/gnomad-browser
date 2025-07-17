@@ -55,6 +55,7 @@ const geneFactory = Factory.define<Gene>(({ params, associations }) => {
     gene_id,
     gene_version,
     symbol,
+    reference_genome,
     canonical_transcript_id,
     flags,
     mane_select_transcript,

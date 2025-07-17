@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GeneFlags does not render any flags with basic gene 1`] = `null`;
+
+exports[`GeneFlags renders CMRG flag if one of 3 relevant genes 1`] = `
+<p>
+  <span
+    className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
+  >
+    Warning
+  </span>
+   Variant calls in this gene may be missing or unreliable due to
+   
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
+    href="https://www.nature.com/articles/s41587-021-01158-1"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    false duplications in the GRCh38 reference
+  </a>
+  . We will be working on integrating data from the All of Us challenging medically relevant genes (
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
+    href="https://support.researchallofus.org/hc/en-us/articles/29475228181908-How-the-All-of-Us-Genomic-data-are-organized#01JQ7ES9YM8KS6PZBF03C8J399"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    CMRG
+  </a>
+  ) callset to remedy this issue in the future.
+</p>
+`;
+
+exports[`GeneFlags renders chip flag if present on gene 1`] = `
+<p>
+  <span
+    className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
+  >
+    Note
+  </span>
+   Analysis of allele balance and age data indicates that this gene shows evidence of
+   
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
+    href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8050831/"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    clonal hematopoiesis of indeterminate potential (CHIP)
+  </a>
+  . The potential presence of somatic variants should be taken into account when interpreting the penetrance, pathogenicity, and frequency of assumed germline variants. For more information, see pages 37-40 of
+   
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
+    href="https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-020-2308-7/MediaObjects/41586_2020_2308_MOESM1_ESM.pdf"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    supplementary information
+  </a>
+   
+  for 
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
+    href="https://doi.org/10.1038/s41586-020-2308-7"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <em>
+      The mutational constraint spectrum quantified from variation in 141,456 humans
+    </em>
+  </a>
+   
+  and 
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
+    href="https://pubmed.ncbi.nlm.nih.gov/28229513/"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    <em>
+      Pathogenic ASXL1 somatic variants in reference databases complicate germline variant interpretation for Bohring-Opitz Syndrome
+    </em>
+  </a>
+  .
+</p>
+`;
