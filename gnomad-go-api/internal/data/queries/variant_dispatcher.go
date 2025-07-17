@@ -46,58 +46,58 @@ func InitializeFetchers() {
 	})
 
 	// gnomAD v3 datasets
-	RegisterDatasetFetcher("gnomad_r3_genomes", &GnomadV3VariantFetcher{
+	RegisterDatasetFetcher("gnomad_r3", &GnomadV3VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{
-			DatasetID:       "gnomad_r3_genomes",
+			DatasetID:       "gnomad_r3",
 			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
 			ESIndex:         "gnomad_v3_variants",
 		},
 		Subset: "all",
 	})
 
-	RegisterDatasetFetcher("gnomad_r3_genomes_non_v2", &GnomadV3VariantFetcher{
+	RegisterDatasetFetcher("gnomad_r3_controls_and_biobanks", &GnomadV3VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{
-			DatasetID:       "gnomad_r3_genomes_non_v2",
+			DatasetID:       "gnomad_r3_controls_and_biobanks",
 			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
 			ESIndex:         "gnomad_v3_variants",
 		},
-		Subset: "non_v2",
+		Subset: "controls_and_biobanks",
 	})
 
-	RegisterDatasetFetcher("gnomad_r3_genomes_non_cancer", &GnomadV3VariantFetcher{
+	RegisterDatasetFetcher("gnomad_r3_non_cancer", &GnomadV3VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{
-			DatasetID:       "gnomad_r3_genomes_non_cancer",
+			DatasetID:       "gnomad_r3_non_cancer",
 			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
 			ESIndex:         "gnomad_v3_variants",
 		},
 		Subset: "non_cancer",
 	})
 
-	RegisterDatasetFetcher("gnomad_r3_genomes_non_neuro", &GnomadV3VariantFetcher{
+	RegisterDatasetFetcher("gnomad_r3_non_neuro", &GnomadV3VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{
-			DatasetID:       "gnomad_r3_genomes_non_neuro",
+			DatasetID:       "gnomad_r3_non_neuro",
 			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
 			ESIndex:         "gnomad_v3_variants",
 		},
 		Subset: "non_neuro",
 	})
 
-	RegisterDatasetFetcher("gnomad_r3_genomes_non_topmed", &GnomadV3VariantFetcher{
+	RegisterDatasetFetcher("gnomad_r3_non_topmed", &GnomadV3VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{
-			DatasetID:       "gnomad_r3_genomes_non_topmed",
+			DatasetID:       "gnomad_r3_non_topmed",
 			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
 			ESIndex:         "gnomad_v3_variants",
 		},
 		Subset: "non_topmed",
 	})
 
-	RegisterDatasetFetcher("gnomad_r3_genomes_controls_and_biobanks", &GnomadV3VariantFetcher{
+	RegisterDatasetFetcher("gnomad_r3_non_v2", &GnomadV3VariantFetcher{
 		BaseVariantFetcher: BaseVariantFetcher{
-			DatasetID:       "gnomad_r3_genomes_controls_and_biobanks",
+			DatasetID:       "gnomad_r3_non_v2",
 			ReferenceGenome: model.ReferenceGenomeIDGRCh38,
 			ESIndex:         "gnomad_v3_variants",
 		},
-		Subset: "controls_and_biobanks",
+		Subset: "non_v2",
 	})
 
 	// gnomAD v2 datasets
