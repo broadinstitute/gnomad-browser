@@ -17,54 +17,31 @@ make test-unit
 
 Integration tests require a running Elasticsearch instance with gnomAD data.
 
-Run all integration tests:
+#### Elasticsearch Configuration
+
+Set environment variables for Elasticsearch connection:
 ```bash
-# Using default Elasticsearch URL (http://localhost:9200)
-make test-integration
-
-# Using custom Elasticsearch URL
-ELASTICSEARCH_URL=http://your-es-host:9200 make test-integration
-
-# With authentication (default username is "elastic")
-ELASTICSEARCH_PASSWORD=your-password make test-integration
-
-# With custom username and password
-ELASTICSEARCH_URL=http://localhost:9200 \
-ELASTICSEARCH_USERNAME=your-username \
-ELASTICSEARCH_PASSWORD=your-password \
-make test-integration
+# Default: http://localhost:9200 with username "elastic"
+export ELASTICSEARCH_URL=http://your-es-host:9200
+export ELASTICSEARCH_USERNAME=your-username  # defaults to "elastic"
+export ELASTICSEARCH_PASSWORD=your-password
 ```
 
-Run specific gnomAD v4 integration tests:
+#### Running Tests
+
 ```bash
+# All integration tests
+make test-integration
+
+# Specific gnomAD v4 tests
 make test-integration-gnomad-v4
 
-# With authentication
-ELASTICSEARCH_PASSWORD=your-password make test-integration-gnomad-v4
-```
-
-Run snapshot-based integration tests:
-```bash
+# Snapshot-based tests
 make test-integration-snapshots
-```
 
-Run all tests including integration tests:
-```bash
+# All tests (unit + integration)
 make test-all
 ```
-
-### Test Variant IDs
-
-When running integration tests, you'll need to update the test variant IDs in `gnomad_v4_variants_integration_test.go` with actual variants from your Elasticsearch instance. Look for comments like `// Replace with real variant` and update with known variant IDs.
-
-Example test variants to use:
-- Variant ID: Replace `1-55516888-G-GA` with an actual variant ID
-- rsID: Replace `rs1234567` with an actual rsID  
-- VRS ID: Replace `ga4gh:VA.example` with an actual VRS ID
-
-### Running Tests in CI
-
-Integration tests are tagged with `// +build integration` and will be skipped by default in CI unless explicitly enabled.
 
 ## Development
 
@@ -109,21 +86,57 @@ make install-tools
 
 This Go API is a port of the TypeScript GraphQL API. The behavior should match the original TypeScript implementation exactly.
 
-#### Snapshot Testing
+#### Migration Test Framework
 
-Run snapshot tests to compare Go API responses with the original TypeScript API:
+The migration uses a comprehensive test framework located in `/graphql-api/migration_tests/`:
+
+**Reference Data Generation (TypeScript API)**
+```bash
+cd /path/to/gnomad-browser/graphql-api/migration_tests
+npm run generate-variables  # Create variable files from test-identifiers.json
+npm run generate-snapshots  # Query TypeScript API, save reference responses
+```
+
+**Go API Validation**
+
+The `test-snapshots.sh` script provides a convenient interface for running snapshot tests:
 
 ```bash
-# Set Elasticsearch credentials
-export ELASTICSEARCH_USERNAME=elastic
-export ELASTICSEARCH_PASSWORD=[REDACTED]
+# Run all snapshot tests
+./test-snapshots.sh
 
-# Run specific test
-./test-snapshots.sh [test-name]
+# Run specific test by name
+./test-snapshots.sh variant-page-v4
 
-# View test results in test_logs/ directory
-ls test_logs/
+# Run tests matching pattern with verbose output
+./test-snapshots.sh -v copy-number
+
+# Show log file location after test
+./test-snapshots.sh -l variant-page-v4
+
+# Get help with available options
+./test-snapshots.sh --help
 ```
+
+**Available test categories:**
+- `variant-page-*` (Variant page tests)
+- `gene-page-*` (Gene page tests) 
+- `copy-number-variant-*` (Copy number variant tests)
+- `structural-variant-*` (Structural variant tests)
+- `short-tandem-repeat-*` (STR tests)
+- `region-*` (Region tests)
+- `transcript-*` (Transcript tests)
+
+**View test results:**
+```bash
+ls test_logs/  # Failure logs with detailed comparisons
+```
+
+**Test Structure:**
+- **50+ test queries** covering all GraphQL endpoints
+- **Central test data** in `test-identifiers.json` (variants, genes, regions)
+- **Reference snapshots** from TypeScript API responses
+- **Behavioral validation** ensuring Go API matches TypeScript exactly
 
 #### Test Failure Categories
 
