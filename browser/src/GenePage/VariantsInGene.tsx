@@ -224,10 +224,6 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
       transcript_id
       transcript_version
       variant_id
-      faf95_joint {
-        popmax
-        popmax_population
-      }
       exome {
         ac
         ac_hemi
@@ -299,7 +295,7 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
         value
         flags
       }
-      lof_curation {
+      lof_curations {
         verdict
         flags
       }
