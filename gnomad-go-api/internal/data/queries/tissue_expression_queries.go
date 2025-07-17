@@ -38,7 +38,7 @@ func FetchGtexTissueExpression(ctx context.Context, esClient *elastic.Client, tr
 	}
 
 	if hit == nil {
-		return nil, nil // Transcript not found
+		return []*model.GtexTissue{}, nil // Transcript not found - return empty array
 	}
 
 	// Extract the source
@@ -53,7 +53,7 @@ func FetchGtexTissueExpression(ctx context.Context, esClient *elastic.Client, tr
 	// Get the gtex_tissue_expression field
 	tissueExpressionData, ok := value["gtex_tissue_expression"]
 	if !ok || tissueExpressionData == nil {
-		return nil, nil // No tissue expression data
+		return []*model.GtexTissue{}, nil // No tissue expression data - return empty array
 	}
 
 	// Handle different formats: map[string]interface{} or map[string]float64
@@ -102,7 +102,7 @@ func FetchGtexTissueExpression(ctx context.Context, esClient *elastic.Client, tr
 		}
 
 	default:
-		return nil, nil // Unsupported format
+		return []*model.GtexTissue{}, nil // Unsupported format - return empty array
 	}
 
 	// Filter out V2-specific tissues for GRCh38
