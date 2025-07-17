@@ -361,10 +361,14 @@ func (f *GnomadV2VariantFetcher) buildFAF95Data(fafData *GnomadV2FAFData) *model
 }
 
 func (f *GnomadV2VariantFetcher) buildPopulations(pops []GnomadV2PopulationData) []*model.PopulationAlleleFrequencies {
+	return f.buildPopulationsWithFiltering(pops, false)
+}
+
+func (f *GnomadV2VariantFetcher) buildPopulationsWithFiltering(pops []GnomadV2PopulationData, applyFilter bool) []*model.PopulationAlleleFrequencies {
 	populations := make([]*model.PopulationAlleleFrequencies, 0, len(pops))
 	for _, pop := range pops {
-		// Filter out sex and subpopulation data per TypeScript logic
-		if strings.Contains(pop.ID, "_") || pop.ID == "XX" || pop.ID == "XY" {
+		// Filter out sex and subpopulation data only for variant summaries, not for variant details
+		if applyFilter && (strings.Contains(pop.ID, "_") || pop.ID == "XX" || pop.ID == "XY") {
 			continue
 		}
 
@@ -382,6 +386,140 @@ func (f *GnomadV2VariantFetcher) buildPopulations(pops []GnomadV2PopulationData)
 	// Sort populations for consistent output
 	sortPopulations(populations)
 	return populations
+}
+
+func (f *GnomadV2VariantFetcher) buildExomeDataForSummary(freqData *GnomadV2FrequencyData, exomeData *GnomadV2ExomeData, subset string) *model.VariantDetailsExomeData {
+	if freqData == nil {
+		return nil
+	}
+
+	// Build filters (add AC0 if needed)
+	filters := make([]string, 0)
+
+	// Add original filters from the exome data
+	if exomeData.Filters != nil {
+		filters = append(filters, exomeData.Filters...)
+	}
+
+	// Add frequency-specific filters
+	if freqData.Filters != nil {
+		filters = append(filters, freqData.Filters...)
+	}
+
+	// Add AC0 filter if AC is 0 and not already present
+	if freqData.AC == 0 && !contains(filters, "AC0") {
+		filters = append(filters, "AC0")
+	}
+
+	// Build populations with filtering for variant summaries
+	populations := f.buildPopulationsWithFiltering(freqData.Populations, true)
+
+	// Calculate allele frequency
+	var af *float64
+	if freqData.AN > 0 {
+		afValue := float64(freqData.AC) / float64(freqData.AN)
+		af = &afValue
+	}
+
+	// Build quality metrics
+	var qualityMetrics *model.VariantQualityMetrics
+	if exomeData != nil {
+		qualityMetrics = f.buildQualityMetrics(&exomeData.QualityMetrics)
+	}
+
+	// Build age distribution
+	var ageDistribution *model.AgeDistribution
+	if exomeData != nil && exomeData.AgeDistribution[subset] != nil {
+		ageDistribution = f.buildAgeDistribution(exomeData.AgeDistribution[subset])
+	}
+
+	// Build FAF95 data
+	var faf95 *model.VariantFilteringAlleleFrequency
+	if exomeData != nil && exomeData.Faf95 != nil {
+		faf95 = f.buildFAF95Data(exomeData.Faf95)
+	}
+
+	return &model.VariantDetailsExomeData{
+		Ac:              freqData.AC,
+		An:              freqData.AN,
+		AcHemi:          freqData.HemizygoteCount,
+		AcHom:           freqData.HomozygoteCount,
+		HemizygoteCount: toIntPtr(freqData.HemizygoteCount),
+		HomozygoteCount: toIntPtr(freqData.HomozygoteCount),
+		Af:              af,
+		Populations:     populations,
+		QualityMetrics:  qualityMetrics,
+		AgeDistribution: ageDistribution,
+		Faf95:           faf95,
+		Filters:         uniqueStrings(filters),
+	}
+}
+
+func (f *GnomadV2VariantFetcher) buildGenomeDataForSummary(freqData *GnomadV2FrequencyData, genomeData *GnomadV2GenomeData, subset string) *model.VariantDetailsGenomeData {
+	if freqData == nil {
+		return nil
+	}
+
+	// Build filters (add AC0 if needed)
+	filters := make([]string, 0)
+
+	// Add original filters from the genome data
+	if genomeData.Filters != nil {
+		filters = append(filters, genomeData.Filters...)
+	}
+
+	// Add frequency-specific filters
+	if freqData.Filters != nil {
+		filters = append(filters, freqData.Filters...)
+	}
+
+	// Add AC0 filter if AC is 0 and not already present
+	if freqData.AC == 0 && !contains(filters, "AC0") {
+		filters = append(filters, "AC0")
+	}
+
+	// Build populations with filtering for variant summaries
+	populations := f.buildPopulationsWithFiltering(freqData.Populations, true)
+
+	// Calculate allele frequency
+	var af *float64
+	if freqData.AN > 0 {
+		afValue := float64(freqData.AC) / float64(freqData.AN)
+		af = &afValue
+	}
+
+	// Build quality metrics
+	var qualityMetrics *model.VariantQualityMetrics
+	if genomeData != nil {
+		qualityMetrics = f.buildQualityMetrics(&genomeData.QualityMetrics)
+	}
+
+	// Build age distribution
+	var ageDistribution *model.AgeDistribution
+	if genomeData != nil && genomeData.AgeDistribution[subset] != nil {
+		ageDistribution = f.buildAgeDistribution(genomeData.AgeDistribution[subset])
+	}
+
+	// Build FAF95 data
+	var faf95 *model.VariantFilteringAlleleFrequency
+	if genomeData != nil && genomeData.Faf95 != nil {
+		faf95 = f.buildFAF95Data(genomeData.Faf95)
+	}
+
+	return &model.VariantDetailsGenomeData{
+		Ac:              freqData.AC,
+		An:              freqData.AN,
+		AcHemi:          freqData.HemizygoteCount,
+		AcHom:           freqData.HomozygoteCount,
+		HemizygoteCount: toIntPtr(freqData.HemizygoteCount),
+		HomozygoteCount: toIntPtr(freqData.HomozygoteCount),
+		Af:              af,
+		Populations:     populations,
+		QualityMetrics:  qualityMetrics,
+		AgeDistribution: ageDistribution,
+		Faf95:           faf95,
+		Filters:         uniqueStrings(filters),
+	}
 }
 
 func (f *GnomadV2VariantFetcher) buildQualityMetrics(qm interface{}) *model.VariantQualityMetrics {
@@ -652,13 +790,13 @@ func (f *GnomadV2VariantFetcher) shapeVariantSummary(doc *GnomadV2VariantDocumen
 	// Build exome data if present
 	var exomeData *model.VariantDetailsExomeData
 	if doc.Exome != nil && doc.Exome.Freq[exomeSubset] != nil && doc.Exome.Freq[exomeSubset].ACRaw > 0 {
-		exomeData = f.buildExomeData(doc.Exome.Freq[exomeSubset], doc.Exome, exomeSubset)
+		exomeData = f.buildExomeDataForSummary(doc.Exome.Freq[exomeSubset], doc.Exome, exomeSubset)
 	}
 
 	// Build genome data if present
 	var genomeData *model.VariantDetailsGenomeData
 	if doc.Genome != nil && doc.Genome.Freq[genomeSubset] != nil && doc.Genome.Freq[genomeSubset].ACRaw > 0 {
-		genomeData = f.buildGenomeData(doc.Genome.Freq[genomeSubset], doc.Genome, genomeSubset)
+		genomeData = f.buildGenomeDataForSummary(doc.Genome.Freq[genomeSubset], doc.Genome, genomeSubset)
 	}
 
 	// Create the variant

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
@@ -848,19 +849,19 @@ func (f *GnomadV4VariantFetcher) shapeVariantSummary(doc *GnomadV4VariantDocumen
 	// Build exome data if present
 	var exomeData *model.VariantDetailsExomeData
 	if doc.Exome != nil && doc.Exome.Freq[exomeSubset] != nil && doc.Exome.Freq[exomeSubset].AC > 0 {
-		exomeData = f.shapeExomeData(doc.Exome, exomeSubset)
+		exomeData = f.shapeExomeDataForSummary(doc.Exome, exomeSubset)
 	}
 
 	// Build genome data if present
 	var genomeData *model.VariantDetailsGenomeData
 	if doc.Genome != nil && doc.Genome.Freq[genomeSubset] != nil && doc.Genome.Freq[genomeSubset].AC > 0 {
-		genomeData = f.shapeGenomeData(doc.Genome)
+		genomeData = f.shapeGenomeDataForSummary(doc.Genome)
 	}
 
 	// Build joint data if present
 	var jointData *model.VariantDetailsJointData
 	if doc.Joint != nil && doc.Joint.Freq[jointSubset] != nil && doc.Joint.Freq[jointSubset].AC > 0 {
-		jointData = f.shapeJointData(doc.Joint, jointSubset)
+		jointData = f.shapeJointDataForSummary(doc.Joint, jointSubset)
 	}
 
 	// Create the variant
@@ -1146,4 +1147,274 @@ func (f *GnomadV4VariantFetcher) FetchVariantsByTranscript(ctx context.Context, 
 	}
 
 	return variants, nil
+}
+// Variant summary-specific data shaping methods that apply population filtering
+
+func (f *GnomadV4VariantFetcher) shapeExomeDataForSummary(data *GnomadV4SequencingData, subset string) *model.VariantDetailsExomeData {
+	freqData := data.Freq[subset]
+	if freqData == nil {
+		return nil
+	}
+
+	shaped := &model.VariantDetailsExomeData{
+		Ac:      freqData.AC,
+		An:      freqData.AN,
+		AcHemi:  freqData.HemizygoteCount,
+		AcHom:   freqData.HomozygoteCount,
+		Filters: freqData.Filters,
+	}
+
+	// Add AC=0 filter if needed
+	shaped.Filters = AddAC0FilterIfNeeded(shaped.Filters, freqData.AC)
+
+	// Convert ancestry groups to generic format
+	basePopulations := f.convertAncestryGroupsToMaps(freqData.AncestryGroups)
+
+	// Prepare additional population sources (not used for exome)
+	additionalSources := make(map[string]interface{})
+
+	// Shape populations with filtering for variant summaries
+	shaped.Populations = ShapeAndMergePopulationsWithFiltering(basePopulations, additionalSources, "exome", true)
+
+	// Shape FAF95/FAF99 - transform from grpmax to popmax format
+	if data.FAF95 != nil {
+		shaped.Faf95 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.FAF95.Grpmax,
+			PopmaxPopulation: &data.FAF95.GrpmaxGenAnc,
+		}
+	}
+	if data.FAF99 != nil {
+		shaped.Faf99 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.FAF99.Grpmax,
+			PopmaxPopulation: &data.FAF99.GrpmaxGenAnc,
+		}
+	}
+
+	// Add quality metrics
+	if len(data.QualityMetrics.AlleleBalance.AltAdj.BinEdges) > 0 {
+		shaped.QualityMetrics = &model.VariantQualityMetrics{
+			AlleleBalance: &model.AlleleBalanceHistogram{
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.AlleleBalance.AltAdj.BinEdges,
+					data.QualityMetrics.AlleleBalance.AltAdj.BinFreq,
+					data.QualityMetrics.AlleleBalance.AltAdj.NSmaller,
+					data.QualityMetrics.AlleleBalance.AltAdj.NLarger,
+				),
+			},
+			GenotypeDepth: &model.GenotypeDepthHistogram{
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NLarger,
+				),
+			},
+			GenotypeQuality: &model.GenotypeQualityHistogram{
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NLarger,
+				),
+			},
+			SiteQualityMetrics: ShapeSiteQualityMetrics(f.convertSiteQualityMetricsToMaps(data.QualityMetrics.SiteQualityMetrics)),
+		}
+	}
+
+	// Add age distribution
+	if data.AgeDistribution != nil {
+		shaped.AgeDistribution = ShapeAgeDistribution(
+			data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq,
+			data.AgeDistribution.Het.NSmaller, data.AgeDistribution.Het.NLarger,
+			data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq,
+			data.AgeDistribution.Hom.NSmaller, data.AgeDistribution.Hom.NLarger,
+		)
+	}
+
+	return shaped
+}
+
+func (f *GnomadV4VariantFetcher) shapeGenomeDataForSummary(data *GnomadV4SequencingData) *model.VariantDetailsGenomeData {
+	freqData := data.Freq["all"]
+	if freqData == nil {
+		return nil
+	}
+
+	shaped := &model.VariantDetailsGenomeData{
+		Ac:      freqData.AC,
+		An:      freqData.AN,
+		AcHemi:  freqData.HemizygoteCount,
+		AcHom:   freqData.HomozygoteCount,
+		Filters: freqData.Filters,
+	}
+
+	// Add AC=0 filter if needed
+	shaped.Filters = AddAC0FilterIfNeeded(shaped.Filters, freqData.AC)
+
+	// Convert ancestry groups to generic format
+	basePopulations := f.convertAncestryGroupsToMaps(freqData.AncestryGroups)
+
+	// Prepare additional population sources (with filtering to exclude underscores)
+	additionalSources := make(map[string]interface{})
+	if data.Freq["all"] != nil {
+		if data.Freq["all"].HGDP != nil {
+			additionalSources["hgdp"] = f.convertSubPopulationToMap(data.Freq["all"].HGDP)
+		}
+		if data.Freq["all"].TGP != nil {
+			additionalSources["tgp"] = f.convertSubPopulationToMap(data.Freq["all"].TGP)
+		}
+	}
+
+	// Shape populations with filtering for variant summaries
+	shaped.Populations = ShapeAndMergePopulationsWithFiltering(basePopulations, additionalSources, "genome", true)
+
+	// Shape FAF95/FAF99 - transform from grpmax to popmax format
+	if data.FAF95 != nil {
+		shaped.Faf95 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.FAF95.Grpmax,
+			PopmaxPopulation: &data.FAF95.GrpmaxGenAnc,
+		}
+	}
+	if data.FAF99 != nil {
+		shaped.Faf99 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.FAF99.Grpmax,
+			PopmaxPopulation: &data.FAF99.GrpmaxGenAnc,
+		}
+	}
+
+	// Add quality metrics
+	if len(data.QualityMetrics.AlleleBalance.AltAdj.BinEdges) > 0 {
+		shaped.QualityMetrics = &model.VariantQualityMetrics{
+			AlleleBalance: &model.AlleleBalanceHistogram{
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.AlleleBalance.AltAdj.BinEdges,
+					data.QualityMetrics.AlleleBalance.AltAdj.BinFreq,
+					data.QualityMetrics.AlleleBalance.AltAdj.NSmaller,
+					data.QualityMetrics.AlleleBalance.AltAdj.NLarger,
+				),
+			},
+			GenotypeDepth: &model.GenotypeDepthHistogram{
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeDepth.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeDepth.AltAdj.NLarger,
+				),
+			},
+			GenotypeQuality: &model.GenotypeQualityHistogram{
+				All: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AllAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AllAdj.NLarger,
+				),
+				Alt: ShapeHistogramWithCounts(
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinEdges,
+					data.QualityMetrics.GenotypeQuality.AltAdj.BinFreq,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NSmaller,
+					data.QualityMetrics.GenotypeQuality.AltAdj.NLarger,
+				),
+			},
+			SiteQualityMetrics: ShapeSiteQualityMetrics(f.convertSiteQualityMetricsToMaps(data.QualityMetrics.SiteQualityMetrics)),
+		}
+	}
+
+	// Add age distribution
+	if data.AgeDistribution != nil {
+		shaped.AgeDistribution = ShapeAgeDistribution(
+			data.AgeDistribution.Het.BinEdges, data.AgeDistribution.Het.BinFreq,
+			data.AgeDistribution.Het.NSmaller, data.AgeDistribution.Het.NLarger,
+			data.AgeDistribution.Hom.BinEdges, data.AgeDistribution.Hom.BinFreq,
+			data.AgeDistribution.Hom.NSmaller, data.AgeDistribution.Hom.NLarger,
+		)
+	}
+
+	return shaped
+}
+
+func (f *GnomadV4VariantFetcher) shapeJointDataForSummary(data *GnomadV4JointData, subset string) *model.VariantDetailsJointData {
+	jointData := data.Freq[subset]
+	if jointData == nil {
+		return nil
+	}
+
+	shaped := &model.VariantDetailsJointData{
+		Ac:              jointData.AC,
+		An:              jointData.AN,
+		HemizygoteCount: &jointData.HemizygoteCount,
+		HomozygoteCount: &jointData.HomozygoteCount,
+		Filters:         []string{}, // Initialize as empty array
+	}
+
+	// Combine filters from frequency data and joint-level flags
+	if jointData.Filters != nil {
+		shaped.Filters = append(shaped.Filters, jointData.Filters...)
+	}
+	if data.Flags != nil {
+		shaped.Filters = append(shaped.Filters, data.Flags...)
+	}
+	
+	// Add AC=0 filter if needed
+	shaped.Filters = AddAC0FilterIfNeeded(shaped.Filters, jointData.AC)
+	
+	// Ensure filters is not nil
+	if shaped.Filters == nil {
+		shaped.Filters = []string{}
+	}
+
+	// Shape populations with filtering for variant summaries
+	shaped.Populations = make([]*model.PopulationAlleleFrequencies, 0)
+	for _, pop := range jointData.AncestryGroups {
+		// Apply filter: exclude populations with underscores, XX, XY
+		if strings.Contains(pop.ID, "_") || pop.ID == "XX" || pop.ID == "XY" {
+			continue
+		}
+		
+		shaped.Populations = append(shaped.Populations, &model.PopulationAlleleFrequencies{
+			ID:              pop.ID,
+			Ac:              pop.AC,
+			An:              pop.AN,
+			HomozygoteCount: pop.HomozygoteCount,
+			HemizygoteCount: &pop.HemizygoteCount,
+			AcHemi:          &pop.HemizygoteCount, // Set AcHemi to ensure it's always non-nil
+			AcHom:           pop.HomozygoteCount,   // Set AcHom to match HomozygoteCount
+		})
+	}
+
+	// Add FAF95 data if available
+	if data.Fafmax != nil {
+		shaped.Faf95 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.Fafmax.Faf95Max,
+			PopmaxPopulation: &data.Fafmax.Faf95MaxGenAnc,
+		}
+		shaped.Faf99 = &model.VariantFilteringAlleleFrequency{
+			Popmax:           &data.Fafmax.Faf99Max,
+			PopmaxPopulation: &data.Fafmax.Faf99MaxGenAnc,
+		}
+	}
+
+	// Add freq_comparison_stats if available
+	if data.FreqComparisonStats != nil {
+		shaped.FreqComparisonStats = shapeFreqComparisonStats(data.FreqComparisonStats)
+	}
+
+	return shaped
 }

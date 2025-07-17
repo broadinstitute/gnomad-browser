@@ -13,6 +13,11 @@ import (
 
 // ShapeAndMergePopulations shapes population data with optional prefix merging (for HGDP and 1KG)
 func ShapeAndMergePopulations(basePopulations []map[string]interface{}, additionalPopulationSources map[string]interface{}, sequenceType string) []*model.PopulationAlleleFrequencies {
+	return ShapeAndMergePopulationsWithFiltering(basePopulations, additionalPopulationSources, sequenceType, false)
+}
+
+// ShapeAndMergePopulationsWithFiltering shapes population data with optional filtering for variant summaries
+func ShapeAndMergePopulationsWithFiltering(basePopulations []map[string]interface{}, additionalPopulationSources map[string]interface{}, sequenceType string, applyFilter bool) []*model.PopulationAlleleFrequencies {
 	// Create map to track populations
 	popMap := make(map[string]*model.PopulationAlleleFrequencies)
 
@@ -20,6 +25,11 @@ func ShapeAndMergePopulations(basePopulations []map[string]interface{}, addition
 	for _, pop := range basePopulations {
 		popID := toString(pop["id"])
 		if popID == "" {
+			continue
+		}
+
+		// Apply filter for variant summaries: exclude populations with underscores, XX, XY
+		if applyFilter && (strings.Contains(popID, "_") || popID == "XX" || popID == "XY") {
 			continue
 		}
 
@@ -43,12 +53,12 @@ func ShapeAndMergePopulations(basePopulations []map[string]interface{}, addition
 	if sequenceType == "genome" && additionalPopulationSources != nil {
 		// Add HGDP populations with "hgdp:" prefix
 		if hgdp, ok := additionalPopulationSources["hgdp"].(map[string]interface{}); ok {
-			addPrefixedPopulations(hgdp, "hgdp:", popMap)
+			addPrefixedPopulationsWithFiltering(hgdp, "hgdp:", popMap, applyFilter)
 		}
 
 		// Add 1KG populations with "1kg:" prefix
 		if tgp, ok := additionalPopulationSources["tgp"].(map[string]interface{}); ok {
-			addPrefixedPopulations(tgp, "1kg:", popMap)
+			addPrefixedPopulationsWithFiltering(tgp, "1kg:", popMap, applyFilter)
 		}
 	}
 
@@ -67,6 +77,11 @@ func ShapeAndMergePopulations(basePopulations []map[string]interface{}, addition
 
 // addPrefixedPopulations adds populations with a prefix to the population map
 func addPrefixedPopulations(source map[string]interface{}, prefix string, popMap map[string]*model.PopulationAlleleFrequencies) {
+	addPrefixedPopulationsWithFiltering(source, prefix, popMap, false)
+}
+
+// addPrefixedPopulationsWithFiltering adds populations with a prefix to the population map, with optional filtering
+func addPrefixedPopulationsWithFiltering(source map[string]interface{}, prefix string, popMap map[string]*model.PopulationAlleleFrequencies, applyFilter bool) {
 	// Check if this source exists
 	if source == nil {
 		return
@@ -90,6 +105,12 @@ func addPrefixedPopulations(source map[string]interface{}, prefix string, popMap
 		}
 
 		prefixedID := prefix + popID
+		
+		// Apply filter for variant summaries: exclude populations with underscores, XX, XY
+		if applyFilter && (strings.Contains(popID, "_") || popID == "XX" || popID == "XY") {
+			continue
+		}
+
 		ac := toInt(pop["ac"])
 		an := toInt(pop["an"])
 		homCount := toInt(pop["homozygote_count"])
