@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"sort"
 	"strings"
 
 	"gnomad-browser/gnomad-go-api/internal/elastic"
@@ -71,6 +72,52 @@ func isGRCh38(datasetID string) bool {
 	return datasetID == "gnomad_r4" || datasetID == "gnomad_r3"
 }
 
+// extendRegions adds padding to regions (equivalent to TypeScript extendRegions function)
+func extendRegions(amount int, regions []CoverageRegion) []CoverageRegion {
+	paddedRegions := make([]CoverageRegion, len(regions))
+	for i, region := range regions {
+		paddedRegions[i] = CoverageRegion{
+			Start: region.Start - amount,
+			Stop:  region.Stop + amount,
+		}
+	}
+	return paddedRegions
+}
+
+// mergeOverlappingRegions merges overlapping regions (equivalent to TypeScript mergeOverlappingRegions function)
+func mergeOverlappingRegions(sortedRegions []CoverageRegion) []CoverageRegion {
+	if len(sortedRegions) == 0 {
+		return []CoverageRegion{}
+	}
+
+	mergedRegions := []CoverageRegion{sortedRegions[0]}
+	previousRegion := &mergedRegions[0]
+
+	for i := 1; i < len(sortedRegions); i++ {
+		nextRegion := sortedRegions[i]
+
+		if nextRegion.Start <= previousRegion.Stop+1 {
+			if nextRegion.Stop > previousRegion.Stop {
+				previousRegion.Stop = nextRegion.Stop
+			}
+		} else {
+			mergedRegions = append(mergedRegions, nextRegion)
+			previousRegion = &mergedRegions[len(mergedRegions)-1]
+		}
+	}
+
+	return mergedRegions
+}
+
+// totalRegionSize calculates the total size of all regions (equivalent to TypeScript totalRegionSize function)
+func totalRegionSize(regions []CoverageRegion) int {
+	total := 0
+	for _, region := range regions {
+		total += region.Stop - region.Start
+	}
+	return total
+}
+
 // FetchFeatureCoverage fetches coverage data for a specific feature (gene/transcript)
 func FetchFeatureCoverage(ctx context.Context, esClient *elastic.Client, featureID string, datasetID string, regions []CoverageRegion, chrom string) (*model.FeatureCoverage, error) {
 	datasetIndices, ok := coverageIndices[datasetID]
@@ -78,13 +125,28 @@ func FetchFeatureCoverage(ctx context.Context, esClient *elastic.Client, feature
 		return nil, fmt.Errorf("unknown dataset: %s", datasetID)
 	}
 
+	// Add padding to regions (like TypeScript extendRegions function)
+	paddedRegions := extendRegions(75, regions)
+	
+	// Sort regions by start position
+	sort.Slice(paddedRegions, func(i, j int) bool {
+		return paddedRegions[i].Start < paddedRegions[j].Start
+	})
+	
+	// Merge overlapping regions
+	mergedRegions := mergeOverlappingRegions(paddedRegions)
+	
+	// Calculate bucket size based on total merged region size (like TypeScript)
+	totalSize := totalRegionSize(mergedRegions)
+	bucketSize := int(math.Max(math.Floor(float64(totalSize)/500), 1))
+
 	var exomeCoverage []*model.CoverageBin
 	var genomeCoverage []*model.CoverageBin
 	var err error
 
 	// Fetch exome coverage if index exists
 	if exomeIndex := datasetIndices["exome"]; exomeIndex != "" {
-		exomeCoverage, err = fetchCoverageForRegions(ctx, esClient, exomeIndex, chrom, regions, isGRCh38(datasetID))
+		exomeCoverage, err = fetchCoverageForRegionsWithBucketSize(ctx, esClient, exomeIndex, chrom, mergedRegions, isGRCh38(datasetID), bucketSize)
 		if err != nil {
 			return nil, fmt.Errorf("error fetching exome coverage: %w", err)
 		}
@@ -92,7 +154,7 @@ func FetchFeatureCoverage(ctx context.Context, esClient *elastic.Client, feature
 
 	// Fetch genome coverage if index exists
 	if genomeIndex := datasetIndices["genome"]; genomeIndex != "" {
-		genomeCoverage, err = fetchCoverageForRegions(ctx, esClient, genomeIndex, chrom, regions, isGRCh38(datasetID))
+		genomeCoverage, err = fetchCoverageForRegionsWithBucketSize(ctx, esClient, genomeIndex, chrom, mergedRegions, isGRCh38(datasetID), bucketSize)
 		if err != nil {
 			return nil, fmt.Errorf("error fetching genome coverage: %w", err)
 		}
@@ -243,6 +305,29 @@ func FetchVariantCoverageForDataset(ctx context.Context, esClient *elastic.Clien
 		Exome:  exomeCoverage,
 		Genome: genomeCoverage,
 	}, nil
+}
+
+// fetchCoverageForRegionsWithBucketSize fetches coverage data for multiple genomic regions with specified bucket size
+func fetchCoverageForRegionsWithBucketSize(ctx context.Context, esClient *elastic.Client, indexName string, chrom string, regions []CoverageRegion, isGRCh38Dataset bool, bucketSize int) ([]*model.CoverageBin, error) {
+	if len(regions) == 0 {
+		return []*model.CoverageBin{}, nil
+	}
+
+	// For GRCh38, use chr prefix
+	chromName := chrom
+	if isGRCh38Dataset && !strings.HasPrefix(chrom, "chr") {
+		chromName = "chr" + chrom
+	}
+
+	// Build and execute query
+	query := buildCoverageQuery(chromName, regions, bucketSize)
+	response, err := esClient.Search(ctx, indexName, query)
+	if err != nil {
+		return nil, fmt.Errorf("error executing coverage search: %w", err)
+	}
+
+	// Parse aggregation results
+	return parseCoverageAggregation(response, bucketSize)
 }
 
 // fetchCoverageForRegions fetches coverage data for multiple genomic regions
@@ -421,20 +506,20 @@ func parseCoverageAggregation(response *elastic.SearchResponse, bucketSize int) 
 			continue
 		}
 
-		// Create coverage bin
+		// Create coverage bin with ceil operation for over_X values to match TypeScript
 		bin := &model.CoverageBin{
 			Pos:     pos,
 			Mean:    extractFloatValue(bucket, "mean"),
 			Median:  extractFloatValue(bucket, "median"),
-			Over1:   extractFloatValue(bucket, "over_1"),
-			Over5:   extractFloatValue(bucket, "over_5"),
-			Over10:  extractFloatValue(bucket, "over_10"),
-			Over15:  extractFloatValue(bucket, "over_15"),
-			Over20:  extractFloatValue(bucket, "over_20"),
-			Over25:  extractFloatValue(bucket, "over_25"),
-			Over30:  extractFloatValue(bucket, "over_30"),
-			Over50:  extractFloatValue(bucket, "over_50"),
-			Over100: extractFloatValue(bucket, "over_100"),
+			Over1:   extractFloatValueWithCeil(bucket, "over_1"),
+			Over5:   extractFloatValueWithCeil(bucket, "over_5"),
+			Over10:  extractFloatValueWithCeil(bucket, "over_10"),
+			Over15:  extractFloatValueWithCeil(bucket, "over_15"),
+			Over20:  extractFloatValueWithCeil(bucket, "over_20"),
+			Over25:  extractFloatValueWithCeil(bucket, "over_25"),
+			Over30:  extractFloatValueWithCeil(bucket, "over_30"),
+			Over50:  extractFloatValueWithCeil(bucket, "over_50"),
+			Over100: extractFloatValueWithCeil(bucket, "over_100"),
 		}
 
 		coverageBins = append(coverageBins, bin)
@@ -447,26 +532,49 @@ func parseCoverageAggregation(response *elastic.SearchResponse, bucketSize int) 
 func extractFloatValue(bucket map[string]interface{}, field string) *float64 {
 	aggInterface, ok := bucket[field].(map[string]interface{})
 	if !ok {
-		return nil
+		// Return 0 instead of nil to match TypeScript behavior
+		zero := 0.0
+		return &zero
 	}
 
 	valueInterface, ok := aggInterface["value"]
 	if !ok {
-		return nil
+		// Return 0 instead of nil to match TypeScript behavior
+		zero := 0.0
+		return &zero
 	}
 
 	// Handle both float64 and nil values
 	switch v := valueInterface.(type) {
 	case float64:
 		if math.IsNaN(v) {
-			return nil
+			// Return 0 instead of nil to match TypeScript behavior
+			zero := 0.0
+			return &zero
 		}
 		return &v
 	case nil:
-		return nil
+		// Return 0 instead of nil to match TypeScript behavior
+		zero := 0.0
+		return &zero
 	default:
-		return nil
+		// Return 0 instead of nil to match TypeScript behavior
+		zero := 0.0
+		return &zero
 	}
+}
+
+// extractFloatValueWithCeil extracts and rounds a float value using ceiling operation to match TypeScript behavior
+func extractFloatValueWithCeil(bucket map[string]interface{}, field string) *float64 {
+	value := extractFloatValue(bucket, field)
+	if value == nil {
+		// This should never happen now, but keep for safety
+		zero := 0.0
+		return &zero
+	}
+	// Apply Math.ceil() equivalent: round up to 2 decimal places (multiply by 100, ceil, divide by 100)
+	rounded := math.Ceil(*value * 100) / 100
+	return &rounded
 }
 
 // FetchMitochondrialCoverage fetches mitochondrial coverage data
