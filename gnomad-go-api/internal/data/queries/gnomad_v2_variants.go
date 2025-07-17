@@ -432,8 +432,8 @@ func (f *GnomadV2VariantFetcher) buildQualityMetrics(qm interface{}) *model.Vari
 			} `json:"alt_raw"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
-			Metric string  `json:"metric"`
-			Value  float64 `json:"value"`
+			Metric string   `json:"metric"`
+			Value  *float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	}:
 		// Allele balance (alt only for v2)
@@ -492,10 +492,12 @@ func (f *GnomadV2VariantFetcher) buildQualityMetrics(qm interface{}) *model.Vari
 
 		// Site quality metrics
 		for _, sqm := range q.SiteQualityMetrics {
-			site = append(site, &model.VariantSiteQualityMetric{
-				Metric: sqm.Metric,
-				Value:  &sqm.Value,
-			})
+			if sqm.Value != nil {
+				site = append(site, &model.VariantSiteQualityMetric{
+					Metric: sqm.Metric,
+					Value:  sqm.Value,
+				})
+			}
 		}
 	}
 

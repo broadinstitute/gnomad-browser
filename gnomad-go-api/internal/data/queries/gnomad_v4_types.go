@@ -80,8 +80,8 @@ type GnomadV4SequencingData struct {
 			} `json:"alt_adj"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
-			Metric string  `json:"metric"`
-			Value  float64 `json:"value"`
+			Metric string   `json:"metric"`
+			Value  *float64 `json:"value"`
 		} `json:"site_quality_metrics"`
 	} `json:"quality_metrics"`
 
