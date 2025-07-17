@@ -34,6 +34,9 @@ type GnomadV2VariantDocument struct {
 type GnomadV2ExomeData struct {
 	// Subset-specific frequency data (main subsets: gnomad, non_neuro, non_cancer, controls_only)
 	Freq map[string]*GnomadV2FrequencyData `json:"freq"`
+	
+	// FAF95 data - at exome level, not subset level
+	Faf95 *GnomadV2FAFData `json:"faf95"`
 
 	// Quality metrics - v2 has only raw histograms
 	QualityMetrics struct {
@@ -41,26 +44,36 @@ type GnomadV2ExomeData struct {
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"allele_balance"`
 		GenotypeDepth struct {
 			AllRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"all_raw"`
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"genotype_depth"`
 		GenotypeQuality struct {
 			AllRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"all_raw"`
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
@@ -81,6 +94,9 @@ type GnomadV2ExomeData struct {
 type GnomadV2GenomeData struct {
 	// Subset-specific frequency data (gnomad subset converts to gnomad for non_cancer)
 	Freq map[string]*GnomadV2FrequencyData `json:"freq"`
+	
+	// FAF95 data - at genome level, not subset level
+	Faf95 *GnomadV2FAFData `json:"faf95"`
 
 	// Quality metrics - v2 has only raw histograms
 	QualityMetrics struct {
@@ -88,26 +104,36 @@ type GnomadV2GenomeData struct {
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"allele_balance"`
 		GenotypeDepth struct {
 			AllRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"all_raw"`
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"genotype_depth"`
 		GenotypeQuality struct {
 			AllRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"all_raw"`
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
@@ -161,4 +187,10 @@ type GnomadV2AgeDistribution struct {
 		NSmaller int       `json:"n_smaller"`
 		NLarger  int       `json:"n_larger"`
 	} `json:"hom"`
+}
+
+// GnomadV2FAFData represents FAF95 data structure for gnomAD v2
+type GnomadV2FAFData struct {
+	Popmax           float64 `json:"popmax"`
+	PopMaxPopulation string  `json:"popmax_population"`
 }

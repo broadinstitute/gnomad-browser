@@ -592,11 +592,24 @@ func (f *GnomadV4VariantFetcher) shapeJointData(data *GnomadV4JointData, subset 
 		An:              jointData.AN,
 		HemizygoteCount: &jointData.HemizygoteCount,
 		HomozygoteCount: &jointData.HomozygoteCount,
-		Filters:         jointData.Filters,
+		Filters:         []string{}, // Initialize as empty array
 	}
 
+	// Combine filters from frequency data and joint-level flags
+	if jointData.Filters != nil {
+		shaped.Filters = append(shaped.Filters, jointData.Filters...)
+	}
+	if data.Flags != nil {
+		shaped.Filters = append(shaped.Filters, data.Flags...)
+	}
+	
 	// Add AC=0 filter if needed
 	shaped.Filters = AddAC0FilterIfNeeded(shaped.Filters, jointData.AC)
+	
+	// Ensure filters is not nil
+	if shaped.Filters == nil {
+		shaped.Filters = []string{}
+	}
 
 	// Shape populations
 	shaped.Populations = make([]*model.PopulationAlleleFrequencies, len(jointData.AncestryGroups))
@@ -1027,5 +1040,104 @@ func (f *GnomadV4VariantFetcher) FetchVariantsByRegion(ctx context.Context, clie
 }
 
 func (f *GnomadV4VariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.Variant, error) {
-	return nil, fmt.Errorf("gnomAD v4 transcript variant fetching not yet implemented")
+	// Build the query to find variants for this transcript
+	// Use simple term query for transcript_id field (as in original TypeScript)
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"filter": []map[string]interface{}{
+					{
+						"term": map[string]interface{}{
+							"transcript_id": transcriptID,
+						},
+					},
+				},
+			},
+		},
+		"_source": []string{"value"},
+		"size":    10000, // Limit results
+		"sort": []interface{}{
+			map[string]interface{}{
+				"locus.position": map[string]interface{}{
+					"order": "asc",
+				},
+			},
+		},
+	}
+
+	// Execute search
+	resp, err := client.Search(ctx, f.ESIndex, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch gnomAD v4 variants by transcript: %w", err)
+	}
+
+	// Convert to variant models
+	variants := make([]*model.Variant, 0)
+	for _, hit := range resp.Hits.Hits {
+		value, ok := hit.Source["value"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Parse document
+		jsonBytes, err := json.Marshal(value)
+		if err != nil {
+			continue
+		}
+		var doc GnomadV4VariantDocument
+		if err := json.Unmarshal(jsonBytes, &doc); err != nil {
+			continue
+		}
+
+		// Re-extract variant locus info in case it's not present at the top-level
+		if doc.Chrom == "" && doc.Locus.Contig != "" {
+			// Convert []string to []interface{} for ExtractVariantInfo
+			alleles := make([]interface{}, len(doc.Alleles))
+			for i, allele := range doc.Alleles {
+				alleles[i] = allele
+			}
+			doc.Chrom, doc.Pos, doc.Ref, doc.Alt = ExtractVariantInfo(map[string]interface{}{
+				"contig":   doc.Locus.Contig,
+				"position": float64(doc.Locus.Position),
+			}, alleles)
+		}
+
+		// Check if variant has data in the appropriate subset
+		exomeSubset := f.Subset
+		genomeSubset := "all"
+
+		hasExomeData := doc.Exome != nil &&
+			doc.Exome.Freq[exomeSubset] != nil &&
+			doc.Exome.Freq[exomeSubset].ACRaw > 0
+
+		hasGenomeData := doc.Genome != nil &&
+			doc.Genome.Freq[genomeSubset] != nil &&
+			doc.Genome.Freq[genomeSubset].ACRaw > 0
+
+		if !hasExomeData && !hasGenomeData {
+			continue
+		}
+
+		// For transcript variants, we need to find the specific transcript consequence
+		// and use that gene_id for context
+		var geneID string
+		if doc.TranscriptConsequences != nil {
+			for _, tc := range doc.TranscriptConsequences {
+				if tid, ok := tc["transcript_id"].(string); ok && tid == transcriptID {
+					if gid, ok := tc["gene_id"].(string); ok {
+						geneID = gid
+						break
+					}
+				}
+			}
+		}
+
+		// Shape variant summary
+		variant := f.shapeVariantSummary(&doc, geneID)
+		if variant != nil {
+			variants = append(variants, variant)
+		}
+	}
+
+	return variants, nil
 }

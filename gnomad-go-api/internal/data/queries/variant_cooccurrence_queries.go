@@ -109,8 +109,8 @@ func FetchVariantCooccurrence(ctx context.Context, client *elastic.Client, varia
 		return result, nil
 	}
 
-	// If no pre-computed data, compute from individual variant data
-	return computeCooccurrenceFromVariants(variants, variantIDs)
+	// If no pre-computed data, compute from raw variant data using new approach
+	return computeCooccurrenceFromRawVariants(ctx, client, variantIDs, datasetID)
 }
 
 // fetchVariantForCooccurrence fetches a variant for co-occurrence analysis
@@ -128,6 +128,58 @@ func fetchVariantForCooccurrence(ctx context.Context, client *elastic.Client, va
 	}
 
 	return variant, nil
+}
+
+// fetchRawVariantForCooccurrence fetches raw variant data for cooccurrence analysis
+// This matches the TypeScript approach of accessing exomeFreq = variant.exome.freq.gnomad
+func fetchRawVariantForCooccurrence(ctx context.Context, client *elastic.Client, variantID string, datasetID string) (*GnomadV2VariantDocument, error) {
+	if datasetID != "gnomad_r2_1" {
+		return nil, fmt.Errorf("cooccurrence analysis only supports gnomad_r2_1")
+	}
+
+	normalizedID := NormalizeVariantID(variantID)
+	
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"filter": map[string]interface{}{
+					"term": map[string]interface{}{
+						"variant_id": normalizedID,
+					},
+				},
+			},
+		},
+		"_source": map[string]interface{}{
+			"includes": []string{"value"},
+		},
+		"size": 1,
+	}
+
+	response, err := client.Search(ctx, GnomadV2Index, query)
+	if err != nil {
+		return nil, fmt.Errorf("elasticsearch search failed: %w", err)
+	}
+
+	if len(response.Hits.Hits) == 0 {
+		return nil, fmt.Errorf("variant co-occurrence is only available for variants found in gnomAD")
+	}
+
+	hit := response.Hits.Hits[0]
+	value, ok := hit.Source["value"].(map[string]any)
+	if !ok {
+		return nil, fmt.Errorf("invalid document structure")
+	}
+
+	var variant GnomadV2VariantDocument
+	jsonBytes, err := json.Marshal(value)
+	if err != nil {
+		return nil, err
+	}
+	if err := json.Unmarshal(jsonBytes, &variant); err != nil {
+		return nil, err
+	}
+
+	return &variant, nil
 }
 
 // validateCooccurrenceAvailability validates that co-occurrence analysis should be available
@@ -264,7 +316,92 @@ func fetchPrecomputedCooccurrence(ctx context.Context, client *elastic.Client, v
 	return result, nil
 }
 
-// computeCooccurrenceFromVariants computes co-occurrence from individual variant data
+// computeCooccurrenceFromRawVariants computes co-occurrence from raw variant data
+// This matches the TypeScript implementation exactly
+func computeCooccurrenceFromRawVariants(ctx context.Context, client *elastic.Client, variantIDs []string, datasetID string) (*model.VariantCooccurrence, error) {
+	// Fetch raw variants matching TypeScript approach
+	rawVariants := make([]*GnomadV2VariantDocument, 2)
+	for i, variantID := range variantIDs {
+		variant, err := fetchRawVariantForCooccurrence(ctx, client, variantID, datasetID)
+		if err != nil {
+			return nil, err
+		}
+		rawVariants[i] = variant
+	}
+
+	// Get category counts for both variants using the new raw approach
+	variantCounts := make([]VariantCategoryCounts, 2)
+	for i, variant := range rawVariants {
+		counts, err := getRawCategoryCounts(variant)
+		if err != nil {
+			return nil, err
+		}
+		variantCounts[i] = *counts
+	}
+
+	// Compute genotype counts following TypeScript logic exactly
+	// genotype_counts are [AABB, AABb, AAbb, AaBB, AaBb, Aabb, aaBB, aaBb, aabb],
+	// where A/B are reference alleles and a/b are alternate alleles of variants.
+	genotypeCounts := []int{
+		min(variantCounts[0].NHomRef, variantCounts[1].NHomRef), // AABB
+		variantCounts[1].NHet,    // AABb
+		variantCounts[1].NHomAlt, // AAbb
+		variantCounts[0].NHet,    // AaBB
+		0,                        // AaBb
+		0,                        // Aabb
+		variantCounts[0].NHomAlt, // aaBB
+		0,                        // aaBb
+		0,                        // aabb
+	}
+
+	haplotypeCounts := estimateHaplotypeCounts(genotypeCounts)
+	pCompoundHet := getProbabilityCompoundHeterozygous(haplotypeCounts)
+
+	// Compute population-specific data following TypeScript zip logic
+	populations := make([]*model.VariantCooccurrenceInPopulation, 0)
+
+	// Ensure both variants have the same populations in the same order
+	if len(variantCounts[0].Populations) == len(variantCounts[1].Populations) {
+		for i := 0; i < len(variantCounts[0].Populations); i++ {
+			pop0 := variantCounts[0].Populations[i]
+			pop1 := variantCounts[1].Populations[i]
+
+			if pop0.ID == pop1.ID {
+				popGenotypeCounts := []int{
+					min(pop0.NHomRef, pop1.NHomRef), // AABB
+					pop1.NHet,                       // AABb
+					pop1.NHomAlt,                    // AAbb
+					pop0.NHet,                       // AaBB
+					0,                               // AaBb
+					0,                               // Aabb
+					pop0.NHomAlt,                    // aaBB
+					0,                               // aaBb
+					0,                               // aabb
+				}
+
+				popHaplotypeCounts := estimateHaplotypeCounts(popGenotypeCounts)
+				popPCompoundHet := getProbabilityCompoundHeterozygous(popHaplotypeCounts)
+
+				populations = append(populations, &model.VariantCooccurrenceInPopulation{
+					ID:                    pop0.ID,
+					GenotypeCounts:        popGenotypeCounts,
+					HaplotypeCounts:       popHaplotypeCounts,
+					PCompoundHeterozygous: popPCompoundHet,
+				})
+			}
+		}
+	}
+
+	return &model.VariantCooccurrence{
+		VariantIds:            variantIDs,
+		GenotypeCounts:        genotypeCounts,
+		HaplotypeCounts:       haplotypeCounts,
+		PCompoundHeterozygous: pCompoundHet,
+		Populations:           populations,
+	}, nil
+}
+
+// computeCooccurrenceFromVariants computes co-occurrence from individual variant data (legacy function)
 func computeCooccurrenceFromVariants(variants []*model.VariantDetails, variantIDs []string) (*model.VariantCooccurrence, error) {
 	// Get category counts for both variants
 	variantCounts := make([]VariantCategoryCounts, 2)
@@ -338,7 +475,143 @@ func computeCooccurrenceFromVariants(variants []*model.VariantDetails, variantID
 	}, nil
 }
 
-// getCategoryCounts extracts genotype category counts from a variant
+// getRawCategoryCounts extracts genotype category counts from raw variant document
+// This matches the TypeScript getCategoryCounts function exactly
+func getRawCategoryCounts(variant *GnomadV2VariantDocument) (*VariantCategoryCounts, error) {
+	if variant.Exome == nil {
+		return nil, fmt.Errorf("variant %s lacks exome data", variant.VariantID)
+	}
+
+	// TypeScript: const exomeFreq = variant.exome.freq.gnomad
+	exomeFreq := variant.Exome.Freq["gnomad"]
+	if exomeFreq == nil {
+		return nil, fmt.Errorf("variant %s lacks gnomad subset exome data", variant.VariantID)
+	}
+
+	// TypeScript: const populationFrequencies = exomeFreq.populations.reduce(...)
+	populationFrequencies := make(map[string]interface{})
+	for _, pop := range exomeFreq.Populations {
+		if strings.Contains(pop.ID, "_") {
+			// Handle populations with suffix like "nfe_XX", "nfe_XY"
+			parts := strings.Split(pop.ID, "_")
+			if len(parts) == 2 {
+				popID := parts[0]
+				subPopID := parts[1]
+				
+				if populationFrequencies[popID] == nil {
+					populationFrequencies[popID] = make(map[string]GnomadV2PopulationData)
+				}
+				popMap := populationFrequencies[popID].(map[string]GnomadV2PopulationData)
+				popMap[subPopID] = pop
+			}
+		} else {
+			populationFrequencies[pop.ID] = pop
+		}
+	}
+
+	// Calculate total individuals following TypeScript logic exactly
+	var nIndividuals int
+	if variant.Chrom == "X" {
+		// TypeScript: nIndividuals = populationFrequencies.XX.an / 2 + populationFrequencies.XY.an
+		if xxPop, ok := populationFrequencies["XX"].(GnomadV2PopulationData); ok {
+			nIndividuals += xxPop.AN / 2
+		}
+		if xyPop, ok := populationFrequencies["XY"].(GnomadV2PopulationData); ok {
+			nIndividuals += xyPop.AN
+		}
+	} else if variant.Chrom == "Y" {
+		// TypeScript: nIndividuals = populationFrequencies.XY.an
+		if xyPop, ok := populationFrequencies["XY"].(GnomadV2PopulationData); ok {
+			nIndividuals = xyPop.AN
+		}
+	} else {
+		// TypeScript: nIndividuals = exomeFreq.an / 2
+		nIndividuals = exomeFreq.AN / 2
+	}
+
+	// Calculate counts following TypeScript logic exactly
+	// TypeScript: nHomAlt: exomeFreq.homozygote_count
+	nHomAlt := exomeFreq.HomozygoteCount
+
+	// TypeScript: nHet: exomeFreq.ac - 2 * exomeFreq.homozygote_count
+	nHet := exomeFreq.AC - 2*exomeFreq.HomozygoteCount
+
+	// TypeScript: nHomRef: nIndividuals - exomeFreq.ac + exomeFreq.homozygote_count
+	nHomRef := nIndividuals - exomeFreq.AC + exomeFreq.HomozygoteCount
+
+	// TypeScript function for populations
+	getNumIndividualsInPopulation := func(popFreq interface{}) int {
+		if variant.Chrom == "X" {
+			// popFreq.XX.an / 2 + popFreq.XY.an
+			if popMap, ok := popFreq.(map[string]GnomadV2PopulationData); ok {
+				xxAn := 0
+				xyAn := 0
+				if xxPop, ok := popMap["XX"]; ok {
+					xxAn = xxPop.AN
+				}
+				if xyPop, ok := popMap["XY"]; ok {
+					xyAn = xyPop.AN
+				}
+				return xxAn/2 + xyAn
+			}
+		} else if variant.Chrom == "Y" {
+			// popFreq.XY.an
+			if popMap, ok := popFreq.(map[string]GnomadV2PopulationData); ok {
+				if xyPop, ok := popMap["XY"]; ok {
+					return xyPop.AN
+				}
+			}
+		} else {
+			// popFreq.an / 2
+			if pop, ok := popFreq.(GnomadV2PopulationData); ok {
+				return pop.AN / 2
+			}
+		}
+		return 0
+	}
+
+	// TypeScript: exomeFreq.populations.map(...).filter(...)
+	populationIds := make([]string, 0)
+	for _, pop := range exomeFreq.Populations {
+		if !strings.Contains(pop.ID, "_") && pop.ID != "XX" && pop.ID != "XY" {
+			populationIds = append(populationIds, pop.ID)
+		}
+	}
+
+	// Build population data following TypeScript logic exactly
+	populations := make([]PopulationCategoryCounts, 0)
+	for _, popID := range populationIds {
+		if popFreq, ok := populationFrequencies[popID]; ok {
+			popNIndividuals := getNumIndividualsInPopulation(popFreq)
+			
+			var popNHomAlt, popNHet, popAc int
+			if pop, ok := popFreq.(GnomadV2PopulationData); ok {
+				popNHomAlt = pop.HomozygoteCount
+				popAc = pop.AC
+				popNHet = pop.AC - 2*pop.HomozygoteCount
+			}
+
+			// TypeScript: nHomRef: nIndividualsInPop - popFreq.ac + popFreq.homozygote_count
+			popNHomRef := popNIndividuals - popAc + popNHomAlt
+
+			populations = append(populations, PopulationCategoryCounts{
+				ID:      popID,
+				NHomAlt: popNHomAlt,
+				NHet:    popNHet,
+				NHomRef: popNHomRef,
+			})
+		}
+	}
+
+	return &VariantCategoryCounts{
+		NHomAlt:     nHomAlt,
+		NHet:        nHet,
+		NHomRef:     nHomRef,
+		Populations: populations,
+	}, nil
+}
+
+// getCategoryCounts extracts genotype category counts from a variant (legacy function)
 func getCategoryCounts(variant *model.VariantDetails) (*VariantCategoryCounts, error) {
 	if variant.Exome == nil {
 		return nil, fmt.Errorf("variant %s lacks exome data", variant.VariantID)
@@ -346,39 +619,50 @@ func getCategoryCounts(variant *model.VariantDetails) (*VariantCategoryCounts, e
 
 	exome := variant.Exome
 
-	// Calculate total individuals
+	// Build population frequencies map similar to TypeScript reduce function
+	populationFrequencies := make(map[string]interface{})
+	if exome.Populations != nil {
+		for _, pop := range exome.Populations {
+			if strings.Contains(pop.ID, "_") {
+				// Handle populations with suffix like "nfe_XX", "nfe_XY"
+				parts := strings.Split(pop.ID, "_")
+				if len(parts) == 2 {
+					popID := parts[0]
+					subPopID := parts[1]
+					
+					if populationFrequencies[popID] == nil {
+						populationFrequencies[popID] = make(map[string]*model.PopulationAlleleFrequencies)
+					}
+					popMap := populationFrequencies[popID].(map[string]*model.PopulationAlleleFrequencies)
+					popMap[subPopID] = pop
+				}
+			} else {
+				populationFrequencies[pop.ID] = pop
+			}
+		}
+	}
+
+	// Calculate total individuals following TypeScript logic
 	var nIndividuals int
 	if variant.Chrom == "X" {
-		// For X chromosome, need XX and XY populations
-		xxAn := 0
-		xyAn := 0
-		if exome.Populations != nil {
-			for _, pop := range exome.Populations {
-				if pop.ID == "XX" {
-					xxAn = pop.An
-				}
-				if pop.ID == "XY" {
-					xyAn = pop.An
-				}
-			}
+		// nIndividuals = populationFrequencies.XX.an / 2 + populationFrequencies.XY.an
+		if xxPop, ok := populationFrequencies["XX"].(*model.PopulationAlleleFrequencies); ok {
+			nIndividuals += xxPop.An / 2
 		}
-		nIndividuals = xxAn/2 + xyAn
+		if xyPop, ok := populationFrequencies["XY"].(*model.PopulationAlleleFrequencies); ok {
+			nIndividuals += xyPop.An
+		}
 	} else if variant.Chrom == "Y" {
-		// For Y chromosome, only XY population
-		if exome.Populations != nil {
-			for _, pop := range exome.Populations {
-				if pop.ID == "XY" {
-					nIndividuals = pop.An
-					break
-				}
-			}
+		// nIndividuals = populationFrequencies.XY.an
+		if xyPop, ok := populationFrequencies["XY"].(*model.PopulationAlleleFrequencies); ok {
+			nIndividuals = xyPop.An
 		}
 	} else {
-		// Autosomal chromosomes
+		// Autosomal chromosomes: nIndividuals = exomeFreq.an / 2
 		nIndividuals = exome.An / 2
 	}
 
-	// Calculate counts
+	// Calculate counts following TypeScript logic
 	nHomAlt := 0
 	if exome.HomozygoteCount != nil {
 		nHomAlt = *exome.HomozygoteCount
@@ -386,52 +670,68 @@ func getCategoryCounts(variant *model.VariantDetails) (*VariantCategoryCounts, e
 
 	nHet := exome.Ac - 2*nHomAlt
 
-	nHomRef := nIndividuals - nHet - nHomAlt
+	// TypeScript: nHomRef: nIndividuals - exomeFreq.ac + exomeFreq.homozygote_count
+	nHomRef := nIndividuals - exome.Ac + nHomAlt
 
-	// Get population data
-	populations := make([]PopulationCategoryCounts, 0)
-	if exome.Populations != nil {
-		for _, pop := range exome.Populations {
-			// Skip sex chromosome populations and populations with underscores
-			if strings.Contains(pop.ID, "_") || pop.ID == "XX" || pop.ID == "XY" {
-				continue
-			}
-
-			var popNIndividuals int
-			if variant.Chrom == "X" {
-				// Find XX and XY for this population
+	// Function to get number of individuals in a population (matches TypeScript getNumIndividualsInPopulation)
+	getNumIndividualsInPopulation := func(popFreq interface{}) int {
+		if variant.Chrom == "X" {
+			// popFreq.XX.an / 2 + popFreq.XY.an
+			if popMap, ok := popFreq.(map[string]*model.PopulationAlleleFrequencies); ok {
 				xxAn := 0
 				xyAn := 0
-				for _, p := range exome.Populations {
-					if p.ID == pop.ID+"_XX" {
-						xxAn = p.An
-					}
-					if p.ID == pop.ID+"_XY" {
-						xyAn = p.An
-					}
+				if xxPop, ok := popMap["XX"]; ok {
+					xxAn = xxPop.An
 				}
-				popNIndividuals = xxAn/2 + xyAn
-			} else if variant.Chrom == "Y" {
-				// Find XY for this population
-				for _, p := range exome.Populations {
-					if p.ID == pop.ID+"_XY" {
-						popNIndividuals = p.An
-						break
-					}
+				if xyPop, ok := popMap["XY"]; ok {
+					xyAn = xyPop.An
 				}
-			} else {
-				// Autosomal
-				popNIndividuals = pop.An / 2
+				return xxAn/2 + xyAn
+			}
+		} else if variant.Chrom == "Y" {
+			// popFreq.XY.an
+			if popMap, ok := popFreq.(map[string]*model.PopulationAlleleFrequencies); ok {
+				if xyPop, ok := popMap["XY"]; ok {
+					return xyPop.An
+				}
+			}
+		} else {
+			// popFreq.an / 2
+			if pop, ok := popFreq.(*model.PopulationAlleleFrequencies); ok {
+				return pop.An / 2
+			}
+		}
+		return 0
+	}
+
+	// Get population IDs filtering like TypeScript: !(popId.includes('_') || popId === 'XX' || popId === 'XY')
+	populationIds := make([]string, 0)
+	if exome.Populations != nil {
+		for _, pop := range exome.Populations {
+			if !strings.Contains(pop.ID, "_") && pop.ID != "XX" && pop.ID != "XY" {
+				populationIds = append(populationIds, pop.ID)
+			}
+		}
+	}
+
+	// Build population data following TypeScript logic
+	populations := make([]PopulationCategoryCounts, 0)
+	for _, popID := range populationIds {
+		if popFreq, ok := populationFrequencies[popID]; ok {
+			popNIndividuals := getNumIndividualsInPopulation(popFreq)
+			
+			var popNHomAlt, popNHet, popAc int
+			if pop, ok := popFreq.(*model.PopulationAlleleFrequencies); ok {
+				popNHomAlt = pop.HomozygoteCount
+				popAc = pop.Ac
+				popNHet = pop.Ac - 2*pop.HomozygoteCount
 			}
 
-			popNHomAlt := pop.HomozygoteCount
-
-			popNHet := pop.Ac - 2*pop.HomozygoteCount
-
-			popNHomRef := popNIndividuals - popNHet - popNHomAlt
+			// TypeScript: nHomRef: nIndividualsInPop - popFreq.ac + popFreq.homozygote_count
+			popNHomRef := popNIndividuals - popAc + popNHomAlt
 
 			populations = append(populations, PopulationCategoryCounts{
-				ID:      pop.ID,
+				ID:      popID,
 				NHomAlt: popNHomAlt,
 				NHet:    popNHet,
 				NHomRef: popNHomRef,

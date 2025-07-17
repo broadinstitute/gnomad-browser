@@ -84,6 +84,8 @@ models:
         resolver: true
       mitochondrial_coverage:
         resolver: true
+      exac_constraint:
+        resolver: true
   GeneTranscript:
     fields:
       gtex_tissue_expression:

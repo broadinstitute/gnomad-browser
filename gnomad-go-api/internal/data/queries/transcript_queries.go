@@ -193,8 +193,10 @@ func convertTranscriptDocumentToModel(doc *TranscriptDocumentValue, referenceGen
 		}
 	}
 
+	// ExAC constraint is only available for GRCh37
+	// For GRCh38, we set it to nil and let the resolver handle the error
 	var exacConstraint *model.ExacConstraint
-	if doc.ExacConstraint != nil {
+	if referenceGenome == "GRCh37" && doc.ExacConstraint != nil {
 		exacConstraint = &model.ExacConstraint{
 			ExpSyn: doc.ExacConstraint.ExpSyn,
 			ExpMis: doc.ExacConstraint.ExpMis,
@@ -347,8 +349,9 @@ func convertTranscriptGeneDocumentToModel(doc *TranscriptGeneDocument, reference
 		}
 	}
 
+	// ExAC constraint is only available for GRCh37
 	var exacConstraint *model.ExacConstraint
-	if doc.ExacConstraint != nil {
+	if referenceGenome == "GRCh37" && doc.ExacConstraint != nil {
 		exacConstraint = &model.ExacConstraint{
 			ExpSyn: doc.ExacConstraint.ExpSyn,
 			ExpMis: doc.ExacConstraint.ExpMis,

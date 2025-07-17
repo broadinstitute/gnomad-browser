@@ -356,8 +356,15 @@ func FetchClinVarVariantsByTranscript(ctx context.Context, client *elastic.Clien
 	}
 
 	results := make([]*model.ClinVarVariant, 0, len(response.Hits.Hits))
+	
+	// Create transcript context for proper field extraction
+	context := FlagContext{
+		Type:         "transcript",
+		TranscriptID: transcriptID,
+	}
+	
 	for _, hit := range response.Hits.Hits {
-		variant, err := convertHitToClinVarVariant(hit)
+		variant, err := convertHitToClinVarVariantWithContext(hit, &context)
 		if err != nil {
 			continue // Skip invalid variants
 		}

@@ -56,11 +56,11 @@ type MitochondrialVariantDocument struct {
 	// Heteroplasmy distribution
 	HeteroplasmyDistribution *HistogramDocument `json:"heteroplasmy_distribution"`
 
-	// Prediction scores
-	MitotipScore                    float64 `json:"mitotip_score"`
-	MitotipTrnaPrediction           string  `json:"mitotip_trna_prediction"`
-	PONMLProbabilityOfPathogenicity float64 `json:"pon_ml_probability_of_pathogenicity"`
-	PONMtTrnaPrediction             string  `json:"pon_mt_trna_prediction"`
+	// Prediction scores (optional - only present when meaningful)
+	MitotipScore                    *float64 `json:"mitotip_score,omitempty"`
+	MitotipTrnaPrediction           *string  `json:"mitotip_trna_prediction,omitempty"`
+	PONMLProbabilityOfPathogenicity *float64 `json:"pon_ml_probability_of_pathogenicity,omitempty"`
+	PONMtTrnaPrediction             *string  `json:"pon_mt_trna_prediction,omitempty"`
 
 	// Annotations
 	TranscriptConsequences []map[string]interface{} `json:"transcript_consequences"`
@@ -367,18 +367,19 @@ func convertMitochondrialVariantToModel(doc *MitochondrialVariantDocument) *mode
 		Flags:                           doc.Flags,
 	}
 	
-	// Only set prediction scores if they have meaningful values
-	if doc.MitotipScore > 0 {
-		variant.MitotipScore = &doc.MitotipScore
+	// Only set prediction scores if they exist in source data and have meaningful values
+	// Using pointer fields ensures we only include them when present in source JSON
+	if doc.MitotipScore != nil {
+		variant.MitotipScore = doc.MitotipScore
 	}
-	if doc.MitotipTrnaPrediction != "" {
-		variant.MitotipTrnaPrediction = &doc.MitotipTrnaPrediction
+	if doc.MitotipTrnaPrediction != nil && *doc.MitotipTrnaPrediction != "" {
+		variant.MitotipTrnaPrediction = doc.MitotipTrnaPrediction
 	}
-	if doc.PONMLProbabilityOfPathogenicity > 0 {
-		variant.PonMlProbabilityOfPathogenicity = &doc.PONMLProbabilityOfPathogenicity
+	if doc.PONMLProbabilityOfPathogenicity != nil {
+		variant.PonMlProbabilityOfPathogenicity = doc.PONMLProbabilityOfPathogenicity
 	}
-	if doc.PONMtTrnaPrediction != "" {
-		variant.PonMtTrnaPrediction = &doc.PONMtTrnaPrediction
+	if doc.PONMtTrnaPrediction != nil && *doc.PONMtTrnaPrediction != "" {
+		variant.PonMtTrnaPrediction = doc.PONMtTrnaPrediction
 	}
 
 	// Handle optional RSID

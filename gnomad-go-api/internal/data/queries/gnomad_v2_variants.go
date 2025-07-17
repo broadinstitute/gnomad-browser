@@ -164,12 +164,25 @@ func (f *GnomadV2VariantFetcher) shapeVariantData(ctx context.Context, client *e
 		result.Genome = f.buildGenomeData(variant.Genome.Freq[genomeSubset], variant.Genome, genomeSubset)
 	}
 
-	// Add transcript consequences
-	result.TranscriptConsequences = f.buildTranscriptConsequences(variant.TranscriptConsequences)
+	// Add transcript consequences using the shared helper
+	result.TranscriptConsequences = ShapeTranscriptConsequences(
+		variant.TranscriptConsequences,
+		TranscriptConsequenceOptions{IncludeENSEMBLOnly: false}, // ExAC/v2 includes RefSeq
+	)
+
+	// Fetch LoF curation results
+	lofCurations, err := fetchLofCurationResultsByVariant(ctx, client, variant.VariantID)
+	if err != nil {
+		// Log the error but don't fail the request
+		fmt.Printf("could not fetch lof curation results for %s: %v\n", variant.VariantID, err)
+		result.LofCurations = []*model.VariantLofCuration{}
+	} else {
+		result.LofCurations = lofCurations
+	}
 
 	// Coverage - fetch actual coverage data
 	// Use the original contig with chr prefix for coverage queries
-	coverage, err := FetchVariantCoverage(ctx, client, variant.Locus.Contig, variant.Pos)
+	coverage, err := FetchVariantCoverageForDataset(ctx, client, variant.Locus.Contig, variant.Pos, "gnomad_r2_1")
 	if err != nil {
 		// Log error but don't fail - return empty coverage instead
 		coverage = &model.VariantCoverageDetails{
@@ -237,6 +250,12 @@ func (f *GnomadV2VariantFetcher) buildExomeData(freqData *GnomadV2FrequencyData,
 		ageDistribution = f.buildAgeDistribution(exomeData.AgeDistribution[subset])
 	}
 
+	// Build FAF95 data
+	var faf95 *model.VariantFilteringAlleleFrequency
+	if exomeData != nil && exomeData.Faf95 != nil {
+		faf95 = f.buildFAF95Data(exomeData.Faf95)
+	}
+
 	return &model.VariantDetailsExomeData{
 		Ac:              freqData.AC,
 		An:              freqData.AN,
@@ -248,6 +267,7 @@ func (f *GnomadV2VariantFetcher) buildExomeData(freqData *GnomadV2FrequencyData,
 		Populations:     populations,
 		QualityMetrics:  qualityMetrics,
 		AgeDistribution: ageDistribution,
+		Faf95:           faf95,
 		Filters:         uniqueStrings(filters),
 	}
 }
@@ -297,6 +317,12 @@ func (f *GnomadV2VariantFetcher) buildGenomeData(freqData *GnomadV2FrequencyData
 		ageDistribution = f.buildAgeDistribution(genomeData.AgeDistribution[subset])
 	}
 
+	// Build FAF95 data
+	var faf95 *model.VariantFilteringAlleleFrequency
+	if genomeData != nil && genomeData.Faf95 != nil {
+		faf95 = f.buildFAF95Data(genomeData.Faf95)
+	}
+
 	return &model.VariantDetailsGenomeData{
 		Ac:              freqData.AC,
 		An:              freqData.AN,
@@ -308,7 +334,29 @@ func (f *GnomadV2VariantFetcher) buildGenomeData(freqData *GnomadV2FrequencyData
 		Populations:     populations,
 		QualityMetrics:  qualityMetrics,
 		AgeDistribution: ageDistribution,
+		Faf95:           faf95,
 		Filters:         uniqueStrings(filters),
+	}
+}
+
+func (f *GnomadV2VariantFetcher) buildFAF95Data(fafData *GnomadV2FAFData) *model.VariantFilteringAlleleFrequency {
+	if fafData == nil {
+		return nil
+	}
+	
+	var popmax *float64
+	if fafData.Popmax > 0 {
+		popmax = &fafData.Popmax
+	}
+	
+	var popmaxPopulation *string
+	if fafData.PopMaxPopulation != "" {
+		popmaxPopulation = &fafData.PopMaxPopulation
+	}
+	
+	return &model.VariantFilteringAlleleFrequency{
+		Popmax:           popmax,
+		PopmaxPopulation: popmaxPopulation,
 	}
 }
 
@@ -351,26 +399,36 @@ func (f *GnomadV2VariantFetcher) buildQualityMetrics(qm interface{}) *model.Vari
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"allele_balance"`
 		GenotypeDepth struct {
 			AllRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"all_raw"`
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"genotype_depth"`
 		GenotypeQuality struct {
 			AllRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"all_raw"`
 			AltRaw struct {
 				BinEdges []float64 `json:"bin_edges"`
 				BinFreq  []float64 `json:"bin_freq"`
+				NSmaller int       `json:"n_smaller"`
+				NLarger  int       `json:"n_larger"`
 			} `json:"alt_raw"`
 		} `json:"genotype_quality"`
 		SiteQualityMetrics []struct {
@@ -381,10 +439,12 @@ func (f *GnomadV2VariantFetcher) buildQualityMetrics(qm interface{}) *model.Vari
 		// Allele balance (alt only for v2)
 		if len(q.AlleleBalance.AltRaw.BinEdges) > 0 {
 			ab = &model.AlleleBalanceHistogram{
-				Alt: &model.Histogram{
-					BinEdges: q.AlleleBalance.AltRaw.BinEdges,
-					BinFreq:  q.AlleleBalance.AltRaw.BinFreq,
-				},
+				Alt: ShapeHistogramWithCounts(
+					q.AlleleBalance.AltRaw.BinEdges,
+					q.AlleleBalance.AltRaw.BinFreq,
+					q.AlleleBalance.AltRaw.NSmaller,
+					q.AlleleBalance.AltRaw.NLarger,
+				),
 			}
 		}
 
@@ -392,16 +452,20 @@ func (f *GnomadV2VariantFetcher) buildQualityMetrics(qm interface{}) *model.Vari
 		if len(q.GenotypeDepth.AllRaw.BinEdges) > 0 || len(q.GenotypeDepth.AltRaw.BinEdges) > 0 {
 			gd = &model.GenotypeDepthHistogram{}
 			if len(q.GenotypeDepth.AllRaw.BinEdges) > 0 {
-				gd.All = &model.Histogram{
-					BinEdges: q.GenotypeDepth.AllRaw.BinEdges,
-					BinFreq:  q.GenotypeDepth.AllRaw.BinFreq,
-				}
+				gd.All = ShapeHistogramWithCounts(
+					q.GenotypeDepth.AllRaw.BinEdges,
+					q.GenotypeDepth.AllRaw.BinFreq,
+					q.GenotypeDepth.AllRaw.NSmaller,
+					q.GenotypeDepth.AllRaw.NLarger,
+				)
 			}
 			if len(q.GenotypeDepth.AltRaw.BinEdges) > 0 {
-				gd.Alt = &model.Histogram{
-					BinEdges: q.GenotypeDepth.AltRaw.BinEdges,
-					BinFreq:  q.GenotypeDepth.AltRaw.BinFreq,
-				}
+				gd.Alt = ShapeHistogramWithCounts(
+					q.GenotypeDepth.AltRaw.BinEdges,
+					q.GenotypeDepth.AltRaw.BinFreq,
+					q.GenotypeDepth.AltRaw.NSmaller,
+					q.GenotypeDepth.AltRaw.NLarger,
+				)
 			}
 		}
 
@@ -409,16 +473,20 @@ func (f *GnomadV2VariantFetcher) buildQualityMetrics(qm interface{}) *model.Vari
 		if len(q.GenotypeQuality.AllRaw.BinEdges) > 0 || len(q.GenotypeQuality.AltRaw.BinEdges) > 0 {
 			gq = &model.GenotypeQualityHistogram{}
 			if len(q.GenotypeQuality.AllRaw.BinEdges) > 0 {
-				gq.All = &model.Histogram{
-					BinEdges: q.GenotypeQuality.AllRaw.BinEdges,
-					BinFreq:  q.GenotypeQuality.AllRaw.BinFreq,
-				}
+				gq.All = ShapeHistogramWithCounts(
+					q.GenotypeQuality.AllRaw.BinEdges,
+					q.GenotypeQuality.AllRaw.BinFreq,
+					q.GenotypeQuality.AllRaw.NSmaller,
+					q.GenotypeQuality.AllRaw.NLarger,
+				)
 			}
 			if len(q.GenotypeQuality.AltRaw.BinEdges) > 0 {
-				gq.Alt = &model.Histogram{
-					BinEdges: q.GenotypeQuality.AltRaw.BinEdges,
-					BinFreq:  q.GenotypeQuality.AltRaw.BinFreq,
-				}
+				gq.Alt = ShapeHistogramWithCounts(
+					q.GenotypeQuality.AltRaw.BinEdges,
+					q.GenotypeQuality.AltRaw.BinFreq,
+					q.GenotypeQuality.AltRaw.NSmaller,
+					q.GenotypeQuality.AltRaw.NLarger,
+				)
 			}
 		}
 
@@ -450,8 +518,8 @@ func (f *GnomadV2VariantFetcher) buildAgeDistribution(ad *GnomadV2AgeDistributio
 		het = &model.Histogram{
 			BinEdges: ad.Het.BinEdges,
 			BinFreq:  intSliceToFloat64(ad.Het.BinFreq),
-			NSmaller: toIntPtr(ad.Het.NSmaller),
-			NLarger:  toIntPtr(ad.Het.NLarger),
+			NSmaller: toIntPtrAlways(ad.Het.NSmaller),
+			NLarger:  toIntPtrAlways(ad.Het.NLarger),
 		}
 	}
 
@@ -459,8 +527,8 @@ func (f *GnomadV2VariantFetcher) buildAgeDistribution(ad *GnomadV2AgeDistributio
 		hom = &model.Histogram{
 			BinEdges: ad.Hom.BinEdges,
 			BinFreq:  intSliceToFloat64(ad.Hom.BinFreq),
-			NSmaller: toIntPtr(ad.Hom.NSmaller),
-			NLarger:  toIntPtr(ad.Hom.NLarger),
+			NSmaller: toIntPtrAlways(ad.Hom.NSmaller),
+			NLarger:  toIntPtrAlways(ad.Hom.NLarger),
 		}
 	}
 
@@ -470,33 +538,6 @@ func (f *GnomadV2VariantFetcher) buildAgeDistribution(ad *GnomadV2AgeDistributio
 	}
 }
 
-func (f *GnomadV2VariantFetcher) buildTranscriptConsequences(consequences []map[string]interface{}) []*model.TranscriptConsequence {
-	if len(consequences) == 0 {
-		return nil
-	}
-
-	result := make([]*model.TranscriptConsequence, 0, len(consequences))
-	for _, cons := range consequences {
-		tc := &model.TranscriptConsequence{
-			GeneID:       toString(cons["gene_id"]),
-			TranscriptID: toString(cons["transcript_id"]),
-			Hgvsc:        toStringPtr(cons["hgvs_c"]),
-			Hgvsp:        toStringPtr(cons["hgvs_p"]),
-		}
-
-		// Handle consequence terms
-		if terms, ok := cons["consequence_terms"].([]interface{}); ok {
-			tc.ConsequenceTerms = make([]string, 0, len(terms))
-			for _, term := range terms {
-				tc.ConsequenceTerms = append(tc.ConsequenceTerms, toString(term))
-			}
-		}
-
-		result = append(result, tc)
-	}
-
-	return result
-}
 
 // Batch fetching methods.
 func (f *GnomadV2VariantFetcher) FetchVariantsByGene(ctx context.Context, client *elastic.Client, gene *model.Gene) ([]*model.Variant, error) {
@@ -693,8 +734,11 @@ func (f *GnomadV2VariantFetcher) shapeVariantSummary(doc *GnomadV2VariantDocumen
 		}
 	}
 
-	// Add full transcript consequences
-	variant.TranscriptConsequences = f.buildTranscriptConsequences(doc.TranscriptConsequences)
+	// Add full transcript consequences using the shared helper
+	variant.TranscriptConsequences = ShapeTranscriptConsequences(
+		doc.TranscriptConsequences,
+		TranscriptConsequenceOptions{IncludeENSEMBLOnly: false}, // ExAC/v2 includes RefSeq
+	)
 
 	return variant
 }
@@ -782,7 +826,110 @@ func (f *GnomadV2VariantFetcher) FetchVariantsByRegion(ctx context.Context, clie
 }
 
 func (f *GnomadV2VariantFetcher) FetchVariantsByTranscript(ctx context.Context, client *elastic.Client, transcriptID string) ([]*model.Variant, error) {
-	return nil, fmt.Errorf("gnomAD v2 transcript variant fetching not yet implemented")
+	// Build the query to find variants for this transcript
+	// Use simple term query for transcript_id field (as in original TypeScript)
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"bool": map[string]interface{}{
+				"filter": []map[string]interface{}{
+					{
+						"term": map[string]interface{}{
+							"transcript_id": transcriptID,
+						},
+					},
+				},
+			},
+		},
+		"_source": []string{"value"},
+		"size":    10000, // Limit results
+		"sort": []interface{}{
+			map[string]interface{}{
+				"locus.position": map[string]interface{}{
+					"order": "asc",
+				},
+			},
+		},
+	}
+
+	// Execute search
+	resp, err := client.Search(ctx, f.ESIndex, query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch gnomAD v2 variants by transcript: %w", err)
+	}
+
+	// Convert to variant models
+	variants := make([]*model.Variant, 0)
+	for _, hit := range resp.Hits.Hits {
+		value, ok := hit.Source["value"].(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		// Parse document
+		jsonBytes, err := json.Marshal(value)
+		if err != nil {
+			continue
+		}
+
+		var doc GnomadV2VariantDocument
+		if err := json.Unmarshal(jsonBytes, &doc); err != nil {
+			continue
+		}
+
+		// Re-extract variant locus info in case it's not present at the top-level
+		if doc.Chrom == "" && doc.Locus.Contig != "" {
+			// Convert []string to []interface{} for ExtractVariantInfo
+			alleles := make([]interface{}, len(doc.Alleles))
+			for i, allele := range doc.Alleles {
+				alleles[i] = allele
+			}
+			doc.Chrom, doc.Pos, doc.Ref, doc.Alt = ExtractVariantInfo(map[string]interface{}{
+				"contig":   doc.Locus.Contig,
+				"position": float64(doc.Locus.Position),
+			}, alleles)
+		}
+
+		// Check if variant has data in the appropriate subset
+		exomeSubset := f.Subset
+		genomeSubset := f.Subset
+		if f.Subset == "non_cancer" {
+			genomeSubset = "gnomad"
+		}
+
+		hasExomeData := doc.Exome != nil &&
+			doc.Exome.Freq[exomeSubset] != nil &&
+			doc.Exome.Freq[exomeSubset].ACRaw > 0
+
+		hasGenomeData := doc.Genome != nil &&
+			doc.Genome.Freq[genomeSubset] != nil &&
+			doc.Genome.Freq[genomeSubset].ACRaw > 0
+
+		if !hasExomeData && !hasGenomeData {
+			continue
+		}
+
+		// For transcript variants, we need to find the specific transcript consequence
+		// and use that gene_id for context
+		var geneID string
+		if doc.TranscriptConsequences != nil {
+			for _, tc := range doc.TranscriptConsequences {
+				if tid, ok := tc["transcript_id"].(string); ok && tid == transcriptID {
+					if gid, ok := tc["gene_id"].(string); ok {
+						geneID = gid
+						break
+					}
+				}
+			}
+		}
+
+		// Shape variant summary
+		variant := f.shapeVariantSummary(&doc, geneID)
+		if variant != nil {
+			variants = append(variants, variant)
+		}
+	}
+
+	return variants, nil
 }
 
 // Helper functions

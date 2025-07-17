@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"strings"
 
 	"gnomad-browser/gnomad-go-api/internal/elastic"
 	"gnomad-browser/gnomad-go-api/internal/graph/model"
@@ -24,6 +25,10 @@ func roundFloat64Ptr(value *float64) *float64 {
 var coverageIndices = map[string]map[string]string{
 	"gnomad_r4": {
 		"exome":  "gnomad_v4_exome_coverage",
+		"genome": "gnomad_v3_genome_coverage",
+	},
+	"gnomad_r3": {
+		"exome":  "", // gnomAD v3 has no exome coverage
 		"genome": "gnomad_v3_genome_coverage",
 	},
 	"gnomad_r2_1": {
@@ -61,6 +66,11 @@ type CoverageRegion struct {
 	Stop  int `json:"stop"`
 }
 
+// isGRCh38 returns true if the dataset uses GRCh38 reference genome
+func isGRCh38(datasetID string) bool {
+	return datasetID == "gnomad_r4" || datasetID == "gnomad_r3"
+}
+
 // FetchFeatureCoverage fetches coverage data for a specific feature (gene/transcript)
 func FetchFeatureCoverage(ctx context.Context, esClient *elastic.Client, featureID string, datasetID string, regions []CoverageRegion, chrom string) (*model.FeatureCoverage, error) {
 	datasetIndices, ok := coverageIndices[datasetID]
@@ -74,7 +84,7 @@ func FetchFeatureCoverage(ctx context.Context, esClient *elastic.Client, feature
 
 	// Fetch exome coverage if index exists
 	if exomeIndex := datasetIndices["exome"]; exomeIndex != "" {
-		exomeCoverage, err = fetchCoverageForRegions(ctx, esClient, exomeIndex, chrom, regions)
+		exomeCoverage, err = fetchCoverageForRegions(ctx, esClient, exomeIndex, chrom, regions, isGRCh38(datasetID))
 		if err != nil {
 			return nil, fmt.Errorf("error fetching exome coverage: %w", err)
 		}
@@ -82,7 +92,7 @@ func FetchFeatureCoverage(ctx context.Context, esClient *elastic.Client, feature
 
 	// Fetch genome coverage if index exists
 	if genomeIndex := datasetIndices["genome"]; genomeIndex != "" {
-		genomeCoverage, err = fetchCoverageForRegions(ctx, esClient, genomeIndex, chrom, regions)
+		genomeCoverage, err = fetchCoverageForRegions(ctx, esClient, genomeIndex, chrom, regions, isGRCh38(datasetID))
 		if err != nil {
 			return nil, fmt.Errorf("error fetching genome coverage: %w", err)
 		}
@@ -109,7 +119,8 @@ func FetchRegionCoverage(ctx context.Context, esClient *elastic.Client, chrom st
 		return nil, fmt.Errorf("unknown dataset: %s", datasetID)
 	}
 
-	regions := []CoverageRegion{{Start: start, Stop: stop}}
+	// For region queries, we add padding to match browser behavior
+	regions := []CoverageRegion{{Start: start - 75, Stop: stop + 75}}
 
 	var exomeCoverage []*model.CoverageBin
 	var genomeCoverage []*model.CoverageBin
@@ -117,7 +128,7 @@ func FetchRegionCoverage(ctx context.Context, esClient *elastic.Client, chrom st
 
 	// Fetch exome coverage if index exists
 	if exomeIndex := datasetIndices["exome"]; exomeIndex != "" {
-		exomeCoverage, err = fetchCoverageForRegions(ctx, esClient, exomeIndex, chrom, regions)
+		exomeCoverage, err = fetchCoverageForRegions(ctx, esClient, exomeIndex, chrom, regions, isGRCh38(datasetID))
 		if err != nil {
 			return nil, fmt.Errorf("error fetching exome coverage: %w", err)
 		}
@@ -125,7 +136,7 @@ func FetchRegionCoverage(ctx context.Context, esClient *elastic.Client, chrom st
 
 	// Fetch genome coverage if index exists
 	if genomeIndex := datasetIndices["genome"]; genomeIndex != "" {
-		genomeCoverage, err = fetchCoverageForRegions(ctx, esClient, genomeIndex, chrom, regions)
+		genomeCoverage, err = fetchCoverageForRegions(ctx, esClient, genomeIndex, chrom, regions, isGRCh38(datasetID))
 		if err != nil {
 			return nil, fmt.Errorf("error fetching genome coverage: %w", err)
 		}
@@ -146,11 +157,16 @@ func FetchRegionCoverage(ctx context.Context, esClient *elastic.Client, chrom st
 }
 
 // FetchVariantCoverage fetches coverage data for a specific variant position
+// This version is kept for backward compatibility and uses gnomad_r4 as default
 func FetchVariantCoverage(ctx context.Context, esClient *elastic.Client, chrom string, pos int) (*model.VariantCoverageDetails, error) {
-	// Use gnomad_r4 as default dataset for variant coverage
-	datasetIndices, ok := coverageIndices["gnomad_r4"]
+	return FetchVariantCoverageForDataset(ctx, esClient, chrom, pos, "gnomad_r4")
+}
+
+// FetchVariantCoverageForDataset fetches coverage data for a specific variant position and dataset
+func FetchVariantCoverageForDataset(ctx context.Context, esClient *elastic.Client, chrom string, pos int, dataset string) (*model.VariantCoverageDetails, error) {
+	datasetIndices, ok := coverageIndices[dataset]
 	if !ok {
-		return nil, fmt.Errorf("unknown dataset: gnomad_r4")
+		return nil, fmt.Errorf("unknown dataset: %s", dataset)
 	}
 
 	// Create region for single position
@@ -159,9 +175,16 @@ func FetchVariantCoverage(ctx context.Context, esClient *elastic.Client, chrom s
 	var exomeCoverage *model.VariantCoverage
 	var genomeCoverage *model.VariantCoverage
 
+	// For variant coverage, we need to use chr prefix for v4
+	chromName := chrom
+	if isGRCh38(dataset) && !strings.HasPrefix(chrom, "chr") {
+		chromName = "chr" + chrom
+	}
+
 	// Fetch exome coverage if index exists
 	if exomeIndex := datasetIndices["exome"]; exomeIndex != "" {
-		exomeBins, err := fetchCoverageForRegions(ctx, esClient, exomeIndex, chrom, regions)
+		// Pass isGRCh38 based on dataset
+		exomeBins, err := fetchCoverageForRegions(ctx, esClient, exomeIndex, chromName, regions, isGRCh38(dataset))
 		if err != nil {
 			return nil, fmt.Errorf("error fetching exome coverage: %w", err)
 		}
@@ -185,7 +208,8 @@ func FetchVariantCoverage(ctx context.Context, esClient *elastic.Client, chrom s
 
 	// Fetch genome coverage if index exists
 	if genomeIndex := datasetIndices["genome"]; genomeIndex != "" {
-		genomeBins, err := fetchCoverageForRegions(ctx, esClient, genomeIndex, chrom, regions)
+		// Pass isGRCh38 based on dataset
+		genomeBins, err := fetchCoverageForRegions(ctx, esClient, genomeIndex, chromName, regions, isGRCh38(dataset))
 		if err != nil {
 			return nil, fmt.Errorf("error fetching genome coverage: %w", err)
 		}
@@ -222,7 +246,7 @@ func FetchVariantCoverage(ctx context.Context, esClient *elastic.Client, chrom s
 }
 
 // fetchCoverageForRegions fetches coverage data for multiple genomic regions
-func fetchCoverageForRegions(ctx context.Context, esClient *elastic.Client, indexName string, chrom string, regions []CoverageRegion) ([]*model.CoverageBin, error) {
+func fetchCoverageForRegions(ctx context.Context, esClient *elastic.Client, indexName string, chrom string, regions []CoverageRegion, isGRCh38Dataset bool) ([]*model.CoverageBin, error) {
 	if len(regions) == 0 {
 		return []*model.CoverageBin{}, nil
 	}
@@ -233,10 +257,17 @@ func fetchCoverageForRegions(ctx context.Context, esClient *elastic.Client, inde
 		totalSize += region.Stop - region.Start + 1
 	}
 
-	bucketSize := calculateBucketSize(totalSize)
+	// Match TS implementation for bucket size
+	bucketSize := int(math.Max(math.Floor(float64(totalSize)/500), 1))
+
+	// For GRCh38, use chr prefix
+	chromName := chrom
+	if isGRCh38Dataset && !strings.HasPrefix(chrom, "chr") {
+		chromName = "chr" + chrom
+	}
 
 	// Build and execute query
-	query := buildCoverageQuery(chrom, regions, bucketSize)
+	query := buildCoverageQuery(chromName, regions, bucketSize)
 	response, err := esClient.Search(ctx, indexName, query)
 	if err != nil {
 		return nil, fmt.Errorf("error executing coverage search: %w", err)
@@ -246,15 +277,6 @@ func fetchCoverageForRegions(ctx context.Context, esClient *elastic.Client, inde
 	return parseCoverageAggregation(response, bucketSize)
 }
 
-// calculateBucketSize determines the appropriate bucket size for aggregation
-func calculateBucketSize(totalSize int) int {
-	if totalSize <= 100000 {
-		return 1 // 1bp resolution for small regions
-	} else if totalSize <= 1000000 {
-		return 10 // 10bp buckets for medium regions
-	}
-	return 100 // 100bp buckets for large regions
-}
 
 // buildCoverageQuery constructs the Elasticsearch query for coverage data
 func buildCoverageQuery(chrom string, regions []CoverageRegion, bucketSize int) map[string]interface{} {
