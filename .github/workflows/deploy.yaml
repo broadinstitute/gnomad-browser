@@ -5,6 +5,7 @@ on:
     branches:
       - ourdna-browser
       - ourdna-browser-dev
+      - testing-gene-id-in-variants
 
 permissions:
   id-token: write

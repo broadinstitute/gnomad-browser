@@ -652,11 +652,19 @@ const fetchVariantsAgeDistribution = async (esClient: any, _subset: Subset) => {
   logger.info(`genome age_distribution: ${JSON.stringify(genome_age_distribution)}`)
   logger.info(`exome age_distribution: ${JSON.stringify(exome_age_distribution)}`)
 
+  // Empty histogram record, when distr is not defined
+  const empty_hist_rec = {
+    bin_edges: [],
+    bin_freq: [],
+    n_larger: 0,
+    n_smaller: 0,
+  }
+  
   // TODO, update once age_distribution contains genome/exome records, 
   // ATM it is all combined, so we mockup those 2 records
   return {
-      exome: exome_age_distribution[0],
-      genome: genome_age_distribution[0],
+      exome: exome_age_distribution?[0] || empty_hist_rec,
+      genome: genome_age_distribution?[0] || empty_hist_rec,
   }
 }
 
