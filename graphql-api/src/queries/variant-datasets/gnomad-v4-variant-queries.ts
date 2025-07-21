@@ -309,14 +309,17 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
   const getConsequence = getConsequenceForContext(context)
 
   return (variant: any) => {
+
+    logger.info(`shapeVariantSummary: ${JSON.stringify(variant)}`)
+    
     const transcriptConsequence = getConsequence(variant) || {}
     const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext(context, variant)
 
     const exomeFilters = variant.exome?.filters || []
-    const genomeFilters = variant.genome.filters || []
+    const genomeFilters = variant.genome?.filters || []
     const jointFilters = variant.joint?.filter || []
 
-    const subsetGenomeFreq = variant.genome.freq.all || {}
+    const subsetGenomeFreq = variant.genome?.freq?.all || {}
     const subsetJointFreq = variant.joint?.freq[subset] || {}
 
     const hasExomeVariant = variant.exome?.freq?.[subset]?.ac || false 
@@ -426,6 +429,8 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
 
   const pageSize = isLargeGene ? 500 : 10000
 
+  logger.info(`fetchVariantsByGene called for gene: ${gene.gene_id}, subset: ${subset}`)
+
   try {
     const filteredRegions = gene.exons.filter((exon: any) => exon.feature_type === 'CDS')
     const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
@@ -468,7 +473,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
       .map((hit: any) => hit._source.value)
       .filter(
         (variant: any) =>
-          (variant.genome.freq.all && variant.genome.freq.all.ac > 0) ||
+          (variant.genome?.freq.all && variant.genome?.freq.all.ac > 0) ||
           variant.exome?.freq?.[subset]?.ac > 0
       )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
@@ -652,11 +657,19 @@ const fetchVariantsAgeDistribution = async (esClient: any, _subset: Subset) => {
   logger.info(`genome age_distribution: ${JSON.stringify(genome_age_distribution)}`)
   logger.info(`exome age_distribution: ${JSON.stringify(exome_age_distribution)}`)
 
+  // Empty histogram record, when distr is not defined
+  const empty_hist_rec = {
+    bin_edges: [],
+    bin_freq: [],
+    n_larger: 0,
+    n_smaller: 0,
+  }
+  
   // TODO, update once age_distribution contains genome/exome records, 
   // ATM it is all combined, so we mockup those 2 records
   return {
-      exome: exome_age_distribution[0],
-      genome: genome_age_distribution[0],
+      exome: (exome_age_distribution && exome_age_distribution.length > 0 && exome_age_distribution[0] ? exome_age_distribution[0]: empty_hist_rec),
+      genome: (genome_age_distribution && genome_age_distribution.length > 0 && genome_age_distribution[0] ? exome_age_distribution[0]: empty_hist_rec),
   }
 }
 
