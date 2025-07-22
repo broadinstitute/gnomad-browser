@@ -78,7 +78,8 @@ type TranscriptConsequence {
   refseq_id: String
   refseq_version: String
   sift_prediction: String
-  transcript_id: String!
+  # TODO transcript_id back to non-nullable, once data are fixed
+  transcript_id: String
   transcript_version: String
 
   # Deprecated - replaced by is_canonical

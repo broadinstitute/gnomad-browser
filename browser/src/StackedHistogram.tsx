@@ -91,6 +91,10 @@ const StackedHistogram = ({
   const bandWidth = xBandScale.bandwidth()
 
   const renderStackedBar = (binValues: any, scale: any, { x, barWidth, ...segmentProps }: any) => {
+    // if there are no values for this bin, return nothing
+    if (!binValues || binValues.length === 0) {
+      return <></>
+    }
     const barY = scale(sum(binValues))
     let offset = 0
 

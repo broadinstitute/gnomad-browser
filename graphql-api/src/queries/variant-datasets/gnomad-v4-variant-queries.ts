@@ -94,7 +94,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   
   logger.info(`Variant found ${JSON.stringify(variant)}`)
 
-  const subsetGenomeFreq = variant.genome.freq.all || {}
+  const subsetGenomeFreq = variant.genome?.freq?.all || {}
   const subsetJointFreq = variant.joint?.freq[subset] || {}
 
   const hasExomeVariant = variant.exome?.freq?.[subset]?.ac || false
@@ -106,13 +106,13 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   }
 
   const exomeFilters = variant.exome?.filters || []
-  const genomeFilters = variant.genome.filters || []
+  const genomeFilters = variant.genome?.filters || []
   const jointFilters = variant.joint?.flags || []
 
   if (hasExomeVariant && variant.exome?.freq?.[subset]?.ac === 0 && !exomeFilters.includes('AC0')) {
     exomeFilters.push('AC0')
   }
-  if (variant.genome.freq.all.ac === 0 && !genomeFilters.includes('AC0')) {
+  if (hasGenomeVariant && variant.genome?.freq?.all.ac === 0 && !genomeFilters.includes('AC0')) {
     genomeFilters.push('AC0')
   }
 
@@ -120,7 +120,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
 
   let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
-  if ('hgdp' in variant.genome.freq && variant.genome.freq.hgdp.ac_raw > 0) {
+  if (hasGenomeVariant && 'hgdp' in variant.genome.freq && variant.genome.freq.hgdp.ac_raw > 0) {
     genome_ancestry_groups = genome_ancestry_groups.concat(
       variant.genome.freq.hgdp.ancestry_groups.map((pop: any) => ({
         ...pop,
@@ -130,7 +130,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   }
   // Some 1KG samples are included in v2. Since the 1KG population frequencies are based on the full v3.1 dataset,
   // they are invalid for the non-v2 subset.
-  if ('tgp' in variant.genome.freq && variant.genome.freq.tgp.ac_raw > 0) {
+  if (hasGenomeVariant && 'tgp' in variant.genome.freq && variant.genome.freq.tgp.ac_raw > 0) {
     genome_ancestry_groups = genome_ancestry_groups.concat(
       variant.genome.freq.tgp.ancestry_groups.map((pop: any) => ({
         ...pop,
@@ -216,25 +216,25 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
           populations: genome_ancestry_groups,
           faf95: hasGenomeVariant &&
             variant.genome.faf95 && {
-              popmax_population: variant.genome.faf95.grpmax_gen_anc,
-              popmax: variant.genome.faf95.grpmax,
+              popmax_population: variant.genome?.faf95?.grpmax_gen_anc,
+              popmax: variant.genome?.faf95?.grpmax,
             },
           quality_metrics: {
             // TODO: An older version of the data pipeline stored only adj quality metric histograms.
             // Maintain the same behavior by returning the adj version until the API schema is updated to allow
             // selecting which version to return.
             allele_balance: {
-              alt: variant.genome.quality_metrics.allele_balance.alt_adj,
+              alt: variant.genome?.quality_metrics?.allele_balance.alt_adj,
             },
             genotype_depth: {
-              alt: variant.genome.quality_metrics.genotype_depth.alt_adj,
-              all: variant.genome.quality_metrics.genotype_depth.all_adj,
+              alt: variant.genome?.quality_metrics?.genotype_depth.alt_adj,
+              all: variant.genome?.quality_metrics?.genotype_depth.all_adj,
             },
             genotype_quality: {
-              alt: variant.genome.quality_metrics.genotype_quality.alt_adj,
-              all: variant.genome.quality_metrics.genotype_quality.all_adj,
+              alt: variant.genome?.quality_metrics?.genotype_quality.alt_adj,
+              all: variant.genome?.quality_metrics?.genotype_quality.all_adj,
             },
-            site_quality_metrics: variant.genome.quality_metrics.site_quality_metrics.filter(
+            site_quality_metrics: variant.genome?.quality_metrics?.site_quality_metrics.filter(
               (m: any) => Number.isFinite(m.value)
             ),
           },
