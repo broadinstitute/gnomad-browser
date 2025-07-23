@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ExternalLink, PageHeading } from '@gnomad/ui'
+import { Badge, ExternalLink, PageHeading } from '@gnomad/ui'
 
 import Link from '../Link'
 
@@ -63,6 +63,21 @@ const DataPage = () => {
       </TableOfContentsSection>
 
       <TextSection>
+        <div>
+          <Badge level="warning">Warning</Badge> Access to gnomAD data in{' '}
+          <ExternalLink href="https://learn.microsoft.com/en-us/azure/open-datasets/dataset-gnomad">
+            Azure Open Datasets
+          </ExternalLink>{' '}
+          will be deprecated on August 15. Consider transitioning to accessing gnomAD data in{' '}
+          <ExternalLink href="https://cloud.google.com/public-datasets">
+            Google Cloud Public Datasets
+          </ExternalLink>{' '}
+          or the{' '}
+          <ExternalLink href="https://registry.opendata.aws/">
+            Registry of Open Data on AWS
+          </ExternalLink>
+          .
+        </div>
         <div>
           <SectionTitle id="summary" theme={{ type: 'datasets' }}>
             Summary
