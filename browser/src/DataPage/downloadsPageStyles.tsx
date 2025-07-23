@@ -118,7 +118,6 @@ type GetUrlButtonsProps = {
   crc32c?: string
   includeGCP?: boolean
   includeAWS?: boolean
-  includeAzure?: boolean
 }
 
 export const GetUrlButtons = ({
@@ -129,7 +128,6 @@ export const GetUrlButtons = ({
   md5,
   includeGCP = true,
   includeAWS = true,
-  includeAzure = true,
 }: GetUrlButtonsProps) => {
   return (
     <>
@@ -167,17 +165,6 @@ export const GetUrlButtons = ({
             Amazon
           </ShowURLButton>
         ),
-        includeAzure && (
-          // @ts-expect-error TS(2322) FIXME: Type '{ children: string; key: string; "aria-label... Remove this comment to see the full error message
-          <ShowURLButton
-            key="azure"
-            aria-label={`Show Microsoft URL for ${label}`}
-            label={label}
-            url={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
-          >
-            Microsoft
-          </ShowURLButton>
-        ),
       ])}
       {navigator.clipboard && navigator.clipboard.writeText && (
         <>
@@ -208,20 +195,6 @@ export const GetUrlButtons = ({
                 Amazon
               </TextButton>
             ),
-            includeAzure && (
-              <TextButton
-                key="azure"
-                aria-label={`Copy Microsoft URL for ${label}`}
-                onClick={() => {
-                  logButtonClick(`User showed or copied URL for ${label}`)
-                  navigator.clipboard.writeText(
-                    `https://datasetgnomad.blob.core.windows.net/dataset${path}`
-                  )
-                }}
-              >
-                Microsoft
-              </TextButton>
-            ),
           ])}
         </>
       )}
@@ -239,7 +212,6 @@ type DownloadLinksProps = {
   gcsBucket?: string
   includeGCP?: boolean
   includeAWS?: boolean
-  includeAzure?: boolean
   associatedFileType?: string
 }
 
@@ -253,7 +225,6 @@ export const DownloadLinks = ({
   gcsBucket = 'gcp-public-data--gnomad',
   includeGCP = true,
   includeAWS = true,
-  includeAzure = true,
   associatedFileType,
 }: DownloadLinksProps) => {
   return (
@@ -305,19 +276,6 @@ export const DownloadLinks = ({
               Amazon
             </ExternalLink>
           ),
-          includeAzure && (
-            // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-            <ExternalLink
-              key="azure"
-              aria-label={`Download ${label} from Microsoft`}
-              href={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
-              onClick={() => {
-                logButtonClick(`User downloaded ${loggingLabel || label} from Microsoft`)
-              }}
-            >
-              Microsoft
-            </ExternalLink>
-          ),
         ])}
       </span>
       {associatedFileType && (
@@ -342,15 +300,6 @@ export const DownloadLinks = ({
                   href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.${associatedFileType.toLowerCase()}`}
                 >
                   Amazon
-                </ExternalLink>
-              ),
-              includeAzure && (
-                <ExternalLink
-                  key="azure"
-                  aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Microsoft`}
-                  href={`https://datasetgnomad.blob.core.windows.net/dataset${path}.${associatedFileType.toLowerCase()}`}
-                >
-                  Microsoft
                 </ExternalLink>
               ),
             ])}
