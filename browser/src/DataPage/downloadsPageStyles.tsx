@@ -112,7 +112,7 @@ const renderDownloadOptions = (elements: any) => {
     .slice(1)
 }
 
-type OwnGetUrlButtonsProps = {
+type GetUrlButtonsProps = {
   gcsBucket?: string
   label: string
   path: string
@@ -125,19 +125,15 @@ type OwnGetUrlButtonsProps = {
   logClicks?: boolean
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'GetUrlButtonsProps' circularly referen... Remove this comment to see the full error message
-type GetUrlButtonsProps = OwnGetUrlButtonsProps & typeof GetUrlButtons.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'GetUrlButtons' implicitly has type 'any' because ... Remove this comment to see the full error message
 export const GetUrlButtons = ({
-  gcsBucket,
+  gcsBucket = 'gcp-public-data--gnomad',
   label,
   path,
-  size,
-  md5,
-  includeGCP,
-  includeAWS,
-  includeAzure,
+  size = undefined,
+  md5 = undefined,
+  includeGCP = true,
+  includeAWS = true,
+  includeAzure = true,
   logClicks = false,
 }: GetUrlButtonsProps) => {
   return (
@@ -245,15 +241,6 @@ export const GetUrlButtons = ({
       )}
     </>
   )
-}
-
-GetUrlButtons.defaultProps = {
-  gcsBucket: 'gcp-public-data--gnomad',
-  size: undefined,
-  md5: undefined,
-  includeGCP: true,
-  includeAWS: true,
-  includeAzure: true,
 }
 
 type DownloadLinksProps = {
