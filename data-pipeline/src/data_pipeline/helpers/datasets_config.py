@@ -30,6 +30,7 @@ from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_cov
 from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
 from data_pipeline.pipelines.gnomad_v4_lof_curation_results import pipeline as gnomad_v4_lof_curation_results_pipeline
 from data_pipeline.data_types.variant import compressed_variant_id
+from data_pipeline.pipelines.gnomad_v4_lr import pipeline as gnomad_v4_lr_pipeline
 
 
 # Implement this for development/testing purposes
@@ -141,6 +142,27 @@ DATASETS_CONFIG = {
             "index_fields": ["document_id", "variant_id", "locus", "lof_curations.gene_id"],
             "id_field": "document_id",
             "num_shards": 1,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v4_lr_variants": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_lr_pipeline.get_output("variants").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_lr_variants",
+            "index_fields": [
+                "variant_id",
+                "rsid",
+                "genes",
+                # "caid",
+                "locus",
+                "transcript_consequences.gene_id",
+                "short_read_match_id",
+                # "vrs.alt.allele_id",
+            ],
+            "id_field": "variant_id",
+            "num_shards": 48,
             "block_size": 1_000,
         },
     },

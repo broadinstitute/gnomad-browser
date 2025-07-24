@@ -2,16 +2,11 @@ import itertools
 
 import hail as hl
 
+from data_pipeline.helpers.xposition import x_position
+from data_pipeline.helpers.consequences import group_consequence_genes
+
 # ruff doesn't like explicit comparisons to False, but we need them in here, so:
 # ruff: noqa: E712
-
-
-def x_position(chrom, position):
-    contig_number = (
-        hl.case().when(chrom == "X", 23).when(chrom == "Y", 24).when(chrom[0] == "M", 25).default(hl.int(chrom))
-    )
-    return hl.int64(contig_number) * 1_000_000_000 + position
-
 
 TOP_LEVEL_INFO_FIELDS = [
     "ALGORITHMS",
@@ -101,29 +96,7 @@ def import_svs_from_vcfs(vcf_path):
     ds = ds.annotate(filters=ds.filters.difference(hl.set(["MULTIALLELIC"])))
 
     # Group gene lists for all consequences in one field
-    ds = ds.annotate(
-        consequences=hl.array(
-            [
-                hl.struct(
-                    consequence=csq.lower(),
-                    genes=hl.or_else(ds.info[f"PREDICTED_{csq}"], hl.empty_array(hl.tstr)),
-                )
-                for csq in RANKED_CONSEQUENCES
-                if csq not in ("INTERGENIC", "NEAREST_TSS")
-            ]
-        ).filter(lambda csq: hl.len(csq.genes) > 0)
-    )
-    ds = ds.annotate(intergenic=ds.info.PREDICTED_INTERGENIC)
-
-    ds = ds.annotate(
-        major_consequence=hl.rbind(
-            ds.consequences.find(lambda csq: hl.len(csq.genes) > 0),
-            lambda csq: hl.or_else(csq.consequence, hl.or_missing(ds.intergenic, "intergenic")),
-        )
-    )
-
-    # Collect set of all genes for which a variant has a consequence
-    ds = ds.annotate(genes=hl.set(ds.consequences.flatmap(lambda c: c.genes)))
+    ds = group_consequence_genes(ds, RANKED_CONSEQUENCES)
 
     # Group per-population frequency values
     ds = ds.annotate(
