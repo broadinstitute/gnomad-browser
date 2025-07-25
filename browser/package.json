@@ -26,7 +26,7 @@
     "@visx/legend": "^3.12.0",
     "@visx/scale": "^3.12.0",
     "@visx/shape": "^3.12.0",
-    "core-js": "3.5.0",
+    "core-js": "3.44.0",
     "css-loader": "^6.7.3",
     "d3-array": "^1.2.4",
     "d3-scale": "^2.2.2",
