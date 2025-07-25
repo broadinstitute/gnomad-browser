@@ -549,7 +549,7 @@ exports[`Data Page has no unexpected changes 1`] = `
         >
           Hail
         </a>
-         and our
+        , our
          
         <a
           className="c7"
@@ -558,6 +558,16 @@ exports[`Data Page has no unexpected changes 1`] = `
           target="_blank"
         >
           Hail utilities for gnomAD
+        </a>
+        , and the
+         
+        <a
+          className="c7"
+          href="https://github.com/broadinstitute/gnomad-toolbox"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          gnomAD toolbox
         </a>
          
         to work with this data.

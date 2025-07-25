@@ -95,9 +95,13 @@ const DataPage = () => {
             <ExternalLink href="https://azure.microsoft.com/en-us/services/open-datasets/">
               Azure Open Datasets
             </ExternalLink>
-            . We recommend using <ExternalLink href="https://hail.is/">Hail</ExternalLink> and our{' '}
+            . We recommend using <ExternalLink href="https://hail.is/">Hail</ExternalLink>, our{' '}
             <ExternalLink href="https://github.com/broadinstitute/gnomad_methods">
               Hail utilities for gnomAD
+            </ExternalLink>
+            , and the{' '}
+            <ExternalLink href="https://github.com/broadinstitute/gnomad-toolbox">
+              gnomAD toolbox
             </ExternalLink>{' '}
             to work with this data.
           </StyledParagraph>
