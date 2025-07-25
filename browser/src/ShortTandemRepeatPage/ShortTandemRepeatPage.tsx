@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { Badge, Button, ExternalLink, List, ListItem, Modal, Select } from '@gnomad/ui'
+import { Badge, ExternalLink, List, ListItem, Modal, Select } from '@gnomad/ui'
 import Link from '../Link'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import TableWrapper from '../TableWrapper'
@@ -32,7 +32,6 @@ import {
   maxGenotypeDistributionRepeats,
   genotypeRepunitPairs,
 } from './shortTandemRepeatHelpers'
-import ShortTandemRepeatAdjacentRepeatSection from './ShortTandemRepeatAdjacentRepeatSection'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { GenotypeQuality } from './qualityDescription'
 import { QScoreBin } from './qScore'
@@ -241,7 +240,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
   const [selectedGenotypeDistributionRepeatUnits, setSelectedGenotypeDistributionRepeatUnits] =
     useState<string[] | null>(defaultGenotypeDistributionRepunits)
   const [selectedDisease, setSelectedDisease] = useState<string | null>(defaultDisease)
-  const [showAdjacentRepeats, setShowAdjacentRepeats] = useState<boolean>(false)
 
   const populations = [
     ...new Set(shortTandemRepeat.allele_size_distribution.map((cohort) => cohort.ancestry_group)),
@@ -644,43 +642,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           </p>
         )}
       </section>
-
-      {false && (
-        <section style={{ marginBottom: '3em' }}>
-          <h2>
-            Adjacent Repeats <InfoButton topic="str-adjacent-repeats" />
-          </h2>
-          {showAdjacentRepeats ? (
-            shortTandemRepeat.adjacent_repeats.map((adjacentRepeat) => {
-              return (
-                <ShortTandemRepeatAdjacentRepeatSection
-                  key={adjacentRepeat.id}
-                  adjacentRepeat={adjacentRepeat}
-                  populations={populations}
-                  selectedPopulation={selectedPopulation}
-                  selectedSex={selectedSex}
-                  selectedColorBy={selectedColorBy}
-                  selectedScaleType={selectedScaleType}
-                  selectedGenotypeDistributionBin={selectedGenotypeDistributionBin}
-                  setSelectedPopulation={setSelectedPopulation}
-                  setSelectedSex={setSelectedSex}
-                  setSelectedScaleType={setSelectedScaleType}
-                  setSelectedGenotypeDistributionBin={setSelectedGenotypeDistributionBin}
-                />
-              )
-            })
-          ) : (
-            <Button
-              onClick={() => {
-                setShowAdjacentRepeats(true)
-              }}
-            >
-              Show {shortTandemRepeat.adjacent_repeats.length} adjacent repeat
-              {shortTandemRepeat.adjacent_repeats.length > 1 && 's'}
-            </Button>
-          )}
-        </section>
-      )}
 
       <section>
         <h2>
