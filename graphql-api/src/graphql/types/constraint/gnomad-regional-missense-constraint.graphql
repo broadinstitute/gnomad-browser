@@ -16,3 +16,25 @@ type GnomadV2RegionalMissenseConstraint {
   passed_qc: Boolean
   regions: [GnomadV2RegionalMissenseConstraintRegion]
 }
+
+type GnomadV2RegionalMissenseConstraintRegionLiftover {
+  chrom: String
+  start: Int
+  stop: Int
+  chrom_grch37: String
+  start_grch37: Int
+  stop_grch37: Int
+  aa_start: String
+  aa_stop: String
+  obs_mis: Int
+  exp_mis: Float
+  obs_exp: Float
+  chisq_diff_null: Float
+  p_value: Float
+}
+
+type GnomadV2RegionalMissenseConstraintLiftover {
+  has_no_rmc_evidence: Boolean
+  passed_qc: Boolean
+  regions: [GnomadV2RegionalMissenseConstraintRegionLiftover]
+}

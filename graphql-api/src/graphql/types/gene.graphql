@@ -64,7 +64,10 @@ type Gene {
   pext: Pext
 
   gnomad_constraint: GnomadConstraint
-  gnomad_v2_regional_missense_constraint: GnomadV2RegionalMissenseConstraint
+  # TODO: we've renamed this to not include the 'v2'
+  #  but for this demo, we display them both side by side
+  gnomad_v2_regional_missense_constraint: GnomadV2RegionalMissenseConstraintLiftover
+  gnomad_regional_missense_constraint: GnomadV2RegionalMissenseConstraint
 
   exac_constraint: ExacConstraint
   exac_regional_missense_constraint_regions: [ExacRegionalMissenseConstraintRegion!]
