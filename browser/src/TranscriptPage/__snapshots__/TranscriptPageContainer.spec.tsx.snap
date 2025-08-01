@@ -1493,12 +1493,12 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
             <a
               className="DatasetSelector__TopLevelNavigationLink-sc-1p2fxbn-1-Link eggTrD"
               data-item="current_short_variant"
-              href="/gene/dummy_gene?dataset=gnomad_r3"
+              href="/gene/dummy_gene?dataset=gnomad_r4"
               onBlur={[Function]}
               onClick={[Function]}
               onKeyDown={[Function]}
             >
-              gnomAD v3.1.2
+              gnomAD v4.1.0
             </a>
           </li>
           <li

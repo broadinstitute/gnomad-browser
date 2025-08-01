@@ -1357,12 +1357,12 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3"
+      href="/?dataset=gnomad_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2
+      gnomAD v4.1.0
     </a>
   </li>
   <li
@@ -1949,12 +1949,12 @@ exports[`DataSelector with "gnomad_cnv_r4" dataset selected has no unexpected ch
     <a
       className="c2 c3"
       data-item="current_short_variant"
-      href="/?dataset=gnomad_r3"
+      href="/?dataset=gnomad_r4"
       onBlur={[Function]}
       onClick={[Function]}
       onKeyDown={[Function]}
     >
-      gnomAD v3.1.2
+      gnomAD v4.1.0
     </a>
   </li>
   <li
