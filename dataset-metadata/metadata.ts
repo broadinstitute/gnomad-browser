@@ -919,7 +919,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     coverageDatasetId: 'gnomad_r4',
     variantFeedbackDescription: 'gnomAD v4',
     isV4SVs: false,
-    shortVariantDatasetId: 'gnomad_r3',
+    shortVariantDatasetId: 'gnomad_r4',
     structuralVariantDatasetId: 'gnomad_sv_r4',
     isV4CNVs: true,
     copyNumberVariantDatasetId: 'gnomad_cnv_r4',
