@@ -258,6 +258,7 @@ GetUrlButtons.defaultProps = {
 
 type DownloadLinksProps = {
   label: string
+  loggingLabel?: string
   path: string
   size?: string
   md5?: string
@@ -272,6 +273,7 @@ type DownloadLinksProps = {
 
 export const DownloadLinks = ({
   label,
+  loggingLabel,
   path,
   size,
   md5,
@@ -314,7 +316,7 @@ export const DownloadLinks = ({
               href={`https://storage.googleapis.com/${gcsBucket}${path}`}
               onClick={() => {
                 if (logClicks) {
-                  logButtonClick(`User downloaded ${label} from Google`)
+                  logButtonClick(`User downloaded ${loggingLabel || label} from Google`)
                 }
               }}
             >
@@ -329,7 +331,7 @@ export const DownloadLinks = ({
               href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
               onClick={() => {
                 if (logClicks) {
-                  logButtonClick(`User downloaded ${label} from Amazon`)
+                  logButtonClick(`User downloaded ${loggingLabel || label} from Amazon`)
                 }
               }}
             >
@@ -344,7 +346,7 @@ export const DownloadLinks = ({
               href={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
               onClick={() => {
                 if (logClicks) {
-                  logButtonClick(`User downloaded ${label} from Microsoft`)
+                  logButtonClick(`User downloaded ${loggingLabel || label} from Microsoft`)
                 }
               }}
             >
