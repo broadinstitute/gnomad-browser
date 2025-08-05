@@ -5,6 +5,7 @@ import { Button } from '@gnomad/ui'
 import { svConsequenceLabels } from './structuralVariantConsequences'
 import { StructuralVariant } from '../StructuralVariantPage/StructuralVariantPage'
 import { svTypeLabels } from './structuralVariantTypes'
+import { logButtonClick } from '../analytics'
 
 const columns = [
   {
@@ -125,6 +126,7 @@ const ExportStructuralVariantsButton = ({
     {...rest}
     onClick={() => {
       exportVariantsToCsv(variants, exportFileName)
+      logButtonClick('Exported structural variants to CSV')
     }}
   >
     Export variants to CSV

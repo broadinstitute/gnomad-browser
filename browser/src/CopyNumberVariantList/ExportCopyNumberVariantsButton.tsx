@@ -4,6 +4,7 @@ import { Button } from '@gnomad/ui'
 
 import { cnvTypeLabels } from './copyNumberVariantTypes'
 import { CopyNumberVariant } from '../CopyNumberVariantPage/CopyNumberVariantPage'
+import { logButtonClick } from '../analytics'
 
 const columns = [
   {
@@ -96,6 +97,7 @@ const ExportCopyNumberVariantsButton = ({
     {...rest}
     onClick={() => {
       exportVariantsToCsv(variants, exportFileName)
+      logButtonClick('Exported copy number variants to CSV')
     }}
   >
     Export variants to CSV
