@@ -344,7 +344,11 @@ const GnomadV3Downloads = () => (
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          <DownloadLinks label="README" path="/release/3.1.3/tsv/README__2025_03_17.txt" />
+          <DownloadLinks
+            label="README"
+            loggingLabel="v3.1.3 genotype TSV README (3-17-2025 update)"
+            path="/release/3.1.3/tsv/README__2025_03_17.txt"
+          />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
@@ -366,7 +370,11 @@ const GnomadV3Downloads = () => (
       <FileList>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
-          <DownloadLinks label="README" path="/release/3.1.3/tsv/README.txt" />
+          <DownloadLinks
+            label="README"
+            loggingLabel="v3.1.3 genotype TSV README (original)"
+            path="/release/3.1.3/tsv/README.txt"
+          />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
@@ -401,6 +409,7 @@ const GnomadV3Downloads = () => (
         <ListItem>
           <DownloadLinks
             label="README"
+            loggingLabel="v3.1 noncoding constraint README"
             path="/release/3.1/secondary_analyses/genomic_constraint/nc_constraint_gnomad_v31_README.docx"
           />
         </ListItem>
