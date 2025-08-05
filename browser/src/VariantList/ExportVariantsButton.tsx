@@ -10,6 +10,8 @@ import {
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { DatasetId, isV2, isV4, hasJointFrequencyData } from '@gnomad/dataset-metadata/metadata'
 
+import { logButtonClick } from '../analytics'
+
 type ColumnGetter = (variant: VariantTableVariant) => string
 
 export type Column = {
@@ -465,6 +467,7 @@ const ExportVariantsButton = ({ datasetId, exportFileName, variants, ...rest }: 
     {...rest}
     onClick={() => {
       exportVariantsToCsv(variants, datasetId, exportFileName)
+      logButtonClick('Exported variants to CSV')
     }}
   >
     Export variants to CSV

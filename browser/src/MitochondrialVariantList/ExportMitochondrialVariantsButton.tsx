@@ -5,7 +5,7 @@ import { Button } from '@gnomad/ui'
 import { FLAGS_CONFIG } from '../VariantList/VariantFlag'
 import { getLabelForConsequenceTerm } from '../vepConsequences'
 
-import MitochondrialVariantPropType from './MitochondrialVariantPropType'
+import { logButtonClick } from '../analytics'
 
 const BASE_COLUMNS = [
   {
@@ -134,6 +134,7 @@ const ExportMitochondrialVariantsButton = ({
     {...rest}
     onClick={() => {
       exportVariantsToCsv(variants, exportFileName, includeGene)
+      logButtonClick('Exported mitochondrial variants to CSV')
     }}
   >
     Export variants to CSV
