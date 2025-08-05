@@ -24,6 +24,7 @@ import {
   isExac,
   hasCopyNumberVariants,
   isV2,
+  getTopLevelDataset,
 } from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
 import VariantCooccurrenceCountsTable, {
@@ -600,6 +601,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             transcripts={gene.transcripts as TranscriptWithTissueExpression[]} // if a gene has pext, it has gtex
             preferredTranscriptId={preferredTranscriptId}
             preferredTranscriptDescription={preferredTranscriptDescription}
+            topLevelDataset={getTopLevelDataset(datasetId)}
           />
         )}
 
