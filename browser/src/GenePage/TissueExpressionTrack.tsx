@@ -346,6 +346,7 @@ type TissueExpressionTrackProps = {
   transcripts: TranscriptWithTissueExpression[]
   preferredTranscriptId?: string
   preferredTranscriptDescription?: string | React.ReactNode
+  topLevelDataset: string
 }
 
 export type GtexTissueDetail = {
@@ -361,6 +362,7 @@ const TissueExpressionTrack = ({
   transcripts,
   preferredTranscriptId,
   preferredTranscriptDescription,
+  topLevelDataset,
 }: TissueExpressionTrackProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const [showTranscriptTissueExpressionModal, setShowTranscriptTissueExpressionModal] =
@@ -480,7 +482,7 @@ const TissueExpressionTrack = ({
                   }}
                   onClick={() => {
                     if (!isExpanded) {
-                      logButtonClick('User expanded v2 tissue expression track')
+                      logButtonClick(`User expanded ${topLevelDataset} tissue expression track`)
                     }
                     setIsExpanded(!isExpanded)
                   }}

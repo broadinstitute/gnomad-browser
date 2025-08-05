@@ -56,6 +56,7 @@ describe('TissueExpressionTrack', () => {
           transcripts={gene.transcripts as TranscriptWithTissueExpression[]}
           preferredTranscriptId={testTranscriptId}
           preferredTranscriptDescription="test-canonical-transcript"
+          topLevelDataset="v4"
         />
       </RegionViewerContext.Provider>
     )
