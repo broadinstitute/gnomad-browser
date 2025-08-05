@@ -589,7 +589,11 @@ const GnomadV2Downloads = () => {
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
-            <DownloadLinks label="README" path="/release/2.1/mnv/readme.md" />
+            <DownloadLinks
+              label="README"
+              loggingLabel="v2.1 MNV README"
+              path="/release/2.1/mnv/readme.md"
+            />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
@@ -675,6 +679,7 @@ const GnomadV2Downloads = () => {
           <ListItem>
             <DownloadLinks
               label="README"
+              loggingLabel="v2.1.1 variant cooccurrence download tables README"
               path="/release/2.1.1/secondary_analyses/variant_cooccurrence/readme_for_download_tables.txt"
             />
           </ListItem>
