@@ -53,19 +53,16 @@ export const DownloadsSection = styled.section`
 type ShowURLButtonProps = {
   label: string
   url: string
-  logClicks: boolean
 }
 
-const ShowURLButton = ({ label, url, logClicks, ...otherProps }: ShowURLButtonProps) => {
+const ShowURLButton = ({ label, url, ...otherProps }: ShowURLButtonProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
   return (
     <>
       <TextButton
         {...otherProps}
         onClick={() => {
-          if (logClicks) {
-            logButtonClick(`User showed or copied URL for ${label}`)
-          }
+          logButtonClick(`User showed or copied URL for ${label}`)
           setIsExpanded(true)
         }}
       />
@@ -122,7 +119,6 @@ type OwnGetUrlButtonsProps = {
   includeGCP?: boolean
   includeAWS?: boolean
   includeAzure?: boolean
-  logClicks?: boolean
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'GetUrlButtonsProps' circularly referen... Remove this comment to see the full error message
@@ -138,7 +134,6 @@ export const GetUrlButtons = ({
   includeGCP,
   includeAWS,
   includeAzure,
-  logClicks = false,
 }: GetUrlButtonsProps) => {
   return (
     <>
@@ -161,7 +156,6 @@ export const GetUrlButtons = ({
             aria-label={`Show Google URL for ${label}`}
             label={label}
             url={`gs://${gcsBucket}${path}`}
-            logClicks={logClicks}
           >
             Google
           </ShowURLButton>
@@ -173,7 +167,6 @@ export const GetUrlButtons = ({
             aria-label={`Show Amazon URL for ${label}`}
             label={label}
             url={`s3://gnomad-public-us-east-1${path}`}
-            logClicks={logClicks}
           >
             Amazon
           </ShowURLButton>
@@ -185,7 +178,6 @@ export const GetUrlButtons = ({
             aria-label={`Show Microsoft URL for ${label}`}
             label={label}
             url={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
-            logClicks={logClicks}
           >
             Microsoft
           </ShowURLButton>
@@ -201,9 +193,7 @@ export const GetUrlButtons = ({
                 key="gcp"
                 aria-label={`Copy Google URL for ${label}`}
                 onClick={() => {
-                  if (logClicks) {
-                    logButtonClick(`User showed or copied URL for ${label}`)
-                  }
+                  logButtonClick(`User showed or copied URL for ${label}`)
                   navigator.clipboard.writeText(`gs://${gcsBucket}${path}`)
                 }}
               >
@@ -215,9 +205,7 @@ export const GetUrlButtons = ({
                 key="aws"
                 aria-label={`Copy Amazon URL for ${label}`}
                 onClick={() => {
-                  if (logClicks) {
-                    logButtonClick(`User showed or copied URL for ${label}`)
-                  }
+                  logButtonClick(`User showed or copied URL for ${label}`)
                   navigator.clipboard.writeText(`s3://gnomad-public-us-east-1${path}`)
                 }}
               >
@@ -229,9 +217,7 @@ export const GetUrlButtons = ({
                 key="azure"
                 aria-label={`Copy Microsoft URL for ${label}`}
                 onClick={() => {
-                  if (logClicks) {
-                    logButtonClick(`User showed or copied URL for ${label}`)
-                  }
+                  logButtonClick(`User showed or copied URL for ${label}`)
                   navigator.clipboard.writeText(
                     `https://datasetgnomad.blob.core.windows.net/dataset${path}`
                   )

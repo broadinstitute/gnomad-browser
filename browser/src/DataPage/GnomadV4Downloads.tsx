@@ -135,7 +135,6 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht"
-                  logClicks
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -161,7 +160,6 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht/"
-                  logClicks
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -189,7 +187,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Joint sites Hail Table"
               path="/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht"
-              logClicks
             />
           </ListItem>
           {jointChromosomeVcfs.map(({ chrom, size, md5 }) => (
@@ -218,7 +215,6 @@ const GnomadV4Downloads = () => {
                 <GetUrlButtons
                   label="Exomes all site allele number Hail Table"
                   path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.allele_number_all_sites.ht"
-                  logClicks
                 />
               </ListItem>
 
@@ -385,7 +381,6 @@ const GnomadV4Downloads = () => {
             <GetUrlButtons
               label="Constraint metrics Hail Table"
               path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"
-              logClicks
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
