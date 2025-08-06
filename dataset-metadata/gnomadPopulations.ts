@@ -2,9 +2,9 @@ import { textOrMissingTextWarning } from '../browser/src/missingContent'
 import { DatasetId, getTopLevelDataset } from './metadata'
 
 export const GNOMAD_POPULATION_NAMES = {
-  afr: 'African/African American',
+  // afr: 'African/African American',
   ami: 'Amish',
-  amr: 'Admixed American',
+  // amr: 'Admixed American',
   asj: 'Ashkenazi Jewish',
   // eas: 'East Asian',
   // mid: 'Middle Eastern',
@@ -17,13 +17,15 @@ export const GNOMAD_POPULATION_NAMES = {
   remaining: 'Remaining',
 
   // Custom OurDNA definitions
-  csa: 'CSA (Central South Asian)',
-  eas: 'EAS (East Asian)',
-  eur: 'EUR (European)',
-  fil: 'FIL (Filipino)',
-  mid: 'MID (Middle Eastern)',
-  unclassified: 'Unclassified',
+  afr: 'AFR (African, African American and African Caribbean)',
+  amr: 'AMR (Central and South American)',
 
+  csa: 'CSA (Central and South Asian)',
+  eas: 'EAS (East and South East Asian)',
+  eur: 'EUR (European)',
+  fil: 'FIL (Australian Filipino)',
+  mid: 'MID (Middle Eastern and North African)',
+  na: 'Unclassified',
 
   // EAS subpopulations
   eas_jpn: 'Japanese',
@@ -74,12 +76,14 @@ const v3Populations: PopulationId[] = [
   'oth',
 ]
 const v4Populations: PopulationId[] = [
-  'unclassified',
+  'afr',
+  'amr',
   'csa',
   'eas',
   'eur',
+  'mid',
   'fil',
-  'mid'
+  'na',
 ]
 
 export const populationsInDataset = {

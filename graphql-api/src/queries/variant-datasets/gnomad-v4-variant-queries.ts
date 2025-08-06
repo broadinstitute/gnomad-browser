@@ -587,7 +587,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset:
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac > 0) ||
+        (variant.genome?.freq?.all && variant.genome?.freq?.all.ac > 0) ||
         variant.exome?.freq?.[subset]?.ac > 0
     )
     .map(
