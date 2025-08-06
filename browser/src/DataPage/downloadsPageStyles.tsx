@@ -109,7 +109,7 @@ const renderDownloadOptions = (elements: any) => {
     .slice(1)
 }
 
-type OwnGetUrlButtonsProps = {
+type GetUrlButtonsProps = {
   gcsBucket?: string
   label: string
   path: string
@@ -118,22 +118,16 @@ type OwnGetUrlButtonsProps = {
   crc32c?: string
   includeGCP?: boolean
   includeAWS?: boolean
-  includeAzure?: boolean
 }
 
-// @ts-expect-error TS(2456) FIXME: Type alias 'GetUrlButtonsProps' circularly referen... Remove this comment to see the full error message
-type GetUrlButtonsProps = OwnGetUrlButtonsProps & typeof GetUrlButtons.defaultProps
-
-// @ts-expect-error TS(7022) FIXME: 'GetUrlButtons' implicitly has type 'any' because ... Remove this comment to see the full error message
 export const GetUrlButtons = ({
-  gcsBucket,
+  gcsBucket = 'gcp-public-data--gnomad',
   label,
   path,
   size,
   md5,
-  includeGCP,
-  includeAWS,
-  includeAzure,
+  includeGCP = true,
+  includeAWS = true,
 }: GetUrlButtonsProps) => {
   return (
     <>
@@ -171,17 +165,6 @@ export const GetUrlButtons = ({
             Amazon
           </ShowURLButton>
         ),
-        includeAzure && (
-          // @ts-expect-error TS(2322) FIXME: Type '{ children: string; key: string; "aria-label... Remove this comment to see the full error message
-          <ShowURLButton
-            key="azure"
-            aria-label={`Show Microsoft URL for ${label}`}
-            label={label}
-            url={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
-          >
-            Microsoft
-          </ShowURLButton>
-        ),
       ])}
       {navigator.clipboard && navigator.clipboard.writeText && (
         <>
@@ -212,34 +195,11 @@ export const GetUrlButtons = ({
                 Amazon
               </TextButton>
             ),
-            includeAzure && (
-              <TextButton
-                key="azure"
-                aria-label={`Copy Microsoft URL for ${label}`}
-                onClick={() => {
-                  logButtonClick(`User showed or copied URL for ${label}`)
-                  navigator.clipboard.writeText(
-                    `https://datasetgnomad.blob.core.windows.net/dataset${path}`
-                  )
-                }}
-              >
-                Microsoft
-              </TextButton>
-            ),
           ])}
         </>
       )}
     </>
   )
-}
-
-GetUrlButtons.defaultProps = {
-  gcsBucket: 'gcp-public-data--gnomad',
-  size: undefined,
-  md5: undefined,
-  includeGCP: true,
-  includeAWS: true,
-  includeAzure: true,
 }
 
 type DownloadLinksProps = {
@@ -252,7 +212,6 @@ type DownloadLinksProps = {
   gcsBucket?: string
   includeGCP?: boolean
   includeAWS?: boolean
-  includeAzure?: boolean
   associatedFileType?: string
 }
 
@@ -266,7 +225,6 @@ export const DownloadLinks = ({
   gcsBucket = 'gcp-public-data--gnomad',
   includeGCP = true,
   includeAWS = true,
-  includeAzure = true,
   associatedFileType,
 }: DownloadLinksProps) => {
   return (
@@ -318,19 +276,6 @@ export const DownloadLinks = ({
               Amazon
             </ExternalLink>
           ),
-          includeAzure && (
-            // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
-            <ExternalLink
-              key="azure"
-              aria-label={`Download ${label} from Microsoft`}
-              href={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
-              onClick={() => {
-                logButtonClick(`User downloaded ${loggingLabel || label} from Microsoft`)
-              }}
-            >
-              Microsoft
-            </ExternalLink>
-          ),
         ])}
       </span>
       {associatedFileType && (
@@ -355,15 +300,6 @@ export const DownloadLinks = ({
                   href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}.${associatedFileType.toLowerCase()}`}
                 >
                   Amazon
-                </ExternalLink>
-              ),
-              includeAzure && (
-                <ExternalLink
-                  key="azure"
-                  aria-label={`Download ${associatedFileType.toUpperCase()} file for ${label} from Microsoft`}
-                  href={`https://datasetgnomad.blob.core.windows.net/dataset${path}.${associatedFileType.toLowerCase()}`}
-                >
-                  Microsoft
                 </ExternalLink>
               ),
             ])}
