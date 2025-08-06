@@ -268,7 +268,6 @@ type DownloadLinksProps = {
   includeAWS?: boolean
   includeAzure?: boolean
   associatedFileType?: string
-  logClicks?: boolean
 }
 
 export const DownloadLinks = ({
@@ -283,7 +282,6 @@ export const DownloadLinks = ({
   includeAWS = true,
   includeAzure = true,
   associatedFileType,
-  logClicks = false,
 }: DownloadLinksProps) => {
   return (
     <>
@@ -315,9 +313,7 @@ export const DownloadLinks = ({
               aria-label={`Download ${label} from Google`}
               href={`https://storage.googleapis.com/${gcsBucket}${path}`}
               onClick={() => {
-                if (logClicks) {
-                  logButtonClick(`User downloaded ${loggingLabel || label} from Google`)
-                }
+                logButtonClick(`User downloaded ${loggingLabel || label} from Google`)
               }}
             >
               Google
@@ -330,9 +326,7 @@ export const DownloadLinks = ({
               aria-label={`Download ${label} from Amazon`}
               href={`https://gnomad-public-us-east-1.s3.amazonaws.com${path}`}
               onClick={() => {
-                if (logClicks) {
-                  logButtonClick(`User downloaded ${loggingLabel || label} from Amazon`)
-                }
+                logButtonClick(`User downloaded ${loggingLabel || label} from Amazon`)
               }}
             >
               Amazon
@@ -345,9 +339,7 @@ export const DownloadLinks = ({
               aria-label={`Download ${label} from Microsoft`}
               href={`https://datasetgnomad.blob.core.windows.net/dataset${path}`}
               onClick={() => {
-                if (logClicks) {
-                  logButtonClick(`User downloaded ${loggingLabel || label} from Microsoft`)
-                }
+                logButtonClick(`User downloaded ${loggingLabel || label} from Microsoft`)
               }}
             >
               Microsoft

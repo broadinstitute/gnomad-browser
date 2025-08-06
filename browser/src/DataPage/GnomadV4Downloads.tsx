@@ -147,7 +147,6 @@ const GnomadV4Downloads = () => {
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
-                    logClicks
                   />
                 </ListItem>
               ))}
@@ -174,7 +173,6 @@ const GnomadV4Downloads = () => {
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
-                    logClicks
                   />
                 </ListItem>
               ))}
@@ -203,7 +201,6 @@ const GnomadV4Downloads = () => {
                 size={size}
                 md5={md5}
                 associatedFileType="TBI"
-                logClicks
               />
             </ListItem>
           ))}
@@ -232,7 +229,6 @@ const GnomadV4Downloads = () => {
                   path="/release/4.1/tsv/exomes/gnomad.exomes.v4.1.allele_number_all_sites.tsv.bgz"
                   md5="ee71ce1ccfa5c1d9dd86e1ee1b1d11e2"
                   size="1.07 GiB"
-                  logClicks
                 />
               </ListItem>
             </FileList>
@@ -382,7 +378,6 @@ const GnomadV4Downloads = () => {
               label="README"
               loggingLabel="v4.1 constraint README"
               path="/release/4.1/constraint/README.txt"
-              logClicks
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -398,7 +393,6 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Constraint metrics TSV"
               path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv"
-              logClicks
             />
           </ListItem>
         </FileList>
