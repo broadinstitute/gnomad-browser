@@ -110,7 +110,6 @@ const LDFiles = () => {
             // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             label={`LD matrix Hail BlockMatrix for ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population`}
             path={`/release/2.1.1/ld/gnomad.genomes.r2.1.1.${urlPopId}.common.adj.ld.bm`}
-            logClicks
           />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -119,7 +118,6 @@ const LDFiles = () => {
             // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             label={`Variant indices Hail Table for ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population`}
             path={`/release/2.1.1/ld/gnomad.genomes.r2.1.1.${urlPopId}.common.adj.ld.variant_indices.ht`}
-            logClicks
           />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -128,7 +126,6 @@ const LDFiles = () => {
             // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             label={`LD scores Hail Table for ${GNOMAD_POPULATION_NAMES[selectedPopulation]} population`}
             path={`/release/2.1.1/ld/scores/gnomad.genomes.r2.1.1.${urlPopId}.adj.ld_scores.ht`}
-            logClicks
           />
         </ListItem>
         {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -200,7 +197,6 @@ const GnomadV2Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht"
-                  logClicks
                 />
               </ListItem>
 
@@ -237,7 +233,6 @@ const GnomadV2Downloads = () => {
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht"
-                  logClicks
                 />
               </ListItem>
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
@@ -534,7 +529,6 @@ const GnomadV2Downloads = () => {
             <GetUrlButtons
               label="pLoF Metrics by Transcript Hail Table"
               path="/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_transcript.ht"
-              logClicks
             />
           </ListItem>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
