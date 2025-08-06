@@ -18,6 +18,7 @@ import {
   shortVariantDatasetId,
   isV2,
 } from '@gnomad/dataset-metadata/metadata'
+import { logButtonClick } from './analytics'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;
@@ -407,6 +408,7 @@ class NavigationMenu extends Component<NavigationMenuProps, State> {
                                 to={childItem.url}
                                 onBlur={this.onBlur}
                                 onClick={() => {
+                                  logButtonClick(`selected dataset ${childItem.id}`)
                                   this.setState({ expandedItem: null })
                                   this.focusItem(item.id)
                                 }}
