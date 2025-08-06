@@ -28,7 +28,7 @@ export default () => (
     <p>
       Follow us on Instagram{' '}
        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
-      <ExternalLink href="https://www.instagram.com/ourdna_australia/">@ourdna_australia</ExternalLink>
+      <ExternalLink href="https://www.instagram.com/ourdna_australia/">@ourdna_australia </ExternalLink>
       and{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="@ourdna_australia">Facebook</ExternalLink>.
@@ -36,7 +36,7 @@ export default () => (
 
     <br/>
     <p>
-      For all other questions, please email us. 
+      For all other questions, please email us.
     </p>
   </InfoPage>
 )

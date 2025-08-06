@@ -70,7 +70,7 @@ const datasets: Dataset[] = [
   {
     country: 'Australia',
     samples: '10,000',
-    source: 'Our DNA',
+    source: 'OurDNA',
     link: 'https://populationgenomics.org.au/',
     lead: 'Daniel MacArthur',
   },

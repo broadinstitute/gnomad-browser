@@ -12,6 +12,7 @@ import userPreferences from './userPreferences'
 import { ExternalLink } from '@gnomad/ui'
 
 const NavBar = lazy(() => import('./NavBar'))
+const Footer = lazy(() => import('./Footer'))
 const Routes = lazy(() => import('./Routes'))
 
 const scrollToAnchorOrStartOfPage = (location: any) => {
@@ -129,6 +130,7 @@ const App = () => {
             <Suspense fallback={<PageLoading />}>
               <Routes />
             </Suspense>
+            <Footer />
           </Suspense>
         )}
       </ErrorBoundary>

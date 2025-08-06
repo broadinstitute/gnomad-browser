@@ -1,14 +1,5 @@
 ### Who should I contact for more information?
-If you would like more information about the project or if you need to speak to a member of the research team in an emergency please contact:
-
-**Name:**<br>
-Professor John Christodoulou
-
-**Contact telephone:**<br>
-(+61) 03 9936 6516
-
-**Email:**<br>
-<a href="john.christodoulou@mcri.edu.au">john.christodoulou@mcri.edu.au</a>
+If you would like more information about the project or if you need to speak to a member of the research team please contact <a href="servicedesk@populationgenomics.org.au">servicedesk@populationgenomics.com</a>.
 
 <br>You can contact the Director of Research Operations at the Royal Children's Hospital if you:
 

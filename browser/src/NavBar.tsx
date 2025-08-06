@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-
 import { Button } from '@gnomad/ui'
-
 import Searchbox from './Searchbox'
+
+// @ts-ignore - TS2307 Cannot fine module ... or its corresponding type declarations.
+import logoImage from './OurDNA_Browser_Header.png'
 
 const Wrapper = styled.div`
   display: flex;
@@ -92,7 +93,11 @@ const NavBar = () => {
     <Wrapper>
       <LogoWrapper>
         <Link to="/" onClick={closeMenu}>
-          <Logo>OurDNA Browser</Logo>
+          <Logo>
+            <svg width="50" viewBox="0 0 341 228">
+              <image href={logoImage} />
+            </svg>
+          </Logo>
         </Link>
         <ToggleMenuButton onClick={toggleMenu}>☰</ToggleMenuButton>
       </LogoWrapper>
@@ -104,11 +109,11 @@ const NavBar = () => {
             About
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/team" onClick={closeMenu}>
             Team
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/federated" onClick={closeMenu}>
             Federated
@@ -124,11 +129,11 @@ const NavBar = () => {
             Policies
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="/publications" onClick={closeMenu}>
             Publications
           </Link>
-        </li>
+        </li> */}
         {/* two <a> tags instead of <Link>s because the blog is a separate application */}
         <li>
           <a href="/news/">Blog</a>

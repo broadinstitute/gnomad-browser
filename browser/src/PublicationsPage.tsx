@@ -40,12 +40,15 @@ export default () => (
     <DocumentTitle title="Publications" />
     <PageHeading>Publications</PageHeading>
     <p>
-      {' '}   
-       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}         
+      {' '}
+       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://ardc.edu.au/resource/data-and-software-citation/">
       Datasets and software are premier, citable research outputs
-      </ExternalLink>. 
-      There are several distinct outputs from the OurDNA program and we request that you cite the specific resource/s that have been used as input to your work. Please use Digital Object Identifiers (DOIs) in your citations to refer to definitive, persistent records of OurDNA resources. 
+      </ExternalLink>.
+      There are several distinct outputs from the OurDNA program and we request that you cite the specific resource/s that have been used as input to your work. Please use Digital Object Identifiers (DOIs) in your citations to refer to definitive, persistent records of OurDNA resources.
+
+      The OurDNA dataset and OurDNA browser software are registered on Zenodo. Please take care to include the digital object identifier (DOI) in your references list when citing these resources.
+
     </p>
     <br/>
     <CenteredContainer>
@@ -69,24 +72,24 @@ export default () => (
       </StatsTable>
     </CenteredContainer>
 
-    <h2>Flagship paper</h2>
+    <h2>Dataset</h2>
+    Richards, C., de Lange, K., Piscionere J., et al. (2025, July 31). OurDNA dataset (1.0)[Dataset]. www.doi.com
 
+    <h2>Browser (software)</h2>
+    Hyben, M., Harper, M., Bakiris, V., et al. (2025, July 31). OurDNA dataset (1.0)[Software]. www.doi.com
+
+    <h2>Flagship paper</h2>
     <p>
-      Publication of the OurDNA flagship paper is forthcoming. 
-      <br/>
-      <br/>
+      Publication of the OurDNA flagship paper is forthcoming.
+    </p>
+    <h2>Other resources</h2>
+    <p>
       We have a range of additional resources published in the{' '}
        {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://zenodo.org/communities/populationgenomics/records?q=&l=list&p=1&s=10&sort=newest">
       Centre for Populations Zenodo Community
-      </ExternalLink>. 
+      </ExternalLink>.
     </p>
-
-    <h2>Dataset</h2>
-    <p>Example citation of dataset is forthcoming</p>
-
-    <h2>Software</h2>
-    <p>Example citation of software record is forthcoming</p>
 
   </InfoPage>
 )

@@ -39,7 +39,7 @@ The OurDNA program is currently producing three key resources:
 
 ## The OurDNA Browser
 
-The OurDNA browser provides access to harmonised, aggregated genome and exome sequences from the OurDNA program. The OurDNA dataset includes healthy individuals that self-identify as having ancestry from East Africa, Middle East and North Africa, Oceania, and Southeast Asia. Data from the OurDNA browser is designed to integrate with clinical pipelines to support researchers and doctors to find disease-causing genes, understand diversity and improve medical treatments for Australians of diverse backgrounds. 
+The OurDNA browser provides access to harmonised, aggregated genome and exome sequences from the OurDNA program. The OurDNA dataset includes healthy individuals that self-identify as having ancestry from East Africa, Middle East and North Africa, Oceania, and Southeast Asia. Data from the OurDNA browser is designed to integrate with clinical pipelines to support researchers and doctors to find disease-causing genes, understand diversity and improve medical treatments for Australians of diverse backgrounds.
 
 To read more about OurDNA program, please see the [program website](https://www.ourdna.org.au) and the [CPG Zenodo Community](https://zenodo.org/communities/populationgenomics/records). For a [select bibliography](https://populationgenomics.org.au/about-us/resources/publications/) for the Centre for Population Genomics, Centre [talks](https://populationgenomics.org.au/about-us/resources/talks/), and for information on the CPG’s open source [software tools](https://populationgenomics.org.au/about-us/resources/software-tools-2/) that support the OurDNA dataset, please see the [Centre for Population Genomics](https://populationgenomics.org.au) website.
 
@@ -57,7 +57,7 @@ The OurDNA dataset is composed of:
 
 ## Methods
 
-The OurDNA dataset contains individuals sequenced using a mix of exome and genome capture methods and sequencing chemistries, so coverage varies between individuals and across sites. This variation in coverage is incorporated into the variant frequency calculations for each variant. gnomAD was QCed and analyzed using the [Hail](https://hail.is) open-source framework for scalable genetic analysis. 
+The OurDNA dataset contains individuals sequenced using a mix of exome and genome capture methods and sequencing chemistries, so coverage varies between individuals and across sites. This variation in coverage is incorporated into the variant frequency calculations for each variant. gnomAD was QCed and analyzed using the [Hail](https://hail.is) open-source framework for scalable genetic analysis.
 
 All of the raw data from contributing projects and the OurDNA project have been (re)processed through equivalent pipelines to increase consistency across projects. Short-read whole genome sequencing data was processed according to the DRAGEN-GATK Best Practices guidelines. This includes alignment to GRCh38 using the open-source DRAGEN mapper (DRAGMAP, v1.3.0), and variant calling with GATK v4.2.6.1 HaplotypeCaller to discover single-nucleotide variants (SNVs) and insertion-deletions (indels). All samples were aggregated using the hail gVCF Combiner, and then sample and variant quality control was performed on the joint call set in line with gnomAD best practices.
 
@@ -80,6 +80,6 @@ The OurDNA program also receives support from Google’s Digital Future Initiati
 ### Data contributors
 
 - BioHEART (Gemma Figtree)
-- Mackenzie's Mission
+- Mackenzie's Mission (Martin Delatycki, Edwin Kirk, Nigel Laing)
 - OurDNA (Daniel MacArthur)
 - Tasmanian Ophthalmic Biobank Whole Genome Sequencing (Alex Hewitt)
