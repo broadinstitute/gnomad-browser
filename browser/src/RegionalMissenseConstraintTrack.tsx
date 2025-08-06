@@ -116,9 +116,14 @@ const printAAorNA = (aa: string | null) => {
 type RegionTooltipProps = {
   region: RegionWithUnclamped<RegionalMissenseConstraintRegion>
   isTranscriptWide: boolean
+  includeLiftover: boolean
 }
 
-export const RegionTooltip = ({ region, isTranscriptWide }: RegionTooltipProps) => {
+export const RegionTooltip = ({
+  region,
+  isTranscriptWide,
+  includeLiftover,
+}: RegionTooltipProps) => {
   if (isTranscriptWide) {
     return (
       <RegionAttributeList>
@@ -169,47 +174,59 @@ export type RegionalMissenseConstraint = {
 const formattedOE = (region: RegionalMissenseConstraintRegion) => region.obs_exp.toFixed(2)
 
 type Props = {
+  trackTitle: string
   regionalMissenseConstraint: RegionalMissenseConstraint | null
   gene: Gene
 }
 
-const NoRMCConstraint = () => (
-  <Track
-    renderLeftPanel={() => (
-      <SidePanel>
-        <span>Regional missense constraint</span>
-        <InfoButton topic="regional-constraint" />
-      </SidePanel>
-    )}
-  >
-    {({ width }: { width: number }) => (
-      <>
-        <PlotWrapper>
-          <svg height={35} width={width}>
-            <text x={width / 2} y={35 / 2} dy="1.0rem" textAnchor="middle">
-              <tspan>
-                This gene was not searched for evidence of regional missense constraint. See our{' '}
-              </tspan>
-              <tspan fill="#0000ff">
-                <Link to="/help">help page</Link>
-              </tspan>
-              <tspan> for additional information.</tspan>
-            </text>
-          </svg>
-        </PlotWrapper>
-      </>
-    )}
-  </Track>
-)
+type NoRMCProps = {
+  trackTitle?: string
+}
 
-const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: Props) => {
+const NoRMCConstraint = ({ trackTitle }: NoRMCProps) => {
+  const title = trackTitle ? trackTitle : 'Regional missense constraint'
+  return (
+    <Track
+      renderLeftPanel={() => (
+        <SidePanel>
+          <span>{title}</span>
+          <InfoButton topic="regional-constraint" />
+        </SidePanel>
+      )}
+    >
+      {({ width }: { width: number }) => (
+        <>
+          <PlotWrapper>
+            <svg height={35} width={width}>
+              <text x={width / 2} y={35 / 2} dy="1.0rem" textAnchor="middle">
+                <tspan>
+                  This gene was not searched for evidence of regional missense constraint. See our{' '}
+                </tspan>
+                <tspan fill="#0000ff">
+                  <Link to="/help">help page</Link>
+                </tspan>
+                <tspan> for additional information.</tspan>
+              </text>
+            </svg>
+          </PlotWrapper>
+        </>
+      )}
+    </Track>
+  )
+}
+
+const RegionalMissenseConstraintTrack = ({
+  trackTitle,
+  regionalMissenseConstraint,
+  gene,
+}: Props) => {
   if (
     !regionalMissenseConstraint ||
     regionalMissenseConstraint.regions === null ||
     (regionalMissenseConstraint.passed_qc === false &&
       regionalMissenseConstraint.has_no_rmc_evidence === false)
   ) {
-    return <NoRMCConstraint />
+    return <NoRMCConstraint trackTitle={trackTitle} />
   }
 
   // This transcript was searched, but no RMC evidence was found
@@ -246,7 +263,7 @@ const RegionalMissenseConstraintTrack = ({ regionalMissenseConstraint, gene }: P
 
   return (
     <ConstraintTrack
-      trackTitle="Regional missense constraint"
+      trackTitle={trackTitle}
       allRegions={regionalMissenseConstraint.regions}
       constrainedRegions={constraintInCodingSections}
       infobuttonTopic="regional-constraint"

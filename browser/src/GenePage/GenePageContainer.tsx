@@ -129,6 +129,25 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
         chrom
         start
         stop
+        chrom_grch37
+        start_grch37
+        stop_grch37
+        aa_start
+        aa_stop
+        obs_mis
+        exp_mis
+        obs_exp
+        chisq_diff_null
+        p_value
+      }
+    }
+    gnomad_regional_missense_constraint {
+      passed_qc
+      has_no_rmc_evidence
+      regions {
+        chrom
+        start
+        stop
         aa_start
         aa_stop
         obs_mis
