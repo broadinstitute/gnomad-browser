@@ -293,6 +293,7 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
             {this.renderColumnHeader({
               key: 'name',
               label: 'Genetic Ancestry Group',
+              tooltip: 'Australian individuals with genetic similarity, as identified through principal component analysis, to individuals of the listed ancestry',
               props: { colSpan: 2 },
             })}
             {this.renderColumnHeader({

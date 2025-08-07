@@ -17,14 +17,14 @@ export const GNOMAD_POPULATION_NAMES = {
   remaining: 'Remaining',
 
   // Custom OurDNA definitions
-  afr: 'AFR (African, African American and African Caribbean)',
-  amr: 'AMR (Central and South American)',
+  afr: 'African, African American and African Caribbean',
+  amr: 'Central and South American',
 
-  csa: 'CSA (Central and South Asian)',
-  eas: 'EAS (East and South East Asian)',
-  eur: 'EUR (European)',
-  fil: 'FIL (Australian Filipino)',
-  mid: 'MID (Middle Eastern and North African)',
+  csa: 'Central and South Asian',
+  eas: 'East and South East Asian',
+  eur: 'European',
+  fil: 'Australian Filipino',
+  mid: 'Middle Eastern and North African',
   na: 'Unclassified',
 
   // EAS subpopulations
