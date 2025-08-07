@@ -125,7 +125,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     if (this.props.metric) {
       this.state = { selectedMetric: this.props.metric }
     } else if (isV4(this.props.datasetId)) {
-      this.state = { selectedMetric: MetricOptions.over_20 }
+      this.state = { selectedMetric: MetricOptions.over_30 }
     } else {
       this.state = { selectedMetric: MetricOptions.mean }
     }
