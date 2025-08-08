@@ -5,6 +5,7 @@ on:
     branches:
       - ourdna-browser
       - ourdna-browser-dev
+      - fixing-site-quality-metrics
 
 permissions:
   id-token: write
