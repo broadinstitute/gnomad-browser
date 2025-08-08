@@ -1,7 +1,7 @@
 import { omit, throttle } from 'lodash'
 
 import { withCache } from '../cache'
-import logger from '../logger'
+// import logger from '../logger'
 
 import { fetchAllSearchResults, fetchIndexMetadata } from './helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from './helpers/region-helpers'
@@ -9,12 +9,8 @@ import { getConsequenceForContext } from './variant-datasets/shared/transcriptCo
 import largeGenes from './helpers/large-genes'
 
 const CLINVAR_VARIANT_INDICES = {
-  // GRCh37: 'clinvar_grch37_variants',
-  // GRCh38: 'clinvar_grch38_variants',
-  // TODO: revert back to using alias'ed indexes once we are confident this is
-  //   stable in production
-  GRCh37: 'clinvar_grch37_variants-2024-11-08--19-22',
-  GRCh38: 'clinvar_grch38_variants-2024-11-08--13-08',
+  GRCh37: 'clinvar_grch37_variants',
+  GRCh38: 'clinvar_grch38_variants',
 }
 
 // ================================================================================================
@@ -23,17 +19,10 @@ const CLINVAR_VARIANT_INDICES = {
 
 const _fetchClinvarReleaseDate = async (esClient: any) => {
   const metadata = await Promise.all([
-    fetchIndexMetadata(esClient, CLINVAR_VARIANT_INDICES.GRCh37),
     fetchIndexMetadata(esClient, CLINVAR_VARIANT_INDICES.GRCh38),
   ])
 
   const releaseDates = metadata.map((m) => m.table_globals.clinvar_release_date)
-
-  if (releaseDates[0] !== releaseDates[1]) {
-    logger.error({
-      message: `ClinVar release dates do not match. GRCh38: ${releaseDates[1]}, GRCh37: ${releaseDates[0]}`,
-    })
-  }
 
   return releaseDates[0]
 }
