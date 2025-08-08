@@ -3,7 +3,7 @@ id: consequence-category-filter
 title: Filter by consequence category
 ---
 
-Filter gnomAD variants based on [VEP](https://ensembl.org/info/docs/tools/vep/index.html) consequence.
+Filter OurDNA browser variants based on [VEP](https://ensembl.org/info/docs/tools/vep/index.html) consequence.
 
 The VEP consequences included in each category are:
 
