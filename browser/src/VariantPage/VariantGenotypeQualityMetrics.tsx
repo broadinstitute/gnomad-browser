@@ -228,7 +228,15 @@ const VariantGenotypeQualityMetrics = ({
   }
 
   // @ts-ignore
-  const binEdges = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
+  const binEdgesRaw = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
+
+  // loop through the bin edges, convert to string and find the max string length
+  const maxBinEdgeLength = Math.max(...binEdgesRaw.map((edge: number) => edge.toString().length))
+  
+  // if the max length is greater than 5, convert to exponential notation
+  // otherwise keep the original number format
+  // this is to ensure that the bin edges are displayed in a readable format
+  const binEdges: (number | string)[] = maxBinEdgeLength > 5 ? binEdgesRaw.map((edge: number) => edge.toExponential(2)) : binEdgesRaw
 
   const tabs: Tab[] = [
     createTab(
