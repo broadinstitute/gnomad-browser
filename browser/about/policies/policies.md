@@ -45,11 +45,11 @@ We encourage users to consider the following principles when working with the da
 
 * **Community benefit** - consider how your research will benefit OurDNA’s participating communities, either directly or indirectly
 
-* **Ethical reflection** - consider how your research may be used by others and what impact this will have on communities  
+* **Ethical reflection** - consider how your research may be used by others and what impact this will have on communities
 
 * **Contextual interpretation** - consider whether you have appropriately considered historical, social, and environmental contexts in how you have interpreted population genetic differences
 
-* **Responsible reporting** - ensure that you are using appropriate terminology and framing that minimises the chance that your research will be misused  
+* **Responsible reporting** - ensure that you are using appropriate terminology and framing that minimises the chance that your research will be misused
 
 ### Community Engagement
 
@@ -70,8 +70,6 @@ The CPG is firmly committed to Open Science and maximising the community benefit
 
 ## Licence
 
-The OurDNA aggregate data is available free under the [Creative Commons BY-SA](https://creativecommons.org/licenses/by-sa/4.0/deed.en). We request that you actively acknowledge and give attribution to the CPG with appropriate credit linking back to the project’s page. We also request that you provide a link to the licence, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the CPG endorses you or your use. If you remix, transform, or build upon the material, you must distribute your contributions under the same licence as the original. Attribution supports future efforts to release other data. It also reduces the amount of "orphaned data", helping retain links to authoritative sources.
+The OurDNA aggregate data will be available free under the [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.en). Aggregate data download is currently under development. Please check back for a release date.
 
-Citation instructions are provided on our [Publications page](/publications).
-
-
+Citation instructions will be provided on our Publications page (forthcoming).

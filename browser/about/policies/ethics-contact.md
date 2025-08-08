@@ -1,5 +1,5 @@
 ### Who should I contact for more information?
-If you would like more information about the project or if you need to speak to a member of the research team please contact <a href="servicedesk@populationgenomics.org.au">servicedesk@populationgenomics.com</a>.
+If you would like more information about the project or if you need to speak to a member of the research team please contact <a href="mailto:servicedesk@populationgenomics.org.au">servicedesk@populationgenomics.com</a>.
 
 <br>You can contact the Director of Research Operations at the Royal Children's Hospital if you:
 

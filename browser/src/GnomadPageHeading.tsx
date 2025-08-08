@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 import DatasetSelector, { DatasetOptions } from './DatasetSelector'
-import InfoButton from './help/InfoButton'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
@@ -96,9 +95,6 @@ const GnomadPageHeading = ({ children, extra, datasetOptions, selectedDataset }:
     <PageControlsWrapper>
       <Label>Dataset</Label>
       <DatasetSelector datasetOptions={datasetOptions} selectedDataset={selectedDataset} />
-      <span>
-        <InfoButton topic="dataset-selection" />
-      </span>
     </PageControlsWrapper>
   </PageHeadingWrapper>
 )

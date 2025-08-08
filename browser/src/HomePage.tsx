@@ -151,26 +151,26 @@ export default () => (
       is a flagship initiative of the{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://populationgenomics.org.au">Centre for Population Genomics</ExternalLink>
-      {' '}to increase the genomic representation of multicultural communities. 
-      The OurDNA program aims to aggregate and share genetic variation data from over 20,000 Australians, 
-      including 8,000 new high-quality whole genome sequences from participants from 
+      {' '}to increase the genomic representation of multicultural communities.
+      The OurDNA program aims to aggregate and share genetic variation data from over 20,000 Australians,
+      including 8,000 new high-quality whole genome sequences from participants from
       genomically underrepresented groups recruited following participatory community engagement.
     </p>
     <p>
-      The goal of the OurDNA program is to fix a gap in genetic research. Many Australian ancestry groups are not included right now — and we’re working to change that. 
+      The goal of the OurDNA program is to fix a gap in genetic research. Many Australian ancestry groups are not included right now — and we’re working to change that.
       Please see{' '}
       {/* @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component. */}
       <ExternalLink href="https://www.ourdna.org.au">OurDNA</ExternalLink>
       {' '}
-      for more information about the OurDNA Cohort and the Centre for Population Genomics&apos; mission to partner with multicultural communities to advance genetic research and medicine in Australia. 
+      for more information about the OurDNA Cohort and the Centre for Population Genomics&apos; mission to partner with multicultural communities to advance genetic research and medicine in Australia.
       The OurDNA Browser provides access to harmonised, aggregated genome and exome sequences from the OurDNA program.
     </p>
     <p>
-      The OurDNA program is overseen by the director of the Centre for Population Genomics, Daniel MacArthur. 
-      To learn more about program governance and institutional support, please visit our
+      The OurDNA program is overseen by the director of the Centre for Population Genomics, Daniel MacArthur.
+      To learn more about program governance and institutional support, please visit the
       {' '}
       <Link to="/about">
-      Funding
+      About
       </Link>
       {' '}
       page.
