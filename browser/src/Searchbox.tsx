@@ -30,10 +30,10 @@ const Wrapper = styled.div`
 const getDefaultSearchDataset = (selectedDataset: any) => {
   if (selectedDataset) {
     if (selectedDataset.startsWith('gnomad_r4')) {
-      return 'gnomad_r4_ourdna'
+      return 'ourdna'
     }
   }
-  return 'gnomad_r4_ourdna'
+  return 'ourdna'
 }
 
 export default withRouter((props: any) => {
@@ -63,7 +63,7 @@ export default withRouter((props: any) => {
 
   const innerSearchbox = useRef(null)
 
-  const grch38Datasets: DatasetId[] = ['gnomad_r4_ourdna']
+  const grch38Datasets: DatasetId[] = ['ourdna']
   // const grch37Datasets: DatasetId[] = []
 
   return (

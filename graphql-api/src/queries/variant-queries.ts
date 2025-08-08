@@ -37,7 +37,7 @@ const datasetQueries: Record<string, any> = {
     fetchMatchingVariants: (...args: QueryArgs) =>
       gnomadV4VariantQueries.fetchMatchingVariants(...args, 'non_ukb'),
   },
-  gnomad_r4_ourdna: {
+  ourdna: {
     countVariantsInRegion: (...args: QueryArgs) =>
       gnomadV4VariantQueries.countVariantsInRegion(...args, 'all'),
     fetchVariantById: (...args: QueryArgs) =>

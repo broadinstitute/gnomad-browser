@@ -89,7 +89,7 @@ export default () => (
           preserveSelectedDataset={false}
           to={{
             pathname: '/variant/1-1000079-A-G',
-            search: queryString.stringify({ dataset: 'gnomad_r4_ourdna' }),
+            search: queryString.stringify({ dataset: 'ourdna' }),
           }}
         >
           1-1000079-A-G

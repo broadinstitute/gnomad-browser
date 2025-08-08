@@ -1,7 +1,7 @@
 enum DatasetId {
   gnomad_r4
   gnomad_r4_non_ukb
-  gnomad_r4_ourdna
+  ourdna
   gnomad_r3
   gnomad_r3_controls_and_biobanks
   gnomad_r3_non_cancer

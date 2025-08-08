@@ -518,11 +518,11 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
       //   childReferenceGenome: referenceGenome('gnomad_r4_non_ukb'),
       // })
       shortVariantDatasets[1].children.push({
-        id: 'gnomad_r4_ourdna',
-        label: labelForDataset('gnomad_r4_ourdna'),
-        url: urlBuilder(window.location, 'gnomad_r4_ourdna'),
-        description: `${sampleCounts.gnomad_r4_ourdna.total.toLocaleString()} samples`,
-        childReferenceGenome: referenceGenome('gnomad_r4_ourdna'),
+        id: 'ourdna',
+        label: labelForDataset('ourdna'),
+        url: urlBuilder(window.location, 'ourdna'),
+        description: `${sampleCounts.ourdna.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('ourdna'),
       })
     }
 

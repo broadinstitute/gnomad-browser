@@ -20,7 +20,7 @@ export const datasetLabels = {
   gnomad_cnv_r4: 'gnomAD CNVs v4.1.0',
   gnomad_r4: 'gnomAD v4.1.0',
   gnomad_r4_non_ukb: 'gnomAD v4.1.0 (non-UKB)',
-  gnomad_r4_ourdna: 'OurDNA v1.0',
+  ourdna: 'OurDNA v1.0',
 } as const
 export type DatasetId = keyof typeof datasetLabels
 
@@ -1028,7 +1028,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasJointFrequencyData: false,
     hasVRSData: true,
   },
-  gnomad_r4_ourdna: {
+  ourdna: {
     isSubset: true,
     hasConstraints: true,
     hasVariantCoocurrence: false,
@@ -1070,7 +1070,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     coverageDatasetId: 'gnomad_r4',
     variantFeedbackDescription: 'gnomAD v4',
     isV4SVs: false,
-    shortVariantDatasetId: 'gnomad_r4_ourdna',
+    shortVariantDatasetId: 'ourdna',
     structuralVariantDatasetId: 'gnomad_sv_r4',
     isV4CNVs: false,
     copyNumberVariantDatasetId: 'gnomad_cnv_r4',
@@ -1206,7 +1206,7 @@ export const hasCopyNumberVariantCoverage = (datasetId: DatasetId) =>
   getMetadata(datasetId, 'hasCopyNumberVariantCoverage')
 
 export const baseDatasetForReferenceGenome = (genome: ReferenceGenome): DatasetId =>
-  genome === 'GRCh37' ? 'gnomad_r2_1' : 'gnomad_r4_ourdna'
+  genome === 'GRCh37' ? 'gnomad_r2_1' : 'ourdna'
 
 export const hasJointFrequencyData = (datasetId: DatasetId): boolean =>
   getMetadata(datasetId, 'hasJointFrequencyData')

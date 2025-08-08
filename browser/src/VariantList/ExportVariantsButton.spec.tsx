@@ -85,7 +85,6 @@ const EXOME_GROUPMAX_FREQ_LABEL = 'Exome GroupMax FAF frequency'
 const GENOME_GROUPMAX_GROUP_LABEL = 'Genome GroupMax FAF group'
 const GENOME_GROUPMAX_FREQ_LABEL = 'Genome GroupMax FAF frequency'
 
-/* @ts-expect-error TS(TS2741) FIXME: Property 'gnomad_r4_ourdna' is missing in type. */
 const expectedVersionSpecificColumns: Record<DatasetId, Column[]> = {
   exac: [],
   gnomad_r2_1: [
@@ -167,6 +166,18 @@ const expectedVersionSpecificColumns: Record<DatasetId, Column[]> = {
     { label: EXOME_FILTERS_LABEL, getValue: getExomeFilters },
     { label: EXOME_GROUPMAX_GROUP_LABEL, getValue: getV4ExomeFAFGroup },
     { label: EXOME_GROUPMAX_FREQ_LABEL, getValue: getV4ExomeFAFFreq },
+    { label: CADD_LABEL, getValue: getCadd },
+    { label: REVEL_MAX_LABEL, getValue: getRevel },
+    { label: SPLICEAI_DS_MAX_LABEL, getValue: getSpliceAI },
+    { label: PANGOLIN_LARGEST_DS_LABEL, getValue: getPangolin },
+    { label: PHYLOP_LABEL, getValue: getPhylop },
+    { label: SIFT_MAX_LABEL, getValue: getSift },
+    { label: POLYPHEN_MAX_LABEL, getValue: getPolyphen },
+  ],
+  ourdna: [
+    { label: JOINT_FILTERS_LABEL, getValue: getJointFilters },
+    { label: JOINT_GROUPMAX_GROUP_LABEL, getValue: getJointFAFGroup },
+    { label: JOINT_GROUPMAX_FREQ_LABEL, getValue: getJointFAFFreq },
     { label: CADD_LABEL, getValue: getCadd },
     { label: REVEL_MAX_LABEL, getValue: getRevel },
     { label: SPLICEAI_DS_MAX_LABEL, getValue: getSpliceAI },
