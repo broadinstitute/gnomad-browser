@@ -228,7 +228,17 @@ const VariantGenotypeQualityMetrics = ({
   }
 
   // @ts-ignore
-  const binEdges = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
+  const binEdgesRaw = (variant.exome || variant.genome).quality_metrics[selectedMetric].alt.bin_edges
+
+  // loop through the bin edges, convert to string and find the max string length
+  const maxBinEdgeLength = Math.max(...binEdgesRaw.map((edge: number) => edge.toString().length))
+  
+  // Only convert toFixed(2) when maxBinEdgeLength > 5 and all edge values are less than 10
+  const shouldConvertToFixed =
+    maxBinEdgeLength > 5 && binEdgesRaw.every((edge: number) => edge < 10)
+  const binEdges: (number | string)[] = shouldConvertToFixed
+    ? binEdgesRaw.map((edge: number) => edge.toFixed(2))
+    : binEdgesRaw
 
   const tabs: Tab[] = [
     createTab(
