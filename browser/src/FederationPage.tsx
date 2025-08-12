@@ -81,8 +81,7 @@ const datasets: Dataset[] = [
   {
     country: 'China',
     samples: '10,000',
-    source:
-      'Advanced Institute of Information Technology-Juno Genomics joint Center for Mendelian Genomics (AIIT-Juno CMG)',
+    source: 'Advanced Institute for Information Technology',
     lead: 'Xiao Li',
   },
   {
