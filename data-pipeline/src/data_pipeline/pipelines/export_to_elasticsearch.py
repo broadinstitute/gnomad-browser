@@ -158,39 +158,6 @@ DATASETS_CONFIG = {
             "block_size": 1_000,
         },
     },
-    "gnomad_v4_cnv_track_callable": {
-        "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v4_cnvs_pipeline.get_output("track_percent_callable").get_output_path())
-        ),
-        "args": {
-            "index": "gnomad_v4_cnv_track_callable",
-            "id_field": "xpos",
-            "num_shards": 2,
-            "block_size": 10_000,
-        },
-    },
-    "gnomad_v4_cnv_del_burden": {
-        "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v4_cnvs_pipeline.get_output("del_burden").get_output_path())
-        ),
-        "args": {
-            "index": "gnomad_v4_cnv_del_burden",
-            "id_field": "xpos",
-            "num_shards": 2,
-            "block_size": 10_000,
-        },
-    },
-    "gnomad_v4_cnv_dup_burden": {
-        "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v4_cnvs_pipeline.get_output("dup_burden").get_output_path())
-        ),
-        "args": {
-            "index": "gnomad_v4_cnv_dup_burden",
-            "id_field": "xpos",
-            "num_shards": 2,
-            "block_size": 10_000,
-        },
-    },
     ##############################################################################################################
     # gnomAD v3
     ##############################################################################################################
