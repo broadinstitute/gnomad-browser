@@ -87,13 +87,9 @@ const DataPage = () => {
             <ExternalLink href="https://cloud.google.com/public-datasets">
               Google Cloud Public Datasets
             </ExternalLink>
-            , the{' '}
+            , and the{' '}
             <ExternalLink href="https://registry.opendata.aws/">
               Registry of Open Data on AWS
-            </ExternalLink>
-            , and{' '}
-            <ExternalLink href="https://azure.microsoft.com/en-us/services/open-datasets/">
-              Azure Open Datasets
             </ExternalLink>
             . We recommend using <ExternalLink href="https://hail.is/">Hail</ExternalLink>, our{' '}
             <ExternalLink href="https://github.com/broadinstitute/gnomad_methods">
@@ -162,32 +158,6 @@ const DataPage = () => {
 
           <StyledParagraph>
             <CodeBlock>aws s3 ls s3://gnomad-public-us-east-1/release/</CodeBlock>
-          </StyledParagraph>
-
-          <h3>Azure Open Datasets</h3>
-
-          <p>
-            Files can be browsed and downloaded using{' '}
-            <ExternalLink href="https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10">
-              AzCopy
-            </ExternalLink>{' '}
-            or{' '}
-            <ExternalLink href="https://azure.microsoft.com/en-us/features/storage-explorer/">
-              Azure Storage Explorer
-            </ExternalLink>
-            .
-          </p>
-
-          <p>
-            <CodeBlock>azcopy ls https://datasetgnomad.blob.core.windows.net/dataset/</CodeBlock>
-          </p>
-
-          <StyledParagraph>
-            gnomAD variants are also available in Parquet format.{' '}
-            <ExternalLink href="https://docs.microsoft.com/en-us/azure/open-datasets/dataset-gnomad">
-              Find more information on the Azure website
-            </ExternalLink>
-            .
           </StyledParagraph>
 
           <h3>Downloads</h3>
