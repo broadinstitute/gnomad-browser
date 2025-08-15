@@ -217,11 +217,8 @@ const TranscriptConsequence = ({ consequence }: TranscriptConsequenceProps) => {
 
   return (
     <AttributeList>
-      {consequence.hgvsp ? (
-        <Attribute name="HGVSp">{consequence.hgvsp}</Attribute>
-      ) : (
-        <Attribute name="HGVSc">{consequence.hgvsc}</Attribute>
-      )}
+      {consequence.hgvsp && <Attribute name="HGVSp">{consequence.hgvsp}</Attribute>}
+      {consequence.hgvsc && <Attribute name="HGVSc">{consequence.hgvsc}</Attribute>}
       {consequence.domains && consequence.domains.length > 0 && (
         <Attribute name="Domains">
           <TranscriptConsequenceProteinDomains consequence={consequence} />

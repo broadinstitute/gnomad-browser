@@ -1525,22 +1525,6 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -1573,22 +1557,6 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -8946,22 +8914,6 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -8994,22 +8946,6 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -16370,22 +16306,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -16418,22 +16338,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -23794,22 +23698,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -23842,22 +23730,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -31218,22 +31090,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -31266,22 +31122,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -38642,22 +38482,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -38690,22 +38514,6 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -45747,22 +45555,6 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -45795,22 +45587,6 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -52139,22 +51915,6 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -52187,22 +51947,6 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -59682,22 +59426,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -59730,22 +59458,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -67225,22 +66937,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -67273,22 +66969,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -74768,22 +74448,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -74816,22 +74480,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
@@ -82311,22 +81959,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                         <dt
                           className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
                         >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
                           Domains
                         </dt>
                         <dd
@@ -82359,22 +81991,6 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
                     <dl
                       className="TranscriptConsequence__AttributeList-sc-1aaizap-2 bCFpVu"
                     >
-                      <div
-                        style={
-                          {
-                            "marginTop": "0.25em",
-                          }
-                        }
-                      >
-                        <dt
-                          className="TranscriptConsequence__AttributeName-sc-1aaizap-0 hhgcrX"
-                        >
-                          HGVSc
-                        </dt>
-                        <dd
-                          className="TranscriptConsequence__AttributeValue-sc-1aaizap-1 cHxeFf"
-                        />
-                      </div>
                       <div
                         style={
                           {
