@@ -41,12 +41,6 @@ from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_cov
 
 from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
 
-from data_pipeline.pipelines.gnomad_v4_cnv_track_percent_callable import pipeline as gnomad_v4_cnv_coverage_pipeline
-
-from data_pipeline.pipelines.gnomad_v4_cnv_del_burden import pipeline as gnomad_v4_cnv_del_burden
-
-from data_pipeline.pipelines.gnomad_v4_cnv_dup_burden import pipeline as gnomad_v4_cnv_dup_burden
-
 
 logger = logging.getLogger("gnomad_data_pipeline")
 
@@ -166,7 +160,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v4_cnv_track_callable": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v4_cnv_coverage_pipeline.get_output("track_percent_callable").get_output_path())
+            hl.read_table(gnomad_v4_cnvs_pipeline.get_output("track_percent_callable").get_output_path())
         ),
         "args": {
             "index": "gnomad_v4_cnv_track_callable",
@@ -177,7 +171,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v4_cnv_del_burden": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v4_cnv_del_burden.get_output("del_burden").get_output_path())
+            hl.read_table(gnomad_v4_cnvs_pipeline.get_output("del_burden").get_output_path())
         ),
         "args": {
             "index": "gnomad_v4_cnv_del_burden",
@@ -188,7 +182,7 @@ DATASETS_CONFIG = {
     },
     "gnomad_v4_cnv_dup_burden": {
         "get_table": lambda: subset_table(
-            hl.read_table(gnomad_v4_cnv_dup_burden.get_output("dup_burden").get_output_path())
+            hl.read_table(gnomad_v4_cnvs_pipeline.get_output("dup_burden").get_output_path())
         ),
         "args": {
             "index": "gnomad_v4_cnv_dup_burden",
