@@ -237,7 +237,7 @@ Data included in the gnomAD database has met our ethical requirements including 
 
 ## gnomAD Data Preservation Policy
 
-While we hope gnomAD exists for decades to come, we recognize the importance of having a plan in place for preserving gnomAD datasets. Through our [collaboration](https://gnomad.broadinstitute.org/news/2020-10-open-access-to-gnomad-data-on-multiple-cloud-providers/) with Google Cloud Platform (GCP), Microsoft’s Azure, and Amazon Web Services (AWS), we have ensured that the public would continue to have access to any past gnomAD datasets as long as at least one of those public dataset hosting entities remains in business. Additionally we will do everything possible to sustain the existing browser for as long as financial/staffing commitments allow.
+While we hope gnomAD exists for decades to come, we recognize the importance of having a plan in place for preserving gnomAD datasets. Through our [collaboration](https://gnomad.broadinstitute.org/news/2020-10-open-access-to-gnomad-data-on-multiple-cloud-providers/) with Google Cloud Platform (GCP) and Amazon Web Services (AWS), we have ensured that the public would continue to have access to any past gnomAD datasets as long as at least one of those public dataset hosting entities remains in business. Additionally we will do everything possible to sustain the existing browser for as long as financial/staffing commitments allow.
 
 ## Data Generation
 
