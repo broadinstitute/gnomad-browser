@@ -96,7 +96,6 @@ type VAQualityMeasures {
   lowComplexityRegion: Boolean
   lowConfidenceLossOfFunctionError: Boolean
   lossOfFunctionWarning: Boolean
-  noncodingTranscriptError: Boolean
   heterozygousSkewedAlleleCount: Int
 }
 
@@ -118,6 +117,8 @@ type VACohortAlleleFrequencyData {
   cohort: VACohort!
   "Ancillary results that may be associated with the CohortAlleleFrequency, providing additional context or information."
   ancillaryResults: VAAncillaryResults
+  "Metrics of quality of, or confidence in, the CohortAlleleFrequency."
+  qualityMeasures: VAQualityMeasures
   """
   A list of CohortAlleleFrequency objects describing subcohorts of the cohort currently being described.
   This creates a recursive relationship and subcohorts can be further subdivided into more subcohorts.
