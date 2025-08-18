@@ -68,7 +68,7 @@ const DataPage = () => {
           <ExternalLink href="https://learn.microsoft.com/en-us/azure/open-datasets/dataset-gnomad">
             Azure Open Datasets
           </ExternalLink>{' '}
-          will be deprecated on August 15. Consider transitioning to accessing gnomAD data in{' '}
+          ended on August 15. The data is available in{' '}
           <ExternalLink href="https://cloud.google.com/public-datasets">
             Google Cloud Public Datasets
           </ExternalLink>{' '}

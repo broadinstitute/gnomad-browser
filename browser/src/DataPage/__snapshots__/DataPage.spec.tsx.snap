@@ -460,7 +460,7 @@ exports[`Data Page has no unexpected changes 1`] = `
         Azure Open Datasets
       </a>
        
-      will be deprecated on August 15. Consider transitioning to accessing gnomAD data in
+      ended on August 15. The data is available in
        
       <a
         className="c7"
