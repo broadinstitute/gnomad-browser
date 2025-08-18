@@ -4,6 +4,8 @@ from data_pipeline.data_types.variant import variant_id
 
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
+from data_pipeline.pipelines.gnomad_v4_variants import pipeline as gnomad_v4_variants_pipeline
+
 
 pipeline = Pipeline()
 
@@ -69,7 +71,7 @@ pipeline.add_task(
     {
         "gnomad_v2_liftover_exomes_path": "gs://gcp-public-data--gnomad/release/2.1.1/liftover_grch38/ht/exomes/gnomad.exomes.r2.1.1.sites.liftover_grch38.ht",
         "gnomad_v2_liftover_genomes_path": "gs://gcp-public-data--gnomad/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht",
-        "gnomad_v4_variants_path": "gs://gnomad-v4-data-pipeline/output/gnomad_v4_20231027T203139/gnomad_v4_variants_annotated_2.ht",
+        "gnomad_v4_variants_path": gnomad_v4_variants_pipeline.get_output("variants").get_output_path(),
     },
 )
 
