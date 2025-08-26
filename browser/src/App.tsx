@@ -8,7 +8,6 @@ import ErrorBoundary from './ErrorBoundary'
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
 import userPreferences from './userPreferences'
-import { ExternalLink } from '@gnomad/ui'
 
 const NavBar = lazy(() => import('./NavBar'))
 const Routes = lazy(() => import('./Routes'))
@@ -70,12 +69,8 @@ const Banner = styled.div`
   }
 `
 
-const BANNER_CONTENT = (
-  <>
-    Help us continue to improve gnomAD by taking 5 minutes to fill out our{' '}
-    <ExternalLink href="http://broad.io/2024_survey">user survey</ExternalLink>.
-  </>
-)
+const BANNER_CONTENT = null
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
