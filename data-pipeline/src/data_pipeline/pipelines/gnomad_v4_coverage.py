@@ -11,7 +11,7 @@ pipeline.add_task(
     task_function=prepare_coverage,
     output_path=f"/{output_sub_dir}/gnomad_v4_exome_coverage.ht",
     inputs={
-        "coverage_path": "gs://gnomad-v4-coverage-testing/release/4.0/ht/exomes/gnomad.exomes.v4.0.coverage.ht",
+        "coverage_path": "gs://gcp-public-data--gnomad/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.ht",
     },
     # params={"filter_intervals": ["chr1:55039447-55064852"]},
 )
