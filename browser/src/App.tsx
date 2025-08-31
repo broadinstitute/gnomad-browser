@@ -1,6 +1,8 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import { CopilotKit } from '@copilotkit/react-core'
+import '@copilotkit/react-ui/styles.css'
 
 import Delayed from './Delayed'
 import ErrorBoundary from './ErrorBoundary'
@@ -8,6 +10,7 @@ import ErrorBoundary from './ErrorBoundary'
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
 import userPreferences from './userPreferences'
+import GnomadCopilotSidebar from './CopilotSidebar'
 
 const NavBar = lazy(() => import('./NavBar'))
 const Routes = lazy(() => import('./Routes'))
@@ -69,10 +72,23 @@ const Banner = styled.div`
   }
 `
 
+const MainContentWrapper = styled.div`
+  display: flex;
+  height: calc(100vh - 64px); // Assuming navbar height
+  overflow: hidden;
+`
+
+const ContentArea = styled.div`
+  flex: 1;
+  overflow-y: auto;
+`
+
 const BANNER_CONTENT = null
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
+  const [isChatOpen, setIsChatOpen] = useState(false)
+  
   useEffect(() => {
     userPreferences.loadPreferences().then(
       () => {
@@ -90,43 +106,53 @@ const App = () => {
   }, [])
 
   return (
-    <Router>
-      {/* On any navigation, send event to Google Analytics. */}
-      <Route path="/" component={GoogleAnalytics} />
+    <CopilotKit runtimeUrl="http://localhost:4001/api/copilotkit">
+      <Router>
+        {/* On any navigation, send event to Google Analytics. */}
+        <Route path="/" component={GoogleAnalytics} />
 
-      {/**
-       * On any navigation, scroll to the anchor specified by location fragment (if any) or to the top of the page.
-       * If the page's module is already loaded, scrolling is handled by this router's render function. If the page's
-       * module is loaded by Suspense, scrolling is handled by the useEffect hook in the PageLoading component.
-       */}
-      <Route
-        path="/"
-        render={({ location }: any) => {
-          scrollToAnchorOrStartOfPage(location)
-          return null
-        }}
-      />
+        {/**
+         * On any navigation, scroll to the anchor specified by location fragment (if any) or to the top of the page.
+         * If the page's module is already loaded, scrolling is handled by this router's render function. If the page's
+         * module is loaded by Suspense, scrolling is handled by the useEffect hook in the PageLoading component.
+         */}
+        <Route
+          path="/"
+          render={({ location }: any) => {
+            scrollToAnchorOrStartOfPage(location)
+            return null
+          }}
+        />
 
-      <ErrorBoundary>
-        {isLoading ? (
-          <Delayed>
-            <StatusMessage>Loading</StatusMessage>
-          </Delayed>
-        ) : (
-          <Suspense fallback={null}>
-            <TopBarWrapper>
-              <NavBar />
-              {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
-            </TopBarWrapper>
-            <Notifications />
+        <ErrorBoundary>
+          {isLoading ? (
+            <Delayed>
+              <StatusMessage>Loading</StatusMessage>
+            </Delayed>
+          ) : (
+            <Suspense fallback={null}>
+              <TopBarWrapper>
+                <NavBar onOpenChat={() => setIsChatOpen(true)} />
+                {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
+              </TopBarWrapper>
+              <Notifications />
 
-            <Suspense fallback={<PageLoading />}>
-              <Routes />
+              <MainContentWrapper>
+                <ContentArea>
+                  <Suspense fallback={<PageLoading />}>
+                    <Routes />
+                  </Suspense>
+                </ContentArea>
+                <GnomadCopilotSidebar
+                  isOpen={isChatOpen}
+                  onClose={() => setIsChatOpen(false)}
+                />
+              </MainContentWrapper>
             </Suspense>
-          </Suspense>
-        )}
-      </ErrorBoundary>
-    </Router>
+          )}
+        </ErrorBoundary>
+      </Router>
+    </CopilotKit>
   )
 }
 

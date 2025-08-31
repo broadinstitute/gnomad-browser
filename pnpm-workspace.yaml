@@ -1,5 +1,6 @@
 packages:
   - 'browser'
+  - 'copilotkit-server'
   - 'dataset-metadata'
   - 'graphql-api'
   - 'reads'

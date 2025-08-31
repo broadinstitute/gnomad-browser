@@ -25,7 +25,7 @@ const _fetchClinvarReleaseDate = async (esClient: any) => {
     fetchIndexMetadata(esClient, CLINVAR_VARIANT_INDICES.GRCh38),
   ])
 
-  const releaseDates = metadata.map((m) => m.table_globals.clinvar_release_date)
+  const releaseDates = metadata.map((m: any) => m.table_globals.clinvar_release_date)
 
   if (releaseDates[0] !== releaseDates[1]) {
     logger.error({
