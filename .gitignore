@@ -36,3 +36,6 @@ hail-*.log
 
 # Reads metadata databases
 reads/*.db
+
+.grove
+.grove-worktrees
