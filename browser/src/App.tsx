@@ -10,7 +10,7 @@ import ErrorBoundary from './ErrorBoundary'
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
 import userPreferences from './userPreferences'
-import GnomadCopilotSidebar from './CopilotSidebar'
+import { GnomadCopilot } from './GnomadCopilot'
 
 const NavBar = lazy(() => import('./NavBar'))
 const Routes = lazy(() => import('./Routes'))
@@ -72,22 +72,11 @@ const Banner = styled.div`
   }
 `
 
-const MainContentWrapper = styled.div`
-  display: flex;
-  height: calc(100vh - 64px); // Assuming navbar height
-  overflow: hidden;
-`
-
-const ContentArea = styled.div`
-  flex: 1;
-  overflow-y: auto;
-`
 
 const BANNER_CONTENT = null
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [isChatOpen, setIsChatOpen] = useState(false)
   
   useEffect(() => {
     userPreferences.loadPreferences().then(
@@ -131,23 +120,16 @@ const App = () => {
             </Delayed>
           ) : (
             <Suspense fallback={null}>
-              <TopBarWrapper>
-                <NavBar onOpenChat={() => setIsChatOpen(true)} />
-                {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
-              </TopBarWrapper>
-              <Notifications />
-
-              <MainContentWrapper>
-                <ContentArea>
-                  <Suspense fallback={<PageLoading />}>
-                    <Routes />
-                  </Suspense>
-                </ContentArea>
-                <GnomadCopilotSidebar
-                  isOpen={isChatOpen}
-                  onClose={() => setIsChatOpen(false)}
-                />
-              </MainContentWrapper>
+              <GnomadCopilot>
+                <TopBarWrapper>
+                  <NavBar />
+                  {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
+                </TopBarWrapper>
+                <Notifications />
+                <Suspense fallback={<PageLoading />}>
+                  <Routes />
+                </Suspense>
+              </GnomadCopilot>
             </Suspense>
           )}
         </ErrorBoundary>
