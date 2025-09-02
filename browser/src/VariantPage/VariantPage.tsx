@@ -814,10 +814,12 @@ const checkGeneLink = (transcript_consequences: TranscriptConsequence[] | null) 
 
 const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
   const gene = { ensembleId: '' }
+  const [variantData, setVariantData] = React.useState<any>(null)
+  
   return (
     // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
-      <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
+      <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} pageContext={variantData} />
       <BaseQuery
         key={datasetId}
         operationName={operationName}
@@ -878,6 +880,11 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
             const geneData = checkGeneLink(variant.transcript_consequences)
             if (geneData) {
               gene.ensembleId = geneData.ensembleId
+            }
+
+            // Update variant data for CopilotKit context
+            if (variantData?.variant_id !== variant.variant_id) {
+              setVariantData(variant)
             }
 
             pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />

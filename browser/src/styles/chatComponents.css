@@ -1,0 +1,57 @@
+/* Styles for components rendered in the chat sidebar */
+.chat-component-container {
+  max-width: 100%;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+/* Make tables scrollable horizontally in the narrow chat pane */
+.chat-component-container table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  max-width: 100%;
+}
+
+/* Adjust table styling for better readability in compact space */
+.chat-component-container th,
+.chat-component-container td {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8125rem;
+}
+
+.chat-component-container th[scope='col'] {
+  padding-left: 1rem;
+}
+
+.chat-component-container td {
+  padding-left: 1rem;
+}
+
+/* Ensure badges and other inline elements don't break layout */
+.chat-component-container span {
+  white-space: nowrap;
+}
+
+/* Adjust heading sizes */
+.chat-component-container h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Warning and info boxes */
+.chat-component-container p {
+  font-size: 0.875rem;
+  margin: 0.5rem 0;
+}
+
+/* Ensure tooltips work properly in the chat context */
+.chat-component-container [role="tooltip"] {
+  z-index: 9999;
+}
