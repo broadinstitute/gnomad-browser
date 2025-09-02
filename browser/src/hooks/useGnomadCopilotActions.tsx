@@ -145,23 +145,29 @@ const adaptApiDataToComponentProps = (apiData: any): Variant => {
 
 export function useGnomadCopilotActions() {
   useCopilotAction({
-    name: 'showVariantInfo',
+    name: 'get_variant_summary',
     description: 'Fetches and displays a summary of population frequencies for a specific gnomAD variant.',
     parameters: [
       {
-        name: 'variantId',
+        name: 'variant_id',
         type: 'string',
         description: 'The variant ID, e.g., 1-55051215-G-GA or an rsID.',
         required: true,
       },
+      {
+        name: 'dataset',
+        type: 'string', 
+        description: 'The gnomAD dataset to query (e.g., gnomad_r4, gnomad_r3).',
+        required: false,
+      },
     ],
-    handler: async ({ variantId }) => {
-      // In a real implementation, you would get the current dataset from your app's state management
+    handler: async ({ variant_id, dataset }) => {
+      // Get the current dataset from URL if not provided
       const currentUrl = new URL(window.location.href)
-      const datasetId = currentUrl.searchParams.get('dataset') || 'gnomad_r4'
+      const datasetId = dataset || currentUrl.searchParams.get('dataset') || 'gnomad_r4'
       
-      // The handler's return value is sent to the backend, which will execute the corresponding MCP tool.
-      return { variantId, dataset: datasetId }
+      // Return parameters that match the MCP tool's expected format
+      return { variant_id, dataset: datasetId }
     },
     render: ({ status, result }) => {
       if (status === 'inProgress') {
