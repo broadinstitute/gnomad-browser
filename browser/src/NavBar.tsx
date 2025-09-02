@@ -79,11 +79,7 @@ const Menu = styled.ul`
   }
 `
 
-interface NavBarProps {
-  onOpenChat?: () => void
-}
-
-const NavBar = ({ onOpenChat }: NavBarProps) => {
+const NavBar = () => {
   const [isMenuExpanded, setIsMenuExpanded] = useState(false)
   const toggleMenu = useCallback(() => {
     setIsMenuExpanded((previousValue) => !previousValue)
@@ -164,13 +160,6 @@ const NavBar = ({ onOpenChat }: NavBarProps) => {
             Help/FAQ
           </Link>
         </li>
-        {onOpenChat && (
-          <li>
-            <a href="#" onClick={(e) => { e.preventDefault(); closeMenu(); onOpenChat(); }}>
-              Copilot
-            </a>
-          </li>
-        )}
       </Menu>
     </Wrapper>
   )
