@@ -8,3 +8,5 @@
 !pnpm-workspace-api-docker.yaml
 !package.json
 !graphql-api/static_data
+!graphql-api/app.py
+!graphql-api/requirements.txt

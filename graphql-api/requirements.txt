@@ -1,0 +1,8 @@
+pyarrow
+daft
+pyiceberg[gcsfs]
+flask
+flask_cors
+ariadne
+flask_graphql
+polars
