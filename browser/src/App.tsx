@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { CopilotKit } from '@copilotkit/react-core'
 import '@copilotkit/react-ui/styles.css'
+import './styles/chatComponents.css'
 
 import Delayed from './Delayed'
 import ErrorBoundary from './ErrorBoundary'
