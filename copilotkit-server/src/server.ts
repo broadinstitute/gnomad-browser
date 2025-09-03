@@ -16,14 +16,14 @@ app.use(cors({
 }));
 
 const serviceAdapter = new GoogleGenerativeAIAdapter({
-  model: "gemini-1.5-flash-latest",
+  model: "gemini-2.5-pro",
   apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY || "",
 });
 
 // Configure the MCP server command.
-// Assumes the 'gmd' binary is installed in PATH
+// Use the full path to gmd binary
 const mcpConfig = {
-  command: "gmd",
+  command: `${process.env.HOME}/.grove/bin/gmd`,
   args: ["mcp", "serve"],
   env: {
     GNOMAD_API_URL: process.env.GNOMAD_API_URL || "https://gnomad.broadinstitute.org/api"
