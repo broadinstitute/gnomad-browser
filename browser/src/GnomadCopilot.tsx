@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { useHistory, useLocation } from 'react-router-dom'
+import { useMCPStateRender } from './hooks/useMCPStateRender'
 import '@copilotkit/react-ui/styles.css'
 
 const PageContainer = styled.div`
@@ -91,6 +92,7 @@ const StyledCopilotChat = styled(CopilotChat)`
   }
 `
 
+
 export function GnomadCopilot({ children }: { children: React.ReactNode }) {
   const [isChatOpen, setIsChatOpen] = useState(true)
   const [chatWidth, setChatWidth] = useState(window.innerWidth / 3) // Default to 1/3 of screen
@@ -99,8 +101,12 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
   const history = useHistory()
   const location = useLocation()
   
+  // Initialize MCP state rendering (renders inline in chat)
+  useMCPStateRender()
+  
   // Show "interpret this variant" suggestion only on variant pages
   const isVariantPage = location.pathname.startsWith('/variant/')
+  const isGenePage = location.pathname.startsWith('/gene/')
   
   // Define suggestions based on the current page
   const suggestions = useMemo(() => {
@@ -110,10 +116,42 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
           title: "Interpret this variant",
           message: "Can you help me interpret the clinical significance and population frequency of this variant?",
         },
+        {
+          title: "Is this variant too common?",
+          message: "Is this variant's allele frequency too high for it to cause a rare Mendelian disease?",
+        },
+        {
+          title: "Analyze expression at this location (Pext)",
+          message: "Analyze the Pext score for this variant's location. Is it in a functionally important region that is expressed across many tissues?",
+        },
+        {
+          title: "Check in silico predictors",
+          message: "What do in silico predictors like REVEL and CADD say about this variant?",
+        },
+      ]
+    }
+    if (isGenePage) {
+      return [
+        {
+          title: "Summarize gene constraint",
+          message: "Summarize this gene's constraint scores, like pLI and missense o/e.",
+        },
+        {
+          title: "Check tissue expression",
+          message: "In which tissues is this gene most highly expressed?",
+        },
+        {
+          title: "Look up Mendelian disease",
+          message: "Is this gene associated with any Mendelian diseases?",
+        },
+        {
+          title: "Analyze expression regions (Pext)",
+          message: "Provide a Pext analysis for this gene to identify functionally important regions.",
+        },
       ]
     }
     return []
-  }, [isVariantPage])
+  }, [isVariantPage, isGenePage])
 
   useCopilotAction({
     name: 'navigateToVariantPage',
