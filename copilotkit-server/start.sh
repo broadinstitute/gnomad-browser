@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export MENDELIAN_TSV_PATH=/Users/msolomon/code/random/mono2/gmd-api/data/gene-disease-table_8_13_2025.tsv
+
 export NODE_ENV=${NODE_ENV:-development}
 
 if [[ $NODE_ENV == "development" ]]; then
