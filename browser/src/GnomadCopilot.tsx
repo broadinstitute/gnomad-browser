@@ -1,8 +1,8 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import '@copilotkit/react-ui/styles.css'
 
 const PageContainer = styled.div`
@@ -84,15 +84,36 @@ const StyledCopilotChat = styled(CopilotChat)`
   input[type="text"] {
     font-size: 14px !important;
   }
+  
+  /* Style suggestion chips */
+  button[data-suggestion] {
+    font-size: 14px !important;
+  }
 `
 
 export function GnomadCopilot({ children }: { children: React.ReactNode }) {
-  const [isChatOpen, setIsChatOpen] = useState(false)
+  const [isChatOpen, setIsChatOpen] = useState(true)
   const [chatWidth, setChatWidth] = useState(window.innerWidth / 3) // Default to 1/3 of screen
   const isResizing = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const history = useHistory()
+  const location = useLocation()
   
+  // Show "interpret this variant" suggestion only on variant pages
+  const isVariantPage = location.pathname.startsWith('/variant/')
+  
+  // Define suggestions based on the current page
+  const suggestions = useMemo(() => {
+    if (isVariantPage) {
+      return [
+        {
+          title: "Interpret this variant",
+          message: "Can you help me interpret the clinical significance and population frequency of this variant?",
+        },
+      ]
+    }
+    return []
+  }, [isVariantPage])
 
   useCopilotAction({
     name: 'navigateToVariantPage',
@@ -179,6 +200,7 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
                   title: 'gnomAD Assistant',
                   initial: 'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
                 }}
+                suggestions={suggestions}
               />
             </ChatPanel>
           </>
