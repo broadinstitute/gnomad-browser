@@ -23,8 +23,10 @@ const DocumentTitle = ({ title, pageContext }: any) => {
       contextValue = JSON.stringify(geneContext, null, 2)
     } else if (pageContext.variant_id) {
       contextDescription = 'The currently viewed variant'
+      const datasetId = new URL(window.location.href).searchParams.get('dataset')
       const variantContext = {
         variant_id: pageContext.variant_id,
+        dataset: datasetId,
         reference_genome: pageContext.reference_genome,
         caid: pageContext.caid,
         rsids: pageContext.rsids,
