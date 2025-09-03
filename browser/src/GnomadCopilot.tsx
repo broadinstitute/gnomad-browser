@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { useHistory } from 'react-router-dom'
-import { useGnomadCopilotActions } from './hooks/useGnomadCopilotActions'
 import '@copilotkit/react-ui/styles.css'
 
 const PageContainer = styled.div`
@@ -94,8 +93,6 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const history = useHistory()
   
-  // Initialize gnomAD-specific copilot actions
-  useGnomadCopilotActions()
 
   useCopilotAction({
     name: 'navigateToVariantPage',
