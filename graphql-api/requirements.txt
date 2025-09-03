@@ -1,5 +1,4 @@
 pyarrow
-daft
 pyiceberg[gcsfs]
 flask
 flask_cors
