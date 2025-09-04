@@ -4,6 +4,7 @@ import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useMCPStateRender } from './hooks/useMCPStateRender'
+import { useGnomadVariantActions } from './gmd/hooks/useGnomadVariantActions'
 import '@copilotkit/react-ui/styles.css'
 
 const PageContainer = styled.div`
@@ -100,18 +101,25 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const history = useHistory()
   const location = useLocation()
-  
+
   // Initialize MCP state rendering (renders inline in chat)
   useMCPStateRender()
-  
+
+  // Initialize gnomAD variant actions
+  useGnomadVariantActions()
+
   // Show "interpret this variant" suggestion only on variant pages
   const isVariantPage = location.pathname.startsWith('/variant/')
   const isGenePage = location.pathname.startsWith('/gene/')
-  
+
   // Define suggestions based on the current page
   const suggestions = useMemo(() => {
     if (isVariantPage) {
       return [
+        {
+          title: "Display the variant summary",
+          message: "Please display the variant summary",
+        },
         {
           title: "Interpret this variant",
           message: "Can you help me interpret the clinical significance and population frequency of this variant?",
@@ -175,11 +183,11 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
       const currentUrl = new URL(window.location.href)
       const currentDatasetId = currentUrl.searchParams.get('dataset') || 'gnomad_r4'
       const targetDatasetId = datasetId || currentDatasetId
-      
+
       const url = `/variant/${variantId}?dataset=${targetDatasetId}`
       console.log(`Navigating to: ${url}`)
       history.push(url)
-      
+
       return {
         message: `Navigating to the variant page for ${variantId}.`,
       }
@@ -194,14 +202,14 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isResizing.current || !containerRef.current) return
-    
+
     const containerRect = containerRef.current.getBoundingClientRect()
     const newWidth = containerRect.right - e.clientX
-    
+
     // Ensure width stays within bounds
     const minWidth = 300
     const maxWidth = containerRect.width * 0.8
-    
+
     if (newWidth >= minWidth && newWidth <= maxWidth) {
       setChatWidth(newWidth)
     }
@@ -217,7 +225,7 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
     if (isChatOpen) {
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
-      
+
       return () => {
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
