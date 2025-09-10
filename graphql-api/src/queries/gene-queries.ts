@@ -2,29 +2,48 @@ import { withCache } from '../cache'
 
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
-const GENE_INDICES = {
-  GRCh37: 'genes_grch37',
-  GRCh38: 'genes_grch38',
+import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { LimitedElasticClient } from '../elasticsearch'
+
+type GeneIndex = 'genes_grch37' | 'genes_grch38' | 'genes_grch38_patched'
+
+const GENE_INDICES: Record<ReferenceGenome, GeneIndex[]> = {
+  // Order matters here: later indices take precedence over earlier
+  GRCh37: ['genes_grch37'],
+  //  GRCh38: ['genes_grch38', 'genes_grch38_patched'],
+  GRCh38: ['genes_grch38', 'genes_grch38_patched'],
 }
 
-const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {
-  try {
-    const response = await esClient.get({
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      index: GENE_INDICES[referenceGenome],
-      type: '_doc',
-      id: geneId,
-    })
-
-    return response.body._source.value
-  } catch (err) {
-    // meta will not be present if the request times out in the queue before reaching ES
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
-    if (err.meta && err.meta.body && err.meta.body.found === false) {
-      return null
+const _fetchGeneById = async (
+  esClient: LimitedElasticClient,
+  geneId: any,
+  referenceGenome: ReferenceGenome
+) => {
+  const indices = GENE_INDICES[referenceGenome]
+  const requests = indices.map((index) =>
+    esClient
+      .get({
+        index,
+        type: '_doc',
+        id: geneId,
+      })
+      .catch((err) => {
+        // meta will not be present if the request times out in the queue before reaching ES
+        if (err.meta && err.meta.body && err.meta.body.found === false) {
+          return null
+        }
+        throw err
+      })
+  )
+  return Promise.all(requests).then(
+    (responses) => {
+      const responsesWithValue = responses.filter((response) => response)
+      return responsesWithValue.length > 0 ? responsesWithValue[-1] : null
+    },
+    (err) => {
+      throw err
     }
-    throw err
-  }
+  )
 }
 
 export const fetchGeneById = withCache(
@@ -109,7 +128,9 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
     const gene = await _fetchGeneById(esClient, upperCaseQuery, referenceGenome)
     return [
       {
+        // @ts-expect-error
         ensembl_id: gene.gene_id,
+        // @ts-expect-error
         symbol: gene.symbol,
       },
     ]

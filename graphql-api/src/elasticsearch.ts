@@ -117,10 +117,12 @@ const limitedElastic = {
       }
       return response
     }),
-  get: (...args: Parameters<typeof elastic.get>) =>
-    scheduleElasticsearchRequest(() => elastic.get(...args)),
+  get: (args: { index: string; type: '_doc'; id: string }) =>
+    scheduleElasticsearchRequest(() => elastic.get(args)),
   mget: (...args: Parameters<typeof elastic.mget>) =>
     scheduleElasticsearchRequest(() => elastic.mget(...args)),
 }
+
+export type LimitedElasticClient = typeof limitedElastic
 
 export { limitedElastic as client }
