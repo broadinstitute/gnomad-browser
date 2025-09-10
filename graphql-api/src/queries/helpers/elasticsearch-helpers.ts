@@ -1,43 +1,42 @@
+import { LimitedElasticClient, SearchResponse, SearchHit } from '../../elasticsearch'
+
 /**
  * Search and then scroll to retrieve all pages of search results.
  *
- * @param {elasticsearch.Client} client Elasticsearch client
- * @param {Object} searchParams Argument to elasticsearch.Client#search
- * @return {Object[]} Combined list of hits from all responses
  */
-export const fetchAllSearchResults = async (client: any, searchParams: any) => {
-  const allResults: any = []
-  const responseQueue = []
+export const fetchAllSearchResults = async (client: LimitedElasticClient, searchParams: any) => {
+  const allResults: SearchHit[] = []
+  const responseQueue: SearchResponse[] = []
 
   const size = searchParams.size || 1000
   const scroll = searchParams.scroll || '30s'
 
   responseQueue.push(
-    await client.search({
+    await (client.search({
       ...searchParams,
       scroll,
       size,
-    })
+    }) as Promise<SearchResponse>)
   )
 
   while (responseQueue.length) {
-    const response = responseQueue.shift()
+    const response = responseQueue.shift()!
     allResults.push(...response.body.hits.hits)
 
     if (allResults.length === response.body.hits.total.value) {
       // eslint-disable-next-line no-await-in-loop
       await client.clearScroll({
-        scrollId: response.body._scroll_id, // eslint-disable-line no-underscore-dangle
+        scroll_id: response.body._scroll_id, // eslint-disable-line no-underscore-dangle
       })
       break
     }
 
     responseQueue.push(
       // eslint-disable-next-line no-await-in-loop
-      await client.scroll({
+      await (client.scroll({
         scroll,
         scrollId: response.body._scroll_id, // eslint-disable-line no-underscore-dangle
-      })
+      }) as Promise<SearchResponse>)
     )
   }
 

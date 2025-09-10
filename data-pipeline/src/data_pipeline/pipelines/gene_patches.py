@@ -1,5 +1,3 @@
-import hail as hl
-
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
 from data_pipeline.data_types.gene import patch_rnu4atac
