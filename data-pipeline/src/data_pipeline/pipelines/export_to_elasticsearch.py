@@ -41,6 +41,7 @@ from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_cov
 from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
 from data_pipeline.pipelines.gnomad_v4_lof_curation_results import pipeline as gnomad_v4_lof_curation_results_pipeline
 
+from data_pipeline.pipelines.gene_patches import pipeline as gnomad_v4_gene_patches
 
 logger = logging.getLogger("gnomad_data_pipeline")
 
@@ -83,6 +84,15 @@ DATASETS_CONFIG = {
         "get_table": lambda: hl.read_table(genes_pipeline.get_output("genes_grch38").get_output_path()),
         "args": {
             "index": "genes_grch38",
+            "index_fields": ["gene_id", "symbol_upper_case", "search_terms", "xstart", "xstop"],
+            "id_field": "gene_id",
+            "block_size": 200,
+        },
+    },
+    "gene_patches": {
+        "get_table": lambda: hl.read_table(gnomad_v4_gene_patches.get_output("gene_patches").get_output_path()),
+        "args": {
+            "index": "genes_grch38_patches",
             "index_fields": ["gene_id", "symbol_upper_case", "search_terms", "xstart", "xstop"],
             "id_field": "gene_id",
             "block_size": 200,
