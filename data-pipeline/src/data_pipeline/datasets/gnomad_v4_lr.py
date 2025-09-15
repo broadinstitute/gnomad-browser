@@ -65,7 +65,8 @@ def import_variants_from_vcfs(vcf_path):
         pos=ds.locus.position,
         end=ds.info.END,
         length=ds.info.SVLEN,
-        type=ds.info.SVTYPE,
+        svtype=ds.info.SVTYPE,
+        vartype=ds.info.VARTYPE,
         alts=ds.alleles[1:],
     )
 
