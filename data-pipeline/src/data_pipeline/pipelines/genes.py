@@ -32,7 +32,7 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
     prepare_heterozygous_variant_cooccurrence_counts,
     prepare_homozygous_variant_cooccurrence_counts,
 )
-from data_pipeline.data_types.gene import reject_par_y_genes, patch_rnu4atac
+from data_pipeline.data_types.gene import reject_par_y_genes
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import (
     prepare_gnomad_v4_constraint,
@@ -477,13 +477,6 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
-    "patch_rnu4atac_grch38",
-    patch_rnu4atac,
-    f"/{genes_subdir}/genes_grch38_annotated_6_patched.ht",
-    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_6"), "reference_genome": "GRCh38"},
-)
-
-pipeline.add_task(
     "remove_grch38_genes_constraint_for_release",
     remove_gnomad_v4_constraint,
     f"/{genes_subdir}/genes_grch38_annotate_5_removed_constraint",
@@ -520,7 +513,7 @@ pipeline.add_task(
     "extract_grch38_transcripts",
     extract_transcripts,
     f"/{genes_subdir}/transcripts_grch38_base.ht",
-    {"genes_path": pipeline.get_task("patch_rnu4atac_grch38")},
+    {"genes_path": pipeline.get_task("annotate_grch38_genes_step_6")},
 )
 
 ###############################################
@@ -555,7 +548,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "genes_grch37": "annotate_grch37_genes_step_5",
-        "genes_grch38": "patch_rnu4atac_grch38",
+        "genes_grch38": "annotate_grch38_genes_step_6",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",

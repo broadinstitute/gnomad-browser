@@ -117,7 +117,7 @@ def reject_par_y_genes(genes_path=None):
     return genes
 
 
-def patch_rnu4atac(genes_path=None, reference_genome=None):
+def patch_rnu4atac(genes_path=None):
     genes = hl.read_table(genes_path)
 
     gene_symbol = "RNU4ATAC"
@@ -127,8 +127,8 @@ def patch_rnu4atac(genes_path=None, reference_genome=None):
     correct_xstart = x_position(correct_start)
     correct_xstop = x_position(correct_stop)
 
-    correct_start_locus = hl.locus(contig="chr2", position=correct_start, reference_genome=reference_genome)
-    correct_stop_locus = hl.locus(contig="chr2", position=correct_stop, reference_genome=reference_genome)
+    correct_start_locus = hl.locus(contig="chr2", position=correct_start, reference_genome="GRCh38")
+    correct_stop_locus = hl.locus(contig="chr2", position=correct_stop, reference_genome="GRCh38")
 
     correct_interval = hl.interval(correct_start_locus, correct_stop_locus, includes_start=True, includes_end=True)
 
@@ -146,14 +146,16 @@ def patch_rnu4atac(genes_path=None, reference_genome=None):
     correct_transcript.xstop = correct_xstop
     correct_transcript.exons = hl.array([correct_exon])
 
+    genes = genes.filter(genes.gene_symbol == gene_symbol)
+
     genes = genes.annotate(
-        gene_version=hl.if_else(genes.symbol == gene_symbol, 2, genes.symbol),
-        start=hl.if_else(genes.symbol == gene_symbol, correct_start, genes.start),
-        stop=hl.if_else(genes.symbol == gene_symbol, correct_stop, genes.stop),
-        xstart=hl.if_else(genes.symbol == gene_symbol, correct_xstart, genes.xstart),
-        xstop=hl.if_else(genes.symbol == gene_symbol, correct_xstop, genes.xstop),
-        exons=hl.if_else(genes.symbol == gene_symbol, [correct_exon], genes.exons),
-        transcripts=hl.if_else(genes.symbol == gene_symbol, [correct_transcript], genes.transcripts),
+        gene_version=2,
+        start=correct_start,
+        stop=correct_stop,
+        xstart=correct_xstart,
+        xstop=correct_xstop,
+        exons=[correct_exon],
+        transcripts=[correct_transcript],
     )
     return genes
 
