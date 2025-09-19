@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { Badge, ExternalLink, PageHeading } from '@gnomad/ui'
@@ -52,6 +52,16 @@ const BottomSpacer = styled.div`
 const DataPage = () => {
   // Load stylesheet to make smooth scroll behavior active
   const _style = styles.html
+
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash !== '') {
+      const element = document.querySelector(`${hash}`)
+      if (element) {
+        element.scrollIntoView()
+      }
+    }
+  }, [])
 
   return (
     <InfoPage>
