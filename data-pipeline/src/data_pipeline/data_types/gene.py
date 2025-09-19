@@ -118,17 +118,17 @@ def reject_par_y_genes(genes_path=None):
 
 
 def patch_rnu4atac(genes_path=None):
-    genes = hl.read_table(genes_path)
-
     gene_symbol = "RNU4ATAC"
+
+    genes = hl.read_table(genes_path)
+    genes = genes.filter(genes.symbol == gene_symbol)
 
     correct_start = 121530880
     correct_stop = 121531009
-    correct_xstart = x_position(correct_start)
-    correct_xstop = x_position(correct_stop)
-
-    correct_start_locus = hl.locus(contig="chr2", position=correct_start, reference_genome="GRCh38")
-    correct_stop_locus = hl.locus(contig="chr2", position=correct_stop, reference_genome="GRCh38")
+    correct_start_locus = hl.locus(contig="chr2", pos=correct_start, reference_genome="GRCh38")
+    correct_stop_locus = hl.locus(contig="chr2", pos=correct_stop, reference_genome="GRCh38")
+    correct_xstart = x_position(correct_start_locus)
+    correct_xstop = x_position(correct_stop_locus)
 
     correct_interval = hl.interval(correct_start_locus, correct_stop_locus, includes_start=True, includes_end=True)
 
@@ -136,17 +136,25 @@ def patch_rnu4atac(genes_path=None):
         feature_type="exon", start=correct_start, stop=correct_stop, xstart=correct_xstart, xstop=correct_xstop
     )
 
-    correct_transcript = genes.filter(genes.symbol == gene_symbol).take(1)[0].transcripts[0]
-    correct_transcript.interval = correct_interval
-    correct_transcript.transcript_version = "2"
-    correct_transcript.gene_version = "2"
-    correct_transcript.start = correct_start
-    correct_transcript.stop = correct_stop
-    correct_transcript.xstart = correct_xstart
-    correct_transcript.xstop = correct_xstop
-    correct_transcript.exons = hl.array([correct_exon])
-
-    genes = genes.filter(genes.gene_symbol == gene_symbol)
+    incorrect_transcript = genes.take(1)[0].transcripts[0]
+    correct_transcript = hl.struct(
+        interval=correct_interval,
+        transcript_version="2",
+        gene_version="2",
+        start=correct_start,
+        stop=correct_stop,
+        xstart=correct_xstart,
+        xstop=correct_xstop,
+        exons=hl.array([correct_exon]),
+        transcript_id=incorrect_transcript.transcript_id,
+        gene_id=incorrect_transcript.gene_id,
+        chrom=incorrect_transcript.chrom,
+        strand=incorrect_transcript.strand,
+        reference_genome=incorrect_transcript.reference_genome,
+        gtex_tissue_expression=incorrect_transcript.gtex_tissue_expression,
+        refseq_id=hl.missing(hl.tstr),
+        refseq_version=hl.missing(hl.tstr),
+    )
 
     genes = genes.annotate(
         gene_version=2,
