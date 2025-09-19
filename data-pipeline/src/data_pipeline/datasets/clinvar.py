@@ -202,7 +202,7 @@ def parse_clinvar_xml_to_tsv(
         with open_function(input_xml_path, "r") as xml_file:
             # The exact number of variants in the XML file is unknown.
             # Approximate it to show a progress bar.
-            progress = tqdm(total=3_100_000, mininterval=5)
+            progress = tqdm(total=3_750_000, mininterval=5)
             xml = ElementTree.iterparse(xml_file, events=["end"])
             for _, element in xml:
                 if element.tag == "ClinVarVariationRelease":
