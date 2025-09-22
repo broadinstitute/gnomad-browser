@@ -3,7 +3,7 @@ import { withCache } from '../cache'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
-import { LimitedElasticClient, ElasticsearchResponse } from '../elasticsearch'
+import { LimitedElasticClient, GetResponse, SearchResponse } from '../elasticsearch'
 
 type GeneIndex = 'genes_grch37' | 'genes_grch38' | 'genes_grch38_patches-2025-09-19--18-17'
 
@@ -33,7 +33,7 @@ const _fetchGeneById = async (
             return null
           }
           throw err
-        }) as Promise<ElasticsearchResponse | null>
+        }) as Promise<GetResponse | null>
   )
   return Promise.all(requests).then(
     (responses) => {
@@ -55,10 +55,7 @@ export const fetchGeneById = withCache(
 )
 
 export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenceGenome: any) => {
-  const response = await esClient.search({
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    index: GENE_INDICES[referenceGenome],
-    type: '_doc',
+  const responses = await searchMultipleIndices(esClient, referenceGenome, {
     body: {
       query: {
         bool: {
@@ -69,11 +66,12 @@ export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenc
     size: 1,
   })
 
-  if (response.body.hits.total.value === 0) {
+  const responsesWithValue = responses.filter((response) => response.body.hits.total.value > 0)
+  if (responsesWithValue.length === 0) {
     return null
   }
 
-  return response.body.hits.hits[0]._source.value
+  return responsesWithValue[responsesWithValue.length - 1].body.hits.hits[0]._source.value
 }
 
 export const fetchGenesByRegion = async (esClient: any, region: any) => {
@@ -122,6 +120,24 @@ export const fetchGenesByRegion = async (esClient: any, region: any) => {
   return hits.map((hit: any) => hit._source.value)
 }
 
+const searchMultipleIndices = async (
+  esClient: LimitedElasticClient,
+  referenceGenome: ReferenceGenome,
+  searchParams: any
+) => {
+  const indices = GENE_INDICES[referenceGenome]
+  const requests = indices.map(
+    (index) =>
+      esClient.search({
+        index,
+        type: '_doc',
+        ...searchParams,
+      }) as Promise<SearchResponse>
+  )
+
+  return Promise.all(requests)
+}
+
 export const fetchGenesMatchingText = async (esClient: any, query: any, referenceGenome: any) => {
   const upperCaseQuery = query.toUpperCase()
 
@@ -139,10 +155,7 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
   }
 
   // Symbol
-  const response = await esClient.search({
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    index: GENE_INDICES[referenceGenome],
-    type: '_doc',
+  const responses = await searchMultipleIndices(esClient, referenceGenome, {
     _source: ['gene_id', 'value.gene_version', 'value.symbol'],
     body: {
       query: {
@@ -157,15 +170,26 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
     size: 5,
   })
 
-  if (response.body.hits.total.value === 0) {
+  const responsesWithValue = responses.filter((response) => response.body.hits.total.value !== 0)
+  if (responsesWithValue.length === 0) {
     return []
   }
 
-  return response.body.hits.hits
-    .map((hit: any) => hit._source)
-    .map((doc: any) => ({
-      ensembl_id: doc.gene_id,
-      ensembl_version: doc.value.gene_version,
-      symbol: doc.value.symbol,
-    }))
+  let geneIds: string[] = []
+  let geneIdsToDocs: Record<string, any> = {}
+  responsesWithValue.forEach((response) =>
+    response.body.hits.hits.forEach((hit) => {
+      if (geneIds.indexOf(hit._id) < 0) {
+        geneIds.push(hit._id)
+      }
+      geneIdsToDocs[hit._id] = hit._source
+    })
+  )
+
+  const patchedGeneDocs = geneIds.map((geneId) => geneIdsToDocs[geneId])
+  return patchedGeneDocs.map((doc) => ({
+    ensembl_id: doc.gene_id,
+    ensembl_version: doc.value.gene_version,
+    symbol: doc.value.symbol,
+  }))
 }
