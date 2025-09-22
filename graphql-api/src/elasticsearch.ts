@@ -125,4 +125,8 @@ const limitedElastic = {
 
 export type LimitedElasticClient = typeof limitedElastic
 
+export type ElasticsearchResponse = {
+  body: { _source: { value: Record<string, any> } }
+}
+
 export { limitedElastic as client }

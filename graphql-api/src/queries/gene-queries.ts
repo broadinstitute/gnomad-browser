@@ -3,15 +3,14 @@ import { withCache } from '../cache'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
-import { LimitedElasticClient } from '../elasticsearch'
+import { LimitedElasticClient, ElasticsearchResponse } from '../elasticsearch'
 
-type GeneIndex = 'genes_grch37' | 'genes_grch38' | 'genes_grch38_patched'
+type GeneIndex = 'genes_grch37' | 'genes_grch38' | 'genes_grch38_patches-2025-09-19--18-17'
 
 const GENE_INDICES: Record<ReferenceGenome, GeneIndex[]> = {
   // Order matters here: later indices take precedence over earlier
   GRCh37: ['genes_grch37'],
-  //  GRCh38: ['genes_grch38', 'genes_grch38_patched'],
-  GRCh38: ['genes_grch38', 'genes_grch38_patched'],
+  GRCh38: ['genes_grch38', 'genes_grch38_patches-2025-09-19--18-17'],
 }
 
 const _fetchGeneById = async (
@@ -20,25 +19,28 @@ const _fetchGeneById = async (
   referenceGenome: ReferenceGenome
 ) => {
   const indices = GENE_INDICES[referenceGenome]
-  const requests = indices.map((index) =>
-    esClient
-      .get({
-        index,
-        type: '_doc',
-        id: geneId,
-      })
-      .catch((err) => {
-        // meta will not be present if the request times out in the queue before reaching ES
-        if (err.meta && err.meta.body && err.meta.body.found === false) {
-          return null
-        }
-        throw err
-      })
+  const requests = indices.map(
+    (index) =>
+      esClient
+        .get({
+          index,
+          type: '_doc',
+          id: geneId,
+        })
+        .catch((err) => {
+          // meta will not be present if the request times out in the queue before reaching ES
+          if (err.meta && err.meta.body && err.meta.body.found === false) {
+            return null
+          }
+          throw err
+        }) as Promise<ElasticsearchResponse | null>
   )
   return Promise.all(requests).then(
     (responses) => {
-      const responsesWithValue = responses.filter((response) => response)
-      return responsesWithValue.length > 0 ? responsesWithValue[-1] : null
+      const responsesWithValue = responses.filter((response) => response !== null)
+      return responsesWithValue.length > 0
+        ? responsesWithValue[responsesWithValue.length - 1]!.body._source.value
+        : null
     },
     (err) => {
       throw err
@@ -126,14 +128,14 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
   // Ensembl ID
   if (/^ENSG\d{11}$/.test(upperCaseQuery)) {
     const gene = await _fetchGeneById(esClient, upperCaseQuery, referenceGenome)
-    return [
-      {
-        // @ts-expect-error
-        ensembl_id: gene.gene_id,
-        // @ts-expect-error
-        symbol: gene.symbol,
-      },
-    ]
+    return (
+      gene && [
+        {
+          ensembl_id: gene.gene_id,
+          symbol: gene.symbol,
+        },
+      ]
+    )
   }
 
   // Symbol
