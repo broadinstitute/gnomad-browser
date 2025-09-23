@@ -179,7 +179,7 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
   let geneIdsToDocs: Record<string, any> = {}
   responsesWithValue.forEach((response) =>
     response.body.hits.hits.forEach((hit) => {
-      if (geneIds.indexOf(hit._id) < 0) {
+      if (geneIdsToDocs[hit._id] === undefined) {
         geneIds.push(hit._id)
       }
       geneIdsToDocs[hit._id] = hit._source
