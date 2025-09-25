@@ -95,8 +95,8 @@ const limitedElastic = {
       }
       return response
     }),
-  scroll: (...args: Parameters<typeof elastic.scroll>) =>
-    scheduleElasticsearchRequest(() => elastic.scroll(...args)).then((response) => {
+  scroll: (args: { scroll: string; scrollId?: string }) =>
+    scheduleElasticsearchRequest(() => elastic.scroll(args)).then((response) => {
       // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       if (response.body.timed_out) {
         throw new Error('Elasticsearch scroll timed out')
@@ -129,8 +129,10 @@ export type GetResponse = {
   body: { _source: { value: Record<string, any> } }
 }
 
+export type SearchHit = { _id: string; _source: any }
+
 export type SearchResponse = {
-  body: { hits: { total: { value: number }; hits: { _id: string; _source: any }[] } }
+  body: { hits: { total: { value: number }; hits: SearchHit[] }; _scroll_id?: string }
 }
 
 export { limitedElastic as client }

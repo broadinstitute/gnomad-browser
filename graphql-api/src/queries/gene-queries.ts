@@ -1,11 +1,14 @@
+import elasticsearch from '@elastic/elasticsearch'
 import { withCache } from '../cache'
 
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 
 import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
-import { LimitedElasticClient, GetResponse, SearchResponse } from '../elasticsearch'
+import { LimitedElasticClient, GetResponse, SearchResponse, SearchHit } from '../elasticsearch'
 
 type GeneIndex = 'genes_grch37' | 'genes_grch38' | 'genes_grch38_patches-2025-09-19--18-17'
+
+type GeneSearchRegion = { reference_genome: ReferenceGenome; xstart: number; xstop: number }
 
 const GENE_INDICES: Record<ReferenceGenome, GeneIndex[]> = {
   // Order matters here: later indices take precedence over earlier
@@ -15,7 +18,7 @@ const GENE_INDICES: Record<ReferenceGenome, GeneIndex[]> = {
 
 const _fetchGeneById = async (
   esClient: LimitedElasticClient,
-  geneId: any,
+  geneId: string,
   referenceGenome: ReferenceGenome
 ) => {
   const indices = GENE_INDICES[referenceGenome]
@@ -50,12 +53,17 @@ const _fetchGeneById = async (
 
 export const fetchGeneById = withCache(
   _fetchGeneById,
-  (_: any, geneId: any, referenceGenome: any) => `gene:${geneId}:${referenceGenome}`,
+  (_: any, geneId: string, referenceGenome: ReferenceGenome) => `gene:${geneId}:${referenceGenome}`,
   { expiration: 86400 }
 )
 
-export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenceGenome: any) => {
-  const responses = await searchMultipleIndices(esClient, referenceGenome, {
+export const fetchGeneBySymbol = async (
+  esClient: LimitedElasticClient,
+  geneSymbol: string,
+  referenceGenome: ReferenceGenome
+) => {
+  const indices = GENE_INDICES[referenceGenome]
+  const responses = await searchMultipleIndices(esClient, indices, {
     body: {
       query: {
         bool: {
@@ -74,13 +82,14 @@ export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenc
   return responsesWithValue[responsesWithValue.length - 1].body.hits.hits[0]._source.value
 }
 
-export const fetchGenesByRegion = async (esClient: any, region: any) => {
-  const { reference_genome: referenceGenome, xstart, xstop } = region
+export const fetchGenesByRegion = async (
+  esClient: LimitedElasticClient,
+  region: GeneSearchRegion
+) => {
+  const { reference_genome, xstart, xstop } = region
+  const indices = GENE_INDICES[reference_genome]
 
-  const hits = await fetchAllSearchResults(esClient, {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    index: GENE_INDICES[referenceGenome],
-    type: '_doc',
+  const hits = await fetchAllSearchResultsFromMultipleIndices(esClient, indices, {
     size: 200,
     _source: [
       'value.exons',
@@ -117,15 +126,30 @@ export const fetchGenesByRegion = async (esClient: any, region: any) => {
     },
   })
 
-  return hits.map((hit: any) => hit._source.value)
+  const mergedHits = mergeHitsById(hits.flat())
+  return mergedHits.map((hit) => hit._source.value)
+}
+
+const fetchAllSearchResultsFromMultipleIndices = async (
+  esClient: LimitedElasticClient,
+  indices: string[],
+  searchParams: elasticsearch.RequestParams.Search<any>
+) => {
+  const requests = indices.map((index) =>
+    fetchAllSearchResults(esClient, {
+      index,
+      type: '_doc',
+      ...searchParams,
+    })
+  )
+  return Promise.all(requests)
 }
 
 const searchMultipleIndices = async (
   esClient: LimitedElasticClient,
-  referenceGenome: ReferenceGenome,
-  searchParams: any
-) => {
-  const indices = GENE_INDICES[referenceGenome]
+  indices: string[],
+  searchParams: elasticsearch.RequestParams.Search<any>
+): Promise<SearchResponse[]> => {
   const requests = indices.map(
     (index) =>
       esClient.search({
@@ -138,7 +162,38 @@ const searchMultipleIndices = async (
   return Promise.all(requests)
 }
 
-export const fetchGenesMatchingText = async (esClient: any, query: any, referenceGenome: any) => {
+const mergeHitsById = (hits: SearchHit[]): SearchHit[] => {
+  let ids: string[] = []
+  let idsToHits: Record<string, any> = {}
+  hits.forEach((hit) => {
+    if (idsToHits[hit._id] === undefined) {
+      ids.push(hit._id)
+    }
+    idsToHits[hit._id] = hit
+  })
+  return ids.map((id) => idsToHits[id])
+}
+
+const mergeResponsesById = (responses: SearchResponse[]) => {
+  let ids: string[] = []
+  let idsToDocs: Record<string, any> = {}
+  responses.forEach((response) =>
+    response.body.hits.hits.forEach((hit) => {
+      if (idsToDocs[hit._id] === undefined) {
+        ids.push(hit._id)
+      }
+      idsToDocs[hit._id] = hit._source
+    })
+  )
+
+  return ids.map((id) => idsToDocs[id])
+}
+
+export const fetchGenesMatchingText = async (
+  esClient: LimitedElasticClient,
+  query: string,
+  referenceGenome: ReferenceGenome
+) => {
   const upperCaseQuery = query.toUpperCase()
 
   // Ensembl ID
@@ -155,7 +210,7 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
   }
 
   // Symbol
-  const responses = await searchMultipleIndices(esClient, referenceGenome, {
+  const responses = await searchMultipleIndices(esClient, GENE_INDICES[referenceGenome], {
     _source: ['gene_id', 'value.gene_version', 'value.symbol'],
     body: {
       query: {
@@ -175,19 +230,9 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
     return []
   }
 
-  let geneIds: string[] = []
-  let geneIdsToDocs: Record<string, any> = {}
-  responsesWithValue.forEach((response) =>
-    response.body.hits.hits.forEach((hit) => {
-      if (geneIdsToDocs[hit._id] === undefined) {
-        geneIds.push(hit._id)
-      }
-      geneIdsToDocs[hit._id] = hit._source
-    })
-  )
+  const mergedDocs = mergeResponsesById(responsesWithValue)
 
-  const patchedGeneDocs = geneIds.map((geneId) => geneIdsToDocs[geneId])
-  return patchedGeneDocs.map((doc) => ({
+  return mergedDocs.map((doc) => ({
     ensembl_id: doc.gene_id,
     ensembl_version: doc.value.gene_version,
     symbol: doc.value.symbol,
