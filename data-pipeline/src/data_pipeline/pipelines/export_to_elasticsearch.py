@@ -38,8 +38,8 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
 from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
 from data_pipeline.pipelines.gnomad_v4_variants import pipeline as gnomad_v4_variants_pipeline
 from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_coverage_pipeline
-
 from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
+from data_pipeline.pipelines.gnomad_v4_lof_curation_results import pipeline as gnomad_v4_lof_curation_results_pipeline
 
 
 logger = logging.getLogger("gnomad_data_pipeline")
@@ -145,6 +145,18 @@ DATASETS_CONFIG = {
     #     ),
     #     "args": {"index": "gnomad_v4_genome_coverage", "id_field": "xpos", "num_shards": 2, "block_size": 10_000},
     # },
+    "gnomad_v4_lof_curation_results": {
+        "get_table": lambda: add_variant_document_id(
+            hl.read_table(gnomad_v4_lof_curation_results_pipeline.get_output("lof_curation_results").get_output_path())
+        ),
+        "args": {
+            "index": "gnomad_v4_lof_curation_results",
+            "index_fields": ["document_id", "variant_id", "locus", "lof_curations.gene_id"],
+            "id_field": "document_id",
+            "num_shards": 1,
+            "block_size": 1_000,
+        },
+    },
     ##############################################################################################################
     # gnomAD v4 CNVs
     ##############################################################################################################

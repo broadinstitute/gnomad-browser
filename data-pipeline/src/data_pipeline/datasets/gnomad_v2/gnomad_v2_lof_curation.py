@@ -30,8 +30,10 @@ VERDICT_MAPPING = {
     "not_lof": "Not LoF",
 }
 
+VERDICT_MAPPINGS_CLEAN = VERDICT_MAPPING.values()
 
-def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
+
+def import_gnomad_lof_curation_results(curation_result_paths, genes_path):
     all_flags = set()
 
     with hl.hadoop_open("/tmp/import_temp.tsv", "w") as temp_output_file:
@@ -53,7 +55,11 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
                 for row in reader:
                     [chrom, pos, ref, alt] = row["Variant ID"].split("-")
 
-                    variant_flags = [FLAG_MAPPING.get(f, f) for f in raw_dataset_flags if row[f"Flag {f}"] == "TRUE"]
+                    variant_flags = [
+                        FLAG_MAPPING.get(f, f)
+                        for f in raw_dataset_flags
+                        if row.get(f"Flag {f}") == "TRUE" or row.get(f"FLAG {f}") == "1"
+                    ]
 
                     genes = [gene_id for (gene_id, gene_symbol) in (gene.split(":") for gene in row["Gene"].split(";"))]
 
@@ -62,7 +68,8 @@ def import_gnomad_v2_lof_curation_results(curation_result_paths, genes_path):
                     if verdict == "inufficient_evidence":
                         verdict = "insufficient_evidence"
 
-                    verdict = VERDICT_MAPPING[verdict]
+                    if verdict not in VERDICT_MAPPINGS_CLEAN:
+                        verdict = VERDICT_MAPPING[verdict]
 
                     output_row = [
                         chrom,

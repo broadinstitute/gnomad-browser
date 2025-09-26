@@ -1,6 +1,6 @@
 from data_pipeline.pipeline import Pipeline, run_pipeline
 
-from data_pipeline.datasets.gnomad_v2.gnomad_v2_lof_curation import import_gnomad_v2_lof_curation_results
+from data_pipeline.datasets.gnomad_v2.gnomad_v2_lof_curation import import_gnomad_lof_curation_results
 
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
@@ -9,7 +9,7 @@ pipeline = Pipeline()
 
 pipeline.add_task(
     "prepare_gnomad_v2_lof_curation_results",
-    import_gnomad_v2_lof_curation_results,
+    import_gnomad_lof_curation_results,
     "/gnomad_v2/gnomad_v2_lof_curation_results.ht",
     {"genes_path": genes_pipeline.get_output("genes_grch37")},
     {
