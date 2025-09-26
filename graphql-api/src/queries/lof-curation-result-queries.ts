@@ -1,12 +1,35 @@
-const GNOMAD_V2_LOF_CURATION_RESULTS_INDEX = 'gnomad_v2_lof_curation_results'
+type GnomadVersion = 'ExAC' | 'v2'
+
+const GNOMAD_LOF_CURATION_RESULTS_INDICES: Record<GnomadVersion, string> = {
+  ExAC: 'gnomad_v2_lof_curation_results',
+  v2: 'gnomad_v2_lof_curation_results',
+}
+
+type LoFCuration = {
+  gene_id: string
+  gene_version: string
+  gene_symbol: string | null
+  verdict: string
+  flags: string[] | null
+  project: string
+}
+
+type LoFCurationForVariant = {
+  variant_id: string
+  lof_curations: LoFCuration[]
+}
 
 // ================================================================================================
 // Variant query
 // ================================================================================================
 
-export const fetchLofCurationResultsByVariant = async (esClient: any, variantId: any) => {
+export const fetchLofCurationResultsByVariant = async (
+  esClient: any,
+  gnomadVersion: GnomadVersion,
+  variantId: string
+) => {
   const response = await esClient.search({
-    index: GNOMAD_V2_LOF_CURATION_RESULTS_INDEX,
+    index: GNOMAD_LOF_CURATION_RESULTS_INDICES[gnomadVersion],
     type: '_doc',
     body: {
       query: {
@@ -28,10 +51,17 @@ export const fetchLofCurationResultsByVariant = async (esClient: any, variantId:
 // ================================================================================================
 // Gene query
 // ================================================================================================
+type Gene = {
+  gene_id: string
+}
 
-export const fetchLofCurationResultsByGene = async (esClient: any, gene: any) => {
+export const fetchLofCurationResultsByGene = async (
+  esClient: any,
+  gnomadVersion: GnomadVersion,
+  gene: Gene
+) => {
   const response = await esClient.search({
-    index: GNOMAD_V2_LOF_CURATION_RESULTS_INDEX,
+    index: GNOMAD_LOF_CURATION_RESULTS_INDICES[gnomadVersion],
     type: '_doc',
     size: 1000,
     body: {
@@ -47,16 +77,29 @@ export const fetchLofCurationResultsByGene = async (esClient: any, gene: any) =>
     },
   })
 
-  return response.body.hits.hits.map((doc: any) => doc._source.value)
+  const lofCurations: LoFCurationForVariant[] = response.body.hits.hits.map(
+    (doc: any) => doc._source.value
+  )
+
+  return lofCurations
 }
 
 // ================================================================================================
 // Region query
 // ================================================================================================
+type Region = {
+  chrom: string
+  start: number
+  stop: number
+}
 
-export const fetchLofCurationResultsByRegion = async (esClient: any, region: any) => {
+export const fetchLofCurationResultsByRegion = async (
+  esClient: any,
+  gnomadVersion: GnomadVersion,
+  region: Region
+) => {
   const response = await esClient.search({
-    index: GNOMAD_V2_LOF_CURATION_RESULTS_INDEX,
+    index: GNOMAD_LOF_CURATION_RESULTS_INDICES[gnomadVersion],
     type: '_doc',
     size: 1000,
     body: {
@@ -78,5 +121,9 @@ export const fetchLofCurationResultsByRegion = async (esClient: any, region: any
     },
   })
 
-  return response.body.hits.hits.map((doc: any) => doc._source.value)
+  const lofCurations: LoFCurationForVariant[] = response.body.hits.hits.map(
+    (doc: any) => doc._source.value
+  )
+
+  return lofCurations
 }
