@@ -1,12 +1,20 @@
-const GNOMAD_V2_LOF_CURATION_RESULTS_INDEX = 'gnomad_v2_lof_curation_results'
+type GnomadVersion = 'GRCh37'
+
+const GNOMAD_LOF_CURATION_RESULTS_INDICES = {
+  GRCh37: 'gnomad_v2_lof_curation_results',
+}
 
 // ================================================================================================
 // Variant query
 // ================================================================================================
 
-export const fetchLofCurationResultsByVariant = async (esClient: any, variantId: any) => {
+export const fetchLofCurationResultsByVariant = async (
+  esClient: any,
+  gnomadVersion: GnomadVersion,
+  variantId: any
+) => {
   const response = await esClient.search({
-    index: GNOMAD_V2_LOF_CURATION_RESULTS_INDEX,
+    index: GNOMAD_LOF_CURATION_RESULTS_INDICES[gnomadVersion],
     type: '_doc',
     body: {
       query: {
@@ -29,9 +37,13 @@ export const fetchLofCurationResultsByVariant = async (esClient: any, variantId:
 // Gene query
 // ================================================================================================
 
-export const fetchLofCurationResultsByGene = async (esClient: any, gene: any) => {
+export const fetchLofCurationResultsByGene = async (
+  esClient: any,
+  gnomadVersion: GnomadVersion,
+  gene: any
+) => {
   const response = await esClient.search({
-    index: GNOMAD_V2_LOF_CURATION_RESULTS_INDEX,
+    index: GNOMAD_LOF_CURATION_RESULTS_INDICES[gnomadVersion],
     type: '_doc',
     size: 1000,
     body: {
@@ -54,9 +66,13 @@ export const fetchLofCurationResultsByGene = async (esClient: any, gene: any) =>
 // Region query
 // ================================================================================================
 
-export const fetchLofCurationResultsByRegion = async (esClient: any, region: any) => {
+export const fetchLofCurationResultsByRegion = async (
+  esClient: any,
+  gnomadVersion: GnomadVersion,
+  region: any
+) => {
   const response = await esClient.search({
-    index: GNOMAD_V2_LOF_CURATION_RESULTS_INDEX,
+    index: GNOMAD_LOF_CURATION_RESULTS_INDICES[gnomadVersion],
     type: '_doc',
     size: 1000,
     body: {
