@@ -1,7 +1,8 @@
-type GnomadVersion = 'GRCh37'
+type GnomadVersion = 'ExAC' | 'v2'
 
 const GNOMAD_LOF_CURATION_RESULTS_INDICES = {
-  GRCh37: 'gnomad_v2_lof_curation_results',
+  ExAC: 'gnomad_v2_lof_curation_results',
+  v2: 'gnomad_v2_lof_curation_results',
 }
 
 // ================================================================================================

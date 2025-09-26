@@ -121,7 +121,7 @@ const fetchVariantById = async (esClient: any, variantIdOrRsid: any, subset: any
 
   const lofCurationResults = await fetchLofCurationResultsByVariant(
     esClient,
-    'GRCh37',
+    'v2',
     variant.variant_id
   )
 
@@ -276,7 +276,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: any) => {
     )
     .map(shapeVariantSummary(exomeSubset, genomeSubset, { type: 'gene', geneId: gene.gene_id }))
 
-  const lofCurationResults = await fetchLofCurationResultsByGene(esClient, 'GRCh37', gene)
+  const lofCurationResults = await fetchLofCurationResultsByGene(esClient, 'v2', gene)
   const lofCurationResultsByVariant = {}
   lofCurationResults.forEach((result: any) => {
     // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
@@ -348,7 +348,7 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: any) =>
     )
     .map(shapeVariantSummary(exomeSubset, genomeSubset, { type: 'region' }))
 
-  const lofCurationResults = await fetchLofCurationResultsByRegion(esClient, 'GRCh37', region)
+  const lofCurationResults = await fetchLofCurationResultsByRegion(esClient, 'v2', region)
 
   const lofCurationResultsByVariant = {}
   lofCurationResults.forEach((result: any) => {
