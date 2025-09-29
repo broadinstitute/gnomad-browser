@@ -1,8 +1,9 @@
-type GnomadVersion = 'ExAC' | 'v2'
+type GnomadVersion = 'ExAC' | 'v2' | 'v4'
 
 const GNOMAD_LOF_CURATION_RESULTS_INDICES: Record<GnomadVersion, string> = {
   ExAC: 'gnomad_v2_lof_curation_results',
   v2: 'gnomad_v2_lof_curation_results',
+  v4: 'gnomad_v4_lof_curation_results',
 }
 
 type LoFCuration = {
