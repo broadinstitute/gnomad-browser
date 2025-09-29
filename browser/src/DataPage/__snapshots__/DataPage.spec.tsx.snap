@@ -7304,6 +7304,145 @@ exports[`Data Page has no unexpected changes 1`] = `
       className="c8"
     >
       <h2
+        className="c9"
+      >
+        <a
+          aria-hidden="true"
+          className="c10 c11"
+          href="#v4-secondary-analyses"
+          id="v4-secondary-analyses"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Secondary Analyses
+      </h2>
+    </span>
+    <p
+      className="c12"
+    >
+      Additional research analyses created using the core gnomAD releases in collaboration with members of the gnomAD steering committee.
+    </p>
+    <section
+      className="c16"
+    >
+      <span
+        className="c8"
+      >
+        <h2
+          className="c17"
+        >
+          <a
+            aria-hidden="true"
+            className="c10 c11"
+            href="#v4-lof-curation-results"
+            id="v4-lof-curation-results"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Loss-of-function curation results
+        </h2>
+      </span>
+      <p>
+        For information on v4 loss-of-function curation results, see
+         
+        <a
+          className="c7"
+          href="https://doi.org/10.1038/s41586-020-2308-7"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <em>
+            The mutational constraint spectrum quantified from variation in 141,456 humans.
+          </em>
+           
+          Nature 581, 434–443 (2020)
+        </a>
+         
+        (all homozygous LoF curation results),
+         
+        <a
+          className="c7"
+          href="https://doi.org/10.1038/s41586-020-2329-2"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <em>
+            Transcript expression-aware annotation improves rare variant interpretation.
+          </em>
+           
+          Nature 581, 452–458 (2020)
+        </a>
+         
+        (haploinsufficient genes LoF curation results), and
+         
+        <a
+          className="c7"
+          href="https://pubmed.ncbi.nlm.nih.gov/37633279/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <em>
+            Advanced variant classification framework reduces the false positive rate of predicted loss-of-function variants in population sequencing data.
+          </em>
+           
+          Am J Hum Genet 110, 1496-1508 (2023)
+        </a>
+        .
+      </p>
+      <ul
+        className="c20"
+      >
+        <li
+          className="c21"
+        >
+          <span>
+            Incomplete penetrance LoF curation results
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Incomplete penetrance LoF curation results from Google"
+              className="c7"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/lof_curation/incomplete_penetrance_curation_results.csv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Incomplete penetrance LoF curation results from Amazon"
+              className="c7"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/lof_curation/incomplete_penetrance_curation_results.csv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+      </ul>
+    </section>
+    <span
+      className="c8"
+    >
+      <h2
         className="c15"
       >
         <a

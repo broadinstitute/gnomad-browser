@@ -600,6 +600,52 @@ const GnomadV4Downloads = () => {
           </ListItem>
         </FileList>
       </DownloadsSection>
+
+      <SectionTitle id="v4-secondary-analyses" theme={{ type: 'datasets' }}>
+        Secondary Analyses
+      </SectionTitle>
+      <StyledParagraph>
+        Additional research analyses created using the core gnomAD releases in collaboration with
+        members of the gnomAD steering committee.
+      </StyledParagraph>
+
+      <DownloadsSection>
+        <SectionTitle id="v4-lof-curation-results">Loss-of-function curation results</SectionTitle>
+        <p>
+          For information on v4 loss-of-function curation results, see{' '}
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
+            <em>The mutational constraint spectrum quantified from variation in 141,456 humans.</em>{' '}
+            Nature 581, 434–443 (2020)
+          </ExternalLink>{' '}
+          (all homozygous LoF curation results),{' '}
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
+            <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
+            Nature 581, 452–458 (2020)
+          </ExternalLink>{' '}
+          (haploinsufficient genes LoF curation results), and{' '}
+          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          <ExternalLink href="https://pubmed.ncbi.nlm.nih.gov/37633279/">
+            <em>
+              Advanced variant classification framework reduces the false positive rate of predicted
+              loss-of-function variants in population sequencing data.
+            </em>{' '}
+            Am J Hum Genet 110, 1496-1508 (2023)
+          </ExternalLink>
+          .
+        </p>
+
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <DownloadLinks
+              label="Incomplete penetrance LoF curation results"
+              path="/release/4.1/lof_curation/incomplete_penetrance_curation_results.csv"
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
     </>
   )
 }
