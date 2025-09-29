@@ -7,6 +7,11 @@ import { UserVisibleError } from '../../errors'
 import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-queries'
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
+import {
+  fetchLofCurationResultsByVariant,
+  fetchLofCurationResultsByGene,
+  fetchLofCurationResultsByRegion,
+} from '../lof-curation-result-queries'
 
 import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
@@ -112,6 +117,12 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   }
 
   const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
+
+  const lofCurationResults = await fetchLofCurationResultsByVariant(
+    esClient,
+    'v4',
+    variant.variant_id
+  )
 
   let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
@@ -232,6 +243,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
       : null,
     flags: variantFlags,
     // TODO: Include RefSeq transcripts once the browser supports them.
+    lof_curations: lofCurationResults,
     transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
       csq.gene_id.startsWith('ENSG')
     ),
@@ -466,7 +478,21 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
       )
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
-    return shapedHits
+    const lofCurationResults = await fetchLofCurationResultsByGene(esClient, 'v4', gene)
+
+    const lofCurationByVariantId = new Map(
+      lofCurationResults.map((result) => [
+        result.variant_id,
+        result.lof_curations.find((c) => c.gene_id === gene.gene_id),
+      ])
+    )
+
+    const shapedHitsWithLof = shapedHits.map((variant: any) => ({
+      ...variant,
+      lof_curation: lofCurationByVariantId.get(variant.variant_id),
+    }))
+
+    return shapedHitsWithLof
   } catch (error) {
     throw new Error(`'Error fetching variants by gene:', ${error}`)
   }
@@ -506,7 +532,7 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
     },
   })
 
-  return hits
+  const variants = hits
     .map((hit: any) => hit._source.value)
     .filter(
       (variant: any) =>
@@ -514,6 +540,26 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
         variant.exome.freq[subset].ac_raw > 0
     )
     .map(shapeVariantSummary(subset, { type: 'region' }))
+
+  const lofCurationResults = await fetchLofCurationResultsByRegion(esClient, 'v4', region)
+
+  const lofCurationsByVariantAndGene = new Map(
+    lofCurationResults.map((result) => [
+      result.variant_id,
+      new Map(result.lof_curations.map((c) => [c.gene_id, c])),
+    ])
+  )
+
+  const variantsWithLofCurations = variants.map((variant: any) => ({
+    ...variant,
+    lof_curation: variant.transcript_consequence
+      ? lofCurationsByVariantAndGene
+          .get(variant.variant_id)
+          ?.get(variant.transcript_consequence.gene_id)
+      : undefined,
+  }))
+
+  return variantsWithLofCurations
 }
 
 // ================================================================================================
