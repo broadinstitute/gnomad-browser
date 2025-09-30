@@ -3,13 +3,18 @@ import hail as hl
 from .hgvs import hgvsp_from_consequence_amino_acids
 from .vep import consequence_term_rank
 
-
 OMIT_CONSEQUENCE_TERMS = hl.set(["upstream_gene_variant", "downstream_gene_variant"])
 
+# ruff doesn't like explicit comparisons to None, but we need them in here, so:
+# ruff: noqa: E711
 
-def annotate_transcript_consequences(variants_path, transcripts_path, mane_transcripts_path=None):
+
+def annotate_transcript_consequences(variants_path, transcripts_path=None, mane_transcripts_path=None):
     ds = hl.read_table(variants_path)
+    return annotate_transcript_consequences_in_table(ds, transcripts_path, mane_transcripts_path)
 
+
+def annotate_transcript_consequences_in_table(ds, transcripts_path=None, mane_transcripts_path=None):
     most_severe_consequence = ds.vep.most_severe_consequence
 
     transcript_consequences = ds.vep.transcript_consequences
@@ -62,26 +67,25 @@ def annotate_transcript_consequences(variants_path, transcripts_path, mane_trans
 
     transcript_consequences = transcript_consequences.map(lambda c: c.select(*consequences))
 
-    transcripts = hl.read_table(transcripts_path)
-
-    # TODO: This can potentially be improved by removing Table.collect
-    # See https://hail.zulipchat.com/#narrow/stream/123010-Hail-0.2E2.20support/topic/Optimize.20annotation.20with.20small.20dataset
-    # and https://github.com/Nealelab/ukb_common/blob/ad94d20f8c9f3b711e40a473425925775f0b1f30/utils/generic.py#L18
-    transcript_info = hl.dict(
-        [
-            (row.transcript_id, row.transcript_info)
-            for row in transcripts.select(
-                transcript_info=hl.struct(
-                    transcript_version=transcripts.transcript_version,
-                    gene_version=transcripts.gene.gene_version,
-                )
-            ).collect()
-        ]
-    )
-
-    transcript_consequences = transcript_consequences.map(
-        lambda csq: csq.annotate(**transcript_info.get(csq.transcript_id))
-    )
+    if transcripts_path != None:
+        transcripts = hl.read_table(transcripts_path)
+        # TODO: This can potentially be improved by removing Table.collect
+        # See https://hail.zulipchat.com/#narrow/stream/123010-Hail-0.2E2.20support/topic/Optimize.20annotation.20with.20small.20dataset
+        # and https://github.com/Nealelab/ukb_common/blob/ad94d20f8c9f3b711e40a473425925775f0b1f30/utils/generic.py#L18
+        transcript_info = hl.dict(
+            [
+                (row.transcript_id, row.transcript_info)
+                for row in transcripts.select(
+                    transcript_info=hl.struct(
+                        transcript_version=transcripts.transcript_version,
+                        gene_version=transcripts.gene.gene_version,
+                    )
+                ).collect()
+            ]
+        )
+        transcript_consequences = transcript_consequences.map(
+            lambda csq: csq.annotate(**transcript_info.get(csq.transcript_id))
+        )
 
     if mane_transcripts_path:
         mane_transcripts = hl.read_table(mane_transcripts_path)

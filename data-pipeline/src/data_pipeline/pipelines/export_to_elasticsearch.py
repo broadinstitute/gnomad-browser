@@ -143,6 +143,30 @@ DATASETS_CONFIG = {
             "block_size": 1_000,
         },
     },
+    "gnomad_v4_variant_patches": {
+        "get_table": lambda: subset_table(
+            add_variant_document_id(
+                hl.read_table(
+                    "gs://gnomad-browser-data-pipeline/phil-scratch/output/gnomad_v4/gnomad_v4_variants_patched.ht"
+                )
+            )
+        ),
+        "args": {
+            "index": "gnomad_v4_variants_patches",
+            "index_fields": [
+                "document_id",
+                "variant_id",
+                "rsids",
+                "caid",
+                "locus",
+                "transcript_consequences.gene_id",
+                "transcript_consequences.transcript_id",
+                "vrs.alt.allele_id",
+            ],
+            "id_field": "document_id",
+            "block_size": 1_000,
+        },
+    },
     "gnomad_v4_exome_coverage": {
         "get_table": lambda: subset_table(
             hl.read_table(gnomad_v4_coverage_pipeline.get_output("exome_coverage").get_output_path())
