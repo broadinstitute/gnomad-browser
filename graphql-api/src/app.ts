@@ -8,6 +8,8 @@ import { client as esClient } from './elasticsearch'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
 
+import { loadWhitelist } from './whitelist'
+
 process.on('uncaughtException', (error) => {
   logger.error(error)
   process.exit(1)
@@ -74,6 +76,8 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
 
   next()
 })
+
+loadWhitelist()
 
 const context = { esClient }
 
