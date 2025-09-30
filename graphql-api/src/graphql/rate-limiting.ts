@@ -2,6 +2,7 @@ import { Redis } from 'ioredis'
 import config from '../config'
 import { UserVisibleError } from '../errors'
 import logger from '../logger'
+import { isWhitelistedIP } from '../whitelist'
 
 let rateLimitDb: Redis
 
@@ -46,6 +47,10 @@ export const applyRateLimits = async (request: any) => {
   const rateLimitWindow = new Date().getMinutes()
 
   const clientId = request.ip
+
+  if (isWhitelistedIP(clientId)) {
+    return
+  }
 
   try {
     const totalRequestsInWindow = await increaseRateLimitCounter(
