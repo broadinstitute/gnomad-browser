@@ -10,3 +10,4 @@
 !graphql-api/static_data
 !graphql-api/app.py
 !graphql-api/requirements.txt
+!graphql-api/schema.graphql

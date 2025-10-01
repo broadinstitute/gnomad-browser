@@ -1,0 +1,62 @@
+type Consequence {
+  consequence: String
+  genes: [String]
+}
+
+type AllFrequency {
+  an: Int
+  ac: Int
+  af: Float
+  homozygote_ref_count: Int
+  homozygote_alt_count: Int
+  heterozygote_count: Int
+  homozygote_ref_freq: Float
+  homozygote_alt_freq: Float
+  heterozygote_freq: Float
+}
+
+type PopulationFrequency {
+  id: String
+  an: Int
+  ac: Int
+  af: Float
+  homozygote_ref_count: Int
+  homozygote_alt_count: Int
+  heterozygote_count: Int
+  homozygote_ref_freq: Float
+  homozygote_alt_freq: Float
+  heterozygote_freq: Float
+}
+
+type Frequency {
+  all: AllFrequency
+  populations: [PopulationFrequency]
+}
+
+type Variant {
+  qual: Float
+  filters: [String]
+  variant_id: String
+  reference_genome: String
+  chrom: String
+  pos: Int
+  end: Int
+  length: [Int]
+  type: [String]
+  alts: [String]
+  xpos: Int
+  xend: Int
+  consequences: [Consequence]
+  intergenic: Boolean
+  major_consequence: String
+  genes: [String]
+  freq: Frequency
+}
+
+type Region {
+  variants: [Variant]
+}
+
+type Query {
+  region(chrom: String!, start: Int!, stop: Int!): Region!
+}

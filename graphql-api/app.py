@@ -10,21 +10,19 @@ from ariadne import (
 from ariadne.explorer import ExplorerGraphiQL
 from flask import Flask, jsonify, request
 import polars as pl
-import datetime
 
-# ICEBERG_METADATA_FILENAME = "00078-42f16389-a670-47a4-b2ee-b13ac02a3f0d.metadata.json"
+# ICEBERG_METADATA_PATH = "gs://gnomad-browser-data-pipeline/phil-scratch/output/iceberg_warehouse/default.db/long_reads/metadata/00457-007c34d4-2acd-4787-bfc1-94d34e8f5d57.metadata.json"
+ICEBERG_METADATA_PATH = "gs://gnomad-iceberg-prototype-api/iceberg_warehouse/default.db/long_reads/metadata/00379-c827a893-6568-4b54-abf0-79831f4819ed.metadata.json"
 
 type_defs = gql(load_schema_from_path("schema.graphql"))
 query = ObjectType("Query")
-db = pl.scan_iceberg(
-    f"gs://gnomad-browser-data-pipeline/phil-scratch/output/iceberg_warehouse/default.db/long_reads/metadata/00078-654352f6-814c-49cc-8c40-41d6c9365f7a.metadata.json"
-)
+db = pl.scan_iceberg(ICEBERG_METADATA_PATH)
 
 
 @convert_kwargs_to_snake_case
 @query.field("region")
-def region_resolver(obj, info, chrom, start_pos, end_pos):
-    db_variants = db.filter(pl.col("pos").is_between(int(start_pos), int(end_pos)))
+def region_resolver(obj, info, chrom, start=0, stop=0):
+    db_variants = db.filter(pl.col("pos").is_between(int(start), int(stop)))
     variants = db_variants.collect().to_dicts()
     return {"success": True, "variants": variants}
 
@@ -41,7 +39,12 @@ app = Flask(__name__)
 explorer_html = ExplorerGraphiQL().html(None)
 
 
-@app.route("/graphql", methods=["GET"])
+@app.route("/health/ready", methods=["GET"])
+def health_check():
+    return "ok", 200
+
+
+@app.route("/api", methods=["GET"])
 def graphql_explorer():
     # On GET request serve the GraphQL explorer.
     # You don't have to provide the explorer if you don't want to
@@ -50,7 +53,7 @@ def graphql_explorer():
     return explorer_html, 200
 
 
-@app.route("/graphql", methods=["POST"])
+@app.route("/api", methods=["POST"])
 def graphql_server():
     # GraphQL queries are always sent as POST
     data = request.get_json()
@@ -64,4 +67,4 @@ def graphql_server():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host="0.0.0.0", port=8000)
