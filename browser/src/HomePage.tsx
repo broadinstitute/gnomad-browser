@@ -9,6 +9,7 @@ import InfoPage from './InfoPage'
 import Link from './Link'
 import Searchbox from './Searchbox'
 import GnomadLogo from './GnomadLogo'
+import HaplotypeBubbleTrack from './HaplotypeBubbleTrack'
 
 const HomePage = styled(InfoPage)`
   max-width: 740px;
@@ -39,6 +40,12 @@ export default () => (
       <GnomadLogo width="60%" />
       <Heading>Genome Aggregation Database</Heading>
     </HeadingContainer>
+
+    <br />
+    <p>=======</p>
+    <HaplotypeBubbleTrack />
+    <p>=======</p>
+    <br />
 
     <Searchbox width="100%" />
 
