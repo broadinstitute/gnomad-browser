@@ -147,21 +147,23 @@ const variantTableColumns: VariantTableColumn[] = [
 
   {
     key: 'consequence',
-    heading: 'VEP Annotation',
+    heading: 'Predicted Most Severe Consequence',
     description: 'Variant Effect Predictor (VEP) annotation',
     descriptionInContext: (context: string, contextType: string) =>
-      `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(contextType)}`,
+      `Variant Effect Predictor (VEP) or SVAnnotate annotation${getConsequenceDescription(
+        contextType
+      )}`,
     grow: 0,
     minWidth: 140,
     compareFunction: makeStringCompareFunction('consequence'),
     getSearchTerms: (variant: any) => [getLabelForConsequenceTerm(variant.consequence)],
     render: (row: any, key: any, { highlightWords }: any) => (
       <Cell>
-        <VariantCategoryMarker color={getConsequenceColor(row[key])} />
+        <VariantCategoryMarker color={getConsequenceColor(row.l)} />
         <Highlighter
           autoEscape
           searchWords={highlightWords}
-          textToHighlight={getConsequenceName(row[key])}
+          textToHighlight={getConsequenceName(row.l)}
         />
       </Cell>
     ),
@@ -342,20 +344,6 @@ const variantTableColumns: VariantTableColumn[] = [
   },
 
   {
-    key: 'source',
-    heading: 'Source',
-    description: 'Sample set and quality control filters',
-    grow: 0,
-    minWidth: 100,
-    render: (variant: any) => (
-      <React.Fragment>
-        {variant.exome && <SampleSourceIcon source="exome" filters={variant.exome.filters} />}
-        {variant.genome && <SampleSourceIcon source="genome" filters={variant.genome.filters} />}
-      </React.Fragment>
-    ),
-  },
-
-  {
     key: 'transcript_id',
     heading: 'Transcript',
     description: 'Transcript in which the displayed consequence occurs',
@@ -371,7 +359,23 @@ const variantTableColumns: VariantTableColumn[] = [
     ),
     shouldShowInContext: (context: any, contextType: any) => contextType !== 'transcript',
   },
-
+  {
+    key: 'length',
+    heading: 'Length',
+    description: 'Length of variant',
+    isRowHeader: true,
+    grow: 1,
+    shouldShowInContext: () => true,
+    render: (row: any, _: any, { highlightWords }: any) => <Cell>TK</Cell>,
+  },
+  {
+    key: 'variant_type',
+    heading: 'Variant type',
+    isRowHeader: true,
+    grow: 1,
+    shouldShowInContext: () => true,
+    render: (row: any, _: any, { highlightWords }: any) => <Cell>TK</Cell>,
+  },
   {
     key: 'variant_id',
     heading: 'Variant ID',
@@ -388,6 +392,22 @@ const variantTableColumns: VariantTableColumn[] = [
         </Link>
       </Cell>
     ),
+  },
+  {
+    key: 'foo_variant_type',
+    heading: 'Type',
+    description: 'foo Chromosome-position-reference-alternate',
+    isRowHeader: true,
+    grow: 1,
+    render: (row: any, _: any, { highlightWords }: any) => <Cell>{row.vartype}</Cell>,
+  },
+  {
+    key: 'foo_length',
+    heading: 'Length',
+    description: 'foo length',
+    isRowHeader: true,
+    grow: 1,
+    render: (row: any, _: any, { highlightWords }: any) => <Cell>{row.length || 1}</Cell>,
   },
 ]
 

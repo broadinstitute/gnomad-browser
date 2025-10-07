@@ -144,9 +144,9 @@ const VariantsInGene = ({
           .
         </p>
         <p>
-          The table below shows the HGVS consequence and VEP annotation for each variant&apos;s most
-          severe consequence across all transcripts in this gene. Cases where the most severe
-          consequence occurs in a{' '}
+          The table below shows the HGVS or SVAnnotate consequence and VEP annotation for each
+          variant&apos;s most severe consequence across all transcripts in this gene. Cases where
+          the most severe consequence occurs in a{' '}
           {gene.reference_genome === 'GRCh37'
             ? 'non-canonical transcript'
             : 'non-MANE Select transcript (or non-canonical transcript if no MANE Select transcript exists)'}{' '}
