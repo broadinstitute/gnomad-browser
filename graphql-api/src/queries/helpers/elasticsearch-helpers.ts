@@ -1,3 +1,4 @@
+import elasticsearch from '@elastic/elasticsearch'
 import { LimitedElasticClient, SearchResponse, SearchHit } from '../../elasticsearch'
 
 /**
@@ -41,6 +42,21 @@ export const fetchAllSearchResults = async (client: LimitedElasticClient, search
   }
 
   return allResults
+}
+
+export const fetchAllSearchResultsFromMultipleIndices = async (
+  esClient: LimitedElasticClient,
+  indices: string[],
+  searchParams: elasticsearch.RequestParams.Search<any>
+) => {
+  const requests = indices.map((index) =>
+    fetchAllSearchResults(esClient, {
+      index,
+      type: '_doc',
+      ...searchParams,
+    })
+  )
+  return Promise.all(requests)
 }
 
 // Retrieve index metadata set by data pipeline

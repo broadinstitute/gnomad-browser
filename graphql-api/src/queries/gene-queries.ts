@@ -1,7 +1,7 @@
 import elasticsearch from '@elastic/elasticsearch'
 import { withCache } from '../cache'
 
-import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
+import { fetchAllSearchResultsFromMultipleIndices } from './helpers/elasticsearch-helpers'
 
 import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { LimitedElasticClient, GetResponse, SearchResponse, SearchHit } from '../elasticsearch'
@@ -128,21 +128,6 @@ export const fetchGenesByRegion = async (
 
   const mergedHits = mergeHitsById(hits.flat())
   return mergedHits.map((hit) => hit._source.value)
-}
-
-const fetchAllSearchResultsFromMultipleIndices = async (
-  esClient: LimitedElasticClient,
-  indices: string[],
-  searchParams: elasticsearch.RequestParams.Search<any>
-) => {
-  const requests = indices.map((index) =>
-    fetchAllSearchResults(esClient, {
-      index,
-      type: '_doc',
-      ...searchParams,
-    })
-  )
-  return Promise.all(requests)
 }
 
 const searchMultipleIndices = async (

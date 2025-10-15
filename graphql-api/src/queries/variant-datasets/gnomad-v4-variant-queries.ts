@@ -5,7 +5,10 @@ import { isRsId } from '@gnomad/identifiers'
 import { UserVisibleError } from '../../errors'
 
 import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-queries'
-import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
+import {
+  fetchAllSearchResults,
+  fetchAllSearchResultsFromMultipleIndices,
+} from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
 import {
   fetchLofCurationResultsByVariant,
@@ -16,10 +19,67 @@ import {
 import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 import largeGenes from '../helpers/large-genes'
+import { LimitedElasticClient, SearchResponse } from '../../elasticsearch'
 
 const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
+const GNOMAD_V4_VARIANT_INDEX_PATCHES = 'gnomad_v4_variants_patches-2025-10-14--20-02'
 
 type Subset = 'all' | 'non_ukb'
+type ESTranscriptConsequence = {
+  biotype: string
+  consequence_terms: string[]
+  gene_id: string
+  gene_symbol: string
+  gene_version: string
+  is_canonical: boolean
+  major_consequence: string
+  transcript_id: string
+  transcript_version: string
+}
+type ESPatch = {
+  variant_id: string
+  transcript_consequences: ESTranscriptConsequence[]
+}
+
+const mergeTranscriptConsequences = (
+  transcriptConsequences: ESTranscriptConsequence[],
+  patchedTranscriptConsequences?: ESTranscriptConsequence[] | null
+) => {
+  if (!patchedTranscriptConsequences) {
+    return transcriptConsequences
+  }
+
+  const result: ESTranscriptConsequence[] = []
+  transcriptConsequences.forEach((csq) => {
+    const patchedConsequence = patchedTranscriptConsequences!.find(
+      (patchedCsq) => patchedCsq.transcript_id === csq.transcript_id
+    )
+    result.push(patchedConsequence || csq)
+  })
+  return result
+}
+
+const mergeTranscriptConsequencesInVariant = (
+  variant: { variant_id: string; transcript_consequences: ESTranscriptConsequence[] },
+  patches: ESPatch[]
+) => {
+  const matchingPatch = patches.find((patch) => patch.variant_id === variant.variant_id)
+  if (matchingPatch === undefined) {
+    return variant
+  }
+
+  return {
+    ...variant,
+    transcript_consequences: mergeTranscriptConsequences(
+      variant.transcript_consequences,
+      matchingPatch.transcript_consequences
+    ),
+  }
+}
+
+const hasPositiveAC = (variant: any, subset: string) =>
+  (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
+  variant.exome.freq[subset].ac_raw > 0
 
 // ================================================================================================
 // Count query
@@ -69,30 +129,50 @@ const chooseIdField = (variantId: string) => {
   return 'variant_id'
 }
 
-const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) => {
+const fetchVariantById = async (
+  esClient: LimitedElasticClient,
+  variantId: string,
+  subset: Subset
+) => {
   const idField = chooseIdField(variantId)
-  const response = await esClient.search({
+  const query = {
+    bool: {
+      filter: { term: { [idField]: variantId } },
+    },
+  }
+
+  const variantResponsePromise = esClient.search({
     index: GNOMAD_V4_VARIANT_INDEX,
     body: {
-      query: {
-        bool: {
-          filter: { term: { [idField]: variantId } },
-        },
-      },
+      query,
     },
     size: 1,
-  })
+  }) as Promise<SearchResponse>
+  const patchResponsePromise = esClient.search({
+    index: GNOMAD_V4_VARIANT_INDEX_PATCHES,
+    body: { query },
+    size: 1,
+  }) as Promise<SearchResponse>
 
-  if (response.body.hits.total.value === 0) {
+  const variantResponse = await variantResponsePromise
+
+  if (variantResponse.body.hits.total.value === 0) {
     throw new UserVisibleError('Variant not found')
   }
 
   // An rsID may match multiple variants
-  if (response.body.hits.total.value > 1) {
+  if (variantResponse.body.hits.total.value > 1) {
     throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
   }
 
-  const variant = response.body.hits.hits[0]._source.value
+  const patchResponse = await patchResponsePromise
+  const patchedTranscriptConsequences =
+    patchResponse.body.hits.total.value > 0
+      ? (patchResponse.body.hits.hits[0]._source.value
+          .transcript_consequences as ESTranscriptConsequence[])
+      : null
+
+  const variant = variantResponse.body.hits.hits[0]._source.value
 
   const subsetGenomeFreq = variant.genome.freq.all || {}
   const subsetJointFreq = variant.joint.freq[subset] || {}
@@ -244,9 +324,10 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     flags: variantFlags,
     // TODO: Include RefSeq transcripts once the browser supports them.
     lof_curations: lofCurationResults,
-    transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
-      csq.gene_id.startsWith('ENSG')
-    ),
+    transcript_consequences: mergeTranscriptConsequences(
+      variant.transcript_consequences,
+      patchedTranscriptConsequences
+    ).filter((csq: any) => csq.gene_id.startsWith('ENSG')),
     in_silico_predictors: inSilicoPredictorsList,
   }
 
@@ -454,28 +535,30 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
       },
     }))
 
-    const hits = await fetchAllSearchResults(esClient, {
-      index: GNOMAD_V4_VARIANT_INDEX,
-      type: '_doc',
-      size: pageSize,
-      _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
-      body: {
-        query: {
-          bool: {
-            filter: [{ term: { gene_id: gene.gene_id } }, { bool: { should: rangeQueries } }],
+    const [hits, consequencePatchHits] = await fetchAllSearchResultsFromMultipleIndices(
+      esClient,
+      [GNOMAD_V4_VARIANT_INDEX, GNOMAD_V4_VARIANT_INDEX_PATCHES],
+      {
+        type: '_doc',
+        size: pageSize,
+        _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
+        body: {
+          query: {
+            bool: {
+              filter: [{ term: { gene_id: gene.gene_id } }, { bool: { should: rangeQueries } }],
+            },
           },
+          sort: [{ 'locus.position': { order: 'asc' } }],
         },
-        sort: [{ 'locus.position': { order: 'asc' } }],
-      },
-    })
+      }
+    )
+
+    const consequencePatches: ESPatch[] = consequencePatchHits.map((hit) => hit._source.value)
 
     const shapedHits = hits
       .map((hit: any) => hit._source.value)
-      .filter(
-        (variant: any) =>
-          (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-          variant.exome.freq[subset].ac_raw > 0
-      )
+      .filter((variant) => hasPositiveAC(variant, subset))
+      .map((variant) => mergeTranscriptConsequencesInVariant(variant, consequencePatches))
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
     const lofCurationResults = await fetchLofCurationResultsByGene(esClient, 'v4', gene)
@@ -507,38 +590,40 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
   const genomeSubset = 'all'
   const jointSubset = 'all'
 
-  const hits = await fetchAllSearchResults(esClient, {
-    index: GNOMAD_V4_VARIANT_INDEX,
-    type: '_doc',
-    size: 10000,
-    _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { 'locus.contig': `chr${region.chrom}` } },
-            {
-              range: {
-                'locus.position': {
-                  gte: region.start,
-                  lte: region.stop,
+  const [hits, consequencePatchHits] = await fetchAllSearchResultsFromMultipleIndices(
+    esClient,
+    [GNOMAD_V4_VARIANT_INDEX, GNOMAD_V4_VARIANT_INDEX_PATCHES],
+    {
+      type: '_doc',
+      size: 10000,
+      _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
+      body: {
+        query: {
+          bool: {
+            filter: [
+              { term: { 'locus.contig': `chr${region.chrom}` } },
+              {
+                range: {
+                  'locus.position': {
+                    gte: region.start,
+                    lte: region.stop,
+                  },
                 },
               },
-            },
-          ],
+            ],
+          },
         },
+        sort: [{ 'locus.position': { order: 'asc' } }],
       },
-      sort: [{ 'locus.position': { order: 'asc' } }],
-    },
-  })
+    }
+  )
+
+  const consequencePatches: ESPatch[] = consequencePatchHits.map((hit) => hit._source.value)
 
   const variants = hits
     .map((hit: any) => hit._source.value)
-    .filter(
-      (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome.freq[subset].ac_raw > 0
-    )
+    .filter((variant) => hasPositiveAC(variant, subset))
+    .map((variant) => mergeTranscriptConsequencesInVariant(variant, consequencePatches))
     .map(shapeVariantSummary(subset, { type: 'region' }))
 
   const lofCurationResults = await fetchLofCurationResultsByRegion(esClient, 'v4', region)
@@ -599,31 +684,33 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset:
     },
   }))
 
-  const hits = await fetchAllSearchResults(esClient, {
-    index: GNOMAD_V4_VARIANT_INDEX,
-    type: '_doc',
-    size: 10000,
-    _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { transcript_id: transcript.transcript_id } },
-            { bool: { should: rangeQueries } },
-          ],
+  const [hits, consequencePatchHits] = await fetchAllSearchResultsFromMultipleIndices(
+    esClient,
+    [GNOMAD_V4_VARIANT_INDEX, GNOMAD_V4_VARIANT_INDEX_PATCHES],
+    {
+      type: '_doc',
+      size: 10000,
+      _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
+      body: {
+        query: {
+          bool: {
+            filter: [
+              { term: { transcript_id: transcript.transcript_id } },
+              { bool: { should: rangeQueries } },
+            ],
+          },
         },
+        sort: [{ 'locus.position': { order: 'asc' } }],
       },
-      sort: [{ 'locus.position': { order: 'asc' } }],
-    },
-  })
+    }
+  )
+
+  const consequencePatches: ESPatch[] = consequencePatchHits.map((hit) => hit._source.value)
 
   return hits
     .map((hit: any) => hit._source.value)
-    .filter(
-      (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome.freq[subset].ac_raw > 0
-    )
+    .filter((variant) => hasPositiveAC(variant, subset))
+    .map((variant) => mergeTranscriptConsequencesInVariant(variant, consequencePatches))
     .map(
       shapeVariantSummary(subset, { type: 'transcript', transcriptId: transcript.transcript_id })
     )
@@ -665,11 +752,7 @@ const fetchMatchingVariants = async (
 
   return hits
     .map((hit: any) => hit._source.value)
-    .filter(
-      (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome.freq[subset].ac_raw > 0
-    )
+    .filter((variant) => hasPositiveAC(variant, subset))
     .map((variant: any) => ({
       variant_id: variant.variant_id,
     }))
