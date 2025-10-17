@@ -1,7 +1,10 @@
 import elasticsearch from '@elastic/elasticsearch'
 import { withCache } from '../cache'
 
-import { fetchAllSearchResultsFromMultipleIndices } from './helpers/elasticsearch-helpers'
+import {
+  fetchAllSearchResultsFromMultipleIndices,
+  getFromMultipleIndices,
+} from './helpers/elasticsearch-helpers'
 
 import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
 import { LimitedElasticClient, GetResponse, SearchResponse, SearchHit } from '../elasticsearch'
@@ -38,17 +41,7 @@ const _fetchGeneById = async (
           throw err
         }) as Promise<GetResponse | null>
   )
-  return Promise.all(requests).then(
-    (responses) => {
-      const responsesWithValue = responses.filter((response) => response !== null)
-      return responsesWithValue.length > 0
-        ? responsesWithValue[responsesWithValue.length - 1]!.body._source.value
-        : null
-    },
-    (err) => {
-      throw err
-    }
-  )
+  return getFromMultipleIndices(requests)
 }
 
 export const fetchGeneById = withCache(

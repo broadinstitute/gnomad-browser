@@ -1,5 +1,5 @@
 import elasticsearch from '@elastic/elasticsearch'
-import { LimitedElasticClient, SearchResponse, SearchHit } from '../../elasticsearch'
+import { LimitedElasticClient, SearchResponse, SearchHit, GetResponse } from '../../elasticsearch'
 
 /**
  * Search and then scroll to retrieve all pages of search results.
@@ -69,3 +69,16 @@ export const fetchIndexMetadata = async (esClient: any, index: any) => {
   // eslint-disable-next-line no-underscore-dangle
   return Object.values(response.body)[0].mappings._meta
 }
+
+export const getFromMultipleIndices = (requests: Promise<GetResponse | null>[]) =>
+  Promise.all(requests).then(
+    (responses) => {
+      const responsesWithValue = responses.filter((response) => response !== null)
+      return responsesWithValue.length > 0
+        ? responsesWithValue[responsesWithValue.length - 1]!.body._source.value
+        : null
+    },
+    (err) => {
+      throw err
+    }
+  )
