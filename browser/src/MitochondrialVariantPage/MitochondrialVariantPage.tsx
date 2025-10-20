@@ -195,7 +195,7 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
     </Section>
     <Section>
       <h2>
-        Haplogroup Frequencies <InfoButton topic="mt-haplogroup-frequencies" />
+        Haplogroup Frequencies <InfoButton topic="haplogroup-frequencies" />
       </h2>
       <TableWrapper>
         <MitochondrialVariantHaplogroupFrequenciesTable variant={variant} />
