@@ -120,6 +120,11 @@ exports[`Help Page has no unexpected changes 1`] = `
   text-decoration: underline;
 }
 
+.c19 {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .c27 {
   border-collapse: collapse;
   border-spacing: 0;
@@ -261,11 +266,6 @@ exports[`Help Page has no unexpected changes 1`] = `
 
 .c25 td {
   text-align: right;
-}
-
-.c19 {
-  overflow-x: auto;
-  overflow-y: hidden;
 }
 
 .c20 {
