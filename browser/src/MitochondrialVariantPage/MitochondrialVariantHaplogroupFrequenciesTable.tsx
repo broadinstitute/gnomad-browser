@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { BaseTable, Checkbox, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
-import { MitochondrialVariant } from './MitochondrialVariantPage'
+import { MitochondrialVariant, Haplogroup } from './MitochondrialVariantPage'
 
 const CountCell = styled.span`
   display: inline-block;
@@ -43,6 +43,17 @@ type State = {
   sortBy: keyof HaplogroupWithAf
   sortAscending: boolean
 }
+
+const calculateAN = (haplogroups: Haplogroup[]) =>
+  haplogroups.map((haplogroup) => haplogroup.an).reduce((acc, n) => acc + n, 0)
+
+const calculateACHom = (haplogroups: Haplogroup[]) =>
+  haplogroups.map((haplogroup) => haplogroup.ac_hom).reduce((acc, n) => acc + n, 0)
+
+const calculateACHet = (haplogroups: Haplogroup[]) =>
+  haplogroups.map((haplogroup) => haplogroup.ac_het).reduce((acc, n) => acc + n, 0)
+
+const calculateAF = (ac: number, an: number) => (an !== 0 ? ac / an : 0)
 
 class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, State> {
   state: State = {
@@ -89,12 +100,13 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
 
   render() {
     const { variant } = this.props
+    const { haplogroups } = variant
     const { showAC0Haplogroups, sortAscending, sortBy } = this.state
 
     const renderedHaplogroups = (
       showAC0Haplogroups
-        ? variant.haplogroups
-        : variant.haplogroups.filter((haplogroup) => haplogroup.ac_hom + haplogroup.ac_het > 0)
+        ? haplogroups
+        : haplogroups.filter((haplogroup) => haplogroup.ac_hom + haplogroup.ac_het > 0)
     )
       .map((haplogroup) => ({
         ...haplogroup,
@@ -109,21 +121,19 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
           : haplogroup1[sortBy] - haplogroup2[sortBy]
       })
 
-    const totalAlleleNumber = renderedHaplogroups
-      .map((haplogroup) => haplogroup.an)
-      .reduce((acc, n) => acc + n, 0)
+    const totalAlleleNumber = calculateAN(haplogroups)
 
-    const totalHomoplasmicAlleleCount = renderedHaplogroups
-      .map((haplogroup) => haplogroup.ac_hom)
-      .reduce((acc, n) => acc + n, 0)
-    const totalHomoplasmicAlleleFrequency =
-      totalAlleleNumber !== 0 ? totalHomoplasmicAlleleCount / totalAlleleNumber : 0
+    const totalShownHomoplasmicAlleleCount = calculateACHom(renderedHaplogroups)
+    const totalShownHomoplasmicAlleleFrequency = calculateAF(
+      totalShownHomoplasmicAlleleCount,
+      totalAlleleNumber
+    )
 
-    const totalHeteroplasmicAlleleCount = renderedHaplogroups
-      .map((haplogroup) => haplogroup.ac_het)
-      .reduce((acc, n) => acc + n, 0)
-    const totalHeteroplasmicAlleleFrequency =
-      totalAlleleNumber !== 0 ? totalHeteroplasmicAlleleCount / totalAlleleNumber : 0
+    const totalShownHeteroplasmicAlleleCount = calculateACHet(renderedHaplogroups)
+    const totalShownHeteroplasmicAlleleFrequency = calculateAF(
+      totalShownHeteroplasmicAlleleCount,
+      totalAlleleNumber
+    )
 
     return (
       <div>
@@ -178,18 +188,20 @@ class MitochondrialVariantHaplogroupFrequenciesTable extends Component<Props, St
           </tbody>
           <tfoot>
             <tr className="border">
-              <th scope="row">Total</th>
+              <th scope="row">
+                Total {showAC0Haplogroups ? '(all haplotypes)' : '(shown haplotypes)'}
+              </th>
               <td>
                 <CountCell>{totalAlleleNumber}</CountCell>
               </td>
               <td>
-                <CountCell>{totalHomoplasmicAlleleCount}</CountCell>
+                <CountCell>{totalShownHomoplasmicAlleleCount}</CountCell>
               </td>
-              <td>{totalHomoplasmicAlleleFrequency.toPrecision(4)}</td>
+              <td>{totalShownHomoplasmicAlleleFrequency.toPrecision(4)}</td>
               <td>
-                <CountCell>{totalHeteroplasmicAlleleCount}</CountCell>
+                <CountCell>{totalShownHeteroplasmicAlleleCount}</CountCell>
               </td>
-              <td>{totalHeteroplasmicAlleleFrequency.toPrecision(4)}</td>
+              <td>{totalShownHeteroplasmicAlleleFrequency.toPrecision(4)}</td>
             </tr>
           </tfoot>
         </Table>

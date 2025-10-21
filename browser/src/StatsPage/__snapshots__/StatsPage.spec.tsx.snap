@@ -102,6 +102,30 @@ exports[`Stats Page has no unexpected changes 1`] = `
   text-decoration: underline;
 }
 
+.c19 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0;
+  margin: 0 1em 0 0;
+  list-style-type: none;
+}
+
+.c20 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 1em 0.33em 0;
+}
+
 .c0 {
   box-sizing: border-box;
   width: 100%;
@@ -136,30 +160,6 @@ exports[`Stats Page has no unexpected changes 1`] = `
 
 .c5 li {
   margin-bottom: 0.5em;
-}
-
-.c19 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding: 0;
-  margin: 0 1em 0 0;
-  list-style-type: none;
-}
-
-.c20 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin: 0 1em 0.33em 0;
 }
 
 .c12 {
