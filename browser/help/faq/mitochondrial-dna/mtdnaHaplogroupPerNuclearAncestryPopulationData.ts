@@ -1,36 +1,4 @@
-export const haplogroups = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'HV',
-  'I',
-  'J',
-  'K',
-  'L0',
-  'L1',
-  'L2',
-  'L3',
-  'L4',
-  'L5',
-  'M',
-  'N',
-  'P',
-  'R',
-  'T',
-  'U',
-  'V',
-  'W',
-  'X',
-  'Y',
-  'Z',
-] as const
-
-export type Haplogroup = typeof haplogroups[number]
+import { HaplogroupLabel } from '../../../src/MitochondrialVariantPage/MitochondrialVariantPage'
 
 export const codeToAncestryName = {
   afr: 'African/African American',
@@ -46,10 +14,10 @@ export const codeToAncestryName = {
 } as const
 
 type AncestryCode = keyof typeof codeToAncestryName
-export type AncestryName = typeof codeToAncestryName[AncestryCode]
+export type AncestryName = (typeof codeToAncestryName)[AncestryCode]
 
 export interface MtdnaHaplogroupSampleCount {
-  haplogroup: Haplogroup
+  haplogroup: HaplogroupLabel
   ancestry: AncestryCode
   n: number
 }

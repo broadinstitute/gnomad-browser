@@ -36,6 +36,40 @@ import {
 } from './MitochondrialVariantTranscriptConsequence'
 import MitochondrialVariantTranscriptConsequenceList from './MitochondrialVariantTranscriptConsequenceList'
 
+export const haplogroupLabels = [
+  'A',
+  'B',
+  'C',
+  'D',
+  'E',
+  'F',
+  'G',
+  'H',
+  'HV',
+  'I',
+  'J',
+  'K',
+  'L0',
+  'L1',
+  'L2',
+  'L3',
+  'L4',
+  'L5',
+  'M',
+  'N',
+  'P',
+  'R',
+  'T',
+  'U',
+  'V',
+  'W',
+  'X',
+  'Y',
+  'Z',
+] as const
+
+export type HaplogroupLabel = (typeof haplogroupLabels)[number]
+
 const Wrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -89,6 +123,13 @@ export type MitochondrialVariantPopulation = {
   ac_hom: number
 }
 
+export type Haplogroup = {
+  id: HaplogroupLabel
+  an: number
+  ac_hom: number
+  ac_het: number
+}
+
 export type MitochondrialVariant = {
   alt: string
   an: number
@@ -99,12 +140,7 @@ export type MitochondrialVariant = {
   excluded_ac: number | null
   flags: string[] | null
   haplogroup_defining: boolean | null
-  haplogroups: {
-    id: string
-    an: number
-    ac_hom: number
-    ac_het: number
-  }[]
+  haplogroups: Haplogroup[]
   max_heteroplasmy: number | null
   populations: MitochondrialVariantPopulation[]
   pos: number
