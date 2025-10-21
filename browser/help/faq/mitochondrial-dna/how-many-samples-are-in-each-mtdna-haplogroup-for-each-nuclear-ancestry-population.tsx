@@ -6,9 +6,10 @@ import { BaseTable, Select } from '@gnomad/ui'
 import haplogroupAndAncestryData, {
   AncestryName,
   codeToAncestryName,
-  haplogroups,
   MtdnaHaplogroupSampleCount,
 } from './mtdnaHaplogroupPerNuclearAncestryPopulationData'
+
+import { haplogroupLabels } from '../../../src/MitochondrialVariantPage/MitochondrialVariantPage'
 
 const HaplogroupAndAncestryBaseTable = styled(BaseTable)`
   margin-top: 1em;
@@ -64,7 +65,7 @@ const HaplogroupAndAncestryFilterTable = () => {
           <option value="All" key="All">
             All Haplogroups
           </option>
-          {haplogroups.map((haplogroup) => (
+          {haplogroupLabels.map((haplogroup) => (
             <option value={haplogroup} key={haplogroup}>
               {haplogroup}
             </option>
