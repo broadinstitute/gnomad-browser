@@ -7089,6 +7089,67 @@ exports[`Data Page has no unexpected changes 1`] = `
           <a
             aria-hidden="true"
             className="c10 c11"
+            href="#v4-clinvar-grch38"
+            id="v4-clinvar-grch38"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          ClinVar
+        </h2>
+      </span>
+      <p>
+        For more information about these files, see the
+         
+        <a
+          className="-Link c14"
+          href="/help/clinvar-hts"
+          onClick={[Function]}
+        >
+          help text
+        </a>
+        .
+      </p>
+      <ul
+        className="c20"
+      >
+        <li
+          className="c21"
+        >
+          <span>
+            ClinVar GRCh38 Browser Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for ClinVar GRCh38 Browser Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="c16"
+    >
+      <span
+        className="c8"
+      >
+        <h2
+          className="c17"
+        >
+          <a
+            aria-hidden="true"
+            className="c10 c11"
             href="#v4-resources"
             id="v4-resources"
           >
@@ -21124,6 +21185,67 @@ exports[`Data Page has no unexpected changes 1`] = `
               Amazon
             </a>
           </span>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="c16"
+    >
+      <span
+        className="c8"
+      >
+        <h2
+          className="c17"
+        >
+          <a
+            aria-hidden="true"
+            className="c10 c11"
+            href="#v2-clinvar-grch37"
+            id="v2-clinvar-grch37"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          ClinVar
+        </h2>
+      </span>
+      <p>
+        For more information about these files, see the
+         
+        <a
+          className="-Link c14"
+          href="/help/clinvar-hts"
+          onClick={[Function]}
+        >
+          help text
+        </a>
+        .
+      </p>
+      <ul
+        className="c20"
+      >
+        <li
+          className="c21"
+        >
+          <span>
+            ClinVar GRCh37 Browser Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for ClinVar GRCh37 Browser Hail Table"
+            className="c22"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
         </li>
       </ul>
     </section>

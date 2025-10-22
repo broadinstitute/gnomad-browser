@@ -459,6 +459,26 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v2-clinvar-grch37">ClinVar</SectionTitle>
+        <p>
+          For more information about these files, see the{' '}
+          <Link to="/help/clinvar-hts">help text</Link>.
+        </p>
+
+        <FileList>
+          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
+          <ListItem>
+            <GetUrlButtons
+              gcsBucket="gnomad-browser-clinvar"
+              label="ClinVar GRCh37 Browser Hail Table"
+              path="/gnomad_clinvar_grch37.ht"
+              includeAWS={false}
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v2-resources">Resources</SectionTitle>
         <FileList>
           {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
