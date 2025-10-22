@@ -20,6 +20,7 @@ const helpPageTableOfContents: { topics: string[]; faq: FaqTopic[] } = {
     'hgdp-1kg-annotations',
     'v4-hts',
     'v4-browser-hts',
+    'clinvar-hts',
     'exome-capture-tech',
     'combined-freq-stats',
     'allele-count-zero',

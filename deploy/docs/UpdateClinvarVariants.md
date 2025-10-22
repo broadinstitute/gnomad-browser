@@ -115,3 +115,23 @@
    ```
    curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT 'http://localhost:9200/_snapshot/backups/%3Csnapshot-%7Bnow%7BYYYY.MM.dd.HH.mm%7D%7D%3E'
    ```
+
+8. Update the public ClinVar buckets
+
+   We release these final hail tables in a requester pays bucket, `gs://gnomad-browser-clinvar`, use `gsutil rsync` to keep the files in sync.
+
+   GRCh37
+
+   ```
+   gsutil -u gnomadev -m rsync -r \
+     gs://gnomad-v4-data-pipeline/output/clinvar/clinvar_grch37_annotated_2.ht/ \
+     gs://gnomad-browser-clinvar/gnomad_clinvar_grch37.ht
+   ```
+
+   GRCh38
+
+   ```
+   gsutil -u gnomadev -m rsync -r \
+     gs://gnomad-v4-data-pipeline/output/clinvar/clinvar_grch38_annotated_2.ht/ \
+     gs://gnomad-browser-clinvar/gnomad_clinvar_grch38.ht
+   ```
