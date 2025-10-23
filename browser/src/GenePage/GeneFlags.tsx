@@ -13,10 +13,14 @@ type Props = {
 }
 
 const allOfUsCMRGGenes = ['CBS', 'KCNE1', 'CRYAA']
+const vep115Genes = ['RNU4ATAC']
 
 const GeneFlags = ({ gene }: Props) => {
   const shouldDisplayCMRGWarning =
     gene.reference_genome === 'GRCh38' && allOfUsCMRGGenes.includes(gene.symbol)
+
+  const shouldDisplayVEP115Warning =
+    gene.reference_genome === 'GRCh38' && vep115Genes.includes(gene.symbol)
 
   return (
     <>
@@ -33,6 +37,14 @@ const GeneFlags = ({ gene }: Props) => {
             CMRG
           </ExternalLink>
           ) callset to remedy this issue in the future.
+        </p>
+      )}
+      {shouldDisplayVEP115Warning && (
+        <p>
+          <Badge level="warning">Warning</Badge> MANE Select and variant consequence information in
+          this gene were annotated using Ensembl VEP version 115 (GENCODE v49). For more
+          information, see our{' '}
+          <ExternalLink href="https://gnomad.broadinstitute.org/help/vep">help page</ExternalLink>.
         </p>
       )}
       {gene.flags.includes('chip') && (

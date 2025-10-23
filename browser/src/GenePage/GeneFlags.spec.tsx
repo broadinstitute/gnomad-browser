@@ -29,4 +29,12 @@ describe('GeneFlags', () => {
 
     expect(tree).toMatchSnapshot()
   })
+
+  test('renders VEP 115 warning for RNU4ATAC', () => {
+    const testGene = geneFactory.build({ symbol: 'RNU4ATAC', reference_genome: 'GRCh38' })
+
+    const tree = renderer.create(<GeneFlags gene={testGene} />)
+
+    expect(tree).toMatchSnapshot()
+  })
 })
