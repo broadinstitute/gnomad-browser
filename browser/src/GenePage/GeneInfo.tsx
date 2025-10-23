@@ -23,12 +23,12 @@ type ManeSelectTranscriptIdProps = {
 }
 
 const ManeSelectTranscriptId = ({ gene }: ManeSelectTranscriptIdProps) => {
-  const gencodeVersionOfManeSelectTransript = gene.transcripts.find(
+  const gencodeVersionOfManeSelectTranscript = gene.transcripts.find(
     (transcript: any) => transcript.transcript_id === gene.mane_select_transcript.ensembl_id
   )
   const shouldLinkToTranscriptPage =
-    gencodeVersionOfManeSelectTransript &&
-    gencodeVersionOfManeSelectTransript.transcript_version ===
+    gencodeVersionOfManeSelectTranscript &&
+    gencodeVersionOfManeSelectTranscript.transcript_version ===
       gene.mane_select_transcript.ensembl_version
 
   return (
