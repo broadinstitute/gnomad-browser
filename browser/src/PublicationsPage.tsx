@@ -156,6 +156,16 @@ export default () => (
       {/* @ts-expect-error */}
       <List>
         <PaperCitation
+          authorList="Kore, P.*, Wilson, M. W.*, Tiao, G., Chao, K., Darnowsky, P. W., Watts, N. A., Mauer, J. H., Baxter, S. M., Genome Aggregation Database Consortium, Rehm, H. L., Daly, M. J., Karczewski, K. J., & Atkinson, E. G."
+          title="Improved allele frequencies in gnomAD through local ancestry inference."
+          journal="Nature Communications"
+          year="2025"
+          issue="16(1)"
+          pages="8734"
+          pmid="41053080"
+          doiLink="https://doi.org/10.1038/s41467-025-63340-2"
+        />
+        <PaperCitation
           authorList="Poterba, T., Vittal, C., King, D., Goldstein, D., Goldstein, J. I., Schultz, P., Karczewski, K. J., Seed, C., Neale, B. M."
           title="The Scalable Variant Call Representation: Enabling Genetic Analysis Beyond One Million Genomes."
           journal="Bioinformatics"
