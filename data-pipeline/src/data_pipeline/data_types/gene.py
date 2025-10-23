@@ -117,6 +117,66 @@ def reject_par_y_genes(genes_path=None):
     return genes
 
 
+def patch_rnu4atac(genes_path=None):
+    gene_symbol = "RNU4ATAC"
+
+    genes = hl.read_table(genes_path)
+    genes = genes.filter(genes.symbol == gene_symbol)
+
+    correct_start = 121530880
+    correct_stop = 121531009
+    correct_start_locus = hl.locus(contig="chr2", pos=correct_start, reference_genome="GRCh38")
+    correct_stop_locus = hl.locus(contig="chr2", pos=correct_stop, reference_genome="GRCh38")
+    correct_xstart = x_position(correct_start_locus)
+    correct_xstop = x_position(correct_stop_locus)
+
+    correct_interval = hl.interval(correct_start_locus, correct_stop_locus, includes_start=True, includes_end=True)
+
+    correct_exon = hl.struct(
+        feature_type="exon", start=correct_start, stop=correct_stop, xstart=correct_xstart, xstop=correct_xstop
+    )
+
+    incorrect_transcript = genes.take(1)[0].transcripts[0]
+    correct_transcript = hl.struct(
+        interval=correct_interval,
+        transcript_version="2",
+        gene_version="2",
+        start=correct_start,
+        stop=correct_stop,
+        xstart=correct_xstart,
+        xstop=correct_xstop,
+        exons=hl.array([correct_exon]),
+        transcript_id=incorrect_transcript.transcript_id,
+        gene_id=incorrect_transcript.gene_id,
+        chrom=incorrect_transcript.chrom,
+        strand=incorrect_transcript.strand,
+        reference_genome=incorrect_transcript.reference_genome,
+        gtex_tissue_expression=incorrect_transcript.gtex_tissue_expression,
+        refseq_id="NR_023343",
+        refseq_version="3",
+    )
+
+    correct_mane_select_transcript = hl.struct(
+        matched_gene_version="2",
+        ensembl_id="ENST00000580972",
+        ensembl_version="2",
+        refseq_id="NR_023343",
+        refseq_version="3",
+    )
+
+    genes = genes.annotate(
+        gene_version=2,
+        start=correct_start,
+        stop=correct_stop,
+        xstart=correct_xstart,
+        xstop=correct_xstop,
+        exons=[correct_exon],
+        transcripts=[correct_transcript],
+        mane_select_transcript=correct_mane_select_transcript,
+    )
+    return genes
+
+
 ###############################################
 # Transcripts                                 #
 ###############################################

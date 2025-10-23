@@ -41,6 +41,9 @@ from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_cov
 from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
 from data_pipeline.pipelines.gnomad_v4_lof_curation_results import pipeline as gnomad_v4_lof_curation_results_pipeline
 
+from data_pipeline.pipelines.gene_patches import pipeline as gnomad_v4_gene_patches
+from data_pipeline.pipelines.transcript_patches import pipeline as gnomad_v4_transcript_patches
+
 
 logger = logging.getLogger("gnomad_data_pipeline")
 
@@ -88,6 +91,15 @@ DATASETS_CONFIG = {
             "block_size": 200,
         },
     },
+    "gene_patches": {
+        "get_table": lambda: hl.read_table(gnomad_v4_gene_patches.get_output("gene_patches").get_output_path()),
+        "args": {
+            "index": "genes_grch38_patches",
+            "index_fields": ["gene_id", "symbol_upper_case", "search_terms", "xstart", "xstop"],
+            "id_field": "gene_id",
+            "block_size": 200,
+        },
+    },
     ##############################################################################################################
     # Transcripts
     ##############################################################################################################
@@ -104,6 +116,17 @@ DATASETS_CONFIG = {
         "get_table": lambda: hl.read_table(genes_pipeline.get_output("transcripts_grch38").get_output_path()),
         "args": {
             "index": "transcripts_grch38",
+            "index_fields": ["transcript_id"],
+            "id_field": "transcript_id",
+            "block_size": 1_000,
+        },
+    },
+    "transcripts_grch38_patched": {
+        "get_table": lambda: hl.read_table(
+            gnomad_v4_transcript_patches.get_output("transcripts_grch38_patched").get_output_path()
+        ),
+        "args": {
+            "index": "transcripts_grch38_patched",
             "index_fields": ["transcript_id"],
             "id_field": "transcript_id",
             "block_size": 1_000,
@@ -130,6 +153,30 @@ DATASETS_CONFIG = {
             ],
             "id_field": "document_id",
             "num_shards": 48,
+            "block_size": 1_000,
+        },
+    },
+    "gnomad_v4_variant_patches": {
+        "get_table": lambda: subset_table(
+            add_variant_document_id(
+                hl.read_table(
+                    "gs://gnomad-browser-data-pipeline/phil-scratch/output/gnomad_v4/gnomad_v4_variants_patched.ht"
+                )
+            )
+        ),
+        "args": {
+            "index": "gnomad_v4_variants_patches",
+            "index_fields": [
+                "document_id",
+                "variant_id",
+                "rsids",
+                "caid",
+                "locus",
+                "transcript_consequences.gene_id",
+                "transcript_consequences.transcript_id",
+                "vrs.alt.allele_id",
+            ],
+            "id_field": "document_id",
             "block_size": 1_000,
         },
     },

@@ -82,8 +82,8 @@ const scheduleElasticsearchRequest = (fn: any) => {
 const limitedElastic = {
   indices: elastic.indices,
   clearScroll: elastic.clearScroll.bind(elastic),
-  search: (...args: Parameters<typeof elastic.search>) =>
-    scheduleElasticsearchRequest(() => elastic.search(...args)).then((response) => {
+  search: (args: elasticsearch.RequestParams.Search<any>) =>
+    scheduleElasticsearchRequest(() => elastic.search(args)).then((response) => {
       // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       if (response.body.timed_out) {
         throw new Error('Elasticsearch search timed out')
@@ -95,8 +95,8 @@ const limitedElastic = {
       }
       return response
     }),
-  scroll: (...args: Parameters<typeof elastic.scroll>) =>
-    scheduleElasticsearchRequest(() => elastic.scroll(...args)).then((response) => {
+  scroll: (args: { scroll: string; scrollId?: string }) =>
+    scheduleElasticsearchRequest(() => elastic.scroll(args)).then((response) => {
       // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       if (response.body.timed_out) {
         throw new Error('Elasticsearch scroll timed out')
@@ -117,10 +117,22 @@ const limitedElastic = {
       }
       return response
     }),
-  get: (...args: Parameters<typeof elastic.get>) =>
-    scheduleElasticsearchRequest(() => elastic.get(...args)),
+  get: (args: { index: string; type: '_doc'; id: string }) =>
+    scheduleElasticsearchRequest(() => elastic.get(args)),
   mget: (...args: Parameters<typeof elastic.mget>) =>
     scheduleElasticsearchRequest(() => elastic.mget(...args)),
+}
+
+export type LimitedElasticClient = typeof limitedElastic
+
+export type GetResponse = {
+  body: { _source: { value: Record<string, any> } }
+}
+
+export type SearchHit = { _id: string; _source: any }
+
+export type SearchResponse = {
+  body: { hits: { total: { value: number }; hits: SearchHit[] }; _scroll_id?: string }
 }
 
 export { limitedElastic as client }

@@ -1,43 +1,62 @@
+import elasticsearch from '@elastic/elasticsearch'
 import { withCache } from '../cache'
 
-import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
+import {
+  fetchAllSearchResultsFromMultipleIndices,
+  getFromMultipleIndices,
+} from './helpers/elasticsearch-helpers'
 
-const GENE_INDICES = {
-  GRCh37: 'genes_grch37',
-  GRCh38: 'genes_grch38',
+import { ReferenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { LimitedElasticClient, GetResponse, SearchResponse, SearchHit } from '../elasticsearch'
+
+type GeneIndex = 'genes_grch37' | 'genes_grch38' | 'genes_grch38_patches-2025-10-23--19-35'
+
+type GeneSearchRegion = { reference_genome: ReferenceGenome; xstart: number; xstop: number }
+
+const GENE_INDICES: Record<ReferenceGenome, GeneIndex[]> = {
+  // Order matters here: later indices take precedence over earlier
+  GRCh37: ['genes_grch37'],
+  GRCh38: ['genes_grch38', 'genes_grch38_patches-2025-10-23--19-35'],
 }
 
-const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {
-  try {
-    const response = await esClient.get({
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      index: GENE_INDICES[referenceGenome],
-      type: '_doc',
-      id: geneId,
-    })
-
-    return response.body._source.value
-  } catch (err) {
-    // meta will not be present if the request times out in the queue before reaching ES
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
-    if (err.meta && err.meta.body && err.meta.body.found === false) {
-      return null
-    }
-    throw err
-  }
+const _fetchGeneById = async (
+  esClient: LimitedElasticClient,
+  geneId: string,
+  referenceGenome: ReferenceGenome
+) => {
+  const indices = GENE_INDICES[referenceGenome]
+  const requests = indices.map(
+    (index) =>
+      esClient
+        .get({
+          index,
+          type: '_doc',
+          id: geneId,
+        })
+        .catch((err) => {
+          // meta will not be present if the request times out in the queue before reaching ES
+          if (err.meta && err.meta.body && err.meta.body.found === false) {
+            return null
+          }
+          throw err
+        }) as Promise<GetResponse | null>
+  )
+  return getFromMultipleIndices(requests)
 }
 
 export const fetchGeneById = withCache(
   _fetchGeneById,
-  (_: any, geneId: any, referenceGenome: any) => `gene:${geneId}:${referenceGenome}`,
+  (_: any, geneId: string, referenceGenome: ReferenceGenome) => `gene:${geneId}:${referenceGenome}`,
   { expiration: 86400 }
 )
 
-export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenceGenome: any) => {
-  const response = await esClient.search({
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    index: GENE_INDICES[referenceGenome],
-    type: '_doc',
+export const fetchGeneBySymbol = async (
+  esClient: LimitedElasticClient,
+  geneSymbol: string,
+  referenceGenome: ReferenceGenome
+) => {
+  const indices = GENE_INDICES[referenceGenome]
+  const responses = await searchMultipleIndices(esClient, indices, {
     body: {
       query: {
         bool: {
@@ -48,20 +67,22 @@ export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenc
     size: 1,
   })
 
-  if (response.body.hits.total.value === 0) {
+  const responsesWithValue = responses.filter((response) => response.body.hits.total.value > 0)
+  if (responsesWithValue.length === 0) {
     return null
   }
 
-  return response.body.hits.hits[0]._source.value
+  return responsesWithValue[responsesWithValue.length - 1].body.hits.hits[0]._source.value
 }
 
-export const fetchGenesByRegion = async (esClient: any, region: any) => {
-  const { reference_genome: referenceGenome, xstart, xstop } = region
+export const fetchGenesByRegion = async (
+  esClient: LimitedElasticClient,
+  region: GeneSearchRegion
+) => {
+  const { reference_genome, xstart, xstop } = region
+  const indices = GENE_INDICES[reference_genome]
 
-  const hits = await fetchAllSearchResults(esClient, {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    index: GENE_INDICES[referenceGenome],
-    type: '_doc',
+  const hits = await fetchAllSearchResultsFromMultipleIndices(esClient, indices, {
     size: 200,
     _source: [
       'value.exons',
@@ -98,28 +119,76 @@ export const fetchGenesByRegion = async (esClient: any, region: any) => {
     },
   })
 
-  return hits.map((hit: any) => hit._source.value)
+  const mergedHits = mergeHitsById(hits.flat())
+  return mergedHits.map((hit) => hit._source.value)
 }
 
-export const fetchGenesMatchingText = async (esClient: any, query: any, referenceGenome: any) => {
+const searchMultipleIndices = async (
+  esClient: LimitedElasticClient,
+  indices: string[],
+  searchParams: elasticsearch.RequestParams.Search<any>
+): Promise<SearchResponse[]> => {
+  const requests = indices.map(
+    (index) =>
+      esClient.search({
+        index,
+        type: '_doc',
+        ...searchParams,
+      }) as Promise<SearchResponse>
+  )
+
+  return Promise.all(requests)
+}
+
+const mergeHitsById = (hits: SearchHit[]): SearchHit[] => {
+  const ids: string[] = []
+  const idsToHits: Record<string, any> = {}
+  hits.forEach((hit) => {
+    if (idsToHits[hit._id] === undefined) {
+      ids.push(hit._id)
+    }
+    idsToHits[hit._id] = hit
+  })
+  return ids.map((id) => idsToHits[id])
+}
+
+const mergeResponsesById = (responses: SearchResponse[]) => {
+  const ids: string[] = []
+  const idsToDocs: Record<string, any> = {}
+  responses.forEach((response) =>
+    response.body.hits.hits.forEach((hit) => {
+      if (idsToDocs[hit._id] === undefined) {
+        ids.push(hit._id)
+      }
+      idsToDocs[hit._id] = hit._source
+    })
+  )
+
+  return ids.map((id) => idsToDocs[id])
+}
+
+export const fetchGenesMatchingText = async (
+  esClient: LimitedElasticClient,
+  query: string,
+  referenceGenome: ReferenceGenome
+) => {
   const upperCaseQuery = query.toUpperCase()
 
   // Ensembl ID
   if (/^ENSG\d{11}$/.test(upperCaseQuery)) {
     const gene = await _fetchGeneById(esClient, upperCaseQuery, referenceGenome)
-    return [
-      {
-        ensembl_id: gene.gene_id,
-        symbol: gene.symbol,
-      },
-    ]
+    return (
+      gene && [
+        {
+          ensembl_id: gene.gene_id,
+          symbol: gene.symbol,
+        },
+      ]
+    )
   }
 
   // Symbol
-  const response = await esClient.search({
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-    index: GENE_INDICES[referenceGenome],
-    type: '_doc',
+  const responses = await searchMultipleIndices(esClient, GENE_INDICES[referenceGenome], {
     _source: ['gene_id', 'value.gene_version', 'value.symbol'],
     body: {
       query: {
@@ -134,15 +203,16 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
     size: 5,
   })
 
-  if (response.body.hits.total.value === 0) {
+  const responsesWithValue = responses.filter((response) => response.body.hits.total.value !== 0)
+  if (responsesWithValue.length === 0) {
     return []
   }
 
-  return response.body.hits.hits
-    .map((hit: any) => hit._source)
-    .map((doc: any) => ({
-      ensembl_id: doc.gene_id,
-      ensembl_version: doc.value.gene_version,
-      symbol: doc.value.symbol,
-    }))
+  const mergedDocs = mergeResponsesById(responsesWithValue)
+
+  return mergedDocs.map((doc) => ({
+    ensembl_id: doc.gene_id,
+    ensembl_version: doc.value.gene_version,
+    symbol: doc.value.symbol,
+  }))
 }
