@@ -32,6 +32,27 @@ exports[`GeneFlags renders CMRG flag if one of 3 relevant genes 1`] = `
 </p>
 `;
 
+exports[`GeneFlags renders VEP 115 warning for RNU4ATAC 1`] = `
+<p>
+  <span
+    className="Badge__BadgeWrapper-sc-j4izdp-1 gRPPXC"
+  >
+    Warning
+  </span>
+   MANE Select and variant consequence information in this gene were annotated using Ensembl VEP version 115 (GENCODE v49). For more information, see our
+   
+  <a
+    className="Link-sc-14lgydv-0 Link__ExternalLink-sc-14lgydv-1 kswbwW"
+    href="https://gnomad.broadinstitute.org/help/vep"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    help page
+  </a>
+  .
+</p>
+`;
+
 exports[`GeneFlags renders chip flag if present on gene 1`] = `
 <p>
   <span
