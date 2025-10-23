@@ -8,39 +8,40 @@ import Link from '../Link'
 import GeneReferences from './GeneReferences'
 
 type ManeSelectTranscriptIdProps = {
-  gene: {
-    mane_select_transcript: {
-      ensembl_id: string
-      ensembl_version: string
-      refseq_id: string
-      refseq_version: string
-    }
-    transcripts: {
-      transcript_id: string
-      transcript_version: string
-    }[]
+  mane_select_transcript: {
+    ensembl_id: string
+    ensembl_version: string
+    refseq_id: string
+    refseq_version: string
   }
+  transcripts: {
+    transcript_id: string
+    transcript_version: string
+  }[]
 }
 
-const ManeSelectTranscriptId = ({ gene }: ManeSelectTranscriptIdProps) => {
-  const gencodeVersionOfManeSelectTranscript = gene.transcripts.find(
-    (transcript: any) => transcript.transcript_id === gene.mane_select_transcript.ensembl_id
+const ManeSelectTranscriptId = ({
+  mane_select_transcript,
+  transcripts,
+}: ManeSelectTranscriptIdProps) => {
+  const gencodeVersionOfManeSelectTranscript = transcripts.find(
+    (transcript) => transcript.transcript_id === mane_select_transcript.ensembl_id
   )
   const shouldLinkToTranscriptPage =
     gencodeVersionOfManeSelectTranscript &&
     gencodeVersionOfManeSelectTranscript.transcript_version ===
-      gene.mane_select_transcript.ensembl_version
+      mane_select_transcript.ensembl_version
 
   return (
     <React.Fragment>
       {shouldLinkToTranscriptPage ? (
-        <Link to={`/transcript/${gene.mane_select_transcript.ensembl_id}`}>
-          {gene.mane_select_transcript.ensembl_id}.{gene.mane_select_transcript.ensembl_version}
+        <Link to={`/transcript/${mane_select_transcript.ensembl_id}`}>
+          {mane_select_transcript.ensembl_id}.{mane_select_transcript.ensembl_version}
         </Link>
       ) : (
-        `${gene.mane_select_transcript.ensembl_id}.${gene.mane_select_transcript.ensembl_version}`
+        `${mane_select_transcript.ensembl_id}.${mane_select_transcript.ensembl_version}`
       )}{' '}
-      / {gene.mane_select_transcript.refseq_id}.{gene.mane_select_transcript.refseq_version}
+      / {mane_select_transcript.refseq_id}.{mane_select_transcript.refseq_version}
     </React.Fragment>
   )
 }
@@ -109,8 +110,14 @@ const GeneInfo = ({ gene }: GeneInfoProps) => {
             </React.Fragment>
           }
         >
-          {/* @ts-expect-error TS(2322) FIXME: Type '{ gene_id: string; gene_version: string; sym... Remove this comment to see the full error message */}
-          {gene.mane_select_transcript ? <ManeSelectTranscriptId gene={gene} /> : 'Not available'}
+          {gene.mane_select_transcript ? (
+            <ManeSelectTranscriptId
+              mane_select_transcript={gene.mane_select_transcript}
+              transcripts={gene.transcripts}
+            />
+          ) : (
+            'Not available'
+          )}
         </AttributeListItem>
       )}
 
