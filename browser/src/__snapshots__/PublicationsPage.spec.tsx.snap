@@ -294,6 +294,37 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c5"
         >
+          Kore, P.*, Wilson, M. W.*, Tiao, G., Chao, K., Darnowsky, P. W., Watts, N. A., Mauer, J. H., Baxter, S. M., Genome Aggregation Database Consortium, Rehm, H. L., Daly, M. J., Karczewski, K. J., & Atkinson, E. G.
+           
+           
+          Improved allele frequencies in gnomAD through local ancestry inference.
+           
+          <em>
+            Nature Communications
+          </em>
+          . 16(1), 8734 (2025).
+          <span>
+            <a
+              className="c6"
+              href="https://doi.org/10.1038/s41467-025-63340-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.1038/s41467-025-63340-2
+            </a>
+             
+          </span>
+          PMID: 
+          41053080
+        </cite>
+      </li>
+      <li
+        className="c4"
+      >
+        <cite
+          className="c5"
+        >
           Poterba, T., Vittal, C., King, D., Goldstein, D., Goldstein, J. I., Schultz, P., Karczewski, K. J., Seed, C., Neale, B. M.
            
            
