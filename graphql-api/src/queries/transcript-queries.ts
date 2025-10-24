@@ -1,3 +1,5 @@
+import { catchNotFound } from '../elasticsearch'
+
 const TRANSCRIPT_INDICES = {
   GRCh37: 'transcripts_grch37',
   GRCh38: 'transcripts_grch38',
@@ -14,11 +16,6 @@ export const fetchTranscriptById = async (es: any, transcriptId: any, referenceG
 
     return response.body._source.value
   } catch (err) {
-    // meta will not be present if the request times out in the queue before reaching ES
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
-    if (err.meta && err.meta.body.found === false) {
-      return null
-    }
-    throw err
+    return catchNotFound(err)
   }
 }

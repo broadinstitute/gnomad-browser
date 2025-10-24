@@ -37,6 +37,13 @@ esLimiter.on('error', (error: any) => {
   logger.error(error)
 })
 
+export const catchNotFound = (err: any) => {
+  if (err?.meta?.body?.found === false) {
+    return null
+  }
+  throw err
+}
+
 const scheduleElasticsearchRequest = (fn: any) => {
   return new Promise((resolve, reject) => {
     let canceled = false

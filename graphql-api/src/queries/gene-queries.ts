@@ -1,6 +1,7 @@
 import { withCache } from '../cache'
 
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
+import { catchNotFound } from '../elasticsearch'
 
 const GENE_INDICES = {
   GRCh37: 'genes_grch37',
@@ -18,12 +19,7 @@ const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) 
 
     return response.body._source.value
   } catch (err) {
-    // meta will not be present if the request times out in the queue before reaching ES
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
-    if (err.meta && err.meta.body && err.meta.body.found === false) {
-      return null
-    }
-    throw err
+    return catchNotFound(err)
   }
 }
 
