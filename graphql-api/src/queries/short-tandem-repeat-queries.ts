@@ -1,6 +1,7 @@
 import { DATASET_LABELS } from '../datasets'
 import { UserVisibleError } from '../errors'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
+import { catchNotFound } from '../elasticsearch'
 
 const SHORT_TANDEM_REPEAT_INDICES = {
   gnomad_r3: 'gnomad_v3_short_tandem_repeats-2025-03-17--19-04',
@@ -68,12 +69,7 @@ export const fetchShortTandemRepeatById = async (
 
     return response.body._source.value
   } catch (err) {
-    // meta will not be present if the request times out in the queue before reaching ES
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
-    if (err.meta && err.meta.body.found === false) {
-      return null
-    }
-    throw err
+    return catchNotFound(err)
   }
 }
 

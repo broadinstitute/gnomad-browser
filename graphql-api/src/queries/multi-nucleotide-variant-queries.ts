@@ -1,5 +1,6 @@
 import { DATASET_LABELS } from '../datasets'
 import { UserVisibleError } from '../errors'
+import { catchNotFound } from '../elasticsearch'
 
 type DatasetId = keyof typeof DATASET_LABELS
 
@@ -35,11 +36,6 @@ export const fetchMultiNuceotideVariantById = async (
       genome: variant.genome.ac !== undefined ? variant.genome : null,
     }
   } catch (err) {
-    // meta will not be present if the request times out in the queue before reaching ES
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
-    if (err.meta && err.meta.body.found === false) {
-      return null
-    }
-    throw err
+    return catchNotFound(err)
   }
 }
