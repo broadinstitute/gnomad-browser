@@ -103,9 +103,13 @@ export const fetchGenesMatchingText = async (esClient: any, query: any, referenc
   // Ensembl ID
   if (/^ENSG\d{11}$/.test(upperCaseQuery)) {
     const gene = await _fetchGeneById(esClient, upperCaseQuery, referenceGenome)
+    if (gene === null) {
+      return []
+    }
     return [
       {
         ensembl_id: gene.gene_id,
+        ensembl_version: gene.gene_version,
         symbol: gene.symbol,
       },
     ]
