@@ -129,7 +129,7 @@ data:
         attributes:
         - key: gcp.project_id
           # MAKE SURE YOU REPLACE THIS WITH YOUR PROJECT ID
-          value: exac-gnomad
+          value: gnomadev
           action: insert
     receivers:
       otlp:
