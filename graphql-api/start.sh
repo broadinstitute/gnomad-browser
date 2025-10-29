@@ -17,7 +17,7 @@ export RATE_LIMITER_REDIS_URL="${RATE_LIMITER_REDIS_URL:-$DEFAULT_RATE_LIMITER_R
 if [[ -n ${DEBUG:-""} ]]; then
 	# Invoking Node with these flags allows us to attach the interactive
 	# debugger for Node that's built into Chrome.
-	pnpm node -r ts-node/register --inspect ./src/app.ts
+	pnpm node -r ts-node/register -r ./src/instrumentation.ts --inspect ./src/app.ts
 else
-	pnpm ts-node ./src/app.ts
+	pnpm ts-node -r ./src/instrumentation.ts ./src/app.ts
 fi

@@ -20,12 +20,14 @@ RUN pnpm install --production --frozen-lockfile
 COPY --chown=node:node dataset-metadata /app/dataset-metadata
 COPY --chown=node:node graphql-api/src /app/graphql-api/src
 COPY --chown=node:node tsconfig.json /app/graphql-api/tsconfig.json
+COPY --chown=node:node tsconfig.build-instrumentation.json /app/graphql-api/tsconfig.build-instrumentation.json
 COPY --chown=node:node tsconfig.build.json /app/graphql-api/tsconfig.build.json
 
 # Build JS from TS source
+RUN pnpm tsc -p /app/graphql-api/tsconfig.build-instrumentation.json
 RUN pnpm tsc -p /app/graphql-api/tsconfig.build.json
 
 # Copy static data into place
 COPY --chown=node:node graphql-api/static_data /app/static_data
 
-CMD ["node", "graphql-api/src/app.js"]
+CMD ["node", "-r", "./graphql-api/src/instrumentation.js", "graphql-api/src/app.js"]

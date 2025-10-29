@@ -44,9 +44,13 @@ const config: Record<string, any> = {
 
   // JSON caching
   JSON_CACHE_PATH: env.JSON_CACHE_PATH,
-  JSON_CACHE_ENABLE_ALL: env.JSON_CACHE_ENABLE_ALL === "true" || false,
-  JSON_CACHE_LARGE_GENES: env.JSON_CACHE_LARGE_GENES === "true" || false,
-  JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === "true" || false
+  JSON_CACHE_ENABLE_ALL: env.JSON_CACHE_ENABLE_ALL === 'true' || false,
+  JSON_CACHE_LARGE_GENES: env.JSON_CACHE_LARGE_GENES === 'true' || false,
+  JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === 'true' || false,
+
+  // OpenTelemetry collector endpoint
+  OPENTELEMETRY_COLLECTOR_URL: env.OPENTELEMETRY_COLLECTOR_URL,
+  OPENTELEMETRY_SERVICE_NAME: env.OPENTELEMETRY_SERVICE_NAME,
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']
