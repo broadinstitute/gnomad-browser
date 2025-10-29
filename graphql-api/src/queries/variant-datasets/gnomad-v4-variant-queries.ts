@@ -418,6 +418,19 @@ export const getFilteredRegions = (exons: Exon[]) => {
   return filteredRegions
 }
 
+const hasPositiveAC = (variant: any, subset: string) => {
+  try {
+    return (
+      (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
+      variant.exome.freq[subset].ac_raw > 0
+    )
+  } catch (err) {
+    throw new Error(
+      `invalid frequencies for subset ${subset} in variant ${JSON.stringify(variant)}`
+    )
+  }
+}
+
 // ================================================================================================
 // Gene query
 // ================================================================================================
@@ -471,11 +484,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
 
     const shapedHits = hits
       .map((hit: any) => hit._source.value)
-      .filter(
-        (variant: any) =>
-          (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-          variant.exome.freq[subset].ac_raw > 0
-      )
+      .filter((variant: any) => hasPositiveAC(variant, subset))
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
     const lofCurationResults = await fetchLofCurationResultsByGene(esClient, 'v4', gene)
@@ -534,11 +543,7 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
 
   const variants = hits
     .map((hit: any) => hit._source.value)
-    .filter(
-      (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome.freq[subset].ac_raw > 0
-    )
+    .filter((variant: any) => hasPositiveAC(variant, subset))
     .map(shapeVariantSummary(subset, { type: 'region' }))
 
   const lofCurationResults = await fetchLofCurationResultsByRegion(esClient, 'v4', region)
@@ -619,11 +624,7 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset:
 
   return hits
     .map((hit: any) => hit._source.value)
-    .filter(
-      (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome.freq[subset].ac_raw > 0
-    )
+    .filter((variant: any) => hasPositiveAC(variant, subset))
     .map(
       shapeVariantSummary(subset, { type: 'transcript', transcriptId: transcript.transcript_id })
     )
@@ -665,11 +666,7 @@ const fetchMatchingVariants = async (
 
   return hits
     .map((hit: any) => hit._source.value)
-    .filter(
-      (variant: any) =>
-        (variant.genome.freq.all && variant.genome.freq.all.ac_raw > 0) ||
-        variant.exome.freq[subset].ac_raw > 0
-    )
+    .filter((variant: any) => hasPositiveAC(variant, subset))
     .map((variant: any) => ({
       variant_id: variant.variant_id,
     }))
