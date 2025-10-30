@@ -887,7 +887,7 @@
 
 import React, { useState } from 'react'
 import { scaleLinear } from 'd3-scale'
-import { line, curveBasis } from 'd3-shape'
+import { line, curveBasis, curveBumpX } from 'd3-shape'
 
 // Graph node with adjacency list
 interface GraphNode {
@@ -1197,7 +1197,7 @@ const HaplotypeBubblePlot = ({ graph, width = 900 }: any) => {
 
   // Create curved line generator
   const curvedLine: any = line()
-    .curve(curveBasis)
+    .curve(curveBumpX)
     .x((d: any) => d.x)
     .y((d: any) => d.y)
 
