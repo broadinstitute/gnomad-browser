@@ -1,5 +1,5 @@
 import * as opentelemetry from '@opentelemetry/sdk-node'
-// import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
@@ -16,7 +16,7 @@ if (config.OPENTELEMETRY_COLLECTOR_URL !== undefined) {
         url: `${config.OPENTELEMETRY_COLLECTOR_URL}/v1/metrics`,
       }),
     }),
-    instrumentations: [],
+    instrumentations: [getNodeAutoInstrumentations()],
     serviceName: config.OPENTELEMETRY_SERVICE_NAME,
   })
   sdk.start()
