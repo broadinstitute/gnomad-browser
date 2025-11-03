@@ -156,6 +156,17 @@ export default () => (
       {/* @ts-expect-error */}
       <List>
         <PaperCitation
+          authorList="Gudmundsson, S., Singer-Berk, M., Stenton, S. L., Goodrich, J. K., Wilson, M. W., Einson, J., Watts, N. A.; Genome Aggregation Database Consortium; Lappalainen, T., Rehm, H. L., MacArthur, D. G., O'Donnell-Luria, A."
+          title="Exploring penetrance of clinically relevant variants in over 800,000 humans from the Genome Aggregation Database."
+          journal="Nature Communications"
+          year="2025"
+          issue="16(1)"
+          pages="9623"
+          doiLink="https://doi.org/10.1038/s41467-025-61698-x"
+          pmid="41173899"
+          pmcid="PMC12579199"
+        />
+        <PaperCitation
           authorList="Kore, P.*, Wilson, M. W.*, Tiao, G., Chao, K., Darnowsky, P. W., Watts, N. A., Mauer, J. H., Baxter, S. M., Genome Aggregation Database Consortium, Rehm, H. L., Daly, M. J., Karczewski, K. J., & Atkinson, E. G."
           title="Improved allele frequencies in gnomAD through local ancestry inference."
           journal="Nature Communications"
@@ -163,7 +174,7 @@ export default () => (
           issue="16(1)"
           pages="8734"
           pmid="41053080"
-          doiLink="https://doi.org/10.1038/s41467-025-63340-2"
+          doiLink="https://doi.org/10.1038/s41467-025-61698-x"
         />
         <PaperCitation
           authorList="Poterba, T., Vittal, C., King, D., Goldstein, D., Goldstein, J. I., Schultz, P., Karczewski, K. J., Seed, C., Neale, B. M."
