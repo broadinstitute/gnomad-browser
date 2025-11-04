@@ -55,7 +55,7 @@ This flag indicated there are at least two indels that were observed in _cis_. W
 
 _In silico_ splice predictors predict a cryptic in-frame splice site that rescues a canonical splice site abolished by the pLoF variant in question without including stop codons. These cryptic sites may be either up or downstream of the canonical splice site. These essential splice site rescues are detected using SpliceAI and or Pangolin. To be considered a splice rescue, spliceAI and pangolin must agree on the prediction of an in-frame rescue. Additionally, if there is an additional prediction of an out-of-frame cryptic rescue, this must be at a significantly lower score (defined by score >0.2 from the in-frame rescue), in order for the pLoF variant to be classified as _likely not LoF_ or _not LoF_.
 
-#### Splice Variant at In-frame Exon Flag
+#### Variant with In-frame Exon Skipping Prediction Flag
 
 _In silico_ splice predictors predict skipping of the adjacent exon (which is in-frame), usually using spliceAI and pangolin. The predictions must agree across predictors. Skipping of this exon will maintain the reading frame and is not predicted to result in NMD. The skipping of this exon will also remove <25% of the coding sequence for the gene. Additionally, if there is an additional prediction of an out-of-frame cryptic rescue, this must be at a significantly lower score (defined by score >0.2 from the in-frame exon predictions), in order for the pLoF variant to be classified as _likely not LoF_ or _not LoF_.
 
