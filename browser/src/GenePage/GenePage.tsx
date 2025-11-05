@@ -362,7 +362,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   return (
     <TrackPage>
       <TrackPageSection>
-        <DocumentTitle title={`${gene.symbol} | ${labelForDataset(datasetId)}`} />
+        <DocumentTitle title={`${gene.symbol} | ${labelForDataset(datasetId)}`} pageContext={gene} />
         <GnomadPageHeading
           selectedDataset={datasetId}
           datasetOptions={{
