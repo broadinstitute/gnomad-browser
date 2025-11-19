@@ -1,10 +1,14 @@
 *
 !dataset-metadata
+dataset-metadata/**/*.js
 !graphql-api/package.json
 !graphql-api/src
+!browser/src/missingContent.ts
 !tsconfig.json
 !tsconfig.build.json
 !pnpm-lock.yaml
 !pnpm-workspace-api-docker.yaml
 !package.json
 !graphql-api/static_data
+!bin
+!resources

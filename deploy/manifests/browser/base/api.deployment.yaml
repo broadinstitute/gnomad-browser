@@ -61,6 +61,21 @@ spec:
               value: 'true'
             - name: NODE_OPTIONS
               value: '--max-old-space-size=10240'
+            - name: MENDELIAN_TSV_PATH
+              value: '/app/resources/gene-disease-table.tsv'
+            # HOME is required for gmd to initialize correctly if it needs to write to a home directory.
+            - name: HOME
+              value: '/app'
+            # The Google AI API key must be provided via a Kubernetes secret.
+            - name: GOOGLE_GENERATIVE_AI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  # This secret must be created in the cluster manually.
+                  name: google-generative-ai-api-key
+                  key: api_key
+            # MCP server calls the GraphQL API locally since they're colocalized
+            - name: GNOMAD_API_URL
+              value: 'http://localhost:8000/api'
           ports:
             - name: http
               containerPort: 8000

@@ -18,6 +18,10 @@ deploy_config.json
 
 browser/build.env
 
+# Environment configuration (contains local paths and secrets)
+.env
+.env.fish
+
 # Build outputs
 browser/dist
 
@@ -36,3 +40,10 @@ hail-*.log
 
 # Reads metadata databases
 reads/*.db
+
+.grove
+.grove-worktrees
+
+# Binary artifacts for Docker builds
+bin/
+resources/

@@ -119,6 +119,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
       <TrackPageSection>
         <DocumentTitle
           title={`${region.chrom}-${region.start}-${region.stop} | ${labelForDataset(datasetId)}`}
+          pageContext={region}
         />
         <GnomadPageHeading
           extra={<EditRegion initialRegion={region} style={{ marginLeft: '1em' }} />}
