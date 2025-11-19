@@ -32,6 +32,15 @@ const DocumentTitle = ({ title, pageContext }: any) => {
         rsids: pageContext.rsids,
       }
       contextValue = JSON.stringify(variantContext, null, 2)
+    } else if (pageContext.chrom && pageContext.start && pageContext.stop) {
+      contextDescription = 'The currently viewed genomic region'
+      const regionContext = {
+        chrom: pageContext.chrom,
+        start: pageContext.start,
+        stop: pageContext.stop,
+        reference_genome: pageContext.reference_genome,
+      }
+      contextValue = JSON.stringify(regionContext, null, 2)
     } else {
       // Fallback for other contexts that might be passed
       contextValue = JSON.stringify(pageContext, null, 2)

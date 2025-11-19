@@ -111,6 +111,7 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
   // Show "interpret this variant" suggestion only on variant pages
   const isVariantPage = location.pathname.startsWith('/variant/')
   const isGenePage = location.pathname.startsWith('/gene/')
+  const isRegionPage = location.pathname.startsWith('/region/')
 
   // Define suggestions based on the current page
   const suggestions = useMemo(() => {
@@ -136,6 +137,14 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
           title: "Check in silico predictors",
           message: "What do in silico predictors like REVEL and CADD say about this variant?",
         },
+        {
+          title: "Find credible sets for variant",
+          message: "Using the Juha API, find credible sets from GWAS, eQTL, and pQTL studies for this variant.",
+        },
+        {
+          title: "Check variant for colocalization",
+          message: "Using the Juha API, find traits that colocalize at this variant's locus.",
+        },
       ]
     }
     if (isGenePage) {
@@ -156,10 +165,30 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
           title: "Analyze expression regions (Pext)",
           message: "Provide a Pext analysis for this gene to identify functionally important regions.",
         },
+        {
+          title: "Find associations in gene region",
+          message: "Using the Juha API, find GWAS, eQTL, and pQTL credible sets in this gene's region.",
+        },
+        {
+          title: "Find QTLs for this gene",
+          message: "Using the Juha API, find QTLs (eQTLs, pQTLs) where this gene is the target.",
+        },
+        {
+          title: "Find curated disease associations",
+          message: "Using the Juha API, what diseases are associated with this gene from curated sources like ClinGen and GenCC?",
+        },
+      ]
+    }
+    if (isRegionPage) {
+      return [
+        {
+          title: "Find associations in region",
+          message: "Using the Juha API, find GWAS, eQTL, and pQTL credible sets that overlap with this genomic region.",
+        },
       ]
     }
     return []
-  }, [isVariantPage, isGenePage])
+  }, [isVariantPage, isGenePage, isRegionPage])
 
   useCopilotAction({
     name: 'navigateToVariantPage',
