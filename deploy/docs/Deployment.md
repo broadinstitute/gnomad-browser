@@ -136,6 +136,60 @@ Before deploying a new version of the browser, either a demo, or to production:
    - `kubectl config get-contexts` to see your configs cluster
    - `kubectl config use-context <DESIRED-CLUSTER>` to set your configs cluster
 
+7. **Configure and prepare CopilotKit build artifacts** (required for API image builds)
+
+   The gnomAD API now includes the CopilotKit assistant server, which requires two external artifacts to be included in the Docker image:
+
+   - The `gmd` binary
+   - The Mendelian disease TSV file
+
+   **First-time setup:**
+
+   Create a `.env` file in the repository root with your local paths:
+
+   ```
+   cp .env.example .env
+   ```
+
+   Edit `.env` and set the following variables:
+
+   ```bash
+   GMD_BINARY_PATH=/path/to/your/gmd/binary
+   MENDELIAN_TSV_PATH=/path/to/gene-disease-table.tsv
+   ```
+
+   For example:
+   ```bash
+   GMD_BINARY_PATH=/Users/yourname/.grove/bin/gmd
+   MENDELIAN_TSV_PATH=/Users/yourname/data/gene-disease-table.tsv
+   ```
+
+   **Before each Docker build:**
+
+   Run the preparation script to copy artifacts into the build context:
+
+   ```
+   ./deploy/scripts/prepare-copilotkit-artifacts.sh
+   ```
+
+   This will create `bin/gmd` and `resources/gene-disease-table.tsv` from the paths configured in your `.env` file.
+
+   Note: The `.env`, `bin/`, and `resources/` files are in `.gitignore` and should not be committed to the repository.
+
+8. **Ensure Google AI API Key secret exists in Kubernetes** (one-time setup)
+
+   The CopilotKit server requires a Google Generative AI API key. Create the secret if it doesn't exist:
+
+   ```
+   kubectl create secret generic google-generative-ai-api-key \
+     --from-literal=api_key=YOUR_GOOGLE_AI_API_KEY
+   ```
+
+   To verify the secret exists:
+   ```
+   kubectl get secret google-generative-ai-api-key
+   ```
+
 ## Create Demo Browser Deployment
 
 Demo deployments are staging environments independently that let stakeholders preview and approve features before the features go to production.

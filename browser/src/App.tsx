@@ -45,7 +45,7 @@ const GoogleAnalytics = () => {
   const location = useLocation()
   useEffect(() => {
     if ((window as any).gtag) {
-      ;(window as any).gtag('config', (window as any).gaTrackingId, {
+      ; (window as any).gtag('config', (window as any).gaTrackingId, {
         page_path: location.pathname,
       })
     }
@@ -78,7 +78,7 @@ const BANNER_CONTENT = null
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
-  
+
   useEffect(() => {
     userPreferences.loadPreferences().then(
       () => {
@@ -95,8 +95,10 @@ const App = () => {
     )
   }, [])
 
+  const copilotKitUrl = '/api/copilotkit'
+
   return (
-    <CopilotKit runtimeUrl="http://localhost:4001/api/copilotkit">
+    <CopilotKit runtimeUrl={copilotKitUrl}>
       <Router>
         {/* On any navigation, send event to Google Analytics. */}
         <Route path="/" component={GoogleAnalytics} />

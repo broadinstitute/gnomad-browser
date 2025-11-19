@@ -6,6 +6,7 @@ import {
   copilotRuntimeNodeHttpEndpoint,
 } from '@copilotkit/runtime';
 import { LocalMCPClient } from './mcp-client';
+import logger from '../logger';
 
 // This function will be imported by the main graphql-api server
 export function mountCopilotKit(app: Application) {
@@ -26,15 +27,21 @@ export function mountCopilotKit(app: Application) {
     },
   };
 
+  // Create a single shared MCP client instance
+  let sharedMCPClient: LocalMCPClient | null = null;
+
   // Create runtime with MCP support
   const runtime = new CopilotRuntime({
     // Function to create MCP clients based on configuration
     createMCPClient: async (config) => {
       // For local MCP servers, use the stdio client
       if (config.endpoint === 'local://gnomad') {
-        const client = new LocalMCPClient(mcpConfig);
-        await client.connect();
-        return client;
+        // Reuse the same client instance across all requests
+        if (!sharedMCPClient) {
+          sharedMCPClient = new LocalMCPClient(mcpConfig);
+          await sharedMCPClient.connect();
+        }
+        return sharedMCPClient;
       }
       throw new Error(`Unsupported MCP endpoint: ${config.endpoint}`);
     },
@@ -66,10 +73,56 @@ export function mountCopilotKit(app: Application) {
 
   // Mount the handler on the provided Express app with its own CORS middleware
   app.use('/api/copilotkit', cors(corsOptions), (req, res, next) => {
-    (async () => handler(req, res))().catch(next);
+    const startTime = Date.now();
+    const requestId = Math.random().toString(36).substring(7);
+
+    // Log the request with more detail about the conversation
+    let threadId, messageCount;
+    try {
+      const body = req.body || {};
+      threadId = body.threadId;
+      messageCount = body.messages?.length || 0;
+    } catch (e) {
+      // ignore parsing errors
+    }
+
+    logger.info({
+      message: 'CopilotKit request',
+      requestId,
+      threadId,
+      messageCount,
+      method: req.method,
+      path: req.path,
+      userAgent: req.headers['user-agent'],
+    });
+
+    // Wrap the response to log completion
+    const originalSend = res.send;
+    res.send = function(data) {
+      const duration = Date.now() - startTime;
+      logger.info({
+        message: 'CopilotKit response',
+        method: req.method,
+        path: req.path,
+        statusCode: res.statusCode,
+        duration: `${duration}ms`,
+      });
+      return originalSend.call(this, data);
+    };
+
+    (async () => handler(req, res))().catch((error) => {
+      logger.error({
+        message: 'CopilotKit error',
+        error: error.message,
+        stack: error.stack,
+        method: req.method,
+        path: req.path,
+      });
+      next(error);
+    });
   });
 
-  console.log('CopilotKit server mounted on /api/copilotkit');
+  logger.info('CopilotKit server mounted on /api/copilotkit');
 }
 
 // For local development, allow running as a standalone server

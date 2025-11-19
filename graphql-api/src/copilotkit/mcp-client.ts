@@ -1,14 +1,21 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { MCPClient, MCPTool } from "@copilotkit/runtime";
+import logger from '../logger';
 
 export class LocalMCPClient implements MCPClient {
   private client!: Client;
   private connected = false;
 
-  constructor(private config: { command: string; args: string[]; env?: Record<string, string> }) { }
+  constructor(private config: { command: string; args: string[]; env?: Record<string, string> }) {}
 
   async connect(): Promise<void> {
+    logger.info({
+      message: 'MCP client connecting',
+      command: this.config.command,
+      args: this.config.args,
+    });
+
     // Build environment variables, filtering out undefined values
     const env: Record<string, string> = {};
 
@@ -42,6 +49,7 @@ export class LocalMCPClient implements MCPClient {
 
     await this.client.connect(transport);
     this.connected = true;
+    logger.info('MCP client connected successfully');
   }
 
   async tools(): Promise<Record<string, MCPTool>> {
@@ -51,6 +59,12 @@ export class LocalMCPClient implements MCPClient {
 
     const response = await this.client.listTools();
     const toolsMap: Record<string, MCPTool> = {};
+
+    logger.info({
+      message: 'MCP tools loaded',
+      toolCount: response.tools.length,
+      tools: response.tools.map(t => t.name),
+    });
 
     for (const tool of response.tools) {
       // Convert MCP tool schema to CopilotKit MCPTool schema format
@@ -66,22 +80,52 @@ export class LocalMCPClient implements MCPClient {
         description: tool.description,
         schema,
         execute: async (args: any) => {
-          const result = await this.client.callTool({
-            name: tool.name,
-            arguments: args,
+          const startTime = Date.now();
+          logger.info({
+            message: 'MCP tool execution started',
+            tool: tool.name,
+            args,
           });
 
-          // Return the full result including structuredContent if present
-          // Check both result.structuredContent and result._meta.structuredContent
-          const structuredContent = (result as any).structuredContent || result._meta?.structuredContent;
+          try {
+            const result = await this.client.callTool({
+              name: tool.name,
+              arguments: args,
+            });
+            const duration = Date.now() - startTime;
 
-          if (structuredContent) {
-            return {
-              content: result.content,
-              structuredContent
-            };
+            logger.info({
+              message: 'MCP tool execution completed',
+              tool: tool.name,
+              duration: `${duration}ms`,
+              hasStructuredContent: !!(result as any).structuredContent,
+            });
+
+            // Return structured content if available
+            const structuredContent = (result as any).structuredContent;
+            if (structuredContent) {
+              logger.info({
+                message: 'MCP tool returned structured content',
+                tool: tool.name,
+                structuredContentKeys: Object.keys(structuredContent),
+              });
+              return {
+                content: result.content,
+                structuredContent,
+              };
+            }
+
+            return result.content;
+          } catch (error: any) {
+            const duration = Date.now() - startTime;
+            logger.error({
+              message: 'MCP tool execution failed',
+              tool: tool.name,
+              duration: `${duration}ms`,
+              error: error.message,
+            });
+            throw error;
           }
-          return result.content;
         },
       };
     }
@@ -91,8 +135,10 @@ export class LocalMCPClient implements MCPClient {
 
   async close(): Promise<void> {
     if (this.connected) {
+      logger.info('MCP client closing');
       await this.client.close();
       this.connected = false;
+      logger.info('MCP client closed');
     }
   }
 }

@@ -81,6 +81,18 @@ loadWhitelist()
 
 const context = { esClient }
 
+// Import and mount the CopilotKit endpoint (if API key is available)
+import { mountCopilotKit } from './copilotkit/server'
+if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+  try {
+    mountCopilotKit(app)
+  } catch (error) {
+    logger.error(error)
+  }
+} else {
+  logger.info('CopilotKit endpoint not mounted (GOOGLE_GENERATIVE_AI_API_KEY not set)')
+}
+
 app.use('/api/', graphQLApi({ context }))
 
 app.listen(config.PORT)
