@@ -5,6 +5,7 @@ import { useCopilotAction } from '@copilotkit/react-core'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useMCPStateRender } from './hooks/useMCPStateRender'
 import { useGnomadVariantActions } from './gmd/hooks/useGnomadVariantActions'
+import { useJuhaActions } from './gmd/hooks/useJuhaActions'
 import '@copilotkit/react-ui/styles.css'
 
 const PageContainer = styled.div`
@@ -107,6 +108,9 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
 
   // Initialize gnomAD variant actions
   useGnomadVariantActions()
+
+  // Initialize Juha API actions
+  useJuhaActions()
 
   // Show "interpret this variant" suggestion only on variant pages
   const isVariantPage = location.pathname.startsWith('/variant/')
