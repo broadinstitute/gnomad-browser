@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react'
 import styled, { css } from 'styled-components'
 import { CopilotChat } from '@copilotkit/react-ui'
-import { useCopilotAction } from '@copilotkit/react-core'
+import { useCopilotAction, useCopilotContext } from '@copilotkit/react-core'
 import { useHistory, useLocation } from 'react-router-dom'
+import { Modal, Button, PrimaryButton } from '@gnomad/ui'
 import { useMCPStateRender } from './hooks/useMCPStateRender'
 import { useGnomadVariantActions } from './gmd/hooks/useGnomadVariantActions'
 import { useJuhaActions } from './gmd/hooks/useJuhaActions'
@@ -10,6 +11,10 @@ import { useJuhaActions } from './gmd/hooks/useJuhaActions'
 import ExpandIcon from '@fortawesome/fontawesome-free/svgs/solid/expand.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import CompressIcon from '@fortawesome/fontawesome-free/svgs/solid/compress.svg'
+// @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
+import SettingsIcon from '@fortawesome/fontawesome-free/svgs/solid/cog.svg'
+// @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
+import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 import '@copilotkit/react-ui/styles.css'
 
 const PageContainer = styled.div`
@@ -34,6 +39,7 @@ const ChatPanel = styled.div<{ width: number; mode: 'side' | 'fullscreen' }>`
   background: white;
   min-width: 300px;
   position: relative;
+  box-sizing: border-box;
 
   ${(props) =>
     props.mode === 'side' &&
@@ -41,6 +47,7 @@ const ChatPanel = styled.div<{ width: number; mode: 'side' | 'fullscreen' }>`
       width: ${props.width}px;
       max-width: 80%;
       overflow: hidden;
+      padding-right: 8px;
     `}
 
   ${(props) =>
@@ -73,11 +80,71 @@ const ResizeHandle = styled.div`
   }
 `
 
+const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 100px;
+  z-index: 99999;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  pointer-events: auto;
+
+  img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    display: block;
+  }
+
+  &:hover {
+    background: #f7f7f7;
+    border-color: #d32f2f;
+  }
+
+  &:hover img {
+    opacity: 1;
+  }
+`
+
+const SettingsButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 60px;
+  z-index: 99999;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  pointer-events: auto;
+
+  img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    display: block;
+  }
+
+  &:hover {
+    background: #f7f7f7;
+    border-color: #0d79d0;
+  }
+
+  &:hover img {
+    opacity: 1;
+  }
+`
+
 const FullscreenButton = styled.button`
   position: absolute;
   top: 10px;
-  right: 10px;
-  z-index: 9999;
+  right: 20px;
+  z-index: 99999;
   padding: 8px;
   background: white;
   border: 1px solid #e0e0e0;
@@ -125,25 +192,138 @@ const ToggleButton = styled.button`
   }
 `
 
+const SettingsContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0;
+`
+
+const SettingItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`
+
+const SettingLabel = styled.label`
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+`
+
+const Select = styled.select`
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #0d79d0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #0d79d0;
+    box-shadow: 0 0 0 3px rgba(13, 121, 208, 0.1);
+  }
+`
+
+const TextArea = styled.textarea`
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #0d79d0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #0d79d0;
+    box-shadow: 0 0 0 3px rgba(13, 121, 208, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+`
+
 const StyledCopilotChat = styled(CopilotChat)`
   height: 100%;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+
+  /* CSS Custom Properties for theming */
   --copilot-kit-primary-color: #0d79d0;
   --copilot-kit-background-color: white;
   --copilot-kit-header-background: #f7f7f7;
+  --copilot-kit-separator-color: rgba(0, 0, 0, 0.08);
+  --copilot-kit-border-radius: 0.5rem;
 
-  /* Increase font size in the chat input textarea */
-  textarea {
-    font-size: 14px !important;
+  /* Messages container */
+  .copilotKitMessages {
+    padding: 1rem;
+    padding-top: calc(1rem + 40px);
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
-  /* Also apply to any input fields */
-  input[type="text"] {
-    font-size: 14px !important;
+  /* Hide scrollbar unless needed */
+  .copilotKitMessages::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .copilotKitMessages::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .copilotKitMessages::-webkit-scrollbar-thumb {
+    background: #d0d0d0;
+    border-radius: 4px;
+  }
+
+  .copilotKitMessages::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+  }
+
+  /* Individual message bubbles */
+  .copilotKitMessage {
+    border-radius: 0.75rem;
+  }
+
+  /* Input container */
+  .copilotKitInputContainer {
+    width: calc(100% - 48px) !important;
+    margin: 0 auto !important;
+    padding: 0 8px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Input area */
+  .copilotKitInput {
+    border-radius: 0.75rem;
+    border: 1px solid var(--copilot-kit-separator-color) !important;
   }
 
   /* Style suggestion chips */
-  button[data-suggestion] {
+  .copilotKitMessages footer .suggestions .suggestion {
     font-size: 14px !important;
+    border-radius: 0.5rem;
+  }
+
+  .copilotKitMessages footer .suggestions button:not(:disabled):hover {
+    background-color: #f0f9ff;
+    border-color: var(--copilot-kit-primary-color);
+    transform: scale(1.03);
   }
 `
 
@@ -156,6 +336,11 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const history = useHistory()
   const location = useLocation()
+
+  // Settings state
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+  const [selectedModel, setSelectedModel] = useState('claude-3-5-sonnet-20241022')
+  const [customPrompt, setCustomPrompt] = useState('')
 
   // Initialize MCP state rendering (renders inline in chat)
   useMCPStateRender()
@@ -335,6 +520,18 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
                 }}
                 suggestions={suggestions}
               />
+              <SettingsButton
+                onClick={() => setIsSettingsModalOpen(true)}
+                title="Settings"
+              >
+                <img src={SettingsIcon} alt="Settings" />
+              </SettingsButton>
+              <CloseButton
+                onClick={() => setChatDisplayMode('closed')}
+                title="Close Assistant"
+              >
+                <img src={CloseIcon} alt="Close" />
+              </CloseButton>
               <FullscreenButton
                 onClick={() =>
                   setChatDisplayMode(chatDisplayMode === 'fullscreen' ? 'side' : 'fullscreen')
@@ -351,12 +548,46 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
         )}
       </PageContainer>
 
-      {chatDisplayMode !== 'fullscreen' && (
-        <ToggleButton
-          onClick={() => setChatDisplayMode(chatDisplayMode === 'closed' ? 'side' : 'closed')}
-        >
-          {isChatOpen ? 'Close Assistant' : 'Ask gnomAD Assistant'}
+      {!isChatOpen && (
+        <ToggleButton onClick={() => setChatDisplayMode('side')}>
+          Ask gnomAD Assistant
         </ToggleButton>
+      )}
+
+      {isSettingsModalOpen && (
+        <Modal
+          size="large"
+          title="Assistant Settings"
+          onRequestClose={() => setIsSettingsModalOpen(false)}
+        >
+          <SettingsContent>
+            <SettingItem>
+              <SettingLabel htmlFor="model-select">Model</SettingLabel>
+              <Select
+                id="model-select"
+                value={selectedModel}
+                onChange={(e) => setSelectedModel(e.target.value)}
+              >
+                <option value="claude-3-5-sonnet-20241022">Claude 3.5 Sonnet</option>
+                <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
+                <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
+                <option value="gpt-4">GPT-4</option>
+                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+              </Select>
+            </SettingItem>
+            <SettingItem>
+              <SettingLabel htmlFor="custom-prompt">Custom System Prompt</SettingLabel>
+              <TextArea
+                id="custom-prompt"
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                placeholder="Add additional instructions for the assistant (optional)..."
+              />
+            </SettingItem>
+          </SettingsContent>
+        </Modal>
       )}
     </>
   )
