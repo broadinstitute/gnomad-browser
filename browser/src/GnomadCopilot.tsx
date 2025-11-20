@@ -1,11 +1,15 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction } from '@copilotkit/react-core'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useMCPStateRender } from './hooks/useMCPStateRender'
 import { useGnomadVariantActions } from './gmd/hooks/useGnomadVariantActions'
 import { useJuhaActions } from './gmd/hooks/useJuhaActions'
+// @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
+import ExpandIcon from '@fortawesome/fontawesome-free/svgs/solid/expand.svg'
+// @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
+import CompressIcon from '@fortawesome/fontawesome-free/svgs/solid/compress.svg'
 import '@copilotkit/react-ui/styles.css'
 
 const PageContainer = styled.div`
@@ -24,14 +28,33 @@ const MainContent = styled.div`
   min-width: 300px;
 `
 
-const ChatPanel = styled.div<{ width: number }>`
-  width: ${(props) => props.width}px;
-  overflow: hidden;
+const ChatPanel = styled.div<{ width: number; mode: 'side' | 'fullscreen' }>`
   display: flex;
   flex-direction: column;
   background: white;
   min-width: 300px;
-  max-width: 80%;
+  position: relative;
+
+  ${(props) =>
+    props.mode === 'side' &&
+    css`
+      width: ${props.width}px;
+      max-width: 80%;
+      overflow: hidden;
+    `}
+
+  ${(props) =>
+    props.mode === 'fullscreen' &&
+    css`
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1000;
+      max-width: 100%;
+      overflow: hidden;
+    `}
 `
 
 const ResizeHandle = styled.div`
@@ -40,13 +63,43 @@ const ResizeHandle = styled.div`
   cursor: col-resize;
   flex-shrink: 0;
   transition: background-color 0.2s;
-  
+
   &:hover {
     background-color: #0d79d0;
   }
-  
+
   &:active {
     background-color: #0d79d0;
+  }
+`
+
+const FullscreenButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 9999;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  pointer-events: auto;
+
+  img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    display: block;
+  }
+
+  &:hover {
+    background: #f7f7f7;
+    border-color: #0d79d0;
+  }
+
+  &:hover img {
+    opacity: 1;
   }
 `
 
@@ -77,17 +130,17 @@ const StyledCopilotChat = styled(CopilotChat)`
   --copilot-kit-primary-color: #0d79d0;
   --copilot-kit-background-color: white;
   --copilot-kit-header-background: #f7f7f7;
-  
+
   /* Increase font size in the chat input textarea */
   textarea {
     font-size: 14px !important;
   }
-  
+
   /* Also apply to any input fields */
   input[type="text"] {
     font-size: 14px !important;
   }
-  
+
   /* Style suggestion chips */
   button[data-suggestion] {
     font-size: 14px !important;
@@ -96,7 +149,8 @@ const StyledCopilotChat = styled(CopilotChat)`
 
 
 export function GnomadCopilot({ children }: { children: React.ReactNode }) {
-  const [isChatOpen, setIsChatOpen] = useState(true)
+  const [chatDisplayMode, setChatDisplayMode] = useState<'closed' | 'side' | 'fullscreen'>('side')
+  const isChatOpen = chatDisplayMode !== 'closed'
   const [chatWidth, setChatWidth] = useState(window.innerWidth / 3) // Default to 1/3 of screen
   const isResizing = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -255,7 +309,7 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
   }, [])
 
   React.useEffect(() => {
-    if (isChatOpen) {
+    if (chatDisplayMode === 'side') {
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
 
@@ -264,7 +318,7 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
         document.removeEventListener('mouseup', handleMouseUp)
       }
     }
-  }, [isChatOpen, handleMouseMove, handleMouseUp])
+  }, [chatDisplayMode, handleMouseMove, handleMouseUp])
 
   return (
     <>
@@ -272,8 +326,8 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
         <MainContent>{children}</MainContent>
         {isChatOpen && (
           <>
-            <ResizeHandle onMouseDown={handleMouseDown} />
-            <ChatPanel width={chatWidth}>
+            {chatDisplayMode === 'side' && <ResizeHandle onMouseDown={handleMouseDown} />}
+            <ChatPanel width={chatWidth} mode={chatDisplayMode}>
               <StyledCopilotChat
                 labels={{
                   title: 'gnomAD Assistant',
@@ -281,14 +335,29 @@ export function GnomadCopilot({ children }: { children: React.ReactNode }) {
                 }}
                 suggestions={suggestions}
               />
+              <FullscreenButton
+                onClick={() =>
+                  setChatDisplayMode(chatDisplayMode === 'fullscreen' ? 'side' : 'fullscreen')
+                }
+                title={chatDisplayMode === 'fullscreen' ? 'Exit fullscreen' : 'Enter fullscreen'}
+              >
+                <img
+                  src={chatDisplayMode === 'fullscreen' ? CompressIcon : ExpandIcon}
+                  alt={chatDisplayMode === 'fullscreen' ? 'Exit fullscreen' : 'Enter fullscreen'}
+                />
+              </FullscreenButton>
             </ChatPanel>
           </>
         )}
       </PageContainer>
 
-      <ToggleButton onClick={() => setIsChatOpen(!isChatOpen)}>
-        {isChatOpen ? 'Close Assistant' : 'Ask gnomAD Assistant'}
-      </ToggleButton>
+      {chatDisplayMode !== 'fullscreen' && (
+        <ToggleButton
+          onClick={() => setChatDisplayMode(chatDisplayMode === 'closed' ? 'side' : 'closed')}
+        >
+          {isChatOpen ? 'Close Assistant' : 'Ask gnomAD Assistant'}
+        </ToggleButton>
+      )}
     </>
   )
 }
