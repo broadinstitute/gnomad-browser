@@ -4,17 +4,39 @@ import {
   CopilotRuntime,
   GoogleGenerativeAIAdapter,
   copilotRuntimeNodeHttpEndpoint,
+  CopilotServiceAdapter,
+  CopilotRuntimeChatCompletionRequest,
+  CopilotRuntimeChatCompletionResponse,
 } from '@copilotkit/runtime';
 import { LocalMCPClient } from './mcp-client';
 import logger from '../logger';
 
+// Dynamic adapter that selects the model based on forwardedParameters
+class DynamicGeminiAdapter implements CopilotServiceAdapter {
+  async process(
+    request: CopilotRuntimeChatCompletionRequest,
+  ): Promise<CopilotRuntimeChatCompletionResponse> {
+    // Get the model from forwardedParameters, defaulting to gemini-2.5-flash
+    const model = request.forwardedParameters?.model || 'gemini-2.5-flash';
+
+    logger.info({
+      message: 'Using model for CopilotKit request',
+      model,
+    });
+
+    // Create a new GoogleGenerativeAIAdapter with the selected model
+    const adapter = new GoogleGenerativeAIAdapter({
+      model,
+      apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY || '',
+    });
+
+    // Delegate to the adapter
+    return adapter.process(request);
+  }
+}
+
 // This function will be imported by the main graphql-api server
 export function mountCopilotKit(app: Application) {
-  const serviceAdapter = new GoogleGenerativeAIAdapter({
-    model: 'gemini-2.5-flash',
-    apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY || '',
-  });
-
   // Use an environment variable for the gmd command path, defaulting to 'gmd' for production.
   const gmdCommand = process.env.GMD_COMMAND_PATH || 'gmd';
   // Configure the MCP server command.
@@ -58,7 +80,7 @@ export function mountCopilotKit(app: Application) {
   const handler = copilotRuntimeNodeHttpEndpoint({
     endpoint: '/api/copilotkit',
     runtime,
-    serviceAdapter,
+    serviceAdapter: new DynamicGeminiAdapter(),
   });
 
   // Define CORS options for the CopilotKit endpoint
@@ -77,11 +99,14 @@ export function mountCopilotKit(app: Application) {
     const requestId = Math.random().toString(36).substring(7);
 
     // Log the request with more detail about the conversation
-    let threadId, messageCount;
+    let threadId: string | undefined;
+    let messageCount: number | undefined;
+    let model: string | undefined;
     try {
       const body = req.body || {};
       threadId = body.threadId;
       messageCount = body.messages?.length || 0;
+      model = body.forwardedParameters?.model || 'gemini-2.5-flash';
     } catch (e) {
       // ignore parsing errors
     }
@@ -91,6 +116,7 @@ export function mountCopilotKit(app: Application) {
       requestId,
       threadId,
       messageCount,
+      model,
       method: req.method,
       path: req.path,
       userAgent: req.headers['user-agent'],
@@ -102,6 +128,8 @@ export function mountCopilotKit(app: Application) {
       const duration = Date.now() - startTime;
       logger.info({
         message: 'CopilotKit response',
+        requestId,
+        model,
         method: req.method,
         path: req.path,
         statusCode: res.statusCode,

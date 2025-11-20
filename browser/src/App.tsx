@@ -76,8 +76,92 @@ const Banner = styled.div`
 
 const BANNER_CONTENT = null
 
+const COPILOT_MODEL_STORAGE_KEY = 'gnomad.copilot.model'
+const COPILOT_SAVED_PROMPTS_STORAGE_KEY = 'gnomad.copilot.savedPrompts'
+const COPILOT_ACTIVE_PROMPT_ID_STORAGE_KEY = 'gnomad.copilot.activePromptId'
+
+interface SavedPrompt {
+  id: string
+  name: string
+  prompt: string
+}
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
+
+  // CopilotKit settings state - load from localStorage if available
+  const [selectedModel, setSelectedModel] = useState(() => {
+    try {
+      return localStorage.getItem(COPILOT_MODEL_STORAGE_KEY) || 'gemini-2.5-flash'
+    } catch {
+      return 'gemini-2.5-flash'
+    }
+  })
+
+  const [savedPrompts, setSavedPrompts] = useState<SavedPrompt[]>(() => {
+    try {
+      const stored = localStorage.getItem(COPILOT_SAVED_PROMPTS_STORAGE_KEY)
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  })
+
+  const [activePromptId, setActivePromptId] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem(COPILOT_ACTIVE_PROMPT_ID_STORAGE_KEY)
+    } catch {
+      return null
+    }
+  })
+
+  const [customPrompt, setCustomPrompt] = useState(() => {
+    try {
+      const activeId = localStorage.getItem(COPILOT_ACTIVE_PROMPT_ID_STORAGE_KEY)
+      if (activeId) {
+        const stored = localStorage.getItem(COPILOT_SAVED_PROMPTS_STORAGE_KEY)
+        if (stored) {
+          const prompts: SavedPrompt[] = JSON.parse(stored)
+          const activePrompt = prompts.find(p => p.id === activeId)
+          return activePrompt?.prompt || ''
+        }
+      }
+      return ''
+    } catch {
+      return ''
+    }
+  })
+
+  // Persist model selection to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(COPILOT_MODEL_STORAGE_KEY, selectedModel)
+    } catch (error) {
+      console.error('Failed to save model preference:', error)
+    }
+  }, [selectedModel])
+
+  // Persist saved prompts to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(COPILOT_SAVED_PROMPTS_STORAGE_KEY, JSON.stringify(savedPrompts))
+    } catch (error) {
+      console.error('Failed to save prompts:', error)
+    }
+  }, [savedPrompts])
+
+  // Persist active prompt ID to localStorage
+  useEffect(() => {
+    try {
+      if (activePromptId) {
+        localStorage.setItem(COPILOT_ACTIVE_PROMPT_ID_STORAGE_KEY, activePromptId)
+      } else {
+        localStorage.removeItem(COPILOT_ACTIVE_PROMPT_ID_STORAGE_KEY)
+      }
+    } catch (error) {
+      console.error('Failed to save active prompt ID:', error)
+    }
+  }, [activePromptId])
 
   useEffect(() => {
     userPreferences.loadPreferences().then(
@@ -98,7 +182,12 @@ const App = () => {
   const copilotKitUrl = '/api/copilotkit'
 
   return (
-    <CopilotKit runtimeUrl={copilotKitUrl}>
+    <CopilotKit
+      runtimeUrl={copilotKitUrl}
+      // @ts-ignore - model is not in the type definition but is supported by the runtime
+      forwardedParameters={{ model: selectedModel }}
+      instructions="You are a helpful assistant for gnomAD, a genome aggregation database. Your goal is to help users understand genetic data, navigate the site, and find relevant information. Use the available tools to answer user questions about variants, genes, and regions."
+    >
       <Router>
         {/* On any navigation, send event to Google Analytics. */}
         <Route path="/" component={GoogleAnalytics} />
@@ -123,7 +212,16 @@ const App = () => {
             </Delayed>
           ) : (
             <Suspense fallback={null}>
-              <GnomadCopilot>
+              <GnomadCopilot
+                selectedModel={selectedModel}
+                setSelectedModel={setSelectedModel}
+                customPrompt={customPrompt}
+                setCustomPrompt={setCustomPrompt}
+                savedPrompts={savedPrompts}
+                setSavedPrompts={setSavedPrompts}
+                activePromptId={activePromptId}
+                setActivePromptId={setActivePromptId}
+              >
                 <TopBarWrapper>
                   <NavBar />
                   {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
