@@ -1,6 +1,6 @@
 type GnomadConstraint {
   exp_lof: Float
-  exp_mis: Float!
+  exp_mis: Float
   exp_syn: Float
 
   obs_lof: Int

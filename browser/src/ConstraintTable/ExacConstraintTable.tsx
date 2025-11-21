@@ -7,7 +7,7 @@ import { renderRoundedNumber } from './constraintMetrics'
 export type ExacConstraint = {
   exp_syn: number | null
   obs_syn: number | null
-  syn_z: number
+  syn_z: number | null
   exp_mis: number | null
   obs_mis: number | null
   mis_z: number
@@ -41,7 +41,7 @@ const ExacConstraintTable = ({ constraint }: Props) => (
           {renderRoundedNumber(constraint.syn_z, {
             precision: 2,
             tooltipPrecision: 3,
-            highlightColor: constraint.syn_z > 3.71 ? '#ff2600' : null,
+            highlightColor: constraint.syn_z && constraint.syn_z > 3.71 ? '#ff2600' : null,
           })}
         </td>
       </tr>

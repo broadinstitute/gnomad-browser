@@ -137,7 +137,7 @@ const CONSTRAINT_FLAG_DESCRIPTIONS = {
 
 export type GnomadConstraint = {
   exp_lof: number | null
-  exp_mis: number
+  exp_mis: number | null
   exp_syn: number | null
   obs_lof: number | null
   obs_mis: number | null

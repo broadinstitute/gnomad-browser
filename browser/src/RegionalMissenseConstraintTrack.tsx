@@ -21,7 +21,7 @@ export type RegionalMissenseConstraintRegion = {
   aa_start: string | null
   aa_stop: string | null
   obs_mis: number | null
-  exp_mis: number
+  exp_mis: number | null
   obs_exp: number
   chisq_diff_null: number | undefined
   p_value: number
@@ -98,7 +98,7 @@ const Legend = () => {
   )
 }
 
-const renderNumber = (number: number | undefined) => {
+const renderNumber = (number: number | null | undefined) => {
   return number === undefined || number === null ? '-' : number.toPrecision(4)
 }
 
