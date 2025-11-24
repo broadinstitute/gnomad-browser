@@ -11,6 +11,10 @@
     "dist"
   ],
   "dependencies": {
+    "@copilotkit/react-core": "^1.10.6",
+    "@copilotkit/react-textarea": "^1.10.6",
+    "@copilotkit/react-ui": "^1.10.6",
+    "@copilotkit/runtime-client-gql": "1.10.6",
     "@fortawesome/fontawesome-free": "^5.8.1",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.1",
@@ -21,9 +25,6 @@
     "@gnomad/track-transcripts": "4.0.0",
     "@gnomad/track-variants": "3.0.0",
     "@gnomad/ui": "^3.0.0",
-    "@copilotkit/react-core": "^1.10.6",
-    "@copilotkit/react-ui": "^1.10.6",
-    "@copilotkit/react-textarea": "^1.10.6",
     "@visx/axis": "^3.0.0",
     "@visx/group": "^3.0.0",
     "@visx/legend": "^3.12.0",

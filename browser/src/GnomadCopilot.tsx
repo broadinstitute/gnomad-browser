@@ -1,7 +1,14 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react'
 import styled, { css, createGlobalStyle } from 'styled-components'
 import { CopilotChat } from '@copilotkit/react-ui'
-import { useCopilotAction, useCopilotAdditionalInstructions } from '@copilotkit/react-core'
+import { useCopilotAction, useCopilotAdditionalInstructions, useCopilotMessagesContext } from '@copilotkit/react-core'
+import {
+  TextMessage,
+  ActionExecutionMessage,
+  ResultMessage,
+  AgentStateMessage,
+  ImageMessage,
+} from '@copilotkit/runtime-client-gql'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Modal, Button, PrimaryButton } from '@gnomad/ui'
 import { useMCPStateRender } from './hooks/useMCPStateRender'
@@ -257,6 +264,16 @@ const FullscreenChatArea = styled.div`
   position: relative;
 `
 
+const ChatLoadingState = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #666;
+  font-size: 14px;
+  background-color: #fafafa;
+`
+
 const ToggleButton = styled.button`
   position: fixed;
   bottom: 24px;
@@ -470,6 +487,65 @@ export function GnomadCopilot({
   const containerRef = useRef<HTMLDivElement>(null)
   const history = useHistory()
   const location = useLocation()
+
+  // Get CopilotKit's message context to set messages directly
+  const { setMessages } = useCopilotMessagesContext()
+
+  // State for managing loading status
+  const [isLoadingHistory, setIsLoadingHistory] = React.useState(true)
+
+  // Effect to fetch message history when the threadId changes
+  React.useEffect(() => {
+    // If there's no threadId, this is a new chat. Clear messages and stop loading.
+    if (!threadId) {
+      setMessages([])
+      setIsLoadingHistory(false)
+      return
+    }
+
+    const fetchMessages = async () => {
+      setIsLoadingHistory(true)
+      try {
+        const response = await fetch(`/api/copilotkit/threads/${threadId}/messages`)
+
+        if (!response.ok) {
+          throw new Error(`API returned status ${response.status}`)
+        }
+        const data = await response.json()
+
+        // The backend returns the raw message object in the `rawMessage` field.
+        // We need to reconstruct proper CopilotKit message instances from the plain objects
+        const formattedMessages = data.map((msg: any) => {
+          const rawMsg = msg.rawMessage
+
+          // Reconstruct the appropriate message class based on type
+          switch (rawMsg.type) {
+            case 'TextMessage':
+              return new TextMessage(rawMsg)
+            case 'ActionExecutionMessage':
+              return new ActionExecutionMessage(rawMsg)
+            case 'ResultMessage':
+              return new ResultMessage(rawMsg)
+            case 'AgentStateMessage':
+              return new AgentStateMessage(rawMsg)
+            case 'ImageMessage':
+              return new ImageMessage(rawMsg)
+            default:
+              console.warn('[Chat History] Unknown message type:', rawMsg.type)
+              return rawMsg
+          }
+        })
+        setMessages(formattedMessages)
+      } catch (error) {
+        console.error('[Chat History] Failed to fetch chat history:', error)
+        setMessages([]) // Clear messages on error to ensure a clean state
+      } finally {
+        setIsLoadingHistory(false)
+      }
+    }
+
+    fetchMessages()
+  }, [threadId]) // This effect runs only when the threadId changes.
 
   // Settings state
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
@@ -768,13 +844,18 @@ export function GnomadCopilot({
           <>
             <ResizeHandle onMouseDown={handleMouseDown} />
             <ChatPanel width={chatWidth} mode={chatDisplayMode}>
-              <StyledCopilotChat
-                labels={{
-                  title: 'gnomAD Assistant',
-                  initial: 'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
-                }}
-                suggestions={suggestions}
-              />
+              {isLoadingHistory ? (
+                <ChatLoadingState>Loading conversation...</ChatLoadingState>
+              ) : (
+                <StyledCopilotChat
+                  labels={{
+                    title: 'gnomAD Assistant',
+                    initial:
+                      'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
+                  }}
+                  suggestions={suggestions}
+                />
+              )}
               <ModelBadge title={`Current model: ${selectedModel}`}>
                 <img src={RobotIcon} alt="Model" />
                 {getModelDisplayName(selectedModel)}
@@ -811,13 +892,18 @@ export function GnomadCopilot({
       {chatDisplayMode === 'fullscreen' && (
         <FullscreenContainer>
           <FullscreenChatArea>
-            <StyledCopilotChat
-              labels={{
-                title: 'gnomAD Assistant',
-                initial: 'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
-              }}
-              suggestions={suggestions}
-            />
+            {isLoadingHistory ? (
+              <ChatLoadingState>Loading conversation...</ChatLoadingState>
+            ) : (
+              <StyledCopilotChat
+                labels={{
+                  title: 'gnomAD Assistant',
+                  initial:
+                    'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
+                }}
+                suggestions={suggestions}
+              />
+            )}
             <ModelBadge title={`Current model: ${selectedModel}`}>
               <img src={RobotIcon} alt="Model" />
               {getModelDisplayName(selectedModel)}
