@@ -137,7 +137,7 @@ export function ChatHistorySidebar({
     // Refresh every 30 seconds
     const interval = setInterval(fetchThreads, 30000)
     return () => clearInterval(interval)
-  }, [])
+  }, [currentThreadId]) // Re-fetch when currentThreadId changes (e.g., new chat created)
 
   return (
     <SidebarContainer>

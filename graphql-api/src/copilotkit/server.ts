@@ -146,6 +146,9 @@ export function mountCopilotKit(app: Application) {
     credentials: true,
   };
 
+  // Add JSON body parser middleware for POST requests
+  app.use('/api/copilotkit/threads', express.json());
+
   // API Endpoints for thread management - MUST be registered BEFORE the general CopilotKit middleware
   // to avoid being caught by the catch-all handler
 
@@ -160,6 +163,21 @@ export function mountCopilotKit(app: Application) {
     } catch (error: any) {
       logger.error({ message: 'Failed to list threads', error: error.message });
       res.status(500).json({ error: 'Failed to list threads' });
+    }
+  });
+
+  // Create or ensure a thread exists
+  app.post('/api/copilotkit/threads', cors(corsOptions), async (req: Request, res: Response) => {
+    try {
+      const { threadId, model } = req.body;
+      if (!threadId) {
+        return res.status(400).json({ error: 'threadId is required' });
+      }
+      await chatDb.ensureThread(threadId, model);
+      res.json({ success: true, threadId });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to create thread', error: error.message });
+      res.status(500).json({ error: 'Failed to create thread' });
     }
   });
 

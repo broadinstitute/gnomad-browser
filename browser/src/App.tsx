@@ -187,8 +187,29 @@ const App = () => {
   }, [threadId])
 
   // Handler for starting a new chat
-  const handleNewChat = () => {
-    setThreadId(generateThreadId())
+  const handleNewChat = async () => {
+    const newThreadId = generateThreadId()
+
+    try {
+      // Create the thread in the database so it appears in the sidebar
+      await fetch('/api/copilotkit/threads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          threadId: newThreadId,
+          model: selectedModel,
+        }),
+      })
+
+      // Set the new thread as active
+      setThreadId(newThreadId)
+    } catch (error) {
+      console.error('Failed to create new thread:', error)
+      // Still set the thread ID even if the API call fails
+      setThreadId(newThreadId)
+    }
   }
 
   // Handler for selecting an existing thread
