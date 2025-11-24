@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { useAuth0 } from '@auth0/auth0-react'
 
 interface Thread {
   threadId: string
@@ -140,6 +141,8 @@ export function ChatHistorySidebar({
   onNewChat,
   onSelectThread,
 }: ChatHistorySidebarProps) {
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0()
+  const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true'
   const [threads, setThreads] = useState<Thread[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -147,9 +150,22 @@ export function ChatHistorySidebar({
   // Fetch threads
   useEffect(() => {
     const fetchThreads = async () => {
+      if (isAuthEnabled && !isAuthenticated) {
+        setThreads([])
+        setLoading(false)
+        return
+      }
+
       try {
         setLoading(true)
-        const response = await fetch('/api/copilotkit/threads?limit=50')
+
+        const headers: HeadersInit = {}
+        if (isAuthEnabled) {
+          const token = await getAccessTokenSilently()
+          headers.Authorization = `Bearer ${token}`
+        }
+
+        const response = await fetch('/api/copilotkit/threads?limit=50', { headers })
         if (!response.ok) throw new Error('Failed to fetch threads')
         const data = await response.json()
         setThreads(data)
@@ -166,7 +182,7 @@ export function ChatHistorySidebar({
     // Refresh every 30 seconds
     const interval = setInterval(fetchThreads, 30000)
     return () => clearInterval(interval)
-  }, [currentThreadId]) // Re-fetch when currentThreadId changes (e.g., new chat created)
+  }, [currentThreadId, isAuthEnabled, isAuthenticated, getAccessTokenSilently]) // Re-fetch when currentThreadId changes (e.g., new chat created)
 
   // Handle thread deletion
   const handleDeleteThread = async (threadId: string, e: React.MouseEvent) => {
@@ -178,8 +194,15 @@ export function ChatHistorySidebar({
     }
 
     try {
+      const headers: HeadersInit = {}
+      if (isAuthEnabled) {
+        const token = await getAccessTokenSilently()
+        headers.Authorization = `Bearer ${token}`
+      }
+
       const response = await fetch(`/api/copilotkit/threads/${threadId}`, {
         method: 'DELETE',
+        headers,
       })
 
       if (!response.ok) throw new Error('Failed to delete thread')

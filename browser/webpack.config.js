@@ -28,6 +28,7 @@ const config = {
     },
     hot: true,
     port: 8008,
+    server: 'https',
     static: {
       publicPath: '/',
     },
@@ -38,18 +39,21 @@ const config = {
         context: '/api/copilotkit',
         target: getApiBaseUrl(),
         changeOrigin: true,
+        secure: false,
       },
       // General API proxy - pass through as-is (API is mounted at /api/ on the server)
       {
         context: '/api',
         target: getApiBaseUrl(),
         changeOrigin: true,
+        secure: false,
       },
       {
         context: '/reads',
         target: process.env.READS_API_URL,
         pathRewrite: { '^/reads': '' },
         changeOrigin: true,
+        secure: false,
       },
     ],
   },
@@ -119,6 +123,11 @@ const config = {
       REPORT_VARIANT_URL: null,
       REPORT_VARIANT_VARIANT_ID_PARAMETER: null,
       REPORT_VARIANT_DATASET_PARAMETER: null,
+      // Add these new variables for Auth0
+      REACT_APP_AUTH0_ENABLE: null,
+      REACT_APP_AUTH0_DOMAIN: null,
+      REACT_APP_AUTH0_CLIENT_ID: null,
+      REACT_APP_AUTH0_AUDIENCE: null,
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),

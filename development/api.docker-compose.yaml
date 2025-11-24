@@ -56,6 +56,10 @@ services:
       - GNOMAD_API_URL=http://127.0.0.1:8000/api
       # Use container path for gmd, not host path
       - GMD_COMMAND_PATH=gmd
+      # Auth0 Configuration (optional - for user authentication)
+      - REACT_APP_AUTH0_ENABLE
+      - AUTH0_ISSUER_BASE_URL
+      - AUTH0_AUDIENCE
     ports:
       - 8010:8000
     # Note: No volume mounts = using compiled code from image (no hot-reload)

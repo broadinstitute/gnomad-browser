@@ -33,21 +33,29 @@ export interface ChatMessage {
 }
 
 export class ChatDatabase {
+  // Get the owner of a thread for authorization checks
+  async getThreadOwner(threadId: string): Promise<string | null> {
+    const result = await pool.query(
+      'SELECT user_id FROM chat_threads WHERE thread_id = $1',
+      [threadId]
+    );
+    return result.rows[0]?.user_id || null;
+  }
+
   // Ensure thread exists, create if not
-  async ensureThread(threadId: string, model?: string): Promise<void> {
+  async ensureThread(threadId: string, userId: string, model?: string): Promise<void> {
     const query = `
-      INSERT INTO chat_threads (thread_id, model)
-      VALUES ($1, $2)
-      ON CONFLICT (thread_id) DO UPDATE SET
-        updated_at = NOW(),
-        model = COALESCE($2, chat_threads.model)
+      INSERT INTO chat_threads (thread_id, user_id, model)
+      VALUES ($1, $2, $3)
+      ON CONFLICT (thread_id) DO NOTHING
     `;
-    await pool.query(query, [threadId, model]);
+    await pool.query(query, [threadId, userId, model]);
   }
 
   // Save messages from a request
   async saveMessages(
     threadId: string,
+    userId: string,
     messages: Array<{
       role: string;
       content: string;
@@ -61,14 +69,14 @@ export class ChatDatabase {
     try {
       await client.query('BEGIN');
 
-      // Ensure thread exists
+      // Ensure thread exists and associate with user if it's new
       await client.query(`
-        INSERT INTO chat_threads (thread_id, model)
-        VALUES ($1, $2)
+        INSERT INTO chat_threads (thread_id, user_id, model)
+        VALUES ($1, $2, $3)
         ON CONFLICT (thread_id) DO UPDATE SET
           updated_at = NOW(),
-          model = COALESCE($2, chat_threads.model)
-      `, [threadId, model]);
+          model = COALESCE($3, chat_threads.model)
+      `, [threadId, userId, model]);
 
       // Insert messages (avoiding duplicates by copilot_message_id)
       for (const msg of messages) {
@@ -113,7 +121,7 @@ export class ChatDatabase {
   }
 
   // List threads for sidebar
-  async listThreads(limit = 50, offset = 0): Promise<ChatThread[]> {
+  async listThreads(userId: string, limit = 50, offset = 0): Promise<ChatThread[]> {
     const result = await pool.query(`
       SELECT
         id,
@@ -124,34 +132,36 @@ export class ChatDatabase {
         message_count as "messageCount",
         model
       FROM chat_threads
+      WHERE user_id = $1
       ORDER BY updated_at DESC
-      LIMIT $1 OFFSET $2
-    `, [limit, offset]);
+      LIMIT $2 OFFSET $3
+    `, [userId, limit, offset]);
 
     return result.rows;
   }
 
-  // Get messages for a thread
-  async getMessages(threadId: string): Promise<ChatMessage[]> {
+  // Get messages for a thread, ensuring ownership
+  async getMessages(threadId: string, userId: string): Promise<ChatMessage[]> {
     const result = await pool.query(`
       SELECT
-        id,
-        thread_id as "threadId",
-        role,
-        content,
-        created_at as "createdAt",
-        raw_message as "rawMessage"
-      FROM chat_messages
-      WHERE thread_id = $1
-      ORDER BY created_at ASC
-    `, [threadId]);
+        m.id,
+        m.thread_id as "threadId",
+        m.role,
+        m.content,
+        m.created_at as "createdAt",
+        m.raw_message as "rawMessage"
+      FROM chat_messages m
+      JOIN chat_threads t ON m.thread_id = t.thread_id
+      WHERE m.thread_id = $1 AND t.user_id = $2
+      ORDER BY m.created_at ASC
+    `, [threadId, userId]);
 
     return result.rows;
   }
 
-  // Delete a thread
-  async deleteThread(threadId: string): Promise<void> {
-    await pool.query('DELETE FROM chat_threads WHERE thread_id = $1', [threadId]);
+  // Delete a thread, ensuring ownership
+  async deleteThread(threadId: string, userId: string): Promise<void> {
+    await pool.query('DELETE FROM chat_threads WHERE thread_id = $1 AND user_id = $2', [threadId, userId]);
   }
 
   // Health check

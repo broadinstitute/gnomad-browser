@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
 import { CopilotKit } from '@copilotkit/react-core'
 import '@copilotkit/react-ui/styles.css'
 import './styles/chatComponents.css'
@@ -90,8 +91,34 @@ interface SavedPrompt {
 // Helper to generate a new thread ID
 const generateThreadId = () => crypto.randomUUID()
 
-const App = () => {
+// Wrapper to handle Auth0 loading state when authentication is enabled
+const Auth0LoadingWrapper = ({ children }: { children: React.ReactNode }) => {
+  const { isLoading, error } = useAuth0()
+
+  if (isLoading) {
+    return (
+      <Delayed>
+        <StatusMessage>Authenticating...</StatusMessage>
+      </Delayed>
+    )
+  }
+
+  if (error) {
+    return (
+      <Delayed>
+        <StatusMessage>Authentication error: {error.message}</StatusMessage>
+      </Delayed>
+    )
+  }
+
+  return <>{children}</>
+}
+
+const GnomadApp = () => {
+  const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true'
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0()
   const [isLoading, setIsLoading] = useState(true)
+  const [copilotToken, setCopilotToken] = useState<string | null>(null)
 
   // Thread ID state - load from localStorage or generate new
   const [threadId, setThreadId] = useState(() => {
@@ -186,17 +213,56 @@ const App = () => {
     }
   }, [threadId])
 
+  // Fetch Auth0 token for CopilotKit
+  useEffect(() => {
+    if (isAuthEnabled && isAuthenticated) {
+      const getToken = async () => {
+        try {
+          // Try to get token silently first
+          const token = await getAccessTokenSilently({
+            authorizationParams: {
+              audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+            }
+          })
+          setCopilotToken(token)
+        } catch (e: any) {
+          // If consent is required, use popup to get consent interactively
+          if (e.error === 'consent_required' || e.error === 'login_required') {
+            try {
+              // Use popup to get consent - this will open a popup window
+              const token = await getAccessTokenSilently({
+                authorizationParams: {
+                  audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+                  prompt: 'consent',
+                },
+                cacheMode: 'off', // Don't use cached token
+              })
+              setCopilotToken(token)
+            } catch (consentError: any) {
+              console.error('Failed to get Auth0 token. Please check configuration.')
+            }
+          }
+        }
+      }
+      getToken()
+    }
+  }, [isAuthEnabled, isAuthenticated, getAccessTokenSilently])
+
   // Handler for starting a new chat
   const handleNewChat = async () => {
     const newThreadId = generateThreadId()
 
     try {
+      const headers: HeadersInit = { 'Content-Type': 'application/json' }
+      if (isAuthEnabled && isAuthenticated) {
+        const token = await getAccessTokenSilently()
+        headers.Authorization = `Bearer ${token}`
+      }
+
       // Create the thread in the database so it appears in the sidebar
       await fetch('/api/copilotkit/threads', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           threadId: newThreadId,
           model: selectedModel,
@@ -235,9 +301,18 @@ const App = () => {
 
   const copilotKitUrl = '/api/copilotkit'
 
+  if (isAuthEnabled && isAuthenticated && !copilotToken) {
+    return (
+      <Delayed>
+        <StatusMessage>Loading Assistant...</StatusMessage>
+      </Delayed>
+    )
+  }
+
   return (
     <CopilotKit
       runtimeUrl={copilotKitUrl}
+      headers={copilotToken ? { Authorization: `Bearer ${copilotToken}` } : {}}
       // @ts-ignore - threadId and model are not in the type definition but are supported by the runtime
       threadId={threadId}
       forwardedParameters={{ model: selectedModel }}
@@ -295,6 +370,41 @@ const App = () => {
       </Router>
     </CopilotKit>
   )
+}
+
+const App = () => {
+  const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true'
+
+  if (isAuthEnabled) {
+    // Handle the redirect callback - redirect to home after login
+    const onRedirectCallback = (appState: any) => {
+      console.log('[Auth0] Redirect callback', { appState, currentUrl: window.location.href })
+      // After login, navigate to home or the page they were on
+      window.history.replaceState(
+        {},
+        document.title,
+        appState?.returnTo || window.location.pathname
+      )
+    }
+
+    return (
+      <Auth0Provider
+        domain={process.env.REACT_APP_AUTH0_DOMAIN || ''}
+        clientId={process.env.REACT_APP_AUTH0_CLIENT_ID || ''}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+        }}
+        cacheLocation="localstorage"
+        onRedirectCallback={onRedirectCallback}
+      >
+        <Auth0LoadingWrapper>
+          <GnomadApp />
+        </Auth0LoadingWrapper>
+      </Auth0Provider>
+    )
+  }
+  return <GnomadApp />
 }
 
 export default App

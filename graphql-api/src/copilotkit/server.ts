@@ -8,9 +8,34 @@ import {
   CopilotRuntimeChatCompletionRequest,
   CopilotRuntimeChatCompletionResponse,
 } from '@copilotkit/runtime';
+import { auth } from 'express-oauth2-jwt-bearer';
+import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { LocalMCPClient } from './mcp-client';
 import { chatDb } from './database';
 import logger from '../logger';
+
+// Authorization middleware
+const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true';
+const checkJwt = isAuthEnabled ? auth({
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL || '',
+  audience: process.env.AUTH0_AUDIENCE || '',
+}) : (req: any, res: any, next: any) => next(); // No-op if auth is disabled
+
+// Standalone JWT verifier for use in CopilotKit middleware
+const JWKS = isAuthEnabled ? createRemoteJWKSet(
+  new URL(`${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`)
+) : null;
+
+const verifyJwt = async (token: string) => {
+  if (!isAuthEnabled || !JWKS) {
+    return null;
+  }
+  const { payload } = await jwtVerify(token, JWKS, {
+    issuer: process.env.AUTH0_ISSUER_BASE_URL,
+    audience: process.env.AUTH0_AUDIENCE,
+  });
+  return payload;
+};
 
 // Dynamic adapter that selects the model based on forwardedParameters
 class DynamicGeminiAdapter implements CopilotServiceAdapter {
@@ -53,6 +78,9 @@ export function mountCopilotKit(app: Application) {
   // Create a single shared MCP client instance
   let sharedMCPClient: LocalMCPClient | null = null;
 
+  // Store for request-scoped userId (keyed by a request identifier we'll add)
+  const requestUserMap = new Map<string, string>();
+
   // Create runtime with MCP support and persistence middleware
   const runtime = new CopilotRuntime({
     // Middleware for PostgreSQL persistence
@@ -66,6 +94,20 @@ export function mountCopilotKit(app: Application) {
             messageCount: inputMessages?.length || 0,
           });
         }
+
+        // Get userId from the requestUserMap (set by Express middleware)
+        const userId = threadId ? requestUserMap.get(threadId) : undefined;
+
+        // --- Authorization check for existing threads ---
+        if (isAuthEnabled && userId && threadId) {
+          const ownerId = await chatDb.getThreadOwner(threadId);
+          // If the thread exists and the owner is not the current user, deny access.
+          if (ownerId && ownerId !== userId) {
+            throw new Error('User does not have access to this thread.');
+          }
+        }
+
+        // No need to store userId in properties since we have it in the map
       },
 
       onAfterRequest: async ({ threadId, inputMessages, outputMessages, properties }) => {
@@ -73,6 +115,34 @@ export function mountCopilotKit(app: Application) {
           logger.warn({ message: 'No threadId provided - skipping persistence' });
           return;
         }
+
+        // Look up userId from the map, defaulting to 'anonymous' if not found
+        const userId = isAuthEnabled
+          ? (requestUserMap.get(threadId) ?? 'anonymous')
+          : 'anonymous';
+
+        logger.info({
+          message: 'onAfterRequest called',
+          threadId,
+          isAuthEnabled,
+          userId,
+          hasUserIdInMap: !!requestUserMap.get(threadId),
+        });
+
+        // Log a warning if we expected a userId but didn't find one
+        if (isAuthEnabled && !requestUserMap.get(threadId)) {
+          logger.warn({
+            message: 'userId not found in requestUserMap, using anonymous',
+            threadId,
+          });
+        }
+
+        logger.info({
+          message: 'Will save messages with userId',
+          threadId,
+          userId,
+          messageCount: [...(inputMessages || []), ...(outputMessages || [])].length
+        });
 
         try {
           // Combine all messages and save to PostgreSQL
@@ -89,13 +159,16 @@ export function mountCopilotKit(app: Application) {
           // Get model from forwardedParameters if available
           const model = (properties as any)?.forwardedParameters?.model;
 
-          await chatDb.saveMessages(threadId, allMessages, model);
+          await chatDb.saveMessages(threadId, userId, allMessages, model);
 
           logger.info({
             message: 'Chat messages saved to PostgreSQL',
             threadId,
             messageCount: allMessages.length,
           });
+
+          // Clean up the map entry after successful persistence
+          requestUserMap.delete(threadId);
         } catch (error: any) {
           logger.error({
             message: 'Failed to save chat messages',
@@ -153,27 +226,36 @@ export function mountCopilotKit(app: Application) {
   // to avoid being caught by the catch-all handler
 
   // List all threads
-  app.get('/api/copilotkit/threads', cors(corsOptions), async (req: Request, res: Response) => {
+  app.get('/api/copilotkit/threads', cors(corsOptions), checkJwt, async (req: Request, res: Response) => {
     try {
+      const userId = isAuthEnabled ? (req as any).auth.payload.sub : 'anonymous';
+      logger.info({
+        message: 'Listing threads',
+        userId,
+        isAuthEnabled,
+        hasAuth: !!(req as any).auth,
+        authPayload: (req as any).auth?.payload
+      });
       const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
       const offset = parseInt(req.query.offset as string) || 0;
 
-      const threads = await chatDb.listThreads(limit, offset);
+      const threads = await chatDb.listThreads(userId, limit, offset);
       res.json(threads);
     } catch (error: any) {
-      logger.error({ message: 'Failed to list threads', error: error.message });
+      logger.error({ message: 'Failed to list threads', error: error.message, stack: error.stack });
       res.status(500).json({ error: 'Failed to list threads' });
     }
   });
 
   // Create or ensure a thread exists
-  app.post('/api/copilotkit/threads', cors(corsOptions), async (req: Request, res: Response) => {
+  app.post('/api/copilotkit/threads', cors(corsOptions), checkJwt, async (req: Request, res: Response) => {
     try {
+      const userId = isAuthEnabled ? (req as any).auth.payload.sub : 'anonymous';
       const { threadId, model } = req.body;
       if (!threadId) {
         return res.status(400).json({ error: 'threadId is required' });
       }
-      await chatDb.ensureThread(threadId, model);
+      await chatDb.ensureThread(threadId, userId, model);
       res.json({ success: true, threadId });
     } catch (error: any) {
       logger.error({ message: 'Failed to create thread', error: error.message });
@@ -182,20 +264,35 @@ export function mountCopilotKit(app: Application) {
   });
 
   // Get messages for a specific thread
-  app.get('/api/copilotkit/threads/:threadId/messages', cors(corsOptions), async (req: Request, res: Response) => {
+  app.get('/api/copilotkit/threads/:threadId/messages', cors(corsOptions), checkJwt, async (req: Request, res: Response) => {
     try {
-      const messages = await chatDb.getMessages(req.params.threadId);
+      const userId = isAuthEnabled ? (req as any).auth.payload.sub : 'anonymous';
+      logger.info({
+        message: 'Getting messages',
+        threadId: req.params.threadId,
+        userId,
+        isAuthEnabled,
+        hasAuth: !!(req as any).auth,
+        authHeader: req.headers.authorization ? 'present' : 'missing'
+      });
+      const messages = await chatDb.getMessages(req.params.threadId, userId);
       res.json(messages);
     } catch (error: any) {
-      logger.error({ message: 'Failed to get messages', error: error.message });
+      logger.error({
+        message: 'Failed to get messages',
+        threadId: req.params.threadId,
+        error: error.message,
+        stack: error.stack
+      });
       res.status(500).json({ error: 'Failed to get messages' });
     }
   });
 
   // Delete a thread
-  app.delete('/api/copilotkit/threads/:threadId', cors(corsOptions), async (req: Request, res: Response) => {
+  app.delete('/api/copilotkit/threads/:threadId', cors(corsOptions), checkJwt, async (req: Request, res: Response) => {
     try {
-      await chatDb.deleteThread(req.params.threadId);
+      const userId = isAuthEnabled ? (req as any).auth.payload.sub : 'anonymous';
+      await chatDb.deleteThread(req.params.threadId, userId);
       res.json({ success: true });
     } catch (error: any) {
       logger.error({ message: 'Failed to delete thread', error: error.message });
@@ -215,9 +312,74 @@ export function mountCopilotKit(app: Application) {
   logger.info('CopilotKit thread management API mounted');
 
   // Mount the handler on the provided Express app with its own CORS middleware
-  app.use('/api/copilotkit', cors(corsOptions), (req, res, next) => {
+  // Add JSON body parser first so we can access req.body
+  app.use('/api/copilotkit', express.json(), cors(corsOptions), async (req, res, next) => {
     const startTime = Date.now();
     const requestId = Math.random().toString(36).substring(7);
+
+    // --- Authorization for CopilotKit runtime ---
+    if (isAuthEnabled) {
+      try {
+        const authHeader = req.headers.authorization;
+        logger.info({
+          message: 'CopilotKit auth check',
+          requestId,
+          hasAuthHeader: !!authHeader,
+          authHeaderPrefix: authHeader?.substring(0, 20),
+          method: req.method,
+          path: req.path
+        });
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+          logger.warn({ message: 'Missing or invalid auth header', requestId });
+          return res.status(401).json({ error: 'Authorization header is missing or invalid.' });
+        }
+
+        const token = authHeader.substring(7);
+        const payload = await verifyJwt(token);
+        const userId = payload?.sub;
+
+        logger.info({
+          message: 'JWT verified successfully',
+          requestId,
+          userId,
+          hasPayload: !!payload,
+          payloadKeys: payload ? Object.keys(payload) : []
+        });
+
+        if (!userId) {
+          logger.error({ message: 'User ID not found in token payload', requestId, payload });
+          return res.status(401).json({ error: 'User ID not found in token.' });
+        }
+
+        // Store userId in the map keyed by threadId so the CopilotKit middleware can access it
+        // We can't modify req.body because GraphQL validation will reject unknown fields
+        const threadId = req.body?.threadId;
+        if (threadId) {
+          requestUserMap.set(threadId, userId);
+          logger.info({
+            message: 'Stored userId in requestUserMap',
+            requestId,
+            threadId,
+            userId,
+          });
+        } else {
+          logger.warn({
+            message: 'No threadId in request body, cannot store userId',
+            requestId,
+            bodyKeys: req.body ? Object.keys(req.body) : []
+          });
+        }
+      } catch (error: any) {
+        logger.error({
+          message: 'JWT validation error',
+          requestId,
+          error: error.message,
+          stack: error.stack
+        });
+        return res.status(401).json({ error: 'Invalid authentication token.' });
+      }
+    }
 
     // Log the request with more detail about the conversation
     let threadId: string | undefined;

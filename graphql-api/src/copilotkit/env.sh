@@ -31,3 +31,14 @@ if [ -z "${GOOGLE_GENERATIVE_AI_API_KEY:-}" ]; then
     echo "  export GOOGLE_GENERATIVE_AI_API_KEY=\$(gcloud secrets versions access latest --secret=gnomad-gemini-api-key-25-11-19 --project=YOUR_PROJECT)"
     echo ""
 fi
+
+# Auth0 Configuration (optional - only needed if authentication is enabled)
+# These should be set in .env.fish or your shell profile if using Auth0
+if [ "${REACT_APP_AUTH0_ENABLE:-false}" = "true" ]; then
+    if [ -z "${AUTH0_ISSUER_BASE_URL:-}" ]; then
+        echo "WARNING: AUTH0_ISSUER_BASE_URL is not set but authentication is enabled"
+    fi
+    if [ -z "${AUTH0_AUDIENCE:-}" ]; then
+        echo "WARNING: AUTH0_AUDIENCE is not set but authentication is enabled"
+    fi
+fi

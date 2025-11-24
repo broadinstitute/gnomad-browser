@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useMemo } from 'react'
 import styled, { css, createGlobalStyle } from 'styled-components'
+import { useAuth0 } from '@auth0/auth0-react'
 import { CopilotChat } from '@copilotkit/react-ui'
 import { useCopilotAction, useCopilotAdditionalInstructions, useCopilotMessagesContext } from '@copilotkit/react-core'
 import {
@@ -26,6 +27,10 @@ import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 import RobotIcon from '@fortawesome/fontawesome-free/svgs/solid/robot.svg'
 import '@copilotkit/react-ui/styles.css'
 import { ChatHistorySidebar } from './ChatHistorySidebar'
+import Login from './auth/Login'
+import Logout from './auth/Logout'
+// @ts-expect-error TS(2307)
+import SignOutIcon from '@fortawesome/fontawesome-free/svgs/solid/sign-out-alt.svg'
 
 // Ensure modal appears above other UI elements
 const GlobalModalStyles = createGlobalStyle`
@@ -94,6 +99,36 @@ const ResizeHandle = styled.div`
 
   &:active {
     background-color: #0d79d0;
+  }
+`
+
+const LogoutButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 140px;
+  z-index: 99999;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  pointer-events: auto;
+
+  img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    display: block;
+  }
+
+  &:hover {
+    background: #f7f7f7;
+    border-color: #0d79d0;
+  }
+
+  &:hover img {
+    opacity: 1;
   }
 `
 
@@ -303,6 +338,29 @@ const SettingsContent = styled.div`
   padding: 4px 0;
 `
 
+const UserInfoBox = styled.div`
+  padding: 12px;
+  background: #f7f7f7;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`
+
+const UserEmail = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+`
+
+const UserLabel = styled.div`
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`
+
 const SettingItem = styled.div`
   display: flex;
   flex-direction: column;
@@ -451,6 +509,75 @@ interface PageContext {
   reference_genome?: string
 }
 
+// Component to display user info in settings - only rendered when auth is enabled
+const UserInfoDisplay = () => {
+  const { user, isAuthenticated } = useAuth0()
+
+  if (!isAuthenticated || !user) {
+    return null
+  }
+
+  return (
+    <UserInfoBox>
+      <UserLabel>Logged in as</UserLabel>
+      <UserEmail>{user.email || user.name || 'User'}</UserEmail>
+    </UserInfoBox>
+  )
+}
+
+// This new component will contain all auth-related logic for the chat.
+const AuthenticatedChatView = ({
+  suggestions,
+  isLoadingHistory,
+}: {
+  suggestions: { title: string; message: string }[]
+  isLoadingHistory: boolean
+}) => {
+  const { isAuthenticated, isLoading, error, logout } = useAuth0()
+
+  if (isLoading) {
+    return <ChatLoadingState>Authenticating...</ChatLoadingState>
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h3>Error authenticating</h3>
+        <p>{error.message}</p>
+        <Logout />
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return <Login />
+  }
+
+  return (
+    <>
+      {isLoadingHistory ? (
+        <ChatLoadingState>Loading conversation...</ChatLoadingState>
+      ) : (
+        <StyledCopilotChat
+          labels={{
+            title: 'gnomAD Assistant',
+            initial:
+              "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
+          }}
+          suggestions={suggestions}
+        />
+      )}
+      {/* The logout button is rendered here for authenticated users */}
+      <LogoutButton
+        onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+        title="Log out"
+      >
+        <img src={SignOutIcon} alt="Log Out" />
+      </LogoutButton>
+    </>
+  )
+}
+
 export function GnomadCopilot({
   children,
   selectedModel,
@@ -482,6 +609,8 @@ export function GnomadCopilot({
 }) {
   const [chatDisplayMode, setChatDisplayMode] = useState<'closed' | 'side' | 'fullscreen'>('side')
   const isChatOpen = chatDisplayMode !== 'closed'
+  const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true'
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0()
   const [chatWidth, setChatWidth] = useState(window.innerWidth / 3) // Default to 1/3 of screen
   const isResizing = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -506,7 +635,13 @@ export function GnomadCopilot({
     const fetchMessages = async () => {
       setIsLoadingHistory(true)
       try {
-        const response = await fetch(`/api/copilotkit/threads/${threadId}/messages`)
+        const headers: HeadersInit = {}
+        if (isAuthEnabled && isAuthenticated) {
+          const token = await getAccessTokenSilently()
+          headers.Authorization = `Bearer ${token}`
+        }
+
+        const response = await fetch(`/api/copilotkit/threads/${threadId}/messages`, { headers })
 
         if (!response.ok) {
           throw new Error(`API returned status ${response.status}`)
@@ -545,7 +680,7 @@ export function GnomadCopilot({
     }
 
     fetchMessages()
-  }, [threadId]) // This effect runs only when the threadId changes.
+  }, [threadId, isAuthEnabled, isAuthenticated, getAccessTokenSilently]) // This effect runs only when the threadId changes.
 
   // Settings state
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
@@ -844,17 +979,23 @@ export function GnomadCopilot({
           <>
             <ResizeHandle onMouseDown={handleMouseDown} />
             <ChatPanel width={chatWidth} mode={chatDisplayMode}>
-              {isLoadingHistory ? (
-                <ChatLoadingState>Loading conversation...</ChatLoadingState>
+              {isAuthEnabled ? (
+                <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
               ) : (
-                <StyledCopilotChat
-                  labels={{
-                    title: 'gnomAD Assistant',
-                    initial:
-                      'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
-                  }}
-                  suggestions={suggestions}
-                />
+                <>
+                  {isLoadingHistory ? (
+                    <ChatLoadingState>Loading conversation...</ChatLoadingState>
+                  ) : (
+                    <StyledCopilotChat
+                      labels={{
+                        title: 'gnomAD Assistant',
+                        initial:
+                          "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
+                      }}
+                      suggestions={suggestions}
+                    />
+                  )}
+                </>
               )}
               <ModelBadge title={`Current model: ${selectedModel}`}>
                 <img src={RobotIcon} alt="Model" />
@@ -892,17 +1033,23 @@ export function GnomadCopilot({
       {chatDisplayMode === 'fullscreen' && (
         <FullscreenContainer>
           <FullscreenChatArea>
-            {isLoadingHistory ? (
-              <ChatLoadingState>Loading conversation...</ChatLoadingState>
+            {isAuthEnabled ? (
+              <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
             ) : (
-              <StyledCopilotChat
-                labels={{
-                  title: 'gnomAD Assistant',
-                  initial:
-                    'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
-                }}
-                suggestions={suggestions}
-              />
+              <>
+                {isLoadingHistory ? (
+                  <ChatLoadingState>Loading conversation...</ChatLoadingState>
+                ) : (
+                  <StyledCopilotChat
+                    labels={{
+                      title: 'gnomAD Assistant',
+                      initial:
+                        "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
+                    }}
+                    suggestions={suggestions}
+                  />
+                )}
+              </>
             )}
             <ModelBadge title={`Current model: ${selectedModel}`}>
               <img src={RobotIcon} alt="Model" />
@@ -954,6 +1101,8 @@ export function GnomadCopilot({
           onRequestClose={() => setIsSettingsModalOpen(false)}
         >
           <SettingsContent>
+            {isAuthEnabled && <UserInfoDisplay />}
+
             <SettingItem>
               <SettingLabel htmlFor="model-select">Model</SettingLabel>
               <Select
