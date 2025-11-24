@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 import {
   CopilotRuntime,
@@ -9,6 +9,7 @@ import {
   CopilotRuntimeChatCompletionResponse,
 } from '@copilotkit/runtime';
 import { LocalMCPClient } from './mcp-client';
+import { chatDb } from './database';
 import logger from '../logger';
 
 // Dynamic adapter that selects the model based on forwardedParameters
@@ -52,8 +53,60 @@ export function mountCopilotKit(app: Application) {
   // Create a single shared MCP client instance
   let sharedMCPClient: LocalMCPClient | null = null;
 
-  // Create runtime with MCP support
+  // Create runtime with MCP support and persistence middleware
   const runtime = new CopilotRuntime({
+    // Middleware for PostgreSQL persistence
+    middleware: {
+      onBeforeRequest: async ({ threadId, inputMessages, properties }) => {
+        // Log the start of a request
+        if (threadId) {
+          logger.info({
+            message: 'Chat request started',
+            threadId,
+            messageCount: inputMessages?.length || 0,
+          });
+        }
+      },
+
+      onAfterRequest: async ({ threadId, inputMessages, outputMessages, properties }) => {
+        if (!threadId) {
+          logger.warn({ message: 'No threadId provided - skipping persistence' });
+          return;
+        }
+
+        try {
+          // Combine all messages and save to PostgreSQL
+          // Filter out internal CopilotKit messages that don't have a role (e.g., ActionExecutionMessage)
+          const allMessages = [...(inputMessages || []), ...(outputMessages || [])]
+            .filter((msg: any) => msg.role) // Only keep messages with a role
+            .map((msg: any) => ({
+              role: msg.role,
+              content: typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content),
+              id: msg.id,
+              type: (msg.constructor?.name || msg.type || 'Unknown'),
+            }));
+
+          // Get model from forwardedParameters if available
+          const model = (properties as any)?.forwardedParameters?.model;
+
+          await chatDb.saveMessages(threadId, allMessages, model);
+
+          logger.info({
+            message: 'Chat messages saved to PostgreSQL',
+            threadId,
+            messageCount: allMessages.length,
+          });
+        } catch (error: any) {
+          logger.error({
+            message: 'Failed to save chat messages',
+            threadId,
+            error: error.message,
+          });
+          // Don't throw - we don't want persistence failures to break the chat
+        }
+      },
+    },
+
     // Function to create MCP clients based on configuration
     createMCPClient: async (config) => {
       // For local MCP servers, use the stdio client
@@ -92,6 +145,56 @@ export function mountCopilotKit(app: Application) {
     ],
     credentials: true,
   };
+
+  // API Endpoints for thread management - MUST be registered BEFORE the general CopilotKit middleware
+  // to avoid being caught by the catch-all handler
+
+  // List all threads
+  app.get('/api/copilotkit/threads', cors(corsOptions), async (req: Request, res: Response) => {
+    try {
+      const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
+      const offset = parseInt(req.query.offset as string) || 0;
+
+      const threads = await chatDb.listThreads(limit, offset);
+      res.json(threads);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to list threads', error: error.message });
+      res.status(500).json({ error: 'Failed to list threads' });
+    }
+  });
+
+  // Get messages for a specific thread
+  app.get('/api/copilotkit/threads/:threadId/messages', cors(corsOptions), async (req: Request, res: Response) => {
+    try {
+      const messages = await chatDb.getMessages(req.params.threadId);
+      res.json(messages);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get messages', error: error.message });
+      res.status(500).json({ error: 'Failed to get messages' });
+    }
+  });
+
+  // Delete a thread
+  app.delete('/api/copilotkit/threads/:threadId', cors(corsOptions), async (req: Request, res: Response) => {
+    try {
+      await chatDb.deleteThread(req.params.threadId);
+      res.json({ success: true });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to delete thread', error: error.message });
+      res.status(500).json({ error: 'Failed to delete thread' });
+    }
+  });
+
+  // Health check endpoint
+  app.get('/api/copilotkit/health', cors(corsOptions), async (req: Request, res: Response) => {
+    const dbHealthy = await chatDb.healthCheck();
+    res.json({
+      status: dbHealthy ? 'healthy' : 'degraded',
+      database: dbHealthy ? 'connected' : 'disconnected',
+    });
+  });
+
+  logger.info('CopilotKit thread management API mounted');
 
   // Mount the handler on the provided Express app with its own CORS middleware
   app.use('/api/copilotkit', cors(corsOptions), (req, res, next) => {

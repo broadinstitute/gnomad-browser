@@ -34,4 +34,7 @@ COPY --chown=node:node resources/gene-disease-table.tsv /app/resources/gene-dise
 # Copy static data into place
 COPY --chown=node:node graphql-api/static_data /app/static_data
 
+# Copy database schema for CopilotKit
+COPY --chown=node:node graphql-api/src/copilotkit/schema.sql /app/graphql-api/src/copilotkit/schema.sql
+
 CMD ["node", "graphql-api/src/app.js"]

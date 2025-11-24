@@ -371,40 +371,13 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(webpack-cli@5.1.4)(webpack@5.94.0)
 
-  copilotkit-server:
-    dependencies:
-      '@copilotkit/runtime':
-        specifier: ^1.10.3
-        version: 1.10.6(@ag-ui/client@0.0.41)(@ag-ui/core@0.0.41)(@ag-ui/encoder@0.0.41)(@ag-ui/langgraph@0.0.18)(@ag-ui/proto@0.0.41)(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(redis@3.1.2)
-      '@google/generative-ai':
-        specifier: ^0.21.0
-        version: 0.21.0
-      '@modelcontextprotocol/sdk':
-        specifier: ^1.17.4
-        version: 1.22.0
-      '@types/cors':
-        specifier: ^2.8.13
-        version: 2.8.14
-      '@types/express':
-        specifier: ^4.17.17
-        version: 4.17.23
-      cors:
-        specifier: ^2.8.5
-        version: 2.8.5
-      express:
-        specifier: ^4.20.0
-        version: 4.21.2
-      typescript:
-        specifier: ^5.0.4
-        version: 5.2.2
-
   dataset-metadata: {}
 
   graphql-api:
     dependencies:
       '@copilotkit/runtime':
         specifier: ^1.10.6
-        version: 1.10.6(@ag-ui/client@0.0.41)(@ag-ui/core@0.0.41)(@ag-ui/encoder@0.0.41)(@ag-ui/langgraph@0.0.18)(@ag-ui/proto@0.0.41)(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(redis@3.1.2)
+        version: 1.10.6(@ag-ui/client@0.0.41)(@ag-ui/core@0.0.41)(@ag-ui/encoder@0.0.41)(@ag-ui/langgraph@0.0.18)(@ag-ui/proto@0.0.41)(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(pg@8.16.3)(redis@3.1.2)
       '@elastic/elasticsearch':
         specifier: '6'
         version: 6.8.8
@@ -450,6 +423,9 @@ importers:
       '@types/on-headers':
         specifier: ^1.0.0
         version: 1.0.1
+      '@types/pg':
+        specifier: ^8.10.9
+        version: 8.15.6
       '@types/redis':
         specifier: ^4.0.11
         version: 4.0.11
@@ -492,6 +468,9 @@ importers:
       on-headers:
         specifier: ^1.1.0
         version: 1.1.0
+      pg:
+        specifier: ^8.11.3
+        version: 8.16.3
       redis:
         specifier: ^3.1.1
         version: 3.1.2
@@ -3656,7 +3635,7 @@ packages:
       - graphql
     dev: false
 
-  /@copilotkit/runtime@1.10.6(@ag-ui/client@0.0.41)(@ag-ui/core@0.0.41)(@ag-ui/encoder@0.0.41)(@ag-ui/langgraph@0.0.18)(@ag-ui/proto@0.0.41)(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(redis@3.1.2):
+  /@copilotkit/runtime@1.10.6(@ag-ui/client@0.0.41)(@ag-ui/core@0.0.41)(@ag-ui/encoder@0.0.41)(@ag-ui/langgraph@0.0.18)(@ag-ui/proto@0.0.41)(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(pg@8.16.3)(redis@3.1.2):
     resolution: {integrity: sha512-35MdJ6nutC+spgHRJURbanLxBoQCNvVBYD0CBIk4Rv3/Ck8XgZA4lcc+5aGteuERXOPBsYEQjGD4xEPy3QXmGg==}
     peerDependencies:
       '@ag-ui/client': '>=0.0.39'
@@ -3674,7 +3653,7 @@ packages:
       '@copilotkit/shared': 1.10.6
       '@graphql-yoga/plugin-defer-stream': 3.16.2(graphql-yoga@5.16.2)(graphql@16.12.0)
       '@langchain/aws': 0.1.15(@langchain/core@0.3.79)
-      '@langchain/community': 0.3.58(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/aws@0.1.15)(@langchain/core@0.3.79)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(openai@4.104.0)(redis@3.1.2)
+      '@langchain/community': 0.3.58(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/aws@0.1.15)(@langchain/core@0.3.79)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(openai@4.104.0)(pg@8.16.3)(redis@3.1.2)
       '@langchain/core': 0.3.79(openai@4.104.0)
       '@langchain/google-gauth': 0.1.8(@langchain/core@0.3.79)(zod@3.25.76)
       '@langchain/langgraph-sdk': 0.0.70(@langchain/core@0.3.79)
@@ -4924,7 +4903,7 @@ packages:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@jridgewell/trace-mapping': 0.3.28
+      '@jridgewell/trace-mapping': 0.3.29
       '@types/node': 20.7.0
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
@@ -4958,7 +4937,7 @@ packages:
     resolution: {integrity: sha512-MHjT95QuipcPrpLM+8JMSzFx6eHp5Bm+4XeFDJlwsvVBjmKNiIAvasGK2fxz2WbGRlnvqehFbh07MMa7n3YJnw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.28
+      '@jridgewell/trace-mapping': 0.3.29
       callsites: 3.1.0
       graceful-fs: 4.2.11
     dev: true
@@ -5032,8 +5011,8 @@ packages:
   /@jridgewell/gen-mapping@0.3.11:
     resolution: {integrity: sha512-C512c1ytBTio4MrpWKlJpyFHT6+qfFL8SZ58zBzJ1OOzUEjHeF1BtjY2fH7n4x/g2OV/KiiMLAivOp1DXmiMMw==}
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.5.3
-      '@jridgewell/trace-mapping': 0.3.28
+      '@jridgewell/sourcemap-codec': 1.5.4
+      '@jridgewell/trace-mapping': 0.3.29
 
   /@jridgewell/gen-mapping@0.3.12:
     resolution: {integrity: sha512-OuLGC46TjB5BbN1dH8JULVVZY4WTdkF7tV9Ys6wLL1rubZnCMstOhNHueU5bLCrnRuDhKPDM4g6sw4Bel5Gzqg==}
@@ -5049,10 +5028,7 @@ packages:
     resolution: {integrity: sha512-amBU75CKOOkcQLfyM6J+DnWwz41yTsWI7o8MQ003LwUIWb4NYX/evAblTx1oBBYJySqL/zHPxHXDw5ewpQaUFw==}
     dependencies:
       '@jridgewell/gen-mapping': 0.3.11
-      '@jridgewell/trace-mapping': 0.3.28
-
-  /@jridgewell/sourcemap-codec@1.5.3:
-    resolution: {integrity: sha512-AiR5uKpFxP3PjO4R19kQGIMwxyRyPuXmKEEy301V1C0+1rVjS94EZQXf1QKZYN8Q0YM+estSPhmx5JwNftv6nw==}
+      '@jridgewell/trace-mapping': 0.3.29
 
   /@jridgewell/sourcemap-codec@1.5.4:
     resolution: {integrity: sha512-VT2+G1VQs/9oz078bLrYbecdZKs912zQlkelYpuf+SXF+QvZDYJlbx/LSx+meSAwdDFnF8FVXW92AVjjkVmgFw==}
@@ -5061,7 +5037,7 @@ packages:
     resolution: {integrity: sha512-KNNHHwW3EIp4EDYOvYFGyIFfx36R2dNJYH4knnZlF8T5jdbD5Wx8xmSaQ2gP9URkJ04LGEtlcCtwArKcmFcwKw==}
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.3
+      '@jridgewell/sourcemap-codec': 1.5.4
 
   /@jridgewell/trace-mapping@0.3.29:
     resolution: {integrity: sha512-uw6guiW/gcAGPDhLmd77/6lW8QLeiV5RUTsAX46Db6oLhGaVj4lhnPwb184s1bkc8kdVg/+h988dro8GRDpmYQ==}
@@ -5073,7 +5049,7 @@ packages:
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.3
+      '@jridgewell/sourcemap-codec': 1.5.4
     dev: true
 
   /@js-sdsl/ordered-map@4.4.2:
@@ -5127,7 +5103,7 @@ packages:
       - aws-crt
     dev: false
 
-  /@langchain/community@0.3.58(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/aws@0.1.15)(@langchain/core@0.3.79)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(openai@4.104.0)(redis@3.1.2):
+  /@langchain/community@0.3.58(@browserbasehq/stagehand@1.14.0)(@elastic/elasticsearch@6.8.8)(@google-cloud/storage@7.7.0)(@ibm-cloud/watsonx-ai@1.7.3)(@langchain/aws@0.1.15)(@langchain/core@0.3.79)(axios@1.13.2)(ibm-cloud-sdk-core@5.4.4)(ioredis@5.3.2)(lodash@4.17.21)(openai@4.104.0)(pg@8.16.3)(redis@3.1.2):
     resolution: {integrity: sha512-jrMbv1Xz2yqcWtlj+wnMmbagIK6J/fbQdP6R+Az+e+er5CeWy2eZHKBGFL5XYbAzYJdYhAbA4gt8kwVT6oaZfw==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -5524,6 +5500,7 @@ packages:
       lodash: 4.17.21
       math-expression-evaluator: 2.0.7
       openai: 4.104.0(zod@3.25.76)
+      pg: 8.16.3
       redis: 3.1.2
       uuid: 10.0.0
       zod: 3.25.76
@@ -7652,6 +7629,14 @@ packages:
 
   /@types/parse-json@4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
+
+  /@types/pg@8.15.6:
+    resolution: {integrity: sha512-NoaMtzhxOrubeL/7UZuNTrejB4MPAJ0RpxZqXQf2qXuVlTPuG6Y8p4u9dKRaue4yjmC7ZhzVO2/Yyyn25znrPQ==}
+    dependencies:
+      '@types/node': 20.7.0
+      pg-protocol: 1.10.3
+      pg-types: 2.2.0
+    dev: false
 
   /@types/prop-types@15.7.15:
     resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
@@ -16383,6 +16368,68 @@ packages:
     engines: {node: '>=8'}
     dev: false
 
+  /pg-cloudflare@1.2.7:
+    resolution: {integrity: sha512-YgCtzMH0ptvZJslLM1ffsY4EuGaU0cx4XSdXLRFae8bPP4dS5xL1tNB3k2o/N64cHJpwU7dxKli/nZ2lUa5fLg==}
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /pg-connection-string@2.9.1:
+    resolution: {integrity: sha512-nkc6NpDcvPVpZXxrreI/FOtX3XemeLl8E0qFr6F2Lrm/I8WOnaWNhIPK2Z7OHpw7gh5XJThi6j6ppgNoaT1w4w==}
+    dev: false
+
+  /pg-int8@1.0.1:
+    resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
+    engines: {node: '>=4.0.0'}
+    dev: false
+
+  /pg-pool@3.10.1(pg@8.16.3):
+    resolution: {integrity: sha512-Tu8jMlcX+9d8+QVzKIvM/uJtp07PKr82IUOYEphaWcoBhIYkoHpLXN3qO59nAI11ripznDsEzEv8nUxBVWajGg==}
+    peerDependencies:
+      pg: '>=8.0'
+    dependencies:
+      pg: 8.16.3
+    dev: false
+
+  /pg-protocol@1.10.3:
+    resolution: {integrity: sha512-6DIBgBQaTKDJyxnXaLiLR8wBpQQcGWuAESkRBX/t6OwA8YsqP+iVSiond2EDy6Y/dsGk8rh/jtax3js5NeV7JQ==}
+    dev: false
+
+  /pg-types@2.2.0:
+    resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
+    engines: {node: '>=4'}
+    dependencies:
+      pg-int8: 1.0.1
+      postgres-array: 2.0.0
+      postgres-bytea: 1.0.0
+      postgres-date: 1.0.7
+      postgres-interval: 1.2.0
+    dev: false
+
+  /pg@8.16.3:
+    resolution: {integrity: sha512-enxc1h0jA/aq5oSDMvqyW3q89ra6XIIDZgCX9vkMrnz5DFTw/Ny3Li2lFQ+pt3L6MCgm/5o2o8HW9hiJji+xvw==}
+    engines: {node: '>= 16.0.0'}
+    peerDependencies:
+      pg-native: '>=3.0.1'
+    peerDependenciesMeta:
+      pg-native:
+        optional: true
+    dependencies:
+      pg-connection-string: 2.9.1
+      pg-pool: 3.10.1(pg@8.16.3)
+      pg-protocol: 1.10.3
+      pg-types: 2.2.0
+      pgpass: 1.0.5
+    optionalDependencies:
+      pg-cloudflare: 1.2.7
+    dev: false
+
+  /pgpass@1.0.5:
+    resolution: {integrity: sha512-FdW9r/jQZhSeohs1Z3sI1yxFQNFvMcnmfuj4WBMUTxOrAyLMaTcE1aAMBiTlbMNaXvBCQuVi0R7hd8udDSP7ug==}
+    dependencies:
+      split2: 4.2.0
+    dev: false
+
   /picocolors@0.2.1:
     resolution: {integrity: sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==}
     dev: true
@@ -16642,6 +16689,28 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.1.1
       source-map-js: 1.0.2
+    dev: false
+
+  /postgres-array@2.0.0:
+    resolution: {integrity: sha512-VpZrUqU5A69eQyW2c5CA1jtLecCsN2U/bD6VilrFDWq5+5UIEVO7nazS3TEcHf1zuPYO/sqGvUvW62g86RXZuA==}
+    engines: {node: '>=4'}
+    dev: false
+
+  /postgres-bytea@1.0.0:
+    resolution: {integrity: sha512-xy3pmLuQqRBZBXDULy7KbaitYqLcmxigw14Q5sj8QBVLqEwXfeybIKVWiqAXTlcvdvb0+xkOtDbfQMOf4lST1w==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /postgres-date@1.0.7:
+    resolution: {integrity: sha512-suDmjLVQg78nMK2UZ454hAG+OAW+HQPZ6n++TNDUX+L0+uUlLywnoxJKDou51Zm+zTCjrCl0Nq6J9C5hP9vK/Q==}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
+  /postgres-interval@1.2.0:
+    resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      xtend: 4.0.2
     dev: false
 
   /prebuild-install@7.1.1:
@@ -19085,7 +19154,7 @@ packages:
       uglify-js:
         optional: true
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.28
+      '@jridgewell/trace-mapping': 0.3.29
       jest-worker: 27.5.1
       schema-utils: 4.3.2
       serialize-javascript: 6.0.2
@@ -20022,7 +20091,7 @@ packages:
     resolution: {integrity: sha512-6z3GW9x8G1gd+JIIgQQQxXuiJtCXeAjp6RaPEPLv62mH3iPHPxV6W3robxtCzNErRo6ZwTmzWhsbNvjyEBKzKA==}
     engines: {node: '>=10.12.0'}
     dependencies:
-      '@jridgewell/trace-mapping': 0.3.28
+      '@jridgewell/trace-mapping': 0.3.29
       '@types/istanbul-lib-coverage': 2.0.4
       convert-source-map: 1.9.0
     dev: true

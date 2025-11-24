@@ -8,6 +8,13 @@ const tsConfig = require('../tsconfig.build.json')
 
 const isDev = process.env.NODE_ENV === 'development'
 
+// Helper to get base URL from GNOMAD_API_URL (strips /api suffix if present)
+// Force IPv4 by using 127.0.0.1 instead of localhost to avoid IPv6 connection issues
+const getApiBaseUrl = () => {
+  const url = process.env.GNOMAD_API_URL || 'http://localhost:8010'
+  return url.replace(/\/api$/, '').replace('localhost', '127.0.0.1')
+}
+
 const gaTrackingId = process.env.GA_TRACKING_ID
 if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
   // eslint-disable-next-line no-console
@@ -25,10 +32,17 @@ const config = {
       publicPath: '/',
     },
     proxy: [
+      // CopilotKit proxy - must come before general /api proxy
+      // Don't rewrite the path since CopilotKit is mounted at /api/copilotkit on the API server
+      {
+        context: '/api/copilotkit',
+        target: getApiBaseUrl(),
+        changeOrigin: true,
+      },
+      // General API proxy - pass through as-is (API is mounted at /api/ on the server)
       {
         context: '/api',
-        target: process.env.GNOMAD_API_URL,
-        pathRewrite: { '^/api': '' },
+        target: getApiBaseUrl(),
         changeOrigin: true,
       },
       {

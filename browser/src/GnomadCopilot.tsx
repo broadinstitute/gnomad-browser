@@ -18,6 +18,7 @@ import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RobotIcon from '@fortawesome/fontawesome-free/svgs/solid/robot.svg'
 import '@copilotkit/react-ui/styles.css'
+import { ChatHistorySidebar } from './ChatHistorySidebar'
 
 // Ensure modal appears above other UI elements
 const GlobalModalStyles = createGlobalStyle`
@@ -238,6 +239,24 @@ const ContextBadge = styled.div`
   }
 `
 
+const FullscreenContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  z-index: 1000;
+  background: white;
+`
+
+const FullscreenChatArea = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`
+
 const ToggleButton = styled.button`
   position: fixed;
   bottom: 24px;
@@ -425,7 +444,10 @@ export function GnomadCopilot({
   setSavedPrompts,
   activePromptId,
   setActivePromptId,
-  pageContext
+  pageContext,
+  threadId,
+  onNewChat,
+  onSelectThread,
 }: {
   children: React.ReactNode
   selectedModel: string
@@ -437,6 +459,9 @@ export function GnomadCopilot({
   activePromptId: string | null
   setActivePromptId: (id: string | null) => void
   pageContext?: PageContext | null
+  threadId: string
+  onNewChat: () => void
+  onSelectThread: (threadId: string) => void
 }) {
   const [chatDisplayMode, setChatDisplayMode] = useState<'closed' | 'side' | 'fullscreen'>('side')
   const isChatOpen = chatDisplayMode !== 'closed'
@@ -739,9 +764,9 @@ export function GnomadCopilot({
       <GlobalModalStyles />
       <PageContainer ref={containerRef}>
         <MainContent>{children}</MainContent>
-        {isChatOpen && (
+        {isChatOpen && chatDisplayMode === 'side' && (
           <>
-            {chatDisplayMode === 'side' && <ResizeHandle onMouseDown={handleMouseDown} />}
+            <ResizeHandle onMouseDown={handleMouseDown} />
             <ChatPanel width={chatWidth} mode={chatDisplayMode}>
               <StyledCopilotChat
                 labels={{
@@ -773,20 +798,62 @@ export function GnomadCopilot({
                 <img src={CloseIcon} alt="Close" />
               </CloseButton>
               <FullscreenButton
-                onClick={() =>
-                  setChatDisplayMode(chatDisplayMode === 'fullscreen' ? 'side' : 'fullscreen')
-                }
-                title={chatDisplayMode === 'fullscreen' ? 'Exit fullscreen' : 'Enter fullscreen'}
+                onClick={() => setChatDisplayMode('fullscreen')}
+                title="Enter fullscreen"
               >
-                <img
-                  src={chatDisplayMode === 'fullscreen' ? CompressIcon : ExpandIcon}
-                  alt={chatDisplayMode === 'fullscreen' ? 'Exit fullscreen' : 'Enter fullscreen'}
-                />
+                <img src={ExpandIcon} alt="Enter fullscreen" />
               </FullscreenButton>
             </ChatPanel>
           </>
         )}
       </PageContainer>
+
+      {chatDisplayMode === 'fullscreen' && (
+        <FullscreenContainer>
+          <FullscreenChatArea>
+            <StyledCopilotChat
+              labels={{
+                title: 'gnomAD Assistant',
+                initial: 'Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you\'re viewing.',
+              }}
+              suggestions={suggestions}
+            />
+            <ModelBadge title={`Current model: ${selectedModel}`}>
+              <img src={RobotIcon} alt="Model" />
+              {getModelDisplayName(selectedModel)}
+            </ModelBadge>
+            {contextDisplay && (
+              <ContextBadge title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${contextDisplay.detail ? ` (${contextDisplay.detail})` : ''}`}>
+                <span className="context-type">{contextDisplay.type}</span>
+                <span className="context-id">{contextDisplay.id}</span>
+              </ContextBadge>
+            )}
+            <SettingsButton
+              onClick={() => setIsSettingsModalOpen(true)}
+              title="Settings"
+            >
+              <img src={SettingsIcon} alt="Settings" />
+            </SettingsButton>
+            <CloseButton
+              onClick={() => setChatDisplayMode('closed')}
+              title="Close Assistant"
+            >
+              <img src={CloseIcon} alt="Close" />
+            </CloseButton>
+            <FullscreenButton
+              onClick={() => setChatDisplayMode('side')}
+              title="Exit fullscreen"
+            >
+              <img src={CompressIcon} alt="Exit fullscreen" />
+            </FullscreenButton>
+          </FullscreenChatArea>
+          <ChatHistorySidebar
+            currentThreadId={threadId}
+            onNewChat={onNewChat}
+            onSelectThread={onSelectThread}
+          />
+        </FullscreenContainer>
+      )}
 
       {!isChatOpen && (
         <ToggleButton onClick={() => setChatDisplayMode('side')}>

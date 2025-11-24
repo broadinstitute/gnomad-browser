@@ -79,6 +79,7 @@ const BANNER_CONTENT = null
 const COPILOT_MODEL_STORAGE_KEY = 'gnomad.copilot.model'
 const COPILOT_SAVED_PROMPTS_STORAGE_KEY = 'gnomad.copilot.savedPrompts'
 const COPILOT_ACTIVE_PROMPT_ID_STORAGE_KEY = 'gnomad.copilot.activePromptId'
+const COPILOT_THREAD_ID_STORAGE_KEY = 'gnomad.copilot.threadId'
 
 interface SavedPrompt {
   id: string
@@ -86,8 +87,21 @@ interface SavedPrompt {
   prompt: string
 }
 
+// Helper to generate a new thread ID
+const generateThreadId = () => crypto.randomUUID()
+
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
+
+  // Thread ID state - load from localStorage or generate new
+  const [threadId, setThreadId] = useState(() => {
+    try {
+      const storedThreadId = localStorage.getItem(COPILOT_THREAD_ID_STORAGE_KEY)
+      return storedThreadId || generateThreadId()
+    } catch {
+      return generateThreadId()
+    }
+  })
 
   // CopilotKit settings state - load from localStorage if available
   const [selectedModel, setSelectedModel] = useState(() => {
@@ -163,6 +177,25 @@ const App = () => {
     }
   }, [activePromptId])
 
+  // Persist thread ID to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(COPILOT_THREAD_ID_STORAGE_KEY, threadId)
+    } catch (error) {
+      console.error('Failed to save thread ID:', error)
+    }
+  }, [threadId])
+
+  // Handler for starting a new chat
+  const handleNewChat = () => {
+    setThreadId(generateThreadId())
+  }
+
+  // Handler for selecting an existing thread
+  const handleSelectThread = (selectedThreadId: string) => {
+    setThreadId(selectedThreadId)
+  }
+
   useEffect(() => {
     userPreferences.loadPreferences().then(
       () => {
@@ -184,7 +217,8 @@ const App = () => {
   return (
     <CopilotKit
       runtimeUrl={copilotKitUrl}
-      // @ts-ignore - model is not in the type definition but is supported by the runtime
+      // @ts-ignore - threadId and model are not in the type definition but are supported by the runtime
+      threadId={threadId}
       forwardedParameters={{ model: selectedModel }}
       instructions="You are a helpful assistant for gnomAD, a genome aggregation database. Your goal is to help users understand genetic data, navigate the site, and find relevant information. Use the available tools to answer user questions about variants, genes, and regions."
     >
@@ -221,6 +255,9 @@ const App = () => {
                 setSavedPrompts={setSavedPrompts}
                 activePromptId={activePromptId}
                 setActivePromptId={setActivePromptId}
+                threadId={threadId}
+                onNewChat={handleNewChat}
+                onSelectThread={handleSelectThread}
               >
                 <TopBarWrapper>
                   <NavBar />
