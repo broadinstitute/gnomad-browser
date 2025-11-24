@@ -60,10 +60,39 @@ const ThreadItem = styled.div<{ isActive: boolean }>`
   background: ${(props) => (props.isActive ? '#e3f2fd' : 'white')};
   border: 1px solid ${(props) => (props.isActive ? '#90caf9' : '#e0e0e0')};
   transition: all 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
 
   &:hover {
     background: ${(props) => (props.isActive ? '#e3f2fd' : '#f5f5f5')};
     border-color: ${(props) => (props.isActive ? '#90caf9' : '#d0d0d0')};
+  }
+`
+
+const ThreadContent = styled.div`
+  flex: 1;
+  min-width: 0;
+`
+
+const DeleteButton = styled.button`
+  padding: 4px 8px;
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #666;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  opacity: 0.6;
+
+  &:hover {
+    background: #fee;
+    border-color: #d32f2f;
+    color: #d32f2f;
+    opacity: 1;
   }
 `
 
@@ -139,6 +168,35 @@ export function ChatHistorySidebar({
     return () => clearInterval(interval)
   }, [currentThreadId]) // Re-fetch when currentThreadId changes (e.g., new chat created)
 
+  // Handle thread deletion
+  const handleDeleteThread = async (threadId: string, e: React.MouseEvent) => {
+    // Prevent the click from bubbling up to the thread item
+    e.stopPropagation()
+
+    if (!confirm('Are you sure you want to delete this conversation?')) {
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/copilotkit/threads/${threadId}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) throw new Error('Failed to delete thread')
+
+      // Remove the thread from the local state
+      setThreads(threads.filter((t) => t.threadId !== threadId))
+
+      // If we deleted the current thread, start a new chat
+      if (threadId === currentThreadId) {
+        onNewChat()
+      }
+    } catch (err: any) {
+      console.error('Failed to delete thread:', err)
+      alert('Failed to delete conversation. Please try again.')
+    }
+  }
+
   return (
     <SidebarContainer>
       <SidebarHeader>
@@ -160,11 +218,19 @@ export function ChatHistorySidebar({
             isActive={thread.threadId === currentThreadId}
             onClick={() => onSelectThread(thread.threadId)}
           >
-            <ThreadTitle>{thread.title || 'New conversation'}</ThreadTitle>
-            <ThreadMeta>
-              <span>{thread.messageCount} messages</span>
-              <span>{formatDate(thread.updatedAt)}</span>
-            </ThreadMeta>
+            <ThreadContent>
+              <ThreadTitle>{thread.title || 'New conversation'}</ThreadTitle>
+              <ThreadMeta>
+                <span>{thread.messageCount} messages</span>
+                <span>{formatDate(thread.updatedAt)}</span>
+              </ThreadMeta>
+            </ThreadContent>
+            <DeleteButton
+              onClick={(e) => handleDeleteThread(thread.threadId, e)}
+              title="Delete conversation"
+            >
+              Delete
+            </DeleteButton>
           </ThreadItem>
         ))}
       </ThreadList>
