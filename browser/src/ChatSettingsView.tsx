@@ -12,7 +12,7 @@ const SettingsContainer = styled.div`
   flex-direction: column;
   height: 100%;
   background: #f7f7f7;
-  overflow-y: auto;
+  overflow: hidden;
 `
 
 const SettingsHeader = styled.div`
@@ -49,11 +49,53 @@ const HeaderButton = styled.button`
   }
 `
 
+const SettingsBody = styled.div`
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+`
+
+const SettingsNav = styled.nav`
+  width: 180px;
+  background: white;
+  border-right: 1px solid #e0e0e0;
+  padding: 12px 0;
+  overflow-y: auto;
+`
+
+const NavItem = styled.button<{ active: boolean }>`
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  background: ${props => props.active ? '#f0f7fd' : 'transparent'};
+  color: ${props => props.active ? '#0d79d0' : '#333'};
+  font-size: 14px;
+  font-weight: ${props => props.active ? '600' : '400'};
+  text-align: left;
+  cursor: pointer;
+  border-left: 3px solid ${props => props.active ? '#0d79d0' : 'transparent'};
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f0f7fd;
+  }
+`
+
 const SettingsContent = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
+  overflow-y: auto;
+  background: #f7f7f7;
+`
+
+const SectionTitle = styled.h3`
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
 `
 
 const UserInfoBox = styled.div`
@@ -178,6 +220,8 @@ interface ChatSettingsViewProps {
   onDeletePrompt: (promptId: string) => void
 }
 
+type SettingsSection = 'general' | 'favorites'
+
 export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
   onClose,
   isAuthEnabled,
@@ -191,12 +235,124 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
   onSavePrompt,
   onDeletePrompt,
 }) => {
+  const [activeSection, setActiveSection] = useState<SettingsSection>('general')
   const [promptName, setPromptName] = useState('')
   const { logout, isAuthenticated } = useAuth0()
 
   const handleSaveClick = () => {
     onSavePrompt(promptName)
     setPromptName('')
+  }
+
+  const renderGeneralSection = () => (
+    <>
+      <SectionTitle>General Settings</SectionTitle>
+      {isAuthEnabled && <UserInfoDisplay />}
+      <SettingItem>
+        <SettingLabel htmlFor="model-select">Model</SettingLabel>
+        <Select
+          id="model-select"
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+        >
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+          <option value="gemini-3-flash">Gemini 3 Flash</option>
+          <option value="gemini-3-pro">Gemini 3 Pro</option>
+        </Select>
+      </SettingItem>
+
+      <SettingItem>
+        <SettingLabel htmlFor="saved-prompts">Saved Prompts</SettingLabel>
+        <Select
+          id="saved-prompts"
+          value={activePromptId || ''}
+          onChange={(e) => onPromptSelect(e.target.value)}
+        >
+          <option value="">None</option>
+          {savedPrompts.map(prompt => (
+            <option key={prompt.id} value={prompt.id}>
+              {prompt.name}
+            </option>
+          ))}
+        </Select>
+      </SettingItem>
+
+      <SettingItem>
+        <SettingLabel htmlFor="custom-prompt">Custom System Prompt</SettingLabel>
+        <TextArea
+          id="custom-prompt"
+          value={customPrompt}
+          onChange={(e) => onCustomPromptChange(e.target.value)}
+          placeholder="Add additional instructions for the assistant (optional)..."
+        />
+      </SettingItem>
+
+      <SettingItem>
+        <SettingLabel htmlFor="prompt-name">Save Current Prompt As</SettingLabel>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            id="prompt-name"
+            type="text"
+            value={promptName}
+            onChange={(e) => setPromptName(e.target.value)}
+            placeholder="e.g., Rare Disease Focus"
+            style={{
+              flex: 1,
+              padding: '8px 12px',
+              border: '1px solid #e0e0e0',
+              borderRadius: '6px',
+              fontSize: '14px'
+            }}
+          />
+          <PrimaryButton
+            onClick={handleSaveClick}
+            disabled={!promptName.trim() || !customPrompt.trim()}
+          >
+            Save
+          </PrimaryButton>
+        </div>
+      </SettingItem>
+
+      {activePromptId && (
+        <SettingItem>
+          <Button onClick={() => onDeletePrompt(activePromptId)}>
+            Delete Current Prompt
+          </Button>
+        </SettingItem>
+      )}
+
+      {isAuthEnabled && isAuthenticated && (
+        <LogoutContainer>
+          <Button
+            onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+          >
+             <img src={SignOutIcon} alt="Log Out" style={{ width: '14px', height: '14px', marginRight: '8px', opacity: 0.8 }} />
+            Log Out
+          </Button>
+        </LogoutContainer>
+      )}
+    </>
+  )
+
+  const renderFavoritesSection = () => (
+    <>
+      <SectionTitle>Favorites</SectionTitle>
+      <div style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+        <p>Coming soon: Save your favorite genes, variants, and regions for quick access.</p>
+      </div>
+    </>
+  )
+
+  const renderSectionContent = () => {
+    switch (activeSection) {
+      case 'general':
+        return renderGeneralSection()
+      case 'favorites':
+        return renderFavoritesSection()
+      default:
+        return renderGeneralSection()
+    }
   }
 
   return (
@@ -207,93 +363,25 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
           <img src={CloseIcon} alt="Close" />
         </HeaderButton>
       </SettingsHeader>
-      <SettingsContent>
-        {isAuthEnabled && <UserInfoDisplay />}
-        <SettingItem>
-          <SettingLabel htmlFor="model-select">Model</SettingLabel>
-          <Select
-            id="model-select"
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
+      <SettingsBody>
+        <SettingsNav>
+          <NavItem
+            active={activeSection === 'general'}
+            onClick={() => setActiveSection('general')}
           >
-            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-            <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-            <option value="gemini-3-flash">Gemini 3 Flash</option>
-            <option value="gemini-3-pro">Gemini 3 Pro</option>
-          </Select>
-        </SettingItem>
-
-        <SettingItem>
-          <SettingLabel htmlFor="saved-prompts">Saved Prompts</SettingLabel>
-          <Select
-            id="saved-prompts"
-            value={activePromptId || ''}
-            onChange={(e) => onPromptSelect(e.target.value)}
+            General
+          </NavItem>
+          <NavItem
+            active={activeSection === 'favorites'}
+            onClick={() => setActiveSection('favorites')}
           >
-            <option value="">None</option>
-            {savedPrompts.map(prompt => (
-              <option key={prompt.id} value={prompt.id}>
-                {prompt.name}
-              </option>
-            ))}
-          </Select>
-        </SettingItem>
-
-        <SettingItem>
-          <SettingLabel htmlFor="custom-prompt">Custom System Prompt</SettingLabel>
-          <TextArea
-            id="custom-prompt"
-            value={customPrompt}
-            onChange={(e) => onCustomPromptChange(e.target.value)}
-            placeholder="Add additional instructions for the assistant (optional)..."
-          />
-        </SettingItem>
-
-        <SettingItem>
-          <SettingLabel htmlFor="prompt-name">Save Current Prompt As</SettingLabel>
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <input
-              id="prompt-name"
-              type="text"
-              value={promptName}
-              onChange={(e) => setPromptName(e.target.value)}
-              placeholder="e.g., Rare Disease Focus"
-              style={{
-                flex: 1,
-                padding: '8px 12px',
-                border: '1px solid #e0e0e0',
-                borderRadius: '6px',
-                fontSize: '14px'
-              }}
-            />
-            <PrimaryButton
-              onClick={handleSaveClick}
-              disabled={!promptName.trim() || !customPrompt.trim()}
-            >
-              Save
-            </PrimaryButton>
-          </div>
-        </SettingItem>
-
-        {activePromptId && (
-          <SettingItem>
-            <Button onClick={() => onDeletePrompt(activePromptId)}>
-              Delete Current Prompt
-            </Button>
-          </SettingItem>
-        )}
-
-        {isAuthEnabled && isAuthenticated && (
-          <LogoutContainer>
-            <Button
-              onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-            >
-               <img src={SignOutIcon} alt="Log Out" style={{ width: '14px', height: '14px', marginRight: '8px', opacity: 0.8 }} />
-              Log Out
-            </Button>
-          </LogoutContainer>
-        )}
-      </SettingsContent>
+            Favorites
+          </NavItem>
+        </SettingsNav>
+        <SettingsContent>
+          {renderSectionContent()}
+        </SettingsContent>
+      </SettingsBody>
     </SettingsContainer>
   )
 }
