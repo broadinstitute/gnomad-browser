@@ -174,7 +174,7 @@ export default () => (
           issue="16(1)"
           pages="8734"
           pmid="41053080"
-          doiLink="https://doi.org/10.1038/s41467-025-61698-x"
+          doiLink="https://doi.org/10.1038/s41467-025-63340-2"
         />
         <PaperCitation
           authorList="Poterba, T., Vittal, C., King, D., Goldstein, D., Goldstein, J. I., Schultz, P., Karczewski, K. J., Seed, C., Neale, B. M."
