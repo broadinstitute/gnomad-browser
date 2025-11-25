@@ -340,6 +340,24 @@ export function mountCopilotKit(app: Application) {
     }
   });
 
+  // Add context to a thread
+  app.post('/api/copilotkit/threads/:threadId/context', cors(corsOptions), checkJwt, async (req, res) => {
+    try {
+      const userId = isAuthEnabled ? (req as any).auth.payload.sub : 'anonymous';
+      const { threadId } = req.params;
+      const { context } = req.body;
+
+      if (!context || !context.type || !context.id) {
+        return res.status(400).json({ error: 'Invalid context object provided.' });
+      }
+      await chatDb.addContextToThread(threadId, userId, context);
+      res.status(200).json({ success: true });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to add context to thread', error: error.message });
+      res.status(500).json({ error: 'Failed to update thread context' });
+    }
+  });
+
   // Get messages for a specific thread
   app.get('/api/copilotkit/threads/:threadId/messages', cors(corsOptions), checkJwt, async (req: Request, res: Response) => {
     try {

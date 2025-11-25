@@ -86,6 +86,30 @@ const ChatPanel = styled.div<{ width: number; mode: 'side' | 'fullscreen' }>`
     `}
 `
 
+const ChatWrapper = styled.div`
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+`
+
+const ContextUpdateBanner = styled.div`
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  right: 20px;
+  z-index: 100;
+  padding: 8px 12px;
+  background: rgba(227, 242, 253, 0.95);
+  border: 1px solid #90caf9;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1976d2;
+  text-align: center;
+  animation: fadeInDown 0.3s ease-out;
+`
+
 const ResizeHandle = styled.div`
   width: 4px;
   background-color: #e0e0e0;
@@ -607,24 +631,194 @@ export function GnomadCopilot({
   onNewChat: () => void
   onSelectThread: (threadId: string) => void
 }) {
-  const [chatDisplayMode, setChatDisplayMode] = useState<'closed' | 'side' | 'fullscreen'>('side')
+  const history = useHistory()
+  const location = useLocation()
+
+  // Initialize chat display mode from query parameter
+  const getInitialChatMode = (): 'closed' | 'side' | 'fullscreen' => {
+    const params = new URLSearchParams(location.search)
+    const chatMode = params.get('chat')
+    if (chatMode === 'fullscreen') return 'fullscreen'
+    if (chatMode === 'side') return 'side'
+    if (chatMode === 'closed') return 'closed'
+    return 'side' // default
+  }
+
+  const [chatDisplayMode, setChatDisplayModeState] = useState<'closed' | 'side' | 'fullscreen'>(getInitialChatMode())
+
+  // Wrapper function to update both state and URL
+  const setChatDisplayMode = useCallback((mode: 'closed' | 'side' | 'fullscreen') => {
+    setChatDisplayModeState(mode)
+
+    // Update URL query parameter
+    const params = new URLSearchParams(location.search)
+    if (mode === 'side') {
+      // 'side' is the default, so we can remove the parameter
+      params.delete('chat')
+    } else {
+      params.set('chat', mode)
+    }
+
+    const newSearch = params.toString()
+    const newUrl = `${location.pathname}${newSearch ? `?${newSearch}` : ''}${location.hash}`
+    history.replace(newUrl)
+  }, [location.search, location.pathname, location.hash, history])
+
   const isChatOpen = chatDisplayMode !== 'closed'
   const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true'
   const { getAccessTokenSilently, isAuthenticated } = useAuth0()
   const [chatWidth, setChatWidth] = useState(window.innerWidth / 3) // Default to 1/3 of screen
   const isResizing = useRef(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const history = useHistory()
-  const location = useLocation()
+
+  // State for context update notifications
+  const [contextNotification, setContextNotification] = useState<string | null>(null)
+  const lastSentContext = useRef<{ threadId: string; contextId: string } | null>(null)
+
+  // Ref to store the chat history refresh function
+  const chatHistoryRefreshRef = useRef<(() => void) | null>(null)
 
   // Get CopilotKit's message context to set messages directly
-  const { setMessages } = useCopilotMessagesContext()
+  const { setMessages, messages } = useCopilotMessagesContext()
 
   // State for managing loading status
   const [isLoadingHistory, setIsLoadingHistory] = React.useState(true)
 
+  // Track previous message count to detect new messages
+  const prevMessageCountRef = useRef(0)
+
+  // Refresh chat history when new messages are added
+  React.useEffect(() => {
+    const currentMessageCount = messages.length
+    const hadMessages = prevMessageCountRef.current > 0
+    const hasNewMessages = currentMessageCount > prevMessageCountRef.current
+
+    // Refresh if we have new messages and a valid threadId
+    if (hasNewMessages && threadId && chatHistoryRefreshRef.current) {
+      // Small delay to ensure backend has processed the message
+      setTimeout(() => {
+        chatHistoryRefreshRef.current?.()
+      }, 500)
+    }
+
+    prevMessageCountRef.current = currentMessageCount
+  }, [messages.length, threadId])
+
+  // Sync chat display mode when URL changes (e.g., browser back/forward)
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const chatMode = params.get('chat')
+    let newMode: 'closed' | 'side' | 'fullscreen' = 'side'
+    if (chatMode === 'fullscreen') newMode = 'fullscreen'
+    else if (chatMode === 'side') newMode = 'side'
+    else if (chatMode === 'closed') newMode = 'closed'
+
+    if (newMode !== chatDisplayMode) {
+      setChatDisplayModeState(newMode)
+    }
+  }, [location.search])
+
+  // Format context for display badge
+  const getContextDisplay = useCallback(() => {
+    // Use pageContext if provided
+    if (pageContext) {
+      if (pageContext.gene_id && pageContext.symbol) {
+        return {
+          type: 'Gene',
+          id: pageContext.symbol,
+          detail: pageContext.name || pageContext.gene_id
+        }
+      } else if (pageContext.variant_id) {
+        return {
+          type: 'Variant',
+          id: pageContext.variant_id,
+          detail: pageContext.caid || (pageContext.rsids && pageContext.rsids.length > 0 ? pageContext.rsids[0] : '')
+        }
+      } else if (pageContext.chrom && pageContext.start && pageContext.stop) {
+        return {
+          type: 'Region',
+          id: `${pageContext.chrom}:${pageContext.start}-${pageContext.stop}`,
+          detail: ''
+        }
+      }
+    }
+
+    // Fallback: Parse from URL
+    const isVariantPage = location.pathname.startsWith('/variant/')
+    const isGenePage = location.pathname.startsWith('/gene/')
+    const isRegionPage = location.pathname.startsWith('/region/')
+
+    if (isVariantPage) {
+      const match = location.pathname.match(/\/variant\/(.+)/)
+      if (match) {
+        const variantId = decodeURIComponent(match[1].split('?')[0])
+        return { type: 'Variant', id: variantId, detail: '' }
+      }
+    } else if (isGenePage) {
+      const match = location.pathname.match(/\/gene\/(.+)/)
+      if (match) {
+        const geneSymbol = decodeURIComponent(match[1].split('?')[0])
+        return { type: 'Gene', id: geneSymbol, detail: '' }
+      }
+    } else if (isRegionPage) {
+      const match = location.pathname.match(/\/region\/(.+)/)
+      if (match) {
+        const regionId = decodeURIComponent(match[1].split('?')[0])
+        return { type: 'Region', id: regionId, detail: '' }
+      }
+    }
+
+    return null
+  }, [pageContext, location.pathname])
+
+  // Effect to send context updates to backend
+  React.useEffect(() => {
+    const context = getContextDisplay()
+    const contextId = context ? `${context.type}:${context.id}` : null
+
+    if (!context || !threadId || !contextId) return
+
+    // Check if we've already sent this exact context for this thread
+    const alreadySent = lastSentContext.current?.threadId === threadId &&
+                        lastSentContext.current?.contextId === contextId
+
+    if (alreadySent) return
+
+    const isNewContext = lastSentContext.current?.threadId === threadId &&
+                         lastSentContext.current?.contextId !== contextId
+
+    lastSentContext.current = { threadId, contextId }
+
+    const sendContext = async () => {
+      try {
+        const headers: HeadersInit = { 'Content-Type': 'application/json' }
+        if (isAuthEnabled && isAuthenticated) {
+          const token = await getAccessTokenSilently()
+          headers.Authorization = `Bearer ${token}`
+        }
+        await fetch(`/api/copilotkit/threads/${threadId}/context`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ context: { type: context.type, id: context.id } }),
+        })
+        // Only show notification for navigation (not initial context)
+        if (isNewContext) {
+          setContextNotification(`Context updated to ${context.type}: ${context.id}`)
+          setTimeout(() => setContextNotification(null), 5000)
+        }
+      } catch (error) {
+        console.error('Failed to send context update:', error)
+      }
+    }
+    sendContext()
+  }, [getContextDisplay, threadId, isAuthEnabled, isAuthenticated, getAccessTokenSilently])
+
   // Effect to fetch message history when the threadId changes
   React.useEffect(() => {
+    // Note: Don't reset lastSentContext here - it tracks thread+context pairs
+    // Reset message count tracking when thread changes
+    prevMessageCountRef.current = 0
+
     // If there's no threadId, this is a new chat. Clear messages and stop loading.
     if (!threadId) {
       setMessages([])
@@ -787,55 +981,6 @@ export function GnomadCopilot({
   const isVariantPage = location.pathname.startsWith('/variant/')
   const isGenePage = location.pathname.startsWith('/gene/')
   const isRegionPage = location.pathname.startsWith('/region/')
-
-  // Format context for display badge
-  const getContextDisplay = () => {
-    // Use pageContext if provided
-    if (pageContext) {
-      if (pageContext.gene_id && pageContext.symbol) {
-        return {
-          type: 'Gene',
-          id: pageContext.symbol,
-          detail: pageContext.name || pageContext.gene_id
-        }
-      } else if (pageContext.variant_id) {
-        return {
-          type: 'Variant',
-          id: pageContext.variant_id,
-          detail: pageContext.caid || (pageContext.rsids && pageContext.rsids.length > 0 ? pageContext.rsids[0] : '')
-        }
-      } else if (pageContext.chrom && pageContext.start && pageContext.stop) {
-        return {
-          type: 'Region',
-          id: `${pageContext.chrom}:${pageContext.start}-${pageContext.stop}`,
-          detail: ''
-        }
-      }
-    }
-
-    // Fallback: Parse from URL
-    if (isVariantPage) {
-      const match = location.pathname.match(/\/variant\/(.+)/)
-      if (match) {
-        const variantId = decodeURIComponent(match[1].split('?')[0])
-        return { type: 'Variant', id: variantId, detail: '' }
-      }
-    } else if (isGenePage) {
-      const match = location.pathname.match(/\/gene\/(.+)/)
-      if (match) {
-        const geneSymbol = decodeURIComponent(match[1].split('?')[0])
-        return { type: 'Gene', id: geneSymbol, detail: '' }
-      }
-    } else if (isRegionPage) {
-      const match = location.pathname.match(/\/region\/(.+)/)
-      if (match) {
-        const regionId = decodeURIComponent(match[1].split('?')[0])
-        return { type: 'Region', id: regionId, detail: '' }
-      }
-    }
-
-    return null
-  }
 
   const contextDisplay = getContextDisplay()
 
@@ -1025,6 +1170,7 @@ export function GnomadCopilot({
                   <span className="context-id">{contextDisplay.id}</span>
                 </ContextBadge>
               )}
+              {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
               <SettingsButton
                 onClick={() => setIsSettingsModalOpen(true)}
                 title="Settings"
@@ -1050,6 +1196,18 @@ export function GnomadCopilot({
 
       {chatDisplayMode === 'fullscreen' && (
         <FullscreenContainer>
+          {isAuthEnabled && isAuthenticated && (
+            <ChatHistorySidebar
+              currentThreadId={threadId}
+              onNewChat={onNewChat}
+              onSelectThread={onSelectThread}
+              onRefreshRef={(refreshFn) => {
+                chatHistoryRefreshRef.current = refreshFn
+              }}
+              currentContext={contextDisplay}
+              currentMessageCount={messages.filter(m => m.constructor?.name === 'TextMessage' || m.type === 'TextMessage').length}
+            />
+          )}
           <FullscreenChatArea>
             {isAuthEnabled ? (
               <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
@@ -1079,6 +1237,7 @@ export function GnomadCopilot({
                 <span className="context-id">{contextDisplay.id}</span>
               </ContextBadge>
             )}
+            {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
             <SettingsButton
               onClick={() => setIsSettingsModalOpen(true)}
               title="Settings"
@@ -1098,11 +1257,6 @@ export function GnomadCopilot({
               <img src={CompressIcon} alt="Exit fullscreen" />
             </FullscreenButton>
           </FullscreenChatArea>
-          <ChatHistorySidebar
-            currentThreadId={threadId}
-            onNewChat={onNewChat}
-            onSelectThread={onSelectThread}
-          />
         </FullscreenContainer>
       )}
 

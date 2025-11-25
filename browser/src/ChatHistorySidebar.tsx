@@ -7,18 +7,22 @@ interface Thread {
   title: string | null
   updatedAt: string
   messageCount: number
+  contexts: { type: string; id: string }[]
 }
 
 interface ChatHistorySidebarProps {
   currentThreadId: string
   onNewChat: () => void
   onSelectThread: (threadId: string) => void
+  onRefreshRef?: (refreshFn: () => void) => void
+  currentContext?: { type: string; id: string } | null
+  currentMessageCount?: number
 }
 
 const SidebarContainer = styled.div`
-  width: 280px;
+  width: 320px;
   background: #f7f7f7;
-  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -114,6 +118,29 @@ const ThreadMeta = styled.div`
   gap: 8px;
 `
 
+const ContextList = styled.div`
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+`
+
+const ContextPill = styled.div`
+  background: #eef;
+  border: 1px solid #cce;
+  color: #557;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  .context-type {
+    font-weight: 600;
+    margin-right: 4px;
+  }
+`
+
 const LoadingState = styled.div`
   padding: 20px;
   text-align: center;
@@ -140,6 +167,9 @@ export function ChatHistorySidebar({
   currentThreadId,
   onNewChat,
   onSelectThread,
+  onRefreshRef,
+  currentContext,
+  currentMessageCount = 0,
 }: ChatHistorySidebarProps) {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0()
   const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true'
@@ -147,44 +177,111 @@ export function ChatHistorySidebar({
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Fetch threads
-  useEffect(() => {
-    const fetchThreads = async () => {
-      if (isAuthEnabled && !isAuthenticated) {
-        setThreads([])
-        setLoading(false)
-        return
+  // Fetch threads function (extracted so it can be called manually)
+  const fetchThreads = React.useCallback(async (isInitialLoad = false) => {
+    if (isAuthEnabled && !isAuthenticated) {
+      setThreads([])
+      setLoading(false)
+      return
+    }
+
+    try {
+      // Only show loading spinner on initial load, not on refreshes
+      if (isInitialLoad) {
+        setLoading(true)
       }
 
-      try {
-        setLoading(true)
+      const headers: HeadersInit = {}
+      if (isAuthEnabled) {
+        const token = await getAccessTokenSilently()
+        headers.Authorization = `Bearer ${token}`
+      }
 
-        const headers: HeadersInit = {}
-        if (isAuthEnabled) {
-          const token = await getAccessTokenSilently()
-          headers.Authorization = `Bearer ${token}`
-        }
-
-        const response = await fetch('/api/copilotkit/threads?limit=50', { headers })
-        if (!response.ok) throw new Error('Failed to fetch threads')
-        const data = await response.json()
-        // Filter out empty threads (zombie threads with no messages)
-        const nonEmptyThreads = data.filter((thread: Thread) => thread.messageCount > 0)
-        setThreads(nonEmptyThreads)
-        setError(null)
-      } catch (err: any) {
-        setError(err.message)
-      } finally {
+      const response = await fetch('/api/copilotkit/threads?limit=50', { headers })
+      if (!response.ok) throw new Error('Failed to fetch threads')
+      const data = await response.json()
+      // Filter out empty threads (zombie threads with no messages)
+      const nonEmptyThreads = data.filter((thread: Thread) => thread.messageCount > 0)
+      setThreads(nonEmptyThreads)
+      setError(null)
+    } catch (err: any) {
+      setError(err.message)
+    } finally {
+      if (isInitialLoad) {
         setLoading(false)
       }
     }
+  }, [isAuthEnabled, isAuthenticated, getAccessTokenSilently])
 
-    fetchThreads()
+  // Expose refresh function to parent
+  useEffect(() => {
+    if (onRefreshRef) {
+      // Parent refreshes should be silent (no loading state)
+      onRefreshRef(() => fetchThreads(false))
+    }
+  }, [onRefreshRef, fetchThreads])
 
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchThreads, 30000)
+  // Auto-fetch on mount and when dependencies change
+  useEffect(() => {
+    // Initial load
+    fetchThreads(true)
+
+    // Refresh every 30 seconds (without loading state)
+    const interval = setInterval(() => fetchThreads(false), 30000)
     return () => clearInterval(interval)
-  }, [currentThreadId, isAuthEnabled, isAuthenticated, getAccessTokenSilently]) // Re-fetch when currentThreadId changes (e.g., new chat created)
+  }, [fetchThreads])
+
+  // Silently refresh when currentThreadId changes
+  useEffect(() => {
+    if (currentThreadId) {
+      fetchThreads(false)
+    }
+  }, [currentThreadId, fetchThreads])
+
+  // Get unique contexts, prioritizing the most recent ones
+  const getUniqueContexts = (contexts: { type: string; id: string }[] = []) => {
+    if (!contexts) return []
+    const unique: { [key: string]: { type: string; id: string } } = {}
+    // Iterate backwards to get the most recent unique contexts
+    for (let i = contexts.length - 1; i >= 0; i--) {
+      const key = `${contexts[i].type}:${contexts[i].id}`
+      if (!unique[key]) {
+        unique[key] = contexts[i]
+      }
+    }
+    return Object.values(unique).reverse().slice(0, 3) // Show max 3 contexts
+  }
+
+  // Create optimistic thread list - include current thread if not in fetched list
+  const displayThreads = React.useMemo(() => {
+    // Check if current thread exists in fetched threads
+    const existingThread = threads.find(t => t.threadId === currentThreadId)
+
+    // If current thread doesn't exist and we have a threadId, create optimistic entry
+    if (!existingThread && currentThreadId && currentContext) {
+      const optimisticThread: Thread = {
+        threadId: currentThreadId,
+        title: `Chat about ${currentContext.id}`,
+        updatedAt: new Date().toISOString(),
+        messageCount: currentMessageCount,
+        contexts: [currentContext]
+      }
+      // Put optimistic thread at the top
+      return [optimisticThread, ...threads]
+    }
+
+    // If thread exists but has outdated message count, update it
+    if (existingThread && currentMessageCount > existingThread.messageCount) {
+      const updatedThreads = threads.map(t =>
+        t.threadId === currentThreadId
+          ? { ...t, messageCount: currentMessageCount }
+          : t
+      )
+      return updatedThreads
+    }
+
+    return threads
+  }, [threads, currentThreadId, currentContext, currentMessageCount])
 
   // Handle thread deletion
   const handleDeleteThread = async (threadId: string, e: React.MouseEvent) => {
@@ -233,11 +330,11 @@ export function ChatHistorySidebar({
 
         {error && <LoadingState>Error: {error}</LoadingState>}
 
-        {!loading && !error && threads.length === 0 && (
+        {!loading && !error && displayThreads.length === 0 && (
           <LoadingState>No chat history yet</LoadingState>
         )}
 
-        {threads.map((thread) => (
+        {displayThreads.map((thread) => (
           <ThreadItem
             key={thread.threadId}
             isActive={thread.threadId === currentThreadId}
@@ -249,6 +346,14 @@ export function ChatHistorySidebar({
                 <span>{thread.messageCount} messages</span>
                 <span>{formatDate(thread.updatedAt)}</span>
               </ThreadMeta>
+              <ContextList>
+                {getUniqueContexts(thread.contexts).map((context) => (
+                  <ContextPill key={`${context.type}-${context.id}`} title={`${context.type}: ${context.id}`}>
+                    <span className="context-type">{context.type}</span>
+                    <span>{context.id}</span>
+                  </ContextPill>
+                ))}
+              </ContextList>
             </ThreadContent>
             <DeleteButton
               onClick={(e) => handleDeleteThread(thread.threadId, e)}

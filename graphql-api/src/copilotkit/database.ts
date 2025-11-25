@@ -21,6 +21,7 @@ export interface ChatThread {
   updatedAt: Date;
   messageCount: number;
   model: string | null;
+  contexts: any[];
 }
 
 export interface ChatMessage {
@@ -33,6 +34,35 @@ export interface ChatMessage {
 }
 
 export class ChatDatabase {
+  // Helper to generate a title from contexts or fall back to first message
+  private async _updateThreadTitle(client: any, threadId: string): Promise<void> {
+    const titleQuery = `
+      WITH thread_info AS (
+        SELECT
+          contexts,
+          (SELECT SUBSTRING(content, 1, 100) FROM chat_messages WHERE thread_id = $1 AND role = 'user' ORDER BY created_at ASC LIMIT 1) as first_message
+        FROM chat_threads
+        WHERE thread_id = $1
+      )
+      UPDATE chat_threads
+      SET title = (
+        SELECT
+          CASE
+            WHEN jsonb_array_length(contexts) > 0 THEN
+              'Chat about ' || (
+                SELECT string_agg(DISTINCT elem->>'id', ', ')
+                FROM jsonb_array_elements(contexts) AS elem
+              )
+            ELSE
+              first_message
+          END
+        FROM thread_info
+      )
+      WHERE thread_id = $1 AND title IS NULL
+    `;
+    await client.query(titleQuery, [threadId]);
+  }
+
   // Get the owner of a thread for authorization checks
   async getThreadOwner(threadId: string): Promise<string | null> {
     const result = await pool.query(
@@ -50,6 +80,29 @@ export class ChatDatabase {
       ON CONFLICT (thread_id) DO NOTHING
     `;
     await pool.query(query, [threadId, userId, model]);
+  }
+
+  // Add a browsing context to a thread
+  async addContextToThread(threadId: string, userId: string, context: { type: string; id: string }): Promise<void> {
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      const query = `
+        UPDATE chat_threads
+        SET contexts = contexts || $3::jsonb, updated_at = NOW()
+        WHERE thread_id = $1 AND user_id = $2
+        AND (jsonb_array_length(contexts) = 0 OR (contexts->-1->>'type' != $4 OR contexts->-1->>'id' != $5))
+      `;
+      const newContext = { ...context, timestamp: new Date().toISOString() };
+      await client.query(query, [threadId, userId, JSON.stringify(newContext), context.type, context.id]);
+      await this._updateThreadTitle(client, threadId);
+      await client.query('COMMIT');
+    } catch (error) {
+      await client.query('ROLLBACK');
+      throw error;
+    } finally {
+      client.release();
+    }
   }
 
   // Save tool result payload and return the UUID
@@ -245,17 +298,13 @@ export class ChatDatabase {
 
       // Update thread stats
       await client.query(`
-        UPDATE chat_threads SET
-          message_count = (SELECT COUNT(*) FROM chat_messages WHERE thread_id = $1),
-          title = COALESCE(title, (
-            SELECT SUBSTRING(content, 1, 100)
-            FROM chat_messages
-            WHERE thread_id = $1 AND role = 'user'
-            ORDER BY created_at ASC
-            LIMIT 1
-          ))
+        UPDATE chat_threads SET message_count = (
+          SELECT COUNT(*) FROM chat_messages WHERE thread_id = $1)
         WHERE thread_id = $1
       `, [threadId]);
+
+      // Update title before commit to keep it atomic
+      await this._updateThreadTitle(client, threadId);
 
       await client.query('COMMIT');
     } catch (error) {
@@ -276,7 +325,8 @@ export class ChatDatabase {
         created_at as "createdAt",
         updated_at as "updatedAt",
         message_count as "messageCount",
-        model
+        model,
+        contexts
       FROM chat_threads
       WHERE user_id = $1
       ORDER BY updated_at DESC

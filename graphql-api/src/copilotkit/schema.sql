@@ -14,7 +14,10 @@ CREATE TABLE chat_threads (
 
   -- Optional user tracking (for future)
   user_id VARCHAR(255),
-  session_id VARCHAR(255)
+  session_id VARCHAR(255),
+
+  -- Browsing context
+  contexts JSONB DEFAULT '[]'::jsonb NOT NULL
 );
 
 -- Individual messages
@@ -68,6 +71,7 @@ CREATE INDEX idx_threads_updated ON chat_threads(updated_at DESC);
 CREATE INDEX idx_threads_user ON chat_threads(user_id) WHERE user_id IS NOT NULL;
 CREATE INDEX idx_messages_thread ON chat_messages(thread_id, created_at);
 CREATE INDEX idx_messages_created ON chat_messages(created_at DESC);
+CREATE INDEX idx_threads_contexts ON chat_threads USING gin(contexts);
 CREATE INDEX idx_tool_results_user ON tool_results(user_id);
 
 -- Analytics views
