@@ -105,10 +105,13 @@ const ThreadTitle = styled.div`
   font-size: 13px;
   font-weight: 500;
   color: #333;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.4;
 `
 
 const ThreadMeta = styled.div`

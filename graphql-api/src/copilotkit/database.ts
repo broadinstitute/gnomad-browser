@@ -1,5 +1,7 @@
 import { Pool } from 'pg';
 import logger from '../logger';
+import { generateTitleForChat } from './title-generator';
+import config from '../config';
 
 // Connection pool
 const pool = new Pool({
@@ -35,7 +37,15 @@ export interface ChatMessage {
 
 export class ChatDatabase {
   // Helper to generate a title from contexts or fall back to first message
+  // This is now deprecated in favor of AI-based titling.
+  // We keep it as a fallback if AI titling fails or is disabled.
   private async _updateThreadTitle(client: any, threadId: string): Promise<void> {
+    // Check if thread already has a title before proceeding
+    const thread = await client.query('SELECT title FROM chat_threads WHERE thread_id = $1', [threadId]);
+    if (thread.rows[0]?.title) {
+      return; // Don't overwrite an existing title
+    }
+
     const titleQuery = `
       WITH thread_info AS (
         SELECT
@@ -130,6 +140,57 @@ export class ChatDatabase {
       [resultId, userId]
     );
     return result.rows[0]?.result_data || null;
+  }
+
+  // Conditionally generate a title for the thread
+  public async conditionallyGenerateTitle(threadId: string): Promise<void> {
+    const client = await pool.connect();
+    try {
+      const threadResult = await client.query(
+        'SELECT title, message_count, title_generated_at_message_count FROM chat_threads WHERE thread_id = $1',
+        [threadId]
+      );
+
+      if (threadResult.rows.length === 0) {
+        return;
+      }
+
+      const thread = threadResult.rows[0];
+      const shouldGenerateFirstTitle =
+        !thread.title && thread.message_count >= config.COPILOT_TITLE_GENERATION_THRESHOLD;
+      const shouldUpdateTitle =
+        thread.title &&
+        (thread.message_count - thread.title_generated_at_message_count) >= config.COPILOT_TITLE_UPDATE_THRESHOLD;
+
+      if (shouldGenerateFirstTitle || shouldUpdateTitle) {
+        logger.info({
+          message: `Triggering title ${shouldUpdateTitle ? 'update' : 'generation'} for thread`,
+          threadId,
+        });
+
+        const messagesResult = await client.query<ChatMessage>(
+          "SELECT role, content FROM chat_messages WHERE thread_id = $1 AND role IN ('user', 'assistant') ORDER BY created_at ASC LIMIT 8",
+          [threadId]
+        );
+
+        const newTitle = await generateTitleForChat(messagesResult.rows);
+
+        if (newTitle) {
+          await client.query(
+            'UPDATE chat_threads SET title = $1, title_generated_at_message_count = $2, updated_at = NOW() WHERE thread_id = $3',
+            [newTitle, thread.message_count, threadId]
+          );
+          logger.info({ message: 'Successfully generated and saved new title', threadId, title: newTitle });
+        } else {
+          // If title generation fails, try the old method as a fallback
+          await this._updateThreadTitle(client, threadId);
+        }
+      }
+    } catch (error: any) {
+      logger.error({ message: 'Error in conditionallyGenerateTitle', threadId, error: error.message });
+    } finally {
+      client.release();
+    }
   }
 
   // Save messages from a request
@@ -313,6 +374,12 @@ export class ChatDatabase {
     } finally {
       client.release();
     }
+
+    // After saving messages, trigger title generation asynchronously.
+    // This is a "fire and forget" call to avoid blocking the response.
+    this.conditionallyGenerateTitle(threadId).catch(error => {
+      logger.error({ message: 'Background title generation failed', threadId, error: error.message });
+    });
   }
 
   // List threads for sidebar

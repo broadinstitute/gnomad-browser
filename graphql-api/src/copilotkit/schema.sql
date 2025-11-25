@@ -17,7 +17,10 @@ CREATE TABLE chat_threads (
   session_id VARCHAR(255),
 
   -- Browsing context
-  contexts JSONB DEFAULT '[]'::jsonb NOT NULL
+  contexts JSONB DEFAULT '[]'::jsonb NOT NULL,
+
+  -- Auto-titling metadata
+  title_generated_at_message_count INTEGER DEFAULT 0
 );
 
 -- Individual messages
