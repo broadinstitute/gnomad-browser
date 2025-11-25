@@ -93,6 +93,48 @@ export function mountCopilotKit(app: Application) {
             threadId,
             messageCount: inputMessages?.length || 0,
           });
+
+          // Log message types and any potential issues
+          if (inputMessages && inputMessages.length > 0) {
+            inputMessages.forEach((msg: any, idx: number) => {
+              const msgType = msg.constructor?.name || msg.type || 'Unknown'
+
+              // Log basic info
+              logger.info({
+                message: 'Input message',
+                index: idx,
+                type: msgType,
+                id: msg.id,
+                hasArguments: msg.arguments !== undefined,
+                argumentsType: msg.arguments ? typeof msg.arguments : 'undefined',
+                hasResult: msg.result !== undefined,
+                resultType: msg.result ? typeof msg.result : 'undefined',
+              })
+
+              // Log the full message for tool-related messages
+              if (msgType === 'ActionExecutionMessage' || msgType === 'ResultMessage') {
+                try {
+                  const serialized = JSON.stringify(msg, (key, value) => {
+                    if (typeof value === 'function') return '[Function]'
+                    if (key === 'constructor') return '[Constructor]'
+                    return value
+                  })
+                  logger.info({
+                    message: 'Tool message details',
+                    index: idx,
+                    type: msgType,
+                    fullMessage: serialized.substring(0, 1000), // Limit to 1000 chars
+                  })
+                } catch (e: any) {
+                  logger.error({
+                    message: 'Failed to serialize tool message',
+                    index: idx,
+                    error: e.message,
+                  })
+                }
+              }
+            })
+          }
         }
 
         // Get userId from the requestUserMap (set by Express middleware)
@@ -146,15 +188,14 @@ export function mountCopilotKit(app: Application) {
 
         try {
           // Combine all messages and save to PostgreSQL
-          // Filter out internal CopilotKit messages that don't have a role (e.g., ActionExecutionMessage)
-          const allMessages = [...(inputMessages || []), ...(outputMessages || [])]
-            .filter((msg: any) => msg.role) // Only keep messages with a role
-            .map((msg: any) => ({
-              role: msg.role,
-              content: typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content),
-              id: msg.id,
-              type: (msg.constructor?.name || msg.type || 'Unknown'),
-            }));
+          const allMessages = [...(inputMessages || []), ...(outputMessages || [])];
+
+          logger.info({
+            message: 'Processing messages for save',
+            threadId,
+            messageTypes: allMessages.map((m: any) => m.constructor?.name || m.type || 'Unknown'),
+            messageIds: allMessages.map((m: any) => m.id),
+          });
 
           // Get model from forwardedParameters if available
           const model = (properties as any)?.forwardedParameters?.model;
@@ -174,6 +215,7 @@ export function mountCopilotKit(app: Application) {
             message: 'Failed to save chat messages',
             threadId,
             error: error.message,
+            stack: error.stack,
           });
           // Don't throw - we don't want persistence failures to break the chat
         }

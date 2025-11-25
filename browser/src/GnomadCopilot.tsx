@@ -650,17 +650,33 @@ export function GnomadCopilot({
 
         // The backend returns the raw message object in the `rawMessage` field.
         // We need to reconstruct proper CopilotKit message instances from the plain objects
-        const formattedMessages = data.map((msg: any) => {
+        const formattedMessages = data.map((msg: any, idx: number) => {
           const rawMsg = msg.rawMessage
 
-          // Reconstruct the appropriate message class based on type
-          switch (rawMsg.type) {
+          try {
+            // Reconstruct the appropriate message class based on type
+            switch (rawMsg.type) {
             case 'TextMessage':
               return new TextMessage(rawMsg)
             case 'ActionExecutionMessage':
-              return new ActionExecutionMessage(rawMsg)
+              console.log('[Chat History] Reconstructing ActionExecutionMessage:', JSON.stringify(rawMsg))
+              // The arguments field comes from JSONB as a parsed object
+              // But GraphQL schema expects it as a JSON string, so stringify it
+              const actionData = { ...rawMsg }
+              if (actionData.arguments && typeof actionData.arguments !== 'string') {
+                actionData.arguments = JSON.stringify(actionData.arguments)
+              }
+              return new ActionExecutionMessage(actionData)
             case 'ResultMessage':
-              return new ResultMessage(rawMsg)
+              // The result field comes from JSONB as a parsed object/array
+              // But GraphQL schema expects it as a string, so stringify it
+              const resultData = { ...rawMsg }
+              console.log('[Chat History] ResultMessage result type before fix:', typeof resultData.result)
+              if (typeof resultData.result !== 'string') {
+                resultData.result = JSON.stringify(resultData.result)
+              }
+              console.log('[Chat History] ResultMessage result type after fix:', typeof resultData.result, 'length:', resultData.result?.length)
+              return new ResultMessage(resultData)
             case 'AgentStateMessage':
               return new AgentStateMessage(rawMsg)
             case 'ImageMessage':
@@ -668,7 +684,15 @@ export function GnomadCopilot({
             default:
               console.warn('[Chat History] Unknown message type:', rawMsg.type)
               return rawMsg
+            }
+          } catch (err) {
+            console.error(`[Chat History] Error reconstructing message ${idx}:`, err, 'rawMsg:', rawMsg)
+            throw err
           }
+        })
+        console.log('[Chat History] Reconstructed', formattedMessages.length, 'messages')
+        formattedMessages.forEach((msg: any, idx: number) => {
+          console.log(`[Chat History] Message ${idx}:`, msg.constructor?.name || msg.type, msg.id)
         })
         setMessages(formattedMessages)
       } catch (error) {

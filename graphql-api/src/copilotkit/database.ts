@@ -56,17 +56,20 @@ export class ChatDatabase {
   async saveMessages(
     threadId: string,
     userId: string,
-    messages: Array<{
-      role: string;
-      content: string;
-      id?: string;
-      type?: string;
-    }>,
+    messages: any[],
     model?: string
   ): Promise<void> {
     const client = await pool.connect();
 
     try {
+      logger.info({
+        message: 'saveMessages called',
+        threadId,
+        userId,
+        messageCount: messages.length,
+        messageTypes: messages.map(m => m.constructor?.name || m.type || typeof m),
+      });
+
       await client.query('BEGIN');
 
       // Ensure thread exists and associate with user if it's new
@@ -81,20 +84,55 @@ export class ChatDatabase {
       // Insert messages (avoiding duplicates by copilot_message_id)
       for (const msg of messages) {
         // Skip messages without an ID - we can't deduplicate them
-        if (!msg.id) continue;
+        if (!msg.id) {
+          logger.warn({
+            message: 'Skipping message without ID',
+            messageType: msg.constructor?.name || msg.type || 'Unknown',
+          });
+          continue;
+        }
 
-        await client.query(`
-          INSERT INTO chat_messages (thread_id, role, content, copilot_message_id, message_type, raw_message)
-          VALUES ($1, $2, $3, $4, $5, $6)
-          ON CONFLICT (thread_id, copilot_message_id) DO NOTHING
-        `, [
-          threadId,
-          msg.role,
-          typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content),
-          msg.id,
-          msg.type,
-          JSON.stringify(msg)
-        ]);
+        try {
+          // Serialize content safely
+          let contentValue = null;
+          if (msg.content !== undefined && msg.content !== null) {
+            contentValue = typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content);
+          }
+
+          // Serialize raw message with circular reference handling
+          const rawMessageValue = JSON.stringify(msg, (key, value) => {
+            // Handle circular references
+            if (typeof value === 'object' && value !== null) {
+              // Skip large or problematic objects
+              if (key === 'constructor' || key === '__proto__') {
+                return undefined;
+              }
+            }
+            return value;
+          });
+
+          await client.query(`
+            INSERT INTO chat_messages (thread_id, role, content, copilot_message_id, message_type, raw_message)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            ON CONFLICT (thread_id, copilot_message_id) DO NOTHING
+          `, [
+            threadId,
+            msg.role || null,
+            contentValue,
+            msg.id,
+            msg.constructor?.name || msg.type || 'Unknown',
+            rawMessageValue,
+          ]);
+        } catch (msgError: any) {
+          logger.error({
+            message: 'Failed to insert individual message',
+            threadId,
+            messageId: msg.id,
+            messageType: msg.constructor?.name || msg.type || 'Unknown',
+            error: msgError.message,
+          });
+          // Continue with other messages even if one fails
+        }
       }
 
       // Update thread stats

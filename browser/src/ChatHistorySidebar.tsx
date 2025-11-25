@@ -168,7 +168,9 @@ export function ChatHistorySidebar({
         const response = await fetch('/api/copilotkit/threads?limit=50', { headers })
         if (!response.ok) throw new Error('Failed to fetch threads')
         const data = await response.json()
-        setThreads(data)
+        // Filter out empty threads (zombie threads with no messages)
+        const nonEmptyThreads = data.filter((thread: Thread) => thread.messageCount > 0)
+        setThreads(nonEmptyThreads)
         setError(null)
       } catch (err: any) {
         setError(err.message)

@@ -2,6 +2,19 @@ import React from 'react'
 import { useCopilotAction } from '@copilotkit/react-core'
 import JuhaToolsDisplay, { JuhaToolsLoading } from '../components/JuhaToolsDisplay'
 
+// Helper to parse result if it's a JSON string (from restored messages)
+const parseResultIfNeeded = (result: any): any => {
+  if (typeof result === 'string') {
+    try {
+      return JSON.parse(result)
+    } catch (e) {
+      console.warn('Failed to parse result string:', e)
+      return result
+    }
+  }
+  return result
+}
+
 export function useJuhaActions() {
   useCopilotAction({
     name: "get_juha_credible_sets_by_variant",
@@ -14,14 +27,17 @@ export function useJuhaActions() {
       const { status, result } = props
       if (status === 'executing') return <JuhaToolsLoading message="Fetching credible sets by variant..." />
       if (status === 'complete') {
+        // Parse result if it's a JSON string (from restored messages)
+        const parsedResult = parseResultIfNeeded(result)
+
         // Debug logging
-        console.log('[Juha] Credible sets by variant - Full result:', result)
-        console.log('[Juha] Credible sets by variant - structuredContent:', result?.structuredContent)
-        console.log('[Juha] Credible sets by variant - result type:', typeof result)
-        console.log('[Juha] Credible sets by variant - result keys:', result ? Object.keys(result) : 'null')
+        console.log('[Juha] Credible sets by variant - Full result:', parsedResult)
+        console.log('[Juha] Credible sets by variant - structuredContent:', parsedResult?.structuredContent)
+        console.log('[Juha] Credible sets by variant - result type:', typeof parsedResult)
+        console.log('[Juha] Credible sets by variant - result keys:', parsedResult ? Object.keys(parsedResult) : 'null')
 
         // Extract structured content from MCP response
-        const data = result?.structuredContent || result
+        const data = parsedResult?.structuredContent || parsedResult
         return <JuhaToolsDisplay data={data} toolName="credible sets" />
       }
       return null
@@ -39,8 +55,8 @@ export function useJuhaActions() {
       const { status, result } = props
       if (status === 'executing') return <JuhaToolsLoading message="Fetching credible sets by gene..." />
       if (status === 'complete') {
-        // Extract structured content from MCP response
-        const data = result?.structuredContent || result
+        const parsedResult = parseResultIfNeeded(result)
+        const data = parsedResult?.structuredContent || parsedResult
         return <JuhaToolsDisplay data={data} toolName="credible sets" />
       }
       return null
@@ -58,8 +74,8 @@ export function useJuhaActions() {
       const { status, result } = props
       if (status === 'executing') return <JuhaToolsLoading message="Fetching credible sets by region..." />
       if (status === 'complete') {
-        // Extract structured content from MCP response
-        const data = result?.structuredContent || result
+        const parsedResult = parseResultIfNeeded(result)
+        const data = parsedResult?.structuredContent || parsedResult
         return <JuhaToolsDisplay data={data} toolName="credible sets" />
       }
       return null
@@ -77,8 +93,8 @@ export function useJuhaActions() {
         const { status, result } = props;
         if (status === 'executing') return <JuhaToolsLoading message="Fetching QTLs by gene..." />;
         if (status === 'complete') {
-          // Extract structured content from MCP response
-          const data = result?.structuredContent || result
+          const parsedResult = parseResultIfNeeded(result)
+          const data = parsedResult?.structuredContent || parsedResult
           return <JuhaToolsDisplay data={data} toolName="QTLs" />;
         }
         return null;

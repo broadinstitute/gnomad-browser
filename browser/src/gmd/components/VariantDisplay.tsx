@@ -74,21 +74,34 @@ const VariantDisplay: React.FC<VariantDisplayProps> = ({ data }) => {
 
   // Handle CopilotKit's wrapped response format
   let processedData = data
-  
+
   // If data is an array with text objects (CopilotKit format)
   if (Array.isArray(data) && data.length > 0 && data[0].type === 'text' && data[0].text) {
-    try {
-      // Extract and parse the JSON from the text
-      const jsonText = data[0].text
-      processedData = JSON.parse(jsonText)
-      console.log('Parsed variant data:', processedData)
-    } catch (error) {
-      console.error('Failed to parse variant data:', error)
+    const textContent = data[0].text
+
+    // Check if the text is JSON or a text description
+    if (textContent.trim().startsWith('{') || textContent.trim().startsWith('[')) {
+      try {
+        // Try to parse as JSON
+        processedData = JSON.parse(textContent)
+        console.log('Parsed variant data:', processedData)
+      } catch (error) {
+        console.error('Failed to parse variant data:', error)
+        return (
+          <DisplayWrapper>
+            <ErrorMessage>
+              Error parsing variant data
+            </ErrorMessage>
+          </DisplayWrapper>
+        )
+      }
+    } else {
+      // It's a text description, display it as-is
       return (
         <DisplayWrapper>
-          <ErrorMessage>
-            Error parsing variant data
-          </ErrorMessage>
+          <div style={{ whiteSpace: 'pre-wrap', padding: '16px', fontFamily: 'monospace', fontSize: '14px' }}>
+            {textContent}
+          </div>
         </DisplayWrapper>
       )
     }

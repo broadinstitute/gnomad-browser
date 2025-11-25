@@ -23,8 +23,8 @@ CREATE TABLE chat_messages (
   thread_id VARCHAR(255) NOT NULL REFERENCES chat_threads(thread_id) ON DELETE CASCADE,
 
   -- Message content
-  role VARCHAR(50) NOT NULL,  -- 'user', 'assistant', 'system'
-  content TEXT NOT NULL,
+  role VARCHAR(50),  -- 'user', 'assistant', 'system'
+  content TEXT,
 
   -- CopilotKit message metadata
   copilot_message_id VARCHAR(255),

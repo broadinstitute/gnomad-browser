@@ -5,7 +5,7 @@ set -euo pipefail
 # This script initializes the PostgreSQL database with the required schema
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SCHEMA_FILE="${SCRIPT_DIR}/src/copilotkit/schema.sql"
+SCHEMA_FILE="${SCRIPT_DIR}/schema.sql"
 
 echo "======================================"
 echo "gnomAD CopilotKit Database Init"

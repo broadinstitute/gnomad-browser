@@ -29,16 +29,25 @@ export function useGnomadVariantActions() {
     render: (props) => {
       const { status, result } = props
       console.log('get_variant_summary render props:', { status, result })
-      
+
       if (status === 'executing') {
         return <VariantLoading message="Fetching variant information..." />
       }
-      
+
       if (status === 'complete' && result) {
-        console.log('Rendering VariantDisplay with data:', result)
-        return <VariantDisplay data={result} />
+        // If result is a JSON string (from restored messages), parse it
+        let parsedResult = result
+        if (typeof result === 'string') {
+          try {
+            parsedResult = JSON.parse(result)
+          } catch (e) {
+            console.warn('Failed to parse result string:', e)
+          }
+        }
+        console.log('Rendering VariantDisplay with data:', parsedResult)
+        return <VariantDisplay data={parsedResult} />
       }
-      
+
       return null
     },
   })
@@ -66,15 +75,24 @@ export function useGnomadVariantActions() {
     },
     render: (props) => {
       const { status, result } = props
-      
+
       if (status === 'executing') {
         return <VariantLoading message="Loading detailed variant data..." />
       }
-      
+
       if (status === 'complete' && result) {
-        return <VariantDisplay data={result} />
+        // If result is a JSON string (from restored messages), parse it
+        let parsedResult = result
+        if (typeof result === 'string') {
+          try {
+            parsedResult = JSON.parse(result)
+          } catch (e) {
+            console.warn('Failed to parse result string:', e)
+          }
+        }
+        return <VariantDisplay data={parsedResult} />
       }
-      
+
       return null
     },
   })
@@ -102,15 +120,24 @@ export function useGnomadVariantActions() {
     },
     render: (props) => {
       const { status, result } = props
-      
+
       if (status === 'executing') {
         return <VariantLoading message="Loading frequency data..." />
       }
-      
+
       if (status === 'complete' && result) {
-        return <VariantDisplay data={result} />
+        // If result is a JSON string (from restored messages), parse it
+        let parsedResult = result
+        if (typeof result === 'string') {
+          try {
+            parsedResult = JSON.parse(result)
+          } catch (e) {
+            console.warn('Failed to parse result string:', e)
+          }
+        }
+        return <VariantDisplay data={parsedResult} />
       }
-      
+
       return null
     },
   })
