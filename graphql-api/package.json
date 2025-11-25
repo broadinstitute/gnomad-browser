@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "scripts": {
-    "dev": "node --watch --require @swc-node/register src/app.ts"
+    "dev": "nodemon --exec 'node --require @swc-node/register' src/app.ts"
   },
   "dependencies": {
     "@copilotkit/runtime": "^1.10.6",
@@ -48,6 +48,7 @@
     "@swc-node/register": "^1.10.9",
     "@swc/core": "^1.15.3",
     "@types/ioredis": "^5.0.0",
-    "fishery": "^2.2.2"
+    "fishery": "^2.2.2",
+    "nodemon": "^3.1.0"
   }
 }
