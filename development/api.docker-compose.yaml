@@ -37,8 +37,8 @@ services:
   api:
     build:
       context: ..
-      dockerfile: deploy/dockerfiles/browser/api.dockerfile
-    command: node graphql-api/src/app.js
+      dockerfile: deploy/dockerfiles/browser/api.dev.dockerfile
+    command: pnpm --filter @gnomad/graphql-api dev
     environment:
       - NODE_ENV=development
       - PORT=8000
@@ -62,7 +62,9 @@ services:
       - AUTH0_AUDIENCE
     ports:
       - 8010:8000
-    # Note: No volume mounts = using compiled code from image (no hot-reload)
+    volumes:
+      - ../graphql-api:/app/graphql-api
+      - ../dataset-metadata:/app/dataset-metadata
     depends_on:
       - elasticsearch-proxy
       - redis
