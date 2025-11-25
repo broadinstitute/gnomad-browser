@@ -1,18 +1,31 @@
 import React from 'react'
 import { useCopilotAction } from '@copilotkit/react-core'
 import JuhaToolsDisplay, { JuhaToolsLoading } from '../components/JuhaToolsDisplay'
+import { useToolResult } from '../../hooks/useToolResult'
 
-// Helper to parse result if it's a JSON string (from restored messages)
-const parseResultIfNeeded = (result: any): any => {
-  if (typeof result === 'string') {
-    try {
-      return JSON.parse(result)
-    } catch (e) {
-      console.warn('Failed to parse result string:', e)
-      return result
-    }
+// Convert to a proper React component so hooks work correctly
+const JuhaRenderComponent: React.FC<{ props: any; loadingMessage: string; toolName: string }> = ({
+  props,
+  loadingMessage,
+  toolName
+}) => {
+  const { status } = props
+  const { data: resolvedData, isLoading, error } = useToolResult(props.result)
+
+  if (status === 'executing' || isLoading) {
+    return <JuhaToolsLoading message={loadingMessage} />
   }
-  return result
+
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
+
+  if (status === 'complete' && resolvedData) {
+    // The 'results' key is added by our backend standard
+    return <JuhaToolsDisplay data={resolvedData.results} toolName={toolName} />
+  }
+
+  return null
 }
 
 export function useJuhaActions() {
@@ -23,25 +36,7 @@ export function useJuhaActions() {
       { name: 'variant_id', type: 'string', required: true, description: "The ID of the variant (e.g., '1-55516888-G-GA')." },
     ],
     handler: async (args) => args,
-    render: (props) => {
-      const { status, result } = props
-      if (status === 'executing') return <JuhaToolsLoading message="Fetching credible sets by variant..." />
-      if (status === 'complete') {
-        // Parse result if it's a JSON string (from restored messages)
-        const parsedResult = parseResultIfNeeded(result)
-
-        // Debug logging
-        console.log('[Juha] Credible sets by variant - Full result:', parsedResult)
-        console.log('[Juha] Credible sets by variant - structuredContent:', parsedResult?.structuredContent)
-        console.log('[Juha] Credible sets by variant - result type:', typeof parsedResult)
-        console.log('[Juha] Credible sets by variant - result keys:', parsedResult ? Object.keys(parsedResult) : 'null')
-
-        // Extract structured content from MCP response
-        const data = parsedResult?.structuredContent || parsedResult
-        return <JuhaToolsDisplay data={data} toolName="credible sets" />
-      }
-      return null
-    },
+    render: (props) => <JuhaRenderComponent props={props} loadingMessage="Fetching credible sets by variant..." toolName="credible sets" />,
   })
 
   useCopilotAction({
@@ -51,16 +46,7 @@ export function useJuhaActions() {
       { name: 'gene_symbol', type: 'string', required: true, description: "The official symbol of the gene (e.g., 'PCSK9')." },
     ],
     handler: async (args) => args,
-    render: (props) => {
-      const { status, result } = props
-      if (status === 'executing') return <JuhaToolsLoading message="Fetching credible sets by gene..." />
-      if (status === 'complete') {
-        const parsedResult = parseResultIfNeeded(result)
-        const data = parsedResult?.structuredContent || parsedResult
-        return <JuhaToolsDisplay data={data} toolName="credible sets" />
-      }
-      return null
-    },
+    render: (props) => <JuhaRenderComponent props={props} loadingMessage="Fetching credible sets by gene..." toolName="credible sets" />,
   })
 
   useCopilotAction({
@@ -70,16 +56,7 @@ export function useJuhaActions() {
         { name: 'region', type: 'string', required: true, description: "The genomic region in the format 'chr:start-end'." },
     ],
     handler: async (args) => args,
-    render: (props) => {
-      const { status, result } = props
-      if (status === 'executing') return <JuhaToolsLoading message="Fetching credible sets by region..." />
-      if (status === 'complete') {
-        const parsedResult = parseResultIfNeeded(result)
-        const data = parsedResult?.structuredContent || parsedResult
-        return <JuhaToolsDisplay data={data} toolName="credible sets" />
-      }
-      return null
-    },
+    render: (props) => <JuhaRenderComponent props={props} loadingMessage="Fetching credible sets by region..." toolName="credible sets" />,
   })
 
   useCopilotAction({
@@ -89,16 +66,7 @@ export function useJuhaActions() {
         { name: 'gene_symbol', type: 'string', required: true, description: "The official symbol of the gene (e.g., 'APOE')." },
     ],
     handler: async (args) => args,
-    render: (props) => {
-        const { status, result } = props;
-        if (status === 'executing') return <JuhaToolsLoading message="Fetching QTLs by gene..." />;
-        if (status === 'complete') {
-          const parsedResult = parseResultIfNeeded(result)
-          const data = parsedResult?.structuredContent || parsedResult
-          return <JuhaToolsDisplay data={data} toolName="QTLs" />;
-        }
-        return null;
-    },
+    render: (props) => <JuhaRenderComponent props={props} loadingMessage="Fetching QTLs by gene..." toolName="QTLs" />,
   });
 
   useCopilotAction({
@@ -108,16 +76,7 @@ export function useJuhaActions() {
         { name: 'variant_id', type: 'string', required: true, description: "The ID of the variant (e.g., '1-55516888-G-GA')." },
     ],
     handler: async (args) => args,
-    render: (props) => {
-        const { status, result } = props;
-        if (status === 'executing') return <JuhaToolsLoading message="Fetching colocalization data..." />;
-        if (status === 'complete') {
-          // Extract structured content from MCP response
-          const data = result?.structuredContent || result
-          return <JuhaToolsDisplay data={data} toolName="colocalization results" />;
-        }
-        return null;
-    },
+    render: (props) => <JuhaRenderComponent props={props} loadingMessage="Fetching colocalization data..." toolName="colocalization results" />,
   });
 
   useCopilotAction({
@@ -127,15 +86,6 @@ export function useJuhaActions() {
         { name: 'gene_symbol', type: 'string', required: true, description: "The official symbol of the gene (e.g., 'CFTR')." },
     ],
     handler: async (args) => args,
-    render: (props) => {
-        const { status, result } = props;
-        if (status === 'executing') return <JuhaToolsLoading message="Fetching gene-disease associations..." />;
-        if (status === 'complete') {
-          // Extract structured content from MCP response
-          const data = result?.structuredContent || result
-          return <JuhaToolsDisplay data={data} toolName="gene-disease associations" />;
-        }
-        return null;
-    },
+    render: (props) => <JuhaRenderComponent props={props} loadingMessage="Fetching gene-disease associations..." toolName="gene-disease associations" />,
   });
 }

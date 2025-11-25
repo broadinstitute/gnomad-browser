@@ -43,13 +43,6 @@ interface VariantDisplayProps {
 
 const VariantDisplay: React.FC<VariantDisplayProps> = ({ data }) => {
   const history = useHistory()
-  
-  console.log('VariantDisplay received data:', data)
-  console.log('Data type:', typeof data)
-  console.log('Data keys:', data ? Object.keys(data) : 'no data')
-  if (data && typeof data === 'object') {
-    console.log('Data stringified:', JSON.stringify(data, null, 2))
-  }
 
   // Handle error cases
   if (!data) {
@@ -72,46 +65,10 @@ const VariantDisplay: React.FC<VariantDisplayProps> = ({ data }) => {
     )
   }
 
-  // Handle CopilotKit's wrapped response format
-  let processedData = data
+  // With the new hooks, `data` is the clean payload (variant object or array)
+  const variants = Array.isArray(data) ? data : [data]
 
-  // If data is an array with text objects (CopilotKit format)
-  if (Array.isArray(data) && data.length > 0 && data[0].type === 'text' && data[0].text) {
-    const textContent = data[0].text
-
-    // Check if the text is JSON or a text description
-    if (textContent.trim().startsWith('{') || textContent.trim().startsWith('[')) {
-      try {
-        // Try to parse as JSON
-        processedData = JSON.parse(textContent)
-        console.log('Parsed variant data:', processedData)
-      } catch (error) {
-        console.error('Failed to parse variant data:', error)
-        return (
-          <DisplayWrapper>
-            <ErrorMessage>
-              Error parsing variant data
-            </ErrorMessage>
-          </DisplayWrapper>
-        )
-      }
-    } else {
-      // It's a text description, display it as-is
-      return (
-        <DisplayWrapper>
-          <div style={{ whiteSpace: 'pre-wrap', padding: '16px', fontFamily: 'monospace', fontSize: '14px' }}>
-            {textContent}
-          </div>
-        </DisplayWrapper>
-      )
-    }
-  }
-
-  // Determine if we have a single variant or multiple variants
-  const variants = Array.isArray(processedData) ? processedData : (processedData.variants || [processedData])
-  console.log('Processed variants:', variants)
-  
-  if (variants.length === 0) {
+  if (variants.length === 0 || variants[0] === null) {
     return (
       <DisplayWrapper>
         <NoResultsMessage>

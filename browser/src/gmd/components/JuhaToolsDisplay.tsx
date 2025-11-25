@@ -110,13 +110,7 @@ GeneDiseaseTable.displayName = 'GeneDiseaseTable'
 
 // Main Display Component
 const JuhaToolsDisplay = ({ data, toolName }: { data: any, toolName: string }) => {
-  // Debug logging
-  console.log('[JuhaToolsDisplay] Received data:', data)
-  console.log('[JuhaToolsDisplay] Data type:', typeof data)
-  console.log('[JuhaToolsDisplay] Data keys:', data ? Object.keys(data) : 'null')
-  console.log('[JuhaToolsDisplay] Is array?:', Array.isArray(data))
-
-  if (data.error) {
+  if (data?.error) {
     return (
       <DisplayWrapper>
         <ErrorMessage>Error: {data.error}</ErrorMessage>
@@ -124,9 +118,8 @@ const JuhaToolsDisplay = ({ data, toolName }: { data: any, toolName: string }) =
     )
   }
 
-  const processedData = Array.isArray(data) ? data : data.results || []
-  console.log('[JuhaToolsDisplay] Processed data length:', processedData.length)
-  console.log('[JuhaToolsDisplay] First item:', processedData[0])
+  // With the new hooks, `data` is the clean `results` array
+  const processedData = Array.isArray(data) ? data : []
 
   if (processedData.length === 0) {
     return (

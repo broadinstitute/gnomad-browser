@@ -261,8 +261,8 @@ export function mountCopilotKit(app: Application) {
     credentials: true,
   };
 
-  // Add JSON body parser middleware for POST requests
-  app.use('/api/copilotkit/threads', express.json());
+  // Add JSON body parser middleware for POST requests with increased limit
+  app.use('/api/copilotkit/threads', express.json({ limit: '50mb' }));
 
   // API Endpoints for thread management - MUST be registered BEFORE the general CopilotKit middleware
   // to avoid being caught by the catch-all handler
@@ -342,6 +342,23 @@ export function mountCopilotKit(app: Application) {
     }
   });
 
+  // Get a specific tool result
+  app.get('/api/copilotkit/tool_results/:resultId', cors(corsOptions), checkJwt, async (req: Request, res: Response) => {
+    try {
+      const userId = isAuthEnabled ? (req as any).auth.payload.sub : 'anonymous';
+      const resultId = req.params.resultId;
+      const resultData = await chatDb.getToolResult(resultId, userId);
+      if (resultData) {
+        res.json(resultData);
+      } else {
+        res.status(404).json({ error: 'Tool result not found or access denied' });
+      }
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get tool result', error: error.message });
+      res.status(500).json({ error: 'Failed to get tool result' });
+    }
+  });
+
   // Health check endpoint
   app.get('/api/copilotkit/health', cors(corsOptions), async (req: Request, res: Response) => {
     const dbHealthy = await chatDb.healthCheck();
@@ -355,7 +372,8 @@ export function mountCopilotKit(app: Application) {
 
   // Mount the handler on the provided Express app with its own CORS middleware
   // Add JSON body parser first so we can access req.body
-  app.use('/api/copilotkit', express.json(), cors(corsOptions), async (req, res, next) => {
+  // Use a large limit to handle tool results with structured data
+  app.use('/api/copilotkit', express.json({ limit: '50mb' }), cors(corsOptions), async (req, res, next) => {
     const startTime = Date.now();
     const requestId = Math.random().toString(36).substring(7);
 

@@ -73,7 +73,7 @@ mkdir -p bin resources
 
 # Build gmd binary for Linux AMD64
 echo "Building gmd binary for Linux AMD64..."
-GMD_SOURCE_DIR="$(dirname "$GMD_BINARY_PATH")/../.."
+GMD_SOURCE_DIR="$(dirname "$GMD_BINARY_PATH")/.."
 if [ ! -d "$GMD_SOURCE_DIR" ]; then
     echo "ERROR: Cannot find gmd source directory at: $GMD_SOURCE_DIR"
     echo

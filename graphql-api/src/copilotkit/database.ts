@@ -52,6 +52,33 @@ export class ChatDatabase {
     await pool.query(query, [threadId, userId, model]);
   }
 
+  // Save tool result payload and return the UUID
+  async saveToolResult(
+    threadId: string,
+    messageId: string,
+    userId: string,
+    toolName: string,
+    resultData: any
+  ): Promise<string> {
+    const result = await pool.query(
+      `INSERT INTO tool_results (thread_id, message_id, user_id, tool_name, result_data)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (thread_id, message_id) DO UPDATE SET result_data = $5
+       RETURNING id`,
+      [threadId, messageId, userId, toolName, resultData]
+    );
+    return result.rows[0].id;
+  }
+
+  // Get tool result by ID, ensuring user ownership
+  async getToolResult(resultId: string, userId: string): Promise<any | null> {
+    const result = await pool.query(
+      'SELECT result_data FROM tool_results WHERE id = $1 AND user_id = $2',
+      [resultId, userId]
+    );
+    return result.rows[0]?.result_data || null;
+  }
+
   // Save messages from a request
   async saveMessages(
     threadId: string,
@@ -81,8 +108,88 @@ export class ChatDatabase {
           model = COALESCE($3, chat_threads.model)
       `, [threadId, userId, model]);
 
+      const messagesToSave = [...messages];
+
+      // Process tool results before saving messages
+      for (const msg of messagesToSave) {
+        if (msg.constructor?.name === 'ResultMessage' || msg.type === 'ResultMessage') {
+          // Parse result if it's a JSON string
+          let parsedResult = msg.result;
+          if (typeof msg.result === 'string') {
+            try {
+              parsedResult = JSON.parse(msg.result);
+            } catch (e) {
+              logger.warn({
+                message: 'Failed to parse result string',
+                messageId: msg.id,
+                error: (e as Error).message,
+              });
+            }
+          }
+
+          logger.info({
+            message: 'Processing ResultMessage',
+            messageId: msg.id,
+            hasResult: !!msg.result,
+            resultType: typeof msg.result,
+            hasStructuredContent: !!(parsedResult as any)?.structuredContent,
+            structuredContentType: typeof (parsedResult as any)?.structuredContent,
+          });
+
+          // Update the message with parsed result
+          if (parsedResult !== msg.result) {
+            (msg as any).result = parsedResult;
+          }
+        }
+
+        if (
+          (msg.constructor?.name === 'ResultMessage' || msg.type === 'ResultMessage') &&
+          msg.result?.structuredContent &&
+          !msg.result.structuredContent.toolResultId // Avoid re-processing
+        ) {
+          // Derive parentMessageId from ResultMessage ID if not set
+          // ResultMessage IDs follow pattern: "result-{actionMessageId}"
+          let parentId = msg.parentMessageId;
+          if (!parentId && msg.id && msg.id.startsWith('result-')) {
+            parentId = msg.id.substring('result-'.length);
+          }
+
+          const actionMessage = messagesToSave.find(
+            (m) => m.id === parentId && (m.constructor?.name === 'ActionExecutionMessage' || m.type === 'ActionExecutionMessage')
+          );
+
+          if (actionMessage) {
+            const toolName = actionMessage.name || actionMessage.toolName;
+            const structuredContent = msg.result.structuredContent;
+
+            logger.info({
+              message: 'Storing tool result in separate table',
+              messageId: msg.id,
+              toolName,
+              dataSize: JSON.stringify(structuredContent).length,
+            });
+
+            const toolResultId = await this.saveToolResult(
+              threadId,
+              msg.id,
+              userId,
+              toolName,
+              structuredContent
+            );
+
+            (msg as any).toolResultId = toolResultId;
+            msg.result.structuredContent = { toolResultId };
+
+            logger.info({
+              message: 'Tool result stored successfully',
+              toolResultId,
+            });
+          }
+        }
+      }
+
       // Insert messages (avoiding duplicates by copilot_message_id)
-      for (const msg of messages) {
+      for (const msg of messagesToSave) {
         // Skip messages without an ID - we can't deduplicate them
         if (!msg.id) {
           logger.warn({
@@ -112,8 +219,8 @@ export class ChatDatabase {
           });
 
           await client.query(`
-            INSERT INTO chat_messages (thread_id, role, content, copilot_message_id, message_type, raw_message)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            INSERT INTO chat_messages (thread_id, role, content, copilot_message_id, message_type, raw_message, tool_result_id)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             ON CONFLICT (thread_id, copilot_message_id) DO NOTHING
           `, [
             threadId,
@@ -122,6 +229,7 @@ export class ChatDatabase {
             msg.id,
             msg.constructor?.name || msg.type || 'Unknown',
             rawMessageValue,
+            (msg as any).toolResultId || null,
           ]);
         } catch (msgError: any) {
           logger.error({

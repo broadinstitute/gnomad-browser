@@ -2,8 +2,34 @@ import React from 'react'
 import { useCopilotAction } from '@copilotkit/react-core'
 import VariantLoading from '../components/VariantLoading'
 import VariantDisplay from '../components/VariantDisplay'
+import { useToolResult } from '../../hooks/useToolResult'
+
+// Convert to a proper React component so hooks work correctly
+const VariantRenderComponent: React.FC<{ props: any; loadingMessage: string }> = ({
+  props,
+  loadingMessage
+}) => {
+  const { status } = props
+  const { data: resolvedData, isLoading, error } = useToolResult(props.result)
+
+  if (status === 'executing' || isLoading) {
+    return <VariantLoading message={loadingMessage} />
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
+
+  if (status === 'complete' && resolvedData) {
+    // The 'results' key is added by our backend standard
+    return <VariantDisplay data={resolvedData.results} />
+  }
+
+  return null
+}
 
 export function useGnomadVariantActions() {
+
   // Action for getting variant summary
   useCopilotAction({
     name: 'get_variant_summary',
@@ -26,30 +52,7 @@ export function useGnomadVariantActions() {
       // The handler returns the parameters that will be sent to the backend
       return { variant_id, dataset }
     },
-    render: (props) => {
-      const { status, result } = props
-      console.log('get_variant_summary render props:', { status, result })
-
-      if (status === 'executing') {
-        return <VariantLoading message="Fetching variant information..." />
-      }
-
-      if (status === 'complete' && result) {
-        // If result is a JSON string (from restored messages), parse it
-        let parsedResult = result
-        if (typeof result === 'string') {
-          try {
-            parsedResult = JSON.parse(result)
-          } catch (e) {
-            console.warn('Failed to parse result string:', e)
-          }
-        }
-        console.log('Rendering VariantDisplay with data:', parsedResult)
-        return <VariantDisplay data={parsedResult} />
-      }
-
-      return null
-    },
+    render: (props) => <VariantRenderComponent props={props} loadingMessage="Fetching variant information..." />,
   })
 
   // Action for getting variant details with population frequencies
@@ -73,28 +76,7 @@ export function useGnomadVariantActions() {
     handler: async ({ variant_id, dataset }) => {
       return { variant_id, dataset }
     },
-    render: (props) => {
-      const { status, result } = props
-
-      if (status === 'executing') {
-        return <VariantLoading message="Loading detailed variant data..." />
-      }
-
-      if (status === 'complete' && result) {
-        // If result is a JSON string (from restored messages), parse it
-        let parsedResult = result
-        if (typeof result === 'string') {
-          try {
-            parsedResult = JSON.parse(result)
-          } catch (e) {
-            console.warn('Failed to parse result string:', e)
-          }
-        }
-        return <VariantDisplay data={parsedResult} />
-      }
-
-      return null
-    },
+    render: (props) => <VariantRenderComponent props={props} loadingMessage="Loading detailed variant data..." />,
   })
 
   // Action for getting variant frequencies
@@ -118,27 +100,6 @@ export function useGnomadVariantActions() {
     handler: async ({ variant_id, dataset }) => {
       return { variant_id, dataset }
     },
-    render: (props) => {
-      const { status, result } = props
-
-      if (status === 'executing') {
-        return <VariantLoading message="Loading frequency data..." />
-      }
-
-      if (status === 'complete' && result) {
-        // If result is a JSON string (from restored messages), parse it
-        let parsedResult = result
-        if (typeof result === 'string') {
-          try {
-            parsedResult = JSON.parse(result)
-          } catch (e) {
-            console.warn('Failed to parse result string:', e)
-          }
-        }
-        return <VariantDisplay data={parsedResult} />
-      }
-
-      return null
-    },
+    render: (props) => <VariantRenderComponent props={props} loadingMessage="Loading frequency data..." />,
   })
 }

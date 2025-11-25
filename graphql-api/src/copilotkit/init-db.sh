@@ -115,7 +115,7 @@ if [ "${TABLE_EXISTS}" = "t" ]; then
 
     echo "Dropping existing schema..."
     psql -h "${DB_HOST}" -p "${DB_PORT}" -U "${DB_USER}" -d "${DB_NAME}" -c \
-        "DROP TABLE IF EXISTS chat_messages CASCADE; DROP TABLE IF EXISTS chat_threads CASCADE; DROP VIEW IF EXISTS chat_analytics CASCADE;"
+        "DROP TABLE IF EXISTS tool_results CASCADE; DROP TABLE IF EXISTS chat_messages CASCADE; DROP TABLE IF EXISTS chat_threads CASCADE; DROP VIEW IF EXISTS chat_analytics CASCADE;"
     echo "✓ Existing schema dropped"
     echo ""
 fi
@@ -133,6 +133,7 @@ if [ $? -eq 0 ]; then
     echo "Schema includes:"
     echo "  - chat_threads table"
     echo "  - chat_messages table"
+    echo "  - tool_results table"
     echo "  - Indexes for efficient queries"
     echo "  - chat_analytics view"
     echo ""
