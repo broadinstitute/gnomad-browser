@@ -27,6 +27,7 @@ import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 import RobotIcon from '@fortawesome/fontawesome-free/svgs/solid/robot.svg'
 import '@copilotkit/react-ui/styles.css'
 import { ChatHistorySidebar } from './ChatHistorySidebar'
+import { ChatSettingsView } from './ChatSettingsView'
 import Login from './auth/Login'
 import Logout from './auth/Logout'
 // @ts-expect-error TS(2307)
@@ -355,93 +356,6 @@ const ToggleButton = styled.button`
   }
 `
 
-const SettingsContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 4px 0;
-`
-
-const UserInfoBox = styled.div`
-  padding: 12px;
-  background: #f7f7f7;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`
-
-const UserEmail = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
-`
-
-const UserLabel = styled.div`
-  font-size: 12px;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-`
-
-const SettingItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`
-
-const SettingLabel = styled.label`
-  font-size: 13px;
-  font-weight: 500;
-  color: #666;
-`
-
-const Select = styled.select`
-  padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 14px;
-  background: white;
-  cursor: pointer;
-  transition: border-color 0.2s;
-
-  &:hover {
-    border-color: #0d79d0;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #0d79d0;
-    box-shadow: 0 0 0 3px rgba(13, 121, 208, 0.1);
-  }
-`
-
-const TextArea = styled.textarea`
-  padding: 8px 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: vertical;
-  min-height: 80px;
-  transition: border-color 0.2s;
-
-  &:hover {
-    border-color: #0d79d0;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #0d79d0;
-    box-shadow: 0 0 0 3px rgba(13, 121, 208, 0.1);
-  }
-
-  &::placeholder {
-    color: #999;
-  }
-`
-
 interface SavedPrompt {
   id: string
   name: string
@@ -531,22 +445,6 @@ interface PageContext {
   start?: number
   stop?: number
   reference_genome?: string
-}
-
-// Component to display user info in settings - only rendered when auth is enabled
-const UserInfoDisplay = () => {
-  const { user, isAuthenticated } = useAuth0()
-
-  if (!isAuthenticated || !user) {
-    return null
-  }
-
-  return (
-    <UserInfoBox>
-      <UserLabel>Logged in as</UserLabel>
-      <UserEmail>{user.email || user.name || 'User'}</UserEmail>
-    </UserInfoBox>
-  )
 }
 
 // This new component will contain all auth-related logic for the chat.
@@ -895,8 +793,7 @@ export function GnomadCopilot({
   }, [threadId, isAuthEnabled, isAuthenticated, getAccessTokenSilently]) // This effect runs only when the threadId changes.
 
   // Settings state
-  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
-  const [promptName, setPromptName] = useState('')
+  const [isSettingsViewOpen, setIsSettingsViewOpen] = useState(false)
 
   // Handle prompt selection from dropdown
   const handlePromptSelect = (promptId: string) => {
@@ -914,7 +811,7 @@ export function GnomadCopilot({
   }
 
   // Save current prompt with a name
-  const handleSavePrompt = () => {
+  const handleSavePrompt = (promptName: string) => {
     if (!promptName.trim() || !customPrompt.trim()) return
 
     const newPrompt: SavedPrompt = {
@@ -925,7 +822,6 @@ export function GnomadCopilot({
 
     setSavedPrompts([...savedPrompts, newPrompt])
     setActivePromptId(newPrompt.id)
-    setPromptName('')
   }
 
   // Delete a saved prompt
@@ -1142,53 +1038,71 @@ export function GnomadCopilot({
           <>
             <ResizeHandle onMouseDown={handleMouseDown} />
             <ChatPanel width={chatWidth} mode={chatDisplayMode}>
-              {isAuthEnabled ? (
-                <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
+              {isSettingsViewOpen ? (
+                <ChatSettingsView
+                  onClose={() => setIsSettingsViewOpen(false)}
+                  isAuthEnabled={isAuthEnabled}
+                  selectedModel={selectedModel}
+                  setSelectedModel={setSelectedModel}
+                  customPrompt={customPrompt}
+                  onCustomPromptChange={handleCustomPromptChange}
+                  savedPrompts={savedPrompts}
+                  activePromptId={activePromptId}
+                  onPromptSelect={handlePromptSelect}
+                  onSavePrompt={handleSavePrompt}
+                  onDeletePrompt={handleDeletePrompt}
+                />
               ) : (
                 <>
-                  {isLoadingHistory ? (
-                    <ChatLoadingState>Loading conversation...</ChatLoadingState>
+                  {isAuthEnabled ? (
+                    <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
                   ) : (
-                    <StyledCopilotChat
-                      labels={{
-                        title: 'gnomAD Assistant',
-                        initial:
-                          "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
-                      }}
-                      suggestions={suggestions}
-                    />
+                    <>
+                      {isLoadingHistory ? (
+                        <ChatLoadingState>Loading conversation...</ChatLoadingState>
+                      ) : (
+                        <StyledCopilotChat
+                          labels={{
+                            title: 'gnomAD Assistant',
+                            initial:
+                              "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
+                          }}
+                          suggestions={suggestions}
+                        />
+                      )}
+                    </>
                   )}
+                  <ModelBadge title={`Current model: ${selectedModel}`}>
+                    <img src={RobotIcon} alt="Model" />
+                    {getModelDisplayName(selectedModel)}
+                  </ModelBadge>
+                  {contextDisplay && (
+                    <ContextBadge title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${contextDisplay.detail ? ` (${contextDisplay.detail})` : ''}`}>
+                      <span className="context-type">{contextDisplay.type}</span>
+                      <span className="context-id">{contextDisplay.id}</span>
+                    </ContextBadge>
+                  )}
+                  {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
+                  <SettingsButton
+                    onClick={() => setIsSettingsViewOpen(true)}
+                    title="Settings"
+                  >
+                    <img src={SettingsIcon} alt="Settings" />
+                  </SettingsButton>
+                  <CloseButton
+                    onClick={() => setChatDisplayMode('closed')}
+                    title="Close Assistant"
+                  >
+                    <img src={CloseIcon} alt="Close" />
+                  </CloseButton>
+                  <FullscreenButton
+                    onClick={() => setChatDisplayMode('fullscreen')}
+                    title="Enter fullscreen"
+                  >
+                    <img src={ExpandIcon} alt="Enter fullscreen" />
+                  </FullscreenButton>
                 </>
               )}
-              <ModelBadge title={`Current model: ${selectedModel}`}>
-                <img src={RobotIcon} alt="Model" />
-                {getModelDisplayName(selectedModel)}
-              </ModelBadge>
-              {contextDisplay && (
-                <ContextBadge title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${contextDisplay.detail ? ` (${contextDisplay.detail})` : ''}`}>
-                  <span className="context-type">{contextDisplay.type}</span>
-                  <span className="context-id">{contextDisplay.id}</span>
-                </ContextBadge>
-              )}
-              {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
-              <SettingsButton
-                onClick={() => setIsSettingsModalOpen(true)}
-                title="Settings"
-              >
-                <img src={SettingsIcon} alt="Settings" />
-              </SettingsButton>
-              <CloseButton
-                onClick={() => setChatDisplayMode('closed')}
-                title="Close Assistant"
-              >
-                <img src={CloseIcon} alt="Close" />
-              </CloseButton>
-              <FullscreenButton
-                onClick={() => setChatDisplayMode('fullscreen')}
-                title="Enter fullscreen"
-              >
-                <img src={ExpandIcon} alt="Enter fullscreen" />
-              </FullscreenButton>
             </ChatPanel>
           </>
         )}
@@ -1209,53 +1123,71 @@ export function GnomadCopilot({
             />
           )}
           <FullscreenChatArea>
-            {isAuthEnabled ? (
-              <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
+            {isSettingsViewOpen ? (
+              <ChatSettingsView
+                onClose={() => setIsSettingsViewOpen(false)}
+                isAuthEnabled={isAuthEnabled}
+                selectedModel={selectedModel}
+                setSelectedModel={setSelectedModel}
+                customPrompt={customPrompt}
+                onCustomPromptChange={handleCustomPromptChange}
+                savedPrompts={savedPrompts}
+                activePromptId={activePromptId}
+                onPromptSelect={handlePromptSelect}
+                onSavePrompt={handleSavePrompt}
+                onDeletePrompt={handleDeletePrompt}
+              />
             ) : (
               <>
-                {isLoadingHistory ? (
-                  <ChatLoadingState>Loading conversation...</ChatLoadingState>
+                {isAuthEnabled ? (
+                  <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
                 ) : (
-                  <StyledCopilotChat
-                    labels={{
-                      title: 'gnomAD Assistant',
-                      initial:
-                        "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
-                    }}
-                    suggestions={suggestions}
-                  />
+                  <>
+                    {isLoadingHistory ? (
+                      <ChatLoadingState>Loading conversation...</ChatLoadingState>
+                    ) : (
+                      <StyledCopilotChat
+                        labels={{
+                          title: 'gnomAD Assistant',
+                          initial:
+                            "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
+                        }}
+                        suggestions={suggestions}
+                      />
+                    )}
+                  </>
                 )}
+                <ModelBadge title={`Current model: ${selectedModel}`}>
+                  <img src={RobotIcon} alt="Model" />
+                  {getModelDisplayName(selectedModel)}
+                </ModelBadge>
+                {contextDisplay && (
+                  <ContextBadge title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${contextDisplay.detail ? ` (${contextDisplay.detail})` : ''}`}>
+                    <span className="context-type">{contextDisplay.type}</span>
+                    <span className="context-id">{contextDisplay.id}</span>
+                  </ContextBadge>
+                )}
+                {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
+                <SettingsButton
+                  onClick={() => setIsSettingsViewOpen(true)}
+                  title="Settings"
+                >
+                  <img src={SettingsIcon} alt="Settings" />
+                </SettingsButton>
+                <CloseButton
+                  onClick={() => setChatDisplayMode('closed')}
+                  title="Close Assistant"
+                >
+                  <img src={CloseIcon} alt="Close" />
+                </CloseButton>
+                <FullscreenButton
+                  onClick={() => setChatDisplayMode('side')}
+                  title="Exit fullscreen"
+                >
+                  <img src={CompressIcon} alt="Exit fullscreen" />
+                </FullscreenButton>
               </>
             )}
-            <ModelBadge title={`Current model: ${selectedModel}`}>
-              <img src={RobotIcon} alt="Model" />
-              {getModelDisplayName(selectedModel)}
-            </ModelBadge>
-            {contextDisplay && (
-              <ContextBadge title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${contextDisplay.detail ? ` (${contextDisplay.detail})` : ''}`}>
-                <span className="context-type">{contextDisplay.type}</span>
-                <span className="context-id">{contextDisplay.id}</span>
-              </ContextBadge>
-            )}
-            {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
-            <SettingsButton
-              onClick={() => setIsSettingsModalOpen(true)}
-              title="Settings"
-            >
-              <img src={SettingsIcon} alt="Settings" />
-            </SettingsButton>
-            <CloseButton
-              onClick={() => setChatDisplayMode('closed')}
-              title="Close Assistant"
-            >
-              <img src={CloseIcon} alt="Close" />
-            </CloseButton>
-            <FullscreenButton
-              onClick={() => setChatDisplayMode('side')}
-              title="Exit fullscreen"
-            >
-              <img src={CompressIcon} alt="Exit fullscreen" />
-            </FullscreenButton>
           </FullscreenChatArea>
         </FullscreenContainer>
       )}
@@ -1264,92 +1196,6 @@ export function GnomadCopilot({
         <ToggleButton onClick={() => setChatDisplayMode('side')}>
           Ask gnomAD Assistant
         </ToggleButton>
-      )}
-
-      {isSettingsModalOpen && (
-        <Modal
-          size="medium"
-          title="Assistant Settings"
-          onRequestClose={() => setIsSettingsModalOpen(false)}
-        >
-          <SettingsContent>
-            {isAuthEnabled && <UserInfoDisplay />}
-
-            <SettingItem>
-              <SettingLabel htmlFor="model-select">Model</SettingLabel>
-              <Select
-                id="model-select"
-                value={selectedModel}
-                onChange={(e) => setSelectedModel(e.target.value)}
-              >
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-                <option value="gemini-3-flash">Gemini 3 Flash</option>
-                <option value="gemini-3-pro">Gemini 3 Pro</option>
-              </Select>
-            </SettingItem>
-
-            <SettingItem>
-              <SettingLabel htmlFor="saved-prompts">Saved Prompts</SettingLabel>
-              <Select
-                id="saved-prompts"
-                value={activePromptId || ''}
-                onChange={(e) => handlePromptSelect(e.target.value)}
-              >
-                <option value="">None</option>
-                {savedPrompts.map(prompt => (
-                  <option key={prompt.id} value={prompt.id}>
-                    {prompt.name}
-                  </option>
-                ))}
-              </Select>
-            </SettingItem>
-
-            <SettingItem>
-              <SettingLabel htmlFor="custom-prompt">Custom System Prompt</SettingLabel>
-              <TextArea
-                id="custom-prompt"
-                value={customPrompt}
-                onChange={(e) => handleCustomPromptChange(e.target.value)}
-                placeholder="Add additional instructions for the assistant (optional)..."
-              />
-            </SettingItem>
-
-            <SettingItem>
-              <SettingLabel htmlFor="prompt-name">Save Current Prompt As</SettingLabel>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <input
-                  id="prompt-name"
-                  type="text"
-                  value={promptName}
-                  onChange={(e) => setPromptName(e.target.value)}
-                  placeholder="e.g., Rare Disease Focus"
-                  style={{
-                    flex: 1,
-                    padding: '8px 12px',
-                    border: '1px solid #e0e0e0',
-                    borderRadius: '6px',
-                    fontSize: '14px'
-                  }}
-                />
-                <PrimaryButton
-                  onClick={handleSavePrompt}
-                  disabled={!promptName.trim() || !customPrompt.trim()}
-                >
-                  Save
-                </PrimaryButton>
-              </div>
-            </SettingItem>
-
-            {activePromptId && (
-              <SettingItem>
-                <Button onClick={() => handleDeletePrompt(activePromptId)}>
-                  Delete Current Prompt
-                </Button>
-              </SettingItem>
-            )}
-          </SettingsContent>
-        </Modal>
       )}
     </>
   )
