@@ -78,8 +78,14 @@ export function mountCopilotKit(app: Application) {
   // Create a single shared MCP client instance
   let sharedMCPClient: LocalMCPClient | null = null;
 
-  // Store for request-scoped userId (keyed by a request identifier we'll add)
-  const requestUserMap = new Map<string, string>();
+  // Store userId per thread for the current request
+  // This is a workaround since we can't modify the request body
+  // We use a short-lived map that correlates request timing to userId
+  const threadUserIdMap = new Map<string, string>();
+
+  // Store the most recent authenticated userId
+  // This is safe because requests are processed sequentially per thread
+  let currentRequestUserId: string | null = null;
 
   // Create runtime with MCP support and persistence middleware
   const runtime = new CopilotRuntime({
@@ -93,6 +99,16 @@ export function mountCopilotKit(app: Application) {
             threadId,
             messageCount: inputMessages?.length || 0,
           });
+
+          // Store the current userId for this thread if we have one
+          if (currentRequestUserId && !threadUserIdMap.has(threadId)) {
+            threadUserIdMap.set(threadId, currentRequestUserId);
+            logger.info({
+              message: 'Stored userId for thread from current request',
+              threadId,
+              userId: currentRequestUserId,
+            });
+          }
 
           // Log message types and any potential issues
           if (inputMessages && inputMessages.length > 0) {
@@ -137,8 +153,8 @@ export function mountCopilotKit(app: Application) {
           }
         }
 
-        // Get userId from the requestUserMap (set by Express middleware)
-        const userId = threadId ? requestUserMap.get(threadId) : undefined;
+        // Get userId from the threadUserIdMap
+        const userId = threadId ? threadUserIdMap.get(threadId) : undefined;
 
         // --- Authorization check for existing threads ---
         if (isAuthEnabled && userId && threadId) {
@@ -148,8 +164,6 @@ export function mountCopilotKit(app: Application) {
             throw new Error('User does not have access to this thread.');
           }
         }
-
-        // No need to store userId in properties since we have it in the map
       },
 
       onAfterRequest: async ({ threadId, inputMessages, outputMessages, properties }) => {
@@ -158,9 +172,9 @@ export function mountCopilotKit(app: Application) {
           return;
         }
 
-        // Look up userId from the map, defaulting to 'anonymous' if not found
+        // Get userId from the threadUserIdMap, defaulting to 'anonymous' if not found
         const userId = isAuthEnabled
-          ? (requestUserMap.get(threadId) ?? 'anonymous')
+          ? (threadUserIdMap.get(threadId) ?? 'anonymous')
           : 'anonymous';
 
         logger.info({
@@ -168,13 +182,13 @@ export function mountCopilotKit(app: Application) {
           threadId,
           isAuthEnabled,
           userId,
-          hasUserIdInMap: !!requestUserMap.get(threadId),
+          hasUserIdInMap: !!threadUserIdMap.get(threadId),
         });
 
         // Log a warning if we expected a userId but didn't find one
-        if (isAuthEnabled && !requestUserMap.get(threadId)) {
+        if (isAuthEnabled && !threadUserIdMap.get(threadId)) {
           logger.warn({
-            message: 'userId not found in requestUserMap, using anonymous',
+            message: 'userId not found in threadUserIdMap, using anonymous',
             threadId,
           });
         }
@@ -209,7 +223,7 @@ export function mountCopilotKit(app: Application) {
           });
 
           // Clean up the map entry after successful persistence
-          requestUserMap.delete(threadId);
+          threadUserIdMap.delete(threadId);
         } catch (error: any) {
           logger.error({
             message: 'Failed to save chat messages',
@@ -245,11 +259,32 @@ export function mountCopilotKit(app: Application) {
     ],
   });
 
-  const handler = copilotRuntimeNodeHttpEndpoint({
+  const baseHandler = copilotRuntimeNodeHttpEndpoint({
     endpoint: '/api/copilotkit',
     runtime,
     serviceAdapter: new DynamicGeminiAdapter(),
   });
+
+  // Wrap the handler to set the current request userId
+  const handler = async (req: any, res: any) => {
+    // Set the current request userId so onBeforeRequest can pick it up
+    if (req.copilotUserId) {
+      currentRequestUserId = req.copilotUserId;
+      logger.info({
+        message: 'Set current request userId',
+        userId: currentRequestUserId,
+      });
+    } else {
+      currentRequestUserId = null;
+    }
+
+    try {
+      return await baseHandler(req, res);
+    } finally {
+      // Clear the current userId after the request completes
+      currentRequestUserId = null;
+    }
+  };
 
   // Define CORS options for the CopilotKit endpoint
   const corsOptions = {
@@ -412,24 +447,15 @@ export function mountCopilotKit(app: Application) {
           return res.status(401).json({ error: 'User ID not found in token.' });
         }
 
-        // Store userId in the map keyed by threadId so the CopilotKit middleware can access it
-        // We can't modify req.body because GraphQL validation will reject unknown fields
-        const threadId = req.body?.threadId;
-        if (threadId) {
-          requestUserMap.set(threadId, userId);
-          logger.info({
-            message: 'Stored userId in requestUserMap',
-            requestId,
-            threadId,
-            userId,
-          });
-        } else {
-          logger.warn({
-            message: 'No threadId in request body, cannot store userId',
-            requestId,
-            bodyKeys: req.body ? Object.keys(req.body) : []
-          });
-        }
+        // Store userId on the request object so it's available to the runtime handler
+        // We can't modify req.body because GraphQL validates it strictly
+        (req as any).copilotUserId = userId;
+
+        logger.info({
+          message: 'Stored userId on request object',
+          requestId,
+          userId,
+        });
       } catch (error: any) {
         logger.error({
           message: 'JWT validation error',
