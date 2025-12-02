@@ -10,7 +10,7 @@ export type ExacConstraint = {
   syn_z: number | null
   exp_mis: number | null
   obs_mis: number | null
-  mis_z: number
+  mis_z: number | null
   exp_lof: number | null
   obs_lof: number | null
   pLI: number
@@ -54,7 +54,7 @@ const ExacConstraintTable = ({ constraint }: Props) => (
           {renderRoundedNumber(constraint.mis_z, {
             precision: 2,
             tooltipPrecision: 3,
-            highlightColor: constraint.mis_z > 3.09 ? '#ff9300' : null,
+            highlightColor: constraint.mis_z && constraint.mis_z > 3.09 ? '#ff9300' : null,
           })}
         </td>
       </tr>

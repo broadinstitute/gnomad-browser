@@ -22,7 +22,7 @@ export type RegionalMissenseConstraintRegion = {
   aa_stop: string | null
   obs_mis: number | null
   exp_mis: number | null
-  obs_exp: number
+  obs_exp: number | null
   chisq_diff_null: number | undefined
   p_value: number
   z_score: number | null
@@ -43,20 +43,23 @@ function regionColor(region: RegionalMissenseConstraintRegion) {
     return region.z_score > 3.09 ? colorScale.middle : colorScale.not_significant
   }
 
-  let color
-  if (region.obs_exp > 0.8) {
-    color = colorScale.greatest
-  } else if (region.obs_exp > 0.6) {
-    color = colorScale.greater
-  } else if (region.obs_exp > 0.4) {
-    color = colorScale.middle
-  } else if (region.obs_exp > 0.2) {
-    color = colorScale.less
-  } else {
-    color = colorScale.least
+  if (region.obs_exp && region.p_value <= 0.001) {
+    if (region.obs_exp > 0.8) {
+      return colorScale.greatest
+    }
+    if (region.obs_exp > 0.6) {
+      return colorScale.greater
+    }
+    if (region.obs_exp > 0.4) {
+      return colorScale.middle
+    }
+    if (region.obs_exp > 0.2) {
+      return colorScale.less
+    }
+    return colorScale.least
   }
 
-  return region.p_value > 0.001 ? colorScale.not_significant : color
+  return colorScale.not_significant
 }
 
 const Legend = () => {
@@ -166,7 +169,8 @@ export type RegionalMissenseConstraint = {
   regions: RegionalMissenseConstraintRegion[]
 }
 
-const formattedOE = (region: RegionalMissenseConstraintRegion) => region.obs_exp.toFixed(2)
+const formattedOE = (region: RegionalMissenseConstraintRegion) =>
+  region.obs_exp ? region.obs_exp.toFixed(2) : ''
 
 type Props = {
   regionalMissenseConstraint: RegionalMissenseConstraint | null
