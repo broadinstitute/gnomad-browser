@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { AssistantMessage, AssistantMessageProps } from '@copilotkit/react-ui'
 import { useAuth0 } from '@auth0/auth0-react'
-import { Modal, Button, PrimaryButton } from '@gnomad/ui'
+import { Button, PrimaryButton } from '@gnomad/ui'
 import styled from 'styled-components'
 // @ts-expect-error TS(2307)
 import CommentIcon from '@fortawesome/fontawesome-free/svgs/solid/comment-dots.svg'
+import { ChatModal } from './ChatModal'
 
 const FeedbackButton = styled.button`
   background: none;
@@ -34,12 +35,13 @@ const FeedbackButton = styled.button`
 const TextArea = styled.textarea`
   width: 100%;
   min-height: 100px;
-  padding: 8px;
+  padding: 8px 12px 8px 8px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   font-family: inherit;
   font-size: 14px;
   resize: vertical;
+  box-sizing: border-box;
 
   &:focus {
     outline: none;
@@ -129,7 +131,7 @@ export const CustomAssistantMessage: React.FC<CustomAssistantMessageProps> = (pr
       </FeedbackButton>
 
       {isFeedbackModalOpen && (
-        <Modal
+        <ChatModal
           title="Provide Feedback"
           onRequestClose={() => setIsFeedbackModalOpen(false)}
           footer={
@@ -150,7 +152,7 @@ export const CustomAssistantMessage: React.FC<CustomAssistantMessageProps> = (pr
             placeholder="Tell us what you think about this response..."
             autoFocus
           />
-        </Modal>
+        </ChatModal>
       )}
     </MessageWrapper>
   )

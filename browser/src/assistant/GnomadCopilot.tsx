@@ -11,7 +11,7 @@ import {
   ImageMessage,
 } from '@copilotkit/runtime-client-gql'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Modal, Button, PrimaryButton } from '@gnomad/ui'
+import { Button, PrimaryButton } from '@gnomad/ui'
 import { useMCPStateRender } from './hooks/useMCPStateRender'
 import { useGnomadVariantActions } from './gmd/hooks/useGnomadVariantActions'
 import { useJuhaActions } from './gmd/hooks/useJuhaActions'
@@ -38,13 +38,6 @@ import Logout from '../auth/Logout'
 import { useCurrentUser } from '../auth/useCurrentUser'
 // @ts-expect-error TS(2307)
 import SignOutIcon from '@fortawesome/fontawesome-free/svgs/solid/sign-out-alt.svg'
-
-// Ensure modal appears above other UI elements
-const GlobalModalStyles = createGlobalStyle`
-  .ReactModalPortal [data-react-aria-modal-overlay] {
-    z-index: 10000 !important;
-  }
-`
 
 const PageContainer = styled.div`
   display: flex;
@@ -1179,7 +1172,6 @@ export function GnomadCopilot({
 
   return (
     <>
-      <GlobalModalStyles />
       <PageContainer ref={containerRef}>
         <MainContent>{children}</MainContent>
         {isChatOpen && chatDisplayMode === 'side' && (
