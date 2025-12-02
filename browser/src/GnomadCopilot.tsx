@@ -28,6 +28,7 @@ import RobotIcon from '@fortawesome/fontawesome-free/svgs/solid/robot.svg'
 import '@copilotkit/react-ui/styles.css'
 import { ChatHistorySidebar } from './ChatHistorySidebar'
 import { ChatSettingsView } from './ChatSettingsView'
+import { CustomAssistantMessage } from './chat/CustomAssistantMessage'
 import Login from './auth/Login'
 import Logout from './auth/Logout'
 // @ts-expect-error TS(2307)
@@ -451,11 +452,47 @@ interface PageContext {
 const AuthenticatedChatView = ({
   suggestions,
   isLoadingHistory,
+  threadId,
 }: {
   suggestions: { title: string; message: string }[]
   isLoadingHistory: boolean
+  threadId: string
 }) => {
-  const { isAuthenticated, isLoading, error, logout } = useAuth0()
+  const { isAuthenticated, isLoading, error, logout, getAccessTokenSilently } = useAuth0()
+
+  const submitFeedback = async (feedback: any) => {
+    try {
+      const token = await getAccessTokenSilently()
+      await fetch('/api/copilotkit/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(feedback),
+      })
+    } catch (error) {
+      console.error('Failed to submit feedback:', error)
+    }
+  }
+
+  const handleThumbsUp = (message: any) => {
+    submitFeedback({
+      messageId: message.id,
+      threadId,
+      source: 'message',
+      rating: 1,
+    })
+  }
+
+  const handleThumbsDown = (message: any) => {
+    submitFeedback({
+      messageId: message.id,
+      threadId,
+      source: 'message',
+      rating: -1,
+    })
+  }
 
   if (isLoading) {
     return <ChatLoadingState>Authenticating...</ChatLoadingState>
@@ -487,6 +524,9 @@ const AuthenticatedChatView = ({
               "Hello! I can help you understand gnomAD data, navigate the browser, or answer questions about what you're viewing.",
           }}
           suggestions={suggestions}
+          AssistantMessage={(props) => <CustomAssistantMessage {...props} threadId={threadId} />}
+          onThumbsUp={handleThumbsUp}
+          onThumbsDown={handleThumbsDown}
         />
       )}
       {/* The logout button is rendered here for authenticated users */}
@@ -544,12 +584,28 @@ export function GnomadCopilot({
 
   const [chatDisplayMode, setChatDisplayModeState] = useState<'closed' | 'side' | 'fullscreen'>(getInitialChatMode())
 
+  // Sync state with URL when location changes (e.g., browser back/forward)
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const chatMode = params.get('chat')
+    if (chatMode === 'fullscreen') {
+      setChatDisplayModeState('fullscreen')
+    } else if (chatMode === 'side') {
+      setChatDisplayModeState('side')
+    } else if (chatMode === 'closed') {
+      setChatDisplayModeState('closed')
+    } else {
+      setChatDisplayModeState('side') // default
+    }
+  }, [location.search])
+
   // Wrapper function to update both state and URL
   const setChatDisplayMode = useCallback((mode: 'closed' | 'side' | 'fullscreen') => {
     setChatDisplayModeState(mode)
 
-    // Update URL query parameter
-    const params = new URLSearchParams(location.search)
+    // Update URL query parameter - read current location from window
+    const currentSearch = window.location.search
+    const params = new URLSearchParams(currentSearch)
     if (mode === 'side') {
       // 'side' is the default, so we can remove the parameter
       params.delete('chat')
@@ -558,9 +614,9 @@ export function GnomadCopilot({
     }
 
     const newSearch = params.toString()
-    const newUrl = `${location.pathname}${newSearch ? `?${newSearch}` : ''}${location.hash}`
+    const newUrl = `${window.location.pathname}${newSearch ? `?${newSearch}` : ''}${window.location.hash}`
     history.replace(newUrl)
-  }, [location.search, location.pathname, location.hash, history])
+  }, [history])
 
   const isChatOpen = chatDisplayMode !== 'closed'
   const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true'
@@ -797,8 +853,49 @@ export function GnomadCopilot({
     fetchMessages()
   }, [threadId, isAuthEnabled, isAuthenticated, getAccessTokenSilently]) // This effect runs only when the threadId changes.
 
-  // Settings state
-  const [isSettingsViewOpen, setIsSettingsViewOpen] = useState(false)
+  // Settings state - read from URL parameter
+  const getSettingsSection = (): string | null => {
+    const params = new URLSearchParams(location.search)
+    return params.get('settings')
+  }
+
+  const [settingsSection, setSettingsSectionState] = useState<string | null>(getSettingsSection())
+  const isSettingsViewOpen = settingsSection !== null
+
+  // Sync settings state with URL when location changes
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const section = params.get('settings')
+    setSettingsSectionState(section)
+  }, [location.search])
+
+  // Wrapper function to update both state and URL for settings
+  const setSettingsSection = useCallback((section: string | null) => {
+    setSettingsSectionState(section)
+
+    // Update URL query parameter - read current location from window
+    const currentSearch = window.location.search
+    const params = new URLSearchParams(currentSearch)
+    if (section === null) {
+      params.delete('settings')
+    } else {
+      params.set('settings', section)
+    }
+
+    const newSearch = params.toString()
+    const newUrl = `${window.location.pathname}${newSearch ? `?${newSearch}` : ''}${window.location.hash}`
+    history.replace(newUrl)
+  }, [history])
+
+  // Open settings to a specific section
+  const openSettings = useCallback((section: string = 'general') => {
+    setSettingsSection(section)
+  }, [setSettingsSection])
+
+  // Close settings
+  const closeSettings = useCallback(() => {
+    setSettingsSection(null)
+  }, [setSettingsSection])
 
   // Handle prompt selection from dropdown
   const handlePromptSelect = (promptId: string) => {
@@ -1045,7 +1142,9 @@ export function GnomadCopilot({
             <ChatPanel width={chatWidth} mode={chatDisplayMode}>
               {isSettingsViewOpen ? (
                 <ChatSettingsView
-                  onClose={() => setIsSettingsViewOpen(false)}
+                  onClose={closeSettings}
+                  activeSection={settingsSection || 'general'}
+                  onSectionChange={setSettingsSection}
                   isAuthEnabled={isAuthEnabled}
                   selectedModel={selectedModel}
                   setSelectedModel={setSelectedModel}
@@ -1060,7 +1159,7 @@ export function GnomadCopilot({
               ) : (
                 <>
                   {isAuthEnabled ? (
-                    <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
+                    <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} threadId={threadId} />
                   ) : (
                     <>
                       {isLoadingHistory ? (
@@ -1089,7 +1188,7 @@ export function GnomadCopilot({
                   )}
                   {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
                   <SettingsButton
-                    onClick={() => setIsSettingsViewOpen(true)}
+                    onClick={() => openSettings()}
                     title="Settings"
                   >
                     <img src={SettingsIcon} alt="Settings" />
@@ -1145,7 +1244,7 @@ export function GnomadCopilot({
             ) : (
               <>
                 {isAuthEnabled ? (
-                  <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} />
+                  <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} threadId={threadId} />
                 ) : (
                   <>
                     {isLoadingHistory ? (

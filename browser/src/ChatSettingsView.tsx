@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Button, PrimaryButton } from '@gnomad/ui'
+import { ChatFeedbackView } from './ChatFeedbackView'
+import { UsersView } from './UsersView'
 // @ts-expect-error TS(2307)
 import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 // @ts-expect-error TS(2307)
@@ -218,9 +220,11 @@ interface ChatSettingsViewProps {
   onPromptSelect: (promptId: string) => void
   onSavePrompt: (promptName: string) => void
   onDeletePrompt: (promptId: string) => void
+  activeSection: string
+  onSectionChange: (section: string) => void
 }
 
-type SettingsSection = 'general' | 'favorites'
+type SettingsSection = 'general' | 'favorites' | 'feedback' | 'users'
 
 export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
   onClose,
@@ -234,8 +238,10 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
   onPromptSelect,
   onSavePrompt,
   onDeletePrompt,
+  activeSection: activeSectionProp,
+  onSectionChange,
 }) => {
-  const [activeSection, setActiveSection] = useState<SettingsSection>('general')
+  const activeSection = (activeSectionProp || 'general') as SettingsSection
   const [promptName, setPromptName] = useState('')
   const { logout, isAuthenticated } = useAuth0()
 
@@ -344,12 +350,30 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
     </>
   )
 
+  const renderFeedbackSection = () => (
+    <>
+      <SectionTitle>User Feedback</SectionTitle>
+      <ChatFeedbackView />
+    </>
+  )
+
+  const renderUsersSection = () => (
+    <>
+      <SectionTitle>Users</SectionTitle>
+      <UsersView />
+    </>
+  )
+
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'general':
         return renderGeneralSection()
       case 'favorites':
         return renderFavoritesSection()
+      case 'feedback':
+        return renderFeedbackSection()
+      case 'users':
+        return renderUsersSection()
       default:
         return renderGeneralSection()
     }
@@ -367,15 +391,27 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
         <SettingsNav>
           <NavItem
             active={activeSection === 'general'}
-            onClick={() => setActiveSection('general')}
+            onClick={() => onSectionChange('general')}
           >
             General
           </NavItem>
           <NavItem
             active={activeSection === 'favorites'}
-            onClick={() => setActiveSection('favorites')}
+            onClick={() => onSectionChange('favorites')}
           >
             Favorites
+          </NavItem>
+          <NavItem
+            active={activeSection === 'feedback'}
+            onClick={() => onSectionChange('feedback')}
+          >
+            Feedback
+          </NavItem>
+          <NavItem
+            active={activeSection === 'users'}
+            onClick={() => onSectionChange('users')}
+          >
+            Users
           </NavItem>
         </SettingsNav>
         <SettingsContent>
