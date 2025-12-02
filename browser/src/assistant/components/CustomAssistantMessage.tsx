@@ -1,20 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { AssistantMessage, AssistantMessageProps } from '@copilotkit/react-ui'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Modal, Button, PrimaryButton } from '@gnomad/ui'
 import styled from 'styled-components'
+// @ts-expect-error TS(2307)
+import CommentIcon from '@fortawesome/fontawesome-free/svgs/solid/comment-dots.svg'
 
 const FeedbackButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px 8px;
-  font-size: 12px;
-  color: #666;
-  transition: color 0.2s;
+  color: #0d79d0 !important;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.7;
+  vertical-align: middle;
 
   &:hover {
-    color: #0d79d0;
+    opacity: 1;
+  }
+
+  svg, img {
+    width: 16px;
+    height: 16px;
+    display: block;
+    filter: invert(38%) sepia(85%) saturate(1463%) hue-rotate(182deg) brightness(92%) contrast(95%);
   }
 `
 
@@ -38,14 +51,6 @@ const MessageWrapper = styled.div`
   position: relative;
 `
 
-const FeedbackActions = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-top: 8px;
-  padding-left: 12px;
-`
-
 interface CustomAssistantMessageProps extends AssistantMessageProps {
   threadId?: string
 }
@@ -55,6 +60,8 @@ export const CustomAssistantMessage: React.FC<CustomAssistantMessageProps> = (pr
   const [feedbackText, setFeedbackText] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { getAccessTokenSilently, isAuthenticated } = useAuth0()
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const feedbackButtonRef = useRef<HTMLButtonElement>(null)
 
   const handleOpenFeedbackModal = () => {
     setIsFeedbackModalOpen(true)
@@ -99,14 +106,27 @@ export const CustomAssistantMessage: React.FC<CustomAssistantMessageProps> = (pr
     }
   }
 
+  // Insert feedback button after the thumbs down button
+  useEffect(() => {
+    if (!wrapperRef.current || !feedbackButtonRef.current) return
+
+    const thumbsDownButton = wrapperRef.current.querySelector('button[aria-label="Thumbs down"]')
+    if (thumbsDownButton && feedbackButtonRef.current) {
+      // Insert the feedback button after the thumbs down button
+      thumbsDownButton.parentNode?.insertBefore(feedbackButtonRef.current, thumbsDownButton.nextSibling)
+    }
+  }, [props.message?.id]) // Re-run when message changes
+
   return (
-    <MessageWrapper>
+    <MessageWrapper ref={wrapperRef}>
       <AssistantMessage {...props} />
-      <FeedbackActions>
-        <FeedbackButton onClick={handleOpenFeedbackModal} title="Provide detailed feedback">
-          💬 Provide feedback
-        </FeedbackButton>
-      </FeedbackActions>
+      <FeedbackButton
+        ref={feedbackButtonRef}
+        onClick={handleOpenFeedbackModal}
+        title="Provide detailed feedback"
+      >
+        <img src={CommentIcon} alt="Feedback" />
+      </FeedbackButton>
 
       {isFeedbackModalOpen && (
         <Modal
