@@ -2,8 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { ChatFeedbackView } from './ChatFeedbackView'
 import { UsersView } from './UsersView'
-// @ts-expect-error TS(2307)
-import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 
 const SettingsContainer = styled.div`
   display: flex;
@@ -13,39 +11,6 @@ const SettingsContainer = styled.div`
   overflow: hidden;
 `
 
-const SettingsHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-  flex-shrink: 0;
-`
-
-const SettingsTitle = styled.h2`
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-`
-
-const HeaderButton = styled.button`
-  padding: 4px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
-  img {
-    width: 16px;
-    height: 16px;
-    opacity: 0.6;
-    display: block;
-  }
-
-  &:hover img {
-    opacity: 1;
-  }
-`
 
 const SettingsBody = styled.div`
   display: flex;
@@ -97,7 +62,6 @@ const SectionTitle = styled.h3`
 `
 
 interface AdminViewProps {
-  onClose: () => void
   activeSection: string
   onSectionChange: (section: string) => void
 }
@@ -105,7 +69,6 @@ interface AdminViewProps {
 type AdminSection = 'feedback' | 'users'
 
 export const AdminView: React.FC<AdminViewProps> = ({
-  onClose,
   activeSection: activeSectionProp,
   onSectionChange,
 }) => {
@@ -134,12 +97,6 @@ export const AdminView: React.FC<AdminViewProps> = ({
 
   return (
     <SettingsContainer>
-      <SettingsHeader>
-        <SettingsTitle>Admin Panel</SettingsTitle>
-        <HeaderButton onClick={onClose} title="Close admin panel">
-          <img src={CloseIcon} alt="Close" />
-        </HeaderButton>
-      </SettingsHeader>
       <SettingsBody>
         <SettingsNav>
           <NavItem

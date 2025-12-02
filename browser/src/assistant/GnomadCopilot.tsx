@@ -31,6 +31,7 @@ import '@copilotkit/react-ui/styles.css'
 import { ChatHistorySidebar } from './components/ChatHistorySidebar'
 import { ChatSettingsView } from './components/settings/ChatSettingsView'
 import { AdminView } from './components/admin/AdminView'
+import { NavigationBar } from './components/NavigationBar'
 import { CustomAssistantMessage } from './components/CustomAssistantMessage'
 import Login from '../auth/Login'
 import Logout from '../auth/Logout'
@@ -135,7 +136,7 @@ const ResizeHandle = styled.div`
 const LogoutButton = styled.button`
   position: absolute;
   top: 10px;
-  right: 180px;
+  right: 100px;
   z-index: 99999;
   padding: 8px;
   background: white;
@@ -165,7 +166,7 @@ const LogoutButton = styled.button`
 const CloseButton = styled.button`
   position: absolute;
   top: 10px;
-  right: 140px;
+  right: 20px;
   z-index: 99999;
   padding: 8px;
   background: white;
@@ -255,7 +256,7 @@ const AdminButton = styled.button`
 const FullscreenButton = styled.button`
   position: absolute;
   top: 10px;
-  right: 20px;
+  right: 60px;
   z-index: 99999;
   padding: 8px;
   background: white;
@@ -282,11 +283,17 @@ const FullscreenButton = styled.button`
   }
 `
 
+const BadgeContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  flex-shrink: 0;
+`
+
 const ModelBadge = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 20px;
-  z-index: 100;
   padding: 6px 12px;
   background: #f7f7f7;
   border: 1px solid #e0e0e0;
@@ -294,8 +301,6 @@ const ModelBadge = styled.div`
   font-size: 12px;
   font-weight: 500;
   color: #666;
-  pointer-events: none;
-  user-select: none;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -308,10 +313,6 @@ const ModelBadge = styled.div`
 `
 
 const ContextBadge = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 180px;
-  z-index: 100;
   padding: 6px 12px;
   background: #e3f2fd;
   border: 1px solid #90caf9;
@@ -319,12 +320,10 @@ const ContextBadge = styled.div`
   font-size: 12px;
   font-weight: 500;
   color: #1976d2;
-  pointer-events: none;
-  user-select: none;
   display: flex;
   align-items: center;
   gap: 6px;
-  max-width: calc(100% - 400px);
+  max-width: calc(100% - 200px);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -933,6 +932,17 @@ export function GnomadCopilot({
   const openAdmin = (section = 'feedback') => setView('admin', section)
   const showChat = () => setView(null, null)
 
+  // Navigation handler for the NavigationBar component
+  const handleNavigate = (view: 'chat' | 'settings' | 'admin') => {
+    if (view === 'chat') {
+      showChat()
+    } else if (view === 'settings') {
+      openSettings()
+    } else if (view === 'admin') {
+      openAdmin()
+    }
+  }
+
   // Handle prompt selection from dropdown
   const handlePromptSelect = (promptId: string) => {
     if (promptId === '') {
@@ -1176,9 +1186,13 @@ export function GnomadCopilot({
           <>
             <ResizeHandle onMouseDown={handleMouseDown} />
             <ChatPanel width={chatWidth} mode={chatDisplayMode}>
+              <NavigationBar
+                activeView={activeView}
+                onNavigate={handleNavigate}
+                canAccessAdmin={canAccessAdmin}
+              />
               {activeView === 'settings' && (
                 <ChatSettingsView
-                  onClose={showChat}
                   activeSection={activeSection || 'general'}
                   onSectionChange={(s) => setView('settings', s)}
                   isAuthEnabled={isAuthEnabled}
@@ -1195,7 +1209,6 @@ export function GnomadCopilot({
               )}
               {activeView === 'admin' && canAccessAdmin && (
                 <AdminView
-                  onClose={showChat}
                   activeSection={activeSection || 'feedback'}
                   onSectionChange={(s) => setView('admin', s)}
                 />
@@ -1224,45 +1237,39 @@ export function GnomadCopilot({
                       )}
                     </>
                   )}
-                  <ModelBadge title={`Current model: ${selectedModel}`}>
-                    <img src={RobotIcon} alt="Model" />
-                    {getModelDisplayName(selectedModel)}
-                  </ModelBadge>
-                  {contextDisplay && (
-                    <ContextBadge
-                      title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${
-                        contextDisplay.detail ? ` (${contextDisplay.detail})` : ''
-                      }`}
-                    >
-                      <span className="context-type">{contextDisplay.type}</span>
-                      <span className="context-id">{contextDisplay.id}</span>
-                    </ContextBadge>
-                  )}
                   {contextNotification && (
                     <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>
                   )}
-                  {canAccessAdmin && (
-                    <AdminButton onClick={() => openAdmin()} title="Admin Panel">
-                      <img src={UserShieldIcon} alt="Admin Panel" />
-                    </AdminButton>
-                  )}
-                  <SettingsButton onClick={() => openSettings()} title="Settings">
-                    <img src={SettingsIcon} alt="Settings" />
-                  </SettingsButton>
-                  <CloseButton
-                    onClick={() => setChatDisplayMode('closed')}
-                    title="Close Assistant"
-                  >
-                    <img src={CloseIcon} alt="Close" />
-                  </CloseButton>
-                  <FullscreenButton
-                    onClick={() => setChatDisplayMode('fullscreen')}
-                    title="Enter fullscreen"
-                  >
-                    <img src={ExpandIcon} alt="Enter fullscreen" />
-                  </FullscreenButton>
+                  <BadgeContainer>
+                    <ModelBadge title={`Current model: ${selectedModel}`}>
+                      <img src={RobotIcon} alt="Model" />
+                      {getModelDisplayName(selectedModel)}
+                    </ModelBadge>
+                    {contextDisplay && (
+                      <ContextBadge
+                        title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${
+                          contextDisplay.detail ? ` (${contextDisplay.detail})` : ''
+                        }`}
+                      >
+                        <span className="context-type">{contextDisplay.type}</span>
+                        <span className="context-id">{contextDisplay.id}</span>
+                      </ContextBadge>
+                    )}
+                  </BadgeContainer>
                 </>
               )}
+              <CloseButton
+                onClick={() => setChatDisplayMode('closed')}
+                title="Close Assistant"
+              >
+                <img src={CloseIcon} alt="Close" />
+              </CloseButton>
+              <FullscreenButton
+                onClick={() => setChatDisplayMode('fullscreen')}
+                title="Enter fullscreen"
+              >
+                <img src={ExpandIcon} alt="Enter fullscreen" />
+              </FullscreenButton>
             </ChatPanel>
           </>
         )}
@@ -1283,9 +1290,13 @@ export function GnomadCopilot({
             />
           )}
           <FullscreenChatArea>
+            <NavigationBar
+              activeView={activeView}
+              onNavigate={handleNavigate}
+              canAccessAdmin={canAccessAdmin}
+            />
             {activeView === 'settings' && (
               <ChatSettingsView
-                onClose={showChat}
                 activeSection={activeSection || 'general'}
                 onSectionChange={(s) => setView('settings', s)}
                 isAuthEnabled={isAuthEnabled}
@@ -1302,7 +1313,6 @@ export function GnomadCopilot({
             )}
             {activeView === 'admin' && canAccessAdmin && (
               <AdminView
-                onClose={showChat}
                 activeSection={activeSection || 'feedback'}
                 onSectionChange={(s) => setView('admin', s)}
               />
@@ -1331,39 +1341,33 @@ export function GnomadCopilot({
                     )}
                   </>
                 )}
-                <ModelBadge title={`Current model: ${selectedModel}`}>
-                  <img src={RobotIcon} alt="Model" />
-                  {getModelDisplayName(selectedModel)}
-                </ModelBadge>
-                {contextDisplay && (
-                  <ContextBadge
-                    title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${
-                      contextDisplay.detail ? ` (${contextDisplay.detail})` : ''
-                    }`}
-                  >
-                    <span className="context-type">{contextDisplay.type}</span>
-                    <span className="context-id">{contextDisplay.id}</span>
-                  </ContextBadge>
-                )}
                 {contextNotification && (
                   <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>
                 )}
-                {canAccessAdmin && (
-                  <AdminButton onClick={() => openAdmin()} title="Admin Panel">
-                    <img src={UserShieldIcon} alt="Admin Panel" />
-                  </AdminButton>
-                )}
-                <SettingsButton onClick={() => openSettings()} title="Settings">
-                  <img src={SettingsIcon} alt="Settings" />
-                </SettingsButton>
-                <CloseButton onClick={() => setChatDisplayMode('closed')} title="Close Assistant">
-                  <img src={CloseIcon} alt="Close" />
-                </CloseButton>
-                <FullscreenButton onClick={() => setChatDisplayMode('side')} title="Exit fullscreen">
-                  <img src={CompressIcon} alt="Exit fullscreen" />
-                </FullscreenButton>
+                <BadgeContainer>
+                  <ModelBadge title={`Current model: ${selectedModel}`}>
+                    <img src={RobotIcon} alt="Model" />
+                    {getModelDisplayName(selectedModel)}
+                  </ModelBadge>
+                  {contextDisplay && (
+                    <ContextBadge
+                      title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${
+                        contextDisplay.detail ? ` (${contextDisplay.detail})` : ''
+                      }`}
+                    >
+                      <span className="context-type">{contextDisplay.type}</span>
+                      <span className="context-id">{contextDisplay.id}</span>
+                    </ContextBadge>
+                  )}
+                </BadgeContainer>
               </>
             )}
+            <CloseButton onClick={() => setChatDisplayMode('closed')} title="Close Assistant">
+              <img src={CloseIcon} alt="Close" />
+            </CloseButton>
+            <FullscreenButton onClick={() => setChatDisplayMode('side')} title="Exit fullscreen">
+              <img src={CompressIcon} alt="Exit fullscreen" />
+            </FullscreenButton>
           </FullscreenChatArea>
         </FullscreenContainer>
       )}

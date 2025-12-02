@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Button, PrimaryButton } from '@gnomad/ui'
 // @ts-expect-error TS(2307)
-import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
-// @ts-expect-error TS(2307)
 import SignOutIcon from '@fortawesome/fontawesome-free/svgs/solid/sign-out-alt.svg'
 
 const SettingsContainer = styled.div`
@@ -15,39 +13,6 @@ const SettingsContainer = styled.div`
   overflow: hidden;
 `
 
-const SettingsHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  background: white;
-  border-bottom: 1px solid #e0e0e0;
-  flex-shrink: 0;
-`
-
-const SettingsTitle = styled.h2`
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-`
-
-const HeaderButton = styled.button`
-  padding: 4px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-
-  img {
-    width: 16px;
-    height: 16px;
-    opacity: 0.6;
-    display: block;
-  }
-
-  &:hover img {
-    opacity: 1;
-  }
-`
 
 const SettingsBody = styled.div`
   display: flex;
@@ -207,7 +172,6 @@ const UserInfoDisplay = () => {
 }
 
 interface ChatSettingsViewProps {
-  onClose: () => void
   isAuthEnabled: boolean
   selectedModel: string
   setSelectedModel: (model: string) => void
@@ -225,7 +189,6 @@ interface ChatSettingsViewProps {
 type SettingsSection = 'general' | 'favorites'
 
 export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
-  onClose,
   isAuthEnabled,
   selectedModel,
   setSelectedModel,
@@ -362,12 +325,6 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
 
   return (
     <SettingsContainer>
-      <SettingsHeader>
-        <SettingsTitle>Assistant Settings</SettingsTitle>
-        <HeaderButton onClick={onClose} title="Close settings">
-          <img src={CloseIcon} alt="Close" />
-        </HeaderButton>
-      </SettingsHeader>
       <SettingsBody>
         <SettingsNav>
           <NavItem
