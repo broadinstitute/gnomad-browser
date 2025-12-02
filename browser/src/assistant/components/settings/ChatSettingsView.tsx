@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Button, PrimaryButton } from '@gnomad/ui'
-import { ChatFeedbackView } from './ChatFeedbackView'
-import { UsersView } from './UsersView'
 // @ts-expect-error TS(2307)
 import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 // @ts-expect-error TS(2307)
@@ -224,7 +222,7 @@ interface ChatSettingsViewProps {
   onSectionChange: (section: string) => void
 }
 
-type SettingsSection = 'general' | 'favorites' | 'feedback' | 'users'
+type SettingsSection = 'general' | 'favorites'
 
 export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
   onClose,
@@ -350,19 +348,6 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
     </>
   )
 
-  const renderFeedbackSection = () => (
-    <>
-      <SectionTitle>User Feedback</SectionTitle>
-      <ChatFeedbackView />
-    </>
-  )
-
-  const renderUsersSection = () => (
-    <>
-      <SectionTitle>Users</SectionTitle>
-      <UsersView />
-    </>
-  )
 
   const renderSectionContent = () => {
     switch (activeSection) {
@@ -370,10 +355,6 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
         return renderGeneralSection()
       case 'favorites':
         return renderFavoritesSection()
-      case 'feedback':
-        return renderFeedbackSection()
-      case 'users':
-        return renderUsersSection()
       default:
         return renderGeneralSection()
     }
@@ -400,18 +381,6 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
             onClick={() => onSectionChange('favorites')}
           >
             Favorites
-          </NavItem>
-          <NavItem
-            active={activeSection === 'feedback'}
-            onClick={() => onSectionChange('feedback')}
-          >
-            Feedback
-          </NavItem>
-          <NavItem
-            active={activeSection === 'users'}
-            onClick={() => onSectionChange('users')}
-          >
-            Users
           </NavItem>
         </SettingsNav>
         <SettingsContent>

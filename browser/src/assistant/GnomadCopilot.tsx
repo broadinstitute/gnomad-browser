@@ -22,15 +22,19 @@ import CompressIcon from '@fortawesome/fontawesome-free/svgs/solid/compress.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import SettingsIcon from '@fortawesome/fontawesome-free/svgs/solid/cog.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
+import UserShieldIcon from '@fortawesome/fontawesome-free/svgs/solid/user-shield.svg'
+// @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RobotIcon from '@fortawesome/fontawesome-free/svgs/solid/robot.svg'
 import '@copilotkit/react-ui/styles.css'
 import { ChatHistorySidebar } from './components/ChatHistorySidebar'
 import { ChatSettingsView } from './components/settings/ChatSettingsView'
+import { AdminView } from './components/admin/AdminView'
 import { CustomAssistantMessage } from './components/CustomAssistantMessage'
 import Login from '../auth/Login'
 import Logout from '../auth/Logout'
+import { useCurrentUser } from '../auth/useCurrentUser'
 // @ts-expect-error TS(2307)
 import SignOutIcon from '@fortawesome/fontawesome-free/svgs/solid/sign-out-alt.svg'
 
@@ -131,7 +135,7 @@ const ResizeHandle = styled.div`
 const LogoutButton = styled.button`
   position: absolute;
   top: 10px;
-  right: 140px;
+  right: 180px;
   z-index: 99999;
   padding: 8px;
   background: white;
@@ -161,7 +165,7 @@ const LogoutButton = styled.button`
 const CloseButton = styled.button`
   position: absolute;
   top: 10px;
-  right: 100px;
+  right: 140px;
   z-index: 99999;
   padding: 8px;
   background: white;
@@ -189,6 +193,36 @@ const CloseButton = styled.button`
 `
 
 const SettingsButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 100px;
+  z-index: 99999;
+  padding: 8px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  pointer-events: auto;
+
+  img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    display: block;
+  }
+
+  &:hover {
+    background: #f7f7f7;
+    border-color: #0d79d0;
+  }
+
+  &:hover img {
+    opacity: 1;
+  }
+`
+
+const AdminButton = styled.button`
   position: absolute;
   top: 10px;
   right: 60px;
@@ -571,6 +605,8 @@ export function GnomadCopilot({
 }) {
   const history = useHistory()
   const location = useLocation()
+  const { user: currentUser } = useCurrentUser()
+  const canAccessAdmin = currentUser?.role === 'admin' || currentUser?.role === 'viewer'
 
   // Initialize chat display mode from query parameter
   const getInitialChatMode = (): 'closed' | 'side' | 'fullscreen' => {
@@ -853,49 +889,49 @@ export function GnomadCopilot({
     fetchMessages()
   }, [threadId, isAuthEnabled, isAuthenticated, getAccessTokenSilently]) // This effect runs only when the threadId changes.
 
-  // Settings state - read from URL parameter
-  const getSettingsSection = (): string | null => {
-    const params = new URLSearchParams(location.search)
-    return params.get('settings')
-  }
+  // State for current view (chat, settings, admin) and section within a view
+  const getUrlParams = () => new URLSearchParams(location.search)
+  const [activeView, setActiveViewState] = useState<'chat' | 'settings' | 'admin' | null>(
+    () => getUrlParams().get('view') as any
+  )
+  const [activeSection, setActiveSectionState] = useState<string | null>(() =>
+    getUrlParams().get('section')
+  )
 
-  const [settingsSection, setSettingsSectionState] = useState<string | null>(getSettingsSection())
-  const isSettingsViewOpen = settingsSection !== null
-
-  // Sync settings state with URL when location changes
+  // Sync state with URL when location changes
   React.useEffect(() => {
-    const params = new URLSearchParams(location.search)
-    const section = params.get('settings')
-    setSettingsSectionState(section)
+    const params = getUrlParams()
+    setActiveViewState(params.get('view') as any)
+    setActiveSectionState(params.get('section'))
   }, [location.search])
 
-  // Wrapper function to update both state and URL for settings
-  const setSettingsSection = useCallback((section: string | null) => {
-    setSettingsSectionState(section)
+  // Function to update the view and section in the URL
+  const setView = useCallback(
+    (view: string | null, section: string | null) => {
+      const params = new URLSearchParams(window.location.search)
+      if (view) {
+        params.set('view', view)
+      } else {
+        params.delete('view')
+      }
+      if (section) {
+        params.set('section', section)
+      } else {
+        params.delete('section')
+      }
+      const newSearch = params.toString()
+      const newUrl = `${window.location.pathname}${newSearch ? `?${newSearch}` : ''}${
+        window.location.hash
+      }`
+      history.replace(newUrl)
+    },
+    [history]
+  )
 
-    // Update URL query parameter - read current location from window
-    const currentSearch = window.location.search
-    const params = new URLSearchParams(currentSearch)
-    if (section === null) {
-      params.delete('settings')
-    } else {
-      params.set('settings', section)
-    }
-
-    const newSearch = params.toString()
-    const newUrl = `${window.location.pathname}${newSearch ? `?${newSearch}` : ''}${window.location.hash}`
-    history.replace(newUrl)
-  }, [history])
-
-  // Open settings to a specific section
-  const openSettings = useCallback((section: string = 'general') => {
-    setSettingsSection(section)
-  }, [setSettingsSection])
-
-  // Close settings
-  const closeSettings = useCallback(() => {
-    setSettingsSection(null)
-  }, [setSettingsSection])
+  // Helper functions for navigation
+  const openSettings = (section = 'general') => setView('settings', section)
+  const openAdmin = (section = 'feedback') => setView('admin', section)
+  const showChat = () => setView(null, null)
 
   // Handle prompt selection from dropdown
   const handlePromptSelect = (promptId: string) => {
@@ -1140,11 +1176,11 @@ export function GnomadCopilot({
           <>
             <ResizeHandle onMouseDown={handleMouseDown} />
             <ChatPanel width={chatWidth} mode={chatDisplayMode}>
-              {isSettingsViewOpen ? (
+              {activeView === 'settings' && (
                 <ChatSettingsView
-                  onClose={closeSettings}
-                  activeSection={settingsSection || 'general'}
-                  onSectionChange={setSettingsSection}
+                  onClose={showChat}
+                  activeSection={activeSection || 'general'}
+                  onSectionChange={(s) => setView('settings', s)}
                   isAuthEnabled={isAuthEnabled}
                   selectedModel={selectedModel}
                   setSelectedModel={setSelectedModel}
@@ -1156,10 +1192,22 @@ export function GnomadCopilot({
                   onSavePrompt={handleSavePrompt}
                   onDeletePrompt={handleDeletePrompt}
                 />
-              ) : (
+              )}
+              {activeView === 'admin' && canAccessAdmin && (
+                <AdminView
+                  onClose={showChat}
+                  activeSection={activeSection || 'feedback'}
+                  onSectionChange={(s) => setView('admin', s)}
+                />
+              )}
+              {(!activeView || (activeView === 'admin' && !canAccessAdmin)) && (
                 <>
                   {isAuthEnabled ? (
-                    <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} threadId={threadId} />
+                    <AuthenticatedChatView
+                      suggestions={suggestions}
+                      isLoadingHistory={isLoadingHistory}
+                      threadId={threadId}
+                    />
                   ) : (
                     <>
                       {isLoadingHistory ? (
@@ -1181,16 +1229,24 @@ export function GnomadCopilot({
                     {getModelDisplayName(selectedModel)}
                   </ModelBadge>
                   {contextDisplay && (
-                    <ContextBadge title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${contextDisplay.detail ? ` (${contextDisplay.detail})` : ''}`}>
+                    <ContextBadge
+                      title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${
+                        contextDisplay.detail ? ` (${contextDisplay.detail})` : ''
+                      }`}
+                    >
                       <span className="context-type">{contextDisplay.type}</span>
                       <span className="context-id">{contextDisplay.id}</span>
                     </ContextBadge>
                   )}
-                  {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
-                  <SettingsButton
-                    onClick={() => openSettings()}
-                    title="Settings"
-                  >
+                  {contextNotification && (
+                    <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>
+                  )}
+                  {canAccessAdmin && (
+                    <AdminButton onClick={() => openAdmin()} title="Admin Panel">
+                      <img src={UserShieldIcon} alt="Admin Panel" />
+                    </AdminButton>
+                  )}
+                  <SettingsButton onClick={() => openSettings()} title="Settings">
                     <img src={SettingsIcon} alt="Settings" />
                   </SettingsButton>
                   <CloseButton
@@ -1227,9 +1283,11 @@ export function GnomadCopilot({
             />
           )}
           <FullscreenChatArea>
-            {isSettingsViewOpen ? (
+            {activeView === 'settings' && (
               <ChatSettingsView
-                onClose={() => setIsSettingsViewOpen(false)}
+                onClose={showChat}
+                activeSection={activeSection || 'general'}
+                onSectionChange={(s) => setView('settings', s)}
                 isAuthEnabled={isAuthEnabled}
                 selectedModel={selectedModel}
                 setSelectedModel={setSelectedModel}
@@ -1241,10 +1299,22 @@ export function GnomadCopilot({
                 onSavePrompt={handleSavePrompt}
                 onDeletePrompt={handleDeletePrompt}
               />
-            ) : (
+            )}
+            {activeView === 'admin' && canAccessAdmin && (
+              <AdminView
+                onClose={showChat}
+                activeSection={activeSection || 'feedback'}
+                onSectionChange={(s) => setView('admin', s)}
+              />
+            )}
+            {(!activeView || (activeView === 'admin' && !canAccessAdmin)) && (
               <>
                 {isAuthEnabled ? (
-                  <AuthenticatedChatView suggestions={suggestions} isLoadingHistory={isLoadingHistory} threadId={threadId} />
+                  <AuthenticatedChatView
+                    suggestions={suggestions}
+                    isLoadingHistory={isLoadingHistory}
+                    threadId={threadId}
+                  />
                 ) : (
                   <>
                     {isLoadingHistory ? (
@@ -1266,28 +1336,30 @@ export function GnomadCopilot({
                   {getModelDisplayName(selectedModel)}
                 </ModelBadge>
                 {contextDisplay && (
-                  <ContextBadge title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${contextDisplay.detail ? ` (${contextDisplay.detail})` : ''}`}>
+                  <ContextBadge
+                    title={`Current context: ${contextDisplay.type} - ${contextDisplay.id}${
+                      contextDisplay.detail ? ` (${contextDisplay.detail})` : ''
+                    }`}
+                  >
                     <span className="context-type">{contextDisplay.type}</span>
                     <span className="context-id">{contextDisplay.id}</span>
                   </ContextBadge>
                 )}
-                {contextNotification && <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>}
-                <SettingsButton
-                  onClick={() => setIsSettingsViewOpen(true)}
-                  title="Settings"
-                >
+                {contextNotification && (
+                  <ContextUpdateBanner>{contextNotification}</ContextUpdateBanner>
+                )}
+                {canAccessAdmin && (
+                  <AdminButton onClick={() => openAdmin()} title="Admin Panel">
+                    <img src={UserShieldIcon} alt="Admin Panel" />
+                  </AdminButton>
+                )}
+                <SettingsButton onClick={() => openSettings()} title="Settings">
                   <img src={SettingsIcon} alt="Settings" />
                 </SettingsButton>
-                <CloseButton
-                  onClick={() => setChatDisplayMode('closed')}
-                  title="Close Assistant"
-                >
+                <CloseButton onClick={() => setChatDisplayMode('closed')} title="Close Assistant">
                   <img src={CloseIcon} alt="Close" />
                 </CloseButton>
-                <FullscreenButton
-                  onClick={() => setChatDisplayMode('side')}
-                  title="Exit fullscreen"
-                >
+                <FullscreenButton onClick={() => setChatDisplayMode('side')} title="Exit fullscreen">
                   <img src={CompressIcon} alt="Exit fullscreen" />
                 </FullscreenButton>
               </>
