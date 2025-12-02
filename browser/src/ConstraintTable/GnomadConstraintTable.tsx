@@ -145,15 +145,15 @@ export type GnomadConstraint = {
   oe_lof: number | null
   oe_lof_lower: number | null
   oe_lof_upper: number | null
-  oe_mis: number
+  oe_mis: number | null
   oe_mis_lower: number | null
   oe_mis_upper: number | null
   oe_syn: number | null
   oe_syn_lower: number | null
   oe_syn_upper: number | null
   lof_z: number | null
-  mis_z: number
-  syn_z: number
+  mis_z: number | null
+  syn_z: number | null
   pLI: number | null
   flags: string[] | null
 }
@@ -216,7 +216,7 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
               {renderRoundedNumber(constraint.syn_z, {
                 precision: 2,
                 tooltipPrecision: 3,
-                highlightColor: constraint.syn_z > 3.71 ? '#ff2600' : null,
+                highlightColor: constraint.syn_z && constraint.syn_z > 3.71 ? '#ff2600' : null,
               })}
               <br />
               {/* @ts-expect-error TS(2554) FIXME: Expected 3 arguments, but got 2. */}
@@ -234,7 +234,7 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
               {renderRoundedNumber(constraint.mis_z, {
                 precision: 2,
                 tooltipPrecision: 3,
-                highlightColor: constraint.mis_z > 3.09 ? '#ff9300' : null,
+                highlightColor: constraint.mis_z && constraint.mis_z > 3.09 ? '#ff9300' : null,
               })}
               <br />
               {/* @ts-expect-error TS(2554) FIXME: Expected 3 arguments, but got 2. */}

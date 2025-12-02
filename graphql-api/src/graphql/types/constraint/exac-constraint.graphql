@@ -12,7 +12,7 @@ type ExacConstraint {
   mu_lof: Float
 
   syn_z: Float
-  mis_z: Float!
+  mis_z: Float
   lof_z: Float
 
   pli: Float
