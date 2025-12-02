@@ -77,6 +77,9 @@ CREATE INDEX idx_messages_created ON chat_messages(created_at DESC);
 CREATE INDEX idx_threads_contexts ON chat_threads USING gin(contexts);
 CREATE INDEX idx_tool_results_user ON tool_results(user_id);
 
+-- User Roles Enum
+CREATE TYPE user_role AS ENUM ('user', 'viewer', 'admin');
+
 -- Analytics views
 CREATE VIEW chat_analytics AS
 SELECT
@@ -89,3 +92,34 @@ SELECT
 FROM chat_messages m
 JOIN chat_threads t ON m.thread_id = t.thread_id
 GROUP BY DATE_TRUNC('day', m.created_at), t.model;
+
+-- Users table for storing user information
+CREATE TABLE users (
+  user_id VARCHAR(255) PRIMARY KEY,
+  email VARCHAR(255),
+  name VARCHAR(255),
+  role user_role NOT NULL DEFAULT 'user',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  last_seen_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Index for email lookups
+CREATE INDEX idx_users_email ON users(email);
+
+-- User Feedback
+CREATE TABLE chat_feedback (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  user_id VARCHAR(255) REFERENCES users(user_id) ON DELETE SET NULL, -- Foreign key to users table
+  thread_id VARCHAR(255) REFERENCES chat_threads(thread_id) ON DELETE SET NULL,
+  message_id VARCHAR(255), -- The ID of the message being rated
+  source VARCHAR(50) NOT NULL, -- 'message', 'thread', or 'general'
+  rating INT, -- 1 for positive (thumbs up), -1 for negative (thumbs down)
+  feedback_text TEXT,
+  metadata JSONB -- To store contextual info like the model used
+);
+
+-- Indexes for feedback queries
+CREATE INDEX idx_feedback_thread ON chat_feedback(thread_id);
+CREATE INDEX idx_feedback_user ON chat_feedback(user_id) WHERE user_id IS NOT NULL;
+CREATE INDEX idx_feedback_source ON chat_feedback(source);

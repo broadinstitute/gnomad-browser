@@ -35,6 +35,23 @@ export interface ChatMessage {
   rawMessage: any;
 }
 
+export interface Feedback {
+  userId?: string;
+  threadId?: string;
+  messageId?: string;
+  source: 'message' | 'thread' | 'general';
+  rating?: 1 | -1;
+  feedbackText?: string;
+  metadata?: Record<string, any>;
+}
+
+export interface User {
+  userId: string;
+  email?: string;
+  name?: string;
+  role?: 'user' | 'viewer' | 'admin';
+}
+
 export class ChatDatabase {
   // Helper to generate a title from contexts or fall back to first message
   // This is now deprecated in favor of AI-based titling.
@@ -438,6 +455,88 @@ export class ChatDatabase {
     } catch {
       return false;
     }
+  }
+
+  // Upsert user information
+  async upsertUser(user: User): Promise<void> {
+    const { userId, email, name } = user;
+    const query = `
+      INSERT INTO users (user_id, email, name, last_seen_at)
+      VALUES ($1, $2, $3, NOW())
+      ON CONFLICT (user_id) DO UPDATE SET
+        email = COALESCE($2, users.email),
+        name = COALESCE($3, users.name),
+        last_seen_at = NOW()
+    `;
+    await pool.query(query, [userId, email, name]);
+  }
+
+  // Get a single user by ID
+  async getUser(userId: string): Promise<User | null> {
+    const result = await pool.query(
+      'SELECT user_id as "userId", email, name, role FROM users WHERE user_id = $1',
+      [userId]
+    );
+    return result.rows[0] || null;
+  }
+
+  // Update a user's role
+  async updateUserRole(userId: string, role: 'user' | 'viewer' | 'admin'): Promise<void> {
+    await pool.query('UPDATE users SET role = $1 WHERE user_id = $2', [role, userId]);
+  }
+
+  // Save feedback
+  async saveFeedback(feedback: Feedback): Promise<void> {
+    const { userId, threadId, messageId, source, rating, feedbackText, metadata } = feedback;
+    const query = `
+      INSERT INTO chat_feedback (user_id, thread_id, message_id, source, rating, feedback_text, metadata)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+    `;
+    await pool.query(query, [userId, threadId, messageId, source, rating, feedbackText, metadata ? JSON.stringify(metadata) : null]);
+  }
+
+  // Get users with pagination
+  async getUsers(limit = 50, offset = 0): Promise<any[]> {
+    const query = `
+      SELECT
+        user_id as "userId",
+        email,
+        name,
+        role,
+        created_at as "createdAt",
+        last_seen_at as "lastSeenAt"
+      FROM users
+      ORDER BY last_seen_at DESC
+      LIMIT $1 OFFSET $2
+    `;
+    const result = await pool.query(query, [limit, offset]);
+    return result.rows;
+  }
+
+  // Get feedback with pagination
+  async getFeedback(limit = 50, offset = 0): Promise<any[]> {
+    const query = `
+      SELECT
+        f.id,
+        f.created_at as "createdAt",
+        f.user_id as "userId",
+        u.email as "userEmail",
+        u.name as "userName",
+        f.thread_id as "threadId",
+        t.title as "threadTitle",
+        f.message_id as "messageId",
+        f.source,
+        f.rating,
+        f.feedback_text as "feedbackText",
+        f.metadata
+      FROM chat_feedback f
+      LEFT JOIN chat_threads t ON f.thread_id = t.thread_id
+      LEFT JOIN users u ON f.user_id = u.user_id
+      ORDER BY f.created_at DESC
+      LIMIT $1 OFFSET $2
+    `;
+    const result = await pool.query(query, [limit, offset]);
+    return result.rows;
   }
 }
 

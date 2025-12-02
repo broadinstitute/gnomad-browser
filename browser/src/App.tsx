@@ -222,6 +222,7 @@ const GnomadApp = () => {
           const token = await getAccessTokenSilently({
             authorizationParams: {
               audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+              scope: 'openid profile email',
             }
           })
           setCopilotToken(token)
@@ -233,6 +234,7 @@ const GnomadApp = () => {
               const token = await getAccessTokenSilently({
                 authorizationParams: {
                   audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+                  scope: 'openid profile email',
                   prompt: 'consent',
                 },
                 cacheMode: 'off', // Don't use cached token
@@ -394,6 +396,7 @@ const App = () => {
         authorizationParams={{
           redirect_uri: window.location.origin,
           audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+          scope: 'openid profile email',
         }}
         cacheLocation="localstorage"
         onRedirectCallback={onRedirectCallback}

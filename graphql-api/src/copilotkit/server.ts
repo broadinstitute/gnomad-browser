@@ -11,8 +11,17 @@ import {
 import { auth } from 'express-oauth2-jwt-bearer';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { LocalMCPClient } from './mcp-client';
-import { chatDb } from './database';
+import { chatDb, User } from './database';
 import logger from '../logger';
+
+// Extend Express Request type
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User | null;
+    }
+  }
+}
 
 // Authorization middleware
 const isAuthEnabled = process.env.REACT_APP_AUTH0_ENABLE === 'true';
@@ -63,6 +72,84 @@ class DynamicGeminiAdapter implements CopilotServiceAdapter {
 
 // This function will be imported by the main graphql-api server
 export function mountCopilotKit(app: Application) {
+  // Authorization middleware functions
+  const addUserToRequest = async (req: Request, res: Response, next: any) => {
+    if (!isAuthEnabled) {
+      req.user = null;
+      return next();
+    }
+    try {
+      const userId = (req as any).auth.payload.sub;
+      let userEmail = (req as any).auth.payload.email;
+      let userName = (req as any).auth.payload.name;
+
+      logger.info({
+        message: 'addUserToRequest - JWT payload',
+        userId,
+        userEmail,
+        userName,
+        fullPayload: (req as any).auth.payload,
+      });
+
+      // If email/name not in token, try to fetch from Auth0 userinfo endpoint
+      if (userId && (!userEmail || !userName)) {
+        try {
+          const token = req.headers.authorization?.substring(7); // Remove "Bearer "
+          if (token) {
+            const userInfoResponse = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}userinfo`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (userInfoResponse.ok) {
+              const userInfo = await userInfoResponse.json();
+              userEmail = userEmail || userInfo.email;
+              userName = userName || userInfo.name;
+
+              logger.info({
+                message: 'Fetched user info from Auth0 userinfo endpoint',
+                userEmail,
+                userName,
+              });
+            }
+          }
+        } catch (error: any) {
+          logger.warn({ message: 'Failed to fetch userinfo from Auth0', error: error.message });
+        }
+      }
+
+      if (userId) {
+        // Ensure user exists in the DB on every authenticated request to a protected endpoint
+        await chatDb.upsertUser({ userId, email: userEmail, name: userName });
+        const user = await chatDb.getUser(userId);
+        req.user = user;
+
+        logger.info({
+          message: 'addUserToRequest - user from DB',
+          user,
+        });
+      }
+      next();
+    } catch (error: any) {
+      logger.error({ message: 'Failed to add user to request', error: error.message });
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+  const isAdmin = (req: Request, res: Response, next: any) => {
+    if (req.user?.role === 'admin') {
+      return next();
+    }
+    return res.status(403).json({ error: 'Forbidden: Admins only' });
+  };
+
+  const isViewerOrAdmin = (req: Request, res: Response, next: any) => {
+    if (req.user?.role === 'admin' || req.user?.role === 'viewer') {
+      return next();
+    }
+    return res.status(403).json({ error: 'Forbidden: Viewers and Admins only' });
+  };
+
   // Use an environment variable for the gmd command path, defaulting to 'gmd' for production.
   const gmdCommand = process.env.GMD_COMMAND_PATH || 'gmd';
   // Configure the MCP server command.
@@ -300,9 +387,35 @@ export function mountCopilotKit(app: Application) {
 
   // Add JSON body parser middleware for POST requests with increased limit
   app.use('/api/copilotkit/threads', express.json({ limit: '50mb' }));
+  app.use('/api/copilotkit/feedback', express.json());
+  app.use('/api/copilotkit/users', express.json());
 
   // API Endpoints for thread management - MUST be registered BEFORE the general CopilotKit middleware
   // to avoid being caught by the catch-all handler
+
+  // Get current user profile
+  app.get('/api/copilotkit/users/me', cors(corsOptions), checkJwt, addUserToRequest, (req, res) => {
+    if (!req.user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(req.user);
+  });
+
+  // Update a user's role (admins only)
+  app.put('/api/copilotkit/users/:userId/role', cors(corsOptions), checkJwt, addUserToRequest, isAdmin, async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { role } = req.body;
+      if (!['user', 'viewer', 'admin'].includes(role)) {
+        return res.status(400).json({ error: 'Invalid role provided' });
+      }
+      await chatDb.updateUserRole(userId, role);
+      res.json({ success: true, userId, role });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to update user role', error: error.message });
+      res.status(500).json({ error: 'Failed to update user role' });
+    }
+  });
 
   // List all threads
   app.get('/api/copilotkit/threads', cors(corsOptions), checkJwt, async (req: Request, res: Response) => {
@@ -423,6 +536,69 @@ export function mountCopilotKit(app: Application) {
     });
   });
 
+  // Submit feedback - accepts both authenticated and anonymous users
+  app.post('/api/copilotkit/feedback', cors(corsOptions), async (req: Request, res: Response) => {
+    try {
+      // Try to get userId from auth if present, otherwise default to 'anonymous'
+      let userId = 'anonymous';
+      let userEmail: string | undefined;
+      let userName: string | undefined;
+
+      if (isAuthEnabled && req.headers.authorization?.startsWith('Bearer ')) {
+        try {
+          const token = req.headers.authorization.substring(7);
+          const payload = await verifyJwt(token);
+          userId = payload?.sub || 'anonymous';
+          userEmail = payload?.email as string | undefined;
+          userName = payload?.name as string | undefined;
+
+          // Upsert user information if we have a valid userId
+          if (userId !== 'anonymous') {
+            await chatDb.upsertUser({ userId, email: userEmail, name: userName });
+          }
+        } catch (error) {
+          // If JWT verification fails, continue with anonymous userId
+          logger.warn({ message: 'Failed to verify JWT for feedback, using anonymous', error });
+        }
+      }
+
+      const feedbackData = req.body;
+      await chatDb.saveFeedback({ ...feedbackData, userId });
+      res.status(201).json({ success: true });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to save feedback', error: error.message });
+      res.status(500).json({ error: 'Failed to save feedback' });
+    }
+  });
+
+  // Get feedback - requires authentication and viewer/admin role
+  app.get('/api/copilotkit/feedback', cors(corsOptions), checkJwt, addUserToRequest, isViewerOrAdmin, async (req: Request, res: Response) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 50;
+      const offset = parseInt(req.query.offset as string) || 0;
+
+      const feedback = await chatDb.getFeedback(limit, offset);
+      res.json(feedback);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get feedback', error: error.message });
+      res.status(500).json({ error: 'Failed to get feedback' });
+    }
+  });
+
+  // Get users - requires authentication and viewer/admin role
+  app.get('/api/copilotkit/users', cors(corsOptions), checkJwt, addUserToRequest, isViewerOrAdmin, async (req: Request, res: Response) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 50;
+      const offset = parseInt(req.query.offset as string) || 0;
+
+      const users = await chatDb.getUsers(limit, offset);
+      res.json(users);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get users', error: error.message });
+      res.status(500).json({ error: 'Failed to get users' });
+    }
+  });
+
   logger.info('CopilotKit thread management API mounted');
 
   // Mount the handler on the provided Express app with its own CORS middleware
@@ -453,6 +629,8 @@ export function mountCopilotKit(app: Application) {
         const token = authHeader.substring(7);
         const payload = await verifyJwt(token);
         const userId = payload?.sub;
+        const userEmail = payload?.email as string | undefined;
+        const userName = payload?.name as string | undefined;
 
         logger.info({
           message: 'JWT verified successfully',
@@ -465,6 +643,15 @@ export function mountCopilotKit(app: Application) {
         if (!userId) {
           logger.error({ message: 'User ID not found in token payload', requestId, payload });
           return res.status(401).json({ error: 'User ID not found in token.' });
+        }
+
+        // Upsert user information on every authenticated request
+        // This ensures the users table is always up-to-date with email/name from JWT
+        try {
+          await chatDb.upsertUser({ userId, email: userEmail, name: userName });
+        } catch (error: any) {
+          logger.warn({ message: 'Failed to upsert user info', userId, error: error.message });
+          // Continue even if upsert fails - don't block the chat request
         }
 
         // Store userId on the request object so it's available to the runtime handler
