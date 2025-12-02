@@ -230,6 +230,8 @@ export function mountCopilotKit(app: Application) {
             threadId,
             error: error.message,
             stack: error.stack,
+            errorName: error.name,
+            errorCode: error.code,
           });
           // Don't throw - we don't want persistence failures to break the chat
         }

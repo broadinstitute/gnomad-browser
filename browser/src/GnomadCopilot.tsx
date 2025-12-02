@@ -760,9 +760,14 @@ export function GnomadCopilot({
               }
               return new ActionExecutionMessage(actionData)
             case 'ResultMessage':
+              console.log('[Chat History] Reconstructing ResultMessage:', JSON.stringify(rawMsg))
               // The result field comes from JSONB as a parsed object.
-              // We no longer stringify it. The rendering hook will handle it.
-              return new ResultMessage(rawMsg)
+              // But GraphQL schema expects it as a JSON string, so stringify it
+              const resultData = { ...rawMsg }
+              if (resultData.result && typeof resultData.result !== 'string') {
+                resultData.result = JSON.stringify(resultData.result)
+              }
+              return new ResultMessage(resultData)
             case 'AgentStateMessage':
               return new AgentStateMessage(rawMsg)
             case 'ImageMessage':

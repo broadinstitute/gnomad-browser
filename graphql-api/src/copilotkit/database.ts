@@ -116,14 +116,16 @@ export class ChatDatabase {
   }
 
   // Save tool result payload and return the UUID
-  async saveToolResult(
+  // Private method that requires a transactional client to ensure atomicity
+  private async _saveToolResult(
+    client: any,
     threadId: string,
     messageId: string,
     userId: string,
     toolName: string,
     resultData: any
   ): Promise<string> {
-    const result = await pool.query(
+    const result = await client.query(
       `INSERT INTO tool_results (thread_id, message_id, user_id, tool_name, result_data)
        VALUES ($1, $2, $3, $4, $5)
        ON CONFLICT (thread_id, message_id) DO UPDATE SET result_data = $5
@@ -283,7 +285,8 @@ export class ChatDatabase {
               dataSize: JSON.stringify(structuredContent).length,
             });
 
-            const toolResultId = await this.saveToolResult(
+            const toolResultId = await this._saveToolResult(
+              client,
               threadId,
               msg.id,
               userId,
