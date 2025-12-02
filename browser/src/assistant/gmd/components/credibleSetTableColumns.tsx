@@ -1,7 +1,7 @@
 import React from 'react'
-import { Cell, NumericCell } from '../../tableCells'
-import Link from '../../Link'
-import { makeNumericCompareFunction, makeStringCompareFunction } from '../../VariantList/sortUtilities'
+import { Cell, NumericCell } from '../../../tableCells'
+import Link from '../../../Link'
+import { makeNumericCompareFunction, makeStringCompareFunction } from '../../../VariantList/sortUtilities'
 import { TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 const credibleSetTableColumns = [

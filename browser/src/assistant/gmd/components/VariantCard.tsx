@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Badge, Button, ExternalLink } from '@gnomad/ui'
-import AttributeList, { AttributeListItem } from '../../AttributeList'
+import AttributeList, { AttributeListItem } from '../../../AttributeList'
 
 const CardWrapper = styled.div`
   background: #ffffff;

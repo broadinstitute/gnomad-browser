@@ -1,6 +1,6 @@
 import React from 'react'
-import { Cell, NumericCell } from '../../tableCells'
-import { makeNumericCompareFunction, makeStringCompareFunction } from '../../VariantList/sortUtilities'
+import { Cell, NumericCell } from '../../../tableCells'
+import { makeNumericCompareFunction, makeStringCompareFunction } from '../../../VariantList/sortUtilities'
 
 const colocalizationTableColumns = [
   {

@@ -26,11 +26,11 @@ import CloseIcon from '@fortawesome/fontawesome-free/svgs/solid/times.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RobotIcon from '@fortawesome/fontawesome-free/svgs/solid/robot.svg'
 import '@copilotkit/react-ui/styles.css'
-import { ChatHistorySidebar } from './ChatHistorySidebar'
-import { ChatSettingsView } from './ChatSettingsView'
-import { CustomAssistantMessage } from './chat/CustomAssistantMessage'
-import Login from './auth/Login'
-import Logout from './auth/Logout'
+import { ChatHistorySidebar } from './components/ChatHistorySidebar'
+import { ChatSettingsView } from './components/settings/ChatSettingsView'
+import { CustomAssistantMessage } from './components/CustomAssistantMessage'
+import Login from '../auth/Login'
+import Logout from '../auth/Logout'
 // @ts-expect-error TS(2307)
 import SignOutIcon from '@fortawesome/fontawesome-free/svgs/solid/sign-out-alt.svg'
 

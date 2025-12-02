@@ -1,6 +1,6 @@
 import React from 'react'
-import { Cell } from '../../tableCells'
-import { makeStringCompareFunction } from '../../VariantList/sortUtilities'
+import { Cell } from '../../../tableCells'
+import { makeStringCompareFunction } from '../../../VariantList/sortUtilities'
 import { ExternalLink } from '@gnomad/ui'
 
 const getMondoId = (curie: string) => curie.replace('MONDO:', '')
