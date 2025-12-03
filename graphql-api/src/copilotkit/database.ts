@@ -50,6 +50,7 @@ export interface User {
   email?: string;
   name?: string;
   role?: 'user' | 'viewer' | 'admin';
+  allowAdminViewing?: boolean;
 }
 
 export class ChatDatabase {
@@ -217,7 +218,16 @@ export class ChatDatabase {
     threadId: string,
     userId: string,
     messages: any[],
-    model?: string
+    model?: string,
+    incrementalInputTokens?: number,
+    tokenBreakdown?: {
+      systemPromptTokens: number;
+      toolDefinitionTokens: number;
+      historyTokens: number;
+      toolResultTokens: number;
+      userMessageTokens: number;
+    },
+    toolUsage?: Map<string, { tokens: number; executionTime?: number }>
   ): Promise<void> {
     const client = await pool.connect();
 
@@ -242,6 +252,13 @@ export class ChatDatabase {
       `, [threadId, userId, model]);
 
       const messagesToSave = [...messages];
+
+      // Check if a system message already exists for this thread
+      const systemMessageExists = await client.query(
+        `SELECT 1 FROM chat_messages WHERE thread_id = $1 AND role = 'system' LIMIT 1`,
+        [threadId]
+      );
+      const hasSystemMessage = systemMessageExists.rows.length > 0;
 
       // Process tool results before saving messages
       for (const msg of messagesToSave) {
@@ -333,6 +350,12 @@ export class ChatDatabase {
           continue;
         }
 
+        // Save first system message but skip subsequent ones
+        // (they're repeated with every API request but only the first one is interesting)
+        if (msg.role === 'system' && hasSystemMessage) {
+          continue;
+        }
+
         try {
           // Serialize content safely
           let contentValue = null;
@@ -352,10 +375,42 @@ export class ChatDatabase {
             return value;
           });
 
-          await client.query(`
-            INSERT INTO chat_messages (thread_id, role, content, copilot_message_id, message_type, raw_message, tool_result_id)
-            VALUES ($1, $2, $3, $4, $5, $6, $7)
+          // Attribute incremental tokens to messages in this turn
+          // Input tokens go to user message, output tokens to assistant message
+          let inputTokensForMessage = 0;
+          let outputTokensForMessage = 0;
+          let systemPromptTokensForMessage: number | null = null;
+          let toolDefinitionTokensForMessage: number | null = null;
+          let historyTokensForMessage: number | null = null;
+          let toolResultTokensForMessage: number | null = null;
+          let userMessageTokensForMessage: number | null = null;
+
+          // Find the last user message to attribute input tokens and breakdown
+          const lastUserMessage = messagesToSave.slice().reverse().find(m => m.role === 'user');
+          if (msg.role === 'user' && msg.id === lastUserMessage?.id && incrementalInputTokens) {
+            inputTokensForMessage = incrementalInputTokens;
+
+            // Add breakdown for user messages
+            if (tokenBreakdown) {
+              systemPromptTokensForMessage = tokenBreakdown.systemPromptTokens;
+              toolDefinitionTokensForMessage = tokenBreakdown.toolDefinitionTokens;
+              historyTokensForMessage = tokenBreakdown.historyTokens;
+              toolResultTokensForMessage = tokenBreakdown.toolResultTokens;
+              userMessageTokensForMessage = tokenBreakdown.userMessageTokens;
+            }
+          }
+
+          // Output tokens will be set after we count them (done in onAfterRequest)
+          // For now, store them as metadata on the message object
+          if (msg.role === 'assistant' && (msg as any)._outputTokens) {
+            outputTokensForMessage = (msg as any)._outputTokens;
+          }
+
+          const result = await client.query(`
+            INSERT INTO chat_messages (thread_id, role, content, copilot_message_id, message_type, raw_message, tool_result_id, input_tokens, output_tokens, system_prompt_tokens, tool_definition_tokens, history_tokens, tool_result_tokens, user_message_tokens)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
             ON CONFLICT (thread_id, copilot_message_id) DO NOTHING
+            RETURNING id
           `, [
             threadId,
             msg.role || null,
@@ -364,7 +419,19 @@ export class ChatDatabase {
             msg.constructor?.name || msg.type || 'Unknown',
             rawMessageValue,
             (msg as any).toolResultId || null,
+            inputTokensForMessage,
+            outputTokensForMessage,
+            systemPromptTokensForMessage,
+            toolDefinitionTokensForMessage,
+            historyTokensForMessage,
+            toolResultTokensForMessage,
+            userMessageTokensForMessage,
           ]);
+
+          // Store message database ID for tool invocation tracking
+          if (result.rows.length > 0 && msg.role === 'user' && msg.id === lastUserMessage?.id) {
+            (msg as any)._dbId = result.rows[0].id;
+          }
         } catch (msgError: any) {
           logger.error({
             message: 'Failed to insert individual message',
@@ -374,6 +441,44 @@ export class ChatDatabase {
             error: msgError.message,
           });
           // Continue with other messages even if one fails
+        }
+      }
+
+      // Save tool invocations if provided
+      if (toolUsage && toolUsage.size > 0) {
+        const lastUserMessage = messagesToSave.slice().reverse().find(m => m.role === 'user');
+        const messageDbId = (lastUserMessage as any)?._dbId;
+
+        if (messageDbId) {
+          for (const [toolName, usage] of toolUsage.entries()) {
+            try {
+              await client.query(`
+                INSERT INTO tool_invocations (thread_id, message_id, tool_name, result_tokens, execution_time_ms)
+                VALUES ($1, $2, $3, $4, $5)
+              `, [
+                threadId,
+                messageDbId,
+                toolName,
+                usage.tokens,
+                usage.executionTime || null,
+              ]);
+
+              logger.info({
+                message: 'Tool invocation tracked',
+                threadId,
+                messageId: messageDbId,
+                toolName,
+                tokens: usage.tokens,
+              });
+            } catch (toolError: any) {
+              logger.error({
+                message: 'Failed to save tool invocation',
+                threadId,
+                toolName,
+                error: toolError.message,
+              });
+            }
+          }
         }
       }
 
@@ -447,6 +552,11 @@ export class ChatDatabase {
     await pool.query('DELETE FROM chat_threads WHERE thread_id = $1 AND user_id = $2', [threadId, userId]);
   }
 
+  // Delete thread as admin (no user check)
+  async deleteThreadAsAdmin(threadId: string): Promise<void> {
+    await pool.query('DELETE FROM chat_threads WHERE thread_id = $1', [threadId]);
+  }
+
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
@@ -474,10 +584,15 @@ export class ChatDatabase {
   // Get a single user by ID
   async getUser(userId: string): Promise<User | null> {
     const result = await pool.query(
-      'SELECT user_id as "userId", email, name, role FROM users WHERE user_id = $1',
+      'SELECT user_id as "userId", email, name, role, allow_admin_viewing as "allowAdminViewing" FROM users WHERE user_id = $1',
       [userId]
     );
     return result.rows[0] || null;
+  }
+
+  // Update a user's privacy preference
+  async updateUserPrivacy(userId: string, allowAdminViewing: boolean): Promise<void> {
+    await pool.query('UPDATE users SET allow_admin_viewing = $1 WHERE user_id = $2', [allowAdminViewing, userId]);
   }
 
   // Update a user's role
@@ -537,6 +652,183 @@ export class ChatDatabase {
     `;
     const result = await pool.query(query, [limit, offset]);
     return result.rows;
+  }
+
+  // Get all threads for admin view, respecting user privacy
+  async getAllThreadsForAdmin(limit = 50, offset = 0): Promise<any[]> {
+    const query = `
+      SELECT
+        t.id,
+        t.thread_id as "threadId",
+        t.title,
+        t.created_at as "createdAt",
+        t.updated_at as "updatedAt",
+        t.message_count as "messageCount",
+        t.total_input_tokens as "totalInputTokens",
+        t.total_output_tokens as "totalOutputTokens",
+        t.total_request_tokens as "totalRequestTokens",
+        t.model,
+        t.contexts,
+        u.user_id as "userId",
+        u.email as "userEmail",
+        u.name as "userName"
+      FROM chat_threads t
+      JOIN users u ON t.user_id = u.user_id
+      WHERE u.allow_admin_viewing = TRUE
+      ORDER BY t.updated_at DESC
+      LIMIT $1 OFFSET $2
+    `;
+    const result = await pool.query(query, [limit, offset]);
+    return result.rows;
+  }
+
+  // Get messages for a thread for admin view, checking privacy first
+  async getMessagesForAdmin(threadId: string): Promise<ChatMessage[] | null> {
+    const privacyCheck = await pool.query(`
+      SELECT u.allow_admin_viewing
+      FROM users u
+      JOIN chat_threads t ON u.user_id = t.user_id
+      WHERE t.thread_id = $1
+    `, [threadId]);
+
+    if (privacyCheck.rows.length === 0 || !privacyCheck.rows[0].allow_admin_viewing) {
+      return null; // User has opted out or thread not found
+    }
+
+    const result = await pool.query(`
+      SELECT
+        m.id,
+        m.thread_id as "threadId",
+        m.role,
+        m.content,
+        m.created_at as "createdAt",
+        m.input_tokens as "inputTokens",
+        m.output_tokens as "outputTokens",
+        m.system_prompt_tokens as "systemPromptTokens",
+        m.tool_definition_tokens as "toolDefinitionTokens",
+        m.history_tokens as "historyTokens",
+        m.user_message_tokens as "userMessageTokens",
+        m.message_type as "messageType",
+        m.raw_message as "rawMessage"
+      FROM chat_messages m
+      WHERE m.thread_id = $1
+      ORDER BY m.created_at ASC, m.sequence_number ASC
+    `, [threadId]);
+
+    return result.rows;
+  }
+
+  // === ANALYTICS METHODS ===
+
+  // Save an analytics event
+  async saveAnalyticsEvent(event: {
+    userId?: string;
+    threadId?: string;
+    eventType: string;
+    payload?: Record<string, any>;
+    sessionId?: string;
+  }): Promise<void> {
+    const { userId, threadId, eventType, payload, sessionId } = event;
+    const query = `
+      INSERT INTO analytics_events (user_id, thread_id, event_type, payload, session_id)
+      VALUES ($1, $2, $3, $4, $5)
+    `;
+    await pool.query(query, [
+      userId || null,
+      threadId || null,
+      eventType,
+      payload ? JSON.stringify(payload) : null,
+      sessionId || null,
+    ]);
+  }
+
+  // Get statistics for admin view
+  async getUsageStats(): Promise<any> {
+    const query = `
+      WITH thread_stats AS (
+        SELECT
+          model,
+          COUNT(DISTINCT thread_id) AS total_threads,
+          COUNT(DISTINCT user_id) AS total_users,
+          -- Use total_request_tokens if available, fallback to total_input_tokens for old data
+          SUM(COALESCE(total_request_tokens, total_input_tokens, 0)) AS total_request_tokens,
+          SUM(total_output_tokens) AS total_output_tokens
+        FROM chat_threads
+        WHERE model IS NOT NULL
+        GROUP BY model
+      ),
+      message_stats AS (
+        SELECT
+          t.model,
+          COUNT(m.id) AS total_messages,
+          SUM(m.system_prompt_tokens) AS total_system_prompt_tokens,
+          SUM(m.tool_definition_tokens) AS total_tool_definition_tokens,
+          SUM(m.history_tokens) AS total_history_tokens,
+          SUM(m.user_message_tokens) AS total_user_message_tokens
+        FROM chat_messages m
+        JOIN chat_threads t ON m.thread_id = t.thread_id
+        WHERE t.model IS NOT NULL
+        GROUP BY t.model
+      )
+      SELECT
+        ts.model,
+        ts.total_threads,
+        ts.total_users,
+        COALESCE(ms.total_messages, 0) AS total_messages,
+        ts.total_request_tokens,
+        ts.total_output_tokens,
+        COALESCE(ms.total_system_prompt_tokens, 0) AS total_system_prompt_tokens,
+        COALESCE(ms.total_tool_definition_tokens, 0) AS total_tool_definition_tokens,
+        COALESCE(ms.total_history_tokens, 0) AS total_history_tokens,
+        COALESCE(ms.total_user_message_tokens, 0) AS total_user_message_tokens
+      FROM thread_stats ts
+      LEFT JOIN message_stats ms ON ts.model = ms.model
+      ORDER BY ts.total_request_tokens DESC;
+    `;
+    const result = await pool.query(query);
+    return result.rows;
+  }
+
+  // Get suggestion click statistics
+  async getSuggestionStats(limit = 20): Promise<any[]> {
+    const query = `
+      SELECT
+        payload->>'title' as suggestion_title,
+        payload->>'message' as suggestion_message,
+        COUNT(*) as click_count
+      FROM analytics_events
+      WHERE event_type = 'suggestion_click'
+      GROUP BY payload->>'title', payload->>'message'
+      ORDER BY click_count DESC
+      LIMIT $1
+    `;
+    const result = await pool.query(query, [limit]);
+    return result.rows;
+  }
+
+  // Update token usage for a thread
+  async getThreadTokens(threadId: string): Promise<{ total_input_tokens: number; total_output_tokens: number } | null> {
+    const result = await pool.query(
+      `SELECT total_input_tokens, total_output_tokens FROM chat_threads WHERE thread_id = $1`,
+      [threadId]
+    );
+    return result.rows[0] || null;
+  }
+
+  async updateThreadTokenUsage(
+    threadId: string,
+    inputTokens: number,
+    outputTokens: number,
+    requestTokens?: number
+  ): Promise<void> {
+    await pool.query(
+      `UPDATE chat_threads
+       SET total_input_tokens = COALESCE(total_input_tokens, 0) + $1,
+           total_output_tokens = COALESCE(total_output_tokens, 0) + $2,
+           total_request_tokens = COALESCE(total_request_tokens, 0) + $3
+       WHERE thread_id = $4`,
+      [inputTokens, outputTokens, requestTokens || 0, threadId]
+    );
   }
 }
 

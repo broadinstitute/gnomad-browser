@@ -10,6 +10,7 @@ import {
 } from '@copilotkit/runtime';
 import { auth } from 'express-oauth2-jwt-bearer';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { LocalMCPClient } from './mcp-client';
 import { chatDb, User } from './database';
 import logger from '../logger';
@@ -46,17 +47,33 @@ const verifyJwt = async (token: string) => {
   return payload;
 };
 
-// Dynamic adapter that selects the model based on forwardedParameters
+// Store token usage per thread for later retrieval
+// Now includes the cumulative total before this request for delta calculation
+const threadTokenUsage = new Map<string, {
+  inputTokens: number;
+  outputTokens: number;
+  previousCumulativeInput: number; // For calculating incremental cost
+  systemPromptTokens: number;
+  toolDefinitionTokens: number;
+  historyTokens: number;
+  toolResultTokens: number;
+  userMessageTokens: number;
+  toolUsage: Map<string, { tokens: number; executionTime?: number }>;
+}>();
+
+// Dynamic adapter that selects the model based on forwardedParameters and captures token usage
 class DynamicGeminiAdapter implements CopilotServiceAdapter {
   async process(
     request: CopilotRuntimeChatCompletionRequest,
   ): Promise<CopilotRuntimeChatCompletionResponse> {
     // Get the model from forwardedParameters, defaulting to gemini-2.5-flash
     const model = request.forwardedParameters?.model || 'gemini-2.5-flash';
+    const threadId = request.threadId;
 
     logger.info({
       message: 'Using model for CopilotKit request',
       model,
+      threadId,
     });
 
     // Create a new GoogleGenerativeAIAdapter with the selected model
@@ -66,7 +83,203 @@ class DynamicGeminiAdapter implements CopilotServiceAdapter {
     });
 
     // Delegate to the adapter
-    return adapter.process(request);
+    const response = await adapter.process(request);
+
+    // Count tokens using the Gemini countTokens API
+    if (threadId) {
+      try {
+        // Get the thread's current cumulative input tokens to calculate delta
+        const threadResult = await chatDb.getThreadTokens(threadId);
+        const previousCumulativeInput = threadResult?.total_input_tokens || 0;
+
+        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || '');
+        const geminiModel = genAI.getGenerativeModel({ model });
+
+        // Helper to map CopilotKit messages to Gemini's Content format
+        const toGeminiContent = (msg: any) => {
+          let content = '';
+          if (msg.content) {
+            content = msg.content;
+          } else if (msg.textMessage) {
+            content = msg.textMessage.content;
+          } else if (msg.result) {
+            // For tool results, extract only the textContent for the LLM
+            // The structuredContent is for frontend display only
+            if (typeof msg.result === 'string') {
+              content = msg.result;
+            } else if (msg.result.textContent) {
+              // Extract text from MCP textContent array
+              content = Array.isArray(msg.result.textContent)
+                ? msg.result.textContent.map((item: any) => item.text || '').join('\n')
+                : String(msg.result.textContent);
+            } else {
+              // Fallback: serialize the whole result (but this shouldn't happen for MCP tools)
+              content = JSON.stringify(msg.result);
+            }
+          }
+          return { role: msg.role === 'assistant' ? 'model' : 'user', parts: [{ text: content }] };
+        };
+
+        // Map actions to Gemini's Tool format
+        const tools = request.actions && request.actions.length > 0
+          ? [
+              {
+                functionDeclarations: request.actions.map((action: any) => ({
+                  name: action.name,
+                  description: action.description,
+                  parameters: action.parameters?.jsonSchema || action.parameters || {},
+                })),
+              },
+            ]
+          : [];
+
+        // Separate messages for breakdown
+        const systemMessage = request.messages.find((msg: any) => msg.role === 'system');
+        const lastUserMessage = [...request.messages].reverse().find((msg: any) => msg.role === 'user');
+        const allHistoryMessages = request.messages.filter(
+          (msg: any) => msg.role !== 'system' && msg !== lastUserMessage
+        );
+
+        // Separate tool results from conversation history
+        const toolResultMessages = allHistoryMessages.filter(
+          (msg: any) => msg.constructor?.name === 'ResultMessage' || msg.type === 'ResultMessage'
+        );
+        const conversationHistoryMessages = allHistoryMessages.filter(
+          (msg: any) => msg.constructor?.name !== 'ResultMessage' && msg.type !== 'ResultMessage'
+        );
+
+        const systemContent = systemMessage ? [toGeminiContent(systemMessage)] : [];
+        const historyContent = conversationHistoryMessages.map(toGeminiContent);
+        const toolResultContent = toolResultMessages.map(toGeminiContent);
+        const userContent = lastUserMessage ? [toGeminiContent(lastUserMessage)] : [];
+
+        // Count each component
+        let systemPromptTokens = 0;
+        let historyTokens = 0;
+        let toolResultTokens = 0;
+        let userMessageTokens = 0;
+        let toolDefinitionTokens = 0;
+
+        // Track per-tool token usage
+        const toolUsageMap = new Map<string, { tokens: number; executionTime?: number }>();
+
+        try {
+          systemPromptTokens = systemContent.length > 0 ? (await geminiModel.countTokens({ contents: systemContent })).totalTokens : 0;
+        } catch (error: any) {
+          logger.warn({ message: 'Failed to count system prompt tokens', error: error.message });
+        }
+
+        try {
+          historyTokens = historyContent.length > 0 ? (await geminiModel.countTokens({ contents: historyContent })).totalTokens : 0;
+        } catch (error: any) {
+          logger.warn({ message: 'Failed to count history tokens', error: error.message });
+        }
+
+        // Count tool result tokens separately and track per-tool usage
+        try {
+          if (toolResultContent.length > 0) {
+            // Count total tool result tokens
+            toolResultTokens = (await geminiModel.countTokens({ contents: toolResultContent })).totalTokens;
+
+            // Count individual tool tokens for detailed tracking
+            for (const msg of toolResultMessages) {
+              try {
+                const toolContent = toGeminiContent(msg);
+                const tokenCount = (await geminiModel.countTokens({ contents: [toolContent] })).totalTokens;
+
+                // Find the tool name from the corresponding ActionExecutionMessage
+                const actionId = (msg as any).actionExecutionId;
+                const actionMessage = request.messages.find(
+                  (m: any) => m.id === actionId && (m.constructor?.name === 'ActionExecutionMessage' || m.type === 'ActionExecutionMessage')
+                );
+                const toolName = actionMessage?.name || actionMessage?.toolName || 'unknown_tool';
+
+                toolUsageMap.set(toolName, {
+                  tokens: tokenCount,
+                  executionTime: undefined, // Will be filled if available
+                });
+              } catch (perToolError: any) {
+                logger.warn({
+                  message: 'Failed to count individual tool result tokens',
+                  error: perToolError.message,
+                });
+              }
+            }
+          }
+        } catch (error: any) {
+          logger.warn({ message: 'Failed to count tool result tokens', error: error.message });
+        }
+
+        try {
+          userMessageTokens = userContent.length > 0 ? (await geminiModel.countTokens({ contents: userContent })).totalTokens : 0;
+        } catch (error: any) {
+          logger.warn({ message: 'Failed to count user message tokens', error: error.message });
+        }
+
+        try {
+          if (tools.length > 0) {
+            const toolsText = JSON.stringify(tools, null, 2);
+            const toolTokenResult = await geminiModel.countTokens(toolsText);
+            toolDefinitionTokens = toolTokenResult.totalTokens;
+          }
+        } catch (toolError: any) {
+          logger.warn({
+            message: 'Failed to count tool definition tokens',
+            error: toolError.message,
+          });
+        }
+
+        // Count total request tokens - sum all components
+        // Note: We sum the components rather than counting them together because
+        // the Google Generative AI SDK's countTokens method handles them separately
+        const cumulativeInputTokens = systemPromptTokens + historyTokens + toolResultTokens + userMessageTokens + toolDefinitionTokens;
+
+        // Calculate incremental cost for this turn
+        const incrementalInputTokens = cumulativeInputTokens - previousCumulativeInput;
+
+        // Output tokens will be counted in onAfterRequest when we have the output messages
+        const outputTokens = 0;
+
+        threadTokenUsage.set(threadId, {
+          inputTokens: cumulativeInputTokens,
+          outputTokens,
+          previousCumulativeInput,
+          systemPromptTokens,
+          toolDefinitionTokens,
+          historyTokens,
+          toolResultTokens,
+          userMessageTokens,
+          toolUsage: toolUsageMap,
+        });
+
+        logger.info({
+          message: 'Token counting for this request',
+          threadId,
+          systemPromptTokens,
+          historyTokens,
+          toolResultTokens,
+          userMessageTokens,
+          toolDefinitionTokens,
+          cumulativeInputTokens,
+          previousCumulativeInput,
+          incrementalInputTokens,
+          messagesIncluded: request.messages.length,
+          actionsIncluded: request.actions?.length || 0,
+          toolInvocations: Array.from(toolUsageMap.entries()).map(([name, usage]) => ({
+            tool: name,
+            tokens: usage.tokens,
+          })),
+        });
+      } catch (error: any) {
+        logger.error({
+          message: 'Failed to count tokens using Gemini API',
+          threadId,
+          error: error.message,
+        });
+      }
+    }
+
+    return response;
   }
 }
 
@@ -264,6 +477,13 @@ export function mountCopilotKit(app: Application) {
           ? (threadUserIdMap.get(threadId) ?? 'anonymous')
           : 'anonymous';
 
+        // Log properties to understand what token usage data is available
+        logger.info({
+          message: 'onAfterRequest called with properties',
+          threadId,
+          properties: JSON.stringify(properties, null, 2),
+        });
+
         logger.info({
           message: 'onAfterRequest called',
           threadId,
@@ -301,13 +521,109 @@ export function mountCopilotKit(app: Application) {
           // Get model from forwardedParameters if available
           const model = (properties as any)?.forwardedParameters?.model;
 
-          await chatDb.saveMessages(threadId, userId, allMessages, model);
+          // Get token usage for this turn to attribute to messages
+          const tokenUsageForTurn = threadTokenUsage.get(threadId);
+          const incrementalInputTokens = tokenUsageForTurn
+            ? tokenUsageForTurn.inputTokens - tokenUsageForTurn.previousCumulativeInput
+            : 0;
+
+          // Extract token breakdown for detailed tracking
+          const tokenBreakdown = tokenUsageForTurn ? {
+            systemPromptTokens: tokenUsageForTurn.systemPromptTokens || 0,
+            toolDefinitionTokens: tokenUsageForTurn.toolDefinitionTokens || 0,
+            historyTokens: tokenUsageForTurn.historyTokens || 0,
+            toolResultTokens: tokenUsageForTurn.toolResultTokens || 0,
+            userMessageTokens: tokenUsageForTurn.userMessageTokens || 0,
+          } : undefined;
+
+          // Extract per-tool usage for tracking
+          const toolUsage = tokenUsageForTurn?.toolUsage;
+
+          // Count output tokens and attach to assistant message
+          if (outputMessages && outputMessages.length > 0) {
+            try {
+              const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || '');
+              const model = (properties as any)?.forwardedParameters?.model || 'gemini-2.5-flash';
+              const geminiModel = genAI.getGenerativeModel({ model });
+
+              // Extract output text from messages
+              const outputText = outputMessages
+                .map((msg: any) => {
+                  if (msg.content) return msg.content;
+                  if (msg.textMessage) return msg.textMessage.content;
+                  return '';
+                })
+                .filter(Boolean)
+                .join('\n');
+
+              if (outputText) {
+                const outputTokenResult = await geminiModel.countTokens(outputText);
+                const outputTokens = outputTokenResult.totalTokens;
+
+                // Attach output tokens to the assistant message
+                const assistantMessage = outputMessages.find((m: any) => m.role === 'assistant');
+                if (assistantMessage) {
+                  (assistantMessage as any)._outputTokens = outputTokens;
+                }
+
+                logger.info({
+                  message: 'Counted output tokens for this turn',
+                  threadId,
+                  outputTokens,
+                });
+              }
+            } catch (error: any) {
+              logger.error({
+                message: 'Failed to count output tokens',
+                threadId,
+                error: error.message,
+              });
+            }
+          }
+
+          await chatDb.saveMessages(threadId, userId, allMessages, model, incrementalInputTokens, tokenBreakdown, toolUsage);
 
           logger.info({
             message: 'Chat messages saved to PostgreSQL',
             threadId,
             messageCount: allMessages.length,
           });
+
+          // Update thread-level cumulative token totals
+          // incrementalInputTokens was already counted, get output tokens from the message
+          const assistantMessage = outputMessages?.find((m: any) => m.role === 'assistant');
+          const outputTokensForTurn = (assistantMessage as any)?._outputTokens || 0;
+
+          // Get full request token count for this turn (reuse tokenUsageForTurn from above)
+          const fullRequestTokensForTurn = tokenUsageForTurn?.inputTokens || 0;
+
+          if (incrementalInputTokens > 0 || outputTokensForTurn > 0) {
+            try {
+              await chatDb.updateThreadTokenUsage(
+                threadId,
+                incrementalInputTokens,
+                outputTokensForTurn,
+                fullRequestTokensForTurn
+              );
+
+              logger.info({
+                message: 'Thread token totals updated',
+                threadId,
+                incrementalInput: incrementalInputTokens,
+                incrementalOutput: outputTokensForTurn,
+                fullRequestTokens: fullRequestTokensForTurn,
+              });
+            } catch (tokenError: any) {
+              logger.error({
+                message: 'Failed to update thread token usage',
+                threadId,
+                error: tokenError.message,
+              });
+            }
+          }
+
+          // Clean up the token usage map
+          threadTokenUsage.delete(threadId);
 
           // Clean up the map entry after successful persistence
           threadUserIdMap.delete(threadId);
@@ -399,6 +715,24 @@ export function mountCopilotKit(app: Application) {
       return res.status(404).json({ error: 'User not found' });
     }
     res.json(req.user);
+  });
+
+  // Update current user preferences
+  app.put('/api/copilotkit/users/me/preferences', cors(corsOptions), checkJwt, addUserToRequest, async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+      const { allowAdminViewing } = req.body;
+      if (typeof allowAdminViewing !== 'boolean') {
+        return res.status(400).json({ error: 'Invalid value for allowAdminViewing' });
+      }
+      await chatDb.updateUserPrivacy(req.user.userId, allowAdminViewing);
+      res.json({ success: true });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to update user preferences', error: error.message });
+      res.status(500).json({ error: 'Failed to update user preferences' });
+    }
   });
 
   // Update a user's role (admins only)
@@ -596,6 +930,122 @@ export function mountCopilotKit(app: Application) {
     } catch (error: any) {
       logger.error({ message: 'Failed to get users', error: error.message });
       res.status(500).json({ error: 'Failed to get users' });
+    }
+  });
+
+  // === ANALYTICS ENDPOINTS ===
+
+  // Save an analytics event
+  app.post('/api/copilotkit/analytics/event', cors(corsOptions), async (req: Request, res: Response) => {
+    try {
+      let userId: string | undefined;
+      if (isAuthEnabled) {
+        try {
+          const authHeader = req.headers.authorization;
+          if (authHeader) {
+            const token = authHeader.substring(7); // Remove "Bearer "
+            const payload = await verifyJwt(token);
+            userId = payload?.sub as string;
+          }
+        } catch (error) {
+          // If token verification fails, continue without userId
+          logger.warn({ message: 'Failed to verify JWT for analytics event', error });
+        }
+      }
+
+      const { threadId, eventType, payload, sessionId } = req.body;
+
+      if (!eventType) {
+        return res.status(400).json({ error: 'eventType is required' });
+      }
+
+      await chatDb.saveAnalyticsEvent({
+        userId,
+        threadId,
+        eventType,
+        payload,
+        sessionId,
+      });
+
+      res.status(201).json({ success: true });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to save analytics event', error: error.message });
+      res.status(500).json({ error: 'Failed to save analytics event' });
+    }
+  });
+
+  // Get usage statistics (admin only)
+  app.get('/api/copilotkit/admin/stats', cors(corsOptions), checkJwt, addUserToRequest, isAdmin, async (req: Request, res: Response) => {
+    try {
+      const stats = await chatDb.getUsageStats();
+      res.json(stats);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get usage stats', error: error.message });
+      res.status(500).json({ error: 'Failed to get usage stats' });
+    }
+  });
+
+  // Get suggestion click statistics (admin only)
+  app.get('/api/copilotkit/admin/stats/suggestions', cors(corsOptions), checkJwt, addUserToRequest, isAdmin, async (req: Request, res: Response) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 20;
+      const stats = await chatDb.getSuggestionStats(limit);
+      res.json(stats);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get suggestion stats', error: error.message });
+      res.status(500).json({ error: 'Failed to get suggestion stats' });
+    }
+  });
+
+  // === ADMIN THREAD VIEWING ENDPOINTS ===
+
+  // List all viewable threads for admins
+  app.get('/api/copilotkit/admin/threads', cors(corsOptions), checkJwt, addUserToRequest, isAdmin, async (req: Request, res: Response) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 50;
+      const offset = parseInt(req.query.offset as string) || 0;
+      const threads = await chatDb.getAllThreadsForAdmin(limit, offset);
+      res.json(threads);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get all threads for admin', error: error.message });
+      res.status(500).json({ error: 'Failed to get threads' });
+    }
+  });
+
+  // Get messages for a specific thread for admins
+  app.get('/api/copilotkit/admin/threads/:threadId/messages', cors(corsOptions), checkJwt, addUserToRequest, isAdmin, async (req: Request, res: Response) => {
+    try {
+      const { threadId } = req.params;
+      const messages = await chatDb.getMessagesForAdmin(threadId);
+      if (messages === null) {
+        return res.status(403).json({ error: 'Access to this thread is denied by user privacy settings.' });
+      }
+      res.json(messages);
+    } catch (error: any) {
+      logger.error({ message: 'Failed to get messages for admin', error: error.message });
+      res.status(500).json({ error: 'Failed to get messages' });
+    }
+  });
+
+  // Delete a thread (admin only - can delete any thread)
+  app.delete('/api/copilotkit/admin/threads/:threadId', cors(corsOptions), checkJwt, addUserToRequest, isAdmin, async (req: Request, res: Response) => {
+    try {
+      const { threadId } = req.params;
+
+      // Admins can delete any thread, so we pass a special flag or handle it differently
+      // We'll use the deleteThread method but need to bypass the user check
+      await chatDb.deleteThreadAsAdmin(threadId);
+
+      logger.info({
+        message: 'Admin deleted thread',
+        threadId,
+        adminUserId: req.user?.userId,
+      });
+
+      res.json({ success: true });
+    } catch (error: any) {
+      logger.error({ message: 'Failed to delete thread as admin', error: error.message });
+      res.status(500).json({ error: 'Failed to delete thread' });
     }
   });
 

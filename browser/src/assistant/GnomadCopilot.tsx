@@ -485,6 +485,65 @@ const AuthenticatedChatView = ({
   threadId: string
 }) => {
   const { isAuthenticated, isLoading, error, logout, getAccessTokenSilently } = useAuth0()
+  const chatContainerRef = useRef<HTMLDivElement>(null)
+
+  // Track suggestion clicks
+  const trackSuggestionClick = async (suggestion: { title: string; message: string }) => {
+    try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      }
+
+      // Try to get token, but don't fail if unavailable
+      try {
+        const token = await getAccessTokenSilently()
+        headers.Authorization = `Bearer ${token}`
+      } catch (e) {
+        // Continue without token - analytics endpoint will work without userId
+      }
+
+      await fetch('/api/copilotkit/analytics/event', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          threadId,
+          eventType: 'suggestion_click',
+          payload: {
+            title: suggestion.title,
+            message: suggestion.message,
+          },
+        }),
+      })
+    } catch (error) {
+      console.error('Failed to track suggestion click:', error)
+    }
+  }
+
+  // Add click listener for suggestion pills
+  React.useEffect(() => {
+    const handleSuggestionClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      // Check if clicked element is a suggestion button
+      const suggestionButton = target.closest('.suggestion')
+      if (suggestionButton && suggestionButton instanceof HTMLElement) {
+        // Extract the title from the button text
+        const buttonText = suggestionButton.textContent || ''
+        // Find matching suggestion from our suggestions array
+        const matchedSuggestion = suggestions.find(s => s.title === buttonText)
+        if (matchedSuggestion) {
+          trackSuggestionClick(matchedSuggestion)
+        }
+      }
+    }
+
+    const container = chatContainerRef.current
+    if (container) {
+      container.addEventListener('click', handleSuggestionClick)
+      return () => {
+        container.removeEventListener('click', handleSuggestionClick)
+      }
+    }
+  }, [suggestions, threadId])
 
   const submitFeedback = async (feedback: any) => {
     try {
@@ -539,7 +598,7 @@ const AuthenticatedChatView = ({
   }
 
   return (
-    <>
+    <div ref={chatContainerRef} style={{ display: 'contents' }}>
       {isLoadingHistory ? (
         <ChatLoadingState>Loading conversation...</ChatLoadingState>
       ) : (
@@ -562,7 +621,7 @@ const AuthenticatedChatView = ({
       >
         <img src={SignOutIcon} alt="Log Out" />
       </LogoutButton>
-    </>
+    </div>
   )
 }
 

@@ -77,6 +77,11 @@ const ThreadLink = styled.a`
   }
 `
 
+const NoThreadText = styled.span`
+  color: #999;
+  font-style: italic;
+`
+
 // Helper function to display user information
 const formatUserDisplay = (item: any): string => {
   // Prefer email if available
@@ -169,11 +174,11 @@ export const ChatFeedbackView = () => {
               </Td>
               <Td>
                 {item.threadId ? (
-                  <ThreadLink href={`#thread=${item.threadId}`}>
+                  <ThreadLink href={`/gene/ENSG00000115648?chat=fullscreen&thread=${item.threadId}`}>
                     {item.threadTitle || item.threadId.substring(0, 8)}
                   </ThreadLink>
                 ) : (
-                  '-'
+                  <NoThreadText>N/A</NoThreadText>
                 )}
               </Td>
               <Td

@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useAuth0 } from '@auth0/auth0-react'
-import { Button, PrimaryButton } from '@gnomad/ui'
+import { Button, PrimaryButton, Checkbox } from '@gnomad/ui'
 // @ts-expect-error TS(2307)
 import SignOutIcon from '@fortawesome/fontawesome-free/svgs/solid/sign-out-alt.svg'
+import { ChatModal } from '../ChatModal'
+import { useCurrentUser } from '../../../auth/useCurrentUser'
 
 const SettingsContainer = styled.div`
   display: flex;
@@ -149,6 +151,18 @@ const LogoutContainer = styled.div`
   border-top: 1px solid #e0e0e0;
 `
 
+const FeedbackContainer = styled.div`
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+`
+
+const PrivacyContainer = styled.div`
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+`
+
 interface SavedPrompt {
   id: string
   name: string
@@ -204,11 +218,71 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
 }) => {
   const activeSection = (activeSectionProp || 'general') as SettingsSection
   const [promptName, setPromptName] = useState('')
-  const { logout, isAuthenticated } = useAuth0()
+  const { logout, isAuthenticated, getAccessTokenSilently } = useAuth0()
+  const { user: currentUser } = useCurrentUser()
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false)
+  const [feedbackText, setFeedbackText] = useState('')
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false)
+  const [allowAdminViewing, setAllowAdminViewing] = useState(true)
+
+  useEffect(() => {
+    if (currentUser) {
+      setAllowAdminViewing(currentUser.allowAdminViewing ?? true)
+    }
+  }, [currentUser])
 
   const handleSaveClick = () => {
     onSavePrompt(promptName)
     setPromptName('')
+  }
+
+  const handlePrivacyChange = async (isChecked: boolean) => {
+    setAllowAdminViewing(isChecked)
+    try {
+      const token = await getAccessTokenSilently()
+      await fetch('/api/copilotkit/users/me/preferences', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ allowAdminViewing: isChecked }),
+      })
+    } catch (error) {
+      console.error('Failed to update privacy preference:', error)
+      // Revert UI on error
+      setAllowAdminViewing(!isChecked)
+    }
+  }
+
+  const handleFeedbackSubmit = async () => {
+    if (!feedbackText.trim()) return
+
+    setIsSubmittingFeedback(true)
+    try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      }
+      if (isAuthEnabled && isAuthenticated) {
+        const token = await getAccessTokenSilently()
+        headers.Authorization = `Bearer ${token}`
+      }
+      await fetch('/api/copilotkit/feedback', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          source: 'general',
+          feedbackText,
+        }),
+      })
+      setIsFeedbackModalOpen(false)
+      setFeedbackText('')
+    } catch (error) {
+      console.error('Failed to submit general feedback:', error)
+      alert('Failed to submit feedback. Please try again.')
+    } finally {
+      setIsSubmittingFeedback(false)
+    }
   }
 
   const renderGeneralSection = () => (
@@ -290,6 +364,30 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
       )}
 
       {isAuthEnabled && isAuthenticated && (
+        <PrivacyContainer>
+          <SettingLabel>Privacy</SettingLabel>
+          <p style={{ fontSize: '13px', color: '#666', margin: '4px 0 12px' }}>
+            To help us improve the gnomAD Assistant, you can allow administrators to review your conversation history. Your data is not used for any other purpose.
+          </p>
+          <Checkbox
+            id="privacy-setting"
+            checked={allowAdminViewing}
+            onChange={handlePrivacyChange}
+          >
+            Allow admin viewing of conversation history
+          </Checkbox>
+        </PrivacyContainer>
+      )}
+
+      <FeedbackContainer>
+        <SettingLabel>Feedback</SettingLabel>
+        <p style={{ fontSize: '13px', color: '#666', margin: '4px 0 12px' }}>
+          Have feedback about the gnomAD Assistant? We'd love to hear it!
+        </p>
+        <Button onClick={() => setIsFeedbackModalOpen(true)}>Provide General Feedback</Button>
+      </FeedbackContainer>
+
+      {isAuthEnabled && isAuthenticated && (
         <LogoutContainer>
           <Button
             onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
@@ -344,6 +442,30 @@ export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
           {renderSectionContent()}
         </SettingsContent>
       </SettingsBody>
+      {isFeedbackModalOpen && (
+        <ChatModal
+          title="Provide General Feedback"
+          onRequestClose={() => setIsFeedbackModalOpen(false)}
+          footer={
+            <>
+              <Button onClick={() => setIsFeedbackModalOpen(false)} disabled={isSubmittingFeedback}>
+                Cancel
+              </Button>
+              <PrimaryButton onClick={handleFeedbackSubmit} disabled={isSubmittingFeedback || !feedbackText.trim()}>
+                {isSubmittingFeedback ? 'Submitting...' : 'Submit'}
+              </PrimaryButton>
+            </>
+          }
+        >
+          <TextArea
+            aria-label="Feedback input"
+            value={feedbackText}
+            onChange={(e) => setFeedbackText(e.target.value)}
+            placeholder="Tell us about your experience with the assistant..."
+            autoFocus
+          />
+        </ChatModal>
+      )}
     </SettingsContainer>
   )
 }

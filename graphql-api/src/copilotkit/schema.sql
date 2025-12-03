@@ -8,8 +8,9 @@ CREATE TABLE chat_threads (
 
   -- Analytics fields
   message_count INTEGER DEFAULT 0,
-  total_input_tokens INTEGER DEFAULT 0,
-  total_output_tokens INTEGER DEFAULT 0,
+  total_input_tokens INTEGER DEFAULT 0,        -- Cumulative incremental input tokens (new tokens per turn)
+  total_output_tokens INTEGER DEFAULT 0,       -- Cumulative output tokens
+  total_request_tokens BIGINT DEFAULT 0,       -- Cumulative sum of full request sizes (all API calls)
   model VARCHAR(100),
 
   -- Optional user tracking (for future)
@@ -42,6 +43,13 @@ CREATE TABLE chat_messages (
   -- Analytics
   input_tokens INTEGER,
   output_tokens INTEGER,
+
+  -- Detailed token breakdown (for user messages)
+  system_prompt_tokens INTEGER,
+  tool_definition_tokens INTEGER,
+  history_tokens INTEGER,
+  user_message_tokens INTEGER,
+  tool_result_tokens INTEGER,  -- Tokens consumed by tool results in this request
 
   -- Store full message object for debugging
   raw_message JSONB,
@@ -100,7 +108,8 @@ CREATE TABLE users (
   name VARCHAR(255),
   role user_role NOT NULL DEFAULT 'user',
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  last_seen_at TIMESTAMPTZ DEFAULT NOW()
+  last_seen_at TIMESTAMPTZ DEFAULT NOW(),
+  allow_admin_viewing BOOLEAN NOT NULL DEFAULT TRUE
 );
 
 -- Index for email lookups
@@ -123,3 +132,43 @@ CREATE TABLE chat_feedback (
 CREATE INDEX idx_feedback_thread ON chat_feedback(thread_id);
 CREATE INDEX idx_feedback_user ON chat_feedback(user_id) WHERE user_id IS NOT NULL;
 CREATE INDEX idx_feedback_source ON chat_feedback(source);
+
+-- Tool Invocations (for per-tool usage tracking and analytics)
+CREATE TABLE tool_invocations (
+  id SERIAL PRIMARY KEY,
+  thread_id VARCHAR(255) REFERENCES chat_threads(thread_id) ON DELETE CASCADE,
+  message_id UUID REFERENCES chat_messages(id) ON DELETE CASCADE,
+  tool_name TEXT NOT NULL,
+  result_tokens INTEGER,
+  execution_time_ms INTEGER,
+  arguments JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Indexes for tool usage queries
+CREATE INDEX idx_tool_invocations_thread ON tool_invocations(thread_id);
+CREATE INDEX idx_tool_invocations_tool_name ON tool_invocations(tool_name);
+CREATE INDEX idx_tool_invocations_created_at ON tool_invocations(created_at);
+
+-- Comments for tool_invocations table
+COMMENT ON TABLE tool_invocations IS 'Per-tool usage tracking for analytics and cost monitoring';
+COMMENT ON COLUMN tool_invocations.tool_name IS 'Name of the MCP tool that was invoked (e.g., get_juha_credible_sets_by_gene)';
+COMMENT ON COLUMN tool_invocations.result_tokens IS 'Number of tokens consumed by this tool''s output';
+COMMENT ON COLUMN tool_invocations.execution_time_ms IS 'Time taken to execute the tool in milliseconds';
+COMMENT ON COLUMN tool_invocations.arguments IS 'Arguments passed to the tool (for debugging and analysis)';
+
+-- Analytics Events (for tracking user interactions)
+CREATE TABLE analytics_events (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  user_id VARCHAR(255) REFERENCES users(user_id) ON DELETE SET NULL,
+  thread_id VARCHAR(255) REFERENCES chat_threads(thread_id) ON DELETE SET NULL,
+  event_type VARCHAR(100) NOT NULL, -- e.g., 'suggestion_click', 'search', etc.
+  payload JSONB, -- Flexible storage for event-specific data
+  session_id VARCHAR(255)
+);
+
+-- Indexes for analytics queries
+CREATE INDEX idx_analytics_event_type ON analytics_events(event_type);
+CREATE INDEX idx_analytics_user ON analytics_events(user_id) WHERE user_id IS NOT NULL;
+CREATE INDEX idx_analytics_created_at ON analytics_events(created_at DESC);

@@ -6,6 +6,7 @@ interface User {
   email?: string
   name?: string
   role?: 'user' | 'viewer' | 'admin'
+  allowAdminViewing?: boolean
 }
 
 export const useCurrentUser = () => {

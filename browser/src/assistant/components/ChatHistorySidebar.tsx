@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useAuth0 } from '@auth0/auth0-react'
+import { Button, PrimaryButton } from '@gnomad/ui'
+// @ts-expect-error TS(2307)
+import CommentIcon from '@fortawesome/fontawesome-free/svgs/solid/comment-dots.svg'
+import { ChatModal } from './ChatModal'
 
 interface Thread {
   threadId: string
@@ -101,6 +105,44 @@ const DeleteButton = styled.button`
   }
 `
 
+const ThreadFeedbackButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+    display: block;
+    filter: invert(50%);
+  }
+`
+
+const FeedbackTextArea = styled.textarea`
+  width: 100%;
+  min-height: 100px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #0d79d0;
+  }
+`
+
 const ThreadTitle = styled.div`
   font-size: 13px;
   font-weight: 500;
@@ -179,6 +221,9 @@ export function ChatHistorySidebar({
   const [threads, setThreads] = useState<Thread[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [feedbackModalThreadId, setFeedbackModalThreadId] = useState<string | null>(null)
+  const [feedbackText, setFeedbackText] = useState('')
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false)
 
   // Fetch threads function (extracted so it can be called manually)
   const fetchThreads = React.useCallback(async (isInitialLoad = false) => {
@@ -286,6 +331,37 @@ export function ChatHistorySidebar({
     return threads
   }, [threads, currentThreadId, currentContext, currentMessageCount])
 
+  const handleFeedbackSubmit = async () => {
+    if (!feedbackText.trim() || !feedbackModalThreadId) return
+
+    setIsSubmittingFeedback(true)
+    try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      }
+      if (isAuthEnabled && isAuthenticated) {
+        const token = await getAccessTokenSilently()
+        headers.Authorization = `Bearer ${token}`
+      }
+      await fetch('/api/copilotkit/feedback', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          threadId: feedbackModalThreadId,
+          source: 'thread',
+          feedbackText,
+        }),
+      })
+      setFeedbackModalThreadId(null)
+      setFeedbackText('')
+    } catch (error) {
+      console.error('Failed to submit thread feedback:', error)
+      alert('Failed to submit feedback. Please try again.')
+    } finally {
+      setIsSubmittingFeedback(false)
+    }
+  }
+
   // Handle thread deletion
   const handleDeleteThread = async (threadId: string, e: React.MouseEvent) => {
     // Prevent the click from bubbling up to the thread item
@@ -358,15 +434,50 @@ export function ChatHistorySidebar({
                 ))}
               </ContextList>
             </ThreadContent>
-            <DeleteButton
-              onClick={(e) => handleDeleteThread(thread.threadId, e)}
-              title="Delete conversation"
-            >
-              Delete
-            </DeleteButton>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+              <DeleteButton
+                onClick={(e) => handleDeleteThread(thread.threadId, e)}
+                title="Delete conversation"
+              >
+                Delete
+              </DeleteButton>
+              <ThreadFeedbackButton
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setFeedbackModalThreadId(thread.threadId)
+                }}
+                title="Provide feedback on this conversation"
+              >
+                <img src={CommentIcon} alt="Feedback" />
+              </ThreadFeedbackButton>
+            </div>
           </ThreadItem>
         ))}
       </ThreadList>
+      {feedbackModalThreadId && (
+        <ChatModal
+          title="Provide Feedback on Conversation"
+          onRequestClose={() => setFeedbackModalThreadId(null)}
+          footer={
+            <>
+              <Button onClick={() => setFeedbackModalThreadId(null)} disabled={isSubmittingFeedback}>
+                Cancel
+              </Button>
+              <PrimaryButton onClick={handleFeedbackSubmit} disabled={isSubmittingFeedback || !feedbackText.trim()}>
+                {isSubmittingFeedback ? 'Submitting...' : 'Submit'}
+              </PrimaryButton>
+            </>
+          }
+        >
+          <FeedbackTextArea
+            aria-label="Feedback input"
+            value={feedbackText}
+            onChange={(e) => setFeedbackText(e.target.value)}
+            placeholder="Tell us what you think about this conversation..."
+            autoFocus
+          />
+        </ChatModal>
+      )}
     </SidebarContainer>
   )
 }

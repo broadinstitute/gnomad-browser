@@ -2,6 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { ChatFeedbackView } from './ChatFeedbackView'
 import { UsersView } from './UsersView'
+import { AllThreadsView } from './AllThreadsView'
+import { UsageStatsView } from './UsageStatsView'
+import { InteractionAnalysisView } from './InteractionAnalysisView'
 
 const SettingsContainer = styled.div`
   display: flex;
@@ -66,7 +69,7 @@ interface AdminViewProps {
   onSectionChange: (section: string) => void
 }
 
-type AdminSection = 'feedback' | 'users'
+type AdminSection = 'feedback' | 'users' | 'all-threads' | 'usage-stats' | 'interactions'
 
 export const AdminView: React.FC<AdminViewProps> = ({
   activeSection: activeSectionProp,
@@ -90,6 +93,27 @@ export const AdminView: React.FC<AdminViewProps> = ({
                 <UsersView />
             </>
         )
+      case 'all-threads':
+        return (
+            <>
+                <SectionTitle>All Conversations</SectionTitle>
+                <AllThreadsView />
+            </>
+        )
+      case 'usage-stats':
+        return (
+            <>
+                <SectionTitle>Usage & Costs</SectionTitle>
+                <UsageStatsView />
+            </>
+        )
+      case 'interactions':
+        return (
+            <>
+                <SectionTitle>User Interactions</SectionTitle>
+                <InteractionAnalysisView />
+            </>
+        )
       default:
         return null
     }
@@ -110,6 +134,24 @@ export const AdminView: React.FC<AdminViewProps> = ({
             onClick={() => onSectionChange('users')}
           >
             Users
+          </NavItem>
+          <NavItem
+            active={activeSection === 'all-threads'}
+            onClick={() => onSectionChange('all-threads')}
+          >
+            All Conversations
+          </NavItem>
+          <NavItem
+            active={activeSection === 'usage-stats'}
+            onClick={() => onSectionChange('usage-stats')}
+          >
+            Usage & Costs
+          </NavItem>
+          <NavItem
+            active={activeSection === 'interactions'}
+            onClick={() => onSectionChange('interactions')}
+          >
+            User Interactions
           </NavItem>
         </SettingsNav>
         <SettingsContent>
