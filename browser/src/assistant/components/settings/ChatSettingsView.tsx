@@ -1,0 +1,471 @@
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import { useAuth0 } from '@auth0/auth0-react'
+import { Button, PrimaryButton, Checkbox } from '@gnomad/ui'
+// @ts-expect-error TS(2307)
+import SignOutIcon from '@fortawesome/fontawesome-free/svgs/solid/sign-out-alt.svg'
+import { ChatModal } from '../ChatModal'
+import { useCurrentUser } from '../../../auth/useCurrentUser'
+
+const SettingsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #f7f7f7;
+  overflow: hidden;
+`
+
+
+const SettingsBody = styled.div`
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+`
+
+const SettingsNav = styled.nav`
+  width: 180px;
+  background: white;
+  border-right: 1px solid #e0e0e0;
+  padding: 12px 0;
+  overflow-y: auto;
+`
+
+const NavItem = styled.button<{ active: boolean }>`
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  background: ${props => props.active ? '#f0f7fd' : 'transparent'};
+  color: ${props => props.active ? '#0d79d0' : '#333'};
+  font-size: 14px;
+  font-weight: ${props => props.active ? '600' : '400'};
+  text-align: left;
+  cursor: pointer;
+  border-left: 3px solid ${props => props.active ? '#0d79d0' : 'transparent'};
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f0f7fd;
+  }
+`
+
+const SettingsContent = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto;
+  background: #f7f7f7;
+`
+
+const SectionTitle = styled.h3`
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+`
+
+const UserInfoBox = styled.div`
+  padding: 12px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`
+
+const UserEmail = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+`
+
+const UserLabel = styled.div`
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`
+
+const SettingItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`
+
+const SettingLabel = styled.label`
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+`
+
+const Select = styled.select`
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #0d79d0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #0d79d0;
+    box-shadow: 0 0 0 3px rgba(13, 121, 208, 0.1);
+  }
+`
+
+const TextArea = styled.textarea`
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: #0d79d0;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #0d79d0;
+    box-shadow: 0 0 0 3px rgba(13, 121, 208, 0.1);
+  }
+
+  &::placeholder {
+    color: #999;
+  }
+`
+
+const LogoutContainer = styled.div`
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+`
+
+const FeedbackContainer = styled.div`
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+`
+
+const PrivacyContainer = styled.div`
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+`
+
+interface SavedPrompt {
+  id: string
+  name: string
+  prompt: string
+}
+
+// User Info Display Component
+const UserInfoDisplay = () => {
+  const { user, isAuthenticated } = useAuth0()
+
+  if (!isAuthenticated || !user) {
+    return null
+  }
+
+  return (
+    <UserInfoBox>
+      <UserLabel>Logged in as</UserLabel>
+      <UserEmail>{user.email || user.name || 'User'}</UserEmail>
+    </UserInfoBox>
+  )
+}
+
+interface ChatSettingsViewProps {
+  isAuthEnabled: boolean
+  selectedModel: string
+  setSelectedModel: (model: string) => void
+  customPrompt: string
+  onCustomPromptChange: (prompt: string) => void
+  savedPrompts: SavedPrompt[]
+  activePromptId: string | null
+  onPromptSelect: (promptId: string) => void
+  onSavePrompt: (promptName: string) => void
+  onDeletePrompt: (promptId: string) => void
+  activeSection: string
+  onSectionChange: (section: string) => void
+}
+
+type SettingsSection = 'general' | 'favorites'
+
+export const ChatSettingsView: React.FC<ChatSettingsViewProps> = ({
+  isAuthEnabled,
+  selectedModel,
+  setSelectedModel,
+  customPrompt,
+  onCustomPromptChange,
+  savedPrompts,
+  activePromptId,
+  onPromptSelect,
+  onSavePrompt,
+  onDeletePrompt,
+  activeSection: activeSectionProp,
+  onSectionChange,
+}) => {
+  const activeSection = (activeSectionProp || 'general') as SettingsSection
+  const [promptName, setPromptName] = useState('')
+  const { logout, isAuthenticated, getAccessTokenSilently } = useAuth0()
+  const { user: currentUser } = useCurrentUser()
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false)
+  const [feedbackText, setFeedbackText] = useState('')
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false)
+  const [allowAdminViewing, setAllowAdminViewing] = useState(true)
+
+  useEffect(() => {
+    if (currentUser) {
+      setAllowAdminViewing(currentUser.allowAdminViewing ?? true)
+    }
+  }, [currentUser])
+
+  const handleSaveClick = () => {
+    onSavePrompt(promptName)
+    setPromptName('')
+  }
+
+  const handlePrivacyChange = async (isChecked: boolean) => {
+    setAllowAdminViewing(isChecked)
+    try {
+      const token = await getAccessTokenSilently()
+      await fetch('/api/copilotkit/users/me/preferences', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ allowAdminViewing: isChecked }),
+      })
+    } catch (error) {
+      console.error('Failed to update privacy preference:', error)
+      // Revert UI on error
+      setAllowAdminViewing(!isChecked)
+    }
+  }
+
+  const handleFeedbackSubmit = async () => {
+    if (!feedbackText.trim()) return
+
+    setIsSubmittingFeedback(true)
+    try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      }
+      if (isAuthEnabled && isAuthenticated) {
+        const token = await getAccessTokenSilently()
+        headers.Authorization = `Bearer ${token}`
+      }
+      await fetch('/api/copilotkit/feedback', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          source: 'general',
+          feedbackText,
+        }),
+      })
+      setIsFeedbackModalOpen(false)
+      setFeedbackText('')
+    } catch (error) {
+      console.error('Failed to submit general feedback:', error)
+      alert('Failed to submit feedback. Please try again.')
+    } finally {
+      setIsSubmittingFeedback(false)
+    }
+  }
+
+  const renderGeneralSection = () => (
+    <>
+      <SectionTitle>General Settings</SectionTitle>
+      {isAuthEnabled && <UserInfoDisplay />}
+      <SettingItem>
+        <SettingLabel htmlFor="model-select">Model</SettingLabel>
+        <Select
+          id="model-select"
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+        >
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+          <option value="gemini-3-flash">Gemini 3 Flash</option>
+          <option value="gemini-3-pro">Gemini 3 Pro</option>
+        </Select>
+      </SettingItem>
+
+      <SettingItem>
+        <SettingLabel htmlFor="saved-prompts">Saved Prompts</SettingLabel>
+        <Select
+          id="saved-prompts"
+          value={activePromptId || ''}
+          onChange={(e) => onPromptSelect(e.target.value)}
+        >
+          <option value="">None</option>
+          {savedPrompts.map(prompt => (
+            <option key={prompt.id} value={prompt.id}>
+              {prompt.name}
+            </option>
+          ))}
+        </Select>
+      </SettingItem>
+
+      <SettingItem>
+        <SettingLabel htmlFor="custom-prompt">Custom System Prompt</SettingLabel>
+        <TextArea
+          id="custom-prompt"
+          value={customPrompt}
+          onChange={(e) => onCustomPromptChange(e.target.value)}
+          placeholder="Add additional instructions for the assistant (optional)..."
+        />
+      </SettingItem>
+
+      <SettingItem>
+        <SettingLabel htmlFor="prompt-name">Save Current Prompt As</SettingLabel>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            id="prompt-name"
+            type="text"
+            value={promptName}
+            onChange={(e) => setPromptName(e.target.value)}
+            placeholder="e.g., Rare Disease Focus"
+            style={{
+              flex: 1,
+              padding: '8px 12px',
+              border: '1px solid #e0e0e0',
+              borderRadius: '6px',
+              fontSize: '14px'
+            }}
+          />
+          <PrimaryButton
+            onClick={handleSaveClick}
+            disabled={!promptName.trim() || !customPrompt.trim()}
+          >
+            Save
+          </PrimaryButton>
+        </div>
+      </SettingItem>
+
+      {activePromptId && (
+        <SettingItem>
+          <Button onClick={() => onDeletePrompt(activePromptId)}>
+            Delete Current Prompt
+          </Button>
+        </SettingItem>
+      )}
+
+      {isAuthEnabled && isAuthenticated && (
+        <PrivacyContainer>
+          <SettingLabel>Privacy</SettingLabel>
+          <p style={{ fontSize: '13px', color: '#666', margin: '4px 0 12px' }}>
+            To help us improve the gnomAD Assistant, you can allow administrators to review your conversation history. Your data is not used for any other purpose.
+          </p>
+          <Checkbox
+            id="privacy-setting"
+            checked={allowAdminViewing}
+            onChange={handlePrivacyChange}
+          >
+            Allow admin viewing of conversation history
+          </Checkbox>
+        </PrivacyContainer>
+      )}
+
+      <FeedbackContainer>
+        <SettingLabel>Feedback</SettingLabel>
+        <p style={{ fontSize: '13px', color: '#666', margin: '4px 0 12px' }}>
+          Have feedback about the gnomAD Assistant? We'd love to hear it!
+        </p>
+        <Button onClick={() => setIsFeedbackModalOpen(true)}>Provide General Feedback</Button>
+      </FeedbackContainer>
+
+      {isAuthEnabled && isAuthenticated && (
+        <LogoutContainer>
+          <Button
+            onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+          >
+             <img src={SignOutIcon} alt="Log Out" style={{ width: '14px', height: '14px', marginRight: '8px', opacity: 0.8 }} />
+            Log Out
+          </Button>
+        </LogoutContainer>
+      )}
+    </>
+  )
+
+  const renderFavoritesSection = () => (
+    <>
+      <SectionTitle>Favorites</SectionTitle>
+      <div style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+        <p>Coming soon: Save your favorite genes, variants, and regions for quick access.</p>
+      </div>
+    </>
+  )
+
+
+  const renderSectionContent = () => {
+    switch (activeSection) {
+      case 'general':
+        return renderGeneralSection()
+      case 'favorites':
+        return renderFavoritesSection()
+      default:
+        return renderGeneralSection()
+    }
+  }
+
+  return (
+    <SettingsContainer>
+      <SettingsBody>
+        <SettingsNav>
+          <NavItem
+            active={activeSection === 'general'}
+            onClick={() => onSectionChange('general')}
+          >
+            General
+          </NavItem>
+          <NavItem
+            active={activeSection === 'favorites'}
+            onClick={() => onSectionChange('favorites')}
+          >
+            Favorites
+          </NavItem>
+        </SettingsNav>
+        <SettingsContent>
+          {renderSectionContent()}
+        </SettingsContent>
+      </SettingsBody>
+      {isFeedbackModalOpen && (
+        <ChatModal
+          title="Provide General Feedback"
+          onRequestClose={() => setIsFeedbackModalOpen(false)}
+          footer={
+            <>
+              <Button onClick={() => setIsFeedbackModalOpen(false)} disabled={isSubmittingFeedback}>
+                Cancel
+              </Button>
+              <PrimaryButton onClick={handleFeedbackSubmit} disabled={isSubmittingFeedback || !feedbackText.trim()}>
+                {isSubmittingFeedback ? 'Submitting...' : 'Submit'}
+              </PrimaryButton>
+            </>
+          }
+        >
+          <TextArea
+            aria-label="Feedback input"
+            value={feedbackText}
+            onChange={(e) => setFeedbackText(e.target.value)}
+            placeholder="Tell us about your experience with the assistant..."
+            autoFocus
+          />
+        </ChatModal>
+      )}
+    </SettingsContainer>
+  )
+}

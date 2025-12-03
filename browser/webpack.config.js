@@ -8,6 +8,13 @@ const tsConfig = require('../tsconfig.build.json')
 
 const isDev = process.env.NODE_ENV === 'development'
 
+// Helper to get base URL from GNOMAD_API_URL (strips /api suffix if present)
+// Force IPv4 by using 127.0.0.1 instead of localhost to avoid IPv6 connection issues
+const getApiBaseUrl = () => {
+  const url = process.env.GNOMAD_API_URL || 'http://localhost:8010'
+  return url.replace(/\/api$/, '').replace('localhost', '127.0.0.1')
+}
+
 const gaTrackingId = process.env.GA_TRACKING_ID
 if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
   // eslint-disable-next-line no-console
@@ -21,21 +28,32 @@ const config = {
     },
     hot: true,
     port: 8008,
+    server: 'https',
     static: {
       publicPath: '/',
     },
     proxy: [
+      // CopilotKit proxy - must come before general /api proxy
+      // Don't rewrite the path since CopilotKit is mounted at /api/copilotkit on the API server
+      {
+        context: '/api/copilotkit',
+        target: getApiBaseUrl(),
+        changeOrigin: true,
+        secure: false,
+      },
+      // General API proxy - pass through as-is (API is mounted at /api/ on the server)
       {
         context: '/api',
-        target: process.env.GNOMAD_API_URL,
-        pathRewrite: { '^/api': '' },
+        target: getApiBaseUrl(),
         changeOrigin: true,
+        secure: false,
       },
       {
         context: '/reads',
         target: process.env.READS_API_URL,
         pathRewrite: { '^/reads': '' },
         changeOrigin: true,
+        secure: false,
       },
     ],
   },
@@ -105,6 +123,11 @@ const config = {
       REPORT_VARIANT_URL: null,
       REPORT_VARIANT_VARIANT_ID_PARAMETER: null,
       REPORT_VARIANT_DATASET_PARAMETER: null,
+      // Add these new variables for Auth0
+      REACT_APP_AUTH0_ENABLE: null,
+      REACT_APP_AUTH0_DOMAIN: null,
+      REACT_APP_AUTH0_CLIENT_ID: null,
+      REACT_APP_AUTH0_AUDIENCE: null,
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),

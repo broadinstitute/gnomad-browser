@@ -11,6 +11,11 @@
     "dist"
   ],
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
+    "@copilotkit/react-core": "^1.10.6",
+    "@copilotkit/react-textarea": "^1.10.6",
+    "@copilotkit/react-ui": "^1.10.6",
+    "@copilotkit/runtime-client-gql": "1.10.6",
     "@fortawesome/fontawesome-free": "^5.8.1",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.1",

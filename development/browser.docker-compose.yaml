@@ -12,6 +12,11 @@ services:
       - NODE_ENV=development
       - GNOMAD_API_URL
       - READS_API_URL
+      # Auth0 Configuration (optional - for user authentication)
+      - REACT_APP_AUTH0_ENABLE
+      - REACT_APP_AUTH0_DOMAIN
+      - REACT_APP_AUTH0_CLIENT_ID
+      - REACT_APP_AUTH0_AUDIENCE
     ports:
       - 8008:8008
     volumes:

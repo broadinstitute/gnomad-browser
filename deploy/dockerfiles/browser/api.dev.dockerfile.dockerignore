@@ -1,0 +1,8 @@
+**
+!/package.json
+!/pnpm-lock.yaml
+!/pnpm-workspace.yaml
+!/graphql-api/package.json
+!/dataset-metadata/package.json
+!/bin/gmd
+!/resources/gene-disease-table.tsv

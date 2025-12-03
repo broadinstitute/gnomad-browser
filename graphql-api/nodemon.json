@@ -1,0 +1,11 @@
+{
+  "watch": [
+    "src",
+    "../dataset-metadata"
+  ],
+  "ext": "ts,json",
+  "ignore": [
+    "src/**/*.spec.ts"
+  ],
+  "legacyWatch": true
+}

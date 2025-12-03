@@ -19,13 +19,22 @@ RUN pnpm install --production --frozen-lockfile
 # Copy source
 COPY --chown=node:node dataset-metadata /app/dataset-metadata
 COPY --chown=node:node graphql-api/src /app/graphql-api/src
-COPY --chown=node:node tsconfig.json /app/graphql-api/tsconfig.json
-COPY --chown=node:node tsconfig.build.json /app/graphql-api/tsconfig.build.json
+COPY --chown=node:node browser/src/missingContent.ts /app/browser/src/missingContent.ts
+COPY --chown=node:node tsconfig.json /app/tsconfig.json
+COPY --chown=node:node tsconfig.build.json /app/tsconfig.build.json
 
 # Build JS from TS source
-RUN pnpm tsc -p /app/graphql-api/tsconfig.build.json
+RUN pnpm tsc -p /app/tsconfig.build.json
+
+# Copy external artifacts and set permissions
+COPY --chown=node:node bin/gmd /usr/local/bin/gmd
+RUN chmod +x /usr/local/bin/gmd
+COPY --chown=node:node resources/gene-disease-table.tsv /app/resources/gene-disease-table.tsv
 
 # Copy static data into place
 COPY --chown=node:node graphql-api/static_data /app/static_data
+
+# Copy database schema for CopilotKit
+COPY --chown=node:node graphql-api/src/copilotkit/schema.sql /app/graphql-api/src/copilotkit/schema.sql
 
 CMD ["node", "graphql-api/src/app.js"]

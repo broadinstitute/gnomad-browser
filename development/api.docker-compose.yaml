@@ -1,13 +1,29 @@
 services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: gnomad
+      POSTGRES_PASSWORD: gnomad_dev
+      POSTGRES_DB: gnomad_copilot
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gnomad -d gnomad_copilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   elasticsearch-proxy:
     image: gcr.io/google.com/cloudsdktool/cloud-sdk
     command:
       - sh
       - -c
-      - gcloud container clusters get-credentials gnomad-prod --zone=$$ZONE && kubectl port-forward --address=$$(awk 'END { print $$1 }' /etc/hosts) service/gnomad-es-http 9200
+      - gcloud container clusters get-credentials gnomad-v4 --project=$$PROJECT --zone=$$ZONE && kubectl port-forward --address=$$(awk 'END { print $$1 }' /etc/hosts) service/gnomad-es-http 9200
     environment:
       - PROJECT
       - ZONE
+      - CLOUDSDK_CORE_PROJECT=${PROJECT}
     ports:
       - 9200:9200
     volumes:
@@ -20,24 +36,39 @@ services:
       - redis_data:/data
   api:
     build:
-      context: .
-      dockerfile: deploy/dockerfiles/browser/api.dockerfile
-    command: pnpm run node /build/app.js
+      context: ..
+      dockerfile: deploy/dockerfiles/browser/api.dev.dockerfile
+    command: pnpm --filter @gnomad/graphql-api dev
     environment:
       - NODE_ENV=development
       - PORT=8000
       - ELASTICSEARCH_URL=http://elasticsearch-proxy:9200
       - ELASTICSEARCH_USERNAME=elastic
       - ELASTICSEARCH_PASSWORD
-      - CACHE_REDIS_URL=redis://redis:6379/1
-      - RATE_LIMITER_REDIS_URL=redis://redis:6379/2
+      # Redis configuration (using legacy REDIS_HOST/PORT variables)
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # CopilotKit PostgreSQL database
+      - DATABASE_URL=postgresql://gnomad:gnomad_dev@postgres:5432/gnomad_copilot
+      # CopilotKit AI
+      - GOOGLE_GENERATIVE_AI_API_KEY
+      # MCP server callback URL (inside container, API runs on port 8000)
+      - GNOMAD_API_URL=http://127.0.0.1:8000/api
+      # Use container path for gmd, not host path
+      - GMD_COMMAND_PATH=gmd
+      # Auth0 Configuration (optional - for user authentication)
+      - REACT_APP_AUTH0_ENABLE
+      - AUTH0_ISSUER_BASE_URL
+      - AUTH0_AUDIENCE
     ports:
       - 8010:8000
     volumes:
-      - ./dataset-metadata:/app/dataset-metadata
-      - ./graphql-api/src:/app/graphql-api/src
+      - ../graphql-api:/app/graphql-api
+      - ../dataset-metadata:/app/dataset-metadata
     depends_on:
       - elasticsearch-proxy
       - redis
+      - postgres
 volumes:
   redis_data:
+  postgres_data:
