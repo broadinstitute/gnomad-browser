@@ -251,6 +251,81 @@ const DeleteButton = styled.button`
   }
 `
 
+const ToolInvocationsContainer = styled.div`
+  margin-top: 12px;
+  padding-left: 16px;
+  border-left: 2px solid #e8e8e8;
+`
+
+const ToolInvocationHeader = styled.div`
+  font-weight: 600;
+  font-size: 12px;
+  color: #333;
+  margin-bottom: 8px;
+`
+
+const ToolInvocationItem = styled.div`
+  margin-bottom: 10px;
+  padding: 8px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+`
+
+const ToolName = styled.div`
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 13px;
+  color: #7b1fa2;
+  margin-bottom: 4px;
+`
+
+const ToolStats = styled.div`
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 6px;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  strong {
+    font-weight: 600;
+  }
+`
+
+const ArgsToggleButton = styled.button`
+  background: none;
+  border: 1px solid #7b1fa2;
+  color: #7b1fa2;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  margin-top: 4px;
+
+  &:hover {
+    background: #f3e5f5;
+  }
+`
+
+const ToolArguments = styled.pre`
+  margin-top: 8px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #d0d0d0;
+  border-radius: 3px;
+  font-size: 10px;
+  overflow-x: auto;
+  max-height: 200px;
+  overflow-y: auto;
+  color: #333;
+`
+
 // Helper function to display user information
 const formatUserDisplay = (item: any): string => {
   // Prefer email if available
@@ -309,6 +384,7 @@ export const AllThreadsView = () => {
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [deletingThreadId, setDeletingThreadId] = useState<string | null>(null)
   const [collapsedMessages, setCollapsedMessages] = useState<Set<number>>(new Set())
+  const [expandedToolArgs, setExpandedToolArgs] = useState<Set<string>>(new Set())
   const limit = 20
   const { getAccessTokenSilently } = useAuth0()
 
@@ -319,6 +395,19 @@ export const AllThreadsView = () => {
         newSet.delete(index)
       } else {
         newSet.add(index)
+      }
+      return newSet
+    })
+  }
+
+  const toggleToolArgs = (messageIdx: number, toolIdx: number) => {
+    const key = `${messageIdx}-${toolIdx}`
+    setExpandedToolArgs(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(key)) {
+        newSet.delete(key)
+      } else {
+        newSet.add(key)
       }
       return newSet
     })
@@ -377,6 +466,7 @@ export const AllThreadsView = () => {
     setSelectedThreadId(null)
     setMessages([])
     setCollapsedMessages(new Set())
+    setExpandedToolArgs(new Set())
   }
 
   // Collapse system messages by default when messages load
@@ -466,6 +556,18 @@ export const AllThreadsView = () => {
               const isSystemMessage = msg.role === 'system'
               const contentLength = (msg.content || '').length
 
+              // Find tool invocations from the previous user message for ResultMessage display
+              let toolInvocationsToDisplay = null
+              if (msg.messageType === 'ResultMessage') {
+                // Look backwards to find the user message that triggered this tool
+                for (let i = idx - 1; i >= 0; i--) {
+                  if (messages[i].role === 'user' && messages[i].toolInvocations?.length > 0) {
+                    toolInvocationsToDisplay = messages[i].toolInvocations
+                    break
+                  }
+                }
+              }
+
               // Generate descriptive text for messages without content
               let displayContent = msg.content
               if (!displayContent) {
@@ -478,10 +580,14 @@ export const AllThreadsView = () => {
                 }
               }
 
+              // Display role: show "assistant" for tool-related messages even if role is null
+              const displayRole = msg.role ||
+                (msg.messageType === 'ActionExecutionMessage' || msg.messageType === 'ResultMessage' ? 'assistant' : 'unknown')
+
               return (
-                <Message key={idx} role={msg.role}>
+                <Message key={idx} role={displayRole}>
                   <MessageRole>
-                    {msg.role}
+                    {displayRole}
                     {isSystemMessage && contentLength > 200 && (
                       <CollapseButton onClick={() => toggleMessageCollapse(idx)}>
                         {isCollapsed ? '+ Expand' : '- Collapse'}
@@ -510,7 +616,7 @@ export const AllThreadsView = () => {
                       )}
                     </MessageTokens>
                   )}
-                  {msg.role === 'user' && (msg.systemPromptTokens || msg.toolDefinitionTokens || msg.historyTokens || msg.userMessageTokens) && (
+                  {msg.role === 'user' && (msg.systemPromptTokens || msg.toolDefinitionTokens || msg.historyTokens || msg.toolResultTokens || msg.userMessageTokens) && (
                     <TokenBreakdown>
                       <div style={{ marginBottom: '6px', fontWeight: '600', fontSize: '12px', color: '#333' }}>
                         Token Breakdown:
@@ -533,6 +639,12 @@ export const AllThreadsView = () => {
                           <BreakdownValue>{msg.historyTokens.toLocaleString()}</BreakdownValue>
                         </BreakdownItem>
                       )}
+                      {msg.toolResultTokens > 0 && (
+                        <BreakdownItem>
+                          <BreakdownLabel>Tool Results:</BreakdownLabel>
+                          <BreakdownValue>{msg.toolResultTokens.toLocaleString()}</BreakdownValue>
+                        </BreakdownItem>
+                      )}
                       {msg.userMessageTokens > 0 && (
                         <BreakdownItem>
                           <BreakdownLabel>User Message:</BreakdownLabel>
@@ -542,10 +654,44 @@ export const AllThreadsView = () => {
                       <BreakdownItem style={{ marginTop: '4px', paddingTop: '6px', borderTop: '2px solid #ddd', fontWeight: '600' }}>
                         <BreakdownLabel>Total Request:</BreakdownLabel>
                         <BreakdownValue>
-                          {((msg.systemPromptTokens || 0) + (msg.toolDefinitionTokens || 0) + (msg.historyTokens || 0) + (msg.userMessageTokens || 0)).toLocaleString()}
+                          {((msg.systemPromptTokens || 0) + (msg.toolDefinitionTokens || 0) + (msg.historyTokens || 0) + (msg.toolResultTokens || 0) + (msg.userMessageTokens || 0)).toLocaleString()}
                         </BreakdownValue>
                       </BreakdownItem>
                     </TokenBreakdown>
+                  )}
+                  {toolInvocationsToDisplay && toolInvocationsToDisplay.length > 0 && (
+                    <ToolInvocationsContainer>
+                      <ToolInvocationHeader>Tool Calls ({toolInvocationsToDisplay.length})</ToolInvocationHeader>
+                      {toolInvocationsToDisplay.map((invocation: any, toolIdx: number) => {
+                        const key = `${idx}-${toolIdx}`
+                        const isExpanded = expandedToolArgs.has(key)
+                        return (
+                          <ToolInvocationItem key={toolIdx}>
+                            <ToolName>{invocation.toolName}</ToolName>
+                            <ToolStats>
+                              <span>
+                                <strong>Result Tokens:</strong> {invocation.resultTokens?.toLocaleString() || 'N/A'}
+                              </span>
+                              <span>
+                                <strong>Execution:</strong> {invocation.executionTimeMs ? `${invocation.executionTimeMs}ms` : 'N/A'}
+                              </span>
+                            </ToolStats>
+                            {invocation.arguments && (
+                              <>
+                                <ArgsToggleButton onClick={() => toggleToolArgs(idx, toolIdx)}>
+                                  {isExpanded ? 'Hide Arguments' : 'Show Arguments'}
+                                </ArgsToggleButton>
+                                {isExpanded && (
+                                  <ToolArguments>
+                                    {JSON.stringify(invocation.arguments, null, 2)}
+                                  </ToolArguments>
+                                )}
+                              </>
+                            )}
+                          </ToolInvocationItem>
+                        )
+                      })}
+                    </ToolInvocationsContainer>
                   )}
                 </Message>
               )

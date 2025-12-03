@@ -707,11 +707,22 @@ export class ChatDatabase {
         m.system_prompt_tokens as "systemPromptTokens",
         m.tool_definition_tokens as "toolDefinitionTokens",
         m.history_tokens as "historyTokens",
+        m.tool_result_tokens as "toolResultTokens",
         m.user_message_tokens as "userMessageTokens",
         m.message_type as "messageType",
-        m.raw_message as "rawMessage"
+        m.raw_message as "rawMessage",
+        json_agg(
+          json_build_object(
+            'toolName', ti.tool_name,
+            'resultTokens', ti.result_tokens,
+            'executionTimeMs', ti.execution_time_ms,
+            'arguments', ti.arguments
+          )
+        ) FILTER (WHERE ti.id IS NOT NULL) as "toolInvocations"
       FROM chat_messages m
+      LEFT JOIN tool_invocations ti ON m.id = ti.message_id
       WHERE m.thread_id = $1
+      GROUP BY m.id
       ORDER BY m.created_at ASC, m.sequence_number ASC
     `, [threadId]);
 

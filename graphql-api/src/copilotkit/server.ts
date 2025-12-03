@@ -14,6 +14,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { LocalMCPClient } from './mcp-client';
 import { chatDb, User } from './database';
 import logger from '../logger';
+import { extractTextContent, debugLog } from './debug-logger';
 
 // Extend Express Request type
 declare global {
@@ -58,7 +59,6 @@ const threadTokenUsage = new Map<string, {
   historyTokens: number;
   toolResultTokens: number;
   userMessageTokens: number;
-  toolUsage: Map<string, { tokens: number; executionTime?: number }>;
 }>();
 
 // Dynamic adapter that selects the model based on forwardedParameters and captures token usage
@@ -98,25 +98,22 @@ class DynamicGeminiAdapter implements CopilotServiceAdapter {
         // Helper to map CopilotKit messages to Gemini's Content format
         const toGeminiContent = (msg: any) => {
           let content = '';
+          let extractionPath = 'none';
+
           if (msg.content) {
             content = msg.content;
+            extractionPath = 'msg.content';
           } else if (msg.textMessage) {
             content = msg.textMessage.content;
+            extractionPath = 'msg.textMessage.content';
           } else if (msg.result) {
-            // For tool results, extract only the textContent for the LLM
-            // The structuredContent is for frontend display only
-            if (typeof msg.result === 'string') {
-              content = msg.result;
-            } else if (msg.result.textContent) {
-              // Extract text from MCP textContent array
-              content = Array.isArray(msg.result.textContent)
-                ? msg.result.textContent.map((item: any) => item.text || '').join('\n')
-                : String(msg.result.textContent);
-            } else {
-              // Fallback: serialize the whole result (but this shouldn't happen for MCP tools)
-              content = JSON.stringify(msg.result);
-            }
+            // For tool results, extract only the text interpretation for the LLM
+            // The structuredContent is NEVER sent to the LLM (it's for frontend only)
+            const extraction = extractTextContent(msg.result, msg.id);
+            content = extraction.content;
+            extractionPath = `result (${extraction.method})`;
           }
+
           return { role: msg.role === 'assistant' ? 'model' : 'user', parts: [{ text: content }] };
         };
 
@@ -160,9 +157,6 @@ class DynamicGeminiAdapter implements CopilotServiceAdapter {
         let userMessageTokens = 0;
         let toolDefinitionTokens = 0;
 
-        // Track per-tool token usage
-        const toolUsageMap = new Map<string, { tokens: number; executionTime?: number }>();
-
         try {
           systemPromptTokens = systemContent.length > 0 ? (await geminiModel.countTokens({ contents: systemContent })).totalTokens : 0;
         } catch (error: any) {
@@ -175,36 +169,12 @@ class DynamicGeminiAdapter implements CopilotServiceAdapter {
           logger.warn({ message: 'Failed to count history tokens', error: error.message });
         }
 
-        // Count tool result tokens separately and track per-tool usage
+        // Count tool result tokens separately (for total context calculation)
+        // Note: We don't track individual tools here - that happens in onAfterRequest
         try {
           if (toolResultContent.length > 0) {
-            // Count total tool result tokens
+            // Count total tool result tokens for context size tracking
             toolResultTokens = (await geminiModel.countTokens({ contents: toolResultContent })).totalTokens;
-
-            // Count individual tool tokens for detailed tracking
-            for (const msg of toolResultMessages) {
-              try {
-                const toolContent = toGeminiContent(msg);
-                const tokenCount = (await geminiModel.countTokens({ contents: [toolContent] })).totalTokens;
-
-                // Find the tool name from the corresponding ActionExecutionMessage
-                const actionId = (msg as any).actionExecutionId;
-                const actionMessage = request.messages.find(
-                  (m: any) => m.id === actionId && (m.constructor?.name === 'ActionExecutionMessage' || m.type === 'ActionExecutionMessage')
-                );
-                const toolName = actionMessage?.name || actionMessage?.toolName || 'unknown_tool';
-
-                toolUsageMap.set(toolName, {
-                  tokens: tokenCount,
-                  executionTime: undefined, // Will be filled if available
-                });
-              } catch (perToolError: any) {
-                logger.warn({
-                  message: 'Failed to count individual tool result tokens',
-                  error: perToolError.message,
-                });
-              }
-            }
           }
         } catch (error: any) {
           logger.warn({ message: 'Failed to count tool result tokens', error: error.message });
@@ -249,7 +219,6 @@ class DynamicGeminiAdapter implements CopilotServiceAdapter {
           historyTokens,
           toolResultTokens,
           userMessageTokens,
-          toolUsage: toolUsageMap,
         });
 
         logger.info({
@@ -265,10 +234,6 @@ class DynamicGeminiAdapter implements CopilotServiceAdapter {
           incrementalInputTokens,
           messagesIncluded: request.messages.length,
           actionsIncluded: request.actions?.length || 0,
-          toolInvocations: Array.from(toolUsageMap.entries()).map(([name, usage]) => ({
-            tool: name,
-            tokens: usage.tokens,
-          })),
         });
       } catch (error: any) {
         logger.error({
@@ -536,8 +501,74 @@ export function mountCopilotKit(app: Application) {
             userMessageTokens: tokenUsageForTurn.userMessageTokens || 0,
           } : undefined;
 
-          // Extract per-tool usage for tracking
-          const toolUsage = tokenUsageForTurn?.toolUsage;
+          // Track tool calls from THIS turn's output messages ONLY (not from history)
+          const toolUsage = new Map<string, { tokens: number; executionTime?: number }>();
+
+          // Find tool calls and results in the OUTPUT messages only (not history)
+          const actionMessages = (outputMessages || []).filter(
+            (msg: any) => msg.constructor?.name === 'ActionExecutionMessage' || msg.type === 'ActionExecutionMessage'
+          );
+          const resultMessagesInOutput = (outputMessages || []).filter(
+            (msg: any) => msg.constructor?.name === 'ResultMessage' || msg.type === 'ResultMessage'
+          );
+
+          // Count tokens for each tool result from THIS turn
+          if (resultMessagesInOutput.length > 0) {
+            try {
+              const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY || '');
+              const modelName = (properties as any)?.forwardedParameters?.model || 'gemini-2.5-flash';
+              const geminiModel = genAI.getGenerativeModel({ model: modelName });
+
+              for (const resultMsg of resultMessagesInOutput) {
+                try {
+                  // Extract text content for token counting (NOT structured content)
+                  // MCP tools return: { content: [{type: "text", text: "..."}], structuredContent: {...} }
+                  // We only want to count the text that goes to the LLM, NOT the structuredContent
+                  const extraction = extractTextContent(resultMsg.result, resultMsg.id);
+                  const content = extraction.content;
+
+                  if (content) {
+                    const tokenCount = (await geminiModel.countTokens(content)).totalTokens;
+
+                    // Find the corresponding action message to get tool name
+                    const actionId = (resultMsg as any).actionExecutionId || (resultMsg as any).parentMessageId;
+                    const actionMessage = actionMessages.find((m: any) => m.id === actionId);
+                    const toolName = actionMessage?.name || actionMessage?.toolName || 'unknown_tool';
+
+                    debugLog({
+                      step: 'tokenCounting-result',
+                      msgId: resultMsg.id,
+                      tool: toolName,
+                      tokens: tokenCount,
+                    });
+
+                    toolUsage.set(toolName, {
+                      tokens: tokenCount,
+                      executionTime: undefined, // Could be extracted if available
+                    });
+
+                    logger.info({
+                      message: 'Tracked tool invocation for this turn',
+                      threadId,
+                      toolName,
+                      tokens: tokenCount,
+                    });
+                  }
+                } catch (perToolError: any) {
+                  logger.warn({
+                    message: 'Failed to count individual tool result tokens',
+                    error: perToolError.message,
+                  });
+                }
+              }
+            } catch (error: any) {
+              logger.error({
+                message: 'Failed to track tool usage for this turn',
+                threadId,
+                error: error.message,
+              });
+            }
+          }
 
           // Count output tokens and attach to assistant message
           if (outputMessages && outputMessages.length > 0) {
