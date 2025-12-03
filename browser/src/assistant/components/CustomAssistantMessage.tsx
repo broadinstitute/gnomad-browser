@@ -3,34 +3,7 @@ import { AssistantMessage, AssistantMessageProps } from '@copilotkit/react-ui'
 import { useAuth0 } from '@auth0/auth0-react'
 import { Button, PrimaryButton } from '@gnomad/ui'
 import styled from 'styled-components'
-// @ts-expect-error TS(2307)
-import CommentIcon from '@fortawesome/fontawesome-free/svgs/solid/comment-dots.svg'
 import { ChatModal } from './ChatModal'
-
-const FeedbackButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #0d79d0 !important;
-  transition: opacity 0.2s;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  opacity: 0.7;
-  vertical-align: middle;
-
-  &:hover {
-    opacity: 1;
-  }
-
-  svg, img {
-    width: 16px;
-    height: 16px;
-    display: block;
-    filter: invert(38%) sepia(85%) saturate(1463%) hue-rotate(182deg) brightness(92%) contrast(95%);
-  }
-`
 
 const TextArea = styled.textarea`
   width: 100%;
@@ -63,7 +36,6 @@ export const CustomAssistantMessage: React.FC<CustomAssistantMessageProps> = (pr
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { getAccessTokenSilently, isAuthenticated } = useAuth0()
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const feedbackButtonRef = useRef<HTMLButtonElement>(null)
 
   const handleOpenFeedbackModal = () => {
     setIsFeedbackModalOpen(true)
@@ -108,27 +80,40 @@ export const CustomAssistantMessage: React.FC<CustomAssistantMessageProps> = (pr
     }
   }
 
-  // Insert feedback button after the thumbs down button
+  // Add click handlers to thumbs up/down buttons to open feedback modal
   useEffect(() => {
-    if (!wrapperRef.current || !feedbackButtonRef.current) return
+    if (!wrapperRef.current) return
 
+    const thumbsUpButton = wrapperRef.current.querySelector('button[aria-label="Thumbs up"]')
     const thumbsDownButton = wrapperRef.current.querySelector('button[aria-label="Thumbs down"]')
-    if (thumbsDownButton && feedbackButtonRef.current) {
-      // Insert the feedback button after the thumbs down button
-      thumbsDownButton.parentNode?.insertBefore(feedbackButtonRef.current, thumbsDownButton.nextSibling)
+
+    const handleThumbsClick = (e: Event) => {
+      // Let the original click handler run first
+      setTimeout(() => {
+        setIsFeedbackModalOpen(true)
+      }, 0)
+    }
+
+    if (thumbsUpButton) {
+      thumbsUpButton.addEventListener('click', handleThumbsClick)
+    }
+    if (thumbsDownButton) {
+      thumbsDownButton.addEventListener('click', handleThumbsClick)
+    }
+
+    return () => {
+      if (thumbsUpButton) {
+        thumbsUpButton.removeEventListener('click', handleThumbsClick)
+      }
+      if (thumbsDownButton) {
+        thumbsDownButton.removeEventListener('click', handleThumbsClick)
+      }
     }
   }, [props.message?.id]) // Re-run when message changes
 
   return (
     <MessageWrapper ref={wrapperRef}>
       <AssistantMessage {...props} />
-      <FeedbackButton
-        ref={feedbackButtonRef}
-        onClick={handleOpenFeedbackModal}
-        title="Provide detailed feedback"
-      >
-        <img src={CommentIcon} alt="Feedback" />
-      </FeedbackButton>
 
       {isFeedbackModalOpen && (
         <ChatModal
