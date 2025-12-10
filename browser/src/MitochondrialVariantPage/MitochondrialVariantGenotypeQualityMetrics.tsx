@@ -147,7 +147,7 @@ const MitochondrialVariantGenotypeQualityFilters = ({
 
         <div>
           <label htmlFor="mt-genotype-quality-filter">
-            Filter: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            Filter:
             <Select
               id="mt-genotype-quality-filter"
               onChange={(e: any) => {

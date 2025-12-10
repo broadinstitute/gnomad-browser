@@ -19,6 +19,7 @@ exports[`Variant flag correctly formats with key of 'common_low_heteroplasmy' 1`
 
 <span
   className="c0"
+  level="warning"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -43,6 +44,7 @@ exports[`Variant flag correctly formats with key of 'lc_lof' 1`] = `
 
 <span
   className="c0"
+  level="error"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -67,6 +69,7 @@ exports[`Variant flag correctly formats with key of 'lcr' 1`] = `
 
 <span
   className="c0"
+  level="info"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -91,6 +94,7 @@ exports[`Variant flag correctly formats with key of 'lof_flag' 1`] = `
 
 <span
   className="c0"
+  level="warning"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -115,6 +119,7 @@ exports[`Variant flag correctly formats with key of 'mnv' 1`] = `
 
 <span
   className="c0"
+  level="error"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -139,6 +144,7 @@ exports[`Variant flag correctly formats with key of 'monoallelic' 1`] = `
 
 <span
   className="c0"
+  level="info"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -163,6 +169,7 @@ exports[`Variant flag correctly formats with key of 'nc_transcript' 1`] = `
 
 <span
   className="c0"
+  level="error"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >
@@ -187,6 +194,7 @@ exports[`Variant flag correctly formats with key of 'os_lof' 1`] = `
 
 <span
   className="c0"
+  level="info"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
 >

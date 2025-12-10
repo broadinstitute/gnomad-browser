@@ -40,7 +40,7 @@ const coverageFiles = [
 
 const ExacDownloads = () => (
   <>
-    <SectionTitle id="exac" theme={{ type: 'release' }}>
+    <SectionTitle id="exac" subject="release">
       ExAC Downloads
     </SectionTitle>
     <StyledParagraph>
@@ -48,7 +48,7 @@ const ExacDownloads = () => (
       sequence.
     </StyledParagraph>
 
-    <SectionTitle id="exac-core-dataset" theme={{ type: 'datasets' }}>
+    <SectionTitle id="exac-core-dataset" subject="datasets">
       Core Dataset
     </SectionTitle>
     <StyledParagraph>
@@ -59,7 +59,6 @@ const ExacDownloads = () => (
       <SectionTitle id="exac-variants">Variants</SectionTitle>
       <h3>Exomes</h3>
       <FileList>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <DownloadLinks
             label="All chromosomes VCF"
@@ -76,7 +75,6 @@ const ExacDownloads = () => (
       <SectionTitle id="exac-coverage">Coverage</SectionTitle>
       <FileList>
         {coverageFiles.map(({ chrom, md5, size }) => (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <ListItem key={chrom}>
             <DownloadLinks
               label={`chr${chrom} exome coverage summary TSV`}
@@ -92,7 +90,6 @@ const ExacDownloads = () => (
     <DownloadsSection>
       <SectionTitle id="exac-constraint">Constraint</SectionTitle>
       <FileList>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <DownloadLinks
             label="Gene constraint scores TSV"
@@ -107,7 +104,6 @@ const ExacDownloads = () => (
         Regional Missense Constraint
       </SectionTitle>
       <FileList>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <DownloadLinks
             label="Regional missense constraint TSV"
@@ -120,7 +116,6 @@ const ExacDownloads = () => (
     <DownloadsSection>
       <SectionTitle id="exac-resources">Resources</SectionTitle>
       <FileList>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <DownloadLinks
             label="Exome calling regions"
@@ -133,21 +128,18 @@ const ExacDownloads = () => (
     <section>
       <SectionTitle id="exac-other">Other</SectionTitle>
       <FileList>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <GetUrlButtons
             label="Manuscript data"
             path="/legacy/exacv1_downloads/release1/manuscript_data"
           />
         </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <GetUrlButtons
             label="Subset VCFs (non-TCGA and non-psych)"
             path="/legacy/exacv1_downloads/release1/subsets"
           />
         </ListItem>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <ListItem>
           <GetUrlButtons
             label="CNV counts and intolerance scores"

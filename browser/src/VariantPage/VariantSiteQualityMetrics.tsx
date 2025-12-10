@@ -1095,7 +1095,7 @@ const VariantSiteQualityMetricsDistribution = ({
 
       <ControlSection>
         <label htmlFor="site-quality-metrics-metric">
-          Metric: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          Metric:{' '}
           <Select
             id="site-quality-metrics-metric"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1114,7 +1114,7 @@ const VariantSiteQualityMetricsDistribution = ({
         </label>
 
         <label htmlFor="site-quality-metrics-sequencing-type">
-          Sequencing types: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          Sequencing types:{' '}
           <Select
             id="site-quality-metrics-sequencing-type"
             disabled={!variant.exome || !variant.genome}
@@ -1210,7 +1210,6 @@ const VariantSiteQualityMetricsTable = ({
   const availableMetrics = getAvailableMetrics(datasetId)
 
   return (
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <BaseTable style={{ width: '100%' }}>
       <thead>
         <tr>

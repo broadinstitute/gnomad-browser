@@ -15,9 +15,6 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -47,12 +44,7 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -110,6 +102,8 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -151,6 +145,7 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
     <p>
       <span
         className="c0"
+        level="info"
       >
         Note
       </span>
@@ -175,9 +170,6 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -207,12 +199,7 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -235,6 +222,10 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -270,6 +261,8 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -303,9 +296,6 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -332,7 +322,6 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -344,7 +333,6 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -366,16 +354,8 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
 
 @media (max-width:500px) {
   .c1 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -386,7 +366,7 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
   }
 
   .c1 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c1 button:last-child {
@@ -428,6 +408,8 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={true}
         onClick={[Function]}
@@ -437,6 +419,8 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -450,6 +434,8 @@ exports[`ReadData with "exac" dataset selected has no unexpected changes with ex
       className="c1"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -503,9 +489,6 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -535,12 +518,7 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -598,6 +576,8 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -641,9 +621,6 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -673,12 +650,7 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -701,6 +673,10 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -736,6 +712,8 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -769,9 +747,6 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -798,7 +773,6 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -810,7 +784,6 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -832,16 +805,8 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
 
 @media (max-width:500px) {
   .c1 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -852,7 +817,7 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
   }
 
   .c1 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c1 button:last-child {
@@ -894,6 +859,8 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={true}
         onClick={[Function]}
@@ -903,6 +870,8 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -916,6 +885,8 @@ exports[`ReadData with "gnomad_cnv_r4" dataset selected has no unexpected change
       className="c1"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -969,9 +940,6 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -1001,12 +969,7 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -1064,6 +1027,8 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -1105,6 +1070,7 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
     <p>
       <span
         className="c0"
+        level="info"
       >
         Note
       </span>
@@ -1129,9 +1095,6 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -1161,12 +1124,7 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -1189,6 +1147,10 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -1224,6 +1186,8 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -1257,9 +1221,6 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -1300,7 +1261,6 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1312,7 +1272,6 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -1334,16 +1293,8 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -1354,7 +1305,7 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -1392,6 +1343,7 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -1404,6 +1356,8 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -1413,6 +1367,8 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -1426,6 +1382,8 @@ exports[`ReadData with "gnomad_r2_1" dataset selected has no unexpected changes 
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -1479,9 +1437,6 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -1511,12 +1466,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -1574,6 +1524,8 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -1615,6 +1567,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
     <p>
       <span
         className="c0"
+        level="info"
       >
         Note
       </span>
@@ -1639,9 +1592,6 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -1671,12 +1621,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -1699,6 +1644,10 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -1734,6 +1683,8 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -1767,9 +1718,6 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -1810,7 +1758,6 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1822,7 +1769,6 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -1844,16 +1790,8 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -1864,7 +1802,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -1902,6 +1840,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -1910,6 +1849,7 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -1922,6 +1862,8 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -1931,6 +1873,8 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -1944,6 +1888,8 @@ exports[`ReadData with "gnomad_r2_1_controls" dataset selected has no unexpected
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -1997,9 +1943,6 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -2029,12 +1972,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -2092,6 +2030,8 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -2133,6 +2073,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
     <p>
       <span
         className="c0"
+        level="info"
       >
         Note
       </span>
@@ -2157,9 +2098,6 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -2189,12 +2127,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -2217,6 +2150,10 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -2252,6 +2189,8 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -2285,9 +2224,6 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -2328,7 +2264,6 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -2340,7 +2275,6 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -2362,16 +2296,8 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -2382,7 +2308,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -2420,6 +2346,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -2428,6 +2355,7 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -2440,6 +2368,8 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -2449,6 +2379,8 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -2462,6 +2394,8 @@ exports[`ReadData with "gnomad_r2_1_non_cancer" dataset selected has no unexpect
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -2515,9 +2449,6 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -2547,12 +2478,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -2610,6 +2536,8 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -2651,6 +2579,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
     <p>
       <span
         className="c0"
+        level="info"
       >
         Note
       </span>
@@ -2675,9 +2604,6 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -2707,12 +2633,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -2735,6 +2656,10 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -2770,6 +2695,8 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -2803,9 +2730,6 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -2846,7 +2770,6 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -2858,7 +2781,6 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -2880,16 +2802,8 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -2900,7 +2814,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -2938,6 +2852,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -2946,6 +2861,7 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -2958,6 +2874,8 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -2967,6 +2885,8 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -2980,6 +2900,8 @@ exports[`ReadData with "gnomad_r2_1_non_neuro" dataset selected has no unexpecte
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -3033,9 +2955,6 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -3065,12 +2984,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -3128,6 +3042,8 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -3169,6 +3085,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
     <p>
       <span
         className="c0"
+        level="info"
       >
         Note
       </span>
@@ -3193,9 +3110,6 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -3225,12 +3139,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -3253,6 +3162,10 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -3288,6 +3201,8 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -3321,9 +3236,6 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -3364,7 +3276,6 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -3376,7 +3287,6 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -3398,16 +3308,8 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -3418,7 +3320,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -3456,6 +3358,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -3464,6 +3367,7 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -3476,6 +3380,8 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -3485,6 +3391,8 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -3498,6 +3406,8 @@ exports[`ReadData with "gnomad_r2_1_non_topmed" dataset selected has no unexpect
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -3551,9 +3461,6 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -3583,12 +3490,7 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -3646,6 +3548,8 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -3689,9 +3593,6 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -3721,12 +3622,7 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -3749,6 +3645,10 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -3784,6 +3684,8 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -3817,9 +3719,6 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -3846,7 +3745,6 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -3858,7 +3756,6 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -3880,16 +3777,8 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
 
 @media (max-width:500px) {
   .c1 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -3900,7 +3789,7 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
   }
 
   .c1 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c1 button:last-child {
@@ -3942,6 +3831,8 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={true}
         onClick={[Function]}
@@ -3951,6 +3842,8 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -3964,6 +3857,8 @@ exports[`ReadData with "gnomad_r3" dataset selected has no unexpected changes wi
       className="c1"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -4017,9 +3912,6 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -4049,12 +3941,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -4112,6 +3999,8 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -4155,9 +4044,6 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -4187,12 +4073,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -4215,6 +4096,10 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -4250,6 +4135,8 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -4283,9 +4170,6 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -4326,7 +4210,6 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -4338,7 +4221,6 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -4360,16 +4242,8 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -4380,7 +4254,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -4418,6 +4292,7 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -4430,6 +4305,8 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -4439,6 +4316,8 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -4452,6 +4331,8 @@ exports[`ReadData with "gnomad_r3_controls_and_biobanks" dataset selected has no
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -4505,9 +4386,6 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -4537,12 +4415,7 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -4600,6 +4473,8 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -4643,9 +4518,6 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -4675,12 +4547,7 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -4703,6 +4570,10 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -4738,6 +4609,8 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -4771,9 +4644,6 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -4814,7 +4684,6 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -4826,7 +4695,6 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -4848,16 +4716,8 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -4868,7 +4728,7 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -4906,6 +4766,7 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -4918,6 +4779,8 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -4927,6 +4790,8 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -4940,6 +4805,8 @@ exports[`ReadData with "gnomad_r3_non_cancer" dataset selected has no unexpected
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -4993,9 +4860,6 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -5025,12 +4889,7 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -5088,6 +4947,8 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -5131,9 +4992,6 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -5163,12 +5021,7 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -5191,6 +5044,10 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -5226,6 +5083,8 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -5259,9 +5118,6 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -5302,7 +5158,6 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -5314,7 +5169,6 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -5336,16 +5190,8 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -5356,7 +5202,7 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -5394,6 +5240,7 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -5406,6 +5253,8 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -5415,6 +5264,8 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -5428,6 +5279,8 @@ exports[`ReadData with "gnomad_r3_non_neuro" dataset selected has no unexpected 
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -5481,9 +5334,6 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -5513,12 +5363,7 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -5576,6 +5421,8 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -5619,9 +5466,6 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -5651,12 +5495,7 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -5679,6 +5518,10 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -5714,6 +5557,8 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -5747,9 +5592,6 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -5790,7 +5632,6 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -5802,7 +5643,6 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -5824,16 +5664,8 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -5844,7 +5676,7 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -5882,6 +5714,7 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -5894,6 +5727,8 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -5903,6 +5738,8 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -5916,6 +5753,8 @@ exports[`ReadData with "gnomad_r3_non_topmed" dataset selected has no unexpected
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -5969,9 +5808,6 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -6001,12 +5837,7 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -6064,6 +5895,8 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -6107,9 +5940,6 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -6139,12 +5969,7 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -6167,6 +5992,10 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -6202,6 +6031,8 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -6235,9 +6066,6 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -6278,7 +6106,6 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -6290,7 +6117,6 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -6312,16 +6138,8 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -6332,7 +6150,7 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -6370,6 +6188,7 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -6382,6 +6201,8 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -6391,6 +6212,8 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -6404,6 +6227,8 @@ exports[`ReadData with "gnomad_r3_non_v2" dataset selected has no unexpected cha
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -6457,9 +6282,6 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -6489,12 +6311,7 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -6552,6 +6369,8 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -6595,9 +6414,6 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -6627,12 +6443,7 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -6655,6 +6466,10 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -6690,6 +6505,8 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -6723,9 +6540,6 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -6752,7 +6566,6 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -6764,7 +6577,6 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -6786,16 +6598,8 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
 
 @media (max-width:500px) {
   .c1 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -6806,7 +6610,7 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
   }
 
   .c1 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c1 button:last-child {
@@ -6848,6 +6652,8 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={true}
         onClick={[Function]}
@@ -6857,6 +6663,8 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -6870,6 +6678,8 @@ exports[`ReadData with "gnomad_r4" dataset selected has no unexpected changes wi
       className="c1"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -6923,9 +6733,6 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -6955,12 +6762,7 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -7018,6 +6820,8 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -7061,9 +6865,6 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -7093,12 +6894,7 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -7121,6 +6917,10 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -7156,6 +6956,8 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -7189,9 +6991,6 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -7232,7 +7031,6 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -7244,7 +7042,6 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -7266,16 +7063,8 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -7286,7 +7075,7 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -7324,6 +7113,7 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -7336,6 +7126,8 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -7345,6 +7137,8 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -7358,6 +7152,8 @@ exports[`ReadData with "gnomad_r4_non_ukb" dataset selected has no unexpected ch
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -7411,9 +7207,6 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -7443,12 +7236,7 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -7506,6 +7294,8 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -7549,9 +7339,6 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -7581,12 +7368,7 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -7609,6 +7391,10 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -7644,6 +7430,8 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -7677,9 +7465,6 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -7706,7 +7491,6 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -7718,7 +7502,6 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -7740,16 +7523,8 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
 
 @media (max-width:500px) {
   .c1 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -7760,7 +7535,7 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
   }
 
   .c1 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c1 button:last-child {
@@ -7802,6 +7577,8 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={true}
         onClick={[Function]}
@@ -7811,6 +7588,8 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -7824,6 +7603,8 @@ exports[`ReadData with "gnomad_sv_r2_1" dataset selected has no unexpected chang
       className="c1"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -7877,9 +7658,6 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -7909,12 +7687,7 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -7972,6 +7745,8 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -8015,9 +7790,6 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -8047,12 +7819,7 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -8075,6 +7842,10 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -8110,6 +7881,8 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -8143,9 +7916,6 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -8186,7 +7956,6 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -8198,7 +7967,6 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -8220,16 +7988,8 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -8240,7 +8000,7 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -8278,6 +8038,7 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -8290,6 +8051,8 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -8299,6 +8062,8 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -8312,6 +8077,8 @@ exports[`ReadData with "gnomad_sv_r2_1_controls" dataset selected has no unexpec
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -8365,9 +8132,6 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -8397,12 +8161,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -8460,6 +8219,8 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -8503,9 +8264,6 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -8535,12 +8293,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -8563,6 +8316,10 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -8598,6 +8355,8 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -8631,9 +8390,6 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -8674,7 +8430,6 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -8686,7 +8441,6 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -8708,16 +8462,8 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
 
 @media (max-width:500px) {
   .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -8728,7 +8474,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
   }
 
   .c2 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c2 button:last-child {
@@ -8766,6 +8512,7 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
     <p>
       <span
         className="c1"
+        level="info"
       >
         Note
       </span>
@@ -8778,6 +8525,8 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={true}
         onClick={[Function]}
@@ -8787,6 +8536,8 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -8800,6 +8551,8 @@ exports[`ReadData with "gnomad_sv_r2_1_non_neuro" dataset selected has no unexpe
       className="c2"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c3"
         disabled={false}
         onClick={[Function]}
@@ -8853,9 +8606,6 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -8885,12 +8635,7 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -8948,6 +8693,8 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -8991,9 +8738,6 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -9023,12 +8767,7 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
 }
 
 .c1 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -9051,6 +8790,10 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
 
 .c0 {
   margin-bottom: 3rem;
+}
+
+@media (max-width:500px) {
+
 }
 
 <div
@@ -9086,6 +8829,8 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
     </button>
      
     <button
+      backgroundColor="#f8f9fa"
+      borderColor="#6c757d"
       className="c2"
       disabled={false}
       id="load-once"
@@ -9119,9 +8864,6 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -9148,7 +8890,6 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
 
 .c0 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
@@ -9160,7 +8901,6 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
 
 .c0:focus,
 .c0:hover {
-  -webkit-text-decoration: underline;
   text-decoration: underline;
 }
 
@@ -9182,16 +8922,8 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
 
 @media (max-width:500px) {
   .c1 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-right: 0;
   }
@@ -9202,7 +8934,7 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
   }
 
   .c1 button {
-    margin-left: 0 !important;
+    margin-left: 0!important;
   }
 
   .c1 button:last-child {
@@ -9244,6 +8976,8 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
         Exomes:
       </strong>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={true}
         onClick={[Function]}
@@ -9253,6 +8987,8 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
         het
       </button>
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}
@@ -9266,6 +9002,8 @@ exports[`ReadData with "gnomad_sv_r4" dataset selected has no unexpected changes
       className="c1"
     >
       <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
         className="c2"
         disabled={false}
         onClick={[Function]}

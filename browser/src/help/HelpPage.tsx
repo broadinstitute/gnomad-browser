@@ -128,7 +128,6 @@ const HelpPage = () => {
         <h2>Table of contents</h2>
         <ul>
           <li>
-            {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <BaseLink href="#search">Search</BaseLink>
           </li>
           {helpPageTableOfContents.topics.map((topicId: string) => (
@@ -138,12 +137,10 @@ const HelpPage = () => {
             </li>
           ))}
           <li>
-            {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <BaseLink href="#frequently-asked-questions">Frequently asked questions</BaseLink>
             <ul>
               {helpPageTableOfContents.faq.map((section: FaqTopic) => (
                 <li key={section.heading}>
-                  {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
                   <BaseLink href={`#${slugify(section.heading)}`}>{section.heading}</BaseLink>
                 </li>
               ))}
@@ -182,10 +179,8 @@ const HelpPage = () => {
           </section>
 
           <section>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <List>
               {helpPageTableOfContents.topics.map((topicId: string) => (
-                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={topicId}>
                   {/* @ts-expect-error TS(2786) FIXME: 'Link' cannot be used as a JSX component. */}
                   <Link to={`/help/${topicId}`}>{helpTopics[topicId].title}</Link>

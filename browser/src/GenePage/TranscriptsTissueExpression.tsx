@@ -108,7 +108,6 @@ const TranscriptsTissueExpression = ({
       <div style={{ marginBottom: '1em' }}>
         <label htmlFor="transcript-tissue-expression-sort-transcripts-by">
           Sort transcripts by:{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id="transcript-tissue-expression-sort-transcripts-by"
             value={sortTranscriptsBy}
@@ -129,7 +128,7 @@ const TranscriptsTissueExpression = ({
       </div>
       <div style={{ marginBottom: '1em' }}>
         <label htmlFor="transcript-tissue-expression-sort-tissues-by">
-          Sort tissues by: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          Sort tissues by:
           <Select
             id="transcript-tissue-expression-sort-tissues-by"
             value={sortTissuesBy}

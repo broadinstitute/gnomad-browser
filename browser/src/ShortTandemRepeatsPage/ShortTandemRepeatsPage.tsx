@@ -173,7 +173,6 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPagePr
       </p>
 
       <TableWrapper>
-        {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <BaseTable style={{ minWidth: '100%' }}>
           <thead>
             <tr>{headers}</tr>
@@ -260,7 +259,6 @@ type ShortTandemRepeatsPageContainerProps = {
 
 const ShortTandemRepeatsPageContainer = ({ datasetId }: ShortTandemRepeatsPageContainerProps) => {
   return (
-    // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
       <DocumentTitle title={`Tandem Repeats | ${labelForDataset(datasetId)}`} />
       <GnomadPageHeading

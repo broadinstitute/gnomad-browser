@@ -111,7 +111,6 @@ const ZoomRegionForm = forwardRef<any, Props>(
           {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
           <label htmlFor="zoom-region-start">
             Start
-            {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Input
               id="zoom-region-start"
               type="number"
@@ -136,7 +135,6 @@ const ZoomRegionForm = forwardRef<any, Props>(
           {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
           <label htmlFor="zoom-region-stop">
             Stop
-            {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
             <Input
               id="zoom-region-stop"
               type="number"

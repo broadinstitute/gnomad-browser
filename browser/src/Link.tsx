@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types'
 import queryString from 'query-string'
 import React from 'react'
-import { Link as RRLink, withRouter } from 'react-router-dom'
+import { Link as ReactRouterLink, withRouter } from 'react-router-dom'
 
 import { Link as StyledLink } from '@gnomad/ui'
-
-const StyledRRLink = StyledLink.withComponent(RRLink)
 
 const Link = withRouter((props: any) => {
   const {
@@ -32,8 +30,7 @@ const Link = withRouter((props: any) => {
     }
   }
 
-  // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-  return <StyledRRLink {...rest} to={finalTo} />
+  return <StyledLink {...rest} as={ReactRouterLink} to={finalTo} />
 })
 
 Link.propTypes = {

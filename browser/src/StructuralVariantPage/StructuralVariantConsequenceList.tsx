@@ -65,16 +65,13 @@ class StructuralVariantConsequenceList extends Component<Props, State> {
                   {svConsequenceLabels[consequenceCode]}{' '}
                   {!!helpTopic && <InfoButton topic={helpTopic} />}
                 </h3>
-                {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
                 <OrderedList>
                   {genes.slice(0, 3).map((gene) => (
-                    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                     <ListItem key={gene}>
                       <Link to={`/gene/${gene}`}>{gene}</Link>
                     </ListItem>
                   ))}
                   {genes.length > 3 && (
-                    // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
                     <ListItem>
                       <TextButton
                         onClick={() => {
@@ -98,13 +95,11 @@ class StructuralVariantConsequenceList extends Component<Props, State> {
               this.setState({ expandedConsequence: null })
             }}
           >
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <OrderedList>
               {/* @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'. */}
               {variant.consequences
                 .find(({ consequence }: any) => consequence === expandedConsequence)
                 .genes.map((gene: any) => (
-                  // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                   <ListItem key={gene}>
                     <Link to={`/gene/${gene}`}>{gene}</Link>
                   </ListItem>

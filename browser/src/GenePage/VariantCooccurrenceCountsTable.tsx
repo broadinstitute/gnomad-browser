@@ -245,7 +245,6 @@ const HeterozygousCountCell: HeterozygousDataCell = ({
     <td key={afCutoff}>
       {/* @ts-expect-error */}
       <TooltipAnchor tooltip={tooltipContent}>
-        {/* @ts-expect-error */}
         <TooltipHint>
           {counts.two_het_total} ({counts.in_trans})
         </TooltipHint>
@@ -351,7 +350,6 @@ const VariantCooccurrenceCountsTableContent = <
             <>
               {/* @ts-expect-error */}
               <TooltipAnchor tooltip={tooltipContent}>
-                {/* @ts-expect-error */}
                 <TooltipHint>{severityLabel}</TooltipHint>
               </TooltipAnchor>
             </>
@@ -484,7 +482,6 @@ const HeterozygousCaption = () => {
     <>
       {/* @ts-expect-error */}
       <TooltipAnchor tooltip={tooltipContent}>
-        {/* @ts-expect-error */}
         <TooltipHint>
           (number predicted in <i>trans</i>)
         </TooltipHint>

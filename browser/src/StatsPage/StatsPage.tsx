@@ -99,14 +99,15 @@ const StatsSection = styled.div`
   margin-bottom: 5em;
 `
 
-const StatsHighlightColorBlock = styled.div`
+type StatsHighlightColorBlockProps = { backgroundColor: string }
+const StatsHighlightColorBlock = styled.div<StatsHighlightColorBlockProps>`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 200px;
   height: 200px;
   margin: 1em 0 2em 0;
-  background-color: ${(props) => props.theme.color};
+  background-color: ${(props) => props.backgroundColor};
   color: white;
   border-radius: 1.5em;
   text-align: center;
@@ -155,7 +156,7 @@ const StatsHighlightBlock = ({
   color: string
 }) => {
   return (
-    <StatsHighlightColorBlock theme={{ color }}>
+    <StatsHighlightColorBlock backgroundColor={color}>
       <div>
         <StatsHighlightTitle>{title}</StatsHighlightTitle>
         <StatsHighlightText>{text}</StatsHighlightText>

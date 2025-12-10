@@ -252,7 +252,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
             <Legend datasets={datasets} />
             {/* eslint-disable-next-line jsx-a11y/label-has-for */}
             <label htmlFor="coverage-metric">
-              Metric: {/* @ts-expect-error TS2769: No overload matches this call. */}
+              Metric:{' '}
               <Select
                 id="coverage-metric"
                 value={selectedMetric}

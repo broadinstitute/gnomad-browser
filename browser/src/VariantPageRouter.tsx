@@ -58,10 +58,8 @@ const VariantSearch = ({ datasetId, query }: VariantSearchProps) => {
   return (
     <>
       <p style={{ fontSize: '16px' }}>Multiple matching variants found:</p>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
         {(matchingVariants as any).map((variantId: any) => (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <ListItem key={variantId}>
             <Link
               to={{
@@ -85,7 +83,6 @@ type VariantSearchPageProps = {
 
 const VariantSearchPage = ({ datasetId, query }: VariantSearchPageProps) => {
   return (
-    // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
       <DocumentTitle title={`${query} | ${labelForDataset(datasetId)}`} />
       <PageHeading>{query}</PageHeading>
@@ -136,7 +133,6 @@ const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => 
   }
 
   return (
-    // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
       <DocumentTitle title="Invalid variant ID" />
       <PageHeading>Invalid Variant ID</PageHeading>

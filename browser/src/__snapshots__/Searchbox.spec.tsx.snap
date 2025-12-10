@@ -2,10 +2,10 @@
 
 exports[`Searchbox has no unexpected changes when no dataset specified 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r4"
   >
@@ -72,8 +72,9 @@ exports[`Searchbox has no unexpected changes when no dataset specified 1`] = `
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -90,10 +91,10 @@ exports[`Searchbox has no unexpected changes when no dataset specified 1`] = `
 
 exports[`Searchbox with selected dataset exac has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="exac"
   >
@@ -160,8 +161,9 @@ exports[`Searchbox with selected dataset exac has no unexpected changes 1`] = `
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -178,10 +180,10 @@ exports[`Searchbox with selected dataset exac has no unexpected changes 1`] = `
 
 exports[`Searchbox with selected dataset gnomad_cnv_r4 has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_cnv_r4"
   >
@@ -248,8 +250,9 @@ exports[`Searchbox with selected dataset gnomad_cnv_r4 has no unexpected changes
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -266,10 +269,10 @@ exports[`Searchbox with selected dataset gnomad_cnv_r4 has no unexpected changes
 
 exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r2_1"
   >
@@ -336,8 +339,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -354,10 +358,10 @@ exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1
 
 exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r2_1"
   >
@@ -424,8 +428,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -442,10 +447,10 @@ exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected 
 
 exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r2_1"
   >
@@ -512,8 +517,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpecte
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -530,10 +536,10 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpecte
 
 exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r2_1"
   >
@@ -600,8 +606,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -618,10 +625,10 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected
 
 exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r2_1"
   >
@@ -688,8 +695,9 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpecte
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -706,10 +714,10 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpecte
 
 exports[`Searchbox with selected dataset gnomad_r3 has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r3"
   >
@@ -776,8 +784,9 @@ exports[`Searchbox with selected dataset gnomad_r3 has no unexpected changes 1`]
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -794,10 +803,10 @@ exports[`Searchbox with selected dataset gnomad_r3 has no unexpected changes 1`]
 
 exports[`Searchbox with selected dataset gnomad_r3_controls_and_biobanks has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r3"
   >
@@ -864,8 +873,9 @@ exports[`Searchbox with selected dataset gnomad_r3_controls_and_biobanks has no 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -882,10 +892,10 @@ exports[`Searchbox with selected dataset gnomad_r3_controls_and_biobanks has no 
 
 exports[`Searchbox with selected dataset gnomad_r3_non_cancer has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r3"
   >
@@ -952,8 +962,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_cancer has no unexpected 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -970,10 +981,10 @@ exports[`Searchbox with selected dataset gnomad_r3_non_cancer has no unexpected 
 
 exports[`Searchbox with selected dataset gnomad_r3_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r3"
   >
@@ -1040,8 +1051,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_neuro has no unexpected c
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1058,10 +1070,10 @@ exports[`Searchbox with selected dataset gnomad_r3_non_neuro has no unexpected c
 
 exports[`Searchbox with selected dataset gnomad_r3_non_topmed has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r3"
   >
@@ -1128,8 +1140,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_topmed has no unexpected 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1146,10 +1159,10 @@ exports[`Searchbox with selected dataset gnomad_r3_non_topmed has no unexpected 
 
 exports[`Searchbox with selected dataset gnomad_r3_non_v2 has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r3"
   >
@@ -1216,8 +1229,9 @@ exports[`Searchbox with selected dataset gnomad_r3_non_v2 has no unexpected chan
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1234,10 +1248,10 @@ exports[`Searchbox with selected dataset gnomad_r3_non_v2 has no unexpected chan
 
 exports[`Searchbox with selected dataset gnomad_r4 has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r4"
   >
@@ -1304,8 +1318,9 @@ exports[`Searchbox with selected dataset gnomad_r4 has no unexpected changes 1`]
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1322,10 +1337,10 @@ exports[`Searchbox with selected dataset gnomad_r4 has no unexpected changes 1`]
 
 exports[`Searchbox with selected dataset gnomad_r4_non_ukb has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_r4"
   >
@@ -1392,8 +1407,9 @@ exports[`Searchbox with selected dataset gnomad_r4_non_ukb has no unexpected cha
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1410,10 +1426,10 @@ exports[`Searchbox with selected dataset gnomad_r4_non_ukb has no unexpected cha
 
 exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_sv_r2_1"
   >
@@ -1480,8 +1496,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected change
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1498,10 +1515,10 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected change
 
 exports[`Searchbox with selected dataset gnomad_sv_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_sv_r2_1"
   >
@@ -1568,8 +1585,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_controls has no unexpect
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1586,10 +1604,10 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_controls has no unexpect
 
 exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_sv_r2_1"
   >
@@ -1656,8 +1674,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpec
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}
@@ -1674,10 +1693,10 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpec
 
 exports[`Searchbox with selected dataset gnomad_sv_r4 has no unexpected changes 1`] = `
 <div
-  className="Searchbox__Wrapper-sc-oq7bs2-0 gRnmIj"
+  className="Searchbox__Wrapper-sc-oq7bs2-0 crrwqb"
 >
   <select
-    className="Select-sc-1lkyg9e-0 ivadCR"
+    className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
     value="gnomad_sv_r4"
   >
@@ -1744,8 +1763,9 @@ exports[`Searchbox with selected dataset gnomad_sv_r4 has no unexpected changes 
         aria-autocomplete="list"
         aria-expanded={false}
         autoComplete="off"
-        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 ePbiCg"
+        className="Combobox__Input-sc-is1dz3-0 Searchbox__SearchboxInput-sc-kp6w3x-0 lnVqLJ dYBFkh"
         data-testid="searchbox-input"
+        hasResults={false}
         onBlur={[Function]}
         onChange={[Function]}
         onClick={[Function]}

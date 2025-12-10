@@ -21,16 +21,13 @@ export const NcbiReference = (variantRsids: string[]) => {
   return (
     <>
       {variantRsids.length === 1 && (
-        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
         <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <ExternalLink href={`http://www.ncbi.nlm.nih.gov/snp/${variantRsids[0]}`}>
             dbSNP ({variantRsids[0]})
           </ExternalLink>
         </ListItem>
       )}
       {variantRsids.length > 1 && (
-        // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
         <ListItem>
           dbSNP ({' '}
           {(
@@ -52,9 +49,7 @@ export const NcbiReference = (variantRsids: string[]) => {
 
 export const ClinvarReference = (variantClinvarVariationId: string) => {
   return (
-    // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
     <ListItem>
-      {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <ExternalLink
         href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variantClinvarVariationId}/`}
       >
@@ -73,11 +68,9 @@ export const ReferenceList = ({ variant }: Props) => {
   const allOfUsURL = `https://databrowser.researchallofus.org/snvsindels/${variant.variant_id}`
 
   return (
-    // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <List>
       {variant.rsids && NcbiReference(variant.rsids)}
 
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
@@ -85,9 +78,7 @@ export const ReferenceList = ({ variant }: Props) => {
       {variant.clinvar && ClinvarReference(variant.clinvar.clinvar_variation_id)}
 
       {variant.caid && (
-        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
         <ListItem>
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <ExternalLink
             href={`https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=${variant.caid}`}
           >
@@ -97,7 +88,6 @@ export const ReferenceList = ({ variant }: Props) => {
       )}
 
       {variant.reference_genome === 'GRCh38' && (
-        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
         <ListItem>
           <ExternalLink href={allOfUsURL}>All of Us</ExternalLink>
         </ListItem>

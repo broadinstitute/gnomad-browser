@@ -44,10 +44,8 @@ type ConsequencesInGeneProps = {
 
 const ConsequencesInGene = ({ transcriptConsequences, variant }: ConsequencesInGeneProps) => {
   return (
-    // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
     <OrderedList>
       {transcriptConsequences.slice(0, 3).map((csq) => (
-        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
         <ListItem key={csq.transcript_id}>
           <Link to={`/transcript/${csq.transcript_id}`}>
             {csq.transcript_id}.{csq.transcript_version}
@@ -88,13 +86,11 @@ const MitochondrialVariantTranscriptConsequenceList = ({
       ({ value: consequenceTerm, consequences }: any) => (
         <ConsequenceListItem key={consequenceTerm}>
           <h3>{getLabelForConsequenceTerm(consequenceTerm)}</h3>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <OrderedList>
             {groupConsequences(consequences, 'gene_id').map(
               ({ value: geneId, consequences: consequencesInGene }) => {
                 const geneSymbol = consequencesInGene[0].gene_symbol
                 return (
-                  // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                   <ListItem key={geneId}>
                     <h4>
                       <Link to={`/gene/${geneId}`}>{geneSymbol}</Link>

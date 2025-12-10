@@ -102,7 +102,7 @@ const TeamCard = ({ title, description, headshotSource, alsoOnCommitteeHuh }) =>
           <TextTitle>{title}</TextTitle>
           {alsoOnCommitteeHuh && (
             <TextBlurb>
-              , in addition to being a member of the {/* @ts-expect-error */}
+              , in addition to being a member of the
               <Link href="#steering-committee"> gnomAD Steering Committee</Link>
               {', '}
             </TextBlurb>

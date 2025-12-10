@@ -2,7 +2,7 @@
 
 exports[`MitochondrialRegionCoverageTrack with dataset exac has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial genome coverage is not available in 
   ExAC
@@ -44,7 +44,7 @@ query MitochondrialCoverageInRegion($start: Int!, $stop: Int!, $datasetId: Datas
 
 exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1 has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial genome coverage is not available in 
   gnomAD v2.1.1
@@ -53,7 +53,7 @@ exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1 has no unexpe
 
 exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial genome coverage is not available in 
   gnomAD v2.1.1 (controls)
@@ -62,7 +62,7 @@ exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1_controls has 
 
 exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1_non_cancer has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial genome coverage is not available in 
   gnomAD v2.1.1 (non-cancer)
@@ -71,7 +71,7 @@ exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1_non_cancer ha
 
 exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial genome coverage is not available in 
   gnomAD v2.1.1 (non-neuro)
@@ -80,7 +80,7 @@ exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1_non_neuro has
 
 exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r2_1_non_topmed has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial genome coverage is not available in 
   gnomAD v2.1.1 (non-TOPMed)

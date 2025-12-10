@@ -6,7 +6,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
   "baseElement": <body>
     <div>
       <table
-        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
       >
         <thead>
           <tr>
@@ -28,7 +28,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Allele Number
                 </span>
@@ -42,7 +42,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AC
                 </span>
@@ -56,7 +56,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AF
                 </span>
@@ -70,7 +70,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AC
                 </span>
@@ -84,7 +84,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AF
                 </span>
@@ -104,14 +104,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -121,7 +121,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -141,7 +141,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
   </body>,
   "container": <div>
     <table
-      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
     >
       <thead>
         <tr>
@@ -163,7 +163,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Allele Number
               </span>
@@ -177,7 +177,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AC
               </span>
@@ -191,7 +191,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AF
               </span>
@@ -205,7 +205,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AC
               </span>
@@ -219,7 +219,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AF
               </span>
@@ -239,14 +239,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -256,7 +256,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable has no unexpected regres
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -328,7 +328,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
   "baseElement": <body>
     <div>
       <table
-        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
       >
         <thead>
           <tr>
@@ -350,7 +350,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Allele Number
                 </span>
@@ -364,7 +364,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AC
                 </span>
@@ -378,7 +378,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AF
                 </span>
@@ -392,7 +392,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AC
                 </span>
@@ -406,7 +406,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AF
                 </span>
@@ -423,14 +423,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -440,7 +440,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -457,14 +457,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -474,7 +474,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -491,14 +491,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -508,7 +508,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -525,14 +525,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -542,7 +542,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -559,14 +559,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -576,7 +576,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -597,14 +597,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -614,7 +614,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -634,7 +634,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
   </body>,
   "container": <div>
     <table
-      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
     >
       <thead>
         <tr>
@@ -656,7 +656,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Allele Number
               </span>
@@ -670,7 +670,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AC
               </span>
@@ -684,7 +684,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AF
               </span>
@@ -698,7 +698,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AC
               </span>
@@ -712,7 +712,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AF
               </span>
@@ -729,14 +729,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -746,7 +746,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -763,14 +763,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -780,7 +780,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -797,14 +797,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -814,7 +814,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -831,14 +831,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -848,7 +848,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -865,14 +865,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -882,7 +882,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -903,14 +903,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -920,7 +920,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ID 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -992,7 +992,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
   "baseElement": <body>
     <div>
       <table
-        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
       >
         <thead>
           <tr>
@@ -1014,7 +1014,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Allele Number
                 </span>
@@ -1028,7 +1028,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AC
                 </span>
@@ -1042,7 +1042,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AF
                 </span>
@@ -1056,7 +1056,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AC
                 </span>
@@ -1070,7 +1070,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AF
                 </span>
@@ -1087,14 +1087,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1104,7 +1104,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 2
               </span>
@@ -1121,14 +1121,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1138,7 +1138,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 5
               </span>
@@ -1155,14 +1155,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1172,7 +1172,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 1
               </span>
@@ -1189,14 +1189,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1206,7 +1206,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 3
               </span>
@@ -1223,14 +1223,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1240,7 +1240,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 4
               </span>
@@ -1261,14 +1261,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1278,7 +1278,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 15
               </span>
@@ -1298,7 +1298,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
   </body>,
   "container": <div>
     <table
-      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
     >
       <thead>
         <tr>
@@ -1320,7 +1320,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Allele Number
               </span>
@@ -1334,7 +1334,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AC
               </span>
@@ -1348,7 +1348,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AF
               </span>
@@ -1362,7 +1362,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AC
               </span>
@@ -1376,7 +1376,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AF
               </span>
@@ -1393,14 +1393,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -1410,7 +1410,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               2
             </span>
@@ -1427,14 +1427,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -1444,7 +1444,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               5
             </span>
@@ -1461,14 +1461,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -1478,7 +1478,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               1
             </span>
@@ -1495,14 +1495,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -1512,7 +1512,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               3
             </span>
@@ -1529,14 +1529,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -1546,7 +1546,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               4
             </span>
@@ -1567,14 +1567,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -1584,7 +1584,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               15
             </span>
@@ -1656,7 +1656,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
   "baseElement": <body>
     <div>
       <table
-        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
       >
         <thead>
           <tr>
@@ -1678,7 +1678,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Allele Number
                 </span>
@@ -1692,7 +1692,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AC
                 </span>
@@ -1706,7 +1706,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AF
                 </span>
@@ -1720,7 +1720,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AC
                 </span>
@@ -1734,7 +1734,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AF
                 </span>
@@ -1751,14 +1751,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 2
               </span>
@@ -1768,7 +1768,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1785,14 +1785,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 5
               </span>
@@ -1802,7 +1802,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1819,14 +1819,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 1
               </span>
@@ -1836,7 +1836,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1853,14 +1853,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 3
               </span>
@@ -1870,7 +1870,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1887,14 +1887,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 4
               </span>
@@ -1904,7 +1904,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1925,14 +1925,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 15
               </span>
@@ -1942,7 +1942,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -1962,7 +1962,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
   </body>,
   "container": <div>
     <table
-      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
     >
       <thead>
         <tr>
@@ -1984,7 +1984,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Allele Number
               </span>
@@ -1998,7 +1998,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AC
               </span>
@@ -2012,7 +2012,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AF
               </span>
@@ -2026,7 +2026,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AC
               </span>
@@ -2040,7 +2040,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AF
               </span>
@@ -2057,14 +2057,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               2
             </span>
@@ -2074,7 +2074,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2091,14 +2091,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               5
             </span>
@@ -2108,7 +2108,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2125,14 +2125,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               1
             </span>
@@ -2142,7 +2142,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2159,14 +2159,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               3
             </span>
@@ -2176,7 +2176,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2193,14 +2193,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               4
             </span>
@@ -2210,7 +2210,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2231,14 +2231,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               15
             </span>
@@ -2248,7 +2248,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by ac_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2320,7 +2320,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
   "baseElement": <body>
     <div>
       <table
-        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
       >
         <thead>
           <tr>
@@ -2342,7 +2342,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Allele Number
                 </span>
@@ -2356,7 +2356,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AC
                 </span>
@@ -2370,7 +2370,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AF
                 </span>
@@ -2384,7 +2384,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AC
                 </span>
@@ -2398,7 +2398,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AF
                 </span>
@@ -2415,14 +2415,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -2432,7 +2432,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 2
               </span>
@@ -2449,14 +2449,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -2466,7 +2466,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 5
               </span>
@@ -2483,14 +2483,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -2500,7 +2500,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 1
               </span>
@@ -2517,14 +2517,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -2534,7 +2534,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 3
               </span>
@@ -2551,14 +2551,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -2568,7 +2568,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 4
               </span>
@@ -2589,14 +2589,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 500
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -2606,7 +2606,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 15
               </span>
@@ -2626,7 +2626,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
   </body>,
   "container": <div>
     <table
-      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
     >
       <thead>
         <tr>
@@ -2648,7 +2648,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Allele Number
               </span>
@@ -2662,7 +2662,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AC
               </span>
@@ -2676,7 +2676,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AF
               </span>
@@ -2690,7 +2690,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AC
               </span>
@@ -2704,7 +2704,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AF
               </span>
@@ -2721,14 +2721,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2738,7 +2738,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               2
             </span>
@@ -2755,14 +2755,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2772,7 +2772,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               5
             </span>
@@ -2789,14 +2789,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2806,7 +2806,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               1
             </span>
@@ -2823,14 +2823,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2840,7 +2840,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               3
             </span>
@@ -2857,14 +2857,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2874,7 +2874,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               4
             </span>
@@ -2895,14 +2895,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               500
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -2912,7 +2912,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_het 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               15
             </span>
@@ -2984,7 +2984,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
   "baseElement": <body>
     <div>
       <table
-        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
       >
         <thead>
           <tr>
@@ -3006,7 +3006,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Allele Number
                 </span>
@@ -3020,7 +3020,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AC
                 </span>
@@ -3034,7 +3034,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AF
                 </span>
@@ -3048,7 +3048,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AC
                 </span>
@@ -3062,7 +3062,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AF
                 </span>
@@ -3079,14 +3079,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 5
               </span>
@@ -3096,7 +3096,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3113,14 +3113,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 4
               </span>
@@ -3130,7 +3130,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3147,14 +3147,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 3
               </span>
@@ -3164,7 +3164,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3181,14 +3181,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 2
               </span>
@@ -3198,7 +3198,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3215,14 +3215,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 100
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 1
               </span>
@@ -3232,7 +3232,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3253,14 +3253,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 500
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 15
               </span>
@@ -3270,7 +3270,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3290,7 +3290,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
   </body>,
   "container": <div>
     <table
-      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
     >
       <thead>
         <tr>
@@ -3312,7 +3312,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Allele Number
               </span>
@@ -3326,7 +3326,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AC
               </span>
@@ -3340,7 +3340,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AF
               </span>
@@ -3354,7 +3354,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AC
               </span>
@@ -3368,7 +3368,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AF
               </span>
@@ -3385,14 +3385,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               5
             </span>
@@ -3402,7 +3402,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -3419,14 +3419,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               4
             </span>
@@ -3436,7 +3436,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -3453,14 +3453,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               3
             </span>
@@ -3470,7 +3470,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -3487,14 +3487,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               2
             </span>
@@ -3504,7 +3504,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -3521,14 +3521,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               100
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               1
             </span>
@@ -3538,7 +3538,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -3559,14 +3559,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               500
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               15
             </span>
@@ -3576,7 +3576,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by af_hom 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -3648,7 +3648,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
   "baseElement": <body>
     <div>
       <table
-        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+        class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
       >
         <thead>
           <tr>
@@ -3670,7 +3670,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Allele Number
                 </span>
@@ -3684,7 +3684,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AC
                 </span>
@@ -3698,7 +3698,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Homoplasmic AF
                 </span>
@@ -3712,7 +3712,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AC
                 </span>
@@ -3726,7 +3726,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
                 type="button"
               >
                 <span
-                  class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                  class="TooltipHint-sc-1wwbc8j-0 cimmsD"
                 >
                   Heteroplasmic AF
                 </span>
@@ -3743,14 +3743,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 2
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3760,7 +3760,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3777,14 +3777,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 5
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3794,7 +3794,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3811,14 +3811,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 1
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3828,7 +3828,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3845,14 +3845,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 3
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3862,7 +3862,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3879,14 +3879,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 4
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3896,7 +3896,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3917,14 +3917,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </th>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 15
               </span>
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3934,7 +3934,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
             </td>
             <td>
               <span
-                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+                class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
               >
                 0
               </span>
@@ -3954,7 +3954,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
   </body>,
   "container": <div>
     <table
-      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 ihCgBR"
+      class="Table__BaseTable-sc-7fgtt2-0 MitochondrialVariantPopulationFrequenciesTable__Table-sc-1esr108-1 etBNab iGlgzQ"
     >
       <thead>
         <tr>
@@ -3976,7 +3976,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Allele Number
               </span>
@@ -3990,7 +3990,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AC
               </span>
@@ -4004,7 +4004,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Homoplasmic AF
               </span>
@@ -4018,7 +4018,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AC
               </span>
@@ -4032,7 +4032,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
               type="button"
             >
               <span
-                class="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+                class="TooltipHint-sc-1wwbc8j-0 cimmsD"
               >
                 Heteroplasmic AF
               </span>
@@ -4049,14 +4049,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               2
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4066,7 +4066,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4083,14 +4083,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               5
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4100,7 +4100,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4117,14 +4117,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               1
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4134,7 +4134,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4151,14 +4151,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               3
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4168,7 +4168,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4185,14 +4185,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               4
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4202,7 +4202,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4223,14 +4223,14 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </th>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               15
             </span>
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>
@@ -4240,7 +4240,7 @@ exports[`MitochondrialVariantPopulationFrequenciesTable sorting sorts by an 1`] 
           </td>
           <td>
             <span
-              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eKdiaC"
+              class="MitochondrialVariantPopulationFrequenciesTable__CountCell-sc-1esr108-0 eTvNga"
             >
               0
             </span>

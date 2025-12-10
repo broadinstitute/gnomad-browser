@@ -2,10 +2,10 @@
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset exac has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -15,7 +15,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset exac h
     GRCh38
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -25,10 +25,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset exac h
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset exac renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -40,7 +40,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset exac r
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -49,7 +49,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset exac r
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -63,10 +63,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset exac r
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1 has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -76,7 +76,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     GRCh38
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -86,10 +86,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1 renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -101,7 +101,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -110,7 +110,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -124,10 +124,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_controls has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -137,7 +137,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     GRCh38
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -147,10 +147,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_controls renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -162,7 +162,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -171,7 +171,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -185,10 +185,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_cancer has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -198,7 +198,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     GRCh38
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -208,10 +208,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_cancer renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -223,7 +223,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -232,7 +232,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -246,10 +246,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_neuro has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -259,7 +259,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     GRCh38
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -269,10 +269,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_neuro renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -284,7 +284,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -293,7 +293,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -307,10 +307,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_topmed has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -320,7 +320,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     GRCh38
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -330,10 +330,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad_r2_1_non_topmed renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -345,7 +345,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -354,7 +354,7 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r4"
           onClick={[Function]}
         >
@@ -368,10 +368,10 @@ exports[`LiftoverDisambiguationPage starting from liftover source dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3 has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -381,7 +381,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -391,10 +391,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3 renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -406,7 +406,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -415,7 +415,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -429,10 +429,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_controls_and_biobanks has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -442,7 +442,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -452,10 +452,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_controls_and_biobanks renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -467,7 +467,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -476,7 +476,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -490,10 +490,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_cancer has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -503,7 +503,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -513,10 +513,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_cancer renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -528,7 +528,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -537,7 +537,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -551,10 +551,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_neuro has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -564,7 +564,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -574,10 +574,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_neuro renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -589,7 +589,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -598,7 +598,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -612,10 +612,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_topmed has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -625,7 +625,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -635,10 +635,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_topmed renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -650,7 +650,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -659,7 +659,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -673,10 +673,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_v2 has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -686,7 +686,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -696,10 +696,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r3_non_v2 renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -711,7 +711,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -720,7 +720,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -734,10 +734,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r4 has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -747,7 +747,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -757,10 +757,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r4 renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -772,7 +772,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -781,7 +781,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -795,10 +795,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r4_non_ukb has appropriate message if no corresponding variant found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -808,7 +808,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     GRCh37
     .
     <div
-      className="StatusMessage-sc-neg7mh-0 hJFlwG"
+      className="StatusMessage-sc-neg7mh-0 eWmajh"
     >
       No corresponding variants found
     </div>
@@ -818,10 +818,10 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
 
 exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad_r4_non_ukb renders links to each variant if multiple corresponding variants found 1`] = `
 <div
-  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 dWdnsu"
+  className="Page-sc-w7h773-0 TrackPage-sc-1xq3qi7-0 inQCpN kMAZul"
 >
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     Due to liftover, variant 
     fakevariant
@@ -833,7 +833,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
     <ul>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source1?dataset=gnomad_r2_1"
           onClick={[Function]}
         >
@@ -842,7 +842,7 @@ exports[`LiftoverDisambiguationPage starting from liftover target dataset gnomad
       </li>
       <li>
         <a
-          className="Link-sc-14lgydv-0-Link csqFBR"
+          className="Link-sc-14lgydv-0 jtwqlm"
           href="/variant/source2?dataset=gnomad_r2_1"
           onClick={[Function]}
         >

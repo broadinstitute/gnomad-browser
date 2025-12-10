@@ -2,14 +2,14 @@
 
 exports[`MitochondrialVariantsInTranscript with dataset exac has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial variants are not available in 
   ExAC
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link csqFBR"
+    className="Link-sc-14lgydv-0 jtwqlm"
     href="/transcript/dummy_transcript?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -21,19 +21,19 @@ exports[`MitochondrialVariantsInTranscript with dataset exac has no unexpected c
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_cnv_r4 has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -53,14 +53,14 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_cnv_r4 has no une
 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1 has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial variants are not available in 
   gnomAD v2.1.1
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link csqFBR"
+    className="Link-sc-14lgydv-0 jtwqlm"
     href="/transcript/dummy_transcript?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -71,14 +71,14 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1 has no unexp
 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_controls has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial variants are not available in 
   gnomAD v2.1.1 (controls)
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link csqFBR"
+    className="Link-sc-14lgydv-0 jtwqlm"
     href="/transcript/dummy_transcript?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -89,14 +89,14 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_controls has
 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_non_cancer has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial variants are not available in 
   gnomAD v2.1.1 (non-cancer)
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link csqFBR"
+    className="Link-sc-14lgydv-0 jtwqlm"
     href="/transcript/dummy_transcript?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -107,14 +107,14 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_non_cancer h
 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_non_neuro has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial variants are not available in 
   gnomAD v2.1.1 (non-neuro)
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link csqFBR"
+    className="Link-sc-14lgydv-0 jtwqlm"
     href="/transcript/dummy_transcript?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -125,14 +125,14 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_non_neuro ha
 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_non_topmed has no unexpected changes 1`] = `
 <div
-  className="StatusMessage-sc-neg7mh-0 hJFlwG"
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
 >
   Mitochondrial variants are not available in 
   gnomAD v2.1.1 (non-TOPMed)
   <br />
   <br />
   <a
-    className="Link-sc-14lgydv-0-Link csqFBR"
+    className="Link-sc-14lgydv-0 jtwqlm"
     href="/transcript/dummy_transcript?dataset=gnomad_r3"
     onClick={[Function]}
   >
@@ -144,19 +144,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r2_1_non_topmed h
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3 has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -177,19 +177,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3 has no unexpec
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_controls_and_biobanks has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -210,19 +210,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_controls_and_b
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_cancer has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -243,19 +243,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_cancer has
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_neuro has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -276,19 +276,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_neuro has 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_topmed has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -309,19 +309,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_topmed has
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_v2 has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -342,19 +342,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r3_non_v2 has no 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4 has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -375,19 +375,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4 has no unexpec
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4_non_ukb has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -408,19 +408,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4_non_ukb has no
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r2_1 has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -441,19 +441,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r2_1 has no un
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r2_1_controls has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -474,19 +474,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r2_1_controls 
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r2_1_non_neuro has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
@@ -507,19 +507,19 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r2_1_non_neuro
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_sv_r4 has no unexpected changes 1`] = `
 [
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2>
       ClinVar variants
     </h2>
   </div>,
   <p
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     No ClinVar variants found in this transcript.
   </p>,
   <div
-    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 fQVUsz"
+    className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <h2
       style={
