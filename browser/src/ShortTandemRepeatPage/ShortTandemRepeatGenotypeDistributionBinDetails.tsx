@@ -46,12 +46,10 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
 
   return (
     <>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
         {genotypeDistribution
           .filter(isInBin)
           .map(({ long_allele_repunit_count, short_allele_repunit_count, frequency }) => (
-            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
             <ListItem key={`${long_allele_repunit_count}/${short_allele_repunit_count}`}>
               {long_allele_repunit_count} repeats / {short_allele_repunit_count} repeats:{' '}
               {frequency} individuals
@@ -61,7 +59,6 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
       {!selectedRepeatUnits && (
         <>
           <h3>Repeat Units</h3>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <List>
             {repeatUnitPairs
               .map((repeatUnits) => ({
@@ -92,14 +89,11 @@ const ShortTandemRepeatGenotypeDistributionBinDetails = ({
                 },
               ])
               .map(({ repeatUnits, distribution }) => (
-                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={repeatUnits.join('/')}>
                   {repeatUnits.join(' / ')}
-                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                   <List>
                     {distribution.map(
                       ({ short_allele_repunit_count, long_allele_repunit_count, frequency }) => (
-                        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                         <ListItem
                           key={`${long_allele_repunit_count}/${short_allele_repunit_count}`}
                         >

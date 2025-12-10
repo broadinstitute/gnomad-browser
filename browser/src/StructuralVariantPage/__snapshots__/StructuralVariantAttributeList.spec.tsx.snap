@@ -15,6 +15,22 @@ exports[`StructuralVariantAttributeList tolerates certain variant fields being n
   line-height: 1;
 }
 
+.c2 {
+  color: #1173bb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c2:visited,
+.c2:active {
+  color: #1173bb;
+}
+
+.c2:focus,
+.c2:hover {
+  text-decoration: underline;
+}
+
 .c0 {
   margin: 0;
 }
@@ -35,12 +51,7 @@ exports[`StructuralVariantAttributeList tolerates certain variant fields being n
 }
 
 .c3 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -59,24 +70,6 @@ exports[`StructuralVariantAttributeList tolerates certain variant fields being n
 
 .c3:focus img {
   box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
-}
-
-.c2 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.c2:visited,
-.c2:active {
-  color: #1173bb;
-}
-
-.c2:focus,
-.c2:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
 }
 
 @media (max-width:600px) {
@@ -105,6 +98,7 @@ exports[`StructuralVariantAttributeList tolerates certain variant fields being n
     <dd>
       <span
         className="c1"
+        level="success"
       >
         Pass
       </span>
@@ -148,7 +142,7 @@ exports[`StructuralVariantAttributeList tolerates certain variant fields being n
     </dt>
     <dd>
       <a
-        className="-Link c2"
+        className="c2"
         href="/region/21-123-456"
         onClick={[Function]}
       >

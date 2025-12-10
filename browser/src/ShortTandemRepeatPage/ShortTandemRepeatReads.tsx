@@ -371,7 +371,7 @@ const ShortTandemRepeatReads = ({
           Previous sample
         </Button>
         <span>
-          Showing sample {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          Showing sample
           <Input
             type="number"
             value={readIndex + 1}
@@ -457,7 +457,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
             {/* eslint-disable jsx-a11y/label-has-associated-control */}
             {alleleSizeDistributionRepeatUnits.length > 1 && (
               <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}>
-                Repeat unit {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+                Repeat unit
                 <Select
                   id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-repeat-unit`}
                   value={value[alleleIndex].repeat_unit || ''}
@@ -480,7 +480,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
               </Label>
             )}
             <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}>
-              Min repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              Min repeats{' '}
               <Input
                 type="text"
                 id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-min-repeats`}
@@ -506,7 +506,7 @@ const ShortTandemRepeatReadsAllelesFilterControls = ({
               />
             </Label>{' '}
             <Label htmlFor={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}>
-              Max repeats {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+              Max repeats{' '}
               <Input
                 type="text"
                 id={`short-tandem-repeat-reads-filter-allele-${alleleIndex}-max-repeats`}
@@ -559,7 +559,6 @@ const ShortTandemRepeatReadsQualityFilterControls = ({
       <ShortTandemRepeatReadsFilterControlWrapper key="manual-review">
         <Label htmlFor="short-tandem-repeat-reads-manual-review-filter">
           Manual review: &nbsp;
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id="short-tandem-repeat-reads-manual-review-filter"
             value={selectedQualityDescription || ''}
@@ -583,7 +582,6 @@ const ShortTandemRepeatReadsQualityFilterControls = ({
       <ShortTandemRepeatReadsFilterControlWrapper key="q-score">
         <Label htmlFor="short-tandem-repeat-reads-q-score-filter">
           Q score: &nbsp;
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Select
             id="short-tandem-repeat-reads-q-score-filter"
             value={selectedQScoreBin || ''}

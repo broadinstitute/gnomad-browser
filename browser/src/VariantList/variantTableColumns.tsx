@@ -118,7 +118,7 @@ const variantTableColumns: VariantTableColumn[] = [
           })}
       </NumericCell>
     ),
-    shouldShowInContext: (context: string, contextType: string) => contextType === 'gene',
+    shouldShowInContext: (_context: string, contextType: string) => contextType === 'gene',
   },
 
   {
@@ -131,7 +131,6 @@ const variantTableColumns: VariantTableColumn[] = [
     getSearchTerms: (variant: any) => variant.clinical_significance,
     render: (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
-        {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <ExternalLink
           href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`}
         >
@@ -149,7 +148,7 @@ const variantTableColumns: VariantTableColumn[] = [
     key: 'consequence',
     heading: 'VEP Annotation',
     description: 'Variant Effect Predictor (VEP) annotation',
-    descriptionInContext: (context: string, contextType: string) =>
+    descriptionInContext: (_context: string, contextType: string) =>
       `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(contextType)}`,
     grow: 0,
     minWidth: 140,
@@ -196,7 +195,7 @@ const variantTableColumns: VariantTableColumn[] = [
         <Link to={`/gene/${row.gene_id}`}>{row.gene_symbol || row.gene_id}</Link>
       </Cell>
     ),
-    shouldShowInContext: (context: any, contextType: any) => contextType === 'region',
+    shouldShowInContext: (_context: any, contextType: any) => contextType === 'region',
   },
 
   {
@@ -215,7 +214,7 @@ const variantTableColumns: VariantTableColumn[] = [
     key: 'hgvs',
     heading: 'HGVS Consequence',
     description: 'HGVS protein sequence (where defined) or coding sequence',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (_context: any, contextType: any) =>
       `HGVS protein sequence (where defined) or coding sequence${getConsequenceDescription(
         contextType
       )}`,
@@ -234,7 +233,7 @@ const variantTableColumns: VariantTableColumn[] = [
     key: 'hgvsc',
     heading: 'HGVSc Consequence',
     description: 'HGVS coding sequence',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (_context: any, contextType: any) =>
       `HGVS coding sequence${getConsequenceDescription(contextType)}`,
     grow: 1,
     minWidth: 160,
@@ -255,7 +254,7 @@ const variantTableColumns: VariantTableColumn[] = [
     key: 'hgvsp',
     heading: 'HGVSp Consequence',
     description: 'HGVS protein sequence',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (_context: any, contextType: any) =>
       `HGVS protein sequence${getConsequenceDescription(contextType)}`,
     grow: 1,
     minWidth: 160,
@@ -306,7 +305,6 @@ const variantTableColumns: VariantTableColumn[] = [
         content = (
           // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message
           <TooltipAnchor tooltip={tooltip}>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <TooltipHint>{verdict}</TooltipHint>
           </TooltipAnchor>
         )
@@ -316,7 +314,7 @@ const variantTableColumns: VariantTableColumn[] = [
 
       return <Cell>{content}</Cell>
     },
-    shouldShowInContext: (context: any, contextType: any) =>
+    shouldShowInContext: (_context: any, contextType: any) =>
       contextType === 'gene' || contextType === 'region',
   },
 
@@ -369,7 +367,7 @@ const variantTableColumns: VariantTableColumn[] = [
         </Link>
       </Cell>
     ),
-    shouldShowInContext: (context: any, contextType: any) => contextType !== 'transcript',
+    shouldShowInContext: (_context: any, contextType: any) => contextType !== 'transcript',
   },
 
   {

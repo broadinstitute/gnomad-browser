@@ -191,14 +191,12 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
             <th scope="col">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Expected variant counts were predicted using a depth corrected probability of mutation for each gene. More details can be found in the gnomAD flagship paper. Note that the expected variant counts for bases with a median depth <1 were removed from the totals.">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Expected SNVs</TooltipHint>
               </TooltipAnchor>
             </th>
             <th scope="col">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Includes single nucleotide changes that occurred in the canonical transcript that were found at a frequency of <0.1%, passed all filters, and at sites with a median depth ≥1. The counts represent the number of unique variants and not the allele count of these variants.">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Observed SNVs</TooltipHint>
               </TooltipAnchor>
             </th>

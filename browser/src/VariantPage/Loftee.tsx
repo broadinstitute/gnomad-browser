@@ -39,7 +39,6 @@ export const LofteeFilter = ({ filter }: LofteeFilterProps) => {
   return (
     // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message
     <TooltipAnchor tooltip={lofteeFilterDescriptions[filter]}>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <TooltipHint>{filter}</TooltipHint>
     </TooltipAnchor>
   )
@@ -70,7 +69,6 @@ export const LofteeFlag = ({ flag }: LofteeFlagProps) => {
   return (
     // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message
     <TooltipAnchor tooltip={lofteeFlagDescriptions[flag]}>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <TooltipHint>{flag}</TooltipHint>
     </TooltipAnchor>
   )

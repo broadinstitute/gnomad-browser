@@ -2,7 +2,7 @@
 
 exports[`Clinvar Variants Track renders correctly with default props 1`] = `
 [
-  .c26 {
+  .c19 {
   box-sizing: border-box;
   height: calc(2em + 2px);
   padding: 0.375em 0.75em;
@@ -15,361 +15,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-}
-
-.c26:active,
-.c26:hover {
-  background-color: #cbd3da;
-}
-
-.c26:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c26:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c26 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
-.c23 {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c24 {
-  margin-right: 0.5em;
-}
-
-.c28 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.c28:visited,
-.c28:active {
-  color: #1173bb;
-}
-
-.c28:focus,
-.c28:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c11 {
-  box-sizing: border-box;
-  width: 35px;
-  height: 20px;
-  padding: 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-right: 0.75em;
-  background: none;
-  cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  line-height: 18px;
-  outline: none;
-}
-
-.c11:active,
-.c11:hover {
-  border-color: #b7b7b7;
-}
-
-.c11:focus {
-  box-shadow: 0 0 0 0.2em rgba(221,221,221,0.5);
-}
-
-.c11::-moz-focus-inner {
-  border: 0;
-}
-
-.c9 {
-  position: relative;
-  display: inline-block;
-  box-sizing: border-box;
-  width: 14px;
-  height: 14px;
-  padding: 1px;
-  border-width: 1px;
-  margin: 0 0.7em;
-  border-color: #000;
-  border-radius: 3px;
-  border-style: solid;
-  font-size: 10px;
-}
-
-.c9 > img {
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  width: 10px;
-  height: 10px;
-}
-
-.c7 {
-  border: 0;
-  -webkit-clip: rect(0 0 0 0);
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
-}
-
-.c7:focus + .c8 {
-  border-color: #428bca;
-  box-shadow: 0 0 0 0.2em #428bca;
-}
-
-.c5 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  overflow: hidden;
-  border-color: #E6573D;
-  border-style: solid;
-  border-width: 1px;
-}
-
-.c5:first-child {
-  border-top-left-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
-}
-
-.c5:nth-last-child(2) {
-  border-top-right-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
-}
-
-.c12 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  overflow: hidden;
-  border-color: #FAB470;
-  border-style: solid;
-  border-width: 1px;
-}
-
-.c12:first-child {
-  border-top-left-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
-}
-
-.c12:nth-last-child(2) {
-  border-top-right-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
-}
-
-.c14 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  overflow: hidden;
-  border-color: #5E6F9E;
-  border-style: solid;
-  border-width: 1px;
-}
-
-.c14:first-child {
-  border-top-left-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
-}
-
-.c14:nth-last-child(2) {
-  border-top-right-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
-}
-
-.c16 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  overflow: hidden;
-  border-color: #bababa;
-  border-style: solid;
-  border-width: 1px;
-}
-
-.c16:first-child {
-  border-top-left-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
-}
-
-.c16:nth-last-child(2) {
-  border-top-right-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
-}
-
-.c6 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: linear-gradient(to right,rgba(230,87,61,0.5),rgba(230,87,61,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
-  background-repeat: no-repeat;
-  font-size: 14px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c13 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: linear-gradient(to right,rgba(250,180,112,0.5),rgba(250,180,112,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
-  background-repeat: no-repeat;
-  font-size: 14px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c15 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: linear-gradient(to right,rgba(94,111,158,0.5),rgba(94,111,158,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
-  background-repeat: no-repeat;
-  font-size: 14px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c17 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  background: linear-gradient(to right,rgba(186,186,186,0.5),rgba(186,186,186,0.5) 2em,rgba(0,0,0,0) 2em,rgba(0,0,0,0));
-  background-repeat: no-repeat;
-  font-size: 14px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.c10 {
-  padding: 0.375em 0.75em;
-  line-height: 1.15em;
-}
-
-.c19 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  width: 35px;
-  height: 20px;
-  padding: 0;
-  border-radius: 5px;
-  margin: 0 0.5em;
 }
 
 .c19:active,
@@ -393,27 +39,239 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   height: 0.9em;
 }
 
-.c3 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
+.c24 {
+  user-select: none;
+}
+
+.c25 {
+  margin-right: 0.5em;
+}
+
+.c28 {
+  color: #1173bb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c28:visited,
+.c28:active {
+  color: #1173bb;
+}
+
+.c28:focus,
+.c28:hover {
+  text-decoration: underline;
+}
+
+.c11 {
+  box-sizing: border-box;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 0.75em;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  line-height: 18px;
+  outline: none;
+}
+
+.c11:active,
+.c11:hover {
+  border-color: #b7b7b7;
+}
+
+.c11:focus {
+  box-shadow: 0 0 0 0.2em rgba(221,221,221,0.5);
+}
+
+.c11 ::-moz-focus-inner {
+  border: 0;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  padding: 1px;
+  border-width: 1px;
+  margin: 0 0.7em;
+  border-color: #000;
+  border-radius: 3px;
+  border-style: solid;
+  font-size: 10px;
+}
+
+.c9 >img {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 10px;
+  height: 10px;
+}
+
+.c7 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c7 :focus+.c8 {
+  border-color: #428bca;
+  box-shadow: 0 0 0 0.2em #428bca;
+}
+
+.c5 {
   display: inline-flex;
-  -webkit-flex-flow: row wrap;
-  -ms-flex-flow: row wrap;
-  flex-flow: row wrap;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+  flex-shrink: 0;
   align-items: center;
+  overflow: hidden;
+  border-color: #E6573D;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c5:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c5:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c12 {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border-color: #FAB470;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c12:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c12:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c14 {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border-color: #5E6F9E;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c14:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c14:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c16 {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border-color: #bababa;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c16:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c16:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c6 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(230,87,61,0.5), rgba(230,87,61,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c13 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(250,180,112,0.5), rgba(250,180,112,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c15 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(94,111,158,0.5), rgba(94,111,158,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c17 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(186,186,186,0.5), rgba(186,186,186,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c10 {
+  padding: 0.375em 0.75em;
+  line-height: 1.15em;
 }
 
 .c20 {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -ms-inline-flexbox;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border-radius: 5px;
+  margin: 0 0.5em;
+}
+
+.c3 {
   display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.c21 {
+  display: inline-flex;
   align-self: center;
   outline: none;
   padding: 0 3px;
@@ -422,7 +280,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   cursor: pointer;
 }
 
-.c20 img {
+.c21 img {
   position: relative;
   top: 0.13em;
   width: 14px;
@@ -430,7 +288,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   border-radius: 7px;
 }
 
-.c20:focus img {
+.c21:focus img {
   box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
 }
 
@@ -439,80 +297,43 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
 }
 
 .c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
   width: 100%;
   margin-bottom: 1em;
 }
 
 .c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   margin-bottom: 0.5em;
 }
 
-.c21 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c22 {
   display: flex;
-  -webkit-flex-flow: row wrap;
-  -ms-flex-flow: row wrap;
   flex-flow: row wrap;
 }
 
-.c21 input[type='checkbox'] {
+.c22 input[type='checkbox'] {
   position: relative;
   top: 2px;
 }
 
-.c21 label {
+.c22 label {
   margin-left: 1em;
 }
 
-.c21 label:first-child {
+.c22 label:first-child {
   margin-left: 0;
 }
 
-.c22 {
+.c23 {
   margin-right: 1ch;
 }
 
-.c25 {
-  box-sizing: border-box;
-  height: calc(2em + 2px);
-  padding: 0.375em 0.75em;
-  border-color: #6c757d;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.5em;
-  background-color: #f8f9fa;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1.25;
-  outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.c26 {
   width: 35px;
   height: 20px;
   padding: 0;
@@ -520,39 +341,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   line-height: 18px;
 }
 
-.c25:active,
-.c25:hover {
-  background-color: #cbd3da;
-}
-
-.c25:disabled {
-  background-color: rgba(248,249,250,0.5);
-  cursor: not-allowed;
-}
-
-.c25:focus {
-  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
-}
-
-.c25 svg {
-  position: relative;
-  top: 0.11em;
-  width: 0.9em;
-  height: 0.9em;
-}
-
 .c27 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
 }
 
@@ -575,18 +366,13 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
 
 @media (max-width:600px) {
   .c2 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: flex-start;
-    -webkit-box-align: flex-start;
-    -ms-flex-align: flex-start;
     align-items: flex-start;
   }
 }
 
 @media (max-width:600px) {
-  .c21 {
+  .c22 {
     margin-bottom: 0.5em;
   }
 }
@@ -602,13 +388,16 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
       >
         <div>
           <div
+            breakpoint={1200}
             className="c3"
             id="clinvar-track-included-categories"
           >
             <span
+              borderColor="#E6573D"
               className="c4 c5"
             >
               <label
+                backgroundColor="rgba(230,87,61,0.5)"
                 className="c6"
                 htmlFor="clinvar-track-included-categories-pathogenic"
               >
@@ -642,9 +431,11 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
               </button>
             </span>
             <span
+              borderColor="#FAB470"
               className="c4 c12"
             >
               <label
+                backgroundColor="rgba(250,180,112,0.5)"
                 className="c13"
                 htmlFor="clinvar-track-included-categories-uncertain"
               >
@@ -678,9 +469,11 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
               </button>
             </span>
             <span
+              borderColor="#5E6F9E"
               className="c4 c14"
             >
               <label
+                backgroundColor="rgba(94,111,158,0.5)"
                 className="c15"
                 htmlFor="clinvar-track-included-categories-benign"
               >
@@ -714,9 +507,11 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
               </button>
             </span>
             <span
+              borderColor="#bababa"
               className="c4 c16"
             >
               <label
+                backgroundColor="rgba(186,186,186,0.5)"
                 className="c17"
                 htmlFor="clinvar-track-included-categories-other"
               >
@@ -750,7 +545,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
               </button>
             </span>
             <button
-              className="c18 c19"
+              backgroundColor="#f8f9fa"
+              borderColor="#6c757d"
+              className="c18 c19 c20"
               onClick={[Function]}
               type="button"
             >
@@ -759,7 +556,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
           </div>
            
           <button
-            className="c20"
+            className="c21"
             onClick={[Function]}
             type="button"
           >
@@ -792,18 +589,18 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
         className="c2"
       >
         <div
-          className="c21"
+          className="c22"
         >
           <div
-            className="c22"
+            className="c23"
           >
             <label
-              className="c23"
+              className="c24"
               htmlFor="clinvar-track-include-lof"
             >
               <input
                 checked={true}
-                className="c24"
+                className="c25"
                 disabled={false}
                 id="clinvar-track-include-lof"
                 onChange={[Function]}
@@ -813,7 +610,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </label>
              
             <button
-              className="c25"
+              backgroundColor="#f8f9fa"
+              borderColor="#6c757d"
+              className="c19 c26"
               onClick={[Function]}
               type="button"
             >
@@ -821,15 +620,15 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </button>
           </div>
           <div
-            className="c22"
+            className="c23"
           >
             <label
-              className="c23"
+              className="c24"
               htmlFor="clinvar-track-include-missense"
             >
               <input
                 checked={true}
-                className="c24"
+                className="c25"
                 disabled={false}
                 id="clinvar-track-include-missense"
                 onChange={[Function]}
@@ -839,7 +638,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </label>
              
             <button
-              className="c25"
+              backgroundColor="#f8f9fa"
+              borderColor="#6c757d"
+              className="c19 c26"
               onClick={[Function]}
               type="button"
             >
@@ -847,15 +648,15 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </button>
           </div>
           <div
-            className="c22"
+            className="c23"
           >
             <label
-              className="c23"
+              className="c24"
               htmlFor="clinvar-track-include-synonymous"
             >
               <input
                 checked={true}
-                className="c24"
+                className="c25"
                 disabled={false}
                 id="clinvar-track-include-synonymous"
                 onChange={[Function]}
@@ -865,7 +666,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </label>
              
             <button
-              className="c25"
+              backgroundColor="#f8f9fa"
+              borderColor="#6c757d"
+              className="c19 c26"
               onClick={[Function]}
               type="button"
             >
@@ -873,15 +676,15 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </button>
           </div>
           <div
-            className="c22"
+            className="c23"
           >
             <label
-              className="c23"
+              className="c24"
               htmlFor="clinvar-track-include-other"
             >
               <input
                 checked={true}
-                className="c24"
+                className="c25"
                 disabled={false}
                 id="clinvar-track-include-other"
                 onChange={[Function]}
@@ -891,7 +694,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </label>
              
             <button
-              className="c25"
+              backgroundColor="#f8f9fa"
+              borderColor="#6c757d"
+              className="c19 c26"
               onClick={[Function]}
               type="button"
             >
@@ -899,7 +704,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
             </button>
           </div>
           <button
-            className="c25"
+            backgroundColor="#f8f9fa"
+            borderColor="#6c757d"
+            className="c19 c26"
             onClick={[Function]}
             style={
               {
@@ -912,7 +719,9 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
           </button>
         </div>
         <button
-          className="c26"
+          backgroundColor="#f8f9fa"
+          borderColor="#6c757d"
+          className="c19"
           onClick={[Function]}
           style={
             {
@@ -928,12 +737,12 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
         className="c27"
       >
         <label
-          className="c23"
+          className="c24"
           htmlFor="clinvar-track-in-gnomad"
         >
           <input
             checked={false}
-            className="c24"
+            className="c25"
             disabled={false}
             id="clinvar-track-in-gnomad"
             onChange={[Function]}
@@ -997,69 +806,50 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
     </div>
   </div>,
   .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
 }
 
 .c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
   align-items: stretch;
 }
 
 .c2 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
 }
 
 .c4 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
   flex-shrink: 0;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
 }
 
 .c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
   height: 100%;
   padding-right: 20px;
+}
+
+@media (max-width:1200px) {
+
+}
+
+@media (max-width:900px) {
+
+}
+
+@media (max-width:600px) {
+
+}
+
+@media (max-width:600px) {
+
 }
 
 <div

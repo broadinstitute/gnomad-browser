@@ -78,7 +78,6 @@ const AcOfOnePage = () => {
       <MarkdownContent dangerouslySetInnerHTML={{ __html: acOfOnePartThree.html }} />
 
       <h2>References</h2>
-      {/* @ts-expect-error */}
       <OrderedList>
         <PaperCitation
           authorList="Lek, M., Karczewski, K., Minikel, E."
@@ -102,14 +101,12 @@ const AcOfOnePage = () => {
           doiLink="https://doi.org/10.1038/s41586-020-2287-8"
         />
 
-        {/* @ts-expect-error */}
         <ListItem>
           <ExternalLink href="https://databrowser.researchallofus.org/snvsindels">
             https://databrowser.researchallofus.org/snvsindels
           </ExternalLink>
         </ListItem>
 
-        {/* @ts-expect-error */}
         <ListItem>
           <ExternalLink href="https://genebass.org">https://genebass.org</ExternalLink>
         </ListItem>
@@ -172,7 +169,6 @@ const AcOfOnePage = () => {
           doiLink="https://doi.org/10.1126/sciadv.abe9986"
         />
 
-        {/* @ts-expect-error */}
         <ListItem>
           <ExternalLink href="https://www.ncbi.nlm.nih.gov/clinvar/">
             https://www.ncbi.nlm.nih.gov/clinvar/

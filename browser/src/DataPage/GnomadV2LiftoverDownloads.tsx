@@ -69,7 +69,7 @@ const liftoverGenomeChromosomeVcfs = [
 const Gnomadv2LiftoverDownloads = () => {
   return (
     <>
-      <SectionTitle id="v2-liftover" theme={{ type: 'release' }}>
+      <SectionTitle id="v2-liftover" subject="release">
         v2 Liftover Downloads
       </SectionTitle>
       <StyledParagraph>
@@ -77,7 +77,7 @@ const Gnomadv2LiftoverDownloads = () => {
         genomes, lifted over from the GRCh37 to the GRCh38 reference sequence.
       </StyledParagraph>
 
-      <SectionTitle id="v2-liftover-core-dataset" theme={{ type: 'datasets' }}>
+      <SectionTitle id="v2-liftover-core-dataset" subject="datasets">
         Core Dataset
       </SectionTitle>
       <StyledParagraph>
@@ -94,7 +94,6 @@ const Gnomadv2LiftoverDownloads = () => {
           <Column>
             <h3>Exomes</h3>
             <FileList>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
@@ -102,7 +101,6 @@ const Gnomadv2LiftoverDownloads = () => {
                 />
               </ListItem>
 
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <DownloadLinks
                   label="All chromosomes VCF"
@@ -113,7 +111,6 @@ const Gnomadv2LiftoverDownloads = () => {
                 />
               </ListItem>
               {liftoverExomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
-                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
@@ -130,14 +127,12 @@ const Gnomadv2LiftoverDownloads = () => {
           <Column>
             <h3>Genomes</h3>
             <FileList>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
                   path="/release/2.1.1/liftover_grch38/ht/genomes/gnomad.genomes.r2.1.1.sites.liftover_grch38.ht"
                 />
               </ListItem>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <DownloadLinks
                   label="All chromosomes VCF"
@@ -148,7 +143,6 @@ const Gnomadv2LiftoverDownloads = () => {
                 />
               </ListItem>
               {liftoverGenomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
-                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
@@ -173,7 +167,6 @@ const Gnomadv2LiftoverDownloads = () => {
           dbVar and has not been assessed by the gnomAD production team.
         </p>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <ExternalLink href="https://www.ncbi.nlm.nih.gov/sites/dbvarapp/studies/nstd166/">
               nstd166 (gnomAD Structural Variants)

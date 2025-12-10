@@ -54,9 +54,7 @@ type SVReferenceListProps = {
 }
 
 export const SVReferenceList = ({ variant, datasetId }: SVReferenceListProps) => (
-  // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
   <List>
-    {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
     <ListItem>
       <SVUCSCLinks variant={variant} datasetId={datasetId} />
     </ListItem>

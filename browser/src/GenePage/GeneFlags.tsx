@@ -48,11 +48,11 @@ const GeneFlags = ({ gene }: Props) => {
           <ExternalLink href="https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-020-2308-7/MediaObjects/41586_2020_2308_MOESM1_ESM.pdf">
             supplementary information
           </ExternalLink>{' '}
-          for {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          for
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
             <em>The mutational constraint spectrum quantified from variation in 141,456 humans</em>
           </ExternalLink>{' '}
-          and {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          and
           <ExternalLink href="https://pubmed.ncbi.nlm.nih.gov/28229513/">
             <em>
               Pathogenic ASXL1 somatic variants in reference databases complicate germline variant

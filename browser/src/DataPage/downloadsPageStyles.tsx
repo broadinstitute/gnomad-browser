@@ -12,14 +12,18 @@ export const FileList = styled(List)`
   }
 `
 
-const BaseSectionTitle = styled.h2`
-  font-size: ${(props) =>
-    // eslint-disable-next-line no-nested-ternary
-    props.theme.type === 'release'
-      ? '2.25rem'
-      : props.theme.type === 'datasets'
-      ? '1.88rem'
-      : '1.5rem'};
+type BaseSectionTitleProps = { subject?: string }
+
+const BaseSectionTitle = styled.h2<BaseSectionTitleProps>`
+  font-size: ${(props) => {
+    if (props.subject === 'release') {
+      return '2.25rem'
+    }
+    if (props.subject === 'datasets') {
+      return '1.88rem'
+    }
+    return '1.5rem'
+  }};
 `
 
 export const SectionTitle = styled(withAnchor(BaseSectionTitle))``
@@ -251,7 +255,6 @@ export const DownloadLinks = ({
         Download from{' '}
         {renderDownloadOptions([
           includeGCP && (
-            // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
             <ExternalLink
               key="gcp"
               aria-label={`Download ${label} from Google`}
@@ -264,7 +267,6 @@ export const DownloadLinks = ({
             </ExternalLink>
           ),
           includeAWS && (
-            // @ts-expect-error TS(2786) FIXME: 'ExternalLink' cannot be used as a JSX component.
             <ExternalLink
               key="aws"
               aria-label={`Download ${label} from Amazon`}

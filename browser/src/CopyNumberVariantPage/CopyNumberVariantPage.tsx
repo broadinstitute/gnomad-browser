@@ -59,7 +59,6 @@ type CopyNumberVariantPageProps = {
 }
 
 const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProps) => (
-  // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
   <Page>
     <DocumentTitle title={`${variant.variant_id} | ${labelForDataset(datasetId)}`} />
     <GnomadPageHeading
@@ -95,7 +94,6 @@ const CopyNumberVariantPage = ({ datasetId, variant }: CopyNumberVariantPageProp
           {variant.genes.length !== 1 && 's'}.
         </p>
         {variant.genes.map((gene) => (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <ListItem key={gene}>
             <Link to={`/gene/${gene}`}>{gene}</Link>
           </ListItem>

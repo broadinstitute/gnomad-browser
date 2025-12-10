@@ -11,7 +11,6 @@ type Props = {
 const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }: Props) => {
   const hasNotes = shortTandemRepeat.associated_diseases.some((disease) => disease.notes)
   return (
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <BaseTable style={{ minWidth: '100%' }}>
       <thead>
         <tr>

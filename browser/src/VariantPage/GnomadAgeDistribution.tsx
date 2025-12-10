@@ -278,7 +278,7 @@ const GnomadAgeDistribution = ({ datasetId, variant }: GnomadAgeDistributionProp
         </CheckboxWrapper>
 
         <label htmlFor="age-distribution-sequencing-type">
-          Sequencing types: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          Sequencing types:
           <Select
             id="age-distribution-sequencing-type"
             disabled={!variant.exome || !variant.genome}
