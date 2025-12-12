@@ -43,12 +43,10 @@ const formatTooltip = (bin: any, includedCategories: IncludedCategories) => {
   return (
     <TooltipContent>
       This bin contains:
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
         {CLINICAL_SIGNIFICANCE_CATEGORIES.filter((category) => includedCategories[category]).map(
           (category) => {
             return (
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
               <ListItem key={category}>
                 {/* @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message */}
                 {bin[category]} {CLINICAL_SIGNIFICANCE_CATEGORY_LABELS[category].toLowerCase()}{' '}

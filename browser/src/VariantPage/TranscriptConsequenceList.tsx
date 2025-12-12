@@ -91,10 +91,8 @@ class ConsequencesInGene extends Component<ConsequencesInGeneProps, Consequences
       csq.transcript_version ? `${csq.transcript_id}.${csq.transcript_version}` : csq.transcript_id
 
     return (
-      // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
       <OrderedList>
         {transcriptConsequences.slice(0, 3).map((csq) => (
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
           <ListItem key={csq.transcript_id}>
             <Link to={`/transcript/${csq.transcript_id}`}>{qualifiedTranscriptId(csq)}</Link>
             <TranscriptInfo transcriptConsequence={csq} />
@@ -102,7 +100,6 @@ class ConsequencesInGene extends Component<ConsequencesInGeneProps, Consequences
           </ListItem>
         ))}
         {transcriptConsequences.length > 3 && (
-          // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
           <ListItem>
             <TextButton
               onClick={() => {
@@ -122,10 +119,8 @@ class ConsequencesInGene extends Component<ConsequencesInGeneProps, Consequences
             }}
             title={`${getLabelForConsequenceTerm(consequenceTerm)} consequences in ${geneSymbol}`}
           >
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <OrderedList>
               {transcriptConsequences.map((csq) => (
-                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={csq.transcript_id}>
                   <Link to={`/transcript/${csq.transcript_id}`}>{qualifiedTranscriptId(csq)}</Link>
                   <TranscriptInfo transcriptConsequence={csq} />
@@ -169,14 +164,12 @@ export const TranscriptConsequenceList = ({
       ({ value: consequenceTerm, consequences }: any) => (
         <ConsequenceListItem key={consequenceTerm}>
           <h3>{getLabelForConsequenceTerm(consequenceTerm)}</h3>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <OrderedList>
             {groupConsequences(consequences, 'gene_id').map(
               // @ts-expect-error TS(7031) FIXME: Binding element 'geneId' implicitly has an 'any' t... Remove this comment to see the full error message
               ({ value: geneId, consequences: consequencesInGene }) => {
                 const geneSymbol = consequencesInGene[0].gene_symbol
                 return (
-                  // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                   <ListItem key={geneId}>
                     <h4>
                       <Link to={`/gene/${geneId}`}>{geneSymbol}</Link>

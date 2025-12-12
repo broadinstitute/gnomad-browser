@@ -15,10 +15,8 @@ type Props = {
 }
 
 const MNVSummaryList = ({ multiNucleotideVariants }: Props) => (
-  // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
   <List>
     {multiNucleotideVariants.map((mnv) => (
-      // @ts-expect-error TS(2769) FIXME: No overload matches this call.
       <ListItem key={mnv.combined_variant_id}>
         {mnv.changes_amino_acids ? (
           <Badge level="warning">Warning</Badge>

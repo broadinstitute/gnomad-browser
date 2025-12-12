@@ -2,16 +2,16 @@
 
 exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has evidence and passed QC 1`] = `
 <div
-  className="ConstraintTrack__Wrapper-sc-113yvfg-1 iBhwwK"
+  className="ConstraintTrack__Wrapper-sc-113yvfg-1 hywYpw"
 >
   <div
-    className="sc-bxivhb glCqXO"
+    className="sc-ggWZvA faMivF"
   >
     <div
-      className="sc-ifAKCX dBrAUy"
+      className="sc-dTvVRJ ejoLSV"
     >
       <div
-        className="sc-bZQynM hIOTsG"
+        className="sc-hjsuWn ccbdKG"
         style={
           {
             "width": 100,
@@ -19,13 +19,13 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
         }
       >
         <div
-          className="ConstraintTrack__SidePanel-sc-113yvfg-2 dJMFds"
+          className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
         >
           <span>
             Regional missense constraint
           </span>
           <button
-            className="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
             onClick={[Function]}
             type="button"
           >
@@ -55,7 +55,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
         </div>
       </div>
       <div
-        className="sc-gzVnrw irZcDK"
+        className="sc-jJLAfE KfhrV"
         style={
           {
             "width": 1440,
@@ -63,10 +63,10 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
         }
       >
         <div
-          className="ConstraintTrack__TopPanel-sc-113yvfg-3 imJcbb"
+          className="ConstraintTrack__TopPanel-sc-113yvfg-3 hWKyuF"
         >
           <div
-            className="ConstraintTrack__LegendWrapper-sc-113yvfg-4 kkHtue"
+            className="ConstraintTrack__LegendWrapper-sc-113yvfg-4 gzMZWg"
           >
             <span>
               Missense observed/expected
@@ -195,7 +195,7 @@ exports[`RegionalMissenseConstraint has no unexpected changes when the RMC has e
           </div>
         </div>
         <div
-          className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 fHKmMU"
+          className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
         >
           <svg
             height={55}

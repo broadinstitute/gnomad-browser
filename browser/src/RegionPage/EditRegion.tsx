@@ -29,7 +29,7 @@ const RegionControlsWrapper = styled(Wrapper)`
   }
 `
 
-const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (x: any, i: any) => `${i + 1}`), 'X', 'Y']
+const HUMAN_CHROMOSOMES = [...Array.from(new Array(22), (_x: any, i: any) => `${i + 1}`), 'X', 'Y']
 
 type EditRegionModalProps = {
   initialRegion: {
@@ -98,7 +98,6 @@ class EditRegionModal extends Component<EditRegionModalProps, EditRegionModalSta
             {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
             <label htmlFor="edit-region-chrom">
               Chromosome
-              {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Input
                 id="edit-region-chrom"
                 type="text"
@@ -116,7 +115,6 @@ class EditRegionModal extends Component<EditRegionModalProps, EditRegionModalSta
             {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
             <label htmlFor="edit-region-start">
               Start
-              {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Input
                 id="edit-region-start"
                 type="number"
@@ -135,7 +133,6 @@ class EditRegionModal extends Component<EditRegionModalProps, EditRegionModalSta
             {/* eslint-disable-next-line jsx-a11y/label-has-for,jsx-a11y/label-has-associated-control */}
             <label htmlFor="edit-region-stop">
               Stop
-              {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Input
                 id="edit-region-stop"
                 type="number"

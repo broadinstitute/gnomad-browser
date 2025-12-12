@@ -98,7 +98,7 @@ const jointChromosomeVcfs = [
 const GnomadV4Downloads = () => {
   return (
     <>
-      <SectionTitle id="v4" theme={{ type: 'release' }}>
+      <SectionTitle id="v4" subject="release">
         v4 Downloads
       </SectionTitle>
       <StyledParagraph>
@@ -106,7 +106,7 @@ const GnomadV4Downloads = () => {
         mapped to the GRCh38 reference sequence.
       </StyledParagraph>
 
-      <SectionTitle id="v4-core-dataset" theme={{ type: 'datasets' }}>
+      <SectionTitle id="v4-core-dataset" subject="datasets">
         Core Dataset
       </SectionTitle>
       <StyledParagraph>
@@ -130,7 +130,6 @@ const GnomadV4Downloads = () => {
           <Column>
             <h3>Exomes</h3>
             <FileList>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
@@ -138,7 +137,6 @@ const GnomadV4Downloads = () => {
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
-                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
@@ -155,7 +153,6 @@ const GnomadV4Downloads = () => {
           <Column>
             <h3>Genomes</h3>
             <FileList>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
@@ -163,7 +160,6 @@ const GnomadV4Downloads = () => {
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
-                // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
@@ -182,7 +178,6 @@ const GnomadV4Downloads = () => {
       <DownloadsSection>
         <SectionTitle id="v4-joint-freq-stats">Joint Frequency</SectionTitle>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Joint sites Hail Table"
@@ -190,7 +185,6 @@ const GnomadV4Downloads = () => {
             />
           </ListItem>
           {jointChromosomeVcfs.map(({ chrom, size, md5 }) => (
-            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
             <ListItem key={chrom}>
               <DownloadLinks
                 label={`chr${chrom} sites VCF`}
@@ -210,7 +204,6 @@ const GnomadV4Downloads = () => {
           <Column>
             <h3>Exomes</h3>
             <FileList>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <GetUrlButtons
                   label="Exomes all site allele number Hail Table"
@@ -218,7 +211,6 @@ const GnomadV4Downloads = () => {
                 />
               </ListItem>
 
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <DownloadLinks
                   label="Exomes all site allele number TSV"
@@ -233,7 +225,6 @@ const GnomadV4Downloads = () => {
           <Column>
             <h3>Genomes</h3>
             <FileList>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <GetUrlButtons
                   label="Genomes all site allele number Hail Table"
@@ -241,7 +232,6 @@ const GnomadV4Downloads = () => {
                 />
               </ListItem>
 
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <DownloadLinks
                   label="Genomes all site allele number TSV"
@@ -268,21 +258,18 @@ const GnomadV4Downloads = () => {
 
         <h3>Browser variants</h3>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Browser variants Hail Table"
               path="/release/4.1/ht/browser/gnomad.browser.v4.1.sites.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Exome copy number variant Hail Table"
               path="/release/4.1/exome_cnv/gnomad.v4.1.cnv.all.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Genome structural variant Hail Table"
@@ -293,7 +280,6 @@ const GnomadV4Downloads = () => {
 
         <h3>Browser gene models</h3>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Browser GRCh38 gene models Hail Table"
@@ -306,14 +292,12 @@ const GnomadV4Downloads = () => {
       <DownloadsSection>
         <SectionTitle id="v4-coverage">Coverage</SectionTitle>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Exome coverage Hail Table"
               path="/release/4.0/coverage/exomes/gnomad.exomes.v4.0.coverage.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exome coverage summary TSV"
@@ -338,21 +322,18 @@ const GnomadV4Downloads = () => {
           .
         </p>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Principal component analysis (PCA) variant loadings"
               path="/release/4.0/pca/gnomad.v4.0.pca_loadings.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Random forest (RF) .pkl model"
               path="/release/4.0/pca/gnomad.v4.0.RF_fit.pkl"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Random forest (RF) .onnx model"
@@ -368,7 +349,6 @@ const GnomadV4Downloads = () => {
           For information on constraint, see our <Link to="/help/constraint">help text</Link>
         </p>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="README"
@@ -376,14 +356,12 @@ const GnomadV4Downloads = () => {
               path="/release/4.1/constraint/README.txt"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Constraint metrics Hail Table"
               path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Constraint metrics TSV"
@@ -400,7 +378,6 @@ const GnomadV4Downloads = () => {
           <Link to="/help/sv-overview">help text</Link>
         </p>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Genome SV VCF"
@@ -410,7 +387,6 @@ const GnomadV4Downloads = () => {
               associatedFileType="TBI"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Genome SV non neuro controls VCF"
@@ -420,7 +396,6 @@ const GnomadV4Downloads = () => {
               associatedFileType="TBI"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Genome SV BED"
@@ -429,7 +404,6 @@ const GnomadV4Downloads = () => {
               md5="a898e3e37aacfdb1e4d6218d5479683a"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Genome SV non neuro controls BED"
@@ -448,7 +422,6 @@ const GnomadV4Downloads = () => {
           <Link to="/help/sv-overview">help text</Link>
         </p>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exome CNV VCF"
@@ -457,7 +430,6 @@ const GnomadV4Downloads = () => {
               md5="74000fc29d0b9bc547859cfc2ba4ac84"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exome CNV non neuro VCF"
@@ -466,7 +438,6 @@ const GnomadV4Downloads = () => {
               md5="e2976db50823d608f2cf2fb8077f0ddd"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exome CNV non neuro controls VCF"
@@ -482,35 +453,30 @@ const GnomadV4Downloads = () => {
         <SectionTitle id="v4-pext">Proportion expressed across transcripts (pext)</SectionTitle>
         <p>
           For information on pext, see{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
             <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
             Nature 581, 452–458 (2020)
           </ExternalLink>
         </p>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Annotation-level pext for all possible SNVs Hail table"
               path="/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Annotation-level pext for all possible SNVs TSV"
               path="/release/4.1/pext/gnomad.pext.gtex_v10.annotation_level.tsv.gz"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Base-level pext Hail table"
               path="/release/4.1/pext/gnomad.pext.gtex_v10.base_level.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Base-level pext TSV"
@@ -529,21 +495,18 @@ const GnomadV4Downloads = () => {
           </ExternalLink>{' '}
         </p>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="High-quality coding DNVs Hail table"
               path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="High-quality coding DNVs TSV"
               path="/release/4.1/tsv/exomes/gnomad.exomes.v4.1.de_novo.high_quality_coding.tsv.bgz"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="High-quality coding DNVs README"
@@ -561,7 +524,6 @@ const GnomadV4Downloads = () => {
         </p>
 
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               gcsBucket="gnomad-browser-clinvar"
@@ -576,42 +538,36 @@ const GnomadV4Downloads = () => {
       <DownloadsSection>
         <SectionTitle id="v4-resources">Resources</SectionTitle>
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exome sex ploidy cutoffs TSV"
               path="/release/4.0/sex_inference/gnomad.exomes.v4.0.sample_qc.sex_inference.ploidy_cutoffs.tsv"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <GetUrlButtons
               label="Exome calling intervals Hail Table"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.interval_list.ht"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exome calling intervals flat file"
               path="/resources/grch38/intervals/ukb.pad50.broad.pad50.union.intervals"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="REVEL v4.1 README"
               path="/release/4.1/tsv/revel_for_2414_unmatched_transcripts_README.md"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Exomes REVEL supplementary TSV"
               path="/release/4.1/tsv/exomes/gnomad.v4.1.exomes.revel_for_2414_unmatched_transcripts.tsv.bgz"
             />
           </ListItem>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Genomes REVEL supplementary TSV"
@@ -621,7 +577,7 @@ const GnomadV4Downloads = () => {
         </FileList>
       </DownloadsSection>
 
-      <SectionTitle id="v4-secondary-analyses" theme={{ type: 'datasets' }}>
+      <SectionTitle id="v4-secondary-analyses" subject="datasets">
         Secondary Analyses
       </SectionTitle>
       <StyledParagraph>
@@ -633,19 +589,16 @@ const GnomadV4Downloads = () => {
         <SectionTitle id="v4-lof-curation-results">Loss-of-function curation results</SectionTitle>
         <p>
           For information on v4 loss-of-function curation results, see{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
             <em>The mutational constraint spectrum quantified from variation in 141,456 humans.</em>{' '}
             Nature 581, 434–443 (2020)
           </ExternalLink>{' '}
           (all homozygous LoF curation results),{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
             <em>Transcript expression-aware annotation improves rare variant interpretation.</em>{' '}
             Nature 581, 452–458 (2020)
           </ExternalLink>{' '}
           (haploinsufficient genes LoF curation results), and{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <ExternalLink href="https://pubmed.ncbi.nlm.nih.gov/37633279/">
             <em>
               Advanced variant classification framework reduces the false positive rate of predicted
@@ -657,7 +610,6 @@ const GnomadV4Downloads = () => {
         </p>
 
         <FileList>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <ListItem>
             <DownloadLinks
               label="Incomplete penetrance LoF curation results"

@@ -498,10 +498,8 @@ const VariantCoocurrenceContainer = ({
                     : 'multi-nucleotide variants'}
                   .
                 </p>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <List>
                   {multiNucleotideVariants.map((mnv: any) => (
-                    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
                     <ListItem key={mnv.combined_variant_id}>
                       <Link to={`/variant/${mnv.combined_variant_id}`}>
                         {mnv.combined_variant_id}
@@ -576,7 +574,6 @@ const VariantCoocurrencePage = ({ datasetId }: VariantCoocurrencePageProps) => {
     variantIds = [variantIds]
   }
   return (
-    // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <Page>
       <DocumentTitle title="Variant Co-occurrence" />
       <GnomadPageHeading
@@ -604,13 +601,9 @@ const VariantCoocurrencePage = ({ datasetId }: VariantCoocurrencePageProps) => {
           <Section style={{ marginBottom: '2em' }}>
             <h2>Select a variant pair</h2>
             <p>Co-occurrence is available for coding and UTR variants that:</p>
-            {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
             <List>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>Occur in the same gene</ListItem>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>Appear in gnomAD exome samples</ListItem>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>Have a global allele frequency &le; 5%</ListItem>
             </List>
 

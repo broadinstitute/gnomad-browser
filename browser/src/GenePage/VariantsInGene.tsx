@@ -36,10 +36,8 @@ const TranscriptsModal = ({ gene, onRequestClose }: TranscriptsModalProps) => (
     title={`${gene.symbol} transcripts`}
     onRequestClose={onRequestClose}
   >
-    {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
     <List>
       {gene.transcripts.map((transcript) => (
-        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
         <ListItem key={transcript.transcript_id}>
           <Link to={`/transcript/${transcript.transcript_id}`}>
             {transcript.transcript_id}.{transcript.transcript_version}

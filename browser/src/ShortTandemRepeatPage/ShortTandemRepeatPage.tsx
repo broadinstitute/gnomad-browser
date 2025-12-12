@@ -160,12 +160,10 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
   return (
     <>
       <h2>External Resources</h2>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <List>
         <>
           {strchive_id && (
             <>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <ExternalLink href={`https://strchive.org/loci/${strchive_id}`}>
                   STRchive
@@ -177,7 +175,6 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
         <>
           {stripy_id && (
             <>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <ExternalLink href={`https://stripy.org/database/${stripy_id}`}>
                   STRipy
@@ -189,7 +186,6 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
         <>
           {gene && (
             <>
-              {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <ListItem>
                 <ExternalLink
                   href={`https://trexplorer.broadinstitute.org/#sc=isPathogenic&sd=DESC&showRs=1&searchQuery=${gene.symbol}&showColumns=0i1i2i3i4i7i21i17`}
@@ -321,13 +317,10 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           <ExternalResources shortTandemRepeat={shortTandemRepeat} />
           <h2>TRs in gnomAD</h2>
           <p>
-            {/* @ts-expect-error */}
             <List>
-              {/* @ts-expect-error */}
               <ListItem>
                 <Link to="/short-tandem-repeats">Known disease-associated TRs </Link>
               </ListItem>
-              {/* @ts-expect-error */}
               <ListItem>
                 <ExternalLink href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats">
                   Data download
@@ -399,7 +392,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           {alleleSizeDistributionRepunits.length > 1 && (
             <label htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}>
               Repeat unit: &nbsp;
-              {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-repeat-unit`}
                 value={selectedAlleleSizeRepeatUnit}
@@ -465,7 +457,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
           <label
             htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
           >
-            y-Scale: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            y-Scale: &nbsp;
             <Select
               id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
               value={selectedScaleType}
@@ -487,7 +479,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
             >
               Show thresholds for:{' '}
-              {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-selected-disease`}
                 value={selectedDisease}
@@ -574,7 +565,6 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
               htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
             >
               Show thresholds for:{' '}
-              {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
               <Select
                 id={`short-tandem-repeat-${shortTandemRepeat.id}-genotype-distribution-selected-disease`}
                 value={selectedDisease}

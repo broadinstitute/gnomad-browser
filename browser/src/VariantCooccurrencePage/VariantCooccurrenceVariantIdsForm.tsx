@@ -72,7 +72,6 @@ const VariantCoocurrenceVariantIdsForm = ({ datasetId, defaultValues, onSubmit }
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="cooccurrence-variant1" style={{ display: 'block' }}>
           Variant 1 (required)
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Input
             aria-describedby={isVariant1Invalid ? 'cooccurrence-variant1-error' : undefined}
             id="cooccurrence-variant1"
@@ -94,7 +93,6 @@ const VariantCoocurrenceVariantIdsForm = ({ datasetId, defaultValues, onSubmit }
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="cooccurrence-variant2" style={{ display: 'block' }}>
           Variant 2 (required)
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <Input
             aria-describedby={isVariant2Invalid ? 'cooccurrence-variant2-error' : undefined}
             id="cooccurrence-variant2"
@@ -113,7 +111,6 @@ const VariantCoocurrenceVariantIdsForm = ({ datasetId, defaultValues, onSubmit }
         )}
       </InputGroup>
 
-      {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <SubmitButton
         disabled={!variant1Id || !variant2Id || isVariant1Invalid || isVariant2Invalid || submitted}
       >

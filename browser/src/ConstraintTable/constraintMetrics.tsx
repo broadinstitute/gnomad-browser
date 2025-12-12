@@ -32,7 +32,6 @@ export const renderRoundedNumber = (
       {highlightColor ? (
         <ConstraintHighlight highlightColor={highlightColor}>{roundedNumber}</ConstraintHighlight>
       ) : (
-        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
         <TooltipHint>{roundedNumber}</TooltipHint>
       )}
     </TooltipAnchor>

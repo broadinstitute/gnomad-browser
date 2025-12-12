@@ -45,7 +45,6 @@ export const AttributeListItem = ({ children, label, tooltip }: AttributeListIte
       {tooltip ? (
         // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message
         <TooltipAnchor tooltip={tooltip}>
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <TooltipHint>{label}</TooltipHint>
         </TooltipAnchor>
       ) : (

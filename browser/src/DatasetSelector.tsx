@@ -30,7 +30,7 @@ const NavigationMenuWrapper = styled.ul`
   list-style-type: none;
 `
 
-const TopLevelNavigationLink = styled.a`
+const TopLevelNavigationLink = styled.a.attrs({ as: Link })`
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
@@ -47,7 +47,7 @@ const TopLevelNavigationLink = styled.a`
   &:focus {
     box-shadow: 0 0 0 0.2em ${transparentize(0.5, '#428bca')};
   }
-`.withComponent(Link)
+`
 
 const NavigationMenuItem = styled.li`
   position: relative;
@@ -105,7 +105,7 @@ const SubNavigationMenu = styled.ul`
   }
 `
 
-const SubNavigationLink = styled.a`
+const SubNavigationLink = styled.a.attrs({ as: Link })`
   display: inline-block;
   box-sizing: border-box;
   width: 100%;
@@ -126,7 +126,7 @@ const SubNavigationLink = styled.a`
   &:focus {
     outline: 2px solid #428bca;
   }
-`.withComponent(Link)
+`
 
 const ItemDescription = styled.div`
   margin-top: 0.125em;

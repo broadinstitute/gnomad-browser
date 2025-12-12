@@ -1,44 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Contact Page has no unexpected changes 1`] = `
-.c3 {
+.c4 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
 
-.c3:visited,
-.c3:active {
+.c4:visited,
+.c4:active {
   color: #1173bb;
 }
 
-.c3:focus,
-.c3:hover {
-  -webkit-text-decoration: underline;
+.c4:focus,
+.c4:hover {
   text-decoration: underline;
-}
-
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding-bottom: 0.5em;
-  border-bottom: 1px solid #ccc;
-  margin: 0.67em 0;
-  font-size: 14px;
-}
-
-.c2 {
-  margin: 0;
 }
 
 .c0 {
@@ -48,39 +24,43 @@ exports[`Contact Page has no unexpected changes 1`] = `
   padding: 0 15px;
   margin: 0 auto 40px;
   font-size: 14px;
+}
+
+.c2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 14px;
+}
+
+.c3 {
+  margin: 0;
+}
+
+.c1 {
   font-size: 16px;
 }
 
-.c0 p {
+.c1 p {
   margin-bottom: 1em;
   line-height: 1.4;
 }
 
 @media (max-width:900px) {
-  .c1 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
+  .c2 {
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     border-bottom: none;
   }
 }
 
 @media (max-width:900px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+  .c3 {
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-bottom: 0.5em;
     border-bottom: 1px solid #ccc;
@@ -89,13 +69,13 @@ exports[`Contact Page has no unexpected changes 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 c1"
 >
   <div
-    className="c1"
+    className="c2"
   >
     <h1
-      className="c2"
+      className="c3"
     >
       Contact
     </h1>
@@ -104,7 +84,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
     Tell us how you use gnomAD and your wish list by filling out
      
     <a
-      className="c3"
+      className="c4"
       href="http://broad.io/2024_survey"
       rel="noopener noreferrer"
       target="_blank"
@@ -117,7 +97,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
     Use the gnomAD
      
     <a
-      className="c3"
+      className="c4"
       href="https://discuss.gnomad.broadinstitute.org/new-topic?category=General"
       rel="noopener noreferrer"
       target="_blank"
@@ -131,7 +111,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
     Report errors in the website on
      
     <a
-      className="c3"
+      className="c4"
       href="https://github.com/broadinstitute/gnomad-browser/issues/new?labels=Type%3A%20Bug"
       rel="noopener noreferrer"
       target="_blank"
@@ -142,7 +122,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
     or the
      
     <a
-      className="c3"
+      className="c4"
       href="https://discuss.gnomad.broadinstitute.org/new-topic?category=Browser&tags=bug"
       rel="noopener noreferrer"
       target="_blank"
@@ -153,7 +133,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
   <p>
     For questions about gnomAD, check out the 
     <a
-      className="c3"
+      className="c4"
       href="/help"
       rel="noopener noreferrer"
       target="_blank"
@@ -169,7 +149,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
     Follow us on Twitter
      
     <a
-      className="c3"
+      className="c4"
       href="https://twitter.com/gnomad_project"
       rel="noopener noreferrer"
       target="_blank"
@@ -183,7 +163,7 @@ exports[`Contact Page has no unexpected changes 1`] = `
     *Alternately, you can
      
     <a
-      className="c3"
+      className="c4"
       href="mailto:gnomad@broadinstitute.org"
       rel="noopener noreferrer"
       target="_blank"

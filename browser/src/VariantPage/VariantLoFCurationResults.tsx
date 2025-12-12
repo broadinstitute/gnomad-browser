@@ -30,7 +30,6 @@ const LoFCurationResult = ({ result }: LoFCurationResultProps) => {
       {publication && (
         <div>
           For more information about this curation, see{' '}
-          {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
           <ExternalLink href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pubmed_id}/`}>
             PMID {publication.pubmed_id}
           </ExternalLink>

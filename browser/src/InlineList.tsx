@@ -64,10 +64,8 @@ const InlineList = ({ items, label, maxLength, ...otherProps }: Props) => {
           title={label}
           onRequestClose={() => setIsExpanded(false)}
         >
-          {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
           <List>
             {items.map((item: any, index: any) => (
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
               // eslint-disable-next-line react/no-array-index-key
               <ListItem key={index}>{item}</ListItem>
             ))}

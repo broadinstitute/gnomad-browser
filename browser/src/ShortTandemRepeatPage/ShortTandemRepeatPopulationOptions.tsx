@@ -49,7 +49,6 @@ const ShortTandemRepeatPopulationOptions = ({
     <Wrapper>
       <Label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
         Genetic ancestry group: &nbsp;
-        {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
           value={selectedPopulation || ''}
@@ -67,7 +66,7 @@ const ShortTandemRepeatPopulationOptions = ({
       </Label>
 
       <Label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
-        Sex: &nbsp;{/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+        Sex: &nbsp;
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
           value={selectedSex || ''}

@@ -88,7 +88,7 @@ ${error.stack}
                 <ExternalLink href={forumURL}>a topic on our forum</ExternalLink>
               </li>
             </ul>
-            Then {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            Then
             <StyledLink href="/">reload the browser</StyledLink>.
             <br />
             <br />

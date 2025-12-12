@@ -3,7 +3,7 @@
 exports[`local ancestry populations table has no unexpected changes 1`] = `
 <div>
   <table
-    className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 hRGkzk"
+    className="Table__BaseTable-sc-7fgtt2-0 PopulationsTable__Table-sc-sijbl0-0 etBNab hGFz"
   >
     <thead>
       <tr>
@@ -29,7 +29,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
             type="button"
           >
             <span
-              className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
             >
@@ -47,7 +47,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
             type="button"
           >
             <span
-              className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
             >
@@ -69,7 +69,7 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
             type="button"
           >
             <span
-              className="TooltipHint-sc-1wwbc8j-0 cXXQWi"
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
               onMouseEnter={[Function]}
               onMouseLeave={[Function]}
             >
@@ -89,7 +89,8 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
           scope="row"
         >
           <button
-            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 bMMlfW CiRHI"
+            isExpanded={true}
             onClick={[Function]}
             type="button"
           >
@@ -180,7 +181,8 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
           scope="row"
         >
           <button
-            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 ckJgLT"
+            className="Button__TextButton-sc-1eobygi-3 PopulationsTable__TogglePopulationButton-sc-sijbl0-1 bMMlfW CiRHI"
+            isExpanded={true}
             onClick={[Function]}
             type="button"
           >
@@ -319,7 +321,8 @@ exports[`local ancestry populations table has no unexpected changes 1`] = `
   </table>
   <p>
     <span
-      className="Badge__BadgeWrapper-sc-j4izdp-1 jEnuJq"
+      className="Badge__BadgeWrapper-sc-j4izdp-1 bSmbsN"
+      level="info"
     >
       Note
     </span>

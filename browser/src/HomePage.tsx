@@ -62,21 +62,16 @@ export default () => (
       </span>
     </div>
 
-    {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
     <List style={{ marginBottom: '2em' }}>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <Link to="/downloads">Download gnomAD data</Link>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <Link to="/publications">Read gnomAD publications</Link>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <Link to="/variant-cooccurrence">Find co-occurrence of two variants</Link>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <Link
           preserveSelectedDataset={false}
@@ -88,7 +83,6 @@ export default () => (
           Browse tandem repeats in gnomAD
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <Link to="/help/what-features-are-not-yet-in-v4-and-where-can-i-find-them">
           Locate features not yet in gnomAD v4
@@ -104,23 +98,19 @@ export default () => (
     </p>
 
     <h2 style={{ fontSize: '1em' }}>Examples</h2>
-    {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
     <List>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Gene:{' '}
         <Link preserveSelectedDataset={false} to="/gene/ENSG00000169174">
           PCSK9
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Transcript:{' '}
         <Link preserveSelectedDataset={false} to="/transcript/ENST00000302118">
           ENST00000302118
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Variant:{' '}
         <Link
@@ -133,7 +123,6 @@ export default () => (
           1-55051215-G-GA
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Structural variant region:{' '}
         <Link
@@ -146,7 +135,6 @@ export default () => (
           19-11078371-11144910
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Copy number variant region:{' '}
         <Link
@@ -159,7 +147,6 @@ export default () => (
           1-55039447-55064852
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Mitochondrial variant:{' '}
         <Link
@@ -172,7 +159,6 @@ export default () => (
           M-8602-T-C
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         <Link
           preserveSelectedDataset={false}
@@ -194,7 +180,6 @@ export default () => (
           ATXN1
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Regional missense constraint (gnomAD v2, GRCh37):{' '}
         <Link
@@ -210,7 +195,6 @@ export default () => (
           GRIN2A
         </Link>
       </ListItem>
-      {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
       <ListItem>
         Variant co-occurrence (gnomAD v2, GRCh37):{' '}
         <Link
@@ -232,11 +216,8 @@ export default () => (
     <p>
       Check out these resources to learn about gnomAD and how to use it for variant interpretation.
     </p>
-    {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
     <List>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
-        {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <ExternalLink href="https://onlinelibrary.wiley.com/doi/10.1002/humu.24309">
           <em>
             Gudmundsson et al. Variant interpretation using population databases: Lessons from
@@ -245,19 +226,16 @@ export default () => (
           Hum Mutat. 2022 Aug;43(8):1012-1030.
         </ExternalLink>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <ExternalLink href="https://www.broadinstitute.org/videos/mpg-primer-using-gnomad-tips-and-tricks">
           Using gnomAD - tips and tricks (video)
         </ExternalLink>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <ExternalLink href="https://www.broadinstitute.org/videos/gnomad-using-large-genomic-data-sets-interpret-human-genetic-variation">
           gnomAD: Using large genomic data sets to interpret human genetic variation (video)
         </ExternalLink>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <ExternalLink href="https://rarediseasegenomics.org/blog/six-lessons-for-variant-interpretation">
           Six lessons for variant interpretation

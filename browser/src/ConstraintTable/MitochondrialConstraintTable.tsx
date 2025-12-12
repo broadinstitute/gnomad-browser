@@ -151,7 +151,6 @@ const MitochondrialConstraintTable = ({
 
   return (
     <>
-      {/* @ts-expect-error */}
       <BaseTable>
         <thead>
           <tr>

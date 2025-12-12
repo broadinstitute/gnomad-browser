@@ -1,35 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Home Page has no unexpected changes 1`] = `
-.c9 {
-  color: #1173bb;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.c9:visited,
-.c9:active {
-  color: #1173bb;
-}
-
-.c9:focus,
-.c9:hover {
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-.c6 {
-  padding-left: 20px;
-  list-style-type: disc;
-  margin-bottom: 1em;
-}
-
 .c7 {
-  margin-bottom: 0.5em;
-}
-
-.c5 {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
@@ -46,75 +18,36 @@ exports[`Home Page has no unexpected changes 1`] = `
   font-size: 1em;
   line-height: 1.25;
   outline: none;
-  background-image: none;
 }
 
-.c5:focus {
+.c7:focus {
   box-shadow: 0 0 0 0.2em rgba(66,139,202,0.5);
 }
 
-.c4 {
-  height: calc(2em + 2px);
-  padding: 0.375em 1.5em 0.375em 0.75em;
-  border: 1px solid #6c757d;
-  border-radius: 0.25em;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
-  background-position: center right;
-  background-repeat: no-repeat;
-  font-size: 1em;
-  line-height: 1.25;
-}
-
-.c4:focus {
-  outline: none;
-  border-color: rgb(70,130,180);
-  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
-}
-
-.c8 {
+.c11 {
   color: #1173bb;
-  -webkit-text-decoration: none;
   text-decoration: none;
   cursor: pointer;
 }
 
-.c8:visited,
-.c8:active {
+.c11:visited,
+.c11:active {
   color: #1173bb;
 }
 
-.c8:focus,
-.c8:hover {
-  -webkit-text-decoration: underline;
+.c11:focus,
+.c11:hover {
   text-decoration: underline;
 }
 
-.c3 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: stretch;
-  -webkit-box-align: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch;
-  width: 100%;
+.c9 {
+  padding-left: 20px;
+  list-style-type: disc;
+  margin-bottom: 1em;
 }
 
-.c3 select {
-  border-right: 1px solid #ddd;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  background-color: #fff;
-}
-
-.c3 input {
-  border-left: none;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+.c10 {
+  margin-bottom: 0.5em;
 }
 
 .c0 {
@@ -124,49 +57,86 @@ exports[`Home Page has no unexpected changes 1`] = `
   padding: 0 15px;
   margin: 0 auto 40px;
   font-size: 14px;
-  font-size: 16px;
-  max-width: 740px;
-  margin-top: 90px;
 }
 
-.c0 p {
+.c8 {
+  background-image: none;
+}
+
+.c6 {
+  height: calc(2em + 2px);
+  padding: 0.375em 1.5em 0.375em 0.75em;
+  border: 1px solid #6c757d;
+  border-radius: 0.25em;
+  appearance: none;
+  background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-size: 1em;
+  line-height: 1.25;
+}
+
+.c6:focus {
+  outline: none;
+  border-color: rgb(70,130,180);
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+.c1 {
+  font-size: 16px;
+}
+
+.c1 p {
   margin-bottom: 1em;
   line-height: 1.4;
 }
 
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c5 {
   display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}
+
+.c5 select {
+  border-right: 1px solid #ddd;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #fff;
+}
+
+.c5 input {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.c2 {
+  max-width: 740px;
+  margin-top: 90px;
+}
+
+.c3 {
+  display: flex;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
   width: 100%;
   margin-bottom: 1em;
 }
 
-.c2 {
+.c4 {
   padding-top: 0;
   padding-bottom: 0;
   font-size: 1.2em;
   font-weight: normal;
-  -webkit-letter-spacing: 2px;
-  -moz-letter-spacing: 2px;
-  -ms-letter-spacing: 2px;
   letter-spacing: 2px;
   text-align: center;
 }
 
 <div
-  className="c0"
+  className="c0 c1 c2"
 >
   <div
-    className="c1"
+    className="c3"
   >
     <svg
       viewBox="0 0 599.7 215.78"
@@ -185,17 +155,17 @@ exports[`Home Page has no unexpected changes 1`] = `
       />
     </svg>
     <h1
-      className="c2"
+      className="c4"
     >
       Genome Aggregation Database
     </h1>
   </div>
   <div
-    className="c3"
+    className="c5"
     width="100%"
   >
     <select
-      className="c4"
+      className="c6"
       onChange={[Function]}
       value="gnomad_r4"
     >
@@ -262,8 +232,9 @@ exports[`Home Page has no unexpected changes 1`] = `
           aria-autocomplete="list"
           aria-expanded={false}
           autoComplete="off"
-          className="c5"
+          className="c7 c8"
           data-testid="searchbox-input"
+          hasResults={false}
           onBlur={[Function]}
           onChange={[Function]}
           onClick={[Function]}
@@ -300,7 +271,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     </span>
   </div>
   <ul
-    className="c6"
+    className="c9"
     style={
       {
         "marginBottom": "2em",
@@ -308,10 +279,10 @@ exports[`Home Page has no unexpected changes 1`] = `
     }
   >
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="-Link c8"
+        className="c11"
         href="/downloads"
         onClick={[Function]}
       >
@@ -319,10 +290,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="-Link c8"
+        className="c11"
         href="/publications"
         onClick={[Function]}
       >
@@ -330,10 +301,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="-Link c8"
+        className="c11"
         href="/variant-cooccurrence"
         onClick={[Function]}
       >
@@ -341,10 +312,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="-Link c8"
+        className="c11"
         href="/short-tandem-repeats?dataset=gnomad_r4"
         onClick={[Function]}
       >
@@ -352,10 +323,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="-Link c8"
+        className="c11"
         href="/help/what-features-are-not-yet-in-v4-and-where-can-i-find-them"
         onClick={[Function]}
       >
@@ -367,7 +338,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see
      
     <a
-      className="-Link c8"
+      className="c11"
       href="/help/should-i-switch-to-the-latest-version-of-gnomad"
       onClick={[Function]}
     >
@@ -384,15 +355,15 @@ exports[`Home Page has no unexpected changes 1`] = `
     Examples
   </h2>
   <ul
-    className="c6"
+    className="c9"
   >
     <li
-      className="c7"
+      className="c10"
     >
       Gene:
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/gene/ENSG00000169174"
         onClick={[Function]}
       >
@@ -400,12 +371,12 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       Transcript:
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/transcript/ENST00000302118"
         onClick={[Function]}
       >
@@ -413,12 +384,12 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       Variant:
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/variant/1-55051215-G-GA?dataset=gnomad_r4"
         onClick={[Function]}
       >
@@ -426,12 +397,12 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       Structural variant region:
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/region/19-11078371-11144910?dataset=gnomad_sv_r4"
         onClick={[Function]}
       >
@@ -439,12 +410,12 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       Copy number variant region:
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/region/1-55039447-55064852?dataset=gnomad_cnv_r4"
         onClick={[Function]}
       >
@@ -452,12 +423,12 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       Mitochondrial variant:
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/variant/M-8602-T-C?dataset=gnomad_r4"
         onClick={[Function]}
       >
@@ -465,10 +436,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="-Link c8"
+        className="c11"
         href="/short-tandem-repeats?dataset=gnomad_r4"
         onClick={[Function]}
       >
@@ -478,7 +449,7 @@ exports[`Home Page has no unexpected changes 1`] = `
       locus:
        
       <a
-        className="-Link c8"
+        className="c11"
         href="short-tandem-repeat/ATXN1?dataset=gnomad_r4"
         onClick={[Function]}
       >
@@ -486,12 +457,12 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       Regional missense constraint (gnomAD v2, GRCh37):
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/gene/ENSG00000183454?dataset=gnomad_r2_1&variant=1-55505647-G-T&variant=1-55523855-G-A"
         onClick={[Function]}
       >
@@ -499,12 +470,12 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       Variant co-occurrence (gnomAD v2, GRCh37):
        
       <a
-        className="-Link c8"
+        className="c11"
         href="/variant-cooccurrence?dataset=gnomad_r2_1&variant=1-55505647-G-T&variant=1-55523855-G-A"
         onClick={[Function]}
       >
@@ -519,13 +490,13 @@ exports[`Home Page has no unexpected changes 1`] = `
     Check out these resources to learn about gnomAD and how to use it for variant interpretation.
   </p>
   <ul
-    className="c6"
+    className="c9"
   >
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="c9"
+        className="c11"
         href="https://onlinelibrary.wiley.com/doi/10.1002/humu.24309"
         rel="noopener noreferrer"
         target="_blank"
@@ -538,10 +509,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="c9"
+        className="c11"
         href="https://www.broadinstitute.org/videos/mpg-primer-using-gnomad-tips-and-tricks"
         rel="noopener noreferrer"
         target="_blank"
@@ -550,10 +521,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="c9"
+        className="c11"
         href="https://www.broadinstitute.org/videos/gnomad-using-large-genomic-data-sets-interpret-human-genetic-variation"
         rel="noopener noreferrer"
         target="_blank"
@@ -562,10 +533,10 @@ exports[`Home Page has no unexpected changes 1`] = `
       </a>
     </li>
     <li
-      className="c7"
+      className="c10"
     >
       <a
-        className="c9"
+        className="c11"
         href="https://rarediseasegenomics.org/blog/six-lessons-for-variant-interpretation"
         rel="noopener noreferrer"
         target="_blank"
@@ -581,7 +552,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     The
      
     <a
-      className="-Link c8"
+      className="c11"
       href="/about"
       onClick={[Function]}
     >
@@ -594,7 +565,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     The v4 data set (GRCh38) provided on this website spans 730,947 exome sequences and 76,215 whole-genome sequences from unrelated individuals, of
      
     <a
-      className="-Link c8"
+      className="c11"
       href="/stats#diversity"
       onClick={[Function]}
     >
@@ -602,7 +573,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     </a>
     , sequenced as part of various disease-specific and population genetic studies. The gnomAD Principal Investigators and team can be found 
     <a
-      className="-Link c8"
+      className="c11"
       href="/team"
       onClick={[Function]}
     >
@@ -611,7 +582,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     , and the groups that have contributed data to the current release are listed
      
     <a
-      className="-Link c8"
+      className="c11"
       href="/about"
       onClick={[Function]}
     >
@@ -623,7 +594,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     All data here are released for the benefit of the wider biomedical community, without restriction on use - see the
      
     <a
-      className="-Link c8"
+      className="c11"
       href="/policies"
       onClick={[Function]}
     >
@@ -632,7 +603,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     . Sign up for our
      
     <a
-      className="c9"
+      className="c11"
       href="https://groups.google.com/forum/#!forum/exac_data_announcements"
       rel="noopener noreferrer"
       target="_blank"

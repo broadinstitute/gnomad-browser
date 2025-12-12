@@ -23,18 +23,14 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
   const mseqdrURL = `https://mseqdr.org/variant.php?variant=M-${pos}-${ref}-${alt}&dataset=gnomad_r3`
 
   return (
-    // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
     <List>
       {variant.rsids && NcbiReference(variant.rsids)}
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <ExternalLink href={ucscURL}>UCSC</ExternalLink>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <ExternalLink href={mitomapURL}>Mitomap</ExternalLink>
       </ListItem>
-      {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
       <ListItem>
         <ExternalLink href={mseqdrURL}>MSeqDR</ExternalLink>
       </ListItem>
@@ -42,7 +38,6 @@ const MitochondrialVariantReferenceList = ({ variant }: Props) => {
       {(variant.transcript_consequences || []).some(
         (csq: any) => csq.gene_symbol.startsWith('MT-T') || csq.gene_symbol.startsWith('MT-R')
       ) && (
-        // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
         <ListItem>
           <ExternalLink href={`https://www.mitovisualize.org/variant/${variant.variant_id}`}>
             MitoVisualize

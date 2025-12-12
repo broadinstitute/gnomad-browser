@@ -60,17 +60,13 @@ const GeneReferences = ({ gene }: Props) => {
           }}
           title={`External resources for ${geneSymbol}`}
         >
-          {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
           <List>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
               <ExternalLink href={ensemblGeneUrl}>Ensembl</ExternalLink>
             </ListItem>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
               <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
             </ListItem>
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
               <ExternalLink
                 href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneSymbol}`}
@@ -79,12 +75,10 @@ const GeneReferences = ({ gene }: Props) => {
               </ExternalLink>
             </ListItem>
             {omimId && (
-              // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
               <ListItem>
                 <ExternalLink href={`https://omim.org/entry/${omimId}`}>OMIM</ExternalLink>
               </ListItem>
             )}
-            {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
             <ListItem>
               <ExternalLink
                 href={`https://deciphergenomics.org/gene/${geneId}/overview/protein-genomic-info`}
@@ -94,19 +88,16 @@ const GeneReferences = ({ gene }: Props) => {
             </ListItem>
             {hgncId && (
               <>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
                   <ExternalLink href={`https://search.clinicalgenome.org/kb/genes/${hgncId}`}>
                     ClinGen
                   </ExternalLink>
                 </ListItem>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
                   <ExternalLink href={`https://search.thegencc.org/genes/${hgncId}`}>
                     Gene Curation Coalition (GenCC)
                   </ExternalLink>
                 </ListItem>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
                   <ExternalLink
                     href={`https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/${hgncId}`}
@@ -118,13 +109,11 @@ const GeneReferences = ({ gene }: Props) => {
             )}
             {ncbiId && (
               <>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
                   <ExternalLink href={`https://www.ncbi.nlm.nih.gov/gene/?term=${ncbiId}`}>
                     NCBI
                   </ExternalLink>
                 </ListItem>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
                   <ExternalLink
                     href={`https://www.ncbi.nlm.nih.gov/genome/gdv/browser/gene/?id=${ncbiId}`}
@@ -132,7 +121,6 @@ const GeneReferences = ({ gene }: Props) => {
                     NCBI Genome Data Viewer
                   </ExternalLink>
                 </ListItem>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
                   <ExternalLink href={gtexUrl}>GTEx</ExternalLink>
                 </ListItem>

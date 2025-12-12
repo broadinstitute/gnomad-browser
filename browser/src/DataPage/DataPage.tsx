@@ -89,7 +89,7 @@ const DataPage = () => {
           .
         </div>
         <div>
-          <SectionTitle id="summary" theme={{ type: 'datasets' }}>
+          <SectionTitle id="summary" subject="datasets">
             Summary
           </SectionTitle>
           <StyledParagraph>

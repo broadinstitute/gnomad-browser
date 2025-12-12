@@ -24,7 +24,7 @@ const STATUS_COLOR = {
 
 type Status = 'success' | 'info' | 'warning' | 'error'
 
-const Notification = styled.div`
+const Notification = styled.div<{ status: Status }>`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -36,7 +36,7 @@ const Notification = styled.div`
   margin-bottom: 1rem;
   background: linear-gradient(
     to right,
-    ${(props: { status: Status }) => STATUS_COLOR[props.status]} 10px,
+    ${(props) => STATUS_COLOR[props.status]} 10px,
     #fafafa 10px
   );
   box-shadow: 2px 2px 5px #3338;

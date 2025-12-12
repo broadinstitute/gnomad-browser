@@ -65,14 +65,12 @@ const GnomadNonCodingConstraintTableVariant = ({
             <th scope="col">
               {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="The expected number of variants is predicted using an improved mutational model that takes into account both local sequence context and a variety of genomic features.">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Expected</TooltipHint>
               </TooltipAnchor>
             </th>
             <th scope="col">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="The observed number of variants is the count of rare (MAF<=1%) varaints in this 1kb window as identified in gnomAD v3.1.2">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Observed</TooltipHint>
               </TooltipAnchor>
             </th>

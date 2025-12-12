@@ -21,7 +21,6 @@ type Props = {
 }
 
 const ExacConstraintTable = ({ constraint }: Props) => (
-  // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
   <BaseTable>
     <thead>
       <tr>

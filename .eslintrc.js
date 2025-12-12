@@ -67,6 +67,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': ['error'],
     'react/jsx-no-useless-fragment': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
+    'jsx-a11y/label-has-associated-control': 'off',
   },
   overrides: [
     {

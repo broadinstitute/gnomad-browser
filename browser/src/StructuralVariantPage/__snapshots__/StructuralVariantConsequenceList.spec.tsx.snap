@@ -3,15 +3,15 @@
 exports[`StructuralVariantConsequenceList expanding genes list for consequence in category copy_gain with >3 genes expands to show all genes 1`] = `
 <DocumentFragment>
   <ol
-    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 iisOkx"
   >
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         copy gain 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -27,43 +27,43 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/ABC"
           >
             ABC
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/DEF"
           >
             DEF
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/GHI"
           >
             GHI
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <button
-            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            class="Button__TextButton-sc-1eobygi-3 bMMlfW"
             type="button"
           >
             and 1 more
@@ -78,15 +78,15 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
 exports[`StructuralVariantConsequenceList expanding genes list for consequence in category dup_lof with >3 genes expands to show all genes 1`] = `
 <DocumentFragment>
   <ol
-    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 iisOkx"
   >
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         int. exon duplication 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -102,43 +102,43 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/ABC"
           >
             ABC
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/DEF"
           >
             DEF
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/GHI"
           >
             GHI
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <button
-            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            class="Button__TextButton-sc-1eobygi-3 bMMlfW"
             type="button"
           >
             and 1 more
@@ -147,12 +147,12 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
       </ol>
     </li>
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         partial exon duplication 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -168,43 +168,43 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/MNO"
           >
             MNO
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/PQR"
           >
             PQR
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/STU"
           >
             STU
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <button
-            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            class="Button__TextButton-sc-1eobygi-3 bMMlfW"
             type="button"
           >
             and 2 more
@@ -219,15 +219,15 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
 exports[`StructuralVariantConsequenceList expanding genes list for consequence in category lof with >3 genes expands to show all genes 1`] = `
 <DocumentFragment>
   <ol
-    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 iisOkx"
   >
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         loss of function 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -243,43 +243,43 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/ABC"
           >
             ABC
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/DEF"
           >
             DEF
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/GHI"
           >
             GHI
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <button
-            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            class="Button__TextButton-sc-1eobygi-3 bMMlfW"
             type="button"
           >
             and 1 more
@@ -294,52 +294,52 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
 exports[`StructuralVariantConsequenceList expanding genes list for consequence in category other with >3 genes expands to show all genes 1`] = `
 <DocumentFragment>
   <ol
-    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 iisOkx"
   >
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         inversion span 
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/ABC"
           >
             ABC
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/DEF"
           >
             DEF
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/GHI"
           >
             GHI
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <button
-            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            class="Button__TextButton-sc-1eobygi-3 bMMlfW"
             type="button"
           >
             and 1 more
@@ -348,49 +348,49 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
       </ol>
     </li>
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         partial duplication 
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/MNO"
           >
             MNO
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/PQR"
           >
             PQR
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/STU"
           >
             STU
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <button
-            class="Button__TextButton-sc-1eobygi-3 gWkUTz"
+            class="Button__TextButton-sc-1eobygi-3 bMMlfW"
             type="button"
           >
             and 2 more
@@ -405,15 +405,15 @@ exports[`StructuralVariantConsequenceList expanding genes list for consequence i
 exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] = `
 <DocumentFragment>
   <ol
-    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 fKPQdv"
+    class="StructuralVariantConsequenceList__Wrapper-sc-1mstxep-0 iisOkx"
   >
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         loss of function 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -429,16 +429,16 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       />
     </li>
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         loss of function 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -454,13 +454,13 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/ABC123"
           >
             ABC123
@@ -469,12 +469,12 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
       </ol>
     </li>
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         loss of function 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -490,23 +490,23 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/ABC123"
           >
             ABC123
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/QRSTUV"
           >
             QRSTUV
@@ -515,12 +515,12 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
       </ol>
     </li>
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         copy gain 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -536,16 +536,16 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       />
     </li>
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         copy gain 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -561,13 +561,13 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/DEF234"
           >
             DEF234
@@ -576,12 +576,12 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
       </ol>
     </li>
     <li
-      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 qVCRP"
+      class="StructuralVariantConsequenceList__ConsequenceListItem-sc-1mstxep-1 cPAXNk"
     >
       <h3>
         copy gain 
         <button
-          class="InfoButton__Button-sc-13t5e82-0 gxsoyZ"
+          class="InfoButton__Button-sc-13t5e82-0 faZoWY"
           type="button"
         >
           <img
@@ -597,23 +597,23 @@ exports[`StructuralVariantConsequenceList should have no unexpected changes 1`] 
         </button>
       </h3>
       <ol
-        class="List__OrderedList-sc-4j87st-2 gKjCRF"
+        class="List__OrderedList-sc-4j87st-2 eRLUkl"
       >
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/DEF234"
           >
             DEF234
           </a>
         </li>
         <li
-          class="List__ListItem-sc-4j87st-1 gGPLUe"
+          class="List__ListItem-sc-4j87st-1 eQCGXh"
         >
           <a
-            class="Link-sc-14lgydv-0-Link csqFBR"
+            class="Link-sc-14lgydv-0 jtwqlm"
             href="/gene/LLLLLL"
           >
             LLLLLL

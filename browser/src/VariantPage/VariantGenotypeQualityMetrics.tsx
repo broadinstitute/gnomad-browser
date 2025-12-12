@@ -295,7 +295,7 @@ const VariantGenotypeQualityMetrics = ({
         />
 
         <label htmlFor="genotype-quality-metrics-sequencing-type">
-          Sequencing types: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+          Sequencing types:
           <Select
             id="genotype-quality-metrics-sequencing-type"
             disabled={!variant.exome || !variant.genome}

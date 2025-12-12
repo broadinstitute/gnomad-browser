@@ -7,15 +7,12 @@ exports[`has no unexpected changes 1`] = `
   padding: 0.375em 1.5em 0.375em 0.75em;
   border: 1px solid #6c757d;
   border-radius: 0.25em;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
   background-position: center right;
   background-repeat: no-repeat;
   font-size: 1em;
   line-height: 1.25;
-  margin: 1em 1em 0 0;
 }
 
 .c0:focus {
@@ -24,8 +21,12 @@ exports[`has no unexpected changes 1`] = `
   box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
 }
 
+.c1 {
+  margin: 1em 1em 0 0;
+}
+
 <select
-    className="c0"
+    className="c0 c1"
     id="haplogroup-selected"
     onChange={[Function]}
     value="All"
@@ -190,15 +191,12 @@ exports[`has no unexpected changes 1`] = `
   padding: 0.375em 1.5em 0.375em 0.75em;
   border: 1px solid #6c757d;
   border-radius: 0.25em;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
   background-position: center right;
   background-repeat: no-repeat;
   font-size: 1em;
   line-height: 1.25;
-  margin: 1em 1em 0 0;
 }
 
 .c0:focus {
@@ -207,8 +205,12 @@ exports[`has no unexpected changes 1`] = `
   box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
 }
 
+.c1 {
+  margin: 1em 1em 0 0;
+}
+
 <select
-    className="c0"
+    className="c0 c1"
     id="ancestry-selected"
     onChange={[Function]}
     value="All"
@@ -276,8 +278,6 @@ exports[`has no unexpected changes 1`] = `
   .c0 {
   border-collapse: collapse;
   border-spacing: 0;
-  margin-top: 1em;
-  margin-bottom: 1em;
 }
 
 .c0 td,
@@ -312,9 +312,6 @@ exports[`has no unexpected changes 1`] = `
   cursor: pointer;
   font: inherit;
   outline: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
@@ -330,12 +327,17 @@ exports[`has no unexpected changes 1`] = `
   font-weight: bold;
 }
 
-.c0 td {
+.c1 {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.c1 td {
   text-align: right;
 }
 
 <table
-    className="c0"
+    className="c0 c1"
   >
     <thead>
       <tr>

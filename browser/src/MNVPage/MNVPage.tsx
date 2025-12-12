@@ -44,7 +44,6 @@ type Props = {
 }
 
 const MNVPage = ({ datasetId, variantId }: Props) => (
-  // @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message
   <Page>
     <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
     <GnomadPageHeading
@@ -100,9 +99,7 @@ const MNVPage = ({ datasetId, variantId }: Props) => (
                 </Column>
                 <Column>
                   <h2>References</h2>
-                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                   <List>
-                    {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                     <ListItem>
                       <ExternalLink
                         href={`https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&highlight=hg19.chr${
@@ -139,11 +136,8 @@ const MNVPage = ({ datasetId, variantId }: Props) => (
             <Section>
               <h2>Read Data</h2>
               <p>These reads were generated based on the constituent SNVs, therefore:</p>
-              {/* @ts-expect-error TS(2746) FIXME: This JSX tag's 'children' prop expects a single ch... Remove this comment to see the full error message */}
               <List>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>A read may not be from an individual carrying the MNV.</ListItem>
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <ListItem>
                   Reads from individuals carrying the MNV may be shown more than once.
                 </ListItem>

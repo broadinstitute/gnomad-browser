@@ -19,10 +19,8 @@ type SubmissionsListProps = {
 }
 
 const SubmissionsList = ({ submissions }: SubmissionsListProps) => (
-  // @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message
   <List>
     {submissions.map((submission) => (
-      // @ts-expect-error TS(2769) FIXME: No overload matches this call.
       <ListItem key={`${submission.submitter_name}-${submission.last_evaluated}`}>
         <AttributeList>
           <AttributeListItem label="Submitter">{submission.submitter_name}</AttributeListItem>

@@ -10,7 +10,7 @@ import TranscriptConsequencePropType from './TranscriptConsequencePropType'
 const AttributeName = styled.dt`
   display: inline;
 
-  ::after {
+  &::after {
     content: ': ';
   }
 `
@@ -103,7 +103,6 @@ const PREFERRED_DOMAIN_DATABASES = new Set(['Pfam'])
 const renderDomain = (domain: any) => {
   if (domain.database === 'Pfam') {
     return (
-      // @ts-expect-error TS(2769) FIXME: No overload matches this call.
       <ExternalLink href={`https://pfam.xfam.org/family/${domain.name}`}>
         {domain.name} ({domain.database})
       </ExternalLink>

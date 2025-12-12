@@ -2,7 +2,7 @@
 
 exports[`ShortTandemRepeatAttributes displays no gene link for an STR with empty string for associated gene 1`] = `
 <dl
-  className="AttributeList-sc-1yjjegy-0 boDRvX"
+  className="AttributeList-sc-1yjjegy-0 gnGPdi"
   style={
     {
       "marginTop": "1.25em",
@@ -23,7 +23,7 @@ exports[`ShortTandemRepeatAttributes displays no gene link for an STR with empty
     </dt>
     <dd>
       <a
-        className="Link-sc-14lgydv-0-Link csqFBR"
+        className="Link-sc-14lgydv-0 jtwqlm"
         href="/region/1-10000000-15000000"
         onClick={[Function]}
       >
@@ -40,7 +40,7 @@ exports[`ShortTandemRepeatAttributes displays no gene link for an STR with empty
 
 exports[`ShortTandemRepeatAttributes has no unexected changes 1`] = `
 <dl
-  className="AttributeList-sc-1yjjegy-0 boDRvX"
+  className="AttributeList-sc-1yjjegy-0 gnGPdi"
   style={
     {
       "marginTop": "1.25em",
@@ -53,7 +53,7 @@ exports[`ShortTandemRepeatAttributes has no unexected changes 1`] = `
     </dt>
     <dd>
       <a
-        className="Link-sc-14lgydv-0-Link csqFBR"
+        className="Link-sc-14lgydv-0 jtwqlm"
         href="/gene/ENSG00000000001"
         onClick={[Function]}
       >
@@ -75,7 +75,7 @@ exports[`ShortTandemRepeatAttributes has no unexected changes 1`] = `
     </dt>
     <dd>
       <a
-        className="Link-sc-14lgydv-0-Link csqFBR"
+        className="Link-sc-14lgydv-0 jtwqlm"
         href="/region/1-10000000-15000000"
         onClick={[Function]}
       >

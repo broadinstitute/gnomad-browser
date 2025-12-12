@@ -34,7 +34,7 @@ const ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect = ({
     <label
       htmlFor={`short-tandem-repeat-${shortTandemRepeatOrAdjacentRepeat.id}-genotype-distribution-repeat-units`}
     >
-      Repeat units: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+      Repeat units:
       <Select
         id={`short-tandem-repeat-${shortTandemRepeatOrAdjacentRepeat.id}-genotype-distribution-repeat-units`}
         value={selectedRepeatUnits === null ? '' : selectedRepeatUnits.join(' / ')}

@@ -57,7 +57,7 @@ const HaplogroupAndAncestryFilterTable = () => {
       <HaplogroupOrAncestrySelector
         id="haplogroup-selected"
         value={haplogroupSelected}
-        onChange={(e) => {
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
           setHaplogroupSelected(e.target.value)
         }}
       >
@@ -76,7 +76,7 @@ const HaplogroupAndAncestryFilterTable = () => {
       <HaplogroupOrAncestrySelector
         id="ancestry-selected"
         value={ancestrySelected}
-        onChange={(e) => {
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
           setAncestrySelected(e.target.value)
         }}
       >

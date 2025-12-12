@@ -120,7 +120,6 @@ const FilteringAlleleFrequency = ({
     <span>
       {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: any; }' is not... Remove this comment to see the full error message */}
       <TooltipAnchor tooltip={GNOMAD_POPULATION_NAMES[popmaxPopulation.toLowerCase()]}>
-        {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
         <TooltipHint>{popmax.toPrecision(4)}</TooltipHint>
       </TooltipAnchor>
       <FilteringAlleleFrequencyPopulation>
@@ -299,7 +298,6 @@ export const GnomadVariantOccurrenceTable = ({
             <th scope="row">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Quality control filters that this variant failed (if any)">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>
                   Filters <InfoButton topic="what-do-the-flags-on-the-browser-mean" />
                 </TooltipHint>
@@ -313,7 +311,6 @@ export const GnomadVariantOccurrenceTable = ({
             <th scope="row">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Alternate allele count in high quality genotypes">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Allele Count</TooltipHint>
               </TooltipAnchor>
             </th>
@@ -337,7 +334,6 @@ export const GnomadVariantOccurrenceTable = ({
             <th scope="row">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Total number of called high quality genotypes">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Allele Number</TooltipHint>
               </TooltipAnchor>
             </th>
@@ -374,7 +370,6 @@ export const GnomadVariantOccurrenceTable = ({
             <th scope="row">
               {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
               <TooltipAnchor tooltip="Alternate allele frequency in high quality genotypes">
-                {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                 <TooltipHint>Allele Frequency</TooltipHint>
               </TooltipAnchor>
             </th>
@@ -423,7 +418,6 @@ export const GnomadVariantOccurrenceTable = ({
               <th scope="row">
                 {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
                 <TooltipAnchor tooltip="Number of individuals homozygous for alternate allele">
-                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                   <TooltipHint>Number of homozygotes</TooltipHint>
                 </TooltipAnchor>
               </th>
@@ -454,7 +448,6 @@ export const GnomadVariantOccurrenceTable = ({
               <th scope="row">
                 {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
                 <TooltipAnchor tooltip="Number of individuals hemizygous for alternate allele">
-                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                   <TooltipHint>Number of hemizygotes</TooltipHint>
                 </TooltipAnchor>
               </th>
@@ -468,7 +461,6 @@ export const GnomadVariantOccurrenceTable = ({
               <th scope="row">
                 {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
                 <TooltipAnchor tooltip="Mean depth of coverage at this variant's locus">
-                  {/* @ts-expect-error TS(2745) FIXME: This JSX tag's 'children' prop expects type 'never... Remove this comment to see the full error message */}
                   <TooltipHint>Mean depth of coverage</TooltipHint>
                 </TooltipAnchor>
               </th>

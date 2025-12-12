@@ -185,7 +185,6 @@ export default () => (
                 <td>{dataset.samples}</td>
                 <td>
                   {dataset.link ? (
-                    // @ts-expect-error
                     <Link href={dataset.link}>{dataset.source}</Link>
                   ) : (
                     dataset.source

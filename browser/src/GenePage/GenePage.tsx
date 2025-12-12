@@ -238,8 +238,8 @@ type TableSelectorProps = {
 // prettier-ignore
 const BaseTableSelector = styled.div<TableSelectorProps>
 
-const TableSelector = BaseTableSelector.attrs(
-  ({ setSelectedTableName, ownTableName }: TableSelectorProps) => ({
+const TableSelector = BaseTableSelector.attrs<TableSelectorProps>(
+  ({ setSelectedTableName, ownTableName }) => ({
     onClick: () => {
       if (ownTableName === 'cooccurrence') {
         logButtonClick('User selected variant co-occurrence table on Gene page')

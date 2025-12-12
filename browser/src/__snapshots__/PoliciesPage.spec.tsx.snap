@@ -1,99 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Policies Page has no unexpected changes 1`] = `
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding-bottom: 0.5em;
-  border-bottom: 1px solid #ccc;
-  margin: 0.67em 0;
-  font-size: 14px;
-}
-
-.c2 {
-  margin: 0;
-}
-
-.c3 {
-  font-size: 16px;
-}
-
-.c3 h1,
-.c3 h2,
-.c3 h3 {
-  font-weight: bold;
-}
-
-.c3 h1 {
-  font-size: 2em;
-}
-
-.c3 h2 {
-  font-size: 1.5em;
-}
-
-.c3 p {
-  margin-top: 15px;
-  margin-bottom: 15px;
-  line-height: 1.4;
-}
-
-.c3 a {
-  color: #428bca;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-}
-
-.c3 img {
-  max-width: 100%;
-}
-
-.c3 blockquote {
-  margin: 0 0 0 10px;
-  font-size: 14px;
-  font-style: italic;
-  line-height: 1.4;
-}
-
-.c3 ol,
-.c3 ul {
-  padding-left: 20px;
-  margin: 1em 0;
-}
-
-.c3 li {
-  margin-bottom: 0.5em;
-}
-
-.c3 table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-.c3 td {
-  padding: 0.5em 10px 0.5em 0;
-  border-bottom: 1px solid #ccc;
-  font-weight: normal;
-  text-align: left;
-}
-
-.c3 th {
-  padding: 0.5em 10px 0.5em 0;
-  border-bottom: 1px solid #000;
-  background-position: center right;
-  background-repeat: no-repeat;
-  font-weight: bold;
-}
-
 .c0 {
   box-sizing: border-box;
   width: 100%;
@@ -101,60 +8,133 @@ exports[`Policies Page has no unexpected changes 1`] = `
   padding: 0 15px;
   margin: 0 auto 40px;
   font-size: 14px;
+}
+
+.c3 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 14px;
+}
+
+.c4 {
+  margin: 0;
+}
+
+.c1 {
   font-size: 16px;
 }
 
-.c0 p {
+.c1 p {
   margin-bottom: 1em;
   line-height: 1.4;
 }
 
-.c0 h2 {
-  font-size: 1.5em;
+.c5 {
+  font-size: 16px;
+}
+
+.c5 h1,
+.c5 h2,
+.c5 h3 {
   font-weight: bold;
 }
 
-.c0 h2:not(:first-child) {
-  padding-top: 1.5rem;
+.c5 h1 {
+  font-size: 2em;
 }
 
-.c4 p {
+.c5 h2 {
+  font-size: 1.5em;
+}
+
+.c5 p {
   margin-top: 15px;
   margin-bottom: 15px;
   line-height: 1.4;
 }
 
-.c4 a {
+.c5 a {
   color: #428bca;
-  -webkit-text-decoration: none;
+  text-decoration: none;
+}
+
+.c5 img {
+  max-width: 100%;
+}
+
+.c5 blockquote {
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.c5 ol,
+.c5 ul {
+  padding-left: 20px;
+  margin: 1em 0;
+}
+
+.c5 li {
+  margin-bottom: 0.5em;
+}
+
+.c5 table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.c5 td {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #ccc;
+  font-weight: normal;
+  text-align: left;
+}
+
+.c5 th {
+  padding: 0.5em 10px 0.5em 0;
+  border-bottom: 1px solid #000;
+  background-position: center right;
+  background-repeat: no-repeat;
+  font-weight: bold;
+}
+
+.c2 h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.c2 h2:not(:first-child) {
+  padding-top: 1.5rem;
+}
+
+.c6 p {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.c6 a {
+  color: #428bca;
   text-decoration: none;
 }
 
 @media (max-width:900px) {
-  .c1 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
+  .c3 {
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     border-bottom: none;
   }
 }
 
 @media (max-width:900px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+  .c4 {
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-bottom: 0.5em;
     border-bottom: 1px solid #ccc;
@@ -163,19 +143,19 @@ exports[`Policies Page has no unexpected changes 1`] = `
 }
 
 <div
-  className="c0"
+  className="c0 c1 c2"
 >
   <div
-    className="c1"
+    className="c3"
   >
     <h1
-      className="c2"
+      className="c4"
     >
       Policies
     </h1>
   </div>
   <div
-    className="c3"
+    className="c5"
     dangerouslySetInnerHTML={
       {
         "__html": "## gnomAD™ Terms of use
@@ -208,7 +188,7 @@ There is no need to include us as authors on your manuscript, unless we contribu
   />
   <br />
   <div
-    className="c4"
+    className="c6"
   >
     <h2>
       gnomAD Privacy Policy (Draft)
@@ -228,7 +208,7 @@ There is no need to include us as authors on your manuscript, unless we contribu
   </div>
   <br />
   <div
-    className="c3"
+    className="c5"
     dangerouslySetInnerHTML={
       {
         "__html": "## gnomAD Ethics Policy

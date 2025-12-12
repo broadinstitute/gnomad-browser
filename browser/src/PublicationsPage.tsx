@@ -40,7 +40,6 @@ export const PaperCitation = ({
   pmcid,
 }: PaperCitationProps) => {
   return (
-    // @ts-expect-error
     <ListItem>
       <Citation>
         {prefix && (
@@ -56,7 +55,6 @@ export const PaperCitation = ({
         <>
           {doiLink && (
             <span>
-              {/* @ts-expect-error */}
               <ExternalLink href={doiLink}> {doiLink}</ExternalLink>{' '}
             </span>
           )}
@@ -89,7 +87,6 @@ export default () => (
     </p>
     <p>
       Current flagship paper (<b>v3</b>):
-      {/* @ts-expect-error */}
       <List>
         <PaperCitation
           authorList="Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q.,
@@ -115,7 +112,6 @@ export default () => (
     </p>{' '}
     <p>
       Previous flagship papers:
-      {/* @ts-expect-error */}
       <List>
         <PaperCitation
           prefix="v2"
@@ -153,7 +149,6 @@ export default () => (
     </p>
     <p>
       Remaining publications:
-      {/* @ts-expect-error */}
       <List>
         <PaperCitation
           authorList="Gudmundsson, S., Singer-Berk, M., Stenton, S. L., Goodrich, J. K., Wilson, M. W., Einson, J., Watts, N. A.; Genome Aggregation Database Consortium; Lappalainen, T., Rehm, H. L., MacArthur, D. G., O'Donnell-Luria, A."

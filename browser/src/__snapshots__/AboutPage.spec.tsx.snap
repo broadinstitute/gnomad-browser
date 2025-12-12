@@ -1,28 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`About Page has no unexpected changes 1`] = `
-.c1 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding-bottom: 0.5em;
-  border-bottom: 1px solid #ccc;
-  margin: 0.67em 0;
-  font-size: 14px;
-}
-
-.c2 {
-  margin: 0;
-}
-
 .c0 {
   box-sizing: border-box;
   width: 100%;
@@ -30,78 +8,94 @@ exports[`About Page has no unexpected changes 1`] = `
   padding: 0 15px;
   margin: 0 auto 40px;
   font-size: 14px;
+}
+
+.c2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  margin: 0.67em 0;
+  font-size: 14px;
+}
+
+.c3 {
+  margin: 0;
+}
+
+.c1 {
   font-size: 16px;
 }
 
-.c0 p {
+.c1 p {
   margin-bottom: 1em;
   line-height: 1.4;
 }
 
-.c3 {
+.c4 {
   font-size: 16px;
 }
 
-.c3 h1,
-.c3 h2,
-.c3 h3 {
+.c4 h1,
+.c4 h2,
+.c4 h3 {
   font-weight: bold;
 }
 
-.c3 h1 {
+.c4 h1 {
   font-size: 2em;
 }
 
-.c3 h2 {
+.c4 h2 {
   font-size: 1.5em;
 }
 
-.c3 p {
+.c4 p {
   margin-top: 15px;
   margin-bottom: 15px;
   line-height: 1.4;
 }
 
-.c3 a {
+.c4 a {
   color: #428bca;
-  -webkit-text-decoration: none;
   text-decoration: none;
 }
 
-.c3 img {
+.c4 img {
   max-width: 100%;
 }
 
-.c3 blockquote {
+.c4 blockquote {
   margin: 0 0 0 10px;
   font-size: 14px;
   font-style: italic;
   line-height: 1.4;
 }
 
-.c3 ol,
-.c3 ul {
+.c4 ol,
+.c4 ul {
   padding-left: 20px;
   margin: 1em 0;
 }
 
-.c3 li {
+.c4 li {
   margin-bottom: 0.5em;
 }
 
-.c3 table {
+.c4 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-.c3 td {
+.c4 td {
   padding: 0.5em 10px 0.5em 0;
   border-bottom: 1px solid #ccc;
   font-weight: normal;
   text-align: left;
 }
 
-.c3 th {
+.c4 th {
   padding: 0.5em 10px 0.5em 0;
   border-bottom: 1px solid #000;
   background-position: center right;
@@ -109,48 +103,23 @@ exports[`About Page has no unexpected changes 1`] = `
   font-weight: bold;
 }
 
-.c5 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
+.c6 {
   display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
   flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
   justify-content: space-between;
 }
 
-.c4 {
+.c5 {
   padding-top: 2rem;
   margin-top: 2rem;
 }
 
-.c6 {
+.c7 {
   width: calc( 45% - 15px );
-}
-
-.c9 {
-  line-height: 1.5;
-}
-
-.c9 ul {
-  padding-left: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.c9 ul ul {
-  padding-left: 20px;
-  margin: 0.5em 0;
 }
 
 .c8 {
   line-height: 1.5;
-  -webkit-columns: 2;
-  columns: 2;
 }
 
 .c8 ul {
@@ -164,50 +133,26 @@ exports[`About Page has no unexpected changes 1`] = `
   margin: 0.5em 0;
 }
 
-.c7 {
-  line-height: 1.5;
+.c10 {
+  columns: 2;
 }
 
-.c7 ul {
-  padding-left: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.c7 ul ul {
-  padding-left: 20px;
-  margin: 0.5em 0;
-}
-
-.c7 li {
+.c9 li {
   margin-bottom: 1rem;
 }
 
 @media (max-width:900px) {
-  .c1 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
+  .c2 {
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     border-bottom: none;
   }
 }
 
 @media (max-width:900px) {
-  .c2 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+  .c3 {
     display: flex;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
     flex-direction: column;
-    -webkit-align-items: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
     padding-bottom: 0.5em;
     border-bottom: 1px solid #ccc;
@@ -216,41 +161,38 @@ exports[`About Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:992px) {
-  .c5 {
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
+  .c6 {
     flex-direction: column;
     font-size: 16px;
   }
 }
 
 @media (max-width:992px) {
-  .c6 {
+  .c7 {
     width: 100%;
   }
 }
 
 @media (max-width:992px) {
-  .c8 {
-    -webkit-columns: 1;
+  .c10 {
     columns: 1;
   }
 }
 
 <div
-  className="c0"
+  className="c0 c1"
 >
   <div
-    className="c1"
+    className="c2"
   >
     <h1
-      className="c2"
+      className="c3"
     >
       About gnomAD
     </h1>
   </div>
   <div
-    className="c3"
+    className="c4"
     dangerouslySetInnerHTML={
       {
         "__html": "The Genome Aggregation Database (gnomAD™), originally launched in 2014 as the Exome Aggregation Consortium (ExAC), is the result of a coalition of investigators willing to share aggregate human exome and genome sequencing data from a variety of large-scale sequencing projects, and make summary data available for the wider scientific community. The project is overseen by co-directors Heidi Rehm and Mark Daly, and steering committee members Samantha Baxter, Katherine Chao, Julia Goodrich, Konrad Karczewski, Daniel MacArthur, Benjamin Neale, Anne O'Donnell-Luria, Kaitlin Samocha, Matthew Solomonson, and Michael Talkowski. To learn more about the team that produces gnomAD please see our [team page](/team). A list of investigators and groups that have contributed data is available below.
@@ -278,20 +220,20 @@ For more Stats on gnomAD v4 please see our [stats page](/stats)
     onClick={[Function]}
   />
   <h2
-    className="c4"
+    className="c5"
   >
     Funding
   </h2>
   <div
-    className="c5"
+    className="c6"
   >
     <div
-      className="c6"
+      className="c7"
       width="45%"
     >
       <div
         aria-labelledby="funding"
-        className="c7"
+        className="c8 c9"
         dangerouslySetInnerHTML={
           {
             "__html": "**Current Funding**
@@ -323,12 +265,12 @@ For more Stats on gnomAD v4 please see our [stats page](/stats)
       </p>
     </div>
     <div
-      className="c6"
+      className="c7"
       width="45%"
     >
       <div
         aria-labelledby="gcbr"
-        className="c7"
+        className="c8 c9"
         dangerouslySetInnerHTML={
           {
             "__html": "![GCBR Logo](./GCBR-Logo-RGB.png)
@@ -342,15 +284,15 @@ See our blog post [here](https://gnomad.broadinstitute.org/news/2022-12-gnomad-s
     </div>
   </div>
   <h2
-    className="c4"
+    className="c5"
   >
     Data Contributors
   </h2>
   <div
-    className="c5"
+    className="c6"
   >
     <div
-      className="c6"
+      className="c7"
       width="45%"
     >
       <h3
@@ -360,7 +302,7 @@ See our blog post [here](https://gnomad.broadinstitute.org/news/2022-12-gnomad-s
       </h3>
       <div
         aria-labelledby="principal-investigators"
-        className="c8"
+        className="c8 c10"
         dangerouslySetInnerHTML={
           {
             "__html": "- Maria Abreu
@@ -557,7 +499,7 @@ See our blog post [here](https://gnomad.broadinstitute.org/news/2022-12-gnomad-s
       />
     </div>
     <div
-      className="c6"
+      className="c7"
       width="45%"
     >
       <h3
@@ -567,7 +509,7 @@ See our blog post [here](https://gnomad.broadinstitute.org/news/2022-12-gnomad-s
       </h3>
       <div
         aria-labelledby="contributing-projects"
-        className="c9"
+        className="c8"
         dangerouslySetInnerHTML={
           {
             "__html": "- 1000 Genomes

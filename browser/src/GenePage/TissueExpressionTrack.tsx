@@ -570,7 +570,6 @@ const TissueExpressionTrack = ({
                   <ControlsWrapper>
                     <label htmlFor="tissue-expression-track-sort-tissues-by">
                       Sort tissues by:{' '}
-                      {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
                       <Select
                         id="tissue-expression-track-sort-tissues-by"
                         value={sortTissuesBy}

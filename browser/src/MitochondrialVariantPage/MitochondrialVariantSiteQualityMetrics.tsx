@@ -295,7 +295,7 @@ const MitochondrialVariantSiteQualityMetricsDistribution = ({
 
         <div>
           <label htmlFor="mt-site-quality-metrics-metric">
-            Metric: {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
+            Metric:{' '}
             <Select
               id="mt-site-quality-metrics-metric"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -332,7 +332,6 @@ const MitochondrialVariantSiteQualityMetricsTable = ({
   variant,
 }: MitochondrialVariantSiteQualityMetricsTableProps) => {
   return (
-    // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <BaseTable style={{ width: '100%', marginTop: '1em' }}>
       <thead>
         <tr>

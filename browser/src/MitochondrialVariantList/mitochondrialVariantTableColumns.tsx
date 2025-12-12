@@ -109,7 +109,6 @@ const mitochondrialVariantTableColumns = [
     getSearchTerms: (variant: any) => [variant.clinical_significance],
     render: (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
-        {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <ExternalLink
           href={`https://www.ncbi.nlm.nih.gov/clinvar/variation/${variant.clinvar_variation_id}/`}
         >
@@ -127,7 +126,7 @@ const mitochondrialVariantTableColumns = [
     key: 'consequence',
     heading: 'VEP Annotation',
     description: 'Variant Effect Predictor (VEP) annotation',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (_context: any, contextType: any) =>
       `Variant Effect Predictor (VEP) annotation${getConsequenceDescription(contextType)}`,
     grow: 0,
     minWidth: 140,
@@ -167,14 +166,14 @@ const mitochondrialVariantTableColumns = [
         <Link to={`/gene/${row.gene_id}`}>{row.gene_symbol || row.gene_id}</Link>
       </Cell>
     ),
-    shouldShowInContext: (context: any, contextType: any) => contextType === 'region',
+    shouldShowInContext: (_context: any, contextType: any) => contextType === 'region',
   },
 
   {
     key: 'hgvs',
     heading: 'HGVS Consequence',
     description: 'HGVS protein sequence (where defined) or coding sequence',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (_context: any, contextType: any) =>
       `HGVS protein sequence (where defined) or coding sequence${getConsequenceDescription(
         contextType
       )}`,
@@ -182,7 +181,7 @@ const mitochondrialVariantTableColumns = [
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvs'),
     getSearchTerms: (variant: any) => [variant.hgvsp || variant.hgvsc],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _key: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter
           autoEscape
@@ -197,13 +196,13 @@ const mitochondrialVariantTableColumns = [
     key: 'hgvsc',
     heading: 'HGVSc Consequence',
     description: 'HGVS coding sequence',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (_context: any, contextType: any) =>
       `HGVS coding sequence${getConsequenceDescription(contextType)}`,
     grow: 1,
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvsc'),
     getSearchTerms: (variant: any) => [variant.hgvsc],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _key: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter
           autoEscape
@@ -218,13 +217,13 @@ const mitochondrialVariantTableColumns = [
     key: 'hgvsp',
     heading: 'HGVSp Consequence',
     description: 'HGVS protein sequence',
-    descriptionInContext: (context: any, contextType: any) =>
+    descriptionInContext: (_context: any, contextType: any) =>
       `HGVS protein sequence${getConsequenceDescription(contextType)}`,
     grow: 1,
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvsp'),
     getSearchTerms: (variant: any) => [variant.hgvsp],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _key: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter
           autoEscape
@@ -263,7 +262,7 @@ const mitochondrialVariantTableColumns = [
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('pos'),
     getSearchTerms: (variant: any) => [variant.variant_id],
-    render: (variant: any, key: any, { highlightWords }: any) => (
+    render: (variant: any, _key: any, { highlightWords }: any) => (
       <Cell>
         <Link target="_blank" to={`/variant/${variant.variant_id}`}>
           <Highlighter

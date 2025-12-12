@@ -85,7 +85,6 @@ export default withRouter((props: any) => {
   return (
     // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <Wrapper width={width}>
-      {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
       <Select
         value={searchDataset}
         onChange={(e: any) => {
