@@ -54,7 +54,7 @@ export default () => (
         <a href={privacyPolicy} target="_blank" rel="noreferrer">
           here
         </a>
-        . It is currently undergoing legal review and is not yet final.
+        .
       </p>
     </PrivacyPolicyWrapper>
 
