@@ -513,7 +513,7 @@ const VariantCoocurrenceContainer = ({
             <VariantCoocurrence cooccurrenceData={variant_cooccurrence} />
 
             <Section>
-              <h2>VEP Annotations</h2>
+              <h2>Ensembl Variant Effect Predictor</h2>
               <p>
                 These variants both occur in {genesInCommon.size} gene
                 {genesInCommon.size === 1 ? '' : 's'}:{' '}
