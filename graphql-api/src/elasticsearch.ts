@@ -25,7 +25,8 @@ if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
   }
 }
 
-const elastic = new elasticsearch.Client(elasticsearchConfig)
+export const createUnlimitedElasticClient = () => new elasticsearch.Client(elasticsearchConfig)
+const elastic = createUnlimitedElasticClient()
 
 const esLimiter = new Bottleneck({
   maxConcurrent: config.MAX_CONCURRENT_ELASTICSEARCH_REQUESTS,
