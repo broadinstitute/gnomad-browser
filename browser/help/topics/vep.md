@@ -5,9 +5,11 @@ title: 'Annotations in gnomAD'
 
 ### gnomAD v4.1
 
-#### VEP
+#### Ensembl VEP
 
-Variants in the browser (and all current VCFs available for download) were annotated using VEP version 105 using GENCODE v39 on GRCh38, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
+Variants in the browser (and all current VCFs available for download) were annotated using Ensembl VEP version 105 using GENCODE v39 on GRCh38, with the [LOFTEE](https://github.com/konradjk/loftee) (Loss-Of-Function Transcript Effect Estimator) plugin.
+
+Note that variants in the gene [RNU4ATAC](https://gnomad.broadinstitute.org/gene/ENSG00000264229?dataset=gnomad_r4) were annotated using Ensembl VEP version 115 (GENCODE v49) on GRCh38. Ensembl VEP version 115 annotations for other genes are available in our [downloadable files](https://gnomad.broadinstitute.org/data#v4). We are not currently planning to update the Ensembl VEP version for other genes in the gnomAD browser.
 
 #### <a name="loftee"></a>LOFTEE
 
