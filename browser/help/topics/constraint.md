@@ -22,7 +22,7 @@ More details on these methods can be found in the supplement of [Lek _et al._ Na
 
 We used the transcripts of protein-coding genes as defined by GENCODE v39.
 
-We currently flag 599 MANE select transcripts that have (1) no expected variants, (2) far too many synonymous, missense, or pLoF variants as determined by a Z score, or (3) far too few synonymous variants as determined by a Z score. If all outliers are removed, there are 16,863 MANE select transcripts left for analyses.
+We currently flag 1,348 MANE select transcripts that have (1) no expected variants, (2) far too many synonymous, missense, or pLoF variants as determined by a Z score, or (3) far too few synonymous variants as determined by a Z score. If all outliers are removed, there are 17,063 MANE select transcripts left for analyses.
 
 #### Observed variant count
 
