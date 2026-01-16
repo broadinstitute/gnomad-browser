@@ -30,7 +30,7 @@ The observed variant count is the number of unique single nucleotide variants in
 
 #### Expected variant count
 
-We calculate the expected number of variants for all bases with median depth ≥ 0 in our exome samples using a mutational model that corrects for local sequence context and CpG methylation levels. Previously, we used this same mutational model, but corrected for depth; more details on the previous approach can be found in section 4.1 of the supplement in [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7).
+We calculate the expected number of variants for all bases with median depth ≥ 0 in our exome samples using a mutational model that corrects for local sequence context and CpG methylation levels. In gnomAD v4.1.1, we use [allele number (AN)](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1/#allele-numbers-across-all-possible-sites) as a proxy for coverage. Following the methods described in section 4.1 of the supplement in [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7), we calculate a coverage model for sites with median AN percent \< 90% in the gnomAD exome samples and use this model to adjust expected variant counts at low coverage sites.
 
 #### pLoF Variant types
 
