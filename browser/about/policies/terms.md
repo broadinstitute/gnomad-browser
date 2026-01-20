@@ -15,9 +15,3 @@ Some annotations may have restrictions on usage. For instance, SpliceAI annotati
 The gnomAD team has a firm commitment to open science. This includes, but is not limited to, making our data and code open-source, posting pre-prints, and prioritizing publishing in journals that support open access.
 
 We request that developers integrating gnomAD data in their tools include a statement acknowledging the inclusion of gnomAD data (e.g., "This tool includes data from the gnomAD v4.1 release."). However, to avoid confusion and misattribution, we ask that you refrain from incorporating "gnomAD" or "Genome Aggregation Database'' into the name of your tool and from using the gnomAD logo without permission. gnomAD™ is a trademark owned by The Broad Institute, Inc.
-
-## Citation in publications
-
-We request that any use of data obtained from the gnomAD browser cite [the gnomAD flagship paper](https://broad.io/gnomad_lof) and any online resources that include the data set provide a link to the browser. For use of the SV data, we request cite [this paper](https://broad.io/gnomad_sv) for use of the SV data.
-
-There is no need to include us as authors on your manuscript, unless we contributed specific advice or analysis for your work.
