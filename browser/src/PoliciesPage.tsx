@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 import { PageHeading } from '@gnomad/ui'
@@ -12,7 +12,7 @@ import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 import MarkdownContent from './MarkdownContent'
 
-const PoliciesPage = styled(InfoPage)`
+const PoliciesPageStyle = styled(InfoPage)`
   h2 {
     font-size: 1.5em;
     font-weight: bold;
@@ -42,31 +42,45 @@ const CitationHeading = withAnchor(styled.h2`
   margin-top: 2.5rem;
 `)
 
-export default () => (
-  <PoliciesPage>
-    <DocumentTitle title="Policies" />
-    <PageHeading>Policies</PageHeading>
+const PoliciesPage = () => {
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash !== '') {
+      const element = document.querySelector(`${hash}`)
+      if (element) {
+        element.scrollIntoView()
+      }
+    }
+  }, [])
 
-    <MarkdownContent dangerouslySetInnerHTML={{ __html: termsContent.html }} />
+  return (
+    <PoliciesPageStyle>
+      <DocumentTitle title="Policies" />
+      <PageHeading>Policies</PageHeading>
 
-    <br />
+      <MarkdownContent dangerouslySetInnerHTML={{ __html: termsContent.html }} />
 
-    <PrivacyPolicyWrapper>
-      <h2>gnomAD Privacy Policy (Draft)</h2>
-      <p>
-        gnomAD’s draft Privacy Policy that outlines what data we store while you are using our
-        website and when you communicate with us, can be found{' '}
-        <a href={privacyPolicy} target="_blank" rel="noreferrer">
-          here
-        </a>
-        .
-      </p>
-    </PrivacyPolicyWrapper>
+      <br />
 
-    <br />
+      <PrivacyPolicyWrapper>
+        <h2>gnomAD Privacy Policy (Draft)</h2>
+        <p>
+          gnomAD’s draft Privacy Policy that outlines what data we store while you are using our
+          website and when you communicate with us, can be found{' '}
+          <a href={privacyPolicy} target="_blank" rel="noreferrer">
+            here
+          </a>
+          .
+        </p>
+      </PrivacyPolicyWrapper>
 
-    <MarkdownContent dangerouslySetInnerHTML={{ __html: policiesContent.html }} />
-    <CitationHeading id="citation">Citation in publications</CitationHeading>
-    <MarkdownContent dangerouslySetInnerHTML={{ __html: citationsContent.html }} />
-  </PoliciesPage>
-)
+      <br />
+
+      <MarkdownContent dangerouslySetInnerHTML={{ __html: policiesContent.html }} />
+      <CitationHeading id="citation">Citation in publications</CitationHeading>
+      <MarkdownContent dangerouslySetInnerHTML={{ __html: citationsContent.html }} />
+    </PoliciesPageStyle>
+  )
+}
+
+export default PoliciesPage
