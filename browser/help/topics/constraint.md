@@ -42,7 +42,7 @@ For pLoF counts, only nonsense, splice donor and acceptor site variants caused b
 
 #### <a id="loeuf"></a>Observed / expected (`oe`) and the Loss-of-function Observed / expected upper bound fraction (`LOEUF`) score
 
-We have calculated the ratio of the observed / expected (`oe`) number of loss-of-function variants for all bases of sufficient depth in the MANE Select (v4 on GRCh38) or canonical (ExAC and v2 on GRCh37) and other non-Select/canonical transcript for each gene. The expected counts are based on a mutational model that takes sequence context and methylation into account.
+We have calculated the ratio of the observed / expected (`oe`) number of loss-of-function variants for all bases with median AN percent ≥ 20 in the MANE Select (v4 on GRCh38) or canonical (ExAC and v2 on GRCh37) and other non-Select/canonical transcript for each gene. The expected counts are based on a mutational model that takes sequence context and methylation into account.
 
 #### Interpretation
 
@@ -64,7 +64,7 @@ As mentioned above, `oe` and `LOEUF` are dependent on sample size and we note th
 
 For synonymous and missense variation, we created a signed Z score of the deviation of observed counts from the expected number. Positive Z scores indicate increased constraint (intolerance to variation) and therefore that the transcript had fewer variants than expected. Negative Z scores were given to transcripts that had more variants than expected.
 
-To generate Z scores, we used a previously described, but slightly modified, sequence-context based mutational model to predict the number of expected rare (minor allele frequency < 0.1%) variants per transcript at well covered sites. We then calculated the chi-squared value for the deviation of observation from expectation for each mutational class (synonymous and missense). The square root of these values was taken and multiplied by -1 if the number of observed variants was greater than expectation or 1 if observed counts were smaller than expected. The synonymous Z scores were then corrected by dividing each score by the standard deviation of all synonymous Z scores in between -8 and 8 (-5 and 5 for gnomAD v2). For the missense Z scores, we took all Z scores between -8 and 0 (-5 and 0 for gnomAD v2) and created a mirrored distribution. The missense Z scores were then corrected by dividing each score by the standard deviation of these mirror distributions.
+To generate Z scores, we used a previously described, but slightly modified, sequence-context based mutational model to predict the number of expected rare (minor allele frequency < 0.1%) variants per transcript. We then calculated the chi-squared value for the deviation of observation from expectation for each mutational class (synonymous and missense). The square root of these values was taken and multiplied by -1 if the number of observed variants was greater than expectation or 1 if observed counts were smaller than expected. The synonymous Z scores were then corrected by dividing each score by the standard deviation of all synonymous Z scores in between -8 and 8 (-5 and 5 for gnomAD v2). For the missense Z scores, we took all Z scores between -8 and 0 (-5 and 0 for gnomAD v2) and created a mirrored distribution. The missense Z scores were then corrected by dividing each score by the standard deviation of these mirror distributions.
 
 For more information, see [Samocha _et al._ Nature Genetics 2014](https://www.nature.com/articles/ng.3050) and [Lek _et al._ Nature 2016](https://www.nature.com/articles/nature19057).
 
