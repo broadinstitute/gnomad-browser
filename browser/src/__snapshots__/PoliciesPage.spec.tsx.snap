@@ -24,6 +24,25 @@ exports[`Policies Page has no unexpected changes 1`] = `
   margin: 0;
 }
 
+.c10 {
+  position: absolute;
+  transform: translate(-15px,calc(50% - 0.5em));
+  display: flex;
+  align-items: center;
+  width: 15px;
+  height: 1em;
+  visibility: hidden;
+  vertical-align: middle;
+}
+
+.c7 {
+  position: relative;
+}
+
+.c7 :hover .c9 {
+  visibility: visible;
+}
+
 .c1 {
   font-size: 16px;
 }
@@ -123,6 +142,10 @@ exports[`Policies Page has no unexpected changes 1`] = `
   text-decoration: none;
 }
 
+.c8 {
+  margin-top: 2.5rem;
+}
+
 @media (max-width:900px) {
   .c3 {
     flex-direction: column;
@@ -175,12 +198,6 @@ Some annotations may have restrictions on usage. For instance, SpliceAI annotati
 The gnomAD team has a firm commitment to open science. This includes, but is not limited to, making our data and code open-source, posting pre-prints, and prioritizing publishing in journals that support open access.
 
 We request that developers integrating gnomAD data in their tools include a statement acknowledging the inclusion of gnomAD data (e.g., "This tool includes data from the gnomAD v4.1 release."). However, to avoid confusion and misattribution, we ask that you refrain from incorporating "gnomAD" or "Genome Aggregation Database'' into the name of your tool and from using the gnomAD logo without permission. gnomAD™ is a trademark owned by The Broad Institute, Inc.
-
-## Citation in publications
-
-We request that any use of data obtained from the gnomAD browser cite [the gnomAD flagship paper](https://broad.io/gnomad_lof) and any online resources that include the data set provide a link to the browser. For use of the SV data, we request cite [this paper](https://broad.io/gnomad_sv) for use of the SV data.
-
-There is no need to include us as authors on your manuscript, unless we contributed specific advice or analysis for your work.
 ",
       }
     }
@@ -226,6 +243,49 @@ A full description of the methods used to aggregate and call variants across the
 ## Public Release of Low Frequency Allele Count
 
 The vast majority of variants being discovered within large population datasets – and in particular those with the greatest functional impact – are extremely rare. Some genomic data generating programs limit the ability to share allele counts (AC) below a certain threshold. However, sharing summary statistics for all variants, including those found only in a single individual, is critical for scientific progress and discovery. Obscuring information about this rare variation would be reasonable if the risks to participants were large, but the experiences of many other large genomics initiatives illustrate that the actual risks to privacy are quite small. Follow [this link](/AC1) to read our full statement supporting public release of low frequency allele count summary statistics.
+",
+      }
+    }
+    onClick={[Function]}
+  />
+  <span
+    className="c7"
+  >
+    <h2
+      className="c8"
+    >
+      <a
+        aria-hidden="true"
+        className="c9 c10"
+        href="#citation"
+        id="citation"
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Citation in publications
+    </h2>
+  </span>
+  <div
+    className="c5"
+    dangerouslySetInnerHTML={
+      {
+        "__html": "We request that any use of data obtained from the gnomAD browser cite [the gnomAD flagship paper](https://doi.org/10.1038/s41586-023-06045-0) and any online resources that include the data set provide a link to the browser. For use of the SV data, we request that you cite [this paper](https://broad.io/gnomad_sv).
+
+To cite a gnomAD version prior to publication, we recommend using this format:
+
+> gnomAD (vX.X, Y individuals, released on MM/DD/YY) (most recent flagship paper).
+
+For example, to cite gnomAD v4.1:
+
+> gnomAD (v4.1, 807,162 individuals, released on 04/19/2024) (Chen et al., 2023).
+
+There is no need to include us as authors on your manuscript, unless we contributed specific advice or analysis for your work.
 ",
       }
     }

@@ -4,9 +4,10 @@ import styled from 'styled-components'
 import { PageHeading } from '@gnomad/ui'
 
 import termsContent from '../about/policies/terms.md'
+import citationsContent from '../about/policies/citations.md'
 import privacyPolicy from '../about/policies/policies_gnomAD_privacy_DRAFT.pdf'
 import policiesContent from '../about/policies/policies.md'
-
+import { withAnchor } from './AnchorLink'
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 import MarkdownContent from './MarkdownContent'
@@ -37,6 +38,10 @@ const PrivacyPolicyWrapper = styled.div`
   }
 `
 
+const CitationHeading = withAnchor(styled.h2`
+  margin-top: 2.5rem;
+`)
+
 export default () => (
   <PoliciesPage>
     <DocumentTitle title="Policies" />
@@ -61,5 +66,7 @@ export default () => (
     <br />
 
     <MarkdownContent dangerouslySetInnerHTML={{ __html: policiesContent.html }} />
+    <CitationHeading id="citation">Citation in publications</CitationHeading>
+    <MarkdownContent dangerouslySetInnerHTML={{ __html: citationsContent.html }} />
   </PoliciesPage>
 )
