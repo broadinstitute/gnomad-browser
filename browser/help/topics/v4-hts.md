@@ -207,7 +207,8 @@ Row fields:
     - `VRS_Starts`: Interresidue coordinates used as the location starts for the GA4GH VRS Alleles corresponding to the values in the alleles column.
     - `VRS_Ends`: Interresidue coordinates used as the location ends for the GA4GH VRS Alleles corresponding to the values in the alleles column
     - `VRS_States`: The literal sequence states used for the GA4GH VRS Alleles corresponding to the values in the alleles column.
-- `vep`: Consequence annotations from Ensembl VEP. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
+- `vep_105`: Consequence annotations from Ensembl VEP version 105. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). Ensembl VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
+- `vep_115`: Consequence annotations from Ensembl VEP version 115. Ensembl VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
 - `vqsr_results`: VQSR related variant annotations.
   - `AS_VQSLOD`: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
   - `AS_culprit`: Allele-specific worst-performing annotation in the VQSR Gaussian mixture model.
