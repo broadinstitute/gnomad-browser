@@ -122,10 +122,10 @@ Global fields:
   - `vrs_schema_version`: The [version](https://github.com/ga4gh/vrs/tags) of the VRS schema that is used to represent variants and compute identifiers.
   - `vrs_python_version`: The [version](https://github.com/ga4gh/vrs-python/tags) of the vrs-python library that was used to compute IDs on the callset.
   - `seqrepo_version`: The [version](https://github.com/biocommons/biocommons.seqrepo) of the SeqRepo database that was used in VRS computations.
-- `vep_globals`: Information about VEP annotations.
-  - `vep_version`: VEP version that was run on the callset.
-  - `vep_help`: Output from `vep --help`.
-  - `vep_config`: VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
+- `vep_globals`: Information about Ensembl VEP annotations.
+  - `vep_versions`: Array of Ensembl VEP versions run on the callset.
+  - `vep_help`: Dictionary of output from `vep --help`. Key is Ensembl VEP version, and value is output.
+  - `vep_config`: Dictionary with Ensembl VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main. Key is Ensembl VEP version, and value is configuration.
   - `gencode_version`: GENCODE version used in VEP.
   - `mane_select_version`: MANE select version used in VEP.
 - `frequency_README`: Explanation of how to use the '`freq_index_dict`' global annotation to extract frequencies from the '`freq`' row annotation.
