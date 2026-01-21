@@ -126,8 +126,8 @@ Global fields:
   - `vep_versions`: Array of Ensembl VEP versions run on the callset.
   - `vep_help`: Dictionary of output from `vep --help`. Key is Ensembl VEP version, and value is output.
   - `vep_config`: Dictionary with Ensembl VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main. Key is Ensembl VEP version, and value is configuration.
-  - `gencode_version`: GENCODE version used in VEP.
-  - `mane_select_version`: MANE select version used in VEP.
+  - `gencode_version`: Dictionary of GENCODE versions used in Ensembl VEP. Key is Ensembl VEP version, and value is GENCODE version.
+  - `mane_select_version`: Dictionary of MANE Select version used in Ensembl VEP. Key is Ensembl VEP version, and value is MANE Select version.
 - `frequency_README`: Explanation of how to use the '`freq_index_dict`' global annotation to extract frequencies from the '`freq`' row annotation.
 - `date`: Date Hail Table was created.
 - `version`: gnomAD data version.
