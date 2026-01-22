@@ -79,11 +79,10 @@ export default () => (
     <PageHeading>Publications</PageHeading>
     <p>This page lists publications from the gnomAD group.</p>
     <p>
-      If you want to
-      <Link to="/publications#citation">cite gnomAD</Link>
-      in a publication, please use the current flagship paper (except if referring to a previous
-      version; see below). If you build online resources that include the data set, we ask that you
-      provide links to the browser from the resource where relevant.
+      If you want to <Link to="/publications#citation">cite gnomAD</Link> in a publication, please
+      use the current flagship paper (except if referring to a previous version; see below). If you
+      build online resources that include the data set, we ask that you provide links to the browser
+      from the resource where relevant.
     </p>
     <p>
       There is no need to include us as authors on your manuscript, unless we contributed specific
