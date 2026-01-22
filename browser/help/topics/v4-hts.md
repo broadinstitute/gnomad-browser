@@ -122,12 +122,18 @@ Global fields:
   - `vrs_schema_version`: The [version](https://github.com/ga4gh/vrs/tags) of the VRS schema that is used to represent variants and compute identifiers.
   - `vrs_python_version`: The [version](https://github.com/ga4gh/vrs-python/tags) of the vrs-python library that was used to compute IDs on the callset.
   - `seqrepo_version`: The [version](https://github.com/biocommons/biocommons.seqrepo) of the SeqRepo database that was used in VRS computations.
-- `vep_globals`: Information about Ensembl VEP annotations.
-  - `vep_versions`: Array of Ensembl VEP versions run on the callset.
-  - `vep_help`: Dictionary of output from `vep --help`. Key is Ensembl VEP version, and value is output.
-  - `vep_config`: Dictionary with Ensembl VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main. Key is Ensembl VEP version, and value is configuration.
-  - `gencode_version`: Dictionary of GENCODE versions used in Ensembl VEP. Key is Ensembl VEP version, and value is GENCODE version.
-  - `mane_select_version`: Dictionary of MANE Select version used in Ensembl VEP. Key is Ensembl VEP version, and value is MANE Select version.
+- `vep_globals`: Information about Ensembl VEP annotation.
+  - `vep_versions`: Ensembl VEP version (105).
+  - `vep_help`: Output from `vep --help`.
+  - `vep_config`: Ensembl VEP configuration to run VEP 105 with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
+  - `gencode_version`: GENCODE version used in Ensembl VEP 105.
+  - `mane_select_version`: MANE Select version used in Ensembl VEP version 105.
+- `vep115_globals`: Information about Ensembl VEP 115 annotation.
+  - `vep_versions`: Ensembl VEP version (115).
+  - `vep_help`: Output from `vep --help`.
+  - `vep_config`: Ensembl VEP configuration to run VEP 115 version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
+  - `gencode_version`: Dictionary of GENCODE version used in Ensembl VEP 115.
+  - `mane_select_version`: MANE Select version used in Ensembl VEP 115.
 - `frequency_README`: Explanation of how to use the '`freq_index_dict`' global annotation to extract frequencies from the '`freq`' row annotation.
 - `date`: Date Hail Table was created.
 - `version`: gnomAD data version.
@@ -207,8 +213,8 @@ Row fields:
     - `VRS_Starts`: Interresidue coordinates used as the location starts for the GA4GH VRS Alleles corresponding to the values in the alleles column.
     - `VRS_Ends`: Interresidue coordinates used as the location ends for the GA4GH VRS Alleles corresponding to the values in the alleles column
     - `VRS_States`: The literal sequence states used for the GA4GH VRS Alleles corresponding to the values in the alleles column.
-- `vep_105`: Consequence annotations from Ensembl VEP version 105. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). Ensembl VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
-- `vep_115`: Consequence annotations from Ensembl VEP version 115. Ensembl VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
+- `vep`: Consequence annotations from Ensembl VEP version 105. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). Ensembl VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
+- `vep115`: Consequence annotations from Ensembl VEP version 115. Ensembl VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
 - `vqsr_results`: VQSR related variant annotations.
   - `AS_VQSLOD`: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
   - `AS_culprit`: Allele-specific worst-performing annotation in the VQSR Gaussian mixture model.
