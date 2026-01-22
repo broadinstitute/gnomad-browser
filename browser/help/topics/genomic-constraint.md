@@ -13,4 +13,4 @@ The genomic constraint track only displays if the region is 150kb or less, and t
 
 Gaps in the genomic constract track represent regions that did not pass quality control, e.g., sequencing coverage outliers or low variant quality scores.
 
-More details can be found in the [preprint on bioRxiv](https://www.biorxiv.org/content/10.1101/2022.03.20.485034).
+More details can be found in the [Chen *et al.* Nature 2024](https://doi.org/10.1038/s41586-023-06045-0).
