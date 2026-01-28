@@ -327,7 +327,7 @@ Row fields
 
 #### gnomAD v4.1 joint frequency Hail Table annotations
 
-The v4.1 joint (combined exomes + genomes) frequency Hail Table was not updated for the v4.1.1 release and only only contains frequencies for the following groupings:
+The v4.1 joint (combined exomes + genomes) frequency Hail Table was not updated for the v4.1.1 release and only contains frequencies for the following groupings:
 
 - `group`
 - `sex` (`adj`<sup>1</sup> only)
