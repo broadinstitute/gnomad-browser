@@ -648,6 +648,7 @@ Row fields
 <details>
 
 <summary>Expand to see details for past versions</summary>
+
 ### <a id="annotation-descriptions"></a>gnomAD v4.1 Hail Table annotation descriptions
 
 #### gnomAD v4.1 exomes Hail Table annotations
