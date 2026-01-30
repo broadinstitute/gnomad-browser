@@ -11,7 +11,7 @@ The sections below will review:
 - [Details on each of the scores](/help/constraint#scores)
   - [LOEUF: loss-of-function observed / expected upper bound fraction](/help/constraint#loeuf)
   - [pLI: probability of being loss-of-function intolerant](/help/constraint#pli)
-  - [Z score](/help/constraint#z-score)
+  - [Z-score](/help/constraint#z-score)
 - [An explanation of “What is the difference between the LOEUF and pLI score?](/help/constraint#loeuf-vs-pli)”
 
 We adapt the methods described in the supplements of [Lek _et al._ Nature 2016](https://www.nature.com/articles/nature19057) and [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7).
@@ -22,7 +22,7 @@ We adapt the methods described in the supplements of [Lek _et al._ Nature 2016](
 
 We used the transcripts of protein-coding genes as defined by GENCODE v39.
 
-We currently flag 1,348 MANE select transcripts that have (1) no expected variants, (2) far too many synonymous, missense, or pLoF variants as determined by a Z score, or (3) far too few synonymous variants as determined by a Z score. If all outliers are removed, there are 17,063 MANE select transcripts left for analyses.
+We currently flag 1,348 MANE select transcripts that have (1) no expected variants, (2) far too many synonymous, missense, or pLoF variants as determined by a Z-score, or (3) far too few synonymous variants as determined by a Z-score. If all outliers are removed, there are 17,063 MANE select transcripts left for analyses.
 
 #### Observed variant count
 
@@ -74,9 +74,9 @@ As mentioned above, `oe` and `LOEUF` are dependent on sample size and we note th
 
 #### <a id="z-score"></a>Synonymous and missense (Z scores)
 
-For synonymous and missense variation, we created a signed Z score of the deviation of observed counts from the expected number. Positive Z scores indicate increased constraint (intolerance to variation) and therefore that the transcript had fewer variants than expected. Negative Z scores were given to transcripts that had more variants than expected.
+For synonymous and missense variation, we created a signed Z-score of the deviation of observed counts from the expected number. Positive Z-scores indicate increased constraint (intolerance to variation) and therefore that the transcript had fewer variants than expected. Negative Z-scores were given to transcripts that had more variants than expected.
 
-To generate Z scores, we used a previously described, but slightly modified, sequence-context based mutational model to predict the number of expected rare (minor allele frequency < 0.1%) variants per transcript. We then calculated the chi-squared value for the deviation of observation from expectation for each mutational class (synonymous and missense). The square root of these values was taken and multiplied by -1 if the number of observed variants was greater than expectation or 1 if observed counts were smaller than expected. The synonymous Z scores were then corrected by dividing each score by the standard deviation of all synonymous Z scores in between -8 and 8 (-5 and 5 for gnomAD v2). For the missense Z scores, we took all Z scores between -8 and 0 (-5 and 0 for gnomAD v2) and created a mirrored distribution. The missense Z scores were then corrected by dividing each score by the standard deviation of these mirror distributions.
+To generate Z-scores, we used a previously described, but slightly modified, sequence-context based mutational model to predict the number of expected rare (minor allele frequency < 0.1%) variants per transcript. We then calculated the chi-squared value for the deviation of observation from expectation for each mutational class (synonymous and missense). The square root of these values was taken and multiplied by -1 if the number of observed variants was greater than expectation or 1 if observed counts were smaller than expected. The synonymous Z-scores were then corrected by dividing each score by the standard deviation of all synonymous Z-scores in between -8 and 8 (-5 and 5 for gnomAD v2). For the missense Z-scores, we took all Z-scores between -8 and 0 (-5 and 0 for gnomAD v2) and created a mirrored distribution. The missense Z-scores were then corrected by dividing each score by the standard deviation of these mirror distributions.
 
 For more information, see [Samocha _et al._ Nature Genetics 2014](https://www.nature.com/articles/ng.3050) and [Lek _et al._ Nature 2016](https://www.nature.com/articles/nature19057).
 
