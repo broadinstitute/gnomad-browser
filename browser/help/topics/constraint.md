@@ -26,7 +26,7 @@ We currently flag 1,348 MANE select transcripts that have (1) no expected varian
 
 #### Observed variant count
 
-The observed variant count is the number of unique single nucleotide variants in the transcript with minor allele frequency (MAF) < 0.1% that pass [variant quality control](https://gnomad.broadinstitute.org/help/variant-qc). Variants with MAFs over 0.1% were not included; the rationale behind this choice is that, for pLoF variants, the total number of false positives far outweighs the number of true common variants.
+The observed variant count is the number of unique single nucleotide variants in the transcript with alternate allele frequency (AF) < 0.1% that pass [variant quality control](https://gnomad.broadinstitute.org/help/variant-qc). Variants with AFs over 0.1% were not included; the rationale behind this choice is that, for pLoF variants, the total number of false positives far outweighs the number of true common variants.
 
 #### Expected variant count
 
