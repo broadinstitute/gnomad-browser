@@ -732,8 +732,9 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -2269,8 +2270,9 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -3793,8 +3795,9 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -5317,8 +5320,9 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -6841,8 +6845,9 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -8365,8 +8370,9 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -9925,8 +9931,9 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -11462,8 +11469,9 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -13117,8 +13125,9 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -14772,8 +14781,9 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -16427,8 +16437,9 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -18082,8 +18093,9 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -19737,7 +19749,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
           </div>
         </div>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2
           .
         </p>
@@ -21298,7 +21310,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
           </div>
         </div>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (controls/biobanks)
           .
         </p>
@@ -22859,7 +22871,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
           </div>
         </div>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-cancer)
           .
         </p>
@@ -24420,7 +24432,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
           </div>
         </div>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-neuro)
           .
         </p>
@@ -25981,7 +25993,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
           </div>
         </div>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-TOPMed)
           .
         </p>
@@ -27542,7 +27554,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
           </div>
         </div>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-v2)
           .
         </p>
@@ -29103,8 +29115,9 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>
@@ -30663,8 +30676,9 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
           </div>
         </div>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           gene
+          .
         </p>
       </div>
     </div>

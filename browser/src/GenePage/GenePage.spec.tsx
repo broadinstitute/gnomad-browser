@@ -87,7 +87,7 @@ forDatasetsNotMatching(svRegexp, 'GenePage with non-SV dataset "%s"', (datasetId
   })
 
   test('selector allows toggling between constrant and co-occurrence tables', async () => {
-    const constraintModeMatcher = /Constraint not (yet )?available/
+    const constraintModeMatcher = /Constraint is not (yet )?available/
     const cooccurrenceModeMatcher = /Individuals with/
 
     render(

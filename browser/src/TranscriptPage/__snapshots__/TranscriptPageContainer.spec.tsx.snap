@@ -646,8 +646,9 @@ exports[`TranscriptPageContainer with dataset exac has no unexpected changes 1`]
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -2112,8 +2113,9 @@ exports[`TranscriptPageContainer with dataset gnomad_cnv_r4 has no unexpected ch
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -3578,8 +3580,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1 has no unexpected chan
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -5044,8 +5047,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_controls has no unexpe
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -6510,8 +6514,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_cancer has no unex
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -7976,8 +7981,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_neuro has no unexp
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -9442,8 +9448,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r2_1_non_topmed has no unex
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -10908,7 +10915,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
           </button>
         </h2>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2
           .
         </p>
@@ -12375,7 +12382,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
           </button>
         </h2>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (controls/biobanks)
           .
         </p>
@@ -13842,7 +13849,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
           </button>
         </h2>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-cancer)
           .
         </p>
@@ -15309,7 +15316,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
           </button>
         </h2>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-neuro)
           .
         </p>
@@ -16776,7 +16783,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
           </button>
         </h2>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-TOPMed)
           .
         </p>
@@ -18243,7 +18250,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
           </button>
         </h2>
         <p>
-          Constraint not yet available for 
+          Constraint is not yet available for 
           gnomAD v3.1.2 (non-v2)
           .
         </p>
@@ -19710,8 +19717,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r4 has no unexpected change
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>
@@ -21176,8 +21184,9 @@ exports[`TranscriptPageContainer with dataset gnomad_r4_non_ukb has no unexpecte
           </button>
         </h2>
         <p>
-          Constraint not available for this 
+          Constraint is not available for this 
           transcript
+          .
         </p>
       </div>
     </div>

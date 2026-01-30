@@ -38,7 +38,7 @@ exports[` 6`] = `
 
 exports[` 7`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -46,7 +46,7 @@ exports[` 7`] = `
 
 exports[` 8`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -54,7 +54,7 @@ exports[` 8`] = `
 
 exports[` 9`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -62,7 +62,7 @@ exports[` 9`] = `
 
 exports[` 10`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -70,7 +70,7 @@ exports[` 10`] = `
 
 exports[` 11`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -78,7 +78,7 @@ exports[` 11`] = `
 
 exports[` 12`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -128,15 +128,17 @@ exports[` 19`] = `
 
 exports[`ConstraintTable with "exac" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "exac" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -556,28 +558,31 @@ exports[`ConstraintTable with "exac" dataset selected with a mitochondrial prote
 
 exports[`ConstraintTable with "exac" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -1344,15 +1349,17 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected and transcript wi
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -1772,28 +1779,31 @@ exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondr
 
 exports[`ConstraintTable with "gnomad_cnv_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -2560,15 +2570,17 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected and transcript with
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -2988,28 +3000,31 @@ exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondria
 
 exports[`ConstraintTable with "gnomad_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -3784,15 +3799,17 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected and transc
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -4212,28 +4229,31 @@ exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -5008,15 +5028,17 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected and tran
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -5436,28 +5458,31 @@ exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a m
 
 exports[`ConstraintTable with "gnomad_r2_1_non_cancer" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -6232,15 +6257,17 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected and trans
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -6660,28 +6687,31 @@ exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mi
 
 exports[`ConstraintTable with "gnomad_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -7456,15 +7486,17 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected and tran
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -7884,13 +7916,13 @@ exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a m
 
 exports[`ConstraintTable with "gnomad_r2_1_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7898,7 +7930,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with availab
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7906,7 +7938,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with availab
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7914,7 +7946,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with availab
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7922,7 +7954,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected and gene with availab
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7930,7 +7962,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected and transcript with a
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7938,7 +7970,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal gene h
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7946,7 +7978,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a minimal transc
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7954,7 +7986,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7962,7 +7994,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7970,7 +8002,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7978,7 +8010,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 
 exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2
   .
 </p>
@@ -7986,7 +8018,7 @@ exports[`ConstraintTable with "gnomad_r3" dataset selected with a mitochondrial 
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -7994,7 +8026,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8002,7 +8034,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8010,7 +8042,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected and gene with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8018,7 +8050,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8026,7 +8058,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8034,7 +8066,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8042,7 +8074,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8050,7 +8082,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8058,7 +8090,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8066,7 +8098,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8074,7 +8106,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (controls/biobanks)
   .
 </p>
@@ -8082,7 +8114,7 @@ exports[`ConstraintTable with "gnomad_r3_controls_and_biobanks" dataset selected
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8090,7 +8122,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8098,7 +8130,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8106,7 +8138,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8114,7 +8146,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8122,7 +8154,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected and transc
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8130,7 +8162,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a min
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8138,7 +8170,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a min
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8146,7 +8178,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8154,7 +8186,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8162,7 +8194,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8170,7 +8202,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-cancer)
   .
 </p>
@@ -8178,7 +8210,7 @@ exports[`ConstraintTable with "gnomad_r3_non_cancer" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8186,7 +8218,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene wi
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8194,7 +8226,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene wi
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8202,7 +8234,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene wi
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8210,7 +8242,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and gene wi
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8218,7 +8250,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected and transcr
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8226,7 +8258,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mini
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8234,7 +8266,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mini
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8242,7 +8274,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8250,7 +8282,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8258,7 +8290,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8266,7 +8298,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 
 exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-neuro)
   .
 </p>
@@ -8274,7 +8306,7 @@ exports[`ConstraintTable with "gnomad_r3_non_neuro" dataset selected with a mito
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8282,7 +8314,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8290,7 +8322,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8298,7 +8330,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8306,7 +8338,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and gene w
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8314,7 +8346,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected and transc
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8322,7 +8354,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a min
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8330,7 +8362,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a min
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8338,7 +8370,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8346,7 +8378,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8354,7 +8386,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8362,7 +8394,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-TOPMed)
   .
 </p>
@@ -8370,7 +8402,7 @@ exports[`ConstraintTable with "gnomad_r3_non_topmed" dataset selected with a mit
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8378,7 +8410,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with 
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8386,7 +8418,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with 
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8394,7 +8426,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with 
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8402,7 +8434,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and gene with 
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8410,7 +8442,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected and transcript
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8418,7 +8450,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8426,7 +8458,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a minimal
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8434,7 +8466,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8442,7 +8474,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8450,7 +8482,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8458,7 +8490,7 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 
 exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not yet available for 
+  Constraint is not yet available for 
   gnomAD v3.1.2 (non-v2)
   .
 </p>
@@ -8466,22 +8498,25 @@ exports[`ConstraintTable with "gnomad_r3_non_v2" dataset selected with a mitocho
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -9248,15 +9283,17 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected and transcript with a
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -9676,28 +9713,31 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -10464,15 +10504,17 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected and transcrip
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -10892,28 +10934,31 @@ exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitoch
 
 exports[`ConstraintTable with "gnomad_r4_non_ukb" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -11680,15 +11725,17 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected and transcript w
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -12108,28 +12155,31 @@ exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochond
 
 exports[`ConstraintTable with "gnomad_sv_r2_1" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -12904,15 +12954,17 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected and tra
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -13332,28 +13384,31 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a 
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_controls" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -14128,15 +14183,17 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected and tr
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -14556,28 +14613,31 @@ exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a
 
 exports[`ConstraintTable with "gnomad_sv_r2_1_non_neuro" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
@@ -15344,15 +15404,17 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected and transcript wit
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   gene
+  .
 </p>
 `;
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a minimal transcript has no unexpected changes 1`] = `
 <p>
-  Constraint not available for this 
+  Constraint is not available for this 
   transcript
+  .
 </p>
 `;
 
@@ -15772,7 +15834,7 @@ exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondri
 
 exports[`ConstraintTable with "gnomad_sv_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
-  Constraint is not available for mitochondrial transcripts
+  Constraint is not available for mitochondrial transcripts.
 </p>
 `;
 
