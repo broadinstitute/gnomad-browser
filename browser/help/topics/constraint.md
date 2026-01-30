@@ -14,7 +14,7 @@ The sections below will review:
   - [Z score](/help/constraint#z-score)
 - [An explanation of “What is the difference between the LOEUF and pLI score?](/help/constraint#loeuf-vs-pli)”
 
-More details on these methods can be found in the supplement of [Lek _et al._ Nature 2016](https://www.nature.com/articles/nature19057) and [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7).
+We adapt the methods described in the supplements of [Lek _et al._ Nature 2016](https://www.nature.com/articles/nature19057) and [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7).
 
 ### <a id="methods"></a> Methods
 
