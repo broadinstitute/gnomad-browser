@@ -123,13 +123,13 @@ Global fields:
   - `vrs_python_version`: The [version](https://github.com/ga4gh/vrs-python/tags) of the vrs-python library that was used to compute IDs on the callset.
   - `seqrepo_version`: The [version](https://github.com/biocommons/biocommons.seqrepo) of the SeqRepo database that was used in VRS computations.
 - `vep_globals`: Information about Ensembl VEP annotation.
-  - `vep_versions`: Ensembl VEP version (105) used to generate the `vep` row annotation.
+  - `vep_version`: Ensembl VEP version (105) used to generate the `vep` row annotation.
   - `vep_help`: Output from `vep --help`.
   - `vep_config`: Ensembl VEP configuration to run VEP 105 with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
   - `gencode_version`: GENCODE version used in Ensembl VEP 105.
   - `mane_select_version`: MANE Select version used in Ensembl VEP 105.
 - `vep115_globals`: Information about Ensembl VEP 115 annotation.
-  - `vep_versions`: Ensembl VEP version (115) used to generate the `vep115` row annotation.
+  - `vep_version`: Ensembl VEP version (115) used to generate the `vep115` row annotation.
   - `vep_help`: Output from `vep --help`.
   - `vep_config`: Ensembl VEP configuration to run VEP 115 version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
   - `gencode_version`: GENCODE version used in Ensembl VEP 115.
