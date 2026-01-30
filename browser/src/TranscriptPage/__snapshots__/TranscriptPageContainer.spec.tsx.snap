@@ -10915,7 +10915,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3 has no unexpected change
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2
           .
         </p>
@@ -12382,7 +12382,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_controls_and_biobanks ha
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (controls/biobanks)
           .
         </p>
@@ -13849,7 +13849,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_cancer has no unexpe
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-cancer)
           .
         </p>
@@ -15316,7 +15316,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_neuro has no unexpec
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-neuro)
           .
         </p>
@@ -16783,7 +16783,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_topmed has no unexpe
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-TOPMed)
           .
         </p>
@@ -18250,7 +18250,7 @@ exports[`TranscriptPageContainer with dataset gnomad_r3_non_v2 has no unexpected
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-v2)
           .
         </p>

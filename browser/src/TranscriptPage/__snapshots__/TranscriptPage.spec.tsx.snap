@@ -6491,7 +6491,7 @@ exports[`TranscriptPage with dataset "gnomad_r3" has no unexpected changes 1`] =
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2
           .
         </p>
@@ -7326,7 +7326,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_controls_and_biobanks" has no un
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (controls/biobanks)
           .
         </p>
@@ -8161,7 +8161,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_cancer" has no unexpected ch
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-cancer)
           .
         </p>
@@ -8996,7 +8996,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_neuro" has no unexpected cha
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-neuro)
           .
         </p>
@@ -9831,7 +9831,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_topmed" has no unexpected ch
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-TOPMed)
           .
         </p>
@@ -10666,7 +10666,7 @@ exports[`TranscriptPage with dataset "gnomad_r3_non_v2" has no unexpected change
           </button>
         </h2>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-v2)
           .
         </p>

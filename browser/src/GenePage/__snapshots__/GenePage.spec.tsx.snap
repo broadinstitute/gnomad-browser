@@ -19749,7 +19749,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
           </div>
         </div>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2
           .
         </p>
@@ -21310,7 +21310,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
           </div>
         </div>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (controls/biobanks)
           .
         </p>
@@ -22871,7 +22871,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
           </div>
         </div>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-cancer)
           .
         </p>
@@ -24432,7 +24432,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
           </div>
         </div>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-neuro)
           .
         </p>
@@ -25993,7 +25993,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
           </div>
         </div>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-TOPMed)
           .
         </p>
@@ -27554,7 +27554,7 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
           </div>
         </div>
         <p>
-          Constraint is not yet available for 
+          Constraint is not available for 
           gnomAD v3.1.2 (non-v2)
           .
         </p>
