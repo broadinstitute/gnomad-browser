@@ -1997,7 +1997,7 @@ exports[`VariantCooccurrenceCountsTable renders correct data into correct table 
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "exac" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2005,7 +2005,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "exac" has no unexpec
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_cnv_r4" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2013,7 +2013,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_cnv_r4" has n
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2021,7 +2021,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3" has no un
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_controls_and_biobanks" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2029,7 +2029,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_controls_a
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_cancer" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2037,7 +2037,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_cancer
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_neuro" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2045,7 +2045,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_neuro"
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_topmed" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2053,7 +2053,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_topmed
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_v2" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2061,7 +2061,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r3_non_v2" ha
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r4" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2069,7 +2069,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r4" has no un
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r4_non_ukb" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;
@@ -2077,7 +2077,7 @@ exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_r4_non_ukb" h
 exports[`VariantCoocurrenceCountsTable with non v2 dataset "gnomad_sv_r4" has no unexpected changes and renders as placeholder text 1`] = `
 <DocumentFragment>
   <p>
-    Variant co-occurrence is only available for gnomAD v2.
+    Variant co-occurrence is currently only available for gnomAD v2.
   </p>
 </DocumentFragment>
 `;

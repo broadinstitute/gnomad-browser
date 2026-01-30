@@ -514,7 +514,7 @@ const VariantCooccurrenceCountsTable = ({
   const [tableMode, setTableMode] = useState<TableMode>('normal')
 
   if (!hasVariantCoocurrence(datasetId)) {
-    return <p>Variant co-occurrence is only available for gnomAD v2.</p>
+    return <p>Variant co-occurrence is currently only available for gnomAD v2.</p>
   }
 
   const buttonLabel = tableMode === 'normal' ? 'expand' : 'collapse'
