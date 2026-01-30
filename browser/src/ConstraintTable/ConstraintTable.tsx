@@ -66,9 +66,17 @@ const noExpectedVariants = (gnomadConstraint: GnomadConstraint | null): boolean 
   return flags.some((flag) => flag.startsWith('no_exp'))
 }
 
+const NoConstraintOnGeneOrTranscript = ({
+  geneOrTranscript,
+}: {
+  geneOrTranscript: Gene | Transcript
+}) => (
+  <p>Constraint is not available for this {isGene(geneOrTranscript) ? 'gene' : 'transcript'}.</p>
+)
+
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   if (!hasConstraints(datasetId)) {
-    return <p>Constraint not yet available for {labelForDataset(datasetId)}.</p>
+    return <p>Constraint is not yet available for {labelForDataset(datasetId)}.</p>
   }
 
   const { transcriptId, transcriptVersion, transcriptDescription } =
@@ -83,7 +91,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
         />
       )
     }
-    return <p>Constraint is not available for mitochondrial transcripts</p>
+    return <p>Constraint is not available for mitochondrial transcripts.</p>
   }
 
   const gnomadConstraint = geneOrTranscript.gnomad_constraint
@@ -91,9 +99,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
 
   if (datasetId === 'exac') {
     if (!exacConstraint) {
-      return (
-        <p>Constraint not available for this {isGene(geneOrTranscript) ? 'gene' : 'transcript'}</p>
-      )
+      return <NoConstraintOnGeneOrTranscript geneOrTranscript={geneOrTranscript} />
     }
     return (
       <>
@@ -112,9 +118,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   }
 
   if (noExpectedVariants(gnomadConstraint)) {
-    return (
-      <p>Constraint not available for this {isGene(geneOrTranscript) ? 'gene' : 'transcript'}</p>
-    )
+    return <NoConstraintOnGeneOrTranscript geneOrTranscript={geneOrTranscript} />
   }
 
   return (
