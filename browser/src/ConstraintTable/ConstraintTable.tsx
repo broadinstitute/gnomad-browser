@@ -7,7 +7,7 @@ import { Transcript } from '../TranscriptPage/TranscriptPage'
 import Link from '../Link'
 
 import ExacConstraintTable from './ExacConstraintTable'
-import GnomadConstraintTable from './GnomadConstraintTable'
+import GnomadConstraintTable, { GnomadConstraint } from './GnomadConstraintTable'
 import MitochondrialConstraintTable from './MitochondrialConstraintTable'
 
 type Props = {
@@ -58,6 +58,14 @@ const transcriptDetails = (
   return { transcriptId, transcriptVersion, transcriptDescription }
 }
 
+const noExpectedVariants = (gnomadConstraint: GnomadConstraint | null): boolean => {
+  if (gnomadConstraint === null) {
+    return true
+  }
+  const flags = gnomadConstraint.flags || []
+  return flags.some((flag) => flag.startsWith('no_exp'))
+}
+
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   if (!hasConstraints(datasetId)) {
     return <p>Constraint not yet available for {labelForDataset(datasetId)}.</p>
@@ -103,7 +111,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
     )
   }
 
-  if (!gnomadConstraint) {
+  if (noExpectedVariants(gnomadConstraint)) {
     return (
       <p>Constraint not available for this {isGene(geneOrTranscript) ? 'gene' : 'transcript'}</p>
     )
@@ -114,7 +122,7 @@ const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
       {['controls', 'non_neuro', 'non_cancer', 'non_topmed'].some((subset) =>
         datasetId.includes(subset)
       ) && <p>Constraint is based on the full gnomAD dataset, not the selected subset.</p>}
-      <GnomadConstraintTable constraint={gnomadConstraint} />
+      <GnomadConstraintTable constraint={gnomadConstraint!} />
       {isGene(geneOrTranscript) && (
         <p style={{ marginBottom: 0 }}>
           Constraint metrics based on {transcriptDescription} transcript (

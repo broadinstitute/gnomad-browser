@@ -240,6 +240,23 @@ forAllDatasetsExcept(['exac'], 'ConstraintTable with "%s" dataset selected', (da
       )
       expect(tree).toMatchSnapshot()
     })
+    ;['no_exp_lof', 'no_exp_mis', 'no_exp_syn'].forEach((noExpectedFlag) => {
+      describe(`but with ${noExpectedFlag} flag set`, () => {
+        test('omits constraint', () => {
+          const gene = geneFactory.build({
+            gnomad_constraint: gnomadConstraintFactory.build({
+              flags: [noExpectedFlag],
+            }),
+          })
+          const tree = renderer.create(
+            <BrowserRouter>
+              <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
+            </BrowserRouter>
+          )
+          expect(tree).toMatchSnapshot()
+        })
+      })
+    })
   })
 
   describe('and transcript with available constraint', () => {
