@@ -76,7 +76,7 @@ const NoConstraintOnGeneOrTranscript = ({
 
 const ConstraintTable = ({ datasetId, geneOrTranscript }: Props) => {
   if (!hasConstraints(datasetId)) {
-    return <p>Constraint is not yet available for {labelForDataset(datasetId)}.</p>
+    return <p>Constraint is not available for {labelForDataset(datasetId)}.</p>
   }
 
   const { transcriptId, transcriptVersion, transcriptDescription } =
