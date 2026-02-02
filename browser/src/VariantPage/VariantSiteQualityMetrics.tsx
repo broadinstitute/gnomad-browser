@@ -24,7 +24,7 @@ import { logButtonClick } from '../analytics'
 // Metric descriptions
 // ================================================================================================
 
-const qualityMetricDescriptions = {
+const qualityMetricDescriptions: Record<string, string> = {
   BaseQRankSum: 'Z-score from Wilcoxon rank sum test of alternate vs. reference base qualities.',
   ClippingRankSum:
     'Z-score from Wilcoxon rank sum test of alternate vs. reference number of hard clipped bases.',
@@ -44,7 +44,6 @@ const qualityMetricDescriptions = {
     'Z-score from Wilcoxon rank sum test of alternate vs. reference read position bias.',
   // Info field is `rf_tp_probability`
   RF: 'Random forest prediction probability for a site being a true variant.',
-  SiteQuality: undefined, // TODO
   SOR: 'Strand bias estimated by the symmetric odds ratio test.',
   VarDP: 'Depth over variant genotypes (does not include depth of reference samples).',
   VQSLOD:
@@ -126,29 +125,17 @@ const getMetricDataForSequencingType = ({
         { min: 0.5, max: Infinity, key: '1' },
       ]
       const af = an === 0 ? 0 : ac / an
-      const afBin = afBins.find((bin: any) => bin.min <= af && af < bin.max)
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
+      const afBin = afBins.find((bin) => bin.min <= af && af < bin.max)!
       if (afBin.max === Infinity) {
         description = `${
           metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
-        } approximation for all variants with AF >= ${
-          // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-          afBin.min
-        }.`
+        } approximation for all variants with AF >= ${afBin.min}.`
       } else
         description = `${
           metric === 'SiteQuality' ? 'Site quality' : 'Allele-specific variant qual'
-        } approximation for all variants with ${
-          // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-          afBin.min
-        } <= AF ${
-          // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-          afBin.max === 1 ? '<=' : '<'
-        } ${
-          // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
+        } approximation for all variants with ${afBin.min} <= AF ${afBin.max === 1 ? '<=' : '<'} ${
           afBin.max
         }.`
-      // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
       key = `${metric === 'SiteQuality' ? 'QUALapprox' : metric}-binned_${afBin.key}`
     }
   } else if (metric === 'inbreeding_coeff') {
@@ -172,7 +159,6 @@ const getMetricDataForSequencingType = ({
   } else {
     key = metric
     if (metric && metric.startsWith('AS_')) {
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
       const baseDescription = qualityMetricDescriptions[metric.slice(3)]
       if (baseDescription) {
         description = `Allele-specific ${baseDescription
@@ -279,27 +265,32 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
   }
 
   if (metric === 'SiteQuality') {
-    const getAFBin = ({ sequencingType, ac, an }: any) => {
+    const getAFBin = ({
+      sequencingType,
+      ac,
+      an,
+    }: {
+      sequencingType: 'exome' | 'genome'
+      ac: number
+      an: number
+    }) => {
       let afBinHistogram
       let afBinLabel
       if (ac === 1) {
         afBinHistogram =
-          // @ts-expect-error
           gnomadV2SiteQualityMetricDistributions[sequencingType].siteQuality.singleton
         afBinLabel = `singleton ${sequencingType} variants`
       } else if (ac === 2) {
         afBinHistogram =
-          // @ts-expect-error
           gnomadV2SiteQualityMetricDistributions[sequencingType].siteQuality.doubleton
         afBinLabel = `doubleton ${sequencingType} variants`
       } else {
         const af = an === 0 ? 0 : ac / an
-        // @ts-expect-error
         const afBin = gnomadV2SiteQualityMetricDistributions[
           sequencingType
         ].siteQuality.af_bins.find(
-          (bin: any) => bin.min_af <= af && (af < bin.max_af || (af === 1 && af <= bin.max_af))
-        )
+          (bin) => bin.min_af <= af && (af < bin.max_af || (af === 1 && af <= bin.max_af))
+        )!
         afBinHistogram = afBin.histogram
         afBinLabel = `${sequencingType} variants with ${afBin.min_af} <= AF ${
           afBin.max_af === 1 ? '<=' : '<'
@@ -327,8 +318,7 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
       }
     }
 
-    // @ts-expect-error TS(2339) FIXME: Property 'histogram' does not exist on type '{ his... Remove this comment to see the full error message
-    const { histogram } = exomeBin || genomeBin
+    const { histogram } = (exomeBin || genomeBin)!
     binEdges = histogram.bin_edges.map((edge: any) => Math.log10(edge))
 
     exomeBinValues = exomeBin
@@ -343,12 +333,12 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
       : null
 
     if (variant.exome && variant.genome) {
-      // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-      description = `This is the site quality distribution for all ${exomeBin.label} and all ${genomeBin.label}.`
+      description = `This is the site quality distribution for all ${exomeBin!.label} and all ${
+        genomeBin!.label
+      }.`
     } else {
       description = `This is the site quality distribution for all ${
-        // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
-        (exomeBin || genomeBin).label
+        (exomeBin || genomeBin)!.label
       }.`
     }
   } else {
@@ -382,7 +372,6 @@ const prepareDataGnomadV2 = ({ metric, variant }: any) => {
       genomeHistogram.n_larger,
     ]
 
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     description = qualityMetricDescriptions[metric]
   }
 
@@ -414,14 +403,11 @@ const prepareDataExac = ({ metric, variant }: any) => {
     } else {
       const af = an === 0 ? 0 : ac / an
       const afBin = exacSiteQualityMetricDistributions.exome.siteQuality.af_bins.find(
-        (bin: any) => bin.min_af <= af && (af < bin.max_af || (af === 1 && af <= bin.max_af))
-      )
-      // @ts-expect-error
+        (bin) => bin.min_af <= af && (af < bin.max_af || (af === 1 && af <= bin.max_af))
+      )!
       histogram = afBin.histogram
       description = `This is the site quality distribution for all variants with ${
-        // @ts-expect-error
         afBin.min_af
-        // @ts-expect-error
       } <= AF ${afBin.max_af === 1 ? '<=' : '<'} ${afBin.max_af}.`
     }
     binEdges = histogram.bin_edges.map((edge: any) => Math.log10(edge))
@@ -435,7 +421,6 @@ const prepareDataExac = ({ metric, variant }: any) => {
         ? histogram.bin_edges.map((edge: any) => Math.log10(edge))
         : // @ts-expect-error
           histogram.binEdges
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     description = qualityMetricDescriptions[metric]
   }
 
@@ -601,7 +586,7 @@ const formatMetricValue = (value: number, metric: string, isLog: boolean) => {
 const labelProps = {
   fontSize: 14,
   textAnchor: 'middle',
-}
+} as const
 
 type OwnSiteQualityMetricsHistogramProps = {
   metric: string
@@ -802,7 +787,6 @@ const SiteQualityMetricsHistogram = ({
       <AxisBottom
         label={xLabelRenamed}
         labelOffset={30}
-        // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
         labelProps={labelProps}
         left={margin.left}
         top={margin.top + plotHeight}
@@ -823,7 +807,6 @@ const SiteQualityMetricsHistogram = ({
 
       <AxisLeft
         label={primaryYLabel}
-        // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
         labelProps={labelProps}
         left={margin.left}
         // @ts-expect-error TS(2345) FIXME: Argument of type 'string | number' is not assignab... Remove this comment to see the full error message
@@ -845,7 +828,6 @@ const SiteQualityMetricsHistogram = ({
       {secondaryValues && (
         <AxisRight
           label={secondaryYLabel}
-          // @ts-expect-error TS(2322) FIXME: Type '{ fontSize: number; textAnchor: string; }' i... Remove this comment to see the full error message
           labelProps={labelProps}
           left={margin.left + plotWidth}
           // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
@@ -1158,7 +1140,6 @@ const renderMetric = (metric: any, datasetId: any) => {
   if (metric === 'SiteQuality') {
     description = getSiteQualityMetricDescription(datasetId)
   } else if (metric.startsWith('AS_')) {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     const baseDescription = qualityMetricDescriptions[metric.slice(3)]
     if (baseDescription) {
       description = `Allele-specific ${baseDescription
@@ -1166,7 +1147,6 @@ const renderMetric = (metric: any, datasetId: any) => {
         .toLowerCase()}${baseDescription.slice(1)}`
     }
   } else {
-    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     description = qualityMetricDescriptions[metric]
   }
 
