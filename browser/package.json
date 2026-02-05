@@ -35,7 +35,7 @@
     "html2canvas": "^1.4.1",
     "igv": "^2.1.0",
     "js-worker-search": "^1.4.0",
-    "lodash-es": "^4.17.21",
+    "lodash-es": "^4.17.23",
     "memoize-one": "^5.0.2",
     "polished": "^3.2.0",
     "prop-types": "^15.7.2",
