@@ -25,3 +25,7 @@ Flags that will appear in the variant table on gene/region pages:
 - NC Transcript: Marked in a putative LoF category by VEP (essential splice, stop-gained, or frameshift) but appears on a non-protein-coding transcript
 - SEGDUP: Found in a region overlapping a segmental duplication (regions provided by GA4GH Benchmarking Team)
 - Common low heteroplasmy: Variant is present at an overall frequency of .001 across all samples with a heteroplasmy level > 0 and < 0.50 (mitochondrial variants only)
+
+Flags that will appear at the top of gene/transcript pages:
+- Low exome coverage: Less than 10% of the coding base pairs in this gene are well-covered in the gnomAD exomes. Well-covered is defined here has having a median allele number percent (AN%; percent of total possible AN observed at site) greater than 90%
+- Low exome mapping quality: The mean `AS_MQ` (allele-specific root mean square of the mapping quality of reads across all samples) value across this gene is less than 50
