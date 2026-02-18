@@ -28,5 +28,5 @@ Flags that will appear in the variant table on gene/region pages:
 
 Flags that will appear at the top of gene/transcript pages:
 
-- Low exome coverage: Less than 10% of the coding base pairs in this gene are well-covered in the gnomAD exomes. Well-covered is defined here has having a median allele number percent (AN%; percent of total possible AN observed at site) greater than 90%
+- Low exome coverage: Less than 10% of the coding base pairs in this gene are well-covered in the gnomAD exomes. Well-covered is defined here as having a median allele number percent (AN%; percent of total possible AN observed at site) greater than 90%
 - Low exome mapping quality: The mean `AS_MQ` (allele-specific root mean square of the mapping quality of reads across all samples) value across this gene is less than 50
