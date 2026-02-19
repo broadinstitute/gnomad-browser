@@ -116,6 +116,7 @@ const config = {
             minifyCSS: true,
             minifyJS: true,
           },
+      useRecaptcha: !isDev,
     }),
     new FaviconsWebpackPlugin('./src/logo.svg'),
   ],
