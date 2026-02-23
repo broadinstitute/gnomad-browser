@@ -40,7 +40,7 @@ output_sub_dir = "gnomad_v4"
 
 config = PipelineConfig(
     name=pipeline_name,
-    input_root="gs://gnomad-v4-data-pipeline/input",
+    input_root="gs://gnomad-v4-data-pipeline/inputs",
     output_root="gs://gnomad-v4-data-pipeline/output",
 )
 
@@ -50,10 +50,10 @@ pipeline = Pipeline(config=config)
 pipeline.add_task(
     name="prepare_gnomad_v4_variants",
     task_function=prepare_gnomad_v4_variants,
-    output_path=f"{output_sub_dir}/gnomad_v4_variants_base.ht",
+    output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_base.ht",
     inputs={
-        "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht",
-        "genome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht",
+        "exome_variants_path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.1/variants/gnomad.exomes.v4.1.1.sites.ht",
+        "genome_variants_path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.1/variants/gnomad.genomes.v4.1.1.sites.ht",
         "variants_joint_frequency_path": "gs://gcp-public-data--gnomad/release/4.1/ht/joint/gnomad.joint.v4.1.sites.ht",
     },
 )
@@ -61,7 +61,7 @@ pipeline.add_task(
 pipeline.add_task(
     name="annotate_gnomad_v4_variants",
     task_function=annotate_variants,
-    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_1.ht",
+    output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_annotated_1.ht",
     inputs=(
         {
             "variants_path": pipeline.get_task("prepare_gnomad_v4_variants"),
@@ -74,7 +74,7 @@ pipeline.add_task(
 pipeline.add_task(
     name="annotate_gnomad_v4_transcript_consequences",
     task_function=annotate_transcript_consequences,
-    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_2.ht",
+    output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_annotated_2.ht",
     inputs={
         "variants_path": pipeline.get_task("annotate_gnomad_v4_variants"),
         "transcripts_path": genes_pipeline.get_output("base_transcripts_grch38"),
@@ -85,7 +85,7 @@ pipeline.add_task(
 pipeline.add_task(
     name="annotate_gnomad_v4_caids",
     task_function=annotate_caids,
-    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_3.ht",
+    output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_annotated_3.ht",
     inputs={
         "variants_path": pipeline.get_task("annotate_gnomad_v4_transcript_consequences"),
         "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
@@ -95,7 +95,7 @@ pipeline.add_task(
 pipeline.add_task(
     name="annotate_vrs_ids",
     task_function=annotate_vrs_ids,
-    output_path=f"{output_sub_dir}/gnomad_v4_variants_annotated_4.ht",
+    output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_annotated_4.ht",
     inputs={
         "variants_path": pipeline.get_task("annotate_gnomad_v4_caids"),
         "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht",
@@ -108,7 +108,7 @@ pipeline.add_task(
 pipeline.add_task(
     name="prepare_table_for_release",
     task_function=prepare_table_for_release,
-    output_path=f"{output_sub_dir}/gnomad.browser.v4.1.sites.ht",
+    output_path=f"{output_sub_dir}/v4.1.1/gnomad.browser.v4.1.sites.ht",
     inputs={
         "variants_table_path": pipeline.get_task("annotate_vrs_ids"),
     },
