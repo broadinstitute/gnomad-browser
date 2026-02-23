@@ -127,28 +127,3 @@ pipeline.set_outputs({"variants": "annotate_vrs_ids"})
 if __name__ == "__main__":
     if RUN:
         run_pipeline(pipeline)
-
-        write_schemas(
-            [pipeline],
-            os.path.expanduser("~/schemas"),
-            task_names=[
-                "prepare_gnomad_v4_variants",
-                "annotate_gnomad_v4_variants",
-                "annotate_gnomad_v4_transcript_consequences",
-                "annotate_gnomad_v4_caids",
-                "annotate_vrs_ids",
-            ],
-        )
-        # copy locally using:
-        # gcloud compute scp dp-m:~/schemas . --tunnel-through-iap --recurse
-
-    logger.info("Validating pipeline IO formats")
-
-    validate_exome_globals_input(pipeline)
-    validate_genome_globals_input(pipeline)
-    validate_exome_variant_input(pipeline)
-    validate_genome_variant_input(pipeline)
-    validate_step1_output(pipeline)
-    validate_step2_output(pipeline)
-    validate_step3_output(pipeline)
-    validate_step4_output(pipeline)

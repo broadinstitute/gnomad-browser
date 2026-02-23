@@ -33,21 +33,21 @@ def annotate_vrs_ids(variants_path, exome_variants_path, genome_variants_path):
     genome_vrs = genomes.select(vrs=genomes.info.vrs)
     vrs = exome_vrs.union(genome_vrs)
     vrs = vrs.group_by(vrs.locus, vrs.alleles).aggregate(vrs=hl.agg.collect(vrs.vrs)[0])
-    vrs = vrs.transmute(
+    ds = ds.join(vrs)
+    ds = ds.transmute(
         vrs=hl.struct(
             ref=hl.struct(
-                allele_id=vrs.vrs.VRS_Allele_IDs[0],
-                start=vrs.vrs.VRS_Starts[0],
-                end=vrs.vrs.VRS_Ends[0],
-                state=vrs.vrs.VRS_States[0],
+                allele_id=ds.vrs.VRS_Allele_IDs[0],
+                start=ds.vrs.VRS_Starts[0],
+                end=ds.vrs.VRS_Ends[0],
+                state=ds.vrs.VRS_States[0],
             ),
             alt=hl.struct(
-                allele_id=vrs.vrs.VRS_Allele_IDs[1],
-                start=vrs.vrs.VRS_Starts[1],
-                end=vrs.vrs.VRS_Ends[1],
-                state=vrs.vrs.VRS_States[1],
+                allele_id=ds.vrs.VRS_Allele_IDs[1],
+                start=ds.vrs.VRS_Starts[1],
+                end=ds.vrs.VRS_Ends[1],
+                state=ds.vrs.VRS_States[1],
             ),
         )
     )
-    ds = ds.join(vrs)
     return ds
