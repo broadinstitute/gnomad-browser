@@ -453,6 +453,24 @@ pipeline.add_task(
 
 def annotate_with_constraint(genes_path, constraint_path):
     genes = hl.read_table(genes_path)
+    # TK remove
+    genes_to_retain = hl.literal(
+        [
+            "AMY1B",
+            "RGPD5",
+            "MAGEA9",
+            "CHD7",
+            "CBS",
+            "ABCG8",
+            "ARHGEF5",
+            "ACKR4",
+            "PCSK9",
+            "TTN",
+            "RNU4ATAC",
+        ]
+    )
+    genes = genes.filter(genes_to_retain.contains(genes.symbol))
+
     constraint = hl.read_table(constraint_path)
     return genes.annotate(gnomad_constraint=constraint[genes.preferred_transcript_id])
 
