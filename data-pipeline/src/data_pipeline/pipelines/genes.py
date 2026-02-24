@@ -475,7 +475,7 @@ def annotate_v4_with_constraint(genes_path, constraint_path):
 pipeline.add_task(
     "annotate_grch38_genes_step_5",
     annotate_v4_with_constraint,
-    f"/{genes_subdir}/genes_grch38_annotated_5.ht",
+    f"/{genes_subdir}/v4.1.1/genes_grch38_annotated_5.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
         "constraint_path": pipeline.get_task("prepare_gnomad_v4_constraint"),
@@ -485,7 +485,7 @@ pipeline.add_task(
 pipeline.add_task(
     "annotate_grch38_genes_step_6",
     reject_par_y_genes,
-    f"/{genes_subdir}/genes_grch38_annotated_6.ht",
+    f"/{genes_subdir}/v4.1.1/genes_grch38_annotated_6.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_5"),
     },
@@ -504,7 +504,7 @@ pipeline.add_task(
 pipeline.add_task(
     "remove_grch38_genes_constraint_for_release",
     remove_gnomad_v4_constraint,
-    f"/{genes_subdir}/genes_grch38_annotate_7_removed_constraint",
+    f"/{genes_subdir}/v4.1.1/genes_grch38_annotate_7_removed_constraint",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_7"),
     },
@@ -514,7 +514,7 @@ pipeline.add_task(
 pipeline.add_task(
     "prepare_grch38_genes_table_for_public_release",
     prepare_gene_table_for_release,
-    f"/{genes_subdir}/gnomad.browser.GRCh38.GENCODEv39.pext.ht",
+    f"/{genes_subdir}/v4.1.1/gnomad.browser.GRCh38.GENCODEv39.pext.ht",
     {
         "genes_path": pipeline.get_task("remove_grch38_genes_constraint_for_release"),
     },
@@ -559,7 +559,7 @@ pipeline.add_task(
 pipeline.add_task(
     "annotate_grch38_transcripts",
     annotate_table,
-    f"/{genes_subdir}/transcripts_grch38_annotated_1.ht",
+    f"/{genes_subdir}/v4.1.1/transcripts_grch38_annotated_1.ht",
     {
         "table_path": pipeline.get_task("extract_grch38_transcripts"),
         "gnomad_constraint": pipeline.get_task("prepare_gnomad_v4_constraint"),
