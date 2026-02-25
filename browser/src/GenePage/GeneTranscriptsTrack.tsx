@@ -62,9 +62,13 @@ const GeneTranscriptsTrack = ({
       (transcript) => transcript.transcript_id === preferredTranscriptId
     )
     preferredTranscript!.gtex_tissue_expression.forEach((tissue) => {
+      if (ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName]?.fullName === undefined) {
+        return
+      }
+
       gtexTissues[tissue.tissue as GtexTissueName] = {
-        fullName: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName].fullName || tissue.tissue,
-        color: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName].color || '#888888',
+        fullName: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName]?.fullName || tissue.tissue,
+        color: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName]?.color || '#888888',
         value: tissue.value,
       }
     })
@@ -151,17 +155,19 @@ const GeneTranscriptsTrack = ({
                   return null
                 }
 
+                const displayedGtexTissues = transcript.gtex_tissue_expression.filter(
+                  (tissueExpression) =>
+                    ALL_GTEX_TISSUES[tissueExpression.tissue as GtexTissueName]?.fullName ===
+                    undefined
+                )
+
                 const meanExpression = mean(
-                  transcript.gtex_tissue_expression.map(
-                    (tissueExpression) => tissueExpression.value
-                  )
+                  displayedGtexTissues.map((tissueExpression) => tissueExpression.value)
                 )!
                 const maxExpression = max(
-                  transcript.gtex_tissue_expression.map(
-                    (tissueExpression) => tissueExpression.value
-                  )
+                  displayedGtexTissues.map((tissueExpression) => tissueExpression.value)
                 )!
-                const tissueMostExpressedIn = transcript.gtex_tissue_expression.find(
+                const tissueMostExpressedIn = displayedGtexTissues.find(
                   (tissue) => tissue.value === maxExpression
                 )!.tissue
 
@@ -179,7 +185,8 @@ const GeneTranscriptsTrack = ({
                       tooltip={`Mean expression across all tissues = ${meanExpression.toFixed(
                         2
                       )} TPM\nMost expressed in ${
-                        gtexTissues[tissueMostExpressedIn as GtexTissueName]!.fullName
+                        gtexTissues[tissueMostExpressedIn as GtexTissueName]?.fullName ||
+                        tissueMostExpressedIn
                       } (${maxExpression.toFixed(2)} TPM)`}
                     >
                       <rect

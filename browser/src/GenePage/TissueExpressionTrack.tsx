@@ -377,9 +377,13 @@ const TissueExpressionTrack = ({
   transcripts
     .find((transcript) => transcript.transcript_id === preferredTranscriptId)
     ?.gtex_tissue_expression.forEach((tissue) => {
+      if (ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName]?.fullName === undefined) {
+        return
+      }
+
       gtexTissues[tissue.tissue as GtexTissueName] = {
-        fullName: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName].fullName || tissue.tissue,
-        color: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName].color || '#888888',
+        fullName: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName]?.fullName || tissue.tissue,
+        color: ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName]?.color || '#888888',
         value: tissue.value,
       }
     })
@@ -438,26 +442,29 @@ const TissueExpressionTrack = ({
     Object.values(expressionByTissue).map((v) => v.meanTranscriptExpressionInTissue)
   )!
 
+  const safeFullName = (t: [string, GtexTissueDetail]) => {
+    return ALL_GTEX_TISSUES[t[0] as GtexTissueName]?.fullName || t[0]
+  }
+
   const tissues =
     sortTissuesBy === 'mean-expression'
       ? Object.entries(gtexTissues)
+          .filter((t) => ALL_GTEX_TISSUES[t[0] as GtexTissueName]?.fullName !== undefined)
           .sort((t1, t2) => {
+            const t1FullName = safeFullName(t1)
+            const t2FullName = safeFullName(t2)
             const t1Expression = expressionByTissue[t1[0]].meanTranscriptExpressionInTissue
             const t2Expression = expressionByTissue[t2[0]].meanTranscriptExpressionInTissue
+
             if (t1Expression === t2Expression) {
-              return ALL_GTEX_TISSUES[t1[0] as GtexTissueName].fullName.localeCompare(
-                ALL_GTEX_TISSUES[t2[0] as GtexTissueName].fullName
-              )
+              return t1FullName.localeCompare(t2FullName)
             }
             return t2Expression - t1Expression
           })
-          .map((t: any) => t[0])
+          .map((t) => t[0])
       : Object.entries(gtexTissues)
-          .sort((t1, t2) =>
-            ALL_GTEX_TISSUES[t1[0] as GtexTissueName].fullName.localeCompare(
-              ALL_GTEX_TISSUES[t2[0] as GtexTissueName].fullName
-            )
-          )
+          .filter((t) => ALL_GTEX_TISSUES[t[0] as GtexTissueName]?.fullName !== undefined)
+          .sort((t1, t2) => safeFullName(t1).localeCompare(safeFullName(t2)))
           .map((t) => t[0])
 
   const isExpressed = expressionRegions.some((region: any) => region.mean !== 0)
