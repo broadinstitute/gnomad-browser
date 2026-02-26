@@ -36,6 +36,8 @@ def prepare_gnomad_v4_constraint(path):
         # Other
         pli=ds.lof.pLI,
         flags=ds.constraint_flags,
+        # to be raised into top level `flags` field on annotation
+        gene_flags=ds.gene_flags,
     )
 
     ds = ds.filter(ds.transcript.contains("ENST"))
