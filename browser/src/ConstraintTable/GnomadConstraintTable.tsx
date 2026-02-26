@@ -135,6 +135,11 @@ const CONSTRAINT_FLAG_DESCRIPTIONS = {
   outlier_syn: 'More or fewer synonymous variants than expected',
 }
 
+const GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS: Record<string, string> = {
+  low_exome_coverage: 'Low coverage gene',
+  low_exome_mapping_quality: 'Low mappability gene',
+}
+
 export type GnomadConstraint = {
   exp_lof: number | null
   exp_mis: number | null
@@ -165,10 +170,11 @@ type OEMetricField =
   | `oe_${ConstraintFieldWithOEMetrics}_upper`
 
 type GnomadConstraintTableProps = {
+  geneFlags: string[]
   constraint: GnomadConstraint
 }
 
-const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
+const GnomadConstraintTable = ({ geneFlags, constraint }: GnomadConstraintTableProps) => {
   let lofHighlightColor = null
   if (constraint.oe_lof_upper !== null) {
     if (constraint.oe_lof_upper < 0.33) {
@@ -282,6 +288,30 @@ const GnomadConstraintTable = ({ constraint }: GnomadConstraintTableProps) => {
               More information on constraint flags.
             </Link>
           </p>
+        </React.Fragment>
+      )}
+
+      {geneFlags.length > 0 && (
+        <React.Fragment>
+          {geneFlags
+            .filter((flag) => flag in GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS)
+            .map((flag) => {
+              let flagDescription
+              if (flag in GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS) {
+                flagDescription = GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS[flag]
+              } else {
+                flagDescription = (
+                  <span>
+                    Gene constraint flag: <code>{flag}</code>
+                  </span>
+                )
+              }
+              return (
+                <p key={flag} style={{ maxWidth: '460px' }}>
+                  <Badge level="info">Note</Badge> {flagDescription}
+                </p>
+              )
+            })}
         </React.Fragment>
       )}
     </div>
