@@ -41,9 +41,9 @@ from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import (
 
 pipeline = Pipeline()
 
-external_sources_subdir = "external_sources"
-genes_subdir = "genes"
-constraint_subdir = "constraint"
+external_sources_subdir = "external_sources/v4.1.1_demo"
+genes_subdir = "genes/v4.1.1_demo"
+constraint_subdir = "constraint/v4.1.1_demo"
 
 
 ###############################################
@@ -298,7 +298,8 @@ pipeline.add_task(
     "prepare_gnomad_v4_constraint",
     prepare_gnomad_v4_constraint,
     f"/{constraint_subdir}/gnomad_v4_constraint.ht",
-    {"path": "gs://gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"},
+    # TK: TODO: change this to the public 'gcp-public-data--gnomad/...' path when released
+    {"path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.ht"},
 )
 
 pipeline.add_task(
