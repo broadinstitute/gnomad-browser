@@ -164,6 +164,24 @@ def collect_transcript_exons(transcript_exons):
     return exons
 
 
+def annotate_gene_models_with_low_coverage_flag(genes_path, low_coverage_tsv_path):
+    low_coverage_flag_name = "v4_low_coverage_trancript"
+
+    genes_ht = hl.read_table(genes_path)
+    tsv_ht = hl.import_table(low_coverage_tsv_path)
+    tsv_ht = tsv_ht.key_by("transcript_id")
+
+    genes_ht = genes_ht.annotate(
+        flags=hl.if_else(
+            hl.is_defined(tsv_ht[genes_ht.canonical_transcript_id]),
+            hl.or_else(genes_ht.flags, hl.empty_set(hl.tstr)).add(low_coverage_flag_name),
+            genes_ht.flags,
+        )
+    )
+
+    return genes_ht
+
+
 ###############################################
 # Main                                        #
 ###############################################

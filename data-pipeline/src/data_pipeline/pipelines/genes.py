@@ -32,7 +32,7 @@ from data_pipeline.pipelines.variant_cooccurrence_counts import (
     prepare_heterozygous_variant_cooccurrence_counts,
     prepare_homozygous_variant_cooccurrence_counts,
 )
-from data_pipeline.data_types.gene import reject_par_y_genes
+from data_pipeline.data_types.gene import reject_par_y_genes, annotate_gene_models_with_low_coverage_flag
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import (
     prepare_gnomad_v4_constraint,
@@ -492,11 +492,21 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
+    "annotate_grch38_genes_step_7",
+    annotate_gene_models_with_low_coverage_flag,
+    f"/{genes_subdir}/genes_grch38_annotated_7.ht",
+    {
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_6"),
+        "low_coverage_tsv_path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.1/gnomad.v4.1.low_coverage_transcripts.tsv",
+    },
+)
+
+pipeline.add_task(
     "remove_grch38_genes_constraint_for_release",
     remove_gnomad_v4_constraint,
-    f"/{genes_subdir}/genes_grch38_annotate_5_removed_constraint",
+    f"/{genes_subdir}/genes_grch38_annotate_7_removed_constraint",
     {
-        "genes_path": pipeline.get_task("annotate_grch38_genes_step_5"),
+        "genes_path": pipeline.get_task("annotate_grch38_genes_step_7"),
     },
 )
 
@@ -563,7 +573,7 @@ pipeline.add_task(
 pipeline.set_outputs(
     {
         "genes_grch37": "annotate_grch37_genes_step_5",
-        "genes_grch38": "annotate_grch38_genes_step_6",
+        "genes_grch38": "annotate_grch38_genes_step_7",
         "base_transcripts_grch37": "extract_grch37_transcripts",
         "base_transcripts_grch38": "extract_grch38_transcripts",
         "transcripts_grch37": "annotate_grch37_transcripts",
