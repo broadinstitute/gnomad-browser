@@ -452,15 +452,29 @@ pipeline.add_task(
 )
 
 
-def annotate_with_constraint(genes_path, constraint_path):
+def annotate_v4_with_constraint(genes_path, constraint_path):
     genes = hl.read_table(genes_path)
     constraint = hl.read_table(constraint_path)
-    return genes.annotate(gnomad_constraint=constraint[genes.preferred_transcript_id])
+
+    constraint_match = constraint[genes.preferred_transcript_id]
+
+    genes = genes.annotate(
+        gnomad_constraint=constraint_match.drop("gene_flags"),
+        flags=hl.if_else(
+            hl.is_defined(constraint_match.gene_flags),
+            hl.or_else(genes.flags, hl.empty_set(hl.tstr)).union(
+                hl.or_else(constraint_match.gene_flags, hl.empty_set(hl.tstr))
+            ),
+            genes.flags,
+        ),
+    )
+
+    return genes
 
 
 pipeline.add_task(
     "annotate_grch38_genes_step_5",
-    annotate_with_constraint,
+    annotate_v4_with_constraint,
     f"/{genes_subdir}/genes_grch38_annotated_5.ht",
     {
         "genes_path": pipeline.get_task("annotate_grch38_genes_step_4"),
