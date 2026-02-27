@@ -420,6 +420,51 @@ def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: s
         **{field: hl.or_else(variants.exome[field], variants.genome[field]) for field in shared_fields}
     )
 
+    # Overwrite vep for RNU4ATAC variants with vep115
+    variants = variants.annotate(temp_vep115=hl.or_else(variants.exome.vep115, variants.genome.vep115))
+    variants = variants.annotate(
+        temp_vep115=variants.temp_vep115.drop("colocated_variants"),
+    )
+
+    transcript_consequences_keys = [key for key in variants.vep.transcript_consequences.first().dtype.keys()]
+    variants = variants.annotate(
+        temp_vep115=variants.temp_vep115.annotate(
+            intergenic_consequences=variants.temp_vep115.intergenic_consequences.map(lambda x: x.drop("context")),
+            regulatory_feature_consequences=variants.temp_vep115.regulatory_feature_consequences.map(
+                lambda x: x.drop("context")
+            ),
+            transcript_consequences=variants.temp_vep115.transcript_consequences.map(
+                lambda x: x.select(*transcript_consequences_keys)
+            ),
+            motif_feature_consequences=hl.missing(variants.vep.motif_feature_consequences.dtype),
+        )
+    )
+    VEP_FIELDS = [
+        "allele_string",
+        "end",
+        "id",
+        "input",
+        "intergenic_consequences",
+        "most_severe_consequence",
+        "motif_feature_consequences",
+        "regulatory_feature_consequences",
+        "seq_region_name",
+        "start",
+        "strand",
+        "transcript_consequences",
+        "variant_class",
+    ]
+    variants = variants.annotate(
+        vep=hl.if_else(
+            (variants.locus.contig == "chr2")
+            & (variants.locus.position >= 121530881)
+            & (variants.locus.position <= 121531007),
+            variants.temp_vep115.select(*VEP_FIELDS),
+            variants.vep.select(*VEP_FIELDS),
+        )
+    )
+    variants = variants.drop("temp_vep115")
+
     variants = variants.annotate(exome=variants.exome.drop(*shared_fields), genome=variants.genome.drop(*shared_fields))
 
     # Colocated variants
@@ -466,5 +511,4 @@ def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: s
 
     joint_frequency_data = prepare_gnomad_v4_variants_joint_frequency_helper(variants_joint_frequency_path)
     variants = variants.annotate(**joint_frequency_data[variants.locus, variants.alleles])
-
     return variants
