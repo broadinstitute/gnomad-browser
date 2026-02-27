@@ -150,6 +150,7 @@ Row fields:
     - `start`: The start position of the Allele.
     - `end`: The end position of the Allele.
     - `state`: A VRS Sequence Expression that corresponds to the nucleotide or amino acid sequence of the Allele.
+  - `alt`: Struct containing information about the alternate allele. Contains the same fields as `ref` above.
 
 #### gnomAD v4.1. browser gene models Hail Table annotations
 
