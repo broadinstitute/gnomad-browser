@@ -785,7 +785,7 @@ Row fields:
     - `VRS_Ends`: Interresidue coordinates used as the location ends for the GA4GH VRS Alleles corresponding to the values in the alleles column.
     - `VRS_States`: The literal sequence states used for the GA4GH VRS Alleles corresponding to the values in the alleles column.
     - `VRS_Lengths`: The length values from ReferenceLengthExpression states for the GA4GH VRS Alleles corresponding to the GT indexes of the reference and alternate alleles.
-    - `VRS_RepeatSubunitLengths`: The repeatSubunitLength values from ReferenceLengthExpression states for the GA4GH VRS Alleles corresponding to the GT indexes of the reference and alternate alleles..
+    - `VRS_RepeatSubunitLengths`: The repeatSubunitLength values from ReferenceLengthExpression states for the GA4GH VRS Alleles corresponding to the GT indexes of the reference and alternate alleles.
 - `vep`: Consequence annotations from Ensembl VEP. More details about VEP output is described [here](https://ensembl.org/info/docs/tools/vep/vep_formats.html#output). VEP was run using the LOFTEE plugin and information about the additional LOFTEE annotations can be found [here](https://github.com/konradjk/loftee).
 - `vqsr_results`: VQSR related variant annotations.
   - `AS_VQSLOD`: Allele-specific log-odds ratio of being a true variant versus being a false positive under the trained VQSR Gaussian mixture model.
