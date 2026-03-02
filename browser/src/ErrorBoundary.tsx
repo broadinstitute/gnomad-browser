@@ -88,8 +88,7 @@ ${error.stack}
                 <ExternalLink href={forumURL}>a topic on our forum</ExternalLink>
               </li>
             </ul>
-            Then
-            <StyledLink href="/">reload the browser</StyledLink>.
+            Then <StyledLink href="/">reload the browser</StyledLink>.
             <br />
             <br />
             <br />
