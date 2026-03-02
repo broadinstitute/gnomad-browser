@@ -157,7 +157,7 @@ const GeneTranscriptsTrack = ({
 
                 const displayedGtexTissues = transcript.gtex_tissue_expression.filter(
                   (tissueExpression) =>
-                    ALL_GTEX_TISSUES[tissueExpression.tissue as GtexTissueName]?.fullName ===
+                    ALL_GTEX_TISSUES[tissueExpression.tissue as GtexTissueName]?.fullName !==
                     undefined
                 )
 

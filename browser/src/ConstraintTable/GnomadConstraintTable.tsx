@@ -296,16 +296,11 @@ const GnomadConstraintTable = ({ geneFlags, constraint }: GnomadConstraintTableP
           {geneFlags
             .filter((flag) => flag in GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS)
             .map((flag) => {
-              let flagDescription
-              if (flag in GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS) {
-                flagDescription = GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS[flag]
-              } else {
-                flagDescription = (
-                  <span>
-                    Gene constraint flag: <code>{flag}</code>
-                  </span>
-                )
-              }
+              const flagDescription = GENE_LEVEL_CONSTRAINT_FLAG_DESCRIPTIONS[flag] || (
+                <span>
+                  Gene constraint flag: <code>{flag}</code>
+                </span>
+              )
               return (
                 <p key={flag} style={{ maxWidth: '460px' }}>
                   <Badge level="info">Note</Badge> {flagDescription}
