@@ -436,7 +436,11 @@ def prepare_gnomad_v4_variants_joint_frequency_helper(variants_joint_frequency_p
                 grpmax=ds.joint.fafmax.faf99_max,
                 grpmax_gen_anc=ds.joint.fafmax.faf99_max_gen_anc,
             ),
-            freq_comparison_stats=ds.freq_comparison_stats,
+            freq_comparison_stats=ds.freq_comparison_stats.annotate(
+                contingency_table_test=ds.freq_comparison_stats.contingency_table_test.filter(
+                    lambda x: hl.is_defined(x)
+                )
+            ),
         ),
     )
 
