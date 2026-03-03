@@ -87,6 +87,8 @@ const context = { esClient }
 
 app.use('/api/', graphQLApi({ context }))
 
-startEsStatsPolling(STATS_POLL_INTERVAL)
+if (!process.env.NO_ES_STATS_POLL) {
+  startEsStatsPolling(STATS_POLL_INTERVAL)
+}
 
 app.listen(config.PORT)
