@@ -3699,7 +3699,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="M-345-456 | gnomAD v4.1.0"
+      title="M-345-456 | gnomAD v4.1.1"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -3849,7 +3849,7 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="12-345-456 | gnomAD v4.1.0"
+      title="12-345-456 | gnomAD v4.1.1"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -3991,7 +3991,7 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="M-345-456 | gnomAD v4.1.0 (non-UKB)"
+      title="M-345-456 | gnomAD v4.1.1 (non-UKB)"
     />
     <GnomadPageHeading
       datasetOptions={
@@ -4141,7 +4141,7 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
 <TrackPage>
   <TrackPage__TrackPageSection>
     <DocumentTitle
-      title="12-345-456 | gnomAD v4.1.0 (non-UKB)"
+      title="12-345-456 | gnomAD v4.1.1 (non-UKB)"
     />
     <GnomadPageHeading
       datasetOptions={
