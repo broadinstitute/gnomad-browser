@@ -39,7 +39,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   data-item="current_short_variant"
                   href="/?dataset=gnomad_r4"
                 >
-                  gnomAD v4.1.0
+                  gnomAD v4.1.1
                 </a>
               </li>
               <li
@@ -79,7 +79,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                         data-item="gnomad_r4"
                         href="/?dataset=gnomad_r4"
                       >
-                        gnomAD v4.1.0
+                        gnomAD v4.1.1
                         <div
                           class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                         >
@@ -721,7 +721,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                 data-item="current_short_variant"
                 href="/?dataset=gnomad_r4"
               >
-                gnomAD v4.1.0
+                gnomAD v4.1.1
               </a>
             </li>
             <li
@@ -761,7 +761,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                       data-item="gnomad_r4"
                       href="/?dataset=gnomad_r4"
                     >
-                      gnomAD v4.1.0
+                      gnomAD v4.1.1
                       <div
                         class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                       >
