@@ -6,7 +6,7 @@ import InlineList from '../InlineList'
 import Link from '../Link'
 
 import GeneReferences from './GeneReferences'
-import { Badge } from '@gnomad/ui'
+import GeneWarnings from './GeneWarnings'
 
 type ManeSelectTranscriptIdProps = {
   mane_select_transcript: {
@@ -70,13 +70,6 @@ type GeneInfoProps = {
     }[]
     flags: string[]
   }
-}
-
-const GENE_FLAGS_TO_RENDER: Record<string, string> = {
-  low_exome_coverage:
-    'This gene is not well covered in the gnomAD v4.1.1 exomes. Allele frequency estimates in the exomes and gene constraint metrics may not be reliable.',
-  low_exome_mapping_quality:
-    'This gene has poor read mapping statistics in the gnomAD v4.1.1 exomes. Allele frequency estimates in the exomes and gene constraint metrics may not be reliable.',
 }
 
 const GeneInfo = ({ gene }: GeneInfoProps) => {
@@ -169,15 +162,7 @@ const GeneInfo = ({ gene }: GeneInfoProps) => {
         <GeneReferences gene={gene} />
       </AttributeListItem>
 
-      {gene.flags
-        .filter((flag) => flag in GENE_FLAGS_TO_RENDER)
-        .map((flag) => {
-          return (
-            <p>
-              <Badge level="warning">Warning</Badge> {GENE_FLAGS_TO_RENDER[flag]}
-            </p>
-          )
-        })}
+      <GeneWarnings flags={gene.flags} />
     </AttributeList>
   )
 }
