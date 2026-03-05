@@ -6,6 +6,7 @@ import { GeneMetadata } from '../GenePage/GenePage'
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import Link from '../Link'
 import InfoButton from '../help/InfoButton'
+import GeneWarnings from '../GenePage/GeneWarnings'
 
 type TranscriptReferencesProps = {
   transcript: {
@@ -100,6 +101,7 @@ const TranscriptInfo = ({ transcript }: TranscriptInfoProps) => {
       <AttributeListItem label="External resources">
         <TranscriptReferences transcript={transcript} />
       </AttributeListItem>
+      <GeneWarnings flags={transcript.gene.flags} />
     </AttributeList>
   )
 }
