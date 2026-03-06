@@ -41,12 +41,16 @@ def annotate_vrs_ids(variants_path, exome_variants_path, genome_variants_path):
                 start=ds.vrs.VRS_Starts[0],
                 end=ds.vrs.VRS_Ends[0],
                 state=ds.vrs.VRS_States[0],
+                length=ds.vrs.VRS_Lengths[0],
+                repeat_subunit_lengths=ds.vrs.VRS_RepeatSubunitLengths[0],
             ),
             alt=hl.struct(
                 allele_id=ds.vrs.VRS_Allele_IDs[1],
                 start=ds.vrs.VRS_Starts[1],
                 end=ds.vrs.VRS_Ends[1],
                 state=ds.vrs.VRS_States[1],
+                length=ds.vrs.VRS_Lengths[1],
+                repeat_subunit_lengths=ds.vrs.VRS_RepeatSubunitLengths[1],
             ),
         )
     )

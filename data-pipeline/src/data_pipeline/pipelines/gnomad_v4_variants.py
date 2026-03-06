@@ -98,8 +98,8 @@ pipeline.add_task(
     output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_annotated_4.ht",
     inputs={
         "variants_path": pipeline.get_task("annotate_gnomad_v4_caids"),
-        "exome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht",
-        "genome_variants_path": "gs://gcp-public-data--gnomad/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht",
+        "exome_variants_path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.1/variants/gnomad.exomes.v4.1.1.sites.ht",
+        "genome_variants_path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.1/variants/gnomad.genomes.v4.1.1.sites.ht",
     },
 )
 

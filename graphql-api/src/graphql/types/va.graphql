@@ -51,6 +51,8 @@ type VAAllele {
   type: String!
   location: VASequenceLocation!
   state: VALiteralSequenceExpression!
+  length: Int
+  repeat_subunit_length: Int
 }
 
 type VACohortAlleleFrequencyDerivation {

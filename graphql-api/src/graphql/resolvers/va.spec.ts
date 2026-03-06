@@ -15,12 +15,16 @@ const alleleEsDocument = {
       start: 123,
       end: 234,
       state: 'G',
+      length: 12,
+      repeat_subunit_length: 4,
     },
     alt: {
       allele_id: 'ga4gh:SQ.IAmTheAltStateID',
       start: 124,
       end: 235,
       state: 'A',
+      length: 23,
+      repeat_subunit_length: 5,
     },
   },
 }
@@ -42,6 +46,8 @@ const expectedAllele: VAAllele = {
     type: 'LiteralSequenceExpression',
     sequence: 'A',
   },
+  length: 23,
+  repeat_subunit_length: 5,
 }
 
 describe('resolveVAAllele', () => {
