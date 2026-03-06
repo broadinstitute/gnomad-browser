@@ -60,6 +60,8 @@ export type Allele = {
   type: string
   location: SequenceLocation
   state: LiteralSequenceExpression
+  length: number | null
+  repeat_subunit_length: number | null
 }
 
 type CohortCharacteristic = {
@@ -156,6 +158,11 @@ export const resolveVAAllele = async (obj: any, _args: any, _ctx: any): Promise<
   const altVRSId = alt.allele_id as string
   const refSequence = ref.state as string
   const altSequence = alt.state as string
+  const altLength = alt.length ? (alt.length as number) : null
+  const altRepeatSubunitLength = alt.repeat_subunit_length
+    ? (alt.repeat_subunit_length as number)
+    : null
+
   const altState: LiteralSequenceExpression = {
     type: 'LiteralSequenceExpression',
     sequence: altSequence,
@@ -176,7 +183,14 @@ export const resolveVAAllele = async (obj: any, _args: any, _ctx: any): Promise<
     _id: generateLocationId(unhashedLocation),
   }
 
-  return { _id: altVRSId, type: 'Allele', location, state: altState }
+  return {
+    _id: altVRSId,
+    type: 'Allele',
+    location,
+    state: altState,
+    length: altLength,
+    repeat_subunit_length: altRepeatSubunitLength,
+  }
 }
 
 type Subset = {
