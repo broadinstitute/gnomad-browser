@@ -8,7 +8,13 @@ import { Track } from '@gnomad/region-viewer'
 import { RegionsPlot } from '@gnomad/track-regions'
 import { Badge, Button, Modal, SearchInput, Select, TooltipAnchor } from '@gnomad/ui'
 
-import { ALL_GTEX_TISSUES, GtexTissueName, GtexTissues } from '../gtex'
+import {
+  ALL_GTEX_TISSUES,
+  GtexTissueName,
+  GtexTissues,
+  V2_GTEX_TISSUES,
+  V4_GTEX_TISSUES,
+} from '../gtex'
 import InfoButton from '../help/InfoButton'
 
 import { logButtonClick } from '../analytics'
@@ -373,11 +379,12 @@ const TissueExpressionTrack = ({
     'alphabetical'
   )
 
+  const gtex_version_tissues = topLevelDataset === 'v4' ? V4_GTEX_TISSUES : V2_GTEX_TISSUES
   const gtexTissues: Partial<Record<GtexTissueName, GtexTissueDetail>> = {}
   transcripts
     .find((transcript) => transcript.transcript_id === preferredTranscriptId)
     ?.gtex_tissue_expression.forEach((tissue) => {
-      if (ALL_GTEX_TISSUES[tissue.tissue as GtexTissueName]?.fullName === undefined) {
+      if (gtex_version_tissues[tissue.tissue as GtexTissueName]?.fullName === undefined) {
         return
       }
 
