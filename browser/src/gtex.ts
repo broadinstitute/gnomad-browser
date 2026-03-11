@@ -235,6 +235,16 @@ export type TissueDetail = {
 
 export type GtexTissues = Record<GtexTissueName, TissueDetail>
 
+export const V2_GTEX_TISSUES: Partial<Record<GtexTissueName, TissueDetail>> = {
+  ...SHARED_GTEX_TISSUES,
+  ...V2_SPECIFIC_GTEX_TISSUES,
+}
+
+export const V4_GTEX_TISSUES: Partial<Record<GtexTissueName, TissueDetail>> = {
+  ...SHARED_GTEX_TISSUES,
+  ...V4_SPECIFIC_GTEX_TISSUES,
+}
+
 export const ALL_GTEX_TISSUES: GtexTissues = {
   ...SHARED_GTEX_TISSUES,
   ...V2_SPECIFIC_GTEX_TISSUES,
