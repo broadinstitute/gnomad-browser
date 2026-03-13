@@ -42,7 +42,7 @@ For pLoF counts, only nonsense, splice donor and acceptor site variants caused b
 
 #### <a id="loeuf"></a>Observed / expected (`oe`) and the Loss-of-function Observed / expected upper bound fraction (`LOEUF`) score
 
-We have calculated the ratio of the observed / expected (`oe`) number of loss-of-function variants for all bases with median AN percent ≥ 20 in the MANE Select (v4 on GRCh38) or canonical (ExAC and v2 on GRCh37) and other non-Select/canonical transcript for each gene. The expected counts are based on a mutational model that takes sequence context and methylation into account.
+We have calculated the ratio of the observed / expected (`oe`) number of loss-of-function variants for all bases with AN percent ≥ 20 in the MANE Select (v4 on GRCh38) or canonical (ExAC and v2 on GRCh37) and other non-Select/canonical transcript for each gene. The expected counts are based on a mutational model that takes sequence context and methylation into account.
 
 In its original formulation, LOEUF was computed using a frequentist approach: the observed and expected LoF counts were modeled as Poisson-distributed, and the score was defined as the upper bound of a central 90% Poisson confidence interval around the observed count, divided by the neutral expectation. While intuitive, this approach treats the true underlying number of LoF variants as a fixed but unknown parameter, and the confidence interval it produces has a strictly frequentist interpretation — one that does not directly quantify uncertainty about it given the data at hand.
 
