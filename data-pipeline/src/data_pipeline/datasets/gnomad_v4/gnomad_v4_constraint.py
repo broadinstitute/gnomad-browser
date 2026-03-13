@@ -23,6 +23,7 @@ def prepare_gnomad_v4_constraint(path):
         oe_lof=ds.lof.oe,
         oe_lof_lower=ds.lof.oe_ci.lower,
         oe_lof_upper=ds.lof.oe_ci.upper,
+        oe_lof_percentile=ds.lof.oe_ci.upper_bin_percentile,
         oe_mis=ds.mis.oe,
         oe_mis_lower=ds.mis.oe_ci.lower,
         oe_mis_upper=ds.mis.oe_ci.upper,
