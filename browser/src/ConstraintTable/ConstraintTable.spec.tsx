@@ -38,6 +38,7 @@ const gnomadConstraintFactory = Factory.define<GnomadConstraint>(() => ({
   oe_lof: 0.789,
   oe_lof_lower: 0.6,
   oe_lof_upper: 0.9,
+  oe_lof_percentile: 0.95,
   oe_mis: 0.891,
   oe_mis_lower: 0.8,
   oe_mis_upper: 0.99,

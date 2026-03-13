@@ -64,6 +64,7 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       oe_lof
       oe_lof_lower
       oe_lof_upper
+      oe_lof_percentile
       oe_mis
       oe_mis_lower
       oe_mis_upper

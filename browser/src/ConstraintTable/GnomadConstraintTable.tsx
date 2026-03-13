@@ -79,6 +79,13 @@ Graph.defaultProps = {
   color: undefined,
 }
 
+const lofTooltipContent = (loeuf: number, percentile: number | null) => {
+  if (percentile === null) {
+    return `LOEUF = ${loeuf}`
+  }
+  return `LOEUF = ${loeuf}\nGene percentile = ${percentile}`
+}
+
 const renderOEMetrics = (
   constraint: GnomadConstraint,
   category: ConstraintFieldWithOEMetrics,
@@ -99,7 +106,10 @@ const renderOEMetrics = (
             precision: 2,
             tooltipPrecision: 3,
             highlightColor,
-            formatTooltip: category === 'lof' ? (n) => `LOEUF = ${n}` : (n) => `${n}`,
+            formatTooltip:
+              category === 'lof'
+                ? (n) => lofTooltipContent(n, constraint.oe_lof_percentile)
+                : (n) => `${n}`,
           })}
           )
         </React.Fragment>
@@ -150,6 +160,7 @@ export type GnomadConstraint = {
   oe_lof: number | null
   oe_lof_lower: number | null
   oe_lof_upper: number | null
+  oe_lof_percentile: number | null
   oe_mis: number | null
   oe_mis_lower: number | null
   oe_mis_upper: number | null
