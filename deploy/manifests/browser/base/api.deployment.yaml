@@ -61,6 +61,8 @@ spec:
               value: 'true'
             - name: NODE_OPTIONS
               value: '--max-old-space-size=10240'
+            - name: REDIS_CACHE_PREFIX
+              value: 'production'
           ports:
             - name: http
               containerPort: 8000
