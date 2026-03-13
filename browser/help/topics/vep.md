@@ -3,7 +3,7 @@ id: vep
 title: 'Annotations in gnomAD'
 ---
 
-### gnomAD v4.1
+### gnomAD v4.1.1
 
 #### Ensembl VEP
 
