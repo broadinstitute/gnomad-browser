@@ -105,6 +105,19 @@ DEMO_DEPLOYMENT_KUSTOMIZATION = """
           spec:
             nodeSelector:
               cloud.google.com/gke-nodepool: 'demo-pool'
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-api
+      spec:
+        template:
+          spec:
+            containers:
+              - name: app
+                env:
+                  - name: REDIS_CACHE_PREFIX
+                    value: '{deployment_name}'
 """
 
 
@@ -193,7 +206,7 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None, d
         )
 
         if demo:
-            kustomization = kustomization + DEMO_DEPLOYMENT_KUSTOMIZATION
+            kustomization = kustomization + DEMO_DEPLOYMENT_KUSTOMIZATION.format(deployment_name=name)
 
         kustomization_file.write(kustomization)
 

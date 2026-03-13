@@ -44,9 +44,10 @@ const config: Record<string, any> = {
 
   // JSON caching
   JSON_CACHE_PATH: env.JSON_CACHE_PATH,
-  JSON_CACHE_ENABLE_ALL: env.JSON_CACHE_ENABLE_ALL === "true" || false,
-  JSON_CACHE_LARGE_GENES: env.JSON_CACHE_LARGE_GENES === "true" || false,
-  JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === "true" || false
+  JSON_CACHE_ENABLE_ALL: env.JSON_CACHE_ENABLE_ALL === 'true' || false,
+  JSON_CACHE_LARGE_GENES: env.JSON_CACHE_LARGE_GENES === 'true' || false,
+  JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === 'true' || false,
+  REDIS_CACHE_PREFIX: env.REDIS_CACHE_PREFIX || '',
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']

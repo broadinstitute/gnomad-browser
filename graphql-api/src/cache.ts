@@ -90,8 +90,11 @@ export const withCache = (
     jsonCacheLargeGenes = config.JSON_CACHE_LARGE_GENES,
   } = options
 
+  const redisCachePrefix = config.REDIS_CACHE_PREFIX
+
   return async (...args: any[]) => {
-    const cacheKey = keyFn(...args)
+    const unscopedCacheKey = keyFn(...args)
+    const cacheKey = `${redisCachePrefix}:${unscopedCacheKey}`
 
     if (jsonCacheEnableAll) {
       const json_cache = new JsonCache(config.JSON_CACHE_PATH, config.JSON_CACHE_COMPRESSION)
