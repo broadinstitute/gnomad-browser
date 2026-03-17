@@ -60,15 +60,15 @@ Although `oe` and `LOEUF` are continuous values, we understand that it can be us
 
 | LOEUF score | LOEUF percentile | Number of genes |
 | :---------- | ---------------: | --------------: |
-| 0.15        |               99 |             177 |
-| 0.27        |               95 |             861 |
-| 0.36        |               90 |           1,711 |
-| 0.45        |               85 |           2,578 |
-| 0.60        |               75 |           3,433 |
-| 0.91        |               50 |           8,552 |
-| 1.19        |               25 |          12,815 |
+| < 0.15        |               ≤ 1 |             177 |
+| < 0.27        |               ≤ 5 |             861 |
+| < 0.36        |               ≤ 10 |           1,711 |
+| < 0.45        |               ≤ 15 |           2,578 |
+| < 0.60        |               ≤ 25 |           3,433 |
+| < 0.91        |               ≤ 50 |           8,552 |
+| < 1.19        |               ≤ 75 |          12,815 |
 
-This table shows the LOEUF score that corresponds to a LOEUF percentile derived from 17,063 MANE Select transcripts. For the interpretation of Mendelian disease cases, we suggest using a `LOEUF` score < 0.45 (corresponding to a LOEUF percentile of 85) as a threshold if needed. Again, ideally `oe` and `LOEUF` should be used as a continuous values rather than a cutoff.
+This table shows the LOEUF score that corresponds to a LOEUF percentile derived from 17,063 MANE Select transcripts. For the interpretation of Mendelian disease cases, we suggest using a `LOEUF` score < 0.45 (corresponding to a LOEUF percentile of 15, indicating that genes with LOEUF scores at this threshold or below are among the most highly pLoF constrained 15% of genes.) as a threshold if needed. Again, ideally `oe` and `LOEUF` should be used as a continuous values rather than a cutoff.
 
 As mentioned above, `oe` and `LOEUF` are dependent on sample size and we note that these values are slightly higher in v4 compared to v2 for all genes. The major impact of this is that any `LOEUF` thresholds used on v2 will not give an equivalent number of genes when applied to v4. This rise in `oe` is anticipated, particularly as we are now able to sample variants with a much lower population allele frequency than before (e.g., 1 in ~125,000 individuals vs 1 in ~730,000 individuals).
 
