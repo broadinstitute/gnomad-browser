@@ -30,9 +30,9 @@ The observed variant count is the number of unique single nucleotide variants in
 
 #### Expected variant count
 
-[Coverage](gnomad.broadinstitute.org/help/how-was-coverage-calculated) for gnomAD v4 was calculated from sample [genomic VCFs (gVCFs)](https://gatk.broadinstitute.org/hc/en-us/articles/360035531812-GVCF-Genomic-Variant-Call-Format), which is less granular than coverage information from read data due to the reference block structure within gVCFs. In gnomAD v4.1.1, we use [allele number (AN)](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1/#allele-numbers-across-all-possible-sites) as a higher resolution proxy for coverage in constraint calculations.
+[Coverage](https://gnomad.broadinstitute.org/help/how-was-coverage-calculated) for gnomAD v4 was calculated from sample [genomic VCFs (gVCFs)](https://gatk.broadinstitute.org/hc/en-us/articles/360035531812-GVCF-Genomic-Variant-Call-Format), which is less granular than coverage information from read data due to the reference block structure within gVCFs. In gnomAD v4.1.1, we use [allele number (AN)](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1/#allele-numbers-across-all-possible-sites) as a higher resolution proxy for coverage in constraint calculations.
 
-We calculate the expected number of variants for all bases with median AN percent (percent of total possible allele number observed at a site) ≥ 20 in our exome samples using a mutational model that corrects for local sequence context and CpG methylation levels. Following the methods described in section 4.1 of the supplement in [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7), we calculate a coverage model for sites with median AN percent between 20% and 90% in the gnomAD exome samples and use this model to adjust expected variant counts at low coverage sites.
+We calculate the expected number of variants for all bases with AN percent (percent of total possible allele number observed at a site) ≥ 20 in our exome samples using a mutational model that corrects for local sequence context and CpG methylation levels. Following the methods described in section 4.1 of the supplement in [Karczewski _et al._ Nature 2020](https://www.nature.com/articles/s41586-020-2308-7), we calculate a coverage model for sites with AN percent between 20% and 90% in the gnomAD exome samples and use this model to adjust expected variant counts at low coverage sites.
 
 #### pLoF Variant types
 
@@ -42,7 +42,7 @@ For pLoF counts, only nonsense, splice donor and acceptor site variants caused b
 
 #### <a id="loeuf"></a>Observed / expected (`oe`) and the Loss-of-function Observed / expected upper bound fraction (`LOEUF`) score
 
-We have calculated the ratio of the observed / expected (`oe`) number of loss-of-function variants for all bases with median AN percent ≥ 20 in the MANE Select (v4 on GRCh38) or canonical (ExAC and v2 on GRCh37) and other non-Select/canonical transcript for each gene. The expected counts are based on a mutational model that takes sequence context and methylation into account.
+We have calculated the ratio of the observed / expected (`oe`) number of loss-of-function variants for all bases with AN percent ≥ 20 in the MANE Select (v4 on GRCh38) or canonical (ExAC and v2 on GRCh37) and other non-Select/canonical transcript for each gene. The expected counts are based on a mutational model that takes sequence context and methylation into account.
 
 In its original formulation, LOEUF was computed using a frequentist approach: the observed and expected LoF counts were modeled as Poisson-distributed, and the score was defined as the upper bound of a central 90% Poisson confidence interval around the observed count, divided by the neutral expectation. While intuitive, this approach treats the true underlying number of LoF variants as a fixed but unknown parameter, and the confidence interval it produces has a strictly frequentist interpretation — one that does not directly quantify uncertainty about it given the data at hand.
 
