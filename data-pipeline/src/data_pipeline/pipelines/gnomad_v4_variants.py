@@ -1,10 +1,5 @@
-import os
-from loguru import logger
-
-
 from data_pipeline.config import PipelineConfig
 from data_pipeline.pipeline import Pipeline, run_pipeline
-from data_pipeline.helpers.write_schemas import write_schemas
 
 from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
     prepare_gnomad_v4_variants,
@@ -14,22 +9,15 @@ from data_pipeline.datasets.gnomad_v4.gnomad_v4_variants import (
 
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
 
-from data_pipeline.datasets.gnomad_v4.gnomad_v4_validation import (
-    validate_exome_globals_input,
-    validate_genome_globals_input,
-    validate_exome_variant_input,
-    validate_genome_variant_input,
-    validate_step1_output,
-    validate_step2_output,
-    validate_step3_output,
-    validate_step4_output,
-)
-
 from data_pipeline.data_types.variant import (
     annotate_variants,
     annotate_transcript_consequences,
     annotate_caids,
     annotate_vrs_ids,
+)
+
+from data_pipeline.data_types.variant.patch_rnu4atac_transcript_consequences import (
+    patch_rnu4atac_transcript_consequences,
 )
 
 RUN = True
@@ -83,11 +71,20 @@ pipeline.add_task(
 )
 
 pipeline.add_task(
+    name="patch_rnu4atac_transcript_consequences",
+    task_function=patch_rnu4atac_transcript_consequences,
+    output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_annotated_2a.ht",
+    inputs={
+        "variants_path": pipeline.get_task("annotate_gnomad_v4_transcript_consequences"),
+    },
+)
+
+pipeline.add_task(
     name="annotate_gnomad_v4_caids",
     task_function=annotate_caids,
     output_path=f"{output_sub_dir}/v4.1.1/gnomad_v4_variants_annotated_3.ht",
     inputs={
-        "variants_path": pipeline.get_task("annotate_gnomad_v4_transcript_consequences"),
+        "variants_path": pipeline.get_task("patch_rnu4atac_transcript_consequences"),
         "caids_path": "gs://gnomad-browser-data-pipeline/caids/gnomad_v4_caids.ht",
     },
 )
