@@ -1493,7 +1493,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -8904,7 +8904,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -16318,7 +16318,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -23732,7 +23732,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -31146,7 +31146,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -38560,7 +38560,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -45652,7 +45652,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -52033,7 +52033,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -59565,7 +59565,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -67097,7 +67097,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -74629,7 +74629,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol
@@ -82161,7 +82161,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
           className="TranscriptConsequenceList__ConsequenceListWrapper-sc-qi0gmz-1 kIOwol"
         >
           <li
-            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 cqOAwo"
+            className="TranscriptConsequenceList__ConsequenceListItem-sc-qi0gmz-2 gAFNOP"
           >
             <h3 />
             <ol

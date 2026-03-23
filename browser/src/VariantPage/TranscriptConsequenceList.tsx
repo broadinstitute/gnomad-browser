@@ -7,6 +7,7 @@ import Link from '../Link'
 import { getLabelForConsequenceTerm } from '../vepConsequences'
 import TranscriptConsequence from './TranscriptConsequence'
 import TranscriptConsequencePropType from './TranscriptConsequencePropType'
+import { VEP115Warning } from '../GenePage/GeneFlags'
 
 /**
  * Group a list of consequences by a field's value. Maintains sort order of list.
@@ -149,11 +150,23 @@ const ConsequenceListWrapper = styled.ol`
 `
 
 const ConsequenceListItem = styled.li`
+  max-width: 40%;
   margin-right: 2em;
 `
 
 type TranscriptConsequenceListProps = {
   transcriptConsequences: TranscriptConsequencePropType[]
+}
+
+const RNU4ATACWarning = ({ geneSymbol }: { geneSymbol: any }) => {
+  if (geneSymbol !== 'RNU4ATAC') {
+    return null
+  }
+  return (
+    <p>
+      <VEP115Warning />
+    </p>
+  )
 }
 
 export const TranscriptConsequenceList = ({
@@ -174,6 +187,7 @@ export const TranscriptConsequenceList = ({
                     <h4>
                       <Link to={`/gene/${geneId}`}>{geneSymbol}</Link>
                     </h4>
+                    <RNU4ATACWarning geneSymbol={geneSymbol} />
                     <ConsequencesInGene transcriptConsequences={consequencesInGene} />
                   </ListItem>
                 )
