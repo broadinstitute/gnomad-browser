@@ -2,7 +2,7 @@ import { catchNotFound } from '../elasticsearch'
 
 const TRANSCRIPT_INDICES = {
   GRCh37: 'transcripts_grch37',
-  GRCh38: 'transcripts_grch38',
+  GRCh38: 'transcripts_grch38-2026-03-25--21-11',
 }
 
 export const fetchTranscriptById = async (es: any, transcriptId: any, referenceGenome: any) => {
