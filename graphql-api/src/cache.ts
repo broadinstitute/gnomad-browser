@@ -86,8 +86,8 @@ export const withCache = (
 ) => {
   const {
     expiration = 3600,
-    jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL,
     jsonCacheLargeGenes = config.JSON_CACHE_LARGE_GENES,
+    jsonCacheEnableAll = config.JSON_CACHE_ENABLE_ALL,
   } = options
 
   const redisCachePrefix = config.REDIS_CACHE_PREFIX
