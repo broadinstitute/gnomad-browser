@@ -6,7 +6,6 @@ import { Page, PageHeading } from '@gnomad/ui'
 import {
   DatasetId,
   referenceGenome,
-  hasShortTandemRepeats,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
@@ -14,7 +13,7 @@ import HaplotypeRegionPage from './HaplotypeRegionPage'
 
 const operationName = 'Region'
 const query = `
-  query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+  query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
     region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
       genes {
         gene_id
@@ -34,15 +33,6 @@ const query = `
             stop
           }
         }
-      }
-      non_coding_constraints {
-        start
-        stop
-        oe
-        z
-      }
-      short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
-        id
       }
     }
   }
@@ -75,8 +65,6 @@ const HaplotypeRegionPageContainer = ({ datasetId, regionId }: Props) => {
         start,
         stop,
         referenceGenome: referenceGenome(datasetId),
-        includeShortTandemRepeats: hasShortTandemRepeats(datasetId),
-        shortTandemRepeatDatasetId: 'gnomad_r3',
       }}
       loadingMessage="Loading region"
       errorMessage="Unable to load region"

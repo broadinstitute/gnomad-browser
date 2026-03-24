@@ -52,6 +52,25 @@ import HaplotypeTrack, { HaplotypeGroups } from '../Haplotypes'
 
 import { Gene } from '../GenePage/GenePage'
 
+const HAPLOTYPE_QUERY = `
+  query HaplotypeGroups($chrom: String!, $start: Int!, $stop: Int!) {
+    haplotype_groups(chrom: $chrom, start: $start, stop: $stop) {
+      groups {
+        samples { sample_id }
+        variants {
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased }
+          readable_id
+        }
+        below_threshold {
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased }
+          readable_id
+        }
+        start stop hash
+      }
+    }
+  }
+`
+
 const GeneName = styled.span`
   overflow: hidden;
   font-size: 0.75em;
@@ -145,6 +164,29 @@ const HaplotypeGenePage = ({ datasetId, gene, geneId }: Props) => {
   const [showTranscripts, setShowTranscripts] = useState(false)
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups | null>(null)
 
+  useEffect(() => {
+    const fetchHaplotypeGroups = async () => {
+      try {
+        const response = await fetch('/api/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: HAPLOTYPE_QUERY,
+            variables: { chrom: gene.chrom, start: gene.start, stop: gene.stop },
+          }),
+        })
+        const result = await response.json()
+        if (result.data?.haplotype_groups) {
+          setHaplotypeGroups(result.data.haplotype_groups)
+        }
+      } catch (error) {
+        console.error('Error fetching haplotype groups:', error)
+      }
+    }
+
+    fetchHaplotypeGroups()
+  }, [gene.chrom, gene.start, gene.stop])
+
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
 
@@ -179,22 +221,6 @@ const HaplotypeGenePage = ({ datasetId, gene, geneId }: Props) => {
   const [zoomRegion, setZoomRegion] = useState(null)
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
-
-  useEffect(() => {
-    const fetchHaplotypeGroups = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8123/haplo?start=${gene.start}&stop=${gene.stop}`
-        )
-        const data = await response.json()
-        setHaplotypeGroups(data)
-      } catch (error) {
-        console.error('Error fetching haplotype groups:', error)
-      }
-    }
-
-    fetchHaplotypeGroups()
-  }, [gene.start, gene.stop])
 
   return (
     <TrackPage>

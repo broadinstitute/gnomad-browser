@@ -1,0 +1,79 @@
+type HaplotypeVariant {
+  locus: String!
+  position: Int!
+  chrom: String!
+  alleles: [String!]!
+  rsid: String
+  qual: Float
+  filters: [String!]
+  info_AF: [Float!]
+  info_AC: Int
+  info_AN: Int
+  info_CM: [Float!]
+  info_SVTYPE: String
+  info_SVLEN: Int
+  gt_alleles: [Int!]
+  gt_phased: Boolean
+  in_samples: [String!]
+}
+
+type HaplotypeVariantSet {
+  variants: [HaplotypeVariant!]!
+  readable_id: String!
+}
+
+type HaplotypeSample {
+  sample_id: String!
+  variant_sets: [HaplotypeVariantSet!]!
+}
+
+type HaplotypeGroup {
+  samples: [HaplotypeSample!]!
+  variants: HaplotypeVariantSet!
+  below_threshold: HaplotypeVariantSet!
+  start: Int!
+  stop: Int!
+  readable_id: String!
+  hash: String!
+}
+
+type HaplotypeGroups {
+  groups: [HaplotypeGroup!]!
+}
+
+type MethylationRecord {
+  chr: String!
+  pos1: Int!
+  pos2: Int!
+  methylation: Float!
+  sample: String!
+}
+
+type RecombinationRateRecord {
+  start: Int!
+  end: Int!
+  value: Float!
+}
+
+extend type Query {
+  haplotype_groups(
+    chrom: String!
+    start: Int!
+    stop: Int!
+    min_allele_freq: Float
+    sort_by: String
+  ): HaplotypeGroups
+
+  methylation(
+    chrom: String!
+    start: Int!
+    stop: Int!
+    sample: String
+  ): [MethylationRecord!]!
+
+  recombination_rate(
+    chrom: String!
+    start: Int!
+    stop: Int!
+  ): [RecombinationRateRecord!]!
+}
