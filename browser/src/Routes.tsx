@@ -25,6 +25,12 @@ const PoliciesPage = lazy(() => import('./PoliciesPage'))
 
 const GenePageContainer = lazy(() => import('./GenePage/GenePageContainer'))
 const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'))
+const HaplotypeGenePageContainer = lazy(
+  () => import('./HaplotypeGenePage/HaplotypeGenePageContainer')
+)
+const HaplotypeRegionPageContainer = lazy(
+  () => import('./HaplotypeRegionPage/HaplotypeRegionPageContainer')
+)
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
@@ -53,6 +59,42 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={HomePage} />
+
+      <Route
+        exact
+        path="/haplotype/gene/:gene"
+        render={({ location, match }: any) => {
+          const params = queryString.parse(location.search)
+          const datasetId = params.dataset || defaultDataset
+          return (
+            <HaplotypeGenePageContainer
+              datasetId={datasetId}
+              geneIdOrSymbol={match.params.gene}
+            />
+          )
+        }}
+      />
+
+      <Route
+        exact
+        path="/haplotype/region/:regionId"
+        render={({ location, match }: any) => {
+          const params = queryString.parse(location.search)
+          const datasetId = params.dataset || defaultDataset
+          if (!isRegionId(match.params.regionId)) {
+            return (
+              <Page>
+                <DocumentTitle title="Invalid region" />
+                <PageHeading>Invalid region</PageHeading>
+                <p>Region must be formatted chrom-start-stop.</p>
+              </Page>
+            )
+          }
+
+          const regionId = normalizeRegionId(match.params.regionId)
+          return <HaplotypeRegionPageContainer datasetId={datasetId} regionId={regionId} />
+        }}
+      />
 
       <Route
         exact
