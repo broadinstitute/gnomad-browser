@@ -14,7 +14,10 @@ const _fetchRecombinationRate = async (chrom: string, start: number, stop: numbe
     const url = `http://api.genome.ucsc.edu/getData/track?genome=hg38;track=recomb1000GAvg;chrom=${chrom};start=${start};end=${stop}`
     const response = await fetch(url)
     const data = await response.json()
-    const rawData = data.recomb1000GAvg?.[chrom] || []
+    // UCSC API returns a flat list when chrom is specified, or keyed by chrom otherwise
+    const rawData = Array.isArray(data.recomb1000GAvg)
+      ? data.recomb1000GAvg
+      : data.recomb1000GAvg?.[chrom] || []
     return rawData.map((d: any) => ({ start: d.start, end: d.end, value: d.value }))
   } catch (error) {
     logger.warn(`Failed to fetch recombination rate from UCSC: ${error}`)
