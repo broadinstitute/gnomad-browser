@@ -16,6 +16,14 @@ type RecombinationRate = {
   value: number
 }
 
+const RECOMBINATION_QUERY = `
+  query Recombination($chrom: String!, $start: Int!, $stop: Int!) {
+    recombination_rate(chrom: $chrom, start: $start, stop: $stop) {
+      start end value
+    }
+  }
+`
+
 type RecombinationRatePlotProps = {
   chrom: string
   start: number
@@ -28,11 +36,18 @@ const RecombinationRatePlot = ({ chrom, start, stop }: RecombinationRatePlotProp
   useEffect(() => {
     const fetchRecombinationData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:8123/recombination?chrom=${chrom}&start=${start}&stop=${stop}`
-        )
-        const data = await response.json()
-        setRecombinationRates(data)
+        const response = await fetch('/api/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            query: RECOMBINATION_QUERY,
+            variables: { chrom, start, stop },
+          }),
+        })
+        const result = await response.json()
+        if (result.data?.recombination_rate) {
+          setRecombinationRates(result.data.recombination_rate)
+        }
       } catch (error) {
         console.error('Error fetching recombination data:', error)
       }

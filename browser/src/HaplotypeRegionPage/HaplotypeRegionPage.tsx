@@ -30,6 +30,33 @@ import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 
 import { Region } from '../RegionPage/RegionPage'
 
+const HAPLOTYPE_GROUPS_QUERY = `
+  query RegionHaploGroups($chrom: String!, $start: Int!, $stop: Int!, $min_allele_freq: Float, $sort_by: String) {
+    haplotype_groups(chrom: $chrom, start: $start, stop: $stop, min_allele_freq: $min_allele_freq, sort_by: $sort_by) {
+      groups {
+        samples { sample_id }
+        variants {
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased }
+          readable_id
+        }
+        below_threshold {
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased }
+          readable_id
+        }
+        start stop hash
+      }
+    }
+  }
+`
+
+const METHYLATION_QUERY = `
+  query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!) {
+    methylation(chrom: $chrom, start: $start, stop: $stop) {
+      chr pos1 pos2 methylation sample
+    }
+  }
+`
+
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -72,39 +99,48 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
 
+  const fetchGraphQL = async (query: string, variables: any) => {
+    const response = await fetch('/api/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, variables }),
+    })
+    return response.json()
+  }
+
   const debouncedFetchHaplotypeGroups = useCallback(
-    debounce(async (threshold: number) => {
+    debounce(async (currentThreshold: number) => {
       try {
-        const url = `http://localhost:8123/haplo?start=${start}&stop=${stop}&min_allele_freq=${threshold}&sort_by=${sortBy}`
-        const response = await fetch(url)
-        const data = await response.json()
-        setHaplotypeGroups(data)
+        const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
+          chrom, start, stop, min_allele_freq: currentThreshold, sort_by: sortBy,
+        })
+        if (result.data?.haplotype_groups) {
+          setHaplotypeGroups(result.data.haplotype_groups)
+        }
       } catch (error) {
         console.error('Error fetching haplotype groups:', error)
       }
     }, 300),
-    [start, stop, sortBy]
+    [chrom, start, stop, sortBy]
   )
 
-  const fetchMethylationData = async (start: number, stop: number, sample: string) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8123/methylation?start=${start}&stop=${stop}`
-      )
-      const data = await response.json()
-      setMethylationData(data)
-    } catch (error) {
-      console.error('Error fetching methylation data:', error)
-    }
-  }
-
   useEffect(() => {
-    fetchMethylationData(start, stop, 'sample_9_high')
-  }, [start, stop])
+    const fetchMethylationData = async () => {
+      try {
+        const result = await fetchGraphQL(METHYLATION_QUERY, { chrom, start, stop })
+        if (result.data?.methylation) {
+          setMethylationData(result.data.methylation)
+        }
+      } catch (error) {
+        console.error('Error fetching methylation data:', error)
+      }
+    }
+    fetchMethylationData()
+  }, [chrom, start, stop])
 
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
-  }, [start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
+  }, [chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
 
   useEffect(() => {
     const newSearchParams = queryString.stringify({
