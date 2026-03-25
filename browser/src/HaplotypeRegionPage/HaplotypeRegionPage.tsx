@@ -1,15 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Badge } from '@gnomad/ui'
+import { Badge, Button } from '@gnomad/ui'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import queryString from 'query-string'
 import { debounce } from 'lodash-es'
+import { useHistory } from 'react-router-dom'
 
 import {
   DatasetId,
   labelForDataset,
-  regionsHaveExomeCoverage,
-  regionsHaveGenomeCoverage,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -20,9 +19,6 @@ import { useWindowSize } from '../windowSize'
 
 import EditRegion from '../RegionPage/EditRegion'
 import GenesInRegionTrack from '../RegionPage/GenesInRegionTrack'
-import MitochondrialRegionCoverageTrack from '../RegionPage/MitochondrialRegionCoverageTrack'
-import RegionControls from '../RegionPage/RegionControls'
-import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import RegionInfo from '../RegionPage/RegionInfo'
 
 import HaplotypeTrack, { HaplotypeGroups, Methylation } from '../Haplotypes'
@@ -84,8 +80,19 @@ type HaplotypeRegionPageProps = {
   region: Region
 }
 
+const zoomRegion = (region: { chrom: string; start: number; stop: number }, factor: number) => {
+  const center = (region.start + region.stop) / 2
+  const newSize = (region.stop - region.start + 1) / factor
+  return {
+    chrom: region.chrom,
+    start: Math.max(1, Math.floor(center - newSize / 2)),
+    stop: Math.floor(center + newSize / 2),
+  }
+}
+
 const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) => {
   const { chrom, start, stop } = region
+  const history = useHistory()
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
   const regionViewerWidth = windowWidth - 30
@@ -187,7 +194,28 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             )}
           </div>
           <RegionControlsWrapper>
-            <RegionControls region={region} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
+              <span>Zoom in</span>
+              {[1.5, 3, 10].map((z) => (
+                <Button key={z} onClick={() => {
+                  const r = zoomRegion(region, z)
+                  history.push({
+                    pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
+                    search: queryString.stringify({ threshold, sortBy }),
+                  })
+                }}>{z}x</Button>
+              ))}
+              <span style={{ marginLeft: '0.5em' }}>Zoom out</span>
+              {[1.5, 3, 10].map((z) => (
+                <Button key={z} onClick={() => {
+                  const r = zoomRegion(region, 1 / z)
+                  history.push({
+                    pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
+                    search: queryString.stringify({ threshold, sortBy }),
+                  })
+                }}>{z}x</Button>
+              ))}
+            </div>
           </RegionControlsWrapper>
         </RegionInfoColumnWrapper>
       </TrackPageSection>
@@ -197,18 +225,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
       >
-        {region.chrom === 'M' ? (
-          <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
-        ) : (
-          <RegionCoverageTrack
-            datasetId={datasetId}
-            chrom={chrom}
-            includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
-            includeGenomeCoverage={regionsHaveGenomeCoverage(datasetId)}
-            start={start}
-            stop={stop}
-          />
-        )}
+        {/* Coverage track disabled — no coverage data for long-read haplotypes */}
 
         <RecombinationRatePlot chrom={region.chrom} start={region.start} stop={region.stop} />
         <GenesInRegionTrack genes={region.genes} region={region} />
