@@ -120,9 +120,13 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
+  const [haplotypeLoading, setHaplotypeLoading] = useState(true)
   const [methylationData, setMethylationData] = useState<Methylation[]>([])
   const [methylationSummary, setMethylationSummary] = useState<MethylationSummaryPoint[]>([])
   const [methylationOutliers, setMethylationOutliers] = useState<any>(null)
+  const [methylationLoading, setMethylationLoading] = useState(false)
+  const [methylationSampleCount, setMethylationSampleCount] = useState(0)
+  const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
 
@@ -137,6 +141,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 
   const debouncedFetchHaplotypeGroups = useCallback(
     debounce(async (currentThreshold: number) => {
+      setHaplotypeLoading(true)
       try {
         const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
           chrom, start, stop, min_allele_freq: currentThreshold, sort_by: sortBy,
@@ -146,6 +151,8 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         }
       } catch (error) {
         console.error('Error fetching haplotype groups:', error)
+      } finally {
+        setHaplotypeLoading(false)
       }
     }, 300),
     [chrom, start, stop, sortBy]
@@ -187,6 +194,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
       if (topOutliers.length === 0) return
 
       console.log(`Fetching methylation for ${topOutliers.length} outlier samples`)
+      setMethylationLoading(true)
 
       try {
         const result = await fetchGraphQL(METHYLATION_QUERY, {
@@ -194,13 +202,56 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         })
         if (result.data?.methylation) {
           setMethylationData(result.data.methylation)
+          setMethylationSampleCount(0) // reset — these are just outliers
         }
       } catch (error) {
         console.error('Error fetching outlier methylation:', error)
+      } finally {
+        setMethylationLoading(false)
       }
     }
     fetchOutlierMethylation()
   }, [chrom, start, stop, methylationOutliers])
+
+  const handleLoadAllSamples = useCallback(async () => {
+    if (!haplotypeGroups || haplotypeGroups.groups.length === 0) return
+
+    const allSampleIds = Array.from(new Set(
+      haplotypeGroups.groups.flatMap(g => g.samples.map(s => s.sample_id))
+    ))
+
+    if (allSampleIds.length === 0) return
+
+    setMethylationLoading(true)
+    setMethylationSampleCount(0)
+    setMethylationTotalSamples(allSampleIds.length)
+    console.log(`Loading methylation for all ${allSampleIds.length} haplotype samples`)
+
+    // Query in small batches, accumulate results progressively
+    const BATCH_SIZE = 5
+    let accumulated: Methylation[] = [...methylationData]
+    let completed = 0
+    const total = allSampleIds.length
+
+    for (let i = 0; i < allSampleIds.length; i += BATCH_SIZE) {
+      const batch = allSampleIds.slice(i, i + BATCH_SIZE)
+      try {
+        const result = await fetchGraphQL(METHYLATION_QUERY, {
+          chrom, start, stop, samples: batch,
+        })
+        if (result.data?.methylation) {
+          accumulated = [...accumulated, ...result.data.methylation]
+          setMethylationData(accumulated)
+        }
+      } catch (error) {
+        console.error(`Error fetching batch ${i / BATCH_SIZE}:`, error)
+      }
+      completed += batch.length
+      setMethylationSampleCount(completed)
+    }
+
+    setMethylationLoading(false)
+  }, [chrom, start, stop, haplotypeGroups, methylationData])
 
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
@@ -297,6 +348,11 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             onMinAfChange={setThreshold}
             initialSortBy={sortBy}
             onSortModeChange={setSortBy}
+            onLoadAllSamples={handleLoadAllSamples}
+            methylationLoading={methylationLoading}
+            methylationSampleCount={methylationSampleCount}
+            methylationTotalSamples={methylationTotalSamples}
+            haplotypeLoading={haplotypeLoading}
           />
         )}
         <PositionAxisTrack />
