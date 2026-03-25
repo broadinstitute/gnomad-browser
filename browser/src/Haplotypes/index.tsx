@@ -82,6 +82,8 @@ export const Legend = ({
   onSortModeChange = () => {},
   showMethylation = true,
   onShowMethylationChange = () => {},
+  filterToOutliers = false,
+  onFilterToOutliersChange = () => {},
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -90,6 +92,8 @@ export const Legend = ({
   onSortModeChange?: (mode: string) => void
   showMethylation?: boolean
   onShowMethylationChange?: (show: boolean) => void
+  filterToOutliers?: boolean
+  onFilterToOutliersChange?: (filter: boolean) => void
 }) => {
   const [threshold, setThreshold] = useState(initialMinAf)
   const [colorMode, setColorMode] = useState('allele')
@@ -227,6 +231,17 @@ export const Legend = ({
           />
           Show methylation
         </label>
+        {showMethylation && (
+          <label style={{ marginTop: '4px' }}>
+            <input
+              type='checkbox'
+              checked={filterToOutliers}
+              onChange={(e) => onFilterToOutliersChange(e.target.checked)}
+              style={{ marginRight: '5px' }}
+            />
+            Filter to outliers
+          </label>
+        )}
       </div>
       <div
         style={{
@@ -351,6 +366,18 @@ export type Methylation = {
   coverage?: number
 }
 
+export type MethylationSummaryPoint = {
+  chrom: string
+  pos1: number
+  pos2: number
+  mean_methylation: number
+  mean_coverage: number
+  num_samples: number
+  std_methylation?: number
+  min_methylation?: number
+  max_methylation?: number
+}
+
 const HaplotypeGroupTooltip = ({ group }: { group: HaplotypeGroup }) => (
   <RegionAttributeList>
     <div>
@@ -438,7 +465,7 @@ const VariantTooltip = ({ variant }: { variant: Variant }) => (
 )
 
 const renderTrackLeftPanel =
-  (haplotypeGroups: HaplotypeGroup[] | null, methylationMax: number) => () => {
+  (haplotypeGroups: HaplotypeGroup[] | null, methylationMax: number, summaryOffset: number = 0) => () => {
     const maxSamples = (haplotypeGroups || []).reduce(
       (max, group) => Math.max(max, group.samples.length),
       0
@@ -469,11 +496,13 @@ const renderTrackLeftPanel =
           <svg
             width={200}
             height={
+              summaryOffset +
               (haplotypeGroups.length + 1) *
                 trackHeight +
               30
             }
           >
+            {/* Header: Long Read Haplotypes + counts */}
             <g>
               <text x={0} y={9} fontSize='12'>
                 Long Read
@@ -502,8 +531,35 @@ const renderTrackLeftPanel =
                 </tspan>
               </text>
             </g>
+            {/* Summary track y-axis — aligned with plot after header (~50px) */}
+            {summaryOffset > 0 && (() => {
+              // Left panel header takes ~50px. Plot summary scale: 100% at y=5, 0% at y=summaryOffset-10.
+              // But left panel has header offset, so shift axis down by header height.
+              const headerHeight = 50
+              const axisTop = headerHeight + 5
+              const axisBottom = headerHeight + summaryOffset - 10
+              const axisHeight = axisBottom - axisTop
+              return (
+                <g transform={`translate(110, ${axisTop})`}>
+                  <text x={-70} y={axisHeight / 2 - 8} fontSize='10' textAnchor='middle'>
+                    Methylation
+                    <tspan x={-70} dy={12}>Summary</tspan>
+                    <tspan x={-70} dy={12}>(%)</tspan>
+                  </text>
+                  <line x1={0} y1={0} x2={0} y2={axisHeight} stroke='black' />
+                  {[0, 50, 100].map((tick) => (
+                    <g transform={`translate(0, ${axisHeight - (tick / 100) * axisHeight})`} key={`summary-left-${tick}`}>
+                      <line x1={-5} y1={0} x2={0} y2={0} stroke='black' />
+                      <text x={-10} y={3} fontSize='10' textAnchor='end'>
+                        {tick}
+                      </text>
+                    </g>
+                  ))}
+                </g>
+              )
+            })()}
             {haplotypeGroups.map((group, index) => {
-              const y = 60 + index * trackHeight
+              const y = summaryOffset + 60 + index * trackHeight
               return (
                 <TooltipAnchor
                   key={`${group.hash}-tooltip-${group.samples.length}-${group.variants.variants.length}`}
@@ -573,6 +629,7 @@ type HaplotypeTrackProps = {
   stop: number
   haplotypeGroups: HaplotypeGroup[]
   methylationData: Methylation[]
+  methylationSummary?: MethylationSummaryPoint[]
   initialMinAf?: number
   initialSortBy?: string
   onMinAfChange?: (threshold: number) => void
@@ -642,6 +699,7 @@ const HaplotypeTrack = ({
   height = 500,
   haplotypeGroups,
   methylationData,
+  methylationSummary = [],
   start,
   stop,
   initialMinAf = 0,
@@ -653,7 +711,8 @@ const HaplotypeTrack = ({
   const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
-  const [showMethylation, setShowMethylation] = useState(false)
+  const [showMethylation, setShowMethylation] = useState(true)
+  const [filterToOutliers, setFilterToOutliers] = useState(true)
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -703,38 +762,47 @@ const HaplotypeTrack = ({
     )
   }
 
+  // When filtering to outliers, only show groups containing samples with methylation data
+  const outlierSampleIds = filterToOutliers && showMethylation
+    ? new Set(methylationData.map(d => d.sample))
+    : null
+  const displayGroups = outlierSampleIds
+    ? haplotypeGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
+    : haplotypeGroups
+
   const regionSize = stop - start
   const variantCircleRadius = regionSize > 100000 ? 2 : 4
 
+  // Build lookup from position to summary stats for coloring dots by deviation
+  const summaryByPos = React.useMemo(() => {
+    const map = new Map<number, { mean: number; std: number }>()
+    for (const s of methylationSummary) {
+      map.set(s.pos1, { mean: s.mean_methylation, std: s.std_methylation || 0 })
+    }
+    return map
+  }, [methylationSummary])
+
+  const summaryTrackHeight = showMethylation && methylationSummary.length > 0 ? 120 : 0
   const methylationPlotHeight = showMethylation
-    ? (haplotypeGroups.length + 1) * 50
+    ? (displayGroups.length + 1) * 50
     : 0
 
   const dynamicHeight =
-    haplotypeGroups.length * 21 +
+    summaryTrackHeight +
+    displayGroups.length * 21 +
     methylationPlotHeight
 
   const methylationYScale = scaleLinear()
     .domain([0, Math.max(...methylationData.map((d) => d.methylation))])
     .range([65, 35])
 
-  const methylationDataBySample = methylationData.reduce<Record<string, Methylation[]>>(
-    (acc, d) => {
-      if (!acc[d.sample]) {
-        acc[d.sample] = []
-      }
-      acc[d.sample].push(d)
-      return acc
-    },
-    {}
-  )
-
   return (
     <Wrapper>
       <Track
         renderLeftPanel={renderTrackLeftPanel(
-          haplotypeGroups,
-          showMethylation ? Math.max(...methylationData.map((d) => d.methylation)) : 0
+          displayGroups,
+          showMethylation ? Math.max(...methylationData.map((d) => d.methylation)) : 0,
+          summaryTrackHeight
         )}
       >
         {({ scalePosition, width }: TrackProps) => (
@@ -748,39 +816,86 @@ const HaplotypeTrack = ({
                 onSortModeChange={handleSortModeChange}
                 showMethylation={showMethylation}
                 onShowMethylationChange={handleShowMethylationChange}
+                filterToOutliers={filterToOutliers}
+                onFilterToOutliersChange={setFilterToOutliers}
               />
             </TopPanel>
             <PlotWrapper>
               <svg height={dynamicHeight} width={width}>
-                {haplotypeGroups.map((group, rowIndex) => {
+                {/* Summary methylation track */}
+                {showMethylation && methylationSummary.length > 0 && (() => {
+                  const summaryMethScale = scaleLinear()
+                    .domain([0, 100])
+                    .range([summaryTrackHeight - 10, 5])
+                  // High-variance threshold: std > 20% indicates outlier CpG sites
+                  const HIGH_VARIANCE_THRESHOLD = 20
+                  return (
+                    <g>
+                      {/* Background */}
+                      <rect x={0} y={0} width={width} height={summaryTrackHeight} fill='#fafafa' stroke='#e0e0e0' />
+                      {/* Y-axis ticks */}
+                      {[0, 50, 100].map(tick => (
+                        <g key={`summary-tick-${tick}`}>
+                          <line x1={0} y1={summaryMethScale(tick)} x2={width} y2={summaryMethScale(tick)} stroke='#eee' />
+                        </g>
+                      ))}
+                      {/* Mean line + variance band */}
+                      {methylationSummary.map((d, i) => {
+                        const x = scalePosition(d.pos1)
+                        const isOutlier = (d.std_methylation || 0) > HIGH_VARIANCE_THRESHOLD
+                        const stdVal = d.std_methylation || 0
+                        const yMean = summaryMethScale(d.mean_methylation)
+                        const yHigh = summaryMethScale(Math.min(100, d.mean_methylation + stdVal))
+                        const yLow = summaryMethScale(Math.max(0, d.mean_methylation - stdVal))
+                        return (
+                          <g key={`summary-${i}`}>
+                            {/* Std deviation band */}
+                            <line x1={x} y1={yHigh} x2={x} y2={yLow}
+                              stroke={isOutlier ? 'rgba(220, 38, 38, 0.4)' : 'rgba(100, 100, 200, 0.15)'}
+                              strokeWidth={isOutlier ? 2 : 1} />
+                            {/* Mean dot */}
+                            <TooltipAnchor
+                              tooltipComponent={() => (
+                                <RegionAttributeList>
+                                  <div><dt>Position:</dt><dd>{d.pos1}</dd></div>
+                                  <div><dt>Mean methylation:</dt><dd>{d.mean_methylation.toFixed(1)}%</dd></div>
+                                  <div><dt>Std dev:</dt><dd>{stdVal.toFixed(1)}%</dd></div>
+                                  <div><dt>Range:</dt><dd>{(d.min_methylation || 0).toFixed(1)}% - {(d.max_methylation || 0).toFixed(1)}%</dd></div>
+                                  <div><dt>Mean coverage:</dt><dd>{d.mean_coverage.toFixed(0)}x</dd></div>
+                                  <div><dt>Samples:</dt><dd>{d.num_samples}</dd></div>
+                                  {isOutlier && <div><dt style={{color: '#dc2626'}}>High variance site</dt><dd></dd></div>}
+                                </RegionAttributeList>
+                              )}
+                            >
+                              <circle cx={x} cy={yMean} r={isOutlier ? 4 : 2.5}
+                                fill={isOutlier ? '#dc2626' : '#4a5568'} />
+                            </TooltipAnchor>
+                          </g>
+                        )
+                      })}
+                      {/* Separator line */}
+                      <line x1={0} y1={summaryTrackHeight} x2={width} y2={summaryTrackHeight} stroke='#ccc' />
+                    </g>
+                  )
+                })()}
+                {displayGroups.map((group, rowIndex) => {
                   const startX = scalePosition(start)
                   const stopX = scalePosition(stop)
                   const groupWidth = stopX - startX
                   const trackHeight = showMethylation ? 70 : 20
 
-                  const hasMethylationImpactingVariant = group.variants.variants.some(
-                    (variant) => variant.position === 100038008
-                  )
+                  // Get methylation data for samples in this haplotype group
+                  const groupSampleIds = new Set(group.samples.map(s => s.sample_id))
+                  const methSampleData = methylationData.filter(d => groupSampleIds.has(d.sample))
 
-                  const methylationSampleKeys = Object.keys(methylationDataBySample)
-
-                  const methDataType = !hasMethylationImpactingVariant ? 'high' : 'normal'
-
-                  const sampleKeys = Object.keys(methylationDataBySample)
-                    .filter((key) => key.includes(methDataType))
-                    .sort(() => 0.5 - Math.random())
-
-                  const methSampleData =
-                    sampleKeys.length > 0
-                      ? methylationDataBySample[sampleKeys.shift() as string] || []
-                      : []
+                  const rowY = summaryTrackHeight + rowIndex * trackHeight
 
                   return (
                     <>
                       <g key={`haplo-${rowIndex}`}>
                         <rect
                           x={startX}
-                          y={5 + rowIndex * trackHeight}
+                          y={5 + rowY}
                           width={groupWidth}
                           height={15}
                           fill='#f0f0f0'
@@ -788,9 +903,9 @@ const HaplotypeTrack = ({
                         />
                         <line
                           x1={startX}
-                          y1={12.5 + rowIndex * trackHeight}
+                          y1={12.5 + rowY}
                           x2={stopX}
-                          y2={12.5 + rowIndex * trackHeight}
+                          y2={12.5 + rowY}
                           stroke='#a8a8a8'
                           strokeWidth={1}
                         />
@@ -801,7 +916,7 @@ const HaplotypeTrack = ({
                           >
                             <circle
                               cx={scalePosition(variant.position)}
-                              cy={12.5 + rowIndex * trackHeight}
+                              cy={12.5 + rowY}
                               r={1.5}
                               fill='none'
                               stroke={
@@ -845,9 +960,9 @@ const HaplotypeTrack = ({
                               {isDottedLine ? (
                                 <line
                                   x1={scalePosition(variant.position)}
-                                  y1={5 + rowIndex * trackHeight}
+                                  y1={5 + rowY}
                                   x2={scalePosition(variant.position)}
-                                  y2={20 + rowIndex * trackHeight}
+                                  y2={20 + rowY}
                                   stroke={color}
                                   strokeDasharray='4 2'
                                   strokeWidth={Math.min(5, 2 + (variant.info_SVLEN / 100) * 10)}
@@ -855,7 +970,7 @@ const HaplotypeTrack = ({
                               ) : (
                                 <circle
                                   cx={scalePosition(variant.position)}
-                                  cy={12.5 + rowIndex * trackHeight}
+                                  cy={12.5 + rowY}
                                   r={variantCircleRadius}
                                   fill={color}
                                   stroke='black'
@@ -868,6 +983,18 @@ const HaplotypeTrack = ({
                       <g>
                         {showMethylation &&
                           methSampleData.map((d, index) => {
+                            const stats = summaryByPos.get(d.pos1)
+                            const deviation = stats ? d.methylation - stats.mean : 0
+                            const zScore = stats && stats.std > 0 ? deviation / stats.std : 0
+                            // Red = hypomethylated (below mean), blue = hypermethylated, grey = normal
+                            let dotColor = '#aaa'
+                            let dotRadius = 2
+                            if (Math.abs(zScore) > 2) {
+                              dotColor = deviation < 0 ? '#dc2626' : '#2563eb'
+                              dotRadius = 3
+                            } else if (Math.abs(zScore) > 1) {
+                              dotColor = deviation < 0 ? '#f87171' : '#60a5fa'
+                            }
                             return (
                               <TooltipAnchor
                                 key={`methylation-${rowIndex}-${index}`}
@@ -881,6 +1008,12 @@ const HaplotypeTrack = ({
                                       <dt>Methylation:</dt>
                                       <dd>{d.methylation.toFixed(1)}%</dd>
                                     </div>
+                                    {stats && (
+                                      <div>
+                                        <dt>Mean:</dt>
+                                        <dd>{stats.mean.toFixed(1)}% (z={zScore.toFixed(1)})</dd>
+                                      </div>
+                                    )}
                                     {d.coverage !== undefined && (
                                       <div>
                                         <dt>Coverage:</dt>
@@ -896,9 +1029,9 @@ const HaplotypeTrack = ({
                               >
                                 <circle
                                   cx={scalePosition(d.pos1)}
-                                  cy={methylationYScale(d.methylation) + rowIndex * trackHeight}
-                                  r={2}
-                                  fill='grey'
+                                  cy={methylationYScale(d.methylation) + rowY}
+                                  r={dotRadius}
+                                  fill={dotColor}
                                   stroke='none'
                                 />
                               </TooltipAnchor>
