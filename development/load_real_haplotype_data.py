@@ -518,9 +518,53 @@ def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0)
 # --- Methylation loading ---
 
 
-def load_methylation(es_url, region_chrom, region_start, region_stop):
-    """Fetch HPRC .bed.gz files via Tabix, aggregate across samples, and load summary into ES."""
+def _query_sample(args):
+    """Query a single sample's BED file via genohype. Returns (sample_id, [(pos1, pos2, meth, cov), ...])."""
+    genohype_bin, gcs_path, region_chrom, region_start, region_stop = args
+    sample_id = gcs_path.rstrip("/").split("/")[-1].split(".")[0]
+
+    proc = subprocess.Popen(
+        [
+            genohype_bin, "query", gcs_path,
+            "--where", f"chrom={region_chrom}",
+            "--where", f"begin>={region_start}",
+            "--where", f"begin<={region_stop}",
+            "--json",
+        ],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+
+    records = []
+    for line in proc.stdout:
+        line = line.strip()
+        if not line.startswith("{"):
+            continue
+        try:
+            rec = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        records.append((rec.get("begin", 0), rec.get("end", 0), rec.get("mod_score", 0.0), rec.get("cov", 0)))
+
+    proc.wait()
+    return sample_id, records
+
+
+def load_methylation(es_url, region_chrom, region_start, region_stop, parallelism=16):
+    """Query HPRC .bed.gz files via genohype, aggregate across samples, and load summary into ES."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    import time
+
     print(f"\n=== Loading methylation summary data ===")
+
+    # Find genohype binary
+    genohype_bin = os.environ.get("GENOHYPE_BIN", "genohype")
+    result = subprocess.run([genohype_bin, "--version"], capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"  ERROR: genohype not found at '{genohype_bin}'. Set GENOHYPE_BIN env var.")
+        return 0
+    print(f"  Using genohype: {genohype_bin}")
 
     files = gcs_list(GCS_METHYLATION_DIR)
     bedgz_files = [f for f in files if f.endswith(".bed.gz") and not f.endswith(".tbi")]
@@ -529,57 +573,70 @@ def load_methylation(es_url, region_chrom, region_start, region_stop):
         print("  No .bed.gz files found on GCS")
         return 0
 
-    print(f"  Found {len(bedgz_files)} bed.gz files. Aggregating...")
+    print(f"  Found {len(bedgz_files)} bed.gz files. Querying {parallelism} samples in parallel...")
     delete_and_create_index(es_url, METHY_INDEX)
 
-    # Dictionary to aggregate CpG sites: pos1 -> { sum_meth, sum_cov, count, pos2 }
+    # Query all samples in parallel
     agg_data = {}
-    samples_processed = 0
+    samples_completed = 0
+    t0 = time.time()
 
-    for gcs_path in bedgz_files:
-        # Convert gs:// to https://storage.googleapis.com/ for tabix
-        http_path = gcs_path.replace("gs://", "https://storage.googleapis.com/")
-        region_query = f"{region_chrom}:{region_start}-{region_stop}"
+    task_args = [(genohype_bin, gcs_path, region_chrom, region_start, region_stop) for gcs_path in bedgz_files]
 
-        proc = subprocess.Popen(
-            ["tabix", http_path, region_query],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
+    with ThreadPoolExecutor(max_workers=parallelism) as pool:
+        futures = {pool.submit(_query_sample, args): args for args in task_args}
+        for future in as_completed(futures):
+            sample_id, records = future.result()
+            for pos1, pos2, meth, cov in records:
+                if pos1 not in agg_data:
+                    agg_data[pos1] = {"pos2": pos2, "samples": []}
+                agg_data[pos1]["samples"].append((sample_id, meth, cov))
 
-        sample_sites = 0
-        for line in proc.stdout:
-            parts = line.strip().split("\t")
-            if len(parts) < 6:
-                continue
-
-            pos1 = int(parts[1])
-            pos2 = int(parts[2])
-            meth = float(parts[3])
-            cov = int(parts[5])
-
-            if pos1 not in agg_data:
-                agg_data[pos1] = {"pos2": pos2, "sum_meth": 0.0, "sum_cov": 0, "count": 0}
-
-            agg_data[pos1]["sum_meth"] += meth
-            agg_data[pos1]["sum_cov"] += cov
-            agg_data[pos1]["count"] += 1
-            sample_sites += 1
-
-        proc.wait()
-        samples_processed += 1
-        if samples_processed % 10 == 0:
-            print(f"  Processed {samples_processed}/{len(bedgz_files)} samples ({len(agg_data)} CpG sites)...")
+            samples_completed += 1
+            elapsed = time.time() - t0
+            rate = samples_completed / elapsed if elapsed > 0 else 0
+            eta = (len(bedgz_files) - samples_completed) / rate if rate > 0 else 0
+            print(f"  [{samples_completed}/{len(bedgz_files)}] {sample_id}: {len(records)} sites | {rate:.1f} samples/s | ETA {eta:.0f}s")
 
     print(f"  Aggregated {len(agg_data)} CpG sites across {samples_processed} samples")
 
     bulk_lines = []
     count = 0
 
+    import math
+    from collections import Counter
+
+    OUTLIER_Z_THRESHOLD = 2.0  # flag samples > 2 std from mean
+
+    # Track per-sample outlier counts and direction across all CpG sites
+    sample_outlier_counts = Counter()  # sample_id -> number of outlier sites
+    sample_hypo_counts = Counter()     # sites where sample is below mean
+    sample_hyper_counts = Counter()    # sites where sample is above mean
+    sample_total_sites = Counter()     # total sites seen per sample
+
     for pos1, data in sorted(agg_data.items()):
-        mean_meth = data["sum_meth"] / data["count"]
-        mean_cov = data["sum_cov"] / data["count"]
+        samples = data["samples"]  # list of (sample_id, meth, cov)
+        n = len(samples)
+        values = [s[1] for s in samples]
+        coverages = [s[2] for s in samples]
+        mean_meth = sum(values) / n
+        mean_cov = sum(coverages) / n
+        min_meth = min(values)
+        max_meth = max(values)
+        variance = sum((v - mean_meth) ** 2 for v in values) / n
+        std_meth = math.sqrt(variance)
+
+        # Count outlier hits per sample
+        if std_meth > 0:
+            for sid, meth, _cov in samples:
+                sample_total_sites[sid] += 1
+                deviation = meth - mean_meth
+                if abs(deviation) > OUTLIER_Z_THRESHOLD * std_meth:
+                    sample_outlier_counts[sid] += 1
+                    if deviation < 0:
+                        sample_hypo_counts[sid] += 1
+                    else:
+                        sample_hyper_counts[sid] += 1
 
         doc_id = f"{region_chrom}_{pos1}"
         doc = {
@@ -589,7 +646,10 @@ def load_methylation(es_url, region_chrom, region_start, region_stop):
             "pos2": data["pos2"],
             "mean_methylation": mean_meth,
             "mean_coverage": mean_cov,
-            "num_samples": data["count"],
+            "num_samples": n,
+            "std_methylation": std_meth,
+            "min_methylation": min_meth,
+            "max_methylation": max_meth,
         }
 
         bulk_lines.append(
@@ -607,6 +667,48 @@ def load_methylation(es_url, region_chrom, region_start, region_stop):
         es_bulk(es_url, bulk_lines)
 
     print(f"  Total: {count} aggregated methylation summary docs inserted")
+
+    # Build per-sample outlier ranking and store as a single doc
+    total_sites = len(agg_data)
+    ranking = []
+    for sid in sorted(sample_outlier_counts, key=sample_outlier_counts.get, reverse=True):
+        outlier_count = sample_outlier_counts[sid]
+        hypo = sample_hypo_counts.get(sid, 0)
+        hyper = sample_hyper_counts.get(sid, 0)
+        direction = "hypo" if hypo > hyper else "hyper" if hyper > hypo else "mixed"
+        ranking.append({
+            "sample_id": sid,
+            "outlier_count": outlier_count,
+            "outlier_fraction": round(outlier_count / total_sites, 4) if total_sites > 0 else 0,
+            "direction": direction,
+        })
+
+    ranking_doc = {
+        "chrom": region_chrom,
+        "start": region_start,
+        "stop": region_stop,
+        "total_cpg_sites": total_sites,
+        "total_samples": samples_processed,
+        "samples": ranking,
+    }
+    ranking_id = f"{region_chrom}_{region_start}_{region_stop}_outliers"
+
+    # Store in the same index with a special doc type prefix
+    OUTLIER_INDEX = "gnomad_r4_lr_methylation_outliers"
+    try:
+        req = urllib.request.Request(f"{es_url}/{OUTLIER_INDEX}", method="DELETE")
+        urllib.request.urlopen(req)
+    except urllib.error.HTTPError:
+        pass
+    bulk_lines = [
+        json.dumps({"index": {"_index": OUTLIER_INDEX, "_type": "_doc", "_id": ranking_id}}),
+        json.dumps(ranking_doc),
+    ]
+    es_bulk(es_url, bulk_lines)
+
+    outlier_samples = [s for s in ranking if s["outlier_count"] > 0]
+    print(f"  Outlier ranking: {len(outlier_samples)} samples with at least 1 outlier site (top: {ranking[0]['sample_id']}={ranking[0]['outlier_count']} sites)" if ranking else "  No outlier data")
+
     return count
 
 
@@ -760,6 +862,7 @@ def main():
     parser.add_argument("--coverage-downsample", type=int, default=0, help="Sample every Nth base for coverage (default: auto)")
     parser.add_argument("--gnomad-api", default=GNOMAD_API, help="gnomAD API URL for gene models")
     parser.add_argument("--region", default="chr22:20000000-21000000", help="Region to load (format: chrN:start-stop)")
+    parser.add_argument("--parallelism", type=int, default=16, help="Number of parallel genohype queries for methylation (default: 16)")
     args = parser.parse_args()
 
     # Parse region
@@ -803,7 +906,7 @@ def main():
 
     # Load methylation
     if not args.skip_methy:
-        load_methylation(args.es_url, region_chrom, region_start, region_stop)
+        load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism)
 
     # Load gene models
     if not args.skip_genes:
@@ -811,7 +914,7 @@ def main():
 
     # Verify counts
     print("\n=== Verification ===")
-    for idx in [HAPLO_INDEX, METHY_INDEX, COVERAGE_INDEX, GENES_INDEX]:
+    for idx in [HAPLO_INDEX, METHY_INDEX, "gnomad_r4_lr_methylation_outliers", COVERAGE_INDEX, GENES_INDEX]:
         try:
             # Force refresh before counting
             es_request(args.es_url, f"/{idx}/_refresh", data="", method="POST")

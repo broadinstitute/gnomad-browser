@@ -21,7 +21,7 @@ import EditRegion from '../RegionPage/EditRegion'
 import GenesInRegionTrack from '../RegionPage/GenesInRegionTrack'
 import RegionInfo from '../RegionPage/RegionInfo'
 
-import HaplotypeTrack, { HaplotypeGroups, Methylation } from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroups, Methylation, MethylationSummaryPoint } from '../Haplotypes'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import LRCoverageTrack from './LRCoverageTrack'
 
@@ -49,7 +49,16 @@ const HAPLOTYPE_GROUPS_QUERY = `
 const METHYLATION_SUMMARY_QUERY = `
   query RegionMethylationSummary($chrom: String!, $start: Int!, $stop: Int!) {
     methylation_summary(chrom: $chrom, start: $start, stop: $stop) {
-      chrom pos1 pos2 mean_methylation mean_coverage num_samples
+      chrom pos1 pos2 mean_methylation mean_coverage num_samples std_methylation min_methylation max_methylation
+    }
+  }
+`
+
+const METHYLATION_OUTLIERS_QUERY = `
+  query RegionMethylationOutliers($chrom: String!, $start: Int!, $stop: Int!) {
+    methylation_outliers(chrom: $chrom, start: $start, stop: $stop) {
+      total_cpg_sites total_samples
+      samples { sample_id outlier_count outlier_fraction direction }
     }
   }
 `
@@ -112,7 +121,8 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
   const [methylationData, setMethylationData] = useState<Methylation[]>([])
-  const [methylationSummary, setMethylationSummary] = useState<any[]>([])
+  const [methylationSummary, setMethylationSummary] = useState<MethylationSummaryPoint[]>([])
+  const [methylationOutliers, setMethylationOutliers] = useState<any>(null)
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
 
@@ -141,45 +151,56 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
     [chrom, start, stop, sortBy]
   )
 
-  // Fetch summary data on mount
+  // Fetch summary + outlier ranking on mount
   useEffect(() => {
-    const fetchSummaryData = async () => {
+    const fetchSummaryAndOutliers = async () => {
       try {
-        const result = await fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop })
-        if (result.data?.methylation_summary) {
-          setMethylationSummary(result.data.methylation_summary)
+        const [summaryResult, outlierResult] = await Promise.all([
+          fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop }),
+          fetchGraphQL(METHYLATION_OUTLIERS_QUERY, { chrom, start, stop }),
+        ])
+        if (summaryResult.data?.methylation_summary) {
+          setMethylationSummary(summaryResult.data.methylation_summary)
+        }
+        if (outlierResult.data?.methylation_outliers) {
+          setMethylationOutliers(outlierResult.data.methylation_outliers)
         }
       } catch (error) {
-        console.error('Error fetching methylation summary:', error)
+        console.error('Error fetching methylation data:', error)
       }
     }
-    fetchSummaryData()
+    fetchSummaryAndOutliers()
   }, [chrom, start, stop])
 
-  // Fetch per-sample methylation after haplotypeGroups resolve
+  // Auto-fetch per-sample methylation for top outlier samples
+  const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
-    const fetchPerSampleMethylation = async () => {
-      if (!haplotypeGroups || haplotypeGroups.groups.length === 0) return
+    const fetchOutlierMethylation = async () => {
+      if (!methylationOutliers?.samples?.length) return
 
-      const sampleIds = Array.from(new Set(
-        haplotypeGroups.groups.flatMap(g => g.samples.map(s => s.sample_id))
-      ))
+      // Take top N outlier samples by outlier_count
+      const topOutliers = methylationOutliers.samples
+        .slice(0, MAX_AUTO_FETCH_OUTLIERS)
+        .filter((s: any) => s.outlier_count > 0)
+        .map((s: any) => s.sample_id)
 
-      if (sampleIds.length === 0) return
+      if (topOutliers.length === 0) return
+
+      console.log(`Fetching methylation for ${topOutliers.length} outlier samples`)
 
       try {
         const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: sampleIds,
+          chrom, start, stop, samples: topOutliers,
         })
         if (result.data?.methylation) {
           setMethylationData(result.data.methylation)
         }
       } catch (error) {
-        console.error('Error fetching per-sample methylation:', error)
+        console.error('Error fetching outlier methylation:', error)
       }
     }
-    fetchPerSampleMethylation()
-  }, [chrom, start, stop, haplotypeGroups])
+    fetchOutlierMethylation()
+  }, [chrom, start, stop, methylationOutliers])
 
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
@@ -269,6 +290,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
           <HaplotypeTrack
             haplotypeGroups={haplotypeGroups.groups}
             methylationData={methylationData}
+            methylationSummary={methylationSummary}
             start={start}
             stop={stop}
             initialMinAf={threshold}
