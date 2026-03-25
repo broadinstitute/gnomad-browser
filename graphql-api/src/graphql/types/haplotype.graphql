@@ -67,6 +67,25 @@ type MethylationSummaryRecord {
   mean_methylation: Float!
   mean_coverage: Float!
   num_samples: Int!
+  std_methylation: Float
+  min_methylation: Float
+  max_methylation: Float
+}
+
+type MethylationOutlierSample {
+  sample_id: String!
+  outlier_count: Int!
+  outlier_fraction: Float!
+  direction: String!
+}
+
+type MethylationOutlierRanking {
+  chrom: String!
+  start: Int!
+  stop: Int!
+  total_cpg_sites: Int!
+  total_samples: Int!
+  samples: [MethylationOutlierSample!]!
 }
 
 type RecombinationRateRecord {
@@ -96,6 +115,12 @@ extend type Query {
     start: Int!
     stop: Int!
   ): [MethylationSummaryRecord!]!
+
+  methylation_outliers(
+    chrom: String!
+    start: Int!
+    stop: Int!
+  ): MethylationOutlierRanking
 
   recombination_rate(
     chrom: String!

@@ -1,4 +1,8 @@
+import { execFile } from 'child_process'
+import { promisify } from 'util'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
+
+const execFileAsync = promisify(execFile)
 
 // Cap the number of variant docs fetched to prevent OOM on large regions.
 // 710K docs in a 1MB region is too much; 100K is ~150kb worth of data which
@@ -100,8 +104,68 @@ export const fetchMethylationSummaryForRegion = async (
   return hits.map((hit: any) => hit._source)
 }
 
-const GENOHYPE_BASE_URL = process.env.GENOHYPE_URL || 'http://hail-server:3000'
+export const fetchMethylationOutliersForRegion = async (
+  esClient: any,
+  chrom: string,
+  start: number,
+  stop: number
+) => {
+  try {
+    const docId = `${chrom}_${start}_${stop}_outliers`
+    const response = await esClient.get({
+      index: 'gnomad_r4_lr_methylation_outliers',
+      type: '_doc',
+      id: docId,
+    })
+    return response.body._source
+  } catch (error: any) {
+    // Index or doc may not exist yet
+    if (error.meta?.statusCode === 404) return null
+    console.error(`Error fetching methylation outliers: ${error.message}`)
+    return null
+  }
+}
+
+const GENOHYPE_BIN = process.env.GENOHYPE_BIN || 'genohype'
 const GCS_METHYLATION_BUCKET = 'gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/HPRC_assembly/methylation'
+
+// Temporary: shell out to the genohype CLI to query per-sample methylation
+// from Tabix-indexed .bed.gz files on GCS. This will be replaced with a
+// direct HTTP call to genohype-server once its build is fixed.
+const queryGenohypeCli = async (
+  sample: string,
+  chrom: string,
+  start: number,
+  stop: number
+): Promise<any[]> => {
+  const tablePath = `${GCS_METHYLATION_BUCKET}/${sample}.model.pbmm2.combined.bed.gz`
+  try {
+    const { stdout } = await execFileAsync(GENOHYPE_BIN, [
+      'query', tablePath,
+      '--where', `chrom=${chrom}`,
+      '--where', `begin>=${start}`,
+      '--where', `begin<=${stop}`,
+      '--json',
+    ], { maxBuffer: 10 * 1024 * 1024, timeout: 30000 })
+
+    // genohype --json outputs one JSON object per line (after header lines)
+    const lines = stdout.trim().split('\n')
+    const records: any[] = []
+    for (const line of lines) {
+      if (line.startsWith('{')) {
+        try {
+          records.push(JSON.parse(line))
+        } catch {
+          // skip non-JSON lines (status output)
+        }
+      }
+    }
+    return records
+  } catch (error: any) {
+    console.error(`genohype query failed for sample ${sample}: ${error.message}`)
+    return []
+  }
+}
 
 export const fetchMethylationForRegion = async (
   esClient: any,
@@ -113,28 +177,15 @@ export const fetchMethylationForRegion = async (
   if (!samples || samples.length === 0) return []
 
   const fetchPromises = samples.map(async (sample) => {
-    const tablePath = `${GCS_METHYLATION_BUCKET}/${sample}.model.pbmm2.combined.bed.gz`
-    const url = `${GENOHYPE_BASE_URL}/api/query?table=${encodeURIComponent(tablePath)}&interval=${chrom}:${start}-${stop}&format=json`
-
-    try {
-      const response = await fetch(url)
-      if (!response.ok) {
-        console.error(`Genohype returned ${response.status} for sample ${sample}`)
-        return []
-      }
-      const data = await response.json()
-      return data.map((d: any) => ({
-        chr: d.chrom || chrom,
-        pos1: d.pos1,
-        pos2: d.pos2,
-        methylation: d.methylation,
-        coverage: d.coverage,
-        sample,
-      }))
-    } catch (error) {
-      console.error(`Failed to fetch methylation for sample ${sample}:`, error)
-      return []
-    }
+    const records = await queryGenohypeCli(sample, chrom, start, stop)
+    return records.map((d: any) => ({
+      chr: d.chrom || chrom,
+      pos1: d.begin,
+      pos2: d.end,
+      methylation: d.mod_score,
+      coverage: d.cov,
+      sample,
+    }))
   })
 
   const results = await Promise.all(fetchPromises)
