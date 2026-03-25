@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""Load real HPRC haplotype data, methylation, and gene models into local Elasticsearch.
+"""Load real HPRC haplotype data, methylation, coverage, and gene models into local Elasticsearch.
 
-Downloads pre-computed samples JSON from GCS, methylation bedgraphs, and gene models
-from the public gnomAD API, then bulk-inserts everything into local ES.
+Supports two modes:
+  - vcf (default): Stream the v1 reformatted VCF (232 samples, chr22) from GCS
+  - json (legacy): Download pre-computed samples JSON from the old HPRC prototype
 
 Usage:
-    python3 development/load_real_haplotype_data.py                # afewgenes (fast, ~1 MB)
-    python3 development/load_real_haplotype_data.py --full          # full chr1 (554 MB)
+    python3 development/load_real_haplotype_data.py                # VCF mode, chr22:20M-21M (default)
+    python3 development/load_real_haplotype_data.py --full          # full chr22 (requires 4+ GB ES heap)
+    python3 development/load_real_haplotype_data.py --mode json     # old JSON mode (chr1 prototype)
+    python3 development/load_real_haplotype_data.py --skip-coverage # skip coverage loading
     python3 development/load_real_haplotype_data.py --skip-genes    # skip gene model loading
 """
 import argparse
+import gzip
+import hashlib
 import json
 import os
 import subprocess
@@ -18,14 +23,19 @@ import tempfile
 import urllib.request
 from pathlib import Path
 
-# GCS paths
+# GCS paths — old prototype data (JSON mode)
 GCS_SAMPLES_AFEWGENES = "gs://gnomad-v4-data-pipeline/inputs/haploytype_input/2024-06-19/afewgenes/samples-fff0695d-484f-417d-861b-f0500a0f9aa0.json"
 GCS_SAMPLES_FULL = "gs://gnomad-v4-data-pipeline/inputs/haploytype_input/2024-06-20/chr1_hpcr/samples-e6103797-2e6c-46a3-b12d-c82c4b2a6c8c.json"
 GCS_METHYLATION_DIR = "gs://gnomad-v4-data-pipeline/inputs/haploytype_input/2024-06-26/methylation_files/"
 
+# GCS paths — new v1/v2 datasets
+GCS_VCF_V1 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v1/hprc_chr22.reformatted.vcf.gz"
+GCS_COVERAGE_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc.coverage.tsv.gz"
+
 # ES indices
 HAPLO_INDEX = "gnomad_r4_lr_haplotypes"
 METHY_INDEX = "gnomad_r4_lr_methylation"
+COVERAGE_INDEX = "gnomad_r4_lr_coverage"
 GENES_INDEX = "genes_grch38"
 
 # gnomAD public API
@@ -60,7 +70,12 @@ def es_bulk(es_url, bulk_lines):
         data=body.encode(),
         headers={"Content-Type": "application/x-ndjson"},
     )
-    resp = json.loads(urllib.request.urlopen(req).read())
+    try:
+        resp = json.loads(urllib.request.urlopen(req).read())
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode()
+        print(f"  Bulk HTTP error {e.code}: {err_body[:1000]}")
+        raise
     if resp.get("errors"):
         # Find first error
         for item in resp["items"]:
@@ -108,7 +123,238 @@ def gcs_list(gcs_dir):
     return [line.strip() for line in result.stdout.strip().split("\n") if line.strip()]
 
 
-# --- Haplotype loading ---
+def gcs_stream_gzip(gcs_path):
+    """Stream a gzipped file from GCS, yielding decoded lines."""
+    proc = subprocess.Popen(
+        ["gsutil", "cat", gcs_path],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    with gzip.open(proc.stdout, "rt") as f:
+        for line in f:
+            yield line
+    proc.wait()
+    if proc.returncode != 0:
+        stderr = proc.stderr.read().decode()
+        print(f"  gsutil cat error: {stderr[:500]}")
+
+
+# --- Haplotype loading (VCF mode) ---
+
+
+def parse_info_field(info_str):
+    """Parse a VCF INFO field into a dictionary."""
+    info = {}
+    for entry in info_str.split(";"):
+        if "=" in entry:
+            key, val = entry.split("=", 1)
+            info[key] = val
+        else:
+            info[entry] = True
+    return info
+
+
+def parse_info_float(info, key, default=None):
+    """Extract a float value from parsed INFO dict."""
+    val = info.get(key)
+    if val is None or val == ".":
+        return default
+    try:
+        return float(val)
+    except (ValueError, TypeError):
+        return default
+
+
+def parse_info_int(info, key, default=None):
+    """Extract an int value from parsed INFO dict."""
+    val = info.get(key)
+    if val is None or val == ".":
+        return default
+    try:
+        return int(val)
+    except (ValueError, TypeError):
+        return default
+
+
+def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop):
+    """Stream the v1 reformatted VCF from GCS and load per-carrier docs into ES."""
+    print(f"\n=== Loading haplotypes from VCF (streaming from GCS) ===")
+    print(f"  VCF: {GCS_VCF_V1}")
+    print(f"  Region: {region_chrom}:{region_start}-{region_stop}")
+
+    delete_and_create_index(es_url, HAPLO_INDEX)
+
+    sample_names = []
+    bulk_lines = []
+    count = 0
+    variants_seen = 0
+
+    for line in gcs_stream_gzip(GCS_VCF_V1):
+        line = line.rstrip("\n")
+
+        # Header lines
+        if line.startswith("##"):
+            continue
+        if line.startswith("#CHROM"):
+            parts = line.split("\t")
+            sample_names = parts[9:]  # samples start at column 9
+            print(f"  Found {len(sample_names)} samples in VCF header")
+            continue
+
+        # Variant line
+        parts = line.split("\t")
+        if len(parts) < 10:
+            continue
+
+        chrom_field = parts[0]
+        pos = int(parts[1])
+
+        # Filter by region
+        if chrom_field != region_chrom:
+            continue
+        if pos < region_start or pos > region_stop:
+            continue
+
+        variants_seen += 1
+        ref = parts[3]
+        alt = parts[4]
+        qual_str = parts[5]
+        filter_field = parts[6]
+        info_str = parts[7]
+        format_field = parts[8]
+
+        qual = float(qual_str) if qual_str != "." else 0
+        filters = [] if filter_field == "." or filter_field == "PASS" else filter_field.split(";")
+
+        # Parse INFO
+        info = parse_info_field(info_str)
+        af = parse_info_float(info, "AF")
+        ac = parse_info_int(info, "AC")
+        an = parse_info_int(info, "AN")
+        allele_type = info.get("allele_type", "")
+        if allele_type is True:
+            allele_type = ""
+        allele_length = parse_info_int(info, "allele_length")
+        gnomad_v4_match_type = info.get("gnomAD_V4_match_type", "")
+        if gnomad_v4_match_type is True:
+            gnomad_v4_match_type = ""
+
+        # Population AFs
+        af_afr = parse_info_float(info, "AF_afr")
+        af_amr = parse_info_float(info, "AF_amr")
+        af_eas = parse_info_float(info, "AF_eas")
+        af_nfe = parse_info_float(info, "AF_nfe")
+        af_sas = parse_info_float(info, "AF_sas")
+
+        # Parse FORMAT fields
+        format_keys = format_field.split(":")
+
+        rsid = parts[2] if parts[2] != "." else ""
+
+        # Process each sample
+        for i, sample_data in enumerate(parts[9:]):
+            if sample_data == "." or sample_data.startswith("./."):
+                continue
+
+            fmt_values = sample_data.split(":")
+            fmt = dict(zip(format_keys, fmt_values))
+
+            gt = fmt.get("GT", "./.")
+            if gt in ("./.", "0|0", "0/0"):
+                continue
+
+            # Check RNC (reason not called)
+            rnc = fmt.get("RNC", "..")
+            if rnc != ".." and rnc != "..":
+                # RNC has two characters, one per allele. "." means called OK.
+                # Skip if both alleles have a reason-not-called
+                if rnc[0] != "." and rnc[1] != ".":
+                    continue
+
+            # Determine separator and phase
+            if "|" in gt:
+                gt_parts = gt.split("|")
+                gt_phased = True
+            else:
+                gt_parts = gt.split("/")
+                gt_phased = False
+
+            gt_alleles = []
+            try:
+                gt_alleles = [int(a) for a in gt_parts if a != "."]
+            except ValueError:
+                continue
+
+            # Determine which strands carry the alt allele
+            strands = []
+            if len(gt_parts) >= 1 and gt_parts[0] == "1":
+                strands.append(1)
+            if len(gt_parts) >= 2 and gt_parts[1] == "1":
+                strands.append(2)
+            if not strands:
+                continue
+
+            sample_id = sample_names[i]
+            dp = parse_info_int(fmt, "DP") if "DP" in fmt else None
+            gq = parse_info_int(fmt, "GQ") if "GQ" in fmt else None
+
+            for strand in strands:
+                raw_id = f"{sample_id}_{strand}_{chrom_field}_{pos}_{ref}_{alt}"
+                # ES doc IDs have a 512-byte limit; hash long IDs (from large SVs)
+                if len(raw_id) > 400:
+                    doc_id = f"{sample_id}_{strand}_{chrom_field}_{pos}_{hashlib.md5(raw_id.encode()).hexdigest()}"
+                else:
+                    doc_id = raw_id
+                doc = {
+                    "document_id": doc_id,
+                    "sample_id": sample_id,
+                    "strand": strand,
+                    "chrom": chrom_field,
+                    "position": pos,
+                    "alleles": [ref, alt],
+                    "rsid": rsid,
+                    "qual": qual,
+                    "filters": filters,
+                    "info_AF": [af] if af is not None else [],
+                    "info_AC": ac or 0,
+                    "info_AN": an or 0,
+                    "info_CM": [],
+                    "info_SVTYPE": "",
+                    "info_SVLEN": 0,
+                    "gt_alleles": gt_alleles,
+                    "gt_phased": gt_phased,
+                    # New fields from v1 VCF
+                    "allele_type": allele_type,
+                    "allele_length": allele_length,
+                    "depth": dp,
+                    "genotype_quality": gq,
+                    "gnomad_v4_match_type": gnomad_v4_match_type,
+                    "info_AF_afr": af_afr,
+                    "info_AF_amr": af_amr,
+                    "info_AF_eas": af_eas,
+                    "info_AF_nfe": af_nfe,
+                    "info_AF_sas": af_sas,
+                }
+
+                bulk_lines.append(
+                    json.dumps({"index": {"_index": HAPLO_INDEX, "_type": "_doc", "_id": doc_id}})
+                )
+                bulk_lines.append(json.dumps(doc))
+                count += 1
+
+                if len(bulk_lines) >= BATCH_SIZE * 2:
+                    es_bulk(es_url, bulk_lines)
+                    print(f"  Inserted {count} docs so far ({variants_seen} variants processed)...")
+                    bulk_lines = []
+
+    if bulk_lines:
+        es_bulk(es_url, bulk_lines)
+
+    print(f"  Total: {count} haplotype docs inserted from {variants_seen} variant sites")
+    return count
+
+
+# --- Haplotype loading (JSON mode, legacy) ---
 
 
 def load_haplotypes(es_url, samples_json_path, region_start, region_stop):
@@ -176,6 +422,96 @@ def load_haplotypes(es_url, samples_json_path, region_start, region_stop):
         es_bulk(es_url, bulk_lines)
 
     print(f"  Total: {count} haplotype docs inserted")
+    return count
+
+
+# --- Coverage loading ---
+
+
+def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0):
+    """Stream v2 coverage TSV from GCS and load into ES."""
+    print(f"\n=== Loading coverage data ===")
+    print(f"  Coverage: {GCS_COVERAGE_V2}")
+    print(f"  Region: {region_chrom}:{region_start}-{region_stop}")
+
+    # Auto-calculate downsample step
+    region_size = region_stop - region_start
+    if downsample > 0:
+        step = downsample
+    else:
+        step = max(1, region_size // 10000)
+    print(f"  Downsample step: every {step} bases")
+
+    delete_and_create_index(es_url, COVERAGE_INDEX)
+
+    bulk_lines = []
+    count = 0
+    lines_scanned = 0
+    last_pos = -step  # Track position for downsampling
+
+    # Coverage TSV columns (headerless):
+    # chrom, pos, pos, mean, median, total_bases, over_1, over_5, over_10, over_15, over_20, over_25, over_30, over_50, over_100
+    for line in gcs_stream_gzip(GCS_COVERAGE_V2):
+        line = line.rstrip("\n")
+        if not line:
+            continue
+
+        parts = line.split("\t")
+        if len(parts) < 15:
+            continue
+
+        chrom = parts[0]
+        if chrom != region_chrom:
+            # If we've already passed our chrom, stop early
+            if lines_scanned > 0 and count > 0:
+                break
+            continue
+
+        pos = int(parts[1])
+        if pos < region_start:
+            continue
+        if pos > region_stop:
+            break  # Coverage is sorted, so we can stop
+
+        lines_scanned += 1
+
+        # Downsample: only keep every Nth base
+        if pos - last_pos < step:
+            continue
+        last_pos = pos
+
+        doc = {
+            "chrom": chrom,
+            "pos": pos,
+            "mean": float(parts[3]),
+            "median": float(parts[4]),
+            "over_1": float(parts[6]),
+            "over_5": float(parts[7]),
+            "over_10": float(parts[8]),
+            "over_15": float(parts[9]),
+            "over_20": float(parts[10]),
+            "over_25": float(parts[11]),
+            "over_30": float(parts[12]),
+            "over_50": float(parts[13]),
+            "over_100": float(parts[14]),
+        }
+        doc_id = f"{chrom}_{pos}"
+
+        bulk_lines.append(
+            json.dumps({"index": {"_index": COVERAGE_INDEX, "_type": "_doc", "_id": doc_id}})
+        )
+        bulk_lines.append(json.dumps(doc))
+        count += 1
+
+        if len(bulk_lines) >= BATCH_SIZE * 2:
+            es_bulk(es_url, bulk_lines)
+            print(f"  Inserted {count} coverage docs so far ({lines_scanned} lines scanned)...")
+            bulk_lines = []
+
+    if bulk_lines:
+        es_bulk(es_url, bulk_lines)
+
+    print(f"  Total: {count} coverage docs inserted ({lines_scanned} lines scanned in region)")
     return count
 
 
@@ -397,12 +733,15 @@ def load_genes(es_url, api_url, chrom, start, stop):
 def main():
     parser = argparse.ArgumentParser(description="Load real HPRC data into local ES")
     parser.add_argument("--es-url", default="http://127.0.0.1:9200", help="Elasticsearch URL")
-    parser.add_argument("--full", action="store_true", help="Use full chr1 dataset (554 MB) instead of afewgenes (1.1 MB)")
+    parser.add_argument("--full", action="store_true", help="Load full chromosome (requires 4+ GB ES heap)")
+    parser.add_argument("--mode", choices=["vcf", "json"], default="vcf", help="Loader mode: vcf (new v1 VCF) or json (old samples JSON)")
     parser.add_argument("--skip-haplo", action="store_true", help="Skip haplotype loading")
     parser.add_argument("--skip-methy", action="store_true", help="Skip methylation loading")
+    parser.add_argument("--skip-coverage", action="store_true", help="Skip coverage loading")
     parser.add_argument("--skip-genes", action="store_true", help="Skip gene model loading")
+    parser.add_argument("--coverage-downsample", type=int, default=0, help="Sample every Nth base for coverage (default: auto)")
     parser.add_argument("--gnomad-api", default=GNOMAD_API, help="gnomAD API URL for gene models")
-    parser.add_argument("--region", default="chr1:100000000-110000000", help="Region to load (format: chrN:start-stop)")
+    parser.add_argument("--region", default="chr22:20000000-21000000", help="Region to load (format: chrN:start-stop)")
     args = parser.parse_args()
 
     # Parse region
@@ -413,9 +752,10 @@ def main():
     region_start = int(start_stop[0])
     region_stop = int(start_stop[1])
 
+    mode_label = f"VCF mode ({GCS_VCF_V1.split('/')[-1]})" if args.mode == "vcf" else "JSON mode (legacy)"
     print(f"ES URL: {args.es_url}")
     print(f"Region: {region_chrom}:{region_start}-{region_stop}")
-    print(f"Dataset: {'full chr1 (554 MB)' if args.full else 'afewgenes (1.1 MB)'}")
+    print(f"Mode: {mode_label}")
 
     # Check ES is reachable
     try:
@@ -427,14 +767,21 @@ def main():
 
     # Load haplotypes
     if not args.skip_haplo:
-        gcs_path = GCS_SAMPLES_FULL if args.full else GCS_SAMPLES_AFEWGENES
-        with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
-            tmp_path = tmp.name
-        try:
-            gcs_download(gcs_path, tmp_path)
-            load_haplotypes(args.es_url, tmp_path, region_start, region_stop)
-        finally:
-            os.unlink(tmp_path)
+        if args.mode == "vcf":
+            load_haplotypes_vcf(args.es_url, region_chrom, region_start, region_stop)
+        else:
+            gcs_path = GCS_SAMPLES_FULL if args.full else GCS_SAMPLES_AFEWGENES
+            with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
+                tmp_path = tmp.name
+            try:
+                gcs_download(gcs_path, tmp_path)
+                load_haplotypes(args.es_url, tmp_path, region_start, region_stop)
+            finally:
+                os.unlink(tmp_path)
+
+    # Load coverage (VCF mode only — old JSON data has no coverage)
+    if not args.skip_coverage and args.mode == "vcf":
+        load_coverage(args.es_url, region_chrom, region_start, region_stop, args.coverage_downsample)
 
     # Load methylation
     if not args.skip_methy:
@@ -446,7 +793,7 @@ def main():
 
     # Verify counts
     print("\n=== Verification ===")
-    for idx in [HAPLO_INDEX, METHY_INDEX, GENES_INDEX]:
+    for idx in [HAPLO_INDEX, METHY_INDEX, COVERAGE_INDEX, GENES_INDEX]:
         try:
             # Force refresh before counting
             es_request(args.es_url, f"/{idx}/_refresh", data="", method="POST")

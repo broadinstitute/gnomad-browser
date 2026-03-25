@@ -15,6 +15,16 @@ type HaplotypeVariant {
   gt_alleles: [Int!]
   gt_phased: Boolean
   in_samples: [String!]
+  allele_type: String
+  allele_length: Int
+  depth: Int
+  genotype_quality: Int
+  gnomad_v4_match_type: String
+  info_AF_afr: Float
+  info_AF_amr: Float
+  info_AF_eas: Float
+  info_AF_nfe: Float
+  info_AF_sas: Float
 }
 
 type HaplotypeVariantSet {
@@ -76,4 +86,10 @@ extend type Query {
     start: Int!
     stop: Int!
   ): [RecombinationRateRecord!]!
+
+  lr_coverage(
+    chrom: String!
+    start: Int!
+    stop: Int!
+  ): [CoverageBin!]!
 }

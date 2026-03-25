@@ -1,6 +1,7 @@
 import {
   fetchHaplotypeVariantsForRegion,
   fetchMethylationForRegion,
+  fetchLRCoverageForRegion,
 } from '../../queries/haplotype-queries'
 import {
   reconstructSamplesFromVariants,
@@ -60,6 +61,10 @@ const resolvers = {
     recombination_rate: async (_obj: any, args: any, _ctx: any) => {
       const chrom = normalizeChrom(args.chrom)
       return fetchRecombinationRate(chrom, args.start, args.stop)
+    },
+    lr_coverage: async (_obj: any, args: any, ctx: any) => {
+      const chrom = normalizeChrom(args.chrom)
+      return fetchLRCoverageForRegion(ctx.esClient, chrom, args.start, args.stop)
     },
   },
 }
