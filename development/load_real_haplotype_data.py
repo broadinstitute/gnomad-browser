@@ -26,7 +26,7 @@ from pathlib import Path
 # GCS paths — old prototype data (JSON mode)
 GCS_SAMPLES_AFEWGENES = "gs://gnomad-v4-data-pipeline/inputs/haploytype_input/2024-06-19/afewgenes/samples-fff0695d-484f-417d-861b-f0500a0f9aa0.json"
 GCS_SAMPLES_FULL = "gs://gnomad-v4-data-pipeline/inputs/haploytype_input/2024-06-20/chr1_hpcr/samples-e6103797-2e6c-46a3-b12d-c82c4b2a6c8c.json"
-GCS_METHYLATION_DIR = "gs://gnomad-v4-data-pipeline/inputs/haploytype_input/2024-06-26/methylation_files/"
+GCS_METHYLATION_DIR = "gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/HPRC_assembly/methylation/"
 
 # GCS paths — new v1/v2 datasets
 GCS_VCF_V1 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v1/hprc_chr22.reformatted.vcf.gz"
@@ -34,7 +34,7 @@ GCS_COVERAGE_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD
 
 # ES indices
 HAPLO_INDEX = "gnomad_r4_lr_haplotypes"
-METHY_INDEX = "gnomad_r4_lr_methylation"
+METHY_INDEX = "gnomad_r4_lr_methylation_summary"
 COVERAGE_INDEX = "gnomad_r4_lr_coverage"
 GENES_INDEX = "genes_grch38"
 
@@ -519,76 +519,94 @@ def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0)
 
 
 def load_methylation(es_url, region_chrom, region_start, region_stop):
-    """Download methylation bedgraphs from GCS and load into ES."""
-    print(f"\n=== Loading methylation data ===")
+    """Fetch HPRC .bed.gz files via Tabix, aggregate across samples, and load summary into ES."""
+    print(f"\n=== Loading methylation summary data ===")
 
     files = gcs_list(GCS_METHYLATION_DIR)
-    bedgraph_files = [f for f in files if f.endswith(".bedgraph")]
+    bedgz_files = [f for f in files if f.endswith(".bed.gz") and not f.endswith(".tbi")]
 
-    if not bedgraph_files:
-        print("  No bedgraph files found on GCS")
+    if not bedgz_files:
+        print("  No .bed.gz files found on GCS")
         return 0
 
-    print(f"  Found {len(bedgraph_files)} bedgraph files")
+    print(f"  Found {len(bedgz_files)} bed.gz files. Aggregating...")
     delete_and_create_index(es_url, METHY_INDEX)
+
+    # Dictionary to aggregate CpG sites: pos1 -> { sum_meth, sum_cov, count, pos2 }
+    agg_data = {}
+    samples_processed = 0
+
+    for gcs_path in bedgz_files:
+        # Convert gs:// to https://storage.googleapis.com/ for tabix
+        http_path = gcs_path.replace("gs://", "https://storage.googleapis.com/")
+        region_query = f"{region_chrom}:{region_start}-{region_stop}"
+
+        proc = subprocess.Popen(
+            ["tabix", http_path, region_query],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        sample_sites = 0
+        for line in proc.stdout:
+            parts = line.strip().split("\t")
+            if len(parts) < 6:
+                continue
+
+            pos1 = int(parts[1])
+            pos2 = int(parts[2])
+            meth = float(parts[3])
+            cov = int(parts[5])
+
+            if pos1 not in agg_data:
+                agg_data[pos1] = {"pos2": pos2, "sum_meth": 0.0, "sum_cov": 0, "count": 0}
+
+            agg_data[pos1]["sum_meth"] += meth
+            agg_data[pos1]["sum_cov"] += cov
+            agg_data[pos1]["count"] += 1
+            sample_sites += 1
+
+        proc.wait()
+        samples_processed += 1
+        if samples_processed % 10 == 0:
+            print(f"  Processed {samples_processed}/{len(bedgz_files)} samples ({len(agg_data)} CpG sites)...")
+
+    print(f"  Aggregated {len(agg_data)} CpG sites across {samples_processed} samples")
 
     bulk_lines = []
     count = 0
 
-    with tempfile.TemporaryDirectory() as tmpdir:
-        for gcs_path in bedgraph_files:
-            filename = os.path.basename(gcs_path)
-            local_path = os.path.join(tmpdir, filename)
-            gcs_download(gcs_path, local_path)
+    for pos1, data in sorted(agg_data.items()):
+        mean_meth = data["sum_meth"] / data["count"]
+        mean_cov = data["sum_cov"] / data["count"]
 
-            # Derive sample_id from filename (e.g., "highpromoter.0.bedgraph" -> "highpromoter_0")
-            sample_id = filename.replace(".bedgraph", "").replace(".", "_")
+        doc_id = f"{region_chrom}_{pos1}"
+        doc = {
+            "document_id": doc_id,
+            "chrom": region_chrom,
+            "pos1": pos1,
+            "pos2": data["pos2"],
+            "mean_methylation": mean_meth,
+            "mean_coverage": mean_cov,
+            "num_samples": data["count"],
+        }
 
-            with open(local_path) as f:
-                for line in f:
-                    line = line.strip()
-                    if not line or line.startswith("#") or line.startswith("track"):
-                        continue
-                    parts = line.split("\t")
-                    if len(parts) < 4:
-                        continue
+        bulk_lines.append(
+            json.dumps({"index": {"_index": METHY_INDEX, "_type": "_doc", "_id": doc_id}})
+        )
+        bulk_lines.append(json.dumps(doc))
+        count += 1
 
-                    chrom = parts[0]
-                    start = int(parts[1])
-                    end = int(parts[2])
-                    methylation_pct = float(parts[3])
-
-                    # Filter to region of interest
-                    if chrom != region_chrom:
-                        continue
-                    if end < region_start or start > region_stop:
-                        continue
-
-                    doc_id = f"{sample_id}_{chrom}_{start}"
-                    doc = {
-                        "document_id": doc_id,
-                        "sample_id": sample_id,
-                        "chrom": chrom,
-                        "pos1": start,
-                        "pos2": end,
-                        "methylation": methylation_pct,
-                    }
-
-                    bulk_lines.append(
-                        json.dumps({"index": {"_index": METHY_INDEX, "_type": "_doc", "_id": doc_id}})
-                    )
-                    bulk_lines.append(json.dumps(doc))
-                    count += 1
-
-                    if len(bulk_lines) >= BATCH_SIZE * 2:
-                        es_bulk(es_url, bulk_lines)
-                        print(f"  Inserted {count} methylation docs so far...")
-                        bulk_lines = []
+        if len(bulk_lines) >= BATCH_SIZE * 2:
+            es_bulk(es_url, bulk_lines)
+            print(f"  Inserted {count} summary docs so far...")
+            bulk_lines = []
 
     if bulk_lines:
         es_bulk(es_url, bulk_lines)
 
-    print(f"  Total: {count} methylation docs inserted")
+    print(f"  Total: {count} aggregated methylation summary docs inserted")
     return count
 
 

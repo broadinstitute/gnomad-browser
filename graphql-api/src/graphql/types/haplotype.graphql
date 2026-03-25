@@ -57,6 +57,16 @@ type MethylationRecord {
   pos2: Int!
   methylation: Float!
   sample: String!
+  coverage: Int
+}
+
+type MethylationSummaryRecord {
+  chrom: String!
+  pos1: Int!
+  pos2: Int!
+  mean_methylation: Float!
+  mean_coverage: Float!
+  num_samples: Int!
 }
 
 type RecombinationRateRecord {
@@ -78,8 +88,14 @@ extend type Query {
     chrom: String!
     start: Int!
     stop: Int!
-    sample: String
+    samples: [String!]
   ): [MethylationRecord!]!
+
+  methylation_summary(
+    chrom: String!
+    start: Int!
+    stop: Int!
+  ): [MethylationSummaryRecord!]!
 
   recombination_rate(
     chrom: String!

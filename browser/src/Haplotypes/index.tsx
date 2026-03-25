@@ -348,6 +348,7 @@ export type Methylation = {
   pos1: number
   pos2: number
   sample: string
+  coverage?: number
 }
 
 const HaplotypeGroupTooltip = ({ group }: { group: HaplotypeGroup }) => (
@@ -878,8 +879,14 @@ const HaplotypeTrack = ({
                                     </div>
                                     <div>
                                       <dt>Methylation:</dt>
-                                      <dd>{d.methylation}</dd>
+                                      <dd>{d.methylation.toFixed(1)}%</dd>
                                     </div>
+                                    {d.coverage !== undefined && (
+                                      <div>
+                                        <dt>Coverage:</dt>
+                                        <dd>{d.coverage}x</dd>
+                                      </div>
+                                    )}
                                     <div>
                                       <dt>Sample:</dt>
                                       <dd>{d.sample}</dd>
