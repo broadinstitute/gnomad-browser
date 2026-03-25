@@ -5,7 +5,7 @@ import { TooltipAnchor } from '@gnomad/ui'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { SegmentedControl } from '@gnomad/ui'
 
-const renderMaxRows = 7
+// No artificial cap — render all haplotype groups
 
 const Wrapper = styled.div`
   display: flex;
@@ -107,10 +107,9 @@ export const Legend = ({
     onColorModeChange(newColorMode)
   }
 
-  const handleSortModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newSortMode = event.target.value
-    setSortMode(newSortMode)
-    onSortModeChange(newSortMode)
+  const handleSortModeChange = (value: string) => {
+    setSortMode(value)
+    onSortModeChange(value)
   }
 
   const handleShowMethylationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -469,9 +468,7 @@ const renderTrackLeftPanel =
           <svg
             width={200}
             height={
-              (haplotypeGroups.length > renderMaxRows
-                ? renderMaxRows
-                : haplotypeGroups.length + 1) *
+              (haplotypeGroups.length + 1) *
                 trackHeight +
               30
             }
@@ -504,7 +501,7 @@ const renderTrackLeftPanel =
                 </tspan>
               </text>
             </g>
-            {haplotypeGroups.slice(0, renderMaxRows).map((group, index) => {
+            {haplotypeGroups.map((group, index) => {
               const y = 60 + index * trackHeight
               return (
                 <TooltipAnchor
@@ -709,11 +706,11 @@ const HaplotypeTrack = ({
   const variantCircleRadius = regionSize > 100000 ? 2 : 4
 
   const methylationPlotHeight = showMethylation
-    ? (haplotypeGroups.length > renderMaxRows ? renderMaxRows : haplotypeGroups.length + 1) * 50
+    ? (haplotypeGroups.length + 1) * 50
     : 0
 
   const dynamicHeight =
-    (haplotypeGroups.length > renderMaxRows ? renderMaxRows : haplotypeGroups.length) * 21 +
+    haplotypeGroups.length * 21 +
     methylationPlotHeight
 
   const methylationYScale = scaleLinear()
@@ -754,7 +751,7 @@ const HaplotypeTrack = ({
             </TopPanel>
             <PlotWrapper>
               <svg height={dynamicHeight} width={width}>
-                {haplotypeGroups.slice(0, renderMaxRows).map((group, rowIndex) => {
+                {haplotypeGroups.map((group, rowIndex) => {
                   const startX = scalePosition(start)
                   const stopX = scalePosition(stop)
                   const groupWidth = stopX - startX
