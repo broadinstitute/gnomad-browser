@@ -23,6 +23,7 @@ import RegionInfo from '../RegionPage/RegionInfo'
 
 import HaplotypeTrack, { HaplotypeGroups, Methylation } from '../Haplotypes'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
+import LRCoverageTrack from './LRCoverageTrack'
 
 import { Region } from '../RegionPage/RegionPage'
 
@@ -225,7 +226,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
       >
-        {/* Coverage track disabled — no coverage data for long-read haplotypes */}
+        <LRCoverageTrack chrom={region.chrom} start={region.start} stop={region.stop} />
 
         <RecombinationRatePlot chrom={region.chrom} start={region.start} stop={region.stop} />
         <GenesInRegionTrack genes={region.genes} region={region} />
