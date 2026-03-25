@@ -598,7 +598,7 @@ def load_methylation(es_url, region_chrom, region_start, region_stop, parallelis
             eta = (len(bedgz_files) - samples_completed) / rate if rate > 0 else 0
             print(f"  [{samples_completed}/{len(bedgz_files)}] {sample_id}: {len(records)} sites | {rate:.1f} samples/s | ETA {eta:.0f}s")
 
-    print(f"  Aggregated {len(agg_data)} CpG sites across {samples_processed} samples")
+    print(f"  Aggregated {len(agg_data)} CpG sites across {samples_completed} samples")
 
     bulk_lines = []
     count = 0
@@ -688,7 +688,7 @@ def load_methylation(es_url, region_chrom, region_start, region_stop, parallelis
         "start": region_start,
         "stop": region_stop,
         "total_cpg_sites": total_sites,
-        "total_samples": samples_processed,
+        "total_samples": samples_completed,
         "samples": ranking,
     }
     ranking_id = f"{region_chrom}_{region_start}_{region_stop}_outliers"

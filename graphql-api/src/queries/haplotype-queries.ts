@@ -167,6 +167,22 @@ const queryGenohypeCli = async (
   }
 }
 
+// Run async tasks with bounded concurrency
+const parallelLimit = async <T>(tasks: (() => Promise<T>)[], limit: number): Promise<T[]> => {
+  const results: T[] = []
+  let index = 0
+  const workers = Array.from({ length: Math.min(limit, tasks.length) }, async () => {
+    while (index < tasks.length) {
+      const i = index++
+      results[i] = await tasks[i]()
+    }
+  })
+  await Promise.all(workers)
+  return results
+}
+
+const GENOHYPE_CONCURRENCY = parseInt(process.env.GENOHYPE_CONCURRENCY || '16', 10)
+
 export const fetchMethylationForRegion = async (
   esClient: any,
   chrom: string,
@@ -176,7 +192,9 @@ export const fetchMethylationForRegion = async (
 ) => {
   if (!samples || samples.length === 0) return []
 
-  const fetchPromises = samples.map(async (sample) => {
+  console.log(`Fetching methylation for ${samples.length} samples (concurrency=${GENOHYPE_CONCURRENCY})`)
+
+  const tasks = samples.map((sample) => async () => {
     const records = await queryGenohypeCli(sample, chrom, start, stop)
     return records.map((d: any) => ({
       chr: d.chrom || chrom,
@@ -188,6 +206,6 @@ export const fetchMethylationForRegion = async (
     }))
   })
 
-  const results = await Promise.all(fetchPromises)
+  const results = await parallelLimit(tasks, GENOHYPE_CONCURRENCY)
   return results.flat()
 }
