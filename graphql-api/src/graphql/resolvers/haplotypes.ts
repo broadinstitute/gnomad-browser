@@ -1,6 +1,7 @@
 import {
   fetchHaplotypeVariantsForRegion,
   fetchMethylationForRegion,
+  fetchMethylationSummaryForRegion,
   fetchLRCoverageForRegion,
 } from '../../queries/haplotype-queries'
 import {
@@ -56,7 +57,11 @@ const resolvers = {
     },
     methylation: async (_obj: any, args: any, ctx: any) => {
       const chrom = normalizeChrom(args.chrom)
-      return fetchMethylationForRegion(ctx.esClient, chrom, args.start, args.stop, args.sample)
+      return fetchMethylationForRegion(ctx.esClient, chrom, args.start, args.stop, args.samples)
+    },
+    methylation_summary: async (_obj: any, args: any, ctx: any) => {
+      const chrom = normalizeChrom(args.chrom)
+      return fetchMethylationSummaryForRegion(ctx.esClient, chrom, args.start, args.stop)
     },
     recombination_rate: async (_obj: any, args: any, _ctx: any) => {
       const chrom = normalizeChrom(args.chrom)

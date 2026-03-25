@@ -46,10 +46,18 @@ const HAPLOTYPE_GROUPS_QUERY = `
   }
 `
 
+const METHYLATION_SUMMARY_QUERY = `
+  query RegionMethylationSummary($chrom: String!, $start: Int!, $stop: Int!) {
+    methylation_summary(chrom: $chrom, start: $start, stop: $stop) {
+      chrom pos1 pos2 mean_methylation mean_coverage num_samples
+    }
+  }
+`
+
 const METHYLATION_QUERY = `
-  query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!) {
-    methylation(chrom: $chrom, start: $start, stop: $stop) {
-      chr pos1 pos2 methylation sample
+  query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!, $samples: [String!]) {
+    methylation(chrom: $chrom, start: $start, stop: $stop, samples: $samples) {
+      chr pos1 pos2 methylation sample coverage
     }
   }
 `
@@ -104,6 +112,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
   const [methylationData, setMethylationData] = useState<Methylation[]>([])
+  const [methylationSummary, setMethylationSummary] = useState<any[]>([])
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
 
@@ -132,19 +141,45 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
     [chrom, start, stop, sortBy]
   )
 
+  // Fetch summary data on mount
   useEffect(() => {
-    const fetchMethylationData = async () => {
+    const fetchSummaryData = async () => {
       try {
-        const result = await fetchGraphQL(METHYLATION_QUERY, { chrom, start, stop })
+        const result = await fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop })
+        if (result.data?.methylation_summary) {
+          setMethylationSummary(result.data.methylation_summary)
+        }
+      } catch (error) {
+        console.error('Error fetching methylation summary:', error)
+      }
+    }
+    fetchSummaryData()
+  }, [chrom, start, stop])
+
+  // Fetch per-sample methylation after haplotypeGroups resolve
+  useEffect(() => {
+    const fetchPerSampleMethylation = async () => {
+      if (!haplotypeGroups || haplotypeGroups.groups.length === 0) return
+
+      const sampleIds = Array.from(new Set(
+        haplotypeGroups.groups.flatMap(g => g.samples.map(s => s.sample_id))
+      ))
+
+      if (sampleIds.length === 0) return
+
+      try {
+        const result = await fetchGraphQL(METHYLATION_QUERY, {
+          chrom, start, stop, samples: sampleIds,
+        })
         if (result.data?.methylation) {
           setMethylationData(result.data.methylation)
         }
       } catch (error) {
-        console.error('Error fetching methylation data:', error)
+        console.error('Error fetching per-sample methylation:', error)
       }
     }
-    fetchMethylationData()
-  }, [chrom, start, stop])
+    fetchPerSampleMethylation()
+  }, [chrom, start, stop, haplotypeGroups])
 
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
