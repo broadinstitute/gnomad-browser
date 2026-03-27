@@ -360,6 +360,9 @@ importers:
 
   graphql-api:
     dependencies:
+      '@clickhouse/client':
+        specifier: ^1.18.2
+        version: 1.18.2
       '@elastic/elasticsearch':
         specifier: '6'
         version: 6.8.8
@@ -2767,6 +2770,17 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@clickhouse/client-common@1.18.2:
+    resolution: {integrity: sha512-J0SG6q9V31ydxonglpj9xhNRsUxCsF71iEZ784yldqMYwsHixj/9xHFDgBDX3DuMiDx/kPDfXnf+pimp08wIBA==}
+    dev: false
+
+  /@clickhouse/client@1.18.2:
+    resolution: {integrity: sha512-fuquQswRSHWM6D079ZeuGqkMOsqtcUPL06UdTnowmoeeYjVrqisfVmvnw8pc3OeKS4kVb91oygb/MfLDiMs0TQ==}
+    engines: {node: '>=16'}
+    dependencies:
+      '@clickhouse/client-common': 1.18.2
+    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
