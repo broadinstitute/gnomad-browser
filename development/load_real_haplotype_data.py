@@ -62,6 +62,27 @@ def es_request(es_url, path, data=None, method=None):
         raise
 
 
+def clickhouse_insert(ch_url, table, bulk_lines):
+    """Send JSONEachRow bulk request to ClickHouse."""
+    # Filter out ES metadata lines ({"index": ...}) and only keep the actual document lines
+    doc_lines = [line for line in bulk_lines if not line.startswith('{"index"')]
+    body = "\n".join(doc_lines) + "\n"
+
+    url = f"{ch_url}/?query=INSERT%20INTO%20{table}%20FORMAT%20JSONEachRow"
+    req = urllib.request.Request(
+        url,
+        data=body.encode(),
+        headers={"Content-Type": "application/x-ndjson"},
+    )
+    try:
+        resp = urllib.request.urlopen(req)
+        return resp.read().decode()
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode()
+        print(f"  ClickHouse HTTP error {e.code}: {err_body[:1000]}")
+        raise
+
+
 def es_bulk(es_url, bulk_lines):
     """Send bulk request to ES."""
     body = "\n".join(bulk_lines) + "\n"
@@ -176,13 +197,14 @@ def parse_info_int(info, key, default=None):
         return default
 
 
-def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop):
-    """Stream the v1 reformatted VCF from GCS and load per-carrier docs into ES."""
+def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend="es", ch_url=None):
+    """Stream the v1 reformatted VCF from GCS and load per-carrier docs into ES or ClickHouse."""
     print(f"\n=== Loading haplotypes from VCF (streaming from GCS) ===")
     print(f"  VCF: {GCS_VCF_V1}")
     print(f"  Region: {region_chrom}:{region_start}-{region_stop}")
 
-    delete_and_create_index(es_url, HAPLO_INDEX)
+    if backend == "es":
+        delete_and_create_index(es_url, HAPLO_INDEX)
 
     sample_names = []
     bulk_lines = []
@@ -343,12 +365,18 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop):
                 count += 1
 
                 if len(bulk_lines) >= BATCH_SIZE * 2:
-                    es_bulk(es_url, bulk_lines)
+                    if backend == "clickhouse":
+                        clickhouse_insert(ch_url, "lr_haplotypes", bulk_lines)
+                    else:
+                        es_bulk(es_url, bulk_lines)
                     print(f"  Inserted {count} docs so far ({variants_seen} variants processed)...")
                     bulk_lines = []
 
     if bulk_lines:
-        es_bulk(es_url, bulk_lines)
+        if backend == "clickhouse":
+            clickhouse_insert(ch_url, "lr_haplotypes", bulk_lines)
+        else:
+            es_bulk(es_url, bulk_lines)
 
     print(f"  Total: {count} haplotype docs inserted from {variants_seen} variant sites")
     return count
@@ -428,8 +456,8 @@ def load_haplotypes(es_url, samples_json_path, region_start, region_stop):
 # --- Coverage loading ---
 
 
-def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0):
-    """Stream v2 coverage TSV from GCS and load into ES."""
+def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0, backend="es", ch_url=None):
+    """Stream v2 coverage TSV from GCS and load into ES or ClickHouse."""
     print(f"\n=== Loading coverage data ===")
     print(f"  Coverage: {GCS_COVERAGE_V2}")
     print(f"  Region: {region_chrom}:{region_start}-{region_stop}")
@@ -442,7 +470,8 @@ def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0)
         step = max(1, region_size // 10000)
     print(f"  Downsample step: every {step} bases")
 
-    delete_and_create_index(es_url, COVERAGE_INDEX)
+    if backend == "es":
+        delete_and_create_index(es_url, COVERAGE_INDEX)
 
     bulk_lines = []
     count = 0
@@ -504,12 +533,18 @@ def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0)
         count += 1
 
         if len(bulk_lines) >= BATCH_SIZE * 2:
-            es_bulk(es_url, bulk_lines)
+            if backend == "clickhouse":
+                clickhouse_insert(ch_url, "lr_coverage", bulk_lines)
+            else:
+                es_bulk(es_url, bulk_lines)
             print(f"  Inserted {count} coverage docs so far ({lines_scanned} lines scanned)...")
             bulk_lines = []
 
     if bulk_lines:
-        es_bulk(es_url, bulk_lines)
+        if backend == "clickhouse":
+            clickhouse_insert(ch_url, "lr_coverage", bulk_lines)
+        else:
+            es_bulk(es_url, bulk_lines)
 
     print(f"  Total: {count} coverage docs inserted ({lines_scanned} lines scanned in region)")
     return count
@@ -551,12 +586,12 @@ def _query_sample(args):
     return sample_id, records
 
 
-def load_methylation(es_url, region_chrom, region_start, region_stop, parallelism=16):
-    """Query HPRC .bed.gz files via genohype, aggregate across samples, and load summary into ES."""
+def load_methylation(es_url, region_chrom, region_start, region_stop, parallelism=16, backend="es", ch_url=None):
+    """Query HPRC .bed.gz files via genohype, aggregate across samples, and load into ES or ClickHouse."""
     from concurrent.futures import ThreadPoolExecutor, as_completed
     import time
 
-    print(f"\n=== Loading methylation summary data ===")
+    print(f"\n=== Loading methylation {'per-sample' if backend == 'clickhouse' else 'summary'} data ===")
 
     # Find genohype binary
     genohype_bin = os.environ.get("GENOHYPE_BIN", "genohype")
@@ -574,12 +609,15 @@ def load_methylation(es_url, region_chrom, region_start, region_stop, parallelis
         return 0
 
     print(f"  Found {len(bedgz_files)} bed.gz files. Querying {parallelism} samples in parallel...")
-    delete_and_create_index(es_url, METHY_INDEX)
+    if backend == "es":
+        delete_and_create_index(es_url, METHY_INDEX)
 
     # Query all samples in parallel
     agg_data = {}
     samples_completed = 0
     t0 = time.time()
+    ch_bulk_lines = []
+    ch_count = 0
 
     task_args = [(genohype_bin, gcs_path, region_chrom, region_start, region_stop) for gcs_path in bedgz_files]
 
@@ -587,16 +625,43 @@ def load_methylation(es_url, region_chrom, region_start, region_stop, parallelis
         futures = {pool.submit(_query_sample, args): args for args in task_args}
         for future in as_completed(futures):
             sample_id, records = future.result()
-            for pos1, pos2, meth, cov in records:
-                if pos1 not in agg_data:
-                    agg_data[pos1] = {"pos2": pos2, "samples": []}
-                agg_data[pos1]["samples"].append((sample_id, meth, cov))
+
+            if backend == "clickhouse":
+                # Insert per-sample rows directly into lr_methylation
+                for pos1, pos2, meth, cov in records:
+                    doc = {
+                        "chrom": region_chrom,
+                        "pos1": pos1,
+                        "pos2": pos2,
+                        "sample_id": sample_id,
+                        "methylation": meth,
+                        "coverage": cov,
+                    }
+                    ch_bulk_lines.append(json.dumps({"index": {}}))
+                    ch_bulk_lines.append(json.dumps(doc))
+                    ch_count += 1
+                    if len(ch_bulk_lines) >= BATCH_SIZE * 2:
+                        clickhouse_insert(ch_url, "lr_methylation", ch_bulk_lines)
+                        print(f"  Inserted {ch_count} methylation rows so far...")
+                        ch_bulk_lines = []
+            else:
+                for pos1, pos2, meth, cov in records:
+                    if pos1 not in agg_data:
+                        agg_data[pos1] = {"pos2": pos2, "samples": []}
+                    agg_data[pos1]["samples"].append((sample_id, meth, cov))
 
             samples_completed += 1
             elapsed = time.time() - t0
             rate = samples_completed / elapsed if elapsed > 0 else 0
             eta = (len(bedgz_files) - samples_completed) / rate if rate > 0 else 0
             print(f"  [{samples_completed}/{len(bedgz_files)}] {sample_id}: {len(records)} sites | {rate:.1f} samples/s | ETA {eta:.0f}s")
+
+    # Flush remaining ClickHouse rows
+    if backend == "clickhouse":
+        if ch_bulk_lines:
+            clickhouse_insert(ch_url, "lr_methylation", ch_bulk_lines)
+        print(f"  Total: {ch_count} per-sample methylation rows inserted")
+        return ch_count
 
     print(f"  Aggregated {len(agg_data)} CpG sites across {samples_completed} samples")
 
@@ -851,8 +916,10 @@ def load_genes(es_url, api_url, chrom, start, stop):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Load real HPRC data into local ES")
+    parser = argparse.ArgumentParser(description="Load real HPRC data into local datastore")
+    parser.add_argument("--backend", choices=["es", "clickhouse"], default="es", help="Target datastore")
     parser.add_argument("--es-url", default="http://127.0.0.1:9200", help="Elasticsearch URL")
+    parser.add_argument("--clickhouse-url", default="http://127.0.0.1:8123", help="ClickHouse URL")
     parser.add_argument("--full", action="store_true", help="Load full chromosome (requires 4+ GB ES heap)")
     parser.add_argument("--mode", choices=["vcf", "json"], default="vcf", help="Loader mode: vcf (new v1 VCF) or json (old samples JSON)")
     parser.add_argument("--skip-haplo", action="store_true", help="Skip haplotype loading")
@@ -874,22 +941,58 @@ def main():
     region_stop = int(start_stop[1])
 
     mode_label = f"VCF mode ({GCS_VCF_V1.split('/')[-1]})" if args.mode == "vcf" else "JSON mode (legacy)"
-    print(f"ES URL: {args.es_url}")
+    backend = args.backend
+    print(f"Backend: {backend}")
+    if backend == "es":
+        print(f"ES URL: {args.es_url}")
+    else:
+        print(f"ClickHouse URL: {args.clickhouse_url}")
     print(f"Region: {region_chrom}:{region_start}-{region_stop}")
     print(f"Mode: {mode_label}")
 
-    # Check ES is reachable
-    try:
-        es_request(args.es_url, "/_cluster/health")
-        print("ES is reachable")
-    except Exception as e:
-        print(f"Cannot reach ES at {args.es_url}: {e}")
-        sys.exit(1)
+    # Helper: route bulk inserts to the right backend
+    def bulk_insert(bulk_lines, table=None, index=None):
+        if backend == "clickhouse":
+            clickhouse_insert(args.clickhouse_url, table, bulk_lines)
+        else:
+            es_bulk(args.es_url, bulk_lines)
+
+    if backend == "es":
+        # Check ES is reachable
+        try:
+            es_request(args.es_url, "/_cluster/health")
+            print("ES is reachable")
+        except Exception as e:
+            print(f"Cannot reach ES at {args.es_url}: {e}")
+            sys.exit(1)
+    else:
+        # Check ClickHouse is reachable and create tables
+        try:
+            url = f"{args.clickhouse_url}/?query=SELECT%201"
+            urllib.request.urlopen(url)
+            print("ClickHouse is reachable")
+        except Exception as e:
+            print(f"Cannot reach ClickHouse at {args.clickhouse_url}: {e}")
+            sys.exit(1)
+        # Create target tables from DDL files
+        ddl_dir = Path(__file__).parent / "clickhouse"
+        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql"]:
+            ddl_path = ddl_dir / sql_file
+            if ddl_path.exists():
+                ddl = ddl_path.read_text()
+                req = urllib.request.Request(
+                    args.clickhouse_url,
+                    data=ddl.encode(),
+                    headers={"Content-Type": "text/plain"},
+                )
+                urllib.request.urlopen(req)
+                print(f"  Created table from {sql_file}")
 
     # Load haplotypes
     if not args.skip_haplo:
         if args.mode == "vcf":
-            load_haplotypes_vcf(args.es_url, region_chrom, region_start, region_stop)
+            load_haplotypes_vcf(args.es_url, region_chrom, region_start, region_stop,
+                                backend=backend, ch_url=args.clickhouse_url)
         else:
             gcs_path = GCS_SAMPLES_FULL if args.full else GCS_SAMPLES_AFEWGENES
             with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
@@ -902,26 +1005,37 @@ def main():
 
     # Load coverage (VCF mode only — old JSON data has no coverage)
     if not args.skip_coverage and args.mode == "vcf":
-        load_coverage(args.es_url, region_chrom, region_start, region_stop, args.coverage_downsample)
+        load_coverage(args.es_url, region_chrom, region_start, region_stop, args.coverage_downsample,
+                      backend=backend, ch_url=args.clickhouse_url)
 
     # Load methylation
     if not args.skip_methy:
-        load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism)
+        load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism,
+                         backend=backend, ch_url=args.clickhouse_url)
 
-    # Load gene models
-    if not args.skip_genes:
+    # Load gene models (ES only — genes stay in ES)
+    if not args.skip_genes and backend == "es":
         load_genes(args.es_url, args.gnomad_api, chrom, region_start, region_stop)
 
     # Verify counts
     print("\n=== Verification ===")
-    for idx in [HAPLO_INDEX, METHY_INDEX, "gnomad_r4_lr_methylation_outliers", COVERAGE_INDEX, GENES_INDEX]:
-        try:
-            # Force refresh before counting
-            es_request(args.es_url, f"/{idx}/_refresh", data="", method="POST")
-            resp = es_request(args.es_url, f"/{idx}/_count")
-            print(f"  {idx}: {resp['count']} docs")
-        except Exception:
-            print(f"  {idx}: (not found)")
+    if backend == "clickhouse":
+        for table in ["lr_haplotypes", "lr_methylation", "lr_coverage"]:
+            try:
+                url = f"{args.clickhouse_url}/?query=SELECT%20count()%20FROM%20{table}"
+                resp = urllib.request.urlopen(url).read().decode().strip()
+                print(f"  {table}: {resp} rows")
+            except Exception:
+                print(f"  {table}: (not found)")
+    else:
+        for idx in [HAPLO_INDEX, METHY_INDEX, "gnomad_r4_lr_methylation_outliers", COVERAGE_INDEX, GENES_INDEX]:
+            try:
+                # Force refresh before counting
+                es_request(args.es_url, f"/{idx}/_refresh", data="", method="POST")
+                resp = es_request(args.es_url, f"/{idx}/_count")
+                print(f"  {idx}: {resp['count']} docs")
+            except Exception:
+                print(f"  {idx}: (not found)")
 
     print("\nDone! Test URLs:")
     print(f"  http://localhost:8008/haplotype/region/{chrom}-{region_start}-{region_stop}")
