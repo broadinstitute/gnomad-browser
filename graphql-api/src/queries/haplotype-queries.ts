@@ -1,190 +1,120 @@
-import { execFile } from 'child_process'
-import { promisify } from 'util'
-import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
-
-const execFileAsync = promisify(execFile)
-
-// Cap the number of variant docs fetched to prevent OOM on large regions.
-// 710K docs in a 1MB region is too much; 100K is ~150kb worth of data which
-// is plenty for haplotype grouping visualization.
-const MAX_HAPLOTYPE_DOCS = 100000
+import { clickhouseClient } from '../clickhouse'
 
 export const fetchHaplotypeVariantsForRegion = async (
-  esClient: any,
+  _esClient: any,
   chrom: string,
   start: number,
   stop: number
 ) => {
-  const allResults: any[] = []
-  const size = 10000
-  const scroll = '30s'
-
-  let response = await esClient.search({
-    index: 'gnomad_r4_lr_haplotypes',
-    type: '_doc',
-    scroll,
-    size,
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { chrom } },
-            { range: { position: { gte: start, lte: stop } } },
-          ],
-        },
-      },
-    },
+  const query = `
+    SELECT * EXCEPT(info_AF),
+           [ref, alt] AS alleles,
+           [info_AF] AS info_AF
+    FROM lr_haplotypes
+    WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+    ORDER BY position ASC
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
   })
-
-  allResults.push(...response.body.hits.hits)
-
-  while (
-    allResults.length < response.body.hits.total.value &&
-    allResults.length < MAX_HAPLOTYPE_DOCS
-  ) {
-    response = await esClient.scroll({
-      scroll,
-      scrollId: response.body._scroll_id,
-    })
-    allResults.push(...response.body.hits.hits)
-  }
-
-  await esClient.clearScroll({ scrollId: response.body._scroll_id })
-
-  return allResults.slice(0, MAX_HAPLOTYPE_DOCS).map((hit: any) => hit._source)
+  return resultSet.json()
 }
 
 export const fetchLRCoverageForRegion = async (
-  esClient: any,
+  _esClient: any,
   chrom: string,
   start: number,
   stop: number
 ) => {
-  const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_r4_lr_coverage',
-    type: '_doc',
-    size: 10000,
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { chrom } },
-            { range: { pos: { gte: start, lte: stop } } },
-          ],
-        },
-      },
-      sort: [{ pos: { order: 'asc' } }],
-    },
+  const query = `
+    SELECT * FROM lr_coverage
+    WHERE chrom = {chrom:String} AND pos BETWEEN {start:UInt32} AND {stop:UInt32}
+    ORDER BY pos ASC
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
   })
-  return hits.map((hit: any) => hit._source)
+  return resultSet.json()
 }
 
 export const fetchMethylationSummaryForRegion = async (
-  esClient: any,
+  _esClient: any,
   chrom: string,
   start: number,
   stop: number
 ) => {
-  const hits = await fetchAllSearchResults(esClient, {
-    index: 'gnomad_r4_lr_methylation_summary',
-    type: '_doc',
-    size: 10000,
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { chrom } },
-            { range: { pos1: { gte: start, lte: stop } } },
-          ],
-        },
-      },
-      sort: [{ pos1: { order: 'asc' } }],
-    },
+  const query = `
+    SELECT pos1, pos2,
+           avgMerge(mean_methylation_state) AS mean_methylation,
+           avgMerge(mean_coverage_state) AS mean_coverage,
+           countMerge(num_samples_state) AS num_samples
+    FROM lr_methylation_summary_mv
+    WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+    GROUP BY pos1, pos2
+    ORDER BY pos1 ASC
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
   })
-  return hits.map((hit: any) => hit._source)
+  return resultSet.json()
 }
 
 export const fetchMethylationOutliersForRegion = async (
-  esClient: any,
+  _esClient: any,
   chrom: string,
   start: number,
   stop: number
 ) => {
-  try {
-    const docId = `${chrom}_${start}_${stop}_outliers`
-    const response = await esClient.get({
-      index: 'gnomad_r4_lr_methylation_outliers',
-      type: '_doc',
-      id: docId,
-    })
-    return response.body._source
-  } catch (error: any) {
-    // Index or doc may not exist yet
-    if (error.meta?.statusCode === 404) return null
-    console.error(`Error fetching methylation outliers: ${error.message}`)
-    return null
-  }
-}
-
-const GENOHYPE_BIN = process.env.GENOHYPE_BIN || 'genohype'
-const GCS_METHYLATION_BUCKET = 'gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/HPRC_assembly/methylation'
-
-// Temporary: shell out to the genohype CLI to query per-sample methylation
-// from Tabix-indexed .bed.gz files on GCS. This will be replaced with a
-// direct HTTP call to genohype-server once its build is fixed.
-const queryGenohypeCli = async (
-  sample: string,
-  chrom: string,
-  start: number,
-  stop: number
-): Promise<any[]> => {
-  const tablePath = `${GCS_METHYLATION_BUCKET}/${sample}.model.pbmm2.combined.bed.gz`
-  try {
-    const { stdout } = await execFileAsync(GENOHYPE_BIN, [
-      'query', tablePath,
-      '--where', `chrom=${chrom}`,
-      '--where', `begin>=${start}`,
-      '--where', `begin<=${stop}`,
-      '--json',
-    ], { maxBuffer: 10 * 1024 * 1024, timeout: 30000 })
-
-    // genohype --json outputs one JSON object per line (after header lines)
-    const lines = stdout.trim().split('\n')
-    const records: any[] = []
-    for (const line of lines) {
-      if (line.startsWith('{')) {
-        try {
-          records.push(JSON.parse(line))
-        } catch {
-          // skip non-JSON lines (status output)
-        }
-      }
-    }
-    return records
-  } catch (error: any) {
-    console.error(`genohype query failed for sample ${sample}: ${error.message}`)
-    return []
-  }
-}
-
-// Run async tasks with bounded concurrency
-const parallelLimit = async <T>(tasks: (() => Promise<T>)[], limit: number): Promise<T[]> => {
-  const results: T[] = []
-  let index = 0
-  const workers = Array.from({ length: Math.min(limit, tasks.length) }, async () => {
-    while (index < tasks.length) {
-      const i = index++
-      results[i] = await tasks[i]()
-    }
+  const query = `
+    SELECT sample_id,
+           countIf(abs(methylation - site_mean) > 2 * site_std) AS outlier_count,
+           count() AS total_sites,
+           'mixed' AS direction
+    FROM lr_methylation
+    JOIN (
+        SELECT pos1,
+               avgMerge(mean_methylation_state) AS site_mean,
+               sqrt(varPopMerge(var_methylation_state)) AS site_std
+        FROM lr_methylation_summary_mv
+        WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+        GROUP BY pos1
+    ) AS stats USING pos1
+    WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+    GROUP BY sample_id
+    ORDER BY outlier_count DESC
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
   })
-  await Promise.all(workers)
-  return results
-}
+  const samples = (await resultSet.json()) as any[]
 
-const GENOHYPE_CONCURRENCY = parseInt(process.env.GENOHYPE_CONCURRENCY || '16', 10)
+  if (!samples.length) return null
+
+  return {
+    chrom,
+    start,
+    stop,
+    total_cpg_sites: samples[0]?.total_sites || 0,
+    total_samples: samples.length,
+    samples: samples.map((s) => ({
+      sample_id: s.sample_id,
+      outlier_count: Number(s.outlier_count),
+      outlier_fraction: Number(s.outlier_count) / Number(s.total_sites),
+      direction: s.direction,
+    })),
+  }
+}
 
 export const fetchMethylationForRegion = async (
-  esClient: any,
+  _esClient: any,
   chrom: string,
   start: number,
   stop: number,
@@ -192,20 +122,17 @@ export const fetchMethylationForRegion = async (
 ) => {
   if (!samples || samples.length === 0) return []
 
-  console.log(`Fetching methylation for ${samples.length} samples (concurrency=${GENOHYPE_CONCURRENCY})`)
-
-  const tasks = samples.map((sample) => async () => {
-    const records = await queryGenohypeCli(sample, chrom, start, stop)
-    return records.map((d: any) => ({
-      chr: d.chrom || chrom,
-      pos1: d.begin,
-      pos2: d.end,
-      methylation: d.mod_score,
-      coverage: d.cov,
-      sample,
-    }))
+  const query = `
+    SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
+    FROM lr_methylation
+    WHERE chrom = {chrom:String}
+      AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+      AND sample_id IN ({samples:Array(String)})
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop, samples },
+    format: 'JSONEachRow',
   })
-
-  const results = await parallelLimit(tasks, GENOHYPE_CONCURRENCY)
-  return results.flat()
+  return resultSet.json()
 }
