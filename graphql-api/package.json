@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "private": true,
   "dependencies": {
+    "@clickhouse/client": "^1.18.2",
     "@elastic/elasticsearch": "6",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.0",
