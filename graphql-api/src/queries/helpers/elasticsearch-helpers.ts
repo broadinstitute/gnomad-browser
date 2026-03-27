@@ -24,7 +24,10 @@ export const fetchAllSearchResults = async (client: any, searchParams: any) => {
     const response = responseQueue.shift()
     allResults.push(...response.body.hits.hits)
 
-    if (allResults.length === response.body.hits.total.value) {
+    const total = typeof response.body.hits.total === 'number'
+      ? response.body.hits.total
+      : response.body.hits.total.value
+    if (allResults.length >= total) {
       // eslint-disable-next-line no-await-in-loop
       await client.clearScroll({
         scrollId: response.body._scroll_id, // eslint-disable-line no-underscore-dangle
