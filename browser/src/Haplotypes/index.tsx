@@ -904,7 +904,7 @@ const HaplotypeTrack = ({
   const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
-  const [showMethylation, setShowMethylation] = useState(true)
+  const [showMethylation, setShowMethylation] = useState(false)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
 
   const handleColorModeChange = useCallback(
