@@ -787,7 +787,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr1.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr1.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -798,7 +798,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr1.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr1.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -815,7 +815,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr1 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr1.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr1.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -825,7 +825,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr1 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr1.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr1.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -852,7 +852,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr2.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr2.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -863,7 +863,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr2.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr2.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -880,7 +880,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr2 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr2.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr2.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -890,7 +890,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr2 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr2.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr2.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -917,7 +917,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr3.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr3.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -928,7 +928,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr3.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr3.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -945,7 +945,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr3 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr3.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr3.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -955,7 +955,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr3 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr3.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr3.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -982,7 +982,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr4.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr4.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -993,7 +993,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr4.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr4.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1010,7 +1010,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr4 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr4.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr4.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1020,7 +1020,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr4 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr4.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr4.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1047,7 +1047,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr5.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr5.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1058,7 +1058,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr5.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr5.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1075,7 +1075,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr5 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr5.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr5.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1085,7 +1085,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr5 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr5.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr5.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1112,7 +1112,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr6.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr6.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1123,7 +1123,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr6.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr6.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1140,7 +1140,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr6 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr6.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr6.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1150,7 +1150,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr6 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr6.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr6.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1177,7 +1177,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr7.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr7.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1188,7 +1188,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr7.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr7.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1205,7 +1205,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr7 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr7.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr7.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1215,7 +1215,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr7 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr7.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr7.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1242,7 +1242,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr8.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr8.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1253,7 +1253,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr8.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr8.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1270,7 +1270,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr8 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr8.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr8.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1280,7 +1280,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr8 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr8.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr8.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1307,7 +1307,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr9.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr9.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1318,7 +1318,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr9.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr9.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1335,7 +1335,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr9 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr9.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr9.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1345,7 +1345,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr9 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr9.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr9.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1372,7 +1372,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr10.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr10.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1383,7 +1383,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr10.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr10.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1400,7 +1400,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr10 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr10.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr10.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1410,7 +1410,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr10 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr10.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr10.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1437,7 +1437,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr11.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr11.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1448,7 +1448,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr11.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr11.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1465,7 +1465,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr11 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr11.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr11.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1475,7 +1475,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr11 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr11.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr11.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1502,7 +1502,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr12.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr12.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1513,7 +1513,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr12.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr12.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1530,7 +1530,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr12 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr12.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr12.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1540,7 +1540,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr12 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr12.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr12.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1567,7 +1567,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr13.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr13.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1578,7 +1578,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr13.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr13.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1595,7 +1595,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr13 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr13.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr13.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1605,7 +1605,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr13 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr13.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr13.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1632,7 +1632,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr14.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr14.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1643,7 +1643,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr14.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr14.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1660,7 +1660,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr14 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr14.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr14.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1670,7 +1670,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr14 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr14.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr14.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1697,7 +1697,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr15.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr15.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1708,7 +1708,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr15.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr15.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1725,7 +1725,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr15 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr15.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr15.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1735,7 +1735,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr15 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr15.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr15.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1762,7 +1762,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr16.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr16.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1773,7 +1773,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr16.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr16.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1790,7 +1790,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr16 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr16.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr16.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1800,7 +1800,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr16 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr16.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr16.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1827,7 +1827,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr17.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr17.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1838,7 +1838,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr17.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr17.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1855,7 +1855,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr17 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr17.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr17.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1865,7 +1865,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr17 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr17.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr17.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1892,7 +1892,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr18.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr18.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1903,7 +1903,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr18.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr18.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1920,7 +1920,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr18 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr18.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr18.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1930,7 +1930,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr18 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr18.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr18.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1957,7 +1957,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr19.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr19.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1968,7 +1968,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr19.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr19.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1985,7 +1985,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr19 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr19.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr19.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1995,7 +1995,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr19 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr19.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr19.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2022,7 +2022,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr20.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr20.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2033,7 +2033,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr20.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr20.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2050,7 +2050,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr20 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr20.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr20.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2060,7 +2060,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr20 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr20.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr20.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2087,7 +2087,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr21.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr21.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2098,7 +2098,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr21.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr21.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2115,7 +2115,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr21 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr21.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr21.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2125,7 +2125,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr21 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr21.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr21.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2152,7 +2152,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr22.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr22.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2163,7 +2163,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr22.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr22.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2180,7 +2180,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr22 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr22.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr22.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2190,7 +2190,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr22 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr22.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr22.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2217,7 +2217,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrX.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrX.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2228,7 +2228,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrX.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrX.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2245,7 +2245,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrX sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrX.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrX.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2255,7 +2255,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrX sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrX.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrX.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2282,7 +2282,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrY.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrY.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2293,7 +2293,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrY.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrY.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2310,7 +2310,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrY sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrY.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrY.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2320,7 +2320,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrY sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chrY.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chrY.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2385,7 +2385,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr1.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr1.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2396,7 +2396,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr1.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr1.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2413,7 +2413,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr1 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr1.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr1.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2423,7 +2423,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr1 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr1.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr1.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2450,7 +2450,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr2.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr2.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2461,7 +2461,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr2.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr2.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2478,7 +2478,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr2 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr2.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr2.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2488,7 +2488,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr2 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr2.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr2.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2515,7 +2515,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr3.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr3.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2526,7 +2526,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr3.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr3.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2543,7 +2543,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr3 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr3.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr3.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2553,7 +2553,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr3 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr3.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr3.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2580,7 +2580,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr4.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr4.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2591,7 +2591,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr4.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr4.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2608,7 +2608,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr4 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr4.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr4.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2618,7 +2618,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr4 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr4.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr4.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2645,7 +2645,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr5.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr5.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2656,7 +2656,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr5.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr5.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2673,7 +2673,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr5 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr5.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr5.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2683,7 +2683,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr5 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr5.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr5.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2710,7 +2710,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr6.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr6.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2721,7 +2721,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr6.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr6.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2738,7 +2738,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr6 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr6.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr6.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2748,7 +2748,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr6 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr6.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr6.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2775,7 +2775,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr7.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr7.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2786,7 +2786,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr7.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr7.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2803,7 +2803,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr7 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr7.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr7.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2813,7 +2813,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr7 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr7.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr7.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2840,7 +2840,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr8.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr8.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2851,7 +2851,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr8.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr8.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2868,7 +2868,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr8 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr8.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr8.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2878,7 +2878,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr8 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr8.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr8.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2905,7 +2905,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr9.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr9.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2916,7 +2916,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr9.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr9.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2933,7 +2933,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr9 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr9.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr9.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2943,7 +2943,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr9 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr9.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr9.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2970,7 +2970,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr10.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr10.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2981,7 +2981,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr10.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr10.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2998,7 +2998,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr10 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr10.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr10.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3008,7 +3008,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr10 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr10.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr10.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3035,7 +3035,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr11.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr11.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3046,7 +3046,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr11.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr11.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3063,7 +3063,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr11 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr11.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr11.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3073,7 +3073,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr11 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr11.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr11.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3100,7 +3100,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr12.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr12.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3111,7 +3111,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr12.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr12.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3128,7 +3128,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr12 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr12.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr12.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3138,7 +3138,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr12 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr12.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr12.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3165,7 +3165,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr13.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr13.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3176,7 +3176,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr13.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr13.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3193,7 +3193,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr13 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr13.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr13.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3203,7 +3203,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr13 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr13.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr13.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3230,7 +3230,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr14.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr14.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3241,7 +3241,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr14.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr14.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3258,7 +3258,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr14 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr14.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr14.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3268,7 +3268,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr14 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr14.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr14.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3295,7 +3295,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr15.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr15.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3306,7 +3306,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr15.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr15.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3323,7 +3323,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr15 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr15.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr15.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3333,7 +3333,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr15 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr15.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr15.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3360,7 +3360,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr16.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr16.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3371,7 +3371,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr16.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr16.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3388,7 +3388,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr16 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr16.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr16.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3398,7 +3398,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr16 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr16.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr16.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3425,7 +3425,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr17.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr17.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3436,7 +3436,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr17.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr17.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3453,7 +3453,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr17 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr17.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr17.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3463,7 +3463,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr17 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr17.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr17.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3490,7 +3490,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr18.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr18.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3501,7 +3501,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr18.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr18.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3518,7 +3518,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr18 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr18.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr18.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3528,7 +3528,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr18 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr18.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr18.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3555,7 +3555,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr19.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr19.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3566,7 +3566,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr19.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr19.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3583,7 +3583,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr19 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr19.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr19.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3593,7 +3593,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr19 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr19.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr19.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3620,7 +3620,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr20.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr20.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3631,7 +3631,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr20.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr20.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3648,7 +3648,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr20 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr20.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr20.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3658,7 +3658,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr20 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr20.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr20.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3685,7 +3685,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr21.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr21.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3696,7 +3696,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr21.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr21.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3713,7 +3713,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr21 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr21.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr21.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3723,7 +3723,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr21 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr21.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr21.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3750,7 +3750,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr22.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr22.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3761,7 +3761,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr22.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr22.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3778,7 +3778,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr22 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr22.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr22.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3788,7 +3788,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chr22 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr22.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr22.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3815,7 +3815,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrX.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrX.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3826,7 +3826,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrX.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrX.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3843,7 +3843,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrX sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrX.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrX.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3853,7 +3853,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrX sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrX.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrX.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3880,7 +3880,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrY.vcf.bgz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrY.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3891,7 +3891,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrY.vcf.bgz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrY.vcf.bgz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -3908,7 +3908,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrY sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrY.vcf.bgz.tbi"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrY.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -3918,7 +3918,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download TBI file for chrY sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chrY.vcf.bgz.tbi"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chrY.vcf.bgz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -6190,7 +6190,7 @@ exports[`Data Page has no unexpected changes 1`] = `
             <a
               aria-label="Download README from Google"
               className="c8"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/constraint/README.txt"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/constraint/gnomad.v4.1.1.gene_constraint_ht_README.md"
               onClick={[Function]}
               rel="noopener noreferrer"
               target="_blank"
@@ -6201,7 +6201,7 @@ exports[`Data Page has no unexpected changes 1`] = `
             <a
               aria-label="Download README from Amazon"
               className="c8"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/constraint/README.txt"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/constraint/gnomad.v4.1.1.gene_constraint_ht_README.md"
               onClick={[Function]}
               rel="noopener noreferrer"
               target="_blank"
@@ -6250,7 +6250,7 @@ exports[`Data Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Constraint metrics TSV from Google"
               className="c8"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.tsv.bgz"
               onClick={[Function]}
               rel="noopener noreferrer"
               target="_blank"
@@ -6261,7 +6261,193 @@ exports[`Data Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Constraint metrics TSV from Amazon"
               className="c8"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.tsv.bgz"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            LOEUF gene percentile TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download LOEUF gene percentile TSV from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/constraint/gnomad.v4.1.1.loeuf_percentile_thresholds.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download LOEUF gene percentile TSV from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/constraint/gnomad.v4.1.1.loeuf_percentile_thresholds.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Mutation rate Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Mutation rate Hail Table"
+            className="c23"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Mutation rate Hail Table"
+            className="c23"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Mutation rate TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Mutation rate TSV from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/constraint/model/gnomad.v4.1.1.mutation_rate.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Mutation rate TSV from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/constraint/model/gnomad.v4.1.1.mutation_rate.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Mutation rate README
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Mutation rate README from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/constraint/model/gnomad.v4.1.1.mutation_rate_README.md"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Mutation rate README from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/constraint/model/gnomad.v4.1.1.mutation_rate_README.md"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Methylation rate Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for Methylation rate Hail Table"
+            className="c23"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for Methylation rate Hail Table"
+            className="c23"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Methylation rate README
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Methylation rate README from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/resources/grch38/methylation_sites/README.md"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Methylation rate README from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/resources/grch38/methylation_sites/README.md"
               onClick={[Function]}
               rel="noopener noreferrer"
               target="_blank"
