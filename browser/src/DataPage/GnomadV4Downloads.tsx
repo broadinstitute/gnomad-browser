@@ -133,14 +133,14 @@ const GnomadV4Downloads = () => {
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
-                  path="/release/4.1/ht/exomes/gnomad.exomes.v4.1.sites.ht"
+                  path="/release/4.1.1/ht/exomes/gnomad.exomes.v4.1.1.sites.ht"
                 />
               </ListItem>
               {exomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
-                    path={`/release/4.1/vcf/exomes/gnomad.exomes.v4.1.sites.chr${chrom}.vcf.bgz`}
+                    path={`/release/4.1.1/vcf/exomes/gnomad.exomes.v4.1.1.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
@@ -156,14 +156,14 @@ const GnomadV4Downloads = () => {
               <ListItem>
                 <GetUrlButtons
                   label="Sites Hail Table"
-                  path="/release/4.1/ht/genomes/gnomad.genomes.v4.1.sites.ht/"
+                  path="/release/4.1.1/ht/genomes/gnomad.genomes.v4.1.1.sites.ht"
                 />
               </ListItem>
               {genomeChromosomeVcfs.map(({ chrom, size, md5 }) => (
                 <ListItem key={chrom}>
                   <DownloadLinks
                     label={`chr${chrom} sites VCF`}
-                    path={`/release/4.1/vcf/genomes/gnomad.genomes.v4.1.sites.chr${chrom}.vcf.bgz`}
+                    path={`/release/4.1.1/vcf/genomes/gnomad.genomes.v4.1.1.sites.chr${chrom}.vcf.bgz`}
                     size={size}
                     md5={md5}
                     associatedFileType="TBI"
@@ -261,7 +261,7 @@ const GnomadV4Downloads = () => {
           <ListItem>
             <GetUrlButtons
               label="Browser variants Hail Table"
-              path="/release/4.1/ht/browser/gnomad.browser.v4.1.sites.ht"
+              path="/release/4.1.1/ht/browser/gnomad.browser.v4.1.1.sites.ht"
             />
           </ListItem>
           <ListItem>
@@ -352,20 +352,56 @@ const GnomadV4Downloads = () => {
           <ListItem>
             <DownloadLinks
               label="README"
-              loggingLabel="v4.1 constraint README"
-              path="/release/4.1/constraint/README.txt"
+              loggingLabel="v4.1.1 constraint README"
+              path="/release/4.1.1/constraint/gnomad.v4.1.1.gene_constraint_ht_README.md"
             />
           </ListItem>
           <ListItem>
             <GetUrlButtons
               label="Constraint metrics Hail Table"
-              path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.ht"
+              path="/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.ht"
             />
           </ListItem>
           <ListItem>
             <DownloadLinks
               label="Constraint metrics TSV"
-              path="/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv"
+              path="/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.tsv.bgz"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="LOEUF gene percentile TSV"
+              path="/release/4.1.1/constraint/gnomad.v4.1.1.loeuf_percentile_thresholds.tsv"
+            />
+          </ListItem>
+          <ListItem>
+            <GetUrlButtons
+              label="Mutation rate Hail Table"
+              path="/release/4.1.1/constraint/model/gnomad.v4.1.1.mutation_rate.ht"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Mutation rate TSV"
+              path="/release/4.1.1/constraint/model/gnomad.v4.1.1.mutation_rate.tsv"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Mutation rate README"
+              path="/release/4.1.1/constraint/model/gnomad.v4.1.1.mutation_rate_README.md"
+            />
+          </ListItem>
+          <ListItem>
+            <GetUrlButtons
+              label="Methylation rate Hail Table"
+              path="/resources/grch38/methylation_sites/methylation_all.ht"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Methylation rate README"
+              path="/resources/grch38/methylation_sites/README.md"
             />
           </ListItem>
         </FileList>
