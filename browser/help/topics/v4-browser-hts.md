@@ -5,7 +5,7 @@ title: 'gnomAD v4 Browser Hail Tables'
 
 In addition to our [variants tables](/downloads#v4-variants), we release four data tables underlying the gnomAD browser. These tables enable our users to more easily incorporate gnomAD data into external pipelines and analyses in a manner consistent with what they see in the browser.
 
-## gnomAD v4.1 exome/genome/joint short variant table
+## gnomAD v4.1.1 exome/genome/joint short variant table
 
 To convert the standard gnomAD short variant (SNV/indel) release tables into a format more suitable for browser display, we join the exome, genome, and joint tables on locus/allele to create a single table. This process ensures that they share the same site-level annotations, thus saving space and optimizing database/API queries. Additionally, allele counts and frequencies are structured in a JSON-like format that is more easily consumable by web applications. The table may also include subset data not visible in the browser.
 
@@ -13,7 +13,7 @@ Each row (i.e., variant) in this table will have distinct allele frequency infor
 
 The script for how this table is created can be found [here](https://github.com/broadinstitute/gnomad-browser/blob/main/data-pipeline/src/data_pipeline/pipelines/gnomad_v4_variants.py).
 
-## gnomAD v4.1/v2.1 genes tables
+## gnomAD v4.1.1/v2.1 genes tables
 
 These tables underlie the gene models data seen in the browser, which contains detailed information on exon-coding regions, transcripts, identifiers, gene constraint, and co-occurrence data. The data from these tables are derived from [GENCODE](https://www.gencodegenes.org/human/release_39.html), the [HUGO Gene Nomenclature Committee (HGNC)](https://www.genenames.org/), [MANE transcripts](https://www.ncbi.nlm.nih.gov/refseq/MANE/), [GTEx](https://gtexportal.org/home/) (coming soon), and from gnomAD secondary analyses.
 
@@ -27,7 +27,7 @@ The scripts for how these tables are created can be found [here](https://github.
 
 # Browser Hail Table Field Descriptions
 
-#### gnomAD v4.1 browser variant Hail Table annotations
+#### gnomAD v4.1.1 browser variant Hail Table annotations
 
 Global fields:
 
@@ -154,7 +154,7 @@ Row fields:
     - `repeat_subunit_length`: The number of residues in the repeat subunit.
   - `alt`: Struct containing information about the alternate allele. Contains the same fields as `ref` above.
 
-#### gnomAD v4.1. browser gene models Hail Table annotations
+#### gnomAD v4.1.1 browser gene models Hail Table annotations
 
 Global fields:
 
