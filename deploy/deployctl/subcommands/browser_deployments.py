@@ -5,6 +5,7 @@ import os
 import string
 import sys
 import typing
+import time
 
 from deployctl.config import config
 from deployctl.shell import kubectl, get_most_recent_tag, image_exists, get_k8s_deployments
@@ -235,6 +236,22 @@ def apply_deployment(name: str) -> None:
 
 
 def delete_deployment(name: str, clean: bool = False) -> None:
+    try:
+        active_prod = get_current_browser_deployment()
+    except Exception as err:  # pylint: disable=broad-except
+        active_prod = None
+        sleep_time = 30
+        print(f"Warning: Could not determine active production deployment. Error: ({err})", file=sys.stderr)
+        print(
+            f"Sleeping for {sleep_time}s before proceeding with deletion. Cancel now with 'ctrl + c' unless you are SURE you want to proceed and delete deployment '{name}'."
+        )
+        time.sleep(sleep_time)
+
+    if active_prod and name == active_prod:
+        raise RuntimeError(
+            f"Warning: '{name}' is currently serving production. Quitting before deletion command is issued."
+        )
+
     deployment_directory = os.path.join(deployments_directory(), name)
 
     if os.path.exists(deployment_directory):
