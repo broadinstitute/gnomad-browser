@@ -164,15 +164,30 @@ const GeneTranscriptsTrack = ({
                   }
                 )
 
+                if (displayedGtexTissues.length === 0) {
+                  return null
+                }
+
                 const meanExpression = mean(
                   displayedGtexTissues.map((tissueExpression) => tissueExpression.value)
-                )!
+                )
+
                 const maxExpression = max(
                   displayedGtexTissues.map((tissueExpression) => tissueExpression.value)
-                )!
-                const tissueMostExpressedIn = displayedGtexTissues.find(
+                )
+
+                if (!meanExpression || !maxExpression) {
+                  return null
+                }
+
+                const tissueMostExpressedInObj = displayedGtexTissues.find(
                   (tissue) => tissue.value === maxExpression
-                )!.tissue
+                )
+                const tissueMostExpressedIn = tissueMostExpressedInObj?.tissue
+
+                if (!tissueMostExpressedIn) {
+                  return null
+                }
 
                 const circleRadiusMeanContribution = meanExpression === 0 ? 0 : 0.25
                 const circleRadiusMaxMeanContribution =
