@@ -8,6 +8,7 @@ import typing
 
 from deployctl.config import config
 from deployctl.shell import kubectl, get_most_recent_tag, image_exists, get_k8s_deployments
+from deployctl.subcommands.ingress_production import get_current_browser_deployment
 
 
 KUSTOMIZATION_TEMPLATE = """---
@@ -130,7 +131,7 @@ def deployments_directory() -> str:
 
 def print_pool_name(pool: str) -> str:
     if pool == "demo-pool":
-        return "(demo-pool)"
+        return " (demo-pool)"
     if pool == "main-pool":
         return ""
 
@@ -144,20 +145,29 @@ def determine_deployment_pool(path: str) -> str:
 
 
 def list_deployments() -> None:
+    active_prod = None
+    try:
+        active_prod = get_current_browser_deployment()
+    except Exception:  # pylint: disable=broad-except
+        pass
+
     print("Local configurations")
     print("====================")
     paths = reversed(sorted(glob.iglob(f"{deployments_directory()}/*/kustomization.yaml"), key=os.path.getmtime))
     for path in paths:
         name = os.path.basename(os.path.dirname(path))
         pool = determine_deployment_pool(path)
-        print(f"{name} {print_pool_name(pool)}")
+        print(f"{name}{print_pool_name(pool)}")
 
     print()
 
     print("Cluster deployments")
     print("===================")
     for deployment, pool in get_k8s_deployments("component=gnomad-browser"):
-        print(f"{deployment[len('gnomad-browser-'):]} {print_pool_name(pool)}")
+        name = deployment[len("gnomad-browser-") :]
+        pool_label = print_pool_name(pool)
+        prod_label = " (prod)" if name == active_prod else ""
+        print(f"{name}{pool_label}{prod_label}".strip())
 
     print()
 
