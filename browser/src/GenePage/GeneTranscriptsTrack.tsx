@@ -156,9 +156,12 @@ const GeneTranscriptsTrack = ({
                 }
 
                 const displayedGtexTissues = transcript.gtex_tissue_expression.filter(
-                  (tissueExpression) =>
-                    ALL_GTEX_TISSUES[tissueExpression.tissue as GtexTissueName]?.fullName ===
-                    undefined
+                  (tissueExpression) => {
+                    const tissueKey = tissueExpression.tissue as GtexTissueName
+                    const mappedTissue = ALL_GTEX_TISSUES[tissueKey]
+                    const isValidTissue = mappedTissue?.fullName !== undefined
+                    return isValidTissue
+                  }
                 )
 
                 const meanExpression = mean(
