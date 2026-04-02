@@ -24,8 +24,17 @@ import RegionInfo from '../RegionPage/RegionInfo'
 import HaplotypeTrack, { HaplotypeGroups, Methylation, MethylationSummaryPoint } from '../Haplotypes'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import LRCoverageTrack from './LRCoverageTrack'
+import MQTLTrack from '../Haplotypes/MQTLTrack'
 
 import { Region } from '../RegionPage/RegionPage'
+
+const MQTL_QUERY = `
+  query RegionMQTL($chrom: String!, $start: Int!, $stop: Int!, $min_af: Float) {
+    mqtl_associations(chrom: $chrom, start: $start, stop: $stop, min_af: $min_af) {
+      variant_id variant_pos cpg_pos p_value effect_size carrier_count non_carrier_count
+    }
+  }
+`
 
 const HAPLOTYPE_GROUPS_QUERY = `
   query RegionHaploGroups($chrom: String!, $start: Int!, $stop: Int!, $min_allele_freq: Float, $sort_by: String) {
@@ -129,6 +138,10 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
+
+  const [mqtlData, setMqtlData] = useState<any[]>([])
+  const [mqtlLoading, setMqtlLoading] = useState(false)
+  const [showMqtl, setShowMqtl] = useState(true)
 
   const fetchGraphQL = async (query: string, variables: any) => {
     const response = await fetch('/api/', {
@@ -258,6 +271,24 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   }, [chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
 
   useEffect(() => {
+    if (!showMqtl) return
+    const fetchMQTLs = async () => {
+      setMqtlLoading(true)
+      try {
+        const result = await fetchGraphQL(MQTL_QUERY, { chrom, start, stop, min_af: threshold })
+        if (result.data?.mqtl_associations) {
+          setMqtlData(result.data.mqtl_associations)
+        }
+      } catch (e) {
+        console.error('Error fetching mQTLs:', e)
+      } finally {
+        setMqtlLoading(false)
+      }
+    }
+    fetchMQTLs()
+  }, [chrom, start, stop, threshold, showMqtl])
+
+  useEffect(() => {
     const newSearchParams = queryString.stringify({
       ...queryParams,
       threshold: threshold.toString(),
@@ -337,6 +368,9 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 
         <RecombinationRatePlot chrom={region.chrom} start={region.start} stop={region.stop} />
         <GenesInRegionTrack genes={region.genes} region={region} />
+        {showMqtl && (
+          <MQTLTrack mqtlData={mqtlData} loading={mqtlLoading} />
+        )}
         {haplotypeGroups && (
           <HaplotypeTrack
             haplotypeGroups={haplotypeGroups.groups}
@@ -353,6 +387,10 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             methylationSampleCount={methylationSampleCount}
             methylationTotalSamples={methylationTotalSamples}
             haplotypeLoading={haplotypeLoading}
+            showMqtl={showMqtl}
+            onShowMqtlChange={setShowMqtl}
+            mqtlLoading={mqtlLoading}
+            mqtlData={mqtlData}
           />
         )}
         <PositionAxisTrack />
