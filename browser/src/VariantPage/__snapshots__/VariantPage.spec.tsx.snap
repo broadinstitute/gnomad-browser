@@ -628,7 +628,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
               className="Badge__BadgeWrapper-sc-j4izdp-1 bziSEW"
               level="error"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v3.1.2 genomes
@@ -8039,7 +8039,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
               className="Badge__BadgeWrapper-sc-j4izdp-1 bziSEW"
               level="error"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v3.1.2 (controls/biobanks) genomes
@@ -15453,7 +15453,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
               className="Badge__BadgeWrapper-sc-j4izdp-1 bziSEW"
               level="error"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v3.1.2 (non-cancer) genomes
@@ -22867,7 +22867,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
               className="Badge__BadgeWrapper-sc-j4izdp-1 bziSEW"
               level="error"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v3.1.2 (non-neuro) genomes
@@ -30281,7 +30281,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
               className="Badge__BadgeWrapper-sc-j4izdp-1 bziSEW"
               level="error"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v3.1.2 (non-TOPMed) genomes
@@ -37695,7 +37695,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
               className="Badge__BadgeWrapper-sc-j4izdp-1 bziSEW"
               level="error"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v3.1.2 (non-v2) genomes
@@ -45041,7 +45041,7 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
               className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
               level="warning"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in ExAC. Allele frequency estimates may not be reliable.
           </p>
@@ -51373,7 +51373,7 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
               className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
               level="warning"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v2.1.1 exomes
@@ -58905,7 +58905,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
               className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
               level="warning"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v2.1.1 (controls) exomes
@@ -66437,7 +66437,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
               className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
               level="warning"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v2.1.1 (non-cancer) exomes
@@ -73969,7 +73969,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
               className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
               level="warning"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v2.1.1 (non-neuro) exomes
@@ -81501,7 +81501,7 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
               className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
               level="warning"
             >
-              Warning
+              *Warning
             </span>
              This variant is covered in fewer than 50% of individuals in 
             gnomAD v2.1.1 (non-TOPMed) exomes
