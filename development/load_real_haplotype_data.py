@@ -64,9 +64,7 @@ def es_request(es_url, path, data=None, method=None):
 
 def clickhouse_insert(ch_url, table, bulk_lines):
     """Send JSONEachRow bulk request to ClickHouse."""
-    # Filter out ES metadata lines ({"index": ...}) and only keep the actual document lines
-    doc_lines = [line for line in bulk_lines if not line.startswith('{"index"')]
-    body = "\n".join(doc_lines) + "\n"
+    body = "\n".join(bulk_lines) + "\n"
 
     url = f"{ch_url}/?query=INSERT%20INTO%20{table}%20FORMAT%20JSONEachRow"
     req = urllib.request.Request(
@@ -327,40 +325,71 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                     doc_id = f"{sample_id}_{strand}_{chrom_field}_{pos}_{hashlib.md5(raw_id.encode()).hexdigest()}"
                 else:
                     doc_id = raw_id
-                doc = {
-                    "document_id": doc_id,
-                    "sample_id": sample_id,
-                    "strand": strand,
-                    "chrom": chrom_field,
-                    "position": pos,
-                    "alleles": [ref, alt],
-                    "rsid": rsid,
-                    "qual": qual,
-                    "filters": filters,
-                    "info_AF": [af] if af is not None else [],
-                    "info_AC": ac or 0,
-                    "info_AN": an or 0,
-                    "info_CM": [],
-                    "info_SVTYPE": "",
-                    "info_SVLEN": 0,
-                    "gt_alleles": gt_alleles,
-                    "gt_phased": gt_phased,
-                    # New fields from v1 VCF
-                    "allele_type": allele_type,
-                    "allele_length": allele_length,
-                    "depth": dp,
-                    "genotype_quality": gq,
-                    "gnomad_v4_match_type": gnomad_v4_match_type,
-                    "info_AF_afr": af_afr,
-                    "info_AF_amr": af_amr,
-                    "info_AF_eas": af_eas,
-                    "info_AF_nfe": af_nfe,
-                    "info_AF_sas": af_sas,
-                }
 
-                bulk_lines.append(
-                    json.dumps({"index": {"_index": HAPLO_INDEX, "_type": "_doc", "_id": doc_id}})
-                )
+                if backend == "clickhouse":
+                    # ClickHouse schema: scalar info_AF, separate ref/alt, no ES metadata
+                    doc = {
+                        "chrom": chrom_field,
+                        "position": pos,
+                        "sample_id": sample_id,
+                        "strand": strand,
+                        "ref": ref,
+                        "alt": alt,
+                        "rsid": rsid or "",
+                        "qual": qual or 0,
+                        "filters": filters,
+                        "info_AF": af or 0,
+                        "info_AC": ac or 0,
+                        "info_AN": an or 0,
+                        "allele_type": allele_type or "",
+                        "allele_length": allele_length or 0,
+                        "gnomad_v4_match_type": gnomad_v4_match_type or "",
+                        "info_AF_afr": af_afr,
+                        "info_AF_amr": af_amr,
+                        "info_AF_eas": af_eas,
+                        "info_AF_nfe": af_nfe,
+                        "info_AF_sas": af_sas,
+                        "gt_alleles": gt_alleles,
+                        "gt_phased": 1 if gt_phased else 0,
+                        "depth": dp,
+                        "genotype_quality": gq,
+                    }
+                else:
+                    doc = {
+                        "document_id": doc_id,
+                        "sample_id": sample_id,
+                        "strand": strand,
+                        "chrom": chrom_field,
+                        "position": pos,
+                        "alleles": [ref, alt],
+                        "rsid": rsid,
+                        "qual": qual,
+                        "filters": filters,
+                        "info_AF": [af] if af is not None else [],
+                        "info_AC": ac or 0,
+                        "info_AN": an or 0,
+                        "info_CM": [],
+                        "info_SVTYPE": "",
+                        "info_SVLEN": 0,
+                        "gt_alleles": gt_alleles,
+                        "gt_phased": gt_phased,
+                        # New fields from v1 VCF
+                        "allele_type": allele_type,
+                        "allele_length": allele_length,
+                        "depth": dp,
+                        "genotype_quality": gq,
+                        "gnomad_v4_match_type": gnomad_v4_match_type,
+                        "info_AF_afr": af_afr,
+                        "info_AF_amr": af_amr,
+                        "info_AF_eas": af_eas,
+                        "info_AF_nfe": af_nfe,
+                        "info_AF_sas": af_sas,
+                    }
+
+                if backend != "clickhouse":
+                    bulk_lines.append(
+                        json.dumps({"index": {"_index": HAPLO_INDEX, "_type": "_doc", "_id": doc_id}})
+                    )
                 bulk_lines.append(json.dumps(doc))
                 count += 1
 
@@ -526,9 +555,10 @@ def load_coverage(es_url, region_chrom, region_start, region_stop, downsample=0,
         }
         doc_id = f"{chrom}_{pos}"
 
-        bulk_lines.append(
-            json.dumps({"index": {"_index": COVERAGE_INDEX, "_type": "_doc", "_id": doc_id}})
-        )
+        if backend != "clickhouse":
+            bulk_lines.append(
+                json.dumps({"index": {"_index": COVERAGE_INDEX, "_type": "_doc", "_id": doc_id}})
+            )
         bulk_lines.append(json.dumps(doc))
         count += 1
 
@@ -637,10 +667,9 @@ def load_methylation(es_url, region_chrom, region_start, region_stop, parallelis
                         "methylation": meth,
                         "coverage": cov,
                     }
-                    ch_bulk_lines.append(json.dumps({"index": {}}))
                     ch_bulk_lines.append(json.dumps(doc))
                     ch_count += 1
-                    if len(ch_bulk_lines) >= BATCH_SIZE * 2:
+                    if len(ch_bulk_lines) >= BATCH_SIZE:
                         clickhouse_insert(ch_url, "lr_methylation", ch_bulk_lines)
                         print(f"  Inserted {ch_count} methylation rows so far...")
                         ch_bulk_lines = []
@@ -976,7 +1005,7 @@ def main():
             sys.exit(1)
         # Create target tables from DDL files
         ddl_dir = Path(__file__).parent / "clickhouse"
-        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql"]:
+        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql"]:
             ddl_path = ddl_dir / sql_file
             if ddl_path.exists():
                 ddl = ddl_path.read_text()
