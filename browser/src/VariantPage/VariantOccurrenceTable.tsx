@@ -160,7 +160,7 @@ const LowAlleleNumberWarning = ({
 
   return (
     <p>
-      <Badge level={noticeLevel}>Warning</Badge> This variant is covered in fewer than 50% of
+      <Badge level={noticeLevel}>*Warning</Badge> This variant is covered in fewer than 50% of
       individuals in {sampleSet}.{' '}
       {hasLowAlleleNumberInGenomes
         ? 'This may indicate a low-quality site'

@@ -147,7 +147,7 @@ const ExacVariantOccurrenceTable = ({ variant }: Props) => {
       </Table>
       {hasLowAlleleNumber && (
         <p>
-          <Badge level="warning">Warning</Badge> This variant is covered in fewer than 50% of
+          <Badge level="warning">*Warning</Badge> This variant is covered in fewer than 50% of
           individuals in ExAC. Allele frequency estimates may not be reliable.
         </p>
       )}
