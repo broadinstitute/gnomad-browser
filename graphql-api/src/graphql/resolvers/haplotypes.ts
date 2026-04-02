@@ -40,21 +40,28 @@ const normalizeChrom = (chrom: string) =>
 const resolvers = {
   Query: {
     haplotype_groups: async (_obj: any, args: any, ctx: any) => {
-      const chrom = normalizeChrom(args.chrom)
-      const docs = await fetchHaplotypeVariantsForRegion(
-        ctx.esClient,
-        chrom,
-        args.start,
-        args.stop
-      )
-      const samples = reconstructSamplesFromVariants(docs)
-      return createHaplotypeGroups(
-        samples,
-        args.start,
-        args.stop,
-        args.min_allele_freq || 0,
-        args.sort_by || 'similarity_score'
-      )
+      try {
+        const chrom = normalizeChrom(args.chrom)
+        const docs = await fetchHaplotypeVariantsForRegion(
+          ctx.esClient,
+          chrom,
+          args.start,
+          args.stop
+        )
+        logger.info(`haplotype_groups: fetched ${docs.length} docs for ${chrom}:${args.start}-${args.stop}`)
+        const samples = reconstructSamplesFromVariants(docs)
+        const result = createHaplotypeGroups(
+          samples,
+          args.start,
+          args.stop,
+          args.min_allele_freq || 0,
+          args.sort_by || 'similarity_score'
+        )
+        return result
+      } catch (e: any) {
+        logger.error(`haplotype_groups error: ${e.message}\n${e.stack}`)
+        throw e
+      }
     },
     methylation: async (_obj: any, args: any, ctx: any) => {
       const chrom = normalizeChrom(args.chrom)
