@@ -48,10 +48,11 @@ export const fetchMethylationSummaryForRegion = async (
   stop: number
 ) => {
   const query = `
-    SELECT pos1, pos2,
+    SELECT {chrom:String} AS chrom, pos1, pos2,
            avgMerge(mean_methylation_state) AS mean_methylation,
            avgMerge(mean_coverage_state) AS mean_coverage,
-           countMerge(num_samples_state) AS num_samples
+           countMerge(num_samples_state) AS num_samples,
+           sqrt(varPopMerge(var_methylation_state)) AS std_methylation
     FROM lr_methylation_summary_mv
     WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
     GROUP BY pos1, pos2
@@ -120,18 +121,33 @@ export const fetchMethylationForRegion = async (
   stop: number,
   samples?: string[]
 ) => {
-  if (!samples || samples.length === 0) return []
+  let query = ''
+  let query_params: any = { chrom, start, stop }
 
-  const query = `
-    SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
-    FROM lr_methylation
-    WHERE chrom = {chrom:String}
-      AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
-      AND sample_id IN ({samples:Array(String)})
-  `
+  if (samples && samples.length > 0) {
+    query = `
+      SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
+      FROM lr_methylation
+      WHERE chrom = {chrom:String}
+        AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+        AND sample_id IN ({samples:Array(String)})
+    `
+    query_params.samples = samples
+  } else if (!samples) {
+    // If undefined is explicitly passed, fetch all samples in the region for mQTL
+    query = `
+      SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
+      FROM lr_methylation
+      WHERE chrom = {chrom:String}
+        AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+    `
+  } else {
+    return [] // samples is explicitly an empty array
+  }
+
   const resultSet = await clickhouseClient.query({
     query,
-    query_params: { chrom, start, stop, samples },
+    query_params,
     format: 'JSONEachRow',
   })
   return resultSet.json()

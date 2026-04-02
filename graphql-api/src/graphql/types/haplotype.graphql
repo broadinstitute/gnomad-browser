@@ -94,7 +94,26 @@ type RecombinationRateRecord {
   value: Float!
 }
 
+type MQTLAssociation {
+  variant_id: String!
+  variant_pos: Int!
+  cpg_pos: Int!
+  p_value: Float!
+  effect_size: Float!
+  carrier_count: Int!
+  non_carrier_count: Int!
+}
+
 extend type Query {
+  mqtl_associations(
+    chrom: String!
+    start: Int!
+    stop: Int!
+    min_af: Float
+    max_distance: Int
+    min_carriers: Int
+  ): [MQTLAssociation!]!
+
   haplotype_groups(
     chrom: String!
     start: Int!

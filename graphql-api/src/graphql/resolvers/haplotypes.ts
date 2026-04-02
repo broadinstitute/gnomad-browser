@@ -1,3 +1,4 @@
+import { fetchMQTLAssociations } from '../../queries/mqtl-queries'
 import {
   fetchHaplotypeVariantsForRegion,
   fetchMethylationForRegion,
@@ -39,6 +40,23 @@ const normalizeChrom = (chrom: string) =>
 
 const resolvers = {
   Query: {
+    mqtl_associations: async (_obj: any, args: any, ctx: any) => {
+      try {
+        const chrom = normalizeChrom(args.chrom)
+        return await fetchMQTLAssociations(
+          ctx.esClient,
+          chrom,
+          args.start,
+          args.stop,
+          args.min_af || 0,
+          args.max_distance || 5000,
+          args.min_carriers || 5
+        )
+      } catch (e: any) {
+        logger.error(`mqtl_associations error: ${e.message}\n${e.stack}`)
+        throw e
+      }
+    },
     haplotype_groups: async (_obj: any, args: any, ctx: any) => {
       try {
         const chrom = normalizeChrom(args.chrom)
