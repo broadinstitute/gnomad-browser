@@ -76,21 +76,21 @@ const LegendItem = styled.div`
   margin-right: 1em;
 `
 export const Legend = ({
-  onMinAfChange = () => {},
-  onColorModeChange = () => {},
+  onMinAfChange = () => { },
+  onColorModeChange = () => { },
   initialMinAf = 0,
   initialSortBy = 'similarity_score',
-  onSortModeChange = () => {},
+  onSortModeChange = () => { },
   showMethylation = true,
-  onShowMethylationChange = () => {},
+  onShowMethylationChange = () => { },
   filterToOutliers = false,
-  onFilterToOutliersChange = () => {},
+  onFilterToOutliersChange = () => { },
   onLoadAllSamples,
   methylationLoading = false,
   methylationSampleCount = 0,
   methylationTotalSamples = 0,
   showMqtl = false,
-  onShowMqtlChange = () => {},
+  onShowMqtlChange = () => { },
   mqtlLoading = false,
   mqtlData = [],
 }: {
@@ -138,18 +138,18 @@ export const Legend = ({
           <span>Phased variants:</span>
         </LegendItem>
         <LegendItem>
-            <svg width={30} height={30}>
-              <defs>
-                <linearGradient id='rainbow-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                  <stop offset='0%' stopColor='hsl(0, 70%, 50%)' />
-                  <stop offset='25%' stopColor='hsl(90, 70%, 50%)' />
-                  <stop offset='50%' stopColor='hsl(180, 70%, 50%)' />
-                  <stop offset='75%' stopColor='hsl(270, 70%, 50%)' />
-                  <stop offset='100%' stopColor='hsl(360, 70%, 50%)' />
-                </linearGradient>
-              </defs>
-              <circle cx={15} cy={15} r={4} fill='url(#rainbow-gradient)' stroke='black' />
-            </svg>
+          <svg width={30} height={30}>
+            <defs>
+              <linearGradient id='rainbow-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+                <stop offset='0%' stopColor='hsl(0, 70%, 50%)' />
+                <stop offset='25%' stopColor='hsl(90, 70%, 50%)' />
+                <stop offset='50%' stopColor='hsl(180, 70%, 50%)' />
+                <stop offset='75%' stopColor='hsl(270, 70%, 50%)' />
+                <stop offset='100%' stopColor='hsl(360, 70%, 50%)' />
+              </linearGradient>
+            </defs>
+            <circle cx={15} cy={15} r={4} fill='url(#rainbow-gradient)' stroke='black' />
+          </svg>
           <LegendItem>
             {' '}
             <span style={{ marginLeft: '5px' }}>
@@ -527,6 +527,7 @@ type HaplotypeTrackProps = {
   onShowMqtlChange?: (show: boolean) => void
   mqtlLoading?: boolean
   mqtlData?: any[]
+  mqtlMinLogP?: number
 }
 
 const variantColors: Record<string, string> = {}
@@ -602,10 +603,10 @@ const HaplotypeHeaderTrack = ({
         <SidePanel>
           <svg width={200} height={40}>
             <text x={0} y={15} fontSize='11' fontWeight='bold'>
-              LR Haplotypes ({displayGroups.length})
+              Local Haplotypes ({displayGroups.length})
             </text>
             <text x={0} y={30} fontSize='9' fill='#666'>
-              {totalSamples} samples, {totalVariants} variants
+              {totalSamples} haplotypes, {totalVariants} variants
             </text>
           </svg>
         </SidePanel>
@@ -718,7 +719,7 @@ const MethylationSummaryTrack = ({ methylationSummary }: { methylationSummary: M
                             <div><dt>Range:</dt><dd>{(d.min_methylation || 0).toFixed(1)}% - {(d.max_methylation || 0).toFixed(1)}%</dd></div>
                             <div><dt>Mean coverage:</dt><dd>{d.mean_coverage.toFixed(0)}x</dd></div>
                             <div><dt>Samples:</dt><dd>{d.num_samples}</dd></div>
-                            {isOutlier && <div><dt style={{color: '#dc2626'}}>High variance site</dt><dd></dd></div>}
+                            {isOutlier && <div><dt style={{ color: '#dc2626' }}>High variance site</dt><dd></dd></div>}
                           </RegionAttributeList>
                         )}
                       >
@@ -751,6 +752,9 @@ const HaplotypeGroupTrack = ({
   sampleColorScale,
   variantColorScale,
   methylationYScale,
+  mqtlData = [],
+  showMqtl = false,
+  mqtlMinLogP = 0,
 }: {
   group: HaplotypeGroup
   methSampleData: Methylation[]
@@ -764,9 +768,28 @@ const HaplotypeGroupTrack = ({
   sampleColorScale: (n: number) => string
   variantColorScale: (n: number) => string
   methylationYScale: (n: number) => number
+  mqtlData?: any[]
+  showMqtl?: boolean
+  mqtlMinLogP?: number
 }) => {
+  const mqtlTrackHeight = 80
   const methTrackHeight = 40
-  const trackHeight = showMethylation ? 20 + methTrackHeight : 20
+  const showGroupMqtl = showMqtl && mqtlData.length > 0
+
+  // Filter mQTL data to associations involving variants in this group
+  const groupMqtl = React.useMemo(() => {
+    if (!showGroupMqtl) return []
+    const minP = mqtlMinLogP || 0
+    const groupVariantPositions = new Set(
+      group.variants.variants.map((v: Variant) => v.position)
+    )
+    return mqtlData.filter((d: any) =>
+      groupVariantPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= minP
+    )
+  }, [showGroupMqtl, mqtlData, group.variants.variants, mqtlMinLogP])
+
+  const mqtlPad = 8
+  const trackHeight = (showMethylation ? 20 + methTrackHeight : 20) + (showGroupMqtl && groupMqtl.length > 0 ? mqtlPad + mqtlTrackHeight : 0)
 
   // Aggregate per-sample data into per-position group summary
   const groupSummary = React.useMemo(() => {
@@ -810,6 +833,31 @@ const HaplotypeGroupTrack = ({
                     ))}
                   </g>
                 )}
+                {showGroupMqtl && groupMqtl.length > 0 && (() => {
+                  const mqtlYOffset = (showMethylation ? 20 + methTrackHeight : 20) + mqtlPad
+                  const grpMaxLogP = Math.max(2, ...groupMqtl.map((d: any) => -Math.log10(d.p_value)))
+                  const tickVals = grpMaxLogP <= 5
+                    ? [0, Math.round(grpMaxLogP)]
+                    : [0, Math.round(grpMaxLogP / 2), Math.round(grpMaxLogP)]
+                  return (
+                    <g transform={`translate(110, ${mqtlYOffset})`}>
+                      <line x1={0} y1={0} x2={0} y2={mqtlTrackHeight} stroke='#999' />
+                      {tickVals.map((v) => {
+                        const y = mqtlTrackHeight - (v / grpMaxLogP) * (mqtlTrackHeight - 4)
+                        return (
+                          <g key={`mqtl-tick-${v}`}>
+                            <line x1={-4} y1={y} x2={0} y2={y} stroke='#999' />
+                            <text x={-7} y={y + 3} fontSize='7' textAnchor='end' fill='#666'>{v}</text>
+                          </g>
+                        )
+                      })}
+                      <text x={-30} y={mqtlTrackHeight / 2} fontSize='7' textAnchor='middle'
+                        fill='#999' transform={`rotate(-90, -30, ${mqtlTrackHeight / 2})`}>
+                        -log₁₀(p)
+                      </text>
+                    </g>
+                  )
+                })()}
               </g>
             </TooltipAnchor>
           </svg>
@@ -901,6 +949,51 @@ const HaplotypeGroupTrack = ({
                   })}
                 </g>
               )}
+
+              {/* Per-group mini mQTL arcs */}
+              {showGroupMqtl && groupMqtl.length > 0 && (() => {
+                const mqtlYOffset = (showMethylation ? 20 + methTrackHeight : 20) + mqtlPad
+                const mqtlMaxLogP = Math.max(2, ...groupMqtl.map((d: any) => -Math.log10(d.p_value)))
+                const mqtlHScale = scaleLinear().domain([0, mqtlMaxLogP]).range([0, mqtlTrackHeight - 4])
+                const mqtlBaseline = mqtlYOffset + mqtlTrackHeight
+
+                return (
+                  <g>
+                    <rect x={startX} y={mqtlYOffset} width={groupWidth} height={mqtlTrackHeight} fill='#fafafa' stroke='#e8e8e8' />
+                    <line x1={startX} y1={mqtlBaseline} x2={stopX} y2={mqtlBaseline} stroke='#ddd' strokeWidth={0.5} />
+                    {groupMqtl
+                      .slice()
+                      .sort((a: any, b: any) => b.p_value - a.p_value)
+                      .map((d: any, i: number) => {
+                        const vx = scalePosition(d.variant_pos)
+                        const cx2 = scalePosition(d.cpg_pos)
+                        const logP = -Math.log10(d.p_value)
+                        const arcH = mqtlHScale(logP)
+                        const midX = (vx + cx2) / 2
+                        const midY = mqtlBaseline - arcH
+                        const pathData = `M ${vx} ${mqtlBaseline} Q ${midX} ${midY} ${cx2} ${mqtlBaseline}`
+                        const opacity = Math.min(0.8, 0.2 + (logP / mqtlMaxLogP) * 0.6)
+                        const baseColor = d.effect_size > 0 ? '220, 38, 38' : '37, 99, 235'
+
+                        return (
+                          <TooltipAnchor
+                            key={`grp-mqtl-${i}`}
+                            tooltipComponent={() => (
+                              <RegionAttributeList>
+                                <div><dt>Variant:</dt><dd>{d.variant_id}</dd></div>
+                                <div><dt>CpG:</dt><dd>{d.cpg_pos.toLocaleString()}</dd></div>
+                                <div><dt>p-value:</dt><dd>{d.p_value.toExponential(2)}</dd></div>
+                                <div><dt>Effect:</dt><dd>{d.effect_size > 0 ? '+' : ''}{d.effect_size.toFixed(1)}%</dd></div>
+                              </RegionAttributeList>
+                            )}
+                          >
+                            <path d={pathData} fill='none' stroke={`rgba(${baseColor}, ${opacity})`} strokeWidth={1.5} />
+                          </TooltipAnchor>
+                        )
+                      })}
+                  </g>
+                )
+              })()}
             </svg>
           </PlotWrapper>
         )
@@ -932,11 +1025,12 @@ const HaplotypeTrack = ({
   onShowMqtlChange,
   mqtlLoading = false,
   mqtlData = [],
+  mqtlMinLogP = 0,
 }: HaplotypeTrackProps) => {
   const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
-  const [showMethylation, setShowMethylation] = useState(true)
+  const [showMethylation, setShowMethylation] = useState(false)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
 
   const handleColorModeChange = useCallback(
@@ -971,10 +1065,10 @@ const HaplotypeTrack = ({
     return (
       <Wrapper>
         <Track renderLeftPanel={() => (
-            <SidePanel>
-              <div><span>No haplogroups found</span></div>
-            </SidePanel>
-          )}>
+          <SidePanel>
+            <div><span>No haplogroups found</span></div>
+          </SidePanel>
+        )}>
           {({ width }: { width: number }) => (
             <PlotWrapper>
               <svg height={height} width={width}>
@@ -1039,7 +1133,7 @@ const HaplotypeTrack = ({
     methylationSampleCount,
     methylationTotalSamples,
     showMqtl,
-    onShowMqtlChange: onShowMqtlChange || (() => {}),
+    onShowMqtlChange: onShowMqtlChange || (() => { }),
     mqtlLoading,
     mqtlData,
   }
@@ -1077,6 +1171,9 @@ const HaplotypeTrack = ({
             sampleColorScale={sampleColorScale}
             variantColorScale={variantColorScale}
             methylationYScale={methylationYScale}
+            mqtlData={mqtlData}
+            showMqtl={showMqtl}
+            mqtlMinLogP={mqtlMinLogP}
           />
         )
       })}

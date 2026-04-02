@@ -141,7 +141,8 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
   const [mqtlLoading, setMqtlLoading] = useState(false)
-  const [showMqtl, setShowMqtl] = useState(true)
+  const [showMqtl, setShowMqtl] = useState(false)
+  const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
 
   const fetchGraphQL = async (query: string, variables: any) => {
     const response = await fetch('/api/', {
@@ -369,7 +370,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         <RecombinationRatePlot chrom={region.chrom} start={region.start} stop={region.stop} />
         <GenesInRegionTrack genes={region.genes} region={region} />
         {showMqtl && (
-          <MQTLTrack mqtlData={mqtlData} loading={mqtlLoading} />
+          <MQTLTrack mqtlData={mqtlData} loading={mqtlLoading} minLogP={mqtlMinLogP} onMinLogPChange={setMqtlMinLogP} />
         )}
         {haplotypeGroups && (
           <HaplotypeTrack
@@ -391,6 +392,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             onShowMqtlChange={setShowMqtl}
             mqtlLoading={mqtlLoading}
             mqtlData={mqtlData}
+            mqtlMinLogP={mqtlMinLogP}
           />
         )}
         <PositionAxisTrack />
