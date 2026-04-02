@@ -89,6 +89,10 @@ export const Legend = ({
   methylationLoading = false,
   methylationSampleCount = 0,
   methylationTotalSamples = 0,
+  showMqtl = false,
+  onShowMqtlChange = () => {},
+  mqtlLoading = false,
+  mqtlData = [],
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -103,21 +107,18 @@ export const Legend = ({
   methylationLoading?: boolean
   methylationSampleCount?: number
   methylationTotalSamples?: number
+  showMqtl?: boolean
+  onShowMqtlChange?: (show: boolean) => void
+  mqtlLoading?: boolean
+  mqtlData?: any[]
 }) => {
   const [threshold, setThreshold] = useState(initialMinAf)
-  const [colorMode, setColorMode] = useState('allele')
   const [sortMode, setSortMode] = useState(initialSortBy)
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newThreshold = parseFloat(event.target.value)
     setThreshold(newThreshold)
     onMinAfChange(newThreshold)
-  }
-
-  const handleColorModeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newColorMode = event.target.value
-    setColorMode(newColorMode)
-    onColorModeChange(newColorMode)
   }
 
   const handleSortModeChange = (value: string) => {
@@ -137,7 +138,6 @@ export const Legend = ({
           <span>Phased variants:</span>
         </LegendItem>
         <LegendItem>
-          {colorMode === 'allele' ? (
             <svg width={30} height={30}>
               <defs>
                 <linearGradient id='rainbow-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
@@ -150,19 +150,14 @@ export const Legend = ({
               </defs>
               <circle cx={15} cy={15} r={4} fill='url(#rainbow-gradient)' stroke='black' />
             </svg>
-          ) : (
-            <svg width={30} height={30}>
-              <circle cx={15} cy={15} r={4} fill='#d3d3d3' stroke='black' />
-            </svg>
-          )}
           <LegendItem>
             {' '}
             <span style={{ marginLeft: '5px' }}>
-              SNVs {colorMode === 'allele' && <>(colored by allele)</>}
+              SNVs (colored by allele)
             </span>
           </LegendItem>
         </LegendItem>
-        {colorMode === 'af' && (
+        {false && (
           <LegendItem>
             <svg width={100} height={30}>
               <defs>
@@ -251,6 +246,36 @@ export const Legend = ({
               />
               Filter to outliers
             </label>
+            <label style={{ marginTop: '4px', borderTop: '1px solid #ccc', paddingTop: '4px' }}>
+              <input
+                type='checkbox'
+                checked={showMqtl}
+                onChange={(e) => onShowMqtlChange(e.target.checked)}
+                style={{ marginRight: '5px' }}
+              />
+              Compute mQTLs
+              {mqtlLoading && ' ...'}
+            </label>
+            {showMqtl && mqtlData && mqtlData.length > 0 && (
+              <button
+                onClick={() => {
+                  const header = 'variant_id,variant_pos,cpg_pos,p_value,effect_size,carrier_count,non_carrier_count\n'
+                  const csv = mqtlData.map((d: any) => `${d.variant_id},${d.variant_pos},${d.cpg_pos},${d.p_value},${d.effect_size},${d.carrier_count},${d.non_carrier_count}`).join('\n')
+                  const blob = new Blob([header + csv], { type: 'text/csv' })
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                  a.href = url
+                  a.download = 'mqtl_export.csv'
+                  a.click()
+                }}
+                style={{
+                  marginTop: '4px', padding: '3px 8px', fontSize: '11px', cursor: 'pointer',
+                  background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '3px',
+                }}
+              >
+                Export {mqtlData.length} mQTLs
+              </button>
+            )}
             {onLoadAllSamples && (
               <button
                 onClick={onLoadAllSamples}
@@ -305,32 +330,6 @@ export const Legend = ({
           />
           <span style={{ marginLeft: '3px' }}>{threshold.toFixed(2)}</span>
         </div>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
-        <label style={{ marginLeft: '3px' }}>Dataset:</label>
-        <SegmentedControl
-          id='dataset-dummy'
-          options={[
-            { label: 'PacBio', value: 'pacbio' },
-            { label: 'ONT', value: 'ont' },
-          ]}
-          value={'pacbio'}
-          onChange={(_value: any) => {}}
-        />
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
-        <label style={{ marginLeft: '3px' }}>Color by:</label>
-        <SegmentedControl
-          id='color-mode'
-          options={[
-            { label: 'Allele ID', value: 'allele' },
-            { label: 'Log AF', value: 'af' },
-            // { label: 'Position', value: 'position' },
-            // { label: 'Haplotype count', value: 'haplotype_count' },
-          ]}
-          value={colorMode}
-          onChange={(value: any) => handleColorModeChange(value)}
-        />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
         <label style={{ marginLeft: '3px' }}>Sort by:</label>
@@ -524,6 +523,10 @@ type HaplotypeTrackProps = {
   methylationSampleCount?: number
   methylationTotalSamples?: number
   haplotypeLoading?: boolean
+  showMqtl?: boolean
+  onShowMqtlChange?: (show: boolean) => void
+  mqtlLoading?: boolean
+  mqtlData?: any[]
 }
 
 const variantColors: Record<string, string> = {}
@@ -762,7 +765,27 @@ const HaplotypeGroupTrack = ({
   variantColorScale: (n: number) => string
   methylationYScale: (n: number) => number
 }) => {
-  const trackHeight = showMethylation ? 70 : 20
+  const methTrackHeight = 40
+  const trackHeight = showMethylation ? 20 + methTrackHeight : 20
+
+  // Aggregate per-sample data into per-position group summary
+  const groupSummary = React.useMemo(() => {
+    if (!showMethylation || methSampleData.length === 0) return []
+    const byPos = new Map<number, number[]>()
+    for (const d of methSampleData) {
+      const arr = byPos.get(d.pos1)
+      if (arr) arr.push(d.methylation)
+      else byPos.set(d.pos1, [d.methylation])
+    }
+    return Array.from(byPos.entries()).map(([pos, values]) => {
+      const n = values.length
+      const mean = values.reduce((a, b) => a + b, 0) / n
+      const std = n > 1 ? Math.sqrt(values.reduce((a, v) => a + (v - mean) ** 2, 0) / n) : 0
+      return { pos, mean, std, n }
+    })
+  }, [showMethylation, methSampleData])
+
+  const methYScale = scaleLinear().domain([0, 100]).range([methTrackHeight - 4, 4])
 
   return (
     <Track
@@ -777,13 +800,12 @@ const HaplotypeGroupTrack = ({
                 <text x={60} y={17} fontSize='12'>{group.variants.variants.length}</text>
 
                 {showMethylation && (
-                  <g transform={`translate(110, 35)`}>
-                    <text x={-70} y={15} fontSize='10' textAnchor='middle'>Methylation (%)</text>
-                    <line x1={0} y1={0} x2={0} y2={30} stroke='black' />
+                  <g transform={`translate(110, 20)`}>
+                    <line x1={0} y1={0} x2={0} y2={methTrackHeight} stroke='#999' />
                     {[0, 50, 100].map((tick) => (
-                      <g transform={`translate(0, ${30 - (tick / 100) * 30})`} key={tick}>
-                        <line x1={-5} y1={0} x2={0} y2={0} stroke='black' />
-                        <text x={-10} y={3} fontSize='10' textAnchor='end'>{tick}</text>
+                      <g transform={`translate(0, ${methTrackHeight - 4 - (tick / 100) * (methTrackHeight - 8)})`} key={tick}>
+                        <line x1={-4} y1={0} x2={0} y2={0} stroke='#999' />
+                        <text x={-7} y={3} fontSize='8' textAnchor='end' fill='#666'>{tick}</text>
                       </g>
                     ))}
                   </g>
@@ -844,35 +866,41 @@ const HaplotypeGroupTrack = ({
                 })}
               </g>
 
-              <g>
-                {showMethylation && methSampleData.map((d: Methylation, index: number) => {
-                  const stats = summaryByPos.get(d.pos1)
-                  const deviation = stats ? d.methylation - stats.mean : 0
-                  const zScore = stats && stats.std > 0 ? deviation / stats.std : 0
-                  let dotColor = '#aaa'
-                  let dotRadius = 2
-                  if (Math.abs(zScore) > 2) {
-                    dotColor = deviation < 0 ? '#dc2626' : '#2563eb'
-                    dotRadius = 3
-                  } else if (Math.abs(zScore) > 1) {
-                    dotColor = deviation < 0 ? '#f87171' : '#60a5fa'
-                  }
+              {showMethylation && (
+                <g transform={`translate(0, 20)`}>
+                  <rect x={startX} y={0} width={groupWidth} height={methTrackHeight} fill='#fafaff' stroke='#e8e8f0' />
+                  <line x1={startX} y1={methYScale(50)} x2={stopX} y2={methYScale(50)} stroke='#eee' />
+                  {groupSummary.map((d, i) => {
+                    const x = scalePosition(d.pos)
+                    const popStats = summaryByPos.get(d.pos)
+                    const deviation = popStats ? d.mean - popStats.mean : 0
+                    const popZScore = popStats && popStats.std > 0 ? deviation / popStats.std : 0
 
-                  return (
-                    <TooltipAnchor key={`meth-${index}`} tooltipComponent={() => (
-                      <RegionAttributeList>
-                        <div><dt>Position:</dt><dd>{d.pos1}</dd></div>
-                        <div><dt>Methylation:</dt><dd>{d.methylation.toFixed(1)}%</dd></div>
-                        {stats && <div><dt>Mean:</dt><dd>{stats.mean.toFixed(1)}% (z={zScore.toFixed(1)})</dd></div>}
-                        {d.coverage !== undefined && <div><dt>Coverage:</dt><dd>{d.coverage}x</dd></div>}
-                        <div><dt>Sample:</dt><dd>{d.sample}</dd></div>
-                      </RegionAttributeList>
-                    )}>
-                      <circle cx={scalePosition(d.pos1)} cy={methylationYScale(d.methylation)} r={dotRadius} fill={dotColor} stroke='none' />
-                    </TooltipAnchor>
-                  )
-                })}
-              </g>
+                    const yMean = methYScale(d.mean)
+                    const yHigh = methYScale(Math.min(100, d.mean + d.std))
+                    const yLow = methYScale(Math.max(0, d.mean - d.std))
+
+                    return (
+                      <TooltipAnchor key={`grp-meth-${i}`} tooltipComponent={() => (
+                        <RegionAttributeList>
+                          <div><dt>Position:</dt><dd>{d.pos}</dd></div>
+                          <div><dt>Group mean:</dt><dd>{d.mean.toFixed(1)}%</dd></div>
+                          <div><dt>Group std:</dt><dd>{d.std.toFixed(1)}%</dd></div>
+                          <div><dt>Samples:</dt><dd>{d.n}</dd></div>
+                          {popStats && <div><dt>Pop mean:</dt><dd>{popStats.mean.toFixed(1)}%</dd></div>}
+                          {popStats && <div><dt>Deviation:</dt><dd>{deviation > 0 ? '+' : ''}{deviation.toFixed(1)}% (z={popZScore.toFixed(1)})</dd></div>}
+                        </RegionAttributeList>
+                      )}>
+                        <g>
+                          <line x1={x} y1={yHigh} x2={x} y2={yLow}
+                            stroke='#4a5568' strokeWidth={1} opacity={0.4} />
+                          <circle cx={x} cy={yMean} r={2} fill='#4a5568' />
+                        </g>
+                      </TooltipAnchor>
+                    )
+                  })}
+                </g>
+              )}
             </svg>
           </PlotWrapper>
         )
@@ -900,11 +928,15 @@ const HaplotypeTrack = ({
   methylationSampleCount = 0,
   methylationTotalSamples = 0,
   haplotypeLoading = false,
+  showMqtl = false,
+  onShowMqtlChange,
+  mqtlLoading = false,
+  mqtlData = [],
 }: HaplotypeTrackProps) => {
   const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
-  const [showMethylation, setShowMethylation] = useState(false)
+  const [showMethylation, setShowMethylation] = useState(true)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
 
   const handleColorModeChange = useCallback(
@@ -1006,6 +1038,10 @@ const HaplotypeTrack = ({
     methylationLoading,
     methylationSampleCount,
     methylationTotalSamples,
+    showMqtl,
+    onShowMqtlChange: onShowMqtlChange || (() => {}),
+    mqtlLoading,
+    mqtlData,
   }
 
   return (
