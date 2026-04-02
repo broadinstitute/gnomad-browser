@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
@@ -25,16 +25,17 @@ type MQTLAssociation = {
 type MQTLTrackProps = {
   mqtlData: MQTLAssociation[]
   loading: boolean
+  minLogP: number
+  onMinLogPChange: (v: number) => void
 }
 
 const MARKER_ZONE = 20 // space below baseline for markers
 const TOP_PAD = 5 // space above top of plot
 
-const MQTLTrack = ({ mqtlData, loading }: MQTLTrackProps) => {
+const MQTLTrack = ({ mqtlData, loading, minLogP, onMinLogPChange }: MQTLTrackProps) => {
   const plotHeight = 250
   const svgHeight = plotHeight + MARKER_ZONE
   const baseline = plotHeight
-  const [minLogP, setMinLogP] = useState(0)
 
   const maxLogP = useMemo(
     () => (mqtlData.length > 0 ? Math.max(2, ...mqtlData.map((d) => -Math.log10(d.p_value))) : 2),
@@ -82,7 +83,7 @@ const MQTLTrack = ({ mqtlData, loading }: MQTLTrackProps) => {
           max={Math.floor(maxLogP)}
           step={0.5}
           value={minLogP}
-          onChange={(e) => setMinLogP(parseFloat(e.target.value))}
+          onChange={(e) => onMinLogPChange(parseFloat(e.target.value))}
           style={{ width: '100px' }}
         />
       </div>
