@@ -25,15 +25,13 @@ EOF
 
 ### 2. Add nodes to the es-ingest node pool
 
-This can be done by adjusting the `pool_num_nodes` variable in our [terraform deployment](https://github.com/broadinstitute/gnomad-terraform/blob/8519ea09e697afc7993b278f1c2b4240ae21c8a4/exac-gnomad/services/browserv4/main.tf#L99) and opening a PR to review and apply the infrastructure change.
+This can be done by adjusting the `pool_num_nodes` variable in our [terraform deployment](https://github.com/broadinstitute/gnomad-terraform/blob/8519ea09e697afc7993b278f1c2b4240ae21c8a4/exac-gnomad/services/browserv4/main.tf#L99). Open a PR with that change, get it approved, and apply with `atlantis apply` in Github.
 
-### 3. When the new es-ingest GKE nodes are ready, Add temporary pods to Elasticsearch cluster
+### 3. When the new es-ingest GKE nodes are ready, add temporary pods to Elasticsearch cluster
 
-```
-./deployctl elasticsearch apply --n-ingest-pods=48
-```
+Uncommend the [stanza for ingest nodes in the gnomad-deployments repo](https://github.com/broadinstitute/gnomad-deployments/blob/main/elasticsearch/prod/kustomization.yaml#L160), commit, push, and merge to `main`. The number of ingest pods should match the number of nodes in the `es-ingest` node pool.
 
-The number of ingest pods should match the number of nodes in the `es-ingest` node pool.
+When the update is merged to `main`, start the new pods by going to [the Argo CD dashboard](https://argocd.sre.the-tgg.dev/applications/tgg-services/gnomad-elasticsearch) and syncing.
 
 Watch pods' readiness with `kubectl get pods -w`.
 
@@ -129,9 +127,7 @@ curl -u "elastic:$ELASTICSEARCH_PASSWORD" -XPUT "localhost:9200/_cluster/setting
 
 ### 7. Once data is done being moved, remove the ingest pods
 
-```
-./deployctl elasticsearch apply --n-ingest-pods=0
-```
+Revert the commit you made in step 3, thus once again commenting out the stanza for ingest nodes in the gnomad-deployments repo, then sync via Argo as in step 3.
 
 Watch the cluster to ensure that the ingest pods are successfully terminated:
 
@@ -141,7 +137,7 @@ kubectl get pods -w
 
 ### 8. Once the ingest pods are terminated, resize the es-ingest node pool to 0
 
-Set the `pool_num_nodes` varible for the es-ingest node pool to 0 in our [terraform deployment](https://github.com/broadinstitute/gnomad-terraform/blob/8519ea09e697afc7993b278f1c2b4240ae21c8a4/exac-gnomad/services/browserv4/main.tf#L99) and open a PR to review and apply the infrastructure change.
+Set the `pool_num_nodes` varible for the es-ingest node pool to 0 in our [terraform deployment](https://github.com/broadinstitute/gnomad-terraform/blob/8519ea09e697afc7993b278f1c2b4240ae21c8a4/exac-gnomad/services/browserv4/main.tf#L99). Open a PR with that change, get it approved, and apply with `atlantis apply` in Github.
 
 ### 9. Clean up, delete any unused indices.
 
