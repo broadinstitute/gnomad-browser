@@ -95,6 +95,17 @@ type AncillaryResults = {
   hemizygotes: number | null
 }
 
+type QualityMeasures = {
+  meanDepth: number | null
+  fractionCoverage20x: number | null
+  qcFilters: string[] | null
+  monoallelic: boolean | null
+  lowComplexityRegion: boolean | null
+  lowConfidenceLossOfFunctionError: boolean | null
+  lossOfFunctionWarning: boolean | null
+  heterozygousSkewedAlleleCount: number | null
+}
+
 export type CohortAlleleFrequency = {
   id: string
   type: string
@@ -106,6 +117,7 @@ export type CohortAlleleFrequency = {
   alleleFrequency: number
   cohort: Cohort
   ancillaryResults: AncillaryResults | null
+  qualityMeasures: QualityMeasures | null
   subcohortFrequency: CohortAlleleFrequency[]
 }
 
@@ -201,6 +213,7 @@ type Subset = {
   homozygote_count: number
   grpMax?: GrpMaxFAF95
   jointGrpMax?: GrpMaxFAF95
+  qualityMeasures: QualityMeasures
 }
 
 const GNOMAD_V4_DERIVATION = {
@@ -293,6 +306,7 @@ const resolveVACohortAlleleFrequency = (
     alleleFrequency: subset.ac / subset.an,
     cohort,
     ancillaryResults,
+    qualityMeasures: subset.qualityMeasures,
   }
 }
 
@@ -381,6 +395,25 @@ const addSubcohorts = (
   return Object.values(subcohortMap)
 }
 
+type ESFrequencies = {
+  quality_metrics: {
+    allele_balance: {
+      alt?: {
+        bin_freq: number[]
+      }
+    }
+  }
+}
+
+const calculateHeterozygousSkewedAlleleCount = (frequencies: ESFrequencies): number | null => {
+  const { alt } = frequencies.quality_metrics.allele_balance
+  if (!alt) {
+    return null
+  }
+
+  return alt.bin_freq[18] + alt.bin_freq[19]
+}
+
 const resolveVACohortAlleleFrequencies = async (
   obj: any,
   args: any,
@@ -395,6 +428,18 @@ const resolveVACohortAlleleFrequencies = async (
   const frequencies = obj[frequencyField]
   if (!frequencies) {
     return null
+  }
+  const coverage = obj.coverage[frequencyField]
+
+  const qualityMeasures = {
+    meanDepth: coverage && coverage.mean ? coverage.mean : null,
+    fractionCoverage20x: coverage && coverage.over_20 ? coverage.over_20 : null,
+    qcFilters: frequencies.filters,
+    monoallelic: frequencies.flags.includes('monoallelic'),
+    lowComplexityRegion: obj.flags.includes('lcr'),
+    lowConfidenceLossOfFunctionError: obj.flags.includes('lc_lof'),
+    lossOfFunctionWarning: obj.flags.includes('lof_flag'),
+    heterozygousSkewedAlleleCount: calculateHeterozygousSkewedAlleleCount(frequencies),
   }
 
   const fullSet: Subset = {
@@ -415,6 +460,7 @@ const resolveVACohortAlleleFrequencies = async (
             confidenceInterval: 0.95,
           }
         : undefined,
+    qualityMeasures,
   }
   const subsets = [fullSet, ...(frequencies.ancestry_groups as Subset[])]
   const cohortsWithoutSubcohorts = subsets.map((subset) =>
