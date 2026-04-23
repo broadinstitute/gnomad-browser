@@ -5,6 +5,7 @@ import gnomadV4VariantQueries from './variant-datasets/gnomad-v4-variant-queries
 import gnomadV3VariantQueries from './variant-datasets/gnomad-v3-variant-queries'
 import gnomadV2VariantQueries from './variant-datasets/gnomad-v2-variant-queries'
 import exacVariantQueries from './variant-datasets/exac-variant-queries'
+import longReadQueries from './long_read_variants'
 
 type QueryArgs = [any, any]
 
@@ -66,6 +67,7 @@ const datasetQueries: Record<string, any> = {
       gnomadV2VariantQueries.fetchMatchingVariants(...args, 'gnomad'),
   },
   exac: exacVariantQueries,
+  gnomad_r4_lr: longReadQueries,
 }
 
 type DatasetId = keyof typeof datasetQueries
