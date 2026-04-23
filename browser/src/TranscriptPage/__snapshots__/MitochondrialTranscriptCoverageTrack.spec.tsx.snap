@@ -310,6 +310,13 @@ query MitochondrialCoverageInTranscript($transcriptId: String!, $datasetId: Data
 </mockConstructor>
 `;
 
+exports[`MitochondrialTranscriptCoverageTrack with dataset gnomad_r4_lr queries with proper parameters 1`] = `
+<StatusMessage>
+  Mitochondrial genome coverage is not available in 
+  gnomAD v4.1.1 (long reads)
+</StatusMessage>
+`;
+
 exports[`MitochondrialTranscriptCoverageTrack with dataset gnomad_r4_non_ukb queries with proper parameters 1`] = `
 <mockConstructor
   errorMessage="Unable to load coverage"

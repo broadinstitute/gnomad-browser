@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, isLongRead, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
@@ -23,6 +23,7 @@ import { Variant } from '../VariantPage/VariantPage'
 import { Gene } from '../GenePage/GenePage'
 
 const DEFAULT_COLUMNS = [
+  'short_read_match_id',
   'source',
   'gene',
   'hgvs',
@@ -99,7 +100,7 @@ const Variants = ({
   })
 
   const renderedTableColumns = useMemo(() => {
-    const columnsForContext = getColumnsForContext(context)
+    const columnsForContext = getColumnsForContext(context, datasetId)
     if ((columnsForContext as any).clinical_significance) {
       ;(
         columnsForContext as any
@@ -119,7 +120,7 @@ const Variants = ({
           tooltip: column.description,
         }))
     )
-  }, [clinvarReleaseDate, context, selectedColumns])
+  }, [clinvarReleaseDate, context, selectedColumns, datasetId])
 
   const [filter, setFilter] = useState({
     includeCategories: {
@@ -160,11 +161,13 @@ const Variants = ({
   }, [])
 
   const filteredVariants = useMemo(() => {
-    return mergeExomeAndGenomeData({
-      datasetId,
-      variants: filterVariants(variants, filter, renderedTableColumns),
-      preferJointData: filter.includeExomes && filter.includeGenomes,
-    })
+    return isLongRead(datasetId)
+      ? variants
+      : mergeExomeAndGenomeData({
+          datasetId,
+          variants: filterVariants(variants, filter, renderedTableColumns),
+          preferJointData: filter.includeExomes && filter.includeGenomes,
+        })
   }, [datasetId, variants, filter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {

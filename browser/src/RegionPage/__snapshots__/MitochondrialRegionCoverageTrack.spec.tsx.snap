@@ -318,6 +318,13 @@ query MitochondrialCoverageInRegion($start: Int!, $stop: Int!, $datasetId: Datas
 </mockConstructor>
 `;
 
+exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r4_lr queries with appropriate params 1`] = `
+<StatusMessage>
+  Mitochondrial genome coverage is not available in 
+  gnomAD v4.1.1 (long reads)
+</StatusMessage>
+`;
+
 exports[`MitochondrialRegionCoverageTrack with dataset gnomad_r4_non_ukb queries with appropriate params 1`] = `
 <mockConstructor
   errorMessage="Unable to load coverage"

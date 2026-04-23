@@ -90,6 +90,20 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     <li>
                       <a
                         class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                        data-item="gnomad_r4_lr"
+                        href="/?dataset=gnomad_r4_lr"
+                      >
+                        gnomAD v4.1.1 (long reads)
+                        <div
+                          class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                        >
+                          681,397 samples
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                         data-item="gnomad_r3"
                         href="/?dataset=gnomad_r3"
                       >
@@ -766,6 +780,20 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                         class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                       >
                         807,162 samples
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                      data-item="gnomad_r4_lr"
+                      href="/?dataset=gnomad_r4_lr"
+                    >
+                      gnomAD v4.1.1 (long reads)
+                      <div
+                        class="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                      >
+                        681,397 samples
                       </div>
                     </a>
                   </li>

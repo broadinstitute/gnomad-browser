@@ -5,7 +5,7 @@ import { TooltipAnchor } from '@gnomad/ui'
 
 import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 
-const TitleWrapper = styled.span`
+export const TitleWrapper = styled.span`
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -17,13 +17,13 @@ const TitleWrapper = styled.span`
   }
 `
 
-const Separator = styled.span`
+export const Separator = styled.span`
   @media (max-width: 900px) {
     display: none;
   }
 `
 
-const VariantIdWrapper = styled.span`
+export const VariantIdWrapper = styled.span`
   display: inline-flex;
   flex-direction: row;
   align-items: center;

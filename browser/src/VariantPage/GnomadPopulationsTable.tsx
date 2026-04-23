@@ -17,8 +17,8 @@ const ControlSection = styled.div`
   }
 `
 
-const addPopulationNames = (populations: any) => {
-  return populations.map((pop: any) => {
+export const addPopulationNames = (populations: { id: string; ac: number; an: number }[]) => {
+  return populations.map((pop) => {
     let name
     if (pop.id === 'XX' || pop.id.endsWith('_XX')) {
       name = 'XX'
@@ -32,7 +32,7 @@ const addPopulationNames = (populations: any) => {
   })
 }
 
-const nestPopulations = (populations: any) => {
+export const nestPopulations = (populations: any) => {
   const popIndices = []
   const subpopulations = {}
 

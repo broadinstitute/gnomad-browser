@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 
 import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
-import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  referenceGenome,
+  isLongRead,
+} from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import Link from '../Link'
@@ -122,7 +127,6 @@ const VariantsInGene = ({
       ) : (
         <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
       )}
-
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}
         context={gene}
@@ -167,6 +171,7 @@ const VariantsInGene = ({
           />
         )}
       </Variants>
+      )
     </>
   )
 }
@@ -176,38 +181,51 @@ VariantsInGene.defaultProps = {
   zoomRegion: null,
 }
 
+const withFrequency = (variant: any) => variant.freq !== null
+
+const adaptForTrackAndTable = (variant: any) => ({
+  ...variant,
+  allele_freq: variant.freq.all.af,
+  consequence:
+    variant.transcript_consequences && variant.transcript_consequences[0].major_consequence,
+  ac: variant.freq.all.ac,
+  an: variant.freq.all.an,
+  af: variant.freq.all.af,
+  hgvs: variant.transcript_consequences && variant.transcript_consequences[0].hgvs,
+})
+
+const LongReadVariantsInGene = ({
+  gene,
+  variants,
+  datasetId,
+  zoomRegion,
+  clinvarReleaseDate,
+}: {
+  gene: any
+  variants: any[]
+  datasetId: DatasetId
+  zoomRegion: any
+  clinvarReleaseDate: any
+}) => {
+  const datasetLabel = labelForDataset(datasetId)
+  return (
+    <>
+      <Variants
+        clinvarReleaseDate={clinvarReleaseDate}
+        context={gene}
+        datasetId={datasetId}
+        exportFileName={`${datasetLabel}_${gene.gene_id}`}
+        variants={filterVariantsInZoomRegion(variants, zoomRegion)
+          .filter(withFrequency)
+          .map(adaptForTrackAndTable)}
+      />
+    </>
+  )
+}
+
 const operationName = 'VariantsInGene'
-const query = `
-query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
-  meta {
-    clinvar_release_date
-  }
-  gene(gene_id: $geneId, reference_genome: $referenceGenome) {
-    clinvar_variants {
-      clinical_significance
-      clinvar_variation_id
-      gnomad {
-        exome {
-          ac
-          an
-          filters
-        }
-        genome {
-          ac
-          an
-          filters
-        }
-      }
-      gold_stars
-      hgvsc
-      hgvsp
-      in_gnomad
-      major_consequence
-      pos
-      review_status
-      transcript_id
-      variant_id
-    }
+
+const shortReadVariantSubquery = `
     variants(dataset: $datasetId) {
       consequence
       flags
@@ -302,6 +320,65 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
         flags
       }
     }
+`
+
+const longReadVariantSubquery = `
+	long_read_variants(dataset: $datasetId) {
+		variant_id
+		pos
+		freq {
+			all {
+				ac
+				an
+				af
+				homozygote_ref_count
+				homozygote_alt_count
+				heterozygote_count
+				homozygote_ref_freq
+				homozygote_alt_freq
+				heterozygote_freq
+			}
+		}
+		transcript_consequences {
+			hgvs
+			major_consequence
+		}
+		short_read_match_id
+	}
+`
+
+const query = (variantSubquery: string) => `
+query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
+  gene(gene_id: $geneId, reference_genome: $referenceGenome) {
+    clinvar_variants {
+      clinical_significance
+      clinvar_variation_id
+      gnomad {
+        exome {
+          ac
+          an
+          filters
+        }
+        genome {
+          ac
+          an
+          filters
+        }
+      }
+      gold_stars
+      hgvsc
+      hgvsp
+      in_gnomad
+      major_consequence
+      pos
+      review_status
+      transcript_id
+      variant_id
+    }
+    ${variantSubquery}
   }
 }`
 
@@ -339,7 +416,9 @@ const ConnectedVariantsInGene = ({
   return (
     <Query
       operationName={operationName}
-      query={query}
+      query={
+        isLongRead(datasetId) ? query(longReadVariantSubquery) : query(shortReadVariantSubquery)
+      }
       variables={{
         datasetId,
         geneId: gene.gene_id,
@@ -347,9 +426,29 @@ const ConnectedVariantsInGene = ({
       }}
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
-      success={(data: any) => data.gene && data.gene.variants}
+      success={(data: any) =>
+        data.gene && (isLongRead(datasetId) ? data.gene.long_read_variants : data.gene.variants)
+      }
     >
       {({ data }: any) => {
+        if (isLongRead(datasetId)) {
+          // TK clinvar match on short match?
+          //         let variants = annotateVariantsWithClinvar(
+          //           data.gene.long_read_variants,
+          //           data.gene.clinvar_variants
+          //         )
+          return (
+            <LongReadVariantsInGene
+              {...otherProps}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+              clinvarVariants={data.gene.clinvar_variants}
+              datasetId={datasetId}
+              gene={gene}
+              variants={data.gene.long_read_variants}
+            />
+          )
+        }
+
         let variants = annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)
         if (gene.pext) {
           variants = annotateVariantsWithPext(variants, gene.pext)
