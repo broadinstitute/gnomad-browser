@@ -92,6 +92,21 @@ type MQTLResult = {
   non_carrier_count: number
 }
 
+export type MQTLTimingBreakdown = {
+  fetch_variants_ms: number
+  fetch_methylation_ms: number
+  build_meth_index_ms: number
+  build_carrier_sets_ms: number
+  t_tests_ms: number
+  total_ms: number
+  variants_fetched: number
+  methylation_fetched: number
+  filtered_variants: number
+  cpg_sites: number
+  tests_run: number
+  associations_returned: number
+}
+
 export const fetchMQTLAssociations = async (
   esClient: any,
   chrom: string,
@@ -101,19 +116,29 @@ export const fetchMQTLAssociations = async (
   maxDistance: number,
   minCarriers: number
 ): Promise<MQTLResult[]> => {
+  const timing: Partial<MQTLTimingBreakdown> = {}
+  const t0 = performance.now()
+
   logger.info(`mQTL: fetching variants and methylation for ${chrom}:${start}-${stop}`)
 
   // Fetch variants and all-sample methylation in parallel
+  const tFetch = performance.now()
   const [variants, methylationRaw] = await Promise.all([
     fetchHaplotypeVariantsForRegion(esClient, chrom, start, stop),
     fetchMethylationForRegion(esClient, chrom, start, stop, undefined),
   ])
+  const fetchDone = performance.now()
+  timing.fetch_variants_ms = fetchDone - tFetch
+  timing.fetch_methylation_ms = fetchDone - tFetch
+  timing.variants_fetched = variants.length
+  timing.methylation_fetched = methylationRaw.length
 
   logger.info(`mQTL: ${variants.length} variants, ${methylationRaw.length} methylation records`)
 
   if (variants.length === 0 || methylationRaw.length === 0) return []
 
   // Group methylation by CpG position -> sample -> methylation value
+  const tMethIndex = performance.now()
   const methByCpg = new Map<number, Map<string, number[]>>()
   for (const rec of methylationRaw as any[]) {
     const pos = Number(rec.pos1)
@@ -132,9 +157,11 @@ export const fetchMQTLAssociations = async (
     }
     methAvgByCpg.set(pos, avgMap)
   }
+  timing.build_meth_index_ms = performance.now() - tMethIndex
+  timing.cpg_sites = methAvgByCpg.size
 
   // Build carrier sets per variant
-  // Group variants by position to get per-variant carrier info
+  const tCarrier = performance.now()
   const variantCarriers = new Map<string, { pos: number; carriers: Set<string>; nonCarriers: Set<string> }>()
   const allSamples = new Set<string>()
 
@@ -169,6 +196,8 @@ export const fetchMQTLAssociations = async (
       filteredVariants.push([varId, info])
     }
   }
+  timing.build_carrier_sets_ms = performance.now() - tCarrier
+  timing.filtered_variants = filteredVariants.length
 
   logger.info(`mQTL: ${filteredVariants.length} variants pass AF/carrier filters`)
 
@@ -176,6 +205,8 @@ export const fetchMQTLAssociations = async (
   const results: MQTLResult[] = []
 
   // For each variant, test against nearby CpGs
+  const tTests = performance.now()
+  let testsRun = 0
   for (const [varId, varInfo] of filteredVariants) {
     for (const cpgPos of cpgPositions) {
       if (Math.abs(cpgPos - varInfo.pos) > maxDistance) continue
@@ -193,6 +224,8 @@ export const fetchMQTLAssociations = async (
       }
 
       if (carrierVals.length < 2 || nonCarrierVals.length < 2) continue
+
+      testsRun++
 
       // Welch's t-test
       const n1 = carrierVals.length
@@ -227,11 +260,17 @@ export const fetchMQTLAssociations = async (
       })
     }
   }
+  timing.t_tests_ms = performance.now() - tTests
+  timing.tests_run = testsRun
 
   // Sort by p-value and return top 500
   results.sort((a, b) => a.p_value - b.p_value)
   const topResults = results.slice(0, 500)
 
+  timing.total_ms = performance.now() - t0
+  timing.associations_returned = topResults.length
+
+  logger.info(`mQTL timing: ${JSON.stringify(timing)}`)
   logger.info(`mQTL: ${results.length} total associations, returning top ${topResults.length}`)
   return topResults
 }

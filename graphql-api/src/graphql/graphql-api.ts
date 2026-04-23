@@ -200,7 +200,19 @@ const graphQLApi = ({ context }: any) =>
         throw new GraphQLError(error.message, undefined, undefined, undefined, undefined, error)
       }
 
-      return execute(args)
+      const result = await execute(args)
+
+      // Attach LR timing data to extensions if present, then clear for next request
+      const timings = args.contextValue?._lrTimings
+      if (timings && timings.length > 0) {
+        ;(result as any).extensions = {
+          ...(result as any).extensions,
+          timings: [...timings],
+        }
+        args.contextValue._lrTimings = []
+      }
+
+      return result
     },
 
     customFormatErrorFn: (error: any) =>
