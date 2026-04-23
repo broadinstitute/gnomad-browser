@@ -372,6 +372,24 @@ exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4 has no unexpec
 ]
 `;
 
+exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4_lr has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
+>
+  Mitochondrial variants are not available in 
+  gnomAD v4.1.1 (long reads)
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0 jtwqlm"
+    href="/transcript/dummy_transcript?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    View this transcript in gnomAD v3.1 to see mitochondrial variants
+  </a>
+</div>
+`;
+
 exports[`MitochondrialVariantsInTranscript with dataset gnomad_r4_non_ukb has no unexpected changes 1`] = `
 [
   <div

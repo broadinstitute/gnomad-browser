@@ -49,11 +49,11 @@ import {
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
 
-const Section = styled.section`
+export const Section = styled.section`
   width: 100%;
 `
 
-const ResponsiveSection = styled(Section)`
+export const ResponsiveSection = styled(Section)`
   width: calc(50% - 15px);
 
   @media (max-width: 992px) {
@@ -61,7 +61,7 @@ const ResponsiveSection = styled(Section)`
   }
 `
 
-const FlexWrapper = styled.div`
+export const FlexWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -784,7 +784,7 @@ type VariantPageProps = {
 // As such, if a variant has multiple associated genes, multiple canonical transcripts, and
 //   no MANE select transcript, the "Gene page" button will not appear as it is non-trivial,
 //   and users should navigate further down the page to the VEP consequences section
-const checkGeneLink = (transcript_consequences: TranscriptConsequence[] | null) => {
+export const checkGeneLink = (transcript_consequences: TranscriptConsequence[] | null) => {
   if (!transcript_consequences) {
     return null
   }

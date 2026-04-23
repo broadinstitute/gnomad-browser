@@ -174,6 +174,7 @@ const expectedVersionSpecificColumns: Record<DatasetId, Column[]> = {
     { label: SIFT_MAX_LABEL, getValue: getSift },
     { label: POLYPHEN_MAX_LABEL, getValue: getPolyphen },
   ],
+  gnomad_r4_lr: [],
 }
 
 forAllDatasets('createVersionSpecificColumns for %s dataset', (datasetId) => {

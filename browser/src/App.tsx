@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import Delayed from './Delayed'
-import ErrorBoundary from './ErrorBoundary'
+//import ErrorBoundary from './ErrorBoundary'
 
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
@@ -107,25 +107,29 @@ const App = () => {
         }}
       />
 
-      <ErrorBoundary>
-        {isLoading ? (
-          <Delayed>
-            <StatusMessage>Loading</StatusMessage>
-          </Delayed>
-        ) : (
-          <Suspense fallback={null}>
-            <TopBarWrapper>
-              <NavBar />
-              {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
-            </TopBarWrapper>
-            <Notifications />
+      {
+        // TK restore      <ErrorBoundary>
+      }
+      {isLoading ? (
+        <Delayed>
+          <StatusMessage>Loading</StatusMessage>
+        </Delayed>
+      ) : (
+        <Suspense fallback={null}>
+          <TopBarWrapper>
+            <NavBar />
+            {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
+          </TopBarWrapper>
+          <Notifications />
 
-            <Suspense fallback={<PageLoading />}>
-              <Routes />
-            </Suspense>
+          <Suspense fallback={<PageLoading />}>
+            <Routes />
           </Suspense>
-        )}
-      </ErrorBoundary>
+        </Suspense>
+      )}
+      {
+        // TK restore      </ErrorBoundary>
+      }
     </Router>
   )
 }

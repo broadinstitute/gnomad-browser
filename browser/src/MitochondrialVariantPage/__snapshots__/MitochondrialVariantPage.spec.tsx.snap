@@ -123,6 +123,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r3"
                   href="/?dataset=gnomad_r3"
                   onBlur={[Function]}
@@ -8052,6 +8069,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r3"
                   href="/?dataset=gnomad_r3"
                   onBlur={[Function]}
@@ -15885,6 +15919,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
                   </div>
                 </a>
               </li>
@@ -23730,6 +23781,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r3"
                   href="/?dataset=gnomad_r3"
                   onBlur={[Function]}
@@ -31563,6 +31631,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
                   </div>
                 </a>
               </li>
@@ -39408,6 +39493,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r3"
                   href="/?dataset=gnomad_r3"
                   onBlur={[Function]}
@@ -47241,6 +47343,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
                   </div>
                 </a>
               </li>
@@ -55086,6 +55205,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r3"
                   href="/?dataset=gnomad_r3"
                   onBlur={[Function]}
@@ -62820,6 +62956,24 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
 </div>
 `;
 
+exports[`MitochondrialVariantPage with dataset gnomad_r4_lr has no unexpected changes 1`] = `
+<div
+  className="StatusMessage-sc-neg7mh-0 eWmajh"
+>
+  Mitochondrial variants are not available in 
+  gnomAD v4.1.1 (long reads)
+  <br />
+  <br />
+  <a
+    className="Link-sc-14lgydv-0 jtwqlm"
+    href="/variant/M-123-A-C?dataset=gnomad_r3"
+    onClick={[Function]}
+  >
+    Search for this variant in gnomAD v3
+  </a>
+</div>
+`;
+
 exports[`MitochondrialVariantPage with dataset gnomad_r4_non_ukb has no unexpected changes 1`] = `
 <div
   className="Page-sc-w7h773-0 inQCpN"
@@ -62919,6 +63073,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4_non_ukb has no unexpect
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
                   </div>
                 </a>
               </li>
@@ -70764,6 +70935,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r3"
                   href="/?dataset=gnomad_r3"
                   onBlur={[Function]}
@@ -78597,6 +78785,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
                   </div>
                 </a>
               </li>
@@ -86442,6 +86647,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
               <li>
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r3"
                   href="/?dataset=gnomad_r3"
                   onBlur={[Function]}
@@ -94275,6 +94497,23 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
                     className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
                   >
                     807,162 samples
+                  </div>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
+                  data-item="gnomad_r4_lr"
+                  href="/?dataset=gnomad_r4_lr"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                >
+                  gnomAD v4.1.1 (long reads)
+                  <div
+                    className="DatasetSelector__ItemDescription-sc-1p2fxbn-6 gKTZkZ"
+                  >
+                    681,397 samples
                   </div>
                 </a>
               </li>

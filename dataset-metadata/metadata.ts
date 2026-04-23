@@ -20,6 +20,7 @@ export const datasetLabels = {
   gnomad_cnv_r4: 'gnomAD CNVs v4.1.0',
   gnomad_r4: 'gnomAD v4.1.1',
   gnomad_r4_non_ukb: 'gnomAD v4.1.1 (non-UKB)',
+  gnomad_r4_lr: 'gnomAD v4.1.1 (long reads)',
 } as const
 export type DatasetId = keyof typeof datasetLabels
 
@@ -74,6 +75,7 @@ export type DatasetMetadata = {
   copyNumberVariantDatasetId: DatasetId
   hasJointFrequencyData: boolean
   hasVRSData: boolean
+  isLongRead: boolean
 }
 
 const metadata: Record<DatasetId, DatasetMetadata> = {
@@ -126,6 +128,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r2_1: {
     isSubset: false,
@@ -176,6 +179,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r2_1_controls: {
     isSubset: true,
@@ -226,6 +230,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r2_1_non_cancer: {
     isSubset: true,
@@ -276,6 +281,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r2_1_non_neuro: {
     isSubset: true,
@@ -326,6 +332,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r2_1_non_topmed: {
     isSubset: true,
@@ -376,6 +383,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r3: {
     isSubset: false,
@@ -426,6 +434,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r3_controls_and_biobanks: {
     isSubset: true,
@@ -476,6 +485,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r3_non_cancer: {
     isSubset: true,
@@ -526,6 +536,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r3_non_neuro: {
     isSubset: true,
@@ -576,6 +587,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r3_non_topmed: {
     isSubset: true,
@@ -626,6 +638,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r3_non_v2: {
     isSubset: true,
@@ -676,6 +689,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_sv_r2_1: {
     isSubset: false,
@@ -726,6 +740,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_sv_r2_1_controls: {
     isSubset: true,
@@ -776,6 +791,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_sv_r2_1_non_neuro: {
     isSubset: true,
@@ -826,6 +842,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: false,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_sv_r4: {
     isSubset: false,
@@ -876,6 +893,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: true,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_cnv_r4: {
     isSubset: false,
@@ -926,6 +944,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: true,
     hasJointFrequencyData: true,
     hasVRSData: false,
+    isLongRead: false,
   },
   gnomad_r4: {
     isSubset: false,
@@ -976,6 +995,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasCopyNumberVariantCoverage: false,
     hasJointFrequencyData: true,
     hasVRSData: true,
+    isLongRead: false,
   },
   gnomad_r4_non_ukb: {
     isSubset: true,
@@ -1026,6 +1046,58 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasRelatedVariants: true,
     hasJointFrequencyData: false,
     hasVRSData: true,
+    isLongRead: false,
+  },
+  gnomad_r4_lr: {
+    isSubset: false,
+    hasConstraints: true,
+    hasVariantCoocurrence: false,
+    hasNonCodingConstraints: false,
+    hasExome: false,
+    genesHaveExomeCoverage: false,
+    genesHaveGenomeCoverage: false,
+    transcriptsHaveExomeCoverage: false,
+    regionsHaveExomeCoverage: false,
+    regionsHaveGenomeCoverage: false,
+    hasShortVariants: true,
+    hasStructuralVariants: false,
+    hasCopyNumberVariants: false,
+    hasLocalAncestryPopulations: true,
+    isLiftoverSource: false,
+    isLiftoverTarget: true,
+    referenceGenome: 'GRCh38',
+    usesGrch37: false,
+    usesGrch38: true,
+    isV3Subset: false,
+    isV2: false,
+    isV3: false,
+    isV4: true,
+    isExac: false,
+    isSVs: false,
+    hasV2Genome: false,
+    metricsIncludeLowQualityGenotypes: false,
+    has1000GenomesPopulationFrequencies: false,
+    hasAlleleBalance: false,
+    hasRelatedVariants: false,
+    showAllIndividualsInAgeDistributionByDefault: false,
+    hasExons: false,
+    hasShortTandemRepeats: false,
+    hasMitochondrialGenomeCoverage: false,
+    hasMitochondrialVariants: false,
+    hasNonCodingReadData: false,
+    readsDatasetId: 'gnomad_r4',
+    readsIncludeLowQualityGenotypes: false,
+    coverageDatasetId: 'gnomad_r4',
+    variantFeedbackDescription: 'gnomAD v4',
+    isV4SVs: false,
+    shortVariantDatasetId: 'gnomad_r4',
+    structuralVariantDatasetId: 'gnomad_sv_r4',
+    isV4CNVs: false,
+    copyNumberVariantDatasetId: 'gnomad_cnv_r4',
+    hasCopyNumberVariantCoverage: false,
+    hasJointFrequencyData: false,
+    hasVRSData: false,
+    isLongRead: true,
   },
 }
 
@@ -1180,3 +1252,5 @@ export const getTopLevelDataset = (datasetId: DatasetId): TopLevelDataset => {
 }
 
 export const hasVRSData = (datasetId: DatasetId) => getMetadata(datasetId, 'hasVRSData')
+
+export const isLongRead = (datasetId: DatasetId): boolean => getMetadata(datasetId, 'isLongRead')

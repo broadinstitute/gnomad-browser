@@ -13650,6 +13650,981 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
 </React.Fragment>
 `;
 
+exports[`ShortTandemRepeatPage with "gnomad_r4_lr" dataset has no unexected changes 1`] = `
+<React.Fragment>
+  <ShortTandemRepeatPage__FlexWrapper
+    style={
+      {
+        "marginBottom": "3em",
+      }
+    }
+  >
+    <ShortTandemRepeatPage__ResponsiveSection>
+      <ShortTandemRepeatAttributes
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
+    </ShortTandemRepeatPage__ResponsiveSection>
+    <ShortTandemRepeatPage__ResponsiveSection>
+      <ExternalResources
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
+      <h2>
+        TRs in gnomAD
+      </h2>
+      <p>
+        <List>
+          <List__ListItem>
+            <withRouter()
+              preserveSelectedDataset={true}
+              to="/short-tandem-repeats"
+            >
+              Known disease-associated TRs 
+            </withRouter()>
+          </List__ListItem>
+          <List__ListItem>
+            <Link__ExternalLink
+              href="https://gnomad.broadinstitute.org/data#v3-short-tandem-repeats"
+            >
+              Data download
+            </Link__ExternalLink>
+            ,  
+            <Link__ExternalLink
+              href="https://github.com/broadinstitute/str-analysis/blob/9984a588dffc6bbbeb2e8c8251bba1ce660b3f4b/str_analysis/variant_catalogs/variant_catalog_without_offtargets.GRCh38.json"
+            >
+              ExpansionHunter catalog
+            </Link__ExternalLink>
+          </List__ListItem>
+        </List>
+      </p>
+    </ShortTandemRepeatPage__ResponsiveSection>
+  </ShortTandemRepeatPage__FlexWrapper>
+  <section
+    style={
+      {
+        "marginBottom": "3em",
+      }
+    }
+  >
+    <h2>
+      Associated Diseases 
+      <InfoButton
+        topic="str-associated-diseases"
+      />
+    </h2>
+    <TableWrapper>
+      <ShortTandemRepeatAssociatedDiseasesTable
+        shortTandemRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
+    </TableWrapper>
+  </section>
+  <section
+    style={
+      {
+        "marginBottom": "3em",
+      }
+    }
+  >
+    <h2>
+      Allele Size Distribution 
+      <InfoButton
+        topic="str-allele-size-distribution"
+      />
+    </h2>
+    <ShortTandemRepeatAlleleSizeDistributionPlot
+      alleleSizeDistribution={
+        [
+          {
+            "colorByValue": null,
+            "frequency": 12,
+            "repunit_count": 3,
+          },
+          {
+            "colorByValue": null,
+            "frequency": 123,
+            "repunit_count": 4,
+          },
+        ]
+      }
+      colorBy={null}
+      maxRepeats={4}
+      ranges={[]}
+      repeatUnitLength={4}
+      scaleType="linear"
+    />
+    <ControlSection
+      style={
+        {
+          "marginTop": "0.5em",
+        }
+      }
+    >
+      <ShortTandemRepeatPopulationOptions
+        id="STR1-repeat-counts"
+        populations={
+          [
+            "asj",
+          ]
+        }
+        selectedPopulation={null}
+        selectedSex={null}
+        setSelectedPopulation={[Function]}
+        setSelectedSex={[Function]}
+      />
+      <ShortTandemRepeatColorBySelect
+        id="STR1-color-by"
+        selectedColorBy={null}
+        setSelectedColorBy={[Function]}
+        setSelectedScaleType={[Function]}
+      />
+      <label
+        htmlFor="short-tandem-repeat-STR1-allele-size-distribution-scale"
+      >
+        y-Scale:  
+        <Select
+          id="short-tandem-repeat-STR1-allele-size-distribution-scale"
+          onChange={[Function]}
+          value="linear"
+        >
+          <option
+            value="linear"
+          >
+            Linear
+          </option>
+          <option
+            value="log"
+          >
+            Log
+          </option>
+          <option
+            value="linear-truncated-50"
+          >
+            Linear: Truncated at 50
+          </option>
+          <option
+            value="linear-truncated-200"
+          >
+            Linear: Truncated at 200
+          </option>
+          <option
+            value="linear-truncated-1000"
+          >
+            Linear: Truncated at 1000
+          </option>
+        </Select>
+      </label>
+    </ControlSection>
+    <p
+      style={
+        {
+          "marginBottom": 0,
+        }
+      }
+    >
+      <Badge
+        level="info"
+      >
+        Note
+      </Badge>
+       This plot includes non-pathogenic repeat units. Use the “Repeat unit” menu to view specific repeat units.
+    </p>
+  </section>
+  <section
+    style={
+      {
+        "marginBottom": "3em",
+      }
+    }
+  >
+    <h2>
+      Genotype Distribution 
+      <InfoButton
+        topic="str-genotype-distribution"
+      />
+    </h2>
+    <ShortTandemRepeatGenotypeDistributionPlot
+      axisLabels={
+        [
+          "ACCA allele",
+          "GATA allele",
+        ]
+      }
+      genotypeDistribution={
+        [
+          {
+            "frequency": 15,
+            "long_allele_repunit_count": 9,
+            "short_allele_repunit_count": 8,
+          },
+          {
+            "frequency": 19,
+            "long_allele_repunit_count": 10,
+            "short_allele_repunit_count": 8,
+          },
+          {
+            "frequency": 17,
+            "long_allele_repunit_count": 10,
+            "short_allele_repunit_count": 9,
+          },
+        ]
+      }
+      maxRepeats={
+        [
+          10,
+          9,
+        ]
+      }
+      onSelectBin={[Function]}
+      selectedPopulation={null}
+      selectedSex={null}
+      xRanges={[]}
+      yRanges={[]}
+    />
+    <ControlSection
+      style={
+        {
+          "marginTop": "0.5em",
+        }
+      }
+    >
+      <ShortTandemRepeatPopulationOptions
+        id="STR1-genotype-distribution"
+        populations={
+          [
+            "asj",
+          ]
+        }
+        selectedPopulation={null}
+        selectedSex={null}
+        setSelectedPopulation={[Function]}
+        setSelectedSex={[Function]}
+      />
+      <ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect
+        selectedRepeatUnits={
+          [
+            "ACCA",
+            "GATA",
+          ]
+        }
+        setSelectedRepeatUnits={[Function]}
+        shortTandemRepeatOrAdjacentRepeat={
+          {
+            "adjacent_repeats": [],
+            "age_distribution": [
+              {
+                "age_range": [
+                  null,
+                  18,
+                ],
+                "distribution": [
+                  [
+                    8,
+                    6,
+                  ],
+                  [
+                    9,
+                    3,
+                  ],
+                  [
+                    10,
+                    9,
+                  ],
+                ],
+              },
+            ],
+            "allele_size_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "colorByValue": "low",
+                    "frequency": 12,
+                    "repunit_count": 3,
+                  },
+                  {
+                    "colorByValue": "high",
+                    "frequency": 123,
+                    "repunit_count": 4,
+                  },
+                ],
+                "q_score": "0.6",
+                "quality_description": "medium-low",
+                "repunit": "ACCA",
+                "sex": "XY",
+              },
+            ],
+            "associated_diseases": [
+              {
+                "inheritance_mode": "Autosomal dominant",
+                "name": "disease",
+                "notes": "hello world",
+                "omim_id": "123456",
+                "repeat_size_classifications": [
+                  {
+                    "classification": "Normal",
+                    "max": 32,
+                    "min": null,
+                  },
+                  {
+                    "classification": "Intermediate",
+                    "max": 38,
+                    "min": 36,
+                  },
+                  {
+                    "classification": "Pathogenic",
+                    "max": null,
+                    "min": 39,
+                  },
+                ],
+                "symbol": "abcd1",
+              },
+            ],
+            "gene": {
+              "ensembl_id": "ENSG00000000001",
+              "region": "coding:polyglutamine",
+              "symbol": "ABCD1",
+            },
+            "genotype_distribution": [
+              {
+                "ancestry_group": "asj",
+                "distribution": [
+                  {
+                    "frequency": 15,
+                    "long_allele_repunit_count": 9,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 19,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 8,
+                  },
+                  {
+                    "frequency": 17,
+                    "long_allele_repunit_count": 10,
+                    "short_allele_repunit_count": 9,
+                  },
+                ],
+                "long_allele_repunit": "GATA",
+                "q_score": "1",
+                "quality_description": "high",
+                "sex": "XY",
+                "short_allele_repunit": "ACCA",
+              },
+            ],
+            "id": "STR1",
+            "main_reference_region": {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+            "reference_regions": [
+              {
+                "chrom": "1",
+                "start": 10000000,
+                "stop": 15000000,
+              },
+            ],
+            "reference_repeat_unit": "CTG",
+            "repeat_units": [],
+            "strchive_id": "STRCHIVE1",
+            "stripy_id": "STRIPY1",
+          }
+        }
+      />
+    </ControlSection>
+    <p
+      style={
+        {
+          "marginBottom": 0,
+        }
+      }
+    >
+      <Badge
+        level="info"
+      >
+        Note
+      </Badge>
+       This plot includes non-pathogenic repeat units. Use the “Repeat units” menu to view specific repeat units.
+    </p>
+  </section>
+  <section
+    style={
+      {
+        "marginBottom": "3em",
+      }
+    }
+  >
+    <h2>
+      Age Distribution 
+      <InfoButton
+        topic="str-age-distribution"
+      />
+    </h2>
+    <ShortTandemRepeatAgeDistributionPlot
+      ageDistribution={
+        [
+          {
+            "age_range": [
+              null,
+              18,
+            ],
+            "distribution": [
+              [
+                8,
+                6,
+              ],
+              [
+                9,
+                3,
+              ],
+              [
+                10,
+                9,
+              ],
+            ],
+          },
+        ]
+      }
+      maxRepeats={4}
+      ranges={
+        [
+          {
+            "label": "Normal",
+            "start": 0,
+            "stop": 33,
+          },
+          {
+            "label": "Intermediate",
+            "start": 36,
+            "stop": 39,
+          },
+          {
+            "label": "Pathogenic",
+            "start": 39,
+            "stop": Infinity,
+          },
+        ]
+      }
+    />
+  </section>
+  <section>
+    <h2>
+      Read Data
+       
+      <InfoButton
+        topic="str-read-data"
+      />
+    </h2>
+    <ShortTandemRepeatReadsContainer
+      alleleSizeDistributionRepeatUnits={
+        [
+          "ACCA",
+        ]
+      }
+      datasetId="gnomad_r4_lr"
+      maxRepeats={4}
+      populations={
+        [
+          "asj",
+        ]
+      }
+      selectedPopulation={null}
+      selectedSex={null}
+      setSelectedPopulation={[Function]}
+      setSelectedSex={[Function]}
+      shortTandemRepeat={
+        {
+          "adjacent_repeats": [],
+          "age_distribution": [
+            {
+              "age_range": [
+                null,
+                18,
+              ],
+              "distribution": [
+                [
+                  8,
+                  6,
+                ],
+                [
+                  9,
+                  3,
+                ],
+                [
+                  10,
+                  9,
+                ],
+              ],
+            },
+          ],
+          "allele_size_distribution": [
+            {
+              "ancestry_group": "asj",
+              "distribution": [
+                {
+                  "colorByValue": "low",
+                  "frequency": 12,
+                  "repunit_count": 3,
+                },
+                {
+                  "colorByValue": "high",
+                  "frequency": 123,
+                  "repunit_count": 4,
+                },
+              ],
+              "q_score": "0.6",
+              "quality_description": "medium-low",
+              "repunit": "ACCA",
+              "sex": "XY",
+            },
+          ],
+          "associated_diseases": [
+            {
+              "inheritance_mode": "Autosomal dominant",
+              "name": "disease",
+              "notes": "hello world",
+              "omim_id": "123456",
+              "repeat_size_classifications": [
+                {
+                  "classification": "Normal",
+                  "max": 32,
+                  "min": null,
+                },
+                {
+                  "classification": "Intermediate",
+                  "max": 38,
+                  "min": 36,
+                },
+                {
+                  "classification": "Pathogenic",
+                  "max": null,
+                  "min": 39,
+                },
+              ],
+              "symbol": "abcd1",
+            },
+          ],
+          "gene": {
+            "ensembl_id": "ENSG00000000001",
+            "region": "coding:polyglutamine",
+            "symbol": "ABCD1",
+          },
+          "genotype_distribution": [
+            {
+              "ancestry_group": "asj",
+              "distribution": [
+                {
+                  "frequency": 15,
+                  "long_allele_repunit_count": 9,
+                  "short_allele_repunit_count": 8,
+                },
+                {
+                  "frequency": 19,
+                  "long_allele_repunit_count": 10,
+                  "short_allele_repunit_count": 8,
+                },
+                {
+                  "frequency": 17,
+                  "long_allele_repunit_count": 10,
+                  "short_allele_repunit_count": 9,
+                },
+              ],
+              "long_allele_repunit": "GATA",
+              "q_score": "1",
+              "quality_description": "high",
+              "sex": "XY",
+              "short_allele_repunit": "ACCA",
+            },
+          ],
+          "id": "STR1",
+          "main_reference_region": {
+            "chrom": "1",
+            "start": 10000000,
+            "stop": 15000000,
+          },
+          "reference_regions": [
+            {
+              "chrom": "1",
+              "start": 10000000,
+              "stop": 15000000,
+            },
+          ],
+          "reference_repeat_unit": "CTG",
+          "repeat_units": [],
+          "strchive_id": "STRCHIVE1",
+          "stripy_id": "STRIPY1",
+        }
+      }
+    />
+  </section>
+</React.Fragment>
+`;
+
 exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected changes 1`] = `
 <React.Fragment>
   <ShortTandemRepeatPage__FlexWrapper

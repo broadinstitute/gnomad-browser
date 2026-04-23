@@ -509,6 +509,14 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
         description: `${sampleCounts.gnomad_r4.total.toLocaleString()} samples`,
         childReferenceGenome: referenceGenome('gnomad_r4'),
       })
+
+      shortVariantDatasets[1].children.push({
+        id: 'gnomad_r4_lr',
+        label: labelForDataset('gnomad_r4_lr'),
+        url: urlBuilder(window.location, 'gnomad_r4_lr'),
+        description: `${sampleCounts.gnomad_r4_lr.total.toLocaleString()} samples`,
+        childReferenceGenome: referenceGenome('gnomad_r4_lr'),
+      })
     }
 
     if (includeGnomad4Subsets) {

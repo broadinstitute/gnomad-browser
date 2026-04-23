@@ -19,6 +19,8 @@ const {
   ...gnomadV4SampleCounts
 } = require('./datasets/gnomad-v4/sampleCounts')
 
+const gnomadV4LongReadSampleCounts = require('./datasets/gnomad-v4-lr/sampleCounts')
+
 const sampleCounts = [
   { exac: exacSampleCounts },
   { gnomad_r2_1: gnomadV2SampleCounts },
@@ -39,6 +41,7 @@ const sampleCounts = [
   ...Object.keys(gnomadV4SubsetSampleCounts).map((subset) => ({
     [`gnomad_r4_${subset}`]: gnomadV4SubsetSampleCounts[subset],
   })),
+  { gnomad_r4_lr: gnomadV4LongReadSampleCounts },
 ].reduce(Object.assign, {})
 
 export default sampleCounts

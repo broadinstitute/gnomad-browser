@@ -13,7 +13,7 @@ import Link from '../Link'
 import QCFilter from '../QCFilter'
 import { Variant } from './VariantPage'
 
-const Table = styled.table`
+export const Table = styled.table`
   /* To vertically align with the right column's heading */
   margin-top: 1.25em;
 

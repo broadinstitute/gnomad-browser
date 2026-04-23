@@ -126,6 +126,12 @@ exports[` 19`] = `
 </p>
 `;
 
+exports[` 20`] = `
+<p>
+  Constraint is not available on this gene
+</p>
+`;
+
 exports[`ConstraintTable with "exac" dataset selected with a minimal gene has no unexpected changes 1`] = `
 <p>
   Constraint is not available for this 
@@ -9712,6 +9718,1227 @@ exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial 
 `;
 
 exports[`ConstraintTable with "gnomad_r4" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for mitochondrial transcripts.
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected and gene with available constraint but with no_exp_lof flag set omits constraint 1`] = `
+<p>
+  Constraint is not available for this 
+  gene
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected and gene with available constraint but with no_exp_mis flag set omits constraint 1`] = `
+<p>
+  Constraint is not available for this 
+  gene
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected and gene with available constraint but with no_exp_syn flag set omits constraint 1`] = `
+<p>
+  Constraint is not available for this 
+  gene
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected and gene with available constraint has no unexpected changes 1`] = `
+[
+  <div>
+    <table
+      className="Table__BaseTable-sc-7fgtt2-0 GnomadConstraintTable__Table-sc-wceq7l-0 etBNab dIdsbd"
+    >
+      <thead>
+        <tr>
+          <th
+            scope="col"
+          >
+            Category
+          </th>
+          <th
+            scope="col"
+          >
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              Expected SNVs
+            </span>
+          </th>
+          <th
+            scope="col"
+          >
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              Observed SNVs
+            </span>
+          </th>
+          <th
+            scope="col"
+          >
+            Constraint metrics
+          </th>
+          <td />
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th
+            scope="row"
+          >
+            Synonymous
+          </th>
+          <td>
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.2
+            </span>
+          </td>
+          <td>
+            —
+          </td>
+          <td>
+            Z =
+             
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.46
+            </span>
+            <br />
+            <span
+              className="GnomadConstraintTable__OEMetrics-sc-wceq7l-1 ktQBit"
+            >
+              o/e = 
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.91
+              </span>
+               
+              (
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.8
+              </span>
+               -
+               
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.95
+              </span>
+              )
+            </span>
+          </td>
+          <td>
+            <svg
+              height={30}
+              width={60}
+            >
+              <text
+                fontSize="12px"
+                textAnchor="start"
+                x={0}
+                y={26}
+              >
+                0
+              </text>
+              <line
+                stroke="#333"
+                x1={13}
+                x2={47}
+                y1={25}
+                y2={25}
+              />
+              <rect
+                fill="#aaa"
+                height={14}
+                width={5.099999999999994}
+                x={40.2}
+                y={11}
+              />
+              <circle
+                cx={44.008}
+                cy={18}
+                fill="#e2e2e2"
+                r={3}
+                stroke="#000"
+                strokeWidth={1}
+              />
+              <text
+                fontSize="12px"
+                textAnchor="end"
+                x={60}
+                y={26}
+              >
+                1
+              </text>
+            </svg>
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            Missense
+          </th>
+          <td>
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.3
+            </span>
+          </td>
+          <td>
+            —
+          </td>
+          <td>
+            Z =
+             
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.57
+            </span>
+            <br />
+            <span
+              className="GnomadConstraintTable__OEMetrics-sc-wceq7l-1 ktQBit"
+            >
+              o/e = 
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.89
+              </span>
+               
+              (
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.8
+              </span>
+               -
+               
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.99
+              </span>
+              )
+            </span>
+          </td>
+          <td>
+            <svg
+              height={30}
+              width={60}
+            >
+              <text
+                fontSize="12px"
+                textAnchor="start"
+                x={0}
+                y={26}
+              >
+                0
+              </text>
+              <line
+                stroke="#333"
+                x1={13}
+                x2={47}
+                y1={25}
+                y2={25}
+              />
+              <rect
+                fill="#aaa"
+                height={14}
+                width={6.459999999999994}
+                x={40.2}
+                y={11}
+              />
+              <circle
+                cx={43.294}
+                cy={18}
+                fill="#e2e2e2"
+                r={3}
+                stroke="#000"
+                strokeWidth={1}
+              />
+              <text
+                fontSize="12px"
+                textAnchor="end"
+                x={60}
+                y={26}
+              >
+                1
+              </text>
+            </svg>
+          </td>
+        </tr>
+        <tr>
+          <th
+            scope="row"
+          >
+            pLoF
+          </th>
+          <td>
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.1
+            </span>
+          </td>
+          <td>
+            —
+          </td>
+          <td>
+            pLI = 
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.68
+            </span>
+            <br />
+            <span
+              className="GnomadConstraintTable__OEMetrics-sc-wceq7l-1 ktQBit"
+            >
+              o/e = 
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.79
+              </span>
+               
+              (
+              <span
+                className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.6
+              </span>
+               -
+               
+              <span
+                className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 glNgXE"
+                highlightColor="#ffc000"
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                0.9
+              </span>
+              )
+            </span>
+          </td>
+          <td>
+            <svg
+              height={30}
+              width={60}
+            >
+              <text
+                fontSize="12px"
+                textAnchor="start"
+                x={0}
+                y={26}
+              >
+                0
+              </text>
+              <line
+                stroke="#333"
+                x1={13}
+                x2={47}
+                y1={25}
+                y2={25}
+              />
+              <rect
+                fill="#aaa"
+                height={14}
+                width={10.200000000000003}
+                x={33.4}
+                y={11}
+              />
+              <circle
+                cx={39.826}
+                cy={18}
+                fill="#ffc000"
+                r={3}
+                stroke="#000"
+                strokeWidth={1}
+              />
+              <text
+                fontSize="12px"
+                textAnchor="end"
+                x={60}
+                y={26}
+              >
+                1
+              </text>
+            </svg>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>,
+  <p
+    style={
+      {
+        "marginBottom": 0,
+      }
+    }
+  >
+    Constraint metrics based on 
+    Ensembl canonical
+     transcript (
+    <a
+      className="Link-sc-14lgydv-0 jtwqlm"
+      href="/transcript/transcript-999"
+      onClick={[Function]}
+    >
+      transcript-999
+      .
+      12.34.5
+    </a>
+    ).
+  </p>,
+]
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected and transcript with available constraint has no unexpected changes 1`] = `
+<div>
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 GnomadConstraintTable__Table-sc-wceq7l-0 etBNab dIdsbd"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Category
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected SNVs
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed SNVs
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+        <td />
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            0.2
+          </span>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Z =
+           
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            0.46
+          </span>
+          <br />
+          <span
+            className="GnomadConstraintTable__OEMetrics-sc-wceq7l-1 ktQBit"
+          >
+            o/e = 
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.91
+            </span>
+             
+            (
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.8
+            </span>
+             -
+             
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.95
+            </span>
+            )
+          </span>
+        </td>
+        <td>
+          <svg
+            height={30}
+            width={60}
+          >
+            <text
+              fontSize="12px"
+              textAnchor="start"
+              x={0}
+              y={26}
+            >
+              0
+            </text>
+            <line
+              stroke="#333"
+              x1={13}
+              x2={47}
+              y1={25}
+              y2={25}
+            />
+            <rect
+              fill="#aaa"
+              height={14}
+              width={5.099999999999994}
+              x={40.2}
+              y={11}
+            />
+            <circle
+              cx={44.008}
+              cy={18}
+              fill="#e2e2e2"
+              r={3}
+              stroke="#000"
+              strokeWidth={1}
+            />
+            <text
+              fontSize="12px"
+              textAnchor="end"
+              x={60}
+              y={26}
+            >
+              1
+            </text>
+          </svg>
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            0.3
+          </span>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          Z =
+           
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            0.57
+          </span>
+          <br />
+          <span
+            className="GnomadConstraintTable__OEMetrics-sc-wceq7l-1 ktQBit"
+          >
+            o/e = 
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.89
+            </span>
+             
+            (
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.8
+            </span>
+             -
+             
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.99
+            </span>
+            )
+          </span>
+        </td>
+        <td>
+          <svg
+            height={30}
+            width={60}
+          >
+            <text
+              fontSize="12px"
+              textAnchor="start"
+              x={0}
+              y={26}
+            >
+              0
+            </text>
+            <line
+              stroke="#333"
+              x1={13}
+              x2={47}
+              y1={25}
+              y2={25}
+            />
+            <rect
+              fill="#aaa"
+              height={14}
+              width={6.459999999999994}
+              x={40.2}
+              y={11}
+            />
+            <circle
+              cx={43.294}
+              cy={18}
+              fill="#e2e2e2"
+              r={3}
+              stroke="#000"
+              strokeWidth={1}
+            />
+            <text
+              fontSize="12px"
+              textAnchor="end"
+              x={60}
+              y={26}
+            >
+              1
+            </text>
+          </svg>
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            0.1
+          </span>
+        </td>
+        <td>
+          —
+        </td>
+        <td>
+          pLI = 
+          <span
+            className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            0.68
+          </span>
+          <br />
+          <span
+            className="GnomadConstraintTable__OEMetrics-sc-wceq7l-1 ktQBit"
+          >
+            o/e = 
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.79
+            </span>
+             
+            (
+            <span
+              className="TooltipHint-sc-1wwbc8j-0 cimmsD"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.6
+            </span>
+             -
+             
+            <span
+              className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 glNgXE"
+              highlightColor="#ffc000"
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              0.9
+            </span>
+            )
+          </span>
+        </td>
+        <td>
+          <svg
+            height={30}
+            width={60}
+          >
+            <text
+              fontSize="12px"
+              textAnchor="start"
+              x={0}
+              y={26}
+            >
+              0
+            </text>
+            <line
+              stroke="#333"
+              x1={13}
+              x2={47}
+              y1={25}
+              y2={25}
+            />
+            <rect
+              fill="#aaa"
+              height={14}
+              width={10.200000000000003}
+              x={33.4}
+              y={11}
+            />
+            <circle
+              cx={39.826}
+              cy={18}
+              fill="#ffc000"
+              r={3}
+              stroke="#000"
+              strokeWidth={1}
+            />
+            <text
+              fontSize="12px"
+              textAnchor="end"
+              x={60}
+              y={26}
+            >
+              1
+            </text>
+          </svg>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected with a minimal gene has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for this 
+  gene
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected with a minimal transcript has no unexpected changes 1`] = `
+<p>
+  Constraint is not available for this 
+  transcript
+  .
+</p>
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected with a mitochondrial RNA gene has no unexpected changes 1`] = `
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 etBNab"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Category
+        </th>
+        <th
+          scope="col"
+        >
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          0.35
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0 jtwqlm"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected with a mitochondrial RNA gene highlights upper LOF OE CI if below 0.27 1`] = `
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 etBNab"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Category
+        </th>
+        <th
+          scope="col"
+        >
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          RNA variant
+        </th>
+        <td>
+          22.2
+        </td>
+        <td>
+          1.10
+        </td>
+        <td>
+          o/e = 
+          0.33
+           (
+          0.31
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 jGdFIT"
+            highlightColor="#ff2600"
+          >
+            0.27
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0 jtwqlm"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected with a mitochondrial protein gene has no unexpected changes 1`] = `
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 etBNab"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Category
+        </th>
+        <th
+          scope="col"
+        >
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          0.90
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0 jtwqlm"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected with a mitochondrial protein gene highlights upper LOF OE CI if below 0.058 1`] = `
+[
+  <table
+    className="Table__BaseTable-sc-7fgtt2-0 etBNab"
+  >
+    <thead>
+      <tr>
+        <th
+          scope="col"
+        >
+          Category
+        </th>
+        <th
+          scope="col"
+        >
+           
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Expected
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          <span
+            onMouseEnter={[Function]}
+            onMouseLeave={[Function]}
+          >
+            Observed
+          </span>
+        </th>
+        <th
+          scope="col"
+        >
+          Constraint metrics
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th
+          scope="row"
+        >
+          Synonymous
+        </th>
+        <td>
+          0.23
+        </td>
+        <td>
+          0.22
+        </td>
+        <td>
+          o/e = 
+          0.91
+           (
+          0.80
+           - 
+          0.95
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          Missense
+        </th>
+        <td>
+          0.34
+        </td>
+        <td>
+          0.33
+        </td>
+        <td>
+          o/e = 
+          0.89
+           (
+          0.80
+           - 
+          0.99
+          )
+        </td>
+      </tr>
+      <tr>
+        <th
+          scope="row"
+        >
+          pLoF
+        </th>
+        <td>
+          0.12
+        </td>
+        <td>
+          0.11
+        </td>
+        <td>
+          o/e = 
+          0.79
+           (
+          0.60
+           - 
+          <span
+            className="constraintMetrics__ConstraintHighlight-sc-10sz9wg-0 jGdFIT"
+            highlightColor="#ff2600"
+          >
+            0.06
+          </span>
+          )
+        </td>
+      </tr>
+    </tbody>
+  </table>,
+  "Constraint metrics based on transcript",
+  " ",
+  <a
+    className="Link-sc-14lgydv-0 jtwqlm"
+    href="/transcript/transcript-999"
+    onClick={[Function]}
+  >
+    transcript-999
+    .
+    12.34.5
+  </a>,
+]
+`;
+
+exports[`ConstraintTable with "gnomad_r4_lr" dataset selected with a mitochondrial transcript has no unexpected changes 1`] = `
 <p>
   Constraint is not available for mitochondrial transcripts.
 </p>

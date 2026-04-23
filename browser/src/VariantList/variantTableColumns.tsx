@@ -16,6 +16,7 @@ import {
 import VariantCategoryMarker from './VariantCategoryMarker'
 import VariantFlag from './VariantFlag'
 import { Variant } from '../VariantPage/VariantPage'
+import { DatasetId, isLongRead } from '@gnomad/dataset-metadata/metadata'
 
 const categoryColors = {
   lof: '#DD2C00',
@@ -142,6 +143,7 @@ const variantTableColumns: VariantTableColumn[] = [
         </ExternalLink>
       </Cell>
     ),
+    shouldShowInContext: (_context, contextType) => contextType !== 'gene-lr',
   },
 
   {
@@ -182,6 +184,7 @@ const variantTableColumns: VariantTableColumn[] = [
         ))}
       </>
     ),
+    shouldShowInContext: (_context: any, contextType: any) => contextType !== 'gene-lr',
   },
 
   {
@@ -351,6 +354,7 @@ const variantTableColumns: VariantTableColumn[] = [
         {variant.genome && <SampleSourceIcon source="genome" filters={variant.genome.filters} />}
       </React.Fragment>
     ),
+    shouldShowInContext: (_context, contextType) => contextType !== 'gene-lr',
   },
 
   {
@@ -387,22 +391,46 @@ const variantTableColumns: VariantTableColumn[] = [
       </Cell>
     ),
   },
+  {
+    key: 'short_read_match_id',
+    heading: 'Short read match',
+    description: 'Matching variant in gnomAD v4 short-read dataset',
+    isRowHeader: true,
+    grow: 1,
+    compareFunction: makeStringCompareFunction('short_read_match_id'),
+    getSearchTerms: (variant: any) => [variant.short_read_match_id],
+    render: (row: any, _key: any, _options: any) => (
+      <Cell>
+        <Link
+          target="_blank"
+          to={`/variant/${row.short_read_match_id}?dataset=gnomad_r4`}
+          preserveSelectedDataset={false}
+        >
+          {row.short_read_match_id}
+        </Link>
+      </Cell>
+    ),
+    shouldShowInContext: (_context, contextType) => contextType === 'gene-lr',
+  },
 ]
 
 export default variantTableColumns
 
-const getContextType = (context: any) => {
+const getContextType = (context: any, datasetId: DatasetId) => {
   if (context.transcript_id) {
     return 'transcript'
   }
   if (context.gene_id) {
+    if (isLongRead(datasetId)) {
+      return 'gene-lr'
+    }
     return 'gene'
   }
   return 'region'
 }
 
-export const getColumnsForContext = (context: any) => {
-  const contextType = getContextType(context)
+export const getColumnsForContext = (context: any, datasetId: DatasetId) => {
+  const contextType = getContextType(context, datasetId)
   const columns = variantTableColumns
     .filter(
       (column) =>
