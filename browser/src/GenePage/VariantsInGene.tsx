@@ -432,11 +432,6 @@ const ConnectedVariantsInGene = ({
     >
       {({ data }: any) => {
         if (isLongRead(datasetId)) {
-          // TK clinvar match on short match?
-          //         let variants = annotateVariantsWithClinvar(
-          //           data.gene.long_read_variants,
-          //           data.gene.clinvar_variants
-          //         )
           return (
             <LongReadVariantsInGene
               {...otherProps}
