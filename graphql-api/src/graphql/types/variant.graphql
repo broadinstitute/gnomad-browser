@@ -155,6 +155,7 @@ type Variant {
   pos: Int!
   ref: String!
   alt: String!
+  caid: String
   rsids: [String!]
   exome: VariantSequencingTypeData
   genome: VariantSequencingTypeData

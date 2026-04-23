@@ -25,6 +25,7 @@ import variantResolvers from './resolvers/variants'
 import variantFieldResolvers from './resolvers/variant-fields'
 import variantCooccurrenceResolvers from './resolvers/variant-cooccurrence'
 import cnvCoverageResolvers from './resolvers/cnv-coverage'
+import longReadVariantResolvers from './resolvers/long_read_variants'
 
 const typeDefs = mergeTypeDefs([
   ...loadFilesSync(path.join(__dirname, './types')),
@@ -42,6 +43,7 @@ const resolvers = mergeResolvers([
   geneResolvers,
   geneFieldResolvers,
   liftoverResolvers,
+  longReadVariantResolvers,
   mitochondrialCoverageResolvers,
   mitochondrialVariantResolvers,
   multiNucleotideVariantResolves,

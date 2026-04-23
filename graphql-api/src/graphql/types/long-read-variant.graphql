@@ -1,0 +1,75 @@
+type LongReadTranscriptConsequence {
+  consequence_terms: [String!] # VEP[1]
+  domains: [String!] # VEP[43]
+  gene_id: String! # transcript
+  gene_version: String # transcript
+  gene_symbol: String # VEP[4]
+  hgvs: String
+  hgvsc: String # VEP[10]
+  hgvsp: String # VEP[11]
+  is_canonical: Boolean # transcript
+  is_mane_select: Boolean # VEP[27]
+  is_mane_select_version: Boolean # VEP[27]
+  lof: String # derived from VEP[1]
+  lof_flags: String # VEP[21] ?
+  lof_filter: String # missing
+  major_consequence: String # derived from VEP[1]
+  polyphen_prediction: String # VEP[42]
+  refseq_id: String # missing?
+  refseq_version: String # missing?
+  sift_prediction: String # VEP[41]
+  transcript_id: String! # VEP[6]
+  transcript_version: String # transcript
+  # Deprecated - replaced by is_canonical
+  canonical: Boolean
+}
+
+type LongReadVariantAllFrequencies {
+  ac: Int!
+  an: Int!
+  af: Float!
+  homozygote_ref_count: Int
+  homozygote_alt_count: Int
+  heterozygote_count: Int
+  homozygote_ref_freq: Float
+  homozygote_alt_freq: Float
+  heterozygote_freq: Float
+}
+
+type LongReadVariantPopulationFrequencies {
+  id: String!
+  ac: Int!
+  an: Int!
+  af: Float!
+  homozygote_ref_count: Int!
+  homozygote_alt_count: Int!
+  heterozygote_count: Int!
+  homozygote_ref_freq: Float!
+  homozygote_alt_freq: Float!
+  heterozygote_freq: Float!
+}
+
+type LongReadVariantFrequencies {
+  all: LongReadVariantAllFrequencies!
+  populations: [LongReadVariantPopulationFrequencies]!
+}
+
+type LongReadVariant {
+  variant_id: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  pos: Int!
+  ref: String!
+  alt: String!
+  rsids: [String!]
+  type: String!
+  xpos: Float!
+  transcript_consequences: [LongReadTranscriptConsequence!]
+  intergenic: Boolean
+  major_consequence: String
+  genes: [String!]
+  freq: LongReadVariantFrequencies
+  short_read_match_id: String
+  short_read_match_type: String
+  short_read_match_source: String
+}

@@ -58,7 +58,7 @@ const countVariantsInRegion = async (esClient: any, region: any, _subset: Subset
 
 const isVrsId = (id: string) => /^ga4gh:/.test(id)
 
-const chooseIdField = (variantId: string) => {
+export const chooseIdField = (variantId: string) => {
   if (isRsId(variantId)) {
     return 'rsids'
   }
