@@ -1,5 +1,43 @@
 import { clickhouseClient } from '../clickhouse'
 
+/**
+ * Fetch haplotype variants pre-grouped by (sample_id, strand) in ClickHouse.
+ * Returns ~2 rows per sample instead of one row per variant×sample.
+ */
+export const fetchGroupedHaplotypeVariants = async (
+  _esClient: any,
+  chrom: string,
+  start: number,
+  stop: number
+) => {
+  const query = `
+    SELECT
+      sample_id,
+      strand,
+      groupArray(position)  AS positions,
+      groupArray(ref)       AS refs,
+      groupArray(alt)       AS alts,
+      groupArray(rsid)      AS rsids,
+      groupArray(info_AF)   AS afs,
+      groupArray(info_AC)   AS acs,
+      groupArray(info_AN)   AS ans
+    FROM lr_haplotypes
+    WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+    GROUP BY sample_id, strand
+    ORDER BY sample_id, strand
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json()
+}
+
+/**
+ * Flat per-row fetch — still used by mQTL which needs per-row sample_id + gt_alleles.
+ * Trimmed to only the columns mQTL actually needs.
+ */
 export const fetchHaplotypeVariantsForRegion = async (
   _esClient: any,
   chrom: string,
@@ -7,9 +45,7 @@ export const fetchHaplotypeVariantsForRegion = async (
   stop: number
 ) => {
   const query = `
-    SELECT * EXCEPT(info_AF),
-           [ref, alt] AS alleles,
-           [info_AF] AS info_AF
+    SELECT chrom, position, sample_id, ref, alt, info_AF, gt_alleles
     FROM lr_haplotypes
     WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
     ORDER BY position ASC
