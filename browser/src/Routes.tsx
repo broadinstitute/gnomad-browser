@@ -31,6 +31,9 @@ const HaplotypeGenePageContainer = lazy(
 const HaplotypeRegionPageContainer = lazy(
   () => import('./HaplotypeRegionPage/HaplotypeRegionPageContainer')
 )
+const PangenomeExplorerContainer = lazy(
+  () => import('./PangenomeExplorer/PangenomeExplorerContainer')
+)
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
@@ -93,6 +96,27 @@ const Routes = () => {
 
           const regionId = normalizeRegionId(match.params.regionId)
           return <HaplotypeRegionPageContainer datasetId={datasetId} regionId={regionId} />
+        }}
+      />
+
+      <Route
+        exact
+        path="/haplotype/pangenome/:regionId"
+        render={({ location, match }: any) => {
+          const params = queryString.parse(location.search)
+          const datasetId = params.dataset || defaultDataset
+          if (!isRegionId(match.params.regionId)) {
+            return (
+              <Page>
+                <DocumentTitle title="Invalid region" />
+                <PageHeading>Invalid region</PageHeading>
+                <p>Region must be formatted chrom-start-stop.</p>
+              </Page>
+            )
+          }
+
+          const regionId = normalizeRegionId(match.params.regionId)
+          return <PangenomeExplorerContainer datasetId={datasetId} regionId={regionId} />
         }}
       />
 
