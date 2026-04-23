@@ -3,7 +3,6 @@ import itertools
 
 
 def group_frequencies_by_population(ds, freq_fields, populations):
-    # TK: to get around the sex/pop/field ordering issue, pass in as a list of lists in order
     divisions = list(itertools.chain.from_iterable([pop, f"{pop}_XX", f"{pop}_XY"] for pop in populations)) + [
         "XX",
         "XY",
