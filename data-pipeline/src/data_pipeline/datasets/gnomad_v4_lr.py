@@ -294,6 +294,22 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         short_read_match_source=hl.or_missing(
             ~hl.is_missing(ds.info.gnomAD_V4_match_source), ds.info.gnomAD_V4_match_source[0]
         ),
+        # TK filter
+        # TK grpmax
+        # TK allele length
+        # TK region
+        # TK Origin
+        # TK SUB_FAMILY
+        # TK TR enveloped
+        # TK TR parsed
+        # TK dbsnp
+        # TK predicted
+        # TK in silico
+        # TK age dist
+        # TK genotype quality metrics
+        # TK site quality metrics
+        # TK coverage
+        # TK trv
     )
 
     ds = ds.annotate(
