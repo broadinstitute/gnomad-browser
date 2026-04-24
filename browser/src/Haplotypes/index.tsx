@@ -1187,7 +1187,7 @@ const HaplotypeGroupTrack = ({
                   </TooltipAnchor>
                 ))}
 
-                {group.variants.variants.map((variant: Variant) => {
+                {group.variants.variants.map((variant: Variant, variantIndex: number) => {
                   let isDottedLine = false
                   let color
                   if (colorMode === 'allele') color = getColorForVariantByHash(variant.locus)
@@ -1204,7 +1204,7 @@ const HaplotypeGroupTrack = ({
                   }
 
                   return (
-                    <TooltipAnchor key={`${group.hash}-${variant.locus}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
+                    <TooltipAnchor key={`${group.hash}-${variant.locus}-${variantIndex}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
                       {isDottedLine ? (
                         <line x1={scalePosition(variant.position)} y1={5} x2={scalePosition(variant.position)} y2={20}
                           stroke={color} strokeDasharray='4 2' strokeWidth={Math.min(5, 2 + (variant.info_SVLEN / 100) * 10)} />
