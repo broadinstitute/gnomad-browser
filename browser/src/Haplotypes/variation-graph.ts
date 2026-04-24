@@ -31,10 +31,33 @@ export interface Bubble {
   mergedBubbles?: Bubble[]
 }
 
+/** Pre-computed per-column flow data for rendering */
+export interface ColumnFlow {
+  position: number
+  refWeight: number
+  altWeight: number
+  alleleType: string
+  alleleLength: number
+  alleles: string[]
+}
+
+/** Pre-computed inter-column transition data for rendering */
+export interface InterColumnFlow {
+  fromPos: number
+  toPos: number
+  refToRef: number
+  refToAlt: number
+  altToRef: number
+  altToAlt: number
+}
+
 export interface VariationGraph {
   nodes: Map<string, VarGraphNode>
   edges: Map<string, GraphEdge>
   bubbles: Bubble[]
+  columns: ColumnFlow[]
+  transitions: InterColumnFlow[]
+  totalHaplotypes: number
 }
 
 /**
@@ -72,7 +95,7 @@ export const buildVariationGraph = (
 
   const sortedPositions = Array.from(variantPosSet).sort((a, b) => a - b)
   if (sortedPositions.length === 0) {
-    return { nodes, edges, bubbles: [] }
+    return { nodes, edges, bubbles: [], columns: [], transitions: [], totalHaplotypes: 0 }
   }
 
   // Create ref and alt nodes for each variant position
@@ -230,5 +253,53 @@ export const buildVariationGraph = (
     i = j
   }
 
-  return { nodes, edges, bubbles }
+  // Pre-compute column flows for rendering
+  const columns: ColumnFlow[] = sortedPositions.map((pos) => {
+    const info = variantsByPos.get(pos)!
+    const altId = `alt-${pos}`
+    let altWeight = 0
+    for (const [, edge] of edges) {
+      if (edge.target === altId) altWeight += edge.weight
+    }
+    // Deduplicate: altWeight is haplotypes reaching alt via any incoming edge.
+    // Since a haplotype can only arrive via one edge, this is correct.
+    // But we computed weight as edge.haplotypes.size, so just count unique haplotypes on alt.
+    const altHaps = new Set<string>()
+    for (const [, edge] of edges) {
+      if (edge.target === altId) {
+        for (const h of edge.haplotypes) altHaps.add(h)
+      }
+    }
+    return {
+      position: pos,
+      refWeight: totalHaplotypes - altHaps.size,
+      altWeight: altHaps.size,
+      alleleType: info.alleleType,
+      alleleLength: info.alleleLength,
+      alleles: info.alleles,
+    }
+  })
+
+  // Pre-compute inter-column transitions for rendering
+  const transitions: InterColumnFlow[] = []
+  for (let idx = 0; idx < sortedPositions.length - 1; idx++) {
+    const fromPos = sortedPositions[idx]
+    const toPos = sortedPositions[idx + 1]
+
+    const getEdgeWeight = (src: string, tgt: string) => {
+      const key = `${src}->${tgt}`
+      return edges.get(key)?.weight || 0
+    }
+
+    transitions.push({
+      fromPos,
+      toPos,
+      refToRef: getEdgeWeight(`ref-${fromPos}`, `ref-${toPos}`),
+      refToAlt: getEdgeWeight(`ref-${fromPos}`, `alt-${toPos}`),
+      altToRef: getEdgeWeight(`alt-${fromPos}`, `ref-${toPos}`),
+      altToAlt: getEdgeWeight(`alt-${fromPos}`, `alt-${toPos}`),
+    })
+  }
+
+  return { nodes, edges, bubbles, columns, transitions, totalHaplotypes }
 }
