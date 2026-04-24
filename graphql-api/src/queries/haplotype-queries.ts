@@ -20,7 +20,9 @@ export const fetchGroupedHaplotypeVariants = async (
       groupArray(rsid)      AS rsids,
       groupArray(info_AF)   AS afs,
       groupArray(info_AC)   AS acs,
-      groupArray(info_AN)   AS ans
+      groupArray(info_AN)   AS ans,
+      groupArray(allele_type)   AS allele_types,
+      groupArray(allele_length) AS allele_lengths
     FROM lr_haplotypes
     WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
     GROUP BY sample_id, strand
@@ -53,6 +55,19 @@ export const fetchHaplotypeVariantsForRegion = async (
   const resultSet = await clickhouseClient.query({
     query,
     query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json()
+}
+
+export const fetchSampleMetadata = async (_esClient: any) => {
+  const query = `
+    SELECT sample_id, subpopulation, superpopulation
+    FROM lr_sample_metadata
+    ORDER BY sample_id
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
     format: 'JSONEachRow',
   })
   return resultSet.json()

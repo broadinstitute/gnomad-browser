@@ -104,7 +104,14 @@ type MQTLAssociation {
   non_carrier_count: Int!
 }
 
+type SampleMetadata {
+  sample_id: String!
+  subpopulation: String!
+  superpopulation: String!
+}
+
 extend type Query {
+  sample_metadata: [SampleMetadata!]!
   mqtl_associations(
     chrom: String!
     start: Int!

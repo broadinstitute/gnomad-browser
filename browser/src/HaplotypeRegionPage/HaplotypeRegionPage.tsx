@@ -127,6 +127,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const queryParams = queryString.parse(location.search)
   const initialThreshold = queryParams.threshold ? parseFloat(queryParams.threshold as string) : 0
   const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
+  const initialPlotType = (queryParams.plotType as string) || 'lollipop'
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
   const [haplotypeLoading, setHaplotypeLoading] = useState(true)
@@ -138,6 +139,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
+  const [plotType, setPlotType] = useState(initialPlotType)
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
   const [mqtlLoading, setMqtlLoading] = useState(false)
@@ -294,9 +296,10 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
       ...queryParams,
       threshold: threshold.toString(),
       sortBy,
+      plotType,
     })
     window.history.pushState({}, '', `${location.pathname}?${newSearchParams}`)
-  }, [threshold, sortBy])
+  }, [threshold, sortBy, plotType])
 
   return (
     <TrackPage>
@@ -341,7 +344,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
                   const r = zoomRegion(region, z)
                   history.push({
                     pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
-                    search: queryString.stringify({ threshold, sortBy }),
+                    search: queryString.stringify({ threshold, sortBy, plotType }),
                   })
                 }}>{z}x</Button>
               ))}
@@ -351,7 +354,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
                   const r = zoomRegion(region, 1 / z)
                   history.push({
                     pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
-                    search: queryString.stringify({ threshold, sortBy }),
+                    search: queryString.stringify({ threshold, sortBy, plotType }),
                   })
                 }}>{z}x</Button>
               ))}
@@ -360,7 +363,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         </RegionInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
-        leftPanelWidth={115}
+        leftPanelWidth={150}
         regions={[region]}
         rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
@@ -393,6 +396,8 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             mqtlLoading={mqtlLoading}
             mqtlData={mqtlData}
             mqtlMinLogP={mqtlMinLogP}
+            plotType={plotType}
+            onPlotTypeChange={setPlotType}
           />
         )}
         <PositionAxisTrack />
