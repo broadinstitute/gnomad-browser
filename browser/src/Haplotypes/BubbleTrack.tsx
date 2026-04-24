@@ -1,29 +1,34 @@
 import React from 'react'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
-import { VariationGraph, Bubble } from './variation-graph'
+import { VariationGraph, ColumnFlow, InterColumnFlow } from './variation-graph'
 import { VARIANT_TYPE_COLORS } from './colors'
 import HaplotypeHelpButton from './HelpButton'
 
 const TRACK_HEIGHT = 200
-const BACKBONE_Y = TRACK_HEIGHT * 0.65
-const MIN_ARC_WIDTH = 8
-const MAX_ARC_HEIGHT = BACKBONE_Y - 20
-const BACKBONE_STROKE = 4
+const BACKBONE_Y = TRACK_HEIGHT * 0.75
+const ALT_ZONE_TOP = 15
+const MAX_BACKBONE_THICKNESS = 16
+const MAX_ALT_THICKNESS = 12
 
 type Props = {
   graph: VariationGraph
 }
 
-const getArcHeight = (weight: number, totalHaplotypes: number): number => {
-  if (weight <= 0 || totalHaplotypes <= 0) return 10
-  const fraction = weight / totalHaplotypes
-  return Math.max(10, Math.min(MAX_ARC_HEIGHT, 20 + fraction * MAX_ARC_HEIGHT * 0.8))
+/** Scale a haplotype count to a ribbon thickness */
+const ribbonThickness = (weight: number, total: number, max: number): number => {
+  if (total <= 0 || weight <= 0) return 0.5
+  const fraction = weight / total
+  return Math.max(0.5, fraction * max)
 }
 
-const getStrokeWidth = (weight: number): number => {
-  if (weight <= 0) return 1
-  return Math.max(1, Math.min(8, 1 + Math.log2(weight)))
+/** Get the y-center for the alt ribbon at a column, based on its weight */
+const altY = (altWeight: number, total: number): number => {
+  if (total <= 0 || altWeight <= 0) return BACKBONE_Y - 20
+  const fraction = altWeight / total
+  // Higher AF = closer to backbone (less dramatic arc), lower AF = higher up
+  // Range: ALT_ZONE_TOP (rare) to BACKBONE_Y - 30 (common)
+  return BACKBONE_Y - 30 - (1 - fraction) * (BACKBONE_Y - 30 - ALT_ZONE_TOP)
 }
 
 const getColor = (alleleType: string): string => {
@@ -31,91 +36,142 @@ const getColor = (alleleType: string): string => {
   return VARIANT_TYPE_COLORS[normalized] || VARIANT_TYPE_COLORS.other
 }
 
-const BubbleTooltip = ({ bubble }: { bubble: Bubble }) => {
-  const af = bubble.totalHaplotypes > 0 ? (bubble.weight / bubble.totalHaplotypes).toFixed(4) : 'N/A'
+const ColumnTooltip = ({ col, total }: { col: ColumnFlow; total: number }) => {
+  const af = total > 0 ? (col.altWeight / total).toFixed(4) : 'N/A'
   return (
     <dl style={{ margin: 0 }}>
       <div>
         <dt style={{ display: 'inline', fontWeight: 'bold' }}>Type:</dt>
-        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{bubble.alleleType}</dd>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.alleleType}</dd>
       </div>
       <div>
         <dt style={{ display: 'inline', fontWeight: 'bold' }}>Position:</dt>
-        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{bubble.position.toLocaleString()}</dd>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.position.toLocaleString()}</dd>
       </div>
-      {!bubble.isSuperbubble && (
-        <div>
-          <dt style={{ display: 'inline', fontWeight: 'bold' }}>Alleles:</dt>
-          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>
-            {bubble.alleles[0]?.length > 15 ? bubble.alleles[0].substring(0, 15) + '...' : bubble.alleles[0]}
-            {' → '}
-            {bubble.alleles[1]?.length > 15 ? bubble.alleles[1].substring(0, 15) + '...' : bubble.alleles[1]}
-          </dd>
-        </div>
-      )}
-      {bubble.isSuperbubble && bubble.mergedBubbles && (
-        <div>
-          <dt style={{ display: 'inline', fontWeight: 'bold' }}>Variants:</dt>
-          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{bubble.mergedBubbles.length} linked sites</dd>
-        </div>
-      )}
       <div>
-        <dt style={{ display: 'inline', fontWeight: 'bold' }}>Carriers:</dt>
-        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{bubble.weight} / {bubble.totalHaplotypes}</dd>
+        <dt style={{ display: 'inline', fontWeight: 'bold' }}>Alleles:</dt>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>
+          {col.alleles[0]?.length > 15 ? col.alleles[0].substring(0, 15) + '...' : col.alleles[0]}
+          {' → '}
+          {col.alleles[1]?.length > 15 ? col.alleles[1].substring(0, 15) + '...' : col.alleles[1]}
+        </dd>
+      </div>
+      <div>
+        <dt style={{ display: 'inline', fontWeight: 'bold' }}>Ref haplotypes:</dt>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.refWeight}</dd>
+      </div>
+      <div>
+        <dt style={{ display: 'inline', fontWeight: 'bold' }}>Alt haplotypes:</dt>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.altWeight}</dd>
       </div>
       <div>
         <dt style={{ display: 'inline', fontWeight: 'bold' }}>AF:</dt>
         <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{af}</dd>
       </div>
-      {bubble.alleleLength > 0 && (
+      {col.alleleLength > 0 && (
         <div>
           <dt style={{ display: 'inline', fontWeight: 'bold' }}>Length:</dt>
-          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{bubble.alleleLength} bp</dd>
+          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.alleleLength} bp</dd>
         </div>
       )}
-      <div>
-        <dt style={{ display: 'inline', fontWeight: 'bold' }}>Span:</dt>
-        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>
-          {bubble.span[0].toLocaleString()} – {bubble.span[1].toLocaleString()}
-        </dd>
-      </div>
     </dl>
   )
 }
+
+const TransitionTooltip = ({ t, total }: { t: InterColumnFlow; total: number }) => (
+  <dl style={{ margin: 0 }}>
+    <div>
+      <dt style={{ display: 'inline', fontWeight: 'bold' }}>From:</dt>
+      <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{t.fromPos.toLocaleString()}</dd>
+    </div>
+    <div>
+      <dt style={{ display: 'inline', fontWeight: 'bold' }}>To:</dt>
+      <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{t.toPos.toLocaleString()}</dd>
+    </div>
+    <div>
+      <dt style={{ display: 'inline', fontWeight: 'bold' }}>ref→ref:</dt>
+      <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{t.refToRef} ({total > 0 ? ((t.refToRef / total) * 100).toFixed(1) : 0}%)</dd>
+    </div>
+    {t.refToAlt > 0 && (
+      <div>
+        <dt style={{ display: 'inline', fontWeight: 'bold' }}>ref→alt:</dt>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{t.refToAlt}</dd>
+      </div>
+    )}
+    {t.altToRef > 0 && (
+      <div>
+        <dt style={{ display: 'inline', fontWeight: 'bold' }}>alt→ref:</dt>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{t.altToRef}</dd>
+      </div>
+    )}
+    {t.altToAlt > 0 && (
+      <div>
+        <dt style={{ display: 'inline', fontWeight: 'bold' }}>alt→alt:</dt>
+        <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{t.altToAlt} (linked)</dd>
+      </div>
+    )}
+  </dl>
+)
 
 const BubbleHelp = () => (
   <>
     <h4 style={{ marginTop: 0 }}>Overview</h4>
     <p>
-      The variation graph (bubble) view shows how haplotypes diverge from the reference
-      at each variant site. Each arc represents an alternate allele path — its height
-      and thickness indicate how many haplotypes carry that variant.
+      The variation graph (bubble) view shows haplotype flow through variant sites.
+      At each variant, the flow splits: some haplotypes stay on the reference backbone,
+      others diverge to the alternate path above. Between variant sites, ribbons show
+      how haplotype bundles transition.
     </p>
 
     <h4>Reading the Plot</h4>
     <ul>
-      <li><strong>Grey backbone</strong> — The reference path. Most haplotypes travel along it.</li>
-      <li><strong>Colored arcs</strong> — Alternate allele paths arcing above the backbone.</li>
-      <li><strong>Arc height</strong> — Proportional to carrier frequency (more carriers = taller).</li>
-      <li><strong>Arc thickness</strong> — Proportional to log(carrier count).</li>
-      <li><strong>Arc color</strong> — Variant type: blue=SNV, red=DEL, green=INS, purple=DUP.</li>
-      <li><strong>Shaded backgrounds</strong> — Superbubbles: consecutive variants always co-inherited (perfect LD).</li>
+      <li><strong>Grey backbone</strong> — The reference path. Thickness shows how many haplotypes carry the reference allele.</li>
+      <li><strong>Colored arcs above</strong> — Alternate allele paths. Thickness shows carrier count.</li>
+      <li><strong>Connecting ribbons</strong> — Flow between consecutive variant sites. Curved ribbons show haplotypes transitioning between ref and alt paths.</li>
+      <li><strong>Color</strong> — Variant type: blue=SNV, red=DEL, green=INS, purple=DUP.</li>
+      <li><strong>Shaded backgrounds</strong> — Superbubbles: consecutive variants co-inherited by the same haplotypes (perfect LD).</li>
     </ul>
 
-    <h4>Arc Width</h4>
+    <h4>Flow Patterns</h4>
     <ul>
-      <li><strong>SNVs/Insertions</strong> — Small fixed-width arcs at the variant position.</li>
-      <li><strong>Deletions</strong> — Arc spans from variant start to start + deletion length.</li>
+      <li><strong>Wide backbone + thin arc</strong> — Rare variant (few carriers).</li>
+      <li><strong>Backbone and arc similar width</strong> — Common variant (~50% AF).</li>
+      <li><strong>Connected arcs across sites</strong> — Linked variants on the same haplotypes (LD).</li>
+      <li><strong>Crossing ribbons</strong> — Recombination: haplotypes that carried alt at one site switch to ref at the next.</li>
     </ul>
 
     <h4>Hover</h4>
-    <p>Hover over any arc for variant details, carrier count, and allele frequency.</p>
+    <p>Hover over arcs for variant details, or over ribbons for transition counts.</p>
   </>
 )
 
+/**
+ * Build an SVG cubic bezier ribbon between two y-positions at two x-positions.
+ * The ribbon has a given thickness (half above, half below the center line).
+ */
+const ribbonPath = (
+  x1: number, y1: number, t1: number,
+  x2: number, y2: number, t2: number,
+): string => {
+  const cpx = (x1 + x2) / 2
+  const top1 = y1 - t1 / 2
+  const bot1 = y1 + t1 / 2
+  const top2 = y2 - t2 / 2
+  const bot2 = y2 + t2 / 2
+
+  return [
+    `M ${x1} ${top1}`,
+    `C ${cpx} ${top1}, ${cpx} ${top2}, ${x2} ${top2}`,
+    `L ${x2} ${bot2}`,
+    `C ${cpx} ${bot2}, ${cpx} ${bot1}, ${x1} ${bot1}`,
+    'Z',
+  ].join(' ')
+}
+
 const BubbleTrack = ({ graph }: Props) => {
-  const bubbleCount = graph.bubbles.length
-  const superbubbleCount = graph.bubbles.filter((b) => b.isSuperbubble).length
+  const { columns, transitions, totalHaplotypes, bubbles } = graph
+  const bubbleCount = bubbles.length
+  const superbubbleCount = bubbles.filter((b) => b.isSuperbubble).length
 
   return (
     <Track
@@ -127,21 +183,26 @@ const BubbleTrack = ({ graph }: Props) => {
               <BubbleHelp />
             </HaplotypeHelpButton>
           </div>
-          <svg width={200} height={60}>
+          <svg width={200} height={75}>
             <text x={0} y={12} fontSize="9" fill="#666">
               {bubbleCount} bubbles{superbubbleCount > 0 ? `, ${superbubbleCount} superbubbles` : ''}
             </text>
+            <text x={0} y={24} fontSize="9" fill="#666">
+              {totalHaplotypes} haplotypes
+            </text>
             {/* Legend */}
-            <line x1={5} y1={28} x2={25} y2={28} stroke="#999" strokeWidth={BACKBONE_STROKE} />
-            <text x={30} y={31} fontSize="8" fill="#333">Reference backbone</text>
-            <path d="M 5 48 Q 15 36 25 48" fill="none" stroke={VARIANT_TYPE_COLORS.snv} strokeWidth={2} />
-            <text x={30} y={51} fontSize="8" fill="#333">Alt arc (colored by type)</text>
+            <rect x={5} y={33} width={20} height={6} fill="#999" rx={1} />
+            <text x={30} y={40} fontSize="8" fill="#333">Ref backbone (thickness = count)</text>
+            <rect x={5} y={48} width={20} height={4} fill={VARIANT_TYPE_COLORS.snv} rx={1} />
+            <text x={30} y={54} fontSize="8" fill="#333">Alt path (colored by type)</text>
+            <path d="M 5 68 C 10 60, 20 60, 25 68" fill="rgba(100,100,100,0.15)" stroke="none" />
+            <text x={30} y={70} fontSize="8" fill="#333">Flow ribbon (transition)</text>
           </svg>
         </div>
       )}
     >
       {({ scalePosition, width }: { scalePosition: (input: number) => number; width: number }) => {
-        if (graph.bubbles.length === 0) {
+        if (columns.length === 0) {
           return (
             <svg width={width} height={100}>
               <text x={width / 2} y={50} textAnchor="middle" fill="#666" fontSize="12">
@@ -151,10 +212,19 @@ const BubbleTrack = ({ graph }: Props) => {
           )
         }
 
+        // Pre-compute x positions and y positions for each column
+        const colLayout = columns.map((col) => {
+          const x = scalePosition(col.position)
+          const refT = ribbonThickness(col.refWeight, totalHaplotypes, MAX_BACKBONE_THICKNESS)
+          const altT = ribbonThickness(col.altWeight, totalHaplotypes, MAX_ALT_THICKNESS)
+          const ay = altY(col.altWeight, totalHaplotypes)
+          return { x, refT, altT, ay, col }
+        })
+
         return (
           <svg width={width} height={TRACK_HEIGHT}>
             {/* Superbubble background rects */}
-            {graph.bubbles
+            {bubbles
               .filter((b) => b.isSuperbubble)
               .map((bubble, i) => {
                 const x1 = scalePosition(bubble.span[0])
@@ -163,107 +233,162 @@ const BubbleTrack = ({ graph }: Props) => {
                   <rect
                     key={`superbubble-bg-${i}`}
                     x={x1 - 2}
-                    y={10}
+                    y={ALT_ZONE_TOP - 5}
                     width={Math.max(4, x2 - x1 + 4)}
-                    height={TRACK_HEIGHT - 20}
+                    height={BACKBONE_Y - ALT_ZONE_TOP + 20}
                     fill="#f0e6ff"
-                    opacity={0.4}
+                    opacity={0.3}
                     rx={3}
                   />
                 )
               })}
 
-            {/* Reference backbone */}
-            <line
-              x1={0}
-              y1={BACKBONE_Y}
-              x2={width}
-              y2={BACKBONE_Y}
-              stroke="#999"
-              strokeWidth={BACKBONE_STROKE}
-              strokeLinecap="round"
-            />
+            {/* Inter-column transition ribbons */}
+            {transitions.map((t, i) => {
+              const fromLayout = colLayout[i]
+              const toLayout = colLayout[i + 1]
+              if (!fromLayout || !toLayout) return null
 
-            {/* Bubble arcs */}
-            {graph.bubbles.map((bubble, i) => {
-              if (bubble.isSuperbubble && bubble.mergedBubbles) {
-                // Render individual arcs within superbubble
-                return bubble.mergedBubbles.map((sub, si) => {
-                  const x1 = scalePosition(sub.position)
-                  const arcWidth =
-                    sub.alleleType === 'del' && sub.alleleLength > 0
-                      ? Math.max(MIN_ARC_WIDTH, scalePosition(sub.position + sub.alleleLength) - x1)
-                      : MIN_ARC_WIDTH
-                  const x2 = x1 + arcWidth
-                  const midX = (x1 + x2) / 2
-                  const arcH = getArcHeight(sub.weight, sub.totalHaplotypes)
-                  const arcY = BACKBONE_Y - arcH
-                  const sw = getStrokeWidth(sub.weight)
-                  const color = getColor(sub.alleleType)
+              const elements: React.ReactNode[] = []
 
-                  return (
-                    <TooltipAnchor
-                      key={`super-${i}-arc-${si}`}
-                      tooltipComponent={() => <BubbleTooltip bubble={sub} />}
-                    >
-                      <path
-                        d={`M ${x1} ${BACKBONE_Y} Q ${midX} ${arcY} ${x2} ${BACKBONE_Y}`}
-                        fill="none"
-                        stroke={color}
-                        strokeWidth={sw}
-                        opacity={0.7}
-                      />
-                    </TooltipAnchor>
-                  )
-                })
+              // ref→ref ribbon (backbone between columns)
+              if (t.refToRef > 0) {
+                const thickness = ribbonThickness(t.refToRef, totalHaplotypes, MAX_BACKBONE_THICKNESS)
+                elements.push(
+                  <path
+                    key={`rr-${i}`}
+                    d={ribbonPath(
+                      fromLayout.x, BACKBONE_Y, thickness,
+                      toLayout.x, BACKBONE_Y, thickness
+                    )}
+                    fill="#aaa"
+                    opacity={0.8}
+                  />
+                )
               }
 
-              // Simple bubble
-              const x1 = scalePosition(bubble.position)
-              const arcWidth =
-                bubble.alleleType === 'del' && bubble.alleleLength > 0
-                  ? Math.max(MIN_ARC_WIDTH, scalePosition(bubble.position + bubble.alleleLength) - x1)
-                  : MIN_ARC_WIDTH
-              const x2 = x1 + arcWidth
-              const midX = (x1 + x2) / 2
-              const arcH = getArcHeight(bubble.weight, bubble.totalHaplotypes)
-              const arcY = BACKBONE_Y - arcH
-              const sw = getStrokeWidth(bubble.weight)
-              const color = getColor(bubble.alleleType)
+              // alt→alt ribbon (linked alt path between columns — superbubble flow)
+              if (t.altToAlt > 0) {
+                const thickness = ribbonThickness(t.altToAlt, totalHaplotypes, MAX_ALT_THICKNESS)
+                const color = getColor(fromLayout.col.alleleType)
+                elements.push(
+                  <path
+                    key={`aa-${i}`}
+                    d={ribbonPath(
+                      fromLayout.x, fromLayout.ay, thickness,
+                      toLayout.x, toLayout.ay, thickness
+                    )}
+                    fill={color}
+                    opacity={0.45}
+                  />
+                )
+              }
+
+              // ref→alt ribbon (haplotypes joining alt path)
+              if (t.refToAlt > 0) {
+                const thickness = ribbonThickness(t.refToAlt, totalHaplotypes, MAX_ALT_THICKNESS)
+                elements.push(
+                  <path
+                    key={`ra-${i}`}
+                    d={ribbonPath(
+                      fromLayout.x, BACKBONE_Y, thickness,
+                      toLayout.x, toLayout.ay, thickness
+                    )}
+                    fill={getColor(toLayout.col.alleleType)}
+                    opacity={0.3}
+                  />
+                )
+              }
+
+              // alt→ref ribbon (haplotypes returning to ref path)
+              if (t.altToRef > 0) {
+                const thickness = ribbonThickness(t.altToRef, totalHaplotypes, MAX_ALT_THICKNESS)
+                elements.push(
+                  <path
+                    key={`ar-${i}`}
+                    d={ribbonPath(
+                      fromLayout.x, fromLayout.ay, thickness,
+                      toLayout.x, BACKBONE_Y, thickness
+                    )}
+                    fill={getColor(fromLayout.col.alleleType)}
+                    opacity={0.3}
+                  />
+                )
+              }
+
+              if (elements.length === 0) return null
 
               return (
                 <TooltipAnchor
-                  key={`bubble-${i}`}
-                  tooltipComponent={() => <BubbleTooltip bubble={bubble} />}
+                  key={`transition-${i}`}
+                  tooltipComponent={() => <TransitionTooltip t={t} total={totalHaplotypes} />}
                 >
-                  <path
-                    d={`M ${x1} ${BACKBONE_Y} Q ${midX} ${arcY} ${x2} ${BACKBONE_Y}`}
-                    fill="none"
-                    stroke={color}
-                    strokeWidth={sw}
-                    opacity={0.7}
-                  />
+                  <g>{elements}</g>
                 </TooltipAnchor>
               )
             })}
 
-            {/* Variant position markers on backbone */}
-            {graph.bubbles
-              .filter((b) => !b.isSuperbubble)
-              .map((bubble, i) => {
-                const cx = scalePosition(bubble.position)
-                return (
-                  <circle
-                    key={`marker-${i}`}
-                    cx={cx}
-                    cy={BACKBONE_Y}
-                    r={2}
-                    fill={getColor(bubble.alleleType)}
-                    stroke="#fff"
-                    strokeWidth={0.5}
-                  />
-                )
-              })}
+            {/* Reference backbone node markers at each column */}
+            {colLayout.map(({ x, refT }, i) => (
+              <rect
+                key={`ref-${i}`}
+                x={x - 2}
+                y={BACKBONE_Y - refT / 2}
+                width={4}
+                height={refT}
+                fill="#888"
+                rx={1}
+              />
+            ))}
+
+            {/* Alt nodes at each column with fork/merge lines */}
+            {colLayout.map(({ x, ay, altT, col }, i) => {
+              if (col.altWeight <= 0) return null
+              const color = getColor(col.alleleType)
+              const halfT = Math.max(altT / 2, 2)
+              const refT = ribbonThickness(col.refWeight, totalHaplotypes, MAX_BACKBONE_THICKNESS)
+
+              return (
+                <TooltipAnchor
+                  key={`alt-${i}`}
+                  tooltipComponent={() => <ColumnTooltip col={col} total={totalHaplotypes} />}
+                >
+                  <g>
+                    {/* Vertical fork/merge line connecting backbone to alt node */}
+                    <line
+                      x1={x} y1={BACKBONE_Y - refT / 2}
+                      x2={x} y2={ay + halfT}
+                      stroke={color}
+                      strokeWidth={Math.max(1.5, altT * 0.5)}
+                      opacity={0.5}
+                    />
+                    {/* Alt node marker */}
+                    <ellipse
+                      cx={x}
+                      cy={ay}
+                      rx={Math.max(3, altT * 0.4)}
+                      ry={halfT}
+                      fill={color}
+                      opacity={0.85}
+                    />
+                  </g>
+                </TooltipAnchor>
+              )
+            })}
+
+            {/* Variant position tick marks on baseline */}
+            {colLayout.map(({ x, col }, i) => (
+              <line
+                key={`tick-${i}`}
+                x1={x}
+                y1={BACKBONE_Y + MAX_BACKBONE_THICKNESS / 2 + 2}
+                x2={x}
+                y2={BACKBONE_Y + MAX_BACKBONE_THICKNESS / 2 + 6}
+                stroke={getColor(col.alleleType)}
+                strokeWidth={1}
+                opacity={0.5}
+              />
+            ))}
           </svg>
         )
       }}
