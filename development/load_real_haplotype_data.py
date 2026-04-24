@@ -32,6 +32,19 @@ GCS_METHYLATION_DIR = "gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/HPRC_assembl
 GCS_VCF_V1 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v1/hprc_chr22.reformatted.vcf.gz"
 GCS_COVERAGE_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc.coverage.tsv.gz"
 
+# HPRC sample metadata
+HPRC_METADATA_URL = "https://raw.githubusercontent.com/human-pangenomics/hprc_intermediate_assembly/main/data_tables/sample/hprc_release2_sample_metadata.csv"
+
+# 1000 Genomes subpopulation -> superpopulation mapping
+SUBPOP_TO_SUPERPOP = {
+    "ACB": "AFR", "ASW": "AFR", "ESN": "AFR", "GWD": "AFR", "LWK": "AFR",
+    "MSL": "AFR", "YRI": "AFR", "MKK": "AFR", "ASL": "AFR",
+    "CLM": "AMR", "MXL": "AMR", "PEL": "AMR", "PUR": "AMR",
+    "CDX": "EAS", "CHB": "EAS", "CHS": "EAS", "JPT": "EAS", "KHV": "EAS",
+    "GBR": "EUR", "FIN": "EUR", "IBS": "EUR", "TSI": "EUR",
+    "BEB": "SAS", "GIH": "SAS", "ITU": "SAS", "PJL": "SAS", "STU": "SAS",
+}
+
 # ES indices
 HAPLO_INDEX = "gnomad_r4_lr_haplotypes"
 METHY_INDEX = "gnomad_r4_lr_methylation_summary"
@@ -941,6 +954,69 @@ def load_genes(es_url, api_url, chrom, start, stop):
     return count
 
 
+# --- Sample metadata loading ---
+
+
+def load_sample_metadata(ch_url):
+    """Fetch HPRC sample metadata CSV and load into ClickHouse lr_sample_metadata table."""
+    import csv
+    import io
+
+    print(f"\n=== Loading sample metadata from HPRC ===")
+    print(f"  URL: {HPRC_METADATA_URL}")
+
+    # Fetch CSV
+    resp = urllib.request.urlopen(HPRC_METADATA_URL)
+    content = resp.read().decode("utf-8")
+    reader = csv.DictReader(io.StringIO(content))
+
+    # Get sample IDs already in our haplotype table
+    url = f"{ch_url}/?query=SELECT%20DISTINCT%20sample_id%20FROM%20lr_haplotypes%20FORMAT%20TabSeparated"
+    try:
+        our_samples = set(urllib.request.urlopen(url).read().decode().strip().split("\n"))
+        print(f"  Found {len(our_samples)} samples in lr_haplotypes")
+    except Exception:
+        our_samples = None
+        print("  Warning: could not query lr_haplotypes, loading all HPRC samples")
+
+    rows = []
+    for row in reader:
+        sid = row["sample_id"]
+        if our_samples and sid not in our_samples:
+            continue
+        subpop = row.get("population_abbreviation", "N/A") or "N/A"
+        superpop = SUBPOP_TO_SUPERPOP.get(subpop, "N/A")
+        pop_desc = row.get("population_descriptor", "N/A") or "N/A"
+        sex = row.get("sex", "N/A") or "N/A"
+        collection = row.get("collection", "N/A") or "N/A"
+        rows.append(f"{sid}\t{subpop}\t{superpop}\t{pop_desc}\t{sex}\t{collection}")
+
+    if not rows:
+        print("  No matching samples found in HPRC metadata")
+        return 0
+
+    # Bulk insert into ClickHouse
+    tsv_data = "\n".join(rows)
+    req = urllib.request.Request(
+        f"{ch_url}/?query=INSERT%20INTO%20lr_sample_metadata%20FORMAT%20TabSeparated",
+        data=tsv_data.encode(),
+        headers={"Content-Type": "text/tab-separated-values"},
+    )
+    urllib.request.urlopen(req)
+
+    print(f"  Loaded {len(rows)} sample metadata rows")
+
+    # Show superpopulation distribution
+    url = f"{ch_url}/?query=SELECT%20superpopulation%2C%20count()%20AS%20n%20FROM%20lr_sample_metadata%20GROUP%20BY%20superpopulation%20ORDER%20BY%20n%20DESC%20FORMAT%20PrettyCompact"
+    try:
+        result = urllib.request.urlopen(url).read().decode()
+        print(f"  Population distribution:\n{result}")
+    except Exception:
+        pass
+
+    return len(rows)
+
+
 # --- Main ---
 
 
@@ -955,6 +1031,7 @@ def main():
     parser.add_argument("--skip-methy", action="store_true", help="Skip methylation loading")
     parser.add_argument("--skip-coverage", action="store_true", help="Skip coverage loading")
     parser.add_argument("--skip-genes", action="store_true", help="Skip gene model loading")
+    parser.add_argument("--skip-metadata", action="store_true", help="Skip sample metadata loading")
     parser.add_argument("--coverage-downsample", type=int, default=0, help="Sample every Nth base for coverage (default: auto)")
     parser.add_argument("--gnomad-api", default=GNOMAD_API, help="gnomAD API URL for gene models")
     parser.add_argument("--region", default="chr22:20000000-21000000", help="Region to load (format: chrN:start-stop)")
@@ -1005,7 +1082,7 @@ def main():
             sys.exit(1)
         # Create target tables from DDL files
         ddl_dir = Path(__file__).parent / "clickhouse"
-        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql"]:
+        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql", "lr_sample_metadata.sql"]:
             ddl_path = ddl_dir / sql_file
             if ddl_path.exists():
                 ddl = ddl_path.read_text()
@@ -1046,10 +1123,14 @@ def main():
     if not args.skip_genes and backend == "es":
         load_genes(args.es_url, args.gnomad_api, chrom, region_start, region_stop)
 
+    # Load sample metadata (ClickHouse only)
+    if not args.skip_metadata and backend == "clickhouse":
+        load_sample_metadata(args.clickhouse_url)
+
     # Verify counts
     print("\n=== Verification ===")
     if backend == "clickhouse":
-        for table in ["lr_haplotypes", "lr_methylation", "lr_coverage"]:
+        for table in ["lr_haplotypes", "lr_methylation", "lr_coverage", "lr_sample_metadata"]:
             try:
                 url = f"{args.clickhouse_url}/?query=SELECT%20count()%20FROM%20{table}"
                 resp = urllib.request.urlopen(url).read().decode().strip()
