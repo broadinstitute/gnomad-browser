@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor, Select } from '@gnomad/ui'
@@ -10,6 +10,10 @@ import AlluvialTrack from './AlluvialTrack'
 import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
+import { SUPERPOPULATION_COLORS } from './colors'
+import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
+import GenealogyTreeOverlay from './GenealogyTreeOverlay'
+import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 // Extensible plot type and color mode registries
 export const PLOT_TYPES: { value: string; label: string }[] = [
@@ -24,6 +28,7 @@ export const COLOR_MODES: { value: string; label: string }[] = [
   { value: 'position', label: 'Position' },
   { value: 'af', label: 'Allele Frequency' },
   { value: 'haplotype_count', label: 'Haplotype Count' },
+  { value: 'population', label: 'Population' },
 ]
 
 const Wrapper = styled.div`
@@ -69,34 +74,36 @@ export function regionColor(region: { num_samples: number }) {
 
 const LegendWrapper = styled.div`
   display: flex;
-  align-items: center;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    justify-content: center;
-  }
+  flex-direction: column;
+  gap: 6px;
 `
 
-const PhasedVariantLegendSection = styled.div`
+const LegendRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+`
+
+const LegendSection = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid lightgrey;
   border-radius: 5px;
-  padding: 5px;
-
-  @media (max-width: 600px) {
-    flex-direction: column;
-    justify-content: center;
-  }
+  padding: 4px 6px;
+  flex-wrap: wrap;
 `
+
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 1em;
+  margin-right: 0.75em;
+  font-size: 12px;
 `
 export const Legend = ({
   onMinAfChange = () => { },
   onColorModeChange = () => { },
+  colorMode = 'allele',
   initialMinAf = 0,
   initialSortBy = 'similarity_score',
   onSortModeChange = () => { },
@@ -116,9 +123,12 @@ export const Legend = ({
   onPlotTypeChange = () => { },
   plotTypes = PLOT_TYPES,
   colorModes = COLOR_MODES,
+  showGenealogy = false,
+  onShowGenealogyChange = () => { },
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
+  colorMode?: string
   initialMinAf?: number
   initialSortBy?: string
   onSortModeChange?: (mode: string) => void
@@ -138,6 +148,8 @@ export const Legend = ({
   onPlotTypeChange?: (plotType: string) => void
   plotTypes?: { value: string; label: string }[]
   colorModes?: { value: string; label: string }[]
+  showGenealogy?: boolean
+  onShowGenealogyChange?: (show: boolean) => void
 }) => {
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
@@ -158,194 +170,139 @@ export const Legend = ({
     onShowMethylationChange(show)
   }
 
-  return (
-    <LegendWrapper>
-      <PhasedVariantLegendSection>
+  /** Color legend for the current color mode */
+  const colorLegend = () => {
+    if (colorMode === 'allele') {
+      return (
         <LegendItem>
-          <span>Phased variants:</span>
-        </LegendItem>
-        <LegendItem>
-          <svg width={30} height={30}>
+          <svg width={22} height={22}>
             <defs>
               <linearGradient id='rainbow-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
                 <stop offset='0%' stopColor='hsl(0, 70%, 50%)' />
-                <stop offset='25%' stopColor='hsl(90, 70%, 50%)' />
                 <stop offset='50%' stopColor='hsl(180, 70%, 50%)' />
-                <stop offset='75%' stopColor='hsl(270, 70%, 50%)' />
                 <stop offset='100%' stopColor='hsl(360, 70%, 50%)' />
               </linearGradient>
             </defs>
-            <circle cx={15} cy={15} r={4} fill='url(#rainbow-gradient)' stroke='black' />
+            <circle cx={11} cy={11} r={4} fill='url(#rainbow-gradient)' stroke='black' />
           </svg>
-          <LegendItem>
-            {' '}
-            <span style={{ marginLeft: '5px' }}>
-              SNVs (colored by allele)
-            </span>
-          </LegendItem>
+          <span>Color = unique allele</span>
         </LegendItem>
-        {false && (
-          <LegendItem>
-            <svg width={100} height={30}>
-              <defs>
-                <linearGradient id='logAfGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                  <stop offset='0%' style={{ stopColor: '#d3d3d3', stopOpacity: 1 }} />
-                  <stop offset='100%' style={{ stopColor: '#424242', stopOpacity: 1 }} />
-                </linearGradient>
-              </defs>
-              <rect x='20' y='5' width='60' height='10' fill='url(#logAfGradient)' />
-              <text x='10' y='15' fontSize='10' textAnchor='middle'>
-                0.1
-              </text>
-              <text x='90' y='15' fontSize='10' textAnchor='middle'>
-                1.0
-              </text>
-              <text x='50' y='27' fontSize='10' textAnchor='middle'>
-                Allele frequency
-              </text>
-            </svg>
-          </LegendItem>
+      )
+    }
+    if (colorMode === 'position') {
+      return (
+        <LegendItem>
+          <svg width={60} height={16}>
+            <defs>
+              <linearGradient id='pos-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+                <stop offset='0%' stopColor='hsl(240, 100%, 50%)' />
+                <stop offset='100%' stopColor='hsl(0, 100%, 50%)' />
+              </linearGradient>
+            </defs>
+            <rect x={0} y={2} width={60} height={12} fill='url(#pos-gradient)' rx={2} />
+          </svg>
+          <span style={{ marginLeft: '4px' }}>Position (5&apos;→3&apos;)</span>
+        </LegendItem>
+      )
+    }
+    if (colorMode === 'af') {
+      return (
+        <LegendItem>
+          <svg width={80} height={16}>
+            <defs>
+              <linearGradient id='af-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+                <stop offset='0%' stopColor='#d3d3d3' />
+                <stop offset='100%' stopColor='#424242' />
+              </linearGradient>
+            </defs>
+            <rect x={0} y={2} width={80} height={12} fill='url(#af-gradient)' rx={2} />
+            <text x={2} y={11} fontSize='8' fill='white'>0.1</text>
+            <text x={62} y={11} fontSize='8' fill='white'>1.0</text>
+          </svg>
+          <span style={{ marginLeft: '4px' }}>Allele frequency</span>
+        </LegendItem>
+      )
+    }
+    if (colorMode === 'haplotype_count') {
+      return (
+        <LegendItem>
+          <svg width={80} height={16}>
+            <defs>
+              <linearGradient id='hc-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+                <stop offset='0%' stopColor='#d3d3d3' />
+                <stop offset='100%' stopColor='#ff0000' />
+              </linearGradient>
+            </defs>
+            <rect x={0} y={2} width={80} height={12} fill='url(#hc-gradient)' rx={2} />
+            <text x={2} y={11} fontSize='8' fill='#333'>few</text>
+            <text x={58} y={11} fontSize='8' fill='white'>many</text>
+          </svg>
+          <span style={{ marginLeft: '4px' }}>Groups sharing variant</span>
+        </LegendItem>
+      )
+    }
+    if (colorMode === 'population') {
+      return (
+        <>
+          {Object.entries(SUPERPOPULATION_COLORS).map(([pop, color]) => (
+            <LegendItem key={pop} style={{ marginRight: '0.4em' }}>
+              <svg width={12} height={12}>
+                <rect x={0} y={0} width={12} height={12} fill={color} rx={2} />
+              </svg>
+              <span style={{ marginLeft: '2px' }}>{pop}</span>
+            </LegendItem>
+          ))}
+        </>
+      )
+    }
+    return null
+  }
+
+  return (
+    <LegendWrapper>
+      {/* Row 1: Legends */}
+      <LegendRow>
+        {plotType === 'lollipop' && (
+          <LegendSection>
+            <LegendItem><span style={{ fontWeight: 'bold' }}>Variants:</span></LegendItem>
+            <LegendItem>
+              <svg width={22} height={22}>
+                <circle cx={11} cy={11} r={4} fill='#888' stroke='black' />
+              </svg>
+              <span>SNV</span>
+            </LegendItem>
+            <LegendItem>
+              <svg width={22} height={22}>
+                <line x1={11} y1={3} x2={11} y2={19} stroke='rgba(0, 122, 255, 0.8)' strokeDasharray='4 2' strokeWidth={3} />
+              </svg>
+              <span>Indel</span>
+            </LegendItem>
+            <LegendItem>
+              <svg width={22} height={22}>
+                <line x1={11} y1={3} x2={11} y2={19} stroke='rgba(255, 69, 58, 0.8)' strokeDasharray='4 2' strokeWidth={3} />
+              </svg>
+              <span>SV</span>
+            </LegendItem>
+            <LegendItem>
+              <svg width={22} height={22}>
+                <circle cx={11} cy={11} r={2} fill='none' stroke='grey' />
+              </svg>
+              <span>Below AF</span>
+            </LegendItem>
+          </LegendSection>
         )}
-        <LegendItem>
-          <svg width={30} height={30}>
-            <line
-              x1={15}
-              y1={5}
-              x2={15}
-              y2={25}
-              stroke='rgba(0, 122, 255, 0.8)'
-              strokeDasharray='4 2'
-              strokeWidth={4}
-            />
-          </svg>
-          <span>Indel</span>
-          {/* <span>Insertion</span> */}
-        </LegendItem>
-        <LegendItem>
-          <svg width={30} height={30}>
-            <line
-              x1={15}
-              y1={5}
-              x2={15}
-              y2={25}
-              stroke='rgba(255, 69, 58, 0.8)'
-              strokeDasharray='4 2'
-              strokeWidth={4}
-            />
-          </svg>
-          <span>SV</span>
-          {/* <span>Deletion</span> */}
-        </LegendItem>
-        <LegendItem>
-          <svg width={35} height={30}>
-            <circle cx={15} cy={15} r={2} fill='none' stroke='grey' />
-          </svg>
-          <span>Below AF cutoff</span>
-        </LegendItem>
-      </PhasedVariantLegendSection>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginLeft: '10px',
-          minWidth: '125px',
-          // border: '1px solid black',
-          paddingTop: '10px',
-        }}
-      >
-        <label>
-          <input
-            type='checkbox'
-            checked={showMethylation}
-            onChange={handleShowMethylationChange}
-            style={{ marginRight: '5px' }}
-          />
-          Show methylation
-        </label>
-        {showMethylation && (
-          <>
-            <label style={{ marginTop: '4px' }}>
-              <input
-                type='checkbox'
-                checked={filterToOutliers}
-                onChange={(e) => onFilterToOutliersChange(e.target.checked)}
-                style={{ marginRight: '5px' }}
-              />
-              Filter to outliers
-            </label>
-            <label style={{ marginTop: '4px', borderTop: '1px solid #ccc', paddingTop: '4px' }}>
-              <input
-                type='checkbox'
-                checked={showMqtl}
-                onChange={(e) => onShowMqtlChange(e.target.checked)}
-                style={{ marginRight: '5px' }}
-              />
-              Compute mQTLs
-              {mqtlLoading && ' ...'}
-            </label>
-            {showMqtl && mqtlData && mqtlData.length > 0 && (
-              <button
-                onClick={() => {
-                  const header = 'variant_id,variant_pos,cpg_pos,p_value,effect_size,carrier_count,non_carrier_count\n'
-                  const csv = mqtlData.map((d: any) => `${d.variant_id},${d.variant_pos},${d.cpg_pos},${d.p_value},${d.effect_size},${d.carrier_count},${d.non_carrier_count}`).join('\n')
-                  const blob = new Blob([header + csv], { type: 'text/csv' })
-                  const url = URL.createObjectURL(blob)
-                  const a = document.createElement('a')
-                  a.href = url
-                  a.download = 'mqtl_export.csv'
-                  a.click()
-                }}
-                style={{
-                  marginTop: '4px', padding: '3px 8px', fontSize: '11px', cursor: 'pointer',
-                  background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '3px',
-                }}
-              >
-                Export {mqtlData.length} mQTLs
-              </button>
-            )}
-            {onLoadAllSamples && (
-              <button
-                onClick={onLoadAllSamples}
-                disabled={methylationLoading}
-                style={{
-                  marginTop: '6px',
-                  padding: '3px 8px',
-                  fontSize: '11px',
-                  cursor: methylationLoading ? 'wait' : 'pointer',
-                  background: methylationLoading ? '#e0e0e0' : '#f0f0f0',
-                  border: '1px solid #ccc',
-                  borderRadius: '3px',
-                }}
-              >
-                {methylationLoading
-                  ? `Loading ${methylationSampleCount}/${methylationTotalSamples}...`
-                  : methylationSampleCount > 0 && !methylationLoading
-                    ? `Loaded ${methylationSampleCount} samples`
-                    : 'Load all samples'}
-              </button>
-            )}
-          </>
+        {plotType !== 'heatmap' && (
+          <LegendSection>
+            <LegendItem><span style={{ fontWeight: 'bold' }}>Color:</span></LegendItem>
+            {colorLegend()}
+          </LegendSection>
         )}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          minWidth: '200px',
-          marginLeft: '25',
-        }}
-      >
-        <label htmlFor='threshold-slider'>Minimum variant AF:</label>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
+      </LegendRow>
+
+      {/* Row 2: Controls */}
+      <LegendRow>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Min AF:</label>
           <input
             type='range'
             id='threshold-slider'
@@ -354,33 +311,127 @@ export const Legend = ({
             step='0.01'
             value={threshold}
             onChange={handleThresholdChange}
+            style={{ width: '80px' }}
           />
-          <span style={{ marginLeft: '3px' }}>{threshold.toFixed(2)}</span>
+          <span style={{ fontSize: '12px', minWidth: '28px' }}>{threshold.toFixed(2)}</span>
         </div>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
-        <label style={{ marginLeft: '3px' }}>Sort by:</label>
-        <SegmentedControl
-          id='sort-mode'
-          options={[
-            { label: 'Similarity', value: 'similarity_score' },
-            { label: 'Count', value: 'sample_count' },
-          ]}
-          value={sortMode}
-          onChange={(value: any) => handleSortModeChange(value)}
-        />
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
-        <label style={{ marginLeft: '3px' }}>Plot type:</label>
-        <Select
-          value={plotType}
-          onChange={(e: any) => onPlotTypeChange(e.target.value)}
-        >
-          {plotTypes.map((pt) => (
-            <option key={pt.value} value={pt.value}>{pt.label}</option>
-          ))}
-        </Select>
-      </div>
+        {plotType === 'lollipop' && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <label style={{ fontSize: '12px' }}>Sort:</label>
+            <SegmentedControl
+              id='sort-mode'
+              options={[
+                { label: 'Similarity', value: 'similarity_score' },
+                { label: 'Count', value: 'sample_count' },
+              ]}
+              value={sortMode}
+              onChange={(value: any) => handleSortModeChange(value)}
+            />
+          </div>
+        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <label style={{ fontSize: '12px' }}>Plot:</label>
+          <Select
+            value={plotType}
+            onChange={(e: any) => onPlotTypeChange(e.target.value)}
+          >
+            {plotTypes.map((pt) => (
+              <option key={pt.value} value={pt.value}>{pt.label}</option>
+            ))}
+          </Select>
+        </div>
+        {plotType !== 'heatmap' && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <label style={{ fontSize: '12px' }}>Color:</label>
+            <Select
+              value={colorMode}
+              onChange={(e: any) => onColorModeChange(e.target.value)}
+            >
+              {colorModes.map((cm) => (
+                <option key={cm.value} value={cm.value}>{cm.label}</option>
+              ))}
+            </Select>
+          </div>
+        )}
+        {plotType === 'lollipop' && (
+          <>
+            <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <input
+                type='checkbox'
+                checked={showMethylation}
+                onChange={handleShowMethylationChange}
+              />
+              Methylation
+            </label>
+            {showMethylation && (
+              <>
+                <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <input
+                    type='checkbox'
+                    checked={filterToOutliers}
+                    onChange={(e) => onFilterToOutliersChange(e.target.checked)}
+                  />
+                  Outliers only
+                </label>
+                <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <input
+                    type='checkbox'
+                    checked={showMqtl}
+                    onChange={(e) => onShowMqtlChange(e.target.checked)}
+                  />
+                  mQTLs{mqtlLoading && ' ...'}
+                </label>
+                {showMqtl && mqtlData && mqtlData.length > 0 && (
+                  <button
+                    onClick={() => {
+                      const header = 'variant_id,variant_pos,cpg_pos,p_value,effect_size,carrier_count,non_carrier_count\n'
+                      const csv = mqtlData.map((d: any) => `${d.variant_id},${d.variant_pos},${d.cpg_pos},${d.p_value},${d.effect_size},${d.carrier_count},${d.non_carrier_count}`).join('\n')
+                      const blob = new Blob([header + csv], { type: 'text/csv' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a')
+                      a.href = url
+                      a.download = 'mqtl_export.csv'
+                      a.click()
+                    }}
+                    style={{
+                      padding: '2px 6px', fontSize: '11px', cursor: 'pointer',
+                      background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '3px',
+                    }}
+                  >
+                    Export {mqtlData.length} mQTLs
+                  </button>
+                )}
+                {onLoadAllSamples && (
+                  <button
+                    onClick={onLoadAllSamples}
+                    disabled={methylationLoading}
+                    style={{
+                      padding: '2px 6px', fontSize: '11px',
+                      cursor: methylationLoading ? 'wait' : 'pointer',
+                      background: methylationLoading ? '#e0e0e0' : '#f0f0f0',
+                      border: '1px solid #ccc', borderRadius: '3px',
+                    }}
+                  >
+                    {methylationLoading
+                      ? `Loading ${methylationSampleCount}/${methylationTotalSamples}...`
+                      : methylationSampleCount > 0 && !methylationLoading
+                        ? `Loaded ${methylationSampleCount} samples`
+                        : 'Load all samples'}
+                  </button>
+                )}
+              </>
+            )}
+            <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <input
+                type='checkbox'
+                checked={showGenealogy}
+                onChange={(e) => onShowGenealogyChange(e.target.checked)}
+              />
+              Genealogy tree
+            </label>
+          </>
+        )}
+      </LegendRow>
     </LegendWrapper>
   )
 }
@@ -403,6 +454,11 @@ type Variant = {
   GT_phased: boolean
   allele_type?: string
   allele_length?: number
+  info_AF_afr?: number | null
+  info_AF_amr?: number | null
+  info_AF_eas?: number | null
+  info_AF_nfe?: number | null
+  info_AF_sas?: number | null
 }
 
 type VariantSet = {
@@ -449,34 +505,137 @@ export type MethylationSummaryPoint = {
   max_methylation?: number
 }
 
-const HaplotypeGroupTooltip = ({ group }: { group: HaplotypeGroup }) => (
-  <RegionAttributeList>
-    <div>
-      <dt>Start:</dt>
-      <dd>{group.start}</dd>
+const HaplotypeGroupTooltip = ({ group, sampleMetadata }: { group: HaplotypeGroup; sampleMetadata?: SampleMetadataMap }) => {
+  // Compute subpopulation breakdown if metadata is available
+  const subpopBreakdown = sampleMetadata && sampleMetadata.size > 0
+    ? (() => {
+      const counts: Record<string, { sub: string; sup: string; count: number }> = {}
+      for (const s of group.samples) {
+        const meta = sampleMetadata.get(s.sample_id)
+        const sub = meta?.subpopulation || 'N/A'
+        const sup = meta?.superpopulation || 'N/A'
+        if (!counts[sub]) counts[sub] = { sub, sup, count: 0 }
+        counts[sub].count++
+      }
+      return Object.values(counts).sort((a, b) => b.count - a.count)
+    })()
+    : null
+
+  return (
+    <RegionAttributeList>
+      <div>
+        <dt>Start:</dt>
+        <dd>{group.start}</dd>
+      </div>
+      <div>
+        <dt>Stop:</dt>
+        <dd>{group.stop}</dd>
+      </div>
+      <div>
+        <dt>Num Samples:</dt>
+        <dd>{group.samples.length}</dd>
+      </div>
+      <div>
+        <dt>Size:</dt>
+        <dd>{group.stop - group.start}</dd>
+      </div>
+      <div>
+        <dt>Variant Count:</dt>
+        <dd>{group.variants.variants.length}</dd>
+      </div>
+      {subpopBreakdown && (
+        <div style={{ marginTop: '4px' }}>
+          <dt style={{ display: 'block', marginBottom: '2px' }}>Population breakdown:</dt>
+          <dd style={{ marginLeft: 0 }}>
+            {subpopBreakdown.map(({ sub, sup, count }) => (
+              <div key={sub} style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '1px' }}>
+                <span style={{
+                  display: 'inline-block', width: 8, height: 8, borderRadius: 2,
+                  background: SUPERPOPULATION_COLORS[sup] || SUPERPOPULATION_COLORS['N/A'],
+                }} />
+                <span style={{ fontSize: '11px' }}>{sub} ({sup}): {count}</span>
+              </div>
+            ))}
+          </dd>
+        </div>
+      )}
+      <div>
+        <dt>Sample IDs:</dt>
+        <dd>{group.samples.map((sample) => sample.sample_id).join(', ')}</dd>
+      </div>
+    </RegionAttributeList>
+  )
+}
+
+/** Compute population composition of a group's samples */
+const getPopulationComposition = (
+  samples: Sample[],
+  sampleMetadata: SampleMetadataMap,
+): Record<string, number> => {
+  const counts: Record<string, number> = {}
+  for (const s of samples) {
+    const meta = sampleMetadata.get(s.sample_id)
+    const pop = meta?.superpopulation || 'N/A'
+    counts[pop] = (counts[pop] || 0) + 1
+  }
+  return counts
+}
+
+/** Get dominant superpopulation from a population composition */
+const getDominantPop = (composition: Record<string, number>): string => {
+  let maxPop = 'N/A'
+  let maxCount = 0
+  for (const [pop, count] of Object.entries(composition)) {
+    if (count > maxCount) {
+      maxCount = count
+      maxPop = pop
+    }
+  }
+  return maxPop
+}
+
+/** Population AF mini bar chart for variant tooltip */
+const PopulationAfBars = ({ variant }: { variant: Variant }) => {
+  const pops = [
+    { key: 'AFR', value: variant.info_AF_afr },
+    { key: 'AMR', value: variant.info_AF_amr },
+    { key: 'EAS', value: variant.info_AF_eas },
+    { key: 'EUR', value: variant.info_AF_nfe },
+    { key: 'SAS', value: variant.info_AF_sas },
+  ].filter((p) => p.value != null) as { key: string; value: number }[]
+
+  if (pops.length === 0) return null
+
+  const maxAf = Math.max(...pops.map((p) => p.value), 0.01)
+  const minAf = Math.min(...pops.map((p) => p.value))
+  const isHighlyDifferentiated = maxAf - minAf > 0.2
+
+  return (
+    <div style={{ marginTop: '4px' }}>
+      <dt style={{ fontWeight: 'bold', marginBottom: '2px' }}>Population AFs:</dt>
+      {isHighlyDifferentiated && (
+        <span style={{
+          display: 'inline-block',
+          background: '#d32f2f',
+          color: 'white',
+          fontSize: '9px',
+          padding: '1px 4px',
+          borderRadius: '3px',
+          marginBottom: '2px',
+        }}>Highly Differentiated</span>
+      )}
+      {pops.map((p) => (
+        <div key={p.key} style={{ display: 'flex', alignItems: 'center', marginBottom: '1px' }}>
+          <span style={{ width: '28px', fontSize: '9px', fontWeight: 'bold', color: SUPERPOPULATION_COLORS[p.key] }}>{p.key}</span>
+          <div style={{ width: '80px', height: '8px', background: '#eee', marginRight: '4px' }}>
+            <div style={{ width: `${(p.value / maxAf) * 100}%`, height: '100%', background: SUPERPOPULATION_COLORS[p.key] }} />
+          </div>
+          <span style={{ fontSize: '9px' }}>{p.value.toFixed(4)}</span>
+        </div>
+      ))}
     </div>
-    <div>
-      <dt>Stop:</dt>
-      <dd>{group.stop}</dd>
-    </div>
-    <div>
-      <dt>Num Samples:</dt>
-      <dd>{group.samples.length}</dd>
-    </div>
-    <div>
-      <dt>Size:</dt>
-      <dd>{group.stop - group.start}</dd>
-    </div>
-    <div>
-      <dt>Variant Count:</dt>
-      <dd>{group.variants.variants.length}</dd>
-    </div>
-    <div>
-      <dt>Sample IDs:</dt>
-      <dd>{group.samples.map((sample) => sample.sample_id).join(', ')}</dd>
-    </div>
-  </RegionAttributeList>
-)
+  )
+}
 
 const VariantTooltip = ({ variant }: { variant: Variant }) => (
   <RegionAttributeList>
@@ -532,6 +691,7 @@ const VariantTooltip = ({ variant }: { variant: Variant }) => (
       <dt>Phased:</dt>
       <dd>{variant.GT_phased ? 'Yes' : 'No'}</dd>
     </div>
+    <PopulationAfBars variant={variant} />
   </RegionAttributeList>
 )
 
@@ -553,8 +713,10 @@ type HaplotypeTrackProps = {
   haplotypeGroups: HaplotypeGroup[]
   methylationData: Methylation[]
   methylationSummary?: MethylationSummaryPoint[]
+  sampleMetadata?: SampleMetadataMap
   initialMinAf?: number
   initialSortBy?: string
+  initialColorMode?: string
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
   onSortModeChange?: (mode: string) => void
@@ -570,6 +732,8 @@ type HaplotypeTrackProps = {
   mqtlMinLogP?: number
   plotType?: string
   onPlotTypeChange?: (plotType: string) => void
+  showGenealogy?: boolean
+  onShowGenealogyChange?: (show: boolean) => void
 }
 
 const variantColors: Record<string, string> = {}
@@ -840,6 +1004,7 @@ const HaplotypeGroupTrack = ({
   mqtlData = [],
   showMqtl = false,
   mqtlMinLogP = 0,
+  sampleMetadata,
 }: {
   group: HaplotypeGroup
   methSampleData: Methylation[]
@@ -856,6 +1021,7 @@ const HaplotypeGroupTrack = ({
   mqtlData?: any[]
   showMqtl?: boolean
   mqtlMinLogP?: number
+  sampleMetadata?: SampleMetadataMap
 }) => {
   const mqtlTrackHeight = 80
   const methTrackHeight = 40
@@ -895,17 +1061,63 @@ const HaplotypeGroupTrack = ({
 
   const methYScale = scaleLinear().domain([0, 100]).range([methTrackHeight - 4, 4])
 
+  // Population composition for this group
+  const popComposition = React.useMemo(() => {
+    if (!sampleMetadata || sampleMetadata.size === 0) return null
+    return getPopulationComposition(group.samples, sampleMetadata)
+  }, [group.samples, sampleMetadata])
+
+  const dominantPop = popComposition ? getDominantPop(popComposition) : 'N/A'
+  const dominantColor = SUPERPOPULATION_COLORS[dominantPop] || SUPERPOPULATION_COLORS['N/A']
+
   return (
     <Track
       renderLeftPanel={() => (
         <SidePanel>
           <svg width={200} height={trackHeight}>
-            <TooltipAnchor tooltipComponent={() => <HaplotypeGroupTooltip group={group} />}>
+            <TooltipAnchor tooltipComponent={() => <HaplotypeGroupTooltip group={group} sampleMetadata={sampleMetadata} />}>
               <g>
-                <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
-                <text x={15} y={17} fontSize='12'>{group.samples.length}</text>
-                <circle cx={50} cy={12.5} r={5} fill={variantColorScale(group.variants.variants.length)} />
-                <text x={60} y={17} fontSize='12'>{group.variants.variants.length}</text>
+                {colorMode === 'population' && popComposition ? (() => {
+                  // Stacked bar showing population proportions
+                  const totalSamples = group.samples.length
+                  const barWidth = 80
+                  const barX = 5
+                  const barY = 5
+                  const barH = 10
+                  const sortedPops = Object.entries(popComposition).sort((a, b) => b[1] - a[1])
+                  let accX = barX
+                  return (
+                    <>
+                      {sortedPops.map(([pop, count]) => {
+                        const w = (count / totalSamples) * barWidth
+                        const x = accX
+                        accX += w
+                        return (
+                          <rect
+                            key={pop}
+                            x={x} y={barY} width={w} height={barH}
+                            fill={SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A']}
+                            stroke="white" strokeWidth={0.5}
+                          />
+                        )
+                      })}
+                      <text x={barX + barWidth + 4} y={barY + barH - 1} fontSize='9' fill='#333'>
+                        {totalSamples}
+                      </text>
+                      <circle cx={barX + barWidth + 28} cy={barY + barH / 2} r={4} fill={variantColorScale(group.variants.variants.length)} />
+                      <text x={barX + barWidth + 36} y={barY + barH - 1} fontSize='9' fill='#333'>
+                        {group.variants.variants.length}
+                      </text>
+                    </>
+                  )
+                })() : (
+                  <>
+                    <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
+                    <text x={15} y={17} fontSize='12'>{group.samples.length}</text>
+                    <circle cx={50} cy={12.5} r={5} fill={variantColorScale(group.variants.variants.length)} />
+                    <text x={60} y={17} fontSize='12'>{group.variants.variants.length}</text>
+                  </>
+                )}
 
                 {showMethylation && (
                   <g transform={`translate(110, 20)`}>
@@ -958,7 +1170,12 @@ const HaplotypeGroupTrack = ({
           <PlotWrapper>
             <svg height={trackHeight} width={width}>
               <g>
-                <rect x={startX} y={5} width={groupWidth} height={15} fill='#f0f0f0' stroke='none' />
+                <rect
+                  x={startX} y={5} width={groupWidth} height={15}
+                  fill={colorMode === 'population' && popComposition ? dominantColor : '#f0f0f0'}
+                  opacity={colorMode === 'population' && popComposition ? 0.15 : 1}
+                  stroke='none'
+                />
                 <line x1={startX} y1={12.5} x2={stopX} y2={12.5} stroke='#a8a8a8' strokeWidth={1} />
 
                 {group.below_threshold.variants.map((variant: Variant, index: number) => (
@@ -1094,9 +1311,11 @@ const HaplotypeTrack = ({
   haplotypeGroups,
   methylationData,
   methylationSummary = [],
+  sampleMetadata,
   start,
   stop,
   initialMinAf = 0,
+  initialColorMode = 'allele',
   initialSortBy = 'similarity_score',
   onMinAfChange,
   onColorModeChange,
@@ -1113,8 +1332,10 @@ const HaplotypeTrack = ({
   mqtlMinLogP = 0,
   plotType = 'lollipop',
   onPlotTypeChange,
+  showGenealogy = false,
+  onShowGenealogyChange,
 }: HaplotypeTrackProps) => {
-  const [colorMode, setColorMode] = useState('allele')
+  const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
   const [showMethylation, setShowMethylation] = useState(false)
@@ -1174,9 +1395,25 @@ const HaplotypeTrack = ({
   const outlierSampleIds = filterToOutliers && showMethylation
     ? new Set(methylationData.map(d => d.sample))
     : null
-  const displayGroups = outlierSampleIds
+  const filteredGroups = outlierSampleIds
     ? haplotypeGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
     : haplotypeGroups
+
+  // UPGMA genealogy tree computation
+  const genealogyResult = useMemo(() => {
+    if (!showGenealogy || filteredGroups.length < 2) return null
+    const distMatrix = computeDistanceMatrix(filteredGroups)
+    const { tree, leafOrder } = buildUPGMATree(distMatrix, filteredGroups)
+    return { tree, leafOrder }
+  }, [showGenealogy, filteredGroups])
+
+  // When genealogy is active, reorder groups to match leaf order (prevents branch crossing)
+  const displayGroups = useMemo(() => {
+    if (!showGenealogy || !genealogyResult) return filteredGroups
+    const orderMap = new Map<number, number>()
+    genealogyResult.leafOrder.forEach((hash, idx) => orderMap.set(hash, idx))
+    return [...filteredGroups].sort((a, b) => (orderMap.get(a.hash) ?? 0) - (orderMap.get(b.hash) ?? 0))
+  }, [showGenealogy, genealogyResult, filteredGroups])
 
   const regionSize = stop - start
   const variantCircleRadius = regionSize > 100000 ? 2 : 4
@@ -1210,6 +1447,7 @@ const HaplotypeTrack = ({
     initialSortBy,
     onMinAfChange: handleMinAfChange,
     onColorModeChange: handleColorModeChange,
+    colorMode,
     onSortModeChange: handleSortModeChange,
     showMethylation,
     onShowMethylationChange: handleShowMethylationChange,
@@ -1225,7 +1463,52 @@ const HaplotypeTrack = ({
     mqtlData,
     plotType,
     onPlotTypeChange: onPlotTypeChange || (() => { }),
+    showGenealogy,
+    onShowGenealogyChange: onShowGenealogyChange || (() => { }),
   }
+
+  // Compute deterministic row heights and leaf Y positions for genealogy overlay
+  const { leafYPositions, totalGroupsHeight } = useMemo(() => {
+    if (!showGenealogy || !genealogyResult) return { leafYPositions: new Map<number, number>(), totalGroupsHeight: 0 }
+
+    const mqtlPad = 8
+    const mqtlTrackHeight = 80
+    const methTrackHeight = 40
+    const groupVariantPositions = (group: HaplotypeGroup) =>
+      new Set(group.variants.variants.map((v: any) => v.position))
+
+    let cumY = 0
+    const positions = new Map<number, number>()
+
+    for (const group of displayGroups) {
+      const hasGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
+        const gvp = groupVariantPositions(group)
+        return mqtlData.some((d: any) =>
+          gvp.has(d.variant_pos) && -Math.log10(d.p_value) >= (mqtlMinLogP || 0)
+        )
+      })()
+
+      const trackHeight =
+        (showMethylation ? 20 + methTrackHeight : 20) +
+        (hasGroupMqtl ? mqtlPad + mqtlTrackHeight : 0)
+
+      // Center of this row
+      positions.set(group.hash, cumY + trackHeight / 2)
+      cumY += trackHeight
+    }
+
+    return { leafYPositions: positions, totalGroupsHeight: cumY }
+  }, [showGenealogy, genealogyResult, displayGroups, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
+
+  // Ref for measuring actual group container height
+  const groupsContainerRef = useRef<HTMLDivElement>(null)
+  const [measuredGroupsHeight, setMeasuredGroupsHeight] = useState(0)
+
+  useEffect(() => {
+    if (groupsContainerRef.current && showGenealogy) {
+      setMeasuredGroupsHeight(groupsContainerRef.current.offsetHeight)
+    }
+  })
 
   // Build pangenome graph for alluvial/heatmap views
   const pangenomeGraph = useMemo(() => {
@@ -1271,35 +1554,48 @@ const HaplotypeTrack = ({
             <MethylationSummaryTrack methylationSummary={methylationSummary} />
           )}
 
-          {displayGroups.map((group, rowIndex) => {
-            const groupSampleIds = new Set(group.samples.map(s => s.sample_id))
-            const methSampleData = methylationData.filter(d => groupSampleIds.has(d.sample))
-            return (
-              <HaplotypeGroupTrack
-                key={`haplo-${group.hash}-${rowIndex}`}
-                group={group}
-                methSampleData={methSampleData}
-                start={start}
-                stop={stop}
-                colorMode={colorMode}
-                showMethylation={showMethylation}
-                summaryByPos={summaryByPos}
-                haplotypeGroups={haplotypeGroups}
-                variantCircleRadius={variantCircleRadius}
-                sampleColorScale={sampleColorScale}
-                variantColorScale={variantColorScale}
-                methylationYScale={methylationYScale}
-                mqtlData={mqtlData}
-                showMqtl={showMqtl}
-                mqtlMinLogP={mqtlMinLogP}
+          <div ref={groupsContainerRef} style={{ position: 'relative' }}>
+            {displayGroups.map((group, rowIndex) => {
+              const groupSampleIds = new Set(group.samples.map(s => s.sample_id))
+              const methSampleData = methylationData.filter(d => groupSampleIds.has(d.sample))
+              return (
+                <HaplotypeGroupTrack
+                  key={`haplo-${group.hash}-${rowIndex}`}
+                  group={group}
+                  methSampleData={methSampleData}
+                  start={start}
+                  stop={stop}
+                  colorMode={colorMode}
+                  showMethylation={showMethylation}
+                  summaryByPos={summaryByPos}
+                  haplotypeGroups={haplotypeGroups}
+                  variantCircleRadius={variantCircleRadius}
+                  sampleColorScale={sampleColorScale}
+                  variantColorScale={variantColorScale}
+                  methylationYScale={methylationYScale}
+                  mqtlData={mqtlData}
+                  showMqtl={showMqtl}
+                  mqtlMinLogP={mqtlMinLogP}
+                  sampleMetadata={sampleMetadata}
+                />
+              )
+            })}
+            {showGenealogy && genealogyResult && leafYPositions.size > 0 && (
+              <GenealogyTreeOverlay
+                tree={genealogyResult.tree}
+                leafYPositions={leafYPositions}
+                panelWidth={250}
+                totalHeight={measuredGroupsHeight || totalGroupsHeight}
+                groups={displayGroups}
+                sampleMetadata={sampleMetadata}
               />
-            )
-          })}
+            )}
+          </div>
         </>
       )}
 
       {plotType === 'alluvial' && pangenomeGraph && (
-        <AlluvialTrack graph={pangenomeGraph} />
+        <AlluvialTrack graph={pangenomeGraph} colorMode={colorMode} sampleMetadata={sampleMetadata} />
       )}
 
       {plotType === 'heatmap' && pangenomeGraph && (
@@ -1307,7 +1603,7 @@ const HaplotypeTrack = ({
       )}
 
       {plotType === 'bubble' && variationGraph && (
-        <BubbleTrack graph={variationGraph} />
+        <BubbleTrack graph={variationGraph} colorMode={colorMode} sampleMetadata={sampleMetadata} />
       )}
     </Wrapper>
   )
