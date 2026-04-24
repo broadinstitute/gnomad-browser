@@ -15,6 +15,8 @@ type GroupedRow = {
   afs: number[]
   acs: number[]
   ans: number[]
+  allele_types: string[]
+  allele_lengths: number[]
 }
 
 type Variant = {
@@ -26,9 +28,11 @@ type Variant = {
   info_AF: number[]
   info_AC: number
   info_AN: number
+  allele_type: string
+  allele_length: number
 }
 
-function buildVariant(chrom: string, pos: number, ref: string, alt: string, rsid: string, af: number, ac: number, an: number): Variant {
+function buildVariant(chrom: string, pos: number, ref: string, alt: string, rsid: string, af: number, ac: number, an: number, alleleType: string, alleleLength: number): Variant {
   return {
     locus: `${chrom}:${pos}`,
     chrom,
@@ -38,6 +42,8 @@ function buildVariant(chrom: string, pos: number, ref: string, alt: string, rsid
     info_AF: [af],
     info_AC: ac,
     info_AN: an,
+    allele_type: alleleType || 'snv',
+    allele_length: alleleLength || 0,
   }
 }
 
@@ -75,7 +81,8 @@ export const createHaplotypeGroupsFromGrouped = (
       const variant = buildVariant(
         chrom, pos,
         row.refs[i], row.alts[i], row.rsids[i],
-        af, Number(row.acs[i]), Number(row.ans[i])
+        af, Number(row.acs[i]), Number(row.ans[i]),
+        row.allele_types[i], Number(row.allele_lengths[i])
       )
 
       if (af >= minAlleleFreq) {

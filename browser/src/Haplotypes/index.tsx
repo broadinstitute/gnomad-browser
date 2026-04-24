@@ -5,8 +5,10 @@ import { TooltipAnchor, Select } from '@gnomad/ui'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { SegmentedControl } from '@gnomad/ui'
 import { buildPangenomeGraph } from './pangenome-graph'
+import { buildVariationGraph } from './variation-graph'
 import AlluvialTrack from './AlluvialTrack'
 import HeatmapTrack from './HeatmapTrack'
+import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 
 // Extensible plot type and color mode registries
@@ -14,6 +16,7 @@ export const PLOT_TYPES: { value: string; label: string }[] = [
   { value: 'lollipop', label: 'Lollipop' },
   { value: 'alluvial', label: 'Alluvial Flow' },
   { value: 'heatmap', label: 'Binned Heatmap' },
+  { value: 'bubble', label: 'Variation Graph' },
 ]
 
 export const COLOR_MODES: { value: string; label: string }[] = [
@@ -398,6 +401,8 @@ type Variant = {
   info_SVLEN: number
   GT_alleles: number[]
   GT_phased: boolean
+  allele_type?: string
+  allele_length?: number
 }
 
 type VariantSet = {
@@ -1224,8 +1229,15 @@ const HaplotypeTrack = ({
 
   // Build pangenome graph for alluvial/heatmap views
   const pangenomeGraph = useMemo(() => {
-    if (plotType === 'lollipop' || !displayGroups.length) return null
+    if (plotType !== 'alluvial' && plotType !== 'heatmap') return null
+    if (!displayGroups.length) return null
     return buildPangenomeGraph(displayGroups, start, stop)
+  }, [plotType, displayGroups, start, stop])
+
+  // Build variation graph for bubble view
+  const variationGraph = useMemo(() => {
+    if (plotType !== 'bubble' || !displayGroups.length) return null
+    return buildVariationGraph(displayGroups, start, stop)
   }, [plotType, displayGroups, start, stop])
 
   return (
@@ -1292,6 +1304,10 @@ const HaplotypeTrack = ({
 
       {plotType === 'heatmap' && pangenomeGraph && (
         <HeatmapTrack graph={pangenomeGraph} />
+      )}
+
+      {plotType === 'bubble' && variationGraph && (
+        <BubbleTrack graph={variationGraph} />
       )}
     </Wrapper>
   )
