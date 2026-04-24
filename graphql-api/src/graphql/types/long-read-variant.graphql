@@ -1,25 +1,22 @@
 type LongReadTranscriptConsequence {
-  consequence_terms: [String!] # VEP[1]
-  domains: [String!] # VEP[43]
-  gene_id: String! # transcript
-  gene_version: String # transcript
-  gene_symbol: String # VEP[4]
+  consequence_terms: [String!]
+  domains: [String!]
+  gene_id: String!
+  gene_version: String
+  gene_symbol: String
   hgvs: String
-  hgvsc: String # VEP[10]
-  hgvsp: String # VEP[11]
-  is_canonical: Boolean # transcript
-  is_mane_select: Boolean # VEP[27]
-  is_mane_select_version: Boolean # VEP[27]
-  lof: String # derived from VEP[1]
-  lof_flags: String # VEP[21] ?
-  lof_filter: String # missing
-  major_consequence: String # derived from VEP[1]
-  polyphen_prediction: String # VEP[42]
-  refseq_id: String # missing?
-  refseq_version: String # missing?
-  sift_prediction: String # VEP[41]
-  transcript_id: String! # VEP[6]
-  transcript_version: String # transcript
+  hgvsc: String
+  hgvsp: String
+  is_canonical: Boolean
+  is_mane_select: Boolean
+  is_mane_select_version: Boolean
+  major_consequence: String
+  polyphen_prediction: String
+  refseq_id: String # TK missing?
+  refseq_version: String # TK missing?
+  sift_prediction: String
+  transcript_id: String!
+  transcript_version: String
   # Deprecated - replaced by is_canonical
   canonical: Boolean
 }
