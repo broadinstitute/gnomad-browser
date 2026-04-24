@@ -38,12 +38,12 @@ type LongReadVariantPopulationFrequencies {
   ac: Int!
   an: Int!
   af: Float!
-  homozygote_ref_count: Int!
-  homozygote_alt_count: Int!
-  heterozygote_count: Int!
-  homozygote_ref_freq: Float!
-  homozygote_alt_freq: Float!
-  heterozygote_freq: Float!
+  homozygote_ref_count: Int
+  homozygote_alt_count: Int
+  heterozygote_count: Int
+  homozygote_ref_freq: Float
+  homozygote_alt_freq: Float
+  heterozygote_freq: Float
 }
 
 type LongReadVariantFrequencies {
@@ -59,7 +59,7 @@ type LongReadVariant {
   ref: String!
   alt: String!
   rsids: [String!]
-  type: String!
+  allele_type: String!
   xpos: Float!
   transcript_consequences: [LongReadTranscriptConsequence!]
   intergenic: Boolean
@@ -69,4 +69,11 @@ type LongReadVariant {
   short_read_match_id: String
   short_read_match_type: String
   short_read_match_source: String
+  enveloping_tr_id: String
+  enveloped_ids: [String!]
+  filters: [String!]
+  gene_region: String
+  gnomad_str: String
+  is_likely_tr: Boolean
+  motifs: [String!]
 }
