@@ -1,66 +1,117 @@
 # Updating ClinVar variants
 
+0. Create a backup of the previous ClinVar release files:
+
+   ```
+   CLINVAR_BACKUP_DATE=$(date '+%Y-%m-%d')
+   CLINVAR_BACKUP_PATH="gs://gnomad-v4-data-pipeline/output/clinvar_backups/${CLINVAR_BACKUP_DATE}_clinvar_backup/"
+
+   gsutil -m cp -r "gs://gnomad-v4-data-pipeline/output/clinvar/clinvar_grch37_annotated_2.ht" "$CLINVAR_BACKUP_PATH"
+   gsutil -m cp -r "gs://gnomad-v4-data-pipeline/output/clinvar/clinvar_grch38_annotated_2.ht" "$CLINVAR_BACKUP_PATH"
+   ```
+
 1. Delete clinvar.xml from the data pipeline output bucket so that the data pipeline will download the latest version
 
    ```
    gsutil rm gs://gnomad-browser-data-pipeline/output/external_sources/clinvar.xml.gz
    ```
 
-2. Run data pipeline
+2. Run data pipelines
 
-   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.0 (GRCh38) ClinVar variants should be annotated with VEP 101.
+   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.1 (GRCh38) ClinVar variants should be annotated with VEP 105.
 
-   1. Start Dataproc cluster
+   The first step, in which the pipeline(s) parse the input ClinVar XML produces an intermediate Hail table that is used by both pipelines. Thus, to avoid duplicating work, it is best to wait for the first pipeline to finish this step, before starting the second pipeline.
 
-      GRCh37
+   1. GRCh37
 
-      ```
-      ./deployctl dataproc-cluster start vep85 \
-         --vep GRCh37 \
-         --num-secondary-workers 32
-      ```
-
-      GRCh38
+      Start cluster
 
       ```
-      ./deployctl dataproc-cluster start vep105 \
-         --init=gs://gcp-public-data--gnomad/resources/vep/v105/vep105-init.sh \
-         --metadata=VEP_CONFIG_PATH=/vep_data/vep-gcloud.json,VEP_CONFIG_URI=file:///vep_data/vep-gcloud.json,VEP_REPLICATE=us \
+      ./deployctl dataproc-cluster start clinvar-grch37-vep85 \
+         --init=gs://gnomad-v4-data-pipeline/output/clinvar/vep85/gnomad-browser-grch37-vep85-init.sh \
+         --metadata=VEP_CONFIG_PATH=/vep_data/vep-gcloud.json,VEP_CONFIG_URI=file:///vep_data/vep-gcloud.json \
          --master-machine-type n1-highmem-8 \
          --worker-machine-type n1-highmem-8 \
+         --master-boot-disk-type=pd-ssd \
+         --worker-boot-disk-type=pd-ssd \
+         --secondary-worker-boot-disk-type=pd-ssd \
          --worker-boot-disk-size=200 \
          --secondary-worker-boot-disk-size=200 \
          --num-secondary-workers 16
       ```
 
-   2. Run pipeline
-
-      GRCh37
+      Run pipeline
 
       ```
-      ./deployctl data-pipeline run --cluster vep85 clinvar_grch37
+      ./deployctl data-pipeline run --cluster vep85 clinvar-grch37-vep85
       ```
 
-      GRCh38
+      Stop the cluster
+
+      ```
+      ./deployctl dataproc-cluster stop clinvar-grch37-vep85
+      ```
+
+   2. GRCh38
+
+      Once the GRCh37 pipeline finishes the "parse_clinvar_xml" step, start this pipeline.
+
+      Start cluster
+
+      ```
+      ./deployctl dataproc-cluster start clinvar-grch38-vep105 \
+         --init=gs://gnomad-v4-data-pipeline/output/clinvar/gnomad-browser-grch38-vep105-init.sh \
+         --metadata=VEP_CONFIG_PATH=/vep_data/vep-gcloud.json,VEP_CONFIG_URI=file:///vep_data/vep-gcloud.json,VEP_REPLICATE=us \
+         --master-machine-type n1-highmem-8 \
+         --worker-machine-type n1-highmem-8 \
+         --master-boot-disk-type=pd-ssd \
+         --worker-boot-disk-type=pd-ssd \
+         --secondary-worker-boot-disk-type=pd-ssd \
+         --worker-boot-disk-size=200 \
+         --secondary-worker-boot-disk-size=200 \
+         --num-secondary-workers 16
+      ```
+
+      Run pipeline
 
       ```
       ./deployctl data-pipeline run --cluster vep105 clinvar_grch38
       ```
 
-      \*Note: The `vep105-init.sh` script is inconsistent about starting Docker. As a workaround, after starting the Dataproc Cluster, SSH into every individual node and run `sudo systemctl start docker`
+      Stop the cluster
+
+      ```
+      ./deployctl dataproc-cluster stop clinvar-grch38-vep105
+      ```
+
+      ```
+
+      ```
 
 3. Load variants to Elasticsearch
+
+   Start dataproc cluster
+
+   ```
+   ./deployctl dataproc-cluster start clinvar-es-load
+   ```
 
    GRCh37
 
    ```
-   ./deployctl elasticsearch load-datasets --dataproc-cluster vep85 clinvar_grch37_variants
+   ./deployctl elasticsearch load-datasets --dataproc-cluster clinvar-es-load clinvar_grch37_variants
    ```
 
    GRCh38
 
    ```
-   ./deployctl elasticsearch load-datasets --dataproc-cluster vep105 clinvar_grch38_variants
+   ./deployctl elasticsearch load-datasets --dataproc-cluster clinvar-es-load clinvar_grch38_variants
+   ```
+
+   Stop the cluster
+
+   ```
+   ./deployctl dataproc-cluster stop rhg-clinvar-es-load
    ```
 
 4. [Update Elasticsearch index aliases](./ElasticsearchIndexAliases.md)
@@ -119,6 +170,10 @@
 8. Update the public ClinVar buckets
 
    We release these final hail tables in a requester pays bucket, `gs://gnomad-browser-clinvar`, use `gsutil rsync` to keep the files in sync.
+
+   ```bash
+   # TODO: update these paths! I should push a "..._latest" and "..._<YYYY-MM-DD>", I think
+   ```
 
    GRCh37
 
