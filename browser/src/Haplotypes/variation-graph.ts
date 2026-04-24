@@ -80,14 +80,25 @@ export const buildVariationGraph = (
   const variantPosSet = new Set<number>()
   const variantsByPos = new Map<number, { alleles: string[]; alleleType: string; alleleLength: number }>()
 
+  // Rank: SVs are more visually interesting than SNVs, prefer them when
+  // multiple allele types exist at the same position (multiallelic)
+  const typeRank = (t: string): number => {
+    if (t === 'snv' || t === 'trv') return 0
+    return 1
+  }
+
   for (const group of groups) {
     for (const v of group.variants.variants) {
       variantPosSet.add(v.position)
-      if (!variantsByPos.has(v.position)) {
+      const vType = v.allele_type || 'snv'
+      const vLen = v.allele_length || 0
+      const existing = variantsByPos.get(v.position)
+      if (!existing || typeRank(vType) > typeRank(existing.alleleType) ||
+          (typeRank(vType) === typeRank(existing.alleleType) && Math.abs(vLen) > Math.abs(existing.alleleLength))) {
         variantsByPos.set(v.position, {
           alleles: v.alleles,
-          alleleType: v.allele_type || 'snv',
-          alleleLength: v.allele_length || 0,
+          alleleType: vType,
+          alleleLength: vLen,
         })
       }
     }
