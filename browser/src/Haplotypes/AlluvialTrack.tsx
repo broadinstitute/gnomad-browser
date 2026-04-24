@@ -3,8 +3,9 @@ import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import { scaleLinear } from 'd3-scale'
 import { PangenomeGraph, GraphNode } from './pangenome-graph'
-import { PATH_COLORS } from './colors'
+import { PATH_COLORS, SUPERPOPULATION_COLORS } from './colors'
 import HaplotypeHelpButton from './HelpButton'
+import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 const MAX_PATHS = 30
 const NODE_GAP = 10
@@ -13,6 +14,8 @@ const HEADER_HEIGHT = 90
 
 type Props = {
   graph: PangenomeGraph
+  colorMode?: string
+  sampleMetadata?: SampleMetadataMap
 }
 
 const buildPathD = (coords: { x: number; y: number }[]): string => {
@@ -136,7 +139,26 @@ const AlluvialHelp = () => (
   </>
 )
 
-const AlluvialTrack = ({ graph }: Props) => {
+/** Get dominant superpopulation for a group's samples */
+const getDominantPopForGroup = (
+  samples: { sample_id: string }[],
+  sampleMetadata: SampleMetadataMap,
+): string => {
+  const counts: Record<string, number> = {}
+  for (const s of samples) {
+    const meta = sampleMetadata.get(s.sample_id)
+    const pop = meta?.superpopulation || 'N/A'
+    counts[pop] = (counts[pop] || 0) + 1
+  }
+  let maxPop = 'N/A'
+  let maxCount = 0
+  for (const [pop, count] of Object.entries(counts)) {
+    if (count > maxCount) { maxCount = count; maxPop = pop }
+  }
+  return maxPop
+}
+
+const AlluvialTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
   const variantNodes = graph.nodes.filter((n) => n.isVariantSite)
   const uniquePositions = Array.from(new Set(variantNodes.map((n) => n.position))).sort(
     (a, b) => a - b
@@ -183,6 +205,15 @@ const AlluvialTrack = ({ graph }: Props) => {
     )
   }, [displayPaths, graph, uniquePositions, thicknessScale, minThickness, flowHeight])
 
+  const getPathColor = (pathIdx: number): string => {
+    if (colorMode === 'population' && sampleMetadata && sampleMetadata.size > 0) {
+      const path = displayPaths[pathIdx]
+      const pop = getDominantPopForGroup(path.rawGroup.samples, sampleMetadata)
+      return SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A']
+    }
+    return PATH_COLORS[pathIdx % PATH_COLORS.length]
+  }
+
   return (
     <Track
       renderLeftPanel={() => (
@@ -209,7 +240,7 @@ const AlluvialTrack = ({ graph }: Props) => {
             {/* Per-path labels */}
             {displayPaths.map((path, pathIdx) => {
               const cy = labelYPositions[pathIdx]
-              const color = PATH_COLORS[pathIdx % PATH_COLORS.length]
+              const color = getPathColor(pathIdx)
               const group = path.rawGroup
               const variantCount = group.variants.variants.length
               return (
@@ -325,7 +356,7 @@ const AlluvialTrack = ({ graph }: Props) => {
             {displayPaths.map((path, pathIdx) => {
               const coords = pathCoords[pathIdx]
               if (coords.length === 0) return null
-              const color = PATH_COLORS[pathIdx % PATH_COLORS.length]
+              const color = getPathColor(pathIdx)
               const strokeWidth = Math.max(minThickness, thicknessScale(path.sampleCount))
               return (
                 <path

@@ -28,6 +28,14 @@ import MQTLTrack from '../Haplotypes/MQTLTrack'
 
 import { Region } from '../RegionPage/RegionPage'
 
+const SAMPLE_METADATA_QUERY = `
+  query RegionSampleMetadata {
+    sample_metadata { sample_id subpopulation superpopulation }
+  }
+`
+
+export type SampleMetadataMap = Map<string, { subpopulation: string; superpopulation: string }>
+
 const MQTL_QUERY = `
   query RegionMQTL($chrom: String!, $start: Int!, $stop: Int!, $min_af: Float) {
     mqtl_associations(chrom: $chrom, start: $start, stop: $stop, min_af: $min_af) {
@@ -42,11 +50,11 @@ const HAPLOTYPE_GROUPS_QUERY = `
       groups {
         samples { sample_id }
         variants {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length }
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas }
           readable_id
         }
         below_threshold {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length }
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas }
           readable_id
         }
         start stop hash
@@ -128,6 +136,8 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const initialThreshold = queryParams.threshold ? parseFloat(queryParams.threshold as string) : 0
   const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
   const initialPlotType = (queryParams.plotType as string) || 'lollipop'
+  const initialColorMode = (queryParams.colorMode as string) || 'allele'
+  const initialShowGenealogy = queryParams.showTree === '1'
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
   const [haplotypeLoading, setHaplotypeLoading] = useState(true)
@@ -140,6 +150,10 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
   const [plotType, setPlotType] = useState(initialPlotType)
+  const [colorMode, setColorMode] = useState(initialColorMode)
+  const [showGenealogy, setShowGenealogy] = useState(initialShowGenealogy)
+
+  const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
   const [mqtlLoading, setMqtlLoading] = useState(false)
@@ -173,6 +187,25 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
     }, 300),
     [chrom, start, stop, sortBy]
   )
+
+  // Fetch sample metadata on mount (small static table)
+  useEffect(() => {
+    const fetchMeta = async () => {
+      try {
+        const result = await fetchGraphQL(SAMPLE_METADATA_QUERY, {})
+        if (result.data?.sample_metadata) {
+          const map: SampleMetadataMap = new Map()
+          for (const s of result.data.sample_metadata) {
+            map.set(s.sample_id, { subpopulation: s.subpopulation, superpopulation: s.superpopulation })
+          }
+          setSampleMetadata(map)
+        }
+      } catch (error) {
+        console.error('Error fetching sample metadata:', error)
+      }
+    }
+    fetchMeta()
+  }, [])
 
   // Fetch summary + outlier ranking on mount
   useEffect(() => {
@@ -297,9 +330,11 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
       threshold: threshold.toString(),
       sortBy,
       plotType,
+      colorMode,
+      ...(showGenealogy ? { showTree: '1' } : { showTree: undefined }),
     })
     window.history.pushState({}, '', `${location.pathname}?${newSearchParams}`)
-  }, [threshold, sortBy, plotType])
+  }, [threshold, sortBy, plotType, colorMode, showGenealogy])
 
   return (
     <TrackPage>
@@ -344,7 +379,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
                   const r = zoomRegion(region, z)
                   history.push({
                     pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
-                    search: queryString.stringify({ threshold, sortBy, plotType }),
+                    search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
                   })
                 }}>{z}x</Button>
               ))}
@@ -354,7 +389,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
                   const r = zoomRegion(region, 1 / z)
                   history.push({
                     pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
-                    search: queryString.stringify({ threshold, sortBy, plotType }),
+                    search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
                   })
                 }}>{z}x</Button>
               ))}
@@ -365,7 +400,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
       <RegionViewer
         leftPanelWidth={150}
         regions={[region]}
-        rightPanelWidth={isSmallScreen ? 0 : 80}
+        rightPanelWidth={isSmallScreen ? 0 : showGenealogy && plotType === 'lollipop' ? 250 : 80}
         width={regionViewerWidth}
       >
         <LRCoverageTrack chrom={region.chrom} start={region.start} stop={region.stop} />
@@ -380,6 +415,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             haplotypeGroups={haplotypeGroups.groups}
             methylationData={methylationData}
             methylationSummary={methylationSummary}
+            sampleMetadata={sampleMetadata}
             start={start}
             stop={stop}
             initialMinAf={threshold}
@@ -398,6 +434,10 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             mqtlMinLogP={mqtlMinLogP}
             plotType={plotType}
             onPlotTypeChange={setPlotType}
+            initialColorMode={colorMode}
+            onColorModeChange={setColorMode}
+            showGenealogy={showGenealogy}
+            onShowGenealogyChange={setShowGenealogy}
           />
         )}
         <PositionAxisTrack />
