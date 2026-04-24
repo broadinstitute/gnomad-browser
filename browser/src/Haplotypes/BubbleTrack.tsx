@@ -128,17 +128,25 @@ const BubbleHelp = () => (
     <h4>Reading the Plot</h4>
     <ul>
       <li><strong>Grey backbone</strong> — The reference path. Thickness shows how many haplotypes carry the reference allele.</li>
-      <li><strong>Colored arcs above</strong> — Alternate allele paths. Thickness shows carrier count.</li>
       <li><strong>Connecting ribbons</strong> — Flow between consecutive variant sites. Curved ribbons show haplotypes transitioning between ref and alt paths.</li>
-      <li><strong>Color</strong> — Variant type: blue=SNV, red=DEL, green=INS, purple=DUP.</li>
       <li><strong>Shaded backgrounds</strong> — Superbubbles: consecutive variants co-inherited by the same haplotypes (perfect LD).</li>
+    </ul>
+
+    <h4>Variant Shapes</h4>
+    <ul>
+      <li><strong style={{ color: '#4A90D9' }}>Blue ellipse</strong> — SNV (single nucleotide variant).</li>
+      <li><strong style={{ color: '#D73027' }}>Red dashed arc</strong> — Deletion. Arc spans the deleted region; width shows deletion size.</li>
+      <li><strong style={{ color: '#43A047' }}>Green teardrop</strong> — Insertion. Height proportional to inserted sequence length.</li>
+      <li><strong style={{ color: '#9467BD' }}>Purple diamond</strong> — Duplication. Includes tandem, interspersed, and complex duplications.</li>
+      <li><strong style={{ color: '#E8A838' }}>Orange ellipse</strong> — Tandem repeat variant (TRV).</li>
+      <li><strong style={{ color: '#FF7F0E' }}>Orange dashed diamond</strong> — Inverted duplication.</li>
     </ul>
 
     <h4>Flow Patterns</h4>
     <ul>
-      <li><strong>Wide backbone + thin arc</strong> — Rare variant (few carriers).</li>
-      <li><strong>Backbone and arc similar width</strong> — Common variant (~50% AF).</li>
-      <li><strong>Connected arcs across sites</strong> — Linked variants on the same haplotypes (LD).</li>
+      <li><strong>Wide backbone + small marker</strong> — Rare variant (few carriers).</li>
+      <li><strong>Backbone and alt similar width</strong> — Common variant (~50% AF).</li>
+      <li><strong>Connected markers across sites</strong> — Linked variants on the same haplotypes (LD).</li>
       <li><strong>Crossing ribbons</strong> — Recombination: haplotypes that carried alt at one site switch to ref at the next.</li>
     </ul>
 
@@ -185,7 +193,7 @@ const BubbleTrack = ({ graph }: Props) => {
               <BubbleHelp />
             </HaplotypeHelpButton>
           </div>
-          <svg width={200} height={75}>
+          <svg width={200} height={115}>
             <text x={0} y={12} fontSize="9" fill="#666">
               {bubbleCount} bubbles{superbubbleCount > 0 ? `, ${superbubbleCount} superbubbles` : ''}
             </text>
@@ -194,11 +202,17 @@ const BubbleTrack = ({ graph }: Props) => {
             </text>
             {/* Legend */}
             <rect x={5} y={33} width={20} height={6} fill="#999" rx={1} />
-            <text x={30} y={40} fontSize="8" fill="#333">Ref backbone (thickness = count)</text>
-            <rect x={5} y={48} width={20} height={4} fill={VARIANT_TYPE_COLORS.snv} rx={1} />
-            <text x={30} y={54} fontSize="8" fill="#333">Alt path (colored by type)</text>
-            <path d="M 5 68 C 10 60, 20 60, 25 68" fill="rgba(100,100,100,0.15)" stroke="none" />
-            <text x={30} y={70} fontSize="8" fill="#333">Flow ribbon (transition)</text>
+            <text x={30} y={40} fontSize="8" fill="#333">Ref backbone</text>
+            <ellipse cx={15} cy={52} rx={4} ry={4} fill={VARIANT_TYPE_COLORS.snv} />
+            <text x={30} y={55} fontSize="8" fill="#333">SNV</text>
+            <path d="M 5 67 Q 15 57 25 67" fill="none" stroke={VARIANT_TYPE_COLORS.del} strokeWidth={2} strokeDasharray="4 2" />
+            <text x={30} y={70} fontSize="8" fill="#333">Deletion (spans region)</text>
+            <path d="M 15 85 C 8 78, 12 73, 15 73 C 18 73, 22 78, 15 85" fill={VARIANT_TYPE_COLORS.ins} opacity={0.5} stroke={VARIANT_TYPE_COLORS.ins} strokeWidth={1} />
+            <text x={30} y={82} fontSize="8" fill="#333">Insertion (bump)</text>
+            <path d="M 15 100 L 10 94 L 15 88 L 20 94 Z" fill={VARIANT_TYPE_COLORS.dup} opacity={0.4} stroke={VARIANT_TYPE_COLORS.dup} strokeWidth={1} />
+            <text x={30} y={97} fontSize="8" fill="#333">Duplication (diamond)</text>
+            <ellipse cx={15} cy={110} rx={4} ry={4} fill={VARIANT_TYPE_COLORS.trv} />
+            <text x={30} y={113} fontSize="8" fill="#333">Tandem repeat</text>
           </svg>
         </div>
       )}
@@ -343,28 +357,140 @@ const BubbleTrack = ({ graph }: Props) => {
               />
             ))}
 
-            {/* Alt nodes at each column with fork/merge lines */}
+            {/* Alt nodes at each column — shape varies by SV type */}
             {colLayout.map(({ x, ay, altT, col }, i) => {
               if (col.altWeight <= 0) return null
               const color = getColor(col.alleleType)
               const halfT = Math.max(altT / 2, 3)
               const refT = ribbonThickness(col.refWeight, totalHaplotypes, MAX_BACKBONE_THICKNESS)
+              const sw = Math.max(2, altT * 0.5)
+              const t = col.alleleType.toLowerCase()
+              const absLen = Math.abs(col.alleleLength)
 
+              // Deletion: wide arc spanning the deleted region
+              if (t === 'del' && absLen > 0) {
+                const x2 = scalePosition(col.position + absLen)
+                const span = Math.max(12, x2 - x)
+                const midX = x + span / 2
+                const arcPeakY = ay - Math.min(30, span * 0.15)
+                return (
+                  <TooltipAnchor
+                    key={`alt-${i}`}
+                    tooltipComponent={() => <ColumnTooltip col={col} total={totalHaplotypes} />}
+                  >
+                    <g>
+                      {/* Fork line at start */}
+                      <line x1={x} y1={BACKBONE_Y - refT / 2} x2={x} y2={ay} stroke={color} strokeWidth={sw} opacity={0.5} />
+                      {/* Wide deletion arc */}
+                      <path
+                        d={`M ${x} ${BACKBONE_Y - refT / 2} Q ${midX} ${arcPeakY} ${x + span} ${BACKBONE_Y - refT / 2}`}
+                        fill="none"
+                        stroke={color}
+                        strokeWidth={Math.max(2.5, altT * 0.6)}
+                        opacity={0.75}
+                        strokeDasharray="6 3"
+                      />
+                      {/* Merge line at end */}
+                      <line x1={x + span} y1={BACKBONE_Y - refT / 2} x2={x + span} y2={ay} stroke={color} strokeWidth={sw * 0.7} opacity={0.3} />
+                      {/* "DEL" label */}
+                      {span > 30 && (
+                        <text x={midX} y={arcPeakY - 4} textAnchor="middle" fontSize="8" fill={color} opacity={0.7}>
+                          {absLen > 1000 ? `${(absLen / 1000).toFixed(1)}kb` : `${absLen}bp`}
+                        </text>
+                      )}
+                    </g>
+                  </TooltipAnchor>
+                )
+              }
+
+              // Insertion: teardrop bump above the backbone
+              if (t === 'ins' || t === 'alu_ins') {
+                const bumpW = Math.max(8, Math.min(30, Math.sqrt(absLen) * 2))
+                const bumpH = Math.max(12, Math.min(40, Math.sqrt(absLen) * 3))
+                const peakY = BACKBONE_Y - refT / 2 - bumpH
+                return (
+                  <TooltipAnchor
+                    key={`alt-${i}`}
+                    tooltipComponent={() => <ColumnTooltip col={col} total={totalHaplotypes} />}
+                  >
+                    <g>
+                      {/* Insertion bump: a closed teardrop shape */}
+                      <path
+                        d={`M ${x} ${BACKBONE_Y - refT / 2}
+                            C ${x - bumpW} ${BACKBONE_Y - refT / 2 - bumpH * 0.5},
+                              ${x - bumpW * 0.3} ${peakY},
+                              ${x} ${peakY}
+                            C ${x + bumpW * 0.3} ${peakY},
+                              ${x + bumpW} ${BACKBONE_Y - refT / 2 - bumpH * 0.5},
+                              ${x} ${BACKBONE_Y - refT / 2}`}
+                        fill={color}
+                        opacity={0.35}
+                        stroke={color}
+                        strokeWidth={Math.max(1.5, altT * 0.4)}
+                      />
+                      {/* Size label for large insertions */}
+                      {absLen > 50 && (
+                        <text x={x} y={peakY - 4} textAnchor="middle" fontSize="7" fill={color} opacity={0.7}>
+                          {absLen > 1000 ? `${(absLen / 1000).toFixed(1)}kb` : `${absLen}bp`}
+                        </text>
+                      )}
+                    </g>
+                  </TooltipAnchor>
+                )
+              }
+
+              // Duplication types: diamond/loop-back shape
+              if (t === 'dup' || t === 'dup_interspersed' || t === 'complex_dup' || t === 'inv_dup') {
+                const loopW = Math.max(10, Math.min(40, Math.sqrt(absLen) * 1.5))
+                const loopH = Math.max(15, Math.min(50, Math.sqrt(absLen) * 2.5))
+                const peakY = BACKBONE_Y - refT / 2 - loopH
+                const isDashed = t === 'inv_dup'
+                return (
+                  <TooltipAnchor
+                    key={`alt-${i}`}
+                    tooltipComponent={() => <ColumnTooltip col={col} total={totalHaplotypes} />}
+                  >
+                    <g>
+                      {/* Fork line */}
+                      <line x1={x} y1={BACKBONE_Y - refT / 2} x2={x} y2={peakY + loopH * 0.3} stroke={color} strokeWidth={sw} opacity={0.5} />
+                      {/* Diamond/loop shape */}
+                      <path
+                        d={`M ${x} ${BACKBONE_Y - refT / 2}
+                            L ${x - loopW / 2} ${peakY + loopH * 0.4}
+                            L ${x} ${peakY}
+                            L ${x + loopW / 2} ${peakY + loopH * 0.4}
+                            Z`}
+                        fill={color}
+                        opacity={0.3}
+                        stroke={color}
+                        strokeWidth={Math.max(1.5, altT * 0.4)}
+                        strokeDasharray={isDashed ? '4 2' : 'none'}
+                      />
+                      {/* Size label */}
+                      {absLen > 100 && (
+                        <text x={x} y={peakY - 4} textAnchor="middle" fontSize="7" fill={color} opacity={0.7}>
+                          {absLen > 1000 ? `${(absLen / 1000).toFixed(1)}kb` : `${absLen}bp`}
+                        </text>
+                      )}
+                    </g>
+                  </TooltipAnchor>
+                )
+              }
+
+              // SNV / trv / other: default point ellipse with fork line
               return (
                 <TooltipAnchor
                   key={`alt-${i}`}
                   tooltipComponent={() => <ColumnTooltip col={col} total={totalHaplotypes} />}
                 >
                   <g>
-                    {/* Vertical fork/merge line connecting backbone to alt node */}
                     <line
                       x1={x} y1={BACKBONE_Y - refT / 2}
                       x2={x} y2={ay + halfT}
                       stroke={color}
-                      strokeWidth={Math.max(2, altT * 0.5)}
+                      strokeWidth={sw}
                       opacity={0.6}
                     />
-                    {/* Alt node marker */}
                     <ellipse
                       cx={x}
                       cy={ay}
