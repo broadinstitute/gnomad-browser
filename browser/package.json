@@ -20,7 +20,7 @@
     "@gnomad/track-regions": "3.1.0",
     "@gnomad/track-transcripts": "4.1.0",
     "@gnomad/track-variants": "3.1.0",
-    "@gnomad/ui": "3.1.0",
+    "@gnomad/ui": "file:../../gnomad-browser-toolkit/packages/ui",
     "@visx/axis": "^3.0.0",
     "@visx/group": "^3.0.0",
     "@visx/legend": "^3.12.0",
