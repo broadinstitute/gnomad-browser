@@ -116,9 +116,6 @@ def annotate_with_transcripts(variants, transcripts_path):
             is_mane_select_version=False,
             #            is_mane_select=(~(variants_with_transcript.transcript_vep[28] == hl.literal('')) & (variants_with_transcript.transcript_vep[28].split("\\.")[0] ==  variants_with_transcript.transcript_vep[6])), # TK
             # is_mane_select_version=False,  # TK
-            # lof=TK,
-            # lof_flags=VEP[21]?
-            # lof_filter=TK
             polyphen_prediction=hl.or_missing(
                 ~(variants_with_transcript.transcript_vep[46] == ""), variants_with_transcript.transcript_vep[46]
             ),
@@ -157,11 +154,13 @@ def annotate_with_transcripts(variants, transcripts_path):
 
     variants = variants.join(variants_with_transcript, "left")
     variants = variants.drop("transcript_vep")
+    # TK mark intergenic
+    # TK what to do with motif and regulatory vep?
     return variants
 
 
 def import_variants_from_vcfs(vcf_path, transcripts_path):
-    ds = hl.import_vcf(vcf_path, force_bgz=True, reference_genome="GRCh38")
+    ds = hl.import_vcf(vcf_path, force_bgz=True, reference_genome="GRCh38", array_elements_required=False)
     ds = ds.rows()
     ds = ds.annotate(variant_id=ds.rsid.replace("^chr", ""))
     ds = ds.key_by(ds.variant_id)
@@ -283,7 +282,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         pos=ds.locus.position,
         end=ds.info.END,
         length=ds.info.SVLEN,
-        type=ds.info.allele_type,
+        allele_type=ds.info.allele_type,
         ref=ds.alleles[0],
         alt=ds.alleles[1],
         genes=ds.transcript_consequences.map(lambda tc: tc.gene_id),
@@ -294,23 +293,33 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         short_read_match_source=hl.or_missing(
             ~hl.is_missing(ds.info.gnomAD_V4_match_source), ds.info.gnomAD_V4_match_source[0]
         ),
-        # TK filter
-        # TK grpmax
-        # TK allele length
-        # TK region
-        # TK Origin
-        # TK SUB_FAMILY
-        # TK TR enveloped
-        # TK TR parsed
-        # TK dbsnp
-        # TK predicted
+        enveloping_tr_id=hl.or_missing(
+            ds.info.TR_ENVELOPED, ds.info.TRID.replace("chr", "")
+        ),  # TK add dropdown to frontend
+        is_likely_tr=ds.info.TR_PARSED,
+        gene_region=ds.info.REGION,
+        motifs=ds.info.MOTIFS,
+        gnomad_str=ds.info.gnomAD_STR,
+        filters=ds.filters,
+        # TK trv spanning_depth
         # TK in silico
         # TK age dist
         # TK genotype quality metrics
         # TK site quality metrics
         # TK coverage
-        # TK trv
+        # TK grpmax (ancestry group or none)
+        # TK allele length
+        # TK dbsnp
+        # TK predicted
     )
+
+    enveloped_ids_by_enveloping_id = (
+        ds.filter(ds.info.TR_ENVELOPED).select("enveloping_tr_id").key_by("enveloping_tr_id").select_globals()
+    )
+    enveloped_ids_by_enveloping_id = enveloped_ids_by_enveloping_id.group_by("enveloping_tr_id").aggregate(
+        enveloped_ids=hl.agg.collect(enveloped_ids_by_enveloping_id.variant_id)
+    )
+    ds = ds.join(enveloped_ids_by_enveloping_id, "left")
 
     ds = ds.annotate(
         xpos=x_position(ds.chrom, ds.pos),
@@ -369,6 +378,5 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
 
     ds = ds.annotate(rsids=[ds.rsid])
 
-    ds = ds.key_by("variant_id")
     ds = ds.drop("alleles", "info")
     return ds
