@@ -2,8 +2,9 @@ import React from 'react'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import { VariationGraph, ColumnFlow, InterColumnFlow } from './variation-graph'
-import { VARIANT_TYPE_COLORS } from './colors'
+import { VARIANT_TYPE_COLORS, SUPERPOPULATION_COLORS } from './colors'
 import HaplotypeHelpButton from './HelpButton'
+import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 const TRACK_HEIGHT = 220
 const BACKBONE_Y = TRACK_HEIGHT * 0.75
@@ -14,6 +15,8 @@ const MIN_RIBBON = 1.5
 
 type Props = {
   graph: VariationGraph
+  colorMode?: string
+  sampleMetadata?: SampleMetadataMap
 }
 
 /** Scale a haplotype count to a ribbon thickness using sqrt for visibility */
@@ -178,10 +181,60 @@ const ribbonPath = (
   ].join(' ')
 }
 
-const BubbleTrack = ({ graph }: Props) => {
-  const { columns, transitions, totalHaplotypes, bubbles } = graph
+/** Get dominant superpopulation from a set of sample IDs */
+const getDominantPopForSamples = (
+  sampleIds: Set<string> | string[],
+  sampleMetadata: SampleMetadataMap,
+): string => {
+  const counts: Record<string, number> = {}
+  for (const sid of sampleIds) {
+    const meta = sampleMetadata.get(sid)
+    const pop = meta?.superpopulation || 'N/A'
+    counts[pop] = (counts[pop] || 0) + 1
+  }
+  let maxPop = 'N/A'
+  let maxCount = 0
+  for (const [pop, count] of Object.entries(counts)) {
+    if (count > maxCount) { maxCount = count; maxPop = pop }
+  }
+  return maxPop
+}
+
+const BubbleTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
+  const { columns, transitions, totalHaplotypes, bubbles, edges } = graph
   const bubbleCount = bubbles.length
   const superbubbleCount = bubbles.filter((b) => b.isSuperbubble).length
+
+  const usePopColors = colorMode === 'population' && sampleMetadata && sampleMetadata.size > 0
+
+  // Pre-compute population color for each alt node position
+  const popColorByPos = React.useMemo(() => {
+    if (!usePopColors) return null
+    const colorMap = new Map<number, string>()
+    for (const col of columns) {
+      const altNodeId = `alt-${col.position}`
+      // Collect all haplotypes that reach this alt node
+      const altHaps = new Set<string>()
+      for (const [, edge] of edges) {
+        if (edge.target === altNodeId) {
+          for (const h of edge.haplotypes) altHaps.add(h)
+        }
+      }
+      if (altHaps.size > 0) {
+        const pop = getDominantPopForSamples(altHaps, sampleMetadata!)
+        colorMap.set(col.position, SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A'])
+      }
+    }
+    return colorMap
+  }, [usePopColors, columns, edges, sampleMetadata])
+
+  /** Get color for a column, using population or variant type */
+  const getColColor = (col: ColumnFlow): string => {
+    if (popColorByPos) {
+      return popColorByPos.get(col.position) || SUPERPOPULATION_COLORS['N/A']
+    }
+    return getColor(col.alleleType)
+  }
 
   return (
     <Track
@@ -286,7 +339,7 @@ const BubbleTrack = ({ graph }: Props) => {
               // alt→alt ribbon (linked alt path between columns — superbubble flow)
               if (t.altToAlt > 0) {
                 const thickness = ribbonThickness(t.altToAlt, totalHaplotypes, MAX_ALT_THICKNESS)
-                const color = getColor(fromLayout.col.alleleType)
+                const color = getColColor(fromLayout.col)
                 elements.push(
                   <path
                     key={`aa-${i}`}
@@ -310,7 +363,7 @@ const BubbleTrack = ({ graph }: Props) => {
                       fromLayout.x, BACKBONE_Y, thickness,
                       toLayout.x, toLayout.ay, thickness
                     )}
-                    fill={getColor(toLayout.col.alleleType)}
+                    fill={getColColor(toLayout.col)}
                     opacity={0.4}
                   />
                 )
@@ -326,7 +379,7 @@ const BubbleTrack = ({ graph }: Props) => {
                       fromLayout.x, fromLayout.ay, thickness,
                       toLayout.x, BACKBONE_Y, thickness
                     )}
-                    fill={getColor(fromLayout.col.alleleType)}
+                    fill={getColColor(fromLayout.col)}
                     opacity={0.4}
                   />
                 )
@@ -360,7 +413,7 @@ const BubbleTrack = ({ graph }: Props) => {
             {/* Alt nodes at each column — shape varies by SV type */}
             {colLayout.map(({ x, ay, altT, col }, i) => {
               if (col.altWeight <= 0) return null
-              const color = getColor(col.alleleType)
+              const color = getColColor(col)
               const halfT = Math.max(altT / 2, 3)
               const refT = ribbonThickness(col.refWeight, totalHaplotypes, MAX_BACKBONE_THICKNESS)
               const sw = Math.max(2, altT * 0.5)
@@ -512,7 +565,7 @@ const BubbleTrack = ({ graph }: Props) => {
                 y1={BACKBONE_Y + MAX_BACKBONE_THICKNESS / 2 + 2}
                 x2={x}
                 y2={BACKBONE_Y + MAX_BACKBONE_THICKNESS / 2 + 6}
-                stroke={getColor(col.alleleType)}
+                stroke={getColColor(col)}
                 strokeWidth={1}
                 opacity={0.5}
               />

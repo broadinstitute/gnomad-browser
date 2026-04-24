@@ -17,6 +17,11 @@ type GroupedRow = {
   ans: number[]
   allele_types: string[]
   allele_lengths: number[]
+  af_afrs: (number | null)[]
+  af_amrs: (number | null)[]
+  af_eass: (number | null)[]
+  af_nfes: (number | null)[]
+  af_sass: (number | null)[]
 }
 
 type Variant = {
@@ -30,9 +35,19 @@ type Variant = {
   info_AN: number
   allele_type: string
   allele_length: number
+  info_AF_afr: number | null
+  info_AF_amr: number | null
+  info_AF_eas: number | null
+  info_AF_nfe: number | null
+  info_AF_sas: number | null
 }
 
-function buildVariant(chrom: string, pos: number, ref: string, alt: string, rsid: string, af: number, ac: number, an: number, alleleType: string, alleleLength: number): Variant {
+function buildVariant(
+  chrom: string, pos: number, ref: string, alt: string, rsid: string,
+  af: number, ac: number, an: number, alleleType: string, alleleLength: number,
+  afAfr: number | null, afAmr: number | null, afEas: number | null,
+  afNfe: number | null, afSas: number | null,
+): Variant {
   return {
     locus: `${chrom}:${pos}`,
     chrom,
@@ -44,6 +59,11 @@ function buildVariant(chrom: string, pos: number, ref: string, alt: string, rsid
     info_AN: an,
     allele_type: alleleType || 'snv',
     allele_length: alleleLength || 0,
+    info_AF_afr: afAfr,
+    info_AF_amr: afAmr,
+    info_AF_eas: afEas,
+    info_AF_nfe: afNfe,
+    info_AF_sas: afSas,
   }
 }
 
@@ -78,11 +98,14 @@ export const createHaplotypeGroupsFromGrouped = (
       if (pos < start || pos > stop) continue
 
       const af = Number(row.afs[i])
+      const toNum = (v: number | null) => v != null ? Number(v) : null
       const variant = buildVariant(
         chrom, pos,
         row.refs[i], row.alts[i], row.rsids[i],
         af, Number(row.acs[i]), Number(row.ans[i]),
-        row.allele_types[i], Number(row.allele_lengths[i])
+        row.allele_types[i], Number(row.allele_lengths[i]),
+        toNum(row.af_afrs?.[i]), toNum(row.af_amrs?.[i]), toNum(row.af_eass?.[i]),
+        toNum(row.af_nfes?.[i]), toNum(row.af_sass?.[i]),
       )
 
       if (af >= minAlleleFreq) {

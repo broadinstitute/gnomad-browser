@@ -22,7 +22,12 @@ export const fetchGroupedHaplotypeVariants = async (
       groupArray(info_AC)   AS acs,
       groupArray(info_AN)   AS ans,
       groupArray(allele_type)   AS allele_types,
-      groupArray(allele_length) AS allele_lengths
+      groupArray(allele_length) AS allele_lengths,
+      groupArray(info_AF_afr)   AS af_afrs,
+      groupArray(info_AF_amr)   AS af_amrs,
+      groupArray(info_AF_eas)   AS af_eass,
+      groupArray(info_AF_nfe)   AS af_nfes,
+      groupArray(info_AF_sas)   AS af_sass
     FROM lr_haplotypes
     WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
     GROUP BY sample_id, strand
