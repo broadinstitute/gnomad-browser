@@ -1,6 +1,7 @@
 import { fetchMQTLAssociations } from '../../queries/mqtl-queries'
 import {
   fetchGroupedHaplotypeVariants,
+  fetchSampleMetadata,
   fetchMethylationForRegion,
   fetchMethylationSummaryForRegion,
   fetchMethylationOutliersForRegion,
@@ -50,6 +51,16 @@ const normalizeChrom = (chrom: string) =>
 
 const resolvers = {
   Query: {
+    sample_metadata: async (_obj: any, _args: any, ctx: any) => {
+      const t0 = now()
+      const result = await fetchSampleMetadata(ctx.esClient)
+      addTiming(ctx, {
+        label: 'sample_metadata',
+        ms: now() - t0,
+        meta: { rows: (result as any[]).length },
+      })
+      return result
+    },
     mqtl_associations: async (_obj: any, args: any, ctx: any) => {
       const t0 = now()
       try {

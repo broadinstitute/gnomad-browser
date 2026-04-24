@@ -1,4 +1,4 @@
-import { HaplotypeGroup } from '../Haplotypes'
+import { HaplotypeGroup } from './index'
 
 export interface GraphNode {
   id: string

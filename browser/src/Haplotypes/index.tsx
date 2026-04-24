@@ -1,11 +1,27 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
-import { TooltipAnchor } from '@gnomad/ui'
+import { TooltipAnchor, Select } from '@gnomad/ui'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { SegmentedControl } from '@gnomad/ui'
+import { buildPangenomeGraph } from './pangenome-graph'
+import AlluvialTrack from './AlluvialTrack'
+import HeatmapTrack from './HeatmapTrack'
+import HaplotypeHelpButton from './HelpButton'
 
-// No artificial cap — render all haplotype groups
+// Extensible plot type and color mode registries
+export const PLOT_TYPES: { value: string; label: string }[] = [
+  { value: 'lollipop', label: 'Lollipop' },
+  { value: 'alluvial', label: 'Alluvial Flow' },
+  { value: 'heatmap', label: 'Binned Heatmap' },
+]
+
+export const COLOR_MODES: { value: string; label: string }[] = [
+  { value: 'allele', label: 'Allele' },
+  { value: 'position', label: 'Position' },
+  { value: 'af', label: 'Allele Frequency' },
+  { value: 'haplotype_count', label: 'Haplotype Count' },
+]
 
 const Wrapper = styled.div`
   display: flex;
@@ -93,6 +109,10 @@ export const Legend = ({
   onShowMqtlChange = () => { },
   mqtlLoading = false,
   mqtlData = [],
+  plotType = 'lollipop',
+  onPlotTypeChange = () => { },
+  plotTypes = PLOT_TYPES,
+  colorModes = COLOR_MODES,
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -111,6 +131,10 @@ export const Legend = ({
   onShowMqtlChange?: (show: boolean) => void
   mqtlLoading?: boolean
   mqtlData?: any[]
+  plotType?: string
+  onPlotTypeChange?: (plotType: string) => void
+  plotTypes?: { value: string; label: string }[]
+  colorModes?: { value: string; label: string }[]
 }) => {
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
@@ -343,6 +367,17 @@ export const Legend = ({
           onChange={(value: any) => handleSortModeChange(value)}
         />
       </div>
+      <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px' }}>
+        <label style={{ marginLeft: '3px' }}>Plot type:</label>
+        <Select
+          value={plotType}
+          onChange={(e: any) => onPlotTypeChange(e.target.value)}
+        >
+          {plotTypes.map((pt) => (
+            <option key={pt.value} value={pt.value}>{pt.label}</option>
+          ))}
+        </Select>
+      </div>
     </LegendWrapper>
   )
 }
@@ -528,6 +563,8 @@ type HaplotypeTrackProps = {
   mqtlLoading?: boolean
   mqtlData?: any[]
   mqtlMinLogP?: number
+  plotType?: string
+  onPlotTypeChange?: (plotType: string) => void
 }
 
 const variantColors: Record<string, string> = {}
@@ -575,6 +612,49 @@ const getColorForVariantByHaplotypeCount = (haplotypeGroups: HaplotypeGroup[], l
     .clamp(true)
   return haplotypeCountScale(count)
 }
+
+// --- Help content ---
+
+const LollipopHelp = () => (
+  <>
+    <h4 style={{ marginTop: 0 }}>Overview</h4>
+    <p>
+      The lollipop view shows each haplotype group as a horizontal row with colored markers
+      at each variant position. Groups are clusters of haplotypes that share the same set of
+      variants above the allele frequency threshold.
+    </p>
+
+    <h4>Reading the Plot</h4>
+    <ul>
+      <li><strong>Each row</strong> is one haplotype group — a set of samples that share the same phased variant combination.</li>
+      <li><strong>Colored circles</strong> are SNVs. Color encodes the allele identity (each unique allele gets a consistent color).</li>
+      <li><strong>Blue dashed lines</strong> are indels (insertions/deletions). Thickness scales with variant length.</li>
+      <li><strong>Red dashed lines</strong> are structural variants (SVs).</li>
+      <li><strong>Small open circles</strong> are variants below the current AF threshold (shown for context but not used for grouping).</li>
+      <li><strong>Gray background bar</strong> spans the start-to-stop range of the group's variants.</li>
+    </ul>
+
+    <h4>Left Panel Labels</h4>
+    <ul>
+      <li><strong>Orange circle + number</strong> — Sample count (how many haplotypes in this group)</li>
+      <li><strong>Gray circle + number</strong> — Variant count (how many variant sites above threshold)</li>
+      <li>Hover to see full details including sample IDs and genomic coordinates.</li>
+    </ul>
+
+    <h4>Optional Overlays</h4>
+    <ul>
+      <li><strong>Methylation</strong> — When enabled, each group shows per-CpG methylation levels as dots below the variant row. Deviation from the population mean is highlighted.</li>
+      <li><strong>mQTLs</strong> — When computed, arc connections show variant-CpG associations. Arc height encodes statistical significance (-log₁₀ p). Red arcs = positive effect, blue = negative.</li>
+    </ul>
+
+    <h4>Controls</h4>
+    <ul>
+      <li><strong>Minimum variant AF</strong> — Filters variants by allele frequency. Raising this simplifies groups by ignoring rare variants.</li>
+      <li><strong>Sort by</strong> — "Similarity" groups similar haplotypes together; "Count" sorts by sample count.</li>
+      <li><strong>Filter to outliers</strong> — When methylation is enabled, shows only groups containing methylation outlier samples.</li>
+    </ul>
+  </>
+)
 
 // --- Sub-track components ---
 
@@ -1026,6 +1106,8 @@ const HaplotypeTrack = ({
   mqtlLoading = false,
   mqtlData = [],
   mqtlMinLogP = 0,
+  plotType = 'lollipop',
+  onPlotTypeChange,
 }: HaplotypeTrackProps) => {
   const [colorMode, setColorMode] = useState('allele')
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -1136,7 +1218,15 @@ const HaplotypeTrack = ({
     onShowMqtlChange: onShowMqtlChange || (() => { }),
     mqtlLoading,
     mqtlData,
+    plotType,
+    onPlotTypeChange: onPlotTypeChange || (() => { }),
   }
+
+  // Build pangenome graph for alluvial/heatmap views
+  const pangenomeGraph = useMemo(() => {
+    if (plotType === 'lollipop' || !displayGroups.length) return null
+    return buildPangenomeGraph(displayGroups, start, stop)
+  }, [plotType, displayGroups, start, stop])
 
   return (
     <Wrapper style={{ flexDirection: 'column' }}>
@@ -1149,34 +1239,60 @@ const HaplotypeTrack = ({
         methylationTotalSamples={methylationTotalSamples}
       />
 
-      {showMethylation && methylationSummary.length > 0 && (
-        <MethylationSummaryTrack methylationSummary={methylationSummary} />
+      {plotType === 'lollipop' && (
+        <>
+          <Track
+            renderLeftPanel={() => (
+              <SidePanel>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#666' }}>Lollipop View</span>
+                  <HaplotypeHelpButton title="Lollipop View — How to Read This View">
+                    <LollipopHelp />
+                  </HaplotypeHelpButton>
+                </div>
+              </SidePanel>
+            )}
+          >
+            {() => <div style={{ height: 1 }} />}
+          </Track>
+          {showMethylation && methylationSummary.length > 0 && (
+            <MethylationSummaryTrack methylationSummary={methylationSummary} />
+          )}
+
+          {displayGroups.map((group, rowIndex) => {
+            const groupSampleIds = new Set(group.samples.map(s => s.sample_id))
+            const methSampleData = methylationData.filter(d => groupSampleIds.has(d.sample))
+            return (
+              <HaplotypeGroupTrack
+                key={`haplo-${group.hash}-${rowIndex}`}
+                group={group}
+                methSampleData={methSampleData}
+                start={start}
+                stop={stop}
+                colorMode={colorMode}
+                showMethylation={showMethylation}
+                summaryByPos={summaryByPos}
+                haplotypeGroups={haplotypeGroups}
+                variantCircleRadius={variantCircleRadius}
+                sampleColorScale={sampleColorScale}
+                variantColorScale={variantColorScale}
+                methylationYScale={methylationYScale}
+                mqtlData={mqtlData}
+                showMqtl={showMqtl}
+                mqtlMinLogP={mqtlMinLogP}
+              />
+            )
+          })}
+        </>
       )}
 
-      {displayGroups.map((group, rowIndex) => {
-        const groupSampleIds = new Set(group.samples.map(s => s.sample_id))
-        const methSampleData = methylationData.filter(d => groupSampleIds.has(d.sample))
-        return (
-          <HaplotypeGroupTrack
-            key={`haplo-${group.hash}-${rowIndex}`}
-            group={group}
-            methSampleData={methSampleData}
-            start={start}
-            stop={stop}
-            colorMode={colorMode}
-            showMethylation={showMethylation}
-            summaryByPos={summaryByPos}
-            haplotypeGroups={haplotypeGroups}
-            variantCircleRadius={variantCircleRadius}
-            sampleColorScale={sampleColorScale}
-            variantColorScale={variantColorScale}
-            methylationYScale={methylationYScale}
-            mqtlData={mqtlData}
-            showMqtl={showMqtl}
-            mqtlMinLogP={mqtlMinLogP}
-          />
-        )
-      })}
+      {plotType === 'alluvial' && pangenomeGraph && (
+        <AlluvialTrack graph={pangenomeGraph} />
+      )}
+
+      {plotType === 'heatmap' && pangenomeGraph && (
+        <HeatmapTrack graph={pangenomeGraph} />
+      )}
     </Wrapper>
   )
 }
