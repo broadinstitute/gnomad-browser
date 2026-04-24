@@ -30,6 +30,11 @@ export const VARIANT_TYPE_COLORS: Record<string, string> = {
   del: '#D73027',
   ins: '#43A047',
   dup: '#9467BD',
+  trv: '#E8A838',
+  dup_interspersed: '#7B4F9E',
+  complex_dup: '#6A3D9A',
+  alu_ins: '#33A02C',
+  inv_dup: '#FF7F0E',
   inv: '#FF7F0E',
   other: '#9E9E9E',
 }
