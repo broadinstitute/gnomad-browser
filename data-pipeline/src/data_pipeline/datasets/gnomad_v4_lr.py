@@ -285,7 +285,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         allele_type=ds.info.allele_type,
         ref=ds.alleles[0],
         alt=ds.alleles[1],
-        genes=ds.transcript_consequences.map(lambda tc: tc.gene_id),
+        genes=ds.transcript_consequences.map(lambda tc: tc.gene_id),  # TK de-dup
         short_read_match_type=hl.or_missing(
             ~hl.is_missing(ds.info.gnomAD_V4_match_type), ds.info.gnomAD_V4_match_type[0]
         ),
