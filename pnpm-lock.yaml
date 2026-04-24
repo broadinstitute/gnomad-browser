@@ -172,8 +172,8 @@ importers:
         specifier: 3.1.0
         version: 3.1.0(react-dom@18.3.1)(react@18.3.1)
       '@gnomad/ui':
-        specifier: 3.1.0
-        version: 3.1.0(@popperjs/core@2.11.8)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19)
+        specifier: file:../../gnomad-browser-toolkit/packages/ui
+        version: file:../gnomad-browser-toolkit/packages/ui(@popperjs/core@2.11.8)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19)
       '@visx/axis':
         specifier: ^3.0.0
         version: 3.5.0(react@18.3.1)
@@ -3152,31 +3152,6 @@ packages:
       prop-types: 15.8.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-    dev: false
-
-  /@gnomad/ui@3.1.0(@popperjs/core@2.11.8)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19):
-    resolution: {integrity: sha512-TXl3cP/WnZZvvHqf70oU6TnnYIry6J7/vyMY6nJZ7mzPsFwrH/e79FH/NXOM4goEYItef2ZuVFHqBjKhwzF+nw==}
-    peerDependencies:
-      react: ^18.0.0
-      react-dom: ^18.0.0
-      styled-components: ^6.1.19
-    dependencies:
-      '@fortawesome/fontawesome-free': 5.15.4
-      lodash.debounce: 4.0.8
-      mousetrap: 1.6.5
-      polished: 3.7.2
-      prop-types: 15.8.1
-      react: 18.3.1
-      react-aria-modal: 5.0.2(prop-types@15.8.1)(react-dom@18.3.1)(react@18.3.1)
-      react-autocomplete: 1.8.1(react-dom@18.3.1)(react@18.3.1)
-      react-dom: 18.3.1(react@18.3.1)
-      react-popper: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.3.1)(react@18.3.1)
-      react-sizeme: 3.0.2
-      react-tabs: 6.1.0(react@18.3.1)
-      react-window: 1.8.9(react-dom@18.3.1)(react@18.3.1)
-      styled-components: 6.1.19(react-dom@18.3.1)(react@18.3.1)
-    transitivePeerDependencies:
-      - '@popperjs/core'
     dev: false
 
   /@google-cloud/paginator@5.0.0:
@@ -14423,3 +14398,30 @@ packages:
   /zwitch@1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
+
+  file:../gnomad-browser-toolkit/packages/ui(@popperjs/core@2.11.8)(react-dom@18.3.1)(react@18.3.1)(styled-components@6.1.19):
+    resolution: {directory: ../gnomad-browser-toolkit/packages/ui, type: directory}
+    id: file:../gnomad-browser-toolkit/packages/ui
+    name: '@gnomad/ui'
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+      styled-components: ^6.1.19
+    dependencies:
+      '@fortawesome/fontawesome-free': 5.15.4
+      lodash.debounce: 4.0.8
+      mousetrap: 1.6.5
+      polished: 3.7.2
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-aria-modal: 5.0.2(prop-types@15.8.1)(react-dom@18.3.1)(react@18.3.1)
+      react-autocomplete: 1.8.1(react-dom@18.3.1)(react@18.3.1)
+      react-dom: 18.3.1(react@18.3.1)
+      react-popper: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.3.1)(react@18.3.1)
+      react-sizeme: 3.0.2
+      react-tabs: 6.1.0(react@18.3.1)
+      react-window: 1.8.9(react-dom@18.3.1)(react@18.3.1)
+      styled-components: 6.1.19(react-dom@18.3.1)(react@18.3.1)
+    transitivePeerDependencies:
+      - '@popperjs/core'
+    dev: false
