@@ -5,30 +5,32 @@ import { VariationGraph, ColumnFlow, InterColumnFlow } from './variation-graph'
 import { VARIANT_TYPE_COLORS } from './colors'
 import HaplotypeHelpButton from './HelpButton'
 
-const TRACK_HEIGHT = 200
+const TRACK_HEIGHT = 220
 const BACKBONE_Y = TRACK_HEIGHT * 0.75
 const ALT_ZONE_TOP = 15
-const MAX_BACKBONE_THICKNESS = 16
-const MAX_ALT_THICKNESS = 12
+const MAX_BACKBONE_THICKNESS = 24
+const MAX_ALT_THICKNESS = 18
+const MIN_RIBBON = 1.5
 
 type Props = {
   graph: VariationGraph
 }
 
-/** Scale a haplotype count to a ribbon thickness */
+/** Scale a haplotype count to a ribbon thickness using sqrt for visibility */
 const ribbonThickness = (weight: number, total: number, max: number): number => {
-  if (total <= 0 || weight <= 0) return 0.5
+  if (total <= 0 || weight <= 0) return MIN_RIBBON
   const fraction = weight / total
-  return Math.max(0.5, fraction * max)
+  return Math.max(MIN_RIBBON, Math.sqrt(fraction) * max)
 }
 
 /** Get the y-center for the alt ribbon at a column, based on its weight */
 const altY = (altWeight: number, total: number): number => {
-  if (total <= 0 || altWeight <= 0) return BACKBONE_Y - 20
+  if (total <= 0 || altWeight <= 0) return BACKBONE_Y - 30
   const fraction = altWeight / total
-  // Higher AF = closer to backbone (less dramatic arc), lower AF = higher up
-  // Range: ALT_ZONE_TOP (rare) to BACKBONE_Y - 30 (common)
-  return BACKBONE_Y - 30 - (1 - fraction) * (BACKBONE_Y - 30 - ALT_ZONE_TOP)
+  // sqrt so rare variants don't all cluster at the top
+  const sqrtFraction = Math.sqrt(fraction)
+  // Higher AF = closer to backbone, lower AF = higher up
+  return BACKBONE_Y - 35 - (1 - sqrtFraction) * (BACKBONE_Y - 35 - ALT_ZONE_TOP)
 }
 
 const getColor = (alleleType: string): string => {
@@ -261,8 +263,8 @@ const BubbleTrack = ({ graph }: Props) => {
                       fromLayout.x, BACKBONE_Y, thickness,
                       toLayout.x, BACKBONE_Y, thickness
                     )}
-                    fill="#aaa"
-                    opacity={0.8}
+                    fill="#999"
+                    opacity={0.85}
                   />
                 )
               }
@@ -279,7 +281,7 @@ const BubbleTrack = ({ graph }: Props) => {
                       toLayout.x, toLayout.ay, thickness
                     )}
                     fill={color}
-                    opacity={0.45}
+                    opacity={0.55}
                   />
                 )
               }
@@ -295,7 +297,7 @@ const BubbleTrack = ({ graph }: Props) => {
                       toLayout.x, toLayout.ay, thickness
                     )}
                     fill={getColor(toLayout.col.alleleType)}
-                    opacity={0.3}
+                    opacity={0.4}
                   />
                 )
               }
@@ -311,7 +313,7 @@ const BubbleTrack = ({ graph }: Props) => {
                       toLayout.x, BACKBONE_Y, thickness
                     )}
                     fill={getColor(fromLayout.col.alleleType)}
-                    opacity={0.3}
+                    opacity={0.4}
                   />
                 )
               }
@@ -332,12 +334,12 @@ const BubbleTrack = ({ graph }: Props) => {
             {colLayout.map(({ x, refT }, i) => (
               <rect
                 key={`ref-${i}`}
-                x={x - 2}
+                x={x - 3}
                 y={BACKBONE_Y - refT / 2}
-                width={4}
+                width={6}
                 height={refT}
-                fill="#888"
-                rx={1}
+                fill="#777"
+                rx={2}
               />
             ))}
 
@@ -345,7 +347,7 @@ const BubbleTrack = ({ graph }: Props) => {
             {colLayout.map(({ x, ay, altT, col }, i) => {
               if (col.altWeight <= 0) return null
               const color = getColor(col.alleleType)
-              const halfT = Math.max(altT / 2, 2)
+              const halfT = Math.max(altT / 2, 3)
               const refT = ribbonThickness(col.refWeight, totalHaplotypes, MAX_BACKBONE_THICKNESS)
 
               return (
@@ -359,17 +361,17 @@ const BubbleTrack = ({ graph }: Props) => {
                       x1={x} y1={BACKBONE_Y - refT / 2}
                       x2={x} y2={ay + halfT}
                       stroke={color}
-                      strokeWidth={Math.max(1.5, altT * 0.5)}
-                      opacity={0.5}
+                      strokeWidth={Math.max(2, altT * 0.5)}
+                      opacity={0.6}
                     />
                     {/* Alt node marker */}
                     <ellipse
                       cx={x}
                       cy={ay}
-                      rx={Math.max(3, altT * 0.4)}
-                      ry={halfT}
+                      rx={Math.max(4, altT * 0.5)}
+                      ry={Math.max(halfT, 4)}
                       fill={color}
-                      opacity={0.85}
+                      opacity={0.9}
                     />
                   </g>
                 </TooltipAnchor>
