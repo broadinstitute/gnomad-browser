@@ -43,7 +43,7 @@ function regionColor(region: RegionalMissenseConstraintRegion) {
     return region.z_score > 3.09 ? colorScale.middle : colorScale.not_significant
   }
 
-  if (region.obs_exp && region.p_value <= 0.001) {
+  if (region.obs_exp !== undefined && region.obs_exp !== null && region.p_value <= 1e-2) {
     if (region.obs_exp > 0.8) {
       return colorScale.greatest
     }
