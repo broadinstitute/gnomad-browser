@@ -31,11 +31,11 @@ export type RegionalMissenseConstraintRegion = {
 // https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=5
 const colorScale = {
   not_significant: '#e2e2e2',
-  least: '#9b001f',
-  less: '#de351b',
+  lightest: '#ffffb2',
+  lighter: '#fecc5c',
   middle: '#fd8d3c',
-  greater: '#fecc5c',
-  greatest: '#ffffb2',
+  darker: '#de351b',
+  darkest: '#9b001f',
 }
 
 function regionColor(region: RegionalMissenseConstraintRegion) {
@@ -45,18 +45,18 @@ function regionColor(region: RegionalMissenseConstraintRegion) {
 
   if (region.obs_exp !== undefined && region.obs_exp !== null && region.p_value <= 1e-2) {
     if (region.obs_exp > 0.8) {
-      return colorScale.greatest
+      return colorScale.lightest
     }
     if (region.obs_exp > 0.6) {
-      return colorScale.greater
+      return colorScale.lighter
     }
     if (region.obs_exp > 0.4) {
       return colorScale.middle
     }
     if (region.obs_exp > 0.2) {
-      return colorScale.less
+      return colorScale.darker
     }
-    return colorScale.least
+    return colorScale.darkest
   }
 
   return colorScale.not_significant
@@ -67,11 +67,11 @@ const Legend = () => {
     <>
       <span>Missense observed/expected</span>
       <svg width={170} height={25}>
-        <rect x={10} y={1} width={30} height={10} stroke="#000" fill={colorScale.least} />
-        <rect x={40} y={1} width={30} height={10} stroke="#000" fill={colorScale.less} />
+        <rect x={10} y={1} width={30} height={10} stroke="#000" fill={colorScale.darkest} />
+        <rect x={40} y={1} width={30} height={10} stroke="#000" fill={colorScale.darker} />
         <rect x={70} y={1} width={30} height={10} stroke="#000" fill={colorScale.middle} />
-        <rect x={100} y={1} width={30} height={10} stroke="#000" fill={colorScale.greater} />
-        <rect x={130} y={1} width={30} height={10} stroke="#000" fill={colorScale.greatest} />
+        <rect x={100} y={1} width={30} height={10} stroke="#000" fill={colorScale.lighter} />
+        <rect x={130} y={1} width={30} height={10} stroke="#000" fill={colorScale.lightest} />
         <text x={10} y={10} fontSize="10" dy="1.2em" textAnchor="middle">
           0.0
         </text>
