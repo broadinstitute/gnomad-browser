@@ -63,7 +63,7 @@ export type VariantTableColumn = {
   description?: string
   grow?: number
   minWidth?: number
-  compareFunction?: (a: any, b: any) => number
+  compareFunction?: (a: any, b: any, order?: string) => number
   render: (variant: any, key: string, options: any) => JSX.Element | null
   shouldShowInContext?: (context: string, contextType: string) => boolean
   contextNotes?: string
@@ -391,6 +391,26 @@ const variantTableColumns: VariantTableColumn[] = [
       </Cell>
     ),
   },
+  {
+    key: 'enveloping_tr_id',
+    heading: 'Enveloping TR',
+    isRowHeader: true,
+    compareFunction: makeStringCompareFunction('enveloping_tr_id'),
+    getSearchTerms: (variant: any) => [variant.enveloping_tr_id],
+    render: (row: any, _key: any, _options: any) => (
+      <Cell>
+        <Link
+          target="_blank"
+          to={`/variant/${row.enveloping_tr_id}`}
+          preserveSelectedDataset={true}
+        >
+          {row.enveloping_tr_id}
+        </Link>
+      </Cell>
+    ),
+    shouldShowInContext: (_context, contextType) => contextType === 'gene-lr',
+  },
+
   {
     key: 'short_read_match_id',
     heading: 'Short read match',
