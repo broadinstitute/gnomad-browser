@@ -250,7 +250,8 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
 
         variants_seen += 1
         ref = parts[3]
-        alt = parts[4]
+        alt_field = parts[4]
+        alt_list = alt_field.split(",")
         qual_str = parts[5]
         filter_field = parts[6]
         info_str = parts[7]
@@ -318,21 +319,34 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
             except ValueError:
                 continue
 
-            # Determine which strands carry the alt allele
-            strands = []
-            if len(gt_parts) >= 1 and gt_parts[0] == "1":
-                strands.append(1)
-            if len(gt_parts) >= 2 and gt_parts[1] == "1":
-                strands.append(2)
-            if not strands:
+            # Determine which strands carry an alt allele (GT index > 0)
+            # For multiallelic sites, GT can be 1, 2, 3, etc.
+            strands_with_alleles = []
+            if len(gt_parts) >= 1 and gt_parts[0] not in (".", "0"):
+                try:
+                    strands_with_alleles.append((1, int(gt_parts[0])))
+                except ValueError:
+                    pass
+            if len(gt_parts) >= 2 and gt_parts[1] not in (".", "0"):
+                try:
+                    strands_with_alleles.append((2, int(gt_parts[1])))
+                except ValueError:
+                    pass
+            if not strands_with_alleles:
                 continue
 
             sample_id = sample_names[i]
             dp = parse_info_int(fmt, "DP") if "DP" in fmt else None
             gq = parse_info_int(fmt, "GQ") if "GQ" in fmt else None
 
-            for strand in strands:
-                raw_id = f"{sample_id}_{strand}_{chrom_field}_{pos}_{ref}_{alt}"
+            for strand, gt_idx in strands_with_alleles:
+                # Resolve the specific alt allele (VCF GT is 1-indexed: 1=alt_list[0])
+                if gt_idx - 1 >= len(alt_list):
+                    continue
+                specific_alt = alt_list[gt_idx - 1]
+                computed_length = len(specific_alt) - len(ref)
+
+                raw_id = f"{sample_id}_{strand}_{chrom_field}_{pos}_{ref}_{specific_alt}"
                 # ES doc IDs have a 512-byte limit; hash long IDs (from large SVs)
                 if len(raw_id) > 400:
                     doc_id = f"{sample_id}_{strand}_{chrom_field}_{pos}_{hashlib.md5(raw_id.encode()).hexdigest()}"
@@ -347,7 +361,7 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                         "sample_id": sample_id,
                         "strand": strand,
                         "ref": ref,
-                        "alt": alt,
+                        "alt": specific_alt,
                         "rsid": rsid or "",
                         "qual": qual or 0,
                         "filters": filters,
@@ -355,7 +369,7 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                         "info_AC": ac or 0,
                         "info_AN": an or 0,
                         "allele_type": allele_type or "",
-                        "allele_length": allele_length or 0,
+                        "allele_length": computed_length,
                         "gnomad_v4_match_type": gnomad_v4_match_type or "",
                         "info_AF_afr": af_afr,
                         "info_AF_amr": af_amr,
@@ -374,7 +388,7 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                         "strand": strand,
                         "chrom": chrom_field,
                         "position": pos,
-                        "alleles": [ref, alt],
+                        "alleles": [ref, specific_alt],
                         "rsid": rsid,
                         "qual": qual,
                         "filters": filters,
@@ -383,12 +397,12 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                         "info_AN": an or 0,
                         "info_CM": [],
                         "info_SVTYPE": "",
-                        "info_SVLEN": 0,
+                        "info_SVLEN": computed_length,
                         "gt_alleles": gt_alleles,
                         "gt_phased": gt_phased,
                         # New fields from v1 VCF
                         "allele_type": allele_type,
-                        "allele_length": allele_length,
+                        "allele_length": computed_length,
                         "depth": dp,
                         "genotype_quality": gq,
                         "gnomad_v4_match_type": gnomad_v4_match_type,
