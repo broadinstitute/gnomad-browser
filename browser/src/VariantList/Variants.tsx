@@ -54,12 +54,15 @@ const sortVariants = (variants: any[], { sortKey, sortOrder }: any, parentIdColu
     {}
   )
   // Possible cases:
-  // if v1 and v2 have the same parent ID (including the case where both are
-  // undefined/null), compare v1 and v2 by the compare function
+  // if v1 and v2 have the same parent ID (or both are undefined/null),
+  // compare v1 and v2 by the compare function
+  //
   // if v1 is v2's parent, sort v2 after v1
   // vice versa if v2 is v1's parent
+  //
   // if v1 has a parent ID and v2 doesn't, compare v1's parent to v2
   // vice versa if v1 has no parent ID, but v2 has one
+  //
   // otherwise they have different non-missing parent IDs, compare v1's parent to v2's
 
   return [...variants].sort((v1, v2) => {
