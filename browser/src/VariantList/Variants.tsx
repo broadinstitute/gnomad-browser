@@ -38,10 +38,62 @@ const DEFAULT_COLUMNS = [
   'hemizygote_count',
 ]
 
-const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
-  const sortColumn = variantTableColumns.find((column: any) => column.key === sortKey)
-  // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
-  return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
+const sortVariants = (variants: any[], { sortKey, sortOrder }: any, parentIdColumn?: string) => {
+  const sortColumn = variantTableColumns.find((column) => column.key === sortKey)
+  const compareFunction = sortColumn?.compareFunction
+  if (!compareFunction) {
+    return variants
+  }
+
+  if (parentIdColumn === undefined) {
+    return [...variants].sort((v1, v2) => compareFunction(v1, v2, sortOrder))
+  }
+
+  const variantsById = variants.reduce(
+    (acc, variant) => ({ ...acc, [variant.variant_id]: variant }),
+    {}
+  )
+  // Possible cases:
+  // if v1 and v2 have the same parent ID (including the case where both are
+  // undefined/null), compare v1 and v2 by the compare function
+  // if v1 is v2's parent, sort v2 after v1
+  // vice versa if v2 is v1's parent
+  // if v1 has a parent ID and v2 doesn't, compare v1's parent to v2
+  // vice versa if v1 has no parent ID, but v2 has one
+  // otherwise they have different non-missing parent IDs, compare v1's parent to v2's
+
+  return [...variants].sort((v1, v2) => {
+    const v1ParentId = v1[parentIdColumn]
+    const v2ParentId = v2[parentIdColumn]
+    const v1ParentMissing = v1ParentId === null || v1ParentId === undefined
+    const v2ParentMissing = v2ParentId === null || v2ParentId === undefined
+
+    if (v1ParentId === v2ParentId) {
+      return compareFunction(v1, v2, sortOrder)
+    }
+
+    if (v1ParentMissing && v2ParentMissing) {
+      return compareFunction(v1, v2, sortOrder)
+    }
+
+    if (v1.variant_id === v2ParentId) {
+      return -1
+    }
+
+    if (v2.variant_id === v1ParentId) {
+      return 1
+    }
+
+    if (!v1ParentMissing && v2ParentMissing) {
+      return compareFunction(variantsById[v1ParentId], v2, sortOrder)
+    }
+
+    if (v1ParentMissing && !v2ParentMissing) {
+      return compareFunction(v1, variantsById[v2ParentId], sortOrder)
+    }
+
+    return compareFunction(variantsById[v1ParentId], variantsById[v2ParentId], sortOrder)
+  })
 }
 
 type OwnVariantsProps = {
@@ -51,6 +103,7 @@ type OwnVariantsProps = {
   datasetId: DatasetId
   exportFileName?: string
   variants: Variant[]
+  parentIdColumn?: string
 }
 
 const variantsDefaultProps = {
@@ -82,15 +135,15 @@ export function getFirstIndexFromSearchText(
 }
 
 const Variants = ({
-  children,
+  children = null,
   clinvarReleaseDate,
   context,
   datasetId,
-  exportFileName,
+  exportFileName = 'variants',
   variants,
+  parentIdColumn,
 }: VariantsProps) => {
   const table = useRef(null)
-
   const [selectedColumns, setSelectedColumns] = useState(() => {
     try {
       return userPreferences.getPreference('variantTableColumns') || DEFAULT_COLUMNS
@@ -171,8 +224,8 @@ const Variants = ({
   }, [datasetId, variants, filter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {
-    return sortVariants(filteredVariants, sortState)
-  }, [filteredVariants, sortState])
+    return sortVariants(filteredVariants, sortState, parentIdColumn)
+  }, [filteredVariants, sortState, parentIdColumn])
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
@@ -292,7 +345,7 @@ const Variants = ({
           title="Viewing in table"
           variants={renderedVariants
             .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-            .map((variant) => ({
+            .map((variant: any) => ({
               ...variant,
               isHighlighted: variant.variant_id === variantHoveredInTable,
             }))}
