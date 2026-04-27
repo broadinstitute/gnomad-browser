@@ -454,6 +454,7 @@ type Variant = {
   GT_phased: boolean
   allele_type?: string
   allele_length?: number
+  gnomad_v4_match_type?: string | null
   info_AF_afr?: number | null
   info_AF_amr?: number | null
   info_AF_eas?: number | null
@@ -734,6 +735,7 @@ type HaplotypeTrackProps = {
   onPlotTypeChange?: (plotType: string) => void
   showGenealogy?: boolean
   onShowGenealogyChange?: (show: boolean) => void
+  hoveredVariantPosition?: number | null
 }
 
 const variantColors: Record<string, string> = {}
@@ -1005,6 +1007,7 @@ const HaplotypeGroupTrack = ({
   showMqtl = false,
   mqtlMinLogP = 0,
   sampleMetadata,
+  hoveredVariantPosition,
 }: {
   group: HaplotypeGroup
   methSampleData: Methylation[]
@@ -1022,6 +1025,7 @@ const HaplotypeGroupTrack = ({
   showMqtl?: boolean
   mqtlMinLogP?: number
   sampleMetadata?: SampleMetadataMap
+  hoveredVariantPosition?: number | null
 }) => {
   const mqtlTrackHeight = 80
   const methTrackHeight = 40
@@ -1296,6 +1300,20 @@ const HaplotypeGroupTrack = ({
                   </g>
                 )
               })()}
+
+              {hoveredVariantPosition != null && (
+                <line
+                  x1={scalePosition(hoveredVariantPosition)}
+                  y1={0}
+                  x2={scalePosition(hoveredVariantPosition)}
+                  y2={trackHeight}
+                  stroke="black"
+                  strokeDasharray="4 4"
+                  strokeWidth={1}
+                  opacity={0.5}
+                  pointerEvents="none"
+                />
+              )}
             </svg>
           </PlotWrapper>
         )
@@ -1334,6 +1352,7 @@ const HaplotypeTrack = ({
   onPlotTypeChange,
   showGenealogy = false,
   onShowGenealogyChange,
+  hoveredVariantPosition,
 }: HaplotypeTrackProps) => {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -1577,6 +1596,7 @@ const HaplotypeTrack = ({
                   showMqtl={showMqtl}
                   mqtlMinLogP={mqtlMinLogP}
                   sampleMetadata={sampleMetadata}
+                  hoveredVariantPosition={hoveredVariantPosition}
                 />
               )
             })}

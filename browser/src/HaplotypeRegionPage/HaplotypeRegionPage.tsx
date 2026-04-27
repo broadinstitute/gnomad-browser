@@ -22,6 +22,7 @@ import GenesInRegionTrack from '../RegionPage/GenesInRegionTrack'
 import RegionInfo from '../RegionPage/RegionInfo'
 
 import HaplotypeTrack, { HaplotypeGroups, Methylation, MethylationSummaryPoint } from '../Haplotypes'
+import HaplotypeVariantTable from '../Haplotypes/HaplotypeVariantTable'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import LRCoverageTrack from './LRCoverageTrack'
@@ -51,11 +52,11 @@ const HAPLOTYPE_GROUPS_QUERY = `
       groups {
         samples { sample_id }
         variants {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas }
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas }
           readable_id
         }
         below_threshold {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas }
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas }
           readable_id
         }
         start stop hash
@@ -160,6 +161,8 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const [mqtlLoading, setMqtlLoading] = useState(false)
   const [showMqtl, setShowMqtl] = useState(false)
   const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
+
+  const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
 
   // Local zoom state — the URL region is the full data bounds,
   // zoomView is the sub-region currently displayed in the tracks
@@ -466,10 +469,20 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             onColorModeChange={setColorMode}
             showGenealogy={showGenealogy}
             onShowGenealogyChange={setShowGenealogy}
+            hoveredVariantPosition={hoveredVariantPosition}
           />
         )}
         <PositionAxisTrack />
       </RegionViewer>
+      {haplotypeGroups && (
+        <TrackPageSection>
+          <HaplotypeVariantTable
+            haplotypeGroups={haplotypeGroups}
+            sampleMetadata={sampleMetadata}
+            onHoverVariant={setHoveredVariantPosition}
+          />
+        </TrackPageSection>
+      )}
     </TrackPage>
   )
 }
