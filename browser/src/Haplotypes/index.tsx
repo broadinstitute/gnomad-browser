@@ -460,6 +460,16 @@ type Variant = {
   info_AF_eas?: number | null
   info_AF_nfe?: number | null
   info_AF_sas?: number | null
+  cadd_phred?: number | null
+  phylop?: number | null
+  sv_consequences?: string[] | null
+  dbgap_id?: string | null
+  tr_id?: string | null
+  tr_motifs?: string | null
+  tr_struc?: string | null
+  allele_methylation?: number | null
+  motif_counts?: string | null
+  allele_purity?: number | null
 }
 
 type VariantSet = {
@@ -692,6 +702,12 @@ const VariantTooltip = ({ variant }: { variant: Variant }) => (
       <dt>Phased:</dt>
       <dd>{variant.GT_phased ? 'Yes' : 'No'}</dd>
     </div>
+    {variant.allele_methylation != null && (
+      <div>
+        <dt>Allele Methylation:</dt>
+        <dd>{variant.allele_methylation.toFixed(2)}</dd>
+      </div>
+    )}
     <PopulationAfBars variant={variant} />
   </RegionAttributeList>
 )

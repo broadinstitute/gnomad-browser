@@ -143,6 +143,18 @@ done
 echo "$METH_BULK" | curl -s -X POST "$ES_URL/_bulk" -H 'Content-Type: application/x-ndjson' --data-binary @- | jq '{took: .took, errors: .errors, items_count: (.items | length)}'
 echo "Inserted $METH_COUNT methylation documents."
 
+# --- ClickHouse tables ---
+CH_URL="${2:-http://localhost:8123}"
+
+echo "Creating ClickHouse tables..."
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+for sql_file in lr_haplotypes.sql lr_methylation.sql lr_coverage.sql lr_methylation_summary_mv.sql lr_sample_metadata.sql lr_str_histograms.sql; do
+  sql_path="$SCRIPT_DIR/clickhouse/$sql_file"
+  if [ -f "$sql_path" ]; then
+    curl -s "$CH_URL" --data-binary @"$sql_path" > /dev/null 2>&1 && echo "  Created table from $sql_file" || echo "  Skipped $sql_file (ClickHouse not available)"
+  fi
+done
+
 # Verify
 echo ""
 echo "=== Verification ==="

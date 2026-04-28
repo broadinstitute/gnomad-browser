@@ -22,6 +22,16 @@ type GroupedRow = {
   af_eass: (number | null)[]
   af_nfes: (number | null)[]
   af_sass: (number | null)[]
+  cadd_phreds: (number | null)[]
+  phylops: (number | null)[]
+  sv_consequences_arr: (string[] | null)[]
+  dbgap_ids: (string | null)[]
+  tr_ids: (string | null)[]
+  tr_motifs_arr: (string | null)[]
+  tr_strucs: (string | null)[]
+  allele_methylations: (number | null)[]
+  motif_counts_arr: (string | null)[]
+  allele_purities: (number | null)[]
 }
 
 type Variant = {
@@ -40,6 +50,16 @@ type Variant = {
   info_AF_eas: number | null
   info_AF_nfe: number | null
   info_AF_sas: number | null
+  cadd_phred: number | null
+  phylop: number | null
+  sv_consequences: string[] | null
+  dbgap_id: string | null
+  tr_id: string | null
+  tr_motifs: string | null
+  tr_struc: string | null
+  allele_methylation: number | null
+  motif_counts: string | null
+  allele_purity: number | null
 }
 
 function buildVariant(
@@ -47,6 +67,11 @@ function buildVariant(
   af: number, ac: number, an: number, alleleType: string, alleleLength: number,
   afAfr: number | null, afAmr: number | null, afEas: number | null,
   afNfe: number | null, afSas: number | null,
+  caddPhred: number | null, phylop: number | null,
+  svConsequences: string[] | null, dbgapId: string | null,
+  trId: string | null, trMotifs: string | null, trStruc: string | null,
+  alleleMethylation: number | null, motifCounts: string | null,
+  allelePurity: number | null,
 ): Variant {
   return {
     locus: `${chrom}:${pos}`,
@@ -64,6 +89,16 @@ function buildVariant(
     info_AF_eas: afEas,
     info_AF_nfe: afNfe,
     info_AF_sas: afSas,
+    cadd_phred: caddPhred,
+    phylop,
+    sv_consequences: svConsequences && svConsequences.length > 0 ? svConsequences : null,
+    dbgap_id: dbgapId || null,
+    tr_id: trId || null,
+    tr_motifs: trMotifs || null,
+    tr_struc: trStruc || null,
+    allele_methylation: alleleMethylation,
+    motif_counts: motifCounts || null,
+    allele_purity: allelePurity,
   }
 }
 
@@ -98,7 +133,8 @@ export const createHaplotypeGroupsFromGrouped = (
       if (pos < start || pos > stop) continue
 
       const af = Number(row.afs[i])
-      const toNum = (v: number | null) => v != null ? Number(v) : null
+      const toNum = (v: number | null | undefined) => v != null ? Number(v) : null
+      const toStr = (v: string | null | undefined) => v || null
       const variant = buildVariant(
         chrom, pos,
         row.refs[i], row.alts[i], row.rsids[i],
@@ -106,6 +142,11 @@ export const createHaplotypeGroupsFromGrouped = (
         row.allele_types[i], Number(row.allele_lengths[i]),
         toNum(row.af_afrs?.[i]), toNum(row.af_amrs?.[i]), toNum(row.af_eass?.[i]),
         toNum(row.af_nfes?.[i]), toNum(row.af_sass?.[i]),
+        toNum(row.cadd_phreds?.[i]), toNum(row.phylops?.[i]),
+        row.sv_consequences_arr?.[i] || null, toStr(row.dbgap_ids?.[i]),
+        toStr(row.tr_ids?.[i]), toStr(row.tr_motifs_arr?.[i]), toStr(row.tr_strucs?.[i]),
+        toNum(row.allele_methylations?.[i]), toStr(row.motif_counts_arr?.[i]),
+        toNum(row.allele_purities?.[i]),
       )
 
       if (af >= minAlleleFreq) {

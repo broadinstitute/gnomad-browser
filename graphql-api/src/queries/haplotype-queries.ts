@@ -27,7 +27,17 @@ export const fetchGroupedHaplotypeVariants = async (
       groupArray(info_AF_amr)   AS af_amrs,
       groupArray(info_AF_eas)   AS af_eass,
       groupArray(info_AF_nfe)   AS af_nfes,
-      groupArray(info_AF_sas)   AS af_sass
+      groupArray(info_AF_sas)   AS af_sass,
+      groupArray(cadd_phred)    AS cadd_phreds,
+      groupArray(phylop)        AS phylops,
+      groupArray(sv_consequences) AS sv_consequences_arr,
+      groupArray(dbgap_id)      AS dbgap_ids,
+      groupArray(tr_id)         AS tr_ids,
+      groupArray(tr_motifs)     AS tr_motifs_arr,
+      groupArray(tr_struc)      AS tr_strucs,
+      groupArray(allele_methylation) AS allele_methylations,
+      groupArray(motif_counts)  AS motif_counts_arr,
+      groupArray(allele_purity) AS allele_purities
     FROM lr_haplotypes
     WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
     GROUP BY sample_id, strand
@@ -95,6 +105,39 @@ export const fetchLRCoverageForRegion = async (
     format: 'JSONEachRow',
   })
   return resultSet.json()
+}
+
+export const fetchSTRHistogram = async (
+  _esClient: any,
+  chrom: string,
+  position: number
+) => {
+  const query = `
+    SELECT chrom, position, end_position, motif,
+           allele_size_histogram, biallelic_histogram,
+           min_repeats, mode_repeats, mean_repeats, stdev_repeats,
+           median_repeats, p99_repeats, max_repeats,
+           unique_allele_lengths, num_called_alleles,
+           populations
+    FROM lr_str_histograms
+    WHERE chrom = {chrom:String} AND position = {position:UInt32}
+    LIMIT 1
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, position },
+    format: 'JSONEachRow',
+  })
+  const rows = (await resultSet.json()) as any[]
+  if (rows.length === 0) return null
+
+  const row = rows[0]
+  // Convert populations Map to array of {key, histogram} objects
+  const populations = row.populations
+    ? Object.entries(row.populations).map(([key, histogram]) => ({ key, histogram }))
+    : []
+
+  return { ...row, populations }
 }
 
 export const fetchMethylationSummaryForRegion = async (

@@ -30,6 +30,16 @@ type DerivedVariant = {
   str_distribution?: StrDataPoint[]
   min_length_diff?: number
   max_length_diff?: number
+  cadd_phred: number | null
+  phylop: number | null
+  sv_consequences: string[] | null
+  dbgap_id: string | null
+  tr_id: string | null
+  tr_motifs: string | null
+  tr_struc: string | null
+  allele_methylation: number | null
+  motif_counts: string | null
+  allele_purity: number | null
 }
 
 type SortConfig = {
@@ -156,6 +166,48 @@ const StrExpandedRow = styled.tr`
     background: #fafafa !important;
   }
 `
+
+const PredictorDot = styled.span<{ $color: string }>`
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: ${(p) => p.$color};
+  margin-right: 4px;
+  vertical-align: middle;
+`
+
+const SvCsqBadge = styled.span`
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  background: #e8e8e8;
+  color: #333;
+  margin-right: 3px;
+  white-space: nowrap;
+`
+
+const renderPredictor = (value: number | null | undefined, warnThreshold: number, dangerThreshold: number) => {
+  if (value == null) return <span style={{ color: '#999' }}>—</span>
+  const color = value >= dangerThreshold ? '#e2422a' : value >= warnThreshold ? '#f0c94d' : '#28a745'
+  return (
+    <span>
+      <PredictorDot $color={color} />
+      {value.toFixed(1)}
+    </span>
+  )
+}
+
+const parseSvConsequence = (csq: string): { type: string; gene: string | null } => {
+  const cleaned = csq.replace(/^PREDICTED_/, '')
+  const colonIdx = cleaned.indexOf(':')
+  if (colonIdx >= 0) {
+    return { type: cleaned.slice(0, colonIdx), gene: cleaned.slice(colonIdx + 1) }
+  }
+  return { type: cleaned, gene: null }
+}
 
 // --- Mini STR Distribution Plot ---
 
@@ -595,6 +647,16 @@ const HaplotypeVariantTable = ({
         str_distribution: strDistribution,
         min_length_diff: minLengthDiff,
         max_length_diff: maxLengthDiff,
+        cadd_phred: v.cadd_phred ?? null,
+        phylop: v.phylop ?? null,
+        sv_consequences: v.sv_consequences ?? null,
+        dbgap_id: v.dbgap_id ?? null,
+        tr_id: v.tr_id ?? null,
+        tr_motifs: v.tr_motifs ?? null,
+        tr_struc: v.tr_struc ?? null,
+        allele_methylation: v.allele_methylation ?? null,
+        motif_counts: v.motif_counts ?? null,
+        allele_purity: v.allele_purity ?? null,
       })
     }
 
@@ -685,6 +747,10 @@ const HaplotypeVariantTable = ({
       'af_eas',
       'af_nfe',
       'af_sas',
+      'cadd_phred',
+      'phylop',
+      'sv_consequences',
+      'dbgap_id',
     ]
     const escapeField = (s: string) => (s.includes(',') ? `"${s}"` : s)
     const rows = sorted.map((v) =>
@@ -707,6 +773,10 @@ const HaplotypeVariantTable = ({
         v.info_AF_eas ?? '',
         v.info_AF_nfe ?? '',
         v.info_AF_sas ?? '',
+        v.cadd_phred ?? '',
+        v.phylop ?? '',
+        v.sv_consequences ? escapeField(v.sv_consequences.join(';')) : '',
+        v.dbgap_id ?? '',
       ].join(',')
     )
     const csv = [headers.join(','), ...rows].join('\n')
@@ -719,7 +789,7 @@ const HaplotypeVariantTable = ({
     URL.revokeObjectURL(url)
   }
 
-  const COL_COUNT = 9
+  const COL_COUNT = 12
 
   return (
     <TableContainer>
@@ -796,6 +866,13 @@ const HaplotypeVariantTable = ({
               <th onClick={() => handleSort('gnomad_v4_match_type')}>
                 SR Match{sortIndicator('gnomad_v4_match_type')}
               </th>
+              <th onClick={() => handleSort('cadd_phred')} style={{ width: 60 }}>
+                CADD{sortIndicator('cadd_phred')}
+              </th>
+              <th onClick={() => handleSort('phylop')} style={{ width: 60 }}>
+                phyloP{sortIndicator('phylop')}
+              </th>
+              <th>SV Csq</th>
               <th onClick={() => handleSort('rsid')}>rsID{sortIndicator('rsid')}</th>
             </tr>
           </thead>
@@ -845,6 +922,21 @@ const HaplotypeVariantTable = ({
                             : '—'}
                       </MatchBadge>
                     </td>
+                    <td>{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
+                    <td>{renderPredictor(v.phylop, 7.367, 9.741)}</td>
+                    <td style={{ maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {v.sv_consequences && v.sv_consequences.length > 0
+                        ? v.sv_consequences.map((csq, ci) => {
+                            const { type, gene } = parseSvConsequence(csq)
+                            return (
+                              <SvCsqBadge key={ci} title={gene ? `${type}: ${gene}` : type}>
+                                {type}{gene ? `:${gene}` : ''}
+                              </SvCsqBadge>
+                            )
+                          })
+                        : <span style={{ color: '#ccc' }}>—</span>
+                      }
+                    </td>
                     <td>
                       {v.rsid && v.rsid.startsWith('rs') ? (
                         <a
@@ -855,6 +947,8 @@ const HaplotypeVariantTable = ({
                         >
                           {v.rsid}
                         </a>
+                      ) : v.dbgap_id ? (
+                        <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbgap_id}</span>
                       ) : (
                         <span style={{ color: '#ccc' }}>—</span>
                       )}
@@ -868,10 +962,15 @@ const HaplotypeVariantTable = ({
                           <div style={{ fontSize: 11, color: '#555' }}>
                             <div style={{ fontWeight: 600, marginBottom: 4 }}>
                               STR Locus: {v.chrom}:{v.position}
+                              {v.tr_id && <span style={{ fontWeight: 400, marginLeft: 8, color: '#888' }}>({v.tr_id})</span>}
                             </div>
                             <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
                             <div>Total carriers: {v.carrier_count}</div>
                             <div>Distinct allele lengths: {new Set(v.str_distribution.map((d) => d.length_diff)).size}</div>
+                            {v.tr_motifs && <div>Motifs: <span style={{ fontFamily: 'monospace' }}>{v.tr_motifs}</span></div>}
+                            {v.tr_struc && <div>Structure: <span style={{ fontFamily: 'monospace' }}>{v.tr_struc}</span></div>}
+                            {v.motif_counts && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts}</span></div>}
+                            {v.allele_purity != null && <div>Allele purity: {v.allele_purity.toFixed(3)}</div>}
                             <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                               {POP_ORDER.filter((p) => v.str_distribution!.some((d) => d.pop === p)).map((pop) => (
                                 <span key={pop} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>

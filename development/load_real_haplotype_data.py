@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Load real HPRC haplotype data, methylation, coverage, and gene models into local Elasticsearch.
+"""Load real HPRC haplotype data, methylation, coverage, and gene models into local Elasticsearch/ClickHouse.
 
 Supports two modes:
-  - vcf (default): Stream the v1 reformatted VCF (232 samples, chr22) from GCS
+  - vcf (default): Stream the v2 VCF (292 samples, chr22) from GCS
   - json (legacy): Download pre-computed samples JSON from the old HPRC prototype
 
 Usage:
@@ -30,6 +30,8 @@ GCS_METHYLATION_DIR = "gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/HPRC_assembl
 
 # GCS paths — new v1/v2 datasets
 GCS_VCF_V1 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v1/hprc_chr22.reformatted.vcf.gz"
+GCS_VCF_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc_chr22.in_silico_predictors.vcf.gz"
+GCS_AF_HISTOGRAMS_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc.af_histograms.tsv"
 GCS_COVERAGE_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc.coverage.tsv.gz"
 
 # HPRC sample metadata
@@ -171,6 +173,21 @@ def gcs_stream_gzip(gcs_path):
         print(f"  gsutil cat error: {stderr[:500]}")
 
 
+def gcs_stream_plain(gcs_path):
+    """Stream a plain (uncompressed) file from GCS, yielding decoded lines."""
+    proc = subprocess.Popen(
+        ["gsutil", "cat", gcs_path],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    for raw_line in proc.stdout:
+        yield raw_line.decode("utf-8")
+    proc.wait()
+    if proc.returncode != 0:
+        stderr = proc.stderr.read().decode()
+        print(f"  gsutil cat error: {stderr[:500]}")
+
+
 # --- Haplotype loading (VCF mode) ---
 
 
@@ -208,10 +225,33 @@ def parse_info_int(info, key, default=None):
         return default
 
 
-def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend="es", ch_url=None):
-    """Stream the v1 reformatted VCF from GCS and load per-carrier docs into ES or ClickHouse."""
+def get_hap_value(fmt, key, hap_idx, default=None):
+    """Extract a per-haplotype value from a comma-separated FORMAT field.
+
+    FORMAT fields like AM, AP, MC contain one value per GT allele (comma-separated).
+    hap_idx is 0 for strand 1, 1 for strand 2.
+    """
+    val = fmt.get(key)
+    if val is None or val == ".":
+        return default
+    parts = val.split(",")
+    if hap_idx < len(parts):
+        v = parts[hap_idx]
+        if v == "." or v == "":
+            return default
+        try:
+            return float(v)
+        except (ValueError, TypeError):
+            return default
+    return default
+
+
+def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend="es", ch_url=None, vcf_path=None):
+    """Stream a VCF from GCS and load per-carrier docs into ES or ClickHouse."""
+    if vcf_path is None:
+        vcf_path = GCS_VCF_V2
     print(f"\n=== Loading haplotypes from VCF (streaming from GCS) ===")
-    print(f"  VCF: {GCS_VCF_V1}")
+    print(f"  VCF: {vcf_path}")
     print(f"  Region: {region_chrom}:{region_start}-{region_stop}")
 
     if backend == "es":
@@ -222,7 +262,7 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
     count = 0
     variants_seen = 0
 
-    for line in gcs_stream_gzip(GCS_VCF_V1):
+    for line in gcs_stream_gzip(vcf_path):
         line = line.rstrip("\n")
 
         # Header lines
@@ -280,6 +320,30 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
         af_nfe = parse_info_float(info, "AF_nfe")
         af_sas = parse_info_float(info, "AF_sas")
 
+        # v2 INFO fields
+        cadd_phred = parse_info_float(info, "CADD_PHRED_score")
+        phylop = parse_info_float(info, "phylop")
+        dbgap_id = info.get("dbGaP_ID", "")
+        if dbgap_id is True:
+            dbgap_id = ""
+        tr_id = info.get("TRID", "")
+        if tr_id is True:
+            tr_id = ""
+        tr_motifs = info.get("MOTIFS", "")
+        if tr_motifs is True:
+            tr_motifs = ""
+        tr_struc = info.get("STRUC", "")
+        if tr_struc is True:
+            tr_struc = ""
+
+        # SV consequence predictions: collect all PREDICTED_* keys
+        sv_consequences = []
+        for info_key, info_val in info.items():
+            if info_key.startswith("PREDICTED_"):
+                consequence_type = info_key[len("PREDICTED_"):]
+                gene_name = info_val if isinstance(info_val, str) else ""
+                sv_consequences.append(f"{consequence_type}:{gene_name}" if gene_name else consequence_type)
+
         # Parse FORMAT fields
         format_keys = format_field.split(":")
 
@@ -321,15 +385,16 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
 
             # Determine which strands carry an alt allele (GT index > 0)
             # For multiallelic sites, GT can be 1, 2, 3, etc.
+            # hap_idx tracks position in GT (0=first allele, 1=second) for per-haplotype FORMAT indexing
             strands_with_alleles = []
             if len(gt_parts) >= 1 and gt_parts[0] not in (".", "0"):
                 try:
-                    strands_with_alleles.append((1, int(gt_parts[0])))
+                    strands_with_alleles.append((1, int(gt_parts[0]), 0))
                 except ValueError:
                     pass
             if len(gt_parts) >= 2 and gt_parts[1] not in (".", "0"):
                 try:
-                    strands_with_alleles.append((2, int(gt_parts[1])))
+                    strands_with_alleles.append((2, int(gt_parts[1]), 1))
                 except ValueError:
                     pass
             if not strands_with_alleles:
@@ -339,7 +404,7 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
             dp = parse_info_int(fmt, "DP") if "DP" in fmt else None
             gq = parse_info_int(fmt, "GQ") if "GQ" in fmt else None
 
-            for strand, gt_idx in strands_with_alleles:
+            for strand, gt_idx, hap_idx in strands_with_alleles:
                 # Resolve the specific alt allele (VCF GT is 1-indexed: 1=alt_list[0])
                 if gt_idx - 1 >= len(alt_list):
                     continue
@@ -352,6 +417,18 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                     doc_id = f"{sample_id}_{strand}_{chrom_field}_{pos}_{hashlib.md5(raw_id.encode()).hexdigest()}"
                 else:
                     doc_id = raw_id
+
+                # Per-haplotype FORMAT values (AM=methylation, AP=purity, MC=motif counts)
+                allele_methylation = get_hap_value(fmt, "AM", hap_idx)
+                allele_purity = get_hap_value(fmt, "AP", hap_idx)
+                mc_val = fmt.get("MC")
+                if mc_val and mc_val != ".":
+                    mc_parts = mc_val.split(",")
+                    motif_counts = mc_parts[hap_idx] if hap_idx < len(mc_parts) else ""
+                    if motif_counts == ".":
+                        motif_counts = ""
+                else:
+                    motif_counts = ""
 
                 if backend == "clickhouse":
                     # ClickHouse schema: scalar info_AF, separate ref/alt, no ES metadata
@@ -380,6 +457,16 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                         "gt_phased": 1 if gt_phased else 0,
                         "depth": dp,
                         "genotype_quality": gq,
+                        "cadd_phred": cadd_phred,
+                        "phylop": phylop,
+                        "sv_consequences": sv_consequences,
+                        "dbgap_id": dbgap_id or "",
+                        "tr_id": tr_id or "",
+                        "tr_motifs": tr_motifs or "",
+                        "tr_struc": tr_struc or "",
+                        "allele_methylation": allele_methylation,
+                        "motif_counts": motif_counts,
+                        "allele_purity": allele_purity,
                     }
                 else:
                     doc = {
@@ -1031,6 +1118,115 @@ def load_sample_metadata(ch_url):
     return len(rows)
 
 
+# --- STR histogram loading ---
+
+
+def load_str_histograms(ch_url, gcs_path=None, chrom_filter=None):
+    """Stream AF histograms TSV from GCS and load into ClickHouse lr_str_histograms."""
+    if gcs_path is None:
+        gcs_path = GCS_AF_HISTOGRAMS_V2
+    print(f"\n=== Loading STR histograms ===")
+    print(f"  TSV: {gcs_path}")
+    if chrom_filter:
+        print(f"  Chrom filter: {chrom_filter}")
+
+    bulk_lines = []
+    count = 0
+    header_cols = None
+    pop_start_idx = 15  # population histogram columns start at index 15
+
+    for line in gcs_stream_plain(gcs_path):
+        line = line.rstrip("\n")
+        if not line:
+            continue
+
+        parts = line.split("\t")
+
+        # First line is header
+        if header_cols is None:
+            header_cols = parts
+            print(f"  Header: {len(header_cols)} columns")
+            continue
+
+        if len(parts) < 15:
+            continue
+
+        # LocusId format: {chrom_num}-{start}-{end}-{motif}
+        locus_id = parts[0]
+        locus_parts = locus_id.split("-", 3)
+        if len(locus_parts) < 4:
+            continue
+
+        chrom_num, start_str, end_str, motif = locus_parts
+        chrom = f"chr{chrom_num}"
+
+        if chrom_filter and chrom != chrom_filter:
+            continue
+
+        try:
+            position = int(start_str)
+            end_position = int(end_str)
+        except ValueError:
+            continue
+
+        # Build populations map from per-pop columns
+        populations = {}
+        for col_idx in range(pop_start_idx, len(parts)):
+            if col_idx < len(header_cols):
+                pop_name = header_cols[col_idx]
+                pop_val = parts[col_idx]
+                if pop_val and pop_val != ".":
+                    populations[pop_name] = pop_val
+
+        def safe_float(val, default=0.0):
+            if val == "." or val == "":
+                return default
+            try:
+                return float(val)
+            except (ValueError, TypeError):
+                return default
+
+        def safe_int(val, default=0):
+            if val == "." or val == "":
+                return default
+            try:
+                return int(val)
+            except (ValueError, TypeError):
+                return default
+
+        doc = {
+            "chrom": chrom,
+            "position": position,
+            "end_position": end_position,
+            "motif": motif,
+            "allele_size_histogram": parts[1] if len(parts) > 1 else "",
+            "biallelic_histogram": parts[2] if len(parts) > 2 else "",
+            "min_repeats": safe_float(parts[3]),
+            "mode_repeats": safe_float(parts[4]),
+            "mean_repeats": safe_float(parts[5]),
+            "stdev_repeats": safe_float(parts[6]),
+            "median_repeats": safe_float(parts[7]),
+            "p99_repeats": safe_float(parts[8]),
+            "max_repeats": safe_float(parts[9]),
+            "unique_allele_lengths": safe_int(parts[10]),
+            "num_called_alleles": safe_int(parts[11]),
+            "populations": populations,
+        }
+        bulk_lines.append(json.dumps(doc))
+        count += 1
+
+        if len(bulk_lines) >= BATCH_SIZE:
+            clickhouse_insert(ch_url, "lr_str_histograms", bulk_lines)
+            print(f"  Inserted {count} histogram rows so far...")
+            bulk_lines = []
+
+    if bulk_lines:
+        clickhouse_insert(ch_url, "lr_str_histograms", bulk_lines)
+
+    print(f"  Total: {count} STR histogram rows inserted")
+    return count
+
+
 # --- Main ---
 
 
@@ -1046,6 +1242,7 @@ def main():
     parser.add_argument("--skip-coverage", action="store_true", help="Skip coverage loading")
     parser.add_argument("--skip-genes", action="store_true", help="Skip gene model loading")
     parser.add_argument("--skip-metadata", action="store_true", help="Skip sample metadata loading")
+    parser.add_argument("--skip-histograms", action="store_true", help="Skip STR histogram loading")
     parser.add_argument("--coverage-downsample", type=int, default=0, help="Sample every Nth base for coverage (default: auto)")
     parser.add_argument("--gnomad-api", default=GNOMAD_API, help="gnomAD API URL for gene models")
     parser.add_argument("--region", default="chr22:20000000-21000000", help="Region to load (format: chrN:start-stop)")
@@ -1060,7 +1257,7 @@ def main():
     region_start = int(start_stop[0])
     region_stop = int(start_stop[1])
 
-    mode_label = f"VCF mode ({GCS_VCF_V1.split('/')[-1]})" if args.mode == "vcf" else "JSON mode (legacy)"
+    mode_label = f"VCF mode ({GCS_VCF_V2.split('/')[-1]})" if args.mode == "vcf" else "JSON mode (legacy)"
     backend = args.backend
     print(f"Backend: {backend}")
     if backend == "es":
@@ -1096,7 +1293,7 @@ def main():
             sys.exit(1)
         # Create target tables from DDL files
         ddl_dir = Path(__file__).parent / "clickhouse"
-        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql", "lr_sample_metadata.sql"]:
+        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql", "lr_sample_metadata.sql", "lr_str_histograms.sql"]:
             ddl_path = ddl_dir / sql_file
             if ddl_path.exists():
                 ddl = ddl_path.read_text()
@@ -1133,6 +1330,10 @@ def main():
         load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism,
                          backend=backend, ch_url=args.clickhouse_url)
 
+    # Load STR histograms (ClickHouse only)
+    if not args.skip_histograms and backend == "clickhouse":
+        load_str_histograms(args.clickhouse_url, chrom_filter=region_chrom)
+
     # Load gene models (ES only — genes stay in ES)
     if not args.skip_genes and backend == "es":
         load_genes(args.es_url, args.gnomad_api, chrom, region_start, region_stop)
@@ -1144,7 +1345,7 @@ def main():
     # Verify counts
     print("\n=== Verification ===")
     if backend == "clickhouse":
-        for table in ["lr_haplotypes", "lr_methylation", "lr_coverage", "lr_sample_metadata"]:
+        for table in ["lr_haplotypes", "lr_methylation", "lr_coverage", "lr_sample_metadata", "lr_str_histograms"]:
             try:
                 url = f"{args.clickhouse_url}/?query=SELECT%20count()%20FROM%20{table}"
                 resp = urllib.request.urlopen(url).read().decode().strip()
