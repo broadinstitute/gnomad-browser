@@ -383,9 +383,23 @@ const variantTableColumns: VariantTableColumn[] = [
     grow: 1,
     compareFunction: makeNumericCompareFunction('pos'),
     getSearchTerms: (variant: any) => [variant.variant_id].concat(variant.rsids || []),
-    render: (row: any, _: any, { highlightWords }: any) => (
+    render: (row: any, _: any, { highlightWords, onExpandChildVariants }: any) => (
       <Cell>
+        {/* TK better icon for expand*/}
+        {/* TK detect if expanded to show appropriate icon */}
+        {onExpandChildVariants && row.enveloped_ids && (
+          <a
+            href="#"
+            onClick={(event) => {
+              event.preventDefault()
+              onExpandChildVariants(row.variant_id)
+            }}
+          >
+            [+]
+          </a>
+        )}
         <Link target="_blank" to={`/variant/${row.variant_id}`}>
+          {row.enveloping_tr_id && <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</>}
           <Highlighter autoEscape searchWords={highlightWords} textToHighlight={row.variant_id} />
         </Link>
       </Cell>

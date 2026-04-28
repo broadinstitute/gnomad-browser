@@ -50,7 +50,11 @@ export function getFilteredVariants(
   )
 }
 
-const filterVariants = (variants: Variant[], filter: VariantFilterState, selectedColumns: any) => {
+const filterVariants = (
+  variants: Variant[],
+  filter: VariantFilterState,
+  selectedColumns: any
+): Variant[] => {
   let filteredVariants = variants
 
   const isEveryConsequenceCategorySelected =

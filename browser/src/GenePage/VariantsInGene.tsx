@@ -346,6 +346,7 @@ const longReadVariantSubquery = `
 		}
 		short_read_match_id
 		enveloping_tr_id
+		enveloped_ids
 	}
 `
 
