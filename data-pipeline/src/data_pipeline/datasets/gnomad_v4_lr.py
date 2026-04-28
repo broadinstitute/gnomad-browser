@@ -293,20 +293,18 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         short_read_match_source=hl.or_missing(
             ~hl.is_missing(ds.info.gnomAD_V4_match_source), ds.info.gnomAD_V4_match_source[0]
         ),
-        enveloping_tr_id=hl.or_missing(
-            ds.info.TR_ENVELOPED, ds.info.TRID.replace("chr", "")
-        ),  # TK add dropdown to frontend
+        enveloping_tr_id=hl.or_missing(ds.info.TR_ENVELOPED, ds.info.TRID.replace("chr", "")),
         is_likely_tr=ds.info.TR_PARSED,
         gene_region=ds.info.REGION,
         motifs=ds.info.MOTIFS,
         gnomad_str=ds.info.gnomAD_STR,
         filters=ds.filters,
+        # TK coverage
         # TK trv spanning_depth
         # TK in silico
         # TK age dist
         # TK genotype quality metrics
         # TK site quality metrics
-        # TK coverage
         # TK grpmax (ancestry group or none)
         # TK allele length
         # TK dbsnp
