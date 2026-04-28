@@ -26,6 +26,10 @@ const COVERAGE_INDICES = {
     exome: 'exac_exome_coverage',
     genome: null,
   },
+  gnomad_r4_lr: {
+    exome: null,
+    genome: 'gnomad_v4_lr_coverage',
+  },
 }
 
 // ================================================================================================
