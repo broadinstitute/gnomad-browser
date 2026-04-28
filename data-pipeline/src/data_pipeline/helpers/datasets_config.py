@@ -166,6 +166,12 @@ DATASETS_CONFIG = {
             "block_size": 1_000,
         },
     },
+    "gnomad_v4_lr_coverage": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_lr_coverage_pipeline.get_output("coverage").get_output_path())
+        ),
+        "args": {"index": "gnomad_v4_lr_coverage", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
+    },
     ##############################################################################################################
     # gnomAD v4 CNVs
     ##############################################################################################################
