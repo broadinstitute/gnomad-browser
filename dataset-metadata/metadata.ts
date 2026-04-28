@@ -1087,7 +1087,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasNonCodingReadData: false,
     readsDatasetId: 'gnomad_r4',
     readsIncludeLowQualityGenotypes: false,
-    coverageDatasetId: 'gnomad_r4',
+    coverageDatasetId: 'gnomad_r4_lr',
     variantFeedbackDescription: 'gnomAD v4',
     isV4SVs: false,
     shortVariantDatasetId: 'gnomad_r4',
