@@ -21,6 +21,7 @@ import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
 import { Variant } from '../VariantPage/VariantPage'
 import { Gene } from '../GenePage/GenePage'
+import { LongReadVariant } from '../LongReadVariantPage/LongReadVariantPage'
 
 const DEFAULT_COLUMNS = [
   'short_read_match_id',
@@ -105,7 +106,7 @@ type OwnVariantsProps = {
   context: Gene
   datasetId: DatasetId
   exportFileName?: string
-  variants: Variant[]
+  variants: Variant[] | LongReadVariant[]
   parentIdColumn?: string
 }
 
@@ -137,6 +138,19 @@ export function getFirstIndexFromSearchText(
   return variantWindow[0]
 }
 
+const filterCollapsedEnvelopedVariants = (
+  variants: LongReadVariant[],
+  expandedEnvelopingTRIds: string[]
+) =>
+  variants.filter(
+    (variant) =>
+      !variant.enveloping_tr_id || expandedEnvelopingTRIds.includes(variant.enveloping_tr_id)
+  )
+
+type SortState = {
+  sortKey: string
+  sortOrder: 'ascending' | 'descending'
+}
 const Variants = ({
   children = null,
   clinvarReleaseDate,
@@ -178,7 +192,7 @@ const Variants = ({
     )
   }, [clinvarReleaseDate, context, selectedColumns, datasetId])
 
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useState<VariantFilterState>({
     includeCategories: {
       lof: true,
       missense: true,
@@ -194,7 +208,9 @@ const Variants = ({
     searchText: '',
   })
 
-  const [sortState, setSortState] = useState({
+  const [expandedEnvelopingTRIds, setExpandedEnvelopingTRIds] = useState<string[]>([])
+
+  const [sortState, setSortState] = useState<SortState>({
     sortKey: 'variant_id',
     sortOrder: 'ascending',
   })
@@ -218,13 +234,13 @@ const Variants = ({
 
   const filteredVariants = useMemo(() => {
     return isLongRead(datasetId)
-      ? variants
+      ? filterCollapsedEnvelopedVariants(variants as LongReadVariant[], expandedEnvelopingTRIds) // TK make regular filters work with LR
       : mergeExomeAndGenomeData({
           datasetId,
-          variants: filterVariants(variants, filter, renderedTableColumns),
+          variants: filterVariants(variants as Variant[], filter, renderedTableColumns),
           preferJointData: filter.includeExomes && filter.includeGenomes,
         })
-  }, [datasetId, variants, filter, renderedTableColumns])
+  }, [datasetId, variants, filter, renderedTableColumns, expandedEnvelopingTRIds])
 
   const renderedVariants = useMemo(() => {
     return sortVariants(filteredVariants, sortState, parentIdColumn)
@@ -266,6 +282,13 @@ const Variants = ({
 
   const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
   const onSearchResult = createCallback('variant_id', setFilter)
+  const onExpandChildVariants = (variantId: string) => {
+    if (expandedEnvelopingTRIds.includes(variantId)) {
+      setExpandedEnvelopingTRIds(expandedEnvelopingTRIds.filter((id) => id !== variantId))
+    } else {
+      setExpandedEnvelopingTRIds([...expandedEnvelopingTRIds, variantId])
+    }
+  }
 
   // When a user clicks on the bubble track, update the position in the variant table
   useEffect(() => {
@@ -398,6 +421,7 @@ const Variants = ({
               onHoverVariant={setVariantHoveredInTable}
               onRequestSort={setSortKey}
               onVisibleRowsChange={onVisibleRowsChange}
+              onExpandChildVariants={isLongRead(datasetId) ? onExpandChildVariants : undefined}
               sortKey={sortKey}
               sortOrder={sortOrder}
               variants={renderedVariants}

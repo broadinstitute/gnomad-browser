@@ -69,7 +69,7 @@ const VariantPageTitle = ({
   )
 }
 
-type LongReadVariant = {
+export type LongReadVariant = {
   filters: string[]
   freq: {
     all: {
@@ -87,6 +87,8 @@ type LongReadVariant = {
   in_silico_predictors: any[] // TK
   age_distribution: null // TK
   transcript_consequences: any[]
+  enveloping_tr_id: string | null
+  enveloped_ids: string[] | null
 }
 
 type LongReadVariantPageContentProps = {
