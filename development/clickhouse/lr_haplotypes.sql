@@ -22,7 +22,17 @@ CREATE TABLE IF NOT EXISTS lr_haplotypes (
     gt_alleles Array(UInt8),
     gt_phased UInt8,
     depth Nullable(UInt16),
-    genotype_quality Nullable(UInt16)
+    genotype_quality Nullable(UInt16),
+    cadd_phred Nullable(Float32),
+    phylop Nullable(Float32),
+    sv_consequences Array(String),
+    dbgap_id String DEFAULT '',
+    tr_id String DEFAULT '',
+    tr_motifs String DEFAULT '',
+    tr_struc String DEFAULT '',
+    allele_methylation Nullable(Float32),
+    motif_counts String DEFAULT '',
+    allele_purity Nullable(Float32)
 ) ENGINE = MergeTree()
 PARTITION BY chrom
 ORDER BY (chrom, position, sample_id, strand);

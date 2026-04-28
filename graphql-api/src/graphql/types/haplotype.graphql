@@ -25,6 +25,16 @@ type HaplotypeVariant {
   info_AF_eas: Float
   info_AF_nfe: Float
   info_AF_sas: Float
+  cadd_phred: Float
+  phylop: Float
+  sv_consequences: [String!]
+  dbgap_id: String
+  tr_id: String
+  tr_motifs: String
+  tr_struc: String
+  allele_methylation: Float
+  motif_counts: String
+  allele_purity: Float
 }
 
 type HaplotypeVariantSet {
@@ -110,6 +120,30 @@ type SampleMetadata {
   superpopulation: String!
 }
 
+type STRHistogramPopulation {
+  key: String!
+  histogram: String!
+}
+
+type STRHistogramRecord {
+  chrom: String!
+  position: Int!
+  end_position: Int!
+  motif: String!
+  allele_size_histogram: String!
+  biallelic_histogram: String!
+  min_repeats: Float
+  mode_repeats: Float
+  mean_repeats: Float
+  stdev_repeats: Float
+  median_repeats: Float
+  p99_repeats: Float
+  max_repeats: Float
+  unique_allele_lengths: Int
+  num_called_alleles: Int
+  populations: [STRHistogramPopulation!]
+}
+
 extend type Query {
   sample_metadata: [SampleMetadata!]!
   mqtl_associations(
@@ -159,4 +193,6 @@ extend type Query {
     start: Int!
     stop: Int!
   ): [CoverageBin!]!
+
+  lr_str_histogram(chrom: String!, position: Int!): STRHistogramRecord
 }

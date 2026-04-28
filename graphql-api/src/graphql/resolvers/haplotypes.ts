@@ -6,6 +6,7 @@ import {
   fetchMethylationSummaryForRegion,
   fetchMethylationOutliersForRegion,
   fetchLRCoverageForRegion,
+  fetchSTRHistogram,
 } from '../../queries/haplotype-queries'
 import {
   createHaplotypeGroupsFromGrouped,
@@ -179,6 +180,16 @@ const resolvers = {
         label: 'lr_coverage',
         ms: now() - t0,
         meta: { rows: (result as any[]).length },
+      })
+      return result
+    },
+    lr_str_histogram: async (_obj: any, args: any, ctx: any) => {
+      const t0 = now()
+      const chrom = normalizeChrom(args.chrom)
+      const result = await fetchSTRHistogram(ctx.esClient, chrom, args.position)
+      addTiming(ctx, {
+        label: 'lr_str_histogram',
+        ms: now() - t0,
       })
       return result
     },
