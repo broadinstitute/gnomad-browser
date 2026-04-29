@@ -24,9 +24,8 @@ import sampleCounts from '@gnomad/dataset-metadata/datasets/gnomad-v4-lr/sampleC
 import { PopulationsTable } from '../VariantPage/PopulationsTable'
 import VariantTranscriptConsequences from '../VariantPage/VariantTranscriptConsequences'
 import { addPopulationNames, nestPopulations } from '../VariantPage/GnomadPopulationsTable'
-import ShortTandemRepeatAlleleSizeDistributionPlot from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
-
-import { consolidateAlleleSizeDistributions } from '../ShortTandemRepeatPage/shortTandemRepeatHelpers'
+import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
+import LongReadVariantAlleleSizeDistributionPlot from './LongReadVariantAlleleSizeDistributionPlot'
 
 const VariantPageTitle = ({
   variantId,
@@ -73,6 +72,7 @@ const VariantPageTitle = ({
 }
 
 export type LongReadVariant = {
+  variant_id: string
   filters: string[]
   freq: {
     all: {
@@ -92,17 +92,7 @@ export type LongReadVariant = {
   transcript_consequences: any[]
   enveloping_tr_id: string | null
   enveloped_ids: string[] | null
-  allele_size_distribution:
-    | null
-    | {
-        ancestry_group: string
-        sex: string
-        repunit: string
-        distribution: {
-          repunit_count: number
-          frequency: number
-        }
-      }[]
+  allele_size_distribution: null | AlleleSizeDistributionCohort[]
   genotype_distribution:
     | null
     | {
@@ -270,22 +260,7 @@ const LongReadVariantPageContent = ({ datasetId, variant }: LongReadVariantPageC
       </ResponsiveSection>
       {variant.allele_size_distribution && (
         <ResponsiveSection>
-          {/*TK get max in there*/}
-          {/* TK controls */}
-          <ShortTandemRepeatAlleleSizeDistributionPlot
-            maxRepeats={100}
-            alleleSizeDistribution={consolidateAlleleSizeDistributions(
-              variant.allele_size_distribution,
-              null,
-              null,
-              null,
-              null,
-              null
-            )}
-            colorBy={null}
-            repeatUnitLength={null}
-            scaleType="linear"
-          />
+          <LongReadVariantAlleleSizeDistributionPlot variant={variant} />
         </ResponsiveSection>
       )}
     </FlexWrapper>
@@ -368,6 +343,7 @@ const LongReadVariantPage = ({
   const variantQuery = `
 	query ${operationName}($variantId: String!) {
 	  long_read_variant(variantId: $variantId) {
+  	  variant_id
 	    reference_genome
 	    freq {
 	      all {

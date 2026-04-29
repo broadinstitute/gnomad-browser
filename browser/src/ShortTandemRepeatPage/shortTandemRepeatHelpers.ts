@@ -10,6 +10,7 @@ import {
 import {
   ColorBy,
   ColorByValue,
+  AlleleSizeDistributionCohort,
   AlleleSizeDistributionItem,
 } from './ShortTandemRepeatAlleleSizeDistributionPlot'
 
@@ -22,21 +23,18 @@ type AlleleSizeDistributionParams = {
   selectedRepeatUnit: string | null
 }
 
-const addCohortToAlleleSizeDistribution = (
-  cohort: V3AlleleSizeDistributionCohort,
+export type ColorByFn<T extends AlleleSizeDistributionCohort> = (
+  cohort: T,
+  colorBy: ColorBy | null
+) => ColorByValue | null
+
+const addCohortToAlleleSizeDistribution = <T extends AlleleSizeDistributionCohort>(
+  cohort: T,
   colorBy: ColorBy | null,
+  colorByFn: ColorByFn<T>,
   distribution: Record<string, AlleleSizeDistributionItem>
 ): Record<string, AlleleSizeDistributionItem> => {
-  let colorByValue: ColorByValue | null = null
-  if (colorBy === 'quality_description') {
-    colorByValue = cohort.quality_description
-  } else if (colorBy === 'q_score') {
-    colorByValue = cohort.q_score
-  } else if (colorBy === 'sex') {
-    colorByValue = cohort.sex
-  } else if (colorBy === 'population') {
-    colorByValue = cohort.ancestry_group
-  }
+  const colorByValue = colorByFn(cohort, colorBy)
 
   return cohort.distribution.reduce((acc, distributionItem) => {
     const { repunit_count } = distributionItem
@@ -62,8 +60,9 @@ const repunitsWithClassification = (
     new Set<string>()
   )
 
-export const consolidateAlleleSizeDistributions = (
-  allele_size_distribution: AlleleSizeDistributionCohort[],
+export const consolidateAlleleSizeDistributions = <T extends AlleleSizeDistributionCohort>(
+  allele_size_distribution: T[],
+  colorByFn: ColorByFn<T>,
   selectedPopulation: string | null,
   selectedSex: string | null,
   selectedColorBy: ColorBy | null,
@@ -76,7 +75,7 @@ export const consolidateAlleleSizeDistributions = (
         return acc
       }
 
-      if (selectedSex !== null && cohort.sex) {
+      if (selectedSex !== null && cohort.sex !== selectedSex) {
         return acc
       }
 
@@ -87,10 +86,26 @@ export const consolidateAlleleSizeDistributions = (
       ) {
         return acc
       }
-      return addCohortToAlleleSizeDistribution(cohort, selectedColorBy, acc)
+      return addCohortToAlleleSizeDistribution(cohort, selectedColorBy, colorByFn, acc)
     }, {} as Record<number, AlleleSizeDistributionItem>)
 
   return Object.values(itemsByRepunitCount)
+}
+
+const v3ColorBy: ColorByFn<V3AlleleSizeDistributionCohort> = (cohort, colorBy) => {
+  if (colorBy === 'quality_description') {
+    return cohort.quality_description
+  }
+  if (colorBy === 'q_score') {
+    return cohort.q_score
+  }
+  if (colorBy === 'sex') {
+    return cohort.sex
+  }
+  if (colorBy === 'population') {
+    return cohort.ancestry_group
+  }
+  return null
 }
 
 export const getSelectedAlleleSizeDistribution = (
@@ -111,6 +126,7 @@ export const getSelectedAlleleSizeDistribution = (
 
   return consolidateAlleleSizeDistributions(
     shortTandemRepeatOrAdjacentRepeat.allele_size_distribution,
+    v3ColorBy,
     selectedPopulation,
     selectedSex,
     selectedColorBy,

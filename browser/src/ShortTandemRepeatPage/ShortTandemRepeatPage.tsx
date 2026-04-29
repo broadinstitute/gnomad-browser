@@ -13,6 +13,8 @@ import ShortTandemRepeatAssociatedDiseasesTable from './ShortTandemRepeatAssocia
 import ShortTandemRepeatAttributes from './ShortTandemRepeatAttributes'
 import ShortTandemRepeatPopulationOptions from './ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatColorBySelect from './ShortTandemRepeatColorBySelect'
+import ShortTandemRepeatScaleSelect from './ShortTandemRepeatScaleSelect'
+
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   ColorBy,
   ScaleType,
@@ -151,7 +153,7 @@ type ShortTandemRepeatPageProps = {
 // Stacked bar plots only make sense when the y scale factor stays constant
 // throughout, so log scale is only allowed when there's only one bar per
 // column, that is, when not breaking down the data into subsets.
-const logScaleAllowed = (colorBy: ColorBy | null) => colorBy === null
+export const logScaleAllowed = (colorBy: ColorBy | null) => colorBy === null
 
 const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTandemRepeat }) => {
   const { stripy_id, strchive_id, gene } = shortTandemRepeat
@@ -204,6 +206,9 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
   )
 }
 
+export const allPopulations = <T extends AlleleSizeDistributionCohort>(cohorts: T[]) =>
+  [...new Set(cohorts.map((cohort) => cohort.ancestry_group))].sort()
+
 const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepeatPageProps) => {
   const { allele_size_distribution } = shortTandemRepeat
 
@@ -240,9 +245,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     useState<string[] | null>(defaultGenotypeDistributionRepunits)
   const [selectedDisease, setSelectedDisease] = useState<string | null>(defaultDisease)
 
-  const populations = [
-    ...new Set(shortTandemRepeat.allele_size_distribution.map((cohort) => cohort.ancestry_group)),
-  ].sort()
+  const populations = allPopulations(shortTandemRepeat.allele_size_distribution)
 
   const allRepeatUnitsByClassification: Record<string, string[]> = {}
   shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
@@ -457,24 +460,12 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
             </label>
           )}
 
-          <label
-            htmlFor={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
-          >
-            y-Scale: &nbsp;
-            <Select
-              id={`short-tandem-repeat-${shortTandemRepeat.id}-allele-size-distribution-scale`}
-              value={selectedScaleType}
-              onChange={(e: { target: { value: ScaleType } }) => {
-                setSelectedScaleType(e.target.value)
-              }}
-            >
-              <option value="linear">Linear</option>
-              {logScaleAllowed(selectedColorBy) && <option value="log">Log</option>}
-              <option value="linear-truncated-50">Linear: Truncated at 50</option>
-              <option value="linear-truncated-200">Linear: Truncated at 200</option>
-              <option value="linear-truncated-1000">Linear: Truncated at 1000</option>
-            </Select>
-          </label>
+          <ShortTandemRepeatScaleSelect
+            id={shortTandemRepeat.id}
+            selectedScaleType={selectedScaleType}
+            setSelectedScaleType={setSelectedScaleType}
+            selectedColorBy={selectedColorBy}
+          />
         </ControlSection>
         {shortTandemRepeat.associated_diseases.length > 1 && (
           <ControlSection style={{ marginTop: '1em' }}>
