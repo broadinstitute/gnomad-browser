@@ -51,6 +51,32 @@ type LongReadVariantFrequencies {
   populations: [LongReadVariantPopulationFrequencies]!
 }
 
+type LongReadAlleleSizeBin {
+  repunit_count: Int!
+  frequency: Int!
+}
+
+type LongReadAlleleSizeDistribution {
+  ancestry_group: String!
+  sex: String!
+  repunit: String!
+  distribution: [LongReadAlleleSizeBin!]!
+}
+
+type LongReadGenotypeBin {
+  short_allele_repunit_count: Int!
+  long_allele_repunit_count: Int!
+  frequency: Int!
+}
+
+type LongReadGenotypeDistribution {
+  ancestry_group: String!
+  sex: String!
+  short_allele_repunit: String!
+  long_allele_repunit: String!
+  distribution: [LongReadGenotypeBin!]!
+}
+
 type LongReadVariant {
   variant_id: String!
   reference_genome: ReferenceGenomeId!
@@ -76,4 +102,6 @@ type LongReadVariant {
   gnomad_str: String
   is_likely_tr: Boolean
   motifs: [String!]
+  allele_size_distribution: [LongReadAlleleSizeDistribution!]
+  genotype_distribution: [LongReadGenotypeDistribution!]
 }

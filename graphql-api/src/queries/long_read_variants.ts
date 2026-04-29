@@ -4,7 +4,7 @@ import { mergeOverlappingRegions } from './helpers/region-helpers'
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 import { withCache } from '../cache'
 
-const GNOMAD_V4_LONG_READS_VARIANT_INDEX = 'gnomad_v4_lr_variants-2026-04-24--17-42'
+const GNOMAD_V4_LONG_READS_VARIANT_INDEX = 'gnomad_v4_lr_variants-2026-04-29--05-00'
 
 export const fetchVariantById = async (esClient: any, variantId: string) => {
   const idField = chooseIdField(variantId)
