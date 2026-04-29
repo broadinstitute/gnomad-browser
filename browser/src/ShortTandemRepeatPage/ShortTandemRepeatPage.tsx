@@ -48,9 +48,12 @@ export type AlleleSizeDistributionCohort = {
   ancestry_group: PopulationId
   sex: Sex
   repunit: string
+  distribution: AlleleSizeDistributionItem[]
+}
+
+export type V3AlleleSizeDistributionCohort = AlleleSizeDistributionCohort & {
   quality_description: GenotypeQuality
   q_score: QScoreBin
-  distribution: AlleleSizeDistributionItem[]
 }
 
 export type GenotypeDistributionItem = {
@@ -79,7 +82,7 @@ export type ShortTandemRepeatAdjacentRepeat = {
   reference_region: ShortTandemRepeatReferenceRegion
   reference_repeat_unit: string
   repeat_units: string[]
-  allele_size_distribution: AlleleSizeDistributionCohort[]
+  allele_size_distribution: V3AlleleSizeDistributionCohort[]
   genotype_distribution: GenotypeDistributionCohort[]
 }
 
@@ -119,7 +122,7 @@ export type ShortTandemRepeat = {
     repeat_unit: string
     classification: RepeatUnitClassification
   }[]
-  allele_size_distribution: AlleleSizeDistributionCohort[]
+  allele_size_distribution: V3AlleleSizeDistributionCohort[]
   genotype_distribution: GenotypeDistributionCohort[]
   age_distribution: AgeDistributionItem[]
   adjacent_repeats: ShortTandemRepeatAdjacentRepeat[]

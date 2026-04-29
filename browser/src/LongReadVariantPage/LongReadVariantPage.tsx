@@ -24,6 +24,9 @@ import sampleCounts from '@gnomad/dataset-metadata/datasets/gnomad-v4-lr/sampleC
 import { PopulationsTable } from '../VariantPage/PopulationsTable'
 import VariantTranscriptConsequences from '../VariantPage/VariantTranscriptConsequences'
 import { addPopulationNames, nestPopulations } from '../VariantPage/GnomadPopulationsTable'
+import ShortTandemRepeatAlleleSizeDistributionPlot from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
+
+import { consolidateAlleleSizeDistributions } from '../ShortTandemRepeatPage/shortTandemRepeatHelpers'
 
 const VariantPageTitle = ({
   variantId,
@@ -89,6 +92,30 @@ export type LongReadVariant = {
   transcript_consequences: any[]
   enveloping_tr_id: string | null
   enveloped_ids: string[] | null
+  allele_size_distribution:
+    | null
+    | {
+        ancestry_group: string
+        sex: string
+        repunit: string
+        distribution: {
+          repunit_count: number
+          frequency: number
+        }
+      }[]
+  genotype_distribution:
+    | null
+    | {
+        ancestry_group: string
+        sex: string
+        short_allele_repunit: string
+        long_allele_repunit: string
+        distribution: {
+          short_allele_repunit_count: number
+          long_allele_repunit_count: number
+          frequency: number
+        }
+      }[]
 }
 
 type LongReadVariantPageContentProps = {
@@ -241,6 +268,26 @@ const LongReadVariantPageContent = ({ datasetId, variant }: LongReadVariantPageC
         <h2>Site Quality Metrics</h2>
         <LongReadVariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
       </ResponsiveSection>
+      {variant.allele_size_distribution && (
+        <ResponsiveSection>
+          {/*TK get max in there*/}
+          {/* TK controls */}
+          <ShortTandemRepeatAlleleSizeDistributionPlot
+            maxRepeats={100}
+            alleleSizeDistribution={consolidateAlleleSizeDistributions(
+              variant.allele_size_distribution,
+              null,
+              null,
+              null,
+              null,
+              null
+            )}
+            colorBy={null}
+            repeatUnitLength={null}
+            scaleType="linear"
+          />
+        </ResponsiveSection>
+      )}
     </FlexWrapper>
   )
 }
@@ -347,9 +394,6 @@ const LongReadVariantPage = ({
 	      is_canonical
 	      is_mane_select
 	      is_mane_select_version
-	      lof
-	      lof_flags
-	      lof_filter
 	      major_consequence
 	      polyphen_prediction
 	      refseq_id
@@ -358,6 +402,26 @@ const LongReadVariantPage = ({
 	      transcript_id
 	      transcript_version
 	    }
+            allele_size_distribution {
+              ancestry_group
+              sex
+              repunit
+              distribution {
+                repunit_count
+                frequency
+              }
+            }
+            genotype_distribution{
+              ancestry_group
+              sex
+              short_allele_repunit
+              long_allele_repunit
+              distribution{
+                short_allele_repunit_count
+                long_allele_repunit_count
+                frequency
+              }
+            }
 	  }
 	}
 `

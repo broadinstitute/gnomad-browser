@@ -1,6 +1,6 @@
 import {
   ShortTandemRepeat,
-  AlleleSizeDistributionCohort,
+  V3AlleleSizeDistributionCohort,
   GenotypeDistributionCohort,
   GenotypeDistributionItem,
   ShortTandemRepeatAdjacentRepeat,
@@ -23,7 +23,7 @@ type AlleleSizeDistributionParams = {
 }
 
 const addCohortToAlleleSizeDistribution = (
-  cohort: AlleleSizeDistributionCohort,
+  cohort: V3AlleleSizeDistributionCohort,
   colorBy: ColorBy | null,
   distribution: Record<string, AlleleSizeDistributionItem>
 ): Record<string, AlleleSizeDistributionItem> => {
@@ -62,6 +62,37 @@ const repunitsWithClassification = (
     new Set<string>()
   )
 
+export const consolidateAlleleSizeDistributions = (
+  allele_size_distribution: AlleleSizeDistributionCohort[],
+  selectedPopulation: string | null,
+  selectedSex: string | null,
+  selectedColorBy: ColorBy | null,
+  selectedRepeatUnit: string | null,
+  matchingRepunits: Set<string> | null
+) => {
+  const itemsByRepunitCount: Record<number, AlleleSizeDistributionItem> =
+    allele_size_distribution.reduce((acc, cohort) => {
+      if (selectedPopulation !== null && cohort.ancestry_group !== selectedPopulation) {
+        return acc
+      }
+
+      if (selectedSex !== null && cohort.sex) {
+        return acc
+      }
+
+      if (
+        selectedRepeatUnit !== null &&
+        matchingRepunits &&
+        !matchingRepunits.has(cohort.repunit)
+      ) {
+        return acc
+      }
+      return addCohortToAlleleSizeDistribution(cohort, selectedColorBy, acc)
+    }, {} as Record<number, AlleleSizeDistributionItem>)
+
+  return Object.values(itemsByRepunitCount)
+}
+
 export const getSelectedAlleleSizeDistribution = (
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
   {
@@ -78,22 +109,14 @@ export const getSelectedAlleleSizeDistribution = (
       ? repunitsWithClassification(shortTandemRepeatOrAdjacentRepeat, selectedRepeatUnit.slice(15))
       : new Set([selectedRepeatUnit!])
 
-  const itemsByRepunitCount: Record<number, AlleleSizeDistributionItem> =
-    shortTandemRepeatOrAdjacentRepeat.allele_size_distribution.reduce((acc, cohort) => {
-      if (selectedPopulation !== null && cohort.ancestry_group !== selectedPopulation) {
-        return acc
-      }
-      if (selectedSex !== null && cohort.sex) {
-        return acc
-      }
-
-      if (selectedRepeatUnit !== null && !matchingRepunits.has(cohort.repunit)) {
-        return acc
-      }
-      return addCohortToAlleleSizeDistribution(cohort, selectedColorBy, acc)
-    }, {} as Record<number, AlleleSizeDistributionItem>)
-
-  return Object.values(itemsByRepunitCount)
+  return consolidateAlleleSizeDistributions(
+    shortTandemRepeatOrAdjacentRepeat.allele_size_distribution,
+    selectedPopulation,
+    selectedSex,
+    selectedColorBy,
+    selectedRepeatUnit,
+    matchingRepunits
+  )
 }
 
 const addCohortToGenotypeDistribution = (
