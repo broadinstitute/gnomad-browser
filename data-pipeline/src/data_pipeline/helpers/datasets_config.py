@@ -31,6 +31,7 @@ from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pi
 from data_pipeline.pipelines.gnomad_v4_lof_curation_results import pipeline as gnomad_v4_lof_curation_results_pipeline
 from data_pipeline.data_types.variant import compressed_variant_id
 from data_pipeline.pipelines.gnomad_v4_lr import pipeline as gnomad_v4_lr_pipeline
+from data_pipeline.pipelines.gnomad_v4_lr_coverage import pipeline as gnomad_v4_lr_coverage_pipeline
 
 
 # Implement this for development/testing purposes
