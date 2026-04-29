@@ -1,5 +1,5 @@
 from data_pipeline.pipeline import Pipeline, run_pipeline
-from data_pipeline.datasets.gnomad_v4_lr import import_variants_from_vcfs
+from data_pipeline.datasets.gnomad_v4_lr import import_variants_from_vcfs, annotate_lr_with_str_histograms
 
 pipeline = Pipeline()
 pipeline.add_task(
@@ -13,7 +13,17 @@ pipeline.add_task(
     },
 )
 
-pipeline.set_outputs({"variants": "import_variants_from_vcfs"})
+pipeline.add_task(
+    "annotate_lr_with_str_histograms",
+    annotate_lr_with_str_histograms,
+    "/gnomad_v4_lr/v4_long_reads_variants_2.ht",
+    {},
+    {
+        "variant_path": "gs://gnomad-v4-data-pipeline/output/gnomad_v4_lr/v4_long_reads_variants_1.ht",
+        "histograms_path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc.af_histograms.tsv",
+    },
+)
+pipeline.set_outputs({"variants": "annotate_lr_with_str_histograms"})
 
 if __name__ == "__main__":
     run_pipeline(pipeline)
