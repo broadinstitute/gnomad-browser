@@ -23,6 +23,13 @@ import {
 import { qScoreLabels, QScoreBin, qScoreKeys } from './qScore'
 import { Sex } from './ShortTandemRepeatPage'
 
+export type AlleleSizeDistributionCohort = {
+  ancestry_group: PopulationId
+  sex: Sex
+  repunit: string
+  distribution: AlleleSizeDistributionItem[]
+}
+
 // The 100% width/height container is necessary the component
 // to size to fit its container vs staying at its initial size.
 const GraphWrapper = styled.div`
