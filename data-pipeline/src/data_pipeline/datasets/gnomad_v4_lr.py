@@ -273,7 +273,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         regulatory_vep=ds.vep.filter(lambda vep: vep[5] == hl.literal("RegulatoryFeature")),
     )
     ds = ds.drop("vep")
-
+    # TK remember to drop all the veps at the end
     ds = annotate_with_transcripts(ds, transcripts_path)
 
     ds = ds.annotate(
@@ -299,12 +299,11 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         motifs=ds.info.MOTIFS,
         gnomad_str=ds.info.gnomAD_STR,
         filters=ds.filters,
-        # TK coverage
-        # TK trv spanning_depth
         # TK in silico
         # TK age dist
-        # TK genotype quality metrics
         # TK site quality metrics
+        # TK genotype quality metrics
+        # TK trv spanning_depth
         # TK grpmax (ancestry group or none)
         # TK allele length
         # TK dbsnp
@@ -378,3 +377,191 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
 
     ds = ds.drop("alleles", "info")
     return ds
+
+
+def make_allele_count_bin(bin_string):
+    bin_parts = bin_string.split(":")
+    repunit_count = hl.int(bin_parts[0][0:-1])  # strip "x" from end
+    frequency = hl.int(bin_parts[1])
+    return hl.struct(repunit_count=repunit_count, frequency=frequency)
+
+
+def parse_allele_count_column(histograms, key):
+    key_parts = key.split(":")
+    ancestry_group = hl.literal(key_parts[1])
+    sex = hl.literal("XX") if key_parts[2] == "female" else hl.literal("XY")
+    histograms = histograms.annotate(
+        new_bins=histograms[key]
+        .split(",")
+        .filter(lambda bin_string: bin_string.contains("x"))
+        .map(make_allele_count_bin)
+    )
+    histograms = histograms.annotate(
+        new_distribution=hl.array(
+            [
+                hl.struct(
+                    ancestry_group=ancestry_group, sex=sex, repunit=histograms.Motif, distribution=histograms.new_bins
+                )
+            ]
+        )
+    )
+    histograms = histograms.drop("new_bins")
+    histograms = histograms.transmute(
+        allele_size_distribution=hl.if_else(
+            hl.is_missing(histograms.allele_size_distribution),
+            histograms.new_distribution,
+            histograms.allele_size_distribution.extend(histograms.new_distribution),
+        )
+    )
+    histograms = histograms.drop(key)
+    return histograms
+
+
+def make_genotype_count_bin(bin_string):
+    bin_parts = bin_string.split(":")
+    counts = bin_parts[0].split("/")
+    short_allele_repunit_count = hl.int(counts[0])
+    long_allele_repunit_count = hl.int(counts[1])
+    frequency = hl.int(bin_parts[1])
+    return hl.struct(
+        short_allele_repunit_count=short_allele_repunit_count,
+        long_allele_repunit_count=long_allele_repunit_count,
+        frequency=frequency,
+    )
+
+
+def parse_genotype_distribution_column(histograms, key):
+    key_parts = key.split(":")
+    ancestry_group = hl.literal(key_parts[1])
+    sex = hl.literal("XX") if key_parts[2] == "female" else hl.literal("XY")
+    histograms = histograms.annotate(
+        new_bins=histograms[key]
+        .split(",")
+        .filter(lambda bin_string: bin_string.contains(":"))
+        .map(make_genotype_count_bin)
+    )
+    histograms = histograms.annotate(
+        new_distribution=hl.array(
+            [
+                hl.struct(
+                    ancestry_group=ancestry_group,
+                    sex=sex,
+                    short_allele_repunit=histograms.Motif,
+                    long_allele_repunit=histograms.Motif,
+                    distribution=histograms.new_bins,
+                )
+            ]
+        )
+    )
+    histograms = histograms.drop("new_bins")
+    histograms = histograms.transmute(
+        genotype_distribution=hl.if_else(
+            hl.is_missing(histograms.genotype_distribution),
+            histograms.new_distribution,
+            histograms.genotype_distribution.extend(histograms.new_distribution),
+        )
+    )
+    histograms = histograms.drop(key)
+    return histograms
+
+
+def annotate_lr_with_str_histograms(variant_path=None, histograms_path=None):
+    variants = hl.read_table(variant_path)
+    histograms = hl.methods.import_table(histograms_path, force_bgz=True)
+
+    # TK remove for full dataset
+    histograms = histograms.filter(histograms.LocusId.startswith("22"))
+
+    histograms = histograms.select(
+        "LocusId",
+        "Motif",
+        "AlleleSizeHistogram:afr:female",
+        "AlleleSizeHistogram:afr:male",
+        "AlleleSizeHistogram:amr:female",
+        "AlleleSizeHistogram:amr:male",
+        "AlleleSizeHistogram:asj:male",
+        "AlleleSizeHistogram:eas:female",
+        "AlleleSizeHistogram:eas:male",
+        "AlleleSizeHistogram:nfe:female",
+        "AlleleSizeHistogram:nfe:male",
+        "AlleleSizeHistogram:sas:female",
+        "AlleleSizeHistogram:sas:male",
+        "BiallelicHistogram:afr:female",
+        "BiallelicHistogram:afr:male",
+        "BiallelicHistogram:amr:female",
+        "BiallelicHistogram:amr:male",
+        "BiallelicHistogram:asj:male",
+        "BiallelicHistogram:eas:female",
+        "BiallelicHistogram:eas:male",
+        "BiallelicHistogram:nfe:female",
+        "BiallelicHistogram:nfe:male",
+        "BiallelicHistogram:sas:female",
+        "BiallelicHistogram:sas:male",
+    )
+    histograms = histograms.annotate(LocusId=histograms.LocusId.split("-"))
+    histograms = histograms.transmute(
+        chrom=histograms.LocusId[0], start=hl.int32(histograms.LocusId[1]), end=hl.int32(histograms.LocusId[2])
+    )
+    histograms = histograms.transmute(
+        start=hl.str(histograms.start), length=hl.str(histograms.end - histograms.start + 1)
+    )
+    histograms = histograms.transmute(
+        variant_id=hl.str("-").join([histograms.chrom, histograms.start, hl.literal("TRV"), histograms.length])
+    )
+    histograms = histograms.key_by(histograms.variant_id)
+
+    allele_size_distribution_schema = hl.tarray(
+        hl.tstruct(
+            ancestry_group=hl.tstr,
+            sex=hl.tstr,
+            repunit=hl.tstr,
+            distribution=hl.tarray(hl.tstruct(repunit_count=hl.tint, frequency=hl.tint)),
+        )
+    )
+    histograms = histograms.annotate(allele_size_distribution=hl.missing(allele_size_distribution_schema))
+    allele_count_keys = [
+        "AlleleSizeHistogram:afr:female",
+        "AlleleSizeHistogram:afr:male",
+        "AlleleSizeHistogram:amr:female",
+        "AlleleSizeHistogram:amr:male",
+        "AlleleSizeHistogram:asj:male",
+        "AlleleSizeHistogram:eas:female",
+        "AlleleSizeHistogram:eas:male",
+        "AlleleSizeHistogram:nfe:female",
+        "AlleleSizeHistogram:nfe:male",
+        "AlleleSizeHistogram:sas:female",
+        "AlleleSizeHistogram:sas:male",
+    ]
+    for key in allele_count_keys:
+        histograms = parse_allele_count_column(histograms, key)
+
+    genotype_distribution_schema = hl.tarray(
+        hl.tstruct(
+            ancestry_group=hl.tstr,
+            sex=hl.tstr,
+            short_allele_repunit=hl.tstr,
+            long_allele_repunit=hl.tstr,
+            distribution=hl.tarray(
+                hl.tstruct(short_allele_repunit_count=hl.tint, long_allele_repunit_count=hl.tint, frequency=hl.tint)
+            ),
+        )
+    )
+    histograms = histograms.annotate(genotype_distribution=hl.missing(genotype_distribution_schema))
+    biallelic_keys = [
+        "BiallelicHistogram:afr:female",
+        "BiallelicHistogram:afr:male",
+        "BiallelicHistogram:amr:female",
+        "BiallelicHistogram:amr:male",
+        "BiallelicHistogram:asj:male",
+        "BiallelicHistogram:eas:female",
+        "BiallelicHistogram:eas:male",
+        "BiallelicHistogram:nfe:female",
+        "BiallelicHistogram:nfe:male",
+        "BiallelicHistogram:sas:female",
+        "BiallelicHistogram:sas:male",
+    ]
+    for key in biallelic_keys:
+        histograms = parse_genotype_distribution_column(histograms, key)
+
+    variants = variants.join(histograms, "left")
+    return variants
