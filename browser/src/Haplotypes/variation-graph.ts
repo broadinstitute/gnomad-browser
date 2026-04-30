@@ -39,6 +39,10 @@ export interface ColumnFlow {
   alleleType: string
   alleleLength: number
   alleles: string[]
+  // STR-specific fields (present when alleleType === 'trv')
+  strMinLengthDiff?: number
+  strMaxLengthDiff?: number
+  strDistinctAlleles?: number
 }
 
 /** Pre-computed inter-column transition data for rendering */
@@ -79,16 +83,28 @@ export const buildVariationGraph = (
   // Collect all unique variant positions across all groups
   const variantPosSet = new Set<number>()
   const variantsByPos = new Map<number, { alleles: string[]; alleleType: string; alleleLength: number }>()
+  // Track STR allele lengths per position
+  const strLengthsByPos = new Map<number, Set<number>>()
 
   // Rank: SVs are more visually interesting than SNVs, prefer them when
-  // multiple allele types exist at the same position (multiallelic)
+  // multiple allele types exist at the same position (multiallelic).
+  // TRVs rank higher than SNVs so they get their distinctive shape.
   const typeRank = (t: string): number => {
-    if (t === 'snv' || t === 'trv') return 0
-    return 1
+    if (t === 'snv') return 0
+    if (t === 'trv') return 1
+    return 2
   }
 
   for (const group of groups) {
-    for (const v of group.variants.variants) {
+    // Include above-threshold variants plus below-threshold TRVs
+    // (TRVs often have info_AF=0 for individual alleles, so they land in below_threshold)
+    const belowThresholdTrvs = (group.below_threshold?.variants || [])
+      .filter((v: any) => (v.allele_type || '') === 'trv')
+    const allVariants = [
+      ...group.variants.variants,
+      ...belowThresholdTrvs,
+    ]
+    for (const v of allVariants) {
       variantPosSet.add(v.position)
       const vType = v.allele_type || 'snv'
       const vLen = v.allele_length || 0
@@ -100,6 +116,13 @@ export const buildVariationGraph = (
           alleleType: vType,
           alleleLength: vLen,
         })
+      }
+      // Collect STR allele lengths
+      if (vType === 'trv') {
+        if (!strLengthsByPos.has(v.position)) {
+          strLengthsByPos.set(v.position, new Set())
+        }
+        strLengthsByPos.get(v.position)!.add(vLen)
       }
     }
   }
@@ -150,9 +173,15 @@ export const buildVariationGraph = (
 
   // Walk each group's path through the variant sites
   for (const group of groups) {
-    if (group.variants.variants.length === 0) continue
+    const belowTrvs = (group.below_threshold?.variants || [])
+      .filter((v: any) => (v.allele_type || '') === 'trv')
+    const allGroupVariants = [
+      ...group.variants.variants,
+      ...belowTrvs,
+    ]
+    if (allGroupVariants.length === 0) continue
 
-    const groupVariantPositions = new Set(group.variants.variants.map((v) => v.position))
+    const groupVariantPositions = new Set(allGroupVariants.map((v) => v.position))
 
     // Each sample in the group takes the same path
     for (const sample of group.samples) {
@@ -281,7 +310,7 @@ export const buildVariationGraph = (
         for (const h of edge.haplotypes) altHaps.add(h)
       }
     }
-    return {
+    const col: ColumnFlow = {
       position: pos,
       refWeight: totalHaplotypes - altHaps.size,
       altWeight: altHaps.size,
@@ -289,6 +318,15 @@ export const buildVariationGraph = (
       alleleLength: info.alleleLength,
       alleles: info.alleles,
     }
+    // Add STR-specific fields
+    const strLengths = strLengthsByPos.get(pos)
+    if (info.alleleType === 'trv' && strLengths && strLengths.size > 0) {
+      const lengths = Array.from(strLengths)
+      col.strMinLengthDiff = Math.min(...lengths)
+      col.strMaxLengthDiff = Math.max(...lengths)
+      col.strDistinctAlleles = strLengths.size
+    }
+    return col
   })
 
   // Pre-compute inter-column transitions for rendering

@@ -1,10 +1,72 @@
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { SUPERPOPULATION_COLORS, VARIANT_TYPE_COLORS } from './colors'
+import { PATH_COLORS, SUPERPOPULATION_COLORS, VARIANT_TYPE_COLORS } from './colors'
+import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 type StrDataPoint = { length_diff: number; pop: string; count: number }
+
+// --- Sequence decomposition types ---
+
+type MotifToken = {
+  type: 'motif'
+  motifIndex: number
+  sequence: string
+}
+
+type InterruptionToken = {
+  type: 'interruption'
+  sequence: string
+}
+
+type SequenceToken = MotifToken | InterruptionToken
+
+type AlleleStructure = {
+  sequence: string
+  tokens: SequenceToken[]
+  totalMotifUnits: number
+  interruptionCount: number
+  interruptionBases: number
+  popCounts: Record<string, number>
+  totalCarriers: number
+}
+
+/**
+ * Decompose an allele sequence into motif tokens and interruptions.
+ * Uses greedy regex matching with motifs sorted by length descending.
+ */
+const decomposeSequence = (sequence: string, motifs: string[]): SequenceToken[] => {
+  if (!sequence || motifs.length === 0) return []
+
+  // Sort motifs by length descending for greedy matching
+  const sortedMotifs = [...motifs].sort((a, b) => b.length - a.length)
+  const escaped = sortedMotifs.map((m) => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  const regex = new RegExp(`(${escaped.join('|')})`, 'gi')
+
+  const tokens: SequenceToken[] = []
+  let lastIndex = 0
+
+  for (const match of sequence.matchAll(regex)) {
+    const matchStart = match.index!
+    // Add interruption for any unmatched gap
+    if (matchStart > lastIndex) {
+      tokens.push({ type: 'interruption', sequence: sequence.slice(lastIndex, matchStart) })
+    }
+    // Find which motif index matched (case-insensitive)
+    const matched = match[0].toUpperCase()
+    const motifIndex = motifs.findIndex((m) => m.toUpperCase() === matched)
+    tokens.push({ type: 'motif', motifIndex, sequence: match[0] })
+    lastIndex = matchStart + match[0].length
+  }
+
+  // Trailing unmatched bases
+  if (lastIndex < sequence.length) {
+    tokens.push({ type: 'interruption', sequence: sequence.slice(lastIndex) })
+  }
+
+  return tokens
+}
 
 type DerivedVariant = {
   variant_id: string
@@ -38,8 +100,9 @@ type DerivedVariant = {
   tr_motifs: string | null
   tr_struc: string | null
   allele_methylation: number | null
-  motif_counts: string | null
+  motif_counts: number[] | null
   allele_purity: number | null
+  str_allele_structures?: AlleleStructure[]
 }
 
 type SortConfig = {
@@ -211,7 +274,8 @@ const parseSvConsequence = (csq: string): { type: string; gene: string | null } 
 
 // --- Mini STR Distribution Plot ---
 
-const PLOT_WIDTH = 300
+const MIN_PLOT_WIDTH = 300
+const BAR_MIN_STEP = 12 // minimum pixels per bar to avoid label overlap
 const PLOT_HEIGHT = 80
 const PLOT_MARGIN = { top: 8, right: 8, bottom: 20, left: 32 }
 
@@ -242,19 +306,23 @@ const MiniSTRPlot = ({ distribution }: { distribution: StrDataPoint[] }) => {
 
   if (byLength.length === 0) return null
 
-  const innerWidth = PLOT_WIDTH - PLOT_MARGIN.left - PLOT_MARGIN.right
+  const plotWidth = Math.max(MIN_PLOT_WIDTH, byLength.length * BAR_MIN_STEP + PLOT_MARGIN.left + PLOT_MARGIN.right)
+  const innerWidth = plotWidth - PLOT_MARGIN.left - PLOT_MARGIN.right
   const innerHeight = PLOT_HEIGHT - PLOT_MARGIN.top - PLOT_MARGIN.bottom
 
   const maxTotal = Math.max(...byLength.map((d) => d.total), 1)
   const barWidth = Math.max(4, Math.min(20, innerWidth / byLength.length - 2))
+
+  // Show every Nth label to avoid overlap
+  const labelStep = Math.max(1, Math.ceil(byLength.length / (innerWidth / 20)))
 
   const xScale = (i: number) =>
     PLOT_MARGIN.left + (innerWidth / byLength.length) * i + (innerWidth / byLength.length - barWidth) / 2
   const yScale = (val: number) => PLOT_MARGIN.top + innerHeight * (1 - val / maxTotal)
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <svg width={PLOT_WIDTH} height={PLOT_HEIGHT}>
+    <div style={{ display: 'inline-block', overflowX: 'auto', maxWidth: '100%' }}>
+      <svg width={plotWidth} height={PLOT_HEIGHT}>
         {/* Y axis */}
         <line
           x1={PLOT_MARGIN.left}
@@ -286,7 +354,7 @@ const MiniSTRPlot = ({ distribution }: { distribution: StrDataPoint[] }) => {
         <line
           x1={PLOT_MARGIN.left}
           y1={PLOT_MARGIN.top + innerHeight}
-          x2={PLOT_WIDTH - PLOT_MARGIN.right}
+          x2={plotWidth - PLOT_MARGIN.right}
           y2={PLOT_MARGIN.top + innerHeight}
           stroke="#ccc"
         />
@@ -318,16 +386,18 @@ const MiniSTRPlot = ({ distribution }: { distribution: StrDataPoint[] }) => {
                   />
                 )
               })}
-              {/* X tick label */}
-              <text
-                x={bx + barWidth / 2}
-                y={PLOT_MARGIN.top + innerHeight + 12}
-                fontSize={7}
-                textAnchor="middle"
-                fill="#666"
-              >
-                {d.lengthDiff > 0 ? `+${d.lengthDiff}` : d.lengthDiff}
-              </text>
+              {/* X tick label — only show every Nth to avoid overlap */}
+              {i % labelStep === 0 && (
+                <text
+                  x={bx + barWidth / 2}
+                  y={PLOT_MARGIN.top + innerHeight + 12}
+                  fontSize={7}
+                  textAnchor="middle"
+                  fill="#666"
+                >
+                  {d.lengthDiff > 0 ? `+${d.lengthDiff}` : d.lengthDiff}
+                </text>
+              )}
             </g>
           )
         })}
@@ -335,7 +405,7 @@ const MiniSTRPlot = ({ distribution }: { distribution: StrDataPoint[] }) => {
         {/* X axis label */}
         <text
           x={PLOT_MARGIN.left + innerWidth / 2}
-          y={PLOT_HEIGHT - 2}
+          y={PLOT_HEIGHT - 1}
           fontSize={8}
           textAnchor="middle"
           fill="#999"
@@ -464,6 +534,11 @@ const getMatchLevel = (matchType: string | null): 'exact' | 'truvari' | 'none' =
 const truncateAllele = (allele: string, max = 8) =>
   allele.length > max ? allele.slice(0, max) + '…' : allele
 
+const formatBp = (bp: number): string => {
+  if (bp >= 1000) return `${(bp / 1000).toFixed(1)}kb`
+  return `${bp}bp`
+}
+
 /** Build a display-friendly variant ID.
  *  - Short variants (ref/alt both ≤20bp): chrom-pos-ref-alt (standard gnomAD format)
  *  - True SVs (symbolic alleles like <DEL>, or either allele >20bp): chrom-pos-SVTYPE(length)
@@ -490,6 +565,461 @@ const buildVariantId = (v: {
   }
 
   return `${v.chrom}-${v.position}-${ref}-${alt}`
+}
+
+// --- Allele Structure Help ---
+
+const AlleleStructureHelp = () => (
+  <>
+    <h4 style={{ marginTop: 0 }}>Overview</h4>
+    <p>
+      The motif structure grid shows how each distinct tandem repeat allele is composed
+      at the sequence level. Each row is a unique allele structure observed in the cohort.
+    </p>
+
+    <h4>Reading the Grid</h4>
+    <ul>
+      <li><strong>Colored blocks</strong> represent repeat motif units (e.g., each "T" in a poly-T repeat). Colors correspond to different motifs at multi-motif loci.</li>
+      <li><strong>Dark blocks</strong> are interruptions — bases that don't match any expected motif. Interruption positions can be clinically significant (e.g., AGG interruptions in FMR1 CGG repeats stabilize the tract).</li>
+      <li><strong>Block width</strong> is proportional to the nucleotide length of each unit.</li>
+      <li><strong>Units</strong> — total number of motif repeat units in the allele.</li>
+      <li><strong>Interruptions</strong> — count of interruption segments and their total base length.</li>
+      <li><strong>Haplotypes</strong> — number of haplotypes carrying this exact allele structure, with population-colored bar. Percentages are relative to total haplotypes (each diploid sample contributes two).</li>
+    </ul>
+
+    <h4>Purity Heatmap (Large Expansions)</h4>
+    <p>
+      For alleles longer than 2kb or with more than 100 repeat units, individual blocks
+      become too small to render. Instead, the sequence is divided into 100bp bins and each
+      bin is colored by its local motif purity:
+    </p>
+    <ul>
+      <li><strong>Green</strong> — 100% of bases match a motif (pure repeat)</li>
+      <li><strong>Yellow</strong> — ~50% motif purity (mixed)</li>
+      <li><strong>Red</strong> — 0% motif purity (completely diverged)</li>
+    </ul>
+    <p>
+      This reveals whether purity degrades toward one end (common in unstable expansions)
+      or is uniformly distributed.
+    </p>
+
+    <h4>Hover</h4>
+    <ul>
+      <li>Hover over any row to see the raw allele sequence.</li>
+      <li>In the purity heatmap, hover over a bin to see its bp range and local purity percentage.</li>
+    </ul>
+  </>
+)
+
+// --- Allele Structure Grid (FMR1-style visualization) ---
+
+const MOTIF_COLORS = PATH_COLORS.slice(0, 8)
+const INTERRUPTION_COLOR = '#333'
+const STRUCTURE_ROW_HEIGHT = 16
+const STRUCTURE_BLOCK_MIN_WIDTH = 4
+const STRUCTURE_MAX_GRID_WIDTH = 500
+const STRUCTURE_DEFAULT_ROWS = 10
+
+const AlleleStructureGrid = ({
+  structures,
+  motifs,
+}: {
+  structures: AlleleStructure[]
+  motifs: string[]
+}) => {
+  const [showAll, setShowAll] = useState(false)
+
+  const displayed = showAll ? structures : structures.slice(0, STRUCTURE_DEFAULT_ROWS)
+  const hiddenCount = structures.length - STRUCTURE_DEFAULT_ROWS
+
+  // Compute the scale: find the longest sequence to normalize block widths
+  const maxSeqLen = Math.max(...structures.map((s) => s.sequence.length), 1)
+  const scale = STRUCTURE_MAX_GRID_WIDTH / maxSeqLen
+
+  // Total haplotypes across all structures (denominator for percentages)
+  const totalHaplotypes = structures.reduce((s, a) => s + a.totalCarriers, 0)
+
+  // Max carrier count for bar scaling
+  const maxCarriers = Math.max(...structures.map((s) => s.totalCarriers), 1)
+
+  return (
+    <div style={{ marginTop: 8 }}>
+      {/* Motif legend */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 6, fontSize: 11 }}>
+        {motifs.map((motif, i) => (
+          <span key={motif} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <span
+              style={{
+                display: 'inline-block',
+                width: 10,
+                height: 10,
+                borderRadius: 2,
+                background: MOTIF_COLORS[i % MOTIF_COLORS.length],
+              }}
+            />
+            <span style={{ fontFamily: 'monospace' }}>{motif}</span>
+          </span>
+        ))}
+        <span style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+          <span
+            style={{
+              display: 'inline-block',
+              width: 10,
+              height: 10,
+              borderRadius: 2,
+              background: INTERRUPTION_COLOR,
+              opacity: 0.6,
+            }}
+          />
+          interruption
+        </span>
+        <HaplotypeHelpButton title="Motif Structure — How to Read This View">
+          <AlleleStructureHelp />
+        </HaplotypeHelpButton>
+      </div>
+
+      {/* Column headers */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          fontSize: 10,
+          color: '#888',
+          fontWeight: 600,
+          marginBottom: 2,
+          paddingLeft: 2,
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+        <span style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0 }}>Motif Structure</span>
+        <span style={{ width: 40, textAlign: 'right' }}>Units</span>
+        <span style={{ width: 80, textAlign: 'right' }}>Interruptions</span>
+        <span style={{ width: 120 }}>Haplotypes</span>
+      </div>
+
+      {/* Rows */}
+      {displayed.map((allele, idx) => (
+        <AlleleStructureRow
+          key={idx}
+          allele={allele}
+          scale={scale}
+          maxCarriers={maxCarriers}
+          totalHaplotypes={totalHaplotypes}
+        />
+      ))}
+
+      {/* Show more / less */}
+      {hiddenCount > 0 && (
+        <button
+          onClick={() => setShowAll(!showAll)}
+          style={{
+            marginTop: 4,
+            padding: '2px 8px',
+            fontSize: 11,
+            border: '1px solid #ccc',
+            borderRadius: 3,
+            background: '#f8f8f8',
+            cursor: 'pointer',
+          }}
+        >
+          {showAll ? 'Show fewer' : `Show ${hiddenCount} more rare alleles`}
+        </button>
+      )}
+    </div>
+  )
+}
+
+const AlleleStructureRow = ({
+  allele,
+  scale,
+  maxCarriers,
+  totalHaplotypes,
+}: {
+  allele: AlleleStructure
+  scale: number
+  maxCarriers: number
+  totalHaplotypes: number
+}) => {
+  const [hovered, setHovered] = useState(false)
+
+  const useBinnedView = allele.totalMotifUnits > 100 || allele.sequence.length > 2000
+
+  const gridWidth = allele.sequence.length * scale
+
+  if (useBinnedView) {
+    // Bin the sequence into ~100bp chunks and compute local purity per bin
+    const BIN_SIZE = 100
+    const seqLen = allele.tokens.reduce((s, t) => s + t.sequence.length, 0)
+    const numBins = Math.max(1, Math.ceil(seqLen / BIN_SIZE))
+    const binWidth = Math.min(6, STRUCTURE_MAX_GRID_WIDTH / numBins)
+
+    // Walk tokens to fill bins with motif/interruption base counts
+    const bins: { motifBases: number; totalBases: number; start: number; end: number }[] = []
+    for (let b = 0; b < numBins; b++) {
+      bins.push({ motifBases: 0, totalBases: 0, start: b * BIN_SIZE, end: Math.min((b + 1) * BIN_SIZE, seqLen) })
+    }
+    let pos = 0
+    for (const token of allele.tokens) {
+      const tLen = token.sequence.length
+      for (let i = 0; i < tLen; i++) {
+        const binIdx = Math.min(Math.floor((pos + i) / BIN_SIZE), numBins - 1)
+        bins[binIdx].totalBases++
+        if (token.type === 'motif') bins[binIdx].motifBases++
+      }
+      pos += tLen
+    }
+
+    // Compute longest pure motif run (consecutive motif tokens)
+    let longestPureRun = 0
+    let currentRun = 0
+    for (const token of allele.tokens) {
+      if (token.type === 'motif') {
+        currentRun++
+        longestPureRun = Math.max(longestPureRun, currentRun)
+      } else {
+        currentRun = 0
+      }
+    }
+
+    const overallPurity = allele.totalMotifUnits / Math.max(allele.totalMotifUnits + allele.interruptionCount, 1)
+
+    // Green-yellow-red diverging scale for purity (distinct from motif colors)
+    const interpolatePurity = (purity: number) => {
+      // 1.0 = dark green (#2e7d32), 0.5 = yellow (#fdd835), 0.0 = red (#c62828)
+      if (purity >= 0.5) {
+        const t = (purity - 0.5) * 2 // 0..1
+        const r = Math.round(253 * (1 - t) + 46 * t)
+        const g = Math.round(216 * (1 - t) + 125 * t)
+        const b = Math.round(53 * (1 - t) + 50 * t)
+        return `rgb(${r},${g},${b})`
+      }
+      const t = purity * 2 // 0..1
+      const r = Math.round(198 * (1 - t) + 253 * t)
+      const g = Math.round(40 * (1 - t) + 216 * t)
+      const b = Math.round(40 * (1 - t) + 53 * t)
+      return `rgb(${r},${g},${b})`
+    }
+
+    return (
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
+          paddingLeft: 2,
+          paddingTop: 1,
+          paddingBottom: 1,
+          background: hovered ? '#f0f7ff' : undefined,
+          borderRadius: 2,
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        {/* Binned purity heatmap */}
+        <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden' }}>
+          <svg width={numBins * binWidth + 1} height={STRUCTURE_ROW_HEIGHT}>
+            {bins.map((bin, i) => {
+              const purity = bin.totalBases > 0 ? bin.motifBases / bin.totalBases : 0
+              return (
+                <rect
+                  key={i}
+                  x={i * binWidth}
+                  y={2}
+                  width={binWidth - 0.5}
+                  height={STRUCTURE_ROW_HEIGHT - 4}
+                  rx={0}
+                  fill={interpolatePurity(purity)}
+                >
+                  <title>{`bp ${bin.start}–${bin.end}: ${(purity * 100).toFixed(0)}% purity`}</title>
+                </rect>
+              )
+            })}
+            <rect
+              x={0} y={2}
+              width={numBins * binWidth}
+              height={STRUCTURE_ROW_HEIGHT - 4}
+              fill="none" stroke="#ddd" strokeWidth={0.5} rx={1}
+            />
+          </svg>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: '#888', marginTop: 1 }}>
+            <span>{formatBp(seqLen)} | {(overallPurity * 100).toFixed(0)}% purity | longest pure run: {longestPureRun} | {numBins} bins of {BIN_SIZE}bp</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 4 }}>
+              <span style={{ color: '#aaa' }}>purity:</span>
+              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#c62828', borderRadius: 1 }} />
+              <span>0%</span>
+              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#fdd835', borderRadius: 1 }} />
+              <span>50%</span>
+              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#2e7d32', borderRadius: 1 }} />
+              <span>100%</span>
+            </span>
+          </div>
+        </div>
+
+        <span style={{ width: 40, textAlign: 'right', fontSize: 11, fontFamily: 'monospace', color: '#444' }}>
+          {allele.totalMotifUnits}
+        </span>
+
+        <span style={{ width: 80, textAlign: 'right', fontSize: 11, fontFamily: 'monospace', color: allele.interruptionCount > 0 ? '#c62828' : '#999' }}>
+          {allele.interruptionCount > 0 ? `${allele.interruptionCount} (${formatBp(allele.interruptionBases)})` : '—'}
+        </span>
+
+        <div style={{ width: 120, display: 'flex', alignItems: 'center', gap: 4 }}>
+          <svg width={80} height={10}>
+            {(() => {
+              let bx = 0
+              const barTotal = (allele.totalCarriers / maxCarriers) * 80
+              return POP_ORDER.map((pop) => {
+                const count = allele.popCounts[pop] || 0
+                if (count === 0) return null
+                const w = (count / allele.totalCarriers) * barTotal
+                const segment = (
+                  <rect key={pop} x={bx} y={0} width={Math.max(w, 0.5)} height={10} fill={SUPERPOPULATION_COLORS[pop] || '#999'} rx={1} />
+                )
+                bx += w
+                return segment
+              })
+            })()}
+          </svg>
+          <span style={{ fontSize: 10, color: '#666' }}>
+            {allele.totalCarriers}
+            <span style={{ color: '#aaa' }}> ({((allele.totalCarriers / totalHaplotypes) * 100).toFixed(0)}%)</span>
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        paddingLeft: 2,
+        paddingTop: 1,
+        paddingBottom: 1,
+        background: hovered ? '#f0f7ff' : undefined,
+        borderRadius: 2,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      title={allele.sequence.length <= 200
+        ? `${allele.sequence} (${allele.sequence.length}bp)`
+        : `${allele.sequence.slice(0, 80)}...${allele.sequence.slice(-80)} (${allele.sequence.length}bp)`}
+    >
+      {/* Motif grid */}
+      <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden' }}>
+      <svg
+        width={STRUCTURE_MAX_GRID_WIDTH}
+        height={STRUCTURE_ROW_HEIGHT}
+      >
+        {(() => {
+          let x = 0
+          const gap = 0.5
+          return allele.tokens.map((token, i) => {
+            const w = Math.max(STRUCTURE_BLOCK_MIN_WIDTH, token.sequence.length * scale) - gap
+            const block = (
+              <rect
+                key={i}
+                x={x}
+                y={2}
+                width={Math.max(w, 1)}
+                height={STRUCTURE_ROW_HEIGHT - 4}
+                rx={1}
+                fill={
+                  token.type === 'motif'
+                    ? MOTIF_COLORS[token.motifIndex % MOTIF_COLORS.length]
+                    : INTERRUPTION_COLOR
+                }
+                opacity={token.type === 'interruption' ? 0.6 : 1}
+                stroke="white"
+                strokeWidth={0.5}
+              />
+            )
+            x += w + gap
+            return block
+          })
+        })()}
+        {/* Faint outline around the whole bar */}
+        <rect
+          x={0}
+          y={2}
+          width={gridWidth}
+          height={STRUCTURE_ROW_HEIGHT - 4}
+          fill="none"
+          stroke="#ddd"
+          strokeWidth={0.5}
+          rx={1}
+        />
+      </svg>
+      </div>
+
+      {/* Repeat unit count */}
+      <span
+        style={{
+          width: 40,
+          textAlign: 'right',
+          fontSize: 11,
+          fontFamily: 'monospace',
+          color: '#444',
+        }}
+      >
+        {allele.totalMotifUnits}
+      </span>
+
+      {/* Interruption summary */}
+      <span
+        style={{
+          width: 80,
+          textAlign: 'right',
+          fontSize: 11,
+          fontFamily: 'monospace',
+          color: allele.interruptionCount > 0 ? '#c62828' : '#999',
+        }}
+      >
+        {allele.interruptionCount > 0
+          ? `${allele.interruptionCount} (${formatBp(allele.interruptionBases)})`
+          : '—'}
+      </span>
+
+      {/* Population-stacked carrier bar */}
+      <div style={{ width: 120, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <svg width={80} height={10}>
+          {(() => {
+            let bx = 0
+            const barTotal = (allele.totalCarriers / maxCarriers) * 80
+            return POP_ORDER.map((pop) => {
+              const count = allele.popCounts[pop] || 0
+              if (count === 0) return null
+              const w = (count / allele.totalCarriers) * barTotal
+              const segment = (
+                <rect
+                  key={pop}
+                  x={bx}
+                  y={0}
+                  width={Math.max(w, 0.5)}
+                  height={10}
+                  fill={SUPERPOPULATION_COLORS[pop] || '#999'}
+                  rx={1}
+                />
+              )
+              bx += w
+              return segment
+            })
+          })()}
+        </svg>
+        <span style={{ fontSize: 10, color: '#666' }}>
+          {allele.totalCarriers}
+          <span style={{ color: '#aaa' }}>
+            {' '}({((allele.totalCarriers / totalHaplotypes) * 100).toFixed(0)}%)
+          </span>
+        </span>
+      </div>
+
+    </div>
+  )
 }
 
 // --- Main component ---
@@ -527,6 +1057,13 @@ const HaplotypeVariantTable = ({
 
   // Derive unique variant list, grouping TRVs by position
   const variants = useMemo(() => {
+    // Count unique samples for STR AF calculation
+    const allSampleIds = new Set<string>()
+    for (const g of haplotypeGroups.groups) {
+      for (const s of g.samples) allSampleIds.add(s.sample_id)
+    }
+    const sampleCount = allSampleIds.size
+
     // Phase 1: collect all variant occurrences with carrier info
     const map = new Map<
       string,
@@ -536,6 +1073,8 @@ const HaplotypeVariantTable = ({
         carrierIds: Set<string>
         // For STR loci: accumulate per-carrier length diffs by pop
         strCarriers?: Map<string, { lengthDiff: number; pop: string }[]>
+        // For STR loci: accumulate alt sequences with per-haplotype population counts
+        strSequences?: Map<string, Record<string, number>>
       }
     >()
 
@@ -561,7 +1100,7 @@ const HaplotypeVariantTable = ({
             variant: v,
             groupCount: 0,
             carrierIds: new Set(),
-            ...(isTrv ? { strCarriers: new Map() } : {}),
+            ...(isTrv ? { strCarriers: new Map(), strSequences: new Map() } : {}),
           }
           map.set(key, entry)
         }
@@ -574,12 +1113,23 @@ const HaplotypeVariantTable = ({
           if (isTrv && entry.strCarriers) {
             const meta = sampleMetadata.get(s.sample_id)
             const pop = meta?.superpopulation || 'N/A'
-            const lengthDiff = v.alleles[1].length - v.alleles[0].length
+            const altSeq = v.alleles[1]
+            const lengthDiff = altSeq.length - v.alleles[0].length
             const carrierId = s.sample_id
             if (!entry.strCarriers.has(carrierId)) {
               entry.strCarriers.set(carrierId, [])
             }
             entry.strCarriers.get(carrierId)!.push({ lengthDiff, pop })
+
+            // Track alt sequences with haplotype counts (one per haplotype, not per sample)
+            if (entry.strSequences && altSeq.length <= 10000) {
+              let popCounts = entry.strSequences.get(altSeq)
+              if (!popCounts) {
+                popCounts = {}
+                entry.strSequences.set(altSeq, popCounts)
+              }
+              popCounts[pop] = (popCounts[pop] || 0) + 1
+            }
           }
         }
       }
@@ -587,7 +1137,7 @@ const HaplotypeVariantTable = ({
 
     // Phase 2: build DerivedVariant array
     const result: DerivedVariant[] = []
-    for (const [key, { variant: v, groupCount, carrierIds, strCarriers }] of map) {
+    for (const [key, { variant: v, groupCount, carrierIds, strCarriers, strSequences }] of map) {
       const isTrv = key.endsWith(':TRV')
 
       // Build STR distribution from accumulated carrier data
@@ -617,6 +1167,34 @@ const HaplotypeVariantTable = ({
         }
       }
 
+      // Build allele structures for STR loci
+      let strAlleleStructures: AlleleStructure[] | undefined
+      if (isTrv && strSequences && strSequences.size > 0 && v.tr_motifs) {
+        const motifs = (v.tr_motifs as string).split(',').map((m: string) => m.trim()).filter(Boolean)
+        const refSeq = v.alleles[0] as string
+        if (motifs.length > 0) {
+          strAlleleStructures = []
+          for (const [seq, popCounts] of strSequences) {
+            // Strip the VCF anchor base (1st base, shared between ref and alt)
+            const repeatSeq = seq.length > 1 && refSeq.length > 0 && seq[0] === refSeq[0] ? seq.slice(1) : seq
+            const tokens = decomposeSequence(repeatSeq, motifs)
+            const totalMotifUnits = tokens.filter((t) => t.type === 'motif').length
+            const interruptions = tokens.filter((t) => t.type === 'interruption')
+            strAlleleStructures.push({
+              sequence: seq,
+              tokens,
+              totalMotifUnits,
+              interruptionCount: interruptions.length,
+              interruptionBases: interruptions.reduce((s, t) => s + t.sequence.length, 0),
+              popCounts,
+              totalCarriers: Object.values(popCounts).reduce((s, c) => s + c, 0),
+            })
+          }
+          // Sort by carrier count descending
+          strAlleleStructures.sort((a, b) => b.totalCarriers - a.totalCarriers)
+        }
+      }
+
       const variantId = isTrv
         ? `${v.chrom}-${v.position}-STR`
         : buildVariantId(v)
@@ -631,7 +1209,9 @@ const HaplotypeVariantTable = ({
         allele_length: isTrv
           ? (maxLengthDiff ?? 0) - (minLengthDiff ?? 0)
           : v.allele_length || 0,
-        info_AF: Array.isArray(v.info_AF) ? v.info_AF[0] : v.info_AF || 0,
+        info_AF: isTrv
+          ? carrierIds.size / Math.max(1, sampleCount)
+          : (Array.isArray(v.info_AF) ? v.info_AF[0] : v.info_AF || 0),
         info_SVTYPE: v.info_SVTYPE || null,
         info_SVLEN: v.info_SVLEN || 0,
         rsid: v.rsid || '',
@@ -657,6 +1237,7 @@ const HaplotypeVariantTable = ({
         allele_methylation: v.allele_methylation ?? null,
         motif_counts: v.motif_counts ?? null,
         allele_purity: v.allele_purity ?? null,
+        str_allele_structures: strAlleleStructures,
       })
     }
 
@@ -967,9 +1548,22 @@ const HaplotypeVariantTable = ({
                             <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
                             <div>Total carriers: {v.carrier_count}</div>
                             <div>Distinct allele lengths: {new Set(v.str_distribution.map((d) => d.length_diff)).size}</div>
-                            {v.tr_motifs && <div>Motifs: <span style={{ fontFamily: 'monospace' }}>{v.tr_motifs}</span></div>}
-                            {v.tr_struc && <div>Structure: <span style={{ fontFamily: 'monospace' }}>{v.tr_struc}</span></div>}
-                            {v.motif_counts && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts}</span></div>}
+                            {v.tr_motifs && (
+                              <div style={{ marginTop: 4, marginBottom: 2 }}>
+                                <span style={{ fontWeight: 600 }}>Motifs: </span>
+                                <span style={{
+                                  fontFamily: 'monospace',
+                                  fontSize: 12,
+                                  background: '#f0e6d2',
+                                  padding: '1px 6px',
+                                  borderRadius: 3,
+                                  border: '1px solid #e0cdb5',
+                                  letterSpacing: '0.5px',
+                                }}>{v.tr_motifs}</span>
+                              </div>
+                            )}
+                            {v.tr_struc && <div>TRGT ID: <span style={{ fontFamily: 'monospace' }}>{v.tr_struc}</span></div>}
+                            {v.motif_counts && v.motif_counts.length > 0 && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts.join(', ')}</span></div>}
                             {v.allele_purity != null && <div>Allele purity: {v.allele_purity.toFixed(3)}</div>}
                             <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                               {POP_ORDER.filter((p) => v.str_distribution!.some((d) => d.pop === p)).map((pop) => (
@@ -989,6 +1583,13 @@ const HaplotypeVariantTable = ({
                             </div>
                           </div>
                         </div>
+                        {/* Allele structure grid (FMR1-style motif visualization) */}
+                        {v.str_allele_structures && v.str_allele_structures.length > 0 && v.tr_motifs && (
+                          <AlleleStructureGrid
+                            structures={v.str_allele_structures}
+                            motifs={v.tr_motifs.split(',').map((m: string) => m.trim())}
+                          />
+                        )}
                       </td>
                     </StrExpandedRow>
                   )}

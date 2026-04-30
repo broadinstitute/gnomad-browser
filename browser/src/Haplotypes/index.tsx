@@ -468,7 +468,7 @@ type Variant = {
   tr_motifs?: string | null
   tr_struc?: string | null
   allele_methylation?: number | null
-  motif_counts?: string | null
+  motif_counts?: number[] | null
   allele_purity?: number | null
 }
 
