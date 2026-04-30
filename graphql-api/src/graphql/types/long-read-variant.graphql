@@ -104,4 +104,5 @@ type LongReadVariant {
   motifs: [String!]
   allele_size_distribution: [LongReadAlleleSizeDistribution!]
   genotype_distribution: [LongReadGenotypeDistribution!]
+  max_repunits: Int
 }
