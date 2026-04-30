@@ -497,7 +497,11 @@ def annotate_lr_with_str_histograms(variant_path=None, histograms_path=None):
         "BiallelicHistogram:nfe:male",
         "BiallelicHistogram:sas:female",
         "BiallelicHistogram:sas:male",
+        "Max",
     )
+
+    histograms = histograms.transmute(max_repunits=histograms.Max)
+
     histograms = histograms.annotate(LocusId=histograms.LocusId.split("-"))
     histograms = histograms.transmute(
         chrom=histograms.LocusId[0], start=hl.int32(histograms.LocusId[1]), end=hl.int32(histograms.LocusId[2])
