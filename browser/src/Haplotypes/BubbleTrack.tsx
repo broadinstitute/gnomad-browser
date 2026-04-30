@@ -79,6 +79,18 @@ const ColumnTooltip = ({ col, total }: { col: ColumnFlow; total: number }) => {
           <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.alleleLength} bp</dd>
         </div>
       )}
+      {col.strMinLengthDiff != null && col.strMaxLengthDiff != null && (
+        <div>
+          <dt style={{ display: 'inline', fontWeight: 'bold' }}>Length range:</dt>
+          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.strMinLengthDiff} to {col.strMaxLengthDiff} bp</dd>
+        </div>
+      )}
+      {col.strDistinctAlleles != null && (
+        <div>
+          <dt style={{ display: 'inline', fontWeight: 'bold' }}>Distinct alleles:</dt>
+          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.strDistinctAlleles}</dd>
+        </div>
+      )}
     </dl>
   )
 }
@@ -122,39 +134,50 @@ const BubbleHelp = () => (
   <>
     <h4 style={{ marginTop: 0 }}>Overview</h4>
     <p>
-      The variation graph (bubble) view shows haplotype flow through variant sites.
-      At each variant, the flow splits: some haplotypes stay on the reference backbone,
-      others diverge to the alternate path above. Between variant sites, ribbons show
-      how haplotype bundles transition.
+      The variation graph shows how haplotypes flow through a
+      sequence of variant sites. Think of the reference genome as a road: at each variant,
+      the road forks — some haplotypes stay on the reference backbone (grey), others take
+      an alternate path (colored arc above). After each variant, paths merge back. Each
+      fork-and-merge is a <strong>bubble</strong>.
     </p>
 
-    <h4>Reading the Plot</h4>
+    <h4>Nodes &amp; Edges</h4>
     <ul>
-      <li><strong>Grey backbone</strong> — The reference path. Thickness shows how many haplotypes carry the reference allele.</li>
-      <li><strong>Connecting ribbons</strong> — Flow between consecutive variant sites. Curved ribbons show haplotypes transitioning between ref and alt paths.</li>
-      <li><strong>Shaded backgrounds</strong> — Superbubbles: consecutive variants co-inherited by the same haplotypes (perfect LD).</li>
+      <li><strong>Nodes</strong> (vertical bars and shapes) — Variant positions. Each node
+        is a fork point where haplotypes diverge into ref and alt paths. The shape and color
+        encode the variant type.</li>
+      <li><strong>Edges</strong> (ribbons between nodes) — Groups of haplotypes traveling
+        together from one variant to the next. Ribbon <strong>thickness</strong> is
+        proportional to the number of haplotypes. Ribbons are colored by the alt variant
+        they are associated with.</li>
+      <li><strong>Grey backbone</strong> — The reference path. Thickness shows how many
+        haplotypes carry the reference allele at each site.</li>
     </ul>
 
     <h4>Variant Shapes</h4>
     <ul>
       <li><strong style={{ color: '#4A90D9' }}>Blue ellipse</strong> — SNV (single nucleotide variant).</li>
-      <li><strong style={{ color: '#D73027' }}>Red dashed arc</strong> — Deletion. Arc spans the deleted region; width shows deletion size.</li>
+      <li><strong style={{ color: '#D73027' }}>Red dashed arc</strong> — Deletion. Arc spans the deleted region; label shows size.</li>
       <li><strong style={{ color: '#43A047' }}>Green teardrop</strong> — Insertion. Height proportional to inserted sequence length.</li>
-      <li><strong style={{ color: '#9467BD' }}>Purple diamond</strong> — Duplication. Includes tandem, interspersed, and complex duplications.</li>
-      <li><strong style={{ color: '#E8A838' }}>Orange ellipse</strong> — Tandem repeat variant (TRV).</li>
-      <li><strong style={{ color: '#FF7F0E' }}>Orange dashed diamond</strong> — Inverted duplication.</li>
+      <li><strong style={{ color: '#9467BD' }}>Purple diamond</strong> — Duplication.</li>
+      <li><strong style={{ color: '#E8A838' }}>Orange wave</strong> — Tandem repeat variant (STR/VNTR). Number of oscillations reflects allelic diversity; label shows the length range across carriers.</li>
     </ul>
 
-    <h4>Flow Patterns</h4>
+    <h4>Reading the Flow</h4>
     <ul>
-      <li><strong>Wide backbone + small marker</strong> — Rare variant (few carriers).</li>
-      <li><strong>Backbone and alt similar width</strong> — Common variant (~50% AF).</li>
-      <li><strong>Connected markers across sites</strong> — Linked variants on the same haplotypes (LD).</li>
-      <li><strong>Crossing ribbons</strong> — Recombination: haplotypes that carried alt at one site switch to ref at the next.</li>
+      <li><strong>Thick alt arc</strong> — Common variant (many carriers).</li>
+      <li><strong>Thin alt arc</strong> — Rare variant (few carriers).</li>
+      <li><strong>Parallel ribbons</strong> — Variants in linkage disequilibrium (same
+        haplotypes carry both alt alleles).</li>
+      <li><strong>Crossing ribbons</strong> — Recombination between sites: haplotypes
+        that carried alt at one variant switch to ref at the next, or vice versa.</li>
+      <li><strong>Purple shaded region</strong> — Superbubble: a block of consecutive
+        variants in perfect LD, always co-inherited on the same haplotypes.</li>
     </ul>
 
-    <h4>Hover</h4>
-    <p>Hover over arcs for variant details, or over ribbons for transition counts.</p>
+    <h4>Interaction</h4>
+    <p>Hover over a node for variant details (type, position, alleles, AF).
+      Hover over a ribbon for transition counts (ref→ref, ref→alt, alt→ref, alt→alt).</p>
   </>
 )
 
@@ -264,7 +287,9 @@ const BubbleTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
             <text x={30} y={82} fontSize="8" fill="#333">Insertion (bump)</text>
             <path d="M 15 100 L 10 94 L 15 88 L 20 94 Z" fill={VARIANT_TYPE_COLORS.dup} opacity={0.4} stroke={VARIANT_TYPE_COLORS.dup} strokeWidth={1} />
             <text x={30} y={97} fontSize="8" fill="#333">Duplication (diamond)</text>
-            <ellipse cx={15} cy={110} rx={4} ry={4} fill={VARIANT_TYPE_COLORS.trv} />
+            <rect x={5} y={105} width={20} height={8} fill={VARIANT_TYPE_COLORS.trv} opacity={0.7} rx={2} />
+            <line x1={12} y1={105} x2={12} y2={113} stroke="white" strokeWidth={1} opacity={0.6} />
+            <line x1={18} y1={105} x2={18} y2={113} stroke="white" strokeWidth={1} opacity={0.6} />
             <text x={30} y={113} fontSize="8" fill="#333">Tandem repeat</text>
           </svg>
         </div>
@@ -530,7 +555,51 @@ const BubbleTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
                 )
               }
 
-              // SNV / trv / other: default point ellipse with fork line
+              // Tandem repeat variant: horizontal bar with repeat-unit tick marks
+              if (t === 'trv') {
+                const barW = Math.max(12, Math.min(40, (col.strDistinctAlleles || 2) * 3))
+                const barH = Math.max(halfT, 5)
+                const barY = ay - barH / 2
+                const numTicks = Math.min(8, Math.max(2, col.strDistinctAlleles || 3))
+                const tickSpacing = barW / (numTicks + 1)
+
+                return (
+                  <TooltipAnchor
+                    key={`alt-${i}`}
+                    tooltipComponent={() => <ColumnTooltip col={col} total={totalHaplotypes} />}
+                  >
+                    <g>
+                      {/* Fork line from backbone */}
+                      <line x1={x} y1={BACKBONE_Y - refT / 2} x2={x} y2={barY + barH} stroke={color} strokeWidth={sw} opacity={0.5} />
+                      {/* Filled bar */}
+                      <rect
+                        x={x - barW / 2}
+                        y={barY}
+                        width={barW}
+                        height={barH}
+                        fill={color}
+                        opacity={0.7}
+                        rx={2}
+                      />
+                      {/* Repeat-unit tick marks */}
+                      {Array.from({ length: numTicks }, (_, ti) => (
+                        <line
+                          key={ti}
+                          x1={x - barW / 2 + tickSpacing * (ti + 1)}
+                          y1={barY}
+                          x2={x - barW / 2 + tickSpacing * (ti + 1)}
+                          y2={barY + barH}
+                          stroke="white"
+                          strokeWidth={1}
+                          opacity={0.6}
+                        />
+                      ))}
+                    </g>
+                  </TooltipAnchor>
+                )
+              }
+
+              // SNV / other: default point ellipse with fork line
               return (
                 <TooltipAnchor
                   key={`alt-${i}`}
