@@ -19,6 +19,7 @@ import ControlSection from '../VariantPage/ControlSection'
 import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
+import InfoButton from '../help/InfoButton'
 
 const colorByFn: ColorByFn<AlleleSizeDistributionCohort> = (cohort, colorBy) => {
   if (colorBy === 'sex') {
@@ -57,6 +58,9 @@ const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: Props) => {
   return (
     <>
       <section>
+        <h2>
+          Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
+        </h2>
         <ShortTandemRepeatAlleleSizeDistributionPlot
           maxRepeats={100}
           alleleSizeDistribution={consolidateAlleleSizeDistributions(
