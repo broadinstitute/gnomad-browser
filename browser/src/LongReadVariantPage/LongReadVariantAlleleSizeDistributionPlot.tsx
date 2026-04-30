@@ -36,7 +36,7 @@ type Props = {
 }
 
 const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: Props) => {
-  const { allele_size_distribution } = variant
+  const { allele_size_distribution, max_repunits } = variant
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
   const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
@@ -49,7 +49,7 @@ const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: Props) => {
     rawSetSelectedColorBy(newColorBy)
   }
 
-  if (!allele_size_distribution) {
+  if (!allele_size_distribution || !max_repunits) {
     return null
   }
 
@@ -62,7 +62,7 @@ const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: Props) => {
           Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
         </h2>
         <ShortTandemRepeatAlleleSizeDistributionPlot
-          maxRepeats={100}
+          maxRepeats={max_repunits}
           alleleSizeDistribution={consolidateAlleleSizeDistributions(
             allele_size_distribution,
             colorByFn,

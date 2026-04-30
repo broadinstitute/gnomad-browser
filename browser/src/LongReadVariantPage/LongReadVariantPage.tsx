@@ -93,6 +93,7 @@ export type LongReadVariant = {
   enveloping_tr_id: string | null
   enveloped_ids: string[] | null
   allele_size_distribution: null | AlleleSizeDistributionCohort[]
+  max_repunits: number | null
   genotype_distribution:
     | null
     | {
@@ -387,6 +388,7 @@ const LongReadVariantPage = ({
                 frequency
               }
             }
+	    max_repunits
             genotype_distribution{
               ancestry_group
               sex
