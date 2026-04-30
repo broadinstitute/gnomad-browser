@@ -267,27 +267,39 @@ export const Legend = ({
             <LegendItem><span style={{ fontWeight: 'bold' }}>Variants:</span></LegendItem>
             <LegendItem>
               <svg width={22} height={22}>
-                <circle cx={11} cy={11} r={4} fill='#888' stroke='black' />
+                <circle cx={11} cy={11} r={4} fill='#888' stroke='#333' strokeWidth={0.5} />
               </svg>
               <span>SNV</span>
             </LegendItem>
             <LegendItem>
               <svg width={22} height={22}>
-                <line x1={11} y1={3} x2={11} y2={19} stroke='rgba(0, 122, 255, 0.8)' strokeDasharray='4 2' strokeWidth={3} />
+                <line x1={11} y1={4} x2={11} y2={18} stroke='#888' strokeDasharray='4 2' strokeWidth={2.5} />
               </svg>
-              <span>Indel</span>
+              <span>Deletion</span>
             </LegendItem>
             <LegendItem>
               <svg width={22} height={22}>
-                <line x1={11} y1={3} x2={11} y2={19} stroke='rgba(255, 69, 58, 0.8)' strokeDasharray='4 2' strokeWidth={3} />
+                <path d='M 11 5 L 6 17 L 16 17 Z' fill='#888' stroke='#888' strokeWidth={0.5} />
               </svg>
-              <span>SV</span>
+              <span>Insertion</span>
             </LegendItem>
             <LegendItem>
               <svg width={22} height={22}>
-                <circle cx={11} cy={11} r={2} fill='none' stroke='grey' />
+                <path d='M 11 5 L 6 11 L 11 17 L 16 11 Z' fill='#888' opacity={0.7} stroke='#888' strokeWidth={0.5} />
+              </svg>
+              <span>Duplication</span>
+            </LegendItem>
+            <LegendItem>
+              <svg width={22} height={22}>
+                <circle cx={11} cy={11} r={2} fill='none' stroke='grey' strokeWidth={0.7} />
               </svg>
               <span>Below AF</span>
+            </LegendItem>
+            <LegendItem>
+              <svg width={22} height={22}>
+                <rect x={6} y={7} width={10} height={8} fill='none' rx={1} stroke='grey' strokeWidth={0.7} opacity={0.5} />
+              </svg>
+              <span>STR</span>
             </LegendItem>
           </LegendSection>
         )}
@@ -1198,38 +1210,80 @@ const HaplotypeGroupTrack = ({
                 />
                 <line x1={startX} y1={12.5} x2={stopX} y2={12.5} stroke='#a8a8a8' strokeWidth={1} />
 
-                {group.below_threshold.variants.map((variant: Variant, index: number) => (
-                  <TooltipAnchor key={`below-${group.hash}-${index}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
-                    <circle
-                      cx={scalePosition(variant.position)} cy={12.5} r={1.5} fill='none'
-                      stroke={colorMode === 'allele' ? getColorForVariantByHash(variant.locus) : 'grey'}
-                    />
-                  </TooltipAnchor>
-                ))}
+                {group.below_threshold.variants.map((variant: Variant, index: number) => {
+                  const bx = scalePosition(variant.position)
+                  const bType = (variant.allele_type || '').toLowerCase()
+                  const bColor = colorMode === 'allele' ? getColorForVariantByHash(variant.locus) : 'grey'
+                  return (
+                    <TooltipAnchor key={`below-${group.hash}-${index}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
+                      {bType === 'del' ? (
+                        <line x1={bx} y1={8} x2={bx} y2={17} stroke={bColor} strokeDasharray='2 2' strokeWidth={1} opacity={0.4} />
+                      ) : bType === 'ins' || bType === 'alu_ins' || bType === 'sva_ins' ? (
+                        <path d={`M ${bx} ${12.5 - 3} L ${bx - 2.5} ${12.5 + 2.5} L ${bx + 2.5} ${12.5 + 2.5} Z`} fill='none' stroke={bColor} strokeWidth={0.7} opacity={0.5} />
+                      ) : bType === 'dup' || bType === 'dup_interspersed' || bType === 'complex_dup' || bType === 'inv_dup' ? (
+                        <path d={`M ${bx} ${12.5 - 3} L ${bx - 2.5} ${12.5} L ${bx} ${12.5 + 3} L ${bx + 2.5} ${12.5} Z`} fill='none' stroke={bColor} strokeWidth={0.7} opacity={0.5} />
+                      ) : bType === 'trv' ? (
+                        <rect x={bx - 3} y={12.5 - 2.5} width={6} height={5} fill='none' stroke={bColor} strokeWidth={0.7} rx={1} opacity={0.5} />
+                      ) : (
+                        <circle cx={bx} cy={12.5} r={1.5} fill='none' stroke={bColor} strokeWidth={0.7} />
+                      )}
+                    </TooltipAnchor>
+                  )
+                })}
 
                 {group.variants.variants.map((variant: Variant, variantIndex: number) => {
-                  let isDottedLine = false
-                  let color
+                  // Determine color from the active color mode
+                  let color: string
                   if (colorMode === 'allele') color = getColorForVariantByHash(variant.locus)
                   else if (colorMode === 'position') color = getColorForVariantByPosition(variant.position, start, stop)
                   else if (colorMode === 'af') color = getColorForVariantByAf(variant.info_AF[0])
                   else if (colorMode === 'haplotype_count') color = getColorForVariantByHaplotypeCount(haplotypeGroups, variant.locus)
+                  else color = '#333'
 
-                  if (variant.info_SVTYPE === 'DEL') {
-                    isDottedLine = true
-                    color = 'rgba(255, 69, 58, 0.8)'
-                  } else if (variant.info_SVTYPE === 'INS') {
-                    isDottedLine = true
-                    color = 'rgba(0, 122, 255, 0.8)'
-                  }
+                  // Determine variant category by allele_type
+                  const vType = (variant.allele_type || '').toLowerCase()
+                  const x = scalePosition(variant.position)
 
                   return (
                     <TooltipAnchor key={`${group.hash}-${variant.locus}-${variantIndex}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
-                      {isDottedLine ? (
-                        <line x1={scalePosition(variant.position)} y1={5} x2={scalePosition(variant.position)} y2={20}
-                          stroke={color} strokeDasharray='4 2' strokeWidth={Math.min(5, 2 + (variant.info_SVLEN / 100) * 10)} />
+                      {vType === 'del' ? (
+                        // Deletion: dashed line, thickness scales with length
+                        <line x1={x} y1={5} x2={x} y2={20}
+                          stroke={color} strokeDasharray='4 2'
+                          strokeWidth={Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)} />
+                      ) : vType === 'ins' || vType === 'alu_ins' || vType === 'sva_ins' ? (
+                        // Insertion: upward triangle
+                        <path
+                          d={`M ${x} ${12.5 - 5} L ${x - 4} ${12.5 + 4} L ${x + 4} ${12.5 + 4} Z`}
+                          fill={color} opacity={0.8} stroke={color} strokeWidth={0.5}
+                        />
+                      ) : vType === 'dup' || vType === 'dup_interspersed' || vType === 'complex_dup' || vType === 'inv_dup' ? (
+                        // Duplication: diamond
+                        <path
+                          d={`M ${x} ${12.5 - 5} L ${x - 4} ${12.5} L ${x} ${12.5 + 5} L ${x + 4} ${12.5} Z`}
+                          fill={color} opacity={0.7} stroke={color} strokeWidth={0.5}
+                        />
+                      ) : vType === 'inv' ? (
+                        // Inversion: rotated square
+                        <rect
+                          x={x - 3.5} y={12.5 - 3.5} width={7} height={7}
+                          fill={color} opacity={0.7} stroke={color} strokeWidth={0.5}
+                          transform={`rotate(45, ${x}, 12.5)`}
+                        />
+                      ) : vType === 'trv' ? (
+                        // Tandem repeat: rounded rect with tick marks
+                        <g>
+                          <rect
+                            x={x - 5} y={12.5 - 4} width={10} height={8}
+                            fill={color} opacity={0.8} rx={1.5}
+                            stroke={color} strokeWidth={0.5}
+                          />
+                          <line x1={x - 1.5} y1={12.5 - 4} x2={x - 1.5} y2={12.5 + 4} stroke='white' strokeWidth={0.7} opacity={0.6} />
+                          <line x1={x + 1.5} y1={12.5 - 4} x2={x + 1.5} y2={12.5 + 4} stroke='white' strokeWidth={0.7} opacity={0.6} />
+                        </g>
                       ) : (
-                        <circle cx={scalePosition(variant.position)} cy={12.5} r={variantCircleRadius} fill={color} stroke='black' />
+                        // SNV / other: circle
+                        <circle cx={x} cy={12.5} r={variantCircleRadius} fill={color} stroke='black' strokeWidth={0.5} />
                       )}
                     </TooltipAnchor>
                   )

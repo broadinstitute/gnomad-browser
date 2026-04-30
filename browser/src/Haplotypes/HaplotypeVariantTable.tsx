@@ -103,6 +103,8 @@ type DerivedVariant = {
   motif_counts: number[] | null
   allele_purity: number | null
   str_allele_structures?: AlleleStructure[]
+  str_flank_prefix?: string
+  str_flank_suffix?: string
 }
 
 type SortConfig = {
@@ -623,9 +625,13 @@ const STRUCTURE_DEFAULT_ROWS = 10
 const AlleleStructureGrid = ({
   structures,
   motifs,
+  flankPrefix,
+  flankSuffix,
 }: {
   structures: AlleleStructure[]
   motifs: string[]
+  flankPrefix?: string
+  flankSuffix?: string
 }) => {
   const [showAll, setShowAll] = useState(false)
 
@@ -707,6 +713,8 @@ const AlleleStructureGrid = ({
           scale={scale}
           maxCarriers={maxCarriers}
           totalHaplotypes={totalHaplotypes}
+          flankPrefix={flankPrefix}
+          flankSuffix={flankSuffix}
         />
       ))}
 
@@ -736,11 +744,15 @@ const AlleleStructureRow = ({
   scale,
   maxCarriers,
   totalHaplotypes,
+  flankPrefix,
+  flankSuffix,
 }: {
   allele: AlleleStructure
   scale: number
   maxCarriers: number
   totalHaplotypes: number
+  flankPrefix?: string
+  flankSuffix?: string
 }) => {
   const [hovered, setHovered] = useState(false)
 
@@ -819,6 +831,10 @@ const AlleleStructureRow = ({
       >
         {/* Binned purity heatmap */}
         <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+          {flankPrefix && (
+            <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginRight: 2, flexShrink: 0 }}>{flankPrefix}</span>
+          )}
           <svg width={numBins * binWidth + 1} height={STRUCTURE_ROW_HEIGHT}>
             {bins.map((bin, i) => {
               const purity = bin.totalBases > 0 ? bin.motifBases / bin.totalBases : 0
@@ -843,6 +859,10 @@ const AlleleStructureRow = ({
               fill="none" stroke="#ddd" strokeWidth={0.5} rx={1}
             />
           </svg>
+          {flankSuffix && (
+            <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginLeft: 2, flexShrink: 0 }}>{flankSuffix}</span>
+          )}
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: '#888', marginTop: 1 }}>
             <span>{formatBp(seqLen)} | {(overallPurity * 100).toFixed(0)}% purity | longest pure run: {longestPureRun} | {numBins} bins of {BIN_SIZE}bp</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 4 }}>
@@ -909,11 +929,15 @@ const AlleleStructureRow = ({
         ? `${allele.sequence} (${allele.sequence.length}bp)`
         : `${allele.sequence.slice(0, 80)}...${allele.sequence.slice(-80)} (${allele.sequence.length}bp)`}
     >
-      {/* Motif grid */}
-      <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden' }}>
+      {/* Motif grid with flanking context */}
+      <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+      {flankPrefix && (
+        <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginRight: 2, flexShrink: 0 }}>{flankPrefix}</span>
+      )}
       <svg
-        width={STRUCTURE_MAX_GRID_WIDTH}
+        width={STRUCTURE_MAX_GRID_WIDTH - (flankPrefix ? flankPrefix.length * 6 + 4 : 0) - (flankSuffix ? flankSuffix.length * 6 + 4 : 0)}
         height={STRUCTURE_ROW_HEIGHT}
+        style={{ flexShrink: 1, flexGrow: 1 }}
       >
         {(() => {
           let x = 0
@@ -954,6 +978,9 @@ const AlleleStructureRow = ({
           rx={1}
         />
       </svg>
+      {flankSuffix && (
+        <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginLeft: 2, flexShrink: 0 }}>{flankSuffix}</span>
+      )}
       </div>
 
       {/* Repeat unit count */}
@@ -1169,9 +1196,20 @@ const HaplotypeVariantTable = ({
 
       // Build allele structures for STR loci
       let strAlleleStructures: AlleleStructure[] | undefined
+      let flankPrefix = ''
+      let flankSuffix = ''
       if (isTrv && strSequences && strSequences.size > 0 && v.tr_motifs) {
         const motifs = (v.tr_motifs as string).split(',').map((m: string) => m.trim()).filter(Boolean)
         const refSeq = v.alleles[0] as string
+        // Compute flanking context from ref: decompose ref (minus anchor) and grab leading/trailing non-motif bases
+        const refRepeat = refSeq.length > 1 ? refSeq.slice(1) : refSeq
+        const refTokens = decomposeSequence(refRepeat, motifs)
+        if (refTokens.length > 0 && refTokens[0].type === 'interruption') {
+          flankPrefix = refTokens[0].sequence.slice(-5) // last 5 chars of leading flank
+        }
+        if (refTokens.length > 0 && refTokens[refTokens.length - 1].type === 'interruption') {
+          flankSuffix = refTokens[refTokens.length - 1].sequence.slice(0, 5) // first 5 chars of trailing flank
+        }
         if (motifs.length > 0) {
           strAlleleStructures = []
           for (const [seq, popCounts] of strSequences) {
@@ -1238,6 +1276,8 @@ const HaplotypeVariantTable = ({
         motif_counts: v.motif_counts ?? null,
         allele_purity: v.allele_purity ?? null,
         str_allele_structures: strAlleleStructures,
+        str_flank_prefix: flankPrefix || undefined,
+        str_flank_suffix: flankSuffix || undefined,
       })
     }
 
@@ -1588,6 +1628,8 @@ const HaplotypeVariantTable = ({
                           <AlleleStructureGrid
                             structures={v.str_allele_structures}
                             motifs={v.tr_motifs.split(',').map((m: string) => m.trim())}
+                            flankPrefix={v.str_flank_prefix}
+                            flankSuffix={v.str_flank_suffix}
                           />
                         )}
                       </td>
