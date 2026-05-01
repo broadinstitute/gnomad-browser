@@ -8,6 +8,7 @@ import ErrorBoundary from './ErrorBoundary'
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
 import userPreferences from './userPreferences'
+import { ExternalLink } from '@gnomad/ui'
 
 const NavBar = lazy(() => import('./NavBar'))
 const Routes = lazy(() => import('./Routes'))
@@ -69,7 +70,16 @@ const Banner = styled.div`
   }
 `
 
-const BANNER_CONTENT = null
+const BANNER_CONTENT = (
+  <>
+    Join the gnomAD team for a{' '}
+    <ExternalLink href="https://us02web.zoom.us/meeting/register/lqWS2j97QDG2AMUmm3Jkyw#/registration">
+      talk on May 11, 4-5PM ET
+    </ExternalLink>{' '}
+    addressing common misconceptions about the resource — what it is, what metadata are available,
+    and the types of studies it includes.
+  </>
+)
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
