@@ -273,7 +273,6 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         regulatory_vep=ds.vep.filter(lambda vep: vep[5] == hl.literal("RegulatoryFeature")),
     )
     ds = ds.drop("vep")
-    # TK remember to drop all the veps at the end
     ds = annotate_with_transcripts(ds, transcripts_path)
 
     ds = ds.annotate(
@@ -285,7 +284,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         allele_type=ds.info.allele_type,
         ref=ds.alleles[0],
         alt=ds.alleles[1],
-        genes=ds.transcript_consequences.map(lambda tc: tc.gene_id),  # TK de-dup
+        genes=hl.set(ds.transcript_consequences.map(lambda tc: tc.gene_id)),
         short_read_match_type=hl.or_missing(
             ~hl.is_missing(ds.info.gnomAD_V4_match_type), ds.info.gnomAD_V4_match_type[0]
         ),
@@ -375,7 +374,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
 
     ds = ds.annotate(rsids=[ds.rsid])
 
-    ds = ds.drop("alleles", "info")
+    ds = ds.drop("alleles", "info", "intergenic_vep", "motif_vep", "regulatory_vep")
     return ds
 
 
