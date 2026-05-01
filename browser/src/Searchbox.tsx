@@ -79,7 +79,13 @@ export default withRouter((props: any) => {
 
   const innerSearchbox = useRef(null)
 
-  const grch38Datasets: DatasetId[] = ['gnomad_r4', 'gnomad_r3', 'gnomad_sv_r4', 'gnomad_cnv_r4']
+  const grch38Datasets: DatasetId[] = [
+    'gnomad_r4',
+    'gnomad_r4_lr',
+    'gnomad_r3',
+    'gnomad_sv_r4',
+    'gnomad_cnv_r4',
+  ]
   const grch37Datasets: DatasetId[] = ['gnomad_r2_1', 'gnomad_sv_r2_1', 'exac']
 
   return (
