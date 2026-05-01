@@ -23,6 +23,14 @@ These [regions](https://storage.googleapis.com/gcp-public-data--gnomad/intervals
 
 The segmental duplication regions we used are from the Global Alliance for Genomics and Health (GA4GH) Benchmarking Team and the Genome in a Bottle Consortium. Information on the source of these files can be found in [GA4GH's benchmarking-tools GitHub repository](https://github.com/ga4gh/benchmarking-tools/tree/d88448a68a79ed322837bc8eb4d5a096a710993d/resources/stratification-bed-files/SegmentalDuplications).
 
+### ClinVar
+
+The gnomAD Browser's ClinVar track is populated by short variants included in ClinVar's weekly [VCV](https://www.ncbi.nlm.nih.gov/clinvar/docs/variation_report/) release by parsing their XML files updated on their [FTP server](https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/weekly_release/).
+
+This information is used to populate the standalone ClinVar variant track on the Gene/Transcript/Region pages, and in displaying ClinVar information for gnomAD variants in the browser in the variant table on the Gene/Transcript/Region pages, as well as on invididual Variant pages.
+
+The ClinVar data is updated at least once per quarter, though it is frequently updated on a monthly basis. The most recent, and previous, parsed and reshaped ClinVar data can be downloaded from the [Data Page](https://gnomad.broadinstitute.org/data). Downloads are seperated into [ClinVar GRCh38](https://gnomad.broadinstitute.org/data#v4-clinvar-grch38), for gnomAD v4; and [ClinVar GRCh37](https://gnomad.broadinstitute.org/data#v2-clinvar-grch37), for gnomAD v2.
+
 <br/><br/>
 
 <details>

@@ -5,13 +5,39 @@ title: 'ClinVar Hail Tables'
 
 ### Overview
 
-We release two data tables underlying the ClinVar data displayed in the gnomAD browser. On a bi-monthly basis, we process the ClinVar monthly VCV XML release into two Hail Tables, one for GRCh38 and one for GRCh37. These tables enable our users to more easily incorporate ClinVar data into external pipelines in a manner consistent with what they see in the browser.
+We release two data tables underlying the ClinVar data displayed in the gnomAD browser. At least once per quarter (though frequently on a monthly basis), we process the ClinVar monthly VCV XML release into two Hail Tables, one for GRCh38 and one for GRCh37. These tables enable our users to more easily incorporate ClinVar data into external pipelines in a manner consistent with what they see in the browser.
+
+We release both the most recently processed ClinVar XML VCV release, titled `gnomad_clinvar_grch<VERSION>_latest`, and releases dated with the ClinVar data release date, e.g. `gnomad_clinvar_grch38_2026-03-28_release.ht`.
 
 These tables are stored in a requester pays GCS bucket. As such, to access or download this data you must provide a billing project when accessing the data with `gsutil`, e.g.
 
+To copy the latest GRCh38 ClinVar Browser table:
+
 ```
-gsutil -u YOUR_PROJECT -m cp -r \
-  gs://gnomad-browser-clinvar/gnomad_clinvar_grch38.ht \
+gsutil -u <YOUR_PROJECT> -m cp -r \
+  gs://gnomad-browser-clinvar/grch38/gnomad_clinvar_grch38_latest.ht \
+  gs://YOUR-BUCKET/YOUR-OPTIONAL-NESTED-BUCKETS/gnomad_clinvar_grch38.ht
+```
+
+To see all releases for GRCh38
+
+```
+gsutil -u <YOUR_PROJECT> ls gs://gnomad-browser/clinvar/grch38/
+```
+
+To copy a specific ClinVar release date Browser Hail table:
+
+```
+gsutil -u <YOUR_PROJECT> -m cp -r \
+  gs://gnomad-browser-clinvar/grch38/gnomad_browser_clinvar_grch38_2026-03-28_release.ht \
+  gs://YOUR-BUCKET/YOUR-OPTIONAL-NESTED-BUCKETS/gnomad_clinvar_grch38.ht
+```
+
+To copy the latest GRCh37 ClinVar Browser table:
+
+```
+gsutil -u <YOUR_PROJECT> -m cp -r \
+  gs://gnomad-browser-clinvar/grch37/gnomad_clinvar_grch37_latest.ht \
   gs://YOUR-BUCKET/YOUR-OPTIONAL-NESTED-BUCKETS/gnomad_clinvar_grch38.ht
 ```
 

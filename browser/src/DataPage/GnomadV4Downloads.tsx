@@ -555,7 +555,8 @@ const GnomadV4Downloads = () => {
       <DownloadsSection>
         <SectionTitle id="v4-clinvar-grch38">ClinVar</SectionTitle>
         <p>
-          For more information about these files, see the{' '}
+          For more information about these files, including how to download a specific previous
+          version of the gnomAD browser ClinVar GRCh38 table, see the{' '}
           <Link to="/help/clinvar-hts">help text</Link>.
         </p>
 
@@ -563,8 +564,8 @@ const GnomadV4Downloads = () => {
           <ListItem>
             <GetUrlButtons
               gcsBucket="gnomad-browser-clinvar"
-              label="ClinVar GRCh38 Browser Hail Table"
-              path="/gnomad_clinvar_grch38.ht"
+              label="Latest ClinVar GRCh38 Browser Hail Table"
+              path="/grch38/gnomad_clinvar_grch38_latest.ht"
               includeAWS={false}
             />
           </ListItem>
