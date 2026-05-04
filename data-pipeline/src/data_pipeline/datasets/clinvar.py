@@ -195,6 +195,7 @@ def parse_clinvar_xml_to_tsv(
     parse_variant_function,
 ):
     release_date = ""
+    file_size = os.path.getsize(input_xml_path)
 
     with open(output_tsv_path, "w", newline="") as output_file:
         writer = csv.writer(output_file, delimiter="\t", quotechar="", quoting=csv.QUOTE_NONE)
@@ -202,49 +203,97 @@ def parse_clinvar_xml_to_tsv(
 
         open_function = gzip.open if str(input_xml_path).endswith(".gz") else open
         with open_function(input_xml_path, "r") as xml_file:
-            # The exact number of variants in the XML file is unknown.
-            # Approximate it to show a progress bar.
-            progress = tqdm(total=3_100_000, mininterval=5)
-            xml = ElementTree.iterparse(xml_file, events=["end"])
-            for _, element in xml:
-                if element.tag == "ClinVarVariationRelease":
-                    release_date = element.attrib["ReleaseDate"]
 
-                if element.tag == "VariationArchive":
-                    try:
-                        variant = parse_variant_function(element)
-                        if variant is None:
+            with open(input_xml_path, "rb") as raw_xml_file:
+                with tqdm.wrapattr(
+                    raw_xml_file, "read", total=file_size, mininterval=5, unit="B", unit_scale=True
+                ) as pbar_file:
+                    if str(input_xml_path).endswith(".gz"):
+                        xml_file = gzip.open(pbar_file)
+                    else:
+                        xml_file = pbar_file
+
+                    xml = ElementTree.iterparse(xml_file, events=["end"])
+                    for _, element in xml:
+                        if element.tag == "ClinVarVariationRelease":
+                            release_date = element.attrib["ReleaseDate"]
+
+                        if element.tag == "VariationArchive":
+                            try:
+                                variant = parse_variant_function(element)
+                                if variant is None:
+                                    element.clear()
+                                    continue
+                                locations = variant.pop("locations")
+                                writer.writerow(
+                                    [
+                                        locations["GRCh37"]["locus"] if "GRCh37" in locations else "NA",
+                                        json.dumps(locations["GRCh37"]["alleles"]) if "GRCh37" in locations else "NA",
+                                        (
+                                            "chr" + locations["GRCh38"]["locus"].replace("MT", "M")
+                                            if "GRCh38" in locations
+                                            else "NA"
+                                        ),
+                                        json.dumps(locations["GRCh38"]["alleles"]) if "GRCh38" in locations else "NA",
+                                        json.dumps(variant),
+                                    ]
+                                )
+
+                            except Exception:
+                                print(
+                                    f"Failed to parse variant {element.attrib['VariationID']}",
+                                    file=sys.stderr,
+                                )
+                                raise
+
+                            # https://stackoverflow.com/questions/7697710/python-running-out-of-memory-parsing-xml-using-celementtree-iterparse
                             element.clear()
-                            continue
-                        locations = variant.pop("locations")
-                        writer.writerow(
-                            [
-                                locations["GRCh37"]["locus"] if "GRCh37" in locations else "NA",
-                                json.dumps(locations["GRCh37"]["alleles"]) if "GRCh37" in locations else "NA",
-                                (
-                                    "chr" + locations["GRCh38"]["locus"].replace("MT", "M")
-                                    if "GRCh38" in locations
-                                    else "NA"
-                                ),
-                                json.dumps(locations["GRCh38"]["alleles"]) if "GRCh38" in locations else "NA",
-                                json.dumps(variant),
-                            ]
-                        )
-                        progress.update(1)
 
-                    except Exception:
-                        print(
-                            f"Failed to parse variant {element.attrib['VariationID']}",
-                            file=sys.stderr,
-                        )
-                        raise
+        return release_date
 
-                    # https://stackoverflow.com/questions/7697710/python-running-out-of-memory-parsing-xml-using-celementtree-iterparse
-                    element.clear()
+        # The exact number of variants in the XML file is unknown.
+        # Approximate it to show a progress bar.
+        #     progress = tqdm(total=3_100_000, mininterval=5)
+        #     xml = ElementTree.iterparse(xml_file, events=["end"])
+        #     for _, element in xml:
+        #         if element.tag == "ClinVarVariationRelease":
+        #             release_date = element.attrib["ReleaseDate"]
+        #
+        #         if element.tag == "VariationArchive":
+        #             try:
+        #                 variant = parse_variant_function(element)
+        #                 if variant is None:
+        #                     element.clear()
+        #                     continue
+        #                 locations = variant.pop("locations")
+        #                 writer.writerow(
+        #                     [
+        #                         locations["GRCh37"]["locus"] if "GRCh37" in locations else "NA",
+        #                         json.dumps(locations["GRCh37"]["alleles"]) if "GRCh37" in locations else "NA",
+        #                         (
+        #                             "chr" + locations["GRCh38"]["locus"].replace("MT", "M")
+        #                             if "GRCh38" in locations
+        #                             else "NA"
+        #                         ),
+        #                         json.dumps(locations["GRCh38"]["alleles"]) if "GRCh38" in locations else "NA",
+        #                         json.dumps(variant),
+        #                     ]
+        #                 )
+        #                 progress.update(1)
+        #
+        #             except Exception:
+        #                 print(
+        #                     f"Failed to parse variant {element.attrib['VariationID']}",
+        #                     file=sys.stderr,
+        #                 )
+        #                 raise
+        #
+        #             # https://stackoverflow.com/questions/7697710/python-running-out-of-memory-parsing-xml-using-celementtree-iterparse
+        #             element.clear()
+        #
+        # progress.close()
 
-        progress.close()
-
-    return release_date
+    # return release_date
 
 
 def import_clinvar_xml(clinvar_xml_path):
