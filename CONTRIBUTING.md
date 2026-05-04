@@ -118,6 +118,32 @@ pnpm jest
 
 To run only tests for one component, use `pnpm jest --projects browser` or `pnpm jest --projects graphql-api`.
 
+[Playwright](https://playwright.dev) is used for a set of minimal e2e tests as a sanity check before promoting off color deployments to production.
+
+To run the playwright tests, use:
+
+```
+GNOMAD_API_URL=<YOUR_URL>/api pnpm start:browser
+```
+
+e.g., to run the tests against a locally running development backend:
+
+```
+GNOMAD_API_URL=http://localhost:8010/api pnpm start:browser
+```
+
+To do it for the ingress associated with a new `green` deployment
+
+```
+GNOMAD_API_URL="http://$(kubectl get ingress gnomad-ingress-demo-green -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api" pnpm test:playwright
+```
+
+For blue:
+
+```
+GNOMAD_API_URL="http://$(kubectl get ingress gnomad-ingress-demo-blue -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api" pnpm test:playwright
+```
+
 ## Updating dependencies
 
 Images for the Docker Compose development environment need to be rebuilt after updating dependencies.
