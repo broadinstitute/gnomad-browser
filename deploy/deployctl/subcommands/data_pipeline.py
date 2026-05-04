@@ -3,6 +3,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 import typing
 import zipfile
 
@@ -22,6 +23,9 @@ def run_pipeline(
 
     if not config.data_pipeline_output:
         raise RuntimeError("data_pipeline_output configuration is required")
+
+    print(f"\nStarting {pipeline} at {time.strftime('%H:%M:%S')}\n")
+    start_time = time.time()
 
     # Zip contents of data_pipeline directory for upload to Dataproc cluster
     with tempfile.NamedTemporaryFile(prefix="pyfiles_", suffix=".zip", delete=False) as tmp_file:
@@ -57,6 +61,12 @@ def run_pipeline(
         print(" ".join(command[:5]) + " \\\n    " + " \\\n    ".join(command[5:]))
         if not dry_run:
             subprocess.check_call(command)
+
+            end_time = time.time()
+            duration = end_time - start_time
+            print(
+                f"\nFinished {pipeline} at {time.strftime('%H:%M:%S')}, took {int(duration // 60)}m{duration % 60:02.0f}s"
+            )
 
 
 def main(argv: typing.List[str]) -> None:
