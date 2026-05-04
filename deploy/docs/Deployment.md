@@ -302,6 +302,12 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 
      It typically takes ~5 minutes for the IP to resolve to the new deployment
 
+   - Run the minimal Playwright e2e tests against this deployment:
+
+     ```
+     GNOMAD_API_URL="http://$(kubectl get ingress gnomad-ingress-demo-<DEPLOYMENT_NAME> -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api" pnpm test:playwright
+     ```
+
    - Clean up the ingress when you no longer need it with:
 
      ```
@@ -325,7 +331,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
     - It is typically useful to leave the old deployment up for a few days, as it makes a rollback very quick to perform. Once it is clear the new deployment is stable, the old deployment can safely be taken down.
 
       ```
-      ./deployctl deployments delete <old-deployment-name>
+      ./deployctl deployments delete <OLD_DEPLOYMENT_NAME>
       ```
 
 **Where:**
