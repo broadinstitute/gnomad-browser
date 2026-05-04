@@ -6,34 +6,21 @@ from data_pipeline.data_types.variant import annotate_transcript_consequences
 
 from data_pipeline.datasets.clinvar import (
     CLINVAR_XML_URL,
-    import_clinvar_xml,
     prepare_clinvar_variants,
     annotate_clinvar_variants_in_gnomad,
 )
 
 from data_pipeline.pipelines.genes import pipeline as genes_pipeline
+from data_pipeline.pipelines.clinvar_parse_xml import pipeline as clinvar_xml_pipeline
 
 
 pipeline = Pipeline()
-
-pipeline.add_download_task(
-    "download_clinvar_xml",
-    CLINVAR_XML_URL,
-    "/external_sources/clinvar.xml.gz",
-)
-
-pipeline.add_task(
-    "import_clinvar_xml",
-    import_clinvar_xml,
-    "/clinvar/clinvar.ht",
-    {"clinvar_xml_path": pipeline.get_task("download_clinvar_xml")},
-)
 
 pipeline.add_task(
     "prepare_clinvar_grch37_variants",
     prepare_clinvar_variants,
     "/clinvar/clinvar_grch37_base.ht",
-    {"clinvar_path": pipeline.get_task("import_clinvar_xml")},
+    {"clinvar_path": clinvar_xml_pipeline.get_task("import_clinvar_xml")},
     {"reference_genome": "GRCh37"},
 )
 

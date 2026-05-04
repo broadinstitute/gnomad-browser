@@ -29,7 +29,27 @@
 
    ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.1 (GRCh38) ClinVar variants should be annotated with VEP 105.
 
-   The first step, in which the pipeline(s) parse the input ClinVar XML produces an intermediate Hail table that is used by both pipelines. Thus, to avoid duplicating work, it is best to wait for the first pipeline to finish this step, before starting the second pipeline.
+   The first step, in which the pipeline(s) parse the input ClinVar XML produces an intermediate Hail table that is used by both pipelines. Thus, the `clinvar-parse-xml` pipeline should be run before either `clinvar_grch38` or `clinvar_grch37`.
+
+   0. Parse ClinVar XML file
+
+      Start cluster
+
+      ```
+      ./deployctl dataproc-cluster start clinvar-parse-xml
+      ```
+
+      Run pipeline
+
+      ```
+      ./deployctl data-pipeline run --cluster clinvar-parse-xml clinvar_parse_xml
+      ```
+
+      Stop the cluster
+
+      ```
+      ./deployctl dataproc-cluster stop clinvar-parse-xml
+      ```
 
    1. GRCh37
 
