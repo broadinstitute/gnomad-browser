@@ -27,13 +27,33 @@
 
 2. Run data pipelines
 
-   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.1 (GRCh38) ClinVar variants should be annotated with VEP 105.
+   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.1.1 (GRCh38) ClinVar variants should be annotated with VEP 105 (although in the browser, RNU4ATAC displays VEP 115 variants, and in the release file all variants also have VEP 115, v4.1.1 by and large still uses VEP 105).
 
-   The first step, in which the pipeline(s) parse the input ClinVar XML produces an intermediate Hail table that is used by both pipelines. Thus, to avoid duplicating work, it is best to wait for the first pipeline to finish this step, before starting the second pipeline.
+   The first step, in which the pipeline(s) parse the input ClinVar XML produces an intermediate Hail table that is used by both pipelines. Thus, the `clinvar-parse-xml` pipeline should be run before either `clinvar_grch38` or `clinvar_grch37`.
 
-   1. GRCh37
+   1. Parse ClinVar XML file
 
-      Start cluster
+      Start cluster (~ 10 minutes)
+
+      ```
+      ./deployctl dataproc-cluster start clinvar-parse-xml
+      ```
+
+      Run pipeline (~ 1 hour, 20 minutes)
+
+      ```
+      ./deployctl data-pipeline run --cluster clinvar-parse-xml clinvar_parse_xml
+      ```
+
+      Stop the cluster
+
+      ```
+      ./deployctl dataproc-cluster stop clinvar-parse-xml
+      ```
+
+   2. GRCh37 - run this after step 1 (`clinvar_parse_xml`) finishes, can be run in parallel with step 3 (`GRCh38`)
+
+      Start cluster (~ 10 minutes)
 
       ```
       ./deployctl dataproc-cluster start clinvar-grch37-vep85 \
@@ -49,7 +69,7 @@
          --num-secondary-workers 16
       ```
 
-      Run pipeline
+      Run pipeline (~ 25 minutes)
 
       ```
       ./deployctl data-pipeline run --cluster clinvar-grch37-vep85 clinvar_grch37
@@ -61,15 +81,13 @@
       ./deployctl dataproc-cluster stop clinvar-grch37-vep85
       ```
 
-   2. GRCh38
+   3. GRCh38 - run this after step 1 (`clinvar_parse_xml`) finishes, can be run in parallel with step 2 (`GRCh37`)
 
-      Once the GRCh37 pipeline finishes the "parse_clinvar_xml" step, start this pipeline.
-
-      Start cluster
+      Start cluster (~ 10 minutes)
 
       ```
       ./deployctl dataproc-cluster start clinvar-grch38-vep105 \
-         --init=gs://gnomad-v4-data-pipeline/output/clinvar/gnomad-browser-grch38-vep105-init.sh \
+         --init=gs://gnomad-v4-data-pipeline/output/clinvar/vep105/gnomad-browser-grch38-vep105-init.sh \
          --metadata=VEP_CONFIG_PATH=/vep_data/vep-gcloud.json,VEP_CONFIG_URI=file:///vep_data/vep-gcloud.json,VEP_REPLICATE=us \
          --master-machine-type n1-highmem-8 \
          --worker-machine-type n1-highmem-8 \
@@ -81,7 +99,7 @@
          --num-secondary-workers 16
       ```
 
-      Run pipeline
+      Run pipeline (~ 1 hour, 10 minutes)
 
       ```
       ./deployctl data-pipeline run --cluster clinvar-grch38-vep105 clinvar_grch38
@@ -95,7 +113,7 @@
 
 3. Load variants to Elasticsearch
 
-   Start dataproc cluster
+   Start dataproc cluster (~ 10 minutes)
 
    ```
    ./deployctl dataproc-cluster start clinvar-es-load
@@ -135,7 +153,7 @@
 
    Replace the `clinvar_grch37_variants` and `clinvar_grch38_variants` aliases with the new indices.
 
-   Lookup the names of all the indices that exist
+   Lookup the names of the indices that exist, excluding those starting with `.`
 
    ```
    curl -u "elastic:$ELASTICSEARCH_PASSWORD" "http://localhost:9200/_cat/indices/*,-.*?pretty&v=true&s=index:asc"
@@ -214,7 +232,7 @@
       Or, remove all the cache dirs programatically
 
       ```
-      rm -rf /var/cache/nginx/[0-9a-f]
+      rm -rf /var/cache/nginx/?
       ```
 
 6. Delete old Elasticsearch indices
@@ -243,10 +261,11 @@
    CLINVAR_PATH="gs://gnomad-v4-data-pipeline/output/clinvar/clinvar_grch37_annotated_2.ht"
 
    NEW_CLINVAR_RELEASE_DATE=$(gsutil cat "${CLINVAR_PATH}/globals/parts/part-0" | strings | grep -oE '20[0-9]{2}-[0-9]{2}-[0-9]{2}')
-   echo $NEW_CLINVAR_RELEASE_DATE
    ```
 
-   GRCh37 - overwrite the `..._latest.ht` table, create a date stamped table (`..._YYYY-MM-DD_release.ht`
+   **GRCh37**
+
+   Overwrite the `..._latest.ht` table,
 
    ```
    gsutil -u exac-gnomad -m rsync -d -r \
@@ -254,13 +273,17 @@
      gs://gnomad-browser-clinvar/grch37/gnomad_browser_clinvar_grch37_latest.ht
    ```
 
+   Create a date stamped table (`...\_YYYY-MM-DD_release.ht)
+
    ```
    gsutil -u exac-gnomad -m rsync -d -r \
      gs://gnomad-v4-data-pipeline/output/clinvar/clinvar_grch37_annotated_2.ht/ \
      "gs://gnomad-browser-clinvar/grch37/gnomad_browser_clinvar_grch37_${NEW_CLINVAR_RELEASE_DATE}_release.ht"
    ```
 
-   GRCh38 - overwrite the `..._latest.ht` table, create a date stamped table (`..._YYYY-MM-DD_release.ht`
+   **GRCh38**
+
+   Overwrite the `..._latest.ht` table,
 
    ```
    gsutil -u exac-gnomad -m rsync -d -r \
@@ -268,8 +291,31 @@
      gs://gnomad-browser-clinvar/grch38/gnomad_browser_clinvar_grch38_latest.ht
    ```
 
+   Create a date stamped table (`..._YYYY-MM-DD_release.ht`)
+
    ```
    gsutil -u exac-gnomad -m rsync -d -r \
      gs://gnomad-v4-data-pipeline/output/clinvar/clinvar_grch38_annotated_2.ht/ \
      "gs://gnomad-browser-clinvar/grch38/gnomad_browser_clinvar_grch38_${NEW_CLINVAR_RELEASE_DATE}_release.ht"
+   ```
+
+   (Optional) To confirm `rsync` worked as intended for the `_latest` files, with Hail locally installed on your machine, add requester pays options to the `hl.init` call:
+
+   ```
+   import hail as hl
+
+   hl.init(spark_conf={
+    'spark.hadoop.fs.gs.requester.pays.mode': 'CUSTOM',
+    'spark.hadoop.fs.gs.requester.pays.buckets': 'gnomad-browser-clinvar',
+    'spark.hadoop.fs.gs.requester.pays.project.id': 'gnomadev'
+   })
+
+
+   ht37 = hl.read_table("gs://gnomad-browser-clinvar/grch37/gnomad_browser_clinvar_grch37_latest.ht")
+   ht37.describe()
+   ht37.show(3)
+
+   ht38 = hl.read_table("gs://gnomad-browser-clinvar/grch38/gnomad_browser_clinvar_grch38_latest.ht")
+   ht38.describe()
+   ht38.show(3)
    ```

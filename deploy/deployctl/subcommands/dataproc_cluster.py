@@ -1,5 +1,6 @@
 import argparse
 import os
+import time
 import subprocess
 import sys
 import typing
@@ -43,6 +44,9 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
         requirements_file.seek(0)
         requirements = [line.strip() for line in requirements_file.readlines()]
 
+    print(f"\nStarting cluster: '{name}' at {time.strftime('%H:%M:%S')}\n")
+    start_time = time.time()
+
     subprocess.check_output(
         [
             "hailctl",
@@ -62,6 +66,12 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             "--scopes=cloud-platform",
         ]
         + cluster_args
+    )
+
+    end_time = time.time()
+    duration = end_time - start_time
+    print(
+        f"\nStarted cluster: '{name}' at {time.strftime('%H:%M:%S')}, took {int(duration // 60)}m{duration % 60:02.0f}s"
     )
 
 
