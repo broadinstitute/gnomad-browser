@@ -7192,7 +7192,7 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <p>
-        For more information about these files, see the
+        For more information about these files, including how to download a specific previous version of the gnomAD browser ClinVar GRCh38 table, see the
          
         <a
           className="c8"
@@ -7210,13 +7210,13 @@ exports[`Data Page has no unexpected changes 1`] = `
           className="c22"
         >
           <span>
-            ClinVar GRCh38 Browser Hail Table
+            Latest ClinVar GRCh38 Browser Hail Table
           </span>
           <br />
           Show URL for
            
           <button
-            aria-label="Show Google URL for ClinVar GRCh38 Browser Hail Table"
+            aria-label="Show Google URL for Latest ClinVar GRCh38 Browser Hail Table"
             className="c23"
             onClick={[Function]}
             type="button"
@@ -21316,7 +21316,7 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <p>
-        For more information about these files, see the
+        For more information about these files, including how to download a specific previous version of the gnomAD browser ClinVar GRCh37 table, see the
          
         <a
           className="c8"
@@ -21334,13 +21334,13 @@ exports[`Data Page has no unexpected changes 1`] = `
           className="c22"
         >
           <span>
-            ClinVar GRCh37 Browser Hail Table
+            Latest ClinVar GRCh37 Browser Hail Table
           </span>
           <br />
           Show URL for
            
           <button
-            aria-label="Show Google URL for ClinVar GRCh37 Browser Hail Table"
+            aria-label="Show Google URL for Latest ClinVar GRCh37 Browser Hail Table"
             className="c23"
             onClick={[Function]}
             type="button"
