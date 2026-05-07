@@ -38,7 +38,7 @@ import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { GenotypeQuality } from './qualityDescription'
 import { QScoreBin } from './qScore'
 
-type ShortTandemRepeatReferenceRegion = {
+export type ShortTandemRepeatReferenceRegion = {
   chrom: string
   start: number
   stop: number
@@ -130,7 +130,7 @@ export type ShortTandemRepeat = {
   adjacent_repeats: ShortTandemRepeatAdjacentRepeat[]
 }
 
-const ResponsiveSection = styled.section`
+export const ResponsiveSection = styled.section`
   width: calc(50% - 15px);
 
   @media (max-width: 992px) {
@@ -138,11 +138,12 @@ const ResponsiveSection = styled.section`
   }
 `
 
-const FlexWrapper = styled.div`
+export const FlexWrapper = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 3em;
 `
 
 type ShortTandemRepeatPageProps = {
@@ -311,7 +312,7 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
     <>
       <FlexWrapper style={{ marginBottom: '3em' }}>
         <ResponsiveSection>
-          <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
+          <ShortTandemRepeatAttributes {...shortTandemRepeat} />
           {!allRepeatUnitsFoundInGnomadArePathogenic && (
             <p style={{ marginBottom: 0 }}>
               <Badge level="info">Note</Badge> This locus has both pathogenic and non-pathogenic

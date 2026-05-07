@@ -4,15 +4,19 @@ import AttributeList, { AttributeListItem } from '../AttributeList'
 import InlineList from '../InlineList'
 import Link from '../Link'
 
-import { ShortTandemRepeat, RepeatUnitClassification } from './ShortTandemRepeatPage'
+import { RepeatUnitClassification, ShortTandemRepeatReferenceRegion } from './ShortTandemRepeatPage'
 
 type ShortTandemRepeatRepeatUnitsProps = {
-  shortTandemRepeat: ShortTandemRepeat
+  reference_repeat_unit: string
+  repeat_units: RepeatUnit[]
 }
 
-const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRepeatUnitsProps) => {
+const ShortTandemRepeatRepeatUnits = ({
+  reference_repeat_unit,
+  repeat_units,
+}: ShortTandemRepeatRepeatUnitsProps) => {
   const repeatUnitsByClassification: Partial<Record<RepeatUnitClassification, string[]>> = {}
-  shortTandemRepeat.repeat_units.forEach((repeatUnit) => {
+  repeat_units.forEach((repeatUnit) => {
     if (repeatUnitsByClassification[repeatUnit.classification] === undefined) {
       repeatUnitsByClassification[repeatUnit.classification] = []
     }
@@ -31,8 +35,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
         <InlineList
           items={repeatUnitsByClassification.unknown.map((repeatUnit: string) => (
             <span>
-              {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
-              shortTandemRepeat.repeat_units.length > 1
+              {repeatUnit === reference_repeat_unit && repeat_units.length > 1
                 ? `${repeatUnit} (reference)`
                 : repeatUnit}
             </span>
@@ -58,8 +61,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
             <InlineList
               items={repeatUnitsByClassification.pathogenic.map((repeatUnit: string) => (
                 <span>
-                  {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
-                  shortTandemRepeat.repeat_units.length > 1
+                  {repeatUnit === reference_repeat_unit && repeat_units.length > 1
                     ? `${repeatUnit} (reference)`
                     : repeatUnit}
                 </span>
@@ -86,8 +88,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
           <InlineList
             items={repeatUnitsByClassification.pathogenic.map((repeatUnit: string) => (
               <span>
-                {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
-                shortTandemRepeat.repeat_units.length > 1
+                {repeatUnit === reference_repeat_unit && repeat_units.length > 1
                   ? `${repeatUnit} (reference)`
                   : repeatUnit}
               </span>
@@ -106,8 +107,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
           <InlineList
             items={repeatUnitsByClassification.benign.map((repeatUnit: string) => (
               <span>
-                {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
-                shortTandemRepeat.repeat_units.length > 1
+                {repeatUnit === reference_repeat_unit && repeat_units.length > 1
                   ? `${repeatUnit} (reference)`
                   : repeatUnit}
               </span>
@@ -124,8 +124,7 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
           <InlineList
             items={repeatUnitsByClassification.unknown.map((repeatUnit: string) => (
               <span>
-                {repeatUnit === shortTandemRepeat.reference_repeat_unit &&
-                shortTandemRepeat.repeat_units.length > 1
+                {repeatUnit === reference_repeat_unit && repeat_units.length > 1
                   ? `${repeatUnit} (reference)`
                   : repeatUnit}
               </span>
@@ -138,31 +137,49 @@ const ShortTandemRepeatRepeatUnits = ({ shortTandemRepeat }: ShortTandemRepeatRe
   )
 }
 
-type ShortTandemRepeatAttributesProps = {
-  shortTandemRepeat: ShortTandemRepeat
+type RepeatUnit = {
+  repeat_unit: string
+  classification: RepeatUnitClassification
 }
 
-const ShortTandemRepeatAttributes = ({ shortTandemRepeat }: ShortTandemRepeatAttributesProps) => {
+type Props = {
+  gene?: null | {
+    ensembl_id: string
+    symbol: string
+    region?: string
+  }
+  main_reference_region: ShortTandemRepeatReferenceRegion
+  reference_repeat_unit: string
+  repeat_units: RepeatUnit[]
+}
+
+const ShortTandemRepeatAttributes = ({
+  gene,
+  main_reference_region,
+  reference_repeat_unit,
+  repeat_units,
+}: Props) => {
   return (
     <AttributeList style={{ marginTop: '1.25em' }}>
-      {shortTandemRepeat.gene.ensembl_id && shortTandemRepeat.gene.ensembl_id !== '' && (
+      {gene?.ensembl_id && gene.ensembl_id !== '' && (
         <AttributeListItem label="Gene">
-          <Link to={`/gene/${shortTandemRepeat.gene.ensembl_id}`}>
-            {shortTandemRepeat.gene.symbol}
+          <Link to={`/gene/${gene.ensembl_id}`}>
+            {gene.symbol !== '' ? gene.symbol : gene.ensembl_id}
           </Link>
         </AttributeListItem>
       )}
-      <AttributeListItem label="Gene region">{shortTandemRepeat.gene.region}</AttributeListItem>
+      {gene?.region && <AttributeListItem label="Gene region">{gene.region}</AttributeListItem>}
       <AttributeListItem label="Reference region">
         <Link
-          to={`/region/${shortTandemRepeat.main_reference_region.chrom}-${shortTandemRepeat.main_reference_region.start}-${shortTandemRepeat.main_reference_region.stop}`}
+          to={`/region/${main_reference_region.chrom}-${main_reference_region.start}-${main_reference_region.stop}`}
         >
-          {shortTandemRepeat.main_reference_region.chrom}:
-          {shortTandemRepeat.main_reference_region.start}-
-          {shortTandemRepeat.main_reference_region.stop}
+          {main_reference_region.chrom}:{main_reference_region.start}-{main_reference_region.stop}
         </Link>
       </AttributeListItem>
-      <ShortTandemRepeatRepeatUnits shortTandemRepeat={shortTandemRepeat} />
+      <ShortTandemRepeatRepeatUnits
+        reference_repeat_unit={reference_repeat_unit}
+        repeat_units={repeat_units}
+      />
     </AttributeList>
   )
 }

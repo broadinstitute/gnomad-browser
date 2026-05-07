@@ -6,26 +6,19 @@ import {
   referenceGenome,
   ReferenceGenome,
 } from '@gnomad/dataset-metadata/metadata'
-import { Section, ResponsiveSection, FlexWrapper, checkGeneLink } from '../VariantPage/VariantPage'
+import { checkGeneLink } from '../VariantPage/VariantPage'
 import { BaseQuery } from '../Query'
 import DocumentTitle from '../DocumentTitle'
-import { Button, Page, TooltipAnchor, ExternalLink, TooltipHint, Badge } from '@gnomad/ui'
+import { Button, Page, TooltipAnchor } from '@gnomad/ui'
 import Delayed from '../Delayed'
 import StatusMessage from '../StatusMessage'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TitleWrapper, Separator, VariantIdWrapper } from '../VariantPage/VariantPageTitle'
-import { variantFeedbackUrl } from '../variantFeedback'
-import InfoButton from '../help/InfoButton'
-import TableWrapper from '../TableWrapper'
-import { Table } from '../VariantPage/VariantOccurrenceTable'
 // import QCFilter from '../QCFilter'
 //
-import sampleCounts from '@gnomad/dataset-metadata/datasets/gnomad-v4-lr/sampleCounts'
-import { PopulationsTable } from '../VariantPage/PopulationsTable'
-import VariantTranscriptConsequences from '../VariantPage/VariantTranscriptConsequences'
-import { addPopulationNames, nestPopulations } from '../VariantPage/GnomadPopulationsTable'
 import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
-import LongReadVariantAlleleSizeDistributionPlot from './LongReadVariantAlleleSizeDistributionPlot'
+import LongReadVariantPageContent from './LongReadVariantPageContent'
+import LongReadTandemRepeatPageContent from './LongReadTandemRepeatPageContent'
 
 const VariantPageTitle = ({
   variantId,
@@ -74,6 +67,7 @@ const VariantPageTitle = ({
 export type LongReadVariant = {
   variant_id: string
   filters: string[]
+  ref: string
   freq: {
     all: {
       ac: number
@@ -107,229 +101,17 @@ export type LongReadVariant = {
           frequency: number
         }
       }[]
-}
-
-type LongReadVariantPageContentProps = {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}
-
-const LongReadVariantFlag = ({ variant }: { variant: LongReadVariant }) => {
-  const filters = variant.filters || [] // TK
-  if (filters.length === 0) {
-    return <Badge level="success">Pass</Badge>
+  allele_type: string
+  main_reference_region: null | {
+    reference_genome: string
+    chrom: string
+    start: number
+    stop: number
   }
-
-  return filters.map((_filter: any) => {
-    return null
-    /*   const data =
-      filter === 'discrepant_frequencies'
-        ? {
-            pValue: variant.joint!.freq_comparison_stats.stat_union.p_value,
-            testName: variant.joint!.freq_comparison_stats.stat_union.stat_test_name,
-            geneticAncestry:
-              variant.joint!.freq_comparison_stats.stat_union.gen_ancs[0] || undefined,
-          }
-        : {}*/
-
-    {
-      //<QCFilter key="TK" filter="TK" data={{}} />
-    }
-  })
-}
-
-const LongReadVariantOccurrenceTable = ({ variant }: { variant: LongReadVariant }) => {
-  const hasLowAlleleNumber = variant.freq.all.an < sampleCounts.total / 2
-  return (
-    <div>
-      <Table>
-        <tbody>
-          <tr>
-            <th scope="row">
-              {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-              <TooltipAnchor tooltip="Quality control filters that this variant failed (if any)">
-                <TooltipHint>
-                  Filters <InfoButton topic="what-do-the-flags-on-the-browser-mean" />
-                </TooltipHint>
-              </TooltipAnchor>
-            </th>
-            <td>
-              <LongReadVariantFlag variant={variant} />
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">
-              {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-              <TooltipAnchor tooltip="Alternate allele count in high quality genotypes">
-                <TooltipHint>Allele Count</TooltipHint>
-              </TooltipAnchor>
-            </th>
-            <td>{variant.freq.all.ac}</td>
-          </tr>
-          <tr>
-            <th scope="row">
-              {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-              <TooltipAnchor tooltip="Total number of called high quality genotypes">
-                <TooltipHint>Allele Number</TooltipHint>
-              </TooltipAnchor>
-            </th>
-            <td>{variant.freq.all.an}</td>
-          </tr>
-          <tr>
-            <th scope="row">
-              {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-              <TooltipAnchor tooltip="Alternate allele frequency in high quality genotypes">
-                <TooltipHint>Allele Frequency</TooltipHint>
-              </TooltipAnchor>
-            </th>
-            <td>{variant.freq.all.af.toPrecision(4)}</td>
-          </tr>
-        </tbody>
-      </Table>
-      {hasLowAlleleNumber && (
-        <p>
-          <Badge level="error">Warning</Badge> This variant is covered in fewer than 50% of
-          individuals. This may indicate a low-quality site.
-        </p>
-      )}
-    </div>
-  )
-}
-
-const LongReadVariantPageContent = ({ datasetId, variant }: LongReadVariantPageContentProps) => {
-  return (
-    <FlexWrapper>
-      <ResponsiveSection>
-        <TableWrapper>
-          <LongReadVariantOccurrenceTable variant={variant} />
-        </TableWrapper>
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>Feedback</h2>
-        <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
-          Report an issue with this variant
-        </ExternalLink>
-      </ResponsiveSection>
-
-      <Section>
-        <h2>
-          Genetic Ancestry Group Frequencies <InfoButton topic="ancestry" />
-        </h2>
-        <LongReadVariantPopulationFrequencies variant={variant} />
-      </Section>
-
-      <Section>
-        <h2>Related Variants</h2>
-        <LongReadVariantRelatedVariants datasetId={datasetId} variant={variant} />
-      </Section>
-
-      <Section>
-        <h2>Ensembl Variant Effect Predictor</h2>
-        <VariantTranscriptConsequences variant={variant} />
-      </Section>
-
-      <FlexWrapper>
-        {variant.in_silico_predictors && variant.in_silico_predictors.length && (
-          <ResponsiveSection>
-            <h2>In Silico Predictors</h2>
-            <LongReadVariantInSilicoPredictors variant={variant} datasetId={datasetId} />
-          </ResponsiveSection>
-        )}
-      </FlexWrapper>
-
-      <FlexWrapper>
-        <ResponsiveSection>
-          {variant.age_distribution && (
-            <React.Fragment>
-              <h2>
-                Age Distribution <InfoButton topic="age" />
-              </h2>
-
-              <LongReadVariantAgeDistribution datasetId={datasetId} variant={variant} />
-            </React.Fragment>
-          )}
-        </ResponsiveSection>
-      </FlexWrapper>
-
-      <ResponsiveSection>
-        <h2>Genotype Quality Metrics</h2>
-        <LongReadVariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>Site Quality Metrics</h2>
-        <LongReadVariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
-      </ResponsiveSection>
-      {variant.allele_size_distribution && (
-        <ResponsiveSection>
-          <LongReadVariantAlleleSizeDistributionPlot variant={variant} />
-        </ResponsiveSection>
-      )}
-    </FlexWrapper>
-  )
-}
-
-const LongReadVariantPopulationFrequencies = ({ variant }: { variant: LongReadVariant }) => {
-  return (
-    <TableWrapper>
-      <PopulationsTable
-        populations={nestPopulations(addPopulationNames(variant.freq.populations))}
-      />
-    </TableWrapper>
-  )
-}
-
-const LongReadVariantRelatedVariants = ({
-  datasetId,
-  variant,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  // TK
-  return null
-}
-
-const LongReadVariantInSilicoPredictors = ({
-  variant,
-  datasetId,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  // TK
-  return null
-}
-
-const LongReadVariantAgeDistribution = ({
-  datasetId,
-  variant,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  //TK
-  return null
-}
-const LongReadVariantGenotypeQualityMetrics = ({
-  datasetId,
-  variant,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  //TK
-  return null
-}
-
-const LongReadVariantSiteQualityMetrics = ({
-  datasetId,
-  variant,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  //TK
-  return null
+  gene: null | {
+    ensembl_id: string
+    symbol: string
+  }
 }
 
 const LongReadVariantPage = ({
@@ -344,6 +126,12 @@ const LongReadVariantPage = ({
   const variantQuery = `
 	query ${operationName}($variantId: String!) {
 	  long_read_variant(variantId: $variantId) {
+          genes {
+            ensembl_id
+	    symbol
+	  }
+	  allele_type
+	  ref
   	  variant_id
 	    reference_genome
 	    freq {
@@ -400,6 +188,12 @@ const LongReadVariantPage = ({
                 frequency
               }
             }
+	    main_reference_region {
+                reference_genome
+                chrom
+                start
+                stop
+	    }
 	  }
 	}
 `
@@ -457,26 +251,13 @@ const LongReadVariantPage = ({
                 geneId = geneData.ensembleId
               }
 
-              pageContent = <LongReadVariantPageContent datasetId={datasetId} variant={variant} />
+              pageContent =
+                variant.allele_type === 'trv' ? (
+                  <LongReadTandemRepeatPageContent datasetId={datasetId} variant={variant} />
+                ) : (
+                  <LongReadVariantPageContent datasetId={datasetId} variant={variant} />
+                )
             }
-
-            //           const datasetLinkWithLiftover: URLBuilder = (currentLocation, toDatasetId) => {
-            //             const needsLiftoverDisambiguation =
-            //               (isLiftoverSource(datasetId) && isLiftoverTarget(toDatasetId)) ||
-            //               (isLiftoverSource(toDatasetId) && isLiftoverTarget(datasetId))
-            //
-            //             return needsLiftoverDisambiguation
-            //               ? {
-            //                   ...currentLocation,
-            //                   pathname: `/variant/liftover/${variantId}/${datasetId}/${toDatasetId}`,
-            //                   search: '',
-            //                 }
-            //               : {
-            //                   ...currentLocation,
-            //                   pathname: `/variant/${variantId}`,
-            //                   search: `?dataset=${toDatasetId}`,
-            //                 }
-            //           }
 
             return (
               <React.Fragment>
@@ -489,7 +270,6 @@ const LongReadVariantPage = ({
                     includeGnomad4Subsets: false,
                     includeStructuralVariants: false,
                     includeCopyNumberVariants: false,
-                    //                    urlBuilder: datasetLinkWithLiftover,
                   }}
                   selectedDataset={datasetId}
                   extra={
