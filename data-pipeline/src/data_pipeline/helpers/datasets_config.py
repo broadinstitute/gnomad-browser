@@ -155,10 +155,10 @@ DATASETS_CONFIG = {
             "index_fields": [
                 "variant_id",
                 "rsid",
-                "genes",
+                "genes.ensembl_id",
                 # "caid",
                 "locus",
-                "transcript_consequences.gene_id",
+                # "transcript_consequences.gene_id",
                 "short_read_match_id",
                 # "vrs.alt.allele_id",
             ],

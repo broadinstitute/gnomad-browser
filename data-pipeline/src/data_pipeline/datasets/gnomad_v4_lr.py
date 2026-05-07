@@ -164,6 +164,8 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
     ds = ds.rows()
     ds = ds.annotate(variant_id=ds.rsid.replace("^chr", ""))
     ds = ds.key_by(ds.variant_id)
+    # VEP fields:
+    #
     # Allele
     # Consequence
     # IMPACT
@@ -247,6 +249,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
 
     # 1: Consequences (seperated with "&")
     # 3: gene symbol
+    # 4: gene ensembl ID
     # 5: feature type (blank, Transcript, MotifFeature, or RegulatoryFeature
     # 6: feature ID
     # 10: HGVSc
@@ -272,7 +275,6 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         motif_vep=ds.vep.filter(lambda vep: vep[5] == hl.literal("MotifFeature")),
         regulatory_vep=ds.vep.filter(lambda vep: vep[5] == hl.literal("RegulatoryFeature")),
     )
-    ds = ds.drop("vep")
     ds = annotate_with_transcripts(ds, transcripts_path)
 
     ds = ds.annotate(
@@ -284,7 +286,6 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         allele_type=ds.info.allele_type,
         ref=ds.alleles[0],
         alt=ds.alleles[1],
-        genes=hl.set(ds.transcript_consequences.map(lambda tc: tc.gene_id)),
         short_read_match_type=hl.or_missing(
             ~hl.is_missing(ds.info.gnomAD_V4_match_type), ds.info.gnomAD_V4_match_type[0]
         ),
@@ -298,6 +299,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         motifs=ds.info.MOTIFS,
         gnomad_str=ds.info.gnomAD_STR,
         filters=ds.filters,
+        genes=hl.set(ds.vep.map(lambda v: hl.struct(symbol=v[3], ensembl_id=v[4]))),
         # TK in silico
         # TK age dist
         # TK site quality metrics
@@ -307,6 +309,17 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
         # TK allele length
         # TK dbsnp
         # TK predicted
+    )
+    ds = ds.annotate(
+        main_reference_region=hl.or_missing(
+            ds.allele_type == hl.literal("trv"),
+            hl.struct(
+                reference_genome=hl.literal("GRCh38"),
+                chrom=ds.chrom,
+                start=ds.locus.position,
+                stop=ds.locus.position + ds.ref.length(),
+            ),
+        )
     )
 
     enveloped_ids_by_enveloping_id = (
@@ -374,7 +387,7 @@ def import_variants_from_vcfs(vcf_path, transcripts_path):
 
     ds = ds.annotate(rsids=[ds.rsid])
 
-    ds = ds.drop("alleles", "info", "intergenic_vep", "motif_vep", "regulatory_vep")
+    ds = ds.drop("alleles", "info", "vep", "intergenic_vep", "motif_vep", "regulatory_vep")
     return ds
 
 
