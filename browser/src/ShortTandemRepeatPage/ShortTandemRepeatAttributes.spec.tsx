@@ -8,22 +8,34 @@ import { BrowserRouter } from 'react-router-dom'
 
 describe('ShortTandemRepeatAttributes', () => {
   test('has no unexected changes', () => {
-    const shortTandemRepeat = shortTandemRepeatFactory.build()
+    const { gene, reference_repeat_unit, repeat_units, main_reference_region } =
+      shortTandemRepeatFactory.build()
     const tree = renderer.create(
       <BrowserRouter>
-        <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
+        <ShortTandemRepeatAttributes
+          gene={gene}
+          reference_repeat_unit={reference_repeat_unit}
+          repeat_units={repeat_units}
+          main_reference_region={main_reference_region}
+        />
       </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
   })
 
   test('displays no gene link for an STR with empty string for associated gene', () => {
-    const shortTandemRepeat = shortTandemRepeatFactory.build({
-      gene: { ...DEFAULT_GENE, ensembl_id: '' },
-    })
+    const { gene, reference_repeat_unit, repeat_units, main_reference_region } =
+      shortTandemRepeatFactory.build({
+        gene: { ...DEFAULT_GENE, ensembl_id: '' },
+      })
     const tree = renderer.create(
       <BrowserRouter>
-        <ShortTandemRepeatAttributes shortTandemRepeat={shortTandemRepeat} />
+        <ShortTandemRepeatAttributes
+          gene={gene}
+          reference_repeat_unit={reference_repeat_unit}
+          repeat_units={repeat_units}
+          main_reference_region={main_reference_region}
+        />
       </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()

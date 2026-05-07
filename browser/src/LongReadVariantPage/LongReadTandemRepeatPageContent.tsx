@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import { LongReadVariant } from './LongReadVariantPage'
+import { FlexWrapper, ResponsiveSection } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   AlleleSizeDistributionCohort,
   ColorBy,
@@ -13,13 +16,22 @@ import {
   logScaleAllowed,
   Sex,
 } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
-import { LongReadVariant } from './LongReadVariantPage'
+import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import InfoButton from '../help/InfoButton'
 import ControlSection from '../VariantPage/ControlSection'
-import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
-import InfoButton from '../help/InfoButton'
+import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
+
+type Props = {
+  datasetId: DatasetId
+  variant: LongReadVariant
+}
+
+type AlleleSizeDistributionProps = {
+  variant: LongReadVariant
+}
 
 const colorByFn: ColorByFn<AlleleSizeDistributionCohort> = (cohort, colorBy) => {
   if (colorBy === 'sex') {
@@ -31,11 +43,7 @@ const colorByFn: ColorByFn<AlleleSizeDistributionCohort> = (cohort, colorBy) => 
   return null
 }
 
-type Props = {
-  variant: LongReadVariant
-}
-
-const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: Props) => {
+const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: AlleleSizeDistributionProps) => {
   const { allele_size_distribution, max_repunits } = variant
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -57,6 +65,7 @@ const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: Props) => {
 
   return (
     <>
+      {/*TK external resources (TRExplorer: Dynamic. gnomAD STR Loci: INFO/gnomAD_STR.) */}
       <section>
         <h2>
           Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
@@ -103,11 +112,30 @@ const LongReadVariantAlleleSizeDistributionPlot = ({ variant }: Props) => {
     </>
   )
   {
-    /*TK get max in there*/
-  }
-  {
     /* TK de-squish */
   }
 }
 
-export default LongReadVariantAlleleSizeDistributionPlot
+const LongReadTandemRepeatPageContent = ({ variant }: Props) => {
+  return (
+    <>
+      <FlexWrapper style={{ marginBottom: '3em' }}>
+        <ResponsiveSection>
+          <ShortTandemRepeatAttributes
+            reference_repeat_unit={variant.ref}
+            repeat_units={[{ repeat_unit: variant.ref, classification: 'unknown' }]}
+            main_reference_region={variant.main_reference_region!}
+          />
+        </ResponsiveSection>
+      </FlexWrapper>
+      {variant.allele_size_distribution && (
+        <ResponsiveSection>
+          <LongReadVariantAlleleSizeDistributionPlot variant={variant} />
+        </ResponsiveSection>
+      )}
+      {/* TK genotype dist */}
+    </>
+  )
+}
+
+export default LongReadTandemRepeatPageContent
