@@ -77,6 +77,18 @@ type LongReadGenotypeDistribution {
   distribution: [LongReadGenotypeBin!]!
 }
 
+type LongReadTandemRepeatReferenceRegion {
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  start: Int!
+  stop: Int!
+}
+
+type LongReadGene {
+  symbol: String!
+  ensembl_id: String!
+}
+
 type LongReadVariant {
   variant_id: String!
   reference_genome: ReferenceGenomeId!
@@ -89,8 +101,8 @@ type LongReadVariant {
   xpos: Float!
   transcript_consequences: [LongReadTranscriptConsequence!]
   intergenic: Boolean
+  genes: [LongReadGene!]
   major_consequence: String
-  genes: [String!]
   freq: LongReadVariantFrequencies
   short_read_match_id: String
   short_read_match_type: String
@@ -105,4 +117,5 @@ type LongReadVariant {
   allele_size_distribution: [LongReadAlleleSizeDistribution!]
   genotype_distribution: [LongReadGenotypeDistribution!]
   max_repunits: Int
+  main_reference_region: LongReadTandemRepeatReferenceRegion
 }
