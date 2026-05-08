@@ -1249,6 +1249,7 @@ def main():
     parser.add_argument("--gnomad-api", default=GNOMAD_API, help="gnomAD API URL for gene models")
     parser.add_argument("--region", default="chr22:20000000-21000000", help="Region to load (format: chrN:start-stop)")
     parser.add_argument("--parallelism", type=int, default=16, help="Number of parallel genohype queries for methylation (default: 16)")
+    parser.add_argument("--vcf-path", default=None, help="Override VCF path (default: GCS_VCF_V2)")
     args = parser.parse_args()
 
     # Parse region
