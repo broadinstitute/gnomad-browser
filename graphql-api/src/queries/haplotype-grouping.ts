@@ -30,7 +30,7 @@ type GroupedRow = {
   tr_motifs_arr: (string | null)[]
   tr_strucs: (string | null)[]
   allele_methylations: (number | null)[]
-  motif_counts_arr: (string | null)[]
+  motif_counts_arr: (number[] | null)[]
   allele_purities: (number | null)[]
 }
 
@@ -58,7 +58,7 @@ type Variant = {
   tr_motifs: string | null
   tr_struc: string | null
   allele_methylation: number | null
-  motif_counts: string | null
+  motif_counts: number[] | null
   allele_purity: number | null
 }
 
@@ -70,7 +70,7 @@ function buildVariant(
   caddPhred: number | null, phylop: number | null,
   svConsequences: string[] | null, dbgapId: string | null,
   trId: string | null, trMotifs: string | null, trStruc: string | null,
-  alleleMethylation: number | null, motifCounts: string | null,
+  alleleMethylation: number | null, motifCounts: number[] | null,
   allelePurity: number | null,
 ): Variant {
   return {
@@ -97,7 +97,7 @@ function buildVariant(
     tr_motifs: trMotifs || null,
     tr_struc: trStruc || null,
     allele_methylation: alleleMethylation,
-    motif_counts: motifCounts || null,
+    motif_counts: motifCounts && motifCounts.length > 0 ? motifCounts : null,
     allele_purity: allelePurity,
   }
 }
@@ -145,7 +145,7 @@ export const createHaplotypeGroupsFromGrouped = (
         toNum(row.cadd_phreds?.[i]), toNum(row.phylops?.[i]),
         row.sv_consequences_arr?.[i] || null, toStr(row.dbgap_ids?.[i]),
         toStr(row.tr_ids?.[i]), toStr(row.tr_motifs_arr?.[i]), toStr(row.tr_strucs?.[i]),
-        toNum(row.allele_methylations?.[i]), toStr(row.motif_counts_arr?.[i]),
+        toNum(row.allele_methylations?.[i]), row.motif_counts_arr?.[i] || null,
         toNum(row.allele_purities?.[i]),
       )
 

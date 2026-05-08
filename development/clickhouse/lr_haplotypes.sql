@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS lr_haplotypes (
     tr_motifs String DEFAULT '',
     tr_struc String DEFAULT '',
     allele_methylation Nullable(Float32),
-    motif_counts String DEFAULT '',
+    motif_counts Array(UInt16),
     allele_purity Nullable(Float32)
 ) ENGINE = MergeTree()
 PARTITION BY chrom
