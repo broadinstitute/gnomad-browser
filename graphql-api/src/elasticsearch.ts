@@ -5,10 +5,13 @@ import config from './config'
 import { UserVisibleError } from './errors'
 import logger from './logger'
 
-const elasticsearchConfig = {
+const isCloudRunProxy = config.ELASTICSEARCH_URL?.includes('run.app')
+
+const elasticsearchConfig: Record<string, any> = {
   node: config.ELASTICSEARCH_URL,
   requestTimeout: config.ELASTICSEARCH_REQUEST_TIMEOUT,
   maxRetries: 0,
+  suggestCompression: true,
 }
 
 if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
@@ -18,7 +21,6 @@ if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
     )
   }
 
-  // @ts-expect-error TS(2339) FIXME: Property 'auth' does not exist on type '{ node: an... Remove this comment to see the full error message
   elasticsearchConfig.auth = {
     username: config.ELASTICSEARCH_USERNAME,
     password: config.ELASTICSEARCH_PASSWORD,
@@ -27,6 +29,24 @@ if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
 
 export const createUnlimitedElasticClient = () => new elasticsearch.Client(elasticsearchConfig)
 const elastic = createUnlimitedElasticClient()
+
+// For Cloud Run ES proxy: fetch an identity token at startup and inject it into the
+// transport's global headers. The token (~1h lifetime) stays fresh because
+// min_instance_count=0 means instances cold-start frequently.
+if (isCloudRunProxy) {
+  const { GoogleAuth } = require('google-auth-library')
+  const auth = new GoogleAuth()
+  auth.getIdTokenClient(config.ELASTICSEARCH_URL).then((idClient: any) =>
+    idClient.getRequestHeaders()
+  ).then((headers: Record<string, string>) => {
+    // Patch the transport's headers — these get merged into every request (Transport.js:130)
+    const transport = (elastic as any).transport
+    transport.headers.authorization = headers['Authorization']
+    logger.info('Injected identity token for ES proxy')
+  }).catch((err: any) => {
+    logger.error(`Failed to fetch identity token for ES proxy: ${err}`)
+  })
+}
 
 const esLimiter = new Bottleneck({
   maxConcurrent: config.MAX_CONCURRENT_ELASTICSEARCH_REQUESTS,
