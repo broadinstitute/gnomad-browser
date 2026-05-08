@@ -66,28 +66,24 @@ else
     log "ClickHouse is ready."
 fi
 
-# --- 3. Elasticsearch ---
+# --- 3. Elasticsearch (via Cloud Run proxy) ---
+# Proxies the production ES cluster through Cloud Run with IAM auth.
+# gcloud handles identity tokens transparently on localhost:9200.
 if curl -sf http://127.0.0.1:9200/ &>/dev/null; then
-    log "Elasticsearch already running."
+    log "ES proxy already running on localhost:9200."
 else
-    if docker ps -a --format '{{.Names}}' | grep -q '^gnomad-es$'; then
-        log "Starting existing Elasticsearch container..."
-        docker start gnomad-es
-    else
-        log "Creating Elasticsearch container..."
-        docker run -d --name gnomad-es \
-            -p 9200:9200 \
-            -e "discovery.type=single-node" \
-            -v gnomad_es_data:/usr/share/elasticsearch/data \
-            elasticsearch:7.17.27
-    fi
-    log "Waiting for Elasticsearch..."
+    log "Starting local ES proxy (gcloud run services proxy)..."
+    gcloud run services proxy gnomad-es-readonly-proxy \
+        --project=exac-gnomad --region=us-east1 --port=9200 &
+    ES_PROXY_PID=$!
+    log "Waiting for ES proxy on localhost:9200..."
     for i in $(seq 1 30); do
         curl -sf http://127.0.0.1:9200/ &>/dev/null && break
+        kill -0 $ES_PROXY_PID 2>/dev/null || { err "ES proxy process died"; exit 1; }
         sleep 1
     done
-    curl -sf http://127.0.0.1:9200/ &>/dev/null || { err "Elasticsearch failed to start"; exit 1; }
-    log "Elasticsearch is ready."
+    curl -sf http://127.0.0.1:9200/ &>/dev/null || { err "ES proxy failed to start"; exit 1; }
+    log "ES proxy is ready."
 fi
 
 # --- 4. Redis ---
