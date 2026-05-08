@@ -36,3 +36,12 @@ hail-*.log
 
 # Reads metadata databases
 reads/*.db
+# Playwright MCP
+.playwright-mcp/
+
+# Terraform
+.terraform/
+*.tfplan
+*.tfstate
+*.tfstate.backup
+*.tfvars
