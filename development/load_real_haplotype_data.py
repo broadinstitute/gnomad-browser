@@ -424,11 +424,13 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                 mc_val = fmt.get("MC")
                 if mc_val and mc_val != ".":
                     mc_parts = mc_val.split(",")
-                    motif_counts = mc_parts[hap_idx] if hap_idx < len(mc_parts) else ""
-                    if motif_counts == ".":
-                        motif_counts = ""
+                    mc_str = mc_parts[hap_idx] if hap_idx < len(mc_parts) else ""
+                    if mc_str and mc_str != ".":
+                        motif_counts = [int(x) for x in mc_str.split("_") if x]
+                    else:
+                        motif_counts = []
                 else:
-                    motif_counts = ""
+                    motif_counts = []
 
                 if backend == "clickhouse":
                     # ClickHouse schema: scalar info_AF, separate ref/alt, no ES metadata

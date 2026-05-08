@@ -33,7 +33,7 @@ type HaplotypeVariant {
   tr_motifs: String
   tr_struc: String
   allele_methylation: Float
-  motif_counts: String
+  motif_counts: [Int!]
   allele_purity: Float
 }
 
