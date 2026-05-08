@@ -1,0 +1,14 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-f'
+      - '${_DOCKERFILE}'
+      - '-t'
+      - '${_IMAGE}:latest'
+      - '.'
+images:
+  - '${_IMAGE}:latest'
+substitutions:
+  _DOCKERFILE: 'deploy/dockerfiles/browser/api.dockerfile'
+  _IMAGE: 'us-docker.pkg.dev/gnomadev/gnomad/gnomad-lr-api'
