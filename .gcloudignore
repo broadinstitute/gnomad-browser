@@ -1,0 +1,7 @@
+.git
+node_modules
+.grove-worktrees
+.playwright-mcp
+*.pyc
+__pycache__
+.terraform
