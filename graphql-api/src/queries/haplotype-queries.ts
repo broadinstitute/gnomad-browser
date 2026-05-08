@@ -52,6 +52,55 @@ export const fetchGroupedHaplotypeVariants = async (
 }
 
 /**
+ * Fetch only TRV (tandem repeat variant) haplotypes across a whole chromosome.
+ * Same grouped shape as fetchGroupedHaplotypeVariants but filtered to allele_type = 'trv'.
+ */
+export const fetchGroupedTrvVariants = async (
+  _esClient: any,
+  chrom: string,
+) => {
+  const query = `
+    SELECT
+      sample_id,
+      strand,
+      groupArray(position)  AS positions,
+      groupArray(ref)       AS refs,
+      groupArray(alt)       AS alts,
+      groupArray(rsid)      AS rsids,
+      groupArray(info_AF)   AS afs,
+      groupArray(info_AC)   AS acs,
+      groupArray(info_AN)   AS ans,
+      groupArray(allele_type)   AS allele_types,
+      groupArray(allele_length) AS allele_lengths,
+      groupArray(info_AF_afr)   AS af_afrs,
+      groupArray(info_AF_amr)   AS af_amrs,
+      groupArray(info_AF_eas)   AS af_eass,
+      groupArray(info_AF_nfe)   AS af_nfes,
+      groupArray(info_AF_sas)   AS af_sass,
+      groupArray(cadd_phred)    AS cadd_phreds,
+      groupArray(phylop)        AS phylops,
+      groupArray(sv_consequences) AS sv_consequences_arr,
+      groupArray(dbgap_id)      AS dbgap_ids,
+      groupArray(tr_id)         AS tr_ids,
+      groupArray(tr_motifs)     AS tr_motifs_arr,
+      groupArray(tr_struc)      AS tr_strucs,
+      groupArray(allele_methylation) AS allele_methylations,
+      groupArray(motif_counts)  AS motif_counts_arr,
+      groupArray(allele_purity) AS allele_purities
+    FROM lr_haplotypes
+    WHERE chrom = {chrom:String} AND allele_type = 'trv'
+    GROUP BY sample_id, strand
+    ORDER BY sample_id, strand
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json()
+}
+
+/**
  * Flat per-row fetch — still used by mQTL which needs per-row sample_id + gt_alleles.
  * Trimmed to only the columns mQTL actually needs.
  */

@@ -1,6 +1,7 @@
 import { fetchMQTLAssociations } from '../../queries/mqtl-queries'
 import {
   fetchGroupedHaplotypeVariants,
+  fetchGroupedTrvVariants,
   fetchSampleMetadata,
   fetchMethylationForRegion,
   fetchMethylationSummaryForRegion,
@@ -11,6 +12,7 @@ import {
 import {
   createHaplotypeGroupsFromGrouped,
 } from '../../queries/haplotype-grouping'
+import { fetchStrCatalog, categorizeLocus, parseMotifStats } from '../../queries/str-catalog'
 import { withCache } from '../../cache'
 import logger from '../../logger'
 
@@ -49,6 +51,23 @@ const fetchRecombinationRate = withCache(
 
 const normalizeChrom = (chrom: string) =>
   chrom.startsWith('chr') ? chrom : `chr${chrom}`
+
+const trvCache = new Map<string, any>()
+
+const fetchTrvHaplotypeGroups = async (chrom: string) => {
+  if (trvCache.has(chrom)) return trvCache.get(chrom)
+  const rows = await fetchGroupedTrvVariants(null, chrom)
+  const result = createHaplotypeGroupsFromGrouped(
+    rows as any[],
+    chrom,
+    0,
+    Number.MAX_SAFE_INTEGER,
+    0,
+    'similarity_score'
+  )
+  trvCache.set(chrom, result)
+  return result
+}
 
 const resolvers = {
   Query: {
@@ -190,6 +209,54 @@ const resolvers = {
       addTiming(ctx, {
         label: 'lr_str_histogram',
         ms: now() - t0,
+      })
+      return result
+    },
+    str_catalog_haplotypes: async (_obj: any, args: any, ctx: any) => {
+      try {
+        const chrom = normalizeChrom(args.chrom)
+        const t0 = now()
+        const result = await fetchTrvHaplotypeGroups(chrom)
+        addTiming(ctx, {
+          label: 'str_catalog_haplotypes',
+          ms: now() - t0,
+          meta: { groups: result.groups.length },
+        })
+        return result
+      } catch (e: any) {
+        logger.error(`str_catalog_haplotypes error: ${e.message}\n${e.stack}`)
+        throw e
+      }
+    },
+    str_catalog: async (_obj: any, args: any, ctx: any) => {
+      const t0 = now()
+      const chrom = normalizeChrom(args.chrom)
+      const rows = await fetchStrCatalog(chrom)
+      const result = rows.map((row) => {
+        const { motifCount, maxSingleMotifLen } = parseMotifStats(row.tr_motifs)
+        return {
+          position: Number(row.position),
+          chrom,
+          trId: row.tr_id || '',
+          motifs: row.tr_motifs || '',
+          motifCount,
+          numHaplotypes: Number(row.total_haplotypes),
+          distinctAlleleLengths: Number(row.distinct_lengths),
+          minAlleleLen: Number(row.min_alt_len),
+          maxAlleleLen: Number(row.max_alt_len),
+          sizeRatio: row.size_ratio != null ? Number(row.size_ratio) : null,
+          avgPurity: Number(row.avg_purity),
+          minPurity: Number(row.min_purity),
+          countBelow50Purity: Number(row.count_below_50),
+          hasOverlargeSvOutlier: (row.size_ratio ?? 1) > 50,
+          hasDeletionBug: Number(row.deletion_bug_count) > 0,
+          category: categorizeLocus(row, maxSingleMotifLen),
+        }
+      })
+      addTiming(ctx, {
+        label: 'str_catalog',
+        ms: now() - t0,
+        meta: { loci: result.length },
       })
       return result
     },
