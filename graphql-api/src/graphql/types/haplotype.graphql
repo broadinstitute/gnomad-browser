@@ -144,6 +144,35 @@ type STRHistogramRecord {
   populations: [STRHistogramPopulation!]
 }
 
+enum StrQualityCategory {
+  CLEAN
+  BORDERLINE
+  LEGIT_BINNED
+  BOGUS_PURITY
+  DEGENERATE_MOTIF
+  SV_CONTAMINATION
+  DELETION_BUG
+}
+
+type StrCatalogLocus {
+  position: Int!
+  chrom: String!
+  trId: String!
+  motifs: String!
+  motifCount: Int!
+  numHaplotypes: Int!
+  distinctAlleleLengths: Int!
+  minAlleleLen: Int!
+  maxAlleleLen: Int!
+  sizeRatio: Float
+  avgPurity: Float!
+  minPurity: Float!
+  countBelow50Purity: Int!
+  hasOverlargeSvOutlier: Boolean!
+  hasDeletionBug: Boolean!
+  category: StrQualityCategory!
+}
+
 extend type Query {
   sample_metadata: [SampleMetadata!]!
   mqtl_associations(
@@ -195,4 +224,8 @@ extend type Query {
   ): [CoverageBin!]!
 
   lr_str_histogram(chrom: String!, position: Int!): STRHistogramRecord
+
+  str_catalog(chrom: String!): [StrCatalogLocus!]!
+
+  str_catalog_haplotypes(chrom: String!): HaplotypeGroups
 }
