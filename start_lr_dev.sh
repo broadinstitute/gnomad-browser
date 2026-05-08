@@ -24,6 +24,11 @@ trap cleanup EXIT INT TERM
 
 # --- 1. Colima / Docker ---
 if ! docker info &>/dev/null; then
+    # If colima thinks it's running but docker is dead, force restart
+    if colima list 2>/dev/null | grep -q 'Running'; then
+        warn "Colima VM is running but Docker is unresponsive. Restarting..."
+        colima stop --force
+    fi
     log "Starting Colima..."
     colima start
     # Wait for docker to be ready
