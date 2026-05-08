@@ -1056,12 +1056,14 @@ type HaplotypeVariantTableProps = {
   sampleMetadata: SampleMetadataMap
   totalGroups?: number
   onHoverVariant?: (position: number | null) => void
+  maxHeight?: string
 }
 
 const HaplotypeVariantTable = ({
   haplotypeGroups,
   sampleMetadata,
   onHoverVariant,
+  maxHeight = '500px',
 }: HaplotypeVariantTableProps) => {
   const [sort, setSort] = useState<SortConfig>({ key: 'position', direction: 'asc' })
   const [searchText, setSearchText] = useState('')
@@ -1467,7 +1469,7 @@ const HaplotypeVariantTable = ({
         </CountLabel>
       </ControlBar>
 
-      <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+      <div style={{ maxHeight, overflowY: 'auto' }}>
         <StyledTable>
           <thead>
             <tr>
