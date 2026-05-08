@@ -420,6 +420,9 @@ importers:
       express-graphql:
         specifier: ^0.12.0
         version: 0.12.0(graphql@15.8.0)
+      google-auth-library:
+        specifier: ^9.0.0
+        version: 9.4.1
       graphql:
         specifier: ^15.3.0
         version: 15.8.0

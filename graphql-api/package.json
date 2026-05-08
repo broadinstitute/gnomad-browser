@@ -8,6 +8,7 @@
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.0",
     "@google-cloud/storage": "^7.7.0",
+    "google-auth-library": "^9.0.0",
     "@graphql-tools/load-files": "^6.0.12",
     "@graphql-tools/merge": "^6.0.12",
     "@graphql-tools/schema": "^6.0.12",
