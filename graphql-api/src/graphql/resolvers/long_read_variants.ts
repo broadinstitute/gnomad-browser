@@ -1,6 +1,6 @@
 import { isRsId } from '@gnomad/identifiers'
 import { UserVisibleError } from '../../errors'
-import { fetchVariantById, fetchVariantsByGene } from '../../queries/long_read_variants'
+import { fetchVariantById, fetchVariantsByGene, fetchVariantsByRegion } from '../../queries/long_read_variants'
 
 const addHgvs = (hit: any) => ({
   ...hit,
@@ -45,12 +45,20 @@ const resolveVariantsInGene = async (obj: any, _args: any, _ctx: any) => {
   return hits.map(addHgvs)
 }
 
+const resolveVariantsInRegion = async (obj: any, _args: any, _ctx: any) => {
+  const hits = await fetchVariantsByRegion({ chrom: obj.chrom, start: obj.start, stop: obj.stop })
+  return hits.map(addHgvs)
+}
+
 const resolvers = {
   Query: {
     long_read_variant: resolveVariant,
   },
   Gene: {
     long_read_variants: resolveVariantsInGene,
+  },
+  Region: {
+    long_read_variants: resolveVariantsInRegion,
   },
 }
 
