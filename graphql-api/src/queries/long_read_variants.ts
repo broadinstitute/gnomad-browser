@@ -8,17 +8,28 @@ import { fetchSTRHistogram } from './haplotype-queries'
 const normalizeChrom = (chrom: string) =>
   chrom.startsWith('chr') ? chrom : `chr${chrom}`
 
-const mapClickHouseRowToGraphQL = (row: any) => ({
+const mapClickHouseRowToGraphQL = (row: any) => {
+  const filters = Array.isArray(row.filters) ? [...row.filters] : []
+  if (row.enveloping_tr_id && row.enveloping_tr_id !== '') {
+    if (!filters.includes('TRGT_OVERLAPPED')) {
+      filters.push('TRGT_OVERLAPPED')
+    }
+  }
+
+  return {
   variant_id: row.variant_id,
   reference_genome: 'GRCh38',
   chrom: row.chrom.replace('chr', ''),
   pos: Number(row.position),
+  end: row.end != null ? Number(row.end) : null,
+  length: row.length != null ? Number(row.length) : null,
   ref: row.ref,
   alt: row.alt,
   xpos: Number(row.xpos),
   rsids: row.rsids,
   allele_type: row.allele_type,
-  filters: row.filters,
+  sv_consequences: [],
+  filters,
   intergenic: row.intergenic === 1,
   gene_region: row.gene_region || null,
   major_consequence: row.major_consequence || null,
@@ -41,7 +52,8 @@ const mapClickHouseRowToGraphQL = (row: any) => ({
   allele_size_distribution: null as any,
   genotype_distribution: null as any,
   max_repunits: null as any,
-})
+}
+}
 
 const parseAlleleSizeDistribution = (populations: { key: string; histogram: string }[]) => {
   const results: any[] = []

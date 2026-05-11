@@ -94,6 +94,8 @@ type LongReadVariant {
   reference_genome: ReferenceGenomeId!
   chrom: String!
   pos: Int!
+  end: Int
+  length: Int
   ref: String!
   alt: String!
   rsids: [String!]
@@ -109,6 +111,7 @@ type LongReadVariant {
   short_read_match_source: String
   enveloping_tr_id: String
   enveloped_ids: [String!]
+  sv_consequences: [String!]
   filters: [String!]
   gene_region: String
   gnomad_str: String
