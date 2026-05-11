@@ -195,6 +195,9 @@ const longReadVariantSubquery = `
         start
         stop
       }
+      rsids
+      cadd_phred
+      phylop
       sv_consequences
       freq {
         all {
@@ -262,9 +265,10 @@ type ConnectedVariantsInRegionProps = {
     start: number
     stop: number
   }
+  zoomRegion?: { start: number; stop: number } | null
 }
 
-const ConnectedVariantsInRegion = ({ datasetId, region }: ConnectedVariantsInRegionProps) => {
+const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion }: ConnectedVariantsInRegionProps) => {
   const longRead = isLongRead(datasetId)
 
   return (
@@ -291,6 +295,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region }: ConnectedVariantsInReg
               datasetId={datasetId}
               gene={{ chrom: region.chrom, start: region.start, stop: region.stop }}
               variants={data.region.long_read_variants}
+              zoomRegion={zoomRegion}
               clinvarReleaseDate={data.meta.clinvar_release_date}
             />
           )

@@ -11,7 +11,6 @@ import HaplotypeTrack, { HaplotypeGroups, Methylation, MethylationSummaryPoint }
 import HaplotypeVariantTable from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
-import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 import LongReadVariantTrack from './LongReadVariantTrack'
@@ -30,11 +29,11 @@ const HAPLOTYPE_GROUPS_QUERY = `
       groups {
         samples { sample_id }
         variants {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop major_consequence sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
           readable_id
         }
         below_threshold {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
+          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop major_consequence sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
           readable_id
         }
         start stop hash
@@ -343,37 +342,14 @@ const LongReadUnifiedView = ({
 
   return (
     <>
-      <TrackPageSection>
-        <ToggleWrapper>
-          <SegmentedControl
-            id="lr-view-mode"
-            options={[
-              { label: 'Summary', value: 'summary' },
-              { label: 'Haplotype', value: 'haplotype' },
-            ]}
-            value={viewMode}
-            onChange={(value: string) => setViewMode(value as 'summary' | 'haplotype')}
-          />
-        </ToggleWrapper>
-
-        {viewMode === 'haplotype' && (
-          <InfoBanner>
-            Viewing phased haplotypes for a deeply-sequenced subset of 292 samples.
-            Some rare variants from the full summary callset may not appear in this mode.
-          </InfoBanner>
-        )}
-      </TrackPageSection>
-
       {viewMode === 'summary' && (
         <>
-          <LRCoverageTrack chrom={chrom} start={start} stop={stop} />
           <LongReadVariantTrack variants={displayVariants} />
         </>
       )}
 
       {viewMode === 'haplotype' && (
         <>
-          <LRCoverageTrack chrom={chrom} start={start} stop={stop} />
           <RecombinationRatePlot chrom={chrom} start={queryRegion.start} stop={queryRegion.stop} />
           {showMqtl && (
             <MQTLTrack
@@ -417,6 +393,27 @@ const LongReadUnifiedView = ({
           <PositionAxisTrack />
         </>
       )}
+
+      <TrackPageSection>
+        <ToggleWrapper>
+          <SegmentedControl
+            id="lr-view-mode"
+            options={[
+              { label: 'Summary', value: 'summary' },
+              { label: 'Haplotype', value: 'haplotype' },
+            ]}
+            value={viewMode}
+            onChange={(value: string) => setViewMode(value as 'summary' | 'haplotype')}
+          />
+        </ToggleWrapper>
+
+        {viewMode === 'haplotype' && (
+          <InfoBanner>
+            Viewing phased haplotypes for a deeply-sequenced subset of 292 samples.
+            Some rare variants from the full summary callset may not appear in this mode.
+          </InfoBanner>
+        )}
+      </TrackPageSection>
 
       <TrackPageSection>
         {viewMode === 'summary' ? (

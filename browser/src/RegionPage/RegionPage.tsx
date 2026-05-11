@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
@@ -11,6 +11,7 @@ import {
   regionsHaveGenomeCoverage,
   isSVs,
   isV4CNVs,
+  isLongRead,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import GnomadPageHeading from '../GnomadPageHeading'
@@ -20,6 +21,8 @@ import RegionViewer from '../RegionViewer/RegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
+import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
+import ZoomOverview from '../Haplotypes/ZoomOverview'
 import EditRegion from './EditRegion'
 import GenesInRegionTrack from './GenesInRegionTrack'
 import MitochondrialRegionCoverageTrack from './MitochondrialRegionCoverageTrack'
@@ -78,7 +81,7 @@ type RegionPageProps = {
   region: Region
 }
 
-const variantsInRegion = (datasetId: DatasetId, region: Region) => {
+const variantsInRegion = (datasetId: DatasetId, region: Region, zoomRegion?: { start: number; stop: number } | null) => {
   if (isSVs(datasetId)) {
     return <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
   }
@@ -93,11 +96,12 @@ const variantsInRegion = (datasetId: DatasetId, region: Region) => {
     )
   }
 
-  return <RegularVariantsInRegion datasetId={datasetId} region={region} />
+  return <RegularVariantsInRegion datasetId={datasetId} region={region} zoomRegion={zoomRegion} />
 }
 
 const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const { chrom, start, stop } = region
+  const [zoomRegion, setZoomRegion] = useState<{ start: number; stop: number } | null>(null)
 
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
@@ -154,13 +158,28 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           </RegionControlsWrapper>
         </RegionInfoColumnWrapper>
       </TrackPageSection>
+      {isLongRead(datasetId) && (
+        <TrackPageSection>
+          <ZoomOverview
+            overviewRegion={{ start, stop }}
+            currentRegion={zoomRegion || { start, stop }}
+            chrom={chrom}
+            genes={region.genes}
+            onChangeRegion={setZoomRegion}
+            onSetRegion={setZoomRegion}
+          />
+        </TrackPageSection>
+      )}
       <RegionViewer
         leftPanelWidth={115}
         regions={[region]}
         rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
       >
-        {region.chrom === 'M' ? (
+        {/* eslint-disable-next-line no-nested-ternary */}
+        {isLongRead(datasetId) ? (
+          <LRCoverageTrack chrom={chrom} start={start} stop={stop} />
+        ) : region.chrom === 'M' ? (
           <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
         ) : (
           <RegionCoverageTrack
@@ -188,7 +207,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             />
           </>
         )}
-        {variantsInRegion(datasetId, region)}
+        {variantsInRegion(datasetId, region, zoomRegion)}
       </RegionViewer>
     </TrackPage>
   )

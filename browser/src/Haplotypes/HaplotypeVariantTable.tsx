@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
 import { PATH_COLORS, SUPERPOPULATION_COLORS, VARIANT_TYPE_COLORS } from './colors'
 import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup } from './index'
@@ -93,6 +94,7 @@ type DerivedVariant = {
   str_distribution?: StrDataPoint[]
   min_length_diff?: number
   max_length_diff?: number
+  major_consequence: string | null
   cadd_phred: number | null
   phylop: number | null
   sv_consequences: string[] | null
@@ -1084,6 +1086,12 @@ const HaplotypeVariantTable = ({
     sv: true,
     str: true,
   })
+  const [consequenceFilters, setConsequenceFilters] = useState<Record<string, boolean>>({
+    lof: true,
+    missense: true,
+    synonymous: true,
+    other: true,
+  })
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
 
   const toggleExpand = (id: string) => {
@@ -1131,9 +1139,10 @@ const HaplotypeVariantTable = ({
           short_read_match_id: v.short_read_match_id || null,
           is_str: v.allele_type === 'trv',
           enveloped_ids: v.enveloped_ids || null,
+          major_consequence: v.major_consequence || null,
           sv_consequences: v.sv_consequences || null,
-          cadd_phred: null,
-          phylop: null,
+          cadd_phred: v.cadd_phred ?? null,
+          phylop: v.phylop ?? null,
           dbgap_id: null,
           tr_id: null,
           tr_motifs: v.motifs?.join(',') || null,
@@ -1326,6 +1335,7 @@ const HaplotypeVariantTable = ({
         str_distribution: strDistribution,
         min_length_diff: minLengthDiff,
         max_length_diff: maxLengthDiff,
+        major_consequence: v.major_consequence ?? null,
         cadd_phred: v.cadd_phred ?? null,
         phylop: v.phylop ?? null,
         sv_consequences: v.sv_consequences ?? null,
@@ -1365,6 +1375,12 @@ const HaplotypeVariantTable = ({
     // Type filter
     list = list.filter((v) => typeFilters[getVariantTypeCategory(v.allele_type, v.allele_length)])
 
+    // Consequence category filter
+    list = list.filter((v) => {
+      const cat = getCategoryFromConsequence(v.major_consequence) || 'other'
+      return consequenceFilters[cat]
+    })
+
     // Search filter
     if (searchText.trim()) {
       const q = searchText.trim().toLowerCase()
@@ -1379,7 +1395,7 @@ const HaplotypeVariantTable = ({
     }
 
     return list
-  }, [variants, typeFilters, searchText])
+  }, [variants, typeFilters, consequenceFilters, searchText])
 
   // Sort
   const sorted = useMemo(() => {
@@ -1411,6 +1427,17 @@ const HaplotypeVariantTable = ({
 
   const toggleTypeFilter = (type: string) => {
     setTypeFilters((prev) => ({ ...prev, [type]: !prev[type] }))
+  }
+
+  const toggleConsequenceFilter = (cat: string) => {
+    setConsequenceFilters((prev) => ({ ...prev, [cat]: !prev[cat] }))
+  }
+
+  const consequenceCategoryColors: Record<string, string> = {
+    lof: '#FF583F',
+    missense: '#F0C94D',
+    synonymous: 'green',
+    other: '#757575',
   }
 
   const exportCSV = () => {
@@ -1508,6 +1535,35 @@ const HaplotypeVariantTable = ({
         >
           STR
         </FilterButton>
+        <span style={{ borderLeft: '1px solid #ccc', height: 20, margin: '0 4px' }} />
+        <FilterButton
+          $active={consequenceFilters.lof}
+          $color={consequenceCategoryColors.lof}
+          onClick={() => toggleConsequenceFilter('lof')}
+        >
+          LoF
+        </FilterButton>
+        <FilterButton
+          $active={consequenceFilters.missense}
+          $color={consequenceCategoryColors.missense}
+          onClick={() => toggleConsequenceFilter('missense')}
+        >
+          Missense
+        </FilterButton>
+        <FilterButton
+          $active={consequenceFilters.synonymous}
+          $color={consequenceCategoryColors.synonymous}
+          onClick={() => toggleConsequenceFilter('synonymous')}
+        >
+          Synonymous
+        </FilterButton>
+        <FilterButton
+          $active={consequenceFilters.other}
+          $color={consequenceCategoryColors.other}
+          onClick={() => toggleConsequenceFilter('other')}
+        >
+          Other
+        </FilterButton>
         <SearchInput
           type="text"
           placeholder="Search position, rsID, allele…"
@@ -1571,7 +1627,7 @@ const HaplotypeVariantTable = ({
               <th onClick={() => handleSort('phylop')} style={{ width: 60 }}>
                 phyloP{sortIndicator('phylop')}
               </th>
-              <th>SV Csq</th>
+              <th onClick={() => handleSort('major_consequence')}>Consequence{sortIndicator('major_consequence')}</th>
               <th onClick={() => handleSort('rsid')}>rsID{sortIndicator('rsid')}</th>
             </tr>
           </thead>
@@ -1640,18 +1696,10 @@ const HaplotypeVariantTable = ({
                     )}
                     <td>{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
                     <td>{renderPredictor(v.phylop, 7.367, 9.741)}</td>
-                    <td style={{ maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {v.sv_consequences && v.sv_consequences.length > 0
-                        ? v.sv_consequences.map((csq, ci) => {
-                            const { type, gene } = parseSvConsequence(csq)
-                            return (
-                              <SvCsqBadge key={ci} title={gene ? `${type}: ${gene}` : type}>
-                                {type}{gene ? `:${gene}` : ''}
-                              </SvCsqBadge>
-                            )
-                          })
-                        : <span style={{ color: '#ccc' }}>—</span>
-                      }
+                    <td>
+                      {v.major_consequence
+                        ? getLabelForConsequenceTerm(v.major_consequence)
+                        : <span style={{ color: '#ccc' }}>—</span>}
                     </td>
                     <td>
                       {v.rsid && v.rsid.startsWith('rs') ? (

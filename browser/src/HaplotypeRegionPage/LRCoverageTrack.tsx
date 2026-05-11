@@ -78,7 +78,7 @@ const LRCoverageTrack = ({ chrom, start, stop }: LRCoverageTrackProps) => {
           opacity: 0.7,
         },
       ]}
-      height={200}
+      height={100}
       datasetId="gnomad_r4"
     />
   )
