@@ -8,11 +8,14 @@ Usage:
     python3 development/load_real_haplotype_data.py genes --region chr22:20M-21M
     python3 development/load_real_haplotype_data.py metadata --backend clickhouse
     python3 development/load_real_haplotype_data.py histograms --backend clickhouse
+    python3 development/load_real_haplotype_data.py variants --region chr22:20M-21M --backend clickhouse
     python3 development/load_real_haplotype_data.py all --region chr22:20M-21M --backend clickhouse
 """
 import argparse
+import collections
 import gzip
 import hashlib
+import itertools
 import json
 import os
 import subprocess
@@ -184,6 +187,419 @@ def gcs_stream_plain(gcs_path):
     if proc.returncode != 0:
         stderr = proc.stderr.read().decode()
         print(f"  gsutil cat error: {stderr[:500]}")
+
+
+# --- Variant loading constants ---
+
+POPULATIONS = ["afr", "amr", "asj", "eas", "nfe", "sas"]
+DIVISIONS = list(itertools.chain.from_iterable([pop, f"{pop}_XX", f"{pop}_XY"] for pop in POPULATIONS)) + ["XX", "XY"]
+
+FREQ_FIELDS = ["AN", "AC", "AF", "nhomref", "nhet", "nhomalt", "freq_homref", "freq_het", "freq_homalt"]
+
+FREQ_FIELD_RENAMES = {
+    "nhomref": "homozygote_ref_count",
+    "nhomalt": "homozygote_alt_count",
+    "nhet": "heterozygote_count",
+    "freq_homref": "homozygote_ref_freq",
+    "freq_homalt": "homozygote_alt_freq",
+    "freq_het": "heterozygote_freq",
+}
+
+OMIT_CONSEQUENCE_TERMS = {"upstream_gene_variant", "downstream_gene_variant"}
+
+# Consequence terms ranked by severity (lower index = more severe)
+CONSEQUENCE_TERMS = [
+    "transcript_ablation", "splice_acceptor_variant", "splice_donor_variant",
+    "stop_gained", "frameshift_variant", "stop_lost", "start_lost",
+    "initiator_codon_variant", "transcript_amplification", "inframe_insertion",
+    "inframe_deletion", "missense_variant", "protein_altering_variant",
+    "splice_region_variant", "incomplete_terminal_codon_variant",
+    "start_retained_variant", "stop_retained_variant", "synonymous_variant",
+    "coding_sequence_variant", "mature_miRNA_variant", "5_prime_UTR_variant",
+    "3_prime_UTR_variant", "non_coding_transcript_exon_variant",
+    "non_coding_exon_variant", "intron_variant", "NMD_transcript_variant",
+    "non_coding_transcript_variant", "nc_transcript_variant",
+    "upstream_gene_variant", "downstream_gene_variant", "TFBS_ablation",
+    "TFBS_amplification", "TF_binding_site_variant",
+    "regulatory_region_ablation", "regulatory_region_amplification",
+    "feature_elongation", "regulatory_region_variant", "feature_truncation",
+    "intergenic_variant",
+]
+CONSEQUENCE_TERM_RANK = {term: rank for rank, term in enumerate(CONSEQUENCE_TERMS)}
+
+
+# --- Variant loading (site-level) ---
+
+
+def build_enveloped_map(vcf_path, region_chrom, region_start, region_stop):
+    """Pre-pass: build a map of TR variant_id -> [enveloped variant_ids].
+
+    Scans VCF lines with TR_ENVELOPED flag to find variants enveloped by a TR.
+    Returns dict mapping enveloping TR's variant_id -> list of enveloped variant_ids.
+    """
+    enveloped_map = collections.defaultdict(list)
+    print("  Pre-pass: building enveloped_ids map...")
+
+    for line in gcs_stream_gzip(vcf_path):
+        line = line.rstrip("\n")
+        if line.startswith("#"):
+            continue
+        if "TR_ENVELOPED" not in line:
+            continue
+
+        parts = line.split("\t")
+        if len(parts) < 8:
+            continue
+
+        chrom_field = parts[0]
+        pos = int(parts[1])
+
+        if chrom_field != region_chrom:
+            continue
+        if pos < region_start or pos > region_stop:
+            continue
+
+        info_str = parts[7]
+        info = parse_info_field(info_str)
+
+        # Only process lines that actually have the TR_ENVELOPED flag
+        if "TR_ENVELOPED" not in info:
+            continue
+
+        # variant_id from VCF ID column, strip "chr"
+        variant_id = parts[2].replace("chr", "", 1)
+
+        # TRID is the ID of the enveloping TR
+        trid = info.get("TRID", "")
+        if trid is True or not trid:
+            continue
+        trid = trid.replace("chr", "", 1)
+
+        enveloped_map[trid].append(variant_id)
+
+    print(f"  Pre-pass complete: {sum(len(v) for v in enveloped_map.values())} enveloped variants across {len(enveloped_map)} TRs")
+    return dict(enveloped_map)
+
+
+def parse_info_first(info, key, default=""):
+    """Extract the first value from a Number=. INFO field (comma-separated), or default."""
+    val = info.get(key)
+    if val is None or val is True or val == ".":
+        return default
+    return val.split(",")[0]
+
+
+def compute_xpos(chrom):
+    """Compute chromosome number for xpos calculation."""
+    c = chrom.replace("chr", "")
+    if c == "X":
+        return 23
+    elif c == "Y":
+        return 24
+    elif c == "M" or c == "MT":
+        return 25
+    try:
+        return int(c)
+    except ValueError:
+        return 0
+
+
+def parse_vep_entries(info):
+    """Parse VEP from INFO field. Returns (transcript_consequences, genes, intergenic, major_consequence)."""
+    vep_str = info.get("vep")
+    if not vep_str or vep_str is True:
+        return [], [], 0, ""
+
+    entries = vep_str.split(",")
+
+    # Collect genes from ALL entries (not just transcript VEP)
+    genes_set = set()
+    intergenic = 0
+    transcript_consequences = []
+
+    for entry_str in entries:
+        fields = entry_str.split("|")
+
+        # Genes: collect from all entries with symbol and ensembl_id
+        if len(fields) > 4:
+            symbol = fields[3]
+            ensembl_id = fields[4]
+            if symbol and ensembl_id:
+                genes_set.add((symbol, ensembl_id))
+
+        # Intergenic: feature_type is empty
+        if len(fields) > 5 and fields[5] == "":
+            intergenic = 1
+
+        # Only PICK=1 entries (index 22) for transcript consequences
+        if len(fields) <= 22 or fields[22] != "1":
+            continue
+        # Only Transcript feature_type (index 5)
+        if len(fields) <= 5 or fields[5] != "Transcript":
+            continue
+
+        consequence_terms = [t for t in fields[1].split("&") if t and t not in OMIT_CONSEQUENCE_TERMS]
+        if not consequence_terms:
+            continue
+
+        # HGVSc at index 10, HGVSp at index 11 (correcting Hail bug using 9/10)
+        hgvsc = fields[10].split(":")[-1] if len(fields) > 10 and fields[10] else ""
+        hgvsp = fields[11].split(":")[-1] if len(fields) > 11 and fields[11] else ""
+
+        tc = {
+            "consequence_terms": consequence_terms,
+            "gene_symbol": fields[3] if len(fields) > 3 else "",
+            "gene_id": fields[4] if len(fields) > 4 else "",
+            "transcript_id": fields[6] if len(fields) > 6 else "",
+            "is_canonical": (fields[27] == "YES") if len(fields) > 27 else False,
+            "major_consequence": min(consequence_terms, key=lambda t: CONSEQUENCE_TERM_RANK.get(t, 999)),
+        }
+        if hgvsc:
+            tc["hgvsc"] = hgvsc
+        if hgvsp:
+            tc["hgvsp"] = hgvsp
+        if len(fields) > 45 and fields[45]:
+            tc["sift_prediction"] = fields[45]
+        if len(fields) > 46 and fields[46]:
+            tc["polyphen_prediction"] = fields[46]
+        if len(fields) > 47 and fields[47]:
+            tc["domains"] = [fields[47]]
+
+        transcript_consequences.append(tc)
+
+    # Compute top-level major_consequence from all transcript consequences
+    major_consequence = ""
+    if transcript_consequences:
+        all_terms = []
+        for tc in transcript_consequences:
+            all_terms.extend(tc["consequence_terms"])
+        if all_terms:
+            major_consequence = min(all_terms, key=lambda t: CONSEQUENCE_TERM_RANK.get(t, 999))
+
+    genes = [{"symbol": s, "ensembl_id": e} for s, e in sorted(genes_set)]
+
+    return transcript_consequences, genes, intergenic, major_consequence
+
+
+def build_freq_json(info):
+    """Build the nested frequency JSON matching LongReadVariantFrequencies."""
+    def get_freq_fields(info, suffix=""):
+        ac_val = info.get(f"AC{suffix}")
+        af_val = info.get(f"AF{suffix}")
+        # AC and AF are Number=A (array), take first element
+        if ac_val and ac_val is not True and ac_val != ".":
+            ac_val = ac_val.split(",")[0]
+        if af_val and af_val is not True and af_val != ".":
+            af_val = af_val.split(",")[0]
+        return {
+            "ac": parse_info_int(info, f"AC{suffix}", 0) if not suffix else _safe_int(ac_val, 0),
+            "an": _safe_int(info.get(f"AN{suffix}"), 0),
+            "af": _safe_float(af_val if suffix else info.get("AF"), 0.0),
+            "homozygote_ref_count": _safe_int(info.get(f"nhomref{suffix}"), 0),
+            "homozygote_alt_count": _safe_int(info.get(f"nhomalt{suffix}"), 0),
+            "heterozygote_count": _safe_int(info.get(f"nhet{suffix}"), 0),
+            "homozygote_ref_freq": _safe_float(info.get(f"freq_homref{suffix}"), 0.0),
+            "homozygote_alt_freq": _safe_float(info.get(f"freq_homalt{suffix}"), 0.0),
+            "heterozygote_freq": _safe_float(info.get(f"freq_het{suffix}"), 0.0),
+        }
+
+    # Global "all" frequencies
+    all_freq = get_freq_fields(info)
+    # Handle AC/AF as Number=A (array type) for global
+    ac_raw = info.get("AC")
+    if ac_raw and ac_raw is not True and ac_raw != ".":
+        all_freq["ac"] = _safe_int(ac_raw.split(",")[0], 0)
+    af_raw = info.get("AF")
+    if af_raw and af_raw is not True and af_raw != ".":
+        all_freq["af"] = _safe_float(af_raw.split(",")[0], 0.0)
+
+    # Per-division populations
+    populations = []
+    for division in DIVISIONS:
+        suffix = f"_{division}"
+        pop_freq = {"id": division}
+        ac_raw = info.get(f"AC{suffix}")
+        if ac_raw and ac_raw is not True and ac_raw != ".":
+            pop_freq["ac"] = _safe_int(ac_raw.split(",")[0], 0)
+        else:
+            pop_freq["ac"] = 0
+        af_raw = info.get(f"AF{suffix}")
+        if af_raw and af_raw is not True and af_raw != ".":
+            pop_freq["af"] = _safe_float(af_raw.split(",")[0], 0.0)
+        else:
+            pop_freq["af"] = 0.0
+        pop_freq["an"] = _safe_int(info.get(f"AN{suffix}"), 0)
+        pop_freq["homozygote_ref_count"] = _safe_int(info.get(f"nhomref{suffix}"), 0)
+        pop_freq["homozygote_alt_count"] = _safe_int(info.get(f"nhomalt{suffix}"), 0)
+        pop_freq["heterozygote_count"] = _safe_int(info.get(f"nhet{suffix}"), 0)
+        pop_freq["homozygote_ref_freq"] = _safe_float(info.get(f"freq_homref{suffix}"), 0.0)
+        pop_freq["homozygote_alt_freq"] = _safe_float(info.get(f"freq_homalt{suffix}"), 0.0)
+        pop_freq["heterozygote_freq"] = _safe_float(info.get(f"freq_het{suffix}"), 0.0)
+        populations.append(pop_freq)
+
+    return json.dumps({"all": all_freq, "populations": populations})
+
+
+def _safe_int(val, default=0):
+    if val is None or val is True or val == ".":
+        return default
+    try:
+        return int(val)
+    except (ValueError, TypeError):
+        return default
+
+
+def _safe_float(val, default=0.0):
+    if val is None or val is True or val == ".":
+        return default
+    try:
+        return float(val)
+    except (ValueError, TypeError):
+        return default
+
+
+def load_variants_vcf(ch_url, region_chrom, region_start, region_stop, vcf_path=None):
+    """Stream a VCF from GCS and load site-level variant docs into ClickHouse lr_variants."""
+    if vcf_path is None:
+        vcf_path = GCS_VCF_V2
+
+    print(f"\n=== Loading variants from VCF (site-level) ===")
+    print(f"  VCF: {vcf_path}")
+    print(f"  Region: {region_chrom}:{region_start}-{region_stop}")
+
+    # Pre-pass to build enveloped map
+    enveloped_map = build_enveloped_map(vcf_path, region_chrom, region_start, region_stop)
+
+    # Main pass
+    bulk_lines = []
+    count = 0
+    chrom_num = compute_xpos(region_chrom)
+
+    for line in gcs_stream_gzip(vcf_path):
+        line = line.rstrip("\n")
+        if line.startswith("#"):
+            continue
+
+        parts = line.split("\t")
+        if len(parts) < 8:
+            continue
+
+        chrom_field = parts[0]
+        pos = int(parts[1])
+
+        if chrom_field != region_chrom:
+            continue
+        if pos < region_start or pos > region_stop:
+            continue
+
+        ref = parts[3]
+        alt = parts[4].split(",")[0]  # Take first alt for biallelic sites
+        filter_field = parts[6]
+        info_str = parts[7]
+
+        # variant_id from VCF ID column, strip "chr"
+        variant_id = parts[2].replace("chr", "", 1)
+
+        # Parse INFO
+        info = parse_info_field(info_str)
+
+        allele_type = info.get("allele_type", "")
+        if allele_type is True:
+            allele_type = ""
+
+        filters = [] if filter_field == "." or filter_field == "PASS" else filter_field.split(";")
+
+        # xpos
+        xpos = chrom_num * 1_000_000_000 + pos
+
+        # VEP parsing
+        transcript_consequences, genes, intergenic, major_consequence = parse_vep_entries(info)
+
+        # Frequencies
+        freq_json = build_freq_json(info)
+
+        # Short read matches (Number=. type, take first)
+        short_read_match_id = parse_info_first(info, "gnomAD_V4_match_ID")
+        short_read_match_type = parse_info_first(info, "gnomAD_V4_match_type")
+        short_read_match_source = parse_info_first(info, "gnomAD_V4_match_source")
+
+        # TR fields
+        is_likely_tr = 1 if "TR_PARSED" in info else 0
+
+        enveloping_tr_id = ""
+        if "TR_ENVELOPED" in info:
+            trid = info.get("TRID", "")
+            if trid and trid is not True:
+                enveloping_tr_id = trid.replace("chr", "", 1)
+
+        enveloped_ids = enveloped_map.get(variant_id, []) if allele_type == "trv" else []
+
+        motifs_raw = info.get("MOTIFS")
+        motifs = motifs_raw.split(",") if motifs_raw and motifs_raw is not True else []
+
+        gene_region = info.get("REGION", "")
+        if gene_region is True:
+            gene_region = ""
+
+        gnomad_str = info.get("gnomAD_STR", "")
+        if gnomad_str is True:
+            gnomad_str = ""
+
+        # main_reference_region: only for trv
+        main_reference_region_json = ""
+        if allele_type == "trv":
+            chrom_stripped = chrom_field.replace("chr", "")
+            main_reference_region_json = json.dumps({
+                "reference_genome": "GRCh38",
+                "chrom": chrom_stripped,
+                "start": pos,
+                "stop": pos + len(ref),
+            })
+
+        doc = {
+            "chrom": chrom_field,
+            "position": pos,
+            "ref": ref,
+            "alt": alt,
+            "variant_id": variant_id,
+            "xpos": xpos,
+            "rsids": [parts[2]] if parts[2] != "." else [],
+            "allele_type": allele_type,
+            "filters": filters,
+            "intergenic": intergenic,
+            "gene_region": gene_region,
+            "major_consequence": major_consequence,
+            "end": parse_info_int(info, "END"),
+            "length": parse_info_int(info, "SVLEN"),
+            "cadd_phred": parse_info_float(info, "CADD_PHRED_score"),
+            "phylop": parse_info_float(info, "phylop"),
+            "short_read_match_id": short_read_match_id,
+            "short_read_match_type": short_read_match_type,
+            "short_read_match_source": short_read_match_source,
+            "enveloping_tr_id": enveloping_tr_id,
+            "enveloped_ids": enveloped_ids,
+            "motifs": motifs,
+            "is_likely_tr": is_likely_tr,
+            "gnomad_str": gnomad_str,
+            "freq_json": freq_json,
+            "transcript_consequences_json": json.dumps(transcript_consequences),
+            "genes_json": json.dumps(genes),
+            "main_reference_region_json": main_reference_region_json,
+        }
+
+        bulk_lines.append(json.dumps(doc))
+        count += 1
+
+        if len(bulk_lines) >= BATCH_SIZE:
+            clickhouse_insert(ch_url, "lr_variants", bulk_lines)
+            print(f"  Inserted {count} variant docs so far...")
+            bulk_lines = []
+
+    if bulk_lines:
+        clickhouse_insert(ch_url, "lr_variants", bulk_lines)
+
+    print(f"  Total: {count} variant docs inserted")
+    return count
 
 
 # --- Haplotype loading (VCF mode) ---
@@ -1259,7 +1675,7 @@ def check_backend(backend, es_url, ch_url):
             print(f"Cannot reach ClickHouse at {ch_url}: {e}")
             sys.exit(1)
         ddl_dir = Path(__file__).parent / "clickhouse"
-        for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql", "lr_sample_metadata.sql", "lr_str_histograms.sql"]:
+        for sql_file in ["lr_haplotypes.sql", "lr_variants.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql", "lr_sample_metadata.sql", "lr_str_histograms.sql"]:
             ddl_path = ddl_dir / sql_file
             if ddl_path.exists():
                 ddl = ddl_path.read_text()
@@ -1377,6 +1793,17 @@ def cmd_histograms(args):
     verify_counts("clickhouse", args.es_url, args.clickhouse_url, tables=["lr_str_histograms"])
 
 
+def cmd_variants(args):
+    """Subcommand: load site-level variants (ClickHouse only)."""
+    chrom, region_chrom, region_start, region_stop = parse_region(args.region)
+    if args.backend != "clickhouse":
+        print("Warning: variants are only loaded into ClickHouse, ignoring --backend es")
+    check_backend("clickhouse", args.es_url, args.clickhouse_url)
+
+    load_variants_vcf(args.clickhouse_url, region_chrom, region_start, region_stop, vcf_path=args.vcf_path)
+    verify_counts("clickhouse", args.es_url, args.clickhouse_url, tables=["lr_variants"])
+
+
 def cmd_all(args):
     """Subcommand: load all applicable datasets (replicates original main() behavior)."""
     chrom, region_chrom, region_start, region_stop = parse_region(args.region)
@@ -1413,6 +1840,10 @@ def cmd_all(args):
     load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism,
                      backend=backend, ch_url=args.clickhouse_url)
 
+    # Load variants (ClickHouse only)
+    if backend == "clickhouse":
+        load_variants_vcf(args.clickhouse_url, region_chrom, region_start, region_stop, vcf_path=args.vcf_path)
+
     # Load STR histograms (ClickHouse only)
     if backend == "clickhouse":
         load_str_histograms(args.clickhouse_url, chrom_filter=region_chrom)
@@ -1428,7 +1859,7 @@ def cmd_all(args):
     # Verify counts
     if backend == "clickhouse":
         verify_counts(backend, args.es_url, args.clickhouse_url,
-                      tables=["lr_haplotypes", "lr_methylation", "lr_coverage", "lr_sample_metadata", "lr_str_histograms"])
+                      tables=["lr_haplotypes", "lr_variants", "lr_methylation", "lr_coverage", "lr_sample_metadata", "lr_str_histograms"])
     else:
         verify_counts(backend, args.es_url, args.clickhouse_url,
                       indices=[HAPLO_INDEX, METHY_INDEX, "gnomad_r4_lr_methylation_outliers", COVERAGE_INDEX, GENES_INDEX])
@@ -1478,6 +1909,10 @@ def main():
     # histograms
     hist_parser = subparsers.add_parser("histograms", help="Load STR histograms (ClickHouse only)")
     hist_parser.set_defaults(func=cmd_histograms)
+
+    # variants
+    var_parser = subparsers.add_parser("variants", help="Load site-level variants (ClickHouse only)")
+    var_parser.set_defaults(func=cmd_variants)
 
     # all
     all_parser = subparsers.add_parser("all", help="Load all applicable datasets")
