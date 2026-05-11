@@ -4,6 +4,7 @@ import { PATH_COLORS, SUPERPOPULATION_COLORS, VARIANT_TYPE_COLORS } from './colo
 import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
+import Link from '../Link'
 
 type StrDataPoint = { length_diff: number; pop: string; count: number }
 
@@ -105,6 +106,10 @@ type DerivedVariant = {
   str_allele_structures?: AlleleStructure[]
   str_flank_prefix?: string
   str_flank_suffix?: string
+  ac?: number
+  an?: number
+  short_read_match_id?: string | null
+  enveloped_ids?: string[] | null
 }
 
 type SortConfig = {
@@ -518,10 +523,12 @@ const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
 const isStrVariant = (v: { allele_type?: string; info_SVTYPE?: string | null }): boolean =>
   v.allele_type === 'trv' || v.info_SVTYPE === 'TRV'
 
-const getVariantTypeCategory = (allele_type: string): 'snv' | 'indel' | 'sv' | 'str' => {
+const getVariantTypeCategory = (allele_type: string, allele_length?: number): 'snv' | 'indel' | 'sv' | 'str' => {
   if (allele_type === 'snv') return 'snv'
-  if (['del', 'ins'].includes(allele_type)) return 'indel'
   if (allele_type === 'trv') return 'str'
+  if (['del', 'ins'].includes(allele_type)) {
+    return allele_length != null && Math.abs(allele_length) >= 50 ? 'sv' : 'indel'
+  }
   return 'sv'
 }
 
@@ -1052,16 +1059,20 @@ const AlleleStructureRow = ({
 // --- Main component ---
 
 type HaplotypeVariantTableProps = {
-  haplotypeGroups: { groups: HaplotypeGroup[] }
-  sampleMetadata: SampleMetadataMap
+  mode?: 'summary' | 'haplotype'
+  summaryVariants?: any[]
+  haplotypeGroups?: { groups: HaplotypeGroup[] }
+  sampleMetadata?: SampleMetadataMap
   totalGroups?: number
   onHoverVariant?: (position: number | null) => void
   maxHeight?: string
 }
 
 const HaplotypeVariantTable = ({
-  haplotypeGroups,
-  sampleMetadata,
+  mode = 'haplotype',
+  summaryVariants = [],
+  haplotypeGroups = { groups: [] },
+  sampleMetadata = new Map() as SampleMetadataMap,
   onHoverVariant,
   maxHeight = '500px',
 }: HaplotypeVariantTableProps) => {
@@ -1084,8 +1095,56 @@ const HaplotypeVariantTable = ({
     })
   }
 
+  // O(1) lookup for resolving enveloped variant IDs to full objects
+  const variantDict = useMemo(() => {
+    return new Map(summaryVariants.map((v: any) => [v.variant_id, v]))
+  }, [summaryVariants])
+
   // Derive unique variant list, grouping TRVs by position
   const variants = useMemo(() => {
+    if (mode === 'summary') {
+      return summaryVariants.map((v: any) => {
+        const getPopAf = (popId: string) =>
+          v.freq?.populations?.find((p: any) => p.id === popId)?.af ?? null
+        return {
+          variant_id: v.variant_id,
+          position: v.pos,
+          chrom: v.chrom,
+          ref: v.ref,
+          alt: v.alt,
+          allele_type: v.allele_type,
+          allele_length: v.length || 0,
+          info_AF: v.freq?.all?.af || 0,
+          info_SVTYPE: null,
+          info_SVLEN: v.length || 0,
+          rsid: (v.rsids || [])[0] || '',
+          gnomad_v4_match_type: null,
+          info_AF_afr: getPopAf('afr'),
+          info_AF_amr: getPopAf('amr'),
+          info_AF_eas: getPopAf('eas'),
+          info_AF_nfe: getPopAf('nfe'),
+          info_AF_sas: getPopAf('sas'),
+          group_count: 0,
+          carrier_count: v.freq?.all?.ac || 0,
+          ac: v.freq?.all?.ac || 0,
+          an: v.freq?.all?.an || 0,
+          short_read_match_id: v.short_read_match_id || null,
+          is_str: v.allele_type === 'trv',
+          enveloped_ids: v.enveloped_ids || null,
+          sv_consequences: v.sv_consequences || null,
+          cadd_phred: null,
+          phylop: null,
+          dbgap_id: null,
+          tr_id: null,
+          tr_motifs: v.motifs?.join(',') || null,
+          tr_struc: null,
+          allele_methylation: null,
+          motif_counts: null,
+          allele_purity: null,
+        } as DerivedVariant
+      })
+    }
+
     // Count unique samples for STR AF calculation
     const allSampleIds = new Set<string>()
     for (const g of haplotypeGroups.groups) {
@@ -1280,11 +1339,15 @@ const HaplotypeVariantTable = ({
         str_allele_structures: strAlleleStructures,
         str_flank_prefix: flankPrefix || undefined,
         str_flank_suffix: flankSuffix || undefined,
+        ac: carrierIds.size,
+        an: sampleCount * 2,
+        short_read_match_id: null,
+        enveloped_ids: null,
       })
     }
 
     return result
-  }, [haplotypeGroups, sampleMetadata])
+  }, [mode, summaryVariants, haplotypeGroups, sampleMetadata])
 
   const totalGroups = haplotypeGroups.groups.length
   const totalSamples = useMemo(() => {
@@ -1300,7 +1363,7 @@ const HaplotypeVariantTable = ({
     let list = variants
 
     // Type filter
-    list = list.filter((v) => typeFilters[getVariantTypeCategory(v.allele_type)])
+    list = list.filter((v) => typeFilters[getVariantTypeCategory(v.allele_type, v.allele_length)])
 
     // Search filter
     if (searchText.trim()) {
@@ -1479,16 +1542,29 @@ const HaplotypeVariantTable = ({
                 Length{sortIndicator('allele_length')}
               </th>
               <th onClick={() => handleSort('info_AF')}>LR AF{sortIndicator('info_AF')}</th>
-              <th onClick={() => handleSort('group_count')}>
-                Groups{sortIndicator('group_count')}
-              </th>
-              <th onClick={() => handleSort('carrier_count')}>
-                Carriers{sortIndicator('carrier_count')}
-              </th>
+              {mode === 'summary' && <th onClick={() => handleSort('ac')}>AC{sortIndicator('ac')}</th>}
+              {mode === 'summary' && <th onClick={() => handleSort('an')}>AN{sortIndicator('an')}</th>}
+              {mode === 'haplotype' && (
+                <th onClick={() => handleSort('group_count')}>
+                  Groups{sortIndicator('group_count')}
+                </th>
+              )}
+              {mode === 'haplotype' && (
+                <th onClick={() => handleSort('carrier_count')}>
+                  Carriers{sortIndicator('carrier_count')}
+                </th>
+              )}
               <th>Pop AF</th>
-              <th onClick={() => handleSort('gnomad_v4_match_type')}>
-                SR Match{sortIndicator('gnomad_v4_match_type')}
-              </th>
+              {mode === 'summary' && (
+                <th onClick={() => handleSort('short_read_match_id')}>
+                  SR Match ID{sortIndicator('short_read_match_id')}
+                </th>
+              )}
+              {mode === 'haplotype' && (
+                <th onClick={() => handleSort('gnomad_v4_match_type')}>
+                  SR Match{sortIndicator('gnomad_v4_match_type')}
+                </th>
+              )}
               <th onClick={() => handleSort('cadd_phred')} style={{ width: 60 }}>
                 CADD{sortIndicator('cadd_phred')}
               </th>
@@ -1527,24 +1603,41 @@ const HaplotypeVariantTable = ({
                         : v.allele_length}
                     </td>
                     <td>{v.info_AF.toFixed(4)}</td>
-                    <td>
-                      {v.group_count} / {totalGroups}
-                    </td>
-                    <td>
-                      {v.carrier_count} / {totalSamples}
-                    </td>
+                    {mode === 'summary' && <td>{v.ac}</td>}
+                    {mode === 'summary' && <td>{v.an}</td>}
+                    {mode === 'haplotype' && (
+                      <td>
+                        {v.group_count} / {totalGroups}
+                      </td>
+                    )}
+                    {mode === 'haplotype' && (
+                      <td>
+                        {v.carrier_count} / {totalSamples}
+                      </td>
+                    )}
                     <td>
                       <PopAfBar variant={v} />
                     </td>
-                    <td>
-                      <MatchBadge $level={matchLevel}>
-                        {matchLevel === 'exact'
-                          ? 'EXACT'
-                          : matchLevel === 'truvari'
-                            ? v.gnomad_v4_match_type
-                            : '—'}
-                      </MatchBadge>
-                    </td>
+                    {mode === 'summary' && (
+                      <td>
+                        {v.short_read_match_id ? (
+                          <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false}>
+                            {v.short_read_match_id}
+                          </Link>
+                        ) : '—'}
+                      </td>
+                    )}
+                    {mode === 'haplotype' && (
+                      <td>
+                        <MatchBadge $level={matchLevel}>
+                          {matchLevel === 'exact'
+                            ? 'EXACT'
+                            : matchLevel === 'truvari'
+                              ? v.gnomad_v4_match_type
+                              : '—'}
+                        </MatchBadge>
+                      </td>
+                    )}
                     <td>{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
                     <td>{renderPredictor(v.phylop, 7.367, 9.741)}</td>
                     <td style={{ maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -1577,19 +1670,23 @@ const HaplotypeVariantTable = ({
                       )}
                     </td>
                   </tr>
-                  {isExpanded && v.str_distribution && (
+                  {isExpanded && (
                     <StrExpandedRow>
                       <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-                          <MiniSTRPlot distribution={v.str_distribution} />
+                          {v.str_distribution && <MiniSTRPlot distribution={v.str_distribution} />}
                           <div style={{ fontSize: 11, color: '#555' }}>
                             <div style={{ fontWeight: 600, marginBottom: 4 }}>
                               STR Locus: {v.chrom}:{v.position}
                               {v.tr_id && <span style={{ fontWeight: 400, marginLeft: 8, color: '#888' }}>({v.tr_id})</span>}
                             </div>
-                            <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
+                            {v.str_distribution && (
+                              <>
+                                <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
+                                <div>Distinct allele lengths: {new Set(v.str_distribution.map((d) => d.length_diff)).size}</div>
+                              </>
+                            )}
                             <div>Total carriers: {v.carrier_count}</div>
-                            <div>Distinct allele lengths: {new Set(v.str_distribution.map((d) => d.length_diff)).size}</div>
                             {v.tr_motifs && (
                               <div style={{ marginTop: 4, marginBottom: 2 }}>
                                 <span style={{ fontWeight: 600 }}>Motifs: </span>
@@ -1607,26 +1704,55 @@ const HaplotypeVariantTable = ({
                             {v.tr_struc && <div>TRGT ID: <span style={{ fontFamily: 'monospace' }}>{v.tr_struc}</span></div>}
                             {v.motif_counts && v.motif_counts.length > 0 && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts.join(', ')}</span></div>}
                             {v.allele_purity != null && <div>Allele purity: {v.allele_purity.toFixed(3)}</div>}
-                            <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                              {POP_ORDER.filter((p) => v.str_distribution!.some((d) => d.pop === p)).map((pop) => (
-                                <span key={pop} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                                  <span
-                                    style={{
-                                      display: 'inline-block',
-                                      width: 8,
-                                      height: 8,
-                                      borderRadius: 2,
-                                      background: SUPERPOPULATION_COLORS[pop] || '#999',
-                                    }}
-                                  />
-                                  {pop}
-                                </span>
-                              ))}
-                            </div>
+                            {v.str_distribution && (
+                              <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                                {POP_ORDER.filter((p) => v.str_distribution!.some((d) => d.pop === p)).map((pop) => (
+                                  <span key={pop} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                                    <span
+                                      style={{
+                                        display: 'inline-block',
+                                        width: 8,
+                                        height: 8,
+                                        borderRadius: 2,
+                                        background: SUPERPOPULATION_COLORS[pop] || '#999',
+                                      }}
+                                    />
+                                    {pop}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Overlapping variant calls (enveloped variants) */}
+                            {v.enveloped_ids && v.enveloped_ids.length > 0 && (
+                              <div style={{ marginTop: 12 }}>
+                                <h4 style={{ marginTop: 0, marginBottom: 4, fontSize: 12 }}>
+                                  Overlapping variant calls ({v.enveloped_ids.length})
+                                </h4>
+                                <p style={{ fontSize: 11, color: '#666', marginTop: 0, marginBottom: 8 }}>
+                                  These variants were independently called within this repeat region
+                                  and may be artifacts of repeat-length variation.
+                                </p>
+                                <ul style={{ fontSize: 11, margin: 0, paddingLeft: 16 }}>
+                                  {v.enveloped_ids.map((id: string) => {
+                                    const envVar = variantDict.get(id)
+                                    if (!envVar) {
+                                      return <li key={id} style={{ marginBottom: 4 }}>{id} (data not loaded)</li>
+                                    }
+                                    return (
+                                      <li key={id} style={{ marginBottom: 4 }}>
+                                        <Link to={`/variant/${id}`}>{id}</Link>
+                                        {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac || 0})
+                                      </li>
+                                    )
+                                  })}
+                                </ul>
+                              </div>
+                            )}
                           </div>
                         </div>
                         {/* Allele structure grid (FMR1-style motif visualization) */}
-                        {v.str_allele_structures && v.str_allele_structures.length > 0 && v.tr_motifs && (
+                        {mode === 'haplotype' && v.str_allele_structures && v.str_allele_structures.length > 0 && v.tr_motifs && (
                           <AlleleStructureGrid
                             structures={v.str_allele_structures}
                             motifs={v.tr_motifs.split(',').map((m: string) => m.trim())}
