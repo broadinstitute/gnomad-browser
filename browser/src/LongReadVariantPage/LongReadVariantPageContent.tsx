@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Section, ResponsiveSection, FlexWrapper } from '../VariantPage/VariantPage'
 import { ExternalLink, TooltipHint, TooltipAnchor, Badge } from '@gnomad/ui'
@@ -13,27 +13,67 @@ import InfoButton from '../help/InfoButton'
 import { PopulationsTable } from '../VariantPage/PopulationsTable'
 import VariantTranscriptConsequences from '../VariantPage/VariantTranscriptConsequences'
 import { addPopulationNames, nestPopulations } from '../VariantPage/GnomadPopulationsTable'
+import Link from '../Link'
+import ShortTandemRepeatAlleleSizeDistributionPlot, {
+  AlleleSizeDistributionCohort,
+  ColorBy,
+  ScaleType,
+} from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
+import {
+  consolidateAlleleSizeDistributions,
+  ColorByFn,
+} from '../ShortTandemRepeatPage/shortTandemRepeatHelpers'
+import {
+  allPopulations,
+  logScaleAllowed,
+  Sex,
+} from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
+import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import ControlSection from '../VariantPage/ControlSection'
+import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect'
+import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
+import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
+import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
 
 type Props = {
   datasetId: DatasetId
   variant: LongReadVariant
 }
 
+const ALLELE_TYPE_LABELS: Record<string, string> = {
+  snv: 'SNV',
+  ins: 'Insertion',
+  del: 'Deletion',
+  trv: 'Tandem Repeat',
+  alu_ins: 'Alu Insertion',
+  line1_ins: 'LINE-1 Insertion',
+  sva_ins: 'SVA Insertion',
+}
+
 const LongReadVariantPageContent = ({ datasetId, variant }: Props) => {
+  const isTR = variant.allele_type === 'trv'
+
   return (
     <FlexWrapper>
+      {/* Identity & Attributes */}
+      <ResponsiveSection>
+        <TableWrapper>
+          <LongReadVariantAttributeTable variant={variant} />
+        </TableWrapper>
+      </ResponsiveSection>
       <ResponsiveSection>
         <TableWrapper>
           <LongReadVariantOccurrenceTable variant={variant} />
         </TableWrapper>
       </ResponsiveSection>
+
+      {/* External resources / related variants */}
       <ResponsiveSection>
-        <h2>Feedback</h2>
-        <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
-          Report an issue with this variant
-        </ExternalLink>
+        <h2>External Resources</h2>
+        <LongReadVariantExternalResources datasetId={datasetId} variant={variant} />
       </ResponsiveSection>
 
+      {/* Population frequencies */}
       <Section>
         <h2>
           Genetic Ancestry Group Frequencies <InfoButton topic="ancestry" />
@@ -41,48 +81,111 @@ const LongReadVariantPageContent = ({ datasetId, variant }: Props) => {
         <LongReadVariantPopulationFrequencies variant={variant} />
       </Section>
 
-      <Section>
-        <h2>Related Variants</h2>
-        <LongReadVariantRelatedVariants datasetId={datasetId} variant={variant} />
-      </Section>
-
+      {/* Transcript consequences */}
       <Section>
         <h2>Ensembl Variant Effect Predictor</h2>
-        <VariantTranscriptConsequences variant={variant} />
+        {variant.transcript_consequences && variant.transcript_consequences.length > 0 ? (
+          <VariantTranscriptConsequences variant={variant} />
+        ) : (
+          <p>No transcript consequence annotations available for this variant.</p>
+        )}
       </Section>
 
-      <FlexWrapper>
-        {variant.in_silico_predictors && variant.in_silico_predictors.length && (
-          <ResponsiveSection>
-            <h2>In Silico Predictors</h2>
-            <LongReadVariantInSilicoPredictors variant={variant} datasetId={datasetId} />
-          </ResponsiveSection>
-        )}
-      </FlexWrapper>
+      {/* TR-specific: reference region attributes */}
+      {isTR && variant.main_reference_region && (
+        <Section>
+          <h2>Tandem Repeat Reference Region</h2>
+          <ShortTandemRepeatAttributes
+            reference_repeat_unit={variant.ref}
+            repeat_units={[{ repeat_unit: variant.ref, classification: 'unknown' }]}
+            main_reference_region={variant.main_reference_region}
+          />
+        </Section>
+      )}
 
-      <FlexWrapper>
-        <ResponsiveSection>
-          {variant.age_distribution && (
-            <React.Fragment>
-              <h2>
-                Age Distribution <InfoButton topic="age" />
-              </h2>
+      {/* TR-specific: allele size distribution */}
+      {isTR && variant.allele_size_distribution && (
+        <Section>
+          <LongReadAlleleSizeDistributionSection variant={variant} />
+        </Section>
+      )}
 
-              <LongReadVariantAgeDistribution datasetId={datasetId} variant={variant} />
-            </React.Fragment>
-          )}
-        </ResponsiveSection>
-      </FlexWrapper>
-
-      <ResponsiveSection>
-        <h2>Genotype Quality Metrics</h2>
-        <LongReadVariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>Site Quality Metrics</h2>
-        <LongReadVariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
-      </ResponsiveSection>
+      {/* Overlapping variant calls (enveloped IDs) */}
+      {variant.enveloped_ids && variant.enveloped_ids.length > 0 && (
+        <Section>
+          <h2>Overlapping Variant Calls</h2>
+          <p>
+            These variants were independently called within this repeat region and may be artifacts
+            of repeat-length variation.
+          </p>
+          <ul>
+            {variant.enveloped_ids.map((id: string) => (
+              <li key={id}>
+                <Link
+                  to={`/variant/${id}?dataset=gnomad_r4_lr`}
+                  preserveSelectedDataset={false}
+                >
+                  {id}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
     </FlexWrapper>
+  )
+}
+
+const LongReadVariantAttributeTable = ({ variant }: { variant: LongReadVariant }) => {
+  const alleleTypeLabel = ALLELE_TYPE_LABELS[variant.allele_type] || variant.allele_type
+  const hasSpan = variant.end != null && variant.length != null
+
+  return (
+    <Table>
+      <tbody>
+        <tr>
+          <th scope="row">Allele Type</th>
+          <td>{alleleTypeLabel}</td>
+        </tr>
+        <tr>
+          <th scope="row">Position</th>
+          <td>
+            {variant.chrom}:{variant.pos}
+            {hasSpan && ` - ${variant.end} (${variant.length!.toLocaleString()} bp)`}
+          </td>
+        </tr>
+        {variant.allele_type === 'trv' && variant.motifs && variant.motifs.length > 0 ? (
+          <tr>
+            <th scope="row">Motifs</th>
+            <td>{variant.motifs.join(', ')}</td>
+          </tr>
+        ) : (
+          <>
+            <tr>
+              <th scope="row">Reference</th>
+              <td style={{ wordBreak: 'break-all' }}>{variant.ref}</td>
+            </tr>
+            <tr>
+              <th scope="row">Alternate</th>
+              <td style={{ wordBreak: 'break-all' }}>{variant.alt}</td>
+            </tr>
+          </>
+        )}
+        {variant.enveloping_tr_id && (
+          <tr>
+            <th scope="row">Enveloping TR</th>
+            <td>
+              <Link
+                to={`/variant/${variant.enveloping_tr_id}?dataset=gnomad_r4_lr`}
+                preserveSelectedDataset={false}
+              >
+                {variant.enveloping_tr_id}
+              </Link>
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </Table>
   )
 }
 
@@ -154,82 +257,126 @@ const LongReadVariantPopulationFrequencies = ({ variant }: { variant: LongReadVa
   )
 }
 
-const LongReadVariantRelatedVariants = ({
+const LongReadVariantExternalResources = ({
   datasetId,
   variant,
 }: {
   datasetId: DatasetId
   variant: LongReadVariant
 }) => {
-  // TK
-  return null
-}
-
-const LongReadVariantInSilicoPredictors = ({
-  variant,
-  datasetId,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  // TK
-  return null
-}
-
-const LongReadVariantAgeDistribution = ({
-  datasetId,
-  variant,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  //TK
-  return null
-}
-const LongReadVariantGenotypeQualityMetrics = ({
-  datasetId,
-  variant,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  //TK
-  return null
-}
-
-const LongReadVariantSiteQualityMetrics = ({
-  datasetId,
-  variant,
-}: {
-  datasetId: DatasetId
-  variant: LongReadVariant
-}) => {
-  //TK
-  return null
+  return (
+    <div>
+      {variant.short_read_match_id && (
+        <p>
+          <strong>Short-Read Match: </strong>
+          <Link
+            to={`/variant/${variant.short_read_match_id}?dataset=gnomad_r4`}
+            preserveSelectedDataset={false}
+          >
+            {variant.short_read_match_id}
+          </Link>
+        </p>
+      )}
+      <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
+        Report an issue with this variant
+      </ExternalLink>
+    </div>
+  )
 }
 
 const LongReadVariantFlag = ({ variant }: { variant: LongReadVariant }) => {
-  const filters = variant.filters || [] // TK
+  const filters = variant.filters || []
   if (filters.length === 0) {
     return <Badge level="success">Pass</Badge>
   }
 
-  return filters.map((_filter: any) => {
-    return null
-    /*   const data =
-      filter === 'discrepant_frequencies'
-        ? {
-            pValue: variant.joint!.freq_comparison_stats.stat_union.p_value,
-            testName: variant.joint!.freq_comparison_stats.stat_union.stat_test_name,
-            geneticAncestry:
-              variant.joint!.freq_comparison_stats.stat_union.gen_ancs[0] || undefined,
-          }
-        : {}*/
+  return (
+    <>
+      {filters.map((filter: string) => (
+        <Badge key={filter} level="warning">
+          {filter}
+        </Badge>
+      ))}
+    </>
+  )
+}
 
-    {
-      //<QCFilter key="TK" filter="TK" data={{}} />
+// TR-specific: allele size distribution plot
+const colorByFn: ColorByFn<AlleleSizeDistributionCohort> = (cohort, colorBy) => {
+  if (colorBy === 'sex') {
+    return cohort.sex
+  }
+  if (colorBy === 'population') {
+    return cohort.ancestry_group
+  }
+  return null
+}
+
+const LongReadAlleleSizeDistributionSection = ({ variant }: { variant: LongReadVariant }) => {
+  const { allele_size_distribution, max_repunits } = variant
+  const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
+  const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
+  const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
+  const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | null>(null)
+
+  const setSelectedColorBy = (newColorBy: ColorBy | null) => {
+    if (selectedScaleType === 'log' && !logScaleAllowed(newColorBy)) {
+      setSelectedScaleType('linear')
     }
-  })
+    rawSetSelectedColorBy(newColorBy)
+  }
+
+  if (!allele_size_distribution || !max_repunits) {
+    return null
+  }
+
+  const populations = allPopulations(allele_size_distribution)
+
+  return (
+    <>
+      <h2>
+        Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
+      </h2>
+      <ShortTandemRepeatAlleleSizeDistributionPlot
+        maxRepeats={max_repunits}
+        alleleSizeDistribution={consolidateAlleleSizeDistributions(
+          allele_size_distribution,
+          colorByFn,
+          selectedPopulation,
+          selectedSex,
+          selectedColorBy,
+          null,
+          null
+        )}
+        colorBy={selectedColorBy}
+        repeatUnitLength={null}
+        scaleType={selectedScaleType}
+      />
+      <ControlSection style={{ marginTop: '0.5em' }}>
+        <ShortTandemRepeatPopulationOptions
+          id={`${variant.variant_id}-repeat-counts`}
+          populations={populations}
+          selectedPopulation={selectedPopulation}
+          selectedSex={selectedSex}
+          setSelectedPopulation={setSelectedPopulation}
+          setSelectedSex={setSelectedSex}
+        />
+        <ShortTandemRepeatColorBySelect
+          id={`${variant.variant_id}-color-by`}
+          selectedColorBy={selectedColorBy}
+          setSelectedColorBy={setSelectedColorBy}
+          setSelectedScaleType={setSelectedScaleType}
+          allowedColorBys={['sex', 'population']}
+        />
+        <ShortTandemRepeatScaleSelect
+          id={variant.variant_id}
+          selectedScaleType={selectedScaleType}
+          setSelectedScaleType={setSelectedScaleType}
+          selectedColorBy={selectedColorBy}
+        />
+      </ControlSection>
+    </>
+  )
 }
 
 export default LongReadVariantPageContent
