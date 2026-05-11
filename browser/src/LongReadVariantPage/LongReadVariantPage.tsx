@@ -14,11 +14,18 @@ import Delayed from '../Delayed'
 import StatusMessage from '../StatusMessage'
 import GnomadPageHeading from '../GnomadPageHeading'
 import { TitleWrapper, Separator, VariantIdWrapper } from '../VariantPage/VariantPageTitle'
-// import QCFilter from '../QCFilter'
-//
 import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import LongReadVariantPageContent from './LongReadVariantPageContent'
-import LongReadTandemRepeatPageContent from './LongReadTandemRepeatPageContent'
+
+const ALLELE_TYPE_LABELS: Record<string, string> = {
+  snv: 'SNV',
+  ins: 'Insertion',
+  del: 'Deletion',
+  trv: 'Tandem Repeat',
+  alu_ins: 'Alu Insertion',
+  line1_ins: 'LINE-1 Insertion',
+  sva_ins: 'SVA Insertion',
+}
 
 const VariantPageTitle = ({
   variantId,
@@ -29,19 +36,7 @@ const VariantPageTitle = ({
   variantType: string
   datasetId: DatasetId
 }) => {
-  //let variantDescription = 'Variant'
-  //if (ref.length === 1 && alt.length === 1) {
-  //  variantDescription = 'SNV'
-  //}
-  //if (ref.length < alt.length) {
-  //  const insertionLength = alt.length - ref.length
-  //  variantDescription = `Insertion (${insertionLength} base${insertionLength > 1 ? 's' : ''})`
-  //}
-  //if (ref.length > alt.length) {
-  //  const deletionLength = ref.length - alt.length
-  //  variantDescription = `Deletion (${deletionLength} base${deletionLength > 1 ? 's' : ''})`
-  //}
-  const variantDescription = variantType // TK
+  const variantDescription = ALLELE_TYPE_LABELS[variantType] || variantType
   return (
     <TitleWrapper>
       {variantDescription === 'SNV' ? (
@@ -66,8 +61,14 @@ const VariantPageTitle = ({
 
 export type LongReadVariant = {
   variant_id: string
-  filters: string[]
+  chrom: string
+  pos: number
+  end: number | null
+  length: number | null
   ref: string
+  alt: string
+  filters: string[]
+  allele_type: string
   freq: {
     all: {
       ac: number
@@ -78,14 +79,15 @@ export type LongReadVariant = {
       id: string
       ac: number
       an: number
+      af: number
     }[]
   }
   reference_genome: ReferenceGenome
-  in_silico_predictors: any[] // TK
-  age_distribution: null // TK
   transcript_consequences: any[]
+  short_read_match_id: string | null
   enveloping_tr_id: string | null
   enveloped_ids: string[] | null
+  motifs: string[] | null
   allele_size_distribution: null | AlleleSizeDistributionCohort[]
   max_repunits: number | null
   genotype_distribution:
@@ -101,16 +103,11 @@ export type LongReadVariant = {
           frequency: number
         }
       }[]
-  allele_type: string
   main_reference_region: null | {
     reference_genome: string
     chrom: string
     start: number
     stop: number
-  }
-  gene: null | {
-    ensembl_id: string
-    symbol: string
   }
 }
 
@@ -123,17 +120,28 @@ const LongReadVariantPage = ({
 }) => {
   const operationName = 'LongReadVariant'
   let geneId: string | null = null
+  let variantAlleleType: string = 'Variant'
   const variantQuery = `
 	query ${operationName}($variantId: String!) {
 	  long_read_variant(variantId: $variantId) {
-          genes {
-            ensembl_id
-	    symbol
-	  }
-	  allele_type
-	  ref
-  	  variant_id
+	    variant_id
+	    chrom
+	    pos
+	    end
+	    length
+	    ref
+	    alt
+	    allele_type
+	    filters
 	    reference_genome
+	    short_read_match_id
+	    enveloping_tr_id
+	    enveloped_ids
+	    motifs
+	    genes {
+	      ensembl_id
+	      symbol
+	    }
 	    freq {
 	      all {
 		ac
@@ -148,7 +156,7 @@ const LongReadVariantPage = ({
 	      }
 	    }
 	    transcript_consequences {
-   	      consequence_terms
+	      consequence_terms
 	      domains
 	      gene_id
 	      gene_version
@@ -167,32 +175,32 @@ const LongReadVariantPage = ({
 	      transcript_id
 	      transcript_version
 	    }
-            allele_size_distribution {
-              ancestry_group
-              sex
-              repunit
-              distribution {
-                repunit_count
-                frequency
-              }
-            }
+	    allele_size_distribution {
+	      ancestry_group
+	      sex
+	      repunit
+	      distribution {
+		repunit_count
+		frequency
+	      }
+	    }
 	    max_repunits
-            genotype_distribution{
-              ancestry_group
-              sex
-              short_allele_repunit
-              long_allele_repunit
-              distribution{
-                short_allele_repunit_count
-                long_allele_repunit_count
-                frequency
-              }
-            }
+	    genotype_distribution {
+	      ancestry_group
+	      sex
+	      short_allele_repunit
+	      long_allele_repunit
+	      distribution {
+		short_allele_repunit_count
+		long_allele_repunit_count
+		frequency
+	      }
+	    }
 	    main_reference_region {
-                reference_genome
-                chrom
-                start
-                stop
+	      reference_genome
+	      chrom
+	      start
+	      stop
 	    }
 	  }
 	}
@@ -246,17 +254,16 @@ const LongReadVariantPage = ({
 
               // In this branch, a variant was successfully loaded. Check the symbol
               //   and ensemble ID to create a 'Gene page' button with the correct link
+              variantAlleleType = variant.allele_type || 'Variant'
+
               const geneData = checkGeneLink(variant.transcript_consequences)
               if (geneData) {
                 geneId = geneData.ensembleId
               }
 
-              pageContent =
-                variant.allele_type === 'trv' ? (
-                  <LongReadTandemRepeatPageContent datasetId={datasetId} variant={variant} />
-                ) : (
-                  <LongReadVariantPageContent datasetId={datasetId} variant={variant} />
-                )
+              pageContent = (
+                <LongReadVariantPageContent datasetId={datasetId} variant={variant} />
+              )
             }
 
             return (
@@ -301,11 +308,8 @@ const LongReadVariantPage = ({
                   <VariantPageTitle
                     variantId={variantId}
                     datasetId={datasetId}
-                    variantType="Variant"
-                  />{' '}
-                  {
-                    //TK: variantType
-                  }
+                    variantType={variantAlleleType}
+                  />
                 </GnomadPageHeading>
                 {pageContent}
               </React.Fragment>
