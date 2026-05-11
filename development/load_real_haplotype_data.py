@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 """Load real HPRC haplotype data, methylation, coverage, and gene models into local Elasticsearch/ClickHouse.
 
-Supports two modes:
-  - vcf (default): Stream the v2 VCF (292 samples, chr22) from GCS
-  - json (legacy): Download pre-computed samples JSON from the old HPRC prototype
-
 Usage:
-    python3 development/load_real_haplotype_data.py                # VCF mode, chr22:20M-21M (default)
-    python3 development/load_real_haplotype_data.py --full          # full chr22 (requires 4+ GB ES heap)
-    python3 development/load_real_haplotype_data.py --mode json     # old JSON mode (chr1 prototype)
-    python3 development/load_real_haplotype_data.py --skip-coverage # skip coverage loading
-    python3 development/load_real_haplotype_data.py --skip-genes    # skip gene model loading
+    python3 development/load_real_haplotype_data.py haplotypes --region chr22:20M-21M --backend clickhouse
+    python3 development/load_real_haplotype_data.py coverage --region chr22:20M-21M --backend clickhouse
+    python3 development/load_real_haplotype_data.py methylation --region chr22:20M-21M --backend clickhouse
+    python3 development/load_real_haplotype_data.py genes --region chr22:20M-21M
+    python3 development/load_real_haplotype_data.py metadata --backend clickhouse
+    python3 development/load_real_haplotype_data.py histograms --backend clickhouse
+    python3 development/load_real_haplotype_data.py all --region chr22:20M-21M --backend clickhouse
 """
 import argparse
 import gzip
@@ -1232,142 +1230,267 @@ def load_str_histograms(ch_url, gcs_path=None, chrom_filter=None):
 # --- Main ---
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Load real HPRC data into local datastore")
-    parser.add_argument("--backend", choices=["es", "clickhouse"], default="es", help="Target datastore")
-    parser.add_argument("--es-url", default="http://127.0.0.1:9200", help="Elasticsearch URL")
-    parser.add_argument("--clickhouse-url", default="http://127.0.0.1:8123", help="ClickHouse URL")
-    parser.add_argument("--full", action="store_true", help="Load full chromosome (requires 4+ GB ES heap)")
-    parser.add_argument("--mode", choices=["vcf", "json"], default="vcf", help="Loader mode: vcf (new v1 VCF) or json (old samples JSON)")
-    parser.add_argument("--skip-haplo", action="store_true", help="Skip haplotype loading")
-    parser.add_argument("--skip-methy", action="store_true", help="Skip methylation loading")
-    parser.add_argument("--skip-coverage", action="store_true", help="Skip coverage loading")
-    parser.add_argument("--skip-genes", action="store_true", help="Skip gene model loading")
-    parser.add_argument("--skip-metadata", action="store_true", help="Skip sample metadata loading")
-    parser.add_argument("--skip-histograms", action="store_true", help="Skip STR histogram loading")
-    parser.add_argument("--coverage-downsample", type=int, default=0, help="Sample every Nth base for coverage (default: auto)")
-    parser.add_argument("--gnomad-api", default=GNOMAD_API, help="gnomAD API URL for gene models")
-    parser.add_argument("--region", default="chr22:20000000-21000000", help="Region to load (format: chrN:start-stop)")
-    parser.add_argument("--parallelism", type=int, default=16, help="Number of parallel genohype queries for methylation (default: 16)")
-    parser.add_argument("--vcf-path", default=None, help="Override VCF path (default: GCS_VCF_V2)")
-    args = parser.parse_args()
-
-    # Parse region
-    region_parts = args.region.replace("chr", "").split(":")
+def parse_region(region_str):
+    """Parse a region string like 'chr22:20000000-21000000' into (chrom, region_chrom, start, stop)."""
+    region_parts = region_str.replace("chr", "").split(":")
     chrom = region_parts[0]
     region_chrom = f"chr{chrom}"
     start_stop = region_parts[1].split("-")
     region_start = int(start_stop[0])
     region_stop = int(start_stop[1])
+    return chrom, region_chrom, region_start, region_stop
 
-    mode_label = f"VCF mode ({GCS_VCF_V2.split('/')[-1]})" if args.mode == "vcf" else "JSON mode (legacy)"
-    backend = args.backend
-    print(f"Backend: {backend}")
+
+def check_backend(backend, es_url, ch_url):
+    """Check backend connectivity and create CH tables if needed."""
     if backend == "es":
-        print(f"ES URL: {args.es_url}")
-    else:
-        print(f"ClickHouse URL: {args.clickhouse_url}")
-    print(f"Region: {region_chrom}:{region_start}-{region_stop}")
-    print(f"Mode: {mode_label}")
-
-    # Helper: route bulk inserts to the right backend
-    def bulk_insert(bulk_lines, table=None, index=None):
-        if backend == "clickhouse":
-            clickhouse_insert(args.clickhouse_url, table, bulk_lines)
-        else:
-            es_bulk(args.es_url, bulk_lines)
-
-    if backend == "es":
-        # Check ES is reachable
         try:
-            es_request(args.es_url, "/_cluster/health")
+            es_request(es_url, "/_cluster/health")
             print("ES is reachable")
         except Exception as e:
-            print(f"Cannot reach ES at {args.es_url}: {e}")
+            print(f"Cannot reach ES at {es_url}: {e}")
             sys.exit(1)
     else:
-        # Check ClickHouse is reachable and create tables
         try:
-            url = f"{args.clickhouse_url}/?query=SELECT%201"
+            url = f"{ch_url}/?query=SELECT%201"
             urllib.request.urlopen(url)
             print("ClickHouse is reachable")
         except Exception as e:
-            print(f"Cannot reach ClickHouse at {args.clickhouse_url}: {e}")
+            print(f"Cannot reach ClickHouse at {ch_url}: {e}")
             sys.exit(1)
-        # Create target tables from DDL files
         ddl_dir = Path(__file__).parent / "clickhouse"
         for sql_file in ["lr_haplotypes.sql", "lr_methylation.sql", "lr_coverage.sql", "lr_methylation_summary_mv.sql", "lr_sample_metadata.sql", "lr_str_histograms.sql"]:
             ddl_path = ddl_dir / sql_file
             if ddl_path.exists():
                 ddl = ddl_path.read_text()
                 req = urllib.request.Request(
-                    args.clickhouse_url,
+                    ch_url,
                     data=ddl.encode(),
                     headers={"Content-Type": "text/plain"},
                 )
                 urllib.request.urlopen(req)
                 print(f"  Created table from {sql_file}")
 
-    # Load haplotypes
-    if not args.skip_haplo:
-        if args.mode == "vcf":
-            load_haplotypes_vcf(args.es_url, region_chrom, region_start, region_stop,
-                                backend=backend, ch_url=args.clickhouse_url)
-        else:
-            gcs_path = GCS_SAMPLES_FULL if args.full else GCS_SAMPLES_AFEWGENES
-            with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
-                tmp_path = tmp.name
-            try:
-                gcs_download(gcs_path, tmp_path)
-                load_haplotypes(args.es_url, tmp_path, region_start, region_stop)
-            finally:
-                os.unlink(tmp_path)
 
-    # Load coverage (VCF mode only — old JSON data has no coverage)
-    if not args.skip_coverage and args.mode == "vcf":
-        load_coverage(args.es_url, region_chrom, region_start, region_stop, args.coverage_downsample,
-                      backend=backend, ch_url=args.clickhouse_url)
-
-    # Load methylation
-    if not args.skip_methy:
-        load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism,
-                         backend=backend, ch_url=args.clickhouse_url)
-
-    # Load STR histograms (ClickHouse only)
-    if not args.skip_histograms and backend == "clickhouse":
-        load_str_histograms(args.clickhouse_url, chrom_filter=region_chrom)
-
-    # Load gene models (ES only — genes stay in ES)
-    if not args.skip_genes and backend == "es":
-        load_genes(args.es_url, args.gnomad_api, chrom, region_start, region_stop)
-
-    # Load sample metadata (ClickHouse only)
-    if not args.skip_metadata and backend == "clickhouse":
-        load_sample_metadata(args.clickhouse_url)
-
-    # Verify counts
+def verify_counts(backend, es_url, ch_url, tables=None, indices=None):
+    """Print verification counts for loaded datasets."""
     print("\n=== Verification ===")
     if backend == "clickhouse":
-        for table in ["lr_haplotypes", "lr_methylation", "lr_coverage", "lr_sample_metadata", "lr_str_histograms"]:
+        for table in (tables or []):
             try:
-                url = f"{args.clickhouse_url}/?query=SELECT%20count()%20FROM%20{table}"
+                url = f"{ch_url}/?query=SELECT%20count()%20FROM%20{table}"
                 resp = urllib.request.urlopen(url).read().decode().strip()
                 print(f"  {table}: {resp} rows")
             except Exception:
                 print(f"  {table}: (not found)")
     else:
-        for idx in [HAPLO_INDEX, METHY_INDEX, "gnomad_r4_lr_methylation_outliers", COVERAGE_INDEX, GENES_INDEX]:
+        for idx in (indices or []):
             try:
-                # Force refresh before counting
-                es_request(args.es_url, f"/{idx}/_refresh", data="", method="POST")
-                resp = es_request(args.es_url, f"/{idx}/_count")
+                es_request(es_url, f"/{idx}/_refresh", data="", method="POST")
+                resp = es_request(es_url, f"/{idx}/_count")
                 print(f"  {idx}: {resp['count']} docs")
             except Exception:
                 print(f"  {idx}: (not found)")
 
+
+def cmd_haplotypes(args):
+    """Subcommand: load haplotypes."""
+    chrom, region_chrom, region_start, region_stop = parse_region(args.region)
+    check_backend(args.backend, args.es_url, args.clickhouse_url)
+
+    if args.mode == "vcf":
+        load_haplotypes_vcf(args.es_url, region_chrom, region_start, region_stop,
+                            backend=args.backend, ch_url=args.clickhouse_url, vcf_path=args.vcf_path)
+    else:
+        gcs_path = GCS_SAMPLES_FULL if args.full else GCS_SAMPLES_AFEWGENES
+        with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
+            tmp_path = tmp.name
+        try:
+            gcs_download(gcs_path, tmp_path)
+            load_haplotypes(args.es_url, tmp_path, region_start, region_stop)
+        finally:
+            os.unlink(tmp_path)
+
+    if args.backend == "clickhouse":
+        verify_counts(args.backend, args.es_url, args.clickhouse_url, tables=["lr_haplotypes"])
+    else:
+        verify_counts(args.backend, args.es_url, args.clickhouse_url, indices=[HAPLO_INDEX])
+
+
+def cmd_coverage(args):
+    """Subcommand: load coverage."""
+    chrom, region_chrom, region_start, region_stop = parse_region(args.region)
+    check_backend(args.backend, args.es_url, args.clickhouse_url)
+
+    load_coverage(args.es_url, region_chrom, region_start, region_stop, args.coverage_downsample,
+                  backend=args.backend, ch_url=args.clickhouse_url)
+
+    if args.backend == "clickhouse":
+        verify_counts(args.backend, args.es_url, args.clickhouse_url, tables=["lr_coverage"])
+    else:
+        verify_counts(args.backend, args.es_url, args.clickhouse_url, indices=[COVERAGE_INDEX])
+
+
+def cmd_methylation(args):
+    """Subcommand: load methylation."""
+    chrom, region_chrom, region_start, region_stop = parse_region(args.region)
+    check_backend(args.backend, args.es_url, args.clickhouse_url)
+
+    load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism,
+                     backend=args.backend, ch_url=args.clickhouse_url)
+
+    if args.backend == "clickhouse":
+        verify_counts(args.backend, args.es_url, args.clickhouse_url, tables=["lr_methylation"])
+    else:
+        verify_counts(args.backend, args.es_url, args.clickhouse_url, indices=[METHY_INDEX, "gnomad_r4_lr_methylation_outliers"])
+
+
+def cmd_genes(args):
+    """Subcommand: load gene models (ES only)."""
+    chrom, region_chrom, region_start, region_stop = parse_region(args.region)
+    if args.backend != "es":
+        print("Warning: genes are only loaded into Elasticsearch, ignoring --backend clickhouse")
+    check_backend("es", args.es_url, args.clickhouse_url)
+
+    load_genes(args.es_url, args.gnomad_api, chrom, region_start, region_stop)
+    verify_counts("es", args.es_url, args.clickhouse_url, indices=[GENES_INDEX])
+
+
+def cmd_metadata(args):
+    """Subcommand: load sample metadata (ClickHouse only)."""
+    if args.backend != "clickhouse":
+        print("Warning: metadata is only loaded into ClickHouse, ignoring --backend es")
+    check_backend("clickhouse", args.es_url, args.clickhouse_url)
+
+    load_sample_metadata(args.clickhouse_url)
+    verify_counts("clickhouse", args.es_url, args.clickhouse_url, tables=["lr_sample_metadata"])
+
+
+def cmd_histograms(args):
+    """Subcommand: load STR histograms (ClickHouse only)."""
+    chrom, region_chrom, region_start, region_stop = parse_region(args.region)
+    if args.backend != "clickhouse":
+        print("Warning: histograms are only loaded into ClickHouse, ignoring --backend es")
+    check_backend("clickhouse", args.es_url, args.clickhouse_url)
+
+    load_str_histograms(args.clickhouse_url, chrom_filter=region_chrom)
+    verify_counts("clickhouse", args.es_url, args.clickhouse_url, tables=["lr_str_histograms"])
+
+
+def cmd_all(args):
+    """Subcommand: load all applicable datasets (replicates original main() behavior)."""
+    chrom, region_chrom, region_start, region_stop = parse_region(args.region)
+    backend = args.backend
+    check_backend(backend, args.es_url, args.clickhouse_url)
+
+    print(f"Backend: {backend}")
+    if backend == "es":
+        print(f"ES URL: {args.es_url}")
+    else:
+        print(f"ClickHouse URL: {args.clickhouse_url}")
+    print(f"Region: {region_chrom}:{region_start}-{region_stop}")
+
+    # Load haplotypes
+    if args.mode == "vcf":
+        load_haplotypes_vcf(args.es_url, region_chrom, region_start, region_stop,
+                            backend=backend, ch_url=args.clickhouse_url, vcf_path=args.vcf_path)
+    else:
+        gcs_path = GCS_SAMPLES_FULL if args.full else GCS_SAMPLES_AFEWGENES
+        with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
+            tmp_path = tmp.name
+        try:
+            gcs_download(gcs_path, tmp_path)
+            load_haplotypes(args.es_url, tmp_path, region_start, region_stop)
+        finally:
+            os.unlink(tmp_path)
+
+    # Load coverage (VCF mode only)
+    if args.mode == "vcf":
+        load_coverage(args.es_url, region_chrom, region_start, region_stop, args.coverage_downsample,
+                      backend=backend, ch_url=args.clickhouse_url)
+
+    # Load methylation
+    load_methylation(args.es_url, region_chrom, region_start, region_stop, args.parallelism,
+                     backend=backend, ch_url=args.clickhouse_url)
+
+    # Load STR histograms (ClickHouse only)
+    if backend == "clickhouse":
+        load_str_histograms(args.clickhouse_url, chrom_filter=region_chrom)
+
+    # Load gene models (ES only)
+    if backend == "es":
+        load_genes(args.es_url, args.gnomad_api, chrom, region_start, region_stop)
+
+    # Load sample metadata (ClickHouse only)
+    if backend == "clickhouse":
+        load_sample_metadata(args.clickhouse_url)
+
+    # Verify counts
+    if backend == "clickhouse":
+        verify_counts(backend, args.es_url, args.clickhouse_url,
+                      tables=["lr_haplotypes", "lr_methylation", "lr_coverage", "lr_sample_metadata", "lr_str_histograms"])
+    else:
+        verify_counts(backend, args.es_url, args.clickhouse_url,
+                      indices=[HAPLO_INDEX, METHY_INDEX, "gnomad_r4_lr_methylation_outliers", COVERAGE_INDEX, GENES_INDEX])
+
     print("\nDone! Test URLs:")
     print(f"  http://localhost:8008/haplotype/region/{chrom}-{region_start}-{region_stop}")
     print(f"  http://localhost:8008/haplotype/region/{chrom}-{region_start}-{min(region_start + 100000, region_stop)}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Load real HPRC data into local datastore")
+
+    # Shared arguments on the parent parser
+    parser.add_argument("--backend", choices=["es", "clickhouse"], default="es", help="Target datastore")
+    parser.add_argument("--es-url", default="http://127.0.0.1:9200", help="Elasticsearch URL")
+    parser.add_argument("--clickhouse-url", default="http://127.0.0.1:8123", help="ClickHouse URL")
+    parser.add_argument("--region", default="chr22:20000000-21000000", help="Region to load (format: chrN:start-stop)")
+    parser.add_argument("--parallelism", type=int, default=16, help="Number of parallel genohype queries for methylation")
+    parser.add_argument("--vcf-path", default=None, help="Override VCF path (default: GCS_VCF_V2)")
+    parser.add_argument("--gnomad-api", default=GNOMAD_API, help="gnomAD API URL for gene models")
+    parser.add_argument("--full", action="store_true", help="Load full chromosome (requires 4+ GB ES heap)")
+    parser.add_argument("--coverage-downsample", type=int, default=0, help="Sample every Nth base for coverage (default: auto)")
+
+    subparsers = parser.add_subparsers(dest="command")
+
+    # haplotypes
+    haplo_parser = subparsers.add_parser("haplotypes", help="Load haplotype data")
+    haplo_parser.add_argument("--mode", choices=["vcf", "json"], default="vcf", help="Loader mode: vcf (v2 VCF) or json (legacy samples JSON)")
+    haplo_parser.set_defaults(func=cmd_haplotypes)
+
+    # coverage
+    cov_parser = subparsers.add_parser("coverage", help="Load coverage data")
+    cov_parser.set_defaults(func=cmd_coverage)
+
+    # methylation
+    methy_parser = subparsers.add_parser("methylation", help="Load methylation data")
+    methy_parser.set_defaults(func=cmd_methylation)
+
+    # genes
+    genes_parser = subparsers.add_parser("genes", help="Load gene models from gnomAD API (ES only)")
+    genes_parser.set_defaults(func=cmd_genes)
+
+    # metadata
+    meta_parser = subparsers.add_parser("metadata", help="Load sample metadata from HPRC (ClickHouse only)")
+    meta_parser.set_defaults(func=cmd_metadata)
+
+    # histograms
+    hist_parser = subparsers.add_parser("histograms", help="Load STR histograms (ClickHouse only)")
+    hist_parser.set_defaults(func=cmd_histograms)
+
+    # all
+    all_parser = subparsers.add_parser("all", help="Load all applicable datasets")
+    all_parser.add_argument("--mode", choices=["vcf", "json"], default="vcf", help="Loader mode: vcf (v2 VCF) or json (legacy samples JSON)")
+    all_parser.set_defaults(func=cmd_all)
+
+    args = parser.parse_args()
+
+    if args.command is None:
+        parser.print_help()
+        sys.exit(1)
+
+    args.func(args)
 
 
 if __name__ == "__main__":
