@@ -11,7 +11,7 @@ import {
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import Link from '../Link'
-import LongReadVariantTrack from '../LongReadVariantPage/LongReadVariantTrack'
+import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
@@ -180,49 +180,6 @@ const VariantsInGene = ({
 VariantsInGene.defaultProps = {
   clinvarVariants: null,
   zoomRegion: null,
-}
-
-const withFrequency = (variant: any) => variant.freq !== null
-
-const adaptForTrackAndTable = (variant: any) => ({
-  ...variant,
-  allele_freq: variant.freq.all.af,
-  consequence:
-    variant.transcript_consequences && variant.transcript_consequences[0].major_consequence,
-  ac: variant.freq.all.ac,
-  an: variant.freq.all.an,
-  af: variant.freq.all.af,
-  hgvs: variant.transcript_consequences && variant.transcript_consequences[0].hgvs,
-})
-
-const LongReadVariantsInGene = ({
-  gene,
-  variants,
-  datasetId,
-  zoomRegion,
-  clinvarReleaseDate,
-}: {
-  gene: any
-  variants: any[]
-  datasetId: DatasetId
-  zoomRegion: any
-  clinvarReleaseDate: any
-}) => {
-  const datasetLabel = labelForDataset(datasetId)
-  const filteredVariants = filterVariantsInZoomRegion(variants, zoomRegion).filter(withFrequency)
-  return (
-    <>
-      <LongReadVariantTrack variants={filteredVariants} />
-
-      <Variants
-        clinvarReleaseDate={clinvarReleaseDate}
-        context={gene}
-        datasetId={datasetId}
-        exportFileName={`${datasetLabel}_${gene.gene_id}`}
-        variants={filteredVariants.map(adaptForTrackAndTable)}
-      />
-    </>
-  )
 }
 
 const operationName = 'VariantsInGene'
@@ -449,13 +406,12 @@ const ConnectedVariantsInGene = ({
       {({ data }: any) => {
         if (isLongRead(datasetId)) {
           return (
-            <LongReadVariantsInGene
-              {...otherProps}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-              clinvarVariants={data.gene.clinvar_variants}
+            <LongReadUnifiedView
               datasetId={datasetId}
               gene={gene}
               variants={data.gene.long_read_variants}
+              zoomRegion={otherProps.zoomRegion}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
             />
           )
         }
