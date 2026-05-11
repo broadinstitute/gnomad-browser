@@ -24,6 +24,7 @@ import {
   isExac,
   hasCopyNumberVariants,
   isV2,
+  isLongRead,
   getTopLevelDataset,
 } from '@gnomad/dataset-metadata/metadata'
 import ConstraintTable from '../ConstraintTable/ConstraintTable'
@@ -445,12 +446,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             width={overviewWidth}
           />
         )}
-        zoomDisabled={!hasExons(datasetId)}
+        zoomDisabled={!hasExons(datasetId) && !isLongRead(datasetId)}
         zoomRegion={zoomRegion}
         onChangeZoomRegion={setZoomRegion}
       >
         {/* eslint-disable-next-line no-nested-ternary */}
-        {!hasExons(datasetId) ? (
+        {isLongRead(datasetId) ? null : !hasExons(datasetId) ? (
           <RegionCoverageTrack
             chrom={gene.chrom}
             datasetId={datasetId}
@@ -593,7 +594,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
+        {hasCodingExons && gene.chrom !== 'M' && gene.pext && !isLongRead(datasetId) && (
           <TissueExpressionTrack
             exons={cdsCompositeExons}
             expressionRegions={gene.pext.regions}

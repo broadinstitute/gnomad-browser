@@ -100,8 +100,8 @@ const InfoBanner = styled.div`
 type LongReadUnifiedViewProps = {
   datasetId: DatasetId
   gene: {
-    gene_id: string
-    symbol: string
+    gene_id?: string
+    symbol?: string
     chrom: string
     start: number
     stop: number
