@@ -11,6 +11,7 @@ import {
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import Link from '../Link'
+import LongReadVariantTrack from '../LongReadVariantPage/LongReadVariantTrack'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
@@ -208,16 +209,17 @@ const LongReadVariantsInGene = ({
   clinvarReleaseDate: any
 }) => {
   const datasetLabel = labelForDataset(datasetId)
+  const filteredVariants = filterVariantsInZoomRegion(variants, zoomRegion).filter(withFrequency)
   return (
     <>
+      <LongReadVariantTrack variants={filteredVariants} />
+
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}
         context={gene}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${gene.gene_id}`}
-        variants={filterVariantsInZoomRegion(variants, zoomRegion)
-          .filter(withFrequency)
-          .map(adaptForTrackAndTable)}
+        variants={filteredVariants.map(adaptForTrackAndTable)}
       />
     </>
   )
@@ -326,6 +328,17 @@ const longReadVariantSubquery = `
 	long_read_variants(dataset: $datasetId) {
 		variant_id
 		pos
+		end
+		length
+		allele_type
+		filters
+		motifs
+		main_reference_region {
+			chrom
+			start
+			stop
+		}
+		sv_consequences
 		freq {
 			all {
 				ac
@@ -343,6 +356,7 @@ const longReadVariantSubquery = `
 			hgvs
 			major_consequence
 		}
+		major_consequence
 		short_read_match_id
 		enveloping_tr_id
 		enveloped_ids
