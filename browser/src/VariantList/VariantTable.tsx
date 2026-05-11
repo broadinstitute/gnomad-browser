@@ -10,7 +10,6 @@ type OwnProps = {
   onVisibleRowsChange?: (...args: any[]) => any
   onHoverVariant?: (...args: any[]) => any
   onRequestSort?: (...args: any[]) => any
-  onExpandChildVariants?: (variantId: string) => void
   sortKey: string
   sortOrder: 'ascending' | 'descending'
   variants: any[]
@@ -28,7 +27,6 @@ const VariantTable = ({
   onVisibleRowsChange,
   onHoverVariant,
   onRequestSort,
-  onExpandChildVariants,
   variants,
   sortKey,
   sortOrder,
@@ -37,7 +35,6 @@ const VariantTable = ({
     <Grid
       cellData={{
         highlightWords: highlightText.split(',').map((s: any) => s.trim()),
-        onExpandChildVariants,
       }}
       columns={columns}
       data={variants}
