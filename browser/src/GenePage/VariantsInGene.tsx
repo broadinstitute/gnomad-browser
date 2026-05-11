@@ -218,7 +218,6 @@ const LongReadVariantsInGene = ({
         variants={filterVariantsInZoomRegion(variants, zoomRegion)
           .filter(withFrequency)
           .map(adaptForTrackAndTable)}
-        parentIdColumn="enveloping_tr_id"
       />
     </>
   )
