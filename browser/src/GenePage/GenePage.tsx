@@ -46,6 +46,8 @@ import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
+import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
+import ZoomOverview from '../Haplotypes/ZoomOverview'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
@@ -356,7 +358,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           stop: exon.stop + 75,
         }))
 
-  const [zoomRegion, setZoomRegion] = useState(null)
+  const [zoomRegion, setZoomRegion] = useState<{ start: number; stop: number } | null>(null)
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
@@ -430,6 +432,18 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           </ConstraintOrCooccurrenceColumn>
         </GeneInfoColumnWrapper>
       </TrackPageSection>
+      {isLongRead(datasetId) && (
+        <TrackPageSection>
+          <ZoomOverview
+            overviewRegion={{ start: gene.start, stop: gene.stop }}
+            currentRegion={zoomRegion || { start: gene.start, stop: gene.stop }}
+            chrom={gene.chrom}
+            genes={[gene] as any}
+            onChangeRegion={setZoomRegion}
+            onSetRegion={setZoomRegion}
+          />
+        </TrackPageSection>
+      )}
       <RegionViewer
         contextType="gene"
         leftPanelWidth={115}
@@ -446,12 +460,14 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             width={overviewWidth}
           />
         )}
-        zoomDisabled={!hasExons(datasetId) && !isLongRead(datasetId)}
+        zoomDisabled={isLongRead(datasetId) || (!hasExons(datasetId) && !isLongRead(datasetId))}
         zoomRegion={zoomRegion}
         onChangeZoomRegion={setZoomRegion}
       >
         {/* eslint-disable-next-line no-nested-ternary */}
-        {isLongRead(datasetId) ? null : !hasExons(datasetId) ? (
+        {isLongRead(datasetId) ? (
+          <LRCoverageTrack chrom={gene.chrom} start={gene.start} stop={gene.stop} />
+        ) : !hasExons(datasetId) ? (
           <RegionCoverageTrack
             chrom={gene.chrom}
             datasetId={datasetId}

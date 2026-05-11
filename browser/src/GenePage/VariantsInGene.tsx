@@ -295,6 +295,9 @@ const longReadVariantSubquery = `
 			start
 			stop
 		}
+		rsids
+		cadd_phred
+		phylop
 		sv_consequences
 		freq {
 			all {
