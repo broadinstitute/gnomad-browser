@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, labelForDataset, referenceGenome, isLongRead } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
@@ -80,37 +81,8 @@ VariantsInRegion.defaultProps = {
 }
 
 const operationName = 'VariantInRegion'
-const query = `
-query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
-  meta {
-    clinvar_release_date
-  }
-  region(start: $start, stop: $stop, chrom: $chrom, reference_genome: $referenceGenome) {
-    clinvar_variants {
-      clinical_significance
-      clinvar_variation_id
-      gnomad {
-        exome {
-          ac
-          an
-          filters
-        }
-        genome {
-          ac
-          an
-          filters
-        }
-      }
-      gold_stars
-      hgvsc
-      hgvsp
-      in_gnomad
-      major_consequence
-      pos
-      review_status
-      transcript_id
-      variant_id
-    }
+
+const shortReadVariantSubquery = `
     variants(dataset: $datasetId) {
       consequence
       flags
@@ -207,6 +179,79 @@ query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: D
         flags
       }
     }
+`
+
+const longReadVariantSubquery = `
+    long_read_variants(dataset: $datasetId) {
+      variant_id
+      pos
+      end
+      length
+      allele_type
+      filters
+      motifs
+      main_reference_region {
+        chrom
+        start
+        stop
+      }
+      sv_consequences
+      freq {
+        all {
+          ac
+          an
+          af
+          homozygote_ref_count
+          homozygote_alt_count
+          heterozygote_count
+          homozygote_ref_freq
+          homozygote_alt_freq
+          heterozygote_freq
+        }
+      }
+      transcript_consequences {
+        hgvs
+        major_consequence
+      }
+      major_consequence
+      short_read_match_id
+      enveloping_tr_id
+      enveloped_ids
+    }
+`
+
+const query = (variantSubquery: string) => `
+query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+  meta {
+    clinvar_release_date
+  }
+  region(start: $start, stop: $stop, chrom: $chrom, reference_genome: $referenceGenome) {
+    clinvar_variants {
+      clinical_significance
+      clinvar_variation_id
+      gnomad {
+        exome {
+          ac
+          an
+          filters
+        }
+        genome {
+          ac
+          an
+          filters
+        }
+      }
+      gold_stars
+      hgvsc
+      hgvsp
+      in_gnomad
+      major_consequence
+      pos
+      review_status
+      transcript_id
+      variant_id
+    }
+    ${variantSubquery}
   }
 }`
 
@@ -219,33 +264,50 @@ type ConnectedVariantsInRegionProps = {
   }
 }
 
-const ConnectedVariantsInRegion = ({ datasetId, region }: ConnectedVariantsInRegionProps) => (
-  <Query
-    operationName={operationName}
-    query={query}
-    variables={{
-      datasetId,
-      chrom: region.chrom,
-      start: region.start,
-      stop: region.stop,
-      referenceGenome: referenceGenome(datasetId),
-    }}
-    loadingMessage="Loading variants"
-    errorMessage="Unable to load variants"
-    success={(data: any) => data.region && data.region.variants}
-  >
-    {({ data }: any) => {
-      return (
-        <VariantsInRegion
-          clinvarReleaseDate={data.meta.clinvar_release_date}
-          clinvarVariants={data.region.clinvar_variants}
-          datasetId={datasetId}
-          region={region}
-          variants={annotateVariantsWithClinvar(data.region.variants, data.region.clinvar_variants)}
-        />
-      )
-    }}
-  </Query>
-)
+const ConnectedVariantsInRegion = ({ datasetId, region }: ConnectedVariantsInRegionProps) => {
+  const longRead = isLongRead(datasetId)
+
+  return (
+    <Query
+      operationName={operationName}
+      query={longRead ? query(longReadVariantSubquery) : query(shortReadVariantSubquery)}
+      variables={{
+        datasetId,
+        chrom: region.chrom,
+        start: region.start,
+        stop: region.stop,
+        referenceGenome: referenceGenome(datasetId),
+      }}
+      loadingMessage="Loading variants"
+      errorMessage="Unable to load variants"
+      success={(data: any) =>
+        data.region && (longRead ? data.region.long_read_variants : data.region.variants)
+      }
+    >
+      {({ data }: any) => {
+        if (longRead) {
+          return (
+            <LongReadUnifiedView
+              datasetId={datasetId}
+              gene={{ chrom: region.chrom, start: region.start, stop: region.stop }}
+              variants={data.region.long_read_variants}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+            />
+          )
+        }
+
+        return (
+          <VariantsInRegion
+            clinvarReleaseDate={data.meta.clinvar_release_date}
+            clinvarVariants={data.region.clinvar_variants}
+            datasetId={datasetId}
+            region={region}
+            variants={annotateVariantsWithClinvar(data.region.variants, data.region.clinvar_variants)}
+          />
+        )
+      }}
+    </Query>
+  )
+}
 
 export default ConnectedVariantsInRegion

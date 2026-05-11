@@ -181,9 +181,38 @@ export const fetchVariantsByGene = withCache(
   { expiration: 1 }
 )
 
+const _fetchVariantsByRegion = async (region: { chrom: string; start: number; stop: number }) => {
+  const chrom = normalizeChrom(region.chrom)
+
+  const query = `
+    SELECT * FROM lr_variants
+    WHERE chrom = {chrom:String}
+      AND position >= {start:UInt32}
+      AND position <= {stop:UInt32}
+    ORDER BY position ASC
+  `
+
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start: region.start, stop: region.stop },
+    format: 'JSONEachRow',
+  })
+  const rows = (await resultSet.json()) as any[]
+
+  return rows.map(mapClickHouseRowToGraphQL)
+}
+
+export const fetchVariantsByRegion = withCache(
+  _fetchVariantsByRegion,
+  (region: { chrom: string; start: number; stop: number }) =>
+    `lr_variants:region:${region.chrom}:${region.start}:${region.stop}`,
+  { expiration: 1 }
+)
+
 const queries = {
   fetchVariantById,
   fetchVariantsByGene,
+  fetchVariantsByRegion,
 }
 
 export default queries

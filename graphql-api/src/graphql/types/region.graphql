@@ -29,6 +29,7 @@ type Region {
   non_coding_constraints: [NonCodingConstraintRegion!] @cost(value: 3)
 
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
+  long_read_variants(dataset: DatasetId!): [LongReadVariant!] @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
   mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]! @cost(value: 10)
   copy_number_variants(dataset: CopyNumberVariantDatasetId!): [CopyNumberVariant!]! @cost(value: 10)
