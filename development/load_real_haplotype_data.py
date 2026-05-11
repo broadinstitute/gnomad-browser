@@ -324,7 +324,7 @@ def parse_vep_entries(info):
         if len(fields) > 4:
             symbol = fields[3]
             ensembl_id = fields[4]
-            if symbol and ensembl_id:
+            if symbol and ensembl_id and ensembl_id.startswith("ENSG"):
                 genes_set.add((symbol, ensembl_id))
 
         # Intergenic: feature_type is empty
