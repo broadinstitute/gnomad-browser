@@ -1,5 +1,6 @@
 import { throttle } from 'lodash-es'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { SegmentedControl } from '@gnomad/ui'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
@@ -31,11 +32,11 @@ const HAPLOTYPE_GROUPS_QUERY = `
       groups {
         samples { sample_id }
         variants {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
+          variants { locus chrom position alleles rsid qual major_consequence filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
           readable_id
         }
         below_threshold {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
+          variants { locus chrom position alleles rsid qual major_consequence filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
           readable_id
         }
         start stop hash
@@ -86,15 +87,6 @@ const ToggleWrapper = styled.div`
   margin-bottom: 12px;
 `
 
-const InfoBanner = styled.div`
-  background: #fff3e0;
-  border: 1px solid #ffe0b2;
-  border-radius: 4px;
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #e65100;
-  margin-bottom: 12px;
-`
 
 // --- Component ---
 
@@ -130,7 +122,31 @@ const LongReadUnifiedView = ({
 }: LongReadUnifiedViewProps) => {
   const { chrom, start, stop } = gene
 
-  const [viewMode, setViewMode] = useState<'summary' | 'haplotype'>('summary')
+  // Bug 1: Read lr_view and show_tree from URL params
+  const location = useLocation()
+  const history = useHistory()
+  const searchParams = new URLSearchParams(location.search)
+  const viewMode = (searchParams.get('lr_view') === 'haplotype' ? 'haplotype' : 'summary') as 'summary' | 'haplotype'
+
+  const setViewMode = useCallback((mode: string) => {
+    const params = new URLSearchParams(location.search)
+    params.set('lr_view', mode)
+    if (mode === 'summary') {
+      params.delete('show_tree')
+    }
+    history.replace({ ...location, search: params.toString() })
+  }, [history, location])
+
+  const showGenealogyFromUrl = searchParams.get('show_tree') === 'true'
+  const setShowGenealogyUrl = useCallback((show: boolean) => {
+    const params = new URLSearchParams(location.search)
+    if (show) {
+      params.set('show_tree', 'true')
+    } else {
+      params.delete('show_tree')
+    }
+    history.replace({ ...location, search: params.toString() })
+  }, [history, location])
 
   // Haplotype mode state
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
@@ -148,7 +164,7 @@ const LongReadUnifiedView = ({
   const [sortBy, setSortBy] = useState('similarity_score')
   const [plotType, setPlotType] = useState('lollipop')
   const [colorMode, setColorMode] = useState('allele')
-  const [showGenealogy, setShowGenealogy] = useState(false)
+  const showGenealogy = showGenealogyFromUrl
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
   const [mqtlLoading, setMqtlLoading] = useState(false)
@@ -398,6 +414,26 @@ const LongReadUnifiedView = ({
 
   return (
     <>
+      <TrackPageSection>
+        <ToggleWrapper>
+          <SegmentedControl
+            id="lr-view-mode"
+            options={[
+              { label: 'Summary', value: 'summary' },
+              { label: 'Haplotype', value: 'haplotype' },
+            ]}
+            value={viewMode}
+            onChange={(value: string) => setViewMode(value as 'summary' | 'haplotype')}
+          />
+        </ToggleWrapper>
+
+        {viewMode === 'haplotype' && (
+          <p style={{ fontSize: 13, color: '#666', margin: '0 0 12px 0' }}>
+            Viewing phased haplotypes for a subset of 292 samples.
+          </p>
+        )}
+      </TrackPageSection>
+
       {viewMode === 'summary' && (
         <LongReadVariantTrack variants={displayVariants} />
       )}
@@ -440,34 +476,13 @@ const LongReadUnifiedView = ({
               initialColorMode={colorMode}
               onColorModeChange={setColorMode}
               showGenealogy={showGenealogy}
-              onShowGenealogyChange={setShowGenealogy}
+              onShowGenealogyChange={setShowGenealogyUrl}
               hoveredVariantPosition={hoveredVariantPosition}
             />
           )}
           <PositionAxisTrack />
         </>
       )}
-
-      <TrackPageSection>
-        <ToggleWrapper>
-          <SegmentedControl
-            id="lr-view-mode"
-            options={[
-              { label: 'Summary', value: 'summary' },
-              { label: 'Haplotype', value: 'haplotype' },
-            ]}
-            value={viewMode}
-            onChange={(value: string) => setViewMode(value as 'summary' | 'haplotype')}
-          />
-        </ToggleWrapper>
-
-        {viewMode === 'haplotype' && (
-          <InfoBanner>
-            Viewing phased haplotypes for a deeply-sequenced subset of 292 samples.
-            Some rare variants from the full summary callset may not appear in this mode.
-          </InfoBanner>
-        )}
-      </TrackPageSection>
 
       {viewMode === 'summary' ? (
         <TrackPageSection>
