@@ -1,23 +1,33 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 
-import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
+import { Badge, List, ListItem, Modal, SegmentedControl, TextButton } from '@gnomad/ui'
 
 import {
   DatasetId,
   labelForDataset,
   referenceGenome,
   isLongRead,
+  associatedLongReadDataset,
 } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import Link from '../Link'
-import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
+import LongReadHaplotypeView from '../LongReadVariantPage/LongReadHaplotypeView'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
+import mergeLongReadVariants from '../VariantList/mergeLongReadVariants'
 import Variants from '../VariantList/Variants'
 import { Gene } from './GenePage'
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+`
 
 type TranscriptsModalProps = {
   gene: {
@@ -58,6 +68,7 @@ type OwnVariantsInGeneProps = {
   clinvarReleaseDate: string
   clinvarVariants?: any[]
   datasetId: DatasetId
+  lrDatasetId?: DatasetId | null
   gene: {
     gene_id: string
     symbol: string
@@ -97,6 +108,7 @@ const VariantsInGene = ({
   clinvarReleaseDate,
   clinvarVariants,
   datasetId,
+  lrDatasetId,
   gene,
   includeNonCodingTranscripts,
   includeUTRs,
@@ -107,72 +119,99 @@ const VariantsInGene = ({
   const datasetLabel = labelForDataset(datasetId)
 
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
+  const [viewMode, setViewMode] = useState<'summary' | 'haplotype'>('summary')
 
   return (
     <>
-      <TrackPageSection>
-        <h2>ClinVar variants</h2>
-      </TrackPageSection>
-      {clinvarVariants.length > 0 ? (
-        <>
-          <ClinvarVariantTrack
-            referenceGenome={referenceGenome(datasetId)}
-            transcripts={gene.transcripts}
-            variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
-          />
-          <TrackPageSection as="p">
-            Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
-            release.
-          </TrackPageSection>
-        </>
-      ) : (
-        <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
+      {lrDatasetId && (
+        <TrackPageSection>
+          <ToggleWrapper>
+            <SegmentedControl
+              id="lr-view-mode"
+              options={[
+                { label: 'Variant Table', value: 'summary' },
+                { label: 'Phased Haplotypes', value: 'haplotype' },
+              ]}
+              value={viewMode}
+              onChange={(value: string) => setViewMode(value as 'summary' | 'haplotype')}
+            />
+          </ToggleWrapper>
+        </TrackPageSection>
       )}
-      <Variants
-        clinvarReleaseDate={clinvarReleaseDate}
-        context={gene}
-        datasetId={datasetId}
-        exportFileName={`${datasetLabel}_${gene.gene_id}`}
-        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
-      >
-        <p>
-          <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
-            {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
-          </Badge>{' '}
-          {hasOnlyNonCodingTranscripts && <>This gene has no coding transcripts. </>}
-          Only variants located in or within 75 base pairs of{' '}
-          {!hasOnlyNonCodingTranscripts ? <>a coding exon (CDS)</> : <>an exon</>} are shown here.
-          To see variants {!hasOnlyNonCodingTranscripts ? <>in UTRs or introns</> : <>in introns</>}
-          , use the <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>
-          .
-        </p>
-        <p>
-          The table below shows the HGVS consequence and VEP annotation for each variant&apos;s most
-          severe consequence across all transcripts in this gene. Cases where the most severe
-          consequence occurs in a{' '}
-          {gene.reference_genome === 'GRCh37'
-            ? 'non-canonical transcript'
-            : 'non-MANE Select transcript (or non-canonical transcript if no MANE Select transcript exists)'}{' '}
-          are denoted with †. To see consequences in a specific transcript, use the{' '}
-          <TextButton
-            onClick={() => {
-              setIsTranscriptsModalOpen(true)
-            }}
+
+      {viewMode === 'haplotype' && lrDatasetId ? (
+        <LongReadHaplotypeView
+          datasetId={lrDatasetId}
+          gene={gene}
+          zoomRegion={zoomRegion}
+        />
+      ) : (
+        <>
+          <TrackPageSection>
+            <h2>ClinVar variants</h2>
+          </TrackPageSection>
+          {clinvarVariants.length > 0 ? (
+            <>
+              <ClinvarVariantTrack
+                referenceGenome={referenceGenome(datasetId)}
+                transcripts={gene.transcripts}
+                variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
+              />
+              <TrackPageSection as="p">
+                Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
+                release.
+              </TrackPageSection>
+            </>
+          ) : (
+            <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
+          )}
+          <Variants
+            clinvarReleaseDate={clinvarReleaseDate}
+            context={gene}
+            datasetId={datasetId}
+            exportFileName={`${datasetLabel}_${gene.gene_id}`}
+            variants={filterVariantsInZoomRegion(variants, zoomRegion)}
           >
-            transcript view
-          </TextButton>
-          .
-        </p>
-        {isTranscriptsModalOpen && (
-          <TranscriptsModal
-            gene={gene}
-            onRequestClose={() => {
-              setIsTranscriptsModalOpen(false)
-            }}
-          />
-        )}
-      </Variants>
-      )
+            <p>
+              <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
+                {includeNonCodingTranscripts || includeUTRs ? 'Warning' : 'Note'}
+              </Badge>{' '}
+              {hasOnlyNonCodingTranscripts && <>This gene has no coding transcripts. </>}
+              Only variants located in or within 75 base pairs of{' '}
+              {!hasOnlyNonCodingTranscripts ? <>a coding exon (CDS)</> : <>an exon</>} are shown here.
+              To see variants {!hasOnlyNonCodingTranscripts ? <>in UTRs or introns</> : <>in introns</>}
+              , use the <Link to={`/region/${gene.chrom}-${gene.start}-${gene.stop}`}>region view</Link>
+              .
+            </p>
+            <p>
+              The table below shows the HGVS consequence and VEP annotation for each variant&apos;s most
+              severe consequence across all transcripts in this gene. Cases where the most severe
+              consequence occurs in a{' '}
+              {gene.reference_genome === 'GRCh37'
+                ? 'non-canonical transcript'
+                : 'non-MANE Select transcript (or non-canonical transcript if no MANE Select transcript exists)'}{' '}
+              are denoted with †. To see consequences in a specific transcript, use the{' '}
+              <TextButton
+                onClick={() => {
+                  setIsTranscriptsModalOpen(true)
+                }}
+              >
+                transcript view
+              </TextButton>
+              .
+            </p>
+            {isTranscriptsModalOpen && (
+              <TranscriptsModal
+                gene={gene}
+                onRequestClose={() => {
+                  setIsTranscriptsModalOpen(false)
+                }}
+              />
+            )}
+          </Variants>
+          )
+        </>
+      )}
     </>
   )
 }
@@ -184,8 +223,7 @@ VariantsInGene.defaultProps = {
 
 const operationName = 'VariantsInGene'
 
-const shortReadVariantSubquery = `
-    variants(dataset: $datasetId) {
+const shortReadVariantFields = `
       consequence
       flags
       hgvs
@@ -278,11 +316,9 @@ const shortReadVariantSubquery = `
         verdict
         flags
       }
-    }
 `
 
-const longReadVariantSubquery = `
-	long_read_variants(dataset: $datasetId) {
+const longReadVariantFields = `
 		variant_id
 		pos
 		end
@@ -320,11 +356,17 @@ const longReadVariantSubquery = `
 		short_read_match_id
 		enveloping_tr_id
 		enveloped_ids
-	}
 `
 
-const query = (variantSubquery: string) => `
-query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
+const buildQuery = (hasLongRead: boolean) => {
+  const variantSubquery = `variants(dataset: $datasetId) { ${shortReadVariantFields} }`
+  const lrSubquery = hasLongRead
+    ? `long_read_variants(dataset: $lrDatasetId) { ${longReadVariantFields} }`
+    : ''
+  const lrVariable = hasLongRead ? ', $lrDatasetId: DatasetId!' : ''
+
+  return `
+query ${operationName}($geneId: String!, $datasetId: DatasetId!${lrVariable}, $referenceGenome: ReferenceGenomeId!) {
   meta {
     clinvar_release_date
   }
@@ -355,8 +397,10 @@ query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenom
       variant_id
     }
     ${variantSubquery}
+    ${lrSubquery}
   }
 }`
+}
 
 const annotateVariantsWithPext = (variants: any, pext: any) => {
   const pextRegions = [...pext.regions]
@@ -389,39 +433,35 @@ const ConnectedVariantsInGene = ({
   gene,
   ...otherProps
 }: ConnectedVariantsInGeneProps) => {
+  // Determine LR dataset: either the associated LR dataset, or the dataset itself if it IS LR
+  const lrDatasetId = associatedLongReadDataset(datasetId) || (isLongRead(datasetId) ? datasetId : null)
+  const hasLongRead = !!lrDatasetId
+  // When viewing an LR dataset directly, query SR variants from the base dataset (gnomad_r4)
+  const srDatasetId = isLongRead(datasetId) ? ('gnomad_r4' as DatasetId) : datasetId
+
   return (
     <Query
       operationName={operationName}
-      query={
-        isLongRead(datasetId) ? query(longReadVariantSubquery) : query(shortReadVariantSubquery)
-      }
+      query={buildQuery(hasLongRead)}
       variables={{
-        datasetId,
+        datasetId: srDatasetId,
         geneId: gene.gene_id,
         referenceGenome: referenceGenome(datasetId),
+        ...(hasLongRead && { lrDatasetId }),
       }}
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
-      success={(data: any) =>
-        data.gene && (isLongRead(datasetId) ? data.gene.long_read_variants : data.gene.variants)
-      }
+      success={(data: any) => data.gene && data.gene.variants}
     >
       {({ data }: any) => {
-        if (isLongRead(datasetId)) {
-          return (
-            <LongReadUnifiedView
-              datasetId={datasetId}
-              gene={gene}
-              variants={data.gene.long_read_variants}
-              zoomRegion={otherProps.zoomRegion}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-            />
-          )
-        }
-
         let variants = annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)
         if (gene.pext) {
           variants = annotateVariantsWithPext(variants, gene.pext)
+        }
+
+        // Merge LR variants into the SR array if available
+        if (hasLongRead && data.gene.long_read_variants) {
+          variants = mergeLongReadVariants(variants, data.gene.long_read_variants)
         }
 
         return (
@@ -429,7 +469,8 @@ const ConnectedVariantsInGene = ({
             {...otherProps}
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.gene.clinvar_variants}
-            datasetId={datasetId}
+            datasetId={srDatasetId}
+            lrDatasetId={lrDatasetId}
             gene={gene}
             variants={variants}
           />
