@@ -67,17 +67,19 @@ type Props = {
     }
     includeExomes: boolean
     includeGenomes: boolean
+    includeLongReads: boolean
     includeFilteredVariants: boolean
     includeSNVs: boolean
     includeIndels: boolean
     includeContext: boolean
     searchText: string
   }
+  hasLongReadData?: boolean
   jumpToRow: (...args: any[]) => any
   position: number
 }
 
-const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) => {
+const VariantFilterControls = ({ onChange, value, hasLongReadData, jumpToRow, position }: Props) => {
   const searchInput = useRef(null)
 
   return (
@@ -121,7 +123,7 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
         <CheckboxSection>
           <Checkbox
             checked={value.includeExomes}
-            disabled={!value.includeGenomes}
+            disabled={!value.includeGenomes && !(hasLongReadData && value.includeLongReads)}
             id="exome-variant-filter"
             label="Exomes"
             onChange={(includeExomes) => {
@@ -130,13 +132,24 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
           />
           <Checkbox
             checked={value.includeGenomes}
-            disabled={!value.includeExomes}
+            disabled={!value.includeExomes && !(hasLongReadData && value.includeLongReads)}
             id="genome-variant-filter"
             label="Genomes"
             onChange={(includeGenomes) => {
               onChange({ ...value, includeGenomes })
             }}
           />
+          {hasLongReadData && (
+            <Checkbox
+              checked={value.includeLongReads}
+              disabled={!value.includeExomes && !value.includeGenomes}
+              id="long-read-variant-filter"
+              label="Long reads"
+              onChange={(includeLongReads) => {
+                onChange({ ...value, includeLongReads })
+              }}
+            />
+          )}
         </CheckboxSection>
         <CheckboxSection>
           <Checkbox

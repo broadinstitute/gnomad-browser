@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
-import { DatasetId, isLongRead, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, isLongRead, associatedLongReadDataset, labelForDataset } from '@gnomad/dataset-metadata/metadata'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
@@ -142,6 +142,7 @@ const Variants = ({
     includeIndels: true,
     includeExomes: true,
     includeGenomes: true,
+    includeLongReads: true,
     includeContext: true,
     searchText: '',
   })
@@ -168,14 +169,15 @@ const Variants = ({
     })
   }, [])
 
+  const hasLongReadData = !!(associatedLongReadDataset(datasetId) || isLongRead(datasetId))
+
   const filteredVariants = useMemo(() => {
-    return isLongRead(datasetId)
-      ? variants // TK make regular filters work with LR
-      : mergeCallsetData({
-          datasetId,
-          variants: filterVariants(variants as Variant[], filter, renderedTableColumns),
-          preferJointData: filter.includeExomes && filter.includeGenomes,
-        })
+    const filtered = filterVariants(variants as Variant[], filter, renderedTableColumns)
+    return mergeCallsetData({
+      datasetId,
+      variants: filtered,
+      preferJointData: filter.includeExomes && filter.includeGenomes,
+    })
   }, [datasetId, variants, filter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {
@@ -313,6 +315,7 @@ const Variants = ({
         <VariantFilterControls
           onChange={setFilter}
           value={filter}
+          hasLongReadData={hasLongReadData}
           jumpToRow={onSearchResult}
           position={currentSearchIndex}
         />

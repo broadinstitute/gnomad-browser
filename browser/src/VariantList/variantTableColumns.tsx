@@ -1,7 +1,7 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
 
-import { ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
+import { Badge, ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
@@ -352,9 +352,11 @@ const variantTableColumns: VariantTableColumn[] = [
       <React.Fragment>
         {variant.exome && <SampleSourceIcon source="exome" filters={variant.exome.filters} />}
         {variant.genome && <SampleSourceIcon source="genome" filters={variant.genome.filters} />}
+        {variant.long_read && (
+          <SampleSourceIcon source="long_read" filters={variant.long_read.filters} />
+        )}
       </React.Fragment>
     ),
-    shouldShowInContext: (_context, contextType) => contextType !== 'gene-lr',
   },
 
   {
@@ -388,6 +390,11 @@ const variantTableColumns: VariantTableColumn[] = [
         <Link target="_blank" to={`/variant/${row.variant_id}`}>
           <Highlighter autoEscape searchWords={highlightWords} textToHighlight={row.variant_id} />
         </Link>
+        {row.long_read_details?.is_likely_tr && (
+          <span style={{ marginLeft: '0.5ch' }}>
+            <Badge level="info">STR</Badge>
+          </span>
+        )}
       </Cell>
     ),
   },

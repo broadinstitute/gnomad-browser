@@ -272,6 +272,9 @@ const exportVariantsToCsv = (
               if (variant.genome) {
                 sources.push('gnomAD Genomes')
               }
+              if (variant.long_read) {
+                sources.push('gnomAD Long Reads')
+              }
               return sources.join(',')
             },
     },
@@ -291,6 +294,15 @@ const exportVariantsToCsv = (
           return 'NA'
         }
         return variant.genome.filters.length === 0 ? 'PASS' : variant.genome.filters.join(',')
+      },
+    },
+    {
+      label: 'Filters - long reads',
+      getValue: (variant: VariantTableVariant) => {
+        if (!variant.long_read) {
+          return 'NA'
+        }
+        return variant.long_read.filters.length === 0 ? 'PASS' : variant.long_read.filters.join(',')
       },
     },
     {
@@ -417,6 +429,9 @@ export type VariantTableVariant = {
     filters: string[]
   } | null
   genome: {
+    filters: string[]
+  } | null
+  long_read?: {
     filters: string[]
   } | null
 }
