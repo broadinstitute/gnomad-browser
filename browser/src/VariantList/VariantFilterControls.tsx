@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
 
-import { DatasetId, isLongRead } from '@gnomad/dataset-metadata/metadata'
 import CategoryFilterControl from '../CategoryFilterControl'
 import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import InfoButton from '../help/InfoButton'
@@ -58,7 +57,6 @@ const keyboardShortcuts = {
 }
 
 type Props = {
-  datasetId?: DatasetId
   onChange: (...args: any[]) => any
   value: {
     includeCategories: {
@@ -79,7 +77,7 @@ type Props = {
   position: number
 }
 
-const VariantFilterControls = ({ datasetId, onChange, value, jumpToRow, position }: Props) => {
+const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) => {
   const searchInput = useRef(null)
 
   return (
@@ -120,28 +118,26 @@ const VariantFilterControls = ({ datasetId, onChange, value, jumpToRow, position
       </ConsequenceFiltersWrapper>
 
       <CheckboxFiltersWrapper>
-        {!(datasetId && isLongRead(datasetId)) && (
-          <CheckboxSection>
-            <Checkbox
-              checked={value.includeExomes}
-              disabled={!value.includeGenomes}
-              id="exome-variant-filter"
-              label="Exomes"
-              onChange={(includeExomes) => {
-                onChange({ ...value, includeExomes })
-              }}
-            />
-            <Checkbox
-              checked={value.includeGenomes}
-              disabled={!value.includeExomes}
-              id="genome-variant-filter"
-              label="Genomes"
-              onChange={(includeGenomes) => {
-                onChange({ ...value, includeGenomes })
-              }}
-            />
-          </CheckboxSection>
-        )}
+        <CheckboxSection>
+          <Checkbox
+            checked={value.includeExomes}
+            disabled={!value.includeGenomes}
+            id="exome-variant-filter"
+            label="Exomes"
+            onChange={(includeExomes) => {
+              onChange({ ...value, includeExomes })
+            }}
+          />
+          <Checkbox
+            checked={value.includeGenomes}
+            disabled={!value.includeExomes}
+            id="genome-variant-filter"
+            label="Genomes"
+            onChange={(includeGenomes) => {
+              onChange({ ...value, includeGenomes })
+            }}
+          />
+        </CheckboxSection>
         <CheckboxSection>
           <Checkbox
             checked={value.includeSNVs}
