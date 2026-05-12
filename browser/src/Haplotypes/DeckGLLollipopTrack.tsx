@@ -210,6 +210,8 @@ type DeckGLLollipopTrackProps = {
   mqtlMinLogP?: number
   sampleMetadata?: SampleMetadataMap
   hoveredVariantPosition?: number | null
+  showGenealogy?: boolean
+  genealogyPanelWidth?: number
 }
 
 export default function DeckGLLollipopTrack({
@@ -229,6 +231,8 @@ export default function DeckGLLollipopTrack({
   mqtlMinLogP = 0,
   sampleMetadata,
   hoveredVariantPosition,
+  showGenealogy = false,
+  genealogyPanelWidth = 250,
 }: DeckGLLollipopTrackProps) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -330,6 +334,8 @@ export default function DeckGLLollipopTrack({
           rowOffsets={rowOffsets}
           hovered={hovered}
           onHover={onHover}
+          showGenealogy={showGenealogy}
+          genealogyPanelWidth={genealogyPanelWidth}
         />
       )}
     </Track>
@@ -357,6 +363,8 @@ type DeckGLCanvasProps = {
   rowOffsets: number[]
   hovered: any
   onHover: (info: any) => void
+  showGenealogy: boolean
+  genealogyPanelWidth: number
 }
 
 // Inner component that receives scalePosition from Track render prop
@@ -381,7 +389,12 @@ function DeckGLLollipopCanvas({
   rowOffsets,
   hovered,
   onHover,
+  showGenealogy,
+  genealogyPanelWidth,
 }: DeckGLCanvasProps) {
+  // When genealogy tree is visible, shrink the canvas so it doesn't render into the tree area
+  const canvasWidth = showGenealogy ? Math.max(0, width - genealogyPanelWidth) : width
+
   // Pre-aggregate locus counts for haplotype_count color mode
   const locusCounts = useMemo(() => {
     const counts = new Map<string, number>()
@@ -760,22 +773,22 @@ function DeckGLLollipopCanvas({
 
   const viewState = useMemo(
     () => ({
-      target: [width / 2, totalHeight / 2, 0] as [number, number, number],
+      target: [canvasWidth / 2, totalHeight / 2, 0] as [number, number, number],
       zoom: 0,
     }),
-    [width, totalHeight]
+    [canvasWidth, totalHeight]
   )
 
   return (
-    <div style={{ position: 'relative', width, height: totalHeight, overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: canvasWidth, height: totalHeight, overflow: 'hidden' }}>
       <DeckGL
         views={view}
         viewState={viewState}
         layers={layers}
         controller={false}
         pickingRadius={5}
-        style={{ position: 'absolute', left: 0, top: 0, width, height: totalHeight }}
-        width={width}
+        style={{ position: 'absolute', left: '0', top: '0', width: `${canvasWidth}px`, height: `${totalHeight}px` }}
+        width={canvasWidth}
         height={totalHeight}
       />
       {hovered && hovered.object && (

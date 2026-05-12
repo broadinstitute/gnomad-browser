@@ -193,6 +193,7 @@ const GenealogyTreeOverlay = ({
         top: 0,
         right: 0,
         pointerEvents: 'all',
+        zIndex: 10,
       }}
     >
       {elements}

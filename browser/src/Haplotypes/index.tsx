@@ -1663,6 +1663,8 @@ const HaplotypeTrack = ({
               mqtlMinLogP={mqtlMinLogP}
               sampleMetadata={sampleMetadata}
               hoveredVariantPosition={hoveredVariantPosition}
+              showGenealogy={showGenealogy}
+              genealogyPanelWidth={250}
             />
             {showGenealogy && genealogyResult && leafYPositions.size > 0 && (
               <GenealogyTreeOverlay
