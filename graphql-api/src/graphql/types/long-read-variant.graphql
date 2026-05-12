@@ -105,6 +105,8 @@ type LongReadVariant {
   intergenic: Boolean
   genes: [LongReadGene!]
   major_consequence: String
+  cadd_phred: Float
+  phylop: Float
   freq: LongReadVariantFrequencies
   short_read_match_id: String
   short_read_match_type: String
