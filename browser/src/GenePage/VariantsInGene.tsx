@@ -13,7 +13,7 @@ import {
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import Link from '../Link'
-import LongReadHaplotypeView from '../LongReadVariantPage/LongReadHaplotypeView'
+import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
@@ -454,12 +454,26 @@ const ConnectedVariantsInGene = ({
       success={(data: any) => data.gene && data.gene.variants}
     >
       {({ data }: any) => {
+        // When viewing the LR dataset directly, show the LR-focused unified view
+        // with haplotype toggle, 3-band track, etc.
+        if (isLongRead(datasetId)) {
+          return (
+            <LongReadUnifiedView
+              datasetId={datasetId}
+              gene={gene}
+              variants={data.gene.long_read_variants || []}
+              zoomRegion={otherProps.zoomRegion}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+            />
+          )
+        }
+
         let variants = annotateVariantsWithClinvar(data.gene.variants, data.gene.clinvar_variants)
         if (gene.pext) {
           variants = annotateVariantsWithPext(variants, gene.pext)
         }
 
-        // Merge LR variants into the SR array if available
+        // Merge LR variants into the SR array as third callset
         if (hasLongRead && data.gene.long_read_variants) {
           variants = mergeLongReadVariants(variants, data.gene.long_read_variants)
         }
