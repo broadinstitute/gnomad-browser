@@ -316,16 +316,58 @@ type ConnectedVariantsInRegionProps = {
 }
 
 const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion }: ConnectedVariantsInRegionProps) => {
-  const lrDatasetId = associatedLongReadDataset(datasetId) || (isLongRead(datasetId) ? datasetId : null)
+  // When viewing LR dataset directly, only query LR data — skip the expensive SR query
+  if (isLongRead(datasetId)) {
+    return (
+      <Query
+        operationName="LongReadVariantsInRegion"
+        query={`query LongReadVariantsInRegion($datasetId: DatasetId!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+          meta { clinvar_release_date }
+          region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+            long_read_variants(dataset: $datasetId) {
+              variant_id pos end length ref alt allele_type filters motifs rsids
+              main_reference_region { chrom start stop }
+              sv_consequences major_consequence cadd_phred phylop
+              freq { all { ac an af homozygote_ref_count homozygote_alt_count heterozygote_count } populations { id ac an af } }
+              transcript_consequences { hgvs major_consequence gene_id gene_symbol transcript_id }
+              short_read_match_id enveloping_tr_id enveloped_ids
+              is_likely_tr gnomad_str
+            }
+          }
+        }`}
+        variables={{
+          datasetId,
+          chrom: region.chrom,
+          start: region.start,
+          stop: region.stop,
+          referenceGenome: referenceGenome(datasetId),
+        }}
+        loadingMessage="Loading variants"
+        errorMessage="Unable to load variants"
+        success={(data: any) => data.region}
+      >
+        {({ data }: any) => (
+          <LongReadUnifiedView
+            datasetId={datasetId}
+            gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
+            variants={data.region.long_read_variants || []}
+            zoomRegion={zoomRegion}
+            clinvarReleaseDate={data.meta.clinvar_release_date}
+          />
+        )}
+      </Query>
+    )
+  }
+
+  const lrDatasetId = associatedLongReadDataset(datasetId) || null
   const hasLongRead = !!lrDatasetId
-  const srDatasetId = isLongRead(datasetId) ? ('gnomad_r4' as DatasetId) : datasetId
 
   return (
     <Query
       operationName={operationName}
       query={buildQuery(hasLongRead)}
       variables={{
-        datasetId: srDatasetId,
+        datasetId,
         chrom: region.chrom,
         start: region.start,
         stop: region.stop,
@@ -337,18 +379,6 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion }: ConnectedV
       success={(data: any) => data.region && data.region.variants}
     >
       {({ data }: any) => {
-        if (isLongRead(datasetId)) {
-          return (
-            <LongReadUnifiedView
-              datasetId={datasetId}
-              gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
-              variants={data.region.long_read_variants || []}
-              zoomRegion={zoomRegion}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-            />
-          )
-        }
-
         let variants = annotateVariantsWithClinvar(data.region.variants, data.region.clinvar_variants)
 
         if (hasLongRead && data.region.long_read_variants) {
@@ -359,7 +389,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion }: ConnectedV
           <VariantsInRegion
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.region.clinvar_variants}
-            datasetId={srDatasetId}
+            datasetId={datasetId}
             lrDatasetId={lrDatasetId}
             region={region}
             variants={variants}
