@@ -13,7 +13,7 @@ import { TrackPageSection } from '../TrackPage'
 import userPreferences from '../userPreferences'
 import ExportVariantsButton from './ExportVariantsButton'
 import filterVariants, { VariantFilterState, getFilteredVariants } from './filterVariants'
-import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
+import mergeCallsetData from './mergeCallsetData'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
 import variantTableColumns, { getColumnsForContext } from './variantTableColumns'
@@ -171,7 +171,7 @@ const Variants = ({
   const filteredVariants = useMemo(() => {
     return isLongRead(datasetId)
       ? variants // TK make regular filters work with LR
-      : mergeExomeAndGenomeData({
+      : mergeCallsetData({
           datasetId,
           variants: filterVariants(variants as Variant[], filter, renderedTableColumns),
           preferJointData: filter.includeExomes && filter.includeGenomes,

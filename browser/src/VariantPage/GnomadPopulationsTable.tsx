@@ -7,7 +7,7 @@ import { GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/gnomadPopulati
 import { DatasetId, hasV2Genome } from '@gnomad/dataset-metadata/metadata'
 import { PopulationsTable } from './PopulationsTable'
 import { Population } from './VariantPage'
-import { mergeExomeGenomeAndJointPopulationData } from '../VariantList/mergeExomeAndGenomeData'
+import { mergeExomeGenomeAndJointPopulationData } from '../VariantList/mergeCallsetData'
 
 const ControlSection = styled.div`
   margin-top: 1em;
