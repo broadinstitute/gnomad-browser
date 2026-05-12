@@ -5,7 +5,7 @@ import { DatasetId, labelForDataset, referenceGenome, isLongRead, associatedLong
 import { SegmentedControl } from '@gnomad/ui'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import LongReadHaplotypeView from '../LongReadVariantPage/LongReadHaplotypeView'
+import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
@@ -337,6 +337,18 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion }: ConnectedV
       success={(data: any) => data.region && data.region.variants}
     >
       {({ data }: any) => {
+        if (isLongRead(datasetId)) {
+          return (
+            <LongReadUnifiedView
+              datasetId={datasetId}
+              gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
+              variants={data.region.long_read_variants || []}
+              zoomRegion={zoomRegion}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+            />
+          )
+        }
+
         let variants = annotateVariantsWithClinvar(data.region.variants, data.region.clinvar_variants)
 
         if (hasLongRead && data.region.long_read_variants) {
