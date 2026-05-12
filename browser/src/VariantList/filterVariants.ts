@@ -75,12 +75,12 @@ const filterVariants = (
   if (!filter.includeFilteredVariants) {
     filteredVariants = filteredVariants.map((v: any) => ({
       ...v,
-      exome: v.exome && v.exome.filters && v.exome.filters.length === 0 ? v.exome : null,
-      genome: v.genome && v.genome.filters && v.genome.filters.length === 0 ? v.genome : null,
+      exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
+      genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
       long_read:
-        v.long_read && (!v.long_read.filters || v.long_read.filters.length === 0) ? v.long_read : null,
+        v.long_read && v.long_read.filters.length === 0 ? v.long_read : null,
       long_read_details:
-        v.long_read && (!v.long_read.filters || v.long_read.filters.length === 0) ? v.long_read_details : null,
+        v.long_read && v.long_read.filters.length === 0 ? v.long_read_details : null,
     }))
   }
 
