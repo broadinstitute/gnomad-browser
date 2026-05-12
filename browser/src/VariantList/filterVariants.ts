@@ -1,3 +1,4 @@
+import { DatasetId, isLongRead } from '@gnomad/dataset-metadata/metadata'
 import { Variant } from '../VariantPage/VariantPage'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { VariantTableColumn } from './variantTableColumns'
@@ -53,7 +54,8 @@ export function getFilteredVariants(
 const filterVariants = (
   variants: Variant[],
   filter: VariantFilterState,
-  selectedColumns: any
+  selectedColumns: any,
+  datasetId?: DatasetId
 ): Variant[] => {
   let filteredVariants = variants
 
@@ -71,29 +73,38 @@ const filterVariants = (
     })
   }
 
-  if (!filter.includeFilteredVariants) {
-    filteredVariants = filteredVariants.map((v: Variant) => ({
-      ...v,
-      exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
-      genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
-    }))
-  }
+  if (datasetId && isLongRead(datasetId)) {
+    // LR variants have flat filters array, no exome/genome
+    if (!filter.includeFilteredVariants) {
+      filteredVariants = filteredVariants.filter(
+        (v: any) => !v.filters || v.filters.length === 0
+      )
+    }
+  } else {
+    if (!filter.includeFilteredVariants) {
+      filteredVariants = filteredVariants.map((v: Variant) => ({
+        ...v,
+        exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
+        genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
+      }))
+    }
 
-  if (!filter.includeExomes) {
-    filteredVariants = filteredVariants.map((v: Variant) => ({
-      ...v,
-      exome: null,
-    }))
-  }
+    if (!filter.includeExomes) {
+      filteredVariants = filteredVariants.map((v: Variant) => ({
+        ...v,
+        exome: null,
+      }))
+    }
 
-  if (!filter.includeGenomes) {
-    filteredVariants = filteredVariants.map((v: Variant) => ({
-      ...v,
-      genome: null,
-    }))
-  }
+    if (!filter.includeGenomes) {
+      filteredVariants = filteredVariants.map((v: Variant) => ({
+        ...v,
+        genome: null,
+      }))
+    }
 
-  filteredVariants = filteredVariants.filter((v: Variant) => v.exome || v.genome)
+    filteredVariants = filteredVariants.filter((v: Variant) => v.exome || v.genome)
+  }
 
   if (filter.searchText && !filter.includeContext) {
     filteredVariants = getFilteredVariants(filter, filteredVariants, selectedColumns)
