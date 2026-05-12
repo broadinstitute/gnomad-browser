@@ -11,6 +11,9 @@
     "dist"
   ],
   "dependencies": {
+    "@deck.gl/core": "^9.3.2",
+    "@deck.gl/layers": "^9.3.2",
+    "@deck.gl/react": "^9.3.2",
     "@fortawesome/fontawesome-free": "^5.8.1",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.1",
