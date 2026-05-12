@@ -14,6 +14,7 @@ import {
 } from '../../queries/variant-queries'
 
 import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-queries'
+import { fetchVariantById as fetchLongReadVariantById } from '../../queries/long_read_variants'
 
 import { hasVRSData } from '../../../../dataset-metadata/metadata'
 
@@ -32,13 +33,18 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   }
 
   let normalizedVariantId
+  let isLongReadOnlyId = false
 
   if (variantId) {
-    if (!isVariantId(variantId)) {
+    if (isVariantId(variantId)) {
+      normalizedVariantId = normalizeVariantId(variantId)
+    } else if (/^\d{1,2}-\d+-[A-Za-z]+-\d+$/.test(variantId) || /^[XYxy]-\d+-[A-Za-z]+-\d+$/.test(variantId)) {
+      // LR variant IDs like "22-20277853-TRV-14" don't pass standard validation
+      normalizedVariantId = variantId
+      isLongReadOnlyId = true
+    } else {
       throw new UserVisibleError('Invalid variant ID')
     }
-
-    normalizedVariantId = normalizeVariantId(variantId)
   }
 
   if (rsid) {
@@ -57,7 +63,99 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
     normalizedVariantId = /^ga4gh:/.test(vrsId) ? vrsId : `ga4gh:${vrsId}`
   }
 
-  const variant = await fetchVariantById(ctx.esClient, dataset, normalizedVariantId)
+  let variant
+  try {
+    if (isLongReadOnlyId) {
+      throw new UserVisibleError('Variant not found')
+    }
+    variant = await fetchVariantById(ctx.esClient, dataset, normalizedVariantId)
+  } catch (error: any) {
+    if (error instanceof UserVisibleError && error.message === 'Variant not found') {
+      const lrVariant = await fetchLongReadVariantById(normalizedVariantId)
+      if (!lrVariant) {
+        throw error
+      }
+
+      variant = {
+        variant_id: lrVariant.variant_id,
+        variantId: lrVariant.variant_id,
+        reference_genome: lrVariant.reference_genome,
+        chrom: lrVariant.chrom,
+        pos: lrVariant.pos,
+        ref: lrVariant.ref,
+        alt: lrVariant.alt,
+        caid: null,
+        rsids: lrVariant.rsids,
+        rsid: null,
+        colocated_variants: [],
+        colocatedVariants: [],
+        coverage: { exome: null, genome: null },
+        lof_curations: null,
+        multi_nucleotide_variants: null,
+        multiNucleotideVariants: null,
+        flags: [],
+
+        exome: null,
+        genome: null,
+        joint: null,
+
+        long_read: {
+          ac: lrVariant.freq?.all?.ac || 0,
+          an: lrVariant.freq?.all?.an || 0,
+          af: lrVariant.freq?.all?.af || 0,
+          homozygote_ref_count: lrVariant.freq?.all?.homozygote_ref_count ?? null,
+          homozygote_alt_count: lrVariant.freq?.all?.homozygote_alt_count ?? null,
+          heterozygote_count: lrVariant.freq?.all?.heterozygote_count ?? null,
+          filters: lrVariant.filters || [],
+          populations: lrVariant.freq?.populations || [],
+        },
+
+        long_read_details: {
+          allele_type: lrVariant.allele_type,
+          motifs: lrVariant.motifs,
+          is_likely_tr: lrVariant.is_likely_tr,
+          enveloping_tr_id: lrVariant.enveloping_tr_id,
+          gnomad_str: lrVariant.gnomad_str,
+          allele_size_distribution: lrVariant.allele_size_distribution,
+          genotype_distribution: lrVariant.genotype_distribution,
+          max_repunits: lrVariant.max_repunits,
+          main_reference_region: lrVariant.main_reference_region,
+        },
+
+        transcript_consequences: lrVariant.transcript_consequences || [],
+        sortedTranscriptConsequences: lrVariant.transcript_consequences || [],
+        transcript_consequence: lrVariant.transcript_consequences?.[0] || null,
+        in_silico_predictors: [],
+        non_coding_constraint: null,
+
+        // Deprecated fields mapped from transcript_consequences
+        consequence: lrVariant.transcript_consequences?.[0]?.major_consequence || null,
+        consequence_in_canonical_transcript:
+          lrVariant.transcript_consequences?.[0]?.is_canonical || null,
+        domains: lrVariant.transcript_consequences?.[0]?.domains || null,
+        gene_id: lrVariant.transcript_consequences?.[0]?.gene_id || null,
+        gene_symbol: lrVariant.transcript_consequences?.[0]?.gene_symbol || null,
+        transcript_id: lrVariant.transcript_consequences?.[0]?.transcript_id || null,
+        transcript_version: lrVariant.transcript_consequences?.[0]?.transcript_version || null,
+        hgvsc: lrVariant.transcript_consequences?.[0]?.hgvsc || null,
+        hgvsp: lrVariant.transcript_consequences?.[0]?.hgvsp || null,
+        hgvs: lrVariant.transcript_consequences?.[0]?.hgvs || null,
+        lof: lrVariant.transcript_consequences?.[0]?.lof || null,
+        lof_filter: lrVariant.transcript_consequences?.[0]?.lof_filter || null,
+        lof_flags: null,
+
+        faf95_joint: null,
+        faf99_joint: null,
+
+        // GA4GH placeholders
+        va: { exome: null, genome: null },
+        vrs: null,
+      }
+    } else {
+      throw error
+    }
+  }
+
   const posRounded = Math.floor(variant.pos / 1000) * 1000
   const variantNCCId = `chr${variant.chrom}-${posRounded}-${posRounded + 1000}`
   const variantNCC = await fetchNccConstraintRegionById(ctx.esClient, variantNCCId)
