@@ -467,13 +467,13 @@ const LongReadUnifiedView = ({
       </TrackPageSection>
 
       {viewMode === 'summary' ? (
-        <Variants
-          clinvarReleaseDate={clinvarReleaseDate || "2024-01-01"}
-          context={gene as any}
-          datasetId={datasetId}
-          exportFileName={`gnomad_lr_${gene.symbol || gene.gene_id}`}
-          variants={mappedVariants}
-        />
+        <TrackPageSection>
+          <HaplotypeVariantTable
+            mode="summary"
+            summaryVariants={displayVariants}
+            onHoverVariant={setHoveredVariantPosition}
+          />
+        </TrackPageSection>
       ) : (
         <TrackPageSection>
           {haplotypeGroups && (
