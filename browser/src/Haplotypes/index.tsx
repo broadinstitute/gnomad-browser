@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor, Select } from '@gnomad/ui'
@@ -12,7 +12,6 @@ import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
-import GenealogyTreeOverlay from './GenealogyTreeOverlay'
 import DeckGLLollipopTrack from './DeckGLLollipopTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
@@ -1558,51 +1557,6 @@ const HaplotypeTrack = ({
     onShowGenealogyChange: onShowGenealogyChange || (() => { }),
   }
 
-  // Compute deterministic row heights and leaf Y positions for genealogy overlay
-  // Must match the row height logic in DeckGLLollipopTrack (VARIANT_ROW_HEIGHT=25, METH_TRACK_HEIGHT=40, MQTL_PAD=8, MQTL_TRACK_HEIGHT=80)
-  const { leafYPositions, totalGroupsHeight } = useMemo(() => {
-    if (!showGenealogy || !genealogyResult) return { leafYPositions: new Map<number, number>(), totalGroupsHeight: 0 }
-
-    const VARIANT_ROW_HEIGHT = 25
-    const METH_TRACK_HEIGHT = 40
-    const MQTL_PAD = 8
-    const MQTL_TRACK_HEIGHT = 80
-    const groupVariantPositions = (group: HaplotypeGroup) =>
-      new Set(group.variants.variants.map((v: any) => v.position))
-
-    let cumY = 0
-    const positions = new Map<number, number>()
-
-    for (const group of displayGroups) {
-      const hasGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
-        const gvp = groupVariantPositions(group)
-        return mqtlData.some((d: any) =>
-          gvp.has(d.variant_pos) && -Math.log10(d.p_value) >= (mqtlMinLogP || 0)
-        )
-      })()
-
-      let trackHeight = VARIANT_ROW_HEIGHT
-      if (showMethylation) trackHeight += METH_TRACK_HEIGHT
-      if (hasGroupMqtl) trackHeight += MQTL_PAD + MQTL_TRACK_HEIGHT
-
-      // Center of this row
-      positions.set(group.hash, cumY + trackHeight / 2)
-      cumY += trackHeight
-    }
-
-    return { leafYPositions: positions, totalGroupsHeight: cumY }
-  }, [showGenealogy, genealogyResult, displayGroups, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
-
-  // Ref for measuring actual group container height
-  const groupsContainerRef = useRef<HTMLDivElement>(null)
-  const [measuredGroupsHeight, setMeasuredGroupsHeight] = useState(0)
-
-  useEffect(() => {
-    if (groupsContainerRef.current && showGenealogy) {
-      setMeasuredGroupsHeight(groupsContainerRef.current.offsetHeight)
-    }
-  })
-
   // Build pangenome graph for alluvial/heatmap views
   const pangenomeGraph = useMemo(() => {
     if (plotType !== 'alluvial' && plotType !== 'heatmap') return null
@@ -1647,39 +1601,27 @@ const HaplotypeTrack = ({
             <MethylationSummaryTrack methylationSummary={methylationSummary} />
           )}
 
-          <div ref={groupsContainerRef} style={{ position: 'relative' }}>
-            <DeckGLLollipopTrack
-              displayGroups={displayGroups}
-              haplotypeGroups={haplotypeGroups}
-              start={start}
-              stop={stop}
-              colorMode={colorMode}
-              showMethylation={showMethylation}
-              methylationData={methylationData}
-              methylationSummary={methylationSummary}
-              summaryByPos={summaryByPos}
-              variantCircleRadius={variantCircleRadius}
-              sampleColorScale={sampleColorScale}
-              variantColorScale={variantColorScale}
-              mqtlData={mqtlData}
-              showMqtl={showMqtl}
-              mqtlMinLogP={mqtlMinLogP}
-              sampleMetadata={sampleMetadata}
-              hoveredVariantPosition={hoveredVariantPosition}
-            />
-            {showGenealogy && genealogyResult && leafYPositions.size > 0 && (
-              <div style={{ position: 'absolute', top: 0, right: -250, width: 250, height: '100%' }}>
-                <GenealogyTreeOverlay
-                  tree={genealogyResult.tree}
-                  leafYPositions={leafYPositions}
-                  panelWidth={250}
-                  totalHeight={measuredGroupsHeight || totalGroupsHeight}
-                  groups={displayGroups}
-                  sampleMetadata={sampleMetadata}
-                />
-              </div>
-            )}
-          </div>
+          <DeckGLLollipopTrack
+            displayGroups={displayGroups}
+            haplotypeGroups={haplotypeGroups}
+            start={start}
+            stop={stop}
+            colorMode={colorMode}
+            showMethylation={showMethylation}
+            methylationData={methylationData}
+            methylationSummary={methylationSummary}
+            summaryByPos={summaryByPos}
+            variantCircleRadius={variantCircleRadius}
+            sampleColorScale={sampleColorScale}
+            variantColorScale={variantColorScale}
+            mqtlData={mqtlData}
+            showMqtl={showMqtl}
+            mqtlMinLogP={mqtlMinLogP}
+            sampleMetadata={sampleMetadata}
+            hoveredVariantPosition={hoveredVariantPosition}
+            showGenealogy={showGenealogy}
+            genealogyResult={genealogyResult}
+          />
         </>
       )}
 
