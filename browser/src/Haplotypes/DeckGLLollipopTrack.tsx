@@ -56,11 +56,11 @@ type MqtlArc = {
 
 // HSL string to RGBA array conversion
 function hslToRgba(hsl: string, alpha = 255): [number, number, number, number] {
-  const match = hsl.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/)
+  const match = hsl.match(/hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/)
   if (!match) return hexToRgba(hsl, alpha)
-  const h = parseInt(match[1]) / 360
-  const s = parseInt(match[2]) / 100
-  const l = parseInt(match[3]) / 100
+  const h = parseFloat(match[1]) / 360
+  const s = parseFloat(match[2]) / 100
+  const l = parseFloat(match[3]) / 100
   const a = s * Math.min(l, 1 - l)
   const f = (n: number) => {
     const k = (n + h * 12) % 12
@@ -89,7 +89,14 @@ function hexToRgba(hex: string, alpha = 255): [number, number, number, number] {
 }
 
 function cssColorToRgba(color: string, alpha = 255): [number, number, number, number] {
+  if (!color) return [128, 128, 128, alpha]
   if (color.startsWith('hsl')) return hslToRgba(color, alpha)
+  if (color.startsWith('rgb')) {
+    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/)
+    if (match) {
+      return [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10), alpha]
+    }
+  }
   if (color.startsWith('#')) return hexToRgba(color, alpha)
   return [128, 128, 128, alpha]
 }
@@ -104,9 +111,9 @@ function getColorByHash(locus: string): [number, number, number, number] {
       .reduce((acc, char, idx) => acc + char.charCodeAt(0) * (idx + 1), 0)
     const randomFactor = Math.sin(variantHash - 3.14) * 10000
     const hash = (variantHash * 9301 + 49297 + randomFactor) % 233280
-    const hue = hash % 360
-    const saturation = 60 + (hash % 40)
-    const lightness = 30 + (hash % 40)
+    const hue = Math.floor(Math.abs(hash)) % 360
+    const saturation = 60 + (Math.floor(Math.abs(hash)) % 40)
+    const lightness = 30 + (Math.floor(Math.abs(hash)) % 40)
     variantColorCache[locus] = hslToRgba(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
   }
   return variantColorCache[locus]
@@ -127,30 +134,15 @@ function getColorByAf(af: number): [number, number, number, number] {
   return cssColorToRgba(afScale(af))
 }
 
-function getColorByHaplotypeCount(
-  haplotypeGroups: HaplotypeGroup[],
-  locus: string
-): [number, number, number, number] {
-  const count = haplotypeGroups.reduce(
-    (acc, group) =>
-      acc + (group.variants.variants.some((v) => v.locus === locus) ? 1 : 0),
-    0
-  )
-  const scale = scaleLinear<string>()
-    .domain([0, haplotypeGroups.length])
-    .range(['#d3d3d3', '#ff0000'])
-    .clamp(true)
-  return cssColorToRgba(scale(count))
-}
-
 function getVariantColor(
   variant: Variant,
   colorMode: string,
   start: number,
   stop: number,
-  haplotypeGroups: HaplotypeGroup[],
   sampleMetadata?: SampleMetadataMap,
-  group?: HaplotypeGroup
+  group?: HaplotypeGroup,
+  locusCount: number = 0,
+  totalGroups: number = 1
 ): [number, number, number, number] {
   switch (colorMode) {
     case 'allele':
@@ -159,8 +151,13 @@ function getVariantColor(
       return getColorByPosition(variant.position, start, stop)
     case 'af':
       return getColorByAf(variant.info_AF[0])
-    case 'haplotype_count':
-      return getColorByHaplotypeCount(haplotypeGroups, variant.locus)
+    case 'haplotype_count': {
+      const scale = scaleLinear<string>()
+        .domain([0, totalGroups])
+        .range(['#d3d3d3', '#ff0000'])
+        .clamp(true)
+      return cssColorToRgba(scale(locusCount))
+    }
     case 'population': {
       if (!sampleMetadata || !group) return [51, 51, 51, 255]
       let maxPop = 'N/A'
@@ -385,6 +382,18 @@ function DeckGLLollipopCanvas({
   hovered,
   onHover,
 }: DeckGLCanvasProps) {
+  // Pre-aggregate locus counts for haplotype_count color mode
+  const locusCounts = useMemo(() => {
+    const counts = new Map<string, number>()
+    if (colorMode !== 'haplotype_count') return counts
+    for (const group of haplotypeGroups) {
+      for (const v of group.variants.variants) {
+        counts.set(v.locus, (counts.get(v.locus) || 0) + 1)
+      }
+    }
+    return counts
+  }, [colorMode, haplotypeGroups])
+
   // Flatten all data for deck.gl layers
   const { bgRects, variantPoints, belowThresholdPoints, deletionLines, methPoints, mqtlArcs } =
     useMemo(() => {
@@ -446,9 +455,10 @@ function DeckGLLollipopCanvas({
             colorMode,
             start,
             stop,
-            haplotypeGroups,
             sampleMetadata,
-            group
+            group,
+            locusCounts.get(variant.locus) || 0,
+            haplotypeGroups.length || 1
           )
           const x = scalePosition(variant.position)
 
@@ -568,6 +578,7 @@ function DeckGLLollipopCanvas({
       stop,
       colorMode,
       haplotypeGroups,
+      locusCounts,
       variantCircleRadius,
       showMethylation,
       methylationData,
@@ -747,7 +758,7 @@ function DeckGLLollipopCanvas({
     []
   )
 
-  const initialViewState = useMemo(
+  const viewState = useMemo(
     () => ({
       target: [width / 2, totalHeight / 2, 0] as [number, number, number],
       zoom: 0,
@@ -756,14 +767,14 @@ function DeckGLLollipopCanvas({
   )
 
   return (
-    <div style={{ position: 'relative', width, height: totalHeight }}>
+    <div style={{ position: 'relative', width, height: totalHeight, overflow: 'hidden' }}>
       <DeckGL
         views={view}
-        initialViewState={initialViewState}
+        viewState={viewState}
         layers={layers}
         controller={false}
         pickingRadius={5}
-        style={{ position: 'relative' }}
+        style={{ position: 'absolute', left: 0, top: 0, width, height: totalHeight }}
         width={width}
         height={totalHeight}
       />
