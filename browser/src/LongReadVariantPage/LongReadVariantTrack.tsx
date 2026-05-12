@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 
 import Link from '../Link'
+import VariantTrack from '../VariantList/VariantTrack'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { svTypeColors } from '../StructuralVariantList/structuralVariantTypes'
 
@@ -117,27 +118,6 @@ const SidePanel = styled.div`
   color: #555;
   padding-left: 4px;
 `
-
-// --- Band 1: SNV dots (classic VariantTrack style) ---
-
-const SnvBand = ({ variants, scalePosition, width }: {
-  variants: LRVariant[]
-  scalePosition: (pos: number) => number
-  width: number
-}) => (
-  <svg height={SNV_BAND_HEIGHT} width={width} style={{ overflow: 'visible' }}>
-    {variants.map((v) => {
-      const x = scalePosition(v.pos)
-      const category = getCategoryFromConsequence(v.major_consequence) || 'other'
-      const color = consequenceCategoryColors[category] || consequenceCategoryColors.other
-      return (
-        <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
-          <circle cx={x} cy={SNV_BAND_HEIGHT / 2} r={3} fill={color} />
-        </Link>
-      )
-    })}
-  </svg>
-)
 
 // --- Band 2: SV packed ribbons ---
 
@@ -286,13 +266,19 @@ const LongReadVariantTrack = ({ variants }: LongReadVariantTrackProps) => {
     }
   }
 
+  // Map SNVs for the standard VariantTrack (needs `consequence` prop)
+  const trackSnvVariants = snvVariants.map((v) => ({
+    ...v,
+    consequence: v.major_consequence,
+  }))
+
   return (
     <div>
-      <Track renderLeftPanel={() => <SidePanel>SNVs</SidePanel>}>
-        {({ scalePosition, width }: { scalePosition: (pos: number) => number; width: number }) => (
-          <SnvBand variants={snvVariants} scalePosition={scalePosition} width={width} />
-        )}
-      </Track>
+      <VariantTrack
+        // @ts-expect-error TS(2769) - VariantTrack prop types are loose
+        title={`Long Read SNVs (${trackSnvVariants.length})`}
+        variants={trackSnvVariants}
+      />
 
       {svVariants.length > 0 && (
         <>
