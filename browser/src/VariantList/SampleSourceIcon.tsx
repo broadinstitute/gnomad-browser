@@ -18,22 +18,25 @@ const Icon = styled.span`
 const abbreviations = {
   exome: 'E',
   genome: 'G',
+  long_read: 'LR',
 }
 
 const colors = {
   exome: 'rgb(70, 130, 180)',
   genome: 'rgb(115, 171, 61)',
+  long_read: 'rgb(156, 39, 176)',
 }
 
 type Props = {
-  source: 'exome' | 'genome'
+  source: 'exome' | 'genome' | 'long_read'
   filters: string[]
 }
 
 const SampleSourceIcon = ({ source, filters }: Props) => {
   const isFiltered = filters.length > 0
 
-  let tooltip = `This variant is found in ${source} samples`
+  const sourceLabel = source === 'long_read' ? 'long read' : source
+  let tooltip = `This variant is found in ${sourceLabel} samples`
   if (isFiltered) {
     tooltip += `, where it failed the following filters: ${filters.join(', ')}`
   }

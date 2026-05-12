@@ -37,6 +37,7 @@ describe('getFirstIndexFromSearchText', () => {
       includeIndels: true,
       includeExomes: true,
       includeGenomes: true,
+      includeLongReads: true,
       includeContext: true,
       searchText: 'example35',
     }
@@ -66,6 +67,7 @@ describe('getFirstIndexFromSearchText', () => {
       includeIndels: true,
       includeExomes: true,
       includeGenomes: true,
+      includeLongReads: true,
       includeContext: true,
       searchText: 'example16',
     }
@@ -95,6 +97,7 @@ describe('getFirstIndexFromSearchText', () => {
       includeIndels: true,
       includeExomes: true,
       includeGenomes: true,
+      includeLongReads: true,
       includeContext: true,
       searchText: '1234',
     }

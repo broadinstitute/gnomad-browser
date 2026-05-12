@@ -16,6 +16,7 @@ export type VariantFilterState = {
   includeIndels: boolean
   includeExomes: boolean
   includeGenomes: boolean
+  includeLongReads: boolean
   includeContext: boolean
   searchText: string
 }
@@ -72,39 +73,60 @@ const filterVariants = (
   }
 
   if (!filter.includeFilteredVariants) {
-    filteredVariants = filteredVariants.map((v: Variant) => ({
+    filteredVariants = filteredVariants.map((v: any) => ({
       ...v,
       exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
       genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
+      long_read:
+        v.long_read && v.long_read.filters.length === 0 ? v.long_read : null,
+      long_read_details:
+        v.long_read && v.long_read.filters.length === 0 ? v.long_read_details : null,
     }))
   }
 
   if (!filter.includeExomes) {
-    filteredVariants = filteredVariants.map((v: Variant) => ({
+    filteredVariants = filteredVariants.map((v: any) => ({
       ...v,
       exome: null,
     }))
   }
 
   if (!filter.includeGenomes) {
-    filteredVariants = filteredVariants.map((v: Variant) => ({
+    filteredVariants = filteredVariants.map((v: any) => ({
       ...v,
       genome: null,
     }))
   }
 
-  filteredVariants = filteredVariants.filter((v: Variant) => v.exome || v.genome)
+  if (!filter.includeLongReads) {
+    filteredVariants = filteredVariants.map((v: any) => ({
+      ...v,
+      long_read: null,
+      long_read_details: null,
+    }))
+  }
+
+  filteredVariants = filteredVariants.filter(
+    (v: any) => v.exome || v.genome || v.long_read
+  )
 
   if (filter.searchText && !filter.includeContext) {
     filteredVariants = getFilteredVariants(filter, filteredVariants, selectedColumns)
   }
 
   // Indel and Snp filters.
-  filteredVariants = filteredVariants.filter((v: Variant) => {
+  filteredVariants = filteredVariants.filter((v: any) => {
     const splits = v.variant_id.split('-')
-    // ref and alt are extracted from variant id.
-    const refLength = splits[2].length
-    const altLength = splits[3].length
+    const ref = splits[2]
+    const alt = splits[3]
+
+    // TRV/STR variants (e.g. 22-20277853-TRV-14) are treated as indels
+    if (ref === 'TRV' || (v.long_read_details && v.long_read_details.is_likely_tr)) {
+      return filter.includeIndels
+    }
+
+    const refLength = ref.length
+    const altLength = alt.length
 
     const isSNV = refLength === 1 && altLength === 1
     const isIndel = refLength !== altLength
