@@ -13,6 +13,7 @@ import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import GenealogyTreeOverlay from './GenealogyTreeOverlay'
+import DeckGLLollipopTrack from './DeckGLLollipopTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 // Extensible plot type and color mode registries
@@ -1644,32 +1645,25 @@ const HaplotypeTrack = ({
           )}
 
           <div ref={groupsContainerRef} style={{ position: 'relative' }}>
-            {displayGroups.map((group, rowIndex) => {
-              const groupSampleIds = new Set(group.samples.map(s => s.sample_id))
-              const methSampleData = methylationData.filter(d => groupSampleIds.has(d.sample))
-              return (
-                <HaplotypeGroupTrack
-                  key={`haplo-${group.hash}-${rowIndex}`}
-                  group={group}
-                  methSampleData={methSampleData}
-                  start={start}
-                  stop={stop}
-                  colorMode={colorMode}
-                  showMethylation={showMethylation}
-                  summaryByPos={summaryByPos}
-                  haplotypeGroups={haplotypeGroups}
-                  variantCircleRadius={variantCircleRadius}
-                  sampleColorScale={sampleColorScale}
-                  variantColorScale={variantColorScale}
-                  methylationYScale={methylationYScale}
-                  mqtlData={mqtlData}
-                  showMqtl={showMqtl}
-                  mqtlMinLogP={mqtlMinLogP}
-                  sampleMetadata={sampleMetadata}
-                  hoveredVariantPosition={hoveredVariantPosition}
-                />
-              )
-            })}
+            <DeckGLLollipopTrack
+              displayGroups={displayGroups}
+              haplotypeGroups={haplotypeGroups}
+              start={start}
+              stop={stop}
+              colorMode={colorMode}
+              showMethylation={showMethylation}
+              methylationData={methylationData}
+              methylationSummary={methylationSummary}
+              summaryByPos={summaryByPos}
+              variantCircleRadius={variantCircleRadius}
+              sampleColorScale={sampleColorScale}
+              variantColorScale={variantColorScale}
+              mqtlData={mqtlData}
+              showMqtl={showMqtl}
+              mqtlMinLogP={mqtlMinLogP}
+              sampleMetadata={sampleMetadata}
+              hoveredVariantPosition={hoveredVariantPosition}
+            />
             {showGenealogy && genealogyResult && leafYPositions.size > 0 && (
               <GenealogyTreeOverlay
                 tree={genealogyResult.tree}
