@@ -1644,8 +1644,7 @@ const HaplotypeTrack = ({
             <MethylationSummaryTrack methylationSummary={methylationSummary} />
           )}
 
-          <div ref={groupsContainerRef} style={{ position: 'relative', display: 'flex' }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
+          <div ref={groupsContainerRef} style={{ position: 'relative' }}>
             <DeckGLLollipopTrack
               displayGroups={displayGroups}
               haplotypeGroups={haplotypeGroups}
@@ -1665,18 +1664,15 @@ const HaplotypeTrack = ({
               sampleMetadata={sampleMetadata}
               hoveredVariantPosition={hoveredVariantPosition}
             />
-            </div>
             {showGenealogy && genealogyResult && leafYPositions.size > 0 && (
-              <div style={{ width: 250, flexShrink: 0, position: 'relative' }}>
-                <GenealogyTreeOverlay
-                  tree={genealogyResult.tree}
-                  leafYPositions={leafYPositions}
-                  panelWidth={250}
-                  totalHeight={measuredGroupsHeight || totalGroupsHeight}
-                  groups={displayGroups}
-                  sampleMetadata={sampleMetadata}
-                />
-              </div>
+              <GenealogyTreeOverlay
+                tree={genealogyResult.tree}
+                leafYPositions={leafYPositions}
+                panelWidth={250}
+                totalHeight={measuredGroupsHeight || totalGroupsHeight}
+                groups={displayGroups}
+                sampleMetadata={sampleMetadata}
+              />
             )}
           </div>
         </>
