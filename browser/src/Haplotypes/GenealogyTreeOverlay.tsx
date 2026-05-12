@@ -189,9 +189,6 @@ const GenealogyTreeOverlay = ({
       width={panelWidth}
       height={totalHeight}
       style={{
-        position: 'absolute',
-        top: 0,
-        right: 0,
         pointerEvents: 'all',
       }}
     >
