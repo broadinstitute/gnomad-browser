@@ -75,12 +75,12 @@ const filterVariants = (
   if (!filter.includeFilteredVariants) {
     filteredVariants = filteredVariants.map((v: any) => ({
       ...v,
-      exome: v.exome && v.exome.filters.length === 0 ? v.exome : null,
-      genome: v.genome && v.genome.filters.length === 0 ? v.genome : null,
+      exome: v.exome && v.exome.filters?.length === 0 ? v.exome : null,
+      genome: v.genome && v.genome.filters?.length === 0 ? v.genome : null,
       long_read:
-        v.long_read && v.long_read.filters.length === 0 ? v.long_read : null,
+        v.long_read && v.long_read.filters?.length === 0 ? v.long_read : null,
       long_read_details:
-        v.long_read && v.long_read.filters.length === 0 ? v.long_read_details : null,
+        v.long_read && v.long_read.filters?.length === 0 ? v.long_read_details : null,
     }))
   }
 
@@ -122,6 +122,16 @@ const filterVariants = (
 
     // TRV/STR variants (e.g. 22-20277853-TRV-14) are treated as indels
     if (ref === 'TRV' || (v.long_read_details && v.long_read_details.is_likely_tr)) {
+      return filter.includeIndels
+    }
+
+    // LR variants can have 3-part IDs like "22-20537278-SNV" without a separate alt allele
+    if (!alt) {
+      const alleleType = ref?.toUpperCase()
+      if (alleleType === 'SNV') {
+        return filter.includeSNVs
+      }
+      // Treat unknown allele types (DEL, INS, etc.) as indels
       return filter.includeIndels
     }
 
