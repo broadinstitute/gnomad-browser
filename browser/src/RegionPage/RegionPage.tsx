@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
@@ -105,6 +106,8 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
 
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
+  const location = useLocation()
+  const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') === 'true'
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
@@ -173,7 +176,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
       <RegionViewer
         leftPanelWidth={115}
         regions={[region]}
-        rightPanelWidth={isSmallScreen ? 0 : 80}
+        rightPanelWidth={isSmallScreen ? 0 : showTree ? 250 : 80}
         width={regionViewerWidth}
       >
         {/* eslint-disable-next-line no-nested-ternary */}

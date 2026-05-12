@@ -210,8 +210,6 @@ type DeckGLLollipopTrackProps = {
   mqtlMinLogP?: number
   sampleMetadata?: SampleMetadataMap
   hoveredVariantPosition?: number | null
-  showGenealogy?: boolean
-  genealogyPanelWidth?: number
 }
 
 export default function DeckGLLollipopTrack({
@@ -231,8 +229,6 @@ export default function DeckGLLollipopTrack({
   mqtlMinLogP = 0,
   sampleMetadata,
   hoveredVariantPosition,
-  showGenealogy = false,
-  genealogyPanelWidth = 250,
 }: DeckGLLollipopTrackProps) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -334,8 +330,6 @@ export default function DeckGLLollipopTrack({
           rowOffsets={rowOffsets}
           hovered={hovered}
           onHover={onHover}
-          showGenealogy={showGenealogy}
-          genealogyPanelWidth={genealogyPanelWidth}
         />
       )}
     </Track>
@@ -363,8 +357,6 @@ type DeckGLCanvasProps = {
   rowOffsets: number[]
   hovered: any
   onHover: (info: any) => void
-  showGenealogy: boolean
-  genealogyPanelWidth: number
 }
 
 // Inner component that receives scalePosition from Track render prop
@@ -389,11 +381,9 @@ function DeckGLLollipopCanvas({
   rowOffsets,
   hovered,
   onHover,
-  showGenealogy,
-  genealogyPanelWidth,
 }: DeckGLCanvasProps) {
-  // When genealogy tree is visible, shrink the canvas so it doesn't render into the tree area
-  const canvasWidth = showGenealogy ? Math.max(0, width - genealogyPanelWidth) : width
+  // Canvas uses full width — RegionViewer's rightPanelWidth handles space for genealogy tree
+  const canvasWidth = width
 
   // Pre-aggregate locus counts for haplotype_count color mode
   const locusCounts = useMemo(() => {

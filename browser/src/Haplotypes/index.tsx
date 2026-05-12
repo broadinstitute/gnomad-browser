@@ -473,6 +473,7 @@ type Variant = {
   info_AF_eas?: number | null
   info_AF_nfe?: number | null
   info_AF_sas?: number | null
+  major_consequence?: string | null
   cadd_phred?: number | null
   phylop?: number | null
   sv_consequences?: string[] | null
@@ -1558,12 +1559,14 @@ const HaplotypeTrack = ({
   }
 
   // Compute deterministic row heights and leaf Y positions for genealogy overlay
+  // Must match the row height logic in DeckGLLollipopTrack (VARIANT_ROW_HEIGHT=25, METH_TRACK_HEIGHT=40, MQTL_PAD=8, MQTL_TRACK_HEIGHT=80)
   const { leafYPositions, totalGroupsHeight } = useMemo(() => {
     if (!showGenealogy || !genealogyResult) return { leafYPositions: new Map<number, number>(), totalGroupsHeight: 0 }
 
-    const mqtlPad = 8
-    const mqtlTrackHeight = 80
-    const methTrackHeight = 40
+    const VARIANT_ROW_HEIGHT = 25
+    const METH_TRACK_HEIGHT = 40
+    const MQTL_PAD = 8
+    const MQTL_TRACK_HEIGHT = 80
     const groupVariantPositions = (group: HaplotypeGroup) =>
       new Set(group.variants.variants.map((v: any) => v.position))
 
@@ -1578,9 +1581,9 @@ const HaplotypeTrack = ({
         )
       })()
 
-      const trackHeight =
-        (showMethylation ? 20 + methTrackHeight : 20) +
-        (hasGroupMqtl ? mqtlPad + mqtlTrackHeight : 0)
+      let trackHeight = VARIANT_ROW_HEIGHT
+      if (showMethylation) trackHeight += METH_TRACK_HEIGHT
+      if (hasGroupMqtl) trackHeight += MQTL_PAD + MQTL_TRACK_HEIGHT
 
       // Center of this row
       positions.set(group.hash, cumY + trackHeight / 2)
@@ -1663,18 +1666,18 @@ const HaplotypeTrack = ({
               mqtlMinLogP={mqtlMinLogP}
               sampleMetadata={sampleMetadata}
               hoveredVariantPosition={hoveredVariantPosition}
-              showGenealogy={showGenealogy}
-              genealogyPanelWidth={250}
             />
             {showGenealogy && genealogyResult && leafYPositions.size > 0 && (
-              <GenealogyTreeOverlay
-                tree={genealogyResult.tree}
-                leafYPositions={leafYPositions}
-                panelWidth={250}
-                totalHeight={measuredGroupsHeight || totalGroupsHeight}
-                groups={displayGroups}
-                sampleMetadata={sampleMetadata}
-              />
+              <div style={{ position: 'absolute', top: 0, right: -250, width: 250, height: '100%' }}>
+                <GenealogyTreeOverlay
+                  tree={genealogyResult.tree}
+                  leafYPositions={leafYPositions}
+                  panelWidth={250}
+                  totalHeight={measuredGroupsHeight || totalGroupsHeight}
+                  groups={displayGroups}
+                  sampleMetadata={sampleMetadata}
+                />
+              </div>
             )}
           </div>
         </>

@@ -3,6 +3,7 @@ import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-lef
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
 import React, { useState, Dispatch, SetStateAction } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
@@ -328,6 +329,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
+  const location = useLocation()
+  const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') === 'true'
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
@@ -449,7 +452,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         leftPanelWidth={115}
         width={regionViewerWidth}
         regions={regionViewerRegions}
-        rightPanelWidth={isSmallScreen ? 0 : 80}
+        rightPanelWidth={isSmallScreen ? 0 : showTree ? 250 : 80}
         renderOverview={({ scalePosition, width: overviewWidth }: any) => (
           <TranscriptPlot
             height={10}
