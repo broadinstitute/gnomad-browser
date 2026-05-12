@@ -184,6 +184,7 @@ export const GnomadVariantOccurrenceTable = ({
   variant,
 }: GnomadVariantOccurrenceTableProps) => {
   const showTotal = showExomes && showGenomes
+  const showLongReads = Boolean(variant.long_read)
 
   const isPresentInExome = Boolean(variant.exome)
   const isPresentInGenome = Boolean(variant.genome)
@@ -293,6 +294,7 @@ export const GnomadVariantOccurrenceTable = ({
             {showExomes && <th scope="col">Exomes</th>}
             {showGenomes && <th scope="col">Genomes</th>}
             {showTotal && <th scope="col">Total</th>}
+            {showLongReads && <th scope="col">Long Reads</th>}
           </tr>
           <tr>
             <th scope="row">
@@ -306,6 +308,17 @@ export const GnomadVariantOccurrenceTable = ({
             {showExomes && <td>{renderGnomadVariantFlag(variant, 'exome')}</td>}
             {showGenomes && <td>{renderGnomadVariantFlag(variant, 'genome')}</td>}
             {showTotal && <td>{renderGnomadVariantFlag(variant, 'joint')}</td>}
+            {showLongReads && (
+              <td>
+                {variant.long_read!.filters.length === 0 ? (
+                  <Badge level="success">Pass</Badge>
+                ) : (
+                  variant.long_read!.filters.map((f) => (
+                    <Badge key={f} level="warning">{f}</Badge>
+                  ))
+                )}
+              </td>
+            )}
           </tr>
           <tr>
             <th scope="row">
@@ -329,6 +342,7 @@ export const GnomadVariantOccurrenceTable = ({
               </td>
             )}
             {showTotal && <td>{totalAlleleCount}</td>}
+            {showLongReads && <td>{variant.long_read!.ac}</td>}
           </tr>
           <tr>
             <th scope="row">
@@ -365,6 +379,7 @@ export const GnomadVariantOccurrenceTable = ({
                 {(hasLowAlleleNumberInExomes || hasLowAlleleNumberInGenomes) && ' *'}
               </td>
             )}
+            {showLongReads && <td>{variant.long_read!.an}</td>}
           </tr>
           <tr>
             <th scope="row">
@@ -386,6 +401,7 @@ export const GnomadVariantOccurrenceTable = ({
               </td>
             )}
             {showTotal && <td>{totalAlleleFrequency.toPrecision(4)}</td>}
+            {showLongReads && <td>{variant.long_read!.af.toPrecision(4)}</td>}
           </tr>
           <tr>
             <th scope="row">
@@ -412,6 +428,7 @@ export const GnomadVariantOccurrenceTable = ({
                 {hasJointFrequencyData && <FilteringAlleleFrequency {...variant.joint!.faf95} />}
               </td>
             )}
+            {showLongReads && <td>—</td>}
           </tr>
           {variant.chrom !== 'Y' && (
             <tr>
@@ -441,6 +458,9 @@ export const GnomadVariantOccurrenceTable = ({
                   {showHighAlleleBalanceWarning && ' *'}
                 </td>
               )}
+              {showLongReads && (
+                <td>{variant.long_read!.homozygote_alt_count ?? '—'}</td>
+              )}
             </tr>
           )}
           {(variant.chrom === 'X' || variant.chrom === 'Y') && (
@@ -454,6 +474,7 @@ export const GnomadVariantOccurrenceTable = ({
               {showExomes && <td>{isPresentInExome && exomeHemizygoteCount}</td>}
               {showGenomes && <td>{isPresentInGenome && genomeHemizygoteCount}</td>}
               {showTotal && <td>{totalHemizygoteCount}</td>}
+              {showLongReads && <td>—</td>}
             </tr>
           )}
           {!isV4(datasetId) && (
@@ -471,6 +492,7 @@ export const GnomadVariantOccurrenceTable = ({
                 <td>{genomeCoverage.mean !== null ? genomeCoverage.mean.toFixed(1) : '–'}</td>
               )}
               {showTotal && <td />}
+              {showLongReads && <td />}
             </tr>
           )}
         </tbody>
