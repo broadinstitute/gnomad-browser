@@ -2,6 +2,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { Filter } from '../QCFilter'
 import { Population, Variant } from '../VariantPage/VariantPage'
 import { PopulationId, getPopulationsInDataset } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { LongReadSequencingTypeData, LongReadVariantDetails } from './mergeLongReadVariants'
 
 // safe math on possibly null values
 const add = (n1: number | null | undefined, n2: number | null | undefined) => (n1 || 0) + (n2 || 0)
@@ -111,7 +112,12 @@ export const mergeExomeGenomeAndJointPopulationData = ({
   return reshapedMergedPopulationsWithAddedAncestries
 }
 
-type MergedVariant = Variant & {
+type VariantWithLongRead = Variant & {
+  long_read?: LongReadSequencingTypeData | null
+  long_read_details?: LongReadVariantDetails | null
+}
+
+type MergedVariant = VariantWithLongRead & {
   ac: number
   an: number
   af: number
@@ -122,18 +128,19 @@ type MergedVariant = Variant & {
   populations: Population[]
 }
 
-export const mergeExomeAndGenomeData = ({
+export const mergeCallsetData = ({
   datasetId,
   variants,
   preferJointData = false,
 }: {
   datasetId?: DatasetId
-  variants: Variant[]
+  variants: VariantWithLongRead[]
   preferJointData?: boolean
 }): MergedVariant[] => {
-  const mergedVariants = variants.map((variant: Variant) => {
+  const mergedVariants = variants.map((variant: VariantWithLongRead) => {
     const { exome, genome, joint } = variant
 
+    // Case 1: Joint data available and preferred (standard SR path)
     if (joint && preferJointData) {
       const exomeFilters = exome ? exome.filters : []
       const genomeFilters = genome ? genome.filters : []
@@ -156,52 +163,90 @@ export const mergeExomeAndGenomeData = ({
       }
     }
 
-    const emptySequencingType = {
-      ac: 0,
-      ac_hemi: 0,
-      ac_hom: 0,
-      faf95: {
-        popmax: null,
-        popmax_population: null,
-      },
-      an: 0,
-      af: 5,
-      filters: [] as Filter[],
-      populations: [] as Population[],
+    // Case 2: Exome and/or genome data exists — combine SR counts (never include LR)
+    if (exome || genome) {
+      const emptySequencingType = {
+        ac: 0,
+        ac_hemi: 0,
+        ac_hom: 0,
+        faf95: {
+          popmax: null,
+          popmax_population: null,
+        },
+        an: 0,
+        af: 5,
+        filters: [] as Filter[],
+        populations: [] as Population[],
+      }
+
+      const exomeOrNone = exome || emptySequencingType
+      const genomeOrNone = genome || emptySequencingType
+
+      const combinedAC = add(exomeOrNone.ac, genomeOrNone.ac)
+      const combinedAN = add(exomeOrNone.an, genomeOrNone.an)
+      const combinedAF = combinedAC ? combinedAC / combinedAN : 0
+      const combinedHemizygoteCount = add(exomeOrNone.ac_hemi, genomeOrNone.ac_hemi)
+      const combinedHomozygoteCount = add(exomeOrNone.ac_hom, genomeOrNone.ac_hom)
+
+      const exomeFilters: Filter[] = exomeOrNone.filters
+      const genomeFilters: Filter[] = genomeOrNone.filters
+      const combinedFilters = exomeFilters.concat(genomeFilters)
+
+      const combinedPopulations = mergeExomeGenomeAndJointPopulationData({
+        datasetId,
+        exomePopulations: exomeOrNone.populations,
+        genomePopulations: genomeOrNone.populations,
+      })
+
+      return {
+        ...variant,
+        ac: combinedAC,
+        an: combinedAN,
+        af: combinedAF,
+        allele_freq: combinedAF,
+        ac_hemi: combinedHemizygoteCount,
+        ac_hom: combinedHomozygoteCount,
+        filters: combinedFilters,
+        populations: combinedPopulations,
+      }
     }
 
-    const exomeOrNone = exome || emptySequencingType
-    const genomeOrNone = genome || emptySequencingType
+    // Case 3: LR-only variant (no exome, genome, or joint)
+    const { long_read, long_read_details } = variant
+    if (long_read) {
+      return {
+        ...variant,
+        ac: long_read.ac,
+        an: long_read.an,
+        af: long_read.af,
+        allele_freq: long_read.af,
+        ac_hemi: 0,
+        ac_hom: long_read.homozygote_alt_count || 0,
+        filters: (long_read.filters || []) as Filter[],
+        populations: [],
+      }
+    }
 
-    const combinedAC = add(exomeOrNone.ac, genomeOrNone.ac)
-    const combinedAN = add(exomeOrNone.an, genomeOrNone.an)
-    const combinedAF = combinedAC ? combinedAC / combinedAN : 0
-    const combinedHemizygoteCount = add(exomeOrNone.ac_hemi, genomeOrNone.ac_hemi)
-    const combinedHomozygoteCount = add(exomeOrNone.ac_hom, genomeOrNone.ac_hom)
-
-    const exomeFilters: Filter[] = exomeOrNone.filters
-    const genomeFilters: Filter[] = genomeOrNone.filters
-    const combinedFilters = exomeFilters.concat(genomeFilters)
-
-    const combinedPopulations = mergeExomeGenomeAndJointPopulationData({
-      datasetId,
-      exomePopulations: exomeOrNone.populations,
-      genomePopulations: genomeOrNone.populations,
-    })
-
+    // Case 4: No data at all (shouldn't happen, but handle gracefully)
     return {
       ...variant,
-      ac: combinedAC,
-      an: combinedAN,
-      af: combinedAF,
-      allele_freq: combinedAF,
-      ac_hemi: combinedHemizygoteCount,
-      ac_hom: combinedHomozygoteCount,
-      filters: combinedFilters,
-      populations: combinedPopulations,
+      ac: 0,
+      an: 0,
+      af: 0,
+      allele_freq: 0,
+      ac_hemi: 0,
+      ac_hom: 0,
+      filters: [] as Filter[],
+      populations: [],
+      long_read: long_read ?? null,
+      long_read_details: long_read_details ?? null,
     }
   })
 
   return mergedVariants
 }
-export default mergeExomeAndGenomeData
+
+// Backwards-compatible alias
+export const mergeExomeAndGenomeData = mergeCallsetData
+
+export default mergeCallsetData

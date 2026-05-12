@@ -76,6 +76,7 @@ export type DatasetMetadata = {
   hasJointFrequencyData: boolean
   hasVRSData: boolean
   isLongRead: boolean
+  associatedLongReadDataset?: DatasetId
 }
 
 const metadata: Record<DatasetId, DatasetMetadata> = {
@@ -996,6 +997,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasJointFrequencyData: true,
     hasVRSData: true,
     isLongRead: false,
+    associatedLongReadDataset: 'gnomad_r4_lr',
   },
   gnomad_r4_non_ukb: {
     isSubset: true,
@@ -1047,6 +1049,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     hasJointFrequencyData: false,
     hasVRSData: true,
     isLongRead: false,
+    associatedLongReadDataset: 'gnomad_r4_lr',
   },
   gnomad_r4_lr: {
     isSubset: false,
@@ -1254,3 +1257,6 @@ export const getTopLevelDataset = (datasetId: DatasetId): TopLevelDataset => {
 export const hasVRSData = (datasetId: DatasetId) => getMetadata(datasetId, 'hasVRSData')
 
 export const isLongRead = (datasetId: DatasetId): boolean => getMetadata(datasetId, 'isLongRead')
+
+export const associatedLongReadDataset = (datasetId: DatasetId): DatasetId | undefined =>
+  getMetadata(datasetId, 'associatedLongReadDataset')

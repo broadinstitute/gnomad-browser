@@ -6,7 +6,7 @@ import { Population } from '../VariantPage/VariantPage'
 import {
   mergeExomeGenomeAndJointPopulationData,
   mergeExomeAndGenomeData,
-} from './mergeExomeAndGenomeData'
+} from './mergeCallsetData'
 
 describe('mergeExomeGenomeAndJointPopulationData', () => {
   it('returns expected values when exomes and genomes have the same populations', () => {
