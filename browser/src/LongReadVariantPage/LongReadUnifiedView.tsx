@@ -15,6 +15,7 @@ import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import LongReadVariantTrack from './LongReadVariantTrack'
+import Variants from '../VariantList/Variants'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
@@ -125,6 +126,7 @@ const LongReadUnifiedView = ({
   gene,
   variants,
   zoomRegion,
+  clinvarReleaseDate,
 }: LongReadUnifiedViewProps) => {
   const { chrom, start, stop } = gene
 
@@ -362,14 +364,30 @@ const LongReadUnifiedView = ({
     return filtered
   }, [variants, zoomRegion])
 
-  // Map variants for the standard VariantTrack (expects `consequence` property)
-  const trackVariants = useMemo(
+  // Map LR variants into the standard shape expected by Variants/VariantTable
+  const mappedVariants = useMemo(
     () =>
-      displayVariants.map((v: any) => ({
-        ...v,
-        consequence: v.major_consequence,
-        variant_id: v.variant_id,
-      })),
+      displayVariants.map((v: any) => {
+        const freq = v.freq?.all || {}
+        const tc = v.transcript_consequences?.[0]
+        return {
+          ...v,
+          consequence: v.major_consequence,
+          ac: freq.ac ?? 0,
+          an: freq.an ?? 0,
+          af: freq.af ?? 0,
+          ac_hom: freq.homozygote_alt_count ?? 0,
+          ac_hemi: 0,
+          hgvs: tc?.hgvs || '',
+          hgvsc: tc?.hgvsc || '',
+          hgvsp: tc?.hgvsp || '',
+          rsids: v.rsids || [],
+          flags: [],
+          filters: v.filters || [],
+          populations: [],
+          is_long_read: true,
+        }
+      }),
     [displayVariants]
   )
 
@@ -378,10 +396,7 @@ const LongReadUnifiedView = ({
   return (
     <>
       {viewMode === 'summary' && (
-        <>
-          <LongReadVariantTrack variants={displayVariants} />
-          <PositionAxisTrack />
-        </>
+        <LongReadVariantTrack variants={displayVariants} />
       )}
 
       {viewMode === 'haplotype' && (
@@ -451,24 +466,26 @@ const LongReadUnifiedView = ({
         )}
       </TrackPageSection>
 
-      <TrackPageSection>
-        {viewMode === 'summary' ? (
-          <HaplotypeVariantTable
-            mode="summary"
-            summaryVariants={displayVariants}
-            onHoverVariant={setHoveredVariantPosition}
-          />
-        ) : (
-          haplotypeGroups && (
+      {viewMode === 'summary' ? (
+        <Variants
+          clinvarReleaseDate={clinvarReleaseDate || "2024-01-01"}
+          context={gene as any}
+          datasetId={datasetId}
+          exportFileName={`gnomad_lr_${gene.symbol || gene.gene_id}`}
+          variants={mappedVariants}
+        />
+      ) : (
+        <TrackPageSection>
+          {haplotypeGroups && (
             <HaplotypeVariantTable
               mode="haplotype"
               haplotypeGroups={haplotypeGroups}
               sampleMetadata={sampleMetadata}
               onHoverVariant={setHoveredVariantPosition}
             />
-          )
-        )}
-      </TrackPageSection>
+          )}
+        </TrackPageSection>
+      )}
     </>
   )
 }
