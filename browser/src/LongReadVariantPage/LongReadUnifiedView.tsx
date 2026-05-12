@@ -14,7 +14,7 @@ import HaplotypeVariantTable from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
-import VariantTrack from '../VariantList/VariantTrack'
+import LongReadVariantTrack from './LongReadVariantTrack'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
@@ -379,24 +379,7 @@ const LongReadUnifiedView = ({
     <>
       {viewMode === 'summary' && (
         <>
-          <Cursor onClick={onNavigatorClick}>
-            <VariantTrack
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-              title={`Long Read variants (${trackVariants.length})`}
-              variants={trackVariants}
-            />
-            <VariantTrack
-              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-              title="Viewing in table"
-              variants={trackVariants
-                .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-                .map((v: any) => ({
-                  ...v,
-                  isHighlighted: v.variant_id === variantHoveredInTable,
-                }))}
-              onHoverVariants={onHoverVariantsInTrack}
-            />
-          </Cursor>
+          <LongReadVariantTrack variants={displayVariants} />
           <PositionAxisTrack />
         </>
       )}

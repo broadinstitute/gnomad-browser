@@ -118,7 +118,7 @@ const SidePanel = styled.div`
   padding-left: 4px;
 `
 
-// --- Band 1: SNV lollipops ---
+// --- Band 1: SNV dots (classic VariantTrack style) ---
 
 const SnvBand = ({ variants, scalePosition, width }: {
   variants: LRVariant[]
@@ -132,17 +132,7 @@ const SnvBand = ({ variants, scalePosition, width }: {
       const color = consequenceCategoryColors[category] || consequenceCategoryColors.other
       return (
         <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
-          <g>
-            <line
-              x1={x}
-              x2={x}
-              y1={SNV_BAND_HEIGHT}
-              y2={LOLLIPOP_TOP}
-              stroke={color}
-              strokeWidth={1}
-            />
-            <circle cx={x} cy={LOLLIPOP_TOP} r={LOLLIPOP_RADIUS} fill={color} />
-          </g>
+          <circle cx={x} cy={SNV_BAND_HEIGHT / 2} r={3} fill={color} />
         </Link>
       )
     })}
