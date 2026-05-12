@@ -5,6 +5,7 @@ import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer } from '@deck
 import { Track } from '@gnomad/region-viewer'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
+import GenealogyTreeOverlay from './GenealogyTreeOverlay'
 import type { HaplotypeGroup, Methylation, MethylationSummaryPoint } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
@@ -210,6 +211,8 @@ type DeckGLLollipopTrackProps = {
   mqtlMinLogP?: number
   sampleMetadata?: SampleMetadataMap
   hoveredVariantPosition?: number | null
+  showGenealogy?: boolean
+  genealogyResult?: { tree: any; leafOrder: number[] } | null
 }
 
 export default function DeckGLLollipopTrack({
@@ -229,6 +232,8 @@ export default function DeckGLLollipopTrack({
   mqtlMinLogP = 0,
   sampleMetadata,
   hoveredVariantPosition,
+  showGenealogy = false,
+  genealogyResult,
 }: DeckGLLollipopTrackProps) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -256,6 +261,17 @@ export default function DeckGLLollipopTrack({
     }
     return { rowOffsets: offsets, totalHeight: cumY }
   }, [displayGroups, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
+
+  // Compute leaf Y positions for genealogy tree overlay
+  const leafYPositions = useMemo(() => {
+    const positions = new Map<number, number>()
+    if (showGenealogy && genealogyResult) {
+      displayGroups.forEach((group, i) => {
+        positions.set(group.hash, rowOffsets[i] + ROW_CENTER_Y)
+      })
+    }
+    return positions
+  }, [showGenealogy, genealogyResult, displayGroups, rowOffsets])
 
   const onHover = useCallback(
     (info: any) => {
@@ -301,6 +317,22 @@ export default function DeckGLLollipopTrack({
           </svg>
         </div>
       )}
+      renderRightPanel={
+        showGenealogy && genealogyResult && leafYPositions.size > 0
+          ? () => (
+              <div style={{ position: 'relative', width: 250, height: totalHeight }}>
+                <GenealogyTreeOverlay
+                  tree={genealogyResult.tree}
+                  leafYPositions={leafYPositions}
+                  panelWidth={250}
+                  totalHeight={totalHeight}
+                  groups={displayGroups}
+                  sampleMetadata={sampleMetadata}
+                />
+              </div>
+            )
+          : undefined
+      }
     >
       {({
         scalePosition,
