@@ -169,13 +169,15 @@ const Variants = ({
   }, [])
 
   const filteredVariants = useMemo(() => {
-    return isLongRead(datasetId)
-      ? variants // TK make regular filters work with LR
-      : mergeExomeAndGenomeData({
-          datasetId,
-          variants: filterVariants(variants as Variant[], filter, renderedTableColumns),
-          preferJointData: filter.includeExomes && filter.includeGenomes,
-        })
+    const filtered = filterVariants(variants as Variant[], filter, renderedTableColumns, datasetId)
+    if (isLongRead(datasetId)) {
+      return filtered
+    }
+    return mergeExomeAndGenomeData({
+      datasetId,
+      variants: filtered,
+      preferJointData: filter.includeExomes && filter.includeGenomes,
+    })
   }, [datasetId, variants, filter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {
@@ -311,6 +313,7 @@ const Variants = ({
 
       <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
         <VariantFilterControls
+          datasetId={datasetId}
           onChange={setFilter}
           value={filter}
           jumpToRow={onSearchResult}
