@@ -460,7 +460,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             width={overviewWidth}
           />
         )}
-        zoomDisabled={isLongRead(datasetId) || (!hasExons(datasetId) && !isLongRead(datasetId))}
+        zoomDisabled={!hasExons(datasetId) && !isLongRead(datasetId)}
         zoomRegion={zoomRegion}
         onChangeZoomRegion={setZoomRegion}
       >

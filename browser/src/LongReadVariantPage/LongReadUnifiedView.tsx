@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import { throttle } from 'lodash-es'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { SegmentedControl } from '@gnomad/ui'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { debounce } from 'lodash-es'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
 import HaplotypeTrack, { HaplotypeGroups, Methylation, MethylationSummaryPoint } from '../Haplotypes'
@@ -12,8 +14,7 @@ import HaplotypeVariantTable from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
-
-import LongReadVariantTrack from './LongReadVariantTrack'
+import VariantTrack from '../VariantList/VariantTrack'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
@@ -153,6 +154,27 @@ const LongReadUnifiedView = ({
   const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
 
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
+
+  // Track state for VariantTrack / Cursor integration
+  const [variantHoveredInTable, setVariantHoveredInTable] = useState<string | null>(null)
+  const [variantHoveredInTrack, setVariantHoveredInTrack] = useState<string | null>(null)
+  const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
+
+  const onHoverVariantsInTrack = useMemo(
+    () =>
+      throttle((hoveredVariants: any) => {
+        setVariantHoveredInTrack(hoveredVariants.length > 0 ? hoveredVariants[0].variant_id : null)
+      }, 100),
+    []
+  )
+
+  const onVisibleRowsChange = useMemo(
+    () =>
+      throttle(({ startIndex, stopIndex }: any) => {
+        setVisibleVariantWindow([startIndex, stopIndex])
+      }, 100),
+    []
+  )
 
   // Use zoom region or gene bounds for haplotype queries
   const queryRegion = useMemo(
@@ -340,11 +362,42 @@ const LongReadUnifiedView = ({
     return filtered
   }, [variants, zoomRegion])
 
+  // Map variants for the standard VariantTrack (expects `consequence` property)
+  const trackVariants = useMemo(
+    () =>
+      displayVariants.map((v: any) => ({
+        ...v,
+        consequence: v.major_consequence,
+        variant_id: v.variant_id,
+      })),
+    [displayVariants]
+  )
+
+  const onNavigatorClick = useCallback(() => {}, [])
+
   return (
     <>
       {viewMode === 'summary' && (
         <>
-          <LongReadVariantTrack variants={displayVariants} />
+          <Cursor onClick={onNavigatorClick}>
+            <VariantTrack
+              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+              title={`Long Read variants (${trackVariants.length})`}
+              variants={trackVariants}
+            />
+            <VariantTrack
+              // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+              title="Viewing in table"
+              variants={trackVariants
+                .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+                .map((v: any) => ({
+                  ...v,
+                  isHighlighted: v.variant_id === variantHoveredInTable,
+                }))}
+              onHoverVariants={onHoverVariantsInTrack}
+            />
+          </Cursor>
+          <PositionAxisTrack />
         </>
       )}
 

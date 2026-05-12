@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
+import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
+import CategoryFilterControl from '../CategoryFilterControl'
 import { PATH_COLORS, SUPERPOPULATION_COLORS, VARIANT_TYPE_COLORS } from './colors'
 import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup } from './index'
@@ -133,19 +134,6 @@ const ControlBar = styled.div`
   flex-wrap: wrap;
   margin-bottom: 8px;
   padding: 6px 0;
-`
-
-const FilterButton = styled.button<{ $active: boolean; $color: string }>`
-  padding: 3px 10px;
-  font-size: 12px;
-  border: 1px solid ${(p) => (p.$active ? p.$color : '#ccc')};
-  border-radius: 3px;
-  background: ${(p) => (p.$active ? p.$color : '#f8f8f8')};
-  color: ${(p) => (p.$active ? 'white' : '#333')};
-  cursor: pointer;
-  &:hover {
-    opacity: 0.85;
-  }
 `
 
 const SearchInput = styled.input`
@@ -1425,20 +1413,25 @@ const HaplotypeVariantTable = ({
     return sort.direction === 'asc' ? ' ▲' : ' ▼'
   }
 
-  const toggleTypeFilter = (type: string) => {
-    setTypeFilters((prev) => ({ ...prev, [type]: !prev[type] }))
-  }
-
-  const toggleConsequenceFilter = (cat: string) => {
-    setConsequenceFilters((prev) => ({ ...prev, [cat]: !prev[cat] }))
-  }
-
   const consequenceCategoryColors: Record<string, string> = {
     lof: '#FF583F',
     missense: '#F0C94D',
     synonymous: 'green',
     other: '#757575',
   }
+
+  const variantTypeCategories = [
+    { id: 'snv', label: 'SNV', color: VARIANT_TYPE_COLORS.snv },
+    { id: 'indel', label: 'Indel', color: '#43A047' },
+    { id: 'sv', label: 'SV', color: '#D73027' },
+    { id: 'str', label: 'STR', color: VARIANT_TYPE_COLORS.trv },
+  ]
+
+  const consequenceCategories = VEP_CONSEQUENCE_CATEGORIES.map((category) => ({
+    id: category,
+    label: (VEP_CONSEQUENCE_CATEGORY_LABELS as Record<string, string>)[category],
+    color: consequenceCategoryColors[category],
+  }))
 
   const exportCSV = () => {
     const headers = [
@@ -1507,63 +1500,18 @@ const HaplotypeVariantTable = ({
   return (
     <TableContainer>
       <ControlBar>
-        <FilterButton
-          $active={typeFilters.snv}
-          $color={VARIANT_TYPE_COLORS.snv}
-          onClick={() => toggleTypeFilter('snv')}
-        >
-          SNV
-        </FilterButton>
-        <FilterButton
-          $active={typeFilters.indel}
-          $color="#43A047"
-          onClick={() => toggleTypeFilter('indel')}
-        >
-          Indel
-        </FilterButton>
-        <FilterButton
-          $active={typeFilters.sv}
-          $color="#D73027"
-          onClick={() => toggleTypeFilter('sv')}
-        >
-          SV
-        </FilterButton>
-        <FilterButton
-          $active={typeFilters.str}
-          $color={VARIANT_TYPE_COLORS.trv}
-          onClick={() => toggleTypeFilter('str')}
-        >
-          STR
-        </FilterButton>
-        <span style={{ borderLeft: '1px solid #ccc', height: 20, margin: '0 4px' }} />
-        <FilterButton
-          $active={consequenceFilters.lof}
-          $color={consequenceCategoryColors.lof}
-          onClick={() => toggleConsequenceFilter('lof')}
-        >
-          LoF
-        </FilterButton>
-        <FilterButton
-          $active={consequenceFilters.missense}
-          $color={consequenceCategoryColors.missense}
-          onClick={() => toggleConsequenceFilter('missense')}
-        >
-          Missense
-        </FilterButton>
-        <FilterButton
-          $active={consequenceFilters.synonymous}
-          $color={consequenceCategoryColors.synonymous}
-          onClick={() => toggleConsequenceFilter('synonymous')}
-        >
-          Synonymous
-        </FilterButton>
-        <FilterButton
-          $active={consequenceFilters.other}
-          $color={consequenceCategoryColors.other}
-          onClick={() => toggleConsequenceFilter('other')}
-        >
-          Other
-        </FilterButton>
+        <CategoryFilterControl
+          categories={variantTypeCategories}
+          categorySelections={typeFilters}
+          id="lr-variant-type-filter"
+          onChange={setTypeFilters}
+        />
+        <CategoryFilterControl
+          categories={consequenceCategories}
+          categorySelections={consequenceFilters}
+          id="lr-consequence-filter"
+          onChange={setConsequenceFilters}
+        />
         <SearchInput
           type="text"
           placeholder="Search position, rsID, allele…"
