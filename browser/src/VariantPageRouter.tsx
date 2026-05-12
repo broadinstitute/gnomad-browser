@@ -10,7 +10,6 @@ import {
   labelForDataset,
   hasStructuralVariants,
   hasCopyNumberVariants,
-  isLongRead,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from './DocumentTitle'
 import Link from './Link'
@@ -25,7 +24,6 @@ const MNVPage = lazy(() => import('./MNVPage/MNVPage'))
 const StructuralVariantPage = lazy(() => import('./StructuralVariantPage/StructuralVariantPage'))
 const CopyNumberVariantPage = lazy(() => import('./CopyNumberVariantPage/CopyNumberVariantPage'))
 const VariantPage = lazy(() => import('./VariantPage/VariantPage'))
-const LongReadVariantPage = lazy(() => import('./LongReadVariantPage/LongReadVariantPage'))
 type VariantSearchProps = {
   datasetId: DatasetId
   query: string
@@ -106,11 +104,11 @@ type VariantPageRouterProps = {
   variantId: string
 }
 
-const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => {
-  if (isLongRead(datasetId)) {
-    return <LongReadVariantPage datasetId={datasetId} variantId={variantId} />
-  }
+// LR variant IDs like "22-20277853-TRV-14" or "X-12345-DEL-100"
+const isLrVariantId = (id: string) =>
+  /^\d{1,2}-\d+-[A-Za-z]+-\d+$/.test(id) || /^[XYxy]-\d+-[A-Za-z]+-\d+$/.test(id)
 
+const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => {
   if (hasStructuralVariants(datasetId)) {
     return <StructuralVariantPage datasetId={datasetId} variantId={variantId} />
   }
@@ -131,6 +129,12 @@ const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => 
     }
 
     return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
+  }
+
+  // LR-only variant IDs (e.g., TRV, DEL, INS) route to the standard VariantPage
+  // which handles them via the API's LR fallback
+  if (isLrVariantId(variantId)) {
+    return <VariantPage datasetId={datasetId} variantId={variantId} />
   }
 
   if (isRsId(variantId) || /^CA[0-9]+$/i.test(variantId) || /^[0-9]+$/.test(variantId)) {

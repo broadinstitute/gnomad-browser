@@ -17,6 +17,7 @@ import {
   isV3Subset,
   isV4,
   isExac,
+  isLongRead,
 } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
@@ -42,12 +43,15 @@ import VariantPopulationFrequencies from './VariantPopulationFrequencies'
 import VariantRelatedVariants from './VariantRelatedVariants'
 import VariantSiteQualityMetrics from './VariantSiteQualityMetrics'
 import VariantTranscriptConsequences from './VariantTranscriptConsequences'
+import LongReadFrequenciesTable from './LongReadFrequenciesTable'
+import LongReadVariantDetails from './LongReadVariantDetails'
 import { URLBuilder } from '../DatasetSelector'
 import {
   PopulationIdAndChromosome,
   FullLocalAncestryPopulationId,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
+import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 
 export const Section = styled.section`
   width: 100%;
@@ -298,6 +302,42 @@ type LiftoverSource = {
   datasets: string[]
 }
 
+export type LongReadPopulation = {
+  id: string
+  ac: number
+  an: number
+  af: number
+  homozygote_alt_count: number | null
+}
+
+export type LongReadSequencingType = {
+  ac: number
+  an: number
+  af: number
+  homozygote_ref_count: number | null
+  homozygote_alt_count: number | null
+  heterozygote_count: number | null
+  filters: string[]
+  populations: LongReadPopulation[]
+}
+
+export type LongReadDetails = {
+  allele_type: string | null
+  motifs: string[] | null
+  is_likely_tr: boolean | null
+  enveloping_tr_id: string | null
+  gnomad_str: string | null
+  allele_size_distribution: AlleleSizeDistributionCohort[] | null
+  genotype_distribution: any[] | null
+  max_repunits: number | null
+  main_reference_region: {
+    reference_genome: string
+    chrom: string
+    start: number
+    stop: number
+  } | null
+}
+
 export type Variant = {
   variant_id: string
   reference_genome: ReferenceGenome
@@ -312,6 +352,8 @@ export type Variant = {
   exome: SequencingType | null
   genome: SequencingType | null
   joint: JointSequencingType | null
+  long_read: LongReadSequencingType | null
+  long_read_details: LongReadDetails | null
   lof_curations: LofCuration[] | null
   in_silico_predictors: InSilicoPredictor[] | null
   transcript_consequences: TranscriptConsequence[] | null
@@ -333,6 +375,8 @@ type VariantPageContentProps = {
 }
 
 export const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
+  const isLrOnly = !variant.exome && !variant.genome && Boolean(variant.long_read)
+
   return (
     <FlexWrapper>
       <ResponsiveSection>
@@ -375,8 +419,20 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         <h2>
           Genetic Ancestry Group Frequencies <InfoButton topic="ancestry" />
         </h2>
-        <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
+        {isLrOnly ? (
+          <LongReadFrequenciesTable longRead={variant.long_read!} />
+        ) : (
+          <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
+        )}
       </Section>
+
+      {variant.long_read_details?.is_likely_tr && (
+        <LongReadVariantDetails
+          variantId={variant.variant_id}
+          longReadDetails={variant.long_read_details}
+          ref_allele={variant.ref}
+        />
+      )}
 
       <Section>
         <h2>Related Variants</h2>
@@ -443,18 +499,22 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         </ResponsiveSection>
       </FlexWrapper>
 
-      <ResponsiveSection>
-        <h2>Genotype Quality Metrics</h2>
-        <VariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>Site Quality Metrics</h2>
-        <VariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
-      </ResponsiveSection>
-      <Section>
-        <h2>Read Data</h2>
-        <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
-      </Section>
+      {!isLrOnly && (
+        <>
+          <ResponsiveSection>
+            <h2>Genotype Quality Metrics</h2>
+            <VariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
+          </ResponsiveSection>
+          <ResponsiveSection>
+            <h2>Site Quality Metrics</h2>
+            <VariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
+          </ResponsiveSection>
+          <Section>
+            <h2>Read Data</h2>
+            <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
+          </Section>
+        </>
+      )}
     </FlexWrapper>
   )
 }
@@ -684,6 +744,56 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
           stat_test_name
           gen_ancs
         }
+      }
+    }
+    long_read {
+      ac
+      an
+      af
+      homozygote_ref_count
+      homozygote_alt_count
+      heterozygote_count
+      filters
+      populations {
+        id
+        ac
+        an
+        af
+        homozygote_alt_count
+      }
+    }
+    long_read_details {
+      allele_type
+      motifs
+      is_likely_tr
+      enveloping_tr_id
+      gnomad_str
+      max_repunits
+      allele_size_distribution {
+        ancestry_group
+        sex
+        repunit
+        distribution {
+          repunit_count
+          frequency
+        }
+      }
+      genotype_distribution {
+        ancestry_group
+        sex
+        short_allele_repunit
+        long_allele_repunit
+        distribution {
+          short_allele_repunit_count
+          long_allele_repunit_count
+          frequency
+        }
+      }
+      main_reference_region {
+        reference_genome
+        chrom
+        start
+        stop
       }
     }
     flags
