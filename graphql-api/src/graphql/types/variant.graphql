@@ -106,6 +106,29 @@ type Fafmax {
   faf99_max_gen_anc: String
 }
 
+type LongReadSequencingTypeData {
+  ac: Int!
+  an: Int!
+  af: Float!
+  homozygote_ref_count: Int
+  homozygote_alt_count: Int
+  heterozygote_count: Int
+  filters: [String!]
+  populations: [LongReadVariantPopulationFrequencies]
+}
+
+type LongReadVariantDetails {
+  allele_type: String
+  motifs: [String!]
+  is_likely_tr: Boolean
+  enveloping_tr_id: String
+  gnomad_str: String
+  allele_size_distribution: [LongReadAlleleSizeDistribution!]
+  genotype_distribution: [LongReadGenotypeDistribution!]
+  max_repunits: Int
+  main_reference_region: LongReadTandemRepeatReferenceRegion
+}
+
 type VariantSequencingTypeData {
   ac: Int
   an: Int
@@ -160,6 +183,8 @@ type Variant {
   exome: VariantSequencingTypeData
   genome: VariantSequencingTypeData
   joint: VariantJointSequencingTypeData
+  long_read: LongReadSequencingTypeData
+  long_read_details: LongReadVariantDetails
   flags: [String!]
   lof_curation: LoFCurationInGene
   transcript_consequence: TranscriptConsequence
@@ -307,6 +332,8 @@ type VariantDetails {
   exome: VariantDetailsSequencingTypeData
   genome: VariantDetailsSequencingTypeData
   joint: VariantDetailsJointSequencingTypeData
+  long_read: LongReadSequencingTypeData
+  long_read_details: LongReadVariantDetails
   flags: [String!]
   transcript_consequences: [TranscriptConsequence!]
   in_silico_predictors: [VariantInSilicoPredictor!]
