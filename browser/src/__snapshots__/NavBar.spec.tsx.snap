@@ -195,7 +195,7 @@ exports[`NavBar has no unexpected changes 1`] = `
       <div
         className="c2"
       >
-        mADgno browser
+        gnomAD browser
       </div>
     </a>
     <button

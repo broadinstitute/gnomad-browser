@@ -143,7 +143,7 @@ exports[`Home Page has no unexpected changes 1`] = `
       width="60%"
     >
       <title>
-        mADgno
+        gnomAD
       </title>
       <path
         d="M88.33 78.44q0 20.51-11.87 31.77t-34.4 11.26q-14.89 0-23.6-4.24V98.09a45.23 45.23 0 0 0 23 6.62q11.51 0 17.84-6.08t6.33-16.52v-5.83h-.28q-7.77 12.38-23 12.38-14.1 0-22.38-9.93T11.7 52.1q0-18.7 9.21-29.72t24.25-11q13.46 0 20.15 10.37h.28v-8.58h22.74zm-22.45-27v-5.81a18 18 0 0 0-4.13-11.91A13.38 13.38 0 0 0 51 28.79a13.93 13.93 0 0 0-11.88 5.9q-4.31 5.89-4.32 16.62 0 9.21 4.1 14.57a13.34 13.34 0 0 0 11.22 5.37 13.93 13.93 0 0 0 11.41-5.44q4.35-5.43 4.35-14.35zm113.5 35.42h-22.66V45.92q0-17.13-12.24-17.13a12.13 12.13 0 0 0-9.71 4.53A17.24 17.24 0 0 0 131 44.84v42h-22.79V13.17H131v11.66h.29q8.13-13.45 23.68-13.46 24.47 0 24.46 30.37zm53.99 1.8q-18.42 0-29-10.33t-10.54-28q0-18.28 10.93-28.61t29.58-10.33q18.35 0 28.78 10.33t10.48 27.29q0 18.34-10.76 29t-29.47 10.65zm.63-59.87q-8.07 0-12.52 5.54T217 50.02q0 21.23 17.12 21.23 16.33 0 16.34-21.81-.03-20.65-16.46-20.65zM406.69 86.86H384v-42q0-16-11.81-16.05a10.86 10.86 0 0 0-9.11 4.77 19.83 19.83 0 0 0-3.52 12v41.23h-22.74V44.4q0-15.6-11.59-15.61a11.11 11.11 0 0 0-9.31 4.6q-3.5 4.62-3.49 12.53v40.94h-22.74V13.17h22.74v11.52h.28a27.95 27.95 0 0 1 23.82-13.32q15.62 0 21.37 13.75 8.43-13.74 24.76-13.75 24 0 24 29.65zM506.75 86.96H485.4l-6.19-19.38h-30.92l-6.13 19.34h-21.22l31.65-87h23.23zm-32.02-34.38l-9.34-29.23a38.32 38.32 0 0 1-1.46-7.77h-.48a33 33 0 0 1-1.52 7.58l-9.46 29.42zm47.84 34.38v-87h30.8q46.33 0 46.33 42.39 0 20.32-12.64 32.44t-33.69 12.13zm19.58-71v55.12h9.71q12.72 0 20-7.64t7.24-20.8q0-12.42-7.18-19.55t-20.17-7.13z"
@@ -157,7 +157,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     <h1
       className="c4"
     >
-      mADgno
+      Genome Aggregation Database
     </h1>
   </div>
   <div
@@ -286,7 +286,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         href="/downloads"
         onClick={[Function]}
       >
-        Download mADgno data
+        Download gnomAD data
       </a>
     </li>
     <li
@@ -297,7 +297,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         href="/publications"
         onClick={[Function]}
       >
-        Read mADgno publications
+        Read gnomAD publications
       </a>
     </li>
     <li
@@ -319,7 +319,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         href="/short-tandem-repeats?dataset=gnomad_r4"
         onClick={[Function]}
       >
-        Browse tandem repeats in mADgno
+        Browse tandem repeats in gnomAD
       </a>
     </li>
     <li
@@ -330,19 +330,19 @@ exports[`Home Page has no unexpected changes 1`] = `
         href="/help/what-features-are-not-yet-in-v4-and-where-can-i-find-them"
         onClick={[Function]}
       >
-        Locate features not yet in mADgno v4
+        Locate features not yet in gnomAD v4
       </a>
     </li>
   </ul>
   <p>
-    Please note that the mADgno v3 genomes are now part of mADgno v4. For more information, see
+    Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see
      
     <a
       className="c11"
       href="/help/should-i-switch-to-the-latest-version-of-gnomad"
       onClick={[Function]}
     >
-      "Should I switch to the latest version of mADgno?"
+      "Should I switch to the latest version of gnomAD?"
     </a>
   </p>
   <h2
@@ -459,7 +459,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     <li
       className="c10"
     >
-      Regional missense constraint (mADgno v2, GRCh37):
+      Regional missense constraint (gnomAD v2, GRCh37):
        
       <a
         className="c11"
@@ -472,7 +472,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     <li
       className="c10"
     >
-      Variant co-occurrence (mADgno v2, GRCh37):
+      Variant co-occurrence (gnomAD v2, GRCh37):
        
       <a
         className="c11"
@@ -484,10 +484,10 @@ exports[`Home Page has no unexpected changes 1`] = `
     </li>
   </ul>
   <h2>
-    New to mADgno?
+    New to gnomAD?
   </h2>
   <p>
-    Check out these resources to learn about mADgno and how to use it for variant interpretation.
+    Check out these resources to learn about gnomAD and how to use it for variant interpretation.
   </p>
   <ul
     className="c9"
@@ -502,7 +502,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         target="_blank"
       >
         <em>
-          Gudmundsson et al. Variant interpretation using population databases: Lessons from mADgno.
+          Gudmundsson et al. Variant interpretation using population databases: Lessons from gnomAD.
         </em>
          
         Hum Mutat. 2022 Aug;43(8):1012-1030.
@@ -517,7 +517,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-        Using mADgno - tips and tricks (video)
+        Using gnomAD - tips and tricks (video)
       </a>
     </li>
     <li
@@ -529,7 +529,7 @@ exports[`Home Page has no unexpected changes 1`] = `
         rel="noopener noreferrer"
         target="_blank"
       >
-        mADgno: Using large genomic data sets to interpret human genetic variation (video)
+        gnomAD: Using large genomic data sets to interpret human genetic variation (video)
       </a>
     </li>
     <li
@@ -546,7 +546,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     </li>
   </ul>
   <h2>
-    About mADgno
+    About gnomAD
   </h2>
   <p>
     The
@@ -559,7 +559,7 @@ exports[`Home Page has no unexpected changes 1`] = `
       Genome Aggregation Database
     </a>
      
-    (mADgno™) is a resource developed by an international coalition of investigators, with the goal of aggregating and harmonizing both exome and genome sequencing data from a wide variety of large-scale sequencing projects, and making summary data available for the wider scientific community.
+    (gnomAD™) is a resource developed by an international coalition of investigators, with the goal of aggregating and harmonizing both exome and genome sequencing data from a wide variety of large-scale sequencing projects, and making summary data available for the wider scientific community.
   </p>
   <p>
     The v4 data set (GRCh38) provided on this website spans 730,947 exome sequences and 76,215 whole-genome sequences from unrelated individuals, of
@@ -571,7 +571,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     >
       diverse ancestries
     </a>
-    , sequenced as part of various disease-specific and population genetic studies. The mADgno Principal Investigators and team can be found 
+    , sequenced as part of various disease-specific and population genetic studies. The gnomAD Principal Investigators and team can be found 
     <a
       className="c11"
       href="/team"
