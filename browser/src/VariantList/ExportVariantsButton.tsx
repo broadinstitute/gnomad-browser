@@ -8,13 +8,7 @@ import {
   PopulationId,
   getPopulationsInDataset,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
-import {
-  DatasetId,
-  isV2,
-  isV4,
-  isLongRead,
-  hasJointFrequencyData,
-} from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, isV2, isV4, hasJointFrequencyData } from '@gnomad/dataset-metadata/metadata'
 
 import { logButtonClick } from '../analytics'
 
@@ -267,9 +261,8 @@ const exportVariantsToCsv = (
     },
     {
       label: 'Source',
-      getValue: isLongRead(datasetId)
-        ? () => 'gnomAD Long Reads'
-        : datasetId === 'exac'
+      getValue:
+        datasetId === 'exac'
           ? () => 'ExAC'
           : (variant: VariantTableVariant) => {
               const sources = []
@@ -282,40 +275,24 @@ const exportVariantsToCsv = (
               return sources.join(',')
             },
     },
-    ...(isLongRead(datasetId)
-      ? [
-          {
-            label: 'Filters',
-            getValue: (variant: VariantTableVariant) => {
-              const filters = (variant as any).filters || []
-              return filters.length === 0 ? 'PASS' : filters.join(',')
-            },
-          },
-        ]
-      : [
-          {
-            label: 'Filters - exomes',
-            getValue: (variant: VariantTableVariant) => {
-              if (!variant.exome) {
-                return 'NA'
-              }
-              return variant.exome.filters.length === 0
-                ? 'PASS'
-                : variant.exome.filters.join(',')
-            },
-          },
-          {
-            label: 'Filters - genomes',
-            getValue: (variant: VariantTableVariant) => {
-              if (!variant.genome) {
-                return 'NA'
-              }
-              return variant.genome.filters.length === 0
-                ? 'PASS'
-                : variant.genome.filters.join(',')
-            },
-          },
-        ]),
+    {
+      label: 'Filters - exomes',
+      getValue: (variant: VariantTableVariant) => {
+        if (!variant.exome) {
+          return 'NA'
+        }
+        return variant.exome.filters.length === 0 ? 'PASS' : variant.exome.filters.join(',')
+      },
+    },
+    {
+      label: 'Filters - genomes',
+      getValue: (variant: VariantTableVariant) => {
+        if (!variant.genome) {
+          return 'NA'
+        }
+        return variant.genome.filters.length === 0 ? 'PASS' : variant.genome.filters.join(',')
+      },
+    },
     {
       label: 'Transcript',
       getValue: (variant: VariantTableVariant) =>
@@ -371,23 +348,11 @@ const exportVariantsToCsv = (
     },
   ]
 
-  const longReadColumns: Column[] = isLongRead(datasetId)
-    ? [
-        {
-          label: 'Short Read Match',
-          getValue: (variant: VariantTableVariant) =>
-            (variant as any).short_read_match_id || '',
-        },
-      ]
-    : []
+  const versionSpecificColumns = createVersionSpecificColumns(datasetId)
 
-  const versionSpecificColumns = isLongRead(datasetId)
-    ? []
-    : createVersionSpecificColumns(datasetId)
+  const populationColumns = createPopulationColumns(datasetId)
 
-  const populationColumns = isLongRead(datasetId) ? [] : createPopulationColumns(datasetId)
-
-  const columns = DEFAULT_COLUMNS.concat(longReadColumns, versionSpecificColumns, populationColumns)
+  const columns = DEFAULT_COLUMNS.concat(versionSpecificColumns, populationColumns)
 
   const headerRow = columns.map((c) => c.label)
 
