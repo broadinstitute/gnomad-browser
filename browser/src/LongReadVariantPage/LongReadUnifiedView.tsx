@@ -382,6 +382,8 @@ const LongReadUnifiedView = ({
           hgvsc: tc?.hgvsc || '',
           hgvsp: tc?.hgvsp || '',
           rsids: v.rsids || [],
+          exome: null,
+          genome: null,
           flags: [],
           filters: v.filters || [],
           populations: [],
@@ -468,7 +470,7 @@ const LongReadUnifiedView = ({
 
       {viewMode === 'summary' ? (
         <Variants
-          clinvarReleaseDate={clinvarReleaseDate || "2024-01-01"}
+          clinvarReleaseDate={clinvarReleaseDate || ''}
           context={gene as any}
           datasetId={datasetId}
           exportFileName={`gnomad_lr_${gene.symbol || gene.gene_id}`}
