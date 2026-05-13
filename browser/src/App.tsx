@@ -72,12 +72,12 @@ const Banner = styled.div`
 
 const BANNER_CONTENT = (
   <>
-    Join the gnomAD team for a{' '}
-    <ExternalLink href="https://us02web.zoom.us/meeting/register/lqWS2j97QDG2AMUmm3Jkyw#/registration">
-      talk on May 11, 4-5PM ET
+    Missed our recent talk on common misconceptions about gnomAD?{' '}
+    <ExternalLink href="https://docs.google.com/document/d/1HbD2HjdOUVZCf_0-zgEQyjNkTmKUGeGOh_VYTHTv490/edit?tab=t.0#heading=h.t8hwrqi0tmmw">
+      Watch the recording
     </ExternalLink>{' '}
-    addressing common misconceptions about the resource — what it is, what metadata are available,
-    and the types of studies it includes.
+    covering what the resource is, what metadata are available, and the types of studies it
+    includes.
   </>
 )
 
