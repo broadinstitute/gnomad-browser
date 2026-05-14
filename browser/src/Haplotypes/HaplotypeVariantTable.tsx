@@ -665,6 +665,7 @@ const AlleleStructureGrid = ({
           totalHaplotypes={totalHaplotypes}
           flankPrefix={flankPrefix}
           flankSuffix={flankSuffix}
+          motifs={motifs}
         />
       ))}
 
@@ -689,6 +690,28 @@ const AlleleStructureGrid = ({
   )
 }
 
+const SeqToggle = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
+  <button
+    onClick={(e) => { e.stopPropagation(); onClick() }}
+    title={active ? 'Hide sequence' : 'Show sequence'}
+    style={{
+      fontSize: 8,
+      fontFamily: 'monospace',
+      fontWeight: 600,
+      lineHeight: 1,
+      padding: '1px 3px',
+      borderRadius: 2,
+      cursor: 'pointer',
+      color: active ? '#1565c0' : '#999',
+      background: active ? '#e3f2fd' : '#fafafa',
+      border: `1px solid ${active ? '#90caf9' : '#e0e0e0'}`,
+      flexShrink: 0,
+    }}
+  >
+    {active ? '▾ Seq' : '▸ Seq'}
+  </button>
+)
+
 const AlgorithmBadge = ({ algorithm }: { algorithm: DecomposeAlgorithm }) => (
   <span
     title={algorithm === 'dp' ? 'Decomposed with trviz DP alignment' : 'Decomposed with greedy regex'}
@@ -709,6 +732,58 @@ const AlgorithmBadge = ({ algorithm }: { algorithm: DecomposeAlgorithm }) => (
   </span>
 )
 
+const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: string[] }) => (
+  <div
+    style={{
+      overflowX: 'auto',
+      maxWidth: STRUCTURE_MAX_GRID_WIDTH + 260,
+      padding: '4px 0 6px 2px',
+      borderTop: '1px solid #eee',
+    }}
+  >
+    <div style={{ display: 'flex', flexWrap: 'nowrap', gap: 1 }}>
+      {tokens.map((token, ti) => {
+        const bg =
+          token.type === 'motif'
+            ? MOTIF_COLORS[token.motifIndex % MOTIF_COLORS.length]
+            : INTERRUPTION_COLOR
+        const isInterruption = token.type === 'interruption'
+        const label =
+          token.type === 'motif' ? motifs[token.motifIndex] ?? '?' : 'int'
+        return (
+          <span key={ti} style={{ display: 'inline-flex', flexShrink: 0 }} title={`${label} (${token.sequence.length}bp)`}>
+            {token.sequence.split('').map((ch, ci) => (
+              <span
+                key={ci}
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 10,
+                  lineHeight: '14px',
+                  width: 8,
+                  textAlign: 'center',
+                  background: bg,
+                  color: isInterruption ? '#ccc' : '#fff',
+                  opacity: isInterruption ? 0.7 : 1,
+                  borderRadius: ci === 0 ? '2px 0 0 2px' : ci === token.sequence.length - 1 ? '0 2px 2px 0' : 0,
+                }}
+              >
+                {ch}
+              </span>
+            ))}
+          </span>
+        )
+      })}
+    </div>
+    <div style={{ fontSize: 9, color: '#aaa', marginTop: 2 }}>
+      {tokens.reduce((s, t) => s + t.sequence.length, 0)}bp
+      {' · '}
+      {tokens.length} tokens
+      {' · '}
+      motifs: {motifs.join(', ')}
+    </div>
+  </div>
+)
+
 const AlleleStructureRow = ({
   allele,
   scale,
@@ -716,6 +791,7 @@ const AlleleStructureRow = ({
   totalHaplotypes,
   flankPrefix,
   flankSuffix,
+  motifs,
 }: {
   allele: AlleleStructure
   scale: number
@@ -723,8 +799,10 @@ const AlleleStructureRow = ({
   totalHaplotypes: number
   flankPrefix?: string
   flankSuffix?: string
+  motifs: string[]
 }) => {
   const [hovered, setHovered] = useState(false)
+  const [showSeq, setShowSeq] = useState(false)
 
   const useBinnedView = allele.totalMotifUnits > 100 || allele.sequence.length > 2000
 
@@ -785,6 +863,109 @@ const AlleleStructureRow = ({
     }
 
     return (
+      <div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            paddingLeft: 2,
+            paddingTop: 1,
+            paddingBottom: 1,
+            background: hovered ? '#f0f7ff' : undefined,
+            borderRadius: 2,
+          }}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          {/* Binned purity heatmap */}
+          <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+            {flankPrefix && (
+              <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginRight: 2, flexShrink: 0 }}>{flankPrefix}</span>
+            )}
+            <svg width={numBins * binWidth + 1} height={STRUCTURE_ROW_HEIGHT}>
+              {bins.map((bin, i) => {
+                const purity = bin.totalBases > 0 ? bin.motifBases / bin.totalBases : 0
+                return (
+                  <rect
+                    key={i}
+                    x={i * binWidth}
+                    y={2}
+                    width={binWidth - 0.5}
+                    height={STRUCTURE_ROW_HEIGHT - 4}
+                    rx={0}
+                    fill={interpolatePurity(purity)}
+                  >
+                    <title>{`bp ${bin.start}–${bin.end}: ${(purity * 100).toFixed(0)}% purity`}</title>
+                  </rect>
+                )
+              })}
+              <rect
+                x={0} y={2}
+                width={numBins * binWidth}
+                height={STRUCTURE_ROW_HEIGHT - 4}
+                fill="none" stroke="#ddd" strokeWidth={0.5} rx={1}
+              />
+            </svg>
+            {flankSuffix && (
+              <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginLeft: 2, flexShrink: 0 }}>{flankSuffix}</span>
+            )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: '#888', marginTop: 1 }}>
+              <span>{formatBp(seqLen)} | {(overallPurity * 100).toFixed(0)}% purity | longest pure run: {longestPureRun} | {numBins} bins of {BIN_SIZE}bp</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 4 }}>
+                <span style={{ color: '#aaa' }}>purity:</span>
+                <span style={{ display: 'inline-block', width: 8, height: 8, background: '#c62828', borderRadius: 1 }} />
+                <span>0%</span>
+                <span style={{ display: 'inline-block', width: 8, height: 8, background: '#fdd835', borderRadius: 1 }} />
+                <span>50%</span>
+                <span style={{ display: 'inline-block', width: 8, height: 8, background: '#2e7d32', borderRadius: 1 }} />
+                <span>100%</span>
+              </span>
+            </div>
+          </div>
+
+          <span style={{ width: 40, textAlign: 'right', fontSize: 11, fontFamily: 'monospace', color: '#444' }}>
+            {allele.totalMotifUnits}
+          </span>
+
+          <span style={{ width: 80, textAlign: 'right', fontSize: 11, fontFamily: 'monospace', color: allele.interruptionCount > 0 ? '#c62828' : '#999' }}>
+            {allele.interruptionCount > 0 ? `${allele.interruptionCount} (${formatBp(allele.interruptionBases)})` : '—'}
+          </span>
+
+          <div style={{ width: 120, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <svg width={80} height={10}>
+              {(() => {
+                let bx = 0
+                const barTotal = (allele.totalCarriers / maxCarriers) * 80
+                return POP_ORDER.map((pop) => {
+                  const count = allele.popCounts[pop] || 0
+                  if (count === 0) return null
+                  const w = (count / allele.totalCarriers) * barTotal
+                  const segment = (
+                    <rect key={pop} x={bx} y={0} width={Math.max(w, 0.5)} height={10} fill={SUPERPOPULATION_COLORS[pop] || '#999'} rx={1} />
+                  )
+                  bx += w
+                  return segment
+                })
+              })()}
+            </svg>
+            <span style={{ fontSize: 10, color: '#666' }}>
+              {allele.totalCarriers}
+              <span style={{ color: '#aaa' }}> ({((allele.totalCarriers / totalHaplotypes) * 100).toFixed(0)}%)</span>
+            </span>
+          </div>
+          <AlgorithmBadge algorithm={allele.algorithm} />
+          <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
+        </div>
+        {showSeq && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
+      </div>
+    )
+  }
+
+  return (
+    <div>
       <div
         style={{
           display: 'flex',
@@ -798,63 +979,93 @@ const AlleleStructureRow = ({
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        title={allele.sequence.length <= 200
+          ? `${allele.sequence} (${allele.sequence.length}bp)`
+          : `${allele.sequence.slice(0, 80)}...${allele.sequence.slice(-80)} (${allele.sequence.length}bp)`}
       >
-        {/* Binned purity heatmap */}
-        <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-          {flankPrefix && (
-            <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginRight: 2, flexShrink: 0 }}>{flankPrefix}</span>
-          )}
-          <svg width={numBins * binWidth + 1} height={STRUCTURE_ROW_HEIGHT}>
-            {bins.map((bin, i) => {
-              const purity = bin.totalBases > 0 ? bin.motifBases / bin.totalBases : 0
-              return (
+        {/* Motif grid with flanking context */}
+        <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+        {flankPrefix && (
+          <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginRight: 2, flexShrink: 0 }}>{flankPrefix}</span>
+        )}
+        <svg
+          width={STRUCTURE_MAX_GRID_WIDTH - (flankPrefix ? flankPrefix.length * 6 + 4 : 0) - (flankSuffix ? flankSuffix.length * 6 + 4 : 0)}
+          height={STRUCTURE_ROW_HEIGHT}
+          style={{ flexShrink: 1, flexGrow: 1 }}
+        >
+          {(() => {
+            let x = 0
+            const gap = 0.5
+            return allele.tokens.map((token, i) => {
+              const w = Math.max(STRUCTURE_BLOCK_MIN_WIDTH, token.sequence.length * scale) - gap
+              const block = (
                 <rect
                   key={i}
-                  x={i * binWidth}
+                  x={x}
                   y={2}
-                  width={binWidth - 0.5}
+                  width={Math.max(w, 1)}
                   height={STRUCTURE_ROW_HEIGHT - 4}
-                  rx={0}
-                  fill={interpolatePurity(purity)}
-                >
-                  <title>{`bp ${bin.start}–${bin.end}: ${(purity * 100).toFixed(0)}% purity`}</title>
-                </rect>
+                  rx={1}
+                  fill={
+                    token.type === 'motif'
+                      ? MOTIF_COLORS[token.motifIndex % MOTIF_COLORS.length]
+                      : INTERRUPTION_COLOR
+                  }
+                  opacity={token.type === 'interruption' ? 0.6 : 1}
+                  stroke="white"
+                  strokeWidth={0.5}
+                />
               )
-            })}
-            <rect
-              x={0} y={2}
-              width={numBins * binWidth}
-              height={STRUCTURE_ROW_HEIGHT - 4}
-              fill="none" stroke="#ddd" strokeWidth={0.5} rx={1}
-            />
-          </svg>
-          {flankSuffix && (
-            <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginLeft: 2, flexShrink: 0 }}>{flankSuffix}</span>
-          )}
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: '#888', marginTop: 1 }}>
-            <span>{formatBp(seqLen)} | {(overallPurity * 100).toFixed(0)}% purity | longest pure run: {longestPureRun} | {numBins} bins of {BIN_SIZE}bp</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 4 }}>
-              <span style={{ color: '#aaa' }}>purity:</span>
-              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#c62828', borderRadius: 1 }} />
-              <span>0%</span>
-              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#fdd835', borderRadius: 1 }} />
-              <span>50%</span>
-              <span style={{ display: 'inline-block', width: 8, height: 8, background: '#2e7d32', borderRadius: 1 }} />
-              <span>100%</span>
-            </span>
-          </div>
+              x += w + gap
+              return block
+            })
+          })()}
+          {/* Faint outline around the whole bar */}
+          <rect
+            x={0}
+            y={2}
+            width={gridWidth}
+            height={STRUCTURE_ROW_HEIGHT - 4}
+            fill="none"
+            stroke="#ddd"
+            strokeWidth={0.5}
+            rx={1}
+          />
+        </svg>
+        {flankSuffix && (
+          <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginLeft: 2, flexShrink: 0 }}>{flankSuffix}</span>
+        )}
         </div>
 
-        <span style={{ width: 40, textAlign: 'right', fontSize: 11, fontFamily: 'monospace', color: '#444' }}>
+        {/* Repeat unit count */}
+        <span
+          style={{
+            width: 40,
+            textAlign: 'right',
+            fontSize: 11,
+            fontFamily: 'monospace',
+            color: '#444',
+          }}
+        >
           {allele.totalMotifUnits}
         </span>
 
-        <span style={{ width: 80, textAlign: 'right', fontSize: 11, fontFamily: 'monospace', color: allele.interruptionCount > 0 ? '#c62828' : '#999' }}>
-          {allele.interruptionCount > 0 ? `${allele.interruptionCount} (${formatBp(allele.interruptionBases)})` : '—'}
+        {/* Interruption summary */}
+        <span
+          style={{
+            width: 80,
+            textAlign: 'right',
+            fontSize: 11,
+            fontFamily: 'monospace',
+            color: allele.interruptionCount > 0 ? '#c62828' : '#999',
+          }}
+        >
+          {allele.interruptionCount > 0
+            ? `${allele.interruptionCount} (${formatBp(allele.interruptionBases)})`
+            : '—'}
         </span>
 
+        {/* Population-stacked carrier bar */}
         <div style={{ width: 120, display: 'flex', alignItems: 'center', gap: 4 }}>
           <svg width={80} height={10}>
             {(() => {
@@ -865,7 +1076,15 @@ const AlleleStructureRow = ({
                 if (count === 0) return null
                 const w = (count / allele.totalCarriers) * barTotal
                 const segment = (
-                  <rect key={pop} x={bx} y={0} width={Math.max(w, 0.5)} height={10} fill={SUPERPOPULATION_COLORS[pop] || '#999'} rx={1} />
+                  <rect
+                    key={pop}
+                    x={bx}
+                    y={0}
+                    width={Math.max(w, 0.5)}
+                    height={10}
+                    fill={SUPERPOPULATION_COLORS[pop] || '#999'}
+                    rx={1}
+                  />
                 )
                 bx += w
                 return segment
@@ -874,148 +1093,15 @@ const AlleleStructureRow = ({
           </svg>
           <span style={{ fontSize: 10, color: '#666' }}>
             {allele.totalCarriers}
-            <span style={{ color: '#aaa' }}> ({((allele.totalCarriers / totalHaplotypes) * 100).toFixed(0)}%)</span>
+            <span style={{ color: '#aaa' }}>
+              {' '}({((allele.totalCarriers / totalHaplotypes) * 100).toFixed(0)}%)
+            </span>
           </span>
         </div>
         <AlgorithmBadge algorithm={allele.algorithm} />
+        <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
       </div>
-    )
-  }
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 8,
-        paddingLeft: 2,
-        paddingTop: 1,
-        paddingBottom: 1,
-        background: hovered ? '#f0f7ff' : undefined,
-        borderRadius: 2,
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      title={allele.sequence.length <= 200
-        ? `${allele.sequence} (${allele.sequence.length}bp)`
-        : `${allele.sequence.slice(0, 80)}...${allele.sequence.slice(-80)} (${allele.sequence.length}bp)`}
-    >
-      {/* Motif grid with flanking context */}
-      <div style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
-      {flankPrefix && (
-        <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginRight: 2, flexShrink: 0 }}>{flankPrefix}</span>
-      )}
-      <svg
-        width={STRUCTURE_MAX_GRID_WIDTH - (flankPrefix ? flankPrefix.length * 6 + 4 : 0) - (flankSuffix ? flankSuffix.length * 6 + 4 : 0)}
-        height={STRUCTURE_ROW_HEIGHT}
-        style={{ flexShrink: 1, flexGrow: 1 }}
-      >
-        {(() => {
-          let x = 0
-          const gap = 0.5
-          return allele.tokens.map((token, i) => {
-            const w = Math.max(STRUCTURE_BLOCK_MIN_WIDTH, token.sequence.length * scale) - gap
-            const block = (
-              <rect
-                key={i}
-                x={x}
-                y={2}
-                width={Math.max(w, 1)}
-                height={STRUCTURE_ROW_HEIGHT - 4}
-                rx={1}
-                fill={
-                  token.type === 'motif'
-                    ? MOTIF_COLORS[token.motifIndex % MOTIF_COLORS.length]
-                    : INTERRUPTION_COLOR
-                }
-                opacity={token.type === 'interruption' ? 0.6 : 1}
-                stroke="white"
-                strokeWidth={0.5}
-              />
-            )
-            x += w + gap
-            return block
-          })
-        })()}
-        {/* Faint outline around the whole bar */}
-        <rect
-          x={0}
-          y={2}
-          width={gridWidth}
-          height={STRUCTURE_ROW_HEIGHT - 4}
-          fill="none"
-          stroke="#ddd"
-          strokeWidth={0.5}
-          rx={1}
-        />
-      </svg>
-      {flankSuffix && (
-        <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#999', marginLeft: 2, flexShrink: 0 }}>{flankSuffix}</span>
-      )}
-      </div>
-
-      {/* Repeat unit count */}
-      <span
-        style={{
-          width: 40,
-          textAlign: 'right',
-          fontSize: 11,
-          fontFamily: 'monospace',
-          color: '#444',
-        }}
-      >
-        {allele.totalMotifUnits}
-      </span>
-
-      {/* Interruption summary */}
-      <span
-        style={{
-          width: 80,
-          textAlign: 'right',
-          fontSize: 11,
-          fontFamily: 'monospace',
-          color: allele.interruptionCount > 0 ? '#c62828' : '#999',
-        }}
-      >
-        {allele.interruptionCount > 0
-          ? `${allele.interruptionCount} (${formatBp(allele.interruptionBases)})`
-          : '—'}
-      </span>
-
-      {/* Population-stacked carrier bar */}
-      <div style={{ width: 120, display: 'flex', alignItems: 'center', gap: 4 }}>
-        <svg width={80} height={10}>
-          {(() => {
-            let bx = 0
-            const barTotal = (allele.totalCarriers / maxCarriers) * 80
-            return POP_ORDER.map((pop) => {
-              const count = allele.popCounts[pop] || 0
-              if (count === 0) return null
-              const w = (count / allele.totalCarriers) * barTotal
-              const segment = (
-                <rect
-                  key={pop}
-                  x={bx}
-                  y={0}
-                  width={Math.max(w, 0.5)}
-                  height={10}
-                  fill={SUPERPOPULATION_COLORS[pop] || '#999'}
-                  rx={1}
-                />
-              )
-              bx += w
-              return segment
-            })
-          })()}
-        </svg>
-        <span style={{ fontSize: 10, color: '#666' }}>
-          {allele.totalCarriers}
-          <span style={{ color: '#aaa' }}>
-            {' '}({((allele.totalCarriers / totalHaplotypes) * 100).toFixed(0)}%)
-          </span>
-        </span>
-      </div>
-      <AlgorithmBadge algorithm={allele.algorithm} />
+      {showSeq && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
     </div>
   )
 }
