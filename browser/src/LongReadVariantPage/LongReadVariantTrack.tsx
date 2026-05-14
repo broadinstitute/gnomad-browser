@@ -133,7 +133,7 @@ const SvBand = ({ variants, scalePosition, width }: {
   const barHeight = ROW_HEIGHT - 4
 
   return (
-    <svg height={bandHeight} width={width} style={{ overflow: 'visible' }}>
+    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
       {packed.map((v) => {
         const { shape, color } = getSvDisplay(v.allele_type)
         const rowY = v.row * ROW_HEIGHT + 2
@@ -189,7 +189,7 @@ const TrBand = ({ variants, scalePosition, width }: {
   const barHeight = ROW_HEIGHT - 4
 
   return (
-    <svg height={bandHeight} width={width} style={{ overflow: 'visible' }}>
+    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
       {packed.map((v) => {
         const startX = scalePosition(v.start)
         const stopX = scalePosition(v.stop)
@@ -273,7 +273,7 @@ const LongReadVariantTrack = ({ variants }: LongReadVariantTrackProps) => {
   }))
 
   return (
-    <div>
+    <div style={{ overflow: 'hidden' }}>
       <VariantTrack
         // @ts-expect-error TS(2769) - VariantTrack prop types are loose
         title={`Long Read SNVs (${trackSnvVariants.length})`}

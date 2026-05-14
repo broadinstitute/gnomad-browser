@@ -143,7 +143,6 @@ const VariantsInGene = ({
         <LongReadHaplotypeView
           datasetId={lrDatasetId}
           gene={gene}
-          zoomRegion={zoomRegion}
         />
       ) : (
         <>
@@ -462,7 +461,6 @@ const ConnectedVariantsInGene = ({
               datasetId={datasetId}
               gene={gene}
               variants={data.gene.long_read_variants || []}
-              zoomRegion={otherProps.zoomRegion}
               clinvarReleaseDate={data.meta.clinvar_release_date}
             />
           )

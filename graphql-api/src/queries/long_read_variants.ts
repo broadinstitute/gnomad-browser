@@ -33,6 +33,8 @@ const mapClickHouseRowToGraphQL = (row: any) => {
   intergenic: row.intergenic === 1,
   gene_region: row.gene_region || null,
   major_consequence: row.major_consequence || null,
+  cadd_phred: row.cadd_phred != null ? Number(row.cadd_phred) : null,
+  phylop: row.phylop != null ? Number(row.phylop) : null,
   short_read_match_id: row.short_read_match_id || null,
   short_read_match_type: row.short_read_match_type || null,
   short_read_match_source: row.short_read_match_source || null,
@@ -181,6 +183,30 @@ export const fetchVariantsByGene = withCache(
   { expiration: 1 }
 )
 
+const countVariantsByRegion = async (...args: any[]) => {
+  // Called as (esClient, region) from variant-queries.ts or (region) directly
+  const region: { chrom: string; start: number; stop: number } =
+    args.length > 1 ? args[1] : args[0]
+  const chrom = normalizeChrom(region.chrom)
+
+  const query = `
+    SELECT count() as count FROM lr_variants
+    WHERE chrom = {chrom:String}
+      AND position >= {start:UInt32}
+      AND position <= {stop:UInt32}
+  `
+
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start: region.start, stop: region.stop },
+    format: 'JSONEachRow',
+  })
+  const rows = (await resultSet.json()) as any[]
+  return Number(rows[0]?.count || 0)
+}
+
+export const countVariantsInRegion = countVariantsByRegion
+
 const _fetchVariantsByRegion = async (region: { chrom: string; start: number; stop: number }) => {
   const chrom = normalizeChrom(region.chrom)
 
@@ -210,6 +236,7 @@ export const fetchVariantsByRegion = withCache(
 )
 
 const queries = {
+  countVariantsInRegion,
   fetchVariantById,
   fetchVariantsByGene,
   fetchVariantsByRegion,

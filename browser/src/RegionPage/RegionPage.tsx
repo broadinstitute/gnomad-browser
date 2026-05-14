@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Badge } from '@gnomad/ui'
@@ -23,7 +23,6 @@ import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
 import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
-import ZoomOverview from '../Haplotypes/ZoomOverview'
 import EditRegion from './EditRegion'
 import GenesInRegionTrack from './GenesInRegionTrack'
 import MitochondrialRegionCoverageTrack from './MitochondrialRegionCoverageTrack'
@@ -82,7 +81,15 @@ type RegionPageProps = {
   region: Region
 }
 
-const variantsInRegion = (datasetId: DatasetId, region: Region, zoomRegion?: { start: number; stop: number } | null) => {
+type VariantsInRegionRendererProps = {
+  datasetId: DatasetId
+  region: Region
+  zoomRegion: { start: number; stop: number } | null
+  onChangeZoomRegion: (region: { start: number; stop: number } | null) => void
+  onSetRegion: (region: { start: number; stop: number }) => void
+}
+
+const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion }: VariantsInRegionRendererProps) => {
   if (isSVs(datasetId)) {
     return <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
   }
@@ -97,7 +104,15 @@ const variantsInRegion = (datasetId: DatasetId, region: Region, zoomRegion?: { s
     )
   }
 
-  return <RegularVariantsInRegion datasetId={datasetId} region={region} zoomRegion={zoomRegion} />
+  return (
+    <RegularVariantsInRegion
+      datasetId={datasetId}
+      region={region}
+      zoomRegion={zoomRegion}
+      onChangeZoomRegion={onChangeZoomRegion}
+      onSetRegion={onSetRegion}
+    />
+  )
 }
 
 const RegionPage = ({ datasetId, region }: RegionPageProps) => {
@@ -107,6 +122,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
   const location = useLocation()
+  const history = useHistory()
   const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') === 'true'
 
   // Subtract 30px for padding on Page component
@@ -120,6 +136,23 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
       obs_exp: ncc.oe,
     }
   }
+
+  // "Set as region" navigates to a new URL, triggering full remount + refetch
+  const handleSetRegion = useCallback((newRegion: { start: number; stop: number }) => {
+    const regionId = `${chrom}-${newRegion.start}-${newRegion.stop}`
+    const currentParams = new URLSearchParams(location.search)
+    history.push({
+      pathname: `/region/${regionId}`,
+      search: currentParams.toString(),
+    })
+  }, [chrom, history, location.search])
+
+  // viewRegion drives RegionViewer's coordinate scaling (client-side only).
+  // Data queries always use the full `region` — no refetch on zoom.
+  const viewRegion = zoomRegion
+    ? { ...region, start: zoomRegion.start, stop: zoomRegion.stop }
+    : region
+
 
   return (
     <TrackPage>
@@ -161,21 +194,9 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           </RegionControlsWrapper>
         </RegionInfoColumnWrapper>
       </TrackPageSection>
-      {isLongRead(datasetId) && (
-        <TrackPageSection>
-          <ZoomOverview
-            overviewRegion={{ start, stop }}
-            currentRegion={zoomRegion || { start, stop }}
-            chrom={chrom}
-            genes={region.genes}
-            onChangeRegion={setZoomRegion}
-            onSetRegion={setZoomRegion}
-          />
-        </TrackPageSection>
-      )}
       <RegionViewer
         leftPanelWidth={115}
-        regions={[region]}
+        regions={[viewRegion]}
         rightPanelWidth={isSmallScreen ? 0 : showTree ? 250 : 80}
         width={regionViewerWidth}
       >
@@ -195,7 +216,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           />
         )}
 
-        <GenesInRegionTrack genes={region.genes} region={region} />
+        <GenesInRegionTrack genes={region.genes} region={viewRegion} />
 
         {hasNonCodingConstraints(datasetId) && (
           <>
@@ -210,7 +231,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             />
           </>
         )}
-        {variantsInRegion(datasetId, region, zoomRegion)}
+        {variantsInRegion({ datasetId, region, zoomRegion, onChangeZoomRegion: setZoomRegion, onSetRegion: handleSetRegion })}
       </RegionViewer>
     </TrackPage>
   )

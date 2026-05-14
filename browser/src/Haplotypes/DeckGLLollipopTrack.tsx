@@ -1,4 +1,5 @@
-import React, { useMemo, useState, useCallback } from 'react'
+import React, { useMemo, useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
+import { throttle } from 'lodash-es'
 import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
 import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer } from '@deck.gl/layers'
@@ -17,6 +18,7 @@ const METH_TRACK_HEIGHT = 40
 const MQTL_TRACK_HEIGHT = 80
 const MQTL_PAD = 8
 const ROW_CENTER_Y = 12.5
+const SCROLL_CONTAINER_HEIGHT = 500
 
 // Flattened data types for deck.gl layers
 type VariantPoint = {
@@ -213,9 +215,14 @@ type DeckGLLollipopTrackProps = {
   hoveredVariantPosition?: number | null
   showGenealogy?: boolean
   genealogyResult?: { tree: any; leafOrder: number[] } | null
+  onVisibleGroupChange?: (group: HaplotypeGroup) => void
 }
 
-export default function DeckGLLollipopTrack({
+export type DeckGLLollipopTrackHandle = {
+  scrollToPosition: (pos: number) => void
+}
+
+const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipopTrackProps>(function DeckGLLollipopTrack({
   displayGroups,
   haplotypeGroups,
   start,
@@ -234,13 +241,17 @@ export default function DeckGLLollipopTrack({
   hoveredVariantPosition,
   showGenealogy = false,
   genealogyResult,
-}: DeckGLLollipopTrackProps) {
+  onVisibleGroupChange,
+}, ref) {
   const [hovered, setHovered] = useState<{
     x: number
     y: number
     object: any
     type: 'variant' | 'group'
   } | null>(null)
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [scrollTop, setScrollTop] = useState(0)
 
   // Compute row Y offsets and total height
   const { rowOffsets, totalHeight } = useMemo(() => {
@@ -261,6 +272,42 @@ export default function DeckGLLollipopTrack({
     }
     return { rowOffsets: offsets, totalHeight: cumY }
   }, [displayGroups, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
+
+  // Throttled scroll handler
+  const handleScroll = useMemo(
+    () =>
+      throttle((e: React.UIEvent<HTMLDivElement>) => {
+        const newScrollTop = (e.target as HTMLDivElement).scrollTop
+        setScrollTop(newScrollTop)
+
+        // Find topmost visible group and notify parent
+        if (onVisibleGroupChange && rowOffsets.length > 0) {
+          let visibleIdx = 0
+          for (let i = 0; i < rowOffsets.length; i++) {
+            if (rowOffsets[i] <= newScrollTop) visibleIdx = i
+            else break
+          }
+          onVisibleGroupChange(displayGroups[visibleIdx])
+        }
+      }, 50),
+    [rowOffsets, displayGroups, onVisibleGroupChange]
+  )
+
+  // Expose scrollToPosition for external sync
+  useImperativeHandle(ref, () => ({
+    scrollToPosition(pos: number) {
+      if (!scrollContainerRef.current) return
+      // Find the first group containing a variant at or after pos
+      for (let i = 0; i < displayGroups.length; i++) {
+        const group = displayGroups[i]
+        if (group.variants.variants.some((v) => v.position >= pos) ||
+            group.below_threshold.variants.some((v) => v.position >= pos)) {
+          scrollContainerRef.current.scrollTop = rowOffsets[i]
+          return
+        }
+      }
+    },
+  }), [displayGroups, rowOffsets])
 
   // Compute leaf Y positions for genealogy tree overlay
   const leafYPositions = useMemo(() => {
@@ -290,6 +337,11 @@ export default function DeckGLLollipopTrack({
   )
 
   return (
+    <div
+      ref={scrollContainerRef}
+      onScroll={handleScroll}
+      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto' }}
+    >
     <Track
       renderLeftPanel={() => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -362,11 +414,15 @@ export default function DeckGLLollipopTrack({
           rowOffsets={rowOffsets}
           hovered={hovered}
           onHover={onHover}
+          scrollTop={scrollTop}
         />
       )}
     </Track>
+    </div>
   )
-}
+})
+
+export default DeckGLLollipopTrack
 
 type DeckGLCanvasProps = {
   displayGroups: HaplotypeGroup[]
@@ -389,6 +445,7 @@ type DeckGLCanvasProps = {
   rowOffsets: number[]
   hovered: any
   onHover: (info: any) => void
+  scrollTop: number
 }
 
 // Inner component that receives scalePosition from Track render prop
@@ -413,6 +470,7 @@ function DeckGLLollipopCanvas({
   rowOffsets,
   hovered,
   onHover,
+  scrollTop,
 }: DeckGLCanvasProps) {
   // Canvas uses full width — RegionViewer's rightPanelWidth handles space for genealogy tree
   const canvasWidth = width
@@ -793,29 +851,33 @@ function DeckGLLollipopCanvas({
     []
   )
 
+  const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+
   const viewState = useMemo(
     () => ({
-      target: [canvasWidth / 2, totalHeight / 2, 0] as [number, number, number],
+      target: [canvasWidth / 2, scrollTop + viewportHeight / 2, 0] as [number, number, number],
       zoom: 0,
     }),
-    [canvasWidth, totalHeight]
+    [canvasWidth, scrollTop, viewportHeight]
   )
 
   return (
-    <div style={{ position: 'relative', width: canvasWidth, height: totalHeight, overflow: 'hidden' }}>
-      <DeckGL
-        views={view}
-        viewState={viewState}
-        layers={layers}
-        controller={false}
-        pickingRadius={5}
-        style={{ position: 'absolute', left: '0', top: '0', width: `${canvasWidth}px`, height: `${totalHeight}px` }}
-        width={canvasWidth}
-        height={totalHeight}
-      />
-      {hovered && hovered.object && (
-        <Tooltip x={hovered.x} y={hovered.y} object={hovered.object} type={hovered.type} />
-      )}
+    <div style={{ position: 'relative', width: canvasWidth, height: totalHeight }}>
+      <div style={{ position: 'absolute', top: scrollTop, left: 0, width: canvasWidth, height: viewportHeight }}>
+        <DeckGL
+          views={view}
+          viewState={viewState}
+          layers={layers}
+          controller={false}
+          pickingRadius={5}
+          style={{ position: 'absolute', left: '0', top: '0', width: `${canvasWidth}px`, height: `${viewportHeight}px` }}
+          width={canvasWidth}
+          height={viewportHeight}
+        />
+        {hovered && hovered.object && (
+          <Tooltip x={hovered.x} y={hovered.y} object={hovered.object} type={hovered.type} />
+        )}
+      </div>
     </div>
   )
 }
