@@ -392,7 +392,7 @@ const variantTableColumns: VariantTableColumn[] = [
         </Link>
         {row.long_read_details?.is_likely_tr && (
           <span style={{ marginLeft: '0.5ch' }}>
-            <Badge level="info">STR</Badge>
+            <Badge level="info">TR</Badge>
           </span>
         )}
       </Cell>

@@ -11,7 +11,7 @@ import Link from '../Link'
 import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
 import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
 
-type StrDataPoint = { length_diff: number; pop: string; count: number }
+type TrDataPoint = { length_diff: number; pop: string; count: number }
 
 type AlleleStructure = {
   sequence: string
@@ -44,8 +44,8 @@ type DerivedVariant = {
   info_AF_sas: number | null
   group_count: number
   carrier_count: number
-  is_str: boolean
-  str_distribution?: StrDataPoint[]
+  is_tr: boolean
+  tr_distribution?: TrDataPoint[]
   min_length_diff?: number
   max_length_diff?: number
   major_consequence: string | null
@@ -59,9 +59,9 @@ type DerivedVariant = {
   allele_methylation: number | null
   motif_counts: number[] | null
   allele_purity: number | null
-  str_allele_structures?: AlleleStructure[]
-  str_flank_prefix?: string
-  str_flank_suffix?: string
+  tr_allele_structures?: AlleleStructure[]
+  tr_flank_prefix?: string
+  tr_flank_suffix?: string
   ac?: number
   an?: number
   short_read_match_id?: string | null
@@ -83,9 +83,9 @@ const TableContainer = styled.div`
 const ControlBar = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   padding: 6px 0;
 `
 
@@ -144,6 +144,11 @@ const StyledTable = styled.table`
   tr:hover {
     background: #f0f7ff;
   }
+
+  th.numeric,
+  td.numeric {
+    text-align: right;
+  }
 `
 
 const TypeDot = styled.span<{ $color: string }>`
@@ -174,7 +179,7 @@ const ExpandToggle = styled.span`
   font-size: 10px;
 `
 
-const StrExpandedRow = styled.tr`
+const TrExpandedRow = styled.tr`
   &:hover {
     background: #fafafa !important;
   }
@@ -203,7 +208,7 @@ const SvCsqBadge = styled.span`
 `
 
 const renderPredictor = (value: number | null | undefined, warnThreshold: number, dangerThreshold: number) => {
-  if (value == null) return <span style={{ color: '#999' }}>—</span>
+  if (value == null) return <span style={{ color: '#ccc' }}>—</span>
   const color = value >= dangerThreshold ? '#e2422a' : value >= warnThreshold ? '#f0c94d' : '#28a745'
   return (
     <span>
@@ -222,7 +227,7 @@ const parseSvConsequence = (csq: string): { type: string; gene: string | null } 
   return { type: cleaned, gene: null }
 }
 
-// --- Mini STR Distribution Plot ---
+// --- Mini TR Distribution Plot ---
 
 const MIN_PLOT_WIDTH = 300
 const BAR_MIN_STEP = 12 // minimum pixels per bar to avoid label overlap
@@ -231,7 +236,7 @@ const PLOT_MARGIN = { top: 8, right: 8, bottom: 20, left: 32 }
 
 const POP_ORDER = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS', 'N/A']
 
-const MiniSTRPlot = ({ distribution }: { distribution: StrDataPoint[] }) => {
+const MiniTRPlot = ({ distribution }: { distribution: TrDataPoint[] }) => {
   const [hoveredBar, setHoveredBar] = useState<{ lengthDiff: number; x: number; y: number } | null>(null)
 
   // Aggregate by length_diff, then by pop
@@ -463,12 +468,12 @@ const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
 
 // --- Helper ---
 
-const isStrVariant = (v: { allele_type?: string; info_SVTYPE?: string | null }): boolean =>
+const isTrVariant = (v: { allele_type?: string; info_SVTYPE?: string | null }): boolean =>
   v.allele_type === 'trv' || v.info_SVTYPE === 'TRV'
 
-const getVariantTypeCategory = (allele_type: string, allele_length?: number): 'snv' | 'indel' | 'sv' | 'str' => {
+const getVariantTypeCategory = (allele_type: string, allele_length?: number): 'snv' | 'indel' | 'sv' | 'tr' => {
   if (allele_type === 'snv') return 'snv'
-  if (allele_type === 'trv') return 'str'
+  if (allele_type === 'trv') return 'tr'
   if (['del', 'ins'].includes(allele_type)) {
     return allele_length != null && Math.abs(allele_length) >= 50 ? 'sv' : 'indel'
   }
@@ -1175,7 +1180,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     snv: true,
     indel: true,
     sv: true,
-    str: true,
+    tr: true,
   })
   const [consequenceFilters, setConsequenceFilters] = useState<Record<string, boolean>>({
     lof: true,
@@ -1265,7 +1270,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           ac: v.freq?.all?.ac || 0,
           an: v.freq?.all?.an || 0,
           short_read_match_id: v.short_read_match_id || null,
-          is_str: v.allele_type === 'trv',
+          is_tr: v.allele_type === 'trv',
           enveloped_ids: v.enveloped_ids || null,
           major_consequence: v.major_consequence || null,
           sv_consequences: v.sv_consequences || null,
@@ -1282,7 +1287,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       })
     }
 
-    // Count unique samples for STR AF calculation
+    // Count unique samples for TR AF calculation
     const allSampleIds = new Set<string>()
     for (const g of haplotypeGroups.groups) {
       for (const s of g.samples) allSampleIds.add(s.sample_id)
@@ -1296,10 +1301,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         variant: any
         groupCount: number
         carrierIds: Set<string>
-        // For STR loci: accumulate per-carrier length diffs by pop
-        strCarriers?: Map<string, { lengthDiff: number; pop: string }[]>
-        // For STR loci: accumulate alt sequences with per-haplotype population counts
-        strSequences?: Map<string, Record<string, number>>
+        // For TR loci: accumulate per-carrier length diffs by pop
+        trCarriers?: Map<string, { lengthDiff: number; pop: string }[]>
+        // For TR loci: accumulate alt sequences with per-haplotype population counts
+        trSequences?: Map<string, Record<string, number>>
       }
     >()
 
@@ -1311,8 +1316,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         ...(group.below_threshold?.variants || []),
       ]
       for (const v of allVariants) {
-        const isTrv = isStrVariant(v)
-        // STR variants group by chrom:pos:TRV; others by pos:ref:alt
+        const isTrv = isTrVariant(v)
+        // TR variants group by chrom:pos:TRV; others by pos:ref:alt
         const key = isTrv
           ? `${v.chrom}:${v.position}:TRV`
           : `${v.position}:${v.alleles[0]}:${v.alleles[1]}`
@@ -1325,7 +1330,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
             variant: v,
             groupCount: 0,
             carrierIds: new Set(),
-            ...(isTrv ? { strCarriers: new Map(), strSequences: new Map() } : {}),
+            ...(isTrv ? { trCarriers: new Map(), trSequences: new Map() } : {}),
           }
           map.set(key, entry)
         }
@@ -1334,24 +1339,24 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         for (const s of group.samples) {
           entry.carrierIds.add(s.sample_id)
 
-          // Accumulate STR length diff per carrier
-          if (isTrv && entry.strCarriers) {
+          // Accumulate TR length diff per carrier
+          if (isTrv && entry.trCarriers) {
             const meta = sampleMetadata.get(s.sample_id)
             const pop = meta?.superpopulation || 'N/A'
             const altSeq = v.alleles[1]
             const lengthDiff = altSeq.length - v.alleles[0].length
             const carrierId = s.sample_id
-            if (!entry.strCarriers.has(carrierId)) {
-              entry.strCarriers.set(carrierId, [])
+            if (!entry.trCarriers.has(carrierId)) {
+              entry.trCarriers.set(carrierId, [])
             }
-            entry.strCarriers.get(carrierId)!.push({ lengthDiff, pop })
+            entry.trCarriers.get(carrierId)!.push({ lengthDiff, pop })
 
             // Track alt sequences with haplotype counts (one per haplotype, not per sample)
-            if (entry.strSequences && altSeq.length <= 10000) {
-              let popCounts = entry.strSequences.get(altSeq)
+            if (entry.trSequences && altSeq.length <= 10000) {
+              let popCounts = entry.trSequences.get(altSeq)
               if (!popCounts) {
                 popCounts = {}
-                entry.strSequences.set(altSeq, popCounts)
+                entry.trSequences.set(altSeq, popCounts)
               }
               popCounts[pop] = (popCounts[pop] || 0) + 1
             }
@@ -1362,28 +1367,28 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
     // Phase 2: build DerivedVariant array
     const result: DerivedVariant[] = []
-    for (const [key, { variant: v, groupCount, carrierIds, strCarriers, strSequences }] of map) {
+    for (const [key, { variant: v, groupCount, carrierIds, trCarriers, trSequences }] of map) {
       const isTrv = key.endsWith(':TRV')
 
-      // Build STR distribution from accumulated carrier data
-      let strDistribution: StrDataPoint[] | undefined
+      // Build TR distribution from accumulated carrier data
+      let trDistribution: TrDataPoint[] | undefined
       let minLengthDiff: number | undefined
       let maxLengthDiff: number | undefined
 
-      if (isTrv && strCarriers && strCarriers.size > 0) {
+      if (isTrv && trCarriers && trCarriers.size > 0) {
         const distMap = new Map<string, number>() // "lengthDiff:pop" -> count
-        for (const [, entries] of strCarriers) {
+        for (const [, entries] of trCarriers) {
           for (const { lengthDiff, pop } of entries) {
             const dkey = `${lengthDiff}:${pop}`
             distMap.set(dkey, (distMap.get(dkey) || 0) + 1)
           }
         }
-        strDistribution = []
+        trDistribution = []
         const allLengths: number[] = []
         for (const [dkey, count] of distMap) {
           const [ld, pop] = dkey.split(':')
           const lengthDiff = parseInt(ld, 10)
-          strDistribution.push({ length_diff: lengthDiff, pop, count })
+          trDistribution.push({ length_diff: lengthDiff, pop, count })
           allLengths.push(lengthDiff)
         }
         if (allLengths.length > 0) {
@@ -1392,11 +1397,11 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         }
       }
 
-      // Build allele structures for STR loci
-      let strAlleleStructures: AlleleStructure[] | undefined
+      // Build allele structures for TR loci
+      let trAlleleStructures: AlleleStructure[] | undefined
       let flankPrefix = ''
       let flankSuffix = ''
-      if (isTrv && strSequences && strSequences.size > 0 && v.tr_motifs) {
+      if (isTrv && trSequences && trSequences.size > 0 && v.tr_motifs) {
         const motifs = (v.tr_motifs as string).split(',').map((m: string) => m.trim()).filter(Boolean)
         const refSeq = v.alleles[0] as string
         // Compute flanking context from ref: decompose ref (minus anchor) and grab leading/trailing non-motif bases
@@ -1411,7 +1416,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         if (motifs.length > 0) {
           // Pass 1: decompose each allele sequence
           const interim: Array<{ seq: string; popCounts: Record<string, number>; tokens: SequenceToken[]; algorithm: DecomposeAlgorithm }> = []
-          for (const [seq, popCounts] of strSequences) {
+          for (const [seq, popCounts] of trSequences) {
             const repeatSeq = seq.length > 1 && refSeq.length > 0 && seq[0] === refSeq[0] ? seq.slice(1) : seq
             const { tokens, algorithm } = decomposeSequence(repeatSeq, motifs)
             interim.push({ seq, popCounts, tokens, algorithm })
@@ -1422,7 +1427,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           const refined = refineDecompositions(allTokenLists)
 
           // Pass 3: build final allele structures from refined tokens
-          strAlleleStructures = interim.map((item, i) => {
+          trAlleleStructures = interim.map((item, i) => {
             const tokens = refined[i]
             const totalMotifUnits = tokens.filter((t) => t.type === 'motif').length
             const interruptions = tokens.filter((t) => t.type === 'interruption')
@@ -1437,12 +1442,12 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
               totalCarriers: Object.values(item.popCounts).reduce((s, c) => s + c, 0),
             }
           })
-          strAlleleStructures.sort((a, b) => b.totalCarriers - a.totalCarriers)
+          trAlleleStructures.sort((a, b) => b.totalCarriers - a.totalCarriers)
         }
       }
 
       const variantId = isTrv
-        ? `${v.chrom}-${v.position}-STR`
+        ? `${v.chrom}-${v.position}-TR`
         : buildVariantId(v)
 
       result.push({
@@ -1450,7 +1455,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         position: v.position,
         chrom: v.chrom,
         ref: v.alleles[0],
-        alt: isTrv ? `STR(${minLengthDiff ?? 0}..${maxLengthDiff ?? 0}bp)` : v.alleles[1],
+        alt: isTrv ? `TR(${minLengthDiff ?? 0}..${maxLengthDiff ?? 0}bp)` : v.alleles[1],
         allele_type: isTrv ? 'trv' : v.allele_type || 'snv',
         allele_length: isTrv
           ? (maxLengthDiff ?? 0) - (minLengthDiff ?? 0)
@@ -1469,8 +1474,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         info_AF_sas: v.info_AF_sas ?? null,
         group_count: groupCount,
         carrier_count: carrierIds.size,
-        is_str: isTrv,
-        str_distribution: strDistribution,
+        is_tr: isTrv,
+        tr_distribution: trDistribution,
         min_length_diff: minLengthDiff,
         max_length_diff: maxLengthDiff,
         major_consequence: v.major_consequence ?? null,
@@ -1484,9 +1489,9 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         allele_methylation: v.allele_methylation ?? null,
         motif_counts: v.motif_counts ?? null,
         allele_purity: v.allele_purity ?? null,
-        str_allele_structures: strAlleleStructures,
-        str_flank_prefix: flankPrefix || undefined,
-        str_flank_suffix: flankSuffix || undefined,
+        tr_allele_structures: trAlleleStructures,
+        tr_flank_prefix: flankPrefix || undefined,
+        tr_flank_suffix: flankSuffix || undefined,
         ac: carrierIds.size,
         an: sampleCount * 2,
         short_read_match_id: null,
@@ -1574,7 +1579,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     { id: 'snv', label: 'SNV', color: VARIANT_TYPE_COLORS.snv },
     { id: 'indel', label: 'Indel', color: '#43A047' },
     { id: 'sv', label: 'SV', color: '#D73027' },
-    { id: 'str', label: 'STR', color: VARIANT_TYPE_COLORS.trv },
+    { id: 'tr', label: 'TR', color: VARIANT_TYPE_COLORS.trv },
   ]
 
   const consequenceCategories = VEP_CONSEQUENCE_CATEGORIES.map((category) => ({
@@ -1669,16 +1674,16 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           onChange={(e) => setSearchText(e.target.value)}
         />
         <ExportButton onClick={exportCSV}>Export CSV</ExportButton>
-        {sorted.some((v) => v.is_str) && (
+        {sorted.some((v) => v.is_tr) && (
           <>
             <ExportButton
               onClick={() =>
-                setExpandedRows(new Set(sorted.filter((v) => v.is_str).map((v) => v.variant_id)))
+                setExpandedRows(new Set(sorted.filter((v) => v.is_tr).map((v) => v.variant_id)))
               }
             >
-              Expand all STR
+              Expand all TR
             </ExportButton>
-            <ExportButton onClick={() => setExpandedRows(new Set())}>Fold all STR</ExportButton>
+            <ExportButton onClick={() => setExpandedRows(new Set())}>Fold all TR</ExportButton>
           </>
         )}
         <CountLabel>
@@ -1692,19 +1697,19 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
             <tr>
               <th onClick={() => handleSort('variant_id')}>Variant ID{sortIndicator('variant_id')}</th>
               <th onClick={() => handleSort('allele_type')}>Type{sortIndicator('allele_type')}</th>
-              <th onClick={() => handleSort('allele_length')}>
+              <th className="numeric" onClick={() => handleSort('allele_length')}>
                 Length{sortIndicator('allele_length')}
               </th>
-              <th onClick={() => handleSort('info_AF')}>LR AF{sortIndicator('info_AF')}</th>
-              {mode === 'summary' && <th onClick={() => handleSort('ac')}>AC{sortIndicator('ac')}</th>}
-              {mode === 'summary' && <th onClick={() => handleSort('an')}>AN{sortIndicator('an')}</th>}
+              <th className="numeric" onClick={() => handleSort('info_AF')}>LR AF{sortIndicator('info_AF')}</th>
+              {mode === 'summary' && <th className="numeric" onClick={() => handleSort('ac')}>AC{sortIndicator('ac')}</th>}
+              {mode === 'summary' && <th className="numeric" onClick={() => handleSort('an')}>AN{sortIndicator('an')}</th>}
               {mode === 'haplotype' && (
-                <th onClick={() => handleSort('group_count')}>
+                <th className="numeric" onClick={() => handleSort('group_count')}>
                   Groups{sortIndicator('group_count')}
                 </th>
               )}
               {mode === 'haplotype' && (
-                <th onClick={() => handleSort('carrier_count')}>
+                <th className="numeric" onClick={() => handleSort('carrier_count')}>
                   Carriers{sortIndicator('carrier_count')}
                 </th>
               )}
@@ -1719,10 +1724,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                   SR Match{sortIndicator('gnomad_v4_match_type')}
                 </th>
               )}
-              <th onClick={() => handleSort('cadd_phred')} style={{ width: 60 }}>
+              <th className="numeric" onClick={() => handleSort('cadd_phred')} style={{ width: 60 }}>
                 CADD{sortIndicator('cadd_phred')}
               </th>
-              <th onClick={() => handleSort('phylop')} style={{ width: 60 }}>
+              <th className="numeric" onClick={() => handleSort('phylop')} style={{ width: 60 }}>
                 phyloP{sortIndicator('phylop')}
               </th>
               <th onClick={() => handleSort('major_consequence')}>Consequence{sortIndicator('major_consequence')}</th>
@@ -1732,41 +1737,41 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           <tbody>
             {sorted.map((v, i) => {
               const matchLevel = getMatchLevel(v.gnomad_v4_match_type)
-              const isExpanded = v.is_str && expandedRows.has(v.variant_id)
+              const isExpanded = v.is_tr && expandedRows.has(v.variant_id)
               return (
                 <React.Fragment key={`${v.position}-${v.variant_id}-${i}`}>
                   <tr
                     data-position={v.position}
                     onMouseEnter={() => onHoverVariant?.(v.position)}
                     onMouseLeave={() => onHoverVariant?.(null)}
-                    style={v.is_str ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
-                    onClick={v.is_str ? () => toggleExpand(v.variant_id) : undefined}
+                    style={v.is_tr ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
+                    onClick={v.is_tr ? () => toggleExpand(v.variant_id) : undefined}
                   >
                     <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
-                      {v.is_str && (
+                      {v.is_tr && (
                         <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
                       )}
                       {v.variant_id}
                     </td>
                     <td>
                       <TypeDot $color={VARIANT_TYPE_COLORS[v.allele_type] || VARIANT_TYPE_COLORS.other} />
-                      {v.is_str ? 'STR' : v.allele_type}
+                      {v.is_tr ? 'TR' : v.allele_type}
                     </td>
-                    <td>
-                      {v.is_str
+                    <td className="numeric">
+                      {v.is_tr
                         ? `${v.min_length_diff ?? 0}..${v.max_length_diff ?? 0}bp`
                         : v.allele_length}
                     </td>
-                    <td>{v.info_AF.toFixed(4)}</td>
-                    {mode === 'summary' && <td>{v.ac}</td>}
-                    {mode === 'summary' && <td>{v.an}</td>}
+                    <td className="numeric">{v.info_AF.toFixed(4)}</td>
+                    {mode === 'summary' && <td className="numeric">{v.ac}</td>}
+                    {mode === 'summary' && <td className="numeric">{v.an}</td>}
                     {mode === 'haplotype' && (
-                      <td>
+                      <td className="numeric">
                         {v.group_count} / {totalGroups}
                       </td>
                     )}
                     {mode === 'haplotype' && (
-                      <td>
+                      <td className="numeric">
                         {v.carrier_count} / {totalSamples}
                       </td>
                     )}
@@ -1785,7 +1790,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                               ? `${v.short_read_match_id.slice(0, 20)}…`
                               : v.short_read_match_id}
                           </Link>
-                        ) : '—'}
+                        ) : <span style={{ color: '#ccc' }}>—</span>}
                       </td>
                     )}
                     {mode === 'haplotype' && (
@@ -1799,8 +1804,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         </MatchBadge>
                       </td>
                     )}
-                    <td>{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
-                    <td>{renderPredictor(v.phylop, 7.367, 9.741)}</td>
+                    <td className="numeric">{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
+                    <td className="numeric">{renderPredictor(v.phylop, 7.367, 9.741)}</td>
                     <td>
                       {v.major_consequence
                         ? getLabelForConsequenceTerm(v.major_consequence)
@@ -1824,19 +1829,19 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                     </td>
                   </tr>
                   {isExpanded && (
-                    <StrExpandedRow>
+                    <TrExpandedRow>
                       <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
                         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-                          {v.str_distribution && <MiniSTRPlot distribution={v.str_distribution} />}
+                          {v.tr_distribution && <MiniTRPlot distribution={v.tr_distribution} />}
                           <div style={{ fontSize: 11, color: '#555' }}>
                             <div style={{ fontWeight: 600, marginBottom: 4 }}>
-                              STR Locus: {v.chrom}:{v.position}
+                              TR Locus: {v.chrom}:{v.position}
                               {v.tr_id && <span style={{ fontWeight: 400, marginLeft: 8, color: '#888' }}>({v.tr_id})</span>}
                             </div>
-                            {v.str_distribution && (
+                            {v.tr_distribution && (
                               <>
                                 <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
-                                <div>Distinct allele lengths: {new Set(v.str_distribution.map((d) => d.length_diff)).size}</div>
+                                <div>Distinct allele lengths: {new Set(v.tr_distribution.map((d) => d.length_diff)).size}</div>
                               </>
                             )}
                             <div>Total carriers: {v.carrier_count}</div>
@@ -1857,9 +1862,9 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                             {v.tr_struc && <div>TRGT ID: <span style={{ fontFamily: 'monospace' }}>{v.tr_struc}</span></div>}
                             {v.motif_counts && v.motif_counts.length > 0 && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts.join(', ')}</span></div>}
                             {v.allele_purity != null && <div>Allele purity: {v.allele_purity.toFixed(3)}</div>}
-                            {v.str_distribution && (
+                            {v.tr_distribution && (
                               <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                                {POP_ORDER.filter((p) => v.str_distribution!.some((d) => d.pop === p)).map((pop) => (
+                                {POP_ORDER.filter((p) => v.tr_distribution!.some((d) => d.pop === p)).map((pop) => (
                                   <span key={pop} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
                                     <span
                                       style={{
@@ -1905,16 +1910,16 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                           </div>
                         </div>
                         {/* Allele structure grid (FMR1-style motif visualization) */}
-                        {mode === 'haplotype' && v.str_allele_structures && v.str_allele_structures.length > 0 && v.tr_motifs && (
+                        {mode === 'haplotype' && v.tr_allele_structures && v.tr_allele_structures.length > 0 && v.tr_motifs && (
                           <AlleleStructureGrid
-                            structures={v.str_allele_structures}
+                            structures={v.tr_allele_structures}
                             motifs={v.tr_motifs.split(',').map((m: string) => m.trim())}
-                            flankPrefix={v.str_flank_prefix}
-                            flankSuffix={v.str_flank_suffix}
+                            flankPrefix={v.tr_flank_prefix}
+                            flankSuffix={v.tr_flank_suffix}
                           />
                         )}
                       </td>
-                    </StrExpandedRow>
+                    </TrExpandedRow>
                   )}
                 </React.Fragment>
               )

@@ -120,7 +120,7 @@ const filterVariants = (
     const ref = splits[2]
     const alt = splits[3]
 
-    // TRV/STR variants (e.g. 22-20277853-TRV-14) are treated as indels
+    // TRV/TR variants (e.g. 22-20277853-TRV-14) are treated as indels
     if (ref === 'TRV' || (v.long_read_details && v.long_read_details.is_likely_tr)) {
       return filter.includeIndels
     }
