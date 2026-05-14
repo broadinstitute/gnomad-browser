@@ -6,6 +6,7 @@ import { FLAGS_CONFIG } from '../VariantList/VariantFlag'
 import { getLabelForConsequenceTerm } from '../vepConsequences'
 
 import { logButtonClick } from '../analytics'
+import { exportTableToCsv } from '../exportTableToCsv'
 
 const BASE_COLUMNS = [
   {
@@ -64,7 +65,7 @@ const BASE_COLUMNS = [
   },
 ]
 
-const exportVariantsToCsv = (variants: any, baseFileName: any, includeGene: any) => {
+const getColumns = (includeGene: any) => {
   const columns = [...BASE_COLUMNS]
   if (includeGene) {
     columns.splice(2, 0, {
@@ -73,44 +74,7 @@ const exportVariantsToCsv = (variants: any, baseFileName: any, includeGene: any)
     })
   }
 
-  const headerRow = columns.map((c) => c.label)
-
-  const csv = `${headerRow}\r\n${variants
-    .map((variant: any) =>
-      columns
-        .map((c) => c.getValue(variant))
-        .map((val) =>
-          val.includes(',') || val.includes('"') || val.includes("'")
-            ? `"${val.replace('"', '""')}"`
-            : val
-        )
-        .join(',')
-    )
-    .join('\r\n')}\r\n`
-
-  const date = new Date()
-  const timestamp = `${date.getFullYear()}_${(date.getMonth() + 1)
-    .toString()
-    .padStart(2, '0')}_${date.getDate().toString().padStart(2, '0')}_${date
-    .getHours()
-    .toString()
-    .padStart(2, '0')}_${date.getMinutes().toString().padStart(2, '0')}_${date
-    .getSeconds()
-    .toString()
-    .padStart(2, '0')}`
-
-  const blob = new Blob([csv], { type: 'text/csv' })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.setAttribute('href', url)
-  link.setAttribute('download', `${baseFileName.replace(/\s+/g, '_')}_${timestamp}.csv`)
-  // @ts-expect-error TS(2551) FIXME: Property 'onClick' does not exist on type 'HTMLAnc... Remove this comment to see the full error message
-  link.onClick = () => {
-    URL.revokeObjectURL(url)
-    link.remove()
-  }
-  document.body.appendChild(link)
-  link.click()
+  return columns
 }
 
 type OwnProps = {
@@ -133,7 +97,7 @@ const ExportMitochondrialVariantsButton = ({
   <Button
     {...rest}
     onClick={() => {
-      exportVariantsToCsv(variants, exportFileName, includeGene)
+      exportTableToCsv(variants, getColumns(includeGene), exportFileName)
       logButtonClick('Exported mitochondrial variants to CSV')
     }}
   >
