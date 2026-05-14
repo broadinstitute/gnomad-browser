@@ -126,7 +126,25 @@ const fetchGraphQL = async (query: string, variables: any) => {
   return response.json()
 }
 
-const MAX_HAPLOTYPE_REGION_SIZE = 200_000
+const fetchHaplotypeGroupsREST = async (
+  chrom: string, start: number, stop: number, minAf: number, sortBy: string
+) => {
+  const params = new URLSearchParams({
+    chrom, start: String(start), stop: String(stop),
+    min_af: String(minAf), sort_by: sortBy,
+  })
+  const response = await fetch(`/api/lr/haplotype-groups?${params}`)
+  return response.json()
+}
+
+// Toggle via ?api=rest in URL — defaults to graphql
+const useRestApi = () => {
+  try {
+    return new URLSearchParams(window.location.search).get('api') === 'rest'
+  } catch { return false }
+}
+
+const MAX_HAPLOTYPE_REGION_SIZE = 5_000_000
 
 const LongReadUnifiedView = ({
   datasetId,
@@ -276,23 +294,36 @@ const LongReadUnifiedView = ({
     fetchMeta()
   }, [viewMode, sampleMetadata.size])
 
-  // Debounced haplotype group fetch
+  // Debounced haplotype group fetch — supports both GraphQL and REST paths
+  const isRest = useRestApi()
   const debouncedFetchHaplotypeGroups = useCallback(
     debounce(async (currentThreshold: number) => {
       setHaplotypeLoading(true)
+      const t0 = performance.now()
       try {
-        const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
-          chrom,
-          start: start,
-          stop: stop,
-          min_allele_freq: currentThreshold,
-          sort_by: sortBy,
-        })
-        if (result.errors) {
-          console.error('GraphQL errors fetching haplotype groups:', result.errors)
-        }
-        if (result.data?.haplotype_groups) {
-          setHaplotypeGroups(result.data.haplotype_groups)
+        if (isRest) {
+          const result = await fetchHaplotypeGroupsREST(chrom, start, stop, currentThreshold, sortBy)
+          if (result.error) {
+            console.error('REST error fetching haplotype groups:', result.error)
+          } else {
+            console.log(`[REST] haplotype groups: ${result.groups?.length} groups in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
+            setHaplotypeGroups(result)
+          }
+        } else {
+          const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
+            chrom,
+            start: start,
+            stop: stop,
+            min_allele_freq: currentThreshold,
+            sort_by: sortBy,
+          })
+          if (result.errors) {
+            console.error('GraphQL errors fetching haplotype groups:', result.errors)
+          }
+          if (result.data?.haplotype_groups) {
+            console.log(`[GraphQL] haplotype groups: ${result.data.haplotype_groups.groups?.length} groups in ${Math.round(performance.now() - t0)}ms`)
+            setHaplotypeGroups(result.data.haplotype_groups)
+          }
         }
       } catch (error) {
         console.error('Error fetching haplotype groups:', error)
@@ -300,7 +331,7 @@ const LongReadUnifiedView = ({
         setHaplotypeLoading(false)
       }
     }, 300),
-    [chrom, start, stop, sortBy]
+    [chrom, start, stop, sortBy, isRest]
   )
 
   // Fetch haplotype groups when in haplotype mode

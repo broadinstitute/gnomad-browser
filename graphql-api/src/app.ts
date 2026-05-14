@@ -85,6 +85,49 @@ loadWhitelist()
 
 const context = { esClient }
 
+// REST endpoint for haplotype groups — bypasses GraphQL overhead for large payloads
+import {
+  fetchHaplotypeGroupAssignments,
+  fetchDistinctHaplotypeVariants,
+} from './queries/haplotype-queries'
+import { assembleHaplotypeGroups } from './queries/haplotype-grouping'
+
+app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
+  const t0 = performance.now()
+  try {
+    const chrom = (req.query.chrom || '').startsWith('chr')
+      ? req.query.chrom
+      : `chr${req.query.chrom}`
+    const start = parseInt(req.query.start, 10)
+    const stop = parseInt(req.query.stop, 10)
+    const minAf = parseFloat(req.query.min_af) || 0
+    const sortBy = req.query.sort_by || 'similarity_score'
+
+    if (!chrom || isNaN(start) || isNaN(stop)) {
+      return res.status(400).json({ error: 'chrom, start, stop required' })
+    }
+
+    const [groupAssignments, distinctVariants] = await Promise.all([
+      fetchHaplotypeGroupAssignments(chrom, start, stop, minAf),
+      fetchDistinctHaplotypeVariants(chrom, start, stop),
+    ])
+
+    const result = assembleHaplotypeGroups(
+      groupAssignments as any,
+      distinctVariants as any,
+      chrom,
+      minAf,
+      sortBy
+    )
+
+    const ms = performance.now() - t0
+    res.json({ ...result, _timing: { total_ms: Math.round(ms) } })
+  } catch (e: any) {
+    logger.error(`REST haplotype-groups error: ${e.message}`)
+    res.status(500).json({ error: 'Internal error' })
+  }
+})
+
 app.use('/api/', graphQLApi({ context }))
 
 if (!process.env.NO_ES_STATS_POLL) {

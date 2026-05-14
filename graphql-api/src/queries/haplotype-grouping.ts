@@ -269,6 +269,134 @@ function sortBySimilarity(groups: any[]) {
   }
 }
 
+/**
+ * Assemble haplotype groups from CH-side pre-grouped results (two-query approach).
+ * Q1 provides group assignments (readable_id → carriers), Q2 provides distinct variant details.
+ * This replaces the heavy JS-side grouping with simple map lookups.
+ */
+export const assembleHaplotypeGroups = (
+  groupAssignments: Array<{
+    readable_id: string
+    carriers: Array<[string, number]>
+    sample_count: string
+  }>,
+  distinctVariants: any[],
+  chrom: string,
+  minAlleleFreq: number,
+  sortBy: string = 'similarity_score'
+) => {
+  // Step 1: Build variant map keyed by "chrom-pos:ref-alt"
+  const variantMap = new Map<string, Variant>()
+  for (const row of distinctVariants) {
+    const pos = Number(row.position)
+    const af = Number(row.info_AF)
+    const toNum = (v: any) => v != null ? Number(v) : null
+    const toStr = (v: any) => v || null
+    const key = `${chrom}-${pos}:${row.ref}-${row.alt}`
+    const variant = buildVariant(
+      chrom, pos,
+      row.ref, row.alt, row.rsid,
+      af, Number(row.info_AC), Number(row.info_AN),
+      row.allele_type, Number(row.allele_length),
+      toNum(row.info_AF_afr), toNum(row.info_AF_amr), toNum(row.info_AF_eas),
+      toNum(row.info_AF_nfe), toNum(row.info_AF_sas),
+      toNum(row.cadd_phred), toNum(row.phylop),
+      row.sv_consequences && row.sv_consequences.length > 0 ? row.sv_consequences : null,
+      toStr(row.dbgap_id),
+      toStr(row.tr_id), toStr(row.tr_motifs), toStr(row.tr_struc),
+      toNum(row.allele_methylation),
+      row.motif_counts && row.motif_counts.length > 0 ? row.motif_counts : null,
+      toNum(row.allele_purity),
+    )
+    variantMap.set(key, variant)
+  }
+
+  // Step 2: Build carrier→groupIndex reverse index
+  const carrierToGroup = new Map<string, number>()
+  for (let gi = 0; gi < groupAssignments.length; gi++) {
+    const ga = groupAssignments[gi]
+    for (const [sampleId, strand] of ga.carriers) {
+      carrierToGroup.set(`${sampleId}:${strand}`, gi)
+    }
+  }
+
+  // Step 3: Assemble base groups from group assignments
+  const groups: any[] = []
+  for (const ga of groupAssignments) {
+    const variantKeys = ga.readable_id.split(';')
+    const aboveThreshold: Variant[] = []
+    for (const key of variantKeys) {
+      const v = variantMap.get(key)
+      if (v) aboveThreshold.push(v)
+    }
+
+    if (aboveThreshold.length === 0) continue
+
+    const readableId = ga.readable_id
+    const groupHash = hashString(readableId)
+
+    const samples = ga.carriers.map(([sampleId, _strand]) => ({
+      sample_id: sampleId,
+      variant_sets: [{ variants: aboveThreshold, readable_id: readableId }],
+    }))
+
+    groups.push({
+      samples,
+      variants: { variants: aboveThreshold, readable_id: readableId },
+      below_threshold: { variants: [] as any[], readable_id: '' },
+      start: Math.min(...aboveThreshold.map((v) => v.position)),
+      stop: Math.max(...aboveThreshold.map((v) => v.position)),
+      readable_id: readableId,
+      hash: groupHash,
+    })
+  }
+
+  // Step 4: Distribute below-threshold variants
+  // For each variant below AF threshold, find which groups its carriers belong to
+  // and add the variant to those groups' below_threshold arrays
+  for (const row of distinctVariants) {
+    const af = Number(row.info_AF)
+    if (af >= minAlleleFreq) continue
+
+    const pos = Number(row.position)
+    const key = `${chrom}-${pos}:${row.ref}-${row.alt}`
+    const variant = variantMap.get(key)
+    if (!variant) continue
+
+    const carriers: Array<[string, number]> = row.carriers || []
+    // Group carriers by their group index, collecting sample_ids per group
+    const groupSamples = new Map<number, string[]>()
+    for (const [sampleId, strand] of carriers) {
+      const gi = carrierToGroup.get(`${sampleId}:${strand}`)
+      if (gi === undefined) continue
+      let arr = groupSamples.get(gi)
+      if (!arr) {
+        arr = []
+        groupSamples.set(gi, arr)
+      }
+      arr.push(sampleId)
+    }
+
+    for (const [gi, sampleIds] of groupSamples) {
+      groups[gi].below_threshold.variants.push({
+        ...variant,
+        in_samples: sampleIds,
+      })
+    }
+  }
+
+  // Step 5: Sort
+  if (sortBy === 'similarity_score') {
+    sortBySimilarity(groups)
+  } else if (sortBy === 'sample_count') {
+    groups.sort((a, b) => b.samples.length - a.samples.length)
+  } else {
+    groups.sort((a, b) => b.variants.variants.length - a.variants.variants.length)
+  }
+
+  return { groups }
+}
+
 // --- Legacy exports (used by mQTL and potentially other code paths) ---
 
 export const reconstructSamplesFromVariants = (docs: any[]) => {

@@ -101,6 +101,103 @@ export const fetchGroupedTrvVariants = async (
 }
 
 /**
+ * Query 1: CH-side haplotype grouping.
+ * Computes group signatures (sorted variant IDs joined by ';') and returns
+ * which (sample_id, strand) pairs share each signature. ~100ms vs ~14s JS-side.
+ */
+export const fetchHaplotypeGroupAssignments = async (
+  chrom: string,
+  start: number,
+  stop: number,
+  minAf: number
+) => {
+  const query = `
+    SELECT
+      group_signature AS readable_id,
+      groupArray(tuple(sample_id, strand)) AS carriers,
+      count() AS sample_count
+    FROM (
+      SELECT
+        sample_id, strand,
+        arrayStringConcat(
+          arraySort(
+            groupArrayIf(
+              concat({chrom:String}, '-', toString(position), ':', ref, '-', alt),
+              info_AF >= {min_af:Float32}
+            )
+          ), ';'
+        ) AS group_signature
+      FROM lr_haplotypes
+      WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+      GROUP BY sample_id, strand
+    )
+    WHERE group_signature != ''
+    GROUP BY group_signature
+    ORDER BY sample_count DESC
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop, min_af: minAf },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json() as Promise<
+    Array<{
+      readable_id: string
+      carriers: Array<[string, number]>
+      sample_count: string
+    }>
+  >
+}
+
+/**
+ * Query 2: Fetch distinct variants (all columns) once per (position, ref, alt),
+ * along with which (sample_id, strand) pairs carry each variant.
+ * Returns ~1,700 rows instead of ~1,000,000.
+ */
+export const fetchDistinctHaplotypeVariants = async (
+  chrom: string,
+  start: number,
+  stop: number
+) => {
+  const query = `
+    SELECT
+      position, ref, alt,
+      any(rsid) AS rsid,
+      any(info_AF) AS info_AF,
+      any(info_AC) AS info_AC,
+      any(info_AN) AS info_AN,
+      any(allele_type) AS allele_type,
+      any(allele_length) AS allele_length,
+      any(info_AF_afr) AS info_AF_afr,
+      any(info_AF_amr) AS info_AF_amr,
+      any(info_AF_eas) AS info_AF_eas,
+      any(info_AF_nfe) AS info_AF_nfe,
+      any(info_AF_sas) AS info_AF_sas,
+      any(cadd_phred) AS cadd_phred,
+      any(phylop) AS phylop,
+      any(sv_consequences) AS sv_consequences,
+      any(dbgap_id) AS dbgap_id,
+      any(tr_id) AS tr_id,
+      any(tr_motifs) AS tr_motifs,
+      any(tr_struc) AS tr_struc,
+      any(allele_methylation) AS allele_methylation,
+      any(motif_counts) AS motif_counts,
+      any(allele_purity) AS allele_purity,
+      groupArray(tuple(sample_id, strand)) AS carriers
+    FROM lr_haplotypes
+    WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+    GROUP BY position, ref, alt
+    ORDER BY position ASC
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json() as Promise<any[]>
+}
+
+/**
  * Flat per-row fetch — still used by mQTL which needs per-row sample_id + gt_alleles.
  * Trimmed to only the columns mQTL actually needs.
  */
