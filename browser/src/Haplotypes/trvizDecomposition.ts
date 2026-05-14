@@ -273,48 +273,62 @@ function decomposeSequenceDP(
     return []
   }
 
-  // Backtrack following the Cython approach: walk backwards, detect motif boundaries
-  // when j transitions from 1 to != 1, extract segments via sequence slicing.
-  // We additionally track prev_m to know which motif each segment was aligned to.
-  const segments: DPDecomposedSegment[] = []
+  // Collect the full backtrack path, then walk it forward to detect segment boundaries.
+  // The Cython-style backward boundary detection (prevJ===1 && cj!==1) fails for
+  // 1-character motifs where len(motif)=1 means j at motif-end equals j at motif-start.
+  // Forward-path detection handles all motif lengths correctly.
+  const path: Array<[number, number, number]> = [] // [i, m, j]
   let curI = startI
   let curM = startM
   let curJ = startJ
-  let prevI = -1
-  let prevJ = -1
-  let prevM = -1
-  let motifEnd = N // exclusive end index for current segment
 
   while (true) {
-    const ci = curI
-    const cm = curM
-    const cj = curJ
-
-    if (prevJ === 1 && cj !== 1) {
-      // Motif boundary: the segment that was being aligned to motif prevM
-      // spans from prevI (adjusted to 0-based) to motifEnd
-      const segStart = prevI === 0 ? 0 : prevI - 1
-      segments.push({
-        sequence: sequence.slice(segStart, motifEnd),
-        motifIndex: prevM,
-      })
-      motifEnd = prevI > 0 ? prevI - 1 : motifEnd
-    }
-
-    if (ci === 0 && cj === 0) {
-      break
-    }
-
-    prevI = ci
-    prevJ = cj
-    prevM = cm
-    const p = idx(ci, cm, cj)
+    path.push([curI, curM, curJ])
+    if (curI === 0 && curJ === 0) break
+    const p = idx(curI, curM, curJ)
     curI = btI[p]
     curM = btM[p]
     curJ = btJ[p]
   }
 
-  segments.reverse()
+  path.reverse() // now in forward order: (0,m,0) ... (N,m,len(m))
+
+  // Walk forward: a new segment starts when j===1 and the previous state was at
+  // j===motifLengths[prevM] (completed a motif copy). This works for any motif length,
+  // including 1-char motifs where len(motif)=1 means every character is a boundary.
+  const segments: DPDecomposedSegment[] = []
+  let segStartSeqIdx = 0 // 0-based sequence start of current segment
+  let currentMotif = path.length > 1 ? path[1][1] : 0
+
+  for (let k = 1; k < path.length; k++) {
+    const [, pm, pj] = path[k]
+    const [, prevPM, prevPJ] = path[k - 1]
+
+    // Detect new motif copy: current j=1 (start of motif) and previous j=len(prevMotif)
+    if (pj === 1 && prevPJ === motifLengths[prevPM] && k > 1) {
+      // The previous state completed a motif copy — extract the finished segment.
+      // How many sequence chars were consumed up to prevI? prevI is 1-based, so
+      // the segment ends at the i of the state where j reached len(motif).
+      const prevI = path[k - 1][0]
+      if (prevI > segStartSeqIdx) {
+        segments.push({
+          sequence: sequence.slice(segStartSeqIdx, prevI),
+          motifIndex: currentMotif,
+        })
+        segStartSeqIdx = prevI
+      }
+      currentMotif = pm
+    }
+  }
+
+  // Final segment
+  if (N > segStartSeqIdx) {
+    segments.push({
+      sequence: sequence.slice(segStartSeqIdx, N),
+      motifIndex: currentMotif,
+    })
+  }
+
   return segments
 }
 
