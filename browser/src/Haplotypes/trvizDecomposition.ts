@@ -343,7 +343,11 @@ function classifySegments(segments: DPDecomposedSegment[], motifs: string[]): Se
       return { type: 'interruption' as const, sequence: seg.sequence }
     }
     const dist = getLevenshteinDistance(seg.sequence.toUpperCase(), canonical.toUpperCase())
-    const threshold = Math.max(2, Math.floor(canonical.length * 0.3))
+    // Threshold scales with motif length: ~50% edit distance is still a recognizable
+    // impure copy. For a 7bp motif like GGCCAGG, threshold=4 captures most impure
+    // copies that the DP aligns to that motif template. This aligns with empirical
+    // allele purity values (e.g. 0.614 for a compound GGCCAGG locus).
+    const threshold = Math.max(2, Math.ceil(canonical.length * 0.5))
     if (dist <= threshold) {
       return { type: 'motif' as const, motifIndex: seg.motifIndex, sequence: seg.sequence }
     }

@@ -266,7 +266,47 @@ describe('long motifs', () => {
 })
 
 // ---------------------------------------------------------------------------
-// 7. Edge cases
+// 7. Impure loci with low allele purity (real-world regression tests)
+// ---------------------------------------------------------------------------
+
+describe('impure loci with low allele purity', () => {
+  test('GGCCAGG locus, allele purity 0.614 (real: 22-20226662)', () => {
+    // This locus has heavily impure copies — most tokens should still be
+    // classified as motif rather than interruption given the DP alignment.
+    const r = decomposeSequence(
+      'CTGCAGCTGTCTGGGGCCAGGCCCAGGCTGAGGGGCAGCTAGCAGGGTGCAGG',
+      ['GGCCAGG']
+    )
+    expect(r.algorithm).toBe('dp')
+    const { motif, interruption } = countTypes(r.tokens)
+    // With purity ~0.614 on a 53bp seq (~7.6 copies), most should be motif
+    expect(motif).toBeGreaterThanOrEqual(6)
+    expect(interruption).toBeLessThanOrEqual(2)
+    expectFullCoverage(r, 'CTGCAGCTGTCTGGGGCCAGGCCCAGGCTGAGGGGCAGCTAGCAGGGTGCAGG')
+  })
+
+  test('GGCCAGG locus shorter allele (real: 22-20226662)', () => {
+    const r = decomposeSequence(
+      'CAGCCTGGGGCCAGGCCCAGGCTGAGGGGCAGCTAGCAGGGTGCAGG',
+      ['GGCCAGG']
+    )
+    expect(r.algorithm).toBe('dp')
+    expect(countTypes(r.tokens).motif).toBeGreaterThanOrEqual(5)
+    expectFullCoverage(r, 'CAGCCTGGGGCCAGGCCCAGGCTGAGGGGCAGCTAGCAGGGTGCAGG')
+  })
+
+  test('CAG with heavy interruptions (real: 22-20702839)', () => {
+    // GCAGGAGCAGCACAGCAGGCAGCTGCAG — interleaved GAG, CAC, GCT
+    const r = decomposeSequence('GCAGGAGCAGCACAGCAGGCAGCTGCAG', ['CAG'])
+    expect(r.algorithm).toBe('dp')
+    // Most 3-char segments should be within edit distance 2 of CAG
+    expect(countTypes(r.tokens).motif).toBeGreaterThanOrEqual(5)
+    expectFullCoverage(r, 'GCAGGAGCAGCACAGCAGGCAGCTGCAG')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// 8. Edge cases
 // ---------------------------------------------------------------------------
 
 describe('edge cases', () => {
