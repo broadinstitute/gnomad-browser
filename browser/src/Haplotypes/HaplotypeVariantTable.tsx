@@ -732,15 +732,17 @@ const AlgorithmBadge = ({ algorithm }: { algorithm: DecomposeAlgorithm }) => (
   </span>
 )
 
-/** Check if base at position ci in a motif token mismatches the canonical motif */
-const isMismatch = (token: SequenceToken, ci: number, motifs: string[]): boolean => {
-  if (token.type !== 'motif') return false
+/**
+ * Per-base coloring: a base gets the motif color if it matches the canonical
+ * motif at that position. Otherwise it's "non-matching" — same treatment
+ * whether the token was classified as motif-with-mismatch or interruption.
+ */
+const baseMatchesMotif = (token: SequenceToken, ci: number, motifs: string[]): boolean => {
+  if (token.type === 'interruption') return false
   const canonical = motifs[token.motifIndex]
   if (!canonical) return false
-  // Positional comparison: if the segment is the same length as the motif,
-  // compare base-by-base. If different lengths (indel), flag extra bases.
-  if (ci >= canonical.length) return true // beyond motif length = insertion
-  return token.sequence[ci].toUpperCase() !== canonical[ci].toUpperCase()
+  if (ci >= canonical.length) return false
+  return token.sequence[ci].toUpperCase() === canonical[ci].toUpperCase()
 }
 
 const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: string[] }) => (
@@ -754,17 +756,16 @@ const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: 
   >
     <div style={{ display: 'flex', flexWrap: 'nowrap', gap: 1 }}>
       {tokens.map((token, ti) => {
-        const bg =
+        const motifColor =
           token.type === 'motif'
             ? MOTIF_COLORS[token.motifIndex % MOTIF_COLORS.length]
-            : INTERRUPTION_COLOR
-        const isInterruption = token.type === 'interruption'
+            : null
         const label =
           token.type === 'motif' ? motifs[token.motifIndex] ?? '?' : 'int'
         return (
           <span key={ti} style={{ display: 'inline-flex', flexShrink: 0 }} title={`${label} (${token.sequence.length}bp)`}>
             {token.sequence.split('').map((ch, ci) => {
-              const mismatch = isMismatch(token, ci, motifs)
+              const matches = baseMatchesMotif(token, ci, motifs)
               return (
                 <span
                   key={ci}
@@ -774,12 +775,10 @@ const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: 
                     lineHeight: '14px',
                     width: 8,
                     textAlign: 'center',
-                    background: mismatch ? '#fff' : bg,
-                    color: mismatch ? '#c62828' : isInterruption ? '#ccc' : '#fff',
-                    fontWeight: mismatch ? 700 : 400,
-                    opacity: isInterruption ? 0.7 : 1,
+                    background: matches ? motifColor! : INTERRUPTION_COLOR,
+                    color: matches ? '#fff' : '#aaa',
+                    opacity: matches ? 1 : 0.7,
                     borderRadius: ci === 0 ? '2px 0 0 2px' : ci === token.sequence.length - 1 ? '0 2px 2px 0' : 0,
-                    borderBottom: mismatch ? '2px solid #c62828' : undefined,
                   }}
                 >
                   {ch}
