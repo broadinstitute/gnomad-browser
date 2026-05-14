@@ -2,6 +2,8 @@ import { fetchMQTLAssociations } from '../../queries/mqtl-queries'
 import {
   fetchGroupedHaplotypeVariants,
   fetchGroupedTrvVariants,
+  fetchHaplotypeGroupAssignments,
+  fetchDistinctHaplotypeVariants,
   fetchSampleMetadata,
   fetchMethylationForRegion,
   fetchMethylationSummaryForRegion,
@@ -11,6 +13,7 @@ import {
 } from '../../queries/haplotype-queries'
 import {
   createHaplotypeGroupsFromGrouped,
+  assembleHaplotypeGroups,
 } from '../../queries/haplotype-grouping'
 import { fetchStrCatalog, categorizeLocus, parseMotifStats } from '../../queries/str-catalog'
 import { withCache } from '../../cache'
@@ -108,36 +111,36 @@ const resolvers = {
     haplotype_groups: async (_obj: any, args: any, ctx: any) => {
       try {
         const chrom = normalizeChrom(args.chrom)
+        const minAf = args.min_allele_freq || 0
 
         const tFetch = now()
-        const rows = await fetchGroupedHaplotypeVariants(
-          ctx.esClient,
-          chrom,
-          args.start,
-          args.stop
-        )
+        const [groupAssignments, distinctVariants] = await Promise.all([
+          fetchHaplotypeGroupAssignments(chrom, args.start, args.stop, minAf),
+          fetchDistinctHaplotypeVariants(chrom, args.start, args.stop),
+        ])
         const fetchMs = now() - tFetch
 
-        logger.info(`haplotype_groups: fetched ${(rows as any[]).length} grouped rows for ${chrom}:${args.start}-${args.stop}`)
+        logger.info(`haplotype_groups: fetched ${groupAssignments.length} groups, ${distinctVariants.length} distinct variants for ${chrom}:${args.start}-${args.stop}`)
 
-        const tGroup = now()
-        const result = createHaplotypeGroupsFromGrouped(
-          rows as any[],
+        const tAssemble = now()
+        const result = assembleHaplotypeGroups(
+          groupAssignments,
+          distinctVariants,
           chrom,
-          args.start,
-          args.stop,
-          args.min_allele_freq || 0,
+          minAf,
           args.sort_by || 'similarity_score'
         )
-        const groupMs = now() - tGroup
+        const assembleMs = now() - tAssemble
 
         addTiming(ctx, {
           label: 'haplotype_groups',
-          ms: fetchMs + groupMs,
+          ms: fetchMs + assembleMs,
           meta: {
-            clickhouse_ms: Math.round(fetchMs * 100) / 100,
-            grouping_ms: Math.round(groupMs * 100) / 100,
-            ch_rows: (rows as any[]).length,
+            ch_grouping_ms: Math.round(fetchMs * 100) / 100,
+            ch_variant_ms: Math.round(fetchMs * 100) / 100,
+            assembly_ms: Math.round(assembleMs * 100) / 100,
+            ch_groups: groupAssignments.length,
+            ch_variants: distinctVariants.length,
             groups: result.groups.length,
           },
         })
