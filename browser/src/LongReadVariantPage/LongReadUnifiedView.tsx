@@ -33,15 +33,13 @@ const HAPLOTYPE_GROUPS_QUERY = `
     haplotype_groups(chrom: $chrom, start: $start, stop: $stop, min_allele_freq: $min_allele_freq, sort_by: $sort_by) {
       groups {
         samples { sample_id }
-        variants {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
-          readable_id
-        }
-        below_threshold {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
-          readable_id
-        }
+        variant_ids
+        below_threshold_ids
         start stop hash
+      }
+      variant_dict {
+        key
+        variant { locus chrom position alleles rsid info_AF info_AC info_AN allele_type allele_length info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
       }
     }
   }
@@ -79,6 +77,48 @@ const MQTL_QUERY = `
     }
   }
 `
+
+/**
+ * Reconstruct full group objects from variant_ids + variant_dict.
+ * This lets downstream components (HaplotypeTrack, HaplotypeVariantTable)
+ * work unchanged — they still see groups with full variant objects.
+ */
+const hydrateGroups = (rawGroups: any) => {
+  console.time('[perf] hydrateGroups')
+  const variantDict = rawGroups.variant_dict || []
+  const variantMap = new Map<string, any>()
+  for (const entry of variantDict) {
+    variantMap.set(entry.key, entry.variant)
+  }
+  console.log(`[perf] variant_dict size: ${variantDict.length} entries`)
+
+  const groups = (rawGroups.groups || []).map((g: any) => {
+    // If the group already has hydrated variants (legacy path), pass through
+    if (g.variants?.variants) return g
+
+    const variantIds: string[] = g.variant_ids || []
+    const belowIds: string[] = g.below_threshold_ids || []
+
+    const aboveVariants = variantIds
+      .map((id: string) => variantMap.get(id))
+      .filter(Boolean)
+    const belowVariants = belowIds
+      .map((id: string) => variantMap.get(id))
+      .filter(Boolean)
+
+    const readableId = variantIds.join(';')
+
+    return {
+      ...g,
+      variants: { variants: aboveVariants, readable_id: readableId },
+      below_threshold: { variants: belowVariants, readable_id: '' },
+    }
+  })
+
+  console.log(`[perf] hydrated ${groups.length} groups`)
+  console.timeEnd('[perf] hydrateGroups')
+  return { groups }
+}
 
 // --- Styled components ---
 
@@ -123,7 +163,13 @@ const fetchGraphQL = async (query: string, variables: any) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, variables }),
   })
-  return response.json()
+  const queryName = query.match(/query\s+(\w+)/)?.[1] || 'unknown'
+  console.time(`[perf] JSON parse (${queryName})`)
+  const text = await response.text()
+  console.log(`[perf] response size (${queryName}): ${(text.length / 1024 / 1024).toFixed(2)} MB`)
+  const parsed = JSON.parse(text)
+  console.timeEnd(`[perf] JSON parse (${queryName})`)
+  return parsed
 }
 
 const fetchHaplotypeGroupsREST = async (
@@ -307,9 +353,10 @@ const LongReadUnifiedView = ({
             console.error('REST error fetching haplotype groups:', result.error)
           } else {
             console.log(`[REST] haplotype groups: ${result.groups?.length} groups in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
-            setHaplotypeGroups(result)
+            setHaplotypeGroups(hydrateGroups(result))
           }
         } else {
+          console.time('[perf] GraphQL fetch + JSON parse')
           const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
             chrom,
             start: start,
@@ -317,12 +364,14 @@ const LongReadUnifiedView = ({
             min_allele_freq: currentThreshold,
             sort_by: sortBy,
           })
+          console.timeEnd('[perf] GraphQL fetch + JSON parse')
           if (result.errors) {
             console.error('GraphQL errors fetching haplotype groups:', result.errors)
           }
           if (result.data?.haplotype_groups) {
-            console.log(`[GraphQL] haplotype groups: ${result.data.haplotype_groups.groups?.length} groups in ${Math.round(performance.now() - t0)}ms`)
-            setHaplotypeGroups(result.data.haplotype_groups)
+            const hydrated = hydrateGroups(result.data.haplotype_groups)
+            console.log(`[GraphQL] haplotype groups: ${hydrated.groups?.length} groups in ${Math.round(performance.now() - t0)}ms`)
+            setHaplotypeGroups(hydrated)
           }
         }
       } catch (error) {

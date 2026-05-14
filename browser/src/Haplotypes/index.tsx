@@ -876,8 +876,17 @@ const HaplotypeHeaderTrack = ({
   methylationSampleCount: number
   methylationTotalSamples: number
 }) => {
-  const totalSamples = displayGroups.reduce((sum, group) => sum + group.samples.length, 0)
-  const totalVariants = new Set(displayGroups.flatMap(g => g.variants.variants.map(v => v.locus))).size
+  const { totalSamples, totalVariants } = React.useMemo(() => {
+    let samples = 0
+    const loci = new Set<string>()
+    for (const group of displayGroups) {
+      samples += group.samples.length
+      for (const v of group.variants.variants) {
+        loci.add(v.locus)
+      }
+    }
+    return { totalSamples: samples, totalVariants: loci.size }
+  }, [displayGroups])
 
   return (
     <Track
@@ -1496,8 +1505,14 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   // UPGMA genealogy tree computation
   const genealogyResult = useMemo(() => {
     if (!showGenealogy || filteredGroups.length < 2) return null
+    console.time(`[perf] genealogy (${filteredGroups.length} groups)`)
+    console.time('[perf] computeDistanceMatrix')
     const distMatrix = computeDistanceMatrix(filteredGroups)
+    console.timeEnd('[perf] computeDistanceMatrix')
+    console.time('[perf] buildUPGMATree')
     const { tree, leafOrder } = buildUPGMATree(distMatrix, filteredGroups)
+    console.timeEnd('[perf] buildUPGMATree')
+    console.timeEnd(`[perf] genealogy (${filteredGroups.length} groups)`)
     return { tree, leafOrder }
   }, [showGenealogy, filteredGroups])
 
