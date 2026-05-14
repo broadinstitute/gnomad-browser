@@ -584,6 +584,7 @@ const AlleleStructureGrid = ({
   flankSuffix?: string
 }) => {
   const [showAll, setShowAll] = useState(false)
+  const [expandAllSeqs, setExpandAllSeqs] = useState(false)
 
   const displayed = showAll ? structures : structures.slice(0, STRUCTURE_DEFAULT_ROWS)
   const hiddenCount = structures.length - STRUCTURE_DEFAULT_ROWS
@@ -653,6 +654,23 @@ const AlleleStructureGrid = ({
         <span style={{ width: 40, textAlign: 'right' }}>Units</span>
         <span style={{ width: 80, textAlign: 'right' }}>Interruptions</span>
         <span style={{ width: 120 }}>Haplotypes</span>
+        <button
+          onClick={() => setExpandAllSeqs(!expandAllSeqs)}
+          style={{
+            fontSize: 8,
+            fontFamily: 'monospace',
+            fontWeight: 600,
+            lineHeight: 1,
+            padding: '1px 4px',
+            borderRadius: 2,
+            cursor: 'pointer',
+            color: expandAllSeqs ? '#1565c0' : '#999',
+            background: expandAllSeqs ? '#e3f2fd' : '#fafafa',
+            border: `1px solid ${expandAllSeqs ? '#90caf9' : '#e0e0e0'}`,
+          }}
+        >
+          {expandAllSeqs ? '▾ All Seq' : '▸ All Seq'}
+        </button>
       </div>
 
       {/* Rows */}
@@ -666,6 +684,7 @@ const AlleleStructureGrid = ({
           flankPrefix={flankPrefix}
           flankSuffix={flankSuffix}
           motifs={motifs}
+          forceExpandSeq={expandAllSeqs}
         />
       ))}
 
@@ -807,6 +826,7 @@ const AlleleStructureRow = ({
   flankPrefix,
   flankSuffix,
   motifs,
+  forceExpandSeq = false,
 }: {
   allele: AlleleStructure
   scale: number
@@ -815,9 +835,11 @@ const AlleleStructureRow = ({
   flankPrefix?: string
   flankSuffix?: string
   motifs: string[]
+  forceExpandSeq?: boolean
 }) => {
   const [hovered, setHovered] = useState(false)
   const [showSeq, setShowSeq] = useState(false)
+  const seqVisible = showSeq || forceExpandSeq
 
   const useBinnedView = allele.totalMotifUnits > 100 || allele.sequence.length > 2000
 
@@ -974,7 +996,7 @@ const AlleleStructureRow = ({
           <AlgorithmBadge algorithm={allele.algorithm} />
           <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
         </div>
-        {showSeq && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
+        {seqVisible && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
       </div>
     )
   }
@@ -1116,7 +1138,7 @@ const AlleleStructureRow = ({
         <AlgorithmBadge algorithm={allele.algorithm} />
         <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
       </div>
-      {showSeq && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
+      {seqVisible && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
     </div>
   )
 }
