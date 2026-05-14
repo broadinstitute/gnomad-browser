@@ -19,10 +19,34 @@ const MQTL_TRACK_HEIGHT = 80
 const MQTL_PAD = 8
 const ROW_CENTER_Y = 12.5
 const SCROLL_CONTAINER_HEIGHT = 500
+const VISIBLE_BUFFER = 5 // extra groups above/below viewport to render
+
+/** Binary-search for the first group whose bottom edge is >= scrollTop */
+function findVisibleRange(
+  rowOffsets: number[],
+  totalHeight: number,
+  scrollTop: number,
+  viewportHeight: number,
+): [number, number] {
+  const n = rowOffsets.length
+  if (n === 0) return [0, 0]
+  const top = scrollTop - VISIBLE_BUFFER * VARIANT_ROW_HEIGHT
+  const bottom = scrollTop + viewportHeight + VISIBLE_BUFFER * VARIANT_ROW_HEIGHT
+  let startIdx = 0
+  for (let i = 0; i < n; i++) {
+    if (i + 1 < n ? rowOffsets[i + 1] > top : true) { startIdx = i; break }
+  }
+  let endIdx = n - 1
+  for (let i = startIdx; i < n; i++) {
+    if (rowOffsets[i] > bottom) { endIdx = i - 1; break }
+    endIdx = i
+  }
+  return [Math.max(0, startIdx - VISIBLE_BUFFER), Math.min(n - 1, endIdx + VISIBLE_BUFFER)]
+}
 
 // Flattened data types for deck.gl layers
 type VariantPoint = {
-  x: number // genomic position (will be scaled)
+  position: number // raw genomic position — scaled in layer accessor
   y: number // pixel y
   radius: number
   color: [number, number, number, number]
@@ -31,7 +55,7 @@ type VariantPoint = {
 }
 
 type StemLine = {
-  x: number
+  position: number // raw genomic position — scaled in layer accessor
   yTop: number
   yBottom: number
   color: [number, number, number, number]
@@ -40,19 +64,24 @@ type StemLine = {
 }
 
 type BackgroundRect = {
-  polygon: [number, number][]
+  groupStart: number // raw genomic position
+  groupStop: number // raw genomic position
+  rowY: number
   color: [number, number, number, number]
   group: HaplotypeGroup
 }
 
 type MethPoint = {
-  x: number
+  position: number // raw genomic position
   y: number
   color: [number, number, number, number]
 }
 
 type MqtlArc = {
-  path: [number, number][]
+  variantPos: number // raw genomic position
+  cpgPos: number // raw genomic position
+  arcHeight: number // pre-computed arc height in pixels
+  baseY: number // baseline Y
   color: [number, number, number, number]
   width: number
 }
@@ -336,6 +365,13 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     []
   )
 
+  // Compute visible group range for left panel virtualization
+  const viewportH = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+  const [lpStart, lpEnd] = useMemo(
+    () => findVisibleRange(rowOffsets, totalHeight, scrollTop, viewportH),
+    [rowOffsets, totalHeight, scrollTop, viewportH]
+  )
+
   return (
     <div
       ref={scrollContainerRef}
@@ -347,6 +383,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <svg width={200} height={totalHeight}>
             {displayGroups.map((group, i) => {
+              if (i < lpStart || i > lpEnd) return null
               const y = rowOffsets[i]
               return (
                 <g key={group.hash} transform={`translate(0, ${y})`}>
@@ -475,6 +512,13 @@ function DeckGLLollipopCanvas({
   // Canvas uses full width — RegionViewer's rightPanelWidth handles space for genealogy tree
   const canvasWidth = width
 
+  // Compute visible group range for windowed rendering
+  const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+  const [visStartIdx, visEndIdx] = useMemo(
+    () => findVisibleRange(rowOffsets, totalHeight, scrollTop, viewportHeight),
+    [rowOffsets, totalHeight, scrollTop, viewportHeight]
+  )
+
   // Pre-aggregate locus counts for haplotype_count color mode
   const locusCounts = useMemo(() => {
     const counts = new Map<string, number>()
@@ -487,9 +531,10 @@ function DeckGLLollipopCanvas({
     return counts
   }, [colorMode, haplotypeGroups])
 
-  // Flatten all data for deck.gl layers
+  // Flatten ONLY visible groups for deck.gl layers (windowed rendering)
   const { bgRects, variantPoints, belowThresholdPoints, deletionLines, methPoints, mqtlArcs } =
     useMemo(() => {
+      console.time('[perf] DeckGL data flatten')
       const bgRects: BackgroundRect[] = []
       const variantPoints: VariantPoint[] = []
       const belowThresholdPoints: VariantPoint[] = []
@@ -497,20 +542,15 @@ function DeckGLLollipopCanvas({
       const methPoints: MethPoint[] = []
       const mqtlArcs: MqtlArc[] = []
 
-      for (let gi = 0; gi < displayGroups.length; gi++) {
+      for (let gi = visStartIdx; gi <= visEndIdx && gi < displayGroups.length; gi++) {
         const group = displayGroups[gi]
         const rowY = rowOffsets[gi]
-        const startX = scalePosition(start)
-        const stopX = scalePosition(stop)
 
-        // Background rect
+        // Background rect (store raw genomic positions)
         bgRects.push({
-          polygon: [
-            [scalePosition(group.start), rowY + 5],
-            [scalePosition(group.stop), rowY + 5],
-            [scalePosition(group.stop), rowY + 20],
-            [scalePosition(group.start), rowY + 20],
-          ],
+          groupStart: group.start,
+          groupStop: group.stop,
+          rowY: rowY,
           color: [240, 240, 240, 255],
           group,
         })
@@ -518,10 +558,9 @@ function DeckGLLollipopCanvas({
         // Below-threshold variants (small open circles / faint shapes)
         for (const variant of group.below_threshold.variants) {
           const shape = getVariantShape(variant)
-          const x = scalePosition(variant.position)
           if (shape === 'deletion') {
             deletionLines.push({
-              x,
+              position: variant.position,
               yTop: rowY + 8,
               yBottom: rowY + 17,
               color: [128, 128, 128, 100],
@@ -530,7 +569,7 @@ function DeckGLLollipopCanvas({
             })
           } else {
             belowThresholdPoints.push({
-              x,
+              position: variant.position,
               y: rowY + ROW_CENTER_Y,
               radius: 1.5,
               color: [128, 128, 128, 100],
@@ -553,12 +592,11 @@ function DeckGLLollipopCanvas({
             locusCounts.get(variant.locus) || 0,
             haplotypeGroups.length || 1
           )
-          const x = scalePosition(variant.position)
 
           if (shape === 'deletion') {
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
             deletionLines.push({
-              x,
+              position: variant.position,
               yTop: rowY + 5,
               yBottom: rowY + 20,
               color,
@@ -567,7 +605,7 @@ function DeckGLLollipopCanvas({
             })
           } else {
             variantPoints.push({
-              x,
+              position: variant.position,
               y: rowY + ROW_CENTER_Y,
               radius: variantCircleRadius,
               color,
@@ -595,7 +633,7 @@ function DeckGLLollipopCanvas({
             for (const [pos, values] of byPos) {
               const mean = values.reduce((a, b) => a + b, 0) / values.length
               methPoints.push({
-                x: scalePosition(pos),
+                position: pos,
                 y: methBaseY + methYScale(mean),
                 color: [74, 85, 104, 255],
               })
@@ -627,31 +665,15 @@ function DeckGLLollipopCanvas({
               .range([0, MQTL_TRACK_HEIGHT - 4])
 
             for (const d of groupMqtl) {
-              const vx = scalePosition(d.variant_pos)
-              const cx = scalePosition(d.cpg_pos)
               const logP = -Math.log10(d.p_value)
               const arcH = hScale(logP)
-              const midX = (vx + cx) / 2
-              const midY = mqtlBaseY - arcH
-
-              // Approximate quadratic bezier with line segments
-              const steps = 20
-              const path: [number, number][] = []
-              for (let t = 0; t <= steps; t++) {
-                const tt = t / steps
-                const x =
-                  (1 - tt) * (1 - tt) * vx + 2 * (1 - tt) * tt * midX + tt * tt * cx
-                const y =
-                  (1 - tt) * (1 - tt) * mqtlBaseY +
-                  2 * (1 - tt) * tt * midY +
-                  tt * tt * mqtlBaseY
-                path.push([x, y])
-              }
-
               const isPositive = d.effect_size > 0
               const opacity = Math.min(204, Math.round(51 + (logP / maxLogP) * 153))
               mqtlArcs.push({
-                path,
+                variantPos: d.variant_pos,
+                cpgPos: d.cpg_pos,
+                arcHeight: arcH,
+                baseY: mqtlBaseY,
                 color: isPositive
                   ? [220, 38, 38, opacity]
                   : [37, 99, 235, opacity],
@@ -662,11 +684,12 @@ function DeckGLLollipopCanvas({
         }
       }
 
+      console.log(`[perf] DeckGL: ${variantPoints.length} variants, ${bgRects.length} bg, ${methPoints.length} meth, ${mqtlArcs.length} mqtl, ${deletionLines.length} dels (groups ${visStartIdx}-${visEndIdx} of ${displayGroups.length})`)
+      console.timeEnd('[perf] DeckGL data flatten')
       return { bgRects, variantPoints, belowThresholdPoints, deletionLines, methPoints, mqtlArcs }
     }, [
       displayGroups,
       rowOffsets,
-      scalePosition,
       start,
       stop,
       colorMode,
@@ -679,36 +702,49 @@ function DeckGLLollipopCanvas({
       mqtlData,
       mqtlMinLogP,
       sampleMetadata,
+      visStartIdx,
+      visEndIdx,
     ])
 
-  // Center lines for each group row
+  // Center lines for visible group rows only (raw positions, scaled in accessor)
   const centerLines = useMemo(() => {
-    return displayGroups.map((group, gi) => ({
-      startX: scalePosition(group.start),
-      stopX: scalePosition(group.stop),
-      y: rowOffsets[gi] + ROW_CENTER_Y,
-    }))
-  }, [displayGroups, rowOffsets, scalePosition])
+    const lines = []
+    for (let gi = visStartIdx; gi <= visEndIdx && gi < displayGroups.length; gi++) {
+      const group = displayGroups[gi]
+      lines.push({
+        groupStart: group.start,
+        groupStop: group.stop,
+        y: rowOffsets[gi] + ROW_CENTER_Y,
+      })
+    }
+    return lines
+  }, [displayGroups, rowOffsets, visStartIdx, visEndIdx])
 
-  // Hovered variant position crosshair
+  // Hovered variant position crosshair (raw position, scaled in accessor)
   const crosshairLine = useMemo(() => {
     if (hoveredVariantPosition == null) return []
-    const x = scalePosition(hoveredVariantPosition)
-    return [{ x, yTop: 0, yBottom: totalHeight }]
-  }, [hoveredVariantPosition, scalePosition, totalHeight])
+    return [{ position: hoveredVariantPosition, yTop: 0, yBottom: totalHeight }]
+  }, [hoveredVariantPosition, totalHeight])
 
   const layers = useMemo(() => {
+    console.time('[perf] DeckGL layer creation')
     const result: any[] = []
 
-    // Background rects
+    // Background rects — polygon computed from raw positions via scalePosition
     if (bgRects.length > 0) {
       result.push(
         new SolidPolygonLayer({
           id: 'bg-rects',
           data: bgRects,
-          getPolygon: (d: BackgroundRect) => d.polygon,
+          getPolygon: (d: BackgroundRect) => [
+            [scalePosition(d.groupStart), d.rowY + 5],
+            [scalePosition(d.groupStop), d.rowY + 5],
+            [scalePosition(d.groupStop), d.rowY + 20],
+            [scalePosition(d.groupStart), d.rowY + 20],
+          ],
           getFillColor: (d: BackgroundRect) => d.color,
           pickable: false,
+          updateTriggers: { getPolygon: [scalePosition] },
         })
       )
     }
@@ -719,12 +755,13 @@ function DeckGLLollipopCanvas({
         new LineLayer({
           id: 'center-lines',
           data: centerLines,
-          getSourcePosition: (d: any) => [d.startX, d.y, 0],
-          getTargetPosition: (d: any) => [d.stopX, d.y, 0],
+          getSourcePosition: (d: any) => [scalePosition(d.groupStart), d.y, 0],
+          getTargetPosition: (d: any) => [scalePosition(d.groupStop), d.y, 0],
           getColor: [168, 168, 168, 255],
           getWidth: 1,
           widthUnits: 'pixels' as const,
           pickable: false,
+          updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
         })
       )
     }
@@ -735,13 +772,14 @@ function DeckGLLollipopCanvas({
         new LineLayer({
           id: 'deletion-lines',
           data: deletionLines,
-          getSourcePosition: (d: StemLine) => [d.x, d.yTop, 0],
-          getTargetPosition: (d: StemLine) => [d.x, d.yBottom, 0],
+          getSourcePosition: (d: StemLine) => [scalePosition(d.position), d.yTop, 0],
+          getTargetPosition: (d: StemLine) => [scalePosition(d.position), d.yBottom, 0],
           getColor: (d: StemLine) => d.color,
           getWidth: (d: StemLine) => d.width,
           widthUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
+          updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
         })
       )
     }
@@ -752,7 +790,7 @@ function DeckGLLollipopCanvas({
         new ScatterplotLayer({
           id: 'below-threshold',
           data: belowThresholdPoints,
-          getPosition: (d: VariantPoint) => [d.x, d.y, 0],
+          getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
           getRadius: (d: VariantPoint) => d.radius,
           getFillColor: [0, 0, 0, 0],
           getLineColor: (d: VariantPoint) => d.color,
@@ -763,6 +801,7 @@ function DeckGLLollipopCanvas({
           radiusUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
+          updateTriggers: { getPosition: [scalePosition] },
         })
       )
     }
@@ -773,7 +812,7 @@ function DeckGLLollipopCanvas({
         new ScatterplotLayer({
           id: 'variants',
           data: variantPoints,
-          getPosition: (d: VariantPoint) => [d.x, d.y, 0],
+          getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
           getRadius: (d: VariantPoint) => d.radius,
           getFillColor: (d: VariantPoint) => d.color,
           getLineColor: [0, 0, 0, 128],
@@ -783,6 +822,7 @@ function DeckGLLollipopCanvas({
           radiusUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
+          updateTriggers: { getPosition: [scalePosition] },
         })
       )
     }
@@ -793,26 +833,43 @@ function DeckGLLollipopCanvas({
         new ScatterplotLayer({
           id: 'methylation',
           data: methPoints,
-          getPosition: (d: MethPoint) => [d.x, d.y, 0],
+          getPosition: (d: MethPoint) => [scalePosition(d.position), d.y, 0],
           getRadius: 2,
           getFillColor: (d: MethPoint) => d.color,
           radiusUnits: 'pixels' as const,
           pickable: false,
+          updateTriggers: { getPosition: [scalePosition] },
         })
       )
     }
 
-    // mQTL arcs
+    // mQTL arcs — compute bezier path from raw positions in accessor
     if (mqtlArcs.length > 0) {
       result.push(
         new PathLayer({
           id: 'mqtl-arcs',
           data: mqtlArcs,
-          getPath: (d: MqtlArc) => d.path,
+          getPath: (d: MqtlArc) => {
+            const vx = scalePosition(d.variantPos)
+            const cx = scalePosition(d.cpgPos)
+            const midX = (vx + cx) / 2
+            const midY = d.baseY - d.arcHeight
+            const steps = 20
+            const path: [number, number][] = []
+            for (let t = 0; t <= steps; t++) {
+              const tt = t / steps
+              path.push([
+                (1 - tt) * (1 - tt) * vx + 2 * (1 - tt) * tt * midX + tt * tt * cx,
+                (1 - tt) * (1 - tt) * d.baseY + 2 * (1 - tt) * tt * midY + tt * tt * d.baseY,
+              ])
+            }
+            return path
+          },
           getColor: (d: MqtlArc) => d.color,
           getWidth: (d: MqtlArc) => d.width,
           widthUnits: 'pixels' as const,
           pickable: false,
+          updateTriggers: { getPath: [scalePosition] },
         })
       )
     }
@@ -823,16 +880,18 @@ function DeckGLLollipopCanvas({
         new LineLayer({
           id: 'crosshair',
           data: crosshairLine,
-          getSourcePosition: (d: any) => [d.x, d.yTop, 0],
-          getTargetPosition: (d: any) => [d.x, d.yBottom, 0],
+          getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
+          getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
           getColor: [0, 0, 0, 128],
           getWidth: 1,
           widthUnits: 'pixels' as const,
           pickable: false,
+          updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
         })
       )
     }
 
+    console.timeEnd('[perf] DeckGL layer creation')
     return result
   }, [
     bgRects,
@@ -844,14 +903,13 @@ function DeckGLLollipopCanvas({
     mqtlArcs,
     crosshairLine,
     onHover,
+    scalePosition,
   ])
 
   const view = useMemo(
     () => new OrthographicView({ id: 'main', flipY: true }),
     []
   )
-
-  const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
 
   const viewState = useMemo(
     () => ({

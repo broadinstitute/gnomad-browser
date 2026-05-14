@@ -1200,13 +1200,21 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   }
 
   const tableScrollRef = useRef<HTMLDivElement>(null)
+  const [tableScrollTop, setTableScrollTop] = useState(0)
 
-  // Throttled scroll handler to notify parent of visible variant
+  // Row height for virtualization (approximate — includes padding/borders)
+  const ROW_HEIGHT = 28
+  const VISIBLE_BUFFER_ROWS = 20
+
+  // Throttled scroll handler to notify parent of visible variant + track scroll for virtualization
   const handleTableScroll = useMemo(
     () =>
       throttle(() => {
-        if (!tableScrollRef.current || !onVisibleVariantChange) return
+        if (!tableScrollRef.current) return
         const container = tableScrollRef.current
+        setTableScrollTop(container.scrollTop)
+
+        if (!onVisibleVariantChange) return
         const rows = container.querySelectorAll('tbody tr[data-position]')
         for (let i = 0; i < rows.length; i++) {
           const row = rows[i] as HTMLElement
@@ -1243,6 +1251,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
   // Derive unique variant list, grouping TRVs by position
   const variants = useMemo(() => {
+    console.time('[perf] HaplotypeVariantTable derive variants')
     if (mode === 'summary') {
       return summaryVariants.map((v: any) => {
         const getPopAf = (popId: string) =>
@@ -1402,6 +1411,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       let flankPrefix = ''
       let flankSuffix = ''
       if (isTrv && trSequences && trSequences.size > 0 && v.tr_motifs) {
+        console.time(`[perf] TR decompose pos=${v.position} (${trSequences.size} alleles)`)
         const motifs = (v.tr_motifs as string).split(',').map((m: string) => m.trim()).filter(Boolean)
         const refSeq = v.alleles[0] as string
         // Compute flanking context from ref: decompose ref (minus anchor) and grab leading/trailing non-motif bases
@@ -1444,6 +1454,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           })
           trAlleleStructures.sort((a, b) => b.totalCarriers - a.totalCarriers)
         }
+        console.timeEnd(`[perf] TR decompose pos=${v.position} (${trSequences.size} alleles)`)
       }
 
       const variantId = isTrv
@@ -1499,6 +1510,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       })
     }
 
+    console.log(`[perf] HaplotypeVariantTable: ${result.length} derived variants (${result.filter(v => v.is_tr).length} TR)`)
+    console.timeEnd('[perf] HaplotypeVariantTable derive variants')
     return result
   }, [mode, summaryVariants, haplotypeGroups, sampleMetadata])
 
@@ -1735,18 +1748,31 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
             </tr>
           </thead>
           <tbody>
-            {sorted.map((v, i) => {
-              const matchLevel = getMatchLevel(v.gnomad_v4_match_type)
-              const isExpanded = v.is_tr && expandedRows.has(v.variant_id)
+            {(() => {
+              // Virtualized rendering: only render rows visible in the scroll viewport
+              const maxH = parseInt(maxHeight, 10) || 500
+              const startRow = Math.max(0, Math.floor(tableScrollTop / ROW_HEIGHT) - VISIBLE_BUFFER_ROWS)
+              const visibleCount = Math.ceil(maxH / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS
+              const endRow = Math.min(sorted.length, startRow + visibleCount)
+              const topPad = startRow * ROW_HEIGHT
+              const bottomPad = Math.max(0, (sorted.length - endRow) * ROW_HEIGHT)
+
               return (
-                <React.Fragment key={`${v.position}-${v.variant_id}-${i}`}>
-                  <tr
-                    data-position={v.position}
-                    onMouseEnter={() => onHoverVariant?.(v.position)}
-                    onMouseLeave={() => onHoverVariant?.(null)}
-                    style={v.is_tr ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
-                    onClick={v.is_tr ? () => toggleExpand(v.variant_id) : undefined}
-                  >
+                <>
+                  {topPad > 0 && <tr style={{ height: topPad }} />}
+                  {sorted.slice(startRow, endRow).map((v, sliceIdx) => {
+                    const i = startRow + sliceIdx
+                    const matchLevel = getMatchLevel(v.gnomad_v4_match_type)
+                    const isExpanded = v.is_tr && expandedRows.has(v.variant_id)
+                    return (
+                      <React.Fragment key={`${v.position}-${v.variant_id}-${i}`}>
+                        <tr
+                          data-position={v.position}
+                          onMouseEnter={() => onHoverVariant?.(v.position)}
+                          onMouseLeave={() => onHoverVariant?.(null)}
+                          style={v.is_tr ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
+                          onClick={v.is_tr ? () => toggleExpand(v.variant_id) : undefined}
+                        >
                     <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
                       {v.is_tr && (
                         <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
@@ -1921,9 +1947,13 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                       </td>
                     </TrExpandedRow>
                   )}
-                </React.Fragment>
+                  </React.Fragment>
+                    )
+                  })}
+                  {bottomPad > 0 && <tr style={{ height: bottomPad }} />}
+                </>
               )
-            })}
+            })()}
           </tbody>
         </StyledTable>
       </div>
