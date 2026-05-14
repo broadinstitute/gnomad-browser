@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import HaplotypeVariantTable from './HaplotypeVariantTable'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
-type StrQualityCategory =
+type TrQualityCategory =
   | 'CLEAN'
   | 'BORDERLINE'
   | 'LEGIT_BINNED'
@@ -12,12 +12,12 @@ type StrQualityCategory =
   | 'SV_CONTAMINATION'
   | 'DELETION_BUG'
 
-type StrCatalogLocus = {
+type TrCatalogLocus = {
   position: number
-  category: StrQualityCategory
+  category: TrQualityCategory
 }
 
-const CATEGORY_COLORS: Record<StrQualityCategory, string> = {
+const CATEGORY_COLORS: Record<TrQualityCategory, string> = {
   CLEAN: '#2e7d32',
   BORDERLINE: '#f9a825',
   LEGIT_BINNED: '#1565c0',
@@ -27,7 +27,7 @@ const CATEGORY_COLORS: Record<StrQualityCategory, string> = {
   DELETION_BUG: '#212121',
 }
 
-const CATEGORY_LABELS: Record<StrQualityCategory, string> = {
+const CATEGORY_LABELS: Record<TrQualityCategory, string> = {
   CLEAN: 'Clean',
   BORDERLINE: 'Borderline',
   LEGIT_BINNED: 'Legit Binned',
@@ -37,7 +37,7 @@ const CATEGORY_LABELS: Record<StrQualityCategory, string> = {
   DELETION_BUG: 'Deletion Bug',
 }
 
-const ALL_CATEGORIES: StrQualityCategory[] = [
+const ALL_CATEGORIES: TrQualityCategory[] = [
   'CLEAN',
   'BORDERLINE',
   'LEGIT_BINNED',
@@ -151,13 +151,13 @@ const ErrorMessage = styled.div`
 
 // --- Component ---
 
-const StrCatalogPage = () => {
+const TrCatalogPage = () => {
   const [allGroups, setAllGroups] = useState<any>(null)
-  const [catalogLoci, setCatalogLoci] = useState<StrCatalogLocus[]>([])
+  const [catalogLoci, setCatalogLoci] = useState<TrCatalogLocus[]>([])
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [categoryFilter, setCategoryFilter] = useState<StrQualityCategory | 'ALL'>('ALL')
+  const [categoryFilter, setCategoryFilter] = useState<TrQualityCategory | 'ALL'>('ALL')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -193,7 +193,7 @@ const StrCatalogPage = () => {
 
   // Build position -> category lookup
   const positionCategory = useMemo(() => {
-    const map = new Map<number, StrQualityCategory>()
+    const map = new Map<number, TrQualityCategory>()
     for (const l of catalogLoci) map.set(l.position, l.category)
     return map
   }, [catalogLoci])
@@ -235,11 +235,11 @@ const StrCatalogPage = () => {
     return { groups: filtered }
   }, [allGroups, catalogLoci, categoryFilter])
 
-  if (loading) return <LoadingMessage>Loading all STR haplotypes for chr22...</LoadingMessage>
+  if (loading) return <LoadingMessage>Loading all TR haplotypes for chr22...</LoadingMessage>
 
   return (
     <PageWrapper>
-      <Title>STR Catalog — chr22</Title>
+      <Title>TR Catalog — chr22</Title>
       <Subtitle>
         All TRV haplotype variants across chr22. Filter by quality category. Dev-only audit tool.
       </Subtitle>
@@ -278,4 +278,4 @@ const StrCatalogPage = () => {
   )
 }
 
-export default StrCatalogPage
+export default TrCatalogPage

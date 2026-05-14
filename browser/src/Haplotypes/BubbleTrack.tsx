@@ -79,16 +79,16 @@ const ColumnTooltip = ({ col, total }: { col: ColumnFlow; total: number }) => {
           <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.alleleLength} bp</dd>
         </div>
       )}
-      {col.strMinLengthDiff != null && col.strMaxLengthDiff != null && (
+      {col.trMinLengthDiff != null && col.trMaxLengthDiff != null && (
         <div>
           <dt style={{ display: 'inline', fontWeight: 'bold' }}>Length range:</dt>
-          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.strMinLengthDiff} to {col.strMaxLengthDiff} bp</dd>
+          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.trMinLengthDiff} to {col.trMaxLengthDiff} bp</dd>
         </div>
       )}
-      {col.strDistinctAlleles != null && (
+      {col.trDistinctAlleles != null && (
         <div>
           <dt style={{ display: 'inline', fontWeight: 'bold' }}>Distinct alleles:</dt>
-          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.strDistinctAlleles}</dd>
+          <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{col.trDistinctAlleles}</dd>
         </div>
       )}
     </dl>
@@ -160,7 +160,7 @@ const BubbleHelp = () => (
       <li><strong style={{ color: '#D73027' }}>Red dashed arc</strong> — Deletion. Arc spans the deleted region; label shows size.</li>
       <li><strong style={{ color: '#43A047' }}>Green teardrop</strong> — Insertion. Height proportional to inserted sequence length.</li>
       <li><strong style={{ color: '#9467BD' }}>Purple diamond</strong> — Duplication.</li>
-      <li><strong style={{ color: '#E8A838' }}>Orange wave</strong> — Tandem repeat variant (STR/VNTR). Number of oscillations reflects allelic diversity; label shows the length range across carriers.</li>
+      <li><strong style={{ color: '#E8A838' }}>Orange wave</strong> — Tandem repeat variant (TR). Number of oscillations reflects allelic diversity; label shows the length range across carriers.</li>
     </ul>
 
     <h4>Reading the Flow</h4>
@@ -557,10 +557,10 @@ const BubbleTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
 
               // Tandem repeat variant: horizontal bar with repeat-unit tick marks
               if (t === 'trv') {
-                const barW = Math.max(12, Math.min(40, (col.strDistinctAlleles || 2) * 3))
+                const barW = Math.max(12, Math.min(40, (col.trDistinctAlleles || 2) * 3))
                 const barH = Math.max(halfT, 5)
                 const barY = ay - barH / 2
-                const numTicks = Math.min(8, Math.max(2, col.strDistinctAlleles || 3))
+                const numTicks = Math.min(8, Math.max(2, col.trDistinctAlleles || 3))
                 const tickSpacing = barW / (numTicks + 1)
 
                 return (

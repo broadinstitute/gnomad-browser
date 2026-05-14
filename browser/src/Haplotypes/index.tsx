@@ -82,7 +82,7 @@ const LegendRow = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 12px;
 `
 
 const LegendSection = styled.div`
@@ -299,7 +299,7 @@ export const Legend = ({
               <svg width={22} height={22}>
                 <rect x={6} y={7} width={10} height={8} fill='none' rx={1} stroke='grey' strokeWidth={0.7} opacity={0.5} />
               </svg>
-              <span>STR</span>
+              <span>TR</span>
             </LegendItem>
           </LegendSection>
         )}

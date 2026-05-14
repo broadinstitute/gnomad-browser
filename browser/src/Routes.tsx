@@ -31,7 +31,7 @@ const HaplotypeGenePageContainer = lazy(
 const HaplotypeRegionPageContainer = lazy(
   () => import('./HaplotypeRegionPage/HaplotypeRegionPageContainer')
 )
-const StrCatalogPage = lazy(() => import('./Haplotypes/StrCatalogPage'))
+const TrCatalogPage = lazy(() => import('./Haplotypes/TrCatalogPage'))
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
@@ -97,7 +97,7 @@ const Routes = () => {
         }}
       />
 
-      <Route exact path="/haplotype/str-catalog" component={StrCatalogPage} />
+      <Route exact path="/haplotype/tr-catalog" component={TrCatalogPage} />
 
       <Route
         exact

@@ -8,6 +8,7 @@ import Link from '../Link'
 import VariantTrack from '../VariantList/VariantTrack'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { svTypeColors } from '../StructuralVariantList/structuralVariantTypes'
+import { VARIANT_TYPE_COLORS } from '../Haplotypes/colors'
 
 // --- Types ---
 
@@ -39,7 +40,7 @@ const ROW_HEIGHT = 14
 const LOLLIPOP_RADIUS = 3
 const LOLLIPOP_TOP = 10
 const MIN_SV_BAR_WIDTH = 3
-const TR_BLOCK_COLOR = '#7459B2'
+const TR_BLOCK_COLOR = VARIANT_TYPE_COLORS.trv
 const MOTIF_LABEL_MIN_WIDTH = 40
 
 // --- Consequence colors for Band 1 ---

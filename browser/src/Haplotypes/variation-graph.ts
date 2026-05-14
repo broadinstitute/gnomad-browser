@@ -39,10 +39,10 @@ export interface ColumnFlow {
   alleleType: string
   alleleLength: number
   alleles: string[]
-  // STR-specific fields (present when alleleType === 'trv')
-  strMinLengthDiff?: number
-  strMaxLengthDiff?: number
-  strDistinctAlleles?: number
+  // TR-specific fields (present when alleleType === 'trv')
+  trMinLengthDiff?: number
+  trMaxLengthDiff?: number
+  trDistinctAlleles?: number
 }
 
 /** Pre-computed inter-column transition data for rendering */
@@ -83,8 +83,8 @@ export const buildVariationGraph = (
   // Collect all unique variant positions across all groups
   const variantPosSet = new Set<number>()
   const variantsByPos = new Map<number, { alleles: string[]; alleleType: string; alleleLength: number }>()
-  // Track STR allele lengths per position
-  const strLengthsByPos = new Map<number, Set<number>>()
+  // Track TR allele lengths per position
+  const trLengthsByPos = new Map<number, Set<number>>()
 
   // Rank: SVs are more visually interesting than SNVs, prefer them when
   // multiple allele types exist at the same position (multiallelic).
@@ -117,12 +117,12 @@ export const buildVariationGraph = (
           alleleLength: vLen,
         })
       }
-      // Collect STR allele lengths
+      // Collect TR allele lengths
       if (vType === 'trv') {
-        if (!strLengthsByPos.has(v.position)) {
-          strLengthsByPos.set(v.position, new Set())
+        if (!trLengthsByPos.has(v.position)) {
+          trLengthsByPos.set(v.position, new Set())
         }
-        strLengthsByPos.get(v.position)!.add(vLen)
+        trLengthsByPos.get(v.position)!.add(vLen)
       }
     }
   }
@@ -318,13 +318,13 @@ export const buildVariationGraph = (
       alleleLength: info.alleleLength,
       alleles: info.alleles,
     }
-    // Add STR-specific fields
-    const strLengths = strLengthsByPos.get(pos)
-    if (info.alleleType === 'trv' && strLengths && strLengths.size > 0) {
-      const lengths = Array.from(strLengths)
-      col.strMinLengthDiff = Math.min(...lengths)
-      col.strMaxLengthDiff = Math.max(...lengths)
-      col.strDistinctAlleles = strLengths.size
+    // Add TR-specific fields
+    const trLengths = trLengthsByPos.get(pos)
+    if (info.alleleType === 'trv' && trLengths && trLengths.size > 0) {
+      const lengths = Array.from(trLengths)
+      col.trMinLengthDiff = Math.min(...lengths)
+      col.trMaxLengthDiff = Math.max(...lengths)
+      col.trDistinctAlleles = trLengths.size
     }
     return col
   })
