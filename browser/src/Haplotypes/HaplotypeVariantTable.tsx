@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
+import { throttle } from 'lodash-es'
 import styled from 'styled-components'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
@@ -7,68 +8,20 @@ import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import Link from '../Link'
+import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
+import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
 
 type StrDataPoint = { length_diff: number; pop: string; count: number }
-
-// --- Sequence decomposition types ---
-
-type MotifToken = {
-  type: 'motif'
-  motifIndex: number
-  sequence: string
-}
-
-type InterruptionToken = {
-  type: 'interruption'
-  sequence: string
-}
-
-type SequenceToken = MotifToken | InterruptionToken
 
 type AlleleStructure = {
   sequence: string
   tokens: SequenceToken[]
+  algorithm: DecomposeAlgorithm
   totalMotifUnits: number
   interruptionCount: number
   interruptionBases: number
   popCounts: Record<string, number>
   totalCarriers: number
-}
-
-/**
- * Decompose an allele sequence into motif tokens and interruptions.
- * Uses greedy regex matching with motifs sorted by length descending.
- */
-const decomposeSequence = (sequence: string, motifs: string[]): SequenceToken[] => {
-  if (!sequence || motifs.length === 0) return []
-
-  // Sort motifs by length descending for greedy matching
-  const sortedMotifs = [...motifs].sort((a, b) => b.length - a.length)
-  const escaped = sortedMotifs.map((m) => m.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-  const regex = new RegExp(`(${escaped.join('|')})`, 'gi')
-
-  const tokens: SequenceToken[] = []
-  let lastIndex = 0
-
-  for (const match of sequence.matchAll(regex)) {
-    const matchStart = match.index!
-    // Add interruption for any unmatched gap
-    if (matchStart > lastIndex) {
-      tokens.push({ type: 'interruption', sequence: sequence.slice(lastIndex, matchStart) })
-    }
-    // Find which motif index matched (case-insensitive)
-    const matched = match[0].toUpperCase()
-    const motifIndex = motifs.findIndex((m) => m.toUpperCase() === matched)
-    tokens.push({ type: 'motif', motifIndex, sequence: match[0] })
-    lastIndex = matchStart + match[0].length
-  }
-
-  // Trailing unmatched bases
-  if (lastIndex < sequence.length) {
-    tokens.push({ type: 'interruption', sequence: sequence.slice(lastIndex) })
-  }
-
-  return tokens
 }
 
 type DerivedVariant = {
@@ -736,6 +689,26 @@ const AlleleStructureGrid = ({
   )
 }
 
+const AlgorithmBadge = ({ algorithm }: { algorithm: DecomposeAlgorithm }) => (
+  <span
+    title={algorithm === 'dp' ? 'Decomposed with trviz DP alignment' : 'Decomposed with greedy regex'}
+    style={{
+      fontSize: 8,
+      fontFamily: 'monospace',
+      fontWeight: 600,
+      lineHeight: 1,
+      padding: '1px 3px',
+      borderRadius: 2,
+      color: algorithm === 'dp' ? '#6a1b9a' : '#888',
+      background: algorithm === 'dp' ? '#f3e5f5' : '#f5f5f5',
+      border: `1px solid ${algorithm === 'dp' ? '#ce93d8' : '#e0e0e0'}`,
+      flexShrink: 0,
+    }}
+  >
+    {algorithm === 'dp' ? 'DP' : 'RE'}
+  </span>
+)
+
 const AlleleStructureRow = ({
   allele,
   scale,
@@ -904,6 +877,7 @@ const AlleleStructureRow = ({
             <span style={{ color: '#aaa' }}> ({((allele.totalCarriers / totalHaplotypes) * 100).toFixed(0)}%)</span>
           </span>
         </div>
+        <AlgorithmBadge algorithm={allele.algorithm} />
       </div>
     )
   }
@@ -1041,7 +1015,7 @@ const AlleleStructureRow = ({
           </span>
         </span>
       </div>
-
+      <AlgorithmBadge algorithm={allele.algorithm} />
     </div>
   )
 }
@@ -1055,17 +1029,23 @@ type HaplotypeVariantTableProps = {
   sampleMetadata?: SampleMetadataMap
   totalGroups?: number
   onHoverVariant?: (position: number | null) => void
+  onVisibleVariantChange?: (pos: number) => void
   maxHeight?: string
 }
 
-const HaplotypeVariantTable = ({
+export type HaplotypeVariantTableHandle = {
+  scrollToPosition: (pos: number) => void
+}
+
+const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeVariantTableProps>(function HaplotypeVariantTable({
   mode = 'haplotype',
   summaryVariants = [],
   haplotypeGroups = { groups: [] },
   sampleMetadata = new Map() as SampleMetadataMap,
   onHoverVariant,
+  onVisibleVariantChange,
   maxHeight = '500px',
-}: HaplotypeVariantTableProps) => {
+}, ref) {
   const [sort, setSort] = useState<SortConfig>({ key: 'position', direction: 'asc' })
   const [searchText, setSearchText] = useState('')
   const [typeFilters, setTypeFilters] = useState<Record<string, boolean>>({
@@ -1090,6 +1070,43 @@ const HaplotypeVariantTable = ({
       return next
     })
   }
+
+  const tableScrollRef = useRef<HTMLDivElement>(null)
+
+  // Throttled scroll handler to notify parent of visible variant
+  const handleTableScroll = useMemo(
+    () =>
+      throttle(() => {
+        if (!tableScrollRef.current || !onVisibleVariantChange) return
+        const container = tableScrollRef.current
+        const rows = container.querySelectorAll('tbody tr[data-position]')
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i] as HTMLElement
+          if (row.offsetTop >= container.scrollTop) {
+            const pos = parseInt(row.getAttribute('data-position')!, 10)
+            if (!isNaN(pos)) onVisibleVariantChange(pos)
+            return
+          }
+        }
+      }, 50),
+    [onVisibleVariantChange]
+  )
+
+  // Expose scrollToPosition for external sync
+  useImperativeHandle(ref, () => ({
+    scrollToPosition(pos: number) {
+      if (!tableScrollRef.current) return
+      const rows = tableScrollRef.current.querySelectorAll('tbody tr[data-position]')
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i] as HTMLElement
+        const rowPos = parseInt(row.getAttribute('data-position')!, 10)
+        if (rowPos >= pos) {
+          tableScrollRef.current.scrollTop = row.offsetTop - 30
+          return
+        }
+      }
+    },
+  }), [])
 
   // O(1) lookup for resolving enveloped variant IDs to full objects
   const variantDict = useMemo(() => {
@@ -1261,32 +1278,42 @@ const HaplotypeVariantTable = ({
         const refSeq = v.alleles[0] as string
         // Compute flanking context from ref: decompose ref (minus anchor) and grab leading/trailing non-motif bases
         const refRepeat = refSeq.length > 1 ? refSeq.slice(1) : refSeq
-        const refTokens = decomposeSequence(refRepeat, motifs)
-        if (refTokens.length > 0 && refTokens[0].type === 'interruption') {
-          flankPrefix = refTokens[0].sequence.slice(-5) // last 5 chars of leading flank
+        const refResult = decomposeSequence(refRepeat, motifs)
+        if (refResult.tokens.length > 0 && refResult.tokens[0].type === 'interruption') {
+          flankPrefix = refResult.tokens[0].sequence.slice(-5) // last 5 chars of leading flank
         }
-        if (refTokens.length > 0 && refTokens[refTokens.length - 1].type === 'interruption') {
-          flankSuffix = refTokens[refTokens.length - 1].sequence.slice(0, 5) // first 5 chars of trailing flank
+        if (refResult.tokens.length > 0 && refResult.tokens[refResult.tokens.length - 1].type === 'interruption') {
+          flankSuffix = refResult.tokens[refResult.tokens.length - 1].sequence.slice(0, 5) // first 5 chars of trailing flank
         }
         if (motifs.length > 0) {
-          strAlleleStructures = []
+          // Pass 1: decompose each allele sequence
+          const interim: Array<{ seq: string; popCounts: Record<string, number>; tokens: SequenceToken[]; algorithm: DecomposeAlgorithm }> = []
           for (const [seq, popCounts] of strSequences) {
-            // Strip the VCF anchor base (1st base, shared between ref and alt)
             const repeatSeq = seq.length > 1 && refSeq.length > 0 && seq[0] === refSeq[0] ? seq.slice(1) : seq
-            const tokens = decomposeSequence(repeatSeq, motifs)
+            const { tokens, algorithm } = decomposeSequence(repeatSeq, motifs)
+            interim.push({ seq, popCounts, tokens, algorithm })
+          }
+
+          // Pass 2: refine decompositions to normalize boundary ambiguities
+          const allTokenLists = interim.map((item) => item.tokens)
+          const refined = refineDecompositions(allTokenLists)
+
+          // Pass 3: build final allele structures from refined tokens
+          strAlleleStructures = interim.map((item, i) => {
+            const tokens = refined[i]
             const totalMotifUnits = tokens.filter((t) => t.type === 'motif').length
             const interruptions = tokens.filter((t) => t.type === 'interruption')
-            strAlleleStructures.push({
-              sequence: seq,
+            return {
+              sequence: item.seq,
               tokens,
+              algorithm: item.algorithm,
               totalMotifUnits,
               interruptionCount: interruptions.length,
               interruptionBases: interruptions.reduce((s, t) => s + t.sequence.length, 0),
-              popCounts,
-              totalCarriers: Object.values(popCounts).reduce((s, c) => s + c, 0),
-            })
-          }
-          // Sort by carrier count descending
+              popCounts: item.popCounts,
+              totalCarriers: Object.values(item.popCounts).reduce((s, c) => s + c, 0),
+            }
+          })
           strAlleleStructures.sort((a, b) => b.totalCarriers - a.totalCarriers)
         }
       }
@@ -1536,7 +1563,7 @@ const HaplotypeVariantTable = ({
         </CountLabel>
       </ControlBar>
 
-      <div style={{ maxHeight, overflowY: 'auto' }}>
+      <div ref={tableScrollRef} onScroll={handleTableScroll} style={{ maxHeight, overflowY: 'auto', position: 'relative' }}>
         <StyledTable>
           <thead>
             <tr>
@@ -1586,6 +1613,7 @@ const HaplotypeVariantTable = ({
               return (
                 <React.Fragment key={`${v.position}-${v.variant_id}-${i}`}>
                   <tr
+                    data-position={v.position}
                     onMouseEnter={() => onHoverVariant?.(v.position)}
                     onMouseLeave={() => onHoverVariant?.(null)}
                     style={v.is_str ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
@@ -1767,6 +1795,6 @@ const HaplotypeVariantTable = ({
       </div>
     </TableContainer>
   )
-}
+})
 
 export default HaplotypeVariantTable
