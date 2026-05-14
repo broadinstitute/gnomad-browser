@@ -370,7 +370,7 @@ const StatsPage = () => {
                 height={400}
                 formatTooltip={DiversityBarGraphTooltip}
                 xLabel=""
-                yLabel="Number of samples"
+                yLabel="Number of variants"
                 displayNumbers={false}
               />
             </DiversityBarGraph>
