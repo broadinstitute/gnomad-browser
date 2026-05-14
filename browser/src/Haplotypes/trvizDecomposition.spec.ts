@@ -365,7 +365,8 @@ describe('edge cases', () => {
 
   test('two-base sequence with single base motif and mismatch', () => {
     const r = decomposeSequence('CG', ['C'])
-    expect(r.algorithm).toBe('dp')
+    // 50% purity for 1-char motif → falls back to greedy
+    expect(r.algorithm).toBe('greedy')
     expect(r.tokens).toHaveLength(2)
     expectFullCoverage(r, 'CG')
   })
@@ -428,6 +429,16 @@ describe('algorithm selection', () => {
   test('sequence >10kb → greedy regardless', () => {
     const seq = 'AAAG'.repeat(2600) + 'TTTT' // 10404bp, impure
     expect(decomposeSequence(seq, ['AAAG']).algorithm).toBe('greedy')
+  })
+
+  test('Alu insertion at homopolymer locus → greedy (1-char motif, low purity)', () => {
+    // 48% A purity — not a real A-homopolymer, DP would produce nonsense
+    const alu = 'AAAAAAAAAAAAACTAGATACACTGGAAATTGGACATCAAAATTAGAAACTTTTGTGCTGCAAATCATAGACAGT'
+    expect(decomposeSequence(alu, ['A']).algorithm).toBe('greedy')
+  })
+
+  test('impure homopolymer with >80% purity → dp', () => {
+    expect(decomposeSequence('CCCCCCCCCCCG', ['C']).algorithm).toBe('dp')
   })
 })
 
