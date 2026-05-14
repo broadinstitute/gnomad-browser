@@ -75,7 +75,7 @@ type GenesInRegionTrackProps = {
     }[]
   }[]
   region: {
-    reference_genome: 'GRCh37' | 'GRCh38'
+    reference_genome?: 'GRCh37' | 'GRCh38'
     chrom: string
     start: number
     stop: number
@@ -125,17 +125,19 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
         }
 
         return (
-          <GenesPlot
-            genes={includeNonCodingGenes ? genes : codingGenes}
-            includeNonCodingGenes
-            renderGeneLabel={(gene: any) => (
-              <GeneLink to={`/gene/${gene.gene_id}`}>
-                <text textAnchor="middle">{gene.symbol}</text>
-              </GeneLink>
-            )}
-            scalePosition={scalePosition}
-            width={width}
-          />
+          <div style={{ overflow: 'hidden', width, position: 'relative' }}>
+            <GenesPlot
+              genes={includeNonCodingGenes ? genes : codingGenes}
+              includeNonCodingGenes
+              renderGeneLabel={(gene: any) => (
+                <GeneLink to={`/gene/${gene.gene_id}`}>
+                  <text textAnchor="middle">{gene.symbol}</text>
+                </GeneLink>
+              )}
+              scalePosition={scalePosition}
+              width={width}
+            />
+          </div>
         )
       }}
     </Track>

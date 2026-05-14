@@ -1,5 +1,5 @@
 import { throttle } from 'lodash-es'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { debounce } from 'lodash-es'
@@ -96,7 +96,6 @@ type LongReadHaplotypeViewProps = {
     start: number
     stop: number
   }
-  zoomRegion?: { start: number; stop: number } | null
 }
 
 const fetchGraphQL = async (query: string, variables: any) => {
@@ -111,7 +110,6 @@ const fetchGraphQL = async (query: string, variables: any) => {
 const LongReadHaplotypeView = ({
   datasetId,
   gene,
-  zoomRegion,
 }: LongReadHaplotypeViewProps) => {
   const { chrom, start, stop } = gene
 
@@ -139,15 +137,6 @@ const LongReadHaplotypeView = ({
   const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
 
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
-
-  // Use zoom region or gene bounds for haplotype queries
-  const queryRegion = useMemo(
-    () => ({
-      start: zoomRegion?.start ?? start,
-      stop: zoomRegion?.stop ?? stop,
-    }),
-    [zoomRegion, start, stop]
-  )
 
   // Fetch sample metadata once
   useEffect(() => {
@@ -177,8 +166,8 @@ const LongReadHaplotypeView = ({
       try {
         const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
           chrom,
-          start: queryRegion.start,
-          stop: queryRegion.stop,
+          start: start,
+          stop: stop,
           min_allele_freq: currentThreshold,
           sort_by: sortBy,
         })
@@ -191,13 +180,13 @@ const LongReadHaplotypeView = ({
         setHaplotypeLoading(false)
       }
     }, 300),
-    [chrom, queryRegion.start, queryRegion.stop, sortBy]
+    [chrom, start, stop, sortBy]
   )
 
   // Fetch haplotype groups
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
-  }, [chrom, queryRegion.start, queryRegion.stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
+  }, [chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
 
   // Fetch methylation summary + outliers
   useEffect(() => {
@@ -309,7 +298,7 @@ const LongReadHaplotypeView = ({
 
   return (
     <>
-      <RecombinationRatePlot chrom={chrom} start={queryRegion.start} stop={queryRegion.stop} />
+      <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
       {showMqtl && (
         <MQTLTrack
           mqtlData={mqtlData}
@@ -324,8 +313,8 @@ const LongReadHaplotypeView = ({
           methylationData={methylationData}
           methylationSummary={methylationSummary}
           sampleMetadata={sampleMetadata}
-          start={queryRegion.start}
-          stop={queryRegion.stop}
+          start={start}
+          stop={stop}
           initialMinAf={threshold}
           onMinAfChange={setThreshold}
           initialSortBy={sortBy}

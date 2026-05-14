@@ -13,7 +13,7 @@ const OverviewContainer = styled.div`
 const OverviewHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-bottom: 0.25rem;
   font-size: 13px;
 `
@@ -23,25 +23,43 @@ const ZoomInfo = styled.span`
   flex: 1;
 `
 
+const SetRegionButton = styled.button`
+  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background: #43a047;
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background: #388e3c;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+`
+
 const ResetButton = styled.button`
   padding: 0.25rem 0.5rem;
-  border: 1px solid #1976d2;
+  border: 1px solid #9e9e9e;
   border-radius: 4px;
-  background: #1976d2;
-  color: white;
+  background: transparent;
+  color: #616161;
   font-size: 11px;
   cursor: pointer;
   transition: all 0.15s ease;
 
   &:hover {
-    background: #1565c0;
-    border-color: #1565c0;
+    background: #eeeeee;
+    border-color: #757575;
+    color: #424242;
   }
 `
 
 const TrackWrapper = styled.div`
   position: relative;
-  height: 40px;
   user-select: none;
 `
 
@@ -49,9 +67,9 @@ const SelectionOverlay = styled.div<{ $isDragging: boolean }>`
   position: absolute;
   top: 0;
   height: 100%;
-  background: rgba(66, 133, 244, 0.15);
-  border: 2px solid rgba(66, 133, 244, 0.8);
-  border-radius: 2px;
+  background: rgba(66, 133, 244, 0.08);
+  border-left: 2px solid rgba(66, 133, 244, 0.8);
+  border-right: 2px solid rgba(66, 133, 244, 0.8);
   cursor: ${props => (props.$isDragging ? 'grabbing' : 'grab')};
   box-sizing: border-box;
 `
@@ -82,14 +100,14 @@ const ResizeHandle = styled.div<{ $position: 'left' | 'right' }>`
 `
 
 type Exon = {
-  feature_type: 'CDS' | 'exon' | 'UTR'
+  feature_type: string
   start: number
   stop: number
 }
 
 type Gene = {
-  gene_id: string
-  symbol: string
+  gene_id?: string
+  symbol?: string
   start: number
   stop: number
   exons?: Exon[]
@@ -121,12 +139,36 @@ function linearScale(
   return scale
 }
 
+// Compute variant density as binned counts for the minimap
+function computeVariantDensity(
+  variants: any[],
+  regionStart: number,
+  regionStop: number,
+  numBins: number
+): number[] {
+  const bins = new Array(numBins).fill(0)
+  const binSize = (regionStop - regionStart) / numBins
+  for (const v of variants) {
+    const pos = v.pos ?? v.position
+    if (pos == null || pos < regionStart || pos > regionStop) continue
+    const bin = Math.min(Math.floor((pos - regionStart) / binSize), numBins - 1)
+    bins[bin]++
+  }
+  return bins
+}
+
+const MINIMAP_HEIGHT = 65
+const DENSITY_HEIGHT = 18
+const GENE_AREA_TOP = DENSITY_HEIGHT + 4
+const GENE_AREA_HEIGHT = MINIMAP_HEIGHT - GENE_AREA_TOP - 6
+
 interface ZoomOverviewProps {
   overviewRegion: { start: number; stop: number }
   currentRegion: { start: number; stop: number }
   chrom: string
   genes?: Gene[]
-  onChangeRegion: (region: { start: number; stop: number }) => void
+  variants?: any[]
+  onChangeRegion: (region: { start: number; stop: number } | null) => void
   onSetRegion?: (region: { start: number; stop: number }) => void
 }
 
@@ -135,6 +177,7 @@ export default function ZoomOverview({
   currentRegion,
   chrom,
   genes = [],
+  variants = [],
   onChangeRegion,
   onSetRegion,
 }: ZoomOverviewProps) {
@@ -174,10 +217,19 @@ export default function ZoomOverview({
 
   const activeRegion = tempRegion || currentRegion
   const selectionLeft = scale(activeRegion.start)
-  const selectionWidth = Math.max(scale(activeRegion.stop) - selectionLeft, 10)
+  const selectionRight = scale(activeRegion.stop)
+  const selectionWidth = Math.max(selectionRight - selectionLeft, 10)
 
   const isFullView =
     currentRegion.start <= overviewRegion.start && currentRegion.stop >= overviewRegion.stop
+
+  // Variant density bins for the minimap
+  const numBins = Math.max(Math.floor(containerWidth / 4), 50)
+  const densityBins = useMemo(
+    () => computeVariantDensity(variants, overviewRegion.start, overviewRegion.stop, numBins),
+    [variants, overviewRegion.start, overviewRegion.stop, numBins]
+  )
+  const maxDensity = Math.max(1, ...densityBins)
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent, type: 'move' | 'resize-left' | 'resize-right') => {
@@ -213,7 +265,6 @@ export default function ZoomOverview({
         newStart = scale.invert(dragState.startPixel + deltaX)
         newStop = scale.invert(dragState.stopPixel + deltaX)
 
-        // Clamp
         if (newStart < overviewRegion.start) {
           const offset = overviewRegion.start - newStart
           newStart = overviewRegion.start
@@ -301,6 +352,9 @@ export default function ZoomOverview({
         ? `${(regionSize / 1000).toFixed(1)}kb`
         : `${regionSize}bp`
 
+  const geneMidY = GENE_AREA_TOP + GENE_AREA_HEIGHT / 2
+  const binWidth = containerWidth / numBins
+
   return (
     <OverviewContainer>
       <OverviewHeader>
@@ -312,44 +366,53 @@ export default function ZoomOverview({
           ({regionSizeStr})
         </ZoomInfo>
         {!isFullView && onSetRegion && (
-          <ResetButton
-            onClick={() => onSetRegion(currentRegion)}
-            style={{ background: '#43a047', borderColor: '#43a047' }}
-          >
+          <SetRegionButton onClick={() => onSetRegion(currentRegion)}>
             Set as region
-          </ResetButton>
+          </SetRegionButton>
         )}
         {!isFullView && (
           <ResetButton
-            onClick={() =>
-              onChangeRegion({ start: overviewRegion.start, stop: overviewRegion.stop })
-            }
+            onClick={() => onChangeRegion(null)}
           >
             Reset zoom
           </ResetButton>
         )}
       </OverviewHeader>
 
-      <TrackWrapper ref={containerRef} onClick={handleTrackClick}>
+      <TrackWrapper ref={containerRef} onClick={handleTrackClick} style={{ height: MINIMAP_HEIGHT }}>
         <svg
           width={containerWidth}
-          height={40}
+          height={MINIMAP_HEIGHT}
           style={{ position: 'absolute', top: 0, left: 0 }}
         >
           {/* Background */}
-          <rect x={0} y={0} width={containerWidth} height={40} fill="#f0f0f0" rx={2} />
+          <rect x={0} y={0} width={containerWidth} height={MINIMAP_HEIGHT} fill="#f0f0f0" rx={2} />
+
+          {/* Variant density bars */}
+          {densityBins.map((count, i) => {
+            if (count === 0) return null
+            const barHeight = (count / maxDensity) * DENSITY_HEIGHT
+            return (
+              <rect
+                key={`d${i}`}
+                x={i * binWidth}
+                y={DENSITY_HEIGHT - barHeight}
+                width={Math.max(binWidth - 0.5, 1)}
+                height={barHeight}
+                fill="#7986cb"
+                opacity={0.6}
+              />
+            )
+          })}
 
           {/* Gene models with exons */}
-          {genes.map(gene => {
+          {genes.map((gene, gi) => {
             const gx = Math.max(0, scale(gene.start))
             const gx2 = Math.min(containerWidth, scale(gene.stop))
             const gw = Math.max(2, gx2 - gx)
-            const midY = 20
             return (
-              <g key={gene.gene_id}>
-                {/* Gene spine (thin line spanning full gene) */}
-                <line x1={gx} y1={midY} x2={gx + gw} y2={midY} stroke="#8e8e93" strokeWidth={1} />
-                {/* Individual exons */}
+              <g key={gene.gene_id || gi}>
+                <line x1={gx} y1={geneMidY} x2={gx + gw} y2={geneMidY} stroke="#8e8e93" strokeWidth={1} />
                 {gene.exons?.map((exon, i) => {
                   const ex = Math.max(0, scale(exon.start))
                   const ex2 = Math.min(containerWidth, scale(exon.stop))
@@ -359,7 +422,7 @@ export default function ZoomOverview({
                     <rect
                       key={i}
                       x={ex}
-                      y={isCDS ? midY - 5 : midY - 3}
+                      y={isCDS ? geneMidY - 5 : geneMidY - 3}
                       width={ew}
                       height={isCDS ? 10 : 6}
                       fill={isCDS ? '#616161' : '#9e9e9e'}
@@ -367,11 +430,10 @@ export default function ZoomOverview({
                     />
                   )
                 })}
-                {/* Gene label if wide enough */}
                 {gw > 30 && (
                   <text
                     x={gx + gw / 2}
-                    y={34}
+                    y={MINIMAP_HEIGHT - 3}
                     fontSize="8"
                     fill="#666"
                     textAnchor="middle"
@@ -382,6 +444,14 @@ export default function ZoomOverview({
               </g>
             )
           })}
+
+          {/* Grey-out overlays on unselected flanks */}
+          {!isFullView && (
+            <>
+              <rect x={0} y={0} width={Math.max(selectionLeft, 0)} height={MINIMAP_HEIGHT} fill="rgba(0,0,0,0.12)" />
+              <rect x={selectionLeft + selectionWidth} y={0} width={Math.max(containerWidth - selectionLeft - selectionWidth, 0)} height={MINIMAP_HEIGHT} fill="rgba(0,0,0,0.12)" />
+            </>
+          )}
 
           {/* Tick marks for genomic scale */}
           {useMemo(() => {
@@ -395,22 +465,20 @@ export default function ZoomOverview({
               const x = scale(pos)
               return (
                 <g key={pos}>
-                  <line x1={x} y1={0} x2={x} y2={5} stroke="#bbb" strokeWidth={0.5} />
-                  <text x={x} y={10} fontSize="7" fill="#999" textAnchor="middle">
-                    {(pos / 1000000).toFixed(1)}M
-                  </text>
+                  <line x1={x} y1={GENE_AREA_TOP} x2={x} y2={GENE_AREA_TOP + 4} stroke="#ccc" strokeWidth={0.5} />
                 </g>
               )
             })
           }, [overviewRegion.start, overviewRegion.stop, scale, containerWidth])}
         </svg>
 
-        {/* Selection overlay */}
+        {/* Selection overlay — always rendered so drag handles are accessible */}
         <SelectionOverlay
           $isDragging={dragState?.type === 'move'}
           style={{
             left: `${selectionLeft}px`,
             width: `${Math.max(selectionWidth, 10)}px`,
+            ...(isFullView ? { background: 'transparent', borderColor: 'transparent' } : {}),
           }}
           onMouseDown={e => handleMouseDown(e, 'move')}
         >

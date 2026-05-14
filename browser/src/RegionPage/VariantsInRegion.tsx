@@ -7,7 +7,6 @@ import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
 import Query from '../Query'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import mergeLongReadVariants from '../VariantList/mergeLongReadVariants'
@@ -34,10 +33,6 @@ type OwnVariantsInRegionProps = {
     }[]
   }
   variants: any[]
-  zoomRegion?: {
-    start: number
-    stop: number
-  }
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'VariantsInRegionProps' circularly refe... Remove this comment to see the full error message
@@ -51,7 +46,6 @@ const VariantsInRegion = ({
   lrDatasetId,
   region,
   variants,
-  zoomRegion,
 }: VariantsInRegionProps) => {
   const datasetLabel = labelForDataset(datasetId)
   const [viewMode, setViewMode] = useState<'summary' | 'haplotype'>('summary')
@@ -78,7 +72,6 @@ const VariantsInRegion = ({
         <LongReadHaplotypeView
           datasetId={lrDatasetId}
           gene={{ chrom: region.chrom, start: region.start, stop: region.stop }}
-          zoomRegion={zoomRegion}
         />
       ) : (
         <>
@@ -90,7 +83,7 @@ const VariantsInRegion = ({
               <ClinvarVariantTrack
                 referenceGenome={referenceGenome(datasetId)}
                 transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
-                variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
+                variants={clinvarVariants}
               />
               <TrackPageSection as="p">
                 Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
@@ -106,7 +99,7 @@ const VariantsInRegion = ({
             context={region}
             datasetId={datasetId}
             exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
-            variants={filterVariantsInZoomRegion(variants, zoomRegion)}
+            variants={variants}
           />
         </>
       )}
@@ -116,7 +109,6 @@ const VariantsInRegion = ({
 
 VariantsInRegion.defaultProps = {
   clinvarVariants: null,
-  zoomRegion: null,
 }
 
 const operationName = 'VariantInRegion'
@@ -313,9 +305,11 @@ type ConnectedVariantsInRegionProps = {
     }[]
   }
   zoomRegion?: { start: number; stop: number } | null
+  onChangeZoomRegion?: (region: { start: number; stop: number } | null) => void
+  onSetRegion?: (region: { start: number; stop: number }) => void
 }
 
-const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion }: ConnectedVariantsInRegionProps) => {
+const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion }: ConnectedVariantsInRegionProps) => {
   // When viewing LR dataset directly, only query LR data — skip the expensive SR query
   if (isLongRead(datasetId)) {
     return (
@@ -351,8 +345,11 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion }: ConnectedV
             datasetId={datasetId}
             gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
             variants={data.region.long_read_variants || []}
-            zoomRegion={zoomRegion}
             clinvarReleaseDate={data.meta.clinvar_release_date}
+            genes={region.genes as any[]}
+            zoomRegion={zoomRegion || null}
+            onChangeZoomRegion={onChangeZoomRegion || (() => {})}
+            onSetRegion={onSetRegion || (() => {})}
           />
         )}
       </Query>

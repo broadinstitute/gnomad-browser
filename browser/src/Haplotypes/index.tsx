@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, forwardRef, useRef } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor, Select } from '@gnomad/ui'
@@ -12,7 +12,7 @@ import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
-import DeckGLLollipopTrack from './DeckGLLollipopTrack'
+import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 // Extensible plot type and color mode registries
@@ -765,7 +765,10 @@ type HaplotypeTrackProps = {
   showGenealogy?: boolean
   onShowGenealogyChange?: (show: boolean) => void
   hoveredVariantPosition?: number | null
+  onVisibleGroupChange?: (group: HaplotypeGroup) => void
 }
+
+export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
 
 const variantColors: Record<string, string> = {}
 
@@ -1395,7 +1398,7 @@ const HaplotypeGroupTrack = ({
 
 // --- Main component ---
 
-const HaplotypeTrack = ({
+const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(function HaplotypeTrack({
   height = 500,
   haplotypeGroups,
   methylationData,
@@ -1424,7 +1427,8 @@ const HaplotypeTrack = ({
   showGenealogy = false,
   onShowGenealogyChange,
   hoveredVariantPosition,
-}: HaplotypeTrackProps) => {
+  onVisibleGroupChange,
+}, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
@@ -1602,6 +1606,7 @@ const HaplotypeTrack = ({
           )}
 
           <DeckGLLollipopTrack
+            ref={ref}
             displayGroups={displayGroups}
             haplotypeGroups={haplotypeGroups}
             start={start}
@@ -1621,6 +1626,7 @@ const HaplotypeTrack = ({
             hoveredVariantPosition={hoveredVariantPosition}
             showGenealogy={showGenealogy}
             genealogyResult={genealogyResult}
+            onVisibleGroupChange={onVisibleGroupChange}
           />
         </>
       )}
@@ -1638,6 +1644,6 @@ const HaplotypeTrack = ({
       )}
     </Wrapper>
   )
-}
+})
 
 export default HaplotypeTrack
