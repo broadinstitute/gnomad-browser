@@ -528,6 +528,29 @@ export function decomposeSequence(sequence: string, motifs: string[]): Decompose
     return { tokens: greedyTokens, algorithm: 'greedy' }
   }
 
+  // Skip DP when the greedy result suggests the sequence is not a repeat:
+  // 1. Any interruption > 50bp → structural insertion, not impure repeat
+  // 2. For 1-char motifs: greedy already identifies each matching base, and
+  //    DP just forces non-matching bases into alignment producing nonsense.
+  //    Skip if greedy purity < 80% (a real homopolymer with a few mismatches
+  //    will still be >80%).
+  const maxMotifLen = Math.max(...motifs.map((m) => m.length))
+  const longestInterruption = greedyTokens.reduce(
+    (max, t) => t.type === 'interruption' ? Math.max(max, t.sequence.length) : max,
+    0
+  )
+  if (longestInterruption > 50) {
+    return { tokens: greedyTokens, algorithm: 'greedy' }
+  }
+  if (maxMotifLen === 1) {
+    const greedyMotifBases = greedyTokens
+      .filter((t) => t.type === 'motif')
+      .reduce((s, t) => s + t.sequence.length, 0)
+    if (greedyMotifBases / sequence.length < 0.8) {
+      return { tokens: greedyTokens, algorithm: 'greedy' }
+    }
+  }
+
   // Full DP decomposition
   const segments = decomposeSequenceDP(sequence, motifs)
   if (segments.length === 0) {
