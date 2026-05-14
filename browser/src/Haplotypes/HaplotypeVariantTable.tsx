@@ -732,6 +732,17 @@ const AlgorithmBadge = ({ algorithm }: { algorithm: DecomposeAlgorithm }) => (
   </span>
 )
 
+/** Check if base at position ci in a motif token mismatches the canonical motif */
+const isMismatch = (token: SequenceToken, ci: number, motifs: string[]): boolean => {
+  if (token.type !== 'motif') return false
+  const canonical = motifs[token.motifIndex]
+  if (!canonical) return false
+  // Positional comparison: if the segment is the same length as the motif,
+  // compare base-by-base. If different lengths (indel), flag extra bases.
+  if (ci >= canonical.length) return true // beyond motif length = insertion
+  return token.sequence[ci].toUpperCase() !== canonical[ci].toUpperCase()
+}
+
 const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: string[] }) => (
   <div
     style={{
@@ -752,24 +763,29 @@ const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: 
           token.type === 'motif' ? motifs[token.motifIndex] ?? '?' : 'int'
         return (
           <span key={ti} style={{ display: 'inline-flex', flexShrink: 0 }} title={`${label} (${token.sequence.length}bp)`}>
-            {token.sequence.split('').map((ch, ci) => (
-              <span
-                key={ci}
-                style={{
-                  fontFamily: 'monospace',
-                  fontSize: 10,
-                  lineHeight: '14px',
-                  width: 8,
-                  textAlign: 'center',
-                  background: bg,
-                  color: isInterruption ? '#ccc' : '#fff',
-                  opacity: isInterruption ? 0.7 : 1,
-                  borderRadius: ci === 0 ? '2px 0 0 2px' : ci === token.sequence.length - 1 ? '0 2px 2px 0' : 0,
-                }}
-              >
-                {ch}
-              </span>
-            ))}
+            {token.sequence.split('').map((ch, ci) => {
+              const mismatch = isMismatch(token, ci, motifs)
+              return (
+                <span
+                  key={ci}
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: 10,
+                    lineHeight: '14px',
+                    width: 8,
+                    textAlign: 'center',
+                    background: mismatch ? '#fff' : bg,
+                    color: mismatch ? '#c62828' : isInterruption ? '#ccc' : '#fff',
+                    fontWeight: mismatch ? 700 : 400,
+                    opacity: isInterruption ? 0.7 : 1,
+                    borderRadius: ci === 0 ? '2px 0 0 2px' : ci === token.sequence.length - 1 ? '0 2px 2px 0' : 0,
+                    borderBottom: mismatch ? '2px solid #c62828' : undefined,
+                  }}
+                >
+                  {ch}
+                </span>
+              )
+            })}
           </span>
         )
       })}
@@ -1739,8 +1755,14 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                     {mode === 'summary' && (
                       <td>
                         {v.short_read_match_id ? (
-                          <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false}>
-                            {v.short_read_match_id}
+                          <Link
+                            to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`}
+                            preserveSelectedDataset={false}
+                            title={v.short_read_match_id}
+                          >
+                            {v.short_read_match_id.length > 20
+                              ? `${v.short_read_match_id.slice(0, 20)}…`
+                              : v.short_read_match_id}
                           </Link>
                         ) : '—'}
                       </td>
