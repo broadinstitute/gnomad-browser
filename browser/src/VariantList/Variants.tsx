@@ -134,6 +134,7 @@ const Variants = ({
     includeExomes: true,
     includeGenomes: true,
     includeContext: true,
+    onlyClinvarVariants: false,
     searchText: '',
   })
 

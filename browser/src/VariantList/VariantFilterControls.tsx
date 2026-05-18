@@ -71,6 +71,7 @@ type Props = {
     includeSNVs: boolean
     includeIndels: boolean
     includeContext: boolean
+    onlyClinvarVariants: boolean
     searchText: string
   }
   jumpToRow: (...args: any[]) => any
@@ -177,6 +178,16 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
               label="Display neighboring variants"
               onChange={(includeContext) => {
                 onChange({ ...value, includeContext })
+              }}
+            />
+          </span>
+          <span>
+            <Checkbox
+              checked={value.onlyClinvarVariants}
+              id="clinvar-only-variant-filter"
+              label="ClinVar variants only"
+              onChange={(onlyClinvarVariants) => {
+                onChange({ ...value, onlyClinvarVariants })
               }}
             />
           </span>

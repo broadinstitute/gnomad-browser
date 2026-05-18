@@ -17,6 +17,7 @@ export type VariantFilterState = {
   includeExomes: boolean
   includeGenomes: boolean
   includeContext: boolean
+  onlyClinvarVariants: boolean
   searchText: string
 }
 
@@ -107,6 +108,10 @@ const filterVariants = (variants: Variant[], filter: VariantFilterState, selecte
 
     return (filter.includeSNVs && isSNV) || (filter.includeIndels && isIndel)
   })
+
+  if (filter.onlyClinvarVariants) {
+    filteredVariants = filteredVariants.filter((v: any) => Boolean(v.clinvar_variation_id))
+  }
 
   return filteredVariants
 }
