@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
+import React, { useCallback, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 import { throttle } from 'lodash-es'
 import styled from 'styled-components'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
@@ -1206,6 +1206,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   const ROW_HEIGHT = 28
   const VISIBLE_BUFFER_ROWS = 20
 
+
   // Throttled scroll handler to notify parent of visible variant + track scroll for virtualization
   const handleTableScroll = useMemo(
     () =>
@@ -1749,13 +1750,26 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           </thead>
           <tbody>
             {(() => {
-              // Virtualized rendering: only render rows visible in the scroll viewport
+              // Skip virtualization when the row count is small enough to render all
+              // (e.g. filtered to TR-only). Virtualization with variable-height expanded
+              // rows causes spacer drift since off-screen rows can't be measured.
+              const VIRTUALIZE_THRESHOLD = 200
+              const shouldVirtualize = sorted.length >= VIRTUALIZE_THRESHOLD && expandedRows.size === 0
+
               const maxH = parseInt(maxHeight, 10) || 500
-              const startRow = Math.max(0, Math.floor(tableScrollTop / ROW_HEIGHT) - VISIBLE_BUFFER_ROWS)
-              const visibleCount = Math.ceil(maxH / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS
-              const endRow = Math.min(sorted.length, startRow + visibleCount)
-              const topPad = startRow * ROW_HEIGHT
-              const bottomPad = Math.max(0, (sorted.length - endRow) * ROW_HEIGHT)
+              let startRow = 0
+              let endRow = sorted.length
+              let topPad = 0
+              let bottomPad = 0
+
+              if (shouldVirtualize) {
+                // Fixed-height virtualization — only active when no rows are expanded
+                startRow = Math.max(0, Math.floor(tableScrollTop / ROW_HEIGHT) - VISIBLE_BUFFER_ROWS)
+                const visibleCount = Math.ceil(maxH / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS
+                endRow = Math.min(sorted.length, startRow + visibleCount)
+                topPad = startRow * ROW_HEIGHT
+                bottomPad = Math.max(0, (sorted.length - endRow) * ROW_HEIGHT)
+              }
 
               return (
                 <>
