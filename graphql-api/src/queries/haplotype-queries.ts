@@ -161,33 +161,39 @@ export const fetchDistinctHaplotypeVariants = async (
 ) => {
   const query = `
     SELECT
-      position, ref, alt,
-      any(rsid) AS rsid,
-      any(info_AF) AS info_AF,
-      any(info_AC) AS info_AC,
-      any(info_AN) AS info_AN,
-      any(allele_type) AS allele_type,
-      any(allele_length) AS allele_length,
-      any(info_AF_afr) AS info_AF_afr,
-      any(info_AF_amr) AS info_AF_amr,
-      any(info_AF_eas) AS info_AF_eas,
-      any(info_AF_nfe) AS info_AF_nfe,
-      any(info_AF_sas) AS info_AF_sas,
-      any(cadd_phred) AS cadd_phred,
-      any(phylop) AS phylop,
-      any(sv_consequences) AS sv_consequences,
-      any(dbgap_id) AS dbgap_id,
-      any(tr_id) AS tr_id,
-      any(tr_motifs) AS tr_motifs,
-      any(tr_struc) AS tr_struc,
-      any(allele_methylation) AS allele_methylation,
-      any(motif_counts) AS motif_counts,
-      any(allele_purity) AS allele_purity,
-      groupArray(tuple(sample_id, strand)) AS carriers
-    FROM lr_haplotypes
-    WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
-    GROUP BY position, ref, alt
-    ORDER BY position ASC
+      h.position AS position, h.ref AS ref, h.alt AS alt,
+      any(h.rsid) AS rsid,
+      any(h.info_AF) AS info_AF,
+      any(h.info_AC) AS info_AC,
+      any(h.info_AN) AS info_AN,
+      any(h.allele_type) AS allele_type,
+      any(h.allele_length) AS allele_length,
+      any(h.info_AF_afr) AS info_AF_afr,
+      any(h.info_AF_amr) AS info_AF_amr,
+      any(h.info_AF_eas) AS info_AF_eas,
+      any(h.info_AF_nfe) AS info_AF_nfe,
+      any(h.info_AF_sas) AS info_AF_sas,
+      any(h.cadd_phred) AS cadd_phred,
+      any(h.phylop) AS phylop,
+      any(h.sv_consequences) AS sv_consequences,
+      any(h.dbgap_id) AS dbgap_id,
+      any(tr_meta.enveloping_tr_id) AS tr_id,
+      arrayStringConcat(any(tr_meta.motifs), ',') AS tr_motifs,
+      any(tr_meta.gnomad_str) AS tr_struc,
+      any(h.allele_methylation) AS allele_methylation,
+      any(h.motif_counts) AS motif_counts,
+      any(h.allele_purity) AS allele_purity,
+      groupArray(tuple(h.sample_id, h.strand)) AS carriers
+    FROM lr_haplotypes h
+    LEFT JOIN (
+      SELECT chrom, position, motifs, enveloping_tr_id, gnomad_str
+      FROM lr_variants
+      WHERE allele_type = 'trv' AND chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+    ) AS tr_meta
+      ON h.chrom = tr_meta.chrom AND h.position = tr_meta.position
+    WHERE h.chrom = {chrom:String} AND h.position BETWEEN {start:UInt32} AND {stop:UInt32}
+    GROUP BY h.position, h.ref, h.alt
+    ORDER BY h.position ASC
   `
   const resultSet = await clickhouseClient.query({
     query,
@@ -195,6 +201,39 @@ export const fetchDistinctHaplotypeVariants = async (
     format: 'JSONEachRow',
   })
   return resultSet.json() as Promise<any[]>
+}
+
+/**
+ * Query 3: Fetch per-carrier alt sequences for TRV (tandem repeat variant) positions only.
+ * Returns ~few thousand rows (only TR carriers) vs ~1M total.
+ * Used to rebuild per-carrier length distributions in the frontend.
+ */
+export const fetchTrvCarrierAlts = async (
+  chrom: string,
+  start: number,
+  stop: number
+) => {
+  const query = `
+    SELECT position, ref, alt, sample_id, strand
+    FROM lr_haplotypes
+    WHERE chrom = {chrom:String}
+      AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+      AND allele_type = 'trv'
+  `
+  const resultSet = await clickhouseClient.query({
+    query,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json() as Promise<
+    Array<{
+      position: string
+      ref: string
+      alt: string
+      sample_id: string
+      strand: number
+    }>
+  >
 }
 
 /**

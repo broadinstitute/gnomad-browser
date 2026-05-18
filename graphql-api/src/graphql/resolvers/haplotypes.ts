@@ -4,6 +4,7 @@ import {
   fetchGroupedTrvVariants,
   fetchHaplotypeGroupAssignments,
   fetchDistinctHaplotypeVariants,
+  fetchTrvCarrierAlts,
   fetchSampleMetadata,
   fetchMethylationForRegion,
   fetchMethylationSummaryForRegion,
@@ -114,13 +115,14 @@ const resolvers = {
         const minAf = args.min_allele_freq || 0
 
         const tFetch = now()
-        const [groupAssignments, distinctVariants] = await Promise.all([
+        const [groupAssignments, distinctVariants, trvCarriers] = await Promise.all([
           fetchHaplotypeGroupAssignments(chrom, args.start, args.stop, minAf),
           fetchDistinctHaplotypeVariants(chrom, args.start, args.stop),
+          fetchTrvCarrierAlts(chrom, args.start, args.stop),
         ])
         const fetchMs = now() - tFetch
 
-        logger.info(`haplotype_groups: fetched ${groupAssignments.length} groups, ${distinctVariants.length} distinct variants for ${chrom}:${args.start}-${args.stop}`)
+        logger.info(`haplotype_groups: fetched ${groupAssignments.length} groups, ${distinctVariants.length} distinct variants, ${trvCarriers.length} TRV carriers for ${chrom}:${args.start}-${args.stop}`)
 
         const tAssemble = now()
         const result = assembleHaplotypeGroups(
@@ -128,7 +130,8 @@ const resolvers = {
           distinctVariants,
           chrom,
           minAf,
-          args.sort_by || 'similarity_score'
+          args.sort_by || 'similarity_score',
+          trvCarriers
         )
         const assembleMs = now() - tAssemble
 

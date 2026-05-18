@@ -89,6 +89,7 @@ const context = { esClient }
 import {
   fetchHaplotypeGroupAssignments,
   fetchDistinctHaplotypeVariants,
+  fetchTrvCarrierAlts,
 } from './queries/haplotype-queries'
 import { assembleHaplotypeGroups } from './queries/haplotype-grouping'
 
@@ -107,9 +108,10 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       return res.status(400).json({ error: 'chrom, start, stop required' })
     }
 
-    const [groupAssignments, distinctVariants] = await Promise.all([
+    const [groupAssignments, distinctVariants, trvCarriers] = await Promise.all([
       fetchHaplotypeGroupAssignments(chrom, start, stop, minAf),
       fetchDistinctHaplotypeVariants(chrom, start, stop),
+      fetchTrvCarrierAlts(chrom, start, stop),
     ])
 
     const result = assembleHaplotypeGroups(
@@ -117,7 +119,8 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       distinctVariants as any,
       chrom,
       minAf,
-      sortBy
+      sortBy,
+      trvCarriers as any
     )
 
     const ms = performance.now() - t0

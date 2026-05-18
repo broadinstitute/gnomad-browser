@@ -274,6 +274,14 @@ function sortBySimilarity(groups: any[]) {
  * Q1 provides group assignments (readable_id → carriers), Q2 provides distinct variant details.
  * This replaces the heavy JS-side grouping with simple map lookups.
  */
+export type TrvCarrierRow = {
+  position: string
+  ref: string
+  alt: string
+  sample_id: string
+  strand: number
+}
+
 export const assembleHaplotypeGroups = (
   groupAssignments: Array<{
     readable_id: string
@@ -283,7 +291,8 @@ export const assembleHaplotypeGroups = (
   distinctVariants: any[],
   chrom: string,
   minAlleleFreq: number,
-  sortBy: string = 'similarity_score'
+  sortBy: string = 'similarity_score',
+  trvCarriers: TrvCarrierRow[] = []
 ) => {
   // Step 1: Build variant map keyed by "chrom-pos:ref-alt"
   const variantMap = new Map<string, Variant>()
@@ -311,6 +320,18 @@ export const assembleHaplotypeGroups = (
     variantMap.set(key, variant)
   }
 
+  // Step 1b: Build TRV carrier lookup: (sampleId:strand) → position → alt
+  const trvAltMap = new Map<string, Map<number, string>>()
+  for (const row of trvCarriers) {
+    const carrierKey = `${row.sample_id}:${row.strand}`
+    let posMap = trvAltMap.get(carrierKey)
+    if (!posMap) {
+      posMap = new Map()
+      trvAltMap.set(carrierKey, posMap)
+    }
+    posMap.set(Number(row.position), row.alt)
+  }
+
   // Step 2: Build carrier→groupIndex reverse index
   const carrierToGroup = new Map<string, number>()
   for (let gi = 0; gi < groupAssignments.length; gi++) {
@@ -335,10 +356,27 @@ export const assembleHaplotypeGroups = (
     const readableId = ga.readable_id
     const groupHash = hashString(readableId)
 
-    const samples = ga.carriers.map(([sampleId, _strand]) => ({
-      sample_id: sampleId,
-      variant_sets: [{ variants: aboveThreshold, readable_id: readableId }],
-    }))
+    const hasTrv = aboveThreshold.some((v) => v.allele_type === 'trv')
+    const samples = ga.carriers.map(([sampleId, strand]) => {
+      let variants = aboveThreshold
+      if (hasTrv && trvAltMap.size > 0) {
+        const posMap = trvAltMap.get(`${sampleId}:${strand}`)
+        if (posMap) {
+          variants = aboveThreshold.map((v) => {
+            if (v.allele_type !== 'trv') return v
+            const carrierAlt = posMap.get(v.position)
+            if (carrierAlt && carrierAlt !== v.alleles[1]) {
+              return { ...v, alleles: [v.alleles[0], carrierAlt] }
+            }
+            return v
+          })
+        }
+      }
+      return {
+        sample_id: sampleId,
+        variant_sets: [{ variants, readable_id: readableId }],
+      }
+    })
 
     groups.push({
       samples,
