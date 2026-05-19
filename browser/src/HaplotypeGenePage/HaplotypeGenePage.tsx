@@ -58,11 +58,11 @@ const HAPLOTYPE_QUERY = `
       groups {
         samples { sample_id }
         variants {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased }
+          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
           readable_id
         }
         below_threshold {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased }
+          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
           readable_id
         }
         start stop hash

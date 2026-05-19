@@ -1,4 +1,10 @@
 // Shared color constants for haplotype visualizations
+//
+// Prefer VARIANT_CATEGORY_COLORS (5-category system) for new code.
+// VARIANT_TYPE_COLORS (11-key per-allele-type) is retained for BubbleTrack's
+// per-type rendering; it will be removed once BubbleTrack migrates.
+
+export { VARIANT_CATEGORY_COLORS } from '../LongReadVariantPage/variantUtils'
 
 // Alluvial path colors (categorical)
 export const PATH_COLORS = [

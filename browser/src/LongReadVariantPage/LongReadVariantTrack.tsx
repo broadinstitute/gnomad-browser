@@ -7,8 +7,7 @@ import { Track } from '@gnomad/region-viewer'
 import Link from '../Link'
 import VariantTrack from '../VariantList/VariantTrack'
 import { getCategoryFromConsequence } from '../vepConsequences'
-import { svTypeColors } from '../StructuralVariantList/structuralVariantTypes'
-import { VARIANT_TYPE_COLORS } from '../Haplotypes/colors'
+import { getVariantCategory, VARIANT_CATEGORY_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 
 // --- Types ---
 
@@ -40,7 +39,7 @@ const ROW_HEIGHT = 14
 const LOLLIPOP_RADIUS = 3
 const LOLLIPOP_TOP = 10
 const MIN_SV_BAR_WIDTH = 3
-const TR_BLOCK_COLOR = VARIANT_TYPE_COLORS.trv
+const TR_BLOCK_COLOR = VARIANT_CATEGORY_COLORS.tr
 const MOTIF_LABEL_MIN_WIDTH = 40
 
 // --- Consequence colors for Band 1 ---
@@ -52,41 +51,12 @@ const consequenceCategoryColors: Record<string, string> = {
   other: transparentize(0.6, '#9e9e9e'),
 }
 
-// --- SV type mapping for Band 2 ---
+// SV type colors now come from shared VARIANT_CATEGORY_COLORS in variantUtils.ts
 
-const svDisplayConfig: Record<string, { shape: string; color: string }> = {
-  alu_ins: { shape: 'INS', color: '#9d84e1' },
-  line_ins: { shape: 'INS', color: '#6c5b9c' },
-  sva_ins: { shape: 'INS', color: '#d474e0' },
-  numt: { shape: 'INS', color: '#fa931e' },
-  alu_del: { shape: 'DEL', color: svTypeColors.DEL },
-  line_del: { shape: 'DEL', color: svTypeColors.DEL },
-  sva_del: { shape: 'DEL', color: svTypeColors.DEL },
-  del: { shape: 'DEL', color: svTypeColors.DEL },
-  ins: { shape: 'INS', color: svTypeColors.INS },
-  dup: { shape: 'DUP', color: svTypeColors.DUP },
-  dup_interspersed: { shape: 'DUP', color: '#1a5a8a' },
-  complex_dup: { shape: 'DUP', color: '#3a9ad9' },
-  inv_dup: { shape: 'DUP', color: '#2376B2' },
-}
+// --- Band assignment (delegates to shared variantUtils) ---
 
-function getSvDisplay(alleleType: string): { shape: string; color: string } {
-  return svDisplayConfig[alleleType] || { shape: 'OTH', color: svTypeColors.OTH }
-}
-
-// --- Band assignment ---
-
-function assignBand(variant: LRVariant): Band {
-  const t = variant.allele_type
-  if (t === 'trv') return 'tr'
-  if (t === 'snv') return 'snv'
-  if (t === 'ins' || t === 'del') {
-    const len = variant.length
-    if (len === null || Math.abs(len) < 50) return 'snv'
-    return 'sv'
-  }
-  // All other types are SVs
-  return 'sv'
+function assignVariantBand(variant: LRVariant): Band {
+  return sharedAssignBand(variant.allele_type, variant.length)
 }
 
 // --- Interval packing ---
@@ -136,10 +106,11 @@ const SvBand = ({ variants, scalePosition, width }: {
   return (
     <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
       {packed.map((v) => {
-        const { shape, color } = getSvDisplay(v.allele_type)
+        const cat = getVariantCategory(v.allele_type, v.length)
+        const color = VARIANT_CATEGORY_COLORS[cat]
         const rowY = v.row * ROW_HEIGHT + 2
 
-        if (shape === 'INS') {
+        if (cat === 'insertion') {
           const x = scalePosition(v.pos)
           return (
             <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
@@ -243,15 +214,24 @@ const BandDivider = styled.div`
 
 type LongReadVariantTrackProps = {
   variants: LRVariant[]
+  lod?: LodVisibility
 }
 
-const LongReadVariantTrack = ({ variants }: LongReadVariantTrackProps) => {
+const LongReadVariantTrack = ({ variants, lod }: LongReadVariantTrackProps) => {
   const snvVariants: LRVariant[] = []
   const svVariants: SvItem[] = []
   const trVariants: TrItem[] = []
 
   for (const v of variants) {
-    const band = assignBand(v)
+    // LOD filtering: skip sub-pixel variants when zoomed out
+    if (lod) {
+      const cat = getVariantCategory(v.allele_type, v.length)
+      const isLarge = Math.abs(v.length || 0) >= 50
+      if (cat === 'snv' && !lod.showSnvs) continue
+      if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
+    }
+
+    const band = assignVariantBand(v)
     if (band === 'snv') {
       snvVariants.push(v)
     } else if (band === 'sv') {

@@ -448,46 +448,41 @@ export const Legend = ({
   )
 }
 
-type Variant = {
-  locus: string
-  position: number
+export type LRVariant = {
+  variant_id: string
   chrom: string
-  alleles: string[]
+  pos: number
+  end?: number | null
+  ref: string
+  alt: string
+  allele_type: string
+  allele_length: number
+  freq: {
+    af: number
+    ac: number
+    an: number
+  }
+  populations: Array<{ id: string; af: number }>
   rsid: string
-  qual: number
-  filters: any[]
-  info_AF: number[]
-  info_AC: number
-  info_CM: number[]
-  info_AN: number
-  info_SVTYPE: string
-  info_SVLEN: number
-  GT_alleles: number[]
-  GT_phased: boolean
-  allele_type?: string
-  allele_length?: number
-  gnomad_v4_match_type?: string | null
-  info_AF_afr?: number | null
-  info_AF_amr?: number | null
-  info_AF_eas?: number | null
-  info_AF_nfe?: number | null
-  info_AF_sas?: number | null
   major_consequence?: string | null
   cadd_phred?: number | null
   phylop?: number | null
+  filters?: string[] | null
   sv_consequences?: string[] | null
   dbgap_id?: string | null
   tr_id?: string | null
   tr_motifs?: string | null
-  tr_struc?: string | null
+  gnomad_str?: string | null
   allele_methylation?: number | null
   motif_counts?: number[] | null
   allele_purity?: number | null
+  in_samples?: string[]
+  gt_phased?: boolean
 }
 
 type VariantSet = {
-  variants: Variant[]
-  phase_type: string
+  variants: LRVariant[]
+  readable_id: string
 }
 
 type Sample = {
@@ -619,14 +614,11 @@ const getDominantPop = (composition: Record<string, number>): string => {
 }
 
 /** Population AF mini bar chart for variant tooltip */
-const PopulationAfBars = ({ variant }: { variant: Variant }) => {
-  const pops = [
-    { key: 'AFR', value: variant.info_AF_afr },
-    { key: 'AMR', value: variant.info_AF_amr },
-    { key: 'EAS', value: variant.info_AF_eas },
-    { key: 'EUR', value: variant.info_AF_nfe },
-    { key: 'SAS', value: variant.info_AF_sas },
-  ].filter((p) => p.value != null) as { key: string; value: number }[]
+const PopulationAfBars = ({ variant }: { variant: LRVariant }) => {
+  const pops = (variant.populations || []).map((p) => ({
+    key: p.id.toUpperCase() === 'NFE' ? 'EUR' : p.id.toUpperCase(),
+    value: p.af,
+  }))
 
   if (pops.length === 0) return null
 
@@ -661,59 +653,51 @@ const PopulationAfBars = ({ variant }: { variant: Variant }) => {
   )
 }
 
-const VariantTooltip = ({ variant }: { variant: Variant }) => (
+const VariantTooltip = ({ variant }: { variant: LRVariant }) => (
   <RegionAttributeList>
     <div>
       <dt>Position:</dt>
-      <dd>{variant.position}</dd>
+      <dd>{variant.pos}</dd>
     </div>
     <div>
       <dt>Ref:</dt>
       <dd>
-        {variant.alleles[0].length > 10
-          ? variant.alleles[0].substring(0, 10) + '...'
-          : variant.alleles[0]}
+        {variant.ref.length > 10
+          ? variant.ref.substring(0, 10) + '...'
+          : variant.ref}
       </dd>
     </div>
     <div>
       <dt>Alt:</dt>
       <dd>
-        {variant.alleles[1].length > 10
-          ? variant.alleles[1].substring(0, 10) + '...'
-          : variant.alleles[1]}
+        {variant.alt.length > 10
+          ? variant.alt.substring(0, 10) + '...'
+          : variant.alt}
       </dd>
     </div>
     <div>
       <dt>RSID:</dt>
-      <dd>{variant.rsid.length > 10 ? `${variant.rsid.substring(0, 10)}...` : variant.rsid}</dd>
+      <dd>{variant.rsid && variant.rsid.length > 10 ? `${variant.rsid.substring(0, 10)}...` : variant.rsid}</dd>
     </div>
-    <div>
-      <dt>SVTYPE:</dt>
-      <dd>{variant.info_SVTYPE}</dd>
-    </div>
-    <div>
-      <dt>SVLEN:</dt>
-      <dd>{variant.info_SVLEN}</dd>
-    </div>
-    <div>
-      <dt>Quality:</dt>
-      <dd>{variant.qual}</dd>
-    </div>
+    {variant.allele_type && (
+      <div>
+        <dt>Type:</dt>
+        <dd>{variant.allele_type}</dd>
+      </div>
+    )}
+    {variant.allele_length != null && Math.abs(variant.allele_length) > 0 && (
+      <div>
+        <dt>Length:</dt>
+        <dd>{variant.allele_length}bp</dd>
+      </div>
+    )}
     <div>
       <dt>Allele Frequency:</dt>
-      <dd>{variant.info_AF.join(', ')}</dd>
+      <dd>{variant.freq.af.toFixed(4)}</dd>
     </div>
     <div>
       <dt>Allele Count:</dt>
-      <dd>{variant.info_AC}</dd>
-    </div>
-    {/* <div> */}
-    {/*   <dt>Sample Alleles:</dt> */}
-    {/*   <dd>{variant.GT_alleles.join(', ')}</dd> */}
-    {/* </div> */}
-    <div>
-      <dt>Phased:</dt>
-      <dd>{variant.GT_phased ? 'Yes' : 'No'}</dd>
+      <dd>{variant.freq.ac}</dd>
     </div>
     {variant.allele_methylation != null && (
       <div>
@@ -803,10 +787,10 @@ const getColorForVariantByPosition = (
   return `hsl(${hue}, 100%, 50%)`
 }
 
-const getColorForVariantByHaplotypeCount = (haplotypeGroups: HaplotypeGroup[], locus: string) => {
+const getColorForVariantByHaplotypeCount = (haplotypeGroups: HaplotypeGroup[], variantId: string) => {
   const count = haplotypeGroups.reduce(
     (acc, group) =>
-      acc + (group.variants.variants.some((variant) => variant.locus === locus) ? 1 : 0),
+      acc + (group.variants.variants.some((variant) => variant.variant_id === variantId) ? 1 : 0),
     0
   )
   const haplotypeCountScale = scaleLinear<string>()
@@ -882,7 +866,7 @@ const HaplotypeHeaderTrack = ({
     for (const group of displayGroups) {
       samples += group.samples.length
       for (const v of group.variants.variants) {
-        loci.add(v.locus)
+        loci.add(v.variant_id)
       }
     }
     return { totalSamples: samples, totalVariants: loci.size }
@@ -1077,7 +1061,7 @@ const HaplotypeGroupTrack = ({
     if (!showGroupMqtl) return []
     const minP = mqtlMinLogP || 0
     const groupVariantPositions = new Set(
-      group.variants.variants.map((v: Variant) => v.position)
+      group.variants.variants.map((v: LRVariant) => v.pos)
     )
     return mqtlData.filter((d: any) =>
       groupVariantPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= minP
@@ -1223,10 +1207,10 @@ const HaplotypeGroupTrack = ({
                 />
                 <line x1={startX} y1={12.5} x2={stopX} y2={12.5} stroke='#a8a8a8' strokeWidth={1} />
 
-                {group.below_threshold.variants.map((variant: Variant, index: number) => {
-                  const bx = scalePosition(variant.position)
+                {group.below_threshold.variants.map((variant: LRVariant, index: number) => {
+                  const bx = scalePosition(variant.pos)
                   const bType = (variant.allele_type || '').toLowerCase()
-                  const bColor = colorMode === 'allele' ? getColorForVariantByHash(variant.locus) : 'grey'
+                  const bColor = colorMode === 'allele' ? getColorForVariantByHash(variant.variant_id) : 'grey'
                   return (
                     <TooltipAnchor key={`below-${group.hash}-${index}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
                       {bType === 'del' ? (
@@ -1244,21 +1228,21 @@ const HaplotypeGroupTrack = ({
                   )
                 })}
 
-                {group.variants.variants.map((variant: Variant, variantIndex: number) => {
+                {group.variants.variants.map((variant: LRVariant, variantIndex: number) => {
                   // Determine color from the active color mode
                   let color: string
-                  if (colorMode === 'allele') color = getColorForVariantByHash(variant.locus)
-                  else if (colorMode === 'position') color = getColorForVariantByPosition(variant.position, start, stop)
-                  else if (colorMode === 'af') color = getColorForVariantByAf(variant.info_AF[0])
-                  else if (colorMode === 'haplotype_count') color = getColorForVariantByHaplotypeCount(haplotypeGroups, variant.locus)
+                  if (colorMode === 'allele') color = getColorForVariantByHash(variant.variant_id)
+                  else if (colorMode === 'position') color = getColorForVariantByPosition(variant.pos, start, stop)
+                  else if (colorMode === 'af') color = getColorForVariantByAf(variant.freq.af)
+                  else if (colorMode === 'haplotype_count') color = getColorForVariantByHaplotypeCount(haplotypeGroups, variant.variant_id)
                   else color = '#333'
 
                   // Determine variant category by allele_type
                   const vType = (variant.allele_type || '').toLowerCase()
-                  const x = scalePosition(variant.position)
+                  const x = scalePosition(variant.pos)
 
                   return (
-                    <TooltipAnchor key={`${group.hash}-${variant.locus}-${variantIndex}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
+                    <TooltipAnchor key={`${group.hash}-${variant.variant_id}-${variantIndex}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
                       {vType === 'del' ? (
                         // Deletion: dashed line, thickness scales with length
                         <line x1={x} y1={5} x2={x} y2={20}
