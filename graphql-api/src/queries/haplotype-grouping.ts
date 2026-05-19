@@ -5,6 +5,27 @@
  * Optimized: ClickHouse does the GROUP BY, and similarity uses Set intersection.
  */
 
+import {
+  computeSVDistanceMatrix,
+  buildUPGMATree,
+  getClustersAtThreshold,
+  getLeafGroupHashes,
+  type TreeNode,
+} from './genealogy-math'
+
+// --- UPGMA tree cache (bounded Map, max 5 entries) ---
+const upgmaTreeCache = new Map<string, { tree: TreeNode; leafOrder: string[] }>()
+const TREE_CACHE_MAX = 5
+
+function cacheTree(key: string, value: { tree: TreeNode; leafOrder: string[] }) {
+  if (upgmaTreeCache.size >= TREE_CACHE_MAX) {
+    // Evict oldest entry (first key in insertion order)
+    const firstKey = upgmaTreeCache.keys().next().value
+    if (firstKey !== undefined) upgmaTreeCache.delete(firstKey)
+  }
+  upgmaTreeCache.set(key, value)
+}
+
 type GroupedRow = {
   sample_id: string
   strand: number
@@ -308,7 +329,10 @@ export const assembleHaplotypeGroups = (
   chrom: string,
   minAlleleFreq: number,
   sortBy: string = 'similarity_score',
-  trvCarriers: TrvCarrierRow[] = []
+  trvCarriers: TrvCarrierRow[] = [],
+  clusterThreshold?: number,
+  regionStart?: number,
+  regionStop?: number
 ) => {
   // Step 1: Build variant map keyed by "chrom-pos:ref-alt"
   const variantMap = new Map<string, LRVariant>()
@@ -448,7 +472,78 @@ export const assembleHaplotypeGroups = (
     groups.sort((a, b) => b.variants.variants.length - a.variants.variants.length)
   }
 
-  return { groups }
+  // Step 6: Clustering (optional — only if clusterThreshold is provided)
+  if (clusterThreshold == null || groups.length < 2) {
+    return { groups }
+  }
+
+  const cacheKey = `${chrom}:${regionStart ?? 0}-${regionStop ?? 0}`
+
+  // Fetch or build UPGMA tree
+  let treeResult = upgmaTreeCache.get(cacheKey)
+  if (!treeResult) {
+    const distMatrix = computeSVDistanceMatrix(groups)
+    treeResult = buildUPGMATree(distMatrix, groups)
+    cacheTree(cacheKey, treeResult)
+  }
+
+  const { tree } = treeResult
+
+  // Cut tree at threshold
+  const clusterNodes = getClustersAtThreshold(tree, clusterThreshold)
+
+  // Build a hash→group lookup for fast access
+  const groupByHash = new Map<string, any>()
+  for (const g of groups) {
+    groupByHash.set(g.hash, g)
+  }
+
+  // Compute consensus for each cluster
+  const clusters = clusterNodes.map((clusterNode, idx) => {
+    const memberHashes = getLeafGroupHashes(clusterNode)
+    const memberGroups = memberHashes
+      .map((h) => groupByHash.get(h))
+      .filter((g): g is any => g != null)
+
+    const sampleCount = memberGroups.reduce(
+      (sum: number, g: any) => sum + g.samples.length,
+      0
+    )
+
+    // Tally variant occurrences across member groups, weighted by sample count
+    const variantTally = new Map<string, { variant: LRVariant; count: number }>()
+    for (const g of memberGroups) {
+      const weight = g.samples.length
+      for (const v of g.variants.variants as LRVariant[]) {
+        const existing = variantTally.get(v.variant_id)
+        if (existing) {
+          existing.count += weight
+        } else {
+          variantTally.set(v.variant_id, { variant: v, count: weight })
+        }
+      }
+    }
+
+    const consensusVariants = Array.from(variantTally.values()).map(
+      ({ variant, count }) => ({
+        variant,
+        cluster_af: sampleCount > 0 ? count / sampleCount : 0,
+      })
+    )
+
+    return {
+      cluster_id: `cluster_${idx}`,
+      sample_count: sampleCount,
+      member_group_hashes: memberHashes,
+      consensus_variants: consensusVariants,
+    }
+  })
+
+  return {
+    groups,
+    clusters,
+    tree_json: JSON.stringify(tree),
+  }
 }
 
 // --- Legacy exports (used by mQTL and potentially other code paths) ---

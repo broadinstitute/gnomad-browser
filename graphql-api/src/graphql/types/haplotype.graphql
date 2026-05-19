@@ -67,8 +67,22 @@ type HaplotypeGroup {
   hash: String!
 }
 
+type ClusterConsensusVariant {
+  variant: LRVariant!
+  cluster_af: Float!
+}
+
+type HaplotypeCluster {
+  cluster_id: String!
+  sample_count: Int!
+  member_group_hashes: [String!]!
+  consensus_variants: [ClusterConsensusVariant!]!
+}
+
 type HaplotypeGroups {
   groups: [HaplotypeGroup!]!
+  clusters: [HaplotypeCluster!]
+  tree_json: String
 }
 
 type MethylationRecord {
@@ -200,6 +214,7 @@ extend type Query {
     stop: Int!
     min_allele_freq: Float
     sort_by: String
+    cluster_threshold: Float
   ): HaplotypeGroups
 
   methylation(

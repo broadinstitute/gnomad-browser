@@ -131,7 +131,10 @@ const resolvers = {
           chrom,
           minAf,
           args.sort_by || 'similarity_score',
-          trvCarriers
+          trvCarriers,
+          args.cluster_threshold != null ? args.cluster_threshold : undefined,
+          args.start,
+          args.stop
         )
         const assembleMs = now() - tAssemble
 
