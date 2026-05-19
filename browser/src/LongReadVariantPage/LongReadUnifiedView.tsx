@@ -31,8 +31,8 @@ const SAMPLE_METADATA_QUERY = `
 `
 
 const HAPLOTYPE_GROUPS_QUERY = `
-  query RegionHaploGroups($chrom: String!, $start: Int!, $stop: Int!, $min_allele_freq: Float, $sort_by: String) {
-    haplotype_groups(chrom: $chrom, start: $start, stop: $stop, min_allele_freq: $min_allele_freq, sort_by: $sort_by) {
+  query RegionHaploGroups($chrom: String!, $start: Int!, $stop: Int!, $min_allele_freq: Float, $sort_by: String, $cluster_threshold: Float) {
+    haplotype_groups(chrom: $chrom, start: $start, stop: $stop, min_allele_freq: $min_allele_freq, sort_by: $sort_by, cluster_threshold: $cluster_threshold) {
       groups {
         samples { sample_id }
         variants {
@@ -45,6 +45,16 @@ const HAPLOTYPE_GROUPS_QUERY = `
         }
         start stop hash
       }
+      clusters {
+        cluster_id
+        sample_count
+        member_group_hashes
+        consensus_variants {
+          cluster_af
+          variant { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
+        }
+      }
+      tree_json
     }
   }
 `
@@ -121,7 +131,11 @@ const hydrateGroups = (rawGroups: any) => {
 
   console.log(`[perf] hydrated ${groups.length} groups`)
   console.timeEnd('[perf] hydrateGroups')
-  return { groups }
+  return {
+    groups,
+    clusters: rawGroups.clusters || undefined,
+    tree_json: rawGroups.tree_json || undefined,
+  }
 }
 
 // --- Styled components ---
@@ -192,6 +206,15 @@ const useRestApi = () => {
   try {
     return new URLSearchParams(window.location.search).get('api') === 'rest'
   } catch { return false }
+}
+
+/** Auto-calculate a reasonable cluster threshold based on region size */
+function getAutoClusterThreshold(regionSize: number): number {
+  if (regionSize < 50_000) return 0.0
+  if (regionSize > 1_000_000) return 0.70
+  // Linear interpolation between 0.35 and 0.65 for 50k-1M
+  const t = (regionSize - 50_000) / (1_000_000 - 50_000)
+  return 0.35 + t * 0.30
 }
 
 const MAX_HAPLOTYPE_REGION_SIZE = 5_000_000
@@ -268,6 +291,33 @@ const LongReadUnifiedView = ({
   const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
 
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
+
+  // Cluster state
+  const [clusterThreshold, setClusterThreshold] = useState(() => getAutoClusterThreshold(regionSize))
+  const [isClusteredView, setIsClusteredView] = useState(() => getAutoClusterThreshold(regionSize) > 0)
+  const [expandedClusterIds, setExpandedClusterIds] = useState<Set<string>>(new Set())
+
+  // Clear expanded clusters when threshold/region changes
+  const prevClusterKey = useRef(`${clusterThreshold}-${threshold}-${start}-${stop}`)
+  useEffect(() => {
+    const key = `${clusterThreshold}-${threshold}-${start}-${stop}`
+    if (key !== prevClusterKey.current) {
+      prevClusterKey.current = key
+      setExpandedClusterIds(new Set())
+    }
+  }, [clusterThreshold, threshold, start, stop])
+
+  const toggleClusterExpansion = useCallback((clusterId: string) => {
+    setExpandedClusterIds(prev => {
+      const next = new Set(prev)
+      if (next.has(clusterId)) {
+        next.delete(clusterId)
+      } else {
+        next.add(clusterId)
+      }
+      return next
+    })
+  }, [])
 
   // Scroll sync refs and lock
   const trackRef = useRef<HaplotypeTrackHandle>(null)
@@ -367,6 +417,7 @@ const LongReadUnifiedView = ({
             stop: stop,
             min_allele_freq: currentThreshold,
             sort_by: sortBy,
+            cluster_threshold: isClusteredView ? clusterThreshold : undefined,
           })
           console.timeEnd('[perf] GraphQL fetch + JSON parse')
           if (result.errors) {
@@ -384,14 +435,14 @@ const LongReadUnifiedView = ({
         setHaplotypeLoading(false)
       }
     }, 300),
-    [chrom, start, stop, sortBy, isRest]
+    [chrom, start, stop, sortBy, isRest, isClusteredView, clusterThreshold]
   )
 
   // Fetch haplotype groups when in haplotype mode
   useEffect(() => {
     if (viewMode !== 'haplotype') return
     debouncedFetchHaplotypeGroups(threshold)
-  }, [viewMode, chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
+  }, [viewMode, chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy, isClusteredView, clusterThreshold])
 
   // Fetch methylation summary + outliers when entering haplotype mode
   useEffect(() => {
@@ -645,6 +696,7 @@ const LongReadUnifiedView = ({
             <HaplotypeTrack
               ref={trackRef}
               haplotypeGroups={haplotypeGroups.groups}
+              clusters={haplotypeGroups.clusters}
               methylationData={methylationData}
               methylationSummary={methylationSummary}
               sampleMetadata={sampleMetadata}
@@ -672,6 +724,12 @@ const LongReadUnifiedView = ({
               onShowGenealogyChange={setShowGenealogyUrl}
               hoveredVariantPosition={hoveredVariantPosition}
               onVisibleGroupChange={handleVisibleGroupChange}
+              isClusteredView={isClusteredView}
+              onIsClusteredViewChange={setIsClusteredView}
+              clusterThreshold={clusterThreshold}
+              onClusterThresholdChange={setClusterThreshold}
+              expandedClusterIds={expandedClusterIds}
+              toggleClusterExpansion={toggleClusterExpansion}
             />
           )}
           <PositionAxisTrack />

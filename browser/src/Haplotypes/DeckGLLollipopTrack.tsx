@@ -8,7 +8,7 @@ import { scaleLinear, scaleLog } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, getLodVisibility } from '../LongReadVariantPage/variantUtils'
 import GenealogyTreeOverlay from './GenealogyTreeOverlay'
-import type { HaplotypeGroup, LRVariant, Methylation, MethylationSummaryPoint } from './index'
+import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation, MethylationSummaryPoint } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 type Variant = LRVariant
@@ -235,9 +235,15 @@ function getVariantShape(variant: Variant): VariantShape {
   }
 }
 
+// Discriminated union for rows in the mixed cluster + group view
+type RowItem =
+  | { type: 'cluster'; cluster: HaplotypeCluster }
+  | { type: 'group'; group: HaplotypeGroup; isChild: boolean }
+
 type DeckGLLollipopTrackProps = {
   displayGroups: HaplotypeGroup[]
   haplotypeGroups: HaplotypeGroup[]
+  clusters?: HaplotypeCluster[]
   start: number
   stop: number
   colorMode: string
@@ -256,6 +262,9 @@ type DeckGLLollipopTrackProps = {
   showGenealogy?: boolean
   genealogyResult?: { tree: any; leafOrder: number[] } | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
+  isClusteredView?: boolean
+  expandedClusterIds?: Set<string>
+  toggleClusterExpansion?: (clusterId: string) => void
 }
 
 export type DeckGLLollipopTrackHandle = {
@@ -265,6 +274,7 @@ export type DeckGLLollipopTrackHandle = {
 const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipopTrackProps>(function DeckGLLollipopTrack({
   displayGroups,
   haplotypeGroups,
+  clusters,
   start,
   stop,
   colorMode,
@@ -282,6 +292,9 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   showGenealogy = false,
   genealogyResult,
   onVisibleGroupChange,
+  isClusteredView = false,
+  expandedClusterIds,
+  toggleClusterExpansion,
 }, ref) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -293,25 +306,60 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [scrollTop, setScrollTop] = useState(0)
 
+  // Build a hash->group lookup for cluster expansion
+  const groupByHash = useMemo(() => {
+    const map = new Map<string, HaplotypeGroup>()
+    for (const g of displayGroups) {
+      map.set(String(g.hash), g)
+    }
+    return map
+  }, [displayGroups])
+
+  // Build mixed RowItem array: clusters + expanded groups
+  const rowItems: RowItem[] = useMemo(() => {
+    if (!isClusteredView || !clusters || clusters.length === 0) {
+      return displayGroups.map(group => ({ type: 'group' as const, group, isChild: false }))
+    }
+    const items: RowItem[] = []
+    for (const cluster of clusters) {
+      items.push({ type: 'cluster', cluster })
+      if (expandedClusterIds?.has(cluster.cluster_id)) {
+        for (const hash of cluster.member_group_hashes) {
+          const group = groupByHash.get(hash)
+          if (group) {
+            items.push({ type: 'group', group, isChild: true })
+          }
+        }
+      }
+    }
+    return items
+  }, [isClusteredView, clusters, displayGroups, expandedClusterIds, groupByHash])
+
   // Compute row Y offsets and total height
   const { rowOffsets, totalHeight } = useMemo(() => {
     const offsets: number[] = []
     let cumY = 0
-    for (const group of displayGroups) {
+    for (const item of rowItems) {
       offsets.push(cumY)
-      const showGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
-        const groupVarPositions = new Set(group.variants.variants.map((v) => v.pos))
-        return mqtlData.some(
-          (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
-        )
-      })()
-      let h = VARIANT_ROW_HEIGHT
-      if (showMethylation) h += METH_TRACK_HEIGHT
-      if (showGroupMqtl) h += MQTL_PAD + MQTL_TRACK_HEIGHT
-      cumY += h
+      if (item.type === 'cluster') {
+        // Clusters are a single row
+        cumY += VARIANT_ROW_HEIGHT
+      } else {
+        const group = item.group
+        const showGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
+          const groupVarPositions = new Set(group.variants.variants.map((v) => v.pos))
+          return mqtlData.some(
+            (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
+          )
+        })()
+        let h = VARIANT_ROW_HEIGHT
+        if (showMethylation) h += METH_TRACK_HEIGHT
+        if (showGroupMqtl) h += MQTL_PAD + MQTL_TRACK_HEIGHT
+        cumY += h
+      }
     }
     return { rowOffsets: offsets, totalHeight: cumY }
-  }, [displayGroups, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
+  }, [rowItems, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
 
   // Throttled scroll handler
   const handleScroll = useMemo(
@@ -327,38 +375,46 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
             if (rowOffsets[i] <= newScrollTop) visibleIdx = i
             else break
           }
-          onVisibleGroupChange(displayGroups[visibleIdx])
+          const item = rowItems[visibleIdx]
+          if (item?.type === 'group') {
+            onVisibleGroupChange(item.group)
+          }
         }
       }, 50),
-    [rowOffsets, displayGroups, onVisibleGroupChange]
+    [rowOffsets, rowItems, onVisibleGroupChange]
   )
 
   // Expose scrollToPosition for external sync
   useImperativeHandle(ref, () => ({
     scrollToPosition(pos: number) {
       if (!scrollContainerRef.current) return
-      // Find the first group containing a variant at or after pos
-      for (let i = 0; i < displayGroups.length; i++) {
-        const group = displayGroups[i]
-        if (group.variants.variants.some((v) => v.pos >= pos) ||
-            group.below_threshold.variants.some((v) => v.pos >= pos)) {
-          scrollContainerRef.current.scrollTop = rowOffsets[i]
-          return
+      // Find the first group row containing a variant at or after pos
+      for (let i = 0; i < rowItems.length; i++) {
+        const item = rowItems[i]
+        if (item.type === 'group') {
+          const group = item.group
+          if (group.variants.variants.some((v) => v.pos >= pos) ||
+              group.below_threshold.variants.some((v) => v.pos >= pos)) {
+            scrollContainerRef.current.scrollTop = rowOffsets[i]
+            return
+          }
         }
       }
     },
-  }), [displayGroups, rowOffsets])
+  }), [rowItems, rowOffsets])
 
   // Compute leaf Y positions for genealogy tree overlay
   const leafYPositions = useMemo(() => {
     const positions = new Map<number, number>()
     if (showGenealogy && genealogyResult) {
-      displayGroups.forEach((group, i) => {
-        positions.set(group.hash, rowOffsets[i] + ROW_CENTER_Y)
+      rowItems.forEach((item, i) => {
+        if (item.type === 'group') {
+          positions.set(item.group.hash, rowOffsets[i] + ROW_CENTER_Y)
+        }
       })
     }
     return positions
-  }, [showGenealogy, genealogyResult, displayGroups, rowOffsets])
+  }, [showGenealogy, genealogyResult, rowItems, rowOffsets])
 
   const onHover = useCallback(
     (info: any) => {
@@ -393,11 +449,36 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       renderLeftPanel={() => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <svg width={200} height={totalHeight}>
-            {displayGroups.map((group, i) => {
+            {rowItems.map((item, i) => {
               if (i < lpStart || i > lpEnd) return null
               const y = rowOffsets[i]
+              if (item.type === 'cluster') {
+                const cluster = item.cluster
+                const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
+                return (
+                  <g
+                    key={`cluster-${cluster.cluster_id}`}
+                    transform={`translate(0, ${y})`}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
+                  >
+                    <text x={2} y={17} fontSize='11' fill='#555'>
+                      {isExpanded ? '\u25BC' : '\u25B6'}
+                    </text>
+                    <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
+                    <text x={30} y={17} fontSize='12'>
+                      {cluster.sample_count}
+                    </text>
+                    <text x={60} y={17} fontSize='10' fill='#888'>
+                      ({cluster.member_group_hashes.length}g)
+                    </text>
+                  </g>
+                )
+              }
+              const group = item.group
+              const indent = item.isChild ? 12 : 0
               return (
-                <g key={group.hash} transform={`translate(0, ${y})`}>
+                <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
                   <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
                   <text x={15} y={17} fontSize='12'>
                     {group.samples.length}
@@ -444,6 +525,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
         <DeckGLLollipopCanvas
           displayGroups={displayGroups}
           haplotypeGroups={haplotypeGroups}
+          rowItems={rowItems}
           start={start}
           stop={stop}
           colorMode={colorMode}
@@ -475,6 +557,7 @@ export default DeckGLLollipopTrack
 type DeckGLCanvasProps = {
   displayGroups: HaplotypeGroup[]
   haplotypeGroups: HaplotypeGroup[]
+  rowItems: RowItem[]
   start: number
   stop: number
   colorMode: string
@@ -496,10 +579,18 @@ type DeckGLCanvasProps = {
   scrollTop: number
 }
 
+/** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
+function clusterAfAlpha(clusterAf: number): number {
+  if (clusterAf >= 0.9) return 255
+  // 0.5 <= af < 0.9 => scale 50..255
+  return Math.round(50 + ((clusterAf - 0.5) / 0.4) * 205)
+}
+
 // Inner component that receives scalePosition from Track render prop
 function DeckGLLollipopCanvas({
   displayGroups,
   haplotypeGroups,
+  rowItems,
   start,
   stop,
   colorMode,
@@ -555,16 +646,92 @@ function DeckGLLollipopCanvas({
       const methPoints: MethPoint[] = []
       const mqtlArcs: MqtlArc[] = []
 
-      for (let gi = visStartIdx; gi <= visEndIdx && gi < displayGroups.length; gi++) {
-        const group = displayGroups[gi]
+      for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
+        const item = rowItems[gi]
         const rowY = rowOffsets[gi]
+
+        if (item.type === 'cluster') {
+          // --- Cluster row: render consensus variants with opacity ---
+          const cluster = item.cluster
+
+          // Background rect spanning full region for cluster rows
+          bgRects.push({
+            groupStart: start,
+            groupStop: stop,
+            rowY: rowY,
+            color: [230, 240, 255, 255], // light blue tint for cluster rows
+            group: null as any, // cluster rows don't have a group
+          })
+
+          for (const cv of cluster.consensus_variants) {
+            // Filter: hide variants present in <50% of the cluster
+            if (cv.cluster_af < 0.5) continue
+
+            const variant = cv.variant
+            const alpha = clusterAfAlpha(cv.cluster_af)
+            const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+            const isLarge = Math.abs(variant.allele_length || 0) >= 50
+
+            // LOD filtering
+            if (cat === 'snv' && !lod.showSnvs) continue
+            if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
+
+            // Get base color, then override alpha
+            const baseColor = getVariantColor(
+              variant,
+              colorMode,
+              start,
+              stop,
+              sampleMetadata,
+              undefined,
+              locusCounts.get(variant.variant_id) || 0,
+              haplotypeGroups.length || 1
+            )
+            const color: [number, number, number, number] = [baseColor[0], baseColor[1], baseColor[2], alpha]
+
+            if ((cat === 'deletion' || cat === 'sv') && isLarge) {
+              const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
+              spanningRects.push({
+                start: variant.pos,
+                end: endPos,
+                rowY,
+                color,
+                variant,
+                groupHash: 0,
+              })
+            } else if (cat === 'deletion') {
+              const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
+              deletionLines.push({
+                position: variant.pos,
+                yTop: rowY + 5,
+                yBottom: rowY + 20,
+                color,
+                width: thickness,
+                variant,
+              })
+            } else {
+              variantPoints.push({
+                position: variant.pos,
+                y: rowY + ROW_CENTER_Y,
+                radius: variantCircleRadius,
+                color,
+                variant,
+                groupHash: 0,
+              })
+            }
+          }
+          continue
+        }
+
+        // --- Group row (exact-match group) ---
+        const group = item.group
 
         // Background rect (store raw genomic positions)
         bgRects.push({
           groupStart: group.start,
           groupStop: group.stop,
           rowY: rowY,
-          color: [240, 240, 240, 255],
+          color: item.isChild ? [245, 245, 255, 255] : [240, 240, 240, 255],
           group,
         })
 
@@ -715,11 +882,11 @@ function DeckGLLollipopCanvas({
         }
       }
 
-      console.log(`[perf] DeckGL: ${variantPoints.length} variants, ${spanningRects.length} spans, ${bgRects.length} bg, ${methPoints.length} meth, ${mqtlArcs.length} mqtl, ${deletionLines.length} dels (groups ${visStartIdx}-${visEndIdx} of ${displayGroups.length})`)
+      console.log(`[perf] DeckGL: ${variantPoints.length} variants, ${spanningRects.length} spans, ${bgRects.length} bg, ${methPoints.length} meth, ${mqtlArcs.length} mqtl, ${deletionLines.length} dels (rows ${visStartIdx}-${visEndIdx} of ${rowItems.length})`)
       console.timeEnd('[perf] DeckGL data flatten')
       return { bgRects, variantPoints, belowThresholdPoints, deletionLines, spanningRects, methPoints, mqtlArcs }
     }, [
-      displayGroups,
+      rowItems,
       rowOffsets,
       start,
       stop,
@@ -737,19 +904,27 @@ function DeckGLLollipopCanvas({
       visEndIdx,
     ])
 
-  // Center lines for visible group rows only (raw positions, scaled in accessor)
+  // Center lines for visible rows only (raw positions, scaled in accessor)
   const centerLines = useMemo(() => {
     const lines = []
-    for (let gi = visStartIdx; gi <= visEndIdx && gi < displayGroups.length; gi++) {
-      const group = displayGroups[gi]
-      lines.push({
-        groupStart: group.start,
-        groupStop: group.stop,
-        y: rowOffsets[gi] + ROW_CENTER_Y,
-      })
+    for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
+      const item = rowItems[gi]
+      if (item.type === 'cluster') {
+        lines.push({
+          groupStart: start,
+          groupStop: stop,
+          y: rowOffsets[gi] + ROW_CENTER_Y,
+        })
+      } else {
+        lines.push({
+          groupStart: item.group.start,
+          groupStop: item.group.stop,
+          y: rowOffsets[gi] + ROW_CENTER_Y,
+        })
+      }
     }
     return lines
-  }, [displayGroups, rowOffsets, visStartIdx, visEndIdx])
+  }, [rowItems, rowOffsets, visStartIdx, visEndIdx, start, stop])
 
   // Hovered variant position crosshair (raw position, scaled in accessor)
   const crosshairLine = useMemo(() => {
