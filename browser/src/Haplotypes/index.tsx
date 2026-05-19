@@ -13,6 +13,7 @@ import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
+import ChromosomePainterTrack from './ChromosomePainterTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 // Extensible plot type and color mode registries
@@ -21,6 +22,7 @@ export const PLOT_TYPES: { value: string; label: string }[] = [
   { value: 'alluvial', label: 'Alluvial Flow' },
   { value: 'heatmap', label: 'Binned Heatmap' },
   { value: 'bubble', label: 'Variation Graph' },
+  { value: 'painting', label: 'Chromosome Painting' },
 ]
 
 export const COLOR_MODES: { value: string; label: string }[] = [
@@ -1717,6 +1719,22 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 
       {plotType === 'bubble' && variationGraph && (
         <BubbleTrack graph={variationGraph} colorMode={colorMode} sampleMetadata={sampleMetadata} />
+      )}
+
+      {plotType === 'painting' && (
+        <ChromosomePainterTrack
+          displayGroups={displayGroups}
+          haplotypeGroups={haplotypeGroups}
+          clusters={clusters}
+          start={start}
+          stop={stop}
+          sampleColorScale={sampleColorScale}
+          variantColorScale={variantColorScale}
+          sampleMetadata={sampleMetadata}
+          isClusteredView={isClusteredView}
+          expandedClusterIds={expandedClusterIds}
+          toggleClusterExpansion={toggleClusterExpansion}
+        />
       )}
     </Wrapper>
   )
