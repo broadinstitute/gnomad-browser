@@ -34,32 +34,35 @@ type GroupedRow = {
   allele_purities: (number | null)[]
 }
 
-type Variant = {
-  locus: string
+export type LRVariant = {
+  variant_id: string
   chrom: string
-  position: number
-  alleles: string[]
-  rsid: string
-  info_AF: number[]
-  info_AC: number
-  info_AN: number
+  pos: number
+  end: number | null
+  ref: string
+  alt: string
   allele_type: string
   allele_length: number
-  info_AF_afr: number | null
-  info_AF_amr: number | null
-  info_AF_eas: number | null
-  info_AF_nfe: number | null
-  info_AF_sas: number | null
+  freq: {
+    af: number
+    ac: number
+    an: number
+  }
+  populations: Array<{ id: string; af: number }>
+  rsid: string
+  major_consequence: string | null
   cadd_phred: number | null
   phylop: number | null
   sv_consequences: string[] | null
   dbgap_id: string | null
   tr_id: string | null
   tr_motifs: string | null
-  tr_struc: string | null
+  gnomad_str: string | null
   allele_methylation: number | null
   motif_counts: number[] | null
   allele_purity: number | null
+  in_samples?: string[]
+  gt_phased?: boolean
 }
 
 function buildVariant(
@@ -69,33 +72,46 @@ function buildVariant(
   afNfe: number | null, afSas: number | null,
   caddPhred: number | null, phylop: number | null,
   svConsequences: string[] | null, dbgapId: string | null,
-  trId: string | null, trMotifs: string | null, trStruc: string | null,
+  trId: string | null, trMotifs: string | null, gnomadStr: string | null,
   alleleMethylation: number | null, motifCounts: number[] | null,
   allelePurity: number | null,
-): Variant {
+): LRVariant {
+  const populations: Array<{ id: string; af: number }> = []
+  if (afAfr != null) populations.push({ id: 'afr', af: afAfr })
+  if (afAmr != null) populations.push({ id: 'amr', af: afAmr })
+  if (afEas != null) populations.push({ id: 'eas', af: afEas })
+  if (afNfe != null) populations.push({ id: 'nfe', af: afNfe })
+  if (afSas != null) populations.push({ id: 'sas', af: afSas })
+
+  const resolvedAlleleType = alleleType || 'snv'
+  const resolvedLength = alleleLength || 0
+
+  // Compute end position for SVs/deletions
+  let end: number | null = null
+  if (resolvedAlleleType !== 'snv' && Math.abs(resolvedLength) >= 50) {
+    end = pos + Math.abs(resolvedLength)
+  }
+
   return {
-    locus: `${chrom}:${pos}`,
+    variant_id: `${chrom}:${pos}`,
     chrom,
-    position: pos,
-    alleles: [ref, alt],
+    pos,
+    end,
+    ref,
+    alt,
+    allele_type: resolvedAlleleType,
+    allele_length: resolvedLength,
+    freq: { af, ac, an },
+    populations,
     rsid: rsid || '',
-    info_AF: [af],
-    info_AC: ac,
-    info_AN: an,
-    allele_type: alleleType || 'snv',
-    allele_length: alleleLength || 0,
-    info_AF_afr: afAfr,
-    info_AF_amr: afAmr,
-    info_AF_eas: afEas,
-    info_AF_nfe: afNfe,
-    info_AF_sas: afSas,
+    major_consequence: null,
     cadd_phred: caddPhred,
     phylop,
     sv_consequences: svConsequences && svConsequences.length > 0 ? svConsequences : null,
     dbgap_id: dbgapId || null,
     tr_id: trId || null,
     tr_motifs: trMotifs || null,
-    tr_struc: trStruc || null,
+    gnomad_str: gnomadStr || null,
     allele_methylation: alleleMethylation,
     motif_counts: motifCounts && motifCounts.length > 0 ? motifCounts : null,
     allele_purity: allelePurity,
@@ -125,8 +141,8 @@ export const createHaplotypeGroupsFromGrouped = (
 
   for (const row of rows) {
     const n = row.positions.length
-    const aboveThreshold: Variant[] = []
-    const belowThreshold: Variant[] = []
+    const aboveThreshold: LRVariant[] = []
+    const belowThreshold: LRVariant[] = []
 
     for (let i = 0; i < n; i++) {
       const pos = Number(row.positions[i])
@@ -159,7 +175,7 @@ export const createHaplotypeGroupsFromGrouped = (
     if (aboveThreshold.length === 0) continue
 
     const readableId = aboveThreshold
-      .map((v) => `${v.chrom}-${v.position}:${v.alleles.join('-')}`)
+      .map((v) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
       .sort()
       .join(';')
     const groupHash = hashString(readableId)
@@ -177,8 +193,8 @@ export const createHaplotypeGroupsFromGrouped = (
           variants: belowThreshold.map((v) => ({ ...v, in_samples: [row.sample_id] })),
           readable_id: '',
         },
-        start: Math.min(...aboveThreshold.map((v) => v.position)),
-        stop: Math.max(...aboveThreshold.map((v) => v.position)),
+        start: Math.min(...aboveThreshold.map((v) => v.pos)),
+        stop: Math.max(...aboveThreshold.map((v) => v.pos)),
         readable_id: readableId,
         hash: groupHash,
       }
@@ -186,7 +202,7 @@ export const createHaplotypeGroupsFromGrouped = (
       haplotypeGroups[groupHash].samples.push(sample)
       for (const v of belowThreshold) {
         const existing = haplotypeGroups[groupHash].below_threshold.variants.find(
-          (ev: any) => ev.position === v.position
+          (ev: any) => ev.pos === v.pos
         )
         if (existing) {
           existing.in_samples.push(row.sample_id)
@@ -222,7 +238,7 @@ function sortBySimilarity(groups: any[]) {
 
   // Pre-compute position sets for each group
   const positionSets: Set<number>[] = groups.map(
-    (g) => new Set(g.variants.variants.map((v: any) => v.position))
+    (g) => new Set(g.variants.variants.map((v: any) => v.pos))
   )
 
   // Compute similarity scores: sum of (|intersection| / max(|A|,|B|)) for each pair
@@ -295,7 +311,7 @@ export const assembleHaplotypeGroups = (
   trvCarriers: TrvCarrierRow[] = []
 ) => {
   // Step 1: Build variant map keyed by "chrom-pos:ref-alt"
-  const variantMap = new Map<string, Variant>()
+  const variantMap = new Map<string, LRVariant>()
   for (const row of distinctVariants) {
     const pos = Number(row.position)
     const af = Number(row.info_AF)
@@ -345,7 +361,7 @@ export const assembleHaplotypeGroups = (
   const groups: any[] = []
   for (const ga of groupAssignments) {
     const variantKeys = ga.readable_id.split(';')
-    const aboveThreshold: Variant[] = []
+    const aboveThreshold: LRVariant[] = []
     for (const key of variantKeys) {
       const v = variantMap.get(key)
       if (v) aboveThreshold.push(v)
@@ -364,9 +380,9 @@ export const assembleHaplotypeGroups = (
         if (posMap) {
           variants = aboveThreshold.map((v) => {
             if (v.allele_type !== 'trv') return v
-            const carrierAlt = posMap.get(v.position)
-            if (carrierAlt && carrierAlt !== v.alleles[1]) {
-              return { ...v, alleles: [v.alleles[0], carrierAlt] }
+            const carrierAlt = posMap.get(v.pos)
+            if (carrierAlt && carrierAlt !== v.alt) {
+              return { ...v, alt: carrierAlt }
             }
             return v
           })
@@ -382,8 +398,8 @@ export const assembleHaplotypeGroups = (
       samples,
       variants: { variants: aboveThreshold, readable_id: readableId },
       below_threshold: { variants: [] as any[], readable_id: '' },
-      start: Math.min(...aboveThreshold.map((v) => v.position)),
-      stop: Math.max(...aboveThreshold.map((v) => v.position)),
+      start: Math.min(...aboveThreshold.map((v) => v.pos)),
+      stop: Math.max(...aboveThreshold.map((v) => v.pos)),
       readable_id: readableId,
       hash: groupHash,
     })
@@ -396,8 +412,8 @@ export const assembleHaplotypeGroups = (
     const af = Number(row.info_AF)
     if (af >= minAlleleFreq) continue
 
-    const pos = Number(row.position)
-    const key = `${chrom}-${pos}:${row.ref}-${row.alt}`
+    const varPos = Number(row.position)
+    const key = `${chrom}-${varPos}:${row.ref}-${row.alt}`
     const variant = variantMap.get(key)
     if (!variant) continue
 
@@ -449,11 +465,11 @@ export const reconstructSamplesFromVariants = (docs: any[]) => {
     const sampleDocs = groupedBySample[sample_id]
     const strand1 = sampleDocs.filter((d: any) => d.strand === 1).map((d: any) => ({
       ...d,
-      locus: d.locus || `${d.chrom}:${d.position}`,
+      variant_id: d.variant_id || `${d.chrom}:${d.pos || d.position}`,
     }))
     const strand2 = sampleDocs.filter((d: any) => d.strand === 2).map((d: any) => ({
       ...d,
-      locus: d.locus || `${d.chrom}:${d.position}`,
+      variant_id: d.variant_id || `${d.chrom}:${d.pos || d.position}`,
     }))
 
     return {
@@ -462,14 +478,14 @@ export const reconstructSamplesFromVariants = (docs: any[]) => {
         {
           variants: strand1,
           readable_id: strand1
-            .map((v: any) => `${v.chrom}-${v.position}:${v.alleles.join('-')}`)
+            .map((v: any) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
             .sort()
             .join(';'),
         },
         {
           variants: strand2,
           readable_id: strand2
-            .map((v: any) => `${v.chrom}-${v.position}:${v.alleles.join('-')}`)
+            .map((v: any) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
             .sort()
             .join(';'),
         },
@@ -490,20 +506,20 @@ export const createHaplotypeGroups = (
   samples.forEach((sample) => {
     sample.variant_sets.forEach((vs: any) => {
       const filteredVariants = vs.variants.filter(
-        (v: any) => v.position >= start && v.position <= stop
+        (v: any) => v.pos >= start && v.pos <= stop
       )
       const aboveThreshold: any[] = []
       const belowThreshold: any[] = []
 
       filteredVariants.forEach((v: any) => {
-        const afPasses = v.info_AF && v.info_AF.every((af: number) => af >= minAlleleFreq)
+        const afPasses = v.freq && v.freq.af >= minAlleleFreq
         if (afPasses) aboveThreshold.push(v)
         else belowThreshold.push({ ...v, in_samples: [sample.sample_id] })
       })
 
       if (aboveThreshold.length > 0) {
         const readableId = aboveThreshold
-          .map((v) => `${v.chrom}-${v.position}:${v.alleles.join('-')}`)
+          .map((v) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
           .sort()
           .join(';')
         const groupHash = hashString(readableId)
@@ -513,8 +529,8 @@ export const createHaplotypeGroups = (
             samples: [sample],
             variants: { variants: aboveThreshold, readable_id: readableId },
             below_threshold: { variants: belowThreshold, readable_id: '' },
-            start: Math.min(...aboveThreshold.map((v) => v.position)),
-            stop: Math.max(...aboveThreshold.map((v) => v.position)),
+            start: Math.min(...aboveThreshold.map((v: any) => v.pos)),
+            stop: Math.max(...aboveThreshold.map((v: any) => v.pos)),
             readable_id: readableId,
             hash: groupHash,
           }
@@ -522,7 +538,7 @@ export const createHaplotypeGroups = (
           haplotypeGroups[groupHash].samples.push(sample)
           belowThreshold.forEach((v) => {
             const existing = haplotypeGroups[groupHash].below_threshold.variants.find(
-              (ev: any) => ev.position === v.position
+              (ev: any) => ev.pos === v.pos
             )
             if (existing) existing.in_samples.push(sample.sample_id)
             else haplotypeGroups[groupHash].below_threshold.variants.push(v)

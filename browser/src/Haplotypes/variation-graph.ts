@@ -105,24 +105,24 @@ export const buildVariationGraph = (
       ...belowThresholdTrvs,
     ]
     for (const v of allVariants) {
-      variantPosSet.add(v.position)
+      variantPosSet.add(v.pos)
       const vType = v.allele_type || 'snv'
       const vLen = v.allele_length || 0
-      const existing = variantsByPos.get(v.position)
+      const existing = variantsByPos.get(v.pos)
       if (!existing || typeRank(vType) > typeRank(existing.alleleType) ||
           (typeRank(vType) === typeRank(existing.alleleType) && Math.abs(vLen) > Math.abs(existing.alleleLength))) {
-        variantsByPos.set(v.position, {
-          alleles: v.alleles,
+        variantsByPos.set(v.pos, {
+          alleles: [v.ref, v.alt],
           alleleType: vType,
           alleleLength: vLen,
         })
       }
       // Collect TR allele lengths
       if (vType === 'trv') {
-        if (!trLengthsByPos.has(v.position)) {
-          trLengthsByPos.set(v.position, new Set())
+        if (!trLengthsByPos.has(v.pos)) {
+          trLengthsByPos.set(v.pos, new Set())
         }
-        trLengthsByPos.get(v.position)!.add(vLen)
+        trLengthsByPos.get(v.pos)!.add(vLen)
       }
     }
   }
@@ -181,7 +181,7 @@ export const buildVariationGraph = (
     ]
     if (allGroupVariants.length === 0) continue
 
-    const groupVariantPositions = new Set(allGroupVariants.map((v) => v.position))
+    const groupVariantPositions = new Set(allGroupVariants.map((v) => v.pos))
 
     // Each sample in the group takes the same path
     for (const sample of group.samples) {

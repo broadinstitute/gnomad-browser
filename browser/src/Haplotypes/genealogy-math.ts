@@ -14,7 +14,7 @@ export type TreeNode = {
  */
 export const computeDistanceMatrix = (groups: HaplotypeGroup[]): number[][] => {
   const positionSets = groups.map(
-    (g) => new Set(g.variants.variants.map((v) => v.position))
+    (g) => new Set(g.variants.variants.map((v) => v.pos))
   )
 
   const n = groups.length

@@ -216,7 +216,7 @@ const TrCatalogPage = () => {
     const filtered = allGroups.groups
       .map((group: any) => {
         const filteredVariants = group.variants.variants.filter(
-          (v: any) => allowedPositions.has(v.position)
+          (v: any) => allowedPositions.has(v.pos)
         )
         if (filteredVariants.length === 0) return null
         return {
@@ -225,7 +225,7 @@ const TrCatalogPage = () => {
           below_threshold: {
             ...group.below_threshold,
             variants: group.below_threshold.variants.filter(
-              (v: any) => allowedPositions.has(v.position)
+              (v: any) => allowedPositions.has(v.pos)
             ),
           },
         }

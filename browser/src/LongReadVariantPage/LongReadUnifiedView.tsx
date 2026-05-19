@@ -16,6 +16,8 @@ import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import LongReadVariantTrack from './LongReadVariantTrack'
+import VariantDensityTrack from './VariantDensityTrack'
+import { getLodVisibility } from './variantUtils'
 import Variants from '../VariantList/Variants'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -34,11 +36,11 @@ const HAPLOTYPE_GROUPS_QUERY = `
       groups {
         samples { sample_id }
         variants {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
+          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
           readable_id
         }
         below_threshold {
-          variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbgap_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
+          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
           readable_id
         }
         start stop hash
@@ -510,6 +512,14 @@ const LongReadUnifiedView = ({
     [variants]
   )
 
+  // LOD visibility — determines what to show based on region size
+  const lod = useMemo(() => {
+    const regionSize = zoomRegion
+      ? zoomRegion.stop - zoomRegion.start
+      : stop - start
+    return getLodVisibility(regionSize)
+  }, [zoomRegion, start, stop])
+
   // Client-side zoom filtering — does NOT trigger refetches
   const zoomedVariants = useMemo(
     () => filterVariantsInZoomRegion(displayVariants, zoomRegion),
@@ -613,6 +623,7 @@ const LongReadUnifiedView = ({
 
       {viewMode === 'summary' && (
         <>
+          {lod.showDensityTrack && <VariantDensityTrack variants={displayVariants} />}
           <LongReadVariantTrack variants={displayVariants} />
           <PositionAxisTrack />
         </>
@@ -620,6 +631,7 @@ const LongReadUnifiedView = ({
 
       {viewMode === 'haplotype' && (
         <>
+          {lod.showDensityTrack && <VariantDensityTrack variants={displayVariants} />}
           <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
           {showMqtl && (
             <MQTLTrack

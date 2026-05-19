@@ -6,11 +6,12 @@ import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer } from '@deck
 import { Track } from '@gnomad/region-viewer'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
+import { getVariantCategory, VARIANT_CATEGORY_COLORS, getLodVisibility } from '../LongReadVariantPage/variantUtils'
 import GenealogyTreeOverlay from './GenealogyTreeOverlay'
-import type { HaplotypeGroup, Methylation, MethylationSummaryPoint } from './index'
+import type { HaplotypeGroup, LRVariant, Methylation, MethylationSummaryPoint } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
-type Variant = HaplotypeGroup['variants']['variants'][number]
+type Variant = LRVariant
 
 // Row height constants
 const VARIANT_ROW_HEIGHT = 25
@@ -69,6 +70,15 @@ type BackgroundRect = {
   rowY: number
   color: [number, number, number, number]
   group: HaplotypeGroup
+}
+
+type SpanningRect = {
+  start: number // raw genomic position
+  end: number // raw genomic position
+  rowY: number
+  color: [number, number, number, number]
+  variant: Variant
+  groupHash: number
 }
 
 type MethPoint = {
@@ -178,11 +188,11 @@ function getVariantColor(
 ): [number, number, number, number] {
   switch (colorMode) {
     case 'allele':
-      return getColorByHash(variant.locus)
+      return getColorByHash(variant.variant_id)
     case 'position':
-      return getColorByPosition(variant.position, start, stop)
+      return getColorByPosition(variant.pos, start, stop)
     case 'af':
-      return getColorByAf(variant.info_AF[0])
+      return getColorByAf(variant.freq.af)
     case 'haplotype_count': {
       const scale = scaleLinear<string>()
         .domain([0, totalGroups])
@@ -211,17 +221,18 @@ function getVariantColor(
   }
 }
 
-// Variant shape classification
+// Variant shape classification — delegates to shared getVariantCategory
 type VariantShape = 'circle' | 'deletion' | 'insertion' | 'duplication' | 'inversion' | 'tandem_repeat'
 
 function getVariantShape(variant: Variant): VariantShape {
-  const vType = (variant.allele_type || '').toLowerCase()
-  if (vType === 'del') return 'deletion'
-  if (vType === 'ins' || vType === 'alu_ins' || vType === 'sva_ins') return 'insertion'
-  if (vType === 'dup' || vType === 'dup_interspersed' || vType === 'complex_dup' || vType === 'inv_dup') return 'duplication'
-  if (vType === 'inv') return 'inversion'
-  if (vType === 'trv') return 'tandem_repeat'
-  return 'circle'
+  const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+  switch (cat) {
+    case 'deletion': return 'deletion'
+    case 'insertion': return 'insertion'
+    case 'sv': return 'duplication'
+    case 'tr': return 'tandem_repeat'
+    default: return 'circle'
+  }
 }
 
 type DeckGLLollipopTrackProps = {
@@ -289,7 +300,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     for (const group of displayGroups) {
       offsets.push(cumY)
       const showGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
-        const groupVarPositions = new Set(group.variants.variants.map((v) => v.position))
+        const groupVarPositions = new Set(group.variants.variants.map((v) => v.pos))
         return mqtlData.some(
           (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
         )
@@ -329,8 +340,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       // Find the first group containing a variant at or after pos
       for (let i = 0; i < displayGroups.length; i++) {
         const group = displayGroups[i]
-        if (group.variants.variants.some((v) => v.position >= pos) ||
-            group.below_threshold.variants.some((v) => v.position >= pos)) {
+        if (group.variants.variants.some((v) => v.pos >= pos) ||
+            group.below_threshold.variants.some((v) => v.pos >= pos)) {
           scrollContainerRef.current.scrollTop = rowOffsets[i]
           return
         }
@@ -525,20 +536,22 @@ function DeckGLLollipopCanvas({
     if (colorMode !== 'haplotype_count') return counts
     for (const group of haplotypeGroups) {
       for (const v of group.variants.variants) {
-        counts.set(v.locus, (counts.get(v.locus) || 0) + 1)
+        counts.set(v.variant_id, (counts.get(v.variant_id) || 0) + 1)
       }
     }
     return counts
   }, [colorMode, haplotypeGroups])
 
   // Flatten ONLY visible groups for deck.gl layers (windowed rendering)
-  const { bgRects, variantPoints, belowThresholdPoints, deletionLines, methPoints, mqtlArcs } =
+  const { bgRects, variantPoints, belowThresholdPoints, deletionLines, spanningRects, methPoints, mqtlArcs } =
     useMemo(() => {
       console.time('[perf] DeckGL data flatten')
+      const lod = getLodVisibility(stop - start)
       const bgRects: BackgroundRect[] = []
       const variantPoints: VariantPoint[] = []
       const belowThresholdPoints: VariantPoint[] = []
       const deletionLines: StemLine[] = []
+      const spanningRects: SpanningRect[] = []
       const methPoints: MethPoint[] = []
       const mqtlArcs: MqtlArc[] = []
 
@@ -560,7 +573,7 @@ function DeckGLLollipopCanvas({
           const shape = getVariantShape(variant)
           if (shape === 'deletion') {
             deletionLines.push({
-              position: variant.position,
+              position: variant.pos,
               yTop: rowY + 8,
               yBottom: rowY + 17,
               color: [128, 128, 128, 100],
@@ -569,7 +582,7 @@ function DeckGLLollipopCanvas({
             })
           } else {
             belowThresholdPoints.push({
-              position: variant.position,
+              position: variant.pos,
               y: rowY + ROW_CENTER_Y,
               radius: 1.5,
               color: [128, 128, 128, 100],
@@ -581,7 +594,13 @@ function DeckGLLollipopCanvas({
 
         // Above-threshold variants
         for (const variant of group.variants.variants) {
-          const shape = getVariantShape(variant)
+          const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+          const isLarge = Math.abs(variant.allele_length || 0) >= 50
+
+          // LOD filtering: skip sub-pixel variants when zoomed out
+          if (cat === 'snv' && !lod.showSnvs) continue
+          if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
+
           const color = getVariantColor(
             variant,
             colorMode,
@@ -589,14 +608,26 @@ function DeckGLLollipopCanvas({
             stop,
             sampleMetadata,
             group,
-            locusCounts.get(variant.locus) || 0,
+            locusCounts.get(variant.variant_id) || 0,
             haplotypeGroups.length || 1
           )
 
-          if (shape === 'deletion') {
+          if ((cat === 'deletion' || cat === 'sv') && isLarge) {
+            // Large SVs/deletions render as spanning rectangles
+            const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
+            spanningRects.push({
+              start: variant.pos,
+              end: endPos,
+              rowY,
+              color,
+              variant,
+              groupHash: group.hash,
+            })
+          } else if (cat === 'deletion') {
+            // Small deletions render as vertical lines
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
             deletionLines.push({
-              position: variant.position,
+              position: variant.pos,
               yTop: rowY + 5,
               yBottom: rowY + 20,
               color,
@@ -605,7 +636,7 @@ function DeckGLLollipopCanvas({
             })
           } else {
             variantPoints.push({
-              position: variant.position,
+              position: variant.pos,
               y: rowY + ROW_CENTER_Y,
               radius: variantCircleRadius,
               color,
@@ -643,7 +674,7 @@ function DeckGLLollipopCanvas({
 
         // mQTL arcs
         if (showMqtl && mqtlData.length > 0) {
-          const groupVarPositions = new Set(group.variants.variants.map((v) => v.position))
+          const groupVarPositions = new Set(group.variants.variants.map((v) => v.pos))
           const groupMqtl = mqtlData.filter(
             (d: any) =>
               groupVarPositions.has(d.variant_pos) &&
@@ -684,9 +715,9 @@ function DeckGLLollipopCanvas({
         }
       }
 
-      console.log(`[perf] DeckGL: ${variantPoints.length} variants, ${bgRects.length} bg, ${methPoints.length} meth, ${mqtlArcs.length} mqtl, ${deletionLines.length} dels (groups ${visStartIdx}-${visEndIdx} of ${displayGroups.length})`)
+      console.log(`[perf] DeckGL: ${variantPoints.length} variants, ${spanningRects.length} spans, ${bgRects.length} bg, ${methPoints.length} meth, ${mqtlArcs.length} mqtl, ${deletionLines.length} dels (groups ${visStartIdx}-${visEndIdx} of ${displayGroups.length})`)
       console.timeEnd('[perf] DeckGL data flatten')
-      return { bgRects, variantPoints, belowThresholdPoints, deletionLines, methPoints, mqtlArcs }
+      return { bgRects, variantPoints, belowThresholdPoints, deletionLines, spanningRects, methPoints, mqtlArcs }
     }, [
       displayGroups,
       rowOffsets,
@@ -744,6 +775,27 @@ function DeckGLLollipopCanvas({
           ],
           getFillColor: (d: BackgroundRect) => d.color,
           pickable: false,
+          updateTriggers: { getPolygon: [scalePosition] },
+        })
+      )
+    }
+
+    // SV/deletion spanning rectangles (large variants ≥50bp)
+    if (spanningRects.length > 0) {
+      result.push(
+        new SolidPolygonLayer({
+          id: 'sv-spanning-rects',
+          data: spanningRects,
+          getPolygon: (d: SpanningRect) => {
+            const x1 = scalePosition(d.start)
+            const x2 = Math.max(scalePosition(d.end), x1 + 2) // minimum 2px width
+            const yTop = d.rowY + ROW_CENTER_Y - 4
+            const yBot = d.rowY + ROW_CENTER_Y + 4
+            return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
+          },
+          getFillColor: (d: SpanningRect) => d.color,
+          pickable: true,
+          onHover: onHover,
           updateTriggers: { getPolygon: [scalePosition] },
         })
       )
@@ -895,6 +947,7 @@ function DeckGLLollipopCanvas({
     return result
   }, [
     bgRects,
+    spanningRects,
     centerLines,
     deletionLines,
     belowThresholdPoints,
@@ -973,22 +1026,22 @@ function Tooltip({
       }}
     >
       <div>
-        <strong>Position:</strong> {variant.position}
+        <strong>Position:</strong> {variant.pos}
       </div>
       <div>
         <strong>Ref:</strong>{' '}
-        {variant.alleles[0].length > 10
-          ? variant.alleles[0].substring(0, 10) + '...'
-          : variant.alleles[0]}
+        {variant.ref.length > 10
+          ? variant.ref.substring(0, 10) + '...'
+          : variant.ref}
       </div>
       <div>
         <strong>Alt:</strong>{' '}
-        {variant.alleles[1].length > 10
-          ? variant.alleles[1].substring(0, 10) + '...'
-          : variant.alleles[1]}
+        {variant.alt.length > 10
+          ? variant.alt.substring(0, 10) + '...'
+          : variant.alt}
       </div>
       <div>
-        <strong>AF:</strong> {variant.info_AF.join(', ')}
+        <strong>AF:</strong> {variant.freq.af.toFixed(4)}
       </div>
       {variant.rsid && (
         <div>

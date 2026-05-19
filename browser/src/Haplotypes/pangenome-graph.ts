@@ -30,7 +30,7 @@ export const buildPangenomeGraph = (
   // 1. Find all unique variant positions across all groups
   const variantPosSet = new Set<number>()
   groups.forEach((g) => {
-    g.variants.variants.forEach((v) => variantPosSet.add(v.position))
+    g.variants.variants.forEach((v) => variantPosSet.add(v.pos))
   })
   const sortedPositions = Array.from(variantPosSet).sort((a, b) => a - b)
 
@@ -76,20 +76,20 @@ export const buildPangenomeGraph = (
 
     // Quick lookup for variants in this group
     const varMap = new Map()
-    g.variants.variants.forEach((v) => varMap.set(v.position, v))
+    g.variants.variants.forEach((v) => varMap.set(v.pos, v))
 
     // Trace the path
     sortedPositions.forEach((pos) => {
       if (varMap.has(pos)) {
         const v = varMap.get(pos)
-        const altId = `var-alt-${pos}-${v.alleles.join('-')}`
+        const altId = `var-alt-${pos}-${[v.ref, v.alt].join('-')}`
         // Ensure alt node exists
         if (!nodes.find((n) => n.id === altId)) {
           nodes.push({
             id: altId,
             position: pos,
             type: 'alt',
-            alleles: v.alleles,
+            alleles: [v.ref, v.alt],
             isVariantSite: true,
           })
         }
