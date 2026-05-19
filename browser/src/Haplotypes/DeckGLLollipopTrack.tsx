@@ -414,6 +414,14 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       rowItems.forEach((item, i) => {
         if (item.type === 'group') {
           positions.set(item.group.hash, rowOffsets[i] + ROW_CENTER_Y)
+        } else if (item.type === 'cluster') {
+          // Map all member group hashes to the cluster's Y so the tree
+          // can render even when no clusters are expanded
+          const y = rowOffsets[i] + ROW_CENTER_Y
+          for (const h of item.cluster.member_group_hashes) {
+            const hash = typeof h === 'string' ? (parseInt(h, 10) || 0) : h
+            if (!positions.has(hash)) positions.set(hash, y)
+          }
         }
       })
     }
