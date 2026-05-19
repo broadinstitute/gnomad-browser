@@ -30,6 +30,9 @@ CREATE TABLE IF NOT EXISTS lr_variants (
     is_likely_tr UInt8,
     gnomad_str String DEFAULT '',
 
+    -- Denormalized from freq_json for efficient JOINs
+    info_AF Float32 DEFAULT 0,
+
     -- JSON Payloads for complex GraphQL types
     freq_json String DEFAULT '{}',
     transcript_consequences_json String DEFAULT '[]',
