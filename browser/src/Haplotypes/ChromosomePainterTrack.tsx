@@ -254,83 +254,81 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
     >
       <Track
         renderLeftPanel={() => {
-          const showTree = showGenealogy && genealogyResult && leafYPositions.size > 0
-          const treeWidth = showTree ? 180 : 0
-          const labelsWidth = 120
-          const totalLeftWidth = treeWidth + labelsWidth
+          const labelsWidth = 200
           return (
-            <div style={{ display: 'flex', flexDirection: 'row', width: totalLeftWidth }}>
-              {showTree && (
-                <div style={{ width: treeWidth, height: totalHeight, flexShrink: 0, overflow: 'hidden' }}>
-                  <GenealogyTreeOverlay
-                    tree={genealogyResult!.tree}
-                    leafYPositions={leafYPositions}
-                    panelWidth={treeWidth}
-                    totalHeight={totalHeight}
-                    groups={displayGroups}
-                    clusterThreshold={clusterThreshold}
-                    onClusterThresholdChange={onClusterThresholdChange}
-                    expandedClusterIds={expandedClusterIds}
-                    toggleClusterExpansion={toggleClusterExpansion}
-                    clusters={clusters}
-                    rowYPositions={rowYPositions}
-                    isClusteredView={isClusteredView}
-                  />
-                </div>
-              )}
-              <div style={{ width: labelsWidth, flexShrink: 0 }}>
-                <svg width={labelsWidth} height={totalHeight}>
-                  {rowItems.map((item, i) => {
-                    if (i < lpStart || i > lpEnd) return null
-                    const y = rowOffsets[i]
-                    if (item.type === 'cluster') {
-                      const cluster = item.cluster
-                      const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
-                      return (
-                        <g
-                          key={`cluster-${cluster.cluster_id}`}
-                          transform={`translate(0, ${y})`}
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
-                        >
-                          <text x={2} y={17} fontSize="11" fill="#555">
-                            {isExpanded ? '\u25BC' : '\u25B6'}
-                          </text>
-                          <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
-                          <text x={30} y={17} fontSize="12">
-                            {cluster.sample_count}
-                          </text>
-                          <text x={60} y={17} fontSize="10" fill="#888">
-                            ({cluster.member_group_hashes.length}g)
-                          </text>
-                        </g>
-                      )
-                    }
-                    const group = item.group
-                    const indent = item.isChild ? 12 : 0
+            <div style={{ width: labelsWidth }}>
+              <svg width={labelsWidth} height={totalHeight}>
+                {rowItems.map((item, i) => {
+                  if (i < lpStart || i > lpEnd) return null
+                  const y = rowOffsets[i]
+                  if (item.type === 'cluster') {
+                    const cluster = item.cluster
+                    const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
                     return (
-                      <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
-                        <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
-                        <text x={15} y={17} fontSize="12">
-                          {group.samples.length}
+                      <g
+                        key={`cluster-${cluster.cluster_id}`}
+                        transform={`translate(0, ${y})`}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
+                      >
+                        <text x={2} y={17} fontSize="11" fill="#555">
+                          {isExpanded ? '\u25BC' : '\u25B6'}
                         </text>
-                        <circle
-                          cx={50}
-                          cy={12.5}
-                          r={5}
-                          fill={variantColorScale(group.variants.variants.length)}
-                        />
-                        <text x={60} y={17} fontSize="12">
-                          {group.variants.variants.length}
+                        <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
+                        <text x={30} y={17} fontSize="12">
+                          {cluster.sample_count}
+                        </text>
+                        <text x={60} y={17} fontSize="10" fill="#888">
+                          ({cluster.member_group_hashes.length}g)
                         </text>
                       </g>
                     )
-                  })}
-                </svg>
-              </div>
+                  }
+                  const group = item.group
+                  const indent = item.isChild ? 12 : 0
+                  return (
+                    <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
+                      <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
+                      <text x={15} y={17} fontSize="12">
+                        {group.samples.length}
+                      </text>
+                      <circle
+                        cx={50}
+                        cy={12.5}
+                        r={5}
+                        fill={variantColorScale(group.variants.variants.length)}
+                      />
+                      <text x={60} y={17} fontSize="12">
+                        {group.variants.variants.length}
+                      </text>
+                    </g>
+                  )
+                })}
+              </svg>
             </div>
           )
         }}
+        renderRightPanel={showGenealogy && genealogyResult && leafYPositions.size > 0
+          ? () => (
+            <div style={{ width: 180, height: totalHeight, overflow: 'hidden' }}>
+              <GenealogyTreeOverlay
+                tree={genealogyResult!.tree}
+                leafYPositions={leafYPositions}
+                panelWidth={180}
+                totalHeight={totalHeight}
+                groups={displayGroups}
+                clusterThreshold={clusterThreshold}
+                onClusterThresholdChange={onClusterThresholdChange}
+                expandedClusterIds={expandedClusterIds}
+                toggleClusterExpansion={toggleClusterExpansion}
+                clusters={clusters}
+                rowYPositions={rowYPositions}
+                isClusteredView={isClusteredView}
+              />
+            </div>
+          )
+          : undefined
+        }
       >
         {({
           scalePosition,
@@ -395,20 +393,23 @@ function ChromosomePainterCanvas({
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
   const binSize = (stop - start) / NUM_BINS
 
-  // Flatten visible rows into painted segments
-  const segments: PaintedSegment[] = useMemo(() => {
-    const result: PaintedSegment[] = []
+  // Per-row DeckGL layers for stable animations across expand/collapse
+  const layers = useMemo(() => {
+    const result: any[] = []
 
     for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
+      const rowId = item.type === 'cluster'
+        ? `cluster-${item.cluster.cluster_id}`
+        : `group-${item.group.hash}`
 
       // Initialize bins
       const binVariants: (LRVariant | null)[] = new Array(NUM_BINS).fill(null)
-      const binScores: number[] = new Array(NUM_BINS).fill(0) // for collision resolution
+      const binScores: number[] = new Array(NUM_BINS).fill(0)
+      const rowSegments: PaintedSegment[] = []
 
       if (item.type === 'cluster') {
-        // Cluster row: use consensus_variants where cluster_af >= 0.5
         const cluster = item.cluster
         for (const cv of cluster.consensus_variants) {
           if (cv.cluster_af < 0.5) continue
@@ -421,18 +422,11 @@ function ChromosomePainterCanvas({
           }
         }
 
-        // Forward fill
         let lastVar = binVariants.find((v) => v !== null) ?? null
         for (let i = 0; i < NUM_BINS; i++) {
-          if (binVariants[i]) {
-            lastVar = binVariants[i]
-          } else {
-            binVariants[i] = lastVar
-          }
+          if (binVariants[i]) { lastVar = binVariants[i] } else { binVariants[i] = lastVar }
         }
 
-        // Generate segments with cluster AF-based opacity
-        // Build a quick lookup for cluster_af by variant_id
         const afByVariantId = new Map<string, number>()
         for (const cv of cluster.consensus_variants) {
           if (cv.cluster_af >= 0.5) {
@@ -445,22 +439,15 @@ function ChromosomePainterCanvas({
           const binStop = start + (i + 1) * binSize
           const v = binVariants[i]
           if (!v) {
-            result.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
+            rowSegments.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
           } else {
             const baseColor = getColorByHash(v.variant_id)
             const af = afByVariantId.get(v.variant_id) ?? 0.5
             const alpha = clusterAfAlpha(af)
-            result.push({
-              binStart,
-              binStop,
-              rowY,
-              color: [baseColor[0], baseColor[1], baseColor[2], alpha],
-              variant: v,
-            })
+            rowSegments.push({ binStart, binStop, rowY, color: [baseColor[0], baseColor[1], baseColor[2], alpha], variant: v })
           }
         }
       } else {
-        // Group row: use group.variants.variants filtered to SVs
         const group = item.group
         const svVariants = group.variants.variants.filter(isSV)
 
@@ -473,68 +460,46 @@ function ChromosomePainterCanvas({
           }
         }
 
-        // Forward fill
         let lastVar = binVariants.find((v) => v !== null) ?? null
         for (let i = 0; i < NUM_BINS; i++) {
-          if (binVariants[i]) {
-            lastVar = binVariants[i]
-          } else {
-            binVariants[i] = lastVar
-          }
+          if (binVariants[i]) { lastVar = binVariants[i] } else { binVariants[i] = lastVar }
         }
 
-        // Generate segments (full opacity for groups)
         for (let i = 0; i < NUM_BINS; i++) {
           const binStart = start + i * binSize
           const binStop = start + (i + 1) * binSize
           const v = binVariants[i]
           if (!v) {
-            result.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
+            rowSegments.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
           } else {
             const baseColor = getColorByHash(v.variant_id)
-            result.push({
-              binStart,
-              binStop,
-              rowY,
-              color: [baseColor[0], baseColor[1], baseColor[2], 255],
-              variant: v,
-            })
+            rowSegments.push({ binStart, binStop, rowY, color: [baseColor[0], baseColor[1], baseColor[2], 255], variant: v })
           }
         }
+      }
+
+      if (rowSegments.length > 0) {
+        result.push(new SolidPolygonLayer({
+          id: `painted-blocks-${rowId}`,
+          data: rowSegments,
+          getPolygon: (d: PaintedSegment) => {
+            const x1 = scalePosition(d.binStart)
+            const x2 = scalePosition(d.binStop)
+            const yTop = d.rowY + 2
+            const yBot = d.rowY + VARIANT_ROW_HEIGHT - 2
+            return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
+          },
+          getFillColor: (d: PaintedSegment) => d.color,
+          pickable: true,
+          onHover,
+          updateTriggers: { getPolygon: [scalePosition, rowY] },
+          transitions: { getPolygon: { duration: 300 } },
+        }))
       }
     }
 
     return result
-  }, [rowItems, rowOffsets, start, stop, binSize, visStartIdx, visEndIdx])
-
-  // DeckGL layers
-  const layers = useMemo(() => {
-    if (segments.length === 0) return []
-
-    return [
-      new SolidPolygonLayer({
-        id: 'painted-blocks',
-        data: segments,
-        getPolygon: (d: PaintedSegment) => {
-          const x1 = scalePosition(d.binStart)
-          const x2 = scalePosition(d.binStop)
-          const yTop = d.rowY + 2
-          const yBot = d.rowY + VARIANT_ROW_HEIGHT - 2
-          return [
-            [x1, yTop],
-            [x2, yTop],
-            [x2, yBot],
-            [x1, yBot],
-          ]
-        },
-        getFillColor: (d: PaintedSegment) => d.color,
-        pickable: true,
-        onHover,
-        updateTriggers: { getPolygon: [scalePosition] },
-        transitions: { getPolygon: { duration: 300 } },
-      }),
-    ]
-  }, [segments, scalePosition, onHover])
+  }, [rowItems, rowOffsets, start, stop, binSize, visStartIdx, visEndIdx, scalePosition, onHover])
 
   const view = useMemo(() => new OrthographicView({ id: 'main', flipY: true }), [])
 

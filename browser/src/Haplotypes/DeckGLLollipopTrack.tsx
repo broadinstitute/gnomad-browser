@@ -464,84 +464,82 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     >
     <Track
       renderLeftPanel={() => {
-        const showTree = showGenealogy && genealogyResult && leafYPositions.size > 0
-        const treeWidth = showTree ? 180 : 0
-        const labelsWidth = 120
-        const totalLeftWidth = treeWidth + labelsWidth
+        const labelsWidth = 200
         return (
-          <div style={{ display: 'flex', flexDirection: 'row', width: totalLeftWidth }}>
-            {showTree && (
-              <div style={{ width: treeWidth, height: totalHeight, flexShrink: 0, overflow: 'hidden' }}>
-                <GenealogyTreeOverlay
-                  tree={genealogyResult!.tree}
-                  leafYPositions={leafYPositions}
-                  panelWidth={treeWidth}
-                  totalHeight={totalHeight}
-                  groups={displayGroups}
-                  sampleMetadata={sampleMetadata}
-                  clusterThreshold={clusterThreshold}
-                  onClusterThresholdChange={onClusterThresholdChange}
-                  expandedClusterIds={expandedClusterIds}
-                  toggleClusterExpansion={toggleClusterExpansion}
-                  clusters={clusters}
-                  rowYPositions={rowYPositions}
-                  isClusteredView={isClusteredView}
-                />
-              </div>
-            )}
-            <div style={{ width: labelsWidth, flexShrink: 0 }}>
-              <svg width={labelsWidth} height={totalHeight}>
-                {rowItems.map((item, i) => {
-                  if (i < lpStart || i > lpEnd) return null
-                  const y = rowOffsets[i]
-                  if (item.type === 'cluster') {
-                    const cluster = item.cluster
-                    const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
-                    return (
-                      <g
-                        key={`cluster-${cluster.cluster_id}`}
-                        transform={`translate(0, ${y})`}
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
-                      >
-                        <text x={2} y={17} fontSize='11' fill='#555'>
-                          {isExpanded ? '\u25BC' : '\u25B6'}
-                        </text>
-                        <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
-                        <text x={30} y={17} fontSize='12'>
-                          {cluster.sample_count}
-                        </text>
-                        <text x={60} y={17} fontSize='10' fill='#888'>
-                          ({cluster.member_group_hashes.length}g)
-                        </text>
-                      </g>
-                    )
-                  }
-                  const group = item.group
-                  const indent = item.isChild ? 12 : 0
+          <div style={{ width: labelsWidth }}>
+            <svg width={labelsWidth} height={totalHeight}>
+              {rowItems.map((item, i) => {
+                if (i < lpStart || i > lpEnd) return null
+                const y = rowOffsets[i]
+                if (item.type === 'cluster') {
+                  const cluster = item.cluster
+                  const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
                   return (
-                    <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
-                      <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
-                      <text x={15} y={17} fontSize='12'>
-                        {group.samples.length}
+                    <g
+                      key={`cluster-${cluster.cluster_id}`}
+                      transform={`translate(0, ${y})`}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
+                    >
+                      <text x={2} y={17} fontSize='11' fill='#555'>
+                        {isExpanded ? '\u25BC' : '\u25B6'}
                       </text>
-                      <circle
-                        cx={50}
-                        cy={12.5}
-                        r={5}
-                        fill={variantColorScale(group.variants.variants.length)}
-                      />
-                      <text x={60} y={17} fontSize='12'>
-                        {group.variants.variants.length}
+                      <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
+                      <text x={30} y={17} fontSize='12'>
+                        {cluster.sample_count}
+                      </text>
+                      <text x={60} y={17} fontSize='10' fill='#888'>
+                        ({cluster.member_group_hashes.length}g)
                       </text>
                     </g>
                   )
-                })}
-              </svg>
-            </div>
+                }
+                const group = item.group
+                const indent = item.isChild ? 12 : 0
+                return (
+                  <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
+                    <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
+                    <text x={15} y={17} fontSize='12'>
+                      {group.samples.length}
+                    </text>
+                    <circle
+                      cx={50}
+                      cy={12.5}
+                      r={5}
+                      fill={variantColorScale(group.variants.variants.length)}
+                    />
+                    <text x={60} y={17} fontSize='12'>
+                      {group.variants.variants.length}
+                    </text>
+                  </g>
+                )
+              })}
+            </svg>
           </div>
         )
       }}
+      renderRightPanel={showGenealogy && genealogyResult && leafYPositions.size > 0
+        ? () => (
+          <div style={{ width: 180, height: totalHeight, overflow: 'hidden' }}>
+            <GenealogyTreeOverlay
+              tree={genealogyResult!.tree}
+              leafYPositions={leafYPositions}
+              panelWidth={180}
+              totalHeight={totalHeight}
+              groups={displayGroups}
+              sampleMetadata={sampleMetadata}
+              clusterThreshold={clusterThreshold}
+              onClusterThresholdChange={onClusterThresholdChange}
+              expandedClusterIds={expandedClusterIds}
+              toggleClusterExpansion={toggleClusterExpansion}
+              clusters={clusters}
+              rowYPositions={rowYPositions}
+              isClusteredView={isClusteredView}
+            />
+          </div>
+        )
+        : undefined
+      }
     >
       {({
         scalePosition,
@@ -661,101 +659,72 @@ function DeckGLLollipopCanvas({
     return counts
   }, [colorMode, haplotypeGroups])
 
-  // Flatten ONLY visible groups for deck.gl layers (windowed rendering)
-  const { bgRects, variantPoints, belowThresholdPoints, deletionLines, spanningRects, methPoints, mqtlArcs } =
-    useMemo(() => {
-      console.time('[perf] DeckGL data flatten')
-      const lod = getLodVisibility(stop - start)
-      const bgRects: BackgroundRect[] = []
-      const variantPoints: VariantPoint[] = []
-      const belowThresholdPoints: VariantPoint[] = []
-      const deletionLines: StemLine[] = []
-      const spanningRects: SpanningRect[] = []
-      const methPoints: MethPoint[] = []
-      const mqtlArcs: MqtlArc[] = []
+  // Per-row DeckGL layers for stable animations across expand/collapse
+  const layers = useMemo(() => {
+    console.time('[perf] DeckGL per-row layers')
+    const lod = getLodVisibility(stop - start)
+    const result: any[] = []
 
-      for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
-        const item = rowItems[gi]
-        const rowY = rowOffsets[gi]
+    for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
+      const item = rowItems[gi]
+      const rowY = rowOffsets[gi]
+      const rowId = item.type === 'cluster'
+        ? `cluster-${item.cluster.cluster_id}`
+        : `group-${item.group.hash}`
 
-        if (item.type === 'cluster') {
-          // --- Cluster row: render consensus variants with opacity ---
-          const cluster = item.cluster
+      // Per-row data arrays
+      const rowBgRects: BackgroundRect[] = []
+      const rowVariantPoints: VariantPoint[] = []
+      const rowBelowThresholdPoints: VariantPoint[] = []
+      const rowDeletionLines: StemLine[] = []
+      const rowSpanningRects: SpanningRect[] = []
+      const rowMethPoints: MethPoint[] = []
+      const rowMqtlArcs: MqtlArc[] = []
 
-          // Background rect spanning full region for cluster rows
-          bgRects.push({
-            groupStart: start,
-            groupStop: stop,
-            rowY: rowY,
-            color: [230, 240, 255, 255], // light blue tint for cluster rows
-            group: null as any, // cluster rows don't have a group
-          })
+      // Center line data for this row
+      const centerLineStart = item.type === 'cluster' ? start : item.group.start
+      const centerLineStop = item.type === 'cluster' ? stop : item.group.stop
 
-          for (const cv of cluster.consensus_variants) {
-            // Filter: hide variants present in <50% of the cluster
-            if (cv.cluster_af < 0.5) continue
+      if (item.type === 'cluster') {
+        const cluster = item.cluster
 
-            const variant = cv.variant
-            const alpha = clusterAfAlpha(cv.cluster_af)
-            const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-            const isLarge = Math.abs(variant.allele_length || 0) >= 50
+        rowBgRects.push({
+          groupStart: start,
+          groupStop: stop,
+          rowY: rowY,
+          color: [230, 240, 255, 255],
+          group: null as any,
+        })
 
-            // LOD filtering
-            if (cat === 'snv' && !lod.showSnvs) continue
-            if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
+        for (const cv of cluster.consensus_variants) {
+          if (cv.cluster_af < 0.5) continue
+          const variant = cv.variant
+          const alpha = clusterAfAlpha(cv.cluster_af)
+          const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+          const isLarge = Math.abs(variant.allele_length || 0) >= 50
+          if (cat === 'snv' && !lod.showSnvs) continue
+          if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
-            // Get base color, then override alpha
-            const baseColor = getVariantColor(
-              variant,
-              colorMode,
-              start,
-              stop,
-              sampleMetadata,
-              undefined,
-              locusCounts.get(variant.variant_id) || 0,
-              haplotypeGroups.length || 1
-            )
-            const color: [number, number, number, number] = [baseColor[0], baseColor[1], baseColor[2], alpha]
+          const baseColor = getVariantColor(
+            variant, colorMode, start, stop, sampleMetadata, undefined,
+            locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
+          )
+          const color: [number, number, number, number] = [baseColor[0], baseColor[1], baseColor[2], alpha]
 
-            if ((cat === 'deletion' || cat === 'sv') && isLarge) {
-              const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
-              spanningRects.push({
-                start: variant.pos,
-                end: endPos,
-                rowY,
-                color,
-                variant,
-                groupHash: 0,
-              })
-            } else if (cat === 'deletion') {
-              const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
-              deletionLines.push({
-                position: variant.pos,
-                yTop: rowY + 5,
-                yBottom: rowY + 20,
-                color,
-                width: thickness,
-                variant,
-              })
-            } else {
-              variantPoints.push({
-                position: variant.pos,
-                y: rowY + ROW_CENTER_Y,
-                radius: variantCircleRadius,
-                color,
-                variant,
-                groupHash: 0,
-              })
-            }
+          if ((cat === 'deletion' || cat === 'sv') && isLarge) {
+            const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
+            rowSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
+          } else if (cat === 'deletion') {
+            const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
+            rowDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
+          } else {
+            rowVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
           }
-          continue
         }
-
-        // --- Group row (exact-match group) ---
+      } else {
         const group = item.group
 
-        // Background rect (store raw genomic positions)
-        bgRects.push({
+        rowBgRects.push({
           groupStart: group.start,
           groupStop: group.stop,
           rowY: rowY,
@@ -763,85 +732,37 @@ function DeckGLLollipopCanvas({
           group,
         })
 
-        // Below-threshold variants (small open circles / faint shapes)
         for (const variant of group.below_threshold.variants) {
           const shape = getVariantShape(variant)
           if (shape === 'deletion') {
-            deletionLines.push({
-              position: variant.pos,
-              yTop: rowY + 8,
-              yBottom: rowY + 17,
-              color: [128, 128, 128, 100],
-              width: 1,
-              variant,
-            })
+            rowDeletionLines.push({ position: variant.pos, yTop: rowY + 8, yBottom: rowY + 17, color: [128, 128, 128, 100], width: 1, variant })
           } else {
-            belowThresholdPoints.push({
-              position: variant.pos,
-              y: rowY + ROW_CENTER_Y,
-              radius: 1.5,
-              color: [128, 128, 128, 100],
-              variant,
-              groupHash: group.hash,
-            })
+            rowBelowThresholdPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: group.hash })
           }
         }
 
-        // Above-threshold variants
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
           const isLarge = Math.abs(variant.allele_length || 0) >= 50
-
-          // LOD filtering: skip sub-pixel variants when zoomed out
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
           const color = getVariantColor(
-            variant,
-            colorMode,
-            start,
-            stop,
-            sampleMetadata,
-            group,
-            locusCounts.get(variant.variant_id) || 0,
-            haplotypeGroups.length || 1
+            variant, colorMode, start, stop, sampleMetadata, group,
+            locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
           )
 
           if ((cat === 'deletion' || cat === 'sv') && isLarge) {
-            // Large SVs/deletions render as spanning rectangles
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
-            spanningRects.push({
-              start: variant.pos,
-              end: endPos,
-              rowY,
-              color,
-              variant,
-              groupHash: group.hash,
-            })
+            rowSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
           } else if (cat === 'deletion') {
-            // Small deletions render as vertical lines
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
-            deletionLines.push({
-              position: variant.pos,
-              yTop: rowY + 5,
-              yBottom: rowY + 20,
-              color,
-              width: thickness,
-              variant,
-            })
+            rowDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
           } else {
-            variantPoints.push({
-              position: variant.pos,
-              y: rowY + ROW_CENTER_Y,
-              radius: variantCircleRadius,
-              color,
-              variant,
-              groupHash: group.hash,
-            })
+            rowVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
           }
         }
 
-        // Methylation data
         if (showMethylation) {
           const groupSampleIds = new Set(group.samples.map((s) => s.sample_id))
           const methSampleData = methylationData.filter((d) => groupSampleIds.has(d.sample))
@@ -852,124 +773,44 @@ function DeckGLLollipopCanvas({
               if (arr) arr.push(d.methylation)
               else byPos.set(d.pos1, [d.methylation])
             }
-            const methYScale = scaleLinear()
-              .domain([0, 100])
-              .range([METH_TRACK_HEIGHT - 4, 4])
+            const methYScale = scaleLinear().domain([0, 100]).range([METH_TRACK_HEIGHT - 4, 4])
             const methBaseY = rowY + VARIANT_ROW_HEIGHT
             for (const [pos, values] of byPos) {
               const mean = values.reduce((a, b) => a + b, 0) / values.length
-              methPoints.push({
-                position: pos,
-                y: methBaseY + methYScale(mean),
-                color: [74, 85, 104, 255],
-              })
+              rowMethPoints.push({ position: pos, y: methBaseY + methYScale(mean), color: [74, 85, 104, 255] })
             }
           }
         }
 
-        // mQTL arcs
         if (showMqtl && mqtlData.length > 0) {
           const groupVarPositions = new Set(group.variants.variants.map((v) => v.pos))
           const groupMqtl = mqtlData.filter(
-            (d: any) =>
-              groupVarPositions.has(d.variant_pos) &&
-              -Math.log10(d.p_value) >= (mqtlMinLogP || 0)
+            (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= (mqtlMinLogP || 0)
           )
           if (groupMqtl.length > 0) {
-            const mqtlBaseY =
-              rowY +
-              VARIANT_ROW_HEIGHT +
-              (showMethylation ? METH_TRACK_HEIGHT : 0) +
-              MQTL_PAD +
-              MQTL_TRACK_HEIGHT
-            const maxLogP = Math.max(
-              2,
-              ...groupMqtl.map((d: any) => -Math.log10(d.p_value))
-            )
-            const hScale = scaleLinear()
-              .domain([0, maxLogP])
-              .range([0, MQTL_TRACK_HEIGHT - 4])
-
+            const mqtlBaseY = rowY + VARIANT_ROW_HEIGHT + (showMethylation ? METH_TRACK_HEIGHT : 0) + MQTL_PAD + MQTL_TRACK_HEIGHT
+            const maxLogP = Math.max(2, ...groupMqtl.map((d: any) => -Math.log10(d.p_value)))
+            const hScale = scaleLinear().domain([0, maxLogP]).range([0, MQTL_TRACK_HEIGHT - 4])
             for (const d of groupMqtl) {
               const logP = -Math.log10(d.p_value)
               const arcH = hScale(logP)
               const isPositive = d.effect_size > 0
               const opacity = Math.min(204, Math.round(51 + (logP / maxLogP) * 153))
-              mqtlArcs.push({
-                variantPos: d.variant_pos,
-                cpgPos: d.cpg_pos,
-                arcHeight: arcH,
-                baseY: mqtlBaseY,
-                color: isPositive
-                  ? [220, 38, 38, opacity]
-                  : [37, 99, 235, opacity],
-                width: 1.5,
+              rowMqtlArcs.push({
+                variantPos: d.variant_pos, cpgPos: d.cpg_pos, arcHeight: arcH, baseY: mqtlBaseY,
+                color: isPositive ? [220, 38, 38, opacity] : [37, 99, 235, opacity], width: 1.5,
               })
             }
           }
         }
       }
 
-      console.log(`[perf] DeckGL: ${variantPoints.length} variants, ${spanningRects.length} spans, ${bgRects.length} bg, ${methPoints.length} meth, ${mqtlArcs.length} mqtl, ${deletionLines.length} dels (rows ${visStartIdx}-${visEndIdx} of ${rowItems.length})`)
-      console.timeEnd('[perf] DeckGL data flatten')
-      return { bgRects, variantPoints, belowThresholdPoints, deletionLines, spanningRects, methPoints, mqtlArcs }
-    }, [
-      rowItems,
-      rowOffsets,
-      start,
-      stop,
-      colorMode,
-      haplotypeGroups,
-      locusCounts,
-      variantCircleRadius,
-      showMethylation,
-      methylationData,
-      showMqtl,
-      mqtlData,
-      mqtlMinLogP,
-      sampleMetadata,
-      visStartIdx,
-      visEndIdx,
-    ])
+      // Emit per-row layers with stable IDs
 
-  // Center lines for visible rows only (raw positions, scaled in accessor)
-  const centerLines = useMemo(() => {
-    const lines = []
-    for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
-      const item = rowItems[gi]
-      if (item.type === 'cluster') {
-        lines.push({
-          groupStart: start,
-          groupStop: stop,
-          y: rowOffsets[gi] + ROW_CENTER_Y,
-        })
-      } else {
-        lines.push({
-          groupStart: item.group.start,
-          groupStop: item.group.stop,
-          y: rowOffsets[gi] + ROW_CENTER_Y,
-        })
-      }
-    }
-    return lines
-  }, [rowItems, rowOffsets, visStartIdx, visEndIdx, start, stop])
-
-  // Hovered variant position crosshair (raw position, scaled in accessor)
-  const crosshairLine = useMemo(() => {
-    if (hoveredVariantPosition == null) return []
-    return [{ position: hoveredVariantPosition, yTop: 0, yBottom: totalHeight }]
-  }, [hoveredVariantPosition, totalHeight])
-
-  const layers = useMemo(() => {
-    console.time('[perf] DeckGL layer creation')
-    const result: any[] = []
-
-    // Background rects — polygon computed from raw positions via scalePosition
-    if (bgRects.length > 0) {
-      result.push(
-        new SolidPolygonLayer({
-          id: 'bg-rects',
-          data: bgRects,
+      if (rowBgRects.length > 0) {
+        result.push(new SolidPolygonLayer({
+          id: `bg-rects-${rowId}`,
+          data: rowBgRects,
           getPolygon: (d: BackgroundRect) => [
             [scalePosition(d.groupStart), d.rowY + 5],
             [scalePosition(d.groupStop), d.rowY + 5],
@@ -978,21 +819,32 @@ function DeckGLLollipopCanvas({
           ],
           getFillColor: (d: BackgroundRect) => d.color,
           pickable: false,
-          updateTriggers: { getPolygon: [scalePosition] },
+          updateTriggers: { getPolygon: [scalePosition, rowY] },
           transitions: { getPolygon: { duration: 300 } },
-        })
-      )
-    }
+        }))
+      }
 
-    // SV/deletion spanning rectangles (large variants ≥50bp)
-    if (spanningRects.length > 0) {
-      result.push(
-        new SolidPolygonLayer({
-          id: 'sv-spanning-rects',
-          data: spanningRects,
+      // Center line
+      result.push(new LineLayer({
+        id: `center-line-${rowId}`,
+        data: [{ groupStart: centerLineStart, groupStop: centerLineStop, y: rowY + ROW_CENTER_Y }],
+        getSourcePosition: (d: any) => [scalePosition(d.groupStart), d.y, 0],
+        getTargetPosition: (d: any) => [scalePosition(d.groupStop), d.y, 0],
+        getColor: [168, 168, 168, 255],
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getSourcePosition: [scalePosition, rowY], getTargetPosition: [scalePosition, rowY] },
+        transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
+      }))
+
+      if (rowSpanningRects.length > 0) {
+        result.push(new SolidPolygonLayer({
+          id: `sv-spanning-rects-${rowId}`,
+          data: rowSpanningRects,
           getPolygon: (d: SpanningRect) => {
             const x1 = scalePosition(d.start)
-            const x2 = Math.max(scalePosition(d.end), x1 + 2) // minimum 2px width
+            const x2 = Math.max(scalePosition(d.end), x1 + 2)
             const yTop = d.rowY + ROW_CENTER_Y - 4
             const yBot = d.rowY + ROW_CENTER_Y + 4
             return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
@@ -1000,36 +852,15 @@ function DeckGLLollipopCanvas({
           getFillColor: (d: SpanningRect) => d.color,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getPolygon: [scalePosition] },
+          updateTriggers: { getPolygon: [scalePosition, rowY] },
           transitions: { getPolygon: { duration: 300 } },
-        })
-      )
-    }
+        }))
+      }
 
-    // Center lines
-    if (centerLines.length > 0) {
-      result.push(
-        new LineLayer({
-          id: 'center-lines',
-          data: centerLines,
-          getSourcePosition: (d: any) => [scalePosition(d.groupStart), d.y, 0],
-          getTargetPosition: (d: any) => [scalePosition(d.groupStop), d.y, 0],
-          getColor: [168, 168, 168, 255],
-          getWidth: 1,
-          widthUnits: 'pixels' as const,
-          pickable: false,
-          updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
-          transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
-        })
-      )
-    }
-
-    // Deletion lines
-    if (deletionLines.length > 0) {
-      result.push(
-        new LineLayer({
-          id: 'deletion-lines',
-          data: deletionLines,
+      if (rowDeletionLines.length > 0) {
+        result.push(new LineLayer({
+          id: `deletion-lines-${rowId}`,
+          data: rowDeletionLines,
           getSourcePosition: (d: StemLine) => [scalePosition(d.position), d.yTop, 0],
           getTargetPosition: (d: StemLine) => [scalePosition(d.position), d.yBottom, 0],
           getColor: (d: StemLine) => d.color,
@@ -1037,18 +868,15 @@ function DeckGLLollipopCanvas({
           widthUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+          updateTriggers: { getSourcePosition: [scalePosition, rowY], getTargetPosition: [scalePosition, rowY] },
           transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
-        })
-      )
-    }
+        }))
+      }
 
-    // Below-threshold variant circles (small, faint)
-    if (belowThresholdPoints.length > 0) {
-      result.push(
-        new ScatterplotLayer({
-          id: 'below-threshold',
-          data: belowThresholdPoints,
+      if (rowBelowThresholdPoints.length > 0) {
+        result.push(new ScatterplotLayer({
+          id: `below-threshold-${rowId}`,
+          data: rowBelowThresholdPoints,
           getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
           getRadius: (d: VariantPoint) => d.radius,
           getFillColor: [0, 0, 0, 0],
@@ -1060,18 +888,15 @@ function DeckGLLollipopCanvas({
           radiusUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getPosition: [scalePosition] },
+          updateTriggers: { getPosition: [scalePosition, rowY] },
           transitions: { getPosition: { duration: 300 } },
-        })
-      )
-    }
+        }))
+      }
 
-    // Main variant circles
-    if (variantPoints.length > 0) {
-      result.push(
-        new ScatterplotLayer({
-          id: 'variants',
-          data: variantPoints,
+      if (rowVariantPoints.length > 0) {
+        result.push(new ScatterplotLayer({
+          id: `variants-${rowId}`,
+          data: rowVariantPoints,
           getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
           getRadius: (d: VariantPoint) => d.radius,
           getFillColor: (d: VariantPoint) => d.color,
@@ -1082,34 +907,28 @@ function DeckGLLollipopCanvas({
           radiusUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getPosition: [scalePosition] },
+          updateTriggers: { getPosition: [scalePosition, rowY] },
           transitions: { getPosition: { duration: 300 } },
-        })
-      )
-    }
+        }))
+      }
 
-    // Methylation dots
-    if (methPoints.length > 0) {
-      result.push(
-        new ScatterplotLayer({
-          id: 'methylation',
-          data: methPoints,
+      if (rowMethPoints.length > 0) {
+        result.push(new ScatterplotLayer({
+          id: `methylation-${rowId}`,
+          data: rowMethPoints,
           getPosition: (d: MethPoint) => [scalePosition(d.position), d.y, 0],
           getRadius: 2,
           getFillColor: (d: MethPoint) => d.color,
           radiusUnits: 'pixels' as const,
           pickable: false,
-          updateTriggers: { getPosition: [scalePosition] },
-        })
-      )
-    }
+          updateTriggers: { getPosition: [scalePosition, rowY] },
+        }))
+      }
 
-    // mQTL arcs — compute bezier path from raw positions in accessor
-    if (mqtlArcs.length > 0) {
-      result.push(
-        new PathLayer({
-          id: 'mqtl-arcs',
-          data: mqtlArcs,
+      if (rowMqtlArcs.length > 0) {
+        result.push(new PathLayer({
+          id: `mqtl-arcs-${rowId}`,
+          data: rowMqtlArcs,
           getPath: (d: MqtlArc) => {
             const vx = scalePosition(d.variantPos)
             const cx = scalePosition(d.cpgPos)
@@ -1130,42 +949,49 @@ function DeckGLLollipopCanvas({
           getWidth: (d: MqtlArc) => d.width,
           widthUnits: 'pixels' as const,
           pickable: false,
-          updateTriggers: { getPath: [scalePosition] },
-        })
-      )
+          updateTriggers: { getPath: [scalePosition, rowY] },
+        }))
+      }
     }
 
-    // Crosshair for hovered variant position
-    if (crosshairLine.length > 0) {
-      result.push(
-        new LineLayer({
-          id: 'crosshair',
-          data: crosshairLine,
-          getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
-          getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
-          getColor: [0, 0, 0, 128],
-          getWidth: 1,
-          widthUnits: 'pixels' as const,
-          pickable: false,
-          updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
-        })
-      )
+    // Global crosshair layer (not per-row — doesn't cause shifting)
+    if (hoveredVariantPosition != null) {
+      result.push(new LineLayer({
+        id: 'crosshair',
+        data: [{ position: hoveredVariantPosition, yTop: 0, yBottom: totalHeight }],
+        getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
+        getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
+        getColor: [0, 0, 0, 128],
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+      }))
     }
 
-    console.timeEnd('[perf] DeckGL layer creation')
+    console.timeEnd('[perf] DeckGL per-row layers')
     return result
   }, [
-    bgRects,
-    spanningRects,
-    centerLines,
-    deletionLines,
-    belowThresholdPoints,
-    variantPoints,
-    methPoints,
-    mqtlArcs,
-    crosshairLine,
-    onHover,
+    rowItems,
+    rowOffsets,
+    start,
+    stop,
+    colorMode,
+    haplotypeGroups,
+    locusCounts,
+    variantCircleRadius,
+    showMethylation,
+    methylationData,
+    showMqtl,
+    mqtlData,
+    mqtlMinLogP,
+    sampleMetadata,
+    visStartIdx,
+    visEndIdx,
     scalePosition,
+    onHover,
+    hoveredVariantPosition,
+    totalHeight,
   ])
 
   const view = useMemo(
