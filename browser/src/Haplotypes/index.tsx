@@ -125,6 +125,11 @@ export const Legend = ({
   colorModes = COLOR_MODES,
   showGenealogy = false,
   onShowGenealogyChange = () => { },
+  isClusteredView = false,
+  onIsClusteredViewChange = () => { },
+  clusterThreshold = 0,
+  onClusterThresholdChange = () => { },
+  clusterCount = 0,
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -150,6 +155,11 @@ export const Legend = ({
   colorModes?: { value: string; label: string }[]
   showGenealogy?: boolean
   onShowGenealogyChange?: (show: boolean) => void
+  isClusteredView?: boolean
+  onIsClusteredViewChange?: (clustered: boolean) => void
+  clusterThreshold?: number
+  onClusterThresholdChange?: (threshold: number) => void
+  clusterCount?: number
 }) => {
   const [threshold, setThreshold] = useState(initialMinAf)
   const [sortMode, setSortMode] = useState(initialSortBy)
@@ -441,6 +451,36 @@ export const Legend = ({
               />
               Genealogy tree
             </label>
+            <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <input
+                type='checkbox'
+                checked={isClusteredView}
+                onChange={(e) => onIsClusteredViewChange(e.target.checked)}
+              />
+              Clustered view
+            </label>
+            {isClusteredView && (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Cluster resolution:</label>
+                  <input
+                    type='range'
+                    min='0'
+                    max='1'
+                    step='0.01'
+                    value={clusterThreshold}
+                    onChange={(e) => onClusterThresholdChange(parseFloat(e.target.value))}
+                    style={{ width: '80px' }}
+                  />
+                  <span style={{ fontSize: '12px', minWidth: '28px' }}>{clusterThreshold.toFixed(2)}</span>
+                </div>
+                {clusterCount > 0 && (
+                  <span style={{ fontSize: '11px', color: '#666' }}>
+                    {clusterCount} cluster{clusterCount !== 1 ? 's' : ''}
+                  </span>
+                )}
+              </>
+            )}
           </>
         )}
       </LegendRow>
@@ -499,8 +539,22 @@ export type HaplotypeGroup = {
   below_threshold: VariantSet
 }
 
+export type ClusterConsensusVariant = {
+  variant: LRVariant
+  cluster_af: number
+}
+
+export type HaplotypeCluster = {
+  cluster_id: string
+  sample_count: number
+  member_group_hashes: string[]
+  consensus_variants: ClusterConsensusVariant[]
+}
+
 export type HaplotypeGroups = {
   groups: HaplotypeGroup[]
+  clusters?: HaplotypeCluster[]
+  tree_json?: string
 }
 
 export type Methylation = {
@@ -725,6 +779,7 @@ type HaplotypeTrackProps = {
   start: number
   stop: number
   haplotypeGroups: HaplotypeGroup[]
+  clusters?: HaplotypeCluster[]
   methylationData: Methylation[]
   methylationSummary?: MethylationSummaryPoint[]
   sampleMetadata?: SampleMetadataMap
@@ -750,6 +805,12 @@ type HaplotypeTrackProps = {
   onShowGenealogyChange?: (show: boolean) => void
   hoveredVariantPosition?: number | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
+  isClusteredView?: boolean
+  onIsClusteredViewChange?: (clustered: boolean) => void
+  clusterThreshold?: number
+  onClusterThresholdChange?: (threshold: number) => void
+  expandedClusterIds?: Set<string>
+  toggleClusterExpansion?: (clusterId: string) => void
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1394,6 +1455,7 @@ const HaplotypeGroupTrack = ({
 const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(function HaplotypeTrack({
   height = 500,
   haplotypeGroups,
+  clusters,
   methylationData,
   methylationSummary = [],
   sampleMetadata,
@@ -1421,6 +1483,12 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   onShowGenealogyChange,
   hoveredVariantPosition,
   onVisibleGroupChange,
+  isClusteredView = false,
+  onIsClusteredViewChange,
+  clusterThreshold = 0,
+  onClusterThresholdChange,
+  expandedClusterIds,
+  toggleClusterExpansion,
 }, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -1558,6 +1626,11 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     onPlotTypeChange: onPlotTypeChange || (() => { }),
     showGenealogy,
     onShowGenealogyChange: onShowGenealogyChange || (() => { }),
+    isClusteredView,
+    onIsClusteredViewChange: onIsClusteredViewChange || (() => { }),
+    clusterThreshold,
+    onClusterThresholdChange: onClusterThresholdChange || (() => { }),
+    clusterCount: clusters?.length || 0,
   }
 
   // Build pangenome graph for alluvial/heatmap views
@@ -1608,6 +1681,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             ref={ref}
             displayGroups={displayGroups}
             haplotypeGroups={haplotypeGroups}
+            clusters={clusters}
             start={start}
             stop={stop}
             colorMode={colorMode}
@@ -1626,6 +1700,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             showGenealogy={showGenealogy}
             genealogyResult={genealogyResult}
             onVisibleGroupChange={onVisibleGroupChange}
+            isClusteredView={isClusteredView}
+            expandedClusterIds={expandedClusterIds}
+            toggleClusterExpansion={toggleClusterExpansion}
           />
         </>
       )}
