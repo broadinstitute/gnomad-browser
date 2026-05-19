@@ -813,6 +813,7 @@ type HaplotypeTrackProps = {
   onClusterThresholdChange?: (threshold: number) => void
   expandedClusterIds?: Set<string>
   toggleClusterExpansion?: (clusterId: string) => void
+  treeJson?: string
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1491,6 +1492,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   onClusterThresholdChange,
   expandedClusterIds,
   toggleClusterExpansion,
+  treeJson,
 }, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -1556,9 +1558,42 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     ? haplotypeGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
     : haplotypeGroups
 
-  // UPGMA genealogy tree computation
+  // UPGMA genealogy tree computation — prefer backend tree_json when available
   const genealogyResult = useMemo(() => {
     if (!showGenealogy || filteredGroups.length < 2) return null
+
+    // Backend tree: parse tree_json (groupHash is string in backend TreeNode)
+    if (treeJson) {
+      try {
+        const backendTree = JSON.parse(treeJson) as import('./genealogy-math').TreeNode
+        // Extract leaf order via in-order traversal
+        const leafOrder: number[] = []
+        const traverse = (node: import('./genealogy-math').TreeNode) => {
+          if (node.groupHash !== null) {
+            // Backend sends groupHash as string; convert to number for frontend
+            leafOrder.push(typeof node.groupHash === 'string' ? parseInt(node.groupHash, 10) : node.groupHash)
+            return
+          }
+          if (node.left) traverse(node.left)
+          if (node.right) traverse(node.right)
+        }
+        traverse(backendTree)
+        // Normalize groupHash to number throughout the tree
+        const normalizeTree = (node: any): import('./genealogy-math').TreeNode => ({
+          ...node,
+          groupHash: node.groupHash !== null
+            ? (typeof node.groupHash === 'string' ? parseInt(node.groupHash, 10) : node.groupHash)
+            : null,
+          left: node.left ? normalizeTree(node.left) : null,
+          right: node.right ? normalizeTree(node.right) : null,
+        })
+        return { tree: normalizeTree(backendTree), leafOrder }
+      } catch (e) {
+        console.warn('[genealogy] Failed to parse backend tree_json, falling back to local UPGMA', e)
+      }
+    }
+
+    // Fallback: compute locally
     console.time(`[perf] genealogy (${filteredGroups.length} groups)`)
     console.time('[perf] computeDistanceMatrix')
     const distMatrix = computeDistanceMatrix(filteredGroups)
@@ -1568,7 +1603,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     console.timeEnd('[perf] buildUPGMATree')
     console.timeEnd(`[perf] genealogy (${filteredGroups.length} groups)`)
     return { tree, leafOrder }
-  }, [showGenealogy, filteredGroups])
+  }, [showGenealogy, filteredGroups, treeJson])
 
   // When genealogy is active, reorder groups to match leaf order (prevents branch crossing)
   const displayGroups = useMemo(() => {
@@ -1705,6 +1740,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             isClusteredView={isClusteredView}
             expandedClusterIds={expandedClusterIds}
             toggleClusterExpansion={toggleClusterExpansion}
+            clusterThreshold={clusterThreshold}
+            onClusterThresholdChange={onClusterThresholdChange}
           />
         </>
       )}
@@ -1734,6 +1771,10 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           isClusteredView={isClusteredView}
           expandedClusterIds={expandedClusterIds}
           toggleClusterExpansion={toggleClusterExpansion}
+          showGenealogy={showGenealogy}
+          genealogyResult={genealogyResult}
+          clusterThreshold={clusterThreshold}
+          onClusterThresholdChange={onClusterThresholdChange}
         />
       )}
     </Wrapper>

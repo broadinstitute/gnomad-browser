@@ -265,6 +265,8 @@ type DeckGLLollipopTrackProps = {
   isClusteredView?: boolean
   expandedClusterIds?: Set<string>
   toggleClusterExpansion?: (clusterId: string) => void
+  clusterThreshold?: number
+  onClusterThresholdChange?: (threshold: number) => void
 }
 
 export type DeckGLLollipopTrackHandle = {
@@ -295,6 +297,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   isClusteredView = false,
   expandedClusterIds,
   toggleClusterExpansion,
+  clusterThreshold = 0,
+  onClusterThresholdChange,
 }, ref) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -416,6 +420,19 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     return positions
   }, [showGenealogy, genealogyResult, rowItems, rowOffsets])
 
+  // Combined row Y positions: group hashes + cluster IDs (string keys)
+  const rowYPositions = useMemo(() => {
+    const positions = new Map<string, number>()
+    rowItems.forEach((item, i) => {
+      if (item.type === 'group') {
+        positions.set(String(item.group.hash), rowOffsets[i] + ROW_CENTER_Y)
+      } else if (item.type === 'cluster') {
+        positions.set(item.cluster.cluster_id, rowOffsets[i] + ROW_CENTER_Y)
+      }
+    })
+    return positions
+  }, [rowItems, rowOffsets])
+
   const onHover = useCallback(
     (info: any) => {
       if (info.picked && info.object) {
@@ -446,74 +463,85 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto' }}
     >
     <Track
-      renderLeftPanel={() => (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <svg width={200} height={totalHeight}>
-            {rowItems.map((item, i) => {
-              if (i < lpStart || i > lpEnd) return null
-              const y = rowOffsets[i]
-              if (item.type === 'cluster') {
-                const cluster = item.cluster
-                const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
-                return (
-                  <g
-                    key={`cluster-${cluster.cluster_id}`}
-                    transform={`translate(0, ${y})`}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
-                  >
-                    <text x={2} y={17} fontSize='11' fill='#555'>
-                      {isExpanded ? '\u25BC' : '\u25B6'}
-                    </text>
-                    <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
-                    <text x={30} y={17} fontSize='12'>
-                      {cluster.sample_count}
-                    </text>
-                    <text x={60} y={17} fontSize='10' fill='#888'>
-                      ({cluster.member_group_hashes.length}g)
-                    </text>
-                  </g>
-                )
-              }
-              const group = item.group
-              const indent = item.isChild ? 12 : 0
-              return (
-                <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
-                  <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
-                  <text x={15} y={17} fontSize='12'>
-                    {group.samples.length}
-                  </text>
-                  <circle
-                    cx={50}
-                    cy={12.5}
-                    r={5}
-                    fill={variantColorScale(group.variants.variants.length)}
-                  />
-                  <text x={60} y={17} fontSize='12'>
-                    {group.variants.variants.length}
-                  </text>
-                </g>
-              )
-            })}
-          </svg>
-        </div>
-      )}
-      renderRightPanel={
-        showGenealogy && genealogyResult && leafYPositions.size > 0
-          ? () => (
-              <div style={{ position: 'relative', width: 250, height: totalHeight }}>
+      renderLeftPanel={() => {
+        const showTree = showGenealogy && genealogyResult && leafYPositions.size > 0
+        const treeWidth = showTree ? 180 : 0
+        const labelsWidth = 120
+        const totalLeftWidth = treeWidth + labelsWidth
+        return (
+          <div style={{ display: 'flex', flexDirection: 'row', width: totalLeftWidth }}>
+            {showTree && (
+              <div style={{ width: treeWidth, height: totalHeight, flexShrink: 0, overflow: 'hidden' }}>
                 <GenealogyTreeOverlay
-                  tree={genealogyResult.tree}
+                  tree={genealogyResult!.tree}
                   leafYPositions={leafYPositions}
-                  panelWidth={250}
+                  panelWidth={treeWidth}
                   totalHeight={totalHeight}
                   groups={displayGroups}
                   sampleMetadata={sampleMetadata}
+                  clusterThreshold={clusterThreshold}
+                  onClusterThresholdChange={onClusterThresholdChange}
+                  expandedClusterIds={expandedClusterIds}
+                  toggleClusterExpansion={toggleClusterExpansion}
+                  clusters={clusters}
+                  rowYPositions={rowYPositions}
+                  isClusteredView={isClusteredView}
                 />
               </div>
-            )
-          : undefined
-      }
+            )}
+            <div style={{ width: labelsWidth, flexShrink: 0 }}>
+              <svg width={labelsWidth} height={totalHeight}>
+                {rowItems.map((item, i) => {
+                  if (i < lpStart || i > lpEnd) return null
+                  const y = rowOffsets[i]
+                  if (item.type === 'cluster') {
+                    const cluster = item.cluster
+                    const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
+                    return (
+                      <g
+                        key={`cluster-${cluster.cluster_id}`}
+                        transform={`translate(0, ${y})`}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
+                      >
+                        <text x={2} y={17} fontSize='11' fill='#555'>
+                          {isExpanded ? '\u25BC' : '\u25B6'}
+                        </text>
+                        <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
+                        <text x={30} y={17} fontSize='12'>
+                          {cluster.sample_count}
+                        </text>
+                        <text x={60} y={17} fontSize='10' fill='#888'>
+                          ({cluster.member_group_hashes.length}g)
+                        </text>
+                      </g>
+                    )
+                  }
+                  const group = item.group
+                  const indent = item.isChild ? 12 : 0
+                  return (
+                    <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
+                      <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
+                      <text x={15} y={17} fontSize='12'>
+                        {group.samples.length}
+                      </text>
+                      <circle
+                        cx={50}
+                        cy={12.5}
+                        r={5}
+                        fill={variantColorScale(group.variants.variants.length)}
+                      />
+                      <text x={60} y={17} fontSize='12'>
+                        {group.variants.variants.length}
+                      </text>
+                    </g>
+                  )
+                })}
+              </svg>
+            </div>
+          </div>
+        )
+      }}
     >
       {({
         scalePosition,
@@ -951,6 +979,7 @@ function DeckGLLollipopCanvas({
           getFillColor: (d: BackgroundRect) => d.color,
           pickable: false,
           updateTriggers: { getPolygon: [scalePosition] },
+          transitions: { getPolygon: { duration: 300 } },
         })
       )
     }
@@ -972,6 +1001,7 @@ function DeckGLLollipopCanvas({
           pickable: true,
           onHover: onHover,
           updateTriggers: { getPolygon: [scalePosition] },
+          transitions: { getPolygon: { duration: 300 } },
         })
       )
     }
@@ -989,6 +1019,7 @@ function DeckGLLollipopCanvas({
           widthUnits: 'pixels' as const,
           pickable: false,
           updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+          transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
         })
       )
     }
@@ -1007,6 +1038,7 @@ function DeckGLLollipopCanvas({
           pickable: true,
           onHover: onHover,
           updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+          transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
         })
       )
     }
@@ -1029,6 +1061,7 @@ function DeckGLLollipopCanvas({
           pickable: true,
           onHover: onHover,
           updateTriggers: { getPosition: [scalePosition] },
+          transitions: { getPosition: { duration: 300 } },
         })
       )
     }
@@ -1050,6 +1083,7 @@ function DeckGLLollipopCanvas({
           pickable: true,
           onHover: onHover,
           updateTriggers: { getPosition: [scalePosition] },
+          transitions: { getPosition: { duration: 300 } },
         })
       )
     }

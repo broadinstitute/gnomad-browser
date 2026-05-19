@@ -4,6 +4,7 @@ import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
 import { SolidPolygonLayer } from '@deck.gl/layers'
 import { Track } from '@gnomad/region-viewer'
+import GenealogyTreeOverlay from './GenealogyTreeOverlay'
 import type {
   HaplotypeGroup,
   HaplotypeCluster,
@@ -117,6 +118,10 @@ type ChromosomePainterTrackProps = {
   isClusteredView?: boolean
   expandedClusterIds?: Set<string>
   toggleClusterExpansion?: (clusterId: string) => void
+  showGenealogy?: boolean
+  genealogyResult?: { tree: any; leafOrder: number[] } | null
+  clusterThreshold?: number
+  onClusterThresholdChange?: (threshold: number) => void
 }
 
 const NEUTRAL_COLOR: [number, number, number, number] = [240, 240, 240, 255]
@@ -131,6 +136,10 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
   isClusteredView = false,
   expandedClusterIds,
   toggleClusterExpansion,
+  showGenealogy = false,
+  genealogyResult,
+  clusterThreshold = 0,
+  onClusterThresholdChange,
 }) => {
   const [hovered, setHovered] = useState<{
     x: number
@@ -203,6 +212,32 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
     [rowOffsets, totalHeight, scrollTop, viewportH]
   )
 
+  // Compute leaf Y positions for genealogy tree overlay
+  const leafYPositions = useMemo(() => {
+    const positions = new Map<number, number>()
+    if (showGenealogy && genealogyResult) {
+      rowItems.forEach((item, i) => {
+        if (item.type === 'group') {
+          positions.set(item.group.hash, rowOffsets[i] + VARIANT_ROW_HEIGHT / 2)
+        }
+      })
+    }
+    return positions
+  }, [showGenealogy, genealogyResult, rowItems, rowOffsets])
+
+  // Combined row Y positions: group hashes + cluster IDs (string keys)
+  const rowYPositions = useMemo(() => {
+    const positions = new Map<string, number>()
+    rowItems.forEach((item, i) => {
+      if (item.type === 'group') {
+        positions.set(String(item.group.hash), rowOffsets[i] + VARIANT_ROW_HEIGHT / 2)
+      } else if (item.type === 'cluster') {
+        positions.set(item.cluster.cluster_id, rowOffsets[i] + VARIANT_ROW_HEIGHT / 2)
+      }
+    })
+    return positions
+  }, [rowItems, rowOffsets])
+
   const onHover = useCallback((info: any) => {
     if (info.picked && info.object) {
       setHovered({ x: info.x, y: info.y, object: info.object })
@@ -218,58 +253,84 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
       style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto' }}
     >
       <Track
-        renderLeftPanel={() => (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <svg width={200} height={totalHeight}>
-              {rowItems.map((item, i) => {
-                if (i < lpStart || i > lpEnd) return null
-                const y = rowOffsets[i]
-                if (item.type === 'cluster') {
-                  const cluster = item.cluster
-                  const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
-                  return (
-                    <g
-                      key={`cluster-${cluster.cluster_id}`}
-                      transform={`translate(0, ${y})`}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
-                    >
-                      <text x={2} y={17} fontSize="11" fill="#555">
-                        {isExpanded ? '\u25BC' : '\u25B6'}
-                      </text>
-                      <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
-                      <text x={30} y={17} fontSize="12">
-                        {cluster.sample_count}
-                      </text>
-                      <text x={60} y={17} fontSize="10" fill="#888">
-                        ({cluster.member_group_hashes.length}g)
-                      </text>
-                    </g>
-                  )
-                }
-                const group = item.group
-                const indent = item.isChild ? 12 : 0
-                return (
-                  <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
-                    <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
-                    <text x={15} y={17} fontSize="12">
-                      {group.samples.length}
-                    </text>
-                    <circle
-                      cx={50}
-                      cy={12.5}
-                      r={5}
-                      fill={variantColorScale(group.variants.variants.length)}
-                    />
-                    <text x={60} y={17} fontSize="12">
-                      {group.variants.variants.length}
-                    </text>
-                  </g>
-                )
-              })}
-            </svg>
-          </div>
-        )}
+        renderLeftPanel={() => {
+          const showTree = showGenealogy && genealogyResult && leafYPositions.size > 0
+          const treeWidth = showTree ? 180 : 0
+          const labelsWidth = 120
+          const totalLeftWidth = treeWidth + labelsWidth
+          return (
+            <div style={{ display: 'flex', flexDirection: 'row', width: totalLeftWidth }}>
+              {showTree && (
+                <div style={{ width: treeWidth, height: totalHeight, flexShrink: 0, overflow: 'hidden' }}>
+                  <GenealogyTreeOverlay
+                    tree={genealogyResult!.tree}
+                    leafYPositions={leafYPositions}
+                    panelWidth={treeWidth}
+                    totalHeight={totalHeight}
+                    groups={displayGroups}
+                    clusterThreshold={clusterThreshold}
+                    onClusterThresholdChange={onClusterThresholdChange}
+                    expandedClusterIds={expandedClusterIds}
+                    toggleClusterExpansion={toggleClusterExpansion}
+                    clusters={clusters}
+                    rowYPositions={rowYPositions}
+                    isClusteredView={isClusteredView}
+                  />
+                </div>
+              )}
+              <div style={{ width: labelsWidth, flexShrink: 0 }}>
+                <svg width={labelsWidth} height={totalHeight}>
+                  {rowItems.map((item, i) => {
+                    if (i < lpStart || i > lpEnd) return null
+                    const y = rowOffsets[i]
+                    if (item.type === 'cluster') {
+                      const cluster = item.cluster
+                      const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
+                      return (
+                        <g
+                          key={`cluster-${cluster.cluster_id}`}
+                          transform={`translate(0, ${y})`}
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
+                        >
+                          <text x={2} y={17} fontSize="11" fill="#555">
+                            {isExpanded ? '\u25BC' : '\u25B6'}
+                          </text>
+                          <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
+                          <text x={30} y={17} fontSize="12">
+                            {cluster.sample_count}
+                          </text>
+                          <text x={60} y={17} fontSize="10" fill="#888">
+                            ({cluster.member_group_hashes.length}g)
+                          </text>
+                        </g>
+                      )
+                    }
+                    const group = item.group
+                    const indent = item.isChild ? 12 : 0
+                    return (
+                      <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
+                        <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
+                        <text x={15} y={17} fontSize="12">
+                          {group.samples.length}
+                        </text>
+                        <circle
+                          cx={50}
+                          cy={12.5}
+                          r={5}
+                          fill={variantColorScale(group.variants.variants.length)}
+                        />
+                        <text x={60} y={17} fontSize="12">
+                          {group.variants.variants.length}
+                        </text>
+                      </g>
+                    )
+                  })}
+                </svg>
+              </div>
+            </div>
+          )
+        }}
       >
         {({
           scalePosition,
@@ -470,6 +531,7 @@ function ChromosomePainterCanvas({
         pickable: true,
         onHover,
         updateTriggers: { getPolygon: [scalePosition] },
+        transitions: { getPolygon: { duration: 300 } },
       }),
     ]
   }, [segments, scalePosition, onHover])

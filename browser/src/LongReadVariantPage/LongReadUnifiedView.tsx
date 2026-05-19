@@ -730,6 +730,7 @@ const LongReadUnifiedView = ({
               onClusterThresholdChange={setClusterThreshold}
               expandedClusterIds={expandedClusterIds}
               toggleClusterExpansion={toggleClusterExpansion}
+              treeJson={haplotypeGroups.tree_json}
             />
           )}
           <PositionAxisTrack />
