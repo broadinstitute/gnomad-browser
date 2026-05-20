@@ -88,10 +88,31 @@ export default () => (
       There is no need to include us as authors on your manuscript, unless we contributed specific
       advice or analysis for your work.
     </p>
+    <br />
     <p>
-      Current flagship paper (<b>v3</b>):
+      Current flagship paper (<b>v4</b> Preprint):
       <List>
         <PaperCitation
+          authorList="Guez, J.*, Goodrich, J. K.*, Moldovan, M. A., Chao, K. R., Kar, P., Panchal, R., Wilson, M. W., Laricchia, K. M., Rohlicek, G., Biba, D., Marten, D., He, Q., Darnowsky, P. W., Grant, R., Weisburd, B., Baxter, S. M., Nadeau, J., Lu, W., Jahl, S., Parsa, S., Lamane, A., DiTroia, S., Fu, J., Zhao, X., Alarmani, E., Tolonen, C., Novod, S., Bryant, S., Stevens, C., Chapman, S. B., Cusick, C., Vittal, C., Gauthier, L. D., Goldstein, J. I., Goldstein, D., King, D., Poterba, T., Tiao, G., gnomAD Project Consortium, Tranchero, M., Lotter, W., MacArthur, D. G., Brand, H., Seplyarskiy, V., Koch, E., Talkowski, M. E., Solomonson, M., Neale, B. M., O'Donnell-Luria, A., Finucane, H. K., Sunyaev, S. R., Daly, M. J., Rehm, H. L., Samocha, K. E.†, Karczewski, K. J.†"
+          title="Integrating 730,947 exome sequences with clinical literature improves gene discovery."
+          journal="medRxiv [Preprint]"
+          issue="Mar 25"
+          year="2026"
+          doiLink="https://doi.org/10.64898/2026.03.23.26349081"
+          citationDownloadLink="https://www.medrxiv.org/highwire/citation/1182884/reference-manager"
+          pmid="41929314"
+          pmcid="PMC13042128"
+        />
+        * contributed equally
+        <br />† contributed equally
+      </List>
+    </p>{' '}
+    <br />
+    <p>
+      Previous flagship papers:
+      <List>
+        <PaperCitation
+          prefix="v3"
           authorList="Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q.,
               Alföldi, J., Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W.,
               Tarasova, Y., Phu, W., Grant, R., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E.,
@@ -112,9 +133,6 @@ export default () => (
         * contributed equally
         <br />† contributed equally
       </List>
-    </p>{' '}
-    <p>
-      Previous flagship papers:
       <List>
         <PaperCitation
           prefix="v2"
@@ -150,6 +168,7 @@ export default () => (
         * contributed equally
       </List>
     </p>
+    <br />
     <p>
       Remaining publications:
       <List>
