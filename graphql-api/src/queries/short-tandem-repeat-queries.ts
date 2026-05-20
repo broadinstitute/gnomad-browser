@@ -4,8 +4,8 @@ import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 import { catchNotFound } from '../elasticsearch'
 
 const SHORT_TANDEM_REPEAT_INDICES = {
-  gnomad_r3: 'gnomad_v3_short_tandem_repeats-2025-03-17--19-04',
-  gnomad_r4: 'gnomad_v3_short_tandem_repeats-2025-03-17--19-04',
+  gnomad_r3: 'gnomad_v3_short_tandem_repeats',
+  gnomad_r4: 'gnomad_v3_short_tandem_repeats',
 }
 
 const SUMMARY_FIELDS = [
