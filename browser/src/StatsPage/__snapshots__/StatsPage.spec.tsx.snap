@@ -6951,7 +6951,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
                             dy="0em"
                             x={-180}
                           >
-                            Number of samples
+                            Number of variants
                           </tspan>
                         </text>
                       </svg>
