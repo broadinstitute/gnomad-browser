@@ -307,7 +307,10 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   } | null>(null)
 
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [scrollTop, setScrollTop] = useState(0)
+  // scrollTop as ref — avoids React re-renders on every scroll event.
+  // Only lpScrollTop (debounced) triggers re-renders for SVG label virtualization.
+  const scrollTopRef = useRef(0)
+  const [lpScrollTop, setLpScrollTop] = useState(0)
 
   // Build a hash->group lookup for cluster expansion
   const groupByHash = useMemo(() => {
@@ -370,35 +373,60 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   const rowItemsRef = useRef(rowItems)
   rowItemsRef.current = rowItems
 
-  // Debounced group-change notification (doesn't need to be instant)
-  const debouncedGroupChange = useMemo(
+  // Ref to the DeckGL canvas wrapper for imperative positioning
+  const canvasWrapperRef = useRef<HTMLDivElement>(null)
+  // Ref to the DeckGL instance for imperative viewState updates
+  const deckRef = useRef<any>(null)
+
+  // Deferred callbacks — only fire when scroll STOPS (300ms idle).
+  // During active scrolling, only imperative DOM/DeckGL updates run (zero React).
+  const deferredScrollCallbacks = useMemo(
     () => {
       let timer: ReturnType<typeof setTimeout> | null = null
-      return (scrollTop: number) => {
+      return (newScrollTop: number) => {
         if (timer) clearTimeout(timer)
         timer = setTimeout(() => {
+          // Update SVG left panel virtualization (triggers React re-render)
+          setLpScrollTop(newScrollTop)
+          // Notify parent of visible group change
           if (!onVisibleGroupChange || rowOffsetsRef.current.length === 0) return
           let visibleIdx = 0
           for (let i = 0; i < rowOffsetsRef.current.length; i++) {
-            if (rowOffsetsRef.current[i] <= scrollTop) visibleIdx = i
+            if (rowOffsetsRef.current[i] <= newScrollTop) visibleIdx = i
             else break
           }
           const item = rowItemsRef.current[visibleIdx]
           if (item?.type === 'group') {
             onVisibleGroupChange(item.group)
           }
-        }, 100)
+        }, 300)
       }
     },
     [onVisibleGroupChange]
   )
 
-  // Synchronous scroll handler — no throttle so canvas position stays in sync
+  // Scroll handler: imperative DOM + DeckGL updates (no React re-render),
+  // with debounced callback for SVG labels and group sync.
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const newScrollTop = (e.target as HTMLDivElement).scrollTop
-    setScrollTop(newScrollTop)
-    debouncedGroupChange(newScrollTop)
-  }, [debouncedGroupChange])
+    scrollTopRef.current = newScrollTop
+
+    // Imperative canvas positioning — bypasses React entirely
+    if (canvasWrapperRef.current) {
+      canvasWrapperRef.current.style.top = `${newScrollTop}px`
+    }
+
+    // Imperative DeckGL viewState update — bypasses React layer diffing
+    if (deckRef.current) {
+      const vw = canvasWrapperRef.current?.clientWidth || 0
+      const vh = canvasWrapperRef.current?.clientHeight || 0
+      deckRef.current.deck.setProps({
+        viewState: { target: [vw / 2, newScrollTop + vh / 2, 0], zoom: 0 },
+      })
+    }
+
+    deferredScrollCallbacks(newScrollTop)
+  }, [deferredScrollCallbacks])
 
   // Expose scrollToPosition for external sync
   useImperativeHandle(ref, () => ({
@@ -472,8 +500,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   // Compute visible group range for left panel virtualization
   const viewportH = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
   const [lpStart, lpEnd] = useMemo(
-    () => findVisibleRange(rowOffsets, totalHeight, scrollTop, viewportH),
-    [rowOffsets, totalHeight, scrollTop, viewportH]
+    () => findVisibleRange(rowOffsets, totalHeight, lpScrollTop, viewportH),
+    [rowOffsets, totalHeight, lpScrollTop, viewportH]
   )
 
   return (
@@ -590,7 +618,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           rowOffsets={rowOffsets}
           hovered={hovered}
           onHover={onHover}
-          scrollTop={scrollTop}
+          canvasWrapperRef={canvasWrapperRef}
+          deckRef={deckRef}
         />
       )}
     </Track>
@@ -622,7 +651,8 @@ type DeckGLCanvasProps = {
   rowOffsets: number[]
   hovered: any
   onHover: (info: any) => void
-  scrollTop: number
+  canvasWrapperRef: React.RefObject<HTMLDivElement | null>
+  deckRef: React.RefObject<any>
 }
 
 /** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
@@ -632,8 +662,10 @@ function clusterAfAlpha(clusterAf: number): number {
   return Math.round(50 + ((clusterAf - 0.5) / 0.4) * 205)
 }
 
-// Inner component that receives scalePosition from Track render prop
-function DeckGLLollipopCanvas({
+// Inner component that receives scalePosition from Track render prop.
+// React.memo prevents re-render during scroll — all scroll-driven updates
+// happen imperatively via refs (canvasWrapperRef + deckRef).
+const DeckGLLollipopCanvas = React.memo(function DeckGLLollipopCanvas({
   displayGroups,
   haplotypeGroups,
   rowItems,
@@ -655,10 +687,18 @@ function DeckGLLollipopCanvas({
   rowOffsets,
   hovered,
   onHover,
-  scrollTop,
+  canvasWrapperRef,
+  deckRef,
 }: DeckGLCanvasProps) {
   // Canvas uses full width — RegionViewer's rightPanelWidth handles space for genealogy tree
   const canvasWidth = width
+
+  // Stabilize scalePosition — Track's render prop creates a new function each render,
+  // but the underlying scale doesn't change unless the region changes. Use a ref so
+  // downstream useMemos that depend on it don't invalidate on every parent re-render.
+  const scalePositionRef = useRef(scalePosition)
+  scalePositionRef.current = scalePosition
+  const stableScalePosition = useCallback((pos: number) => scalePositionRef.current(pos), [])
 
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
 
@@ -827,14 +867,14 @@ function DeckGLLollipopCanvas({
           id: `bg-rects-${rowId}`,
           data: rowBgRects,
           getPolygon: (d: BackgroundRect) => [
-            [scalePosition(d.groupStart), d.rowY + 5],
-            [scalePosition(d.groupStop), d.rowY + 5],
-            [scalePosition(d.groupStop), d.rowY + 20],
-            [scalePosition(d.groupStart), d.rowY + 20],
+            [stableScalePosition(d.groupStart), d.rowY + 5],
+            [stableScalePosition(d.groupStop), d.rowY + 5],
+            [stableScalePosition(d.groupStop), d.rowY + 20],
+            [stableScalePosition(d.groupStart), d.rowY + 20],
           ],
           getFillColor: (d: BackgroundRect) => d.color,
           pickable: false,
-          updateTriggers: { getPolygon: [scalePosition, rowY] },
+          updateTriggers: { getPolygon: [stableScalePosition, rowY] },
           transitions: { getPolygon: { duration: 300 } },
         }))
       }
@@ -843,13 +883,13 @@ function DeckGLLollipopCanvas({
       result.push(new LineLayer({
         id: `center-line-${rowId}`,
         data: [{ groupStart: centerLineStart, groupStop: centerLineStop, y: rowY + ROW_CENTER_Y }],
-        getSourcePosition: (d: any) => [scalePosition(d.groupStart), d.y, 0],
-        getTargetPosition: (d: any) => [scalePosition(d.groupStop), d.y, 0],
+        getSourcePosition: (d: any) => [stableScalePosition(d.groupStart), d.y, 0],
+        getTargetPosition: (d: any) => [stableScalePosition(d.groupStop), d.y, 0],
         getColor: [168, 168, 168, 255],
         getWidth: 1,
         widthUnits: 'pixels' as const,
         pickable: false,
-        updateTriggers: { getSourcePosition: [scalePosition, rowY], getTargetPosition: [scalePosition, rowY] },
+        updateTriggers: { getSourcePosition: [stableScalePosition, rowY], getTargetPosition: [stableScalePosition, rowY] },
         transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
       }))
 
@@ -858,8 +898,8 @@ function DeckGLLollipopCanvas({
           id: `sv-spanning-rects-${rowId}`,
           data: rowSpanningRects,
           getPolygon: (d: SpanningRect) => {
-            const x1 = scalePosition(d.start)
-            const x2 = Math.max(scalePosition(d.end), x1 + 2)
+            const x1 = stableScalePosition(d.start)
+            const x2 = Math.max(stableScalePosition(d.end), x1 + 2)
             const yTop = d.rowY + ROW_CENTER_Y - 4
             const yBot = d.rowY + ROW_CENTER_Y + 4
             return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
@@ -867,7 +907,7 @@ function DeckGLLollipopCanvas({
           getFillColor: (d: SpanningRect) => d.color,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getPolygon: [scalePosition, rowY] },
+          updateTriggers: { getPolygon: [stableScalePosition, rowY] },
           transitions: { getPolygon: { duration: 300 } },
         }))
       }
@@ -876,14 +916,14 @@ function DeckGLLollipopCanvas({
         result.push(new LineLayer({
           id: `deletion-lines-${rowId}`,
           data: rowDeletionLines,
-          getSourcePosition: (d: StemLine) => [scalePosition(d.position), d.yTop, 0],
-          getTargetPosition: (d: StemLine) => [scalePosition(d.position), d.yBottom, 0],
+          getSourcePosition: (d: StemLine) => [stableScalePosition(d.position), d.yTop, 0],
+          getTargetPosition: (d: StemLine) => [stableScalePosition(d.position), d.yBottom, 0],
           getColor: (d: StemLine) => d.color,
           getWidth: (d: StemLine) => d.width,
           widthUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getSourcePosition: [scalePosition, rowY], getTargetPosition: [scalePosition, rowY] },
+          updateTriggers: { getSourcePosition: [stableScalePosition, rowY], getTargetPosition: [stableScalePosition, rowY] },
           transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
         }))
       }
@@ -892,7 +932,7 @@ function DeckGLLollipopCanvas({
         result.push(new ScatterplotLayer({
           id: `below-threshold-${rowId}`,
           data: rowBelowThresholdPoints,
-          getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
+          getPosition: (d: VariantPoint) => [stableScalePosition(d.position), d.y, 0],
           getRadius: (d: VariantPoint) => d.radius,
           getFillColor: [0, 0, 0, 0],
           getLineColor: (d: VariantPoint) => d.color,
@@ -903,7 +943,7 @@ function DeckGLLollipopCanvas({
           radiusUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getPosition: [scalePosition, rowY] },
+          updateTriggers: { getPosition: [stableScalePosition, rowY] },
           transitions: { getPosition: { duration: 300 } },
         }))
       }
@@ -912,7 +952,7 @@ function DeckGLLollipopCanvas({
         result.push(new ScatterplotLayer({
           id: `variants-${rowId}`,
           data: rowVariantPoints,
-          getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
+          getPosition: (d: VariantPoint) => [stableScalePosition(d.position), d.y, 0],
           getRadius: (d: VariantPoint) => d.radius,
           getFillColor: (d: VariantPoint) => d.color,
           getLineColor: [0, 0, 0, 128],
@@ -922,7 +962,7 @@ function DeckGLLollipopCanvas({
           radiusUnits: 'pixels' as const,
           pickable: true,
           onHover: onHover,
-          updateTriggers: { getPosition: [scalePosition, rowY] },
+          updateTriggers: { getPosition: [stableScalePosition, rowY] },
           transitions: { getPosition: { duration: 300 } },
         }))
       }
@@ -931,12 +971,12 @@ function DeckGLLollipopCanvas({
         result.push(new ScatterplotLayer({
           id: `methylation-${rowId}`,
           data: rowMethPoints,
-          getPosition: (d: MethPoint) => [scalePosition(d.position), d.y, 0],
+          getPosition: (d: MethPoint) => [stableScalePosition(d.position), d.y, 0],
           getRadius: 2,
           getFillColor: (d: MethPoint) => d.color,
           radiusUnits: 'pixels' as const,
           pickable: false,
-          updateTriggers: { getPosition: [scalePosition, rowY] },
+          updateTriggers: { getPosition: [stableScalePosition, rowY] },
         }))
       }
 
@@ -945,8 +985,8 @@ function DeckGLLollipopCanvas({
           id: `mqtl-arcs-${rowId}`,
           data: rowMqtlArcs,
           getPath: (d: MqtlArc) => {
-            const vx = scalePosition(d.variantPos)
-            const cx = scalePosition(d.cpgPos)
+            const vx = stableScalePosition(d.variantPos)
+            const cx = stableScalePosition(d.cpgPos)
             const midX = (vx + cx) / 2
             const midY = d.baseY - d.arcHeight
             const steps = 20
@@ -964,7 +1004,7 @@ function DeckGLLollipopCanvas({
           getWidth: (d: MqtlArc) => d.width,
           widthUnits: 'pixels' as const,
           pickable: false,
-          updateTriggers: { getPath: [scalePosition, rowY] },
+          updateTriggers: { getPath: [stableScalePosition, rowY] },
         }))
       }
     }
@@ -986,7 +1026,7 @@ function DeckGLLollipopCanvas({
     mqtlData,
     mqtlMinLogP,
     sampleMetadata,
-    scalePosition,
+    stableScalePosition,
     onHover,
     totalHeight,
   ])
@@ -997,36 +1037,44 @@ function DeckGLLollipopCanvas({
     return new LineLayer({
       id: 'crosshair',
       data: [{ position: hoveredVariantPosition, yTop: 0, yBottom: totalHeight }],
-      getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
-      getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
+      getSourcePosition: (d: any) => [stableScalePosition(d.position), d.yTop, 0],
+      getTargetPosition: (d: any) => [stableScalePosition(d.position), d.yBottom, 0],
       getColor: [0, 0, 0, 128],
       getWidth: 1,
       widthUnits: 'pixels' as const,
       pickable: false,
-      updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+      updateTriggers: { getSourcePosition: [stableScalePosition], getTargetPosition: [stableScalePosition] },
     })
-  }, [hoveredVariantPosition, scalePosition, totalHeight])
+  }, [hoveredVariantPosition, stableScalePosition, totalHeight])
 
   const view = useMemo(
     () => new OrthographicView({ id: 'main', flipY: true }),
     []
   )
 
+  // Initial viewState — subsequent updates happen imperatively via deckRef in scroll handler
   const viewState = useMemo(
     () => ({
-      target: [canvasWidth / 2, scrollTop + viewportHeight / 2, 0] as [number, number, number],
+      target: [canvasWidth / 2, 0 + viewportHeight / 2, 0] as [number, number, number],
       zoom: 0,
     }),
-    [canvasWidth, scrollTop, viewportHeight]
+    [canvasWidth, viewportHeight]
+  )
+
+  // Combine layers once — avoid creating a new array on every render
+  const allLayers = useMemo(
+    () => crosshairLayer ? [...layers, crosshairLayer] : layers,
+    [layers, crosshairLayer]
   )
 
   return (
     <div style={{ position: 'relative', width: canvasWidth, height: totalHeight }}>
-      <div style={{ position: 'absolute', top: scrollTop, left: 0, width: canvasWidth, height: viewportHeight }}>
+      <div ref={canvasWrapperRef} style={{ position: 'absolute', top: 0, left: 0, width: canvasWidth, height: viewportHeight }}>
         <DeckGL
+          ref={deckRef}
           views={view}
           viewState={viewState}
-          layers={[...layers, ...(crosshairLayer ? [crosshairLayer] : [])]}
+          layers={allLayers}
           controller={false}
           pickingRadius={5}
           style={{ position: 'absolute', left: '0', top: '0', width: `${canvasWidth}px`, height: `${viewportHeight}px` }}
@@ -1039,7 +1087,7 @@ function DeckGLLollipopCanvas({
       </div>
     </div>
   )
-}
+})
 
 // Simple tooltip overlay
 function Tooltip({
