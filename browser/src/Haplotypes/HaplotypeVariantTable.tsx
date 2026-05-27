@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
-import { throttle } from 'lodash-es'
 import styled from 'styled-components'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
@@ -1114,6 +1113,213 @@ const AlleleStructureRow = ({
   )
 }
 
+// --- Memoized table row ---
+
+type TableRowProps = {
+  v: DerivedVariant
+  i: number
+  isExpanded: boolean
+  mode: 'summary' | 'haplotype'
+  totalGroups: number
+  totalSamples: number
+  variantDict: Map<string, any>
+  onHoverVariant?: (position: number | null) => void
+  toggleExpand: (id: string) => void
+}
+
+const TableRow = React.memo(function TableRow({
+  v,
+  i,
+  isExpanded,
+  mode,
+  totalGroups,
+  totalSamples,
+  variantDict,
+  onHoverVariant,
+  toggleExpand,
+}: TableRowProps) {
+  const COL_COUNT = 12
+  return (
+    <React.Fragment key={`${v.pos}-${v.variant_id}-${i}`}>
+      <tr
+        data-position={v.pos}
+        onMouseEnter={() => onHoverVariant?.(v.pos)}
+        onMouseLeave={() => onHoverVariant?.(null)}
+        style={v.is_tr ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
+        onClick={v.is_tr ? () => toggleExpand(v.variant_id) : undefined}
+      >
+        <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
+          {v.is_tr && (
+            <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
+          )}
+          {v.variant_id}
+        </td>
+        <td>
+          <TypeDot $color={VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)]} />
+          {v.is_tr ? 'TR' : v.allele_type}
+        </td>
+        <td className="numeric">
+          {v.is_tr
+            ? `${v.min_length_diff ?? 0}..${v.max_length_diff ?? 0}bp`
+            : v.allele_length}
+        </td>
+        <td className="numeric">{v.freq.af.toFixed(4)}</td>
+        {mode === 'summary' && <td className="numeric">{v.freq.ac}</td>}
+        {mode === 'summary' && <td className="numeric">{v.freq.an}</td>}
+        {mode === 'haplotype' && (
+          <td className="numeric">
+            {v.group_count} / {totalGroups}
+          </td>
+        )}
+        {mode === 'haplotype' && (
+          <td className="numeric">
+            {v.carrier_count} / {totalSamples}
+          </td>
+        )}
+        <td>
+          <PopAfBar variant={v} />
+        </td>
+        {mode === 'summary' && (
+          <td>
+            {v.short_read_match_id ? (
+              <Link
+                to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`}
+                preserveSelectedDataset={false}
+                title={v.short_read_match_id}
+              >
+                {v.short_read_match_id.length > 20
+                  ? `${v.short_read_match_id.slice(0, 20)}…`
+                  : v.short_read_match_id}
+              </Link>
+            ) : <span style={{ color: '#ccc' }}>—</span>}
+          </td>
+        )}
+        {mode === 'haplotype' && (
+          <td>
+            <span style={{ color: '#ccc' }}>—</span>
+          </td>
+        )}
+        <td className="numeric">{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
+        <td className="numeric">{renderPredictor(v.phylop, 7.367, 9.741)}</td>
+        <td>
+          {v.major_consequence
+            ? getLabelForConsequenceTerm(v.major_consequence)
+            : <span style={{ color: '#ccc' }}>—</span>}
+        </td>
+        <td>
+          {v.rsid && v.rsid.startsWith('rs') ? (
+            <a
+              href={`https://www.ncbi.nlm.nih.gov/snp/${v.rsid}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#428bca', textDecoration: 'none' }}
+            >
+              {v.rsid}
+            </a>
+          ) : v.dbgap_id ? (
+            <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbgap_id}</span>
+          ) : (
+            <span style={{ color: '#ccc' }}>—</span>
+          )}
+        </td>
+      </tr>
+      {isExpanded && (
+        <TrExpandedRow>
+          <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+              {v.tr_distribution && <MiniTRPlot distribution={v.tr_distribution} />}
+              <div style={{ fontSize: 11, color: '#555' }}>
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>
+                  TR Locus: {v.chrom}:{v.pos}
+                  {v.tr_id && <span style={{ fontWeight: 400, marginLeft: 8, color: '#888' }}>({v.tr_id})</span>}
+                </div>
+                {v.tr_distribution && (
+                  <>
+                    <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
+                    <div>Distinct allele lengths: {new Set(v.tr_distribution.map((d) => d.length_diff)).size}</div>
+                  </>
+                )}
+                <div>Total carriers: {v.carrier_count}</div>
+                {v.tr_motifs && (
+                  <div style={{ marginTop: 4, marginBottom: 2 }}>
+                    <span style={{ fontWeight: 600 }}>Motifs: </span>
+                    <span style={{
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                      background: '#f0e6d2',
+                      padding: '1px 6px',
+                      borderRadius: 3,
+                      border: '1px solid #e0cdb5',
+                      letterSpacing: '0.5px',
+                    }}>{v.tr_motifs}</span>
+                  </div>
+                )}
+                {v.gnomad_str && <div>TRGT ID: <span style={{ fontFamily: 'monospace' }}>{v.gnomad_str}</span></div>}
+                {v.motif_counts && v.motif_counts.length > 0 && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts.join(', ')}</span></div>}
+                {v.allele_purity != null && <div>Allele purity: {v.allele_purity.toFixed(3)}</div>}
+                {v.tr_distribution && (
+                  <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {POP_ORDER.filter((p) => v.tr_distribution!.some((d) => d.pop === p)).map((pop) => (
+                      <span key={pop} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            width: 8,
+                            height: 8,
+                            borderRadius: 2,
+                            background: SUPERPOPULATION_COLORS[pop] || '#999',
+                          }}
+                        />
+                        {pop}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Overlapping variant calls (enveloped variants) */}
+                {v.enveloped_ids && v.enveloped_ids.length > 0 && (
+                  <div style={{ marginTop: 12 }}>
+                    <h4 style={{ marginTop: 0, marginBottom: 4, fontSize: 12 }}>
+                      Overlapping variant calls ({v.enveloped_ids.length})
+                    </h4>
+                    <p style={{ fontSize: 11, color: '#666', marginTop: 0, marginBottom: 8 }}>
+                      These variants were independently called within this repeat region
+                      and may be artifacts of repeat-length variation.
+                    </p>
+                    <ul style={{ fontSize: 11, margin: 0, paddingLeft: 16 }}>
+                      {v.enveloped_ids.map((id: string) => {
+                        const envVar = variantDict.get(id)
+                        if (!envVar) {
+                          return <li key={id} style={{ marginBottom: 4 }}>{id} (data not loaded)</li>
+                        }
+                        return (
+                          <li key={id} style={{ marginBottom: 4 }}>
+                            <Link to={`/variant/${id}`}>{id}</Link>
+                            {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac || 0})
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Allele structure grid (FMR1-style motif visualization) */}
+            {mode === 'haplotype' && v.tr_allele_structures && v.tr_allele_structures.length > 0 && v.tr_motifs && (
+              <AlleleStructureGrid
+                structures={v.tr_allele_structures}
+                motifs={v.tr_motifs.split(',').map((m: string) => m.trim())}
+                flankPrefix={v.tr_flank_prefix}
+                flankSuffix={v.tr_flank_suffix}
+              />
+            )}
+          </td>
+        </TrExpandedRow>
+      )}
+    </React.Fragment>
+  )
+})
+
 // --- Main component ---
 
 type HaplotypeVariantTableProps = {
@@ -1167,34 +1373,42 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   }
 
   const tableScrollRef = useRef<HTMLDivElement>(null)
-  const [tableScrollTop, setTableScrollTop] = useState(0)
 
   // Row height for virtualization (approximate — includes padding/borders)
   const ROW_HEIGHT = 28
-  const VISIBLE_BUFFER_ROWS = 20
+  const VISIBLE_BUFFER_ROWS = 15
 
+  // Track visible row window — only triggers re-render when rows actually need
+  // to change (scroll moves past half the buffer), NOT on every scroll pixel.
+  const [visibleWindow, setVisibleWindow] = useState({ startRow: 0, endRow: Math.ceil(500 / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS })
 
-  // Throttled scroll handler to notify parent of visible variant + track scroll for virtualization
-  const handleTableScroll = useMemo(
-    () =>
-      throttle(() => {
-        if (!tableScrollRef.current) return
-        const container = tableScrollRef.current
-        setTableScrollTop(container.scrollTop)
+  const handleTableScroll = useCallback(() => {
+    if (!tableScrollRef.current) return
+    const container = tableScrollRef.current
+    const scrollTop = container.scrollTop
+    const maxH = container.clientHeight || 500
 
-        if (!onVisibleVariantChange) return
-        const rows = container.querySelectorAll('tbody tr[data-position]')
-        for (let i = 0; i < rows.length; i++) {
-          const row = rows[i] as HTMLElement
-          if (row.offsetTop >= container.scrollTop) {
-            const pos = parseInt(row.getAttribute('data-position')!, 10)
-            if (!isNaN(pos)) onVisibleVariantChange(pos)
-            return
-          }
-        }
-      }, 50),
-    [onVisibleVariantChange]
-  )
+    const newStart = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - VISIBLE_BUFFER_ROWS)
+    const visibleCount = Math.ceil(maxH / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS
+    const newEnd = newStart + visibleCount
+
+    // Only re-render when window shifts by half the buffer (~30 rows / ~840px)
+    setVisibleWindow(prev => {
+      if (Math.abs(prev.startRow - newStart) < VISIBLE_BUFFER_ROWS / 2) return prev
+      return { startRow: newStart, endRow: newEnd }
+    })
+
+    if (!onVisibleVariantChange) return
+    const rows = container.querySelectorAll('tbody tr[data-position]')
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i] as HTMLElement
+      if (row.offsetTop >= scrollTop) {
+        const pos = parseInt(row.getAttribute('data-position')!, 10)
+        if (!isNaN(pos)) onVisibleVariantChange(pos)
+        return
+      }
+    }
+  }, [onVisibleVariantChange])
 
   // Expose scrollToPosition for external sync
   useImperativeHandle(ref, () => ({
@@ -1633,8 +1847,6 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     URL.revokeObjectURL(url)
   }
 
-  const COL_COUNT = 12
-
   return (
     <TableContainer>
       <ControlBar>
@@ -1725,16 +1937,14 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
               const VIRTUALIZE_THRESHOLD = 200
               const shouldVirtualize = sorted.length >= VIRTUALIZE_THRESHOLD && expandedRows.size === 0
 
-              const maxH = parseInt(maxHeight, 10) || 500
               let startRow = 0
               let endRow = sorted.length
               let topPad = 0
               let bottomPad = 0
 
               if (shouldVirtualize) {
-                // Fixed-height virtualization — only active when no rows are expanded
-                startRow = Math.max(0, Math.floor(tableScrollTop / ROW_HEIGHT) - VISIBLE_BUFFER_ROWS)
-                const visibleCount = Math.ceil(maxH / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS
+                startRow = visibleWindow.startRow
+                const visibleCount = visibleWindow.endRow - visibleWindow.startRow
                 endRow = Math.min(sorted.length, startRow + visibleCount)
                 topPad = startRow * ROW_HEIGHT
                 bottomPad = Math.max(0, (sorted.length - endRow) * ROW_HEIGHT)
@@ -1747,183 +1957,18 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                     const i = startRow + sliceIdx
                     const isExpanded = v.is_tr && expandedRows.has(v.variant_id)
                     return (
-                      <React.Fragment key={`${v.pos}-${v.variant_id}-${i}`}>
-                        <tr
-                          data-position={v.pos}
-                          onMouseEnter={() => onHoverVariant?.(v.pos)}
-                          onMouseLeave={() => onHoverVariant?.(null)}
-                          style={v.is_tr ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
-                          onClick={v.is_tr ? () => toggleExpand(v.variant_id) : undefined}
-                        >
-                    <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
-                      {v.is_tr && (
-                        <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
-                      )}
-                      {v.variant_id}
-                    </td>
-                    <td>
-                      <TypeDot $color={VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)]} />
-                      {v.is_tr ? 'TR' : v.allele_type}
-                    </td>
-                    <td className="numeric">
-                      {v.is_tr
-                        ? `${v.min_length_diff ?? 0}..${v.max_length_diff ?? 0}bp`
-                        : v.allele_length}
-                    </td>
-                    <td className="numeric">{v.freq.af.toFixed(4)}</td>
-                    {mode === 'summary' && <td className="numeric">{v.freq.ac}</td>}
-                    {mode === 'summary' && <td className="numeric">{v.freq.an}</td>}
-                    {mode === 'haplotype' && (
-                      <td className="numeric">
-                        {v.group_count} / {totalGroups}
-                      </td>
-                    )}
-                    {mode === 'haplotype' && (
-                      <td className="numeric">
-                        {v.carrier_count} / {totalSamples}
-                      </td>
-                    )}
-                    <td>
-                      <PopAfBar variant={v} />
-                    </td>
-                    {mode === 'summary' && (
-                      <td>
-                        {v.short_read_match_id ? (
-                          <Link
-                            to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`}
-                            preserveSelectedDataset={false}
-                            title={v.short_read_match_id}
-                          >
-                            {v.short_read_match_id.length > 20
-                              ? `${v.short_read_match_id.slice(0, 20)}…`
-                              : v.short_read_match_id}
-                          </Link>
-                        ) : <span style={{ color: '#ccc' }}>—</span>}
-                      </td>
-                    )}
-                    {mode === 'haplotype' && (
-                      <td>
-                        <span style={{ color: '#ccc' }}>—</span>
-                      </td>
-                    )}
-                    <td className="numeric">{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
-                    <td className="numeric">{renderPredictor(v.phylop, 7.367, 9.741)}</td>
-                    <td>
-                      {v.major_consequence
-                        ? getLabelForConsequenceTerm(v.major_consequence)
-                        : <span style={{ color: '#ccc' }}>—</span>}
-                    </td>
-                    <td>
-                      {v.rsid && v.rsid.startsWith('rs') ? (
-                        <a
-                          href={`https://www.ncbi.nlm.nih.gov/snp/${v.rsid}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: '#428bca', textDecoration: 'none' }}
-                        >
-                          {v.rsid}
-                        </a>
-                      ) : v.dbgap_id ? (
-                        <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbgap_id}</span>
-                      ) : (
-                        <span style={{ color: '#ccc' }}>—</span>
-                      )}
-                    </td>
-                  </tr>
-                  {isExpanded && (
-                    <TrExpandedRow>
-                      <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
-                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-                          {v.tr_distribution && <MiniTRPlot distribution={v.tr_distribution} />}
-                          <div style={{ fontSize: 11, color: '#555' }}>
-                            <div style={{ fontWeight: 600, marginBottom: 4 }}>
-                              TR Locus: {v.chrom}:{v.pos}
-                              {v.tr_id && <span style={{ fontWeight: 400, marginLeft: 8, color: '#888' }}>({v.tr_id})</span>}
-                            </div>
-                            {v.tr_distribution && (
-                              <>
-                                <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
-                                <div>Distinct allele lengths: {new Set(v.tr_distribution.map((d) => d.length_diff)).size}</div>
-                              </>
-                            )}
-                            <div>Total carriers: {v.carrier_count}</div>
-                            {v.tr_motifs && (
-                              <div style={{ marginTop: 4, marginBottom: 2 }}>
-                                <span style={{ fontWeight: 600 }}>Motifs: </span>
-                                <span style={{
-                                  fontFamily: 'monospace',
-                                  fontSize: 12,
-                                  background: '#f0e6d2',
-                                  padding: '1px 6px',
-                                  borderRadius: 3,
-                                  border: '1px solid #e0cdb5',
-                                  letterSpacing: '0.5px',
-                                }}>{v.tr_motifs}</span>
-                              </div>
-                            )}
-                            {v.gnomad_str && <div>TRGT ID: <span style={{ fontFamily: 'monospace' }}>{v.gnomad_str}</span></div>}
-                            {v.motif_counts && v.motif_counts.length > 0 && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts.join(', ')}</span></div>}
-                            {v.allele_purity != null && <div>Allele purity: {v.allele_purity.toFixed(3)}</div>}
-                            {v.tr_distribution && (
-                              <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                                {POP_ORDER.filter((p) => v.tr_distribution!.some((d) => d.pop === p)).map((pop) => (
-                                  <span key={pop} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                                    <span
-                                      style={{
-                                        display: 'inline-block',
-                                        width: 8,
-                                        height: 8,
-                                        borderRadius: 2,
-                                        background: SUPERPOPULATION_COLORS[pop] || '#999',
-                                      }}
-                                    />
-                                    {pop}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Overlapping variant calls (enveloped variants) */}
-                            {v.enveloped_ids && v.enveloped_ids.length > 0 && (
-                              <div style={{ marginTop: 12 }}>
-                                <h4 style={{ marginTop: 0, marginBottom: 4, fontSize: 12 }}>
-                                  Overlapping variant calls ({v.enveloped_ids.length})
-                                </h4>
-                                <p style={{ fontSize: 11, color: '#666', marginTop: 0, marginBottom: 8 }}>
-                                  These variants were independently called within this repeat region
-                                  and may be artifacts of repeat-length variation.
-                                </p>
-                                <ul style={{ fontSize: 11, margin: 0, paddingLeft: 16 }}>
-                                  {v.enveloped_ids.map((id: string) => {
-                                    const envVar = variantDict.get(id)
-                                    if (!envVar) {
-                                      return <li key={id} style={{ marginBottom: 4 }}>{id} (data not loaded)</li>
-                                    }
-                                    return (
-                                      <li key={id} style={{ marginBottom: 4 }}>
-                                        <Link to={`/variant/${id}`}>{id}</Link>
-                                        {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac || 0})
-                                      </li>
-                                    )
-                                  })}
-                                </ul>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        {/* Allele structure grid (FMR1-style motif visualization) */}
-                        {mode === 'haplotype' && v.tr_allele_structures && v.tr_allele_structures.length > 0 && v.tr_motifs && (
-                          <AlleleStructureGrid
-                            structures={v.tr_allele_structures}
-                            motifs={v.tr_motifs.split(',').map((m: string) => m.trim())}
-                            flankPrefix={v.tr_flank_prefix}
-                            flankSuffix={v.tr_flank_suffix}
-                          />
-                        )}
-                      </td>
-                    </TrExpandedRow>
-                  )}
-                  </React.Fragment>
+                      <TableRow
+                        key={`${v.pos}-${v.variant_id}-${i}`}
+                        v={v}
+                        i={i}
+                        isExpanded={isExpanded}
+                        mode={mode}
+                        totalGroups={totalGroups}
+                        totalSamples={totalSamples}
+                        variantDict={variantDict}
+                        onHoverVariant={onHoverVariant}
+                        toggleExpand={toggleExpand}
+                      />
                     )
                   })}
                   {bottomPad > 0 && <tr style={{ height: bottomPad }} />}
@@ -1937,4 +1982,4 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   )
 })
 
-export default HaplotypeVariantTable
+export default React.memo(HaplotypeVariantTable)
