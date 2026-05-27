@@ -99,28 +99,24 @@ const MQTL_QUERY = `
  */
 const hydrateGroups = (rawGroups: any) => {
   console.time('[perf] hydrateGroups')
-  const variantDict = rawGroups.variant_dict || []
-  const variantMap = new Map<string, any>()
-  for (const entry of variantDict) {
-    variantMap.set(entry.key, entry.variant)
-  }
-  console.log(`[perf] variant_dict size: ${variantDict.length} entries`)
+  const variantArray: any[] = rawGroups.variants || []
+  console.log(`[perf] variant array size: ${variantArray.length} entries`)
 
   const groups = (rawGroups.groups || []).map((g: any) => {
-    // If the group already has hydrated variants (legacy path), pass through
+    // If the group already has hydrated variants (legacy/GraphQL path), pass through
     if (g.variants?.variants) return g
 
-    const variantIds: string[] = g.variant_ids || []
-    const belowIds: string[] = g.below_threshold_ids || []
+    const indices: number[] = g.variant_indices || []
+    const aboveVariants = indices.map((i: number) => variantArray[i]).filter(Boolean)
+    const readableId = aboveVariants
+      .map((v: any) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
+      .sort()
+      .join(';')
 
-    const aboveVariants = variantIds
-      .map((id: string) => variantMap.get(id))
-      .filter(Boolean)
-    const belowVariants = belowIds
-      .map((id: string) => variantMap.get(id))
-      .filter(Boolean)
-
-    const readableId = variantIds.join(';')
+    const belowVariants = (g.below_threshold || []).map((bt: any) => {
+      const variant = bt.vi != null ? variantArray[bt.vi] : null
+      return variant ? { ...variant, in_samples: bt.in_samples } : null
+    }).filter(Boolean)
 
     return {
       ...g,
@@ -201,11 +197,11 @@ const fetchHaplotypeGroupsREST = async (
   return response.json()
 }
 
-// Toggle via ?api=rest in URL — defaults to graphql
+// Toggle via ?api=graphql in URL — defaults to rest (deduplicated, ~30x smaller)
 const useRestApi = () => {
   try {
-    return new URLSearchParams(window.location.search).get('api') === 'rest'
-  } catch { return false }
+    return new URLSearchParams(window.location.search).get('api') !== 'graphql'
+  } catch { return true }
 }
 
 /** Auto-calculate a reasonable cluster threshold based on region size */

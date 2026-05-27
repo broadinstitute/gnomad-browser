@@ -474,7 +474,7 @@ export const assembleHaplotypeGroups = (
 
   // Step 6: Clustering (optional — only if clusterThreshold is provided)
   if (clusterThreshold == null || groups.length < 2) {
-    return { groups }
+    return { groups, variantMap }
   }
 
   const cacheKey = `${chrom}:${regionStart ?? 0}-${regionStop ?? 0}`
@@ -543,6 +543,7 @@ export const assembleHaplotypeGroups = (
     groups,
     clusters,
     tree_json: JSON.stringify(tree),
+    variantMap,
   }
 }
 
