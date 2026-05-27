@@ -187,12 +187,16 @@ const fetchGraphQL = async (query: string, variables: any) => {
 }
 
 const fetchHaplotypeGroupsREST = async (
-  chrom: string, start: number, stop: number, minAf: number, sortBy: string
+  chrom: string, start: number, stop: number, minAf: number, sortBy: string,
+  clusterThreshold?: number
 ) => {
   const params = new URLSearchParams({
     chrom, start: String(start), stop: String(stop),
     min_af: String(minAf), sort_by: sortBy,
   })
+  if (clusterThreshold != null) {
+    params.set('cluster_threshold', String(clusterThreshold))
+  }
   const response = await fetch(`/api/lr/haplotype-groups?${params}`)
   return response.json()
 }
@@ -398,7 +402,7 @@ const LongReadUnifiedView = ({
       const t0 = performance.now()
       try {
         if (isRest) {
-          const result = await fetchHaplotypeGroupsREST(chrom, start, stop, currentThreshold, sortBy)
+          const result = await fetchHaplotypeGroupsREST(chrom, start, stop, currentThreshold, sortBy, isClusteredView ? clusterThreshold : undefined)
           if (result.error) {
             console.error('REST error fetching haplotype groups:', result.error)
           } else {
