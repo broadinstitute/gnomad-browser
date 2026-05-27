@@ -1337,11 +1337,18 @@ export type HaplotypeVariantTableHandle = {
   scrollToPosition: (pos: number) => void
 }
 
+// Stable default references — destructuring defaults like `= []` create new objects
+// every render, which invalidates useMemo deps and causes the 2-second variants
+// derivation to recompute on every scroll tick.
+const EMPTY_VARIANTS: any[] = []
+const EMPTY_HAPLOTYPE_GROUPS: { groups: HaplotypeGroup[] } = { groups: [] }
+const EMPTY_SAMPLE_METADATA = new Map() as SampleMetadataMap
+
 const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeVariantTableProps>(function HaplotypeVariantTable({
   mode = 'haplotype',
-  summaryVariants = [],
-  haplotypeGroups = { groups: [] },
-  sampleMetadata = new Map() as SampleMetadataMap,
+  summaryVariants = EMPTY_VARIANTS,
+  haplotypeGroups = EMPTY_HAPLOTYPE_GROUPS,
+  sampleMetadata = EMPTY_SAMPLE_METADATA,
   onHoverVariant,
   onVisibleVariantChange,
   maxHeight = '500px',
@@ -1363,16 +1370,17 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   })
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
 
-  const toggleExpand = (id: string) => {
+  const toggleExpand = useCallback((id: string) => {
     setExpandedRows((prev) => {
       const next = new Set(prev)
       if (next.has(id)) next.delete(id)
       else next.add(id)
       return next
     })
-  }
+  }, [])
 
   const tableScrollRef = useRef<HTMLDivElement>(null)
+  const sortedRef = useRef<DerivedVariant[]>([])
 
   // Row height for virtualization (approximate — includes padding/borders)
   const ROW_HEIGHT = 28
@@ -1398,15 +1406,11 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       return { startRow: newStart, endRow: newEnd }
     })
 
-    if (!onVisibleVariantChange) return
-    const rows = container.querySelectorAll('tbody tr[data-position]')
-    for (let i = 0; i < rows.length; i++) {
-      const row = rows[i] as HTMLElement
-      if (row.offsetTop >= scrollTop) {
-        const pos = parseInt(row.getAttribute('data-position')!, 10)
-        if (!isNaN(pos)) onVisibleVariantChange(pos)
-        return
-      }
+    if (!onVisibleVariantChange || !sortedRef.current) return
+    // Use math instead of DOM traversal to find the visible variant position.
+    const visibleIdx = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT))
+    if (visibleIdx < sortedRef.current.length) {
+      onVisibleVariantChange(sortedRef.current[visibleIdx].pos)
     }
   }, [onVisibleVariantChange])
 
@@ -1748,6 +1752,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       return ((av as number) - (bv as number)) * multiplier
     })
   }, [filtered, sort])
+  sortedRef.current = sorted
 
   const handleSort = (key: SortKey) => {
     setSort((prev) =>

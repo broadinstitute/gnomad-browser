@@ -1625,16 +1625,24 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     return map
   }, [methylationSummary])
 
-  const maxSamples = (displayGroups || []).reduce((max, group) => Math.max(max, group.samples.length), 0)
-  const maxVariants = (displayGroups || []).reduce((max, group) => Math.max(max, group.variants.variants.length), 0)
+  const maxSamples = useMemo(
+    () => (displayGroups || []).reduce((max, group) => Math.max(max, group.samples.length), 0),
+    [displayGroups]
+  )
+  const maxVariants = useMemo(
+    () => (displayGroups || []).reduce((max, group) => Math.max(max, group.variants.variants.length), 0),
+    [displayGroups]
+  )
 
-  const sampleColorScale = scaleLinear<string>()
-    .domain([0, maxSamples === 0 ? 1 : maxSamples])
-    .range(['#fee0b6', '#b35806'])
+  const sampleColorScale = useMemo(
+    () => scaleLinear<string>().domain([0, maxSamples === 0 ? 1 : maxSamples]).range(['#fee0b6', '#b35806']),
+    [maxSamples]
+  )
 
-  const variantColorScale = scaleLinear<string>()
-    .domain([0, maxVariants === 0 ? 1 : maxVariants])
-    .range(['#efefef', '#7f7f7f'])
+  const variantColorScale = useMemo(
+    () => scaleLinear<string>().domain([0, maxVariants === 0 ? 1 : maxVariants]).range(['#efefef', '#7f7f7f']),
+    [maxVariants]
+  )
 
   const methylationYScale = scaleLinear()
     .domain([0, Math.max(1, ...methylationData.map((d) => d.methylation))])

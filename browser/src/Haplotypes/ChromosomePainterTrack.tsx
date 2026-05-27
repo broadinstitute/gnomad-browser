@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useCallback, useRef } from 'react'
-import { throttle } from 'lodash-es'
 import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
 import { SolidPolygonLayer } from '@deck.gl/layers'
@@ -190,14 +189,10 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
     return { rowOffsets: offsets, totalHeight: cumY }
   }, [rowItems])
 
-  // Throttled scroll handler
-  const handleScroll = useMemo(
-    () =>
-      throttle((e: React.UIEvent<HTMLDivElement>) => {
-        setScrollTop((e.target as HTMLDivElement).scrollTop)
-      }, 50),
-    []
-  )
+  // Synchronous scroll handler — no throttle so canvas position stays in sync
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    setScrollTop((e.target as HTMLDivElement).scrollTop)
+  }, [])
 
   const viewportH = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
 
