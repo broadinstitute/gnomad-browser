@@ -114,13 +114,20 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       fetchTrvCarrierAlts(chrom, start, stop),
     ])
 
+    const clusterThreshold = req.query.cluster_threshold != null
+      ? parseFloat(req.query.cluster_threshold)
+      : undefined
+
     const result = assembleHaplotypeGroups(
       groupAssignments as any,
       distinctVariants as any,
       chrom,
       minAf,
       sortBy,
-      trvCarriers as any
+      trvCarriers as any,
+      clusterThreshold,
+      start,
+      stop
     )
 
     // Deduplicate response: send variant_dict + index-based references instead of full objects
