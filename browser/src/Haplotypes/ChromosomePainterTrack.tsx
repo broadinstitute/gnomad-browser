@@ -199,12 +199,7 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
     []
   )
 
-  // Visible range
   const viewportH = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
-  const [visStartIdx, visEndIdx] = useMemo(
-    () => findVisibleRange(rowOffsets, totalHeight, scrollTop, viewportH),
-    [rowOffsets, totalHeight, scrollTop, viewportH]
-  )
 
   // Left panel visible range
   const [lpStart, lpEnd] = useMemo(
@@ -345,8 +340,6 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
             stop={stop}
             scalePosition={scalePosition}
             width={width}
-            visStartIdx={visStartIdx}
-            visEndIdx={visEndIdx}
             scrollTop={scrollTop}
             hovered={hovered}
             onHover={onHover}
@@ -369,8 +362,6 @@ type CanvasProps = {
   stop: number
   scalePosition: (input: number) => number
   width: number
-  visStartIdx: number
-  visEndIdx: number
   scrollTop: number
   hovered: { x: number; y: number; object: PaintedSegment } | null
   onHover: (info: any) => void
@@ -384,8 +375,6 @@ function ChromosomePainterCanvas({
   stop,
   scalePosition,
   width,
-  visStartIdx,
-  visEndIdx,
   scrollTop,
   hovered,
   onHover,
@@ -397,7 +386,7 @@ function ChromosomePainterCanvas({
   const layers = useMemo(() => {
     const result: any[] = []
 
-    for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
+    for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
       const rowId = item.type === 'cluster'
@@ -499,7 +488,7 @@ function ChromosomePainterCanvas({
     }
 
     return result
-  }, [rowItems, rowOffsets, start, stop, binSize, visStartIdx, visEndIdx, scalePosition, onHover])
+  }, [rowItems, rowOffsets, start, stop, binSize, scalePosition, onHover])
 
   const view = useMemo(() => new OrthographicView({ id: 'main', flipY: true }), [])
 

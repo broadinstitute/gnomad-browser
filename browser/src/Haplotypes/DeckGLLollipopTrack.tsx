@@ -648,12 +648,7 @@ function DeckGLLollipopCanvas({
   // Canvas uses full width — RegionViewer's rightPanelWidth handles space for genealogy tree
   const canvasWidth = width
 
-  // Compute visible group range for windowed rendering
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
-  const [visStartIdx, visEndIdx] = useMemo(
-    () => findVisibleRange(rowOffsets, totalHeight, scrollTop, viewportHeight),
-    [rowOffsets, totalHeight, scrollTop, viewportHeight]
-  )
 
   // Pre-aggregate locus counts for haplotype_count color mode
   const locusCounts = useMemo(() => {
@@ -673,7 +668,7 @@ function DeckGLLollipopCanvas({
     const lod = getLodVisibility(stop - start)
     const result: any[] = []
 
-    for (let gi = visStartIdx; gi <= visEndIdx && gi < rowItems.length; gi++) {
+    for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
       const rowId = item.type === 'cluster'
@@ -962,21 +957,6 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    // Global crosshair layer (not per-row — doesn't cause shifting)
-    if (hoveredVariantPosition != null) {
-      result.push(new LineLayer({
-        id: 'crosshair',
-        data: [{ position: hoveredVariantPosition, yTop: 0, yBottom: totalHeight }],
-        getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
-        getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
-        getColor: [0, 0, 0, 128],
-        getWidth: 1,
-        widthUnits: 'pixels' as const,
-        pickable: false,
-        updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
-      }))
-    }
-
     console.timeEnd('[perf] DeckGL per-row layers')
     return result
   }, [
@@ -994,13 +974,26 @@ function DeckGLLollipopCanvas({
     mqtlData,
     mqtlMinLogP,
     sampleMetadata,
-    visStartIdx,
-    visEndIdx,
     scalePosition,
     onHover,
-    hoveredVariantPosition,
     totalHeight,
   ])
+
+  // Crosshair layer — decoupled so hover doesn't rebuild all variant layers
+  const crosshairLayer = useMemo(() => {
+    if (hoveredVariantPosition == null) return null
+    return new LineLayer({
+      id: 'crosshair',
+      data: [{ position: hoveredVariantPosition, yTop: 0, yBottom: totalHeight }],
+      getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
+      getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
+      getColor: [0, 0, 0, 128],
+      getWidth: 1,
+      widthUnits: 'pixels' as const,
+      pickable: false,
+      updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+    })
+  }, [hoveredVariantPosition, scalePosition, totalHeight])
 
   const view = useMemo(
     () => new OrthographicView({ id: 'main', flipY: true }),
@@ -1021,7 +1014,7 @@ function DeckGLLollipopCanvas({
         <DeckGL
           views={view}
           viewState={viewState}
-          layers={layers}
+          layers={[...layers, ...(crosshairLayer ? [crosshairLayer] : [])]}
           controller={false}
           pickingRadius={5}
           style={{ position: 'absolute', left: '0', top: '0', width: `${canvasWidth}px`, height: `${viewportHeight}px` }}
