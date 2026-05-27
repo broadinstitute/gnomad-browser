@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
-import { throttle } from 'lodash-es'
 import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
 import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer } from '@deck.gl/layers'
@@ -365,28 +364,41 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     return { rowOffsets: offsets, totalHeight: cumY }
   }, [rowItems, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
 
-  // Throttled scroll handler
-  const handleScroll = useMemo(
-    () =>
-      throttle((e: React.UIEvent<HTMLDivElement>) => {
-        const newScrollTop = (e.target as HTMLDivElement).scrollTop
-        setScrollTop(newScrollTop)
+  // Refs for scroll-sync (avoids stale closure in debounced callback)
+  const rowOffsetsRef = useRef(rowOffsets)
+  rowOffsetsRef.current = rowOffsets
+  const rowItemsRef = useRef(rowItems)
+  rowItemsRef.current = rowItems
 
-        // Find topmost visible group and notify parent
-        if (onVisibleGroupChange && rowOffsets.length > 0) {
+  // Debounced group-change notification (doesn't need to be instant)
+  const debouncedGroupChange = useMemo(
+    () => {
+      let timer: ReturnType<typeof setTimeout> | null = null
+      return (scrollTop: number) => {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          if (!onVisibleGroupChange || rowOffsetsRef.current.length === 0) return
           let visibleIdx = 0
-          for (let i = 0; i < rowOffsets.length; i++) {
-            if (rowOffsets[i] <= newScrollTop) visibleIdx = i
+          for (let i = 0; i < rowOffsetsRef.current.length; i++) {
+            if (rowOffsetsRef.current[i] <= scrollTop) visibleIdx = i
             else break
           }
-          const item = rowItems[visibleIdx]
+          const item = rowItemsRef.current[visibleIdx]
           if (item?.type === 'group') {
             onVisibleGroupChange(item.group)
           }
-        }
-      }, 50),
-    [rowOffsets, rowItems, onVisibleGroupChange]
+        }, 100)
+      }
+    },
+    [onVisibleGroupChange]
   )
+
+  // Synchronous scroll handler — no throttle so canvas position stays in sync
+  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    const newScrollTop = (e.target as HTMLDivElement).scrollTop
+    setScrollTop(newScrollTop)
+    debouncedGroupChange(newScrollTop)
+  }, [debouncedGroupChange])
 
   // Expose scrollToPosition for external sync
   useImperativeHandle(ref, () => ({
