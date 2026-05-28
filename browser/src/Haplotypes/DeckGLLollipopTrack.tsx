@@ -1115,6 +1115,7 @@ function DeckGLLollipopCanvas({
     const allMethPoints: MethPoint[] = []
     const allMqtlArcs: MqtlArc[] = []
     const allCenterLines: { groupStart: number; groupStop: number; y: number }[] = []
+    const allClusterBoxes: { yTop: number; yBottom: number }[] = []
 
     for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
@@ -1269,6 +1270,25 @@ function DeckGLLollipopCanvas({
       }
     }
 
+    // Collect bounding boxes for expanded clusters
+    for (let gi = 0; gi < rowItems.length; gi++) {
+      const item = rowItems[gi]
+      if (item.type === 'cluster' && expandedClusterIds?.has(item.cluster.cluster_id)) {
+        let lastChildIdx = gi
+        for (let j = gi + 1; j < rowItems.length; j++) {
+          if (rowItems[j].type === 'group' && (rowItems[j] as { type: 'group'; group: HaplotypeGroup; isChild: boolean }).isChild) {
+            lastChildIdx = j
+          } else break
+        }
+        if (lastChildIdx > gi) {
+          allClusterBoxes.push({
+            yTop: rowOffsets[gi],
+            yBottom: rowOffsets[lastChildIdx] + VARIANT_ROW_HEIGHT,
+          })
+        }
+      }
+    }
+
     // Emit consolidated global layers — one per data type
 
     const result: any[] = []
@@ -1286,6 +1306,32 @@ function DeckGLLollipopCanvas({
         getFillColor: (d: BackgroundRect) => d.color,
         pickable: false,
         updateTriggers: { getPolygon: [scalePosition] },
+      }))
+    }
+
+    if (allClusterBoxes.length > 0) {
+      // Expand each box into 4 line segments for uniform rendering (no corner artifacts)
+      const boxLines: { source: [number, number, number]; target: [number, number, number] }[] = []
+      for (const box of allClusterBoxes) {
+        const x0 = scalePosition(start) + 1
+        const x1 = scalePosition(stop) - 1
+        boxLines.push(
+          { source: [x0, box.yTop, 0], target: [x1, box.yTop, 0] },       // top
+          { source: [x1, box.yTop, 0], target: [x1, box.yBottom, 0] },     // right
+          { source: [x1, box.yBottom, 0], target: [x0, box.yBottom, 0] },  // bottom
+          { source: [x0, box.yBottom, 0], target: [x0, box.yTop, 0] },     // left
+        )
+      }
+      result.push(new LineLayer({
+        id: 'cluster-box-outlines',
+        data: boxLines,
+        getSourcePosition: (d: any) => d.source,
+        getTargetPosition: (d: any) => d.target,
+        getColor: [140, 140, 170, 200],
+        getWidth: 2,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getSourcePosition: [scalePosition, start, stop], getTargetPosition: [scalePosition, start, stop] },
       }))
     }
 
@@ -1434,6 +1480,7 @@ function DeckGLLollipopCanvas({
     scalePosition,
     onHover,
     populationStatsByRow,
+    expandedClusterIds,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers
