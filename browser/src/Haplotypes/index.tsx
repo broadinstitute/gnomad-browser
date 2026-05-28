@@ -1001,30 +1001,61 @@ const ClusteredViewHelp = () => (
   </>
 )
 
-// --- Sub-track components ---
+const AutoTunedHelp = () => (
+  <>
+    <p>
+      The minimum allele frequency threshold and cluster resolution were automatically
+      calculated based on the size of this genomic region. Larger regions use a higher
+      AF threshold to filter out rare variants and reduce visual complexity, and a higher
+      cluster resolution to consolidate major ancestral haplotype blocks.
+    </p>
+    <p>
+      These defaults are designed to give a useful overview on first load. Once you
+      manually adjust either the Min AF slider or the Cluster resolution slider, this
+      indicator disappears — you've taken ownership of the settings.
+    </p>
+  </>
+)
 
-const HaplotypeHeaderTrack = ({
+// --- Info bar component ---
+
+const InfoBarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 12px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+  color: #333;
+  gap: 12px;
+`
+
+const HaplotypeInfoBar = ({
   displayGroups,
-  legendProps,
+  start,
+  stop,
+  threshold,
+  isClusteredView,
+  clusterCount,
   haplotypeLoading,
   methylationLoading,
   methylationSampleCount,
   methylationTotalSamples,
-  isClusteredView,
-  start,
-  stop,
-  threshold,
+  isAutoTuned,
 }: {
   displayGroups: HaplotypeGroup[]
-  legendProps: any
+  start: number
+  stop: number
+  threshold: number
+  isClusteredView: boolean
+  clusterCount: number
   haplotypeLoading: boolean
   methylationLoading: boolean
   methylationSampleCount: number
   methylationTotalSamples: number
-  isClusteredView?: boolean
-  start?: number
-  stop?: number
-  threshold?: number
+  isAutoTuned: boolean
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
     let samples = 0
@@ -1038,69 +1069,89 @@ const HaplotypeHeaderTrack = ({
     return { totalSamples: samples, totalVariants: loci.size }
   }, [displayGroups])
 
-  const regionSize = start != null && stop != null ? stop - start : null
+  const regionSize = stop - start
+  const regionLabel = regionSize >= 1000
+    ? `${(regionSize / 1000).toFixed(regionSize >= 10000 ? 0 : 1)} kb`
+    : `${regionSize.toLocaleString()} bp`
 
+  const thresholdLabel = threshold < 0.01
+    ? `${(threshold * 100).toFixed(1)}%`
+    : `${(threshold * 100).toFixed(0)}%`
+
+  const isLoading = haplotypeLoading || methylationLoading
+
+  return (
+    <InfoBarWrapper>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+        <span><strong>{totalSamples.toLocaleString()}</strong> haplotypes</span>
+        <span style={{ color: '#999' }}>·</span>
+        <span><strong>{totalVariants.toLocaleString()}</strong> variants</span>
+        <span style={{ color: '#999' }}>·</span>
+        <span>{regionLabel}</span>
+        <span style={{ color: '#999' }}>·</span>
+        <span>{isClusteredView ? `Clustered (${clusterCount})` : 'Unclustered'}</span>
+        <span style={{ color: '#999' }}>·</span>
+        <span>Min AF: {thresholdLabel}</span>
+        {isAutoTuned && (
+          <>
+            <span style={{ color: '#999' }}>·</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+              <HaplotypeHelpButton title="Auto-Tuned Defaults">
+                <AutoTunedHelp />
+              </HaplotypeHelpButton>
+              <span style={{ color: '#888', fontSize: '11px', fontStyle: 'italic' }}>
+                Auto-tuned for region size
+              </span>
+            </span>
+          </>
+        )}
+      </div>
+      {isLoading && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666', flexShrink: 0 }}>
+          <span style={{
+            display: 'inline-block',
+            width: '12px',
+            height: '12px',
+            border: '2px solid #ccc',
+            borderTopColor: '#666',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite',
+          }} />
+          {haplotypeLoading && 'Loading haplotypes...'}
+          {!haplotypeLoading && methylationLoading && (
+            methylationTotalSamples > 0
+              ? `Loading methylation: ${methylationSampleCount}/${methylationTotalSamples}`
+              : 'Loading methylation...'
+          )}
+          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        </div>
+      )}
+    </InfoBarWrapper>
+  )
+}
+
+// --- Sub-track components ---
+
+const HaplotypeHeaderTrack = ({
+  legendProps,
+}: {
+  legendProps: any
+}) => {
   return (
     <Track
       renderTopPanel={() => <Legend {...legendProps} />}
       renderLeftPanel={() => (
         <SidePanel>
           <div style={{ width: 200, padding: '4px 0' }}>
-            <div style={{ fontSize: '11px', fontWeight: 'bold', lineHeight: '1.4' }}>
-              Local Haplotypes ({displayGroups.length})
+            <div style={{ display: 'flex', gap: '12px', fontSize: '10px', color: '#666', fontWeight: 'bold' }}>
+              <span style={{ width: '45px' }}>Samples</span>
+              <span>Variants</span>
             </div>
-            <div style={{ fontSize: '9px', color: '#666', lineHeight: '1.4' }}>
-              {totalSamples} haplotypes, {totalVariants} variants
-              {regionSize != null && <span> · {regionSize.toLocaleString()} bp</span>}
-              {isClusteredView && <span> · Clustered</span>}
-              {threshold != null && threshold > 0 && (
-                <span> · Min AF: {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}</span>
-              )}
-            </div>
-            <div style={{ marginTop: '4px', borderTop: '1px solid #e0e0e0' }} />
           </div>
         </SidePanel>
       )}
     >
-      {({ width }: { width: number }) => (
-        <PlotWrapper>
-          {(haplotypeLoading || methylationLoading) && (
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              padding: '8px 12px',
-              background: 'rgba(255, 255, 255, 0.9)',
-              borderBottom: '1px solid #e0e0e0',
-              fontSize: '12px',
-              color: '#666',
-              zIndex: 10,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <span style={{
-                display: 'inline-block',
-                width: '12px',
-                height: '12px',
-                border: '2px solid #ccc',
-                borderTopColor: '#666',
-                borderRadius: '50%',
-                animation: 'spin 0.8s linear infinite',
-              }} />
-              {haplotypeLoading && 'Loading haplotype groups...'}
-              {!haplotypeLoading && methylationLoading && (
-                methylationTotalSamples > 0
-                  ? `Loading methylation: ${methylationSampleCount} / ${methylationTotalSamples} samples`
-                  : 'Loading methylation data...'
-              )}
-              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-            </div>
-          )}
-          <div style={{ height: 20 }} />
-        </PlotWrapper>
-      )}
+      {() => <div style={{ height: 1 }} />}
     </Track>
   )
 }
@@ -1611,6 +1662,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   const [sortMode, setSortMode] = useState(initialSortBy)
   const [showMethylation, setShowMethylation] = useState(false)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
+  const [isAutoTuned, setIsAutoTuned] = useState(true)
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -1623,6 +1675,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   const handleMinAfChange = useCallback(
     (newThreshold: number) => {
       setThreshold(newThreshold)
+      setIsAutoTuned(false)
       onMinAfChange && onMinAfChange(newThreshold)
     },
     [onMinAfChange]
@@ -1786,7 +1839,10 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     isClusteredView,
     onIsClusteredViewChange: onIsClusteredViewChange || (() => { }),
     clusterThreshold,
-    onClusterThresholdChange: onClusterThresholdChange || (() => { }),
+    onClusterThresholdChange: (t: number) => {
+      setIsAutoTuned(false)
+      ;(onClusterThresholdChange || (() => { }))(t)
+    },
     clusterCount: clusters?.length || 0,
     minAfFloor,
     minAfCeiling,
@@ -1808,17 +1864,19 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   return (
     <Wrapper style={{ flexDirection: 'column' }}>
       <StickyHeader>
-        <HaplotypeHeaderTrack
+        <HaplotypeHeaderTrack legendProps={legendProps} />
+        <HaplotypeInfoBar
           displayGroups={displayGroups}
-          legendProps={legendProps}
+          start={start}
+          stop={stop}
+          threshold={threshold}
+          isClusteredView={isClusteredView}
+          clusterCount={clusters?.length || 0}
           haplotypeLoading={haplotypeLoading}
           methylationLoading={methylationLoading}
           methylationSampleCount={methylationSampleCount}
           methylationTotalSamples={methylationTotalSamples}
-          isClusteredView={isClusteredView}
-          start={start}
-          stop={stop}
-          threshold={threshold}
+          isAutoTuned={isAutoTuned}
         />
       </StickyHeader>
 
