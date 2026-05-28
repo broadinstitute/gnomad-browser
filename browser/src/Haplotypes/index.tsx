@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, forwardRef, useRef } from 'react'
+import React, { useState, useCallback, useMemo, forwardRef, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor, Select } from '@gnomad/ui'
@@ -132,6 +132,8 @@ export const Legend = ({
   clusterThreshold = 0,
   onClusterThresholdChange = () => { },
   clusterCount = 0,
+  minAfFloor = 0,
+  minAfCeiling = 1,
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -162,18 +164,36 @@ export const Legend = ({
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
   clusterCount?: number
+  minAfFloor?: number
+  minAfCeiling?: number
 }) => {
-  const [threshold, setThreshold] = useState(initialMinAf)
+  // Log-scale slider: internal state is 0-100, mapped to log10(minAfFloor)..log10(minAfCeiling)
+  const minLog = Math.log10(Math.max(minAfFloor, 0.0001))
+  const maxLog = Math.log10(Math.max(minAfCeiling, 0.001))
+  const afToSlider = (af: number) => {
+    if (maxLog === minLog) return 50
+    return ((Math.log10(Math.max(af, minAfFloor)) - minLog) / (maxLog - minLog)) * 100
+  }
+  const sliderToAf = (val: number) => Math.pow(10, minLog + (val / 100) * (maxLog - minLog))
+
+  const [sliderValue, setSliderValue] = useState(() => afToSlider(initialMinAf))
   const [sortMode, setSortMode] = useState(initialSortBy)
+  const threshold = sliderToAf(sliderValue)
+
+  // Sync slider when initialMinAf changes (e.g., auto-derived default on new data)
+  const prevInitialMinAf = useRef(initialMinAf)
+  useEffect(() => {
+    if (initialMinAf !== prevInitialMinAf.current) {
+      prevInitialMinAf.current = initialMinAf
+      setSliderValue(afToSlider(initialMinAf))
+    }
+  }, [initialMinAf])
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Update local display immediately (no parent re-render during drag)
-    setThreshold(parseFloat(event.target.value))
+    setSliderValue(parseFloat(event.target.value))
   }
   const handleThresholdCommit = () => {
-    // Propagate to parent only on drag end — avoids re-rendering the
-    // entire component tree on every slider pixel and piling up fetches
-    onMinAfChange(threshold)
+    onMinAfChange(sliderToAf(sliderValue))
   }
 
   const handleSortModeChange = (value: string) => {
@@ -335,15 +355,17 @@ export const Legend = ({
             type='range'
             id='threshold-slider'
             min='0'
-            max='1'
-            step='0.01'
-            value={threshold}
+            max='100'
+            step='1'
+            value={sliderValue}
             onChange={handleThresholdChange}
             onPointerUp={handleThresholdCommit}
             onKeyUp={handleThresholdCommit}
             style={{ width: '80px' }}
           />
-          <span style={{ fontSize: '12px', minWidth: '28px' }}>{threshold.toFixed(2)}</span>
+          <span style={{ fontSize: '12px', minWidth: '40px' }}>
+            {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}
+          </span>
         </div>
         {plotType === 'lollipop' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -820,6 +842,8 @@ type HaplotypeTrackProps = {
   expandedClusterIds?: Set<string>
   toggleClusterExpansion?: (clusterId: string) => void
   treeJson?: string
+  minAfFloor?: number
+  minAfCeiling?: number
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1499,6 +1523,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   expandedClusterIds,
   toggleClusterExpansion,
   treeJson,
+  minAfFloor = 0,
+  minAfCeiling = 1,
 }, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -1682,6 +1708,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     clusterThreshold,
     onClusterThresholdChange: onClusterThresholdChange || (() => { }),
     clusterCount: clusters?.length || 0,
+    minAfFloor,
+    minAfCeiling,
   }
 
   // Build pangenome graph for alluvial/heatmap views

@@ -4,13 +4,19 @@ import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { SegmentedControl } from '@gnomad/ui'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
-import { debounce } from 'lodash-es'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
 import HaplotypeTrack, { HaplotypeGroups, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint } from '../Haplotypes'
+import {
+  computeHaplotypeView,
+  filterDisplayVariants,
+  deriveSliderRange,
+  type RawPayload,
+  type ComputedHaplotypeData,
+} from '../Haplotypes/haplotypeCompute'
 import HaplotypeVariantTable, { HaplotypeVariantTableHandle } from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
@@ -27,35 +33,6 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 const SAMPLE_METADATA_QUERY = `
   query RegionSampleMetadata {
     sample_metadata { sample_id subpopulation superpopulation }
-  }
-`
-
-const HAPLOTYPE_GROUPS_QUERY = `
-  query RegionHaploGroups($chrom: String!, $start: Int!, $stop: Int!, $min_allele_freq: Float, $sort_by: String, $cluster_threshold: Float) {
-    haplotype_groups(chrom: $chrom, start: $start, stop: $stop, min_allele_freq: $min_allele_freq, sort_by: $sort_by, cluster_threshold: $cluster_threshold) {
-      groups {
-        samples { sample_id }
-        variants {
-          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
-          readable_id
-        }
-        below_threshold {
-          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
-          readable_id
-        }
-        start stop hash
-      }
-      clusters {
-        cluster_id
-        sample_count
-        member_group_hashes
-        consensus_variants {
-          cluster_af
-          variant { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbgap_id allele_methylation allele_purity motif_counts in_samples gt_phased }
-        }
-      }
-      tree_json
-    }
   }
 `
 
@@ -92,46 +69,16 @@ const MQTL_QUERY = `
   }
 `
 
-/**
- * Reconstruct full group objects from variant_ids + variant_dict.
- * This lets downstream components (HaplotypeTrack, HaplotypeVariantTable)
- * work unchanged — they still see groups with full variant objects.
- */
-const hydrateGroups = (rawGroups: any) => {
-  console.time('[perf] hydrateGroups')
-  const variantArray: any[] = rawGroups.variants || []
-  console.log(`[perf] variant array size: ${variantArray.length} entries`)
-
-  const groups = (rawGroups.groups || []).map((g: any) => {
-    // If the group already has hydrated variants (legacy/GraphQL path), pass through
-    if (g.variants?.variants) return g
-
-    const indices: number[] = g.variant_indices || []
-    const aboveVariants = indices.map((i: number) => variantArray[i]).filter(Boolean)
-    const readableId = aboveVariants
-      .map((v: any) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
-      .sort()
-      .join(';')
-
-    const belowVariants = (g.below_threshold || []).map((bt: any) => {
-      const variant = bt.vi != null ? variantArray[bt.vi] : null
-      return variant ? { ...variant, in_samples: bt.in_samples } : null
-    }).filter(Boolean)
-
-    return {
-      ...g,
-      variants: { variants: aboveVariants, readable_id: readableId },
-      below_threshold: { variants: belowVariants, readable_id: '' },
-    }
+/** Fetch raw variant + carrier data from the REST endpoint (no grouping/tree on server) */
+const fetchHaplotypeDataREST = async (
+  chrom: string, start: number, stop: number,
+  signal?: AbortSignal
+): Promise<RawPayload> => {
+  const params = new URLSearchParams({
+    chrom, start: String(start), stop: String(stop),
   })
-
-  console.log(`[perf] hydrated ${groups.length} groups`)
-  console.timeEnd('[perf] hydrateGroups')
-  return {
-    groups,
-    clusters: rawGroups.clusters || undefined,
-    tree_json: rawGroups.tree_json || undefined,
-  }
+  const response = await fetch(`/api/lr/haplotype-groups?${params}`, { signal })
+  return response.json()
 }
 
 // --- Styled components ---
@@ -186,28 +133,6 @@ const fetchGraphQL = async (query: string, variables: any) => {
   return parsed
 }
 
-const fetchHaplotypeGroupsREST = async (
-  chrom: string, start: number, stop: number, minAf: number, sortBy: string,
-  clusterThreshold?: number,
-  signal?: AbortSignal
-) => {
-  const params = new URLSearchParams({
-    chrom, start: String(start), stop: String(stop),
-    min_af: String(minAf), sort_by: sortBy,
-  })
-  if (clusterThreshold != null) {
-    params.set('cluster_threshold', String(clusterThreshold))
-  }
-  const response = await fetch(`/api/lr/haplotype-groups?${params}`, { signal })
-  return response.json()
-}
-
-// Toggle via ?api=graphql in URL — defaults to rest (deduplicated, ~30x smaller)
-const useRestApi = () => {
-  try {
-    return new URLSearchParams(window.location.search).get('api') !== 'graphql'
-  } catch { return true }
-}
 
 /** Auto-calculate a reasonable cluster threshold based on region size */
 function getAutoClusterThreshold(regionSize: number): number {
@@ -268,8 +193,8 @@ const LongReadUnifiedView = ({
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
 
-  // Haplotype mode state
-  const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
+  // Haplotype mode state — raw payload from server (variants + carrier map)
+  const [rawPayload, setRawPayload] = useState<RawPayload | null>(null)
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
@@ -395,70 +320,77 @@ const LongReadUnifiedView = ({
     fetchMeta()
   }, [viewMode, sampleMetadata.size])
 
-  // Haplotype group fetch with request cancellation and aggressive debounce.
-  // Previous requests are aborted when new ones are triggered, preventing
-  // 15+ concurrent fetches from piling up during slider drags.
-  const isRest = useRestApi()
+  // Fetch raw haplotype data once per region (no grouping/tree on server)
   const abortControllerRef = useRef<AbortController | null>(null)
-  const debouncedFetchHaplotypeGroups = useCallback(
-    debounce(async (currentThreshold: number) => {
-      // Cancel any in-flight request
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort()
-      }
-      const controller = new AbortController()
-      abortControllerRef.current = controller
-
-      setHaplotypeLoading(true)
-      const t0 = performance.now()
-      try {
-        if (isRest) {
-          const result = await fetchHaplotypeGroupsREST(chrom, start, stop, currentThreshold, sortBy, isClusteredView ? clusterThreshold : undefined, controller.signal)
-          if (controller.signal.aborted) return
-          if (result.error) {
-            console.error('REST error fetching haplotype groups:', result.error)
-          } else {
-            console.log(`[REST] haplotype groups: ${result.groups?.length} groups in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
-            setHaplotypeGroups(hydrateGroups(result))
-          }
-        } else {
-          console.time('[perf] GraphQL fetch + JSON parse')
-          const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
-            chrom,
-            start: start,
-            stop: stop,
-            min_allele_freq: currentThreshold,
-            sort_by: sortBy,
-            cluster_threshold: isClusteredView ? clusterThreshold : undefined,
-          })
-          console.timeEnd('[perf] GraphQL fetch + JSON parse')
-          if (controller.signal.aborted) return
-          if (result.errors) {
-            console.error('GraphQL errors fetching haplotype groups:', result.errors)
-          }
-          if (result.data?.haplotype_groups) {
-            const hydrated = hydrateGroups(result.data.haplotype_groups)
-            console.log(`[GraphQL] haplotype groups: ${hydrated.groups?.length} groups in ${Math.round(performance.now() - t0)}ms`)
-            setHaplotypeGroups(hydrated)
-          }
-        }
-      } catch (error: any) {
-        if (error?.name === 'AbortError') return // Expected — superseded by newer request
-        console.error('Error fetching haplotype groups:', error)
-      } finally {
-        if (!controller.signal.aborted) {
-          setHaplotypeLoading(false)
-        }
-      }
-    }, 750),
-    [chrom, start, stop, sortBy, isRest, isClusteredView, clusterThreshold]
-  )
-
-  // Fetch haplotype groups when in haplotype mode
   useEffect(() => {
     if (viewMode !== 'haplotype') return
-    debouncedFetchHaplotypeGroups(threshold)
-  }, [viewMode, chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy, isClusteredView, clusterThreshold])
+
+    if (abortControllerRef.current) abortControllerRef.current.abort()
+    const controller = new AbortController()
+    abortControllerRef.current = controller
+
+    setHaplotypeLoading(true)
+    const t0 = performance.now()
+
+    fetchHaplotypeDataREST(chrom, start, stop, controller.signal)
+      .then((result) => {
+        if (controller.signal.aborted) return
+        console.log(`[REST] raw payload: ${result.variants?.length} variants, ${Object.keys(result.carrier_variant_indices || {}).length} carriers in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
+        setRawPayload(result)
+      })
+      .catch((error: any) => {
+        if (error?.name === 'AbortError') return
+        console.error('Error fetching haplotype data:', error)
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setHaplotypeLoading(false)
+      })
+  }, [viewMode, chrom, start, stop])
+
+  // Auto-derive slider range from data
+  const sliderRange = useMemo(() => {
+    if (!rawPayload) return { floor: 0, ceiling: 1, defaultAf: 0 }
+    return deriveSliderRange(rawPayload.variants, rawPayload.carrier_variant_indices)
+  }, [rawPayload])
+
+  // Set threshold to auto-derived default when new data arrives
+  const prevPayloadRef = useRef<RawPayload | null>(null)
+  useEffect(() => {
+    if (rawPayload && rawPayload !== prevPayloadRef.current) {
+      prevPayloadRef.current = rawPayload
+      setThreshold(sliderRange.defaultAf)
+    }
+  }, [rawPayload, sliderRange.defaultAf])
+
+  // Client-side compute: grouping, sorting, UPGMA tree, cluster cutting
+  // Hybrid min AF: clustering ON → display-only, clustering OFF → drives grouping
+  const haplotypeGroups: HaplotypeGroups = useMemo(() => {
+    if (!rawPayload) return { groups: [] }
+    const t0 = performance.now()
+
+    let result: ComputedHaplotypeData
+    if (isClusteredView) {
+      // Clustering ON: groups defined at floor AF (stable tree), min AF is display-only
+      const baseData = computeHaplotypeView(
+        rawPayload.variants, rawPayload.carrier_variant_indices,
+        sliderRange.floor, sortBy, true, clusterThreshold,
+        rawPayload.trv_alts
+      )
+      result = threshold > sliderRange.floor
+        ? filterDisplayVariants(baseData, threshold)
+        : baseData
+    } else {
+      // Clustering OFF: min AF drives grouping
+      result = computeHaplotypeView(
+        rawPayload.variants, rawPayload.carrier_variant_indices,
+        threshold, sortBy, false, clusterThreshold,
+        rawPayload.trv_alts
+      )
+    }
+
+    console.log(`[client] computed ${result.groups.length} groups${result.clusters ? `, ${result.clusters.length} clusters` : ''} in ${Math.round(performance.now() - t0)}ms`)
+    return result
+  }, [rawPayload, threshold, sortBy, isClusteredView, clusterThreshold, sliderRange.floor])
 
   // Fetch methylation summary + outliers when entering haplotype mode
   useEffect(() => {
@@ -747,6 +679,8 @@ const LongReadUnifiedView = ({
               expandedClusterIds={expandedClusterIds}
               toggleClusterExpansion={toggleClusterExpansion}
               treeJson={haplotypeGroups.tree_json}
+              minAfFloor={sliderRange.floor}
+              minAfCeiling={sliderRange.ceiling}
             />
           )}
           <PositionAxisTrack />
