@@ -334,6 +334,9 @@ export const Legend = ({
           <span style={{ fontSize: '12px', minWidth: '40px' }}>
             {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}
           </span>
+          <HaplotypeHelpButton title="Minimum Allele Frequency">
+            <MinAfHelp />
+          </HaplotypeHelpButton>
         </div>
         {plotType === 'lollipop' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -375,14 +378,19 @@ export const Legend = ({
         )}
         {plotType === 'lollipop' && (
           <>
-            <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <input
-                type='checkbox'
-                checked={showMethylation}
-                onChange={handleShowMethylationChange}
-              />
-              Methylation
-            </label>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type='checkbox'
+                  checked={showMethylation}
+                  onChange={handleShowMethylationChange}
+                />
+                Methylation
+              </label>
+              <HaplotypeHelpButton title="Methylation">
+                <MethylationHelp />
+              </HaplotypeHelpButton>
+            </div>
             {showMethylation && (
               <>
                 <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
@@ -441,22 +449,32 @@ export const Legend = ({
                 )}
               </>
             )}
-            <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <input
-                type='checkbox'
-                checked={showGenealogy}
-                onChange={(e) => onShowGenealogyChange(e.target.checked)}
-              />
-              Genealogy tree
-            </label>
-            <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <input
-                type='checkbox'
-                checked={isClusteredView}
-                onChange={(e) => onIsClusteredViewChange(e.target.checked)}
-              />
-              Clustered view
-            </label>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type='checkbox'
+                  checked={showGenealogy}
+                  onChange={(e) => onShowGenealogyChange(e.target.checked)}
+                />
+                Genealogy tree
+              </label>
+              <HaplotypeHelpButton title="Genealogy Tree">
+                <GenealogyHelp />
+              </HaplotypeHelpButton>
+            </div>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type='checkbox'
+                  checked={isClusteredView}
+                  onChange={(e) => onIsClusteredViewChange(e.target.checked)}
+                />
+                Clustered view
+              </label>
+              <HaplotypeHelpButton title="Clustered View">
+                <ClusteredViewHelp />
+              </HaplotypeHelpButton>
+            </div>
             {isClusteredView && (
               <>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -902,6 +920,84 @@ const LollipopHelp = () => (
       <li><strong>Sort by</strong> — "Similarity" groups similar haplotypes together; "Count" sorts by sample count.</li>
       <li><strong>Filter to outliers</strong> — When methylation is enabled, shows only groups containing methylation outlier samples.</li>
     </ul>
+  </>
+)
+
+const MinAfHelp = () => (
+  <>
+    <p>
+      This slider filters out rare variants before grouping haplotypes together.
+      Because groups in this view are strictly defined by identical sets of variants,
+      keeping rare or sample-specific variants can fragment your data into many tiny,
+      highly specific groups. Raising the threshold ignores these rare variants, allowing
+      samples to coalesce into major ancestral haplotype blocks defined by common variants.
+    </p>
+    <p>
+      The rare variants aren't hidden completely — they remain visible as small open circles
+      on each group's track so you can still spot them without them breaking up the group.
+      Keep in mind that adjusting this slider recalculates the underlying groups, which will
+      also completely rebuild the genealogical tree and clusters.
+    </p>
+  </>
+)
+
+const MethylationHelp = () => (
+  <>
+    <p>
+      Enabling this toggle overlays per-CpG methylation data directly beneath each haplotype
+      group. Because long-read sequencing captures both genetic variants and 5mC epigenetic
+      modifications on the same reads, this lets you visually identify allele-specific
+      methylation (ASM) where specific structural haplotypes drive local hyper- or
+      hypo-methylation.
+    </p>
+    <p>
+      You'll see a track of dots representing the group's mean methylation level at each CpG
+      site. Sites that deviate significantly from the overall population mean are highlighted
+      in red, flagging potential haplotype-driven epigenetic effects. If you check "Outliers
+      only," the view will filter down to groups containing samples that exhibit high regional
+      methylation variance.
+    </p>
+  </>
+)
+
+const GenealogyHelp = () => (
+  <>
+    <p>
+      This displays a hierarchical clustering tree that maps out the evolutionary and structural
+      relationships between the haplotype groups on the screen. When activated, the rows
+      automatically reorder themselves to match the tree topology, placing closely related
+      groups next to each other and preventing branches from crossing.
+    </p>
+    <p>
+      Behind the scenes, the tree is built using UPGMA clustering based on the pairwise Jaccard
+      distance of structural variants (SVs) and tandem repeats (TRs) exclusively. Because
+      structural variants mutate much more slowly than SNVs, they provide a highly stable
+      scaffold for tracing deep ancestral relationships without being skewed by background
+      mutation noise. If you are also using the clustered view, a vertical threshold line will
+      appear on the tree that you can drag to adjust your cluster resolution.
+    </p>
+  </>
+)
+
+const ClusteredViewHelp = () => (
+  <>
+    <p>
+      The clustered view simplifies complex regions by collapsing closely related haplotype
+      groups into broader macro-clusters. It works by cutting the genealogical tree at a
+      specific genetic distance, grouping together haplotypes that share a highly similar
+      structural backbone even if they differ slightly by minor SNVs.
+    </p>
+    <p>
+      Instead of individual groups, you'll see a single row for each cluster displaying its
+      consensus variants. The opacity of these variants scales with their frequency in the
+      cluster — fading out if present in only half the samples, and appearing completely solid
+      if shared by nearly all.
+    </p>
+    <p>
+      You can use the cluster resolution slider to decide where to cut the tree; moving it to
+      the right merges more distant groups together. Click the arrow next to a cluster to
+      expand it and inspect the exact constituent groups indented inside.
+    </p>
   </>
 )
 
