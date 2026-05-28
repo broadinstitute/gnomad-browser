@@ -385,13 +385,14 @@ export function computeHaplotypeView(
   const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts)
   const sorted = sortGroups(groups, sortBy)
 
-  if (!isClusteredView || sorted.length < 2) {
+  if (sorted.length < 2) {
     return { groups: sorted }
   }
 
+  // Always build the UPGMA tree so genealogy and clustering share one tree
   const distMatrix = computeSVDistanceMatrix(sorted)
   const { tree } = buildUPGMATree(distMatrix, sorted)
-  const clusters = computeClusters(sorted, tree, clusterThreshold)
+  const clusters = isClusteredView ? computeClusters(sorted, tree, clusterThreshold) : undefined
 
   return {
     groups: sorted,
