@@ -130,17 +130,21 @@ export const buildUPGMATree = (
 
   const tree = clusters[active[0]]
 
-  // In-order traversal to get leaf order
+  // Iterative in-order traversal to get leaf order
   const leafOrder: number[] = []
-  const traverse = (node: TreeNode) => {
-    if (node.groupHash !== null) {
-      leafOrder.push(node.groupHash)
-      return
+  const stack: TreeNode[] = []
+  let cur: TreeNode | null = tree
+  while (cur || stack.length > 0) {
+    while (cur) {
+      stack.push(cur)
+      cur = cur.left
     }
-    if (node.left) traverse(node.left)
-    if (node.right) traverse(node.right)
+    cur = stack.pop()!
+    if (cur.groupHash !== null) {
+      leafOrder.push(cur.groupHash)
+    }
+    cur = cur.right
   }
-  traverse(tree)
 
   return { tree, leafOrder }
 }
