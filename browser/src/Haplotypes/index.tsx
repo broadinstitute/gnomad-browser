@@ -1148,16 +1148,7 @@ const HaplotypeHeaderTrack = ({
   return (
     <Track
       renderTopPanel={() => <Legend {...legendProps} />}
-      renderLeftPanel={() => (
-        <SidePanel>
-          <div style={{ width: 200, padding: '4px 0' }}>
-            <div style={{ display: 'flex', gap: '12px', fontSize: '10px', color: '#666', fontWeight: 'bold' }}>
-              <span style={{ width: '45px' }}>Samples</span>
-              <span>Variants</span>
-            </div>
-          </div>
-        </SidePanel>
-      )}
+      renderLeftPanel={() => <SidePanel><div style={{ height: 1 }} /></SidePanel>}
     >
       {() => <div style={{ height: 1 }} />}
     </Track>
