@@ -87,11 +87,10 @@ const context = { esClient }
 
 // REST endpoint for haplotype groups — bypasses GraphQL overhead for large payloads
 import {
-  fetchHaplotypeGroupAssignments,
   fetchDistinctHaplotypeVariants,
   fetchTrvCarrierAlts,
 } from './queries/haplotype-queries'
-import { assembleHaplotypeGroups } from './queries/haplotype-grouping'
+import { buildVariantsAndCarrierMap } from './queries/haplotype-grouping'
 
 app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
   const t0 = performance.now()
@@ -101,64 +100,25 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       : `chr${req.query.chrom}`
     const start = parseInt(req.query.start, 10)
     const stop = parseInt(req.query.stop, 10)
-    const minAf = parseFloat(req.query.min_af) || 0
-    const sortBy = req.query.sort_by || 'similarity_score'
 
     if (!chrom || isNaN(start) || isNaN(stop)) {
       return res.status(400).json({ error: 'chrom, start, stop required' })
     }
 
-    const [groupAssignments, distinctVariants, trvCarriers] = await Promise.all([
-      fetchHaplotypeGroupAssignments(chrom, start, stop, minAf),
+    const [distinctVariants, trvCarriers] = await Promise.all([
       fetchDistinctHaplotypeVariants(chrom, start, stop),
       fetchTrvCarrierAlts(chrom, start, stop),
     ])
 
-    const clusterThreshold = req.query.cluster_threshold != null
-      ? parseFloat(req.query.cluster_threshold)
-      : undefined
-
-    const result = assembleHaplotypeGroups(
-      groupAssignments as any,
+    const result = buildVariantsAndCarrierMap(
       distinctVariants as any,
       chrom,
-      minAf,
-      sortBy,
       trvCarriers as any,
-      clusterThreshold,
-      start,
-      stop
     )
-
-    // Deduplicate response: send variant_dict + index-based references instead of full objects
-    // Reduces payload from ~295MB to <10MB by eliminating 50x variant duplication
-
-    // Build variant array and key→index lookup
-    const variantArray: any[] = []
-    const keyToIndex = new Map<string, number>()
-    for (const [key, variant] of result.variantMap) {
-      keyToIndex.set(key, variantArray.length)
-      variantArray.push(variant)
-    }
-
-    const deduplicatedGroups = result.groups.map((g: any) => ({
-      hash: g.hash,
-      start: g.start,
-      stop: g.stop,
-      samples: g.samples.map((s: any) => ({ sample_id: s.sample_id })),
-      variant_indices: g.readable_id.split(';').map((k: string) => keyToIndex.get(k)),
-      below_threshold: (g.below_threshold?.variants || []).map((v: any) => ({
-        vi: keyToIndex.get(`${v.chrom}-${v.pos}:${v.ref}-${v.alt}`),
-        in_samples: v.in_samples,
-      })),
-    }))
 
     const ms = performance.now() - t0
     res.json({
-      groups: deduplicatedGroups,
-      variants: variantArray,
-      clusters: result.clusters,
-      tree_json: result.tree_json,
+      ...result,
       _timing: { total_ms: Math.round(ms) },
     })
   } catch (e: any) {

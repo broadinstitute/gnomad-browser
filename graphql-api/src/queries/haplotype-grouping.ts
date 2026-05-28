@@ -656,3 +656,61 @@ export const createHaplotypeGroups = (
 
   return { groups }
 }
+
+/**
+ * Build a compact payload from Q2 (distinct variants with carriers) for client-side computation.
+ * Transposes the per-variant carrier arrays into per-carrier variant index arrays.
+ * No grouping, sorting, or tree computation — all done client-side.
+ */
+export const buildVariantsAndCarrierMap = (
+  distinctVariants: any[],
+  chrom: string,
+  trvCarriers: Array<{ position: string; ref: string; alt: string; sample_id: string; strand: number }> = [],
+) => {
+  const variants: LRVariant[] = []
+  for (const row of distinctVariants) {
+    const pos = Number(row.position)
+    const af = Number(row.info_AF)
+    const toNum = (v: any) => v != null ? Number(v) : null
+    const toStr = (v: any) => v || null
+    const variant = buildVariant(
+      chrom, pos,
+      row.ref, row.alt, row.rsid,
+      af, Number(row.info_AC), Number(row.info_AN),
+      row.allele_type, Number(row.allele_length),
+      toNum(row.info_AF_afr), toNum(row.info_AF_amr), toNum(row.info_AF_eas),
+      toNum(row.info_AF_nfe), toNum(row.info_AF_sas),
+      toNum(row.cadd_phred), toNum(row.phylop),
+      row.sv_consequences && row.sv_consequences.length > 0 ? row.sv_consequences : null,
+      toStr(row.dbgap_id),
+      toStr(row.tr_id), toStr(row.tr_motifs), toStr(row.tr_struc),
+      toNum(row.allele_methylation),
+      row.motif_counts && row.motif_counts.length > 0 ? row.motif_counts : null,
+      toNum(row.allele_purity),
+    )
+    variants.push(variant)
+  }
+
+  // Transpose: for each carrier, collect which variant indices they carry
+  const carrierVariantIndices: Record<string, number[]> = {}
+  for (let i = 0; i < distinctVariants.length; i++) {
+    const carriers: Array<[string, number]> = distinctVariants[i].carriers || []
+    for (const [sampleId, strand] of carriers) {
+      const key = `${sampleId}:${strand}`
+      if (!carrierVariantIndices[key]) {
+        carrierVariantIndices[key] = []
+      }
+      carrierVariantIndices[key].push(i)
+    }
+  }
+
+  // Build TRV alt map: carrierId → { position → alt }
+  const trvAlts: Record<string, Record<number, string>> = {}
+  for (const row of trvCarriers) {
+    const key = `${row.sample_id}:${row.strand}`
+    if (!trvAlts[key]) trvAlts[key] = {}
+    trvAlts[key][Number(row.position)] = row.alt
+  }
+
+  return { variants, carrier_variant_indices: carrierVariantIndices, trv_alts: trvAlts }
+}
