@@ -1,56 +1,26 @@
-import React, { useMemo, useState, useCallback, useRef } from 'react'
+import React, { useMemo, useState, useCallback, useRef, useContext } from 'react'
 import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
-import { SolidPolygonLayer } from '@deck.gl/layers'
-import { Track } from '@gnomad/region-viewer'
-import GenealogyTreeOverlay from './GenealogyTreeOverlay'
+import { SolidPolygonLayer, ScatterplotLayer, LineLayer, TextLayer } from '@deck.gl/layers'
+import { RegionViewerContext } from '@gnomad/region-viewer'
+import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
+import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
 import type {
   HaplotypeGroup,
   HaplotypeCluster,
   LRVariant,
-  ClusterConsensusVariant,
 } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 // --- Constants ---
 const VARIANT_ROW_HEIGHT = 25
 const SCROLL_CONTAINER_HEIGHT = 500
-const VISIBLE_BUFFER = 5
 const NUM_BINS = 100
 
 // --- Reuse RowItem discriminated union from DeckGLLollipopTrack ---
 type RowItem =
   | { type: 'cluster'; cluster: HaplotypeCluster }
   | { type: 'group'; group: HaplotypeGroup; isChild: boolean }
-
-// --- Binary search for visible range (same as DeckGLLollipopTrack) ---
-function findVisibleRange(
-  rowOffsets: number[],
-  _totalHeight: number,
-  scrollTop: number,
-  viewportHeight: number
-): [number, number] {
-  const n = rowOffsets.length
-  if (n === 0) return [0, 0]
-  const top = scrollTop - VISIBLE_BUFFER * VARIANT_ROW_HEIGHT
-  const bottom = scrollTop + viewportHeight + VISIBLE_BUFFER * VARIANT_ROW_HEIGHT
-  let startIdx = 0
-  for (let i = 0; i < n; i++) {
-    if (i + 1 < n ? rowOffsets[i + 1] > top : true) {
-      startIdx = i
-      break
-    }
-  }
-  let endIdx = n - 1
-  for (let i = startIdx; i < n; i++) {
-    if (rowOffsets[i] > bottom) {
-      endIdx = i - 1
-      break
-    }
-    endIdx = i
-  }
-  return [Math.max(0, startIdx - VISIBLE_BUFFER), Math.min(n - 1, endIdx + VISIBLE_BUFFER)]
-}
 
 // --- Color helpers (reuse getColorByHash from DeckGLLollipopTrack) ---
 function hslToRgba(hsl: string, alpha = 255): [number, number, number, number] {
@@ -65,6 +35,28 @@ function hslToRgba(hsl: string, alpha = 255): [number, number, number, number] {
     return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
   }
   return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255), alpha]
+}
+
+function hexToRgba(hex: string, alpha = 255): [number, number, number, number] {
+  const clean = hex.replace('#', '')
+  if (clean.length === 3) {
+    return [parseInt(clean[0] + clean[0], 16), parseInt(clean[1] + clean[1], 16), parseInt(clean[2] + clean[2], 16), alpha]
+  }
+  if (clean.length === 6) {
+    return [parseInt(clean.slice(0, 2), 16), parseInt(clean.slice(2, 4), 16), parseInt(clean.slice(4, 6), 16), alpha]
+  }
+  return [128, 128, 128, alpha]
+}
+
+function cssColorToRgba(color: string, alpha = 255): [number, number, number, number] {
+  if (!color) return [128, 128, 128, alpha]
+  if (color.startsWith('hsl')) return hslToRgba(color, alpha)
+  if (color.startsWith('rgb')) {
+    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/)
+    if (match) return [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10), alpha]
+  }
+  if (color.startsWith('#')) return hexToRgba(color, alpha)
+  return [128, 128, 128, alpha]
 }
 
 const variantColorCache: Record<string, [number, number, number, number]> = {}
@@ -132,6 +124,7 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
   stop,
   sampleColorScale,
   variantColorScale,
+  sampleMetadata,
   isClusteredView = false,
   expandedClusterIds,
   toggleClusterExpansion,
@@ -143,11 +136,13 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
   const [hovered, setHovered] = useState<{
     x: number
     y: number
-    object: PaintedSegment
+    object: any
+    viewportId: string
   } | null>(null)
 
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [scrollTop, setScrollTop] = useState(0)
+  const scrollTopRef = useRef(0)
+  const deckRef = useRef<any>(null)
 
   // Build hash->group lookup
   const groupByHash = useMemo(() => {
@@ -189,18 +184,31 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
     return { rowOffsets: offsets, totalHeight: cumY }
   }, [rowItems])
 
-  // Synchronous scroll handler — no throttle so canvas position stays in sync
+  // Refs for canvas dimensions — avoids stale closures in scroll handler
+  const centerWidthRef = useRef(0)
+  const viewportHeightRef = useRef(0)
+
+  const LEFT_PANEL_WIDTH = 200
+  const RIGHT_PANEL_WIDTH = 180
+
+  // Imperative scroll handler — updates DeckGL camera directly, no React re-render
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    setScrollTop((e.target as HTMLDivElement).scrollTop)
+    const newScrollTop = (e.target as HTMLDivElement).scrollTop
+    scrollTopRef.current = newScrollTop
+
+    if (deckRef.current?.deck) {
+      const vh = viewportHeightRef.current
+      const cw = centerWidthRef.current
+      const yTarget = newScrollTop + vh / 2
+      deckRef.current.deck.setProps({
+        viewState: {
+          'left-panel': { target: [LEFT_PANEL_WIDTH / 2, yTarget, 0], zoom: 0 },
+          'center-panel': { target: [cw / 2, yTarget, 0], zoom: 0 },
+          'right-panel': { target: [RIGHT_PANEL_WIDTH / 2, yTarget, 0], zoom: 0 },
+        },
+      })
+    }
   }, [])
-
-  const viewportH = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
-
-  // Left panel visible range
-  const [lpStart, lpEnd] = useMemo(
-    () => findVisibleRange(rowOffsets, totalHeight, scrollTop, viewportH),
-    [rowOffsets, totalHeight, scrollTop, viewportH]
-  )
 
   // Compute leaf Y positions for genealogy tree overlay
   const leafYPositions = useMemo(() => {
@@ -230,117 +238,83 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
 
   const onHover = useCallback((info: any) => {
     if (info.picked && info.object) {
-      setHovered({ x: info.x, y: info.y, object: info.object })
+      setHovered({ x: info.x, y: info.y, object: info.object, viewportId: info.viewport?.id || 'center-panel' })
     } else {
       setHovered(null)
     }
   }, [])
 
+  // Consume RegionViewerContext directly — bypass Track component
+  const { scalePosition, centerPanelWidth: centerWidth } = useContext(RegionViewerContext)
+
+  const totalWidth = LEFT_PANEL_WIDTH + centerWidth + RIGHT_PANEL_WIDTH
+  const showRightPanel = showGenealogy && genealogyResult && leafYPositions.size > 0
+
+  // Keep dimension refs in sync
+  centerWidthRef.current = centerWidth
+
   return (
     <div
       ref={scrollContainerRef}
       onScroll={handleScroll}
-      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto' }}
+      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', position: 'relative' }}
     >
-      <Track
-        renderLeftPanel={() => {
-          const labelsWidth = 200
-          return (
-            <div style={{ width: labelsWidth }}>
-              <svg width={labelsWidth} height={totalHeight}>
-                {rowItems.map((item, i) => {
-                  if (i < lpStart || i > lpEnd) return null
-                  const y = rowOffsets[i]
-                  if (item.type === 'cluster') {
-                    const cluster = item.cluster
-                    const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
-                    return (
-                      <g
-                        key={`cluster-${cluster.cluster_id}`}
-                        transform={`translate(0, ${y})`}
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
-                      >
-                        <text x={2} y={17} fontSize="11" fill="#555">
-                          {isExpanded ? '\u25BC' : '\u25B6'}
-                        </text>
-                        <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
-                        <text x={30} y={17} fontSize="12">
-                          {cluster.sample_count}
-                        </text>
-                        <text x={60} y={17} fontSize="10" fill="#888">
-                          ({cluster.member_group_hashes.length}g)
-                        </text>
-                      </g>
-                    )
-                  }
-                  const group = item.group
-                  const indent = item.isChild ? 12 : 0
-                  return (
-                    <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
-                      <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
-                      <text x={15} y={17} fontSize="12">
-                        {group.samples.length}
-                      </text>
-                      <circle
-                        cx={50}
-                        cy={12.5}
-                        r={5}
-                        fill={variantColorScale(group.variants.variants.length)}
-                      />
-                      <text x={60} y={17} fontSize="12">
-                        {group.variants.variants.length}
-                      </text>
-                    </g>
-                  )
-                })}
-              </svg>
-            </div>
-          )
-        }}
-        renderRightPanel={showGenealogy && genealogyResult && leafYPositions.size > 0
-          ? () => (
-            <div style={{ width: 180, height: totalHeight, overflow: 'hidden' }}>
-              <GenealogyTreeOverlay
-                tree={genealogyResult!.tree}
-                leafYPositions={leafYPositions}
-                panelWidth={180}
-                totalHeight={totalHeight}
-                groups={displayGroups}
-                clusterThreshold={clusterThreshold}
-                onClusterThresholdChange={onClusterThresholdChange}
-                expandedClusterIds={expandedClusterIds}
-                toggleClusterExpansion={toggleClusterExpansion}
-                clusters={clusters}
-                rowYPositions={rowYPositions}
-                isClusteredView={isClusteredView}
-              />
-            </div>
-          )
-          : undefined
-        }
-      >
-        {({
-          scalePosition,
-          width,
-        }: {
-          scalePosition: (input: number) => number
-          width: number
-        }) => (
-          <ChromosomePainterCanvas
-            rowItems={rowItems}
-            rowOffsets={rowOffsets}
+      {/* Spacer div — establishes native scrollable height */}
+      <div style={{ height: totalHeight, position: 'relative' }}>
+        {/* DeckGL canvas — multi-view, sticky to viewport */}
+        <ChromosomePainterCanvas
+          rowItems={rowItems}
+          rowOffsets={rowOffsets}
+          totalHeight={totalHeight}
+          totalWidth={totalWidth}
+          leftPanelWidth={LEFT_PANEL_WIDTH}
+          rightPanelWidth={RIGHT_PANEL_WIDTH}
+          start={start}
+          stop={stop}
+          scalePosition={scalePosition}
+          width={centerWidth}
+          hovered={hovered}
+          onHover={onHover}
+          deckRef={deckRef}
+          scrollTopRef={scrollTopRef}
+          viewportHeightRef={viewportHeightRef}
+          sampleColorScale={sampleColorScale}
+          variantColorScale={variantColorScale}
+          expandedClusterIds={expandedClusterIds}
+          toggleClusterExpansion={toggleClusterExpansion}
+          showGenealogy={showGenealogy}
+          genealogyResult={genealogyResult}
+          leafYPositions={leafYPositions}
+          rowYPositions={rowYPositions}
+          displayGroups={displayGroups}
+          sampleMetadata={sampleMetadata}
+          clusterThreshold={clusterThreshold}
+          onClusterThresholdChange={onClusterThresholdChange}
+          clusters={clusters}
+          isClusteredView={isClusteredView}
+        />
+
+        {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
+        {showRightPanel && (
+          <CPThresholdDragOverlay
+            leftPanelWidth={LEFT_PANEL_WIDTH}
+            centerWidth={centerWidth}
+            rightPanelWidth={RIGHT_PANEL_WIDTH}
             totalHeight={totalHeight}
-            start={start}
-            stop={stop}
-            scalePosition={scalePosition}
-            width={width}
-            scrollTop={scrollTop}
-            hovered={hovered}
-            onHover={onHover}
+            showGenealogy={showGenealogy}
+            genealogyResult={genealogyResult}
+            leafYPositions={leafYPositions}
+            groups={displayGroups}
+            sampleMetadata={sampleMetadata}
+            clusterThreshold={clusterThreshold}
+            onClusterThresholdChange={onClusterThresholdChange}
+            clusters={clusters}
+            isClusteredView={isClusteredView}
+            expandedClusterIds={expandedClusterIds}
+            rowYPositions={rowYPositions}
           />
         )}
-      </Track>
+      </div>
     </div>
   )
 }
@@ -353,45 +327,82 @@ type CanvasProps = {
   rowItems: RowItem[]
   rowOffsets: number[]
   totalHeight: number
+  totalWidth: number
+  leftPanelWidth: number
+  rightPanelWidth: number
   start: number
   stop: number
   scalePosition: (input: number) => number
   width: number
-  scrollTop: number
-  hovered: { x: number; y: number; object: PaintedSegment } | null
+  hovered: { x: number; y: number; object: any; viewportId: string } | null
   onHover: (info: any) => void
+  deckRef: React.MutableRefObject<any>
+  scrollTopRef: React.MutableRefObject<number>
+  viewportHeightRef: React.MutableRefObject<number>
+  sampleColorScale: (n: number) => string
+  variantColorScale: (n: number) => string
+  expandedClusterIds?: Set<string>
+  toggleClusterExpansion?: (clusterId: string) => void
+  showGenealogy: boolean
+  genealogyResult?: { tree: any; leafOrder: number[] } | null
+  leafYPositions: Map<number, number>
+  rowYPositions: Map<string, number>
+  displayGroups: HaplotypeGroup[]
+  sampleMetadata?: SampleMetadataMap
+  clusterThreshold: number
+  onClusterThresholdChange?: (threshold: number) => void
+  clusters?: HaplotypeCluster[]
+  isClusteredView: boolean
 }
 
 function ChromosomePainterCanvas({
   rowItems,
   rowOffsets,
   totalHeight,
+  totalWidth,
+  leftPanelWidth,
+  rightPanelWidth,
   start,
   stop,
   scalePosition,
   width,
-  scrollTop,
   hovered,
   onHover,
+  deckRef,
+  scrollTopRef,
+  viewportHeightRef,
+  sampleColorScale,
+  variantColorScale,
+  expandedClusterIds,
+  toggleClusterExpansion,
+  showGenealogy,
+  genealogyResult,
+  leafYPositions,
+  rowYPositions,
+  displayGroups,
+  sampleMetadata,
+  clusterThreshold,
+  onClusterThresholdChange,
+  clusters,
+  isClusteredView,
 }: CanvasProps) {
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
   const binSize = (stop - start) / NUM_BINS
 
-  // Per-row DeckGL layers for stable animations across expand/collapse
+  // Keep dimension ref in sync
+  viewportHeightRef.current = viewportHeight
+
+  // Consolidated global DeckGL layers — single SolidPolygonLayer for all painted segments
   const layers = useMemo(() => {
-    const result: any[] = []
+    const allPaintedSegments: PaintedSegment[] = []
 
     for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
-      const rowId = item.type === 'cluster'
-        ? `cluster-${item.cluster.cluster_id}`
-        : `group-${item.group.hash}`
 
-      // Initialize bins
+      // Initialize bins (per-row computation, pushed to global array)
       const binVariants: (LRVariant | null)[] = new Array(NUM_BINS).fill(null)
       const binScores: number[] = new Array(NUM_BINS).fill(0)
-      const rowSegments: PaintedSegment[] = []
 
       if (item.type === 'cluster') {
         const cluster = item.cluster
@@ -423,12 +434,12 @@ function ChromosomePainterCanvas({
           const binStop = start + (i + 1) * binSize
           const v = binVariants[i]
           if (!v) {
-            rowSegments.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
+            allPaintedSegments.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
           } else {
             const baseColor = getColorByHash(v.variant_id)
             const af = afByVariantId.get(v.variant_id) ?? 0.5
             const alpha = clusterAfAlpha(af)
-            rowSegments.push({ binStart, binStop, rowY, color: [baseColor[0], baseColor[1], baseColor[2], alpha], variant: v })
+            allPaintedSegments.push({ binStart, binStop, rowY, color: [baseColor[0], baseColor[1], baseColor[2], alpha], variant: v })
           }
         }
       } else {
@@ -454,78 +465,257 @@ function ChromosomePainterCanvas({
           const binStop = start + (i + 1) * binSize
           const v = binVariants[i]
           if (!v) {
-            rowSegments.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
+            allPaintedSegments.push({ binStart, binStop, rowY, color: NEUTRAL_COLOR, variant: null })
           } else {
             const baseColor = getColorByHash(v.variant_id)
-            rowSegments.push({ binStart, binStop, rowY, color: [baseColor[0], baseColor[1], baseColor[2], 255], variant: v })
+            allPaintedSegments.push({ binStart, binStop, rowY, color: [baseColor[0], baseColor[1], baseColor[2], 255], variant: v })
           }
         }
       }
+    }
 
-      if (rowSegments.length > 0) {
-        result.push(new SolidPolygonLayer({
-          id: `painted-blocks-${rowId}`,
-          data: rowSegments,
-          getPolygon: (d: PaintedSegment) => {
-            const x1 = scalePosition(d.binStart)
-            const x2 = scalePosition(d.binStop)
-            const yTop = d.rowY + 2
-            const yBot = d.rowY + VARIANT_ROW_HEIGHT - 2
-            return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
-          },
-          getFillColor: (d: PaintedSegment) => d.color,
-          pickable: true,
-          onHover,
-          updateTriggers: { getPolygon: [scalePosition, rowY] },
-          transitions: { getPolygon: { duration: 300 } },
-        }))
+    if (allPaintedSegments.length === 0) return []
+
+    return [new SolidPolygonLayer({
+      id: 'painted-blocks-layer',
+      data: allPaintedSegments,
+      getPolygon: (d: PaintedSegment) => {
+        const x1 = scalePosition(d.binStart)
+        const x2 = scalePosition(d.binStop)
+        const yTop = d.rowY + 2
+        const yBot = d.rowY + VARIANT_ROW_HEIGHT - 2
+        return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
+      },
+      getFillColor: (d: PaintedSegment) => d.color,
+      pickable: true,
+      onHover,
+      updateTriggers: { getPolygon: [scalePosition] },
+    })]
+  }, [rowItems, rowOffsets, start, stop, binSize, scalePosition, onHover])
+
+  // Left panel data arrays for DeckGL layers
+  type LPCircle = { position: [number, number, number]; color: [number, number, number, number]; radius: number }
+  type LPText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number }
+  type LPHitbox = { position: [number, number, number]; action: string; clusterId: string }
+
+  const { lpCircles, lpTexts, lpHitboxes } = useMemo(() => {
+    const circles: LPCircle[] = []
+    const texts: LPText[] = []
+    const hitboxes: LPHitbox[] = []
+    const ROW_CENTER = VARIANT_ROW_HEIGHT / 2
+
+    for (let i = 0; i < rowItems.length; i++) {
+      const item = rowItems[i]
+      const y = rowOffsets[i] + ROW_CENTER
+
+      if (item.type === 'cluster') {
+        const cluster = item.cluster
+        const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
+        texts.push({ position: [8, y, 0], text: isExpanded ? '\u25BC' : '\u25B6', color: [85, 85, 85, 255], size: 11 })
+        hitboxes.push({ position: [8, y, 0], action: 'toggle_cluster', clusterId: cluster.cluster_id })
+
+        const sampleColor = cssColorToRgba(sampleColorScale(cluster.sample_count))
+        circles.push({ position: [20, y, 0], color: sampleColor, radius: 5 })
+        texts.push({ position: [30, y, 0], text: String(cluster.sample_count), color: [0, 0, 0, 255], size: 12 })
+        texts.push({ position: [60, y, 0], text: `(${cluster.member_group_hashes.length}g)`, color: [136, 136, 136, 255], size: 10 })
+      } else {
+        const group = item.group
+        const indent = item.isChild ? 12 : 0
+        const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
+        circles.push({ position: [5 + indent, y, 0], color: sampleColor, radius: 5 })
+        texts.push({ position: [15 + indent, y, 0], text: String(group.samples.length), color: [0, 0, 0, 255], size: 12 })
+        const variantColor = cssColorToRgba(variantColorScale(group.variants.variants.length))
+        circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5 })
+        texts.push({ position: [60 + indent, y, 0], text: String(group.variants.variants.length), color: [0, 0, 0, 255], size: 12 })
       }
+    }
+    return { lpCircles: circles, lpTexts: texts, lpHitboxes: hitboxes }
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale])
+
+  const leftPanelLayers = useMemo(() => {
+    const result: any[] = []
+    if (lpCircles.length > 0) {
+      result.push(new ScatterplotLayer({
+        id: 'left-panel-circles',
+        data: lpCircles,
+        getPosition: (d: LPCircle) => d.position,
+        getRadius: (d: LPCircle) => d.radius,
+        getFillColor: (d: LPCircle) => d.color,
+        radiusUnits: 'pixels' as const,
+        pickable: false,
+      }))
+    }
+    if (lpTexts.length > 0) {
+      result.push(new TextLayer({
+        id: 'left-panel-text',
+        data: lpTexts,
+        getPosition: (d: LPText) => d.position,
+        getText: (d: LPText) => d.text,
+        getSize: (d: LPText) => d.size,
+        getColor: (d: LPText) => d.color,
+        getTextAnchor: 'start',
+        getAlignmentBaseline: 'center',
+        fontSettings: { sdf: true, smoothing: 0.15 },
+        pickable: false,
+      }))
+    }
+    if (lpHitboxes.length > 0) {
+      result.push(new ScatterplotLayer({
+        id: 'left-panel-hitboxes',
+        data: lpHitboxes,
+        getPosition: (d: LPHitbox) => d.position,
+        getRadius: 10,
+        getFillColor: [0, 0, 0, 0],
+        radiusUnits: 'pixels' as const,
+        pickable: true,
+        onClick: (info: any) => {
+          if (info.object?.action === 'toggle_cluster' && toggleClusterExpansion) {
+            toggleClusterExpansion(info.object.clusterId)
+          }
+        },
+      }))
+    }
+    return result
+  }, [lpCircles, lpTexts, lpHitboxes, toggleClusterExpansion])
+
+  // Genealogy tree layout — pure data arrays for DeckGL
+  const treeLayout = useMemo((): TreeLayout | null => {
+    if (!showGenealogy || !genealogyResult || leafYPositions.size === 0) return null
+    return buildGenealogyTreeLayout({
+      tree: genealogyResult.tree,
+      leafYPositions,
+      panelWidth: rightPanelWidth,
+      groups: displayGroups,
+      sampleMetadata,
+      clusterThreshold,
+      isClusteredView,
+      clusters,
+      expandedClusterIds,
+      rowYPositions,
+    })
+  }, [showGenealogy, genealogyResult, leafYPositions, rightPanelWidth, displayGroups, sampleMetadata, clusterThreshold, isClusteredView, clusters, expandedClusterIds, rowYPositions])
+
+  // Tree DeckGL layers for right panel
+  const treeLayers = useMemo(() => {
+    if (!treeLayout) return []
+    const result: any[] = []
+
+    if (treeLayout.branches.length > 0) {
+      result.push(new LineLayer({
+        id: 'tree-branches',
+        data: treeLayout.branches,
+        getSourcePosition: (d: TreeBranch) => d.sourcePosition,
+        getTargetPosition: (d: TreeBranch) => d.targetPosition,
+        getColor: (d: TreeBranch) => d.color,
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+      }))
+    }
+
+    if (treeLayout.nodes.length > 0) {
+      result.push(new ScatterplotLayer({
+        id: 'tree-nodes',
+        data: treeLayout.nodes,
+        getPosition: (d: TreeNodePoint) => d.position,
+        getRadius: (d: TreeNodePoint) => d.radius,
+        getFillColor: (d: TreeNodePoint) => d.color,
+        getLineColor: [51, 51, 51, 128],
+        getLineWidth: 0.5,
+        lineWidthUnits: 'pixels' as const,
+        stroked: true,
+        radiusUnits: 'pixels' as const,
+        pickable: true,
+        onClick: (info: any) => {
+          if (info.object?.isThresholdNode && onClusterThresholdChange && treeLayout) {
+            onClusterThresholdChange(info.object.distance / treeLayout.maxDistance)
+          }
+        },
+        onHover,
+      }))
+    }
+
+    if (treeLayout.clusterMarkers.length > 0) {
+      result.push(new TextLayer({
+        id: 'tree-cluster-markers',
+        data: treeLayout.clusterMarkers,
+        getPosition: (d: TreeClusterMarker) => d.position,
+        getText: (d: TreeClusterMarker) => d.text,
+        getSize: (d: TreeClusterMarker) => d.size,
+        getColor: (d: TreeClusterMarker) => d.color,
+        getTextAnchor: 'middle',
+        getAlignmentBaseline: 'center',
+        fontSettings: { sdf: true, smoothing: 0.15 },
+        pickable: true,
+        onClick: (info: any) => {
+          if (info.object?.isClusterRoot && toggleClusterExpansion) {
+            toggleClusterExpansion(info.object.clusterId)
+          }
+        },
+        onHover,
+      }))
+    }
+
+    if (treeLayout.thresholdX !== null) {
+      result.push(new LineLayer({
+        id: 'tree-threshold-line',
+        data: [{ x: treeLayout.thresholdX, yTop: 0, yBottom: totalHeight }],
+        getSourcePosition: (d: any) => [d.x, d.yTop, 0],
+        getTargetPosition: (d: any) => [d.x, d.yBottom, 0],
+        getColor: [217, 83, 79, 179],
+        getWidth: 1.5,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+      }))
     }
 
     return result
-  }, [rowItems, rowOffsets, start, stop, binSize, scalePosition, onHover])
+  }, [treeLayout, totalHeight, onClusterThresholdChange, toggleClusterExpansion, onHover])
 
-  const view = useMemo(() => new OrthographicView({ id: 'main', flipY: true }), [])
-
-  const viewState = useMemo(
-    () => ({
-      target: [width / 2, scrollTop + viewportHeight / 2, 0] as [number, number, number],
-      zoom: 0,
-    }),
-    [width, scrollTop, viewportHeight]
+  // Multi-view: left panel, center (painted blocks), right panel
+  const views = useMemo(
+    () => [
+      new OrthographicView({ id: 'left-panel', x: 0, y: 0, width: leftPanelWidth, height: viewportHeight, flipY: true }),
+      new OrthographicView({ id: 'center-panel', x: leftPanelWidth, y: 0, width, height: viewportHeight, flipY: true }),
+      new OrthographicView({ id: 'right-panel', x: leftPanelWidth + width, y: 0, width: rightPanelWidth, height: viewportHeight, flipY: true }),
+    ],
+    [leftPanelWidth, width, rightPanelWidth, viewportHeight]
   )
 
+  const yTarget = scrollTopRef.current + viewportHeight / 2
+  const viewState = {
+    'left-panel': { target: [leftPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+    'center-panel': { target: [width / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+    'right-panel': { target: [rightPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+  }
+
   return (
-    <div style={{ position: 'relative', width, height: totalHeight }}>
-      <div
-        style={{
-          position: 'absolute',
-          top: scrollTop,
-          left: 0,
-          width,
-          height: viewportHeight,
+    <div style={{ position: 'sticky', top: 0, left: 0, width: totalWidth, height: viewportHeight }}>
+      <DeckGL
+        ref={deckRef}
+        views={views}
+        viewState={viewState}
+        layers={[...layers, ...leftPanelLayers, ...treeLayers]}
+        layerFilter={({ layer, viewport }) => {
+          const layerId = layer.id
+          if (layerId.startsWith('left-panel-')) return viewport.id === 'left-panel'
+          if (layerId.startsWith('tree-')) return viewport.id === 'right-panel'
+          return viewport.id === 'center-panel'
         }}
-      >
-        <DeckGL
-          views={view}
-          viewState={viewState}
-          layers={layers}
-          controller={false}
-          pickingRadius={5}
-          style={{
-            position: 'absolute',
-            left: '0',
-            top: '0',
-            width: `${width}px`,
-            height: `${viewportHeight}px`,
-          }}
-          width={width}
-          height={viewportHeight}
-        />
-        {hovered && hovered.object && hovered.object.variant && (
-          <PaintingTooltip x={hovered.x} y={hovered.y} segment={hovered.object} />
-        )}
-      </div>
+        getCursor={({ isHovering }: { isHovering: boolean }) => isHovering ? 'pointer' : 'default'}
+        controller={false}
+        pickingRadius={5}
+        style={{ position: 'absolute', left: '0', top: '0', width: `${totalWidth}px`, height: `${viewportHeight}px` }}
+        width={totalWidth}
+        height={viewportHeight}
+      />
+      {hovered && hovered.object && (
+        hovered.viewportId === 'right-panel'
+          ? <TreeTooltip x={hovered.x} y={hovered.y} object={hovered.object} />
+          : hovered.viewportId === 'center-panel' && hovered.object.variant
+            ? <PaintingTooltip x={hovered.x} y={hovered.y} segment={hovered.object} />
+            : null
+      )}
     </div>
   )
 }
@@ -571,6 +761,148 @@ function PaintingTooltip({ x, y, segment }: { x: number; y: number; segment: Pai
       </div>
       <div style={{ fontSize: 10, color: '#888', marginTop: 2 }}>
         Bin: {Math.floor(segment.binStart).toLocaleString()} - {Math.floor(segment.binStop).toLocaleString()}
+      </div>
+    </div>
+  )
+}
+
+function TreeTooltip({ x, y, object }: { x: number; y: number; object: any }) {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: x + 10,
+        top: y + 10,
+        background: 'white',
+        border: '1px solid #ccc',
+        borderRadius: 4,
+        padding: '6px 8px',
+        fontSize: 12,
+        pointerEvents: 'none',
+        zIndex: 100,
+        maxWidth: 300,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+      }}
+    >
+      <span>{object.tooltipText}</span>
+    </div>
+  )
+}
+
+// --- Threshold drag overlay component ---
+
+type CPThresholdDragOverlayProps = {
+  leftPanelWidth: number
+  centerWidth: number
+  rightPanelWidth: number
+  totalHeight: number
+  showGenealogy: boolean
+  genealogyResult?: { tree: any; leafOrder: number[] } | null
+  leafYPositions: Map<number, number>
+  groups: HaplotypeGroup[]
+  sampleMetadata?: SampleMetadataMap
+  clusterThreshold: number
+  onClusterThresholdChange?: (threshold: number) => void
+  clusters?: HaplotypeCluster[]
+  isClusteredView: boolean
+  expandedClusterIds?: Set<string>
+  rowYPositions?: Map<string, number>
+}
+
+function CPThresholdDragOverlay({
+  leftPanelWidth,
+  centerWidth,
+  rightPanelWidth,
+  totalHeight,
+  showGenealogy,
+  genealogyResult,
+  leafYPositions,
+  groups,
+  sampleMetadata,
+  clusterThreshold,
+  onClusterThresholdChange,
+  clusters,
+  isClusteredView,
+  expandedClusterIds,
+  rowYPositions,
+}: CPThresholdDragOverlayProps) {
+  const rightPanelRef = useRef<HTMLDivElement>(null)
+
+  const treeLayout = useMemo((): TreeLayout | null => {
+    if (!showGenealogy || !genealogyResult || leafYPositions.size === 0) return null
+    return buildGenealogyTreeLayout({
+      tree: genealogyResult.tree,
+      leafYPositions,
+      panelWidth: rightPanelWidth,
+      groups,
+      sampleMetadata,
+      clusterThreshold,
+      isClusteredView,
+      clusters,
+      expandedClusterIds,
+      rowYPositions,
+    })
+  }, [showGenealogy, genealogyResult, leafYPositions, rightPanelWidth, groups, sampleMetadata, clusterThreshold, isClusteredView, clusters, expandedClusterIds, rowYPositions])
+
+  const handleThresholdDragStart = useCallback((e: React.PointerEvent) => {
+    if (!onClusterThresholdChange || !rightPanelRef.current || !treeLayout) return
+    e.preventDefault()
+    e.stopPropagation()
+
+    const onPointerMove = (moveEvent: PointerEvent) => {
+      if (!rightPanelRef.current || !treeLayout) return
+      const rect = rightPanelRef.current.getBoundingClientRect()
+      const pointerX = moveEvent.clientX - rect.left
+      const newDistance = treeLayout.xScale.invert(pointerX)
+      const newThreshold = Math.max(0, Math.min(1, newDistance / treeLayout.maxDistance))
+      onClusterThresholdChange(newThreshold)
+    }
+
+    const onPointerUp = () => {
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', onPointerUp)
+    }
+
+    window.addEventListener('pointermove', onPointerMove)
+    window.addEventListener('pointerup', onPointerUp)
+  }, [onClusterThresholdChange, treeLayout])
+
+  if (!treeLayout || treeLayout.thresholdX === null) return null
+
+  return (
+    <div
+      ref={rightPanelRef}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: leftPanelWidth + centerWidth,
+        width: rightPanelWidth,
+        height: totalHeight,
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          left: treeLayout.thresholdX - 6,
+          top: 0,
+          bottom: 0,
+          width: 12,
+          cursor: 'ew-resize',
+          pointerEvents: 'all',
+        }}
+        onPointerDown={handleThresholdDragStart}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: 5,
+            top: 0,
+            bottom: 0,
+            width: 2,
+            borderRight: '1.5px dashed rgba(217,83,79,0.7)',
+          }}
+        />
       </div>
     </div>
   )

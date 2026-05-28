@@ -1,13 +1,14 @@
-import React, { useMemo, useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
+import React, { useMemo, useState, useCallback, useRef, useContext, forwardRef, useImperativeHandle } from 'react'
 import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
-import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer } from '@deck.gl/layers'
-import { Track } from '@gnomad/region-viewer'
+import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer, TextLayer } from '@deck.gl/layers'
+import { RegionViewerContext } from '@gnomad/region-viewer'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
-import { getVariantCategory, VARIANT_CATEGORY_COLORS, getLodVisibility } from '../LongReadVariantPage/variantUtils'
-import GenealogyTreeOverlay from './GenealogyTreeOverlay'
-import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation, MethylationSummaryPoint } from './index'
+import { getVariantCategory, getLodVisibility } from '../LongReadVariantPage/variantUtils'
+import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
+import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
+import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 type Variant = LRVariant
@@ -19,30 +20,6 @@ const MQTL_TRACK_HEIGHT = 80
 const MQTL_PAD = 8
 const ROW_CENTER_Y = 12.5
 const SCROLL_CONTAINER_HEIGHT = 500
-const VISIBLE_BUFFER = 5 // extra groups above/below viewport to render
-
-/** Binary-search for the first group whose bottom edge is >= scrollTop */
-function findVisibleRange(
-  rowOffsets: number[],
-  totalHeight: number,
-  scrollTop: number,
-  viewportHeight: number,
-): [number, number] {
-  const n = rowOffsets.length
-  if (n === 0) return [0, 0]
-  const top = scrollTop - VISIBLE_BUFFER * VARIANT_ROW_HEIGHT
-  const bottom = scrollTop + viewportHeight + VISIBLE_BUFFER * VARIANT_ROW_HEIGHT
-  let startIdx = 0
-  for (let i = 0; i < n; i++) {
-    if (i + 1 < n ? rowOffsets[i + 1] > top : true) { startIdx = i; break }
-  }
-  let endIdx = n - 1
-  for (let i = startIdx; i < n; i++) {
-    if (rowOffsets[i] > bottom) { endIdx = i - 1; break }
-    endIdx = i
-  }
-  return [Math.max(0, startIdx - VISIBLE_BUFFER), Math.min(n - 1, endIdx + VISIBLE_BUFFER)]
-}
 
 // Flattened data types for deck.gl layers
 type VariantPoint = {
@@ -248,7 +225,6 @@ type DeckGLLollipopTrackProps = {
   colorMode: string
   showMethylation: boolean
   methylationData: Methylation[]
-  methylationSummary?: MethylationSummaryPoint[]
   summaryByPos: Map<number, { mean: number; std: number }>
   variantCircleRadius: number
   sampleColorScale: (n: number) => string
@@ -303,11 +279,12 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     x: number
     y: number
     object: any
-    type: 'variant' | 'group'
+    viewportId: string
   } | null>(null)
 
   const scrollContainerRef = useRef<HTMLDivElement>(null)
-  const [scrollTop, setScrollTop] = useState(0)
+  const scrollTopRef = useRef(0)
+  const deckRef = useRef<any>(null)
 
   // Build a hash->group lookup for cluster expansion
   const groupByHash = useMemo(() => {
@@ -393,10 +370,36 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     [onVisibleGroupChange]
   )
 
-  // Synchronous scroll handler — no throttle so canvas position stays in sync
+  // Refs for canvas dimensions — avoids stale closures in scroll handler
+  const canvasWidthRef = useRef(0)
+  const viewportHeightRef = useRef(0)
+
+  // Refs for panel widths — avoids stale closures in scroll handler
+  const leftPanelWidthRef = useRef(200)
+  const centerWidthRef = useRef(0)
+  const rightPanelWidthRef = useRef(180)
+
+  // Imperative scroll handler — updates DeckGL camera directly, no React re-render
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const newScrollTop = (e.target as HTMLDivElement).scrollTop
-    setScrollTop(newScrollTop)
+    scrollTopRef.current = newScrollTop
+
+    // Update DeckGL camera imperatively — bypasses React entirely
+    if (deckRef.current?.deck) {
+      const vh = viewportHeightRef.current
+      const lw = leftPanelWidthRef.current
+      const cw = centerWidthRef.current
+      const rw = rightPanelWidthRef.current
+      const yTarget = newScrollTop + vh / 2
+      deckRef.current.deck.setProps({
+        viewState: {
+          'left-panel': { target: [lw / 2, yTarget, 0], zoom: 0 },
+          'center-panel': { target: [cw / 2, yTarget, 0], zoom: 0 },
+          'right-panel': { target: [rw / 2, yTarget, 0], zoom: 0 },
+        },
+      })
+    }
+
     debouncedGroupChange(newScrollTop)
   }, [debouncedGroupChange])
 
@@ -460,7 +463,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           x: info.x,
           y: info.y,
           object: info.object,
-          type: info.object.variant ? 'variant' : 'group',
+          viewportId: info.viewport?.id || 'center-panel',
         })
       } else {
         setHovered(null)
@@ -469,105 +472,28 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     []
   )
 
-  // Compute visible group range for left panel virtualization
-  const viewportH = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
-  const [lpStart, lpEnd] = useMemo(
-    () => findVisibleRange(rowOffsets, totalHeight, scrollTop, viewportH),
-    [rowOffsets, totalHeight, scrollTop, viewportH]
-  )
+  // Consume RegionViewerContext directly — bypass Track component
+  const { scalePosition, centerPanelWidth: centerWidth } = useContext(RegionViewerContext)
+
+  const leftPanelWidth = 200
+  const rightPanelWidth = 180
+  const totalWidth = leftPanelWidth + centerWidth + rightPanelWidth
+  const showRightPanel = showGenealogy && genealogyResult && leafYPositions.size > 0
+
+  // Keep panel width refs in sync for the imperative scroll handler
+  leftPanelWidthRef.current = leftPanelWidth
+  centerWidthRef.current = centerWidth
+  rightPanelWidthRef.current = rightPanelWidth
 
   return (
     <div
       ref={scrollContainerRef}
       onScroll={handleScroll}
-      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto' }}
+      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', position: 'relative' }}
     >
-    <Track
-      renderLeftPanel={() => {
-        const labelsWidth = 200
-        return (
-          <div style={{ width: labelsWidth }}>
-            <svg width={labelsWidth} height={totalHeight}>
-              {rowItems.map((item, i) => {
-                if (i < lpStart || i > lpEnd) return null
-                const y = rowOffsets[i]
-                if (item.type === 'cluster') {
-                  const cluster = item.cluster
-                  const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
-                  return (
-                    <g
-                      key={`cluster-${cluster.cluster_id}`}
-                      transform={`translate(0, ${y})`}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => toggleClusterExpansion?.(cluster.cluster_id)}
-                    >
-                      <text x={2} y={17} fontSize='11' fill='#555'>
-                        {isExpanded ? '\u25BC' : '\u25B6'}
-                      </text>
-                      <circle cx={20} cy={12.5} r={5} fill={sampleColorScale(cluster.sample_count)} />
-                      <text x={30} y={17} fontSize='12'>
-                        {cluster.sample_count}
-                      </text>
-                      <text x={60} y={17} fontSize='10' fill='#888'>
-                        ({cluster.member_group_hashes.length}g)
-                      </text>
-                    </g>
-                  )
-                }
-                const group = item.group
-                const indent = item.isChild ? 12 : 0
-                return (
-                  <g key={`group-${group.hash}`} transform={`translate(${indent}, ${y})`}>
-                    <circle cx={5} cy={12.5} r={5} fill={sampleColorScale(group.samples.length)} />
-                    <text x={15} y={17} fontSize='12'>
-                      {group.samples.length}
-                    </text>
-                    <circle
-                      cx={50}
-                      cy={12.5}
-                      r={5}
-                      fill={variantColorScale(group.variants.variants.length)}
-                    />
-                    <text x={60} y={17} fontSize='12'>
-                      {group.variants.variants.length}
-                    </text>
-                  </g>
-                )
-              })}
-            </svg>
-          </div>
-        )
-      }}
-      renderRightPanel={showGenealogy && genealogyResult && leafYPositions.size > 0
-        ? () => (
-          <div style={{ width: 180, height: totalHeight, overflow: 'hidden' }}>
-            <GenealogyTreeOverlay
-              tree={genealogyResult!.tree}
-              leafYPositions={leafYPositions}
-              panelWidth={180}
-              totalHeight={totalHeight}
-              groups={displayGroups}
-              sampleMetadata={sampleMetadata}
-              clusterThreshold={clusterThreshold}
-              onClusterThresholdChange={onClusterThresholdChange}
-              expandedClusterIds={expandedClusterIds}
-              toggleClusterExpansion={toggleClusterExpansion}
-              clusters={clusters}
-              rowYPositions={rowYPositions}
-              isClusteredView={isClusteredView}
-            />
-          </div>
-        )
-        : undefined
-      }
-    >
-      {({
-        scalePosition,
-        width,
-      }: {
-        scalePosition: (input: number) => number
-        width: number
-      }) => (
+      {/* Spacer div — establishes native scrollable height */}
+      <div style={{ height: totalHeight, position: 'relative' }}>
+        {/* DeckGL canvas — multi-view, sticky to viewport */}
         <DeckGLLollipopCanvas
           displayGroups={displayGroups}
           haplotypeGroups={haplotypeGroups}
@@ -585,15 +511,53 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           sampleMetadata={sampleMetadata}
           hoveredVariantPosition={hoveredVariantPosition}
           scalePosition={scalePosition}
-          width={width}
+          width={centerWidth}
           totalHeight={totalHeight}
+          totalWidth={totalWidth}
+          leftPanelWidth={leftPanelWidth}
+          rightPanelWidth={rightPanelWidth}
           rowOffsets={rowOffsets}
           hovered={hovered}
           onHover={onHover}
-          scrollTop={scrollTop}
+          deckRef={deckRef}
+          scrollTopRef={scrollTopRef}
+          canvasWidthRef={canvasWidthRef}
+          viewportHeightRef={viewportHeightRef}
+          sampleColorScale={sampleColorScale}
+          variantColorScale={variantColorScale}
+          expandedClusterIds={expandedClusterIds}
+          toggleClusterExpansion={toggleClusterExpansion}
+          showGenealogy={showGenealogy}
+          genealogyResult={genealogyResult}
+          leafYPositions={leafYPositions}
+          rowYPositions={rowYPositions}
+          clusterThreshold={clusterThreshold}
+          onClusterThresholdChange={onClusterThresholdChange}
+          clusters={clusters}
+          isClusteredView={isClusteredView}
         />
-      )}
-    </Track>
+
+        {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
+        {showRightPanel && (
+          <ThresholdDragOverlay
+            leftPanelWidth={leftPanelWidth}
+            centerWidth={centerWidth}
+            rightPanelWidth={rightPanelWidth}
+            totalHeight={totalHeight}
+            showGenealogy={showGenealogy}
+            genealogyResult={genealogyResult}
+            leafYPositions={leafYPositions}
+            groups={displayGroups}
+            sampleMetadata={sampleMetadata}
+            clusterThreshold={clusterThreshold}
+            onClusterThresholdChange={onClusterThresholdChange}
+            clusters={clusters}
+            isClusteredView={isClusteredView}
+            expandedClusterIds={expandedClusterIds}
+            rowYPositions={rowYPositions}
+          />
+        )}
+      </div>
     </div>
   )
 })
@@ -619,10 +583,28 @@ type DeckGLCanvasProps = {
   scalePosition: (input: number) => number
   width: number
   totalHeight: number
+  totalWidth: number
+  leftPanelWidth: number
+  rightPanelWidth: number
   rowOffsets: number[]
   hovered: any
   onHover: (info: any) => void
-  scrollTop: number
+  deckRef: React.MutableRefObject<any>
+  scrollTopRef: React.MutableRefObject<number>
+  canvasWidthRef: React.MutableRefObject<number>
+  viewportHeightRef: React.MutableRefObject<number>
+  sampleColorScale: (n: number) => string
+  variantColorScale: (n: number) => string
+  expandedClusterIds?: Set<string>
+  toggleClusterExpansion?: (clusterId: string) => void
+  showGenealogy: boolean
+  genealogyResult?: { tree: any; leafOrder: number[] } | null
+  leafYPositions: Map<number, number>
+  rowYPositions: Map<string, number>
+  clusterThreshold: number
+  onClusterThresholdChange?: (threshold: number) => void
+  clusters?: HaplotypeCluster[]
+  isClusteredView: boolean
 }
 
 /** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
@@ -632,7 +614,7 @@ function clusterAfAlpha(clusterAf: number): number {
   return Math.round(50 + ((clusterAf - 0.5) / 0.4) * 205)
 }
 
-// Inner component that receives scalePosition from Track render prop
+// Inner component — consumes scalePosition from context (no Track)
 function DeckGLLollipopCanvas({
   displayGroups,
   haplotypeGroups,
@@ -652,15 +634,261 @@ function DeckGLLollipopCanvas({
   scalePosition,
   width,
   totalHeight,
+  totalWidth,
+  leftPanelWidth,
+  rightPanelWidth,
   rowOffsets,
   hovered,
   onHover,
-  scrollTop,
+  deckRef,
+  scrollTopRef,
+  canvasWidthRef,
+  viewportHeightRef,
+  sampleColorScale,
+  variantColorScale,
+  expandedClusterIds,
+  toggleClusterExpansion,
+  showGenealogy,
+  genealogyResult,
+  leafYPositions,
+  rowYPositions,
+  clusterThreshold,
+  onClusterThresholdChange,
+  clusters,
+  isClusteredView,
 }: DeckGLCanvasProps) {
-  // Canvas uses full width — RegionViewer's rightPanelWidth handles space for genealogy tree
   const canvasWidth = width
 
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+
+  // Keep dimension refs in sync so the imperative scroll handler can read them
+  canvasWidthRef.current = canvasWidth
+  viewportHeightRef.current = viewportHeight
+
+  // Left panel data arrays for DeckGL layers
+  type LeftPanelCircle = { position: [number, number, number]; color: [number, number, number, number]; radius: number }
+  type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number }
+  type LeftPanelHitbox = { position: [number, number, number]; action: string; clusterId: string }
+
+  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes } = useMemo(() => {
+    const circles: LeftPanelCircle[] = []
+    const texts: LeftPanelText[] = []
+    const hitboxes: LeftPanelHitbox[] = []
+
+    for (let i = 0; i < rowItems.length; i++) {
+      const item = rowItems[i]
+      const y = rowOffsets[i] + ROW_CENTER_Y
+
+      if (item.type === 'cluster') {
+        const cluster = item.cluster
+        const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
+
+        // Expand/collapse triangle
+        texts.push({
+          position: [8, y, 0],
+          text: isExpanded ? '\u25BC' : '\u25B6',
+          color: [85, 85, 85, 255],
+          size: 11,
+        })
+
+        // Hitbox for click target
+        hitboxes.push({
+          position: [8, y, 0],
+          action: 'toggle_cluster',
+          clusterId: cluster.cluster_id,
+        })
+
+        // Sample count circle + text
+        const sampleColor = cssColorToRgba(sampleColorScale(cluster.sample_count))
+        circles.push({ position: [20, y, 0], color: sampleColor, radius: 5 })
+        texts.push({
+          position: [30, y, 0],
+          text: String(cluster.sample_count),
+          color: [0, 0, 0, 255],
+          size: 12,
+        })
+
+        // Group count text
+        texts.push({
+          position: [60, y, 0],
+          text: `(${cluster.member_group_hashes.length}g)`,
+          color: [136, 136, 136, 255],
+          size: 10,
+        })
+      } else {
+        const group = item.group
+        const indent = item.isChild ? 12 : 0
+
+        // Sample count circle + text
+        const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
+        circles.push({ position: [5 + indent, y, 0], color: sampleColor, radius: 5 })
+        texts.push({
+          position: [15 + indent, y, 0],
+          text: String(group.samples.length),
+          color: [0, 0, 0, 255],
+          size: 12,
+        })
+
+        // Variant count circle + text
+        const variantColor = cssColorToRgba(variantColorScale(group.variants.variants.length))
+        circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5 })
+        texts.push({
+          position: [60 + indent, y, 0],
+          text: String(group.variants.variants.length),
+          color: [0, 0, 0, 255],
+          size: 12,
+        })
+      }
+    }
+
+    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes }
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale])
+
+  // Left panel DeckGL layers
+  const leftPanelLayers = useMemo(() => {
+    const lpLayers: any[] = []
+
+    if (leftPanelCircles.length > 0) {
+      lpLayers.push(new ScatterplotLayer({
+        id: 'left-panel-circles',
+        data: leftPanelCircles,
+        getPosition: (d: LeftPanelCircle) => d.position,
+        getRadius: (d: LeftPanelCircle) => d.radius,
+        getFillColor: (d: LeftPanelCircle) => d.color,
+        radiusUnits: 'pixels' as const,
+        pickable: false,
+      }))
+    }
+
+    if (leftPanelTexts.length > 0) {
+      lpLayers.push(new TextLayer({
+        id: 'left-panel-text',
+        data: leftPanelTexts,
+        getPosition: (d: LeftPanelText) => d.position,
+        getText: (d: LeftPanelText) => d.text,
+        getSize: (d: LeftPanelText) => d.size,
+        getColor: (d: LeftPanelText) => d.color,
+        getTextAnchor: 'start',
+        getAlignmentBaseline: 'center',
+        fontSettings: { sdf: true, smoothing: 0.15 },
+        pickable: false,
+      }))
+    }
+
+    if (leftPanelHitboxes.length > 0) {
+      lpLayers.push(new ScatterplotLayer({
+        id: 'left-panel-hitboxes',
+        data: leftPanelHitboxes,
+        getPosition: (d: LeftPanelHitbox) => d.position,
+        getRadius: 10,
+        getFillColor: [0, 0, 0, 0],
+        radiusUnits: 'pixels' as const,
+        pickable: true,
+        onClick: (info: any) => {
+          if (info.object?.action === 'toggle_cluster' && toggleClusterExpansion) {
+            toggleClusterExpansion(info.object.clusterId)
+          }
+        },
+      }))
+    }
+
+    return lpLayers
+  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, toggleClusterExpansion])
+
+  // Genealogy tree layout — pure data arrays for DeckGL
+  const treeLayout = useMemo((): TreeLayout | null => {
+    if (!showGenealogy || !genealogyResult || leafYPositions.size === 0) return null
+    return buildGenealogyTreeLayout({
+      tree: genealogyResult.tree,
+      leafYPositions,
+      panelWidth: rightPanelWidth,
+      groups: displayGroups,
+      sampleMetadata,
+      clusterThreshold,
+      isClusteredView,
+      clusters,
+      expandedClusterIds,
+      rowYPositions,
+    })
+  }, [showGenealogy, genealogyResult, leafYPositions, rightPanelWidth, displayGroups, sampleMetadata, clusterThreshold, isClusteredView, clusters, expandedClusterIds, rowYPositions])
+
+  // Tree DeckGL layers for right panel
+  const treeLayers = useMemo(() => {
+    if (!treeLayout) return []
+    const result: any[] = []
+
+    if (treeLayout.branches.length > 0) {
+      result.push(new LineLayer({
+        id: 'tree-branches',
+        data: treeLayout.branches,
+        getSourcePosition: (d: TreeBranch) => d.sourcePosition,
+        getTargetPosition: (d: TreeBranch) => d.targetPosition,
+        getColor: (d: TreeBranch) => d.color,
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+      }))
+    }
+
+    if (treeLayout.nodes.length > 0) {
+      result.push(new ScatterplotLayer({
+        id: 'tree-nodes',
+        data: treeLayout.nodes,
+        getPosition: (d: TreeNodePoint) => d.position,
+        getRadius: (d: TreeNodePoint) => d.radius,
+        getFillColor: (d: TreeNodePoint) => d.color,
+        getLineColor: [51, 51, 51, 128],
+        getLineWidth: 0.5,
+        lineWidthUnits: 'pixels' as const,
+        stroked: true,
+        radiusUnits: 'pixels' as const,
+        pickable: true,
+        onClick: (info: any) => {
+          if (info.object?.isThresholdNode && onClusterThresholdChange && treeLayout) {
+            onClusterThresholdChange(info.object.distance / treeLayout.maxDistance)
+          }
+        },
+        onHover: onHover,
+      }))
+    }
+
+    if (treeLayout.clusterMarkers.length > 0) {
+      result.push(new TextLayer({
+        id: 'tree-cluster-markers',
+        data: treeLayout.clusterMarkers,
+        getPosition: (d: TreeClusterMarker) => d.position,
+        getText: (d: TreeClusterMarker) => d.text,
+        getSize: (d: TreeClusterMarker) => d.size,
+        getColor: (d: TreeClusterMarker) => d.color,
+        getTextAnchor: 'middle',
+        getAlignmentBaseline: 'center',
+        fontSettings: { sdf: true, smoothing: 0.15 },
+        pickable: true,
+        onClick: (info: any) => {
+          if (info.object?.isClusterRoot && toggleClusterExpansion) {
+            toggleClusterExpansion(info.object.clusterId)
+          }
+        },
+        onHover: onHover,
+      }))
+    }
+
+    // Threshold cut line
+    if (treeLayout.thresholdX !== null) {
+      result.push(new LineLayer({
+        id: 'tree-threshold-line',
+        data: [{ x: treeLayout.thresholdX, yTop: 0, yBottom: totalHeight }],
+        getSourcePosition: (d: any) => [d.x, d.yTop, 0],
+        getTargetPosition: (d: any) => [d.x, d.yBottom, 0],
+        getColor: [217, 83, 79, 179], // #d9534f at ~70% opacity
+        getWidth: 1.5,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+      }))
+    }
+
+    return result
+  }, [treeLayout, totalHeight, onClusterThresholdChange, toggleClusterExpansion, onHover])
 
   // Pre-aggregate locus counts for haplotype_count color mode
   const locusCounts = useMemo(() => {
@@ -674,36 +902,34 @@ function DeckGLLollipopCanvas({
     return counts
   }, [colorMode, haplotypeGroups])
 
-  // Per-row DeckGL layers for stable animations across expand/collapse
+  // Consolidated global DeckGL layers — one layer per data type for performance at 500+ rows
   const layers = useMemo(() => {
-    console.time('[perf] DeckGL per-row layers')
+    console.time('[perf] DeckGL global layers')
     const lod = getLodVisibility(stop - start)
-    const result: any[] = []
+
+    // Global data arrays — populated across all rows, rendered as single layers
+    const allBgRects: BackgroundRect[] = []
+    const allVariantPoints: VariantPoint[] = []
+    const allBelowThresholdPoints: VariantPoint[] = []
+    const allDeletionLines: StemLine[] = []
+    const allSpanningRects: SpanningRect[] = []
+    const allMethPoints: MethPoint[] = []
+    const allMqtlArcs: MqtlArc[] = []
+    const allCenterLines: { groupStart: number; groupStop: number; y: number }[] = []
 
     for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
-      const rowId = item.type === 'cluster'
-        ? `cluster-${item.cluster.cluster_id}`
-        : `group-${item.group.hash}`
-
-      // Per-row data arrays
-      const rowBgRects: BackgroundRect[] = []
-      const rowVariantPoints: VariantPoint[] = []
-      const rowBelowThresholdPoints: VariantPoint[] = []
-      const rowDeletionLines: StemLine[] = []
-      const rowSpanningRects: SpanningRect[] = []
-      const rowMethPoints: MethPoint[] = []
-      const rowMqtlArcs: MqtlArc[] = []
 
       // Center line data for this row
       const centerLineStart = item.type === 'cluster' ? start : item.group.start
       const centerLineStop = item.type === 'cluster' ? stop : item.group.stop
+      allCenterLines.push({ groupStart: centerLineStart, groupStop: centerLineStop, y: rowY + ROW_CENTER_Y })
 
       if (item.type === 'cluster') {
         const cluster = item.cluster
 
-        rowBgRects.push({
+        allBgRects.push({
           groupStart: start,
           groupStop: stop,
           rowY: rowY,
@@ -728,18 +954,18 @@ function DeckGLLollipopCanvas({
 
           if ((cat === 'deletion' || cat === 'sv') && isLarge) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
-            rowSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
+            allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
           } else if (cat === 'deletion') {
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
-            rowDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
+            allDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
           } else {
-            rowVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
+            allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
           }
         }
       } else {
         const group = item.group
 
-        rowBgRects.push({
+        allBgRects.push({
           groupStart: group.start,
           groupStop: group.stop,
           rowY: rowY,
@@ -750,9 +976,9 @@ function DeckGLLollipopCanvas({
         for (const variant of group.below_threshold.variants) {
           const shape = getVariantShape(variant)
           if (shape === 'deletion') {
-            rowDeletionLines.push({ position: variant.pos, yTop: rowY + 8, yBottom: rowY + 17, color: [128, 128, 128, 100], width: 1, variant })
+            allDeletionLines.push({ position: variant.pos, yTop: rowY + 8, yBottom: rowY + 17, color: [128, 128, 128, 100], width: 1, variant })
           } else {
-            rowBelowThresholdPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: group.hash })
+            allBelowThresholdPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: group.hash })
           }
         }
 
@@ -769,12 +995,12 @@ function DeckGLLollipopCanvas({
 
           if ((cat === 'deletion' || cat === 'sv') && isLarge) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
-            rowSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
+            allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
           } else if (cat === 'deletion') {
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
-            rowDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
+            allDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
           } else {
-            rowVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
+            allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
           }
         }
 
@@ -792,7 +1018,7 @@ function DeckGLLollipopCanvas({
             const methBaseY = rowY + VARIANT_ROW_HEIGHT
             for (const [pos, values] of byPos) {
               const mean = values.reduce((a, b) => a + b, 0) / values.length
-              rowMethPoints.push({ position: pos, y: methBaseY + methYScale(mean), color: [74, 85, 104, 255] })
+              allMethPoints.push({ position: pos, y: methBaseY + methYScale(mean), color: [74, 85, 104, 255] })
             }
           }
         }
@@ -811,7 +1037,7 @@ function DeckGLLollipopCanvas({
               const arcH = hScale(logP)
               const isPositive = d.effect_size > 0
               const opacity = Math.min(204, Math.round(51 + (logP / maxLogP) * 153))
-              rowMqtlArcs.push({
+              allMqtlArcs.push({
                 variantPos: d.variant_pos, cpgPos: d.cpg_pos, arcHeight: arcH, baseY: mqtlBaseY,
                 color: isPositive ? [220, 38, 38, opacity] : [37, 99, 235, opacity], width: 1.5,
               })
@@ -819,157 +1045,154 @@ function DeckGLLollipopCanvas({
           }
         }
       }
+    }
 
-      // Emit per-row layers with stable IDs
+    // Emit consolidated global layers — one per data type
 
-      if (rowBgRects.length > 0) {
-        result.push(new SolidPolygonLayer({
-          id: `bg-rects-${rowId}`,
-          data: rowBgRects,
-          getPolygon: (d: BackgroundRect) => [
-            [scalePosition(d.groupStart), d.rowY + 5],
-            [scalePosition(d.groupStop), d.rowY + 5],
-            [scalePosition(d.groupStop), d.rowY + 20],
-            [scalePosition(d.groupStart), d.rowY + 20],
-          ],
-          getFillColor: (d: BackgroundRect) => d.color,
-          pickable: false,
-          updateTriggers: { getPolygon: [scalePosition, rowY] },
-          transitions: { getPolygon: { duration: 300 } },
-        }))
-      }
+    const result: any[] = []
 
-      // Center line
+    if (allBgRects.length > 0) {
+      result.push(new SolidPolygonLayer({
+        id: 'bg-rects-layer',
+        data: allBgRects,
+        getPolygon: (d: BackgroundRect) => [
+          [scalePosition(d.groupStart), d.rowY + 5],
+          [scalePosition(d.groupStop), d.rowY + 5],
+          [scalePosition(d.groupStop), d.rowY + 20],
+          [scalePosition(d.groupStart), d.rowY + 20],
+        ],
+        getFillColor: (d: BackgroundRect) => d.color,
+        pickable: false,
+        updateTriggers: { getPolygon: [scalePosition] },
+      }))
+    }
+
+    if (allCenterLines.length > 0) {
       result.push(new LineLayer({
-        id: `center-line-${rowId}`,
-        data: [{ groupStart: centerLineStart, groupStop: centerLineStop, y: rowY + ROW_CENTER_Y }],
+        id: 'center-lines-layer',
+        data: allCenterLines,
         getSourcePosition: (d: any) => [scalePosition(d.groupStart), d.y, 0],
         getTargetPosition: (d: any) => [scalePosition(d.groupStop), d.y, 0],
         getColor: [168, 168, 168, 255],
         getWidth: 1,
         widthUnits: 'pixels' as const,
         pickable: false,
-        updateTriggers: { getSourcePosition: [scalePosition, rowY], getTargetPosition: [scalePosition, rowY] },
-        transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
+        updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
       }))
-
-      if (rowSpanningRects.length > 0) {
-        result.push(new SolidPolygonLayer({
-          id: `sv-spanning-rects-${rowId}`,
-          data: rowSpanningRects,
-          getPolygon: (d: SpanningRect) => {
-            const x1 = scalePosition(d.start)
-            const x2 = Math.max(scalePosition(d.end), x1 + 2)
-            const yTop = d.rowY + ROW_CENTER_Y - 4
-            const yBot = d.rowY + ROW_CENTER_Y + 4
-            return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
-          },
-          getFillColor: (d: SpanningRect) => d.color,
-          pickable: true,
-          onHover: onHover,
-          updateTriggers: { getPolygon: [scalePosition, rowY] },
-          transitions: { getPolygon: { duration: 300 } },
-        }))
-      }
-
-      if (rowDeletionLines.length > 0) {
-        result.push(new LineLayer({
-          id: `deletion-lines-${rowId}`,
-          data: rowDeletionLines,
-          getSourcePosition: (d: StemLine) => [scalePosition(d.position), d.yTop, 0],
-          getTargetPosition: (d: StemLine) => [scalePosition(d.position), d.yBottom, 0],
-          getColor: (d: StemLine) => d.color,
-          getWidth: (d: StemLine) => d.width,
-          widthUnits: 'pixels' as const,
-          pickable: true,
-          onHover: onHover,
-          updateTriggers: { getSourcePosition: [scalePosition, rowY], getTargetPosition: [scalePosition, rowY] },
-          transitions: { getSourcePosition: { duration: 300 }, getTargetPosition: { duration: 300 } },
-        }))
-      }
-
-      if (rowBelowThresholdPoints.length > 0) {
-        result.push(new ScatterplotLayer({
-          id: `below-threshold-${rowId}`,
-          data: rowBelowThresholdPoints,
-          getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
-          getRadius: (d: VariantPoint) => d.radius,
-          getFillColor: [0, 0, 0, 0],
-          getLineColor: (d: VariantPoint) => d.color,
-          getLineWidth: 0.7,
-          lineWidthUnits: 'pixels' as const,
-          stroked: true,
-          filled: false,
-          radiusUnits: 'pixels' as const,
-          pickable: true,
-          onHover: onHover,
-          updateTriggers: { getPosition: [scalePosition, rowY] },
-          transitions: { getPosition: { duration: 300 } },
-        }))
-      }
-
-      if (rowVariantPoints.length > 0) {
-        result.push(new ScatterplotLayer({
-          id: `variants-${rowId}`,
-          data: rowVariantPoints,
-          getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
-          getRadius: (d: VariantPoint) => d.radius,
-          getFillColor: (d: VariantPoint) => d.color,
-          getLineColor: [0, 0, 0, 128],
-          getLineWidth: 0.5,
-          lineWidthUnits: 'pixels' as const,
-          stroked: true,
-          radiusUnits: 'pixels' as const,
-          pickable: true,
-          onHover: onHover,
-          updateTriggers: { getPosition: [scalePosition, rowY] },
-          transitions: { getPosition: { duration: 300 } },
-        }))
-      }
-
-      if (rowMethPoints.length > 0) {
-        result.push(new ScatterplotLayer({
-          id: `methylation-${rowId}`,
-          data: rowMethPoints,
-          getPosition: (d: MethPoint) => [scalePosition(d.position), d.y, 0],
-          getRadius: 2,
-          getFillColor: (d: MethPoint) => d.color,
-          radiusUnits: 'pixels' as const,
-          pickable: false,
-          updateTriggers: { getPosition: [scalePosition, rowY] },
-        }))
-      }
-
-      if (rowMqtlArcs.length > 0) {
-        result.push(new PathLayer({
-          id: `mqtl-arcs-${rowId}`,
-          data: rowMqtlArcs,
-          getPath: (d: MqtlArc) => {
-            const vx = scalePosition(d.variantPos)
-            const cx = scalePosition(d.cpgPos)
-            const midX = (vx + cx) / 2
-            const midY = d.baseY - d.arcHeight
-            const steps = 20
-            const path: [number, number][] = []
-            for (let t = 0; t <= steps; t++) {
-              const tt = t / steps
-              path.push([
-                (1 - tt) * (1 - tt) * vx + 2 * (1 - tt) * tt * midX + tt * tt * cx,
-                (1 - tt) * (1 - tt) * d.baseY + 2 * (1 - tt) * tt * midY + tt * tt * d.baseY,
-              ])
-            }
-            return path
-          },
-          getColor: (d: MqtlArc) => d.color,
-          getWidth: (d: MqtlArc) => d.width,
-          widthUnits: 'pixels' as const,
-          pickable: false,
-          updateTriggers: { getPath: [scalePosition, rowY] },
-        }))
-      }
     }
 
-    console.timeEnd('[perf] DeckGL per-row layers')
+    if (allSpanningRects.length > 0) {
+      result.push(new SolidPolygonLayer({
+        id: 'sv-spanning-rects-layer',
+        data: allSpanningRects,
+        getPolygon: (d: SpanningRect) => {
+          const x1 = scalePosition(d.start)
+          const x2 = Math.max(scalePosition(d.end), x1 + 2)
+          const yTop = d.rowY + ROW_CENTER_Y - 4
+          const yBot = d.rowY + ROW_CENTER_Y + 4
+          return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
+        },
+        getFillColor: (d: SpanningRect) => d.color,
+        pickable: true,
+        onHover: onHover,
+        updateTriggers: { getPolygon: [scalePosition] },
+      }))
+    }
+
+    if (allDeletionLines.length > 0) {
+      result.push(new LineLayer({
+        id: 'deletion-lines-layer',
+        data: allDeletionLines,
+        getSourcePosition: (d: StemLine) => [scalePosition(d.position), d.yTop, 0],
+        getTargetPosition: (d: StemLine) => [scalePosition(d.position), d.yBottom, 0],
+        getColor: (d: StemLine) => d.color,
+        getWidth: (d: StemLine) => d.width,
+        widthUnits: 'pixels' as const,
+        pickable: true,
+        onHover: onHover,
+        updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+      }))
+    }
+
+    if (allBelowThresholdPoints.length > 0) {
+      result.push(new ScatterplotLayer({
+        id: 'below-threshold-layer',
+        data: allBelowThresholdPoints,
+        getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
+        getRadius: (d: VariantPoint) => d.radius,
+        getFillColor: [0, 0, 0, 0],
+        getLineColor: (d: VariantPoint) => d.color,
+        getLineWidth: 0.7,
+        lineWidthUnits: 'pixels' as const,
+        stroked: true,
+        filled: false,
+        radiusUnits: 'pixels' as const,
+        pickable: true,
+        onHover: onHover,
+        updateTriggers: { getPosition: [scalePosition] },
+      }))
+    }
+
+    if (allVariantPoints.length > 0) {
+      result.push(new ScatterplotLayer({
+        id: 'variants-layer',
+        data: allVariantPoints,
+        getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
+        getRadius: (d: VariantPoint) => d.radius,
+        getFillColor: (d: VariantPoint) => d.color,
+        getLineColor: [0, 0, 0, 128],
+        getLineWidth: 0.5,
+        lineWidthUnits: 'pixels' as const,
+        stroked: true,
+        radiusUnits: 'pixels' as const,
+        pickable: true,
+        onHover: onHover,
+        updateTriggers: { getPosition: [scalePosition] },
+      }))
+    }
+
+    if (allMethPoints.length > 0) {
+      result.push(new ScatterplotLayer({
+        id: 'methylation-layer',
+        data: allMethPoints,
+        getPosition: (d: MethPoint) => [scalePosition(d.position), d.y, 0],
+        getRadius: 2,
+        getFillColor: (d: MethPoint) => d.color,
+        radiusUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getPosition: [scalePosition] },
+      }))
+    }
+
+    if (allMqtlArcs.length > 0) {
+      result.push(new PathLayer({
+        id: 'mqtl-arcs-layer',
+        data: allMqtlArcs,
+        getPath: (d: MqtlArc) => {
+          const vx = scalePosition(d.variantPos)
+          const cx = scalePosition(d.cpgPos)
+          const midX = (vx + cx) / 2
+          const midY = d.baseY - d.arcHeight
+          const steps = 20
+          const path: [number, number][] = []
+          for (let t = 0; t <= steps; t++) {
+            const tt = t / steps
+            path.push([
+              (1 - tt) * (1 - tt) * vx + 2 * (1 - tt) * tt * midX + tt * tt * cx,
+              (1 - tt) * (1 - tt) * d.baseY + 2 * (1 - tt) * tt * midY + tt * tt * d.baseY,
+            ])
+          }
+          return path
+        },
+        getColor: (d: MqtlArc) => d.color,
+        getWidth: (d: MqtlArc) => d.width,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getPath: [scalePosition] },
+      }))
+    }
+
+    console.timeEnd('[perf] DeckGL global layers')
     return result
   }, [
     rowItems,
@@ -988,7 +1211,6 @@ function DeckGLLollipopCanvas({
     sampleMetadata,
     scalePosition,
     onHover,
-    totalHeight,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers
@@ -1007,72 +1229,91 @@ function DeckGLLollipopCanvas({
     })
   }, [hoveredVariantPosition, scalePosition, totalHeight])
 
-  const view = useMemo(
-    () => new OrthographicView({ id: 'main', flipY: true }),
-    []
+  // Multi-view: left panel, center (variants), right panel
+  const views = useMemo(
+    () => [
+      new OrthographicView({ id: 'left-panel', x: 0, y: 0, width: leftPanelWidth, height: viewportHeight, flipY: true }),
+      new OrthographicView({ id: 'center-panel', x: leftPanelWidth, y: 0, width: canvasWidth, height: viewportHeight, flipY: true }),
+      new OrthographicView({ id: 'right-panel', x: leftPanelWidth + canvasWidth, y: 0, width: rightPanelWidth, height: viewportHeight, flipY: true }),
+    ],
+    [leftPanelWidth, canvasWidth, rightPanelWidth, viewportHeight]
   )
 
-  const viewState = useMemo(
-    () => ({
-      target: [canvasWidth / 2, scrollTop + viewportHeight / 2, 0] as [number, number, number],
-      zoom: 0,
-    }),
-    [canvasWidth, scrollTop, viewportHeight]
-  )
+  // viewState reads from ref — on re-render (data change) it picks up current scroll position;
+  // during scroll, the imperative handler in the parent updates DeckGL directly
+  const yTarget = scrollTopRef.current + viewportHeight / 2
+  const viewState = {
+    'left-panel': { target: [leftPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+    'center-panel': { target: [canvasWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+    'right-panel': { target: [rightPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+  }
 
   return (
-    <div style={{ position: 'relative', width: canvasWidth, height: totalHeight }}>
-      <div style={{ position: 'absolute', top: scrollTop, left: 0, width: canvasWidth, height: viewportHeight }}>
-        <DeckGL
-          views={view}
-          viewState={viewState}
-          layers={[...layers, ...(crosshairLayer ? [crosshairLayer] : [])]}
-          controller={false}
-          pickingRadius={5}
-          style={{ position: 'absolute', left: '0', top: '0', width: `${canvasWidth}px`, height: `${viewportHeight}px` }}
-          width={canvasWidth}
-          height={viewportHeight}
-        />
-        {hovered && hovered.object && (
-          <Tooltip x={hovered.x} y={hovered.y} object={hovered.object} type={hovered.type} />
-        )}
-      </div>
+    <div style={{ position: 'sticky', top: 0, left: 0, width: totalWidth, height: viewportHeight }}>
+      <DeckGL
+        ref={deckRef}
+        views={views}
+        viewState={viewState}
+        layers={[...layers, ...(crosshairLayer ? [crosshairLayer] : []), ...leftPanelLayers, ...treeLayers]}
+        layerFilter={({ layer, viewport }) => {
+          const layerId = layer.id
+          if (layerId.startsWith('left-panel-')) return viewport.id === 'left-panel'
+          if (layerId.startsWith('tree-')) return viewport.id === 'right-panel'
+          return viewport.id === 'center-panel'
+        }}
+        getCursor={({ isHovering }: { isHovering: boolean }) => isHovering ? 'pointer' : 'default'}
+        controller={false}
+        pickingRadius={5}
+        style={{ position: 'absolute', left: '0', top: '0', width: `${totalWidth}px`, height: `${viewportHeight}px` }}
+        width={totalWidth}
+        height={viewportHeight}
+      />
+      {hovered && hovered.object && (
+        <Tooltip x={hovered.x} y={hovered.y} object={hovered.object} viewportId={hovered.viewportId} />
+      )}
     </div>
   )
 }
 
-// Simple tooltip overlay
+// Simple tooltip overlay — routes by viewportId
 function Tooltip({
   x,
   y,
   object,
-  type,
+  viewportId,
 }: {
   x: number
   y: number
   object: any
-  type: 'variant' | 'group'
+  viewportId: string
 }) {
+  const tooltipStyle: React.CSSProperties = {
+    position: 'absolute',
+    left: x + 10,
+    top: y + 10,
+    background: 'white',
+    border: '1px solid #ccc',
+    borderRadius: 4,
+    padding: '6px 8px',
+    fontSize: 12,
+    pointerEvents: 'none',
+    zIndex: 100,
+    maxWidth: 300,
+    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+  }
+
+  // Right panel: tree node / cluster marker tooltips
+  if (viewportId === 'right-panel') {
+    if (!object.tooltipText) return null
+    return <div style={tooltipStyle}><span>{object.tooltipText}</span></div>
+  }
+
+  // Center panel: variant tooltips
   const variant = object.variant as Variant | undefined
   if (!variant) return null
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x + 10,
-        top: y + 10,
-        background: 'white',
-        border: '1px solid #ccc',
-        borderRadius: 4,
-        padding: '6px 8px',
-        fontSize: 12,
-        pointerEvents: 'none',
-        zIndex: 100,
-        maxWidth: 300,
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-      }}
-    >
+    <div style={tooltipStyle}>
       <div>
         <strong>Position:</strong> {variant.pos}
       </div>
@@ -1101,6 +1342,126 @@ function Tooltip({
           <strong>Type:</strong> {variant.allele_type}
         </div>
       )}
+    </div>
+  )
+}
+
+// --- Threshold drag overlay component ---
+
+type ThresholdDragOverlayProps = {
+  leftPanelWidth: number
+  centerWidth: number
+  rightPanelWidth: number
+  totalHeight: number
+  showGenealogy: boolean
+  genealogyResult?: { tree: any; leafOrder: number[] } | null
+  leafYPositions: Map<number, number>
+  groups: HaplotypeGroup[]
+  sampleMetadata?: SampleMetadataMap
+  clusterThreshold: number
+  onClusterThresholdChange?: (threshold: number) => void
+  clusters?: HaplotypeCluster[]
+  isClusteredView: boolean
+  expandedClusterIds?: Set<string>
+  rowYPositions?: Map<string, number>
+}
+
+function ThresholdDragOverlay({
+  leftPanelWidth,
+  centerWidth,
+  rightPanelWidth,
+  totalHeight,
+  showGenealogy,
+  genealogyResult,
+  leafYPositions,
+  groups,
+  sampleMetadata,
+  clusterThreshold,
+  onClusterThresholdChange,
+  clusters,
+  isClusteredView,
+  expandedClusterIds,
+  rowYPositions,
+}: ThresholdDragOverlayProps) {
+  const rightPanelRef = useRef<HTMLDivElement>(null)
+
+  // Compute tree layout for threshold position
+  const treeLayout = useMemo((): TreeLayout | null => {
+    if (!showGenealogy || !genealogyResult || leafYPositions.size === 0) return null
+    return buildGenealogyTreeLayout({
+      tree: genealogyResult.tree,
+      leafYPositions,
+      panelWidth: rightPanelWidth,
+      groups,
+      sampleMetadata,
+      clusterThreshold,
+      isClusteredView,
+      clusters,
+      expandedClusterIds,
+      rowYPositions,
+    })
+  }, [showGenealogy, genealogyResult, leafYPositions, rightPanelWidth, groups, sampleMetadata, clusterThreshold, isClusteredView, clusters, expandedClusterIds, rowYPositions])
+
+  const handleThresholdDragStart = useCallback((e: React.PointerEvent) => {
+    if (!onClusterThresholdChange || !rightPanelRef.current || !treeLayout) return
+    e.preventDefault()
+    e.stopPropagation()
+
+    const onPointerMove = (moveEvent: PointerEvent) => {
+      if (!rightPanelRef.current || !treeLayout) return
+      const rect = rightPanelRef.current.getBoundingClientRect()
+      const pointerX = moveEvent.clientX - rect.left
+      const newDistance = treeLayout.xScale.invert(pointerX)
+      const newThreshold = Math.max(0, Math.min(1, newDistance / treeLayout.maxDistance))
+      onClusterThresholdChange(newThreshold)
+    }
+
+    const onPointerUp = () => {
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', onPointerUp)
+    }
+
+    window.addEventListener('pointermove', onPointerMove)
+    window.addEventListener('pointerup', onPointerUp)
+  }, [onClusterThresholdChange, treeLayout])
+
+  if (!treeLayout || treeLayout.thresholdX === null) return null
+
+  return (
+    <div
+      ref={rightPanelRef}
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: leftPanelWidth + centerWidth,
+        width: rightPanelWidth,
+        height: totalHeight,
+        pointerEvents: 'none',
+      }}
+    >
+      <div
+        style={{
+          position: 'absolute',
+          left: treeLayout.thresholdX - 6,
+          top: 0,
+          bottom: 0,
+          width: 12,
+          cursor: 'ew-resize',
+          pointerEvents: 'all',
+        }}
+        onPointerDown={handleThresholdDragStart}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: 5,
+            top: 0,
+            bottom: 0,
+            width: 2,
+            borderRight: '1.5px dashed rgba(217,83,79,0.7)',
+          }}
+        />
+      </div>
     </div>
   )
 }
