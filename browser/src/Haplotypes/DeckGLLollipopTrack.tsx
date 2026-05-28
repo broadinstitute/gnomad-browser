@@ -735,12 +735,14 @@ function DeckGLLollipopCanvas({
   type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number; tooltipText?: string }
   type LeftPanelHitbox = { position: [number, number, number]; action: string; clusterId: string }
   type LeftPanelPopBar = { polygon: [number, number][]; color: [number, number, number, number] }
+  type LeftPanelTreeLine = { sourcePosition: [number, number, number]; targetPosition: [number, number, number] }
 
-  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars } = useMemo(() => {
+  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines } = useMemo(() => {
     const circles: LeftPanelCircle[] = []
     const texts: LeftPanelText[] = []
     const hitboxes: LeftPanelHitbox[] = []
     const popBars: LeftPanelPopBar[] = []
+    const treeLines: LeftPanelTreeLine[] = []
     const isPopMode = colorMode === 'population'
 
     for (let i = 0; i < rowItems.length; i++) {
@@ -823,7 +825,7 @@ function DeckGLLollipopCanvas({
         }
       } else {
         const group = item.group
-        const indent = item.isChild ? 12 : 0
+        const indent = item.isChild ? 24 : 0
 
         if (isPopMode) {
           // Stacked population bar for group
@@ -889,7 +891,41 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars }
+    // Build tree connector lines for expanded clusters
+    for (let i = 0; i < rowItems.length; i++) {
+      const item = rowItems[i]
+      if (item.type === 'cluster' && expandedClusterIds?.has(item.cluster.cluster_id)) {
+        const parentY = rowOffsets[i] + ROW_CENTER_Y
+        // Find last child row
+        let lastChildIdx = i
+        for (let j = i + 1; j < rowItems.length; j++) {
+          if (rowItems[j].type === 'group' && (rowItems[j] as { type: 'group'; group: HaplotypeGroup; isChild: boolean }).isChild) {
+            lastChildIdx = j
+          } else {
+            break
+          }
+        }
+        if (lastChildIdx > i) {
+          const lastChildY = rowOffsets[lastChildIdx] + ROW_CENTER_Y
+          const lineX = 14
+          // Vertical connector from parent to last child
+          treeLines.push({
+            sourcePosition: [lineX, parentY + 6, 0],
+            targetPosition: [lineX, lastChildY, 0],
+          })
+          // Horizontal ticks for each child
+          for (let j = i + 1; j <= lastChildIdx; j++) {
+            const childY = rowOffsets[j] + ROW_CENTER_Y
+            treeLines.push({
+              sourcePosition: [lineX, childY, 0],
+              targetPosition: [lineX + 8, childY, 0],
+            })
+          }
+        }
+      }
+    }
+
+    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines }
   }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, colorMode, populationStatsByRow])
 
   // Left panel DeckGL layers
@@ -921,9 +957,14 @@ function DeckGLLollipopCanvas({
     }
 
     if (leftPanelTexts.length > 0) {
+      // DeckGL TextLayer default characterSet is ASCII 32-128; add Unicode triangles for expand/collapse
+      const ASCII_CHARS = Array.from({length: 95}, (_, i) => String.fromCharCode(i + 32))
+      const characterSet = [...ASCII_CHARS, '\u25BC', '\u25B6'] // ▼ ▶
+
       lpLayers.push(new TextLayer({
         id: 'left-panel-text',
         data: leftPanelTexts,
+        characterSet,
         getPosition: (d: LeftPanelText) => d.position,
         getText: (d: LeftPanelText) => d.text,
         getSize: (d: LeftPanelText) => d.size,
@@ -933,6 +974,19 @@ function DeckGLLollipopCanvas({
         fontSettings: { sdf: true, smoothing: 0.15 },
         pickable: true,
         onHover: onHover,
+      }))
+    }
+
+    if (leftPanelTreeLines.length > 0) {
+      lpLayers.push(new LineLayer({
+        id: 'left-panel-tree-lines',
+        data: leftPanelTreeLines,
+        getSourcePosition: (d: LeftPanelTreeLine) => d.sourcePosition,
+        getTargetPosition: (d: LeftPanelTreeLine) => d.targetPosition,
+        getColor: [160, 160, 180, 200],
+        getWidth: 1.5,
+        widthUnits: 'pixels' as const,
+        pickable: false,
       }))
     }
 
@@ -954,7 +1008,7 @@ function DeckGLLollipopCanvas({
     }
 
     return lpLayers
-  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, toggleClusterExpansion, onHover])
+  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, toggleClusterExpansion, onHover])
 
   // Genealogy tree layout — pure data arrays for DeckGL
   const treeLayout = useMemo((): TreeLayout | null => {
@@ -1094,7 +1148,7 @@ function DeckGLLollipopCanvas({
       if (item.type === 'cluster') {
         const cluster = item.cluster
 
-        let bgColor: [number, number, number, number] = [230, 240, 255, 255]
+        let bgColor: [number, number, number, number] = [215, 225, 240, 255]
         if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
           const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
           const alpha = Math.round(40 * popStats.dominantFraction)
@@ -1139,7 +1193,7 @@ function DeckGLLollipopCanvas({
       } else {
         const group = item.group
 
-        let bgColor: [number, number, number, number] = item.isChild ? [245, 245, 255, 255] : [240, 240, 240, 255]
+        let bgColor: [number, number, number, number] = item.isChild ? [230, 235, 250, 255] : [240, 240, 240, 255]
         if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
           const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
           const alpha = Math.round(40 * popStats.dominantFraction)
