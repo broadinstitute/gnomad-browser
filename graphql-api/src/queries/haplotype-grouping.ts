@@ -8,8 +8,6 @@
 import {
   computeSVDistanceMatrix,
   buildUPGMATree,
-  getClustersAtThreshold,
-  getLeafGroupHashes,
   type TreeNode,
 } from './genealogy-math'
 
@@ -472,14 +470,13 @@ export const assembleHaplotypeGroups = (
     groups.sort((a, b) => b.variants.variants.length - a.variants.variants.length)
   }
 
-  // Step 6: Clustering (optional — only if clusterThreshold is provided)
-  if (clusterThreshold == null || groups.length < 2) {
+  // Step 6: Build UPGMA tree (clustering/cutting is done client-side)
+  if (groups.length < 2) {
     return { groups, variantMap }
   }
 
   const cacheKey = `${chrom}:${regionStart ?? 0}-${regionStop ?? 0}`
 
-  // Fetch or build UPGMA tree
   let treeResult = upgmaTreeCache.get(cacheKey)
   if (!treeResult) {
     const distMatrix = computeSVDistanceMatrix(groups)
@@ -487,62 +484,9 @@ export const assembleHaplotypeGroups = (
     cacheTree(cacheKey, treeResult)
   }
 
-  const { tree } = treeResult
-
-  // Cut tree at threshold
-  const clusterNodes = getClustersAtThreshold(tree, clusterThreshold)
-
-  // Build a hash→group lookup for fast access
-  const groupByHash = new Map<string, any>()
-  for (const g of groups) {
-    groupByHash.set(g.hash, g)
-  }
-
-  // Compute consensus for each cluster
-  const clusters = clusterNodes.map((clusterNode, idx) => {
-    const memberHashes = getLeafGroupHashes(clusterNode)
-    const memberGroups = memberHashes
-      .map((h) => groupByHash.get(h))
-      .filter((g): g is any => g != null)
-
-    const sampleCount = memberGroups.reduce(
-      (sum: number, g: any) => sum + g.samples.length,
-      0
-    )
-
-    // Tally variant occurrences across member groups, weighted by sample count
-    const variantTally = new Map<string, { variant: LRVariant; count: number }>()
-    for (const g of memberGroups) {
-      const weight = g.samples.length
-      for (const v of g.variants.variants as LRVariant[]) {
-        const existing = variantTally.get(v.variant_id)
-        if (existing) {
-          existing.count += weight
-        } else {
-          variantTally.set(v.variant_id, { variant: v, count: weight })
-        }
-      }
-    }
-
-    const consensusVariants = Array.from(variantTally.values()).map(
-      ({ variant, count }) => ({
-        variant,
-        cluster_af: sampleCount > 0 ? count / sampleCount : 0,
-      })
-    )
-
-    return {
-      cluster_id: `cluster_${idx}`,
-      sample_count: sampleCount,
-      member_group_hashes: memberHashes,
-      consensus_variants: consensusVariants,
-    }
-  })
-
   return {
     groups,
-    clusters,
-    tree_json: JSON.stringify(tree),
+    tree_json: JSON.stringify(treeResult.tree),
     variantMap,
   }
 }

@@ -65,17 +65,7 @@ function hexToRgba(hex: string, alpha = 255): [number, number, number, number] {
   return [128, 128, 128, alpha]
 }
 
-function getDominantPopulation(
-  group: HaplotypeGroup,
-  sampleMetadata?: SampleMetadataMap
-): string {
-  if (!sampleMetadata || sampleMetadata.size === 0) return 'N/A'
-  const counts: Record<string, number> = {}
-  for (const s of group.samples) {
-    const meta = sampleMetadata.get(s.sample_id)
-    const pop = meta?.superpopulation || 'N/A'
-    counts[pop] = (counts[pop] || 0) + 1
-  }
+function getDominantFromCounts(counts: Record<string, number>): string {
   let maxPop = 'N/A'
   let maxCount = 0
   for (const [pop, count] of Object.entries(counts)) {
@@ -167,8 +157,10 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
 
   const scaledThreshold = clusterThreshold * maxDistance
 
-  // Recursive traversal
-  const drawNode = (node: TreeNode, depth: number): number => {
+  // Recursive traversal — returns { y, popCounts } for population aggregation
+  type DrawResult = { y: number; popCounts: Record<string, number> }
+
+  const drawNode = (node: TreeNode, depth: number): DrawResult => {
     const clusterId = isClusteredView ? nodeToClusterId.get(node) : undefined
     const isClusterRoot = clusterId !== undefined
     const isExpanded = isClusterRoot && expandedClusterIds?.has(clusterId!)
@@ -176,32 +168,59 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
     // Collapsed cluster node
     if (isClusterRoot && !isExpanded) {
       const clusterY = rowYPositions?.get(clusterId!)
-      if (clusterY === undefined) return 0
+      if (clusterY === undefined) return { y: 0, popCounts: {} }
 
       const x = Math.max(xScale(node.distance), xPad + MIN_BRANCH_PX)
-      const memberCount = clusters?.find(c => c.cluster_id === clusterId)?.member_group_hashes.length || 0
+      const cluster = clusters?.find(c => c.cluster_id === clusterId)
+      const memberCount = cluster?.member_group_hashes.length || 0
+
+      // Aggregate population for cluster marker color
+      const popCounts: Record<string, number> = {}
+      if (cluster) {
+        for (const h of cluster.member_group_hashes) {
+          const hash = typeof h === 'string' ? (parseInt(h, 10) || 0) : h
+          const group = groupByHash.get(hash)
+          if (group && sampleMetadata) {
+            for (const s of group.samples) {
+              const meta = sampleMetadata.get(s.sample_id)
+              const pop = meta?.superpopulation || 'N/A'
+              popCounts[pop] = (popCounts[pop] || 0) + 1
+            }
+          }
+        }
+      }
+      const dominantPop = getDominantFromCounts(popCounts)
+      const clusterColor = hexToRgba(SUPERPOPULATION_COLORS[dominantPop] || SUPERPOPULATION_COLORS['N/A'], 204)
 
       clusterMarkers.push({
         position: [x, clusterY, 0],
         text: '\u25B6',
-        color: [74, 144, 217, 204], // #4a90d9 at 80% opacity
+        color: clusterColor,
         size: 12,
         isClusterRoot: true,
         clusterId: clusterId!,
         type: 'cluster-node',
         tooltipText: `Click to expand cluster (${memberCount} groups)`,
       })
-      return clusterY
+      return { y: clusterY, popCounts }
     }
 
     // Leaf node
     if (node.groupHash !== null) {
       const y = leafYPositions.get(node.groupHash)
-      if (y === undefined) return 0
+      if (y === undefined) return { y: 0, popCounts: {} }
       const x = xPad
 
       const group = groupByHash.get(node.groupHash)
-      const pop = group ? getDominantPopulation(group, sampleMetadata) : 'N/A'
+      const popCounts: Record<string, number> = {}
+      if (group && sampleMetadata) {
+        for (const s of group.samples) {
+          const meta = sampleMetadata.get(s.sample_id)
+          const pop = meta?.superpopulation || 'N/A'
+          popCounts[pop] = (popCounts[pop] || 0) + 1
+        }
+      }
+      const pop = getDominantFromCounts(popCounts)
       const colorHex = SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A']
       const color = hexToRgba(colorHex)
 
@@ -212,19 +231,27 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
 
       nodes.push({
         position: [x, y, 0],
-        radius: 3,
+        radius: 5,
         color,
         isThresholdNode: false,
         distance: node.distance,
         type: 'tree-node',
         tooltipText: `Group ${node.groupHash}`,
       })
-      return y
+      return { y, popCounts }
     }
 
     // Internal node
-    const leftY = node.left ? drawNode(node.left, depth + 1) : 0
-    const rightY = node.right ? drawNode(node.right, depth + 1) : 0
+    const leftResult = node.left ? drawNode(node.left, depth + 1) : { y: 0, popCounts: {} }
+    const rightResult = node.right ? drawNode(node.right, depth + 1) : { y: 0, popCounts: {} }
+    const leftY = leftResult.y
+    const rightY = rightResult.y
+
+    // Merge population counts from children
+    const popCounts: Record<string, number> = { ...leftResult.popCounts }
+    for (const [pop, count] of Object.entries(rightResult.popCounts)) {
+      popCounts[pop] = (popCounts[pop] || 0) + count
+    }
 
     const mergeX = Math.max(xScale(node.distance), (node.left ? xPad : 0) + MIN_BRANCH_PX)
 
@@ -278,25 +305,30 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
       color: branchColor,
     })
 
-    // Merge node
+    // Merge node — colored by dominant population of descendants
     const midY = (leftY + rightY) / 2
     const isAboveThreshold = node.distance > scaledThreshold
+    const dominantPop = getDominantFromCounts(popCounts)
+    const popColor = hexToRgba(SUPERPOPULATION_COLORS[dominantPop] || SUPERPOPULATION_COLORS['N/A'])
 
     if (isAboveThreshold && isClusteredView) {
       nodes.push({
         position: [effectiveMergeX, midY, 0],
-        radius: 3.5,
-        color: [74, 144, 217, 255], // #4a90d9
+        radius: 5,
+        color: popColor,
         isThresholdNode: true,
         distance: node.distance,
         type: 'tree-node',
         tooltipText: `Distance: ${Math.round(node.distance * 100) / 100} — click to set cluster threshold`,
       })
     } else {
+      const nodeColor: [number, number, number, number] = isBelowThreshold
+        ? [popColor[0], popColor[1], popColor[2], 128]
+        : popColor
       nodes.push({
         position: [effectiveMergeX, midY, 0],
-        radius: 2.5,
-        color: isBelowThreshold ? [204, 204, 204, 128] : [136, 136, 136, 255],
+        radius: 4,
+        color: nodeColor,
         isThresholdNode: false,
         distance: node.distance,
         type: 'tree-node',
@@ -304,7 +336,7 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
       })
     }
 
-    return midY
+    return { y: midY, popCounts }
   }
 
   drawNode(tree, 0)

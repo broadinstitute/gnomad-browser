@@ -1,11 +1,9 @@
 /**
- * Backend port of UPGMA clustering from browser/src/Haplotypes/genealogy-math.ts
+ * Backend UPGMA tree construction for haplotype clustering.
  *
- * Key differences from the frontend version:
- * - Distance matrix filters to SVs only (abs(allele_length) >= 50 or allele_type === 'trv')
- * - Uses Jaccard distance instead of symmetric difference
- * - Adds getClustersAtThreshold for tree cutting
- * - Adds getLeafGroupHashes helper
+ * Builds a UPGMA tree from SV-only Jaccard distances between haplotype groups.
+ * Tree cutting and cluster computation are done client-side
+ * (browser/src/Haplotypes/haplotypeCompute.ts).
  */
 
 import type { LRVariant } from './haplotype-grouping'
@@ -176,32 +174,6 @@ export const buildUPGMATree = (
   return { tree, leafOrder }
 }
 
-/**
- * Cut the UPGMA tree at a given distance threshold.
- * Returns an array of subtree roots representing clusters.
- *
- * Logic: If a node's distance <= threshold, the entire subtree is one cluster.
- * Otherwise, recurse into children.
- */
-export const getClustersAtThreshold = (node: TreeNode, threshold: number): TreeNode[] => {
-  if (node.distance <= threshold) {
-    return [node]
-  }
-  const results: TreeNode[] = []
-  if (node.left) results.push(...getClustersAtThreshold(node.left, threshold))
-  if (node.right) results.push(...getClustersAtThreshold(node.right, threshold))
-  return results
-}
-
-/**
- * Get all leaf group hashes from a subtree.
- */
-export const getLeafGroupHashes = (node: TreeNode): string[] => {
-  if (node.groupHash !== null) {
-    return [node.groupHash]
-  }
-  const hashes: string[] = []
-  if (node.left) hashes.push(...getLeafGroupHashes(node.left))
-  if (node.right) hashes.push(...getLeafGroupHashes(node.right))
-  return hashes
-}
+// getClustersAtThreshold and getLeafGroupHashes have been consolidated
+// to the frontend (browser/src/Haplotypes/haplotypeCompute.ts).
+// Tree cutting and cluster computation are now done client-side.
