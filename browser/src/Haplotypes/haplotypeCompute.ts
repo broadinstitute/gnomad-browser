@@ -35,6 +35,14 @@ export type SliderRange = {
   defaultAf: number
 }
 
+export type AutoDefaults = {
+  floor: number
+  ceiling: number
+  defaultAf: number
+  defaultClusterThreshold: number
+  isClusteredView: boolean
+}
+
 // ---- Hash utility ----
 
 const hashString = (str: string): string => {
