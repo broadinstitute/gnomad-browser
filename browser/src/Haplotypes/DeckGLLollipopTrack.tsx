@@ -751,12 +751,12 @@ function DeckGLLollipopCanvas({
         const cluster = item.cluster
         const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
 
-        // Expand/collapse triangle
+        // Expand/collapse triangle — prominent so users know to click
         texts.push({
           position: [8, y, 0],
           text: isExpanded ? '\u25BC' : '\u25B6',
-          color: [85, 85, 85, 255],
-          size: 11,
+          color: [30, 30, 30, 255],
+          size: 14,
         })
 
         // Hitbox for click target
@@ -896,6 +896,7 @@ function DeckGLLollipopCanvas({
   const leftPanelLayers = useMemo(() => {
     const lpLayers: any[] = []
 
+    // Render order: circles → pop bars → text → hitboxes (text on top of bars)
     if (leftPanelCircles.length > 0) {
       lpLayers.push(new ScatterplotLayer({
         id: 'left-panel-circles',
@@ -906,6 +907,16 @@ function DeckGLLollipopCanvas({
         radiusUnits: 'pixels' as const,
         pickable: true,
         onHover: onHover,
+      }))
+    }
+
+    if (leftPanelPopBars.length > 0) {
+      lpLayers.push(new SolidPolygonLayer({
+        id: 'left-panel-pop-bars',
+        data: leftPanelPopBars,
+        getPolygon: (d: LeftPanelPopBar) => d.polygon,
+        getFillColor: (d: LeftPanelPopBar) => d.color,
+        pickable: false,
       }))
     }
 
@@ -930,7 +941,7 @@ function DeckGLLollipopCanvas({
         id: 'left-panel-hitboxes',
         data: leftPanelHitboxes,
         getPosition: (d: LeftPanelHitbox) => d.position,
-        getRadius: 10,
+        getRadius: 12,
         getFillColor: [0, 0, 0, 0],
         radiusUnits: 'pixels' as const,
         pickable: true,
@@ -939,16 +950,6 @@ function DeckGLLollipopCanvas({
             toggleClusterExpansion(info.object.clusterId)
           }
         },
-      }))
-    }
-
-    if (leftPanelPopBars.length > 0) {
-      lpLayers.push(new SolidPolygonLayer({
-        id: 'left-panel-pop-bars',
-        data: leftPanelPopBars,
-        getPolygon: (d: LeftPanelPopBar) => d.polygon,
-        getFillColor: (d: LeftPanelPopBar) => d.color,
-        pickable: false,
       }))
     }
 
