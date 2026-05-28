@@ -188,7 +188,8 @@ const fetchGraphQL = async (query: string, variables: any) => {
 
 const fetchHaplotypeGroupsREST = async (
   chrom: string, start: number, stop: number, minAf: number, sortBy: string,
-  clusterThreshold?: number
+  clusterThreshold?: number,
+  signal?: AbortSignal
 ) => {
   const params = new URLSearchParams({
     chrom, start: String(start), stop: String(stop),
@@ -197,7 +198,7 @@ const fetchHaplotypeGroupsREST = async (
   if (clusterThreshold != null) {
     params.set('cluster_threshold', String(clusterThreshold))
   }
-  const response = await fetch(`/api/lr/haplotype-groups?${params}`)
+  const response = await fetch(`/api/lr/haplotype-groups?${params}`, { signal })
   return response.json()
 }
 
@@ -394,15 +395,26 @@ const LongReadUnifiedView = ({
     fetchMeta()
   }, [viewMode, sampleMetadata.size])
 
-  // Debounced haplotype group fetch — supports both GraphQL and REST paths
+  // Haplotype group fetch with request cancellation and aggressive debounce.
+  // Previous requests are aborted when new ones are triggered, preventing
+  // 15+ concurrent fetches from piling up during slider drags.
   const isRest = useRestApi()
+  const abortControllerRef = useRef<AbortController | null>(null)
   const debouncedFetchHaplotypeGroups = useCallback(
     debounce(async (currentThreshold: number) => {
+      // Cancel any in-flight request
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+      const controller = new AbortController()
+      abortControllerRef.current = controller
+
       setHaplotypeLoading(true)
       const t0 = performance.now()
       try {
         if (isRest) {
-          const result = await fetchHaplotypeGroupsREST(chrom, start, stop, currentThreshold, sortBy, isClusteredView ? clusterThreshold : undefined)
+          const result = await fetchHaplotypeGroupsREST(chrom, start, stop, currentThreshold, sortBy, isClusteredView ? clusterThreshold : undefined, controller.signal)
+          if (controller.signal.aborted) return
           if (result.error) {
             console.error('REST error fetching haplotype groups:', result.error)
           } else {
@@ -420,6 +432,7 @@ const LongReadUnifiedView = ({
             cluster_threshold: isClusteredView ? clusterThreshold : undefined,
           })
           console.timeEnd('[perf] GraphQL fetch + JSON parse')
+          if (controller.signal.aborted) return
           if (result.errors) {
             console.error('GraphQL errors fetching haplotype groups:', result.errors)
           }
@@ -429,12 +442,15 @@ const LongReadUnifiedView = ({
             setHaplotypeGroups(hydrated)
           }
         }
-      } catch (error) {
+      } catch (error: any) {
+        if (error?.name === 'AbortError') return // Expected — superseded by newer request
         console.error('Error fetching haplotype groups:', error)
       } finally {
-        setHaplotypeLoading(false)
+        if (!controller.signal.aborted) {
+          setHaplotypeLoading(false)
+        }
       }
-    }, 300),
+    }, 750),
     [chrom, start, stop, sortBy, isRest, isClusteredView, clusterThreshold]
   )
 
