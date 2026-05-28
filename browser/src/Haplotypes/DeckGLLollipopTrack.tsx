@@ -792,35 +792,19 @@ function DeckGLLollipopCanvas({
               text: String(popStats.totalSamples),
               color: [0, 0, 0, 255],
               size: 10,
-              tooltipText: `Samples: ${popStats.totalSamples}`,
-            })
-            texts.push({
-              position: [barX + barWidth + 30, y, 0],
-              text: `(${cluster.member_group_hashes.length} groups)`,
-              color: [136, 136, 136, 255],
-              size: 10,
-              tooltipText: `${cluster.member_group_hashes.length} distinct haplotype groups in this cluster`,
+              tooltipText: `${popStats.totalSamples} samples, ${cluster.member_group_hashes.length} groups`,
             })
           }
         } else {
           // Sample count circle + text
           const sampleColor = cssColorToRgba(sampleColorScale(cluster.sample_count))
-          circles.push({ position: [20, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${cluster.sample_count}` })
+          circles.push({ position: [20, y, 0], color: sampleColor, radius: 5, tooltipText: `${cluster.sample_count} samples, ${cluster.member_group_hashes.length} groups` })
           texts.push({
             position: [30, y, 0],
             text: String(cluster.sample_count),
             color: [0, 0, 0, 255],
             size: 12,
-            tooltipText: `Samples: ${cluster.sample_count}`,
-          })
-
-          // Group count text
-          texts.push({
-            position: [60, y, 0],
-            text: `(${cluster.member_group_hashes.length} groups)`,
-            color: [136, 136, 136, 255],
-            size: 10,
-            tooltipText: `${cluster.member_group_hashes.length} distinct haplotype groups in this cluster`,
+            tooltipText: `${cluster.sample_count} samples, ${cluster.member_group_hashes.length} groups`,
           })
         }
       } else {
