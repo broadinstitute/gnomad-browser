@@ -1004,15 +1004,23 @@ const ClusteredViewHelp = () => (
 const AutoTunedHelp = () => (
   <>
     <p>
-      The minimum allele frequency threshold and cluster resolution were automatically
-      calculated based on the size of this genomic region. Larger regions use a higher
-      AF threshold to filter out rare variants and reduce visual complexity, and a higher
-      cluster resolution to consolidate major ancestral haplotype blocks.
+      Default values are automatically calculated from your data to show a useful
+      level of detail. Both the minimum allele frequency and cluster resolution are
+      derived together so the final number of visible rows (after grouping and
+      clustering) lands in a practical range of roughly 15–40.
     </p>
     <p>
-      These defaults are designed to give a useful overview on first load. Once you
-      manually adjust either the Min AF slider or the Cluster resolution slider, this
-      indicator disappears — you've taken ownership of the settings.
+      <strong>Min AF</strong> is initially set to produce a manageable number of
+      distinct haplotype groups — raising it hides rare variants and merges groups.
+    </p>
+    <p>
+      <strong>Cluster resolution</strong> is seeded from the region size and then
+      adjusted jointly with Min AF — larger regions use more aggressive clustering
+      to keep the view readable.
+    </p>
+    <p>
+      Both values can be adjusted freely using the controls. Once you manually change
+      either slider, this indicator disappears — you've taken ownership of the settings.
     </p>
   </>
 )

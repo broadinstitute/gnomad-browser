@@ -561,3 +561,128 @@ function countGroups(
   }
   return signatures.size
 }
+
+// ---- Auto cluster threshold from region size ----
+
+export function getAutoClusterThreshold(regionSize: number): number {
+  if (regionSize < 50_000) return 0.0
+  if (regionSize > 1_000_000) return 0.70
+  const t = (regionSize - 50_000) / (1_000_000 - 50_000)
+  return 0.35 + t * 0.30
+}
+
+// ---- Joint auto-derivation of min AF + cluster threshold ----
+
+const TARGET_MIN = 15
+const TARGET_MAX = 40
+const MAX_GROUPS_FOR_UPGMA = 150
+
+export function deriveAutoDefaults(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  regionSize: number,
+  trvAlts?: Record<string, Record<number, string>>
+): AutoDefaults {
+  if (variants.length === 0) {
+    return { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
+  }
+
+  // Compute floor and ceiling (same as deriveSliderRange)
+  const maxAN = Math.max(...variants.map((v) => v.freq.an))
+  const floor = Math.max(maxAN > 0 ? 2 / maxAN : 0.001, 0.001)
+  const sortedAfs = variants.map((v) => v.freq.af).sort((a, b) => a - b)
+  const p95idx = Math.floor(sortedAfs.length * 0.95)
+  const ceiling = Math.max(Math.min(sortedAfs[p95idx] || 0.95, 0.95), floor + 0.01)
+
+  const baseClusterThreshold = getAutoClusterThreshold(regionSize)
+
+  // No clustering for small regions — fall back to AF-only binary search
+  if (baseClusterThreshold === 0) {
+    const defaultAf = binarySearchAf(variants, carrierVariantIndices, floor, ceiling, 30)
+    return { floor, ceiling, defaultAf, defaultClusterThreshold: 0, isClusteredView: false }
+  }
+
+  // Joint iterative derivation
+  let minAf = floor
+  let clusterThreshold = baseClusterThreshold
+  let bestRowCount = 0
+
+  for (let iter = 0; iter < 10; iter++) {
+    const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts)
+    const N = groups.length
+
+    // Too many groups for UPGMA — raise AF to reduce
+    if (N > MAX_GROUPS_FOR_UPGMA) {
+      minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      continue
+    }
+
+    if (N < 2) {
+      // Too few groups even at floor — return what we have
+      bestRowCount = N
+      break
+    }
+
+    const distMatrix = computeSVDistanceMatrix(groups)
+    const { tree } = buildUPGMATree(distMatrix, groups)
+    const clusterNodes = getClustersAtThreshold(tree, clusterThreshold)
+    const M = clusterNodes.length
+    bestRowCount = M
+
+    if (M >= TARGET_MIN && M <= TARGET_MAX) {
+      break // success
+    }
+
+    if (M > TARGET_MAX) {
+      // Too many clusters — increase threshold to merge more
+      clusterThreshold = Math.min(1.0, clusterThreshold + 0.05)
+      if (clusterThreshold >= 0.95) {
+        // Threshold maxed out, raise AF too
+        minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      }
+    } else {
+      // Too few clusters — decrease AF to get more differentiated groups
+      const newAf = Math.pow(10, (Math.log10(floor) + Math.log10(minAf)) / 2)
+      if (Math.abs(newAf - minAf) < 1e-6) {
+        // AF can't go lower, try decreasing cluster threshold
+        clusterThreshold = Math.max(0, clusterThreshold - 0.05)
+        if (clusterThreshold <= 0.05) break // nothing more we can do
+      } else {
+        minAf = newAf
+      }
+    }
+  }
+
+  return {
+    floor,
+    ceiling,
+    defaultAf: Math.max(minAf, floor),
+    defaultClusterThreshold: clusterThreshold,
+    isClusteredView: true,
+  }
+}
+
+function binarySearchAf(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  floor: number,
+  ceiling: number,
+  targetGroups: number
+): number {
+  let lo = floor
+  let hi = ceiling
+  let bestAf = floor
+
+  for (let step = 0; step < 8; step++) {
+    const mid = Math.pow(10, (Math.log10(lo) + Math.log10(hi)) / 2)
+    const groupCount = countGroups(variants, carrierVariantIndices, mid)
+    if (groupCount > targetGroups) {
+      lo = mid
+    } else {
+      hi = mid
+    }
+    bestAf = mid
+  }
+
+  return Math.max(bestAf, floor)
+}
