@@ -22,6 +22,7 @@ import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import LongReadVariantTrack from './LongReadVariantTrack'
+import { VariantShapeLegend, VariantColorLegend } from './VariantLegend'
 import VariantDensityTrack from './VariantDensityTrack'
 import { getLodVisibility } from './variantUtils'
 import Variants from '../VariantList/Variants'
@@ -622,6 +623,9 @@ const LongReadUnifiedView = ({
 
       {viewMode === 'summary' && (
         <>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
+            <VariantColorLegend />
+          </div>
           {lod.showDensityTrack && <VariantDensityTrack variants={displayVariants} />}
           <LongReadVariantTrack variants={displayVariants} />
           <PositionAxisTrack />
@@ -631,6 +635,7 @@ const LongReadUnifiedView = ({
       {viewMode === 'haplotype' && (
         <>
           {lod.showDensityTrack && <VariantDensityTrack variants={displayVariants} />}
+          <LongReadVariantTrack variants={displayVariants} lod={lod} />
           <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
           {showMqtl && (
             <MQTLTrack

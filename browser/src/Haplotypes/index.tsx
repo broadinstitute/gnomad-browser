@@ -11,6 +11,7 @@ import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
+import { VariantShapeLegend } from '../LongReadVariantPage/VariantLegend'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
@@ -305,47 +306,7 @@ export const Legend = ({
     <LegendWrapper>
       {/* Row 1: Legends */}
       <LegendRow>
-        {plotType === 'lollipop' && (
-          <LegendSection>
-            <LegendItem><span style={{ fontWeight: 'bold' }}>Variants:</span></LegendItem>
-            <LegendItem>
-              <svg width={22} height={22}>
-                <circle cx={11} cy={11} r={4} fill='#888' stroke='#333' strokeWidth={0.5} />
-              </svg>
-              <span>SNV</span>
-            </LegendItem>
-            <LegendItem>
-              <svg width={22} height={22}>
-                <line x1={11} y1={4} x2={11} y2={18} stroke='#888' strokeDasharray='4 2' strokeWidth={2.5} />
-              </svg>
-              <span>Deletion</span>
-            </LegendItem>
-            <LegendItem>
-              <svg width={22} height={22}>
-                <path d='M 11 5 L 6 17 L 16 17 Z' fill='#888' stroke='#888' strokeWidth={0.5} />
-              </svg>
-              <span>Insertion</span>
-            </LegendItem>
-            <LegendItem>
-              <svg width={22} height={22}>
-                <path d='M 11 5 L 6 11 L 11 17 L 16 11 Z' fill='#888' opacity={0.7} stroke='#888' strokeWidth={0.5} />
-              </svg>
-              <span>Duplication</span>
-            </LegendItem>
-            <LegendItem>
-              <svg width={22} height={22}>
-                <circle cx={11} cy={11} r={2} fill='none' stroke='grey' strokeWidth={0.7} />
-              </svg>
-              <span>Below AF</span>
-            </LegendItem>
-            <LegendItem>
-              <svg width={22} height={22}>
-                <rect x={6} y={7} width={10} height={8} fill='none' rx={1} stroke='grey' strokeWidth={0.7} opacity={0.5} />
-              </svg>
-              <span>TR</span>
-            </LegendItem>
-          </LegendSection>
-        )}
+        {plotType === 'lollipop' && <VariantShapeLegend />}
         {plotType !== 'heatmap' && (
           <LegendSection>
             <LegendItem><span style={{ fontWeight: 'bold' }}>Color:</span></LegendItem>
