@@ -46,6 +46,13 @@ const PlotWrapper = styled.div`
   position: relative;
 `
 
+const StickyHeader = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: white;
+`
+
 const RegionAttributeList = styled.dl`
   margin: 0;
 
@@ -946,6 +953,10 @@ const HaplotypeHeaderTrack = ({
   methylationLoading,
   methylationSampleCount,
   methylationTotalSamples,
+  isClusteredView,
+  start,
+  stop,
+  threshold,
 }: {
   displayGroups: HaplotypeGroup[]
   legendProps: any
@@ -953,6 +964,10 @@ const HaplotypeHeaderTrack = ({
   methylationLoading: boolean
   methylationSampleCount: number
   methylationTotalSamples: number
+  isClusteredView?: boolean
+  start?: number
+  stop?: number
+  threshold?: number
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
     let samples = 0
@@ -966,19 +981,42 @@ const HaplotypeHeaderTrack = ({
     return { totalSamples: samples, totalVariants: loci.size }
   }, [displayGroups])
 
+  const regionSize = start != null && stop != null ? stop - start : null
+
   return (
     <Track
       renderTopPanel={() => <Legend {...legendProps} />}
       renderLeftPanel={() => (
         <SidePanel>
-          <svg width={200} height={40}>
-            <text x={0} y={15} fontSize='11' fontWeight='bold'>
+          <div style={{ width: 200, padding: '4px 0' }}>
+            <div style={{ fontSize: '11px', fontWeight: 'bold', lineHeight: '1.4' }}>
               Local Haplotypes ({displayGroups.length})
-            </text>
-            <text x={0} y={30} fontSize='9' fill='#666'>
+            </div>
+            <div style={{ fontSize: '9px', color: '#666', lineHeight: '1.4' }}>
               {totalSamples} haplotypes, {totalVariants} variants
-            </text>
-          </svg>
+              {regionSize != null && <span> · {regionSize.toLocaleString()} bp</span>}
+              {isClusteredView && <span> · Clustered</span>}
+              {threshold != null && threshold > 0 && (
+                <span> · Min AF: {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}</span>
+              )}
+            </div>
+            {/* Column headers for left panel dots */}
+            <div style={{
+              display: 'flex',
+              gap: '8px',
+              marginTop: '4px',
+              paddingTop: '4px',
+              borderTop: '1px solid #e0e0e0',
+              fontSize: '9px',
+              color: '#999',
+              fontWeight: 'bold',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.5px',
+            }}>
+              <span style={{ width: '45px' }}>Samples</span>
+              <span>Variants</span>
+            </div>
+          </div>
         </SidePanel>
       )}
     >
@@ -1018,7 +1056,7 @@ const HaplotypeHeaderTrack = ({
               <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             </div>
           )}
-          <svg width={width} height={40} />
+          <div style={{ height: 20 }} />
         </PlotWrapper>
       )}
     </Track>
@@ -1727,14 +1765,20 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 
   return (
     <Wrapper style={{ flexDirection: 'column' }}>
-      <HaplotypeHeaderTrack
-        displayGroups={displayGroups}
-        legendProps={legendProps}
-        haplotypeLoading={haplotypeLoading}
-        methylationLoading={methylationLoading}
-        methylationSampleCount={methylationSampleCount}
-        methylationTotalSamples={methylationTotalSamples}
-      />
+      <StickyHeader>
+        <HaplotypeHeaderTrack
+          displayGroups={displayGroups}
+          legendProps={legendProps}
+          haplotypeLoading={haplotypeLoading}
+          methylationLoading={methylationLoading}
+          methylationSampleCount={methylationSampleCount}
+          methylationTotalSamples={methylationTotalSamples}
+          isClusteredView={isClusteredView}
+          start={start}
+          stop={stop}
+          threshold={threshold}
+        />
+      </StickyHeader>
 
       {plotType === 'lollipop' && (
         <>

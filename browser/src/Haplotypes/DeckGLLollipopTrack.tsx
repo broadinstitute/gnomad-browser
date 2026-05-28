@@ -731,8 +731,8 @@ function DeckGLLollipopCanvas({
   viewportHeightRef.current = viewportHeight
 
   // Left panel data arrays for DeckGL layers
-  type LeftPanelCircle = { position: [number, number, number]; color: [number, number, number, number]; radius: number }
-  type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number }
+  type LeftPanelCircle = { position: [number, number, number]; color: [number, number, number, number]; radius: number; tooltipText?: string }
+  type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number; tooltipText?: string }
   type LeftPanelHitbox = { position: [number, number, number]; action: string; clusterId: string }
   type LeftPanelPopBar = { polygon: [number, number][]; color: [number, number, number, number] }
 
@@ -790,31 +790,35 @@ function DeckGLLollipopCanvas({
               text: String(popStats.totalSamples),
               color: [0, 0, 0, 255],
               size: 10,
+              tooltipText: `Samples: ${popStats.totalSamples}`,
             })
             texts.push({
               position: [barX + barWidth + 30, y, 0],
-              text: `(${cluster.member_group_hashes.length}g)`,
+              text: `(${cluster.member_group_hashes.length} groups)`,
               color: [136, 136, 136, 255],
               size: 10,
+              tooltipText: `${cluster.member_group_hashes.length} distinct haplotype groups in this cluster`,
             })
           }
         } else {
           // Sample count circle + text
           const sampleColor = cssColorToRgba(sampleColorScale(cluster.sample_count))
-          circles.push({ position: [20, y, 0], color: sampleColor, radius: 5 })
+          circles.push({ position: [20, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${cluster.sample_count}` })
           texts.push({
             position: [30, y, 0],
             text: String(cluster.sample_count),
             color: [0, 0, 0, 255],
             size: 12,
+            tooltipText: `Samples: ${cluster.sample_count}`,
           })
 
           // Group count text
           texts.push({
             position: [60, y, 0],
-            text: `(${cluster.member_group_hashes.length}g)`,
+            text: `(${cluster.member_group_hashes.length} groups)`,
             color: [136, 136, 136, 255],
             size: 10,
+            tooltipText: `${cluster.member_group_hashes.length} distinct haplotype groups in this cluster`,
           })
         }
       } else {
@@ -845,37 +849,41 @@ function DeckGLLollipopCanvas({
               text: String(popStats.totalSamples),
               color: [0, 0, 0, 255],
               size: 10,
+              tooltipText: `Samples: ${popStats.totalSamples}`,
             })
             // Variant count after sample count
             const variantCount = group.variants.variants.length
             const variantColor = cssColorToRgba(variantColorScale(variantCount))
-            circles.push({ position: [barX + barWidth + 28, y, 0], color: variantColor, radius: 4 })
+            circles.push({ position: [barX + barWidth + 28, y, 0], color: variantColor, radius: 4, tooltipText: `Variants: ${variantCount}` })
             texts.push({
               position: [barX + barWidth + 36, y, 0],
               text: String(variantCount),
               color: [0, 0, 0, 255],
               size: 10,
+              tooltipText: `Variants: ${variantCount} variant sites above AF threshold`,
             })
           }
         } else {
           // Sample count circle + text
           const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
-          circles.push({ position: [5 + indent, y, 0], color: sampleColor, radius: 5 })
+          circles.push({ position: [5 + indent, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${group.samples.length}` })
           texts.push({
             position: [15 + indent, y, 0],
             text: String(group.samples.length),
             color: [0, 0, 0, 255],
             size: 12,
+            tooltipText: `Samples: ${group.samples.length} haplotypes share this variant combination`,
           })
 
           // Variant count circle + text
           const variantColor = cssColorToRgba(variantColorScale(group.variants.variants.length))
-          circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5 })
+          circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5, tooltipText: `Variants: ${group.variants.variants.length}` })
           texts.push({
             position: [60 + indent, y, 0],
             text: String(group.variants.variants.length),
             color: [0, 0, 0, 255],
             size: 12,
+            tooltipText: `Variants: ${group.variants.variants.length} variant sites above AF threshold`,
           })
         }
       }
@@ -896,7 +904,8 @@ function DeckGLLollipopCanvas({
         getRadius: (d: LeftPanelCircle) => d.radius,
         getFillColor: (d: LeftPanelCircle) => d.color,
         radiusUnits: 'pixels' as const,
-        pickable: false,
+        pickable: true,
+        onHover: onHover,
       }))
     }
 
@@ -911,7 +920,8 @@ function DeckGLLollipopCanvas({
         getTextAnchor: 'start',
         getAlignmentBaseline: 'center',
         fontSettings: { sdf: true, smoothing: 0.15 },
-        pickable: false,
+        pickable: true,
+        onHover: onHover,
       }))
     }
 
@@ -943,7 +953,7 @@ function DeckGLLollipopCanvas({
     }
 
     return lpLayers
-  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, toggleClusterExpansion])
+  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, toggleClusterExpansion, onHover])
 
   // Genealogy tree layout — pure data arrays for DeckGL
   const treeLayout = useMemo((): TreeLayout | null => {
@@ -1478,6 +1488,12 @@ function Tooltip({
 
   // Right panel: tree node / cluster marker tooltips
   if (viewportId === 'right-panel') {
+    if (!object.tooltipText) return null
+    return <div style={tooltipStyle}><span>{object.tooltipText}</span></div>
+  }
+
+  // Left panel: sample/variant count tooltips
+  if (viewportId === 'left-panel') {
     if (!object.tooltipText) return null
     return <div style={tooltipStyle}><span>{object.tooltipText}</span></div>
   }
