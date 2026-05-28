@@ -25,9 +25,6 @@ const PoliciesPage = lazy(() => import('./PoliciesPage'))
 
 const GenePageContainer = lazy(() => import('./GenePage/GenePageContainer'))
 const RegionPageContainer = lazy(() => import('./RegionPage/RegionPageContainer'))
-const HaplotypeGenePageContainer = lazy(
-  () => import('./HaplotypeGenePage/HaplotypeGenePageContainer')
-)
 const HaplotypeRegionPageContainer = lazy(
   () => import('./HaplotypeRegionPage/HaplotypeRegionPageContainer')
 )
@@ -60,21 +57,6 @@ const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={HomePage} />
-
-      <Route
-        exact
-        path="/haplotype/gene/:gene"
-        render={({ location, match }: any) => {
-          const params = queryString.parse(location.search)
-          const datasetId = params.dataset || defaultDataset
-          return (
-            <HaplotypeGenePageContainer
-              datasetId={datasetId}
-              geneIdOrSymbol={match.params.gene}
-            />
-          )
-        }}
-      />
 
       <Route
         exact
