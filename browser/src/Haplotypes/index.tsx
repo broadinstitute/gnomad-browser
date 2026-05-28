@@ -167,9 +167,13 @@ export const Legend = ({
   const [sortMode, setSortMode] = useState(initialSortBy)
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newThreshold = parseFloat(event.target.value)
-    setThreshold(newThreshold)
-    onMinAfChange(newThreshold)
+    // Update local display immediately (no parent re-render during drag)
+    setThreshold(parseFloat(event.target.value))
+  }
+  const handleThresholdCommit = () => {
+    // Propagate to parent only on drag end — avoids re-rendering the
+    // entire component tree on every slider pixel and piling up fetches
+    onMinAfChange(threshold)
   }
 
   const handleSortModeChange = (value: string) => {
@@ -335,6 +339,8 @@ export const Legend = ({
             step='0.01'
             value={threshold}
             onChange={handleThresholdChange}
+            onPointerUp={handleThresholdCommit}
+            onKeyUp={handleThresholdCommit}
             style={{ width: '80px' }}
           />
           <span style={{ fontSize: '12px', minWidth: '28px' }}>{threshold.toFixed(2)}</span>
