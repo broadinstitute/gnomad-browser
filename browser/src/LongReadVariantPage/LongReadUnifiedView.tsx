@@ -13,7 +13,8 @@ import HaplotypeTrack, { HaplotypeGroups, HaplotypeTrackHandle, Methylation, Met
 import {
   computeHaplotypeView,
   filterDisplayVariants,
-  deriveSliderRange,
+  deriveAutoDefaults,
+  getAutoClusterThreshold,
   type RawPayload,
   type ComputedHaplotypeData,
 } from '../Haplotypes/haplotypeCompute'
@@ -134,15 +135,6 @@ const fetchGraphQL = async (query: string, variables: any) => {
   return parsed
 }
 
-
-/** Auto-calculate a reasonable cluster threshold based on region size */
-function getAutoClusterThreshold(regionSize: number): number {
-  if (regionSize < 50_000) return 0.0
-  if (regionSize > 1_000_000) return 0.70
-  // Linear interpolation between 0.35 and 0.65 for 50k-1M
-  const t = (regionSize - 50_000) / (1_000_000 - 50_000)
-  return 0.35 + t * 0.30
-}
 
 const MAX_HAPLOTYPE_REGION_SIZE = 5_000_000
 
@@ -358,20 +350,23 @@ const LongReadUnifiedView = ({
       })
   }, [viewMode, chrom, start, stop])
 
-  // Auto-derive slider range from data
-  const sliderRange = useMemo(() => {
-    if (!rawPayload) return { floor: 0, ceiling: 1, defaultAf: 0 }
-    return deriveSliderRange(rawPayload.variants, rawPayload.carrier_variant_indices)
-  }, [rawPayload])
+  // Joint auto-derivation of min AF + cluster threshold from data
+  const autoDefaults = useMemo(() => {
+    if (!rawPayload) return { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
+    return deriveAutoDefaults(rawPayload.variants, rawPayload.carrier_variant_indices, regionSize, rawPayload.trv_alts)
+  }, [rawPayload, regionSize])
 
-  // Set threshold to auto-derived default when new data arrives
+  // Apply auto-derived defaults when new data arrives
   const prevPayloadRef = useRef<RawPayload | null>(null)
   useEffect(() => {
     if (rawPayload && rawPayload !== prevPayloadRef.current) {
       prevPayloadRef.current = rawPayload
-      setThreshold(sliderRange.defaultAf)
+      setThreshold(autoDefaults.defaultAf)
+      setClusterThreshold(autoDefaults.defaultClusterThreshold)
+      setDeferredClusterThreshold(autoDefaults.defaultClusterThreshold)
+      setIsClusteredView(autoDefaults.isClusteredView)
     }
-  }, [rawPayload, sliderRange.defaultAf])
+  }, [rawPayload, autoDefaults])
 
   // Client-side compute: grouping, sorting, UPGMA tree, cluster cutting
   // Hybrid min AF: clustering ON → display-only, clustering OFF → drives grouping
@@ -384,10 +379,10 @@ const LongReadUnifiedView = ({
       // Clustering ON: groups defined at floor AF (stable tree), min AF is display-only
       const baseData = computeHaplotypeView(
         rawPayload.variants, rawPayload.carrier_variant_indices,
-        sliderRange.floor, sortBy, true, deferredClusterThreshold,
+        autoDefaults.floor, sortBy, true, deferredClusterThreshold,
         rawPayload.trv_alts
       )
-      result = threshold > sliderRange.floor
+      result = threshold > autoDefaults.floor
         ? filterDisplayVariants(baseData, threshold)
         : baseData
     } else {
@@ -401,7 +396,7 @@ const LongReadUnifiedView = ({
 
     console.log(`[client] computed ${result.groups.length} groups${result.clusters ? `, ${result.clusters.length} clusters` : ''} in ${Math.round(performance.now() - t0)}ms`)
     return result
-  }, [rawPayload, threshold, sortBy, isClusteredView, deferredClusterThreshold, sliderRange.floor])
+  }, [rawPayload, threshold, sortBy, isClusteredView, deferredClusterThreshold, autoDefaults.floor])
 
   // Fetch methylation summary + outliers when entering haplotype mode
   useEffect(() => {
@@ -694,8 +689,8 @@ const LongReadUnifiedView = ({
               expandedClusterIds={expandedClusterIds}
               toggleClusterExpansion={toggleClusterExpansion}
               treeJson={haplotypeGroups.tree_json}
-              minAfFloor={sliderRange.floor}
-              minAfCeiling={sliderRange.ceiling}
+              minAfFloor={autoDefaults.floor}
+              minAfCeiling={autoDefaults.ceiling}
             />
           )}
           <PositionAxisTrack />
