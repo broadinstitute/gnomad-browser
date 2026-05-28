@@ -1732,7 +1732,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             colorMode={colorMode}
             showMethylation={showMethylation}
             methylationData={methylationData}
-            methylationSummary={methylationSummary}
             summaryByPos={summaryByPos}
             variantCircleRadius={variantCircleRadius}
             sampleColorScale={sampleColorScale}
