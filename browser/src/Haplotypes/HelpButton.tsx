@@ -38,11 +38,13 @@ const HaplotypeHelpButton = ({ title, children }: Props) => {
       </Button>
       {isOpen && (
         // @ts-ignore
-        <Modal title={title} size="large" onRequestClose={() => setIsOpen(false)}>
-          <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
-            {children}
-          </div>
-        </Modal>
+        <div style={{ position: 'relative', zIndex: 1000 }}>
+          <Modal title={title} size="large" onRequestClose={() => setIsOpen(false)}>
+            <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
+              {children}
+            </div>
+          </Modal>
+        </div>
       )}
     </>
   )
