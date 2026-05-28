@@ -1057,22 +1057,7 @@ const HaplotypeHeaderTrack = ({
                 <span> · Min AF: {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}</span>
               )}
             </div>
-            {/* Column headers for left panel dots */}
-            <div style={{
-              display: 'flex',
-              gap: '8px',
-              marginTop: '4px',
-              paddingTop: '4px',
-              borderTop: '1px solid #e0e0e0',
-              fontSize: '9px',
-              color: '#999',
-              fontWeight: 'bold',
-              textTransform: 'uppercase' as const,
-              letterSpacing: '0.5px',
-            }}>
-              <span style={{ width: '45px' }}>Samples</span>
-              <span>Variants</span>
-            </div>
+            <div style={{ marginTop: '4px', borderTop: '1px solid #e0e0e0' }} />
           </div>
         </SidePanel>
       )}
