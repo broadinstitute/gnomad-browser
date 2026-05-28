@@ -437,9 +437,9 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   const viewportHeightRef = useRef(0)
 
   // Refs for panel widths — avoids stale closures in scroll handler
-  const leftPanelWidthRef = useRef(200)
+  const leftPanelWidthRef = useRef(115)
   const centerWidthRef = useRef(0)
-  const rightPanelWidthRef = useRef(180)
+  const rightPanelWidthRef = useRef(0)
 
   // Imperative scroll handler — updates DeckGL camera directly, no React re-render
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
@@ -453,13 +453,14 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       const cw = centerWidthRef.current
       const rw = rightPanelWidthRef.current
       const yTarget = newScrollTop + vh / 2
-      deckRef.current.deck.setProps({
-        viewState: {
-          'left-panel': { target: [lw / 2, yTarget, 0], zoom: 0 },
-          'center-panel': { target: [cw / 2, yTarget, 0], zoom: 0 },
-          'right-panel': { target: [rw / 2, yTarget, 0], zoom: 0 },
-        },
-      })
+      const vs: Record<string, { target: [number, number, number]; zoom: number }> = {
+        'left-panel': { target: [lw / 2, yTarget, 0], zoom: 0 },
+        'center-panel': { target: [cw / 2, yTarget, 0], zoom: 0 },
+      }
+      if (rw > 0) {
+        vs['right-panel'] = { target: [rw / 2, yTarget, 0], zoom: 0 }
+      }
+      deckRef.current.deck.setProps({ viewState: vs })
     }
 
     debouncedGroupChange(newScrollTop)
@@ -535,12 +536,24 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   )
 
   // Consume RegionViewerContext directly — bypass Track component
-  const { scalePosition, centerPanelWidth: centerWidth } = useContext(RegionViewerContext)
+  const { scalePosition, centerPanelWidth: contextCenterWidth, leftPanelWidth: contextLeftPanelWidth, rightPanelWidth: contextRightPanelWidth } = useContext(RegionViewerContext)
 
-  const leftPanelWidth = 200
-  const rightPanelWidth = 180
+  // The DeckGL track must fit within the same total width as sibling tracks.
+  // When genealogy is shown, shrink center panel to make room for the tree panel
+  // within the total available width (left + center + right from context).
+  const leftPanelWidth = contextLeftPanelWidth
+  const GENEALOGY_PANEL_WIDTH = 180
+  const rightPanelWidth = showGenealogy ? GENEALOGY_PANEL_WIDTH : 0
+  const extraRightNeeded = Math.max(0, rightPanelWidth - contextRightPanelWidth)
+  const centerWidth = contextCenterWidth - extraRightNeeded
   const totalWidth = leftPanelWidth + centerWidth + rightPanelWidth
   const showRightPanel = showGenealogy && genealogyResult && leafYPositions.size > 0
+
+  // Rescale genomic positions to fit the (possibly narrower) center panel
+  const scaleFactor = contextCenterWidth > 0 ? centerWidth / contextCenterWidth : 1
+  const adjustedScalePosition = scaleFactor === 1
+    ? scalePosition
+    : (pos: number) => scalePosition(pos) * scaleFactor
 
   // Keep panel width refs in sync for the imperative scroll handler
   leftPanelWidthRef.current = leftPanelWidth
@@ -551,7 +564,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     <div
       ref={scrollContainerRef}
       onScroll={handleScroll}
-      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', position: 'relative' }}
+      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', overflowX: 'hidden', position: 'relative' }}
     >
       {/* Spacer div — establishes native scrollable height */}
       <div style={{ height: totalHeight, position: 'relative' }}>
@@ -572,7 +585,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           mqtlMinLogP={mqtlMinLogP}
           sampleMetadata={sampleMetadata}
           hoveredVariantPosition={hoveredVariantPosition}
-          scalePosition={scalePosition}
+          scalePosition={adjustedScalePosition}
           width={centerWidth}
           totalHeight={totalHeight}
           totalWidth={totalWidth}
@@ -1499,23 +1512,30 @@ function DeckGLLollipopCanvas({
     })
   }, [hoveredVariantPosition, scalePosition, totalHeight])
 
-  // Multi-view: left panel, center (variants), right panel
+  // Multi-view: left panel, center (variants), right panel (only when genealogy visible)
   const views = useMemo(
-    () => [
-      new OrthographicView({ id: 'left-panel', x: 0, y: 0, width: leftPanelWidth, height: viewportHeight, flipY: true }),
-      new OrthographicView({ id: 'center-panel', x: leftPanelWidth, y: 0, width: canvasWidth, height: viewportHeight, flipY: true }),
-      new OrthographicView({ id: 'right-panel', x: leftPanelWidth + canvasWidth, y: 0, width: rightPanelWidth, height: viewportHeight, flipY: true }),
-    ],
+    () => {
+      const v = [
+        new OrthographicView({ id: 'left-panel', x: 0, y: 0, width: leftPanelWidth, height: viewportHeight, flipY: true }),
+        new OrthographicView({ id: 'center-panel', x: leftPanelWidth, y: 0, width: canvasWidth, height: viewportHeight, flipY: true }),
+      ]
+      if (rightPanelWidth > 0) {
+        v.push(new OrthographicView({ id: 'right-panel', x: leftPanelWidth + canvasWidth, y: 0, width: rightPanelWidth, height: viewportHeight, flipY: true }))
+      }
+      return v
+    },
     [leftPanelWidth, canvasWidth, rightPanelWidth, viewportHeight]
   )
 
   // viewState reads from ref — on re-render (data change) it picks up current scroll position;
   // during scroll, the imperative handler in the parent updates DeckGL directly
   const yTarget = scrollTopRef.current + viewportHeight / 2
-  const viewState = {
-    'left-panel': { target: [leftPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
-    'center-panel': { target: [canvasWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
-    'right-panel': { target: [rightPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+  const viewState: Record<string, { target: [number, number, number]; zoom: number }> = {
+    'left-panel': { target: [leftPanelWidth / 2, yTarget, 0], zoom: 0 },
+    'center-panel': { target: [canvasWidth / 2, yTarget, 0], zoom: 0 },
+  }
+  if (rightPanelWidth > 0) {
+    viewState['right-panel'] = { target: [rightPanelWidth / 2, yTarget, 0], zoom: 0 }
   }
 
   return (

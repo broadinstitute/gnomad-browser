@@ -692,8 +692,8 @@ const PopulationAfBars = ({ variant }: { variant: LRVariant }) => {
 
   if (pops.length === 0) return null
 
-  const maxAf = Math.max(...pops.map((p) => p.value), 0.01)
-  const minAf = Math.min(...pops.map((p) => p.value))
+  const maxAf = pops.reduce((max, p) => Math.max(max, p.value), 0.01)
+  const minAf = pops.reduce((min, p) => Math.min(min, p.value), Infinity)
   const isHighlyDifferentiated = maxAf - minAf > 0.2
 
   return (
@@ -1724,12 +1724,14 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   }
 
   // When filtering to outliers, only show groups containing samples with methylation data
-  const outlierSampleIds = filterToOutliers && showMethylation
-    ? new Set(methylationData.map(d => d.sample))
-    : null
-  const filteredGroups = outlierSampleIds
-    ? haplotypeGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
-    : haplotypeGroups
+  const filteredGroups = useMemo(() => {
+    const outlierSampleIds = filterToOutliers && showMethylation
+      ? new Set(methylationData.map(d => d.sample))
+      : null
+    return outlierSampleIds
+      ? haplotypeGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
+      : haplotypeGroups
+  }, [haplotypeGroups, filterToOutliers, showMethylation, methylationData])
 
   // UPGMA genealogy tree computation — prefer backend tree_json when available
   const genealogyResult = useMemo(() => {
@@ -1817,8 +1819,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     [maxVariants]
   )
 
+  const maxMeth = methylationData.reduce((max, d) => Math.max(max, d.methylation), 0)
   const methylationYScale = scaleLinear()
-    .domain([0, Math.max(1, ...methylationData.map((d) => d.methylation))])
+    .domain([0, Math.max(1, maxMeth)])
     .range([65, 35])
 
   const legendProps = {

@@ -341,8 +341,8 @@ export function groupCarriers(
       samples,
       variants: { variants: aboveVariants, readable_id: readableId },
       below_threshold: { variants: belowVariants, readable_id: '' },
-      start: Math.min(...aboveVariants.map((v) => v.pos)),
-      stop: Math.max(...aboveVariants.map((v) => v.pos)),
+      start: aboveVariants.reduce((min, v) => Math.min(min, v.pos), Infinity),
+      stop: aboveVariants.reduce((max, v) => Math.max(max, v.pos), -Infinity),
       hash: Number(groupHash),
     })
   }
@@ -510,7 +510,7 @@ export function deriveSliderRange(
   }
 
   // Floor: 2 / max AN (excludes singletons)
-  const maxAN = Math.max(...variants.map((v) => v.freq.an))
+  const maxAN = variants.reduce((max, v) => Math.max(max, v.freq.an), 0)
   const floor = maxAN > 0 ? 2 / maxAN : 0.001
 
   // Ceiling: 95th percentile AF
@@ -588,7 +588,7 @@ export function deriveAutoDefaults(
   }
 
   // Compute floor and ceiling (same as deriveSliderRange)
-  const maxAN = Math.max(...variants.map((v) => v.freq.an))
+  const maxAN = variants.reduce((max, v) => Math.max(max, v.freq.an), 0)
   const floor = Math.max(maxAN > 0 ? 2 / maxAN : 0.001, 0.001)
   const sortedAfs = variants.map((v) => v.freq.af).sort((a, b) => a - b)
   const p95idx = Math.floor(sortedAfs.length * 0.95)
@@ -618,7 +618,6 @@ export function deriveAutoDefaults(
     }
 
     if (N < 2) {
-      // Too few groups even at floor — return what we have
       bestRowCount = N
       break
     }
