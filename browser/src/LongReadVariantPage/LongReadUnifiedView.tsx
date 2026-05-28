@@ -183,13 +183,12 @@ const LongReadUnifiedView = ({
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
 
-  const showGenealogyFromUrl = searchParams.get('show_tree') === 'true'
   const setShowGenealogyUrl = useCallback((show: boolean) => {
     const params = new URLSearchParams(location.search)
     if (show) {
-      params.set('show_tree', 'true')
+      params.delete('show_tree') // default is on, so remove param
     } else {
-      params.delete('show_tree')
+      params.set('show_tree', 'false')
     }
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
@@ -209,8 +208,8 @@ const LongReadUnifiedView = ({
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('similarity_score')
   const [plotType, setPlotType] = useState('lollipop')
-  const [colorMode, setColorMode] = useState('allele')
-  const showGenealogy = showGenealogyFromUrl
+  const [colorMode, setColorMode] = useState('population')
+  const showGenealogy = searchParams.get('show_tree') !== 'false'
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
   const [mqtlLoading, setMqtlLoading] = useState(false)
