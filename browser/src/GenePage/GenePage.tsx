@@ -2,8 +2,8 @@
 import LeftArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-left.svg'
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import RightArrow from '@fortawesome/fontawesome-free/svgs/solid/arrow-circle-right.svg'
-import React, { useState, Dispatch, SetStateAction } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useCallback, useState, Dispatch, SetStateAction } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
@@ -48,7 +48,6 @@ import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
 import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
-import ZoomOverview from '../Haplotypes/ZoomOverview'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
@@ -330,6 +329,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
   const location = useLocation()
+  const history = useHistory()
   const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') === 'true'
 
   // Subtract 30px for padding on Page component
@@ -362,6 +362,15 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         }))
 
   const [zoomRegion, setZoomRegion] = useState<{ start: number; stop: number } | null>(null)
+
+  const handleSetRegion = useCallback((newRegion: { start: number; stop: number }) => {
+    const regionId = `${gene.chrom}-${newRegion.start}-${newRegion.stop}`
+    const currentParams = new URLSearchParams(location.search)
+    history.push({
+      pathname: `/region/${regionId}`,
+      search: currentParams.toString(),
+    })
+  }, [gene.chrom, history, location.search])
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
@@ -435,18 +444,6 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           </ConstraintOrCooccurrenceColumn>
         </GeneInfoColumnWrapper>
       </TrackPageSection>
-      {isLongRead(datasetId) && (
-        <TrackPageSection>
-          <ZoomOverview
-            overviewRegion={{ start: gene.start, stop: gene.stop }}
-            currentRegion={zoomRegion || { start: gene.start, stop: gene.stop }}
-            chrom={gene.chrom}
-            genes={[gene] as any}
-            onChangeRegion={setZoomRegion}
-            onSetRegion={setZoomRegion}
-          />
-        </TrackPageSection>
-      )}
       <RegionViewer
         contextType="gene"
         leftPanelWidth={115}
@@ -654,6 +651,8 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             includeNonCodingTranscripts={includeNonCodingTranscripts}
             includeUTRs={includeUTRs}
             zoomRegion={zoomRegion}
+            onChangeZoomRegion={setZoomRegion}
+            onSetRegion={handleSetRegion}
             hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
           />
         )}

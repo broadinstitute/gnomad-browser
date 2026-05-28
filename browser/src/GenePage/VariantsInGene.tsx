@@ -425,11 +425,17 @@ const annotateVariantsWithPext = (variants: any, pext: any) => {
 type ConnectedVariantsInGeneProps = {
   datasetId: DatasetId
   gene: Gene
+  zoomRegion?: { start: number; stop: number } | null
+  onChangeZoomRegion?: (region: { start: number; stop: number } | null) => void
+  onSetRegion?: (region: { start: number; stop: number }) => void
 } & VariantsInGeneProps
 
 const ConnectedVariantsInGene = ({
   datasetId,
   gene,
+  zoomRegion,
+  onChangeZoomRegion,
+  onSetRegion,
   ...otherProps
 }: ConnectedVariantsInGeneProps) => {
   // Determine LR dataset: either the associated LR dataset, or the dataset itself if it IS LR
@@ -462,6 +468,10 @@ const ConnectedVariantsInGene = ({
               gene={gene}
               variants={data.gene.long_read_variants || []}
               clinvarReleaseDate={data.meta.clinvar_release_date}
+              genes={[gene] as any[]}
+              zoomRegion={zoomRegion || null}
+              onChangeZoomRegion={onChangeZoomRegion || (() => {})}
+              onSetRegion={onSetRegion || (() => {})}
             />
           )
         }
