@@ -339,6 +339,13 @@ const LongReadUnifiedView = ({
       .then((result) => {
         if (controller.signal.aborted) return
         console.log(`[REST] raw payload: ${result.variants?.length} variants, ${Object.keys(result.carrier_variant_indices || {}).length} carriers in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
+
+        // Auto-derive defaults immediately and batch all state updates together
+        const defaults = deriveAutoDefaults(result.variants, result.carrier_variant_indices, regionSize, result.trv_alts)
+        setThreshold(defaults.defaultAf)
+        setClusterThreshold(defaults.defaultClusterThreshold)
+        setDeferredClusterThreshold(defaults.defaultClusterThreshold)
+        setIsClusteredView(defaults.isClusteredView)
         setRawPayload(result)
       })
       .catch((error: any) => {
@@ -355,18 +362,6 @@ const LongReadUnifiedView = ({
     if (!rawPayload) return { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
     return deriveAutoDefaults(rawPayload.variants, rawPayload.carrier_variant_indices, regionSize, rawPayload.trv_alts)
   }, [rawPayload, regionSize])
-
-  // Apply auto-derived defaults when new data arrives
-  const prevPayloadRef = useRef<RawPayload | null>(null)
-  useEffect(() => {
-    if (rawPayload && rawPayload !== prevPayloadRef.current) {
-      prevPayloadRef.current = rawPayload
-      setThreshold(autoDefaults.defaultAf)
-      setClusterThreshold(autoDefaults.defaultClusterThreshold)
-      setDeferredClusterThreshold(autoDefaults.defaultClusterThreshold)
-      setIsClusteredView(autoDefaults.isClusteredView)
-    }
-  }, [rawPayload, autoDefaults])
 
   // Client-side compute: grouping, sorting, UPGMA tree, cluster cutting
   // Hybrid min AF: clustering ON → display-only, clustering OFF → drives grouping
