@@ -1693,28 +1693,28 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     if (treeJson) {
       try {
         const backendTree = JSON.parse(treeJson) as import('./genealogy-math').TreeNode
-        // Extract leaf order via in-order traversal
+        // Iterative in-order traversal: extract leaf order and normalize groupHash in-place
         const leafOrder: number[] = []
-        const traverse = (node: import('./genealogy-math').TreeNode) => {
-          if (node.groupHash !== null) {
-            // Backend sends groupHash as string; convert to number for frontend
-            leafOrder.push(typeof node.groupHash === 'string' ? parseInt(node.groupHash, 10) : node.groupHash)
-            return
+        const stack: import('./genealogy-math').TreeNode[] = []
+        let current: import('./genealogy-math').TreeNode | null = backendTree
+
+        while (current || stack.length > 0) {
+          while (current) {
+            stack.push(current)
+            current = current.left
           }
-          if (node.left) traverse(node.left)
-          if (node.right) traverse(node.right)
+          current = stack.pop()!
+
+          if (current.groupHash !== null) {
+            current.groupHash = typeof current.groupHash === 'string'
+              ? parseInt(current.groupHash as unknown as string, 10)
+              : current.groupHash
+            leafOrder.push(current.groupHash)
+          }
+          current = current.right
         }
-        traverse(backendTree)
-        // Normalize groupHash to number throughout the tree
-        const normalizeTree = (node: any): import('./genealogy-math').TreeNode => ({
-          ...node,
-          groupHash: node.groupHash !== null
-            ? (typeof node.groupHash === 'string' ? parseInt(node.groupHash, 10) : node.groupHash)
-            : null,
-          left: node.left ? normalizeTree(node.left) : null,
-          right: node.right ? normalizeTree(node.right) : null,
-        })
-        return { tree: normalizeTree(backendTree), leafOrder }
+
+        return { tree: backendTree, leafOrder }
       } catch (e) {
         console.warn('[genealogy] Failed to parse backend tree_json, falling back to local UPGMA', e)
       }

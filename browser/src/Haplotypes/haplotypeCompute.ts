@@ -148,32 +148,51 @@ export const buildUPGMATree = (
   }
 
   const tree = clusters[active[0]]
+  // Iterative in-order traversal to get leaf order
   const leafOrder: string[] = []
-  const traverse = (node: TreeNode) => {
-    if (node.groupHash !== null) {
-      leafOrder.push(node.groupHash)
-      return
+  const stack: TreeNode[] = []
+  let cur: TreeNode | null = tree
+  while (cur || stack.length > 0) {
+    while (cur) {
+      stack.push(cur)
+      cur = cur.left
     }
-    if (node.left) traverse(node.left)
-    if (node.right) traverse(node.right)
+    cur = stack.pop()!
+    if (cur.groupHash !== null) {
+      leafOrder.push(cur.groupHash)
+    }
+    cur = cur.right
   }
-  traverse(tree)
   return { tree, leafOrder }
 }
 
-export const getClustersAtThreshold = (node: TreeNode, threshold: number): TreeNode[] => {
-  if (node.distance <= threshold) return [node]
+export const getClustersAtThreshold = (root: TreeNode, threshold: number): TreeNode[] => {
   const results: TreeNode[] = []
-  if (node.left) results.push(...getClustersAtThreshold(node.left, threshold))
-  if (node.right) results.push(...getClustersAtThreshold(node.right, threshold))
+  const stack = [root]
+  while (stack.length > 0) {
+    const node = stack.pop()!
+    if (node.distance <= threshold) {
+      results.push(node)
+    } else {
+      if (node.right) stack.push(node.right)
+      if (node.left) stack.push(node.left)
+    }
+  }
   return results
 }
 
-export const getLeafGroupHashes = (node: TreeNode): string[] => {
-  if (node.groupHash !== null) return [node.groupHash]
+export const getLeafGroupHashes = (root: TreeNode): string[] => {
   const hashes: string[] = []
-  if (node.left) hashes.push(...getLeafGroupHashes(node.left))
-  if (node.right) hashes.push(...getLeafGroupHashes(node.right))
+  const stack = [root]
+  while (stack.length > 0) {
+    const node = stack.pop()!
+    if (node.groupHash !== null) {
+      hashes.push(node.groupHash)
+    } else {
+      if (node.right) stack.push(node.right)
+      if (node.left) stack.push(node.left)
+    }
+  }
   return hashes
 }
 
