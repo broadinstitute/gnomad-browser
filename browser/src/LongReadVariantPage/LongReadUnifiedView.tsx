@@ -1,4 +1,4 @@
-import { throttle } from 'lodash-es'
+import { debounce, throttle } from 'lodash-es'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -218,20 +218,31 @@ const LongReadUnifiedView = ({
 
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
 
-  // Cluster state
+  // Cluster state — two thresholds: visual (immediate) and deferred (debounced).
+  // Visual drives the drag line + slider display; deferred drives the expensive recomputation.
   const [clusterThreshold, setClusterThreshold] = useState(() => getAutoClusterThreshold(regionSize))
+  const [deferredClusterThreshold, setDeferredClusterThreshold] = useState(() => getAutoClusterThreshold(regionSize))
   const [isClusteredView, setIsClusteredView] = useState(() => getAutoClusterThreshold(regionSize) > 0)
   const [expandedClusterIds, setExpandedClusterIds] = useState<Set<string>>(new Set())
 
+  const debouncedCommitThreshold = useMemo(
+    () => debounce((value: number) => setDeferredClusterThreshold(value), 200, { leading: false, trailing: true }),
+    []
+  )
+  const handleClusterThresholdChange = useCallback((value: number) => {
+    setClusterThreshold(value)
+    debouncedCommitThreshold(value)
+  }, [debouncedCommitThreshold])
+
   // Clear expanded clusters when threshold/region changes
-  const prevClusterKey = useRef(`${clusterThreshold}-${threshold}-${start}-${stop}`)
+  const prevClusterKey = useRef(`${deferredClusterThreshold}-${threshold}-${start}-${stop}`)
   useEffect(() => {
-    const key = `${clusterThreshold}-${threshold}-${start}-${stop}`
+    const key = `${deferredClusterThreshold}-${threshold}-${start}-${stop}`
     if (key !== prevClusterKey.current) {
       prevClusterKey.current = key
       setExpandedClusterIds(new Set())
     }
-  }, [clusterThreshold, threshold, start, stop])
+  }, [deferredClusterThreshold, threshold, start, stop])
 
   const toggleClusterExpansion = useCallback((clusterId: string) => {
     setExpandedClusterIds(prev => {
@@ -373,7 +384,7 @@ const LongReadUnifiedView = ({
       // Clustering ON: groups defined at floor AF (stable tree), min AF is display-only
       const baseData = computeHaplotypeView(
         rawPayload.variants, rawPayload.carrier_variant_indices,
-        sliderRange.floor, sortBy, true, clusterThreshold,
+        sliderRange.floor, sortBy, true, deferredClusterThreshold,
         rawPayload.trv_alts
       )
       result = threshold > sliderRange.floor
@@ -383,14 +394,14 @@ const LongReadUnifiedView = ({
       // Clustering OFF: min AF drives grouping
       result = computeHaplotypeView(
         rawPayload.variants, rawPayload.carrier_variant_indices,
-        threshold, sortBy, false, clusterThreshold,
+        threshold, sortBy, false, deferredClusterThreshold,
         rawPayload.trv_alts
       )
     }
 
     console.log(`[client] computed ${result.groups.length} groups${result.clusters ? `, ${result.clusters.length} clusters` : ''} in ${Math.round(performance.now() - t0)}ms`)
     return result
-  }, [rawPayload, threshold, sortBy, isClusteredView, clusterThreshold, sliderRange.floor])
+  }, [rawPayload, threshold, sortBy, isClusteredView, deferredClusterThreshold, sliderRange.floor])
 
   // Fetch methylation summary + outliers when entering haplotype mode
   useEffect(() => {
@@ -679,7 +690,7 @@ const LongReadUnifiedView = ({
               isClusteredView={isClusteredView}
               onIsClusteredViewChange={setIsClusteredView}
               clusterThreshold={clusterThreshold}
-              onClusterThresholdChange={setClusterThreshold}
+              onClusterThresholdChange={handleClusterThresholdChange}
               expandedClusterIds={expandedClusterIds}
               toggleClusterExpansion={toggleClusterExpansion}
               treeJson={haplotypeGroups.tree_json}
