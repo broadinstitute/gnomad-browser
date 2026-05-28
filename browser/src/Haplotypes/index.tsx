@@ -1047,11 +1047,13 @@ const HaplotypeInfoBar = ({
   threshold,
   isClusteredView,
   clusterCount,
+  clusterThreshold,
   haplotypeLoading,
   methylationLoading,
   methylationSampleCount,
   methylationTotalSamples,
   isAutoTuned,
+  plotType,
 }: {
   displayGroups: HaplotypeGroup[]
   start: number
@@ -1059,11 +1061,13 @@ const HaplotypeInfoBar = ({
   threshold: number
   isClusteredView: boolean
   clusterCount: number
+  clusterThreshold: number
   haplotypeLoading: boolean
   methylationLoading: boolean
   methylationSampleCount: number
   methylationTotalSamples: number
   isAutoTuned: boolean
+  plotType: string
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
     let samples = 0
@@ -1097,9 +1101,14 @@ const HaplotypeInfoBar = ({
         <span style={{ color: '#999' }}>·</span>
         <span>{regionLabel}</span>
         <span style={{ color: '#999' }}>·</span>
-        <span>{isClusteredView ? `Clustered (${clusterCount})` : 'Unclustered'}</span>
+        <span>{isClusteredView ? `Clustered (${clusterCount}) · Resolution: ${clusterThreshold.toFixed(2)}` : 'Unclustered'}</span>
         <span style={{ color: '#999' }}>·</span>
         <span>Min AF: {thresholdLabel}</span>
+        <span style={{ color: '#999' }}>·</span>
+        <span style={{ textTransform: 'capitalize' }}>{plotType}</span>
+        <HaplotypeHelpButton title="Lollipop View — How to Read This View">
+          <LollipopHelp />
+        </HaplotypeHelpButton>
         {isAutoTuned && (
           <>
             <span style={{ color: '#999' }}>·</span>
@@ -1871,30 +1880,18 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           threshold={threshold}
           isClusteredView={isClusteredView}
           clusterCount={clusters?.length || 0}
+          clusterThreshold={clusterThreshold}
           haplotypeLoading={haplotypeLoading}
           methylationLoading={methylationLoading}
           methylationSampleCount={methylationSampleCount}
           methylationTotalSamples={methylationTotalSamples}
           isAutoTuned={isAutoTuned}
+          plotType={plotType}
         />
       </StickyHeader>
 
       {plotType === 'lollipop' && (
         <>
-          <Track
-            renderLeftPanel={() => (
-              <SidePanel>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: '10px', fontWeight: 'bold', color: '#666' }}>Lollipop View</span>
-                  <HaplotypeHelpButton title="Lollipop View — How to Read This View">
-                    <LollipopHelp />
-                  </HaplotypeHelpButton>
-                </div>
-              </SidePanel>
-            )}
-          >
-            {() => <div style={{ height: 1 }} />}
-          </Track>
           {showMethylation && methylationSummary.length > 0 && (
             <MethylationSummaryTrack methylationSummary={methylationSummary} />
           )}
