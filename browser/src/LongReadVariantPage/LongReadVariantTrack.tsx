@@ -1,5 +1,5 @@
 import { transparentize } from 'polished'
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
@@ -8,6 +8,7 @@ import Link from '../Link'
 import VariantTrack from '../VariantList/VariantTrack'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
+import AccordionContext from '../Haplotypes/AccordionContext'
 
 // --- Types ---
 
@@ -99,6 +100,9 @@ const SvBand = ({ variants, scalePosition, width }: {
   scalePosition: (pos: number) => number
   width: number
 }) => {
+  const { mapper } = useContext(AccordionContext)
+  const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
+
   // Filter to variants visible in the current viewport
   const visible = variants.filter(v => scalePosition(v.stop) >= 0 && scalePosition(v.start) <= width)
   const { packed, maxRows } = packIntervals(visible)
@@ -112,7 +116,44 @@ const SvBand = ({ variants, scalePosition, width }: {
         const color = VARIANT_CATEGORY_COLORS[cat]
         const rowY = v.row * ROW_HEIGHT + 2
 
+        if (cat === 'insertion' && mapper) {
+          // Insertions don't span reference space. Map through phantom coordinates
+          // so the bar physically expands into the accordion gap.
+          const startX = scalePosition(v.pos)
+          const phantomWidth =
+            (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
+              mapper.getSyntheticCoordinate(v.pos, 0)) *
+            pxPerUnit
+          const barWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
+
+          if (phantomWidth < MIN_SV_BAR_WIDTH) {
+            // Accordion is off or phantom gap too small — render as triangle
+            return (
+              <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
+                <path
+                  d={`M ${startX} ${rowY} l -4 0 l 4 ${barHeight} l 4 -${barHeight} z`}
+                  fill={color}
+                />
+              </Link>
+            )
+          }
+
+          return (
+            <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
+              <rect
+                x={startX}
+                y={rowY}
+                width={barWidth}
+                height={barHeight}
+                fill={color}
+                rx={1}
+              />
+            </Link>
+          )
+        }
+
         if (cat === 'insertion') {
+          // No mapper — fallback to triangle
           const x = scalePosition(v.pos)
           return (
             <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
@@ -124,6 +165,7 @@ const SvBand = ({ variants, scalePosition, width }: {
           )
         }
 
+        // Deletions/duplications: reference-spanning, standard mapping
         let startX = scalePosition(v.start)
         let stopX = scalePosition(v.stop)
         if (stopX - startX < MIN_SV_BAR_WIDTH) {
@@ -158,6 +200,9 @@ const TrBand = ({ variants, scalePosition, width }: {
   scalePosition: (pos: number) => number
   width: number
 }) => {
+  const { mapper } = useContext(AccordionContext)
+  const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
+
   const visible = variants.filter(v => scalePosition(v.stop) >= 0 && scalePosition(v.start) <= width)
   const { packed, maxRows } = packIntervals(visible)
   const bandHeight = maxRows * ROW_HEIGHT
@@ -166,10 +211,26 @@ const TrBand = ({ variants, scalePosition, width }: {
   return (
     <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
       {packed.map((v) => {
-        const startX = scalePosition(v.start)
-        const stopX = scalePosition(v.stop)
-        const blockWidth = Math.max(stopX - startX, MIN_SV_BAR_WIDTH)
         const rowY = v.row * ROW_HEIGHT + 2
+
+        // TRs with abs(length) >= 50 are accordion candidates — map through phantom space
+        const isTrAccordion = mapper && Math.abs(v.length || 0) >= 50
+        let startX: number
+        let blockWidth: number
+
+        if (isTrAccordion) {
+          startX = scalePosition(v.pos)
+          const phantomWidth =
+            (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
+              mapper.getSyntheticCoordinate(v.pos, 0)) *
+            pxPerUnit
+          blockWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
+        } else {
+          startX = scalePosition(v.start)
+          const stopX = scalePosition(v.stop)
+          blockWidth = Math.max(stopX - startX, MIN_SV_BAR_WIDTH)
+        }
+
         const showMotif = blockWidth > MOTIF_LABEL_MIN_WIDTH && v.motifs && v.motifs.length > 0
 
         return (
