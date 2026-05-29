@@ -120,14 +120,19 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
       }
     >
       {({ scalePosition, width }: any) => {
-        if (genes.length === 0) {
+        // Filter genes to those overlapping the visible region (prevents off-screen label stacking)
+        const visibleGenes = (includeNonCodingGenes ? genes : codingGenes).filter(
+          (g: any) => g.stop >= region.start && g.start <= region.stop
+        )
+
+        if (visibleGenes.length === 0) {
           return <StatusMessage>No genes found in this region</StatusMessage>
         }
 
         return (
           <div style={{ overflow: 'hidden', width, position: 'relative' }}>
             <GenesPlot
-              genes={includeNonCodingGenes ? genes : codingGenes}
+              genes={visibleGenes}
               includeNonCodingGenes
               renderGeneLabel={(gene: any) => (
                 <GeneLink to={`/gene/${gene.gene_id}`}>
@@ -145,3 +150,7 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
 }
 
 export default GenesInRegionTrack
+
+
+
+
