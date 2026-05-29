@@ -577,7 +577,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   // within the total available width (left + center + right from context).
   const leftPanelWidth = contextLeftPanelWidth
   const GENEALOGY_PANEL_WIDTH = 180
-  const rightPanelWidth = showGenealogy ? GENEALOGY_PANEL_WIDTH : 0
+  const rightPanelWidth = (showGenealogy && !isDiploidView) ? GENEALOGY_PANEL_WIDTH : 0
   const extraRightNeeded = Math.max(0, rightPanelWidth - contextRightPanelWidth)
   const centerWidth = contextCenterWidth - extraRightNeeded
   const totalWidth = leftPanelWidth + centerWidth + rightPanelWidth
@@ -1258,6 +1258,7 @@ function DeckGLLollipopCanvas({
     const allCenterLines: { groupStart: number; groupStop: number; y: number }[] = []
     const allDashedSeparators: { groupStart: number; groupStop: number; y: number }[] = []
     const allChArcs: { x1: number; y1: number; x2: number; y2: number }[] = []
+    const allRohWaves: { startPos: number; stopPos: number; y: number }[] = []
     const allClusterBoxes: { yTop: number; yBottom: number }[] = []
 
     for (let gi = 0; gi < rowItems.length; gi++) {
@@ -1292,6 +1293,8 @@ function DeckGLLollipopCanvas({
             rowY: rowY - 2, color: strandColor, group: dg,
             height: 40,
           })
+          // Squiggly line between strands to indicate ROH
+          allRohWaves.push({ startPos: dg.start, stopPos: dg.stop, y: rowY + 25 })
         } else {
           // Non-ROH: two separated pills with gap
           allBgRects.push({
@@ -1840,6 +1843,33 @@ function DeckGLLollipopCanvas({
       }))
     }
 
+    if (allRohWaves.length > 0) {
+      result.push(new PathLayer({
+        id: 'roh-wave-lines',
+        data: allRohWaves,
+        getPath: (d: { startPos: number; stopPos: number; y: number }) => {
+          const x1 = scalePosition(d.startPos)
+          const x2 = scalePosition(d.stopPos)
+          const span = x2 - x1
+          const waveLen = 12
+          const amplitude = 2.5
+          const pts: [number, number, number][] = []
+          for (let px = 0; px <= span; px += 2) {
+            const x = x1 + px
+            const yOff = Math.sin((px / waveLen) * Math.PI * 2) * amplitude
+            pts.push([x, d.y + yOff, 0])
+          }
+          pts.push([x2, d.y, 0])
+          return pts
+        },
+        getColor: [180, 180, 200, 150],
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getPath: [scalePosition] },
+      }))
+    }
+
     console.timeEnd('[perf] DeckGL global layers')
     return result
   }, [
@@ -2129,6 +2159,7 @@ function ThresholdDragOverlay({
     </div>
   )
 }
+
 
 
 
