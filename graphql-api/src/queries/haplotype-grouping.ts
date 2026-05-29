@@ -760,7 +760,8 @@ export type AutoDefaults = {
 }
 
 function getAutoClusterThreshold(regionSize: number): number {
-  if (regionSize < 50_000) return 0.0
+  if (regionSize < 5_000) return 0.20
+  if (regionSize < 50_000) return 0.25
   if (regionSize > 1_000_000) return 0.70
   const t = (regionSize - 50_000) / (1_000_000 - 50_000)
   return 0.35 + t * 0.30
