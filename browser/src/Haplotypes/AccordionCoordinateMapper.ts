@@ -60,23 +60,39 @@ export class AccordionCoordinateMapper {
       }
     }
 
-    // Build loci with cumulative offsets
-    let cumulativeOffset = 0
-    this.loci = clusters.map((c) => {
+    // Apply per-locus cap
+    const globalMaxPhantom = regionSize * 0.5 // total phantom space ≤ 50% of view
+    const lociWithLengths = clusters.map((c) => {
       let phantomLength = showPhantomRegions ? c.maxLength : 0
       let isTruncated = false
       if (phantomLength > maxCap) {
         phantomLength = maxCap
         isTruncated = true
       }
-      const locus: PhantomLocus = {
-        genomicPos: c.genomicPos,
-        visualPos: c.genomicPos + cumulativeOffset,
-        maxPhantomLength: phantomLength,
-        cumulativeOffset,
-        isTruncated,
+      return { genomicPos: c.genomicPos, phantomLength, isTruncated }
+    })
+
+    // Apply global cap: if total phantom exceeds budget, scale all down proportionally
+    const totalRaw = lociWithLengths.reduce((sum, l) => sum + l.phantomLength, 0)
+    if (totalRaw > globalMaxPhantom) {
+      const scale = globalMaxPhantom / totalRaw
+      for (const l of lociWithLengths) {
+        l.phantomLength = Math.round(l.phantomLength * scale)
+        l.isTruncated = true // all are truncated when global cap kicks in
       }
-      cumulativeOffset += phantomLength
+    }
+
+    // Build loci with cumulative offsets
+    let cumulativeOffset = 0
+    this.loci = lociWithLengths.map((l) => {
+      const locus: PhantomLocus = {
+        genomicPos: l.genomicPos,
+        visualPos: l.genomicPos + cumulativeOffset,
+        maxPhantomLength: l.phantomLength,
+        cumulativeOffset,
+        isTruncated: l.isTruncated,
+      }
+      cumulativeOffset += l.phantomLength
       return locus
     })
 
