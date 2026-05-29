@@ -669,6 +669,7 @@ const LongReadUnifiedView = ({
         </div>
       )}
 
+      <AccordionRegionViewer mapper={accordionMapper} originalRegion={accordionViewRegion}>
       <TrackPageSection>
         <ToggleWrapper>
           <SegmentedControl
@@ -709,7 +710,7 @@ const LongReadUnifiedView = ({
       )}
 
       {viewMode === 'haplotype' && (
-        <AccordionRegionViewer mapper={accordionMapper} originalRegion={accordionViewRegion}>
+        <>
           {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
           <LongReadVariantTrack variants={zoomedVariants} lod={lod} />
           <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
@@ -773,8 +774,10 @@ const LongReadUnifiedView = ({
             />
           )}
           <AccordionPositionAxisTrack />
-        </AccordionRegionViewer>
+        </>
       )}
+
+      </AccordionRegionViewer>
 
       {onChangeZoomRegion && (
         <TrackPageSection>
@@ -817,5 +820,3 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
-
-
