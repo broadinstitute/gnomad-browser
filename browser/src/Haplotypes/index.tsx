@@ -329,7 +329,7 @@ export const Legend = ({
     <LegendWrapper>
       {/* Row 1: Legends */}
       <LegendRow>
-        {plotType === 'lollipop' && <VariantShapeLegend />}
+        {plotType === 'lollipop' && <VariantShapeLegend showPhantomRegions={showPhantomRegions} />}
         {plotType !== 'heatmap' && (
           <LegendSection>
             <LegendItem><span style={{ fontWeight: 'bold' }}>Color:</span></LegendItem>

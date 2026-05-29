@@ -19,8 +19,8 @@ const LegendItem = styled.div`
   font-size: 12px;
 `
 
-// SVG shape renderers for each variant category, centered at (cx, cy) in a 22x22 viewbox
-const SHAPE_RENDERERS: Record<VariantCategory, (color: string) => React.ReactNode> = {
+// Compact SVG shapes for each variant category in a 22x22 viewbox
+const COMPACT_SHAPE_RENDERERS: Record<VariantCategory, (color: string) => React.ReactNode> = {
   snv: (color) => (
     <circle cx={11} cy={11} r={4} fill={color} stroke="#333" strokeWidth={0.5} />
   ),
@@ -42,25 +42,48 @@ const SHAPE_RENDERERS: Record<VariantCategory, (color: string) => React.ReactNod
   ),
 }
 
+// Expanded (phantom bar) shapes for insertion/TR when accordion is ON
+const EXPANDED_SHAPE_RENDERERS: Record<VariantCategory, (color: string) => React.ReactNode> = {
+  ...COMPACT_SHAPE_RENDERERS,
+  insertion: (color) => (
+    <g>
+      <rect x={2} y={8} width={18} height={6} fill={color} opacity={0.6} />
+      <rect x={2} y={8} width={4} height={6} fill={color} />
+    </g>
+  ),
+  tr: (color) => (
+    <g>
+      <rect x={2} y={8} width={18} height={6} fill={color} opacity={0.6} />
+      <rect x={2} y={8} width={4} height={6} fill={color} />
+    </g>
+  ),
+}
+
+// Default export for backward compatibility — uses compact shapes
+const SHAPE_RENDERERS = COMPACT_SHAPE_RENDERERS
+
 const SHAPE_ORDER: VariantCategory[] = ['snv', 'insertion', 'deletion', 'sv', 'tr']
 
 /**
  * Displays variant shape legend items using a neutral gray color.
- * Used to explain the shape encoding (circle = SNV, triangle = insertion, etc.)
+ * When showPhantomRegions is true, insertion/TR shapes switch to expanded phantom bars.
  */
-export const VariantShapeLegend = () => (
-  <LegendSection>
-    <LegendItem><span style={{ fontWeight: 'bold' }}>Variants:</span></LegendItem>
-    {SHAPE_ORDER.map((cat) => (
-      <LegendItem key={cat}>
-        <svg width={22} height={22}>
-          {SHAPE_RENDERERS[cat]('#888')}
-        </svg>
-        <span>{VARIANT_CATEGORY_LABELS[cat]}</span>
-      </LegendItem>
-    ))}
-  </LegendSection>
-)
+export const VariantShapeLegend = ({ showPhantomRegions = false }: { showPhantomRegions?: boolean }) => {
+  const renderers = showPhantomRegions ? EXPANDED_SHAPE_RENDERERS : COMPACT_SHAPE_RENDERERS
+  return (
+    <LegendSection>
+      <LegendItem><span style={{ fontWeight: 'bold' }}>Variants:</span></LegendItem>
+      {SHAPE_ORDER.map((cat) => (
+        <LegendItem key={cat}>
+          <svg width={22} height={22}>
+            {renderers[cat]('#888')}
+          </svg>
+          <span>{VARIANT_CATEGORY_LABELS[cat]}</span>
+        </LegendItem>
+      ))}
+    </LegendSection>
+  )
+}
 
 /**
  * Displays variant color legend items using VARIANT_CATEGORY_COLORS with their shapes.

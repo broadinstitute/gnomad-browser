@@ -36,6 +36,28 @@ export const VARIANT_CATEGORY_COLORS: Record<VariantCategory, string> = {
 }
 
 /**
+ * Per-allele_type mechanism colors for the 14 raw allele_type values.
+ * Used for color decisions (left-edge accent stripe on phantom bars, subtype legend).
+ * Shape/geometry decisions still use getVariantCategory() → 5 categories.
+ */
+export const ALLELE_TYPE_COLORS: Record<string, string> = {
+  snv: '#4A90D9',
+  ins: '#43A047',
+  alu_ins: '#7CB342',
+  sva_ins: '#558B2F',
+  numt: '#26A69A',
+  del: '#D73027',
+  alu_del: '#D73027',
+  line_del: '#D73027',
+  sva_del: '#D73027',
+  trv: '#E8A838',
+  dup: '#9467BD',
+  dup_interspersed: '#7E57C2',
+  inv_dup: '#AB47BC',
+  complex_dup: '#78909C',
+}
+
+/**
  * Labels for the 5-category filter UI.
  */
 export const VARIANT_CATEGORY_LABELS: Record<VariantCategory, string> = {
