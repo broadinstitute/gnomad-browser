@@ -61,6 +61,7 @@ const ResetButton = styled.button`
 const TrackWrapper = styled.div`
   position: relative;
   user-select: none;
+  overflow: hidden;
 `
 
 const SelectionOverlay = styled.div<{ $isDragging: boolean }>`
@@ -495,3 +496,4 @@ export default function ZoomOverview({
     </OverviewContainer>
   )
 }
+
