@@ -917,6 +917,11 @@ type HaplotypeTrackProps = {
   regionSize?: number
   showPhantomRegions?: boolean
   onShowPhantomRegionsChange?: (show: boolean) => void
+  onVariantClick?: (pos: number) => void
+  onClusterSelect?: (clusterId: string) => void
+  selectedClusterId?: string | null
+  highlightedVariantIds?: Set<string> | null
+  selectedVariantPos?: number | null
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1826,6 +1831,11 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   regionSize = 0,
   showPhantomRegions = true,
   onShowPhantomRegionsChange,
+  onVariantClick,
+  onClusterSelect,
+  selectedClusterId,
+  highlightedVariantIds,
+  selectedVariantPos,
 }, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -2104,6 +2114,11 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             clusterThreshold={clusterThreshold}
             onClusterThresholdChange={onClusterThresholdChange}
             isDiploidView={isDiploidView}
+            onVariantClick={onVariantClick}
+            onClusterSelect={onClusterSelect}
+            selectedClusterId={selectedClusterId}
+            highlightedVariantIds={highlightedVariantIds}
+            selectedVariantPos={selectedVariantPos}
           />
         </>
       )}
@@ -2144,6 +2159,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 })
 
 export default HaplotypeTrack
+
 
 
 

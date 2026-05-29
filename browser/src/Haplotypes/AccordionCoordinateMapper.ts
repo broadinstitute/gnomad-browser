@@ -35,8 +35,15 @@ export class AccordionCoordinateMapper {
 
     // Filter for insertion/TR variants with abs(allele_length) >= 50
     // Note: summary variants from GraphQL use "length", haplotype variants use "allele_length"
+    // TRVs often have null length in summary data — fall back to main_reference_region span
     const ACCORDION_ALLELE_TYPES = new Set(['ins', 'alu_ins', 'sva_ins', 'numt', 'trv'])
-    const getLen = (v: any): number => Math.abs(v.allele_length ?? v.length ?? 0)
+    const getLen = (v: any): number => {
+      const direct = v.allele_length ?? v.length
+      if (direct != null && direct !== 0) return Math.abs(direct)
+      const ref = v.main_reference_region
+      if (ref && ref.stop > ref.start) return ref.stop - ref.start
+      return 0
+    }
     const candidates = unfilteredVariants.filter((v) => {
       const aType = (v.allele_type || '').toLowerCase()
       return ACCORDION_ALLELE_TYPES.has(aType) && getLen(v) >= 50
