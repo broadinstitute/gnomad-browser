@@ -186,9 +186,10 @@ const LongReadUnifiedView = ({
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
 
-  // Haplotype mode state — raw rehydrated data + computed result
+  // Haplotype mode state — Web Worker computation with main-thread fallback
   const [haplotypeData, setHaplotypeData] = useState<ComputedHaplotypeData | null>(null)
   const [autoDefaults, setAutoDefaults] = useState<AutoDefaults>({ floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false })
+  const workerRef = useRef<Worker | null>(null)
   const rawDataRef = useRef<{ variants: import('../Haplotypes/index').LRVariant[]; carrierIndices: Record<string, number[]>; trvAlts?: Record<string, Record<number, string>> } | null>(null)
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
@@ -326,6 +327,31 @@ const LongReadUnifiedView = ({
     fetchMeta()
   }, [viewMode, sampleMetadata.size])
 
+  // Initialize Web Worker (with main-thread fallback)
+  useEffect(() => {
+    try {
+      const w = new Worker(new URL('../Haplotypes/haplotypeWorker.ts', import.meta.url))
+      w.onmessage = (e: MessageEvent) => {
+        if (e.data.type === 'READY') {
+          setHaplotypeData(e.data.data)
+          setHaplotypeLoading(false)
+        } else if (e.data.type === 'UPDATED') {
+          setHaplotypeData(e.data.data)
+        }
+      }
+      w.onerror = () => {
+        console.warn('[worker] haplotype worker failed, using main thread')
+        w.terminate()
+        workerRef.current = null
+      }
+      workerRef.current = w
+      console.log('[worker] haplotype worker initialized')
+    } catch {
+      console.warn('[worker] haplotype worker unavailable, using main thread')
+    }
+    return () => { workerRef.current?.terminate() }
+  }, [])
+
   // Fetch raw haplotype data once per region
   const abortControllerRef = useRef<AbortController | null>(null)
   useEffect(() => {
@@ -351,19 +377,23 @@ const LongReadUnifiedView = ({
         setDeferredClusterThreshold(defaults.defaultClusterThreshold)
         setIsClusteredView(defaults.isClusteredView)
 
-        // Rehydrate SoA variants and compute
-        const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
-          ? rehydrateVariants(result.variants as any)
-          : (result.variants as any) || []
-        const carrierIndices = result.carrier_variant_indices || {}
-        rawDataRef.current = { variants, carrierIndices, trvAlts: result.trv_alts }
-        const baseData = computeHaplotypeView(
-          variants, carrierIndices,
-          defaults.defaultAf, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
-          result.trv_alts
-        )
-        setHaplotypeData(baseData)
-        setHaplotypeLoading(false)
+        if (workerRef.current) {
+          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy })
+        } else {
+          // Main-thread fallback: rehydrate SoA variants and compute directly
+          const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
+            ? rehydrateVariants(result.variants as any)
+            : (result.variants as any) || []
+          const carrierIndices = result.carrier_variant_indices || {}
+          rawDataRef.current = { variants, carrierIndices, trvAlts: result.trv_alts }
+          const baseData = computeHaplotypeView(
+            variants, carrierIndices,
+            defaults.defaultAf, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
+            result.trv_alts
+          )
+          setHaplotypeData(baseData)
+          setHaplotypeLoading(false)
+        }
       })
       .catch((error: any) => {
         if (error?.name === 'AbortError') return
@@ -375,16 +405,26 @@ const LongReadUnifiedView = ({
   // Recompute when AF/sort/clustering changes
   const hasData = haplotypeData !== null
   useEffect(() => {
-    if (!hasData || !rawDataRef.current) return
-    const { variants, carrierIndices, trvAlts } = rawDataRef.current
-    let result: ComputedHaplotypeData
-    if (isClusteredView) {
-      const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts)
-      result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
-    } else {
-      result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts)
+    if (!hasData) return
+    if (workerRef.current) {
+      workerRef.current.postMessage({
+        type: 'UPDATE_AF',
+        minAf: threshold,
+        isClusteredView,
+        clusterThreshold: deferredClusterThreshold,
+        sortBy,
+      })
+    } else if (rawDataRef.current) {
+      const { variants, carrierIndices, trvAlts } = rawDataRef.current
+      let result: ComputedHaplotypeData
+      if (isClusteredView) {
+        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts)
+        result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
+      } else {
+        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts)
+      }
+      setHaplotypeData(result)
     }
-    setHaplotypeData(result)
   }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, hasData])
 
   const haplotypeGroups: HaplotypeGroups = haplotypeData || { groups: [] }
@@ -729,5 +769,3 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
-
-
