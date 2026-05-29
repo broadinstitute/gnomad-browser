@@ -688,8 +688,8 @@ const LongReadUnifiedView = ({
 
       {viewMode === 'haplotype' && (
         <>
-          {lod.showDensityTrack && <VariantDensityTrack variants={displayVariants} />}
-          <LongReadVariantTrack variants={displayVariants} lod={lod} />
+          {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
+          <LongReadVariantTrack variants={zoomedVariants} lod={lod} />
           <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
           {showMqtl && (
             <MQTLTrack
@@ -790,4 +790,5 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
+
 
