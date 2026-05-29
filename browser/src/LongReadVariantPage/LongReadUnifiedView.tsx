@@ -9,7 +9,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
-import HaplotypeTrack, { HaplotypeGroups, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint } from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint } from '../Haplotypes'
 import {
   computeHaplotypeView,
   filterDisplayVariants,
@@ -204,6 +204,7 @@ const LongReadUnifiedView = ({
 
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('similarity_score')
+  const [isDiploidView, setIsDiploidView] = useState(false)
   const [plotType, setPlotType] = useState('lollipop')
   const [colorMode, setColorMode] = useState('population')
   const showGenealogy = searchParams.get('show_tree') !== 'false'
@@ -230,6 +231,15 @@ const LongReadUnifiedView = ({
     setClusterThreshold(value)
     debouncedCommitThreshold(value)
   }, [debouncedCommitThreshold])
+
+  const handleDiploidViewChange = useCallback((diploid: boolean) => {
+    setIsDiploidView(diploid)
+    if (diploid && !['diplotype_frequency', 'roh_fraction', 'compound_het'].includes(sortBy)) {
+      setSortBy('diplotype_frequency')
+    } else if (!diploid && !['similarity_score', 'sample_count'].includes(sortBy)) {
+      setSortBy('similarity_score')
+    }
+  }, [sortBy])
 
   // Clear expanded clusters when threshold/region changes
   const prevClusterKey = useRef(`${deferredClusterThreshold}-${threshold}-${start}-${stop}`)
@@ -406,7 +416,7 @@ const LongReadUnifiedView = ({
       })
   }, [viewMode, chrom, start, stop])
 
-  // Recompute when AF/sort/clustering changes
+  // Recompute when AF/sort/clustering/diploid changes
   const hasData = haplotypeData !== null
   useEffect(() => {
     if (!hasData) return
@@ -418,11 +428,14 @@ const LongReadUnifiedView = ({
         isClusteredView,
         clusterThreshold: deferredClusterThreshold,
         sortBy,
+        isDiploidView,
       })
     } else if (rawDataRef.current) {
       const { variants, carrierIndices, trvAlts } = rawDataRef.current
       let result: ComputedHaplotypeData
-      if (isClusteredView) {
+      if (isDiploidView) {
+        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true)
+      } else if (isClusteredView) {
         const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts)
         result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
       } else {
@@ -430,9 +443,9 @@ const LongReadUnifiedView = ({
       }
       setHaplotypeData(result)
     }
-  }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, hasData])
+  }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, isDiploidView, hasData])
 
-  const haplotypeGroups: HaplotypeGroups = haplotypeData || { groups: [] }
+  const haplotypeGroups: HaplotypeGroups = (haplotypeData as HaplotypeGroups | null) || { groups: [] }
 
   // Fetch methylation summary + outliers when entering haplotype mode
   useEffect(() => {
@@ -689,7 +702,7 @@ const LongReadUnifiedView = ({
           {haplotypeGroups && (
             <HaplotypeTrack
               ref={trackRef}
-              haplotypeGroups={haplotypeGroups.groups}
+              haplotypeGroups={haplotypeGroups.groups as HaplotypeGroup[]}
               clusters={haplotypeGroups.clusters}
               methylationData={methylationData}
               methylationSummary={methylationSummary}
@@ -728,6 +741,8 @@ const LongReadUnifiedView = ({
               treeJson={haplotypeGroups.tree_json}
               minAfFloor={autoDefaults.floor}
               minAfCeiling={autoDefaults.ceiling}
+              isDiploidView={isDiploidView}
+              onIsDiploidViewChange={handleDiploidViewChange}
             />
           )}
           <PositionAxisTrack />
@@ -762,7 +777,7 @@ const LongReadUnifiedView = ({
             <HaplotypeVariantTable
               ref={tableRef}
               mode="haplotype"
-              haplotypeGroups={haplotypeGroups}
+              haplotypeGroups={haplotypeGroups as { groups: HaplotypeGroup[] }}
               sampleMetadata={sampleMetadata}
               onHoverVariant={setHoveredVariantPosition}
               onVisibleVariantChange={handleVisibleVariantChange}

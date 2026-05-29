@@ -9,6 +9,7 @@ import { getVariantCategory, getLodVisibility } from '../LongReadVariantPage/var
 import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
 import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation } from './index'
+import type { DiplotypeGroup } from './haplotypeCompute'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 type Variant = LRVariant
@@ -45,7 +46,8 @@ type BackgroundRect = {
   groupStop: number // raw genomic position
   rowY: number
   color: [number, number, number, number]
-  group: HaplotypeGroup
+  group: HaplotypeGroup | DiplotypeGroup | null
+  height?: number // optional dynamic height (default 15)
 }
 
 type SpanningRect = {
@@ -215,6 +217,7 @@ function getVariantShape(variant: Variant): VariantShape {
 type RowItem =
   | { type: 'cluster'; cluster: HaplotypeCluster }
   | { type: 'group'; group: HaplotypeGroup; isChild: boolean }
+  | { type: 'diplotype'; group: DiplotypeGroup }
 
 // Pre-computed population stats for a row (group or cluster)
 type PopulationStats = {
@@ -278,6 +281,7 @@ type DeckGLLollipopTrackProps = {
   toggleClusterExpansion?: (clusterId: string) => void
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
+  isDiploidView?: boolean
 }
 
 export type DeckGLLollipopTrackHandle = {
@@ -310,6 +314,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   toggleClusterExpansion,
   clusterThreshold = 0,
   onClusterThresholdChange,
+  isDiploidView = false,
 }, ref) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -336,8 +341,16 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     return map
   }, [displayGroups, haplotypeGroups])
 
-  // Build mixed RowItem array: clusters + expanded groups
+  // Build mixed RowItem array: clusters + expanded groups (or diplotype rows)
   const rowItems: RowItem[] = useMemo(() => {
+    if (isDiploidView) {
+      return displayGroups.map(group => {
+        if ('is_diplotype' in group && (group as any).is_diplotype) {
+          return { type: 'diplotype' as const, group: group as unknown as DiplotypeGroup }
+        }
+        return { type: 'group' as const, group, isChild: false }
+      })
+    }
     if (!isClusteredView || !clusters || clusters.length === 0) {
       return displayGroups.map(group => ({ type: 'group' as const, group, isChild: false }))
     }
@@ -354,7 +367,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       }
     }
     return items
-  }, [isClusteredView, clusters, displayGroups, expandedClusterIds, groupByHash])
+  }, [isClusteredView, isDiploidView, clusters, displayGroups, expandedClusterIds, groupByHash])
 
   // Pre-compute population stats for each row (used for background tint + left panel bars)
   const populationStatsByRow: (PopulationStats | null)[] = useMemo(() => {
@@ -363,6 +376,9 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     }
     return rowItems.map((item) => {
       if (item.type === 'group') {
+        return computePopulationStats(item.group.samples, sampleMetadata)
+      }
+      if (item.type === 'diplotype') {
         return computePopulationStats(item.group.samples, sampleMetadata)
       }
       // Cluster: aggregate all member groups' samples
@@ -384,8 +400,19 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     for (const item of rowItems) {
       offsets.push(cumY)
       if (item.type === 'cluster') {
-        // Clusters are a single row
         cumY += VARIANT_ROW_HEIGHT
+      } else if (item.type === 'diplotype') {
+        let h = VARIANT_ROW_HEIGHT * 2 + 8 // 58px: double-height + padding between diplotypes
+        if (showMethylation) h += METH_TRACK_HEIGHT
+        if (showMqtl && mqtlData.length > 0) {
+          const allVars = [...item.group.haplotypeA.variants, ...item.group.haplotypeB.variants]
+          const groupVarPositions = new Set(allVars.map((v) => v.pos))
+          const hasGroupMqtl = mqtlData.some(
+            (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
+          )
+          if (hasGroupMqtl) h += MQTL_PAD + MQTL_TRACK_HEIGHT
+        }
+        cumY += h
       } else {
         const group = item.group
         const showGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
@@ -477,6 +504,13 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           const group = item.group
           if (group.variants.variants.some((v) => v.pos >= pos) ||
               group.below_threshold.variants.some((v) => v.pos >= pos)) {
+            scrollContainerRef.current.scrollTop = rowOffsets[i]
+            return
+          }
+        } else if (item.type === 'diplotype') {
+          const dg = item.group
+          if (dg.haplotypeA.variants.some((v) => v.pos >= pos) ||
+              dg.haplotypeB.variants.some((v) => v.pos >= pos)) {
             scrollContainerRef.current.scrollTop = rowOffsets[i]
             return
           }
@@ -611,6 +645,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           clusters={clusters}
           isClusteredView={isClusteredView}
           populationStatsByRow={populationStatsByRow}
+          isDiploidView={isDiploidView}
         />
 
         {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
@@ -682,6 +717,7 @@ type DeckGLCanvasProps = {
   clusters?: HaplotypeCluster[]
   isClusteredView: boolean
   populationStatsByRow: (PopulationStats | null)[]
+  isDiploidView: boolean
 }
 
 /** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
@@ -734,6 +770,7 @@ function DeckGLLollipopCanvas({
   clusters,
   isClusteredView,
   populationStatsByRow,
+  isDiploidView,
 }: DeckGLCanvasProps) {
   const canvasWidth = width
 
@@ -758,11 +795,85 @@ function DeckGLLollipopCanvas({
     const treeLines: LeftPanelTreeLine[] = []
     const isPopMode = colorMode === 'population'
 
+    // Compute total cohort size for diplotype percentage display
+    const cohortTotal = isDiploidView
+      ? rowItems.reduce((sum, item) => sum + (item.type === 'diplotype' ? item.group.samples.length : 0), 0)
+      : 0
+
     for (let i = 0; i < rowItems.length; i++) {
       const item = rowItems[i]
       const y = rowOffsets[i] + ROW_CENTER_Y
 
-      if (item.type === 'cluster') {
+      if (item.type === 'diplotype') {
+        const group = item.group
+        const popStats = populationStatsByRow[i]
+
+        // Sample ID(s) above the population bar
+        const sampleLabel = group.samples.length <= 3
+          ? group.samples.map(s => s.sample_id).join(', ')
+          : `${group.samples[0].sample_id} +${group.samples.length - 1}`
+        texts.push({
+          position: [5, y - 8, 0],
+          text: sampleLabel,
+          color: [100, 100, 100, 255],
+          size: 8,
+        })
+
+        if (isPopMode && popStats && popStats.totalSamples > 0) {
+          const barX = 5
+          const barWidth = 60
+          const barH = 10
+          const barTop = y - barH / 2
+          const sortedPops = Object.entries(popStats.counts).sort((a, b) => b[1] - a[1])
+          let accX = barX
+          for (const [pop, count] of sortedPops) {
+            const w = (count / popStats.totalSamples) * barWidth
+            const color = cssColorToRgba(SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A'])
+            popBars.push({
+              polygon: [[accX, barTop], [accX + w, barTop], [accX + w, barTop + barH], [accX, barTop + barH]],
+              color,
+            })
+            accX += w
+          }
+          const pct = cohortTotal > 0 ? ((popStats.totalSamples / cohortTotal) * 100).toFixed(1) : '?'
+          texts.push({
+            position: [barX + barWidth + 4, y, 0],
+            text: `${popStats.totalSamples} (${pct}%)`,
+            color: [0, 0, 0, 255],
+            size: 9,
+            tooltipText: `${popStats.totalSamples} samples (${pct}% of cohort)`,
+          })
+          // Clinical badges after frequency
+          let badgeX = barX + barWidth + 50
+          if (group.is_compound_het) {
+            texts.push({ position: [badgeX, y, 0], text: '[CH]', color: [220, 38, 38, 255], size: 8 })
+            badgeX += 22
+          }
+          if (group.is_roh) {
+            texts.push({ position: [badgeX, y, 0], text: '[ROH]', color: [218, 165, 32, 255], size: 8 })
+          }
+        } else {
+          // Non-pop mode: sample count + percentage + badges
+          const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
+          circles.push({ position: [5, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${group.samples.length}` })
+          const pct = cohortTotal > 0 ? ((group.samples.length / cohortTotal) * 100).toFixed(1) : '?'
+          texts.push({
+            position: [15, y, 0],
+            text: `${group.samples.length} (${pct}%)`,
+            color: [0, 0, 0, 255],
+            size: 11,
+            tooltipText: `${group.samples.length} samples (${pct}% of cohort)`,
+          })
+          let badgeX = 68
+          if (group.is_compound_het) {
+            texts.push({ position: [badgeX, y, 0], text: '[CH]', color: [220, 38, 38, 255], size: 9 })
+            badgeX += 24
+          }
+          if (group.is_roh) {
+            texts.push({ position: [badgeX, y, 0], text: '[ROH]', color: [218, 165, 32, 255], size: 9 })
+          }
+        }
+      } else if (item.type === 'cluster') {
         const cluster = item.cluster
         const isExpanded = expandedClusterIds?.has(cluster.cluster_id)
 
@@ -923,7 +1034,7 @@ function DeckGLLollipopCanvas({
     }
 
     return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines }
-  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, colorMode, populationStatsByRow])
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, colorMode, populationStatsByRow, isDiploidView])
 
   // Left panel DeckGL layers
   const leftPanelLayers = useMemo(() => {
@@ -1128,20 +1239,154 @@ function DeckGLLollipopCanvas({
     const allMethPoints: MethPoint[] = []
     const allMqtlArcs: MqtlArc[] = []
     const allCenterLines: { groupStart: number; groupStop: number; y: number }[] = []
+    const allDashedSeparators: { groupStart: number; groupStop: number; y: number }[] = []
+    const allChArcs: { x1: number; y1: number; x2: number; y2: number }[] = []
     const allClusterBoxes: { yTop: number; yBottom: number }[] = []
 
     for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
 
-      // Center line data for this row
-      const centerLineStart = item.type === 'cluster' ? start : item.group.start
-      const centerLineStop = item.type === 'cluster' ? stop : item.group.stop
-      allCenterLines.push({ groupStart: centerLineStart, groupStop: centerLineStop, y: rowY + ROW_CENTER_Y })
-
       // Population-mode background tint: plurality color with proportional opacity
       const popStats = populationStatsByRow[gi]
       const isPopMode = colorMode === 'population'
+
+      if (item.type === 'diplotype') {
+        const dg = item.group
+        const yTop = rowY + ROW_CENTER_Y   // 12.5 — strand A baseline
+        const yBottom = rowY + 37.5         // strand B baseline
+
+        // Center lines for both strands
+        allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yTop })
+        allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yBottom })
+
+        // Two separate strand backgrounds — chromosome-like pill shapes
+        let strandColor: [number, number, number, number] = [232, 238, 248, 255]
+        if (dg.is_roh) {
+          strandColor = [255, 243, 215, 255]
+        } else if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
+          const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
+          const alpha = Math.round(40 * popStats.dominantFraction)
+          strandColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(12, alpha)]
+        }
+
+        // Strand A pill (top): rowY+3 to rowY+22
+        allBgRects.push({
+          groupStart: dg.start, groupStop: dg.stop,
+          rowY: rowY - 2, color: strandColor, group: dg,
+          height: 19,
+        })
+        // Strand B pill (bottom): rowY+26 to rowY+45, 4px gap
+        allBgRects.push({
+          groupStart: dg.start, groupStop: dg.stop,
+          rowY: rowY + 21, color: strandColor, group: dg,
+          height: 19,
+        })
+
+        const effectiveColorMode = isPopMode ? 'allele' : colorMode
+
+        // Helper to push variants for a strand
+        const pushStrandVariants = (variants: LRVariant[], baseline: number) => {
+          for (const variant of variants) {
+            const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+            const isLarge = Math.abs(variant.allele_length || 0) >= 50
+            if (cat === 'snv' && !lod.showSnvs) continue
+            if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
+
+            const color = getVariantColor(
+              variant, effectiveColorMode, start, stop, sampleMetadata, undefined,
+              locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
+            )
+
+            if ((cat === 'deletion' || cat === 'sv') && isLarge) {
+              const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
+              allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color, variant, groupHash: dg.hash })
+            } else if (cat === 'deletion') {
+              const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
+              allDeletionLines.push({ position: variant.pos, yTop: baseline - 7.5, yBottom: baseline + 7.5, color, width: thickness, variant })
+            } else {
+              allVariantPoints.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
+            }
+          }
+        }
+
+        // Strand A variants at yTop, Strand B at yBottom
+        pushStrandVariants(dg.haplotypeA.variants, yTop)
+        pushStrandVariants(dg.haplotypeB.variants, yBottom)
+
+        // Below-threshold variants for both strands
+        const pushBelowThreshold = (variants: LRVariant[], baseline: number) => {
+          for (const variant of variants) {
+            const shape = getVariantShape(variant)
+            if (shape === 'deletion') {
+              allDeletionLines.push({ position: variant.pos, yTop: baseline - 4.5, yBottom: baseline + 4.5, color: [128, 128, 128, 100], width: 1, variant })
+            } else {
+              allBelowThresholdPoints.push({ position: variant.pos, y: baseline, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: dg.hash })
+            }
+          }
+        }
+        pushBelowThreshold(dg.below_thresholdA.variants, yTop)
+        pushBelowThreshold(dg.below_thresholdB.variants, yBottom)
+
+        // Compound het arcs
+        if (dg.is_compound_het && dg.compound_het_pairs.length > 0) {
+          for (const pair of dg.compound_het_pairs) {
+            allChArcs.push({ x1: pair.variantA.pos, y1: yTop, x2: pair.variantB.pos, y2: yBottom })
+          }
+        }
+
+        // Methylation — centered between strands
+        if (showMethylation) {
+          const groupSampleIds = new Set(dg.samples.map((s) => s.sample_id))
+          const methSampleData = methylationData.filter((d) => groupSampleIds.has(d.sample))
+          if (methSampleData.length > 0) {
+            const byPos = new Map<number, number[]>()
+            for (const d of methSampleData) {
+              const arr = byPos.get(d.pos1)
+              if (arr) arr.push(d.methylation)
+              else byPos.set(d.pos1, [d.methylation])
+            }
+            // Place methylation below the diplotype block
+            const methBaseY = rowY + VARIANT_ROW_HEIGHT * 2
+            const methYScale = scaleLinear().domain([0, 100]).range([METH_TRACK_HEIGHT - 4, 4])
+            for (const [pos, values] of byPos) {
+              const mean = values.reduce((a, b) => a + b, 0) / values.length
+              allMethPoints.push({ position: pos, y: methBaseY + methYScale(mean), color: [74, 85, 104, 255] })
+            }
+          }
+        }
+
+        // mQTL arcs
+        if (showMqtl && mqtlData.length > 0) {
+          const allVars = [...dg.haplotypeA.variants, ...dg.haplotypeB.variants]
+          const groupVarPositions = new Set(allVars.map((v) => v.pos))
+          const groupMqtl = mqtlData.filter(
+            (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= (mqtlMinLogP || 0)
+          )
+          if (groupMqtl.length > 0) {
+            const mqtlBaseY = rowY + VARIANT_ROW_HEIGHT * 2 + (showMethylation ? METH_TRACK_HEIGHT : 0) + MQTL_PAD + MQTL_TRACK_HEIGHT
+            const maxLogP = Math.max(2, ...groupMqtl.map((d: any) => -Math.log10(d.p_value)))
+            const hScale = scaleLinear().domain([0, maxLogP]).range([0, MQTL_TRACK_HEIGHT - 4])
+            for (const d of groupMqtl) {
+              const logP = -Math.log10(d.p_value)
+              const arcH = hScale(logP)
+              const isPositive = d.effect_size > 0
+              const opacity = Math.min(204, Math.round(51 + (logP / maxLogP) * 153))
+              allMqtlArcs.push({
+                variantPos: d.variant_pos, cpgPos: d.cpg_pos, arcHeight: arcH, baseY: mqtlBaseY,
+                color: isPositive ? [220, 38, 38, opacity] : [37, 99, 235, opacity], width: 1.5,
+              })
+            }
+          }
+        }
+
+        continue // Skip to next row — diplotype fully handled
+      }
+
+      // Center line data for haploid/cluster rows
+      const centerLineStart = item.type === 'cluster' ? start : item.group.start
+      const centerLineStop = item.type === 'cluster' ? stop : item.group.stop
+      allCenterLines.push({ groupStart: centerLineStart, groupStop: centerLineStop, y: rowY + ROW_CENTER_Y })
 
       if (item.type === 'cluster') {
         const cluster = item.cluster
@@ -1307,19 +1552,78 @@ function DeckGLLollipopCanvas({
     const result: any[] = []
 
     if (allBgRects.length > 0) {
+      // Generate rounded-rect polygon (pill shape) for diplotype strand backgrounds
+      const roundedRect = (x1: number, y1: number, x2: number, y2: number, r: number): [number, number][] => {
+        const pts: [number, number][] = []
+        const steps = 6
+        // top-right arc
+        for (let i = 0; i <= steps; i++) {
+          const a = -Math.PI / 2 + (Math.PI / 2) * (i / steps)
+          pts.push([x2 - r + r * Math.cos(a), y1 + r + r * Math.sin(a)])
+        }
+        // bottom-right arc
+        for (let i = 0; i <= steps; i++) {
+          const a = 0 + (Math.PI / 2) * (i / steps)
+          pts.push([x2 - r + r * Math.cos(a), y2 - r + r * Math.sin(a)])
+        }
+        // bottom-left arc
+        for (let i = 0; i <= steps; i++) {
+          const a = Math.PI / 2 + (Math.PI / 2) * (i / steps)
+          pts.push([x1 + r + r * Math.cos(a), y2 - r + r * Math.sin(a)])
+        }
+        // top-left arc
+        for (let i = 0; i <= steps; i++) {
+          const a = Math.PI + (Math.PI / 2) * (i / steps)
+          pts.push([x1 + r + r * Math.cos(a), y1 + r + r * Math.sin(a)])
+        }
+        return pts
+      }
+
       result.push(new SolidPolygonLayer({
         id: 'bg-rects-layer',
         data: allBgRects,
-        getPolygon: (d: BackgroundRect) => [
-          [scalePosition(d.groupStart), d.rowY + 5],
-          [scalePosition(d.groupStop), d.rowY + 5],
-          [scalePosition(d.groupStop), d.rowY + 20],
-          [scalePosition(d.groupStart), d.rowY + 20],
-        ],
+        getPolygon: (d: BackgroundRect) => {
+          const h = d.height || 15
+          const x1 = scalePosition(d.groupStart)
+          const x2 = scalePosition(d.groupStop)
+          const y1 = d.rowY + 5
+          const y2 = y1 + h
+          const isDiplotype = d.group && 'is_diplotype' in d.group
+          if (isDiplotype) {
+            const r = Math.min(8, h / 2)
+            return roundedRect(x1, y1, x2, y2, r)
+          }
+          return [[x1, y1], [x2, y1], [x2, y2], [x1, y2]]
+        },
         getFillColor: (d: BackgroundRect) => d.color,
         pickable: false,
         updateTriggers: { getPolygon: [scalePosition] },
       }))
+
+      // Outlines for diplotype pills
+      const diplotypePills = allBgRects.filter(d => d.group && 'is_diplotype' in d.group)
+      if (diplotypePills.length > 0) {
+        result.push(new PathLayer({
+          id: 'diplotype-pill-outlines',
+          data: diplotypePills,
+          getPath: (d: BackgroundRect) => {
+            const h = d.height || 15
+            const x1 = scalePosition(d.groupStart)
+            const x2 = scalePosition(d.groupStop)
+            const y1 = d.rowY + 5
+            const y2 = y1 + h
+            const r = Math.min(8, h / 2)
+            const pts = roundedRect(x1, y1, x2, y2, r)
+            pts.push(pts[0]) // close the path
+            return pts.map(([x, y]) => [x, y, 0])
+          },
+          getColor: [190, 200, 215, 180],
+          getWidth: 1,
+          widthUnits: 'pixels' as const,
+          pickable: false,
+          updateTriggers: { getPath: [scalePosition] },
+        }))
+      }
     }
 
     if (allClusterBoxes.length > 0) {
@@ -1473,6 +1777,43 @@ function DeckGLLollipopCanvas({
       }))
     }
 
+    // Dashed separator lines between diplotype strands
+    if (allDashedSeparators.length > 0) {
+      result.push(new LineLayer({
+        id: 'dashed-separators-layer',
+        data: allDashedSeparators,
+        getSourcePosition: (d: any) => [scalePosition(d.groupStart), d.y, 0],
+        getTargetPosition: (d: any) => [scalePosition(d.groupStop), d.y, 0],
+        getColor: [168, 168, 168, 150],
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+      }))
+    }
+
+    // Compound het arcs connecting severe variants across strands
+    if (allChArcs.length > 0) {
+      result.push(new LineLayer({
+        id: 'compound-het-arcs',
+        data: allChArcs,
+        getSourcePosition: (d: any) => [scalePosition(d.x1), d.y1, 0],
+        getTargetPosition: (d: any) => [scalePosition(d.x2), d.y2, 0],
+        getColor: [220, 38, 38, 200],
+        getWidth: 2,
+        widthUnits: 'pixels' as const,
+        pickable: true,
+        onHover: (info: any) => {
+          if (info.picked && info.object) {
+            onHover({ ...info, object: { ...info.object, tooltipText: 'Compound Heterozygous Pair' } })
+          } else {
+            onHover(info)
+          }
+        },
+        updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+      }))
+    }
+
     console.timeEnd('[perf] DeckGL global layers')
     return result
   }, [
@@ -1494,6 +1835,7 @@ function DeckGLLollipopCanvas({
     onHover,
     populationStatsByRow,
     expandedClusterIds,
+    isDiploidView,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers
@@ -1761,3 +2103,9 @@ function ThresholdDragOverlay({
     </div>
   )
 }
+
+
+
+
+
+

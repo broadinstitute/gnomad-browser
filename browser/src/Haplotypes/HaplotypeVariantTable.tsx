@@ -1505,10 +1505,21 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     for (const group of haplotypeGroups.groups) {
       const seen = new Set<string>()
       // Include both above-threshold and below-threshold variants
-      const allVariants = [
-        ...group.variants.variants,
-        ...(group.below_threshold?.variants || []),
-      ]
+      let allVariants: any[]
+      if ('is_diplotype' in group && (group as any).is_diplotype) {
+        const dg = group as any
+        allVariants = [
+          ...(dg.haplotypeA?.variants || []),
+          ...(dg.haplotypeB?.variants || []),
+          ...(dg.below_thresholdA?.variants || []),
+          ...(dg.below_thresholdB?.variants || []),
+        ]
+      } else {
+        allVariants = [
+          ...group.variants.variants,
+          ...(group.below_threshold?.variants || []),
+        ]
+      }
       for (const v of allVariants) {
         const isTrv = isTrVariant(v)
         // TR variants group by chrom:pos:TRV; others by pos:ref:alt
@@ -1988,3 +1999,4 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 })
 
 export default React.memo(HaplotypeVariantTable)
+
