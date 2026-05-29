@@ -1010,18 +1010,19 @@ const MethylationHelp = () => (
 const GenealogyHelp = () => (
   <>
     <p>
-      This displays a hierarchical clustering tree that maps out the evolutionary and structural
-      relationships between the haplotype groups on the screen. When activated, the rows
-      automatically reorder themselves to match the tree topology, placing closely related
-      groups next to each other and preventing branches from crossing.
+      Displays a UPGMA hierarchical clustering tree showing the relationships between
+      haplotype groups. Rows automatically reorder to match the tree topology, placing
+      closely related groups next to each other.
     </p>
     <p>
-      Behind the scenes, the tree is built using UPGMA clustering based on the pairwise Jaccard
-      distance of structural variants (SVs) and tandem repeats (TRs) exclusively. Because
-      structural variants mutate much more slowly than SNVs, they provide a highly stable
-      scaffold for tracing deep ancestral relationships without being skewed by background
-      mutation noise. If you are also using the clustered view, a vertical threshold line will
-      appear on the tree that you can drag to adjust your cluster resolution.
+      <strong>Distance metric:</strong> For regions with 5+ structural variants, the tree
+      uses SV/TR-only Jaccard distance — structural variants mutate slowly and provide a
+      stable scaffold for tracing ancestral relationships. For smaller regions with few SVs,
+      it falls back to all-variant Jaccard (including SNVs) to produce meaningful clustering.
+    </p>
+    <p>
+      If the clustered view is also active, a vertical threshold line appears on the tree
+      that you can drag to adjust cluster resolution.
     </p>
   </>
 )
@@ -1055,21 +1056,24 @@ const DiploidViewHelp = () => (
 const ClusteredViewHelp = () => (
   <>
     <p>
-      The clustered view simplifies complex regions by collapsing closely related haplotype
-      groups into broader macro-clusters. It works by cutting the genealogical tree at a
-      specific genetic distance, grouping together haplotypes that share a highly similar
-      structural backbone even if they differ slightly by minor SNVs.
+      Clustering collapses closely related haplotype groups into macro-clusters by cutting
+      the UPGMA tree at a genetic distance threshold. Groups that share a similar variant
+      profile are merged into a single row.
     </p>
     <p>
-      Instead of individual groups, you'll see a single row for each cluster displaying its
-      consensus variants. The opacity of these variants scales with their frequency in the
-      cluster — fading out if present in only half the samples, and appearing completely solid
-      if shared by nearly all.
+      Each cluster row shows consensus variants — opacity scales with frequency in the
+      cluster (solid = shared by all, faint = present in half). Click the arrow to expand
+      a cluster and see its constituent groups.
     </p>
     <p>
-      You can use the cluster resolution slider to decide where to cut the tree; moving it to
-      the right merges more distant groups together. Click the arrow next to a cluster to
-      expand it and inspect the exact constituent groups indented inside.
+      <strong>Region size behavior:</strong> Small regions (&lt;50kb) use a lower default
+      threshold (0.20–0.25) and cluster on all variant types including SNVs. Larger regions
+      use higher thresholds (0.35–0.70) and cluster on SVs/TRs only, since structural
+      variants provide more stable groupings at scale.
+    </p>
+    <p>
+      Use the cluster resolution slider to adjust where the tree is cut — moving right
+      merges more distant groups together.
     </p>
   </>
 )
@@ -1079,21 +1083,21 @@ const AutoTunedHelp = () => (
     <p>
       Default values are automatically calculated from your data to show a useful
       level of detail. Both the minimum allele frequency and cluster resolution are
-      derived together so the final number of visible rows (after grouping and
-      clustering) lands in a practical range of roughly 15–40.
+      derived together, targeting 15–40 visible rows.
     </p>
     <p>
-      <strong>Min AF</strong> is initially set to produce a manageable number of
-      distinct haplotype groups — raising it hides rare variants and merges groups.
+      <strong>Min AF</strong> is set to produce a manageable number of distinct
+      haplotype groups. It won't be raised beyond 20% of the AF range to avoid
+      over-filtering.
     </p>
     <p>
-      <strong>Cluster resolution</strong> is seeded from the region size and then
-      adjusted jointly with Min AF — larger regions use more aggressive clustering
-      to keep the view readable.
+      <strong>Cluster resolution</strong> is seeded from region size:
+      &lt;5kb → 0.20, 5–50kb → 0.25, 50kb–1Mb → 0.35–0.65, &gt;1Mb → 0.70.
+      The threshold is then fine-tuned jointly with Min AF.
     </p>
     <p>
-      Both values can be adjusted freely using the controls. Once you manually change
-      either slider, this indicator disappears — you've taken ownership of the settings.
+      Both values can be adjusted freely. Once you manually change either slider,
+      this indicator disappears.
     </p>
   </>
 )
@@ -1167,6 +1171,18 @@ const HaplotypeInfoBar = ({
     ? `${(threshold * 100).toFixed(1)}%`
     : `${(threshold * 100).toFixed(0)}%`
 
+  // Determine distance metric mode from variant data
+  const distanceMode = useMemo(() => {
+    const svIds = new Set<string>()
+    for (const group of displayGroups) {
+      if ('is_diplotype' in group) continue
+      for (const v of (group as any).variants?.variants || []) {
+        if (Math.abs(v.allele_length) >= 50 || v.allele_type === 'trv') svIds.add(v.variant_id)
+      }
+    }
+    return svIds.size >= 5 ? 'SV/TR' : 'All variants'
+  }, [displayGroups])
+
   const isLoading = haplotypeLoading || workerComputing || methylationLoading
 
   return (
@@ -1179,6 +1195,12 @@ const HaplotypeInfoBar = ({
         <span>{regionLabel}</span>
         <span style={{ color: '#999' }}>·</span>
         <span>{isDiploidView ? 'Diploid Mode' : isClusteredView ? `Clustered (${clusterCount}) · Resolution: ${clusterThreshold.toFixed(2)}` : 'Unclustered'}</span>
+        {!isDiploidView && (
+          <>
+            <span style={{ color: '#999' }}>·</span>
+            <span style={{ color: '#888', fontSize: '11px' }}>Distance: {distanceMode}</span>
+          </>
+        )}
         <span style={{ color: '#999' }}>·</span>
         <span>Min AF: {thresholdLabel}</span>
         <span style={{ color: '#999' }}>·</span>
@@ -2060,6 +2082,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 })
 
 export default HaplotypeTrack
+
 
 
 
