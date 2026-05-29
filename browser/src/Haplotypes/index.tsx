@@ -147,6 +147,8 @@ export const Legend = ({
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   onDistanceMetricChange = (() => { }) as (metric: import('./haplotypeCompute').DistanceMetric) => void,
   regionSize = 0,
+  showPhantomRegions = true,
+  onShowPhantomRegionsChange = () => { },
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -184,6 +186,8 @@ export const Legend = ({
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
   onDistanceMetricChange?: (metric: import('./haplotypeCompute').DistanceMetric) => void
   regionSize?: number
+  showPhantomRegions?: boolean
+  onShowPhantomRegionsChange?: (show: boolean) => void
 }) => {
   // Log-scale slider: internal state is 0-100, mapped to log10(minAfFloor)..log10(minAfCeiling)
   const minLog = Math.log10(Math.max(minAfFloor, 0.0001))
@@ -487,6 +491,16 @@ export const Legend = ({
               <HaplotypeHelpButton title="Diploid View">
                 <DiploidViewHelp />
               </HaplotypeHelpButton>
+            </div>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type='checkbox'
+                  checked={showPhantomRegions}
+                  onChange={(e) => onShowPhantomRegionsChange(e.target.checked)}
+                />
+                Expand INS/TRs
+              </label>
             </div>
             {!isDiploidView && (
               <>
@@ -901,6 +915,8 @@ type HaplotypeTrackProps = {
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
   onDistanceMetricChange?: (metric: import('./haplotypeCompute').DistanceMetric) => void
   regionSize?: number
+  showPhantomRegions?: boolean
+  onShowPhantomRegionsChange?: (show: boolean) => void
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1808,6 +1824,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   onDistanceMetricChange,
   regionSize = 0,
+  showPhantomRegions = true,
+  onShowPhantomRegionsChange,
 }, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -2011,6 +2029,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     distanceMetric,
     onDistanceMetricChange: onDistanceMetricChange || (() => { }),
     regionSize,
+    showPhantomRegions,
+    onShowPhantomRegionsChange: onShowPhantomRegionsChange || (() => { }),
   }
 
   // Build pangenome graph for alluvial/heatmap views
