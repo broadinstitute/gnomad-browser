@@ -1277,28 +1277,34 @@ function DeckGLLollipopCanvas({
         allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yTop })
         allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yBottom })
 
-        // Two separate strand backgrounds — chromosome-like pill shapes
+        // Strand backgrounds — ROH merges into one pill, non-ROH shows two separated pills
         let strandColor: [number, number, number, number] = [232, 238, 248, 255]
-        if (dg.is_roh) {
-          strandColor = [255, 243, 215, 255]
-        } else if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
+        if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
           const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
           const alpha = Math.round(40 * popStats.dominantFraction)
           strandColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(12, alpha)]
         }
 
-        // Strand A pill (top): rowY+3 to rowY+22
-        allBgRects.push({
-          groupStart: dg.start, groupStop: dg.stop,
-          rowY: rowY - 2, color: strandColor, group: dg,
-          height: 19,
-        })
-        // Strand B pill (bottom): rowY+26 to rowY+45, 4px gap
-        allBgRects.push({
-          groupStart: dg.start, groupStop: dg.stop,
-          rowY: rowY + 21, color: strandColor, group: dg,
-          height: 19,
-        })
+        if (dg.is_roh) {
+          // ROH: single merged pill — both strands are identical
+          allBgRects.push({
+            groupStart: dg.start, groupStop: dg.stop,
+            rowY: rowY - 2, color: strandColor, group: dg,
+            height: 40,
+          })
+        } else {
+          // Non-ROH: two separated pills with gap
+          allBgRects.push({
+            groupStart: dg.start, groupStop: dg.stop,
+            rowY: rowY - 2, color: strandColor, group: dg,
+            height: 19,
+          })
+          allBgRects.push({
+            groupStart: dg.start, groupStop: dg.stop,
+            rowY: rowY + 21, color: strandColor, group: dg,
+            height: 19,
+          })
+        }
 
         const effectiveColorMode = isPopMode ? 'allele' : colorMode
 
@@ -2120,6 +2126,7 @@ function ThresholdDragOverlay({
     </div>
   )
 }
+
 
 
 
