@@ -963,7 +963,7 @@ function DeckGLLollipopCanvas({
               tooltipText: `Samples: ${popStats.totalSamples}`,
             })
             // Variant count after sample count
-            const variantCount = group.variants.variants.length
+            const variantCount = group.variants?.variants?.length ?? 0
             const variantColor = cssColorToRgba(variantColorScale(variantCount))
             circles.push({ position: [barX + barWidth + 28, y, 0], color: variantColor, radius: 4, tooltipText: `Variants: ${variantCount}` })
             texts.push({
@@ -987,14 +987,15 @@ function DeckGLLollipopCanvas({
           })
 
           // Variant count circle + text
-          const variantColor = cssColorToRgba(variantColorScale(group.variants.variants.length))
-          circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5, tooltipText: `Variants: ${group.variants.variants.length}` })
+          const vc = group.variants?.variants?.length ?? 0
+          const variantColor = cssColorToRgba(variantColorScale(vc))
+          circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5, tooltipText: `Variants: ${vc}` })
           texts.push({
             position: [60 + indent, y, 0],
-            text: String(group.variants.variants.length),
+            text: String(vc),
             color: [0, 0, 0, 255],
             size: 12,
-            tooltipText: `Variants: ${group.variants.variants.length} variant sites above AF threshold`,
+            tooltipText: `Variants: ${vc} variant sites above AF threshold`,
           })
         }
       }
@@ -2160,6 +2161,7 @@ function ThresholdDragOverlay({
     </div>
   )
 }
+
 
 
 
