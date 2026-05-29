@@ -104,10 +104,6 @@ type PhantomLabel = {
   centerY: number
 }
 
-type DupDecoration = {
-  path: [number, number][]
-}
-
 // HSL string to RGBA array conversion
 function hslToRgba(hsl: string, alpha = 255): [number, number, number, number] {
   const match = hsl.match(/hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/)
@@ -316,6 +312,11 @@ type DeckGLLollipopTrackProps = {
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
   isDiploidView?: boolean
+  onVariantClick?: (pos: number) => void
+  onClusterSelect?: (clusterId: string) => void
+  selectedClusterId?: string | null
+  highlightedVariantIds?: Set<string> | null
+  selectedVariantPos?: number | null
 }
 
 export type DeckGLLollipopTrackHandle = {
@@ -349,6 +350,11 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   clusterThreshold = 0,
   onClusterThresholdChange,
   isDiploidView = false,
+  onVariantClick,
+  onClusterSelect,
+  selectedClusterId,
+  highlightedVariantIds,
+  selectedVariantPos,
 }, ref) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -680,6 +686,11 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           isClusteredView={isClusteredView}
           populationStatsByRow={populationStatsByRow}
           isDiploidView={isDiploidView}
+          onVariantClick={onVariantClick}
+          onClusterSelect={onClusterSelect}
+          selectedClusterId={selectedClusterId}
+          highlightedVariantIds={highlightedVariantIds}
+          selectedVariantPos={selectedVariantPos}
         />
 
         {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
@@ -752,6 +763,11 @@ type DeckGLCanvasProps = {
   isClusteredView: boolean
   populationStatsByRow: (PopulationStats | null)[]
   isDiploidView: boolean
+  onVariantClick?: (pos: number) => void
+  onClusterSelect?: (clusterId: string) => void
+  selectedClusterId?: string | null
+  highlightedVariantIds?: Set<string> | null
+  selectedVariantPos?: number | null
 }
 
 /** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
@@ -805,6 +821,11 @@ function DeckGLLollipopCanvas({
   isClusteredView,
   populationStatsByRow,
   isDiploidView,
+  onVariantClick,
+  onClusterSelect,
+  selectedClusterId,
+  highlightedVariantIds,
+  selectedVariantPos,
 }: DeckGLCanvasProps) {
   const canvasWidth = width
   const { mapper } = useContext(AccordionContext)
@@ -921,10 +942,17 @@ function DeckGLLollipopCanvas({
           size: 14,
         })
 
-        // Hitbox for click target
+        // Hitbox for expand/collapse triangle
         hitboxes.push({
           position: [8, y, 0],
           action: 'toggle_cluster',
+          clusterId: cluster.cluster_id,
+        })
+
+        // Hitbox for cluster select (over the text/bar area)
+        hitboxes.push({
+          position: [60, y, 0],
+          action: 'select_cluster',
           clusterId: cluster.cluster_id,
         })
 
@@ -1163,13 +1191,15 @@ function DeckGLLollipopCanvas({
         onClick: (info: any) => {
           if (info.object?.action === 'toggle_cluster' && toggleClusterExpansion) {
             toggleClusterExpansion(info.object.clusterId)
+          } else if (info.object?.action === 'select_cluster' && onClusterSelect) {
+            onClusterSelect(info.object.clusterId)
           }
         },
       }))
     }
 
     return lpLayers
-  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, leftPanelSampleLabels, toggleClusterExpansion, onHover])
+  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, leftPanelSampleLabels, toggleClusterExpansion, onClusterSelect, onHover])
 
   // Genealogy tree layout — pure data arrays for DeckGL
   const treeLayout = useMemo((): TreeLayout | null => {
@@ -1299,9 +1329,8 @@ function DeckGLLollipopCanvas({
     const allPhantomBars: PhantomBar[] = []
     const allPhantomConnectors: PhantomConnector[] = []
     const allPhantomLabels: PhantomLabel[] = []
-    const allDupArrows: DupDecoration[] = []
-    const allDupChevrons: DupDecoration[] = []
-    const allDupHatching: DupDecoration[] = []
+    const allInsertionTriangles: VariantPoint[] = []
+    const allTrRects: VariantPoint[] = []
 
     // Accordion phantom region setup
     const accordionActive = !!(mapper && mapper.hasPhantomRegions)
@@ -1331,12 +1360,16 @@ function DeckGLLollipopCanvas({
       if (!accordionActive) return false
       const alleleType = (variant.allele_type || '').toLowerCase()
       if (!ACCORDION_ALLELE_TYPES.has(alleleType)) return false
-      if (Math.abs(variant.allele_length || 0) < 50) return false
 
       const locus = phantomLociByPos.get(variant.pos)
       if (!locus || locus.maxPhantomLength <= 0) return false
 
-      const effectiveLength = Math.min(Math.abs(variant.allele_length || 0), locus.maxPhantomLength)
+      // For non-TRVs, require allele_length >= 50 (small indels render as circles/triangles)
+      // TRVs always get phantom bars if a locus exists — their allele_length is often small
+      // but the phantom gap was created for this locus's reference region span
+      if (alleleType !== 'trv' && Math.abs(variant.allele_length || 0) < 50) return false
+
+      const effectiveLength = Math.min(Math.max(Math.abs(variant.allele_length || 0), 1), locus.maxPhantomLength)
       const accentColor = cssColorToRgba(ALLELE_TYPE_COLORS[alleleType] || '#888888')
 
       allPhantomBars.push({
@@ -1399,58 +1432,6 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    /** Push duplication decoration overlays for spanning SV subtypes */
-    const pushDupDecorations = (variant: Variant, rowY: number) => {
-      const aType = (variant.allele_type || '').toLowerCase()
-      if (aType !== 'dup_interspersed' && aType !== 'inv_dup' && aType !== 'complex_dup') return
-      const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
-      const pxStart = scalePosition(variant.pos)
-      const pxEnd = scalePosition(endPos)
-      const midX = (pxStart + pxEnd) / 2
-      const centerY = rowY + ROW_CENTER_Y
-      const yTop = centerY - 3
-      const yBot = centerY + 3
-
-      if (aType === 'dup_interspersed') {
-        // Right-facing arrow (→) at center of bar
-        const arrowSize = 4
-        allDupArrows.push({
-          path: [
-            [midX - arrowSize, yTop],
-            [midX + arrowSize, centerY],
-            [midX - arrowSize, yBot],
-          ],
-        })
-      } else if (aType === 'inv_dup') {
-        // Inward chevrons (→←) near center
-        const arrowSize = 3
-        const gap = 4
-        allDupChevrons.push({
-          path: [
-            [midX - gap - arrowSize, yTop],
-            [midX - gap + arrowSize, centerY],
-            [midX - gap - arrowSize, yBot],
-          ],
-        })
-        allDupChevrons.push({
-          path: [
-            [midX + gap + arrowSize, yTop],
-            [midX + gap - arrowSize, centerY],
-            [midX + gap + arrowSize, yBot],
-          ],
-        })
-      } else if (aType === 'complex_dup') {
-        // Hatched diagonal lines across the bar
-        for (let x = pxStart; x < pxEnd; x += 10) {
-          allDupHatching.push({
-            path: [
-              [x, yTop],
-              [Math.min(x + 5, pxEnd), yBot],
-            ],
-          })
-        }
-      }
-    }
 
     for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
@@ -1525,10 +1506,13 @@ function DeckGLLollipopCanvas({
             if ((cat === 'deletion' || cat === 'sv') && isLarge && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
               const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
               allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color, variant, groupHash: dg.hash })
-              pushDupDecorations(variant, baseline - ROW_CENTER_Y)
             } else if (cat === 'deletion') {
               const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
               allDeletionLines.push({ position: variant.pos, yTop: baseline - 7.5, yBottom: baseline + 7.5, color, width: thickness, variant })
+            } else if (cat === 'insertion' || (cat === 'sv' && INSERTION_TYPES.has((variant.allele_type || '').toLowerCase()))) {
+              allInsertionTriangles.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
+            } else if (cat === 'tr') {
+              allTrRects.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
             } else {
               allVariantPoints.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
             }
@@ -1670,10 +1654,13 @@ function DeckGLLollipopCanvas({
           if ((cat === 'deletion' || cat === 'sv') && isLarge && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
-            pushDupDecorations(variant, rowY)
           } else if (cat === 'deletion') {
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
             allDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
+          } else if (cat === 'insertion' || (cat === 'sv' && INSERTION_TYPES.has((variant.allele_type || '').toLowerCase()))) {
+            allInsertionTriangles.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
+          } else if (cat === 'tr') {
+            allTrRects.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
           } else {
             allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
           }
@@ -1738,10 +1725,13 @@ function DeckGLLollipopCanvas({
           if ((cat === 'deletion' || cat === 'sv') && isLarge && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
-            pushDupDecorations(variant, rowY)
           } else if (cat === 'deletion') {
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
             allDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
+          } else if (cat === 'insertion' || (cat === 'sv' && INSERTION_TYPES.has((variant.allele_type || '').toLowerCase()))) {
+            allInsertionTriangles.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
+          } else if (cat === 'tr') {
+            allTrRects.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
           } else {
             allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
           }
@@ -1814,40 +1804,26 @@ function DeckGLLollipopCanvas({
 
     const result: any[] = []
 
-    // Phantom background shading at accordion loci (drawn beneath everything)
+    // Subtle edge lines at phantom gap boundaries (drawn beneath everything)
     if (accordionActive) {
       const activeLoci = (phantomLoci as readonly PhantomLocus[]).filter(l => l.maxPhantomLength > 0)
       if (activeLoci.length > 0) {
-        result.push(new SolidPolygonLayer({
-          id: 'phantom-bg-layer',
-          data: activeLoci,
-          getPolygon: (d: PhantomLocus) => {
-            const x1 = scalePosition(d.genomicPos)
-            const x2 = x1 + d.maxPhantomLength * pxPerSynthUnit
-            return [[x1, 0], [x2, 0], [x2, totalHeight], [x1, totalHeight]]
-          },
-          getFillColor: [0, 0, 0, 8], // rgba(0, 0, 0, ~0.03)
-          pickable: false,
-          updateTriggers: { getPolygon: [scalePosition, pxPerSynthUnit, totalHeight] },
-        }))
-
-        // Dashed vertical boundary lines at accordion edges
-        const boundaryData: { genomicPos: number; offset: number }[] = []
+        const edgeData: { genomicPos: number; offset: number }[] = []
         for (const l of activeLoci) {
-          boundaryData.push({ genomicPos: l.genomicPos, offset: 0 })
-          boundaryData.push({ genomicPos: l.genomicPos, offset: l.maxPhantomLength })
+          edgeData.push({ genomicPos: l.genomicPos, offset: 0 })
+          edgeData.push({ genomicPos: l.genomicPos, offset: l.maxPhantomLength })
         }
         result.push(new LineLayer({
-          id: 'phantom-boundary-layer',
-          data: boundaryData,
+          id: 'phantom-edge-lines',
+          data: edgeData,
           getSourcePosition: (d: { genomicPos: number; offset: number }) => [
             scalePosition(d.genomicPos) + d.offset * pxPerSynthUnit, 0, 0,
           ],
           getTargetPosition: (d: { genomicPos: number; offset: number }) => [
             scalePosition(d.genomicPos) + d.offset * pxPerSynthUnit, totalHeight, 0,
           ],
-          getColor: [0, 0, 0, 30],
-          getWidth: 1,
+          getColor: [100, 100, 100, 38], // rgba(100, 100, 100, 0.15)
+          getWidth: 2,
           widthUnits: 'pixels' as const,
           pickable: false,
           updateTriggers: {
@@ -1858,34 +1834,34 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    if (allBgRects.length > 0) {
-      // Generate rounded-rect polygon (pill shape) for diplotype strand backgrounds
-      const roundedRect = (x1: number, y1: number, x2: number, y2: number, r: number): [number, number][] => {
-        const pts: [number, number][] = []
-        const steps = 6
-        // top-right arc
-        for (let i = 0; i <= steps; i++) {
-          const a = -Math.PI / 2 + (Math.PI / 2) * (i / steps)
-          pts.push([x2 - r + r * Math.cos(a), y1 + r + r * Math.sin(a)])
-        }
-        // bottom-right arc
-        for (let i = 0; i <= steps; i++) {
-          const a = 0 + (Math.PI / 2) * (i / steps)
-          pts.push([x2 - r + r * Math.cos(a), y2 - r + r * Math.sin(a)])
-        }
-        // bottom-left arc
-        for (let i = 0; i <= steps; i++) {
-          const a = Math.PI / 2 + (Math.PI / 2) * (i / steps)
-          pts.push([x1 + r + r * Math.cos(a), y2 - r + r * Math.sin(a)])
-        }
-        // top-left arc
-        for (let i = 0; i <= steps; i++) {
-          const a = Math.PI + (Math.PI / 2) * (i / steps)
-          pts.push([x1 + r + r * Math.cos(a), y1 + r + r * Math.sin(a)])
-        }
-        return pts
+    // Generate rounded-rect polygon (pill shape) — shared by bg rects and TR markers
+    const roundedRect = (x1: number, y1: number, x2: number, y2: number, r: number): [number, number][] => {
+      const pts: [number, number][] = []
+      const steps = 6
+      // top-right arc
+      for (let i = 0; i <= steps; i++) {
+        const a = -Math.PI / 2 + (Math.PI / 2) * (i / steps)
+        pts.push([x2 - r + r * Math.cos(a), y1 + r + r * Math.sin(a)])
       }
+      // bottom-right arc
+      for (let i = 0; i <= steps; i++) {
+        const a = 0 + (Math.PI / 2) * (i / steps)
+        pts.push([x2 - r + r * Math.cos(a), y2 - r + r * Math.sin(a)])
+      }
+      // bottom-left arc
+      for (let i = 0; i <= steps; i++) {
+        const a = Math.PI / 2 + (Math.PI / 2) * (i / steps)
+        pts.push([x1 + r + r * Math.cos(a), y2 - r + r * Math.sin(a)])
+      }
+      // top-left arc
+      for (let i = 0; i <= steps; i++) {
+        const a = Math.PI + (Math.PI / 2) * (i / steps)
+        pts.push([x1 + r + r * Math.cos(a), y1 + r + r * Math.sin(a)])
+      }
+      return pts
+    }
 
+    if (allBgRects.length > 0) {
       result.push(new SolidPolygonLayer({
         id: 'bg-rects-layer',
         data: allBgRects,
@@ -2059,31 +2035,18 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    // Truncation indicator: zigzag line at right edge of truncated phantom gaps
-    if (accordionActive) {
-      const truncatedLoci = (phantomLoci as readonly PhantomLocus[]).filter(l => l.isTruncated && l.maxPhantomLength > 0)
-      if (truncatedLoci.length > 0) {
-        const truncationPaths: { path: [number, number][] }[] = []
-        for (const locus of truncatedLoci) {
-          const pxX = scalePosition(locus.genomicPos) + locus.maxPhantomLength * pxPerSynthUnit
-          const zigzag: [number, number][] = []
-          for (let y = 0; y <= totalHeight; y += 6) {
-            const offset = (Math.floor(y / 6) % 2 === 0) ? -2 : 2
-            zigzag.push([pxX + offset, y])
-          }
-          truncationPaths.push({ path: zigzag })
-        }
-        result.push(new PathLayer({
-          id: 'phantom-truncation-layer',
-          data: truncationPaths,
-          getPath: (d: { path: [number, number][] }) => d.path,
-          getColor: [200, 50, 50, 200],
-          getWidth: 2,
-          widthUnits: 'pixels' as const,
-          pickable: false,
-          updateTriggers: { getPath: [scalePosition, pxPerSynthUnit, totalHeight] },
-        }))
+    const handleVariantLayerClick = (info: any) => {
+      if (info.object?.variant && onVariantClick) {
+        onVariantClick(info.object.variant.pos)
       }
+    }
+
+    // Dimming: when table is filtered, fade non-matching variants
+    const hasDimming = highlightedVariantIds && highlightedVariantIds.size > 0
+    const dimVariantColor = (color: [number, number, number, number], variant: Variant): [number, number, number, number] => {
+      if (!hasDimming) return color
+      if (highlightedVariantIds!.has(variant.variant_id)) return color
+      return [color[0], color[1], color[2], 40]
     }
 
     if (allSpanningRects.length > 0) {
@@ -2097,50 +2060,11 @@ function DeckGLLollipopCanvas({
           const yBot = d.rowY + ROW_CENTER_Y + 4
           return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
         },
-        getFillColor: (d: SpanningRect) => d.color,
+        getFillColor: (d: SpanningRect) => dimVariantColor(d.color, d.variant),
         pickable: true,
         onHover: onHover,
+        onClick: handleVariantLayerClick,
         updateTriggers: { getPolygon: [scalePosition] },
-      }))
-    }
-
-    // Duplication decoration overlays on spanning bars
-    if (allDupArrows.length > 0) {
-      result.push(new PathLayer({
-        id: 'dup-arrows-layer',
-        data: allDupArrows,
-        getPath: (d: DupDecoration) => d.path,
-        getColor: [255, 255, 255, 150],
-        getWidth: 1.5,
-        widthUnits: 'pixels' as const,
-        pickable: false,
-        updateTriggers: { getPath: [scalePosition] },
-      }))
-    }
-
-    if (allDupChevrons.length > 0) {
-      result.push(new PathLayer({
-        id: 'dup-chevrons-layer',
-        data: allDupChevrons,
-        getPath: (d: DupDecoration) => d.path,
-        getColor: [255, 255, 255, 150],
-        getWidth: 1.5,
-        widthUnits: 'pixels' as const,
-        pickable: false,
-        updateTriggers: { getPath: [scalePosition] },
-      }))
-    }
-
-    if (allDupHatching.length > 0) {
-      result.push(new PathLayer({
-        id: 'dup-hatching-layer',
-        data: allDupHatching,
-        getPath: (d: DupDecoration) => d.path,
-        getColor: [255, 255, 255, 150],
-        getWidth: 1,
-        widthUnits: 'pixels' as const,
-        pickable: false,
-        updateTriggers: { getPath: [scalePosition] },
       }))
     }
 
@@ -2150,11 +2074,12 @@ function DeckGLLollipopCanvas({
         data: allDeletionLines,
         getSourcePosition: (d: StemLine) => [scalePosition(d.position), d.yTop, 0],
         getTargetPosition: (d: StemLine) => [scalePosition(d.position), d.yBottom, 0],
-        getColor: (d: StemLine) => d.color,
+        getColor: (d: StemLine) => dimVariantColor(d.color, d.variant),
         getWidth: (d: StemLine) => d.width,
         widthUnits: 'pixels' as const,
         pickable: true,
         onHover: onHover,
+        onClick: handleVariantLayerClick,
         updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
       }))
     }
@@ -2184,7 +2109,7 @@ function DeckGLLollipopCanvas({
         data: allVariantPoints,
         getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
         getRadius: (d: VariantPoint) => d.radius,
-        getFillColor: (d: VariantPoint) => d.color,
+        getFillColor: (d: VariantPoint) => dimVariantColor(d.color, d.variant),
         getLineColor: [0, 0, 0, 128],
         getLineWidth: 0.5,
         lineWidthUnits: 'pixels' as const,
@@ -2192,7 +2117,57 @@ function DeckGLLollipopCanvas({
         radiusUnits: 'pixels' as const,
         pickable: true,
         onHover: onHover,
+        onClick: handleVariantLayerClick,
         updateTriggers: { getPosition: [scalePosition] },
+      }))
+    }
+
+    // Upward triangles for insertions
+    if (allInsertionTriangles.length > 0) {
+      result.push(new SolidPolygonLayer({
+        id: 'insertion-triangles-layer',
+        data: allInsertionTriangles,
+        getPolygon: (d: VariantPoint) => {
+          const px = scalePosition(d.position)
+          return [[px - 3, d.y + 4], [px, d.y - 4], [px + 3, d.y + 4]]
+        },
+        getFillColor: (d: VariantPoint) => dimVariantColor(d.color, d.variant),
+        pickable: true,
+        onHover: onHover,
+        onClick: handleVariantLayerClick,
+        updateTriggers: { getPolygon: [scalePosition] },
+      }))
+    }
+
+    // Rounded rectangles for TRs — filled pill with outline
+    if (allTrRects.length > 0) {
+      const trPoly = (d: VariantPoint) => {
+        const px = scalePosition(d.position)
+        return roundedRect(px - 5, d.y - 3.5, px + 5, d.y + 3.5, 3)
+      }
+      result.push(new SolidPolygonLayer({
+        id: 'tr-rects-layer',
+        data: allTrRects,
+        getPolygon: trPoly,
+        getFillColor: (d: VariantPoint) => dimVariantColor(d.color, d.variant),
+        pickable: true,
+        onHover: onHover,
+        onClick: handleVariantLayerClick,
+        updateTriggers: { getPolygon: [scalePosition] },
+      }))
+      result.push(new PathLayer({
+        id: 'tr-rects-outline-layer',
+        data: allTrRects,
+        getPath: (d: VariantPoint) => {
+          const pts = trPoly(d)
+          pts.push(pts[0]) // close path
+          return pts.map(([x, y]) => [x, y, 0])
+        },
+        getColor: [0, 0, 0, 160],
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getPath: [scalePosition] },
       }))
     }
 
@@ -2324,6 +2299,8 @@ function DeckGLLollipopCanvas({
     expandedClusterIds,
     isDiploidView,
     mapper,
+    onVariantClick,
+    highlightedVariantIds,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers
@@ -2341,6 +2318,22 @@ function DeckGLLollipopCanvas({
       updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
     })
   }, [hoveredVariantPosition, scalePosition, totalHeight])
+
+  // Persistent crosshair for table-selected variant
+  const selectedCrosshairLayer = useMemo(() => {
+    if (selectedVariantPos == null) return null
+    return new LineLayer({
+      id: 'selected-crosshair',
+      data: [{ position: selectedVariantPos, yTop: 0, yBottom: totalHeight }],
+      getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
+      getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
+      getColor: [37, 99, 235, 180],
+      getWidth: 2,
+      widthUnits: 'pixels' as const,
+      pickable: false,
+      updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+    })
+  }, [selectedVariantPos, scalePosition, totalHeight])
 
   // Multi-view: left panel, center (variants), right panel (only when genealogy visible)
   const views = useMemo(
@@ -2375,7 +2368,7 @@ function DeckGLLollipopCanvas({
         ref={deckRef}
         views={views}
         viewState={viewState}
-        layers={[...layers, ...(crosshairLayer ? [crosshairLayer] : []), ...leftPanelLayers, ...treeLayers]}
+        layers={[...layers, ...(crosshairLayer ? [crosshairLayer] : []), ...(selectedCrosshairLayer ? [selectedCrosshairLayer] : []), ...leftPanelLayers, ...treeLayers]}
         layerFilter={({ layer, viewport }) => {
           const layerId = layer.id
           if (layerId.startsWith('left-panel-')) return viewport.id === 'left-panel'
@@ -2592,18 +2585,4 @@ function ThresholdDragOverlay({
     </div>
   )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

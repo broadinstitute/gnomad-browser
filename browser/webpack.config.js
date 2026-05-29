@@ -15,6 +15,9 @@ if (process.env.NODE_ENV === 'production' && !gaTrackingId) {
 }
 
 const config = {
+  watchOptions: {
+    poll: 1000,
+  },
   devServer: {
     historyApiFallback: {
       disableDotRule: true,

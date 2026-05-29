@@ -9,7 +9,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
-import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint, LRVariant } from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeCluster, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint, LRVariant } from '../Haplotypes'
 import {
   computeHaplotypeView,
   filterDisplayVariants,
@@ -267,6 +267,41 @@ const LongReadUnifiedView = ({
       return next
     })
   }, [])
+
+  // Bidirectional linking state
+  const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null)
+  const [highlightedVariantIds, setHighlightedVariantIds] = useState<Set<string> | null>(null)
+  const [selectedVariantPos, setSelectedVariantPos] = useState<number | null>(null)
+
+  const handleVariantClickInTrack = useCallback((pos: number) => {
+    // Scroll table to variant and bring it into view
+    tableRef.current?.scrollToPosition(pos)
+    document.getElementById('lr-variant-table-container')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }, [])
+
+  const handleClusterSelect = useCallback((clusterId: string) => {
+    setSelectedClusterId(prev => prev === clusterId ? null : clusterId)
+  }, [])
+
+  const handleClearClusterFilter = useCallback(() => {
+    setSelectedClusterId(null)
+  }, [])
+
+  const handleRowClick = useCallback((pos: number) => {
+    setSelectedVariantPos(pos)
+    setHoveredVariantPosition(pos)
+  }, [])
+
+  const handleFilteredVariantsChange = useCallback((variantIds: Set<string>) => {
+    setHighlightedVariantIds(variantIds.size > 0 ? variantIds : null)
+  }, [])
+
+  // Clear cluster filter when threshold changes
+  const prevClusterThresholdRef = useRef(deferredClusterThreshold)
+  if (deferredClusterThreshold !== prevClusterThresholdRef.current) {
+    prevClusterThresholdRef.current = deferredClusterThreshold
+    setSelectedClusterId(null)
+  }
 
   // Scroll sync refs and lock
   const trackRef = useRef<HaplotypeTrackHandle>(null)
@@ -771,6 +806,11 @@ const LongReadUnifiedView = ({
               regionSize={regionSize}
               showPhantomRegions={showPhantomRegions}
               onShowPhantomRegionsChange={setShowPhantomRegions}
+              onVariantClick={handleVariantClickInTrack}
+              onClusterSelect={handleClusterSelect}
+              selectedClusterId={selectedClusterId}
+              highlightedVariantIds={highlightedVariantIds}
+              selectedVariantPos={selectedVariantPos}
             />
           )}
           <AccordionPositionAxisTrack />
@@ -807,10 +847,15 @@ const LongReadUnifiedView = ({
             <HaplotypeVariantTable
               ref={tableRef}
               mode="haplotype"
-              haplotypeGroups={haplotypeGroups as { groups: HaplotypeGroup[] }}
+              haplotypeGroups={haplotypeGroups as { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }}
               sampleMetadata={sampleMetadata}
               onHoverVariant={setHoveredVariantPosition}
               onVisibleVariantChange={handleVisibleVariantChange}
+              onFilteredVariantsChange={handleFilteredVariantsChange}
+              onRowClick={handleRowClick}
+              isClusteredView={isClusteredView}
+              selectedClusterId={selectedClusterId}
+              onClearClusterFilter={handleClearClusterFilter}
             />
           )}
         </TrackPageSection>
@@ -820,3 +865,4 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
+

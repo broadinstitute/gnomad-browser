@@ -5,7 +5,7 @@ import CategoryFilterControl from '../CategoryFilterControl'
 import { PATH_COLORS, SUPERPOPULATION_COLORS, VARIANT_TYPE_COLORS } from './colors'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, VARIANT_CATEGORY_LABELS } from '../LongReadVariantPage/variantUtils'
 import HaplotypeHelpButton from './HelpButton'
-import type { HaplotypeGroup, LRVariant } from './index'
+import type { HaplotypeGroup, HaplotypeCluster, LRVariant } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import Link from '../Link'
 import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
@@ -36,6 +36,8 @@ type DerivedVariant = LRVariant & {
   tr_flank_suffix?: string
   short_read_match_id?: string | null
   enveloped_ids?: string[] | null
+  cluster_distribution?: { cluster_id: string; af: number }[]
+  active_cluster_count?: number
 }
 
 type SortKey = keyof DerivedVariant | 'freq.af' | 'freq.ac' | 'freq.an'
@@ -1113,6 +1115,35 @@ const AlleleStructureRow = ({
   )
 }
 
+// --- Cluster fingerprint inline visualization ---
+
+const ClusterFingerprint = React.memo(function ClusterFingerprint({
+  distribution,
+}: {
+  distribution: { cluster_id: string; af: number }[]
+}) {
+  const blockW = 8
+  const blockH = 12
+  const gap = 1
+  const totalW = distribution.length * (blockW + gap) - gap
+  return (
+    <svg width={totalW} height={blockH} style={{ verticalAlign: 'middle', marginLeft: 4 }}>
+      {distribution.map((c, i) => (
+        <rect
+          key={c.cluster_id}
+          x={i * (blockW + gap)}
+          y={0}
+          width={blockW}
+          height={blockH}
+          fill={c.af > 0 ? '#1976d2' : '#eee'}
+          opacity={c.af > 0 ? Math.max(0.2, c.af) : 1}
+          rx={1}
+        />
+      ))}
+    </svg>
+  )
+})
+
 // --- Memoized table row ---
 
 type TableRowProps = {
@@ -1121,9 +1152,13 @@ type TableRowProps = {
   isExpanded: boolean
   mode: 'summary' | 'haplotype'
   totalGroups: number
+  totalClusters: number
   totalSamples: number
+  isClusteredView: boolean
+  highlightedPosition: number | null
   variantDict: Map<string, any>
   onHoverVariant?: (position: number | null) => void
+  onRowClick?: (pos: number) => void
   toggleExpand: (id: string) => void
 }
 
@@ -1133,9 +1168,13 @@ const TableRow = React.memo(function TableRow({
   isExpanded,
   mode,
   totalGroups,
+  totalClusters,
   totalSamples,
+  isClusteredView,
+  highlightedPosition,
   variantDict,
   onHoverVariant,
+  onRowClick,
   toggleExpand,
 }: TableRowProps) {
   const COL_COUNT = 12
@@ -1145,8 +1184,17 @@ const TableRow = React.memo(function TableRow({
         data-position={v.pos}
         onMouseEnter={() => onHoverVariant?.(v.pos)}
         onMouseLeave={() => onHoverVariant?.(null)}
-        style={v.is_tr ? { cursor: 'pointer', background: isExpanded ? '#fff8e1' : undefined } : undefined}
-        onClick={v.is_tr ? () => toggleExpand(v.variant_id) : undefined}
+        style={{
+          cursor: 'pointer',
+          background: highlightedPosition === v.pos
+            ? '#fff3cd'
+            : isExpanded ? '#fff8e1' : undefined,
+          transition: 'background 0.3s ease',
+        }}
+        onClick={() => {
+          if (v.is_tr) toggleExpand(v.variant_id)
+          onRowClick?.(v.pos)
+        }}
       >
         <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
           {v.is_tr && (
@@ -1168,7 +1216,14 @@ const TableRow = React.memo(function TableRow({
         {mode === 'summary' && <td className="numeric">{v.freq.an}</td>}
         {mode === 'haplotype' && (
           <td className="numeric">
-            {v.group_count} / {totalGroups}
+            {isClusteredView && v.cluster_distribution ? (
+              <>
+                {v.active_cluster_count} / {totalClusters}
+                <ClusterFingerprint distribution={v.cluster_distribution} />
+              </>
+            ) : (
+              <>{v.group_count} / {totalGroups}</>
+            )}
           </td>
         )}
         {mode === 'haplotype' && (
@@ -1325,12 +1380,17 @@ const TableRow = React.memo(function TableRow({
 type HaplotypeVariantTableProps = {
   mode?: 'summary' | 'haplotype'
   summaryVariants?: any[]
-  haplotypeGroups?: { groups: HaplotypeGroup[] }
+  haplotypeGroups?: { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }
   sampleMetadata?: SampleMetadataMap
   totalGroups?: number
   onHoverVariant?: (position: number | null) => void
   onVisibleVariantChange?: (pos: number) => void
+  onFilteredVariantsChange?: (variantIds: Set<string>) => void
+  onRowClick?: (pos: number) => void
   maxHeight?: string
+  isClusteredView?: boolean
+  selectedClusterId?: string | null
+  onClearClusterFilter?: () => void
 }
 
 export type HaplotypeVariantTableHandle = {
@@ -1341,7 +1401,7 @@ export type HaplotypeVariantTableHandle = {
 // every render, which invalidates useMemo deps and causes the 2-second variants
 // derivation to recompute on every scroll tick.
 const EMPTY_VARIANTS: any[] = []
-const EMPTY_HAPLOTYPE_GROUPS: { groups: HaplotypeGroup[] } = { groups: [] }
+const EMPTY_HAPLOTYPE_GROUPS: { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] } = { groups: [] }
 const EMPTY_SAMPLE_METADATA = new Map() as SampleMetadataMap
 
 const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeVariantTableProps>(function HaplotypeVariantTable({
@@ -1351,7 +1411,12 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   sampleMetadata = EMPTY_SAMPLE_METADATA,
   onHoverVariant,
   onVisibleVariantChange,
+  onFilteredVariantsChange,
+  onRowClick,
   maxHeight = '500px',
+  isClusteredView = false,
+  selectedClusterId = null,
+  onClearClusterFilter,
 }, ref) {
   const [sort, setSort] = useState<SortConfig>({ key: 'pos', direction: 'asc' })
   const [searchText, setSearchText] = useState('')
@@ -1369,6 +1434,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     other: true,
   })
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
+  const [highlightedPosition, setHighlightedPosition] = useState<number | null>(null)
+  const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const toggleExpand = useCallback((id: string) => {
     setExpandedRows((prev) => {
@@ -1424,6 +1491,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         const rowPos = parseInt(row.getAttribute('data-position')!, 10)
         if (rowPos >= pos) {
           tableScrollRef.current.scrollTop = row.offsetTop - 30
+          // Flash highlight
+          if (highlightTimeout.current) clearTimeout(highlightTimeout.current)
+          setHighlightedPosition(rowPos)
+          highlightTimeout.current = setTimeout(() => setHighlightedPosition(null), 2000)
           return
         }
       }
@@ -1570,6 +1641,35 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       }
     }
 
+    // Build cluster distribution lookup: variant map key → per-cluster AF
+    const clusters = haplotypeGroups.clusters
+    const clusterDistByKey = new Map<string, { cluster_id: string; af: number }[]>()
+    if (clusters && clusters.length > 0) {
+      // Build per-cluster AF lookups keyed by the same grouping key used for the variant map
+      const allKeys = new Set<string>()
+      for (const cluster of clusters) {
+        for (const cv of cluster.consensus_variants) {
+          const v = cv.variant
+          const isTrv = (v.allele_type || '').toLowerCase() === 'trv'
+          const k = isTrv ? `${v.chrom}:${v.pos}:TRV` : `${v.pos}:${v.ref}:${v.alt}`
+          allKeys.add(k)
+        }
+      }
+      for (const k of allKeys) {
+        clusterDistByKey.set(k, clusters.map((c: HaplotypeCluster) => {
+          // For TRV, take max AF across all TRV alleles at that position
+          let af = 0
+          for (const cv of c.consensus_variants) {
+            const v = cv.variant
+            const isTrv = (v.allele_type || '').toLowerCase() === 'trv'
+            const cvKey = isTrv ? `${v.chrom}:${v.pos}:TRV` : `${v.pos}:${v.ref}:${v.alt}`
+            if (cvKey === k) af = Math.max(af, cv.cluster_af)
+          }
+          return { cluster_id: c.cluster_id, af }
+        }))
+      }
+    }
+
     // Phase 2: build DerivedVariant array
     const result: DerivedVariant[] = []
     for (const [key, { variant: v, groupCount, carrierIds, trCarriers, trSequences }] of map) {
@@ -1703,6 +1803,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         tr_flank_suffix: flankSuffix || undefined,
         short_read_match_id: null,
         enveloped_ids: null,
+        cluster_distribution: clusterDistByKey.get(key),
+        active_cluster_count: clusterDistByKey.get(key)?.filter(c => c.af > 0).length,
       })
     }
 
@@ -1712,6 +1814,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   }, [mode, summaryVariants, haplotypeGroups, sampleMetadata])
 
   const totalGroups = haplotypeGroups.groups.length
+  const totalClusters = haplotypeGroups.clusters?.length ?? 0
   const totalSamples = useMemo(() => {
     const ids = new Set<string>()
     for (const g of haplotypeGroups.groups) {
@@ -1723,6 +1826,13 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   // Filter
   const filtered = useMemo(() => {
     let list = variants
+
+    // Cluster filter (from track click)
+    if (selectedClusterId) {
+      list = list.filter(v =>
+        v.cluster_distribution?.some(c => c.cluster_id === selectedClusterId && c.af > 0)
+      )
+    }
 
     // Type filter
     list = list.filter((v) => typeFilters[getVariantCategory(v.allele_type, v.allele_length)])
@@ -1747,7 +1857,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     }
 
     return list
-  }, [variants, typeFilters, consequenceFilters, searchText])
+  }, [variants, typeFilters, consequenceFilters, searchText, selectedClusterId])
 
   // Sort
   const sorted = useMemo(() => {
@@ -1764,6 +1874,32 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     })
   }, [filtered, sort])
   sortedRef.current = sorted
+
+  // Debounced callback for filtered variant IDs → track dimming (Phase 3)
+  const debouncedFilterNotify = useMemo(
+    () => {
+      let timer: ReturnType<typeof setTimeout> | null = null
+      return (ids: Set<string>) => {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => onFilteredVariantsChange?.(ids), 300)
+      }
+    },
+    [onFilteredVariantsChange]
+  )
+
+  // Notify parent when filtered set changes
+  const isFiltered = searchText.trim() !== '' || selectedClusterId != null ||
+    Object.values(typeFilters).some(v => !v) || Object.values(consequenceFilters).some(v => !v)
+
+  const prevFilteredRef = useRef<number>(0)
+  if (onFilteredVariantsChange && isFiltered && filtered.length !== prevFilteredRef.current) {
+    prevFilteredRef.current = filtered.length
+    const ids = new Set(filtered.map(v => v.variant_id))
+    debouncedFilterNotify(ids)
+  } else if (onFilteredVariantsChange && !isFiltered && prevFilteredRef.current !== 0) {
+    prevFilteredRef.current = 0
+    debouncedFilterNotify(new Set())
+  }
 
   const handleSort = (key: SortKey) => {
     setSort((prev) =>
@@ -1864,7 +2000,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   }
 
   return (
-    <TableContainer>
+    <TableContainer id="lr-variant-table-container">
       <ControlBar>
         <CategoryFilterControl
           categories={variantTypeCategories}
@@ -1884,6 +2020,24 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
+        {selectedClusterId && (
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 4,
+            padding: '2px 8px', background: '#e3f2fd', borderRadius: 12,
+            fontSize: 12, color: '#1565c0',
+          }}>
+            Filtered to Cluster {selectedClusterId}
+            <button
+              onClick={onClearClusterFilter}
+              style={{
+                border: 'none', background: 'none', cursor: 'pointer',
+                fontSize: 14, color: '#1565c0', padding: 0, lineHeight: 1,
+              }}
+            >
+              ✕
+            </button>
+          </span>
+        )}
         <ExportButton onClick={exportCSV}>Export CSV</ExportButton>
         {sorted.some((v) => v.is_tr) && (
           <>
@@ -1915,8 +2069,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
               {mode === 'summary' && <th className="numeric" onClick={() => handleSort('freq.ac')}>AC{sortIndicator('freq.ac')}</th>}
               {mode === 'summary' && <th className="numeric" onClick={() => handleSort('freq.an')}>AN{sortIndicator('freq.an')}</th>}
               {mode === 'haplotype' && (
-                <th className="numeric" onClick={() => handleSort('group_count')}>
-                  Groups{sortIndicator('group_count')}
+                <th className="numeric" onClick={() => handleSort(isClusteredView ? 'active_cluster_count' : 'group_count')}>
+                  {isClusteredView ? 'Clusters' : 'Haplotypes'}{sortIndicator(isClusteredView ? 'active_cluster_count' : 'group_count')}
                 </th>
               )}
               {mode === 'haplotype' && (
@@ -1980,9 +2134,13 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         isExpanded={isExpanded}
                         mode={mode}
                         totalGroups={totalGroups}
+                        totalClusters={totalClusters}
                         totalSamples={totalSamples}
+                        isClusteredView={isClusteredView}
+                        highlightedPosition={highlightedPosition}
                         variantDict={variantDict}
                         onHoverVariant={onHoverVariant}
+                        onRowClick={onRowClick}
                         toggleExpand={toggleExpand}
                       />
                     )
@@ -1999,4 +2157,5 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 })
 
 export default React.memo(HaplotypeVariantTable)
+
 
