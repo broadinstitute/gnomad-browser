@@ -62,28 +62,38 @@ const AccordionPositionAxis = () => {
         </text>
       </g>
 
-      {/* Phantom gap labels */}
+      {/* Phantom gap labels — only show when there's enough pixel space */}
       {mapper &&
-        mapper.getPhantomLoci().map((locus) => {
-          if (locus.maxPhantomLength <= 0) return null
-          const pxStart = scalePosition(locus.genomicPos)
-          const pxCenter = pxStart + (locus.maxPhantomLength * pxPerUnit) / 2
-          const label = `+${locus.maxPhantomLength.toLocaleString()}bp${locus.isTruncated ? ' (~)' : ''}`
+        (() => {
+          const MIN_LABEL_SPACING = 80 // minimum pixels between labels
+          let lastLabelEnd = -Infinity
+          return mapper.getPhantomLoci().map((locus) => {
+            if (locus.maxPhantomLength <= 0) return null
+            const pxStart = scalePosition(locus.genomicPos)
+            const gapWidth = locus.maxPhantomLength * pxPerUnit
+            // Skip labels for gaps narrower than ~30px
+            if (gapWidth < 30) return null
+            const pxCenter = pxStart + gapWidth / 2
+            // Skip if too close to the last rendered label
+            if (pxCenter - lastLabelEnd < MIN_LABEL_SPACING) return null
+            const label = `+${locus.maxPhantomLength.toLocaleString()}bp${locus.isTruncated ? ' (~)' : ''}`
+            lastLabelEnd = pxCenter + label.length * 3 // rough estimate of label half-width
 
-          return (
-            <text
-              key={`phantom-${locus.genomicPos}`}
-              x={pxCenter}
-              y={height - 7}
-              textAnchor="middle"
-              fill={PHANTOM_LABEL_COLOR}
-              fontStyle="italic"
-              style={{ fontSize: '10px' }}
-            >
-              {label}
-            </text>
-          )
-        })}
+            return (
+              <text
+                key={`phantom-${locus.genomicPos}`}
+                x={pxCenter}
+                y={height - 7}
+                textAnchor="middle"
+                fill={PHANTOM_LABEL_COLOR}
+                fontStyle="italic"
+                style={{ fontSize: '10px' }}
+              >
+                {label}
+              </text>
+            )
+          })
+        })()}
     </svg>
   )
 }
