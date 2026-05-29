@@ -34,12 +34,12 @@ export class AccordionCoordinateMapper {
     const maxCap = regionSize * 0.15
 
     // Filter for insertion/TR variants with abs(allele_length) >= 50
+    // Note: summary variants from GraphQL use "length", haplotype variants use "allele_length"
     const ACCORDION_ALLELE_TYPES = new Set(['ins', 'alu_ins', 'sva_ins', 'numt', 'trv'])
+    const getLen = (v: any): number => Math.abs(v.allele_length ?? v.length ?? 0)
     const candidates = unfilteredVariants.filter((v) => {
-      return (
-        ACCORDION_ALLELE_TYPES.has(v.allele_type.toLowerCase()) &&
-        Math.abs(v.allele_length) >= 50
-      )
+      const aType = (v.allele_type || '').toLowerCase()
+      return ACCORDION_ALLELE_TYPES.has(aType) && getLen(v) >= 50
     })
 
     // Sort by position
@@ -48,7 +48,7 @@ export class AccordionCoordinateMapper {
     // Cluster breakpoints within <= 2bp
     const clusters: { genomicPos: number; maxLength: number }[] = []
     for (const v of sorted) {
-      const len = Math.abs(v.allele_length)
+      const len = getLen(v)
       if (
         clusters.length > 0 &&
         Math.abs(v.pos - clusters[clusters.length - 1].genomicPos) <= 2
