@@ -21,6 +21,7 @@ let carrierVariantIndices: Record<string, number[]> = {}
 let trvAlts: Record<string, Record<number, string>> | undefined
 let autoDefaults: AutoDefaults | null = null
 let baseData: ComputedHaplotypeData | null = null
+let baseDataThreshold = 0
 let currentSortBy = 'similarity_score'
 
 // ---- Message types ----
@@ -74,6 +75,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         floorAf, currentSortBy, isClusteredView, clusterThreshold,
         trvAlts
       )
+      baseDataThreshold = clusterThreshold
 
       // Apply display filtering if default AF > floor
       const defaultAf = autoDefaults?.defaultAf || floorAf
@@ -95,13 +97,14 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
 
       let result: ComputedHaplotypeData
       if (msg.isClusteredView) {
-        // Clustering ON: reuse baseData, apply display filter
-        if (!baseData) {
+        // Clustering ON: rebuild baseData if threshold changed, then apply display filter
+        if (!baseData || msg.clusterThreshold !== baseDataThreshold) {
           baseData = computeHaplotypeView(
             variants, carrierVariantIndices,
             autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
             trvAlts
           )
+          baseDataThreshold = msg.clusterThreshold
         }
         result = msg.minAf > (autoDefaults?.floor || 0)
           ? filterDisplayVariants(baseData, msg.minAf)
@@ -132,9 +135,11 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
         trvAlts
       )
+      baseDataThreshold = msg.clusterThreshold
 
       self.postMessage({ type: 'UPDATED', data: baseData })
       break
     }
   }
 }
+
