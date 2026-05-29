@@ -90,7 +90,7 @@ import {
   fetchDistinctHaplotypeVariants,
   fetchTrvCarrierAlts,
 } from './queries/haplotype-queries'
-import { buildVariantsAndCarrierMap } from './queries/haplotype-grouping'
+import { buildVariantsAndCarrierMap, deriveAutoDefaults } from './queries/haplotype-grouping'
 
 app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
   const t0 = performance.now()
@@ -116,9 +116,18 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       trvCarriers as any,
     )
 
+    // Compute auto defaults server-side (Phase 4)
+    const regionSize = stop - start
+    const autoDefaults = deriveAutoDefaults(
+      result.variants, result.carrier_variant_indices, regionSize, result.trv_alts
+    )
+
     const ms = performance.now() - t0
     res.json({
-      ...result,
+      variants: result.soa_variants,
+      carrier_variant_indices: result.carrier_variant_indices,
+      trv_alts: result.trv_alts,
+      auto_defaults: autoDefaults,
       _timing: { total_ms: Math.round(ms) },
     })
   } catch (e: any) {

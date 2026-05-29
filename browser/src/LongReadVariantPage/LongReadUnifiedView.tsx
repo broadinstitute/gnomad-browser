@@ -13,10 +13,11 @@ import HaplotypeTrack, { HaplotypeGroups, HaplotypeTrackHandle, Methylation, Met
 import {
   computeHaplotypeView,
   filterDisplayVariants,
-  deriveAutoDefaults,
+  rehydrateVariants,
   getAutoClusterThreshold,
   type RawPayload,
   type ComputedHaplotypeData,
+  type AutoDefaults,
 } from '../Haplotypes/haplotypeCompute'
 import HaplotypeVariantTable, { HaplotypeVariantTableHandle } from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
@@ -185,8 +186,10 @@ const LongReadUnifiedView = ({
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
 
-  // Haplotype mode state — raw payload from server (variants + carrier map)
-  const [rawPayload, setRawPayload] = useState<RawPayload | null>(null)
+  // Haplotype mode state — raw rehydrated data + computed result
+  const [haplotypeData, setHaplotypeData] = useState<ComputedHaplotypeData | null>(null)
+  const [autoDefaults, setAutoDefaults] = useState<AutoDefaults>({ floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false })
+  const rawDataRef = useRef<{ variants: import('../Haplotypes/index').LRVariant[]; carrierIndices: Record<string, number[]>; trvAlts?: Record<string, Record<number, string>> } | null>(null)
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
@@ -323,7 +326,7 @@ const LongReadUnifiedView = ({
     fetchMeta()
   }, [viewMode, sampleMetadata.size])
 
-  // Fetch raw haplotype data once per region (no grouping/tree on server)
+  // Fetch raw haplotype data once per region
   const abortControllerRef = useRef<AbortController | null>(null)
   useEffect(() => {
     if (viewMode !== 'haplotype') return
@@ -338,60 +341,53 @@ const LongReadUnifiedView = ({
     fetchHaplotypeDataREST(chrom, start, stop, controller.signal)
       .then((result) => {
         if (controller.signal.aborted) return
-        console.log(`[REST] raw payload: ${result.variants?.length} variants, ${Object.keys(result.carrier_variant_indices || {}).length} carriers in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
+        console.log(`[REST] raw payload: ${result.variants?.variant_id?.length ?? 0} variants, ${Object.keys(result.carrier_variant_indices || {}).length} carriers in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
 
-        // Auto-derive defaults immediately and batch all state updates together
-        const defaults = deriveAutoDefaults(result.variants, result.carrier_variant_indices, regionSize, result.trv_alts)
+        // Use server-computed auto_defaults
+        const defaults = result.auto_defaults || { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
+        setAutoDefaults(defaults)
         setThreshold(defaults.defaultAf)
         setClusterThreshold(defaults.defaultClusterThreshold)
         setDeferredClusterThreshold(defaults.defaultClusterThreshold)
         setIsClusteredView(defaults.isClusteredView)
-        setRawPayload(result)
+
+        // Rehydrate SoA variants and compute
+        const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
+          ? rehydrateVariants(result.variants as any)
+          : (result.variants as any) || []
+        const carrierIndices = result.carrier_variant_indices || {}
+        rawDataRef.current = { variants, carrierIndices, trvAlts: result.trv_alts }
+        const baseData = computeHaplotypeView(
+          variants, carrierIndices,
+          defaults.defaultAf, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
+          result.trv_alts
+        )
+        setHaplotypeData(baseData)
+        setHaplotypeLoading(false)
       })
       .catch((error: any) => {
         if (error?.name === 'AbortError') return
         console.error('Error fetching haplotype data:', error)
-      })
-      .finally(() => {
-        if (!controller.signal.aborted) setHaplotypeLoading(false)
+        setHaplotypeLoading(false)
       })
   }, [viewMode, chrom, start, stop])
 
-  // Joint auto-derivation of min AF + cluster threshold from data
-  const autoDefaults = useMemo(() => {
-    if (!rawPayload) return { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
-    return deriveAutoDefaults(rawPayload.variants, rawPayload.carrier_variant_indices, regionSize, rawPayload.trv_alts)
-  }, [rawPayload, regionSize])
-
-  // Client-side compute: grouping, sorting, UPGMA tree, cluster cutting
-  // Hybrid min AF: clustering ON → display-only, clustering OFF → drives grouping
-  const haplotypeGroups: HaplotypeGroups = useMemo(() => {
-    if (!rawPayload) return { groups: [] }
-    const t0 = performance.now()
-
+  // Recompute when AF/sort/clustering changes
+  const hasData = haplotypeData !== null
+  useEffect(() => {
+    if (!hasData || !rawDataRef.current) return
+    const { variants, carrierIndices, trvAlts } = rawDataRef.current
     let result: ComputedHaplotypeData
     if (isClusteredView) {
-      // Clustering ON: groups defined at floor AF (stable tree), min AF is display-only
-      const baseData = computeHaplotypeView(
-        rawPayload.variants, rawPayload.carrier_variant_indices,
-        autoDefaults.floor, sortBy, true, deferredClusterThreshold,
-        rawPayload.trv_alts
-      )
-      result = threshold > autoDefaults.floor
-        ? filterDisplayVariants(baseData, threshold)
-        : baseData
+      const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts)
+      result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
     } else {
-      // Clustering OFF: min AF drives grouping
-      result = computeHaplotypeView(
-        rawPayload.variants, rawPayload.carrier_variant_indices,
-        threshold, sortBy, false, deferredClusterThreshold,
-        rawPayload.trv_alts
-      )
+      result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts)
     }
+    setHaplotypeData(result)
+  }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, hasData])
 
-    console.log(`[client] computed ${result.groups.length} groups${result.clusters ? `, ${result.clusters.length} clusters` : ''} in ${Math.round(performance.now() - t0)}ms`)
-    return result
-  }, [rawPayload, threshold, sortBy, isClusteredView, deferredClusterThreshold, autoDefaults.floor])
+  const haplotypeGroups: HaplotypeGroups = haplotypeData || { groups: [] }
 
   // Fetch methylation summary + outliers when entering haplotype mode
   useEffect(() => {
@@ -733,3 +729,5 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
+
+

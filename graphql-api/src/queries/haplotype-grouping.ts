@@ -8,6 +8,7 @@
 import {
   computeSVDistanceMatrix,
   buildUPGMATree,
+  getClustersAtThreshold,
   type TreeNode,
 } from './genealogy-math'
 
@@ -601,10 +602,94 @@ export const createHaplotypeGroups = (
   return { groups }
 }
 
+// ---- Struct-of-Arrays (SoA) variant format for compact JSON payloads ----
+
+export type SoAVariants = {
+  variant_id: string[]
+  chrom: string[]
+  pos: number[]
+  end: (number | null)[]
+  ref: string[]
+  alt: string[]
+  allele_type: string[]
+  allele_length: number[]
+  freq_af: number[]
+  freq_ac: number[]
+  freq_an: number[]
+  rsid: string[]
+  cadd_phred: (number | null)[]
+  phylop: (number | null)[]
+  sv_consequences: (string[] | null)[]
+  dbgap_id: (string | null)[]
+  tr_id: (string | null)[]
+  tr_motifs: (string | null)[]
+  gnomad_str: (string | null)[]
+  allele_methylation: (number | null)[]
+  motif_counts: (number[] | null)[]
+  allele_purity: (number | null)[]
+  populations: Array<{ id: string; af: number }>[]
+}
+
+function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
+  const n = variants.length
+  const soa: SoAVariants = {
+    variant_id: new Array(n),
+    chrom: new Array(n),
+    pos: new Array(n),
+    end: new Array(n),
+    ref: new Array(n),
+    alt: new Array(n),
+    allele_type: new Array(n),
+    allele_length: new Array(n),
+    freq_af: new Array(n),
+    freq_ac: new Array(n),
+    freq_an: new Array(n),
+    rsid: new Array(n),
+    cadd_phred: new Array(n),
+    phylop: new Array(n),
+    sv_consequences: new Array(n),
+    dbgap_id: new Array(n),
+    tr_id: new Array(n),
+    tr_motifs: new Array(n),
+    gnomad_str: new Array(n),
+    allele_methylation: new Array(n),
+    motif_counts: new Array(n),
+    allele_purity: new Array(n),
+    populations: new Array(n),
+  }
+  for (let i = 0; i < n; i++) {
+    const v = variants[i]
+    soa.variant_id[i] = v.variant_id
+    soa.chrom[i] = v.chrom
+    soa.pos[i] = v.pos
+    soa.end[i] = v.end
+    soa.ref[i] = v.ref
+    soa.alt[i] = v.alt
+    soa.allele_type[i] = v.allele_type
+    soa.allele_length[i] = v.allele_length
+    soa.freq_af[i] = v.freq.af
+    soa.freq_ac[i] = v.freq.ac
+    soa.freq_an[i] = v.freq.an
+    soa.rsid[i] = v.rsid
+    soa.cadd_phred[i] = v.cadd_phred
+    soa.phylop[i] = v.phylop
+    soa.sv_consequences[i] = v.sv_consequences
+    soa.dbgap_id[i] = v.dbgap_id || null
+    soa.tr_id[i] = v.tr_id || null
+    soa.tr_motifs[i] = v.tr_motifs || null
+    soa.gnomad_str[i] = v.gnomad_str || null
+    soa.allele_methylation[i] = v.allele_methylation ?? null
+    soa.motif_counts[i] = v.motif_counts
+    soa.allele_purity[i] = v.allele_purity ?? null
+    soa.populations[i] = v.populations
+  }
+  return soa
+}
+
 /**
  * Build a compact payload from Q2 (distinct variants with carriers) for client-side computation.
  * Transposes the per-variant carrier arrays into per-carrier variant index arrays.
- * No grouping, sorting, or tree computation — all done client-side.
+ * Packs variants into SoA format for smaller JSON payloads.
  */
 export const buildVariantsAndCarrierMap = (
   distinctVariants: any[],
@@ -656,5 +741,181 @@ export const buildVariantsAndCarrierMap = (
     trvAlts[key][Number(row.position)] = row.alt
   }
 
-  return { variants, carrier_variant_indices: carrierVariantIndices, trv_alts: trvAlts }
+  return {
+    variants,
+    soa_variants: packVariantsToSoA(variants),
+    carrier_variant_indices: carrierVariantIndices,
+    trv_alts: trvAlts,
+  }
+}
+
+// ---- Server-side AutoDefaults (ported from client haplotypeCompute.ts) ----
+
+export type AutoDefaults = {
+  floor: number
+  ceiling: number
+  defaultAf: number
+  defaultClusterThreshold: number
+  isClusteredView: boolean
+}
+
+function getAutoClusterThreshold(regionSize: number): number {
+  if (regionSize < 50_000) return 0.0
+  if (regionSize > 1_000_000) return 0.70
+  const t = (regionSize - 50_000) / (1_000_000 - 50_000)
+  return 0.35 + t * 0.30
+}
+
+function countGroupsForAf(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  minAf: number
+): number {
+  const passingIndices = new Set<number>()
+  for (let i = 0; i < variants.length; i++) {
+    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+  }
+  const signatures = new Set<string>()
+  for (const variantIdxs of Object.values(carrierVariantIndices)) {
+    const filtered = variantIdxs.filter((i) => passingIndices.has(i))
+    if (filtered.length === 0) continue
+    signatures.add(filtered.join(','))
+  }
+  return signatures.size
+}
+
+function groupCarriersForDefaults(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  minAf: number
+): any[] {
+  const passingIndices = new Set<number>()
+  for (let i = 0; i < variants.length; i++) {
+    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+  }
+
+  const signatureToCarriers = new Map<string, string[]>()
+  const signatureToIndices = new Map<string, number[]>()
+
+  for (const [carrierId, variantIdxs] of Object.entries(carrierVariantIndices)) {
+    const filtered = variantIdxs.filter((i) => passingIndices.has(i))
+    if (filtered.length === 0) continue
+    const signature = filtered.join(',')
+    const existing = signatureToCarriers.get(signature)
+    if (existing) {
+      existing.push(carrierId)
+    } else {
+      signatureToCarriers.set(signature, [carrierId])
+      signatureToIndices.set(signature, filtered)
+    }
+  }
+
+  const groups: any[] = []
+  for (const [signature, carriers] of signatureToCarriers) {
+    const indices = signatureToIndices.get(signature)!
+    const aboveVariants = indices.map((i) => variants[i])
+    const readableId = aboveVariants
+      .map((v) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
+      .sort()
+      .join(';')
+    groups.push({
+      samples: carriers.map((c) => ({ sample_id: c.split(':')[0] })),
+      variants: { variants: aboveVariants, readable_id: readableId },
+      hash: hashString(readableId),
+    })
+  }
+  return groups
+}
+
+function binarySearchAfServer(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  floor: number,
+  ceiling: number,
+  targetGroups: number
+): number {
+  let lo = floor
+  let hi = ceiling
+  let bestAf = floor
+  for (let step = 0; step < 8; step++) {
+    const mid = Math.pow(10, (Math.log10(lo) + Math.log10(hi)) / 2)
+    const groupCount = countGroupsForAf(variants, carrierVariantIndices, mid)
+    if (groupCount > targetGroups) lo = mid
+    else hi = mid
+    bestAf = mid
+  }
+  return Math.max(bestAf, floor)
+}
+
+const TARGET_MIN = 15
+const TARGET_MAX = 40
+const MAX_GROUPS_FOR_UPGMA = 150
+
+export function deriveAutoDefaults(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  regionSize: number,
+  trvAlts?: Record<string, Record<number, string>>
+): AutoDefaults {
+  if (variants.length === 0) {
+    return { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
+  }
+
+  const maxAN = variants.reduce((max, v) => Math.max(max, v.freq.an), 0)
+  const floor = Math.max(maxAN > 0 ? 2 / maxAN : 0.001, 0.001)
+  const sortedAfs = variants.map((v) => v.freq.af).sort((a, b) => a - b)
+  const p95idx = Math.floor(sortedAfs.length * 0.95)
+  const ceiling = Math.max(Math.min(sortedAfs[p95idx] || 0.95, 0.95), floor + 0.01)
+
+  const baseClusterThreshold = getAutoClusterThreshold(regionSize)
+
+  if (baseClusterThreshold === 0) {
+    const defaultAf = binarySearchAfServer(variants, carrierVariantIndices, floor, ceiling, 30)
+    return { floor, ceiling, defaultAf, defaultClusterThreshold: 0, isClusteredView: false }
+  }
+
+  let minAf = floor
+  let clusterThreshold = baseClusterThreshold
+
+  for (let iter = 0; iter < 10; iter++) {
+    const groups = groupCarriersForDefaults(variants, carrierVariantIndices, minAf)
+    const N = groups.length
+
+    if (N > MAX_GROUPS_FOR_UPGMA) {
+      minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      continue
+    }
+
+    if (N < 2) break
+
+    const distMatrix = computeSVDistanceMatrix(groups)
+    const { tree } = buildUPGMATree(distMatrix, groups)
+    const clusterNodes = getClustersAtThreshold(tree, clusterThreshold)
+    const M = clusterNodes.length
+
+    if (M >= TARGET_MIN && M <= TARGET_MAX) break
+
+    if (M > TARGET_MAX) {
+      clusterThreshold = Math.min(1.0, clusterThreshold + 0.05)
+      if (clusterThreshold >= 0.95) {
+        minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      }
+    } else {
+      const newAf = Math.pow(10, (Math.log10(floor) + Math.log10(minAf)) / 2)
+      if (Math.abs(newAf - minAf) < 1e-6) {
+        clusterThreshold = Math.max(0, clusterThreshold - 0.05)
+        if (clusterThreshold <= 0.05) break
+      } else {
+        minAf = newAf
+      }
+    }
+  }
+
+  return {
+    floor,
+    ceiling,
+    defaultAf: Math.max(minAf, floor),
+    defaultClusterThreshold: clusterThreshold,
+    isClusteredView: true,
+  }
 }
