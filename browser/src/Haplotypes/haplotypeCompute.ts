@@ -16,10 +16,74 @@ export type TreeNode = {
   size: number
 }
 
+// ---- Struct-of-Arrays (SoA) format for compact payloads ----
+
+export type SoAVariants = {
+  variant_id: string[]
+  chrom: string[]
+  pos: number[]
+  end: (number | null)[]
+  ref: string[]
+  alt: string[]
+  allele_type: string[]
+  allele_length: number[]
+  freq_af: number[]
+  freq_ac: number[]
+  freq_an: number[]
+  rsid: string[]
+  cadd_phred: (number | null)[]
+  phylop: (number | null)[]
+  sv_consequences: (string[] | null)[]
+  dbgap_id: (string | null)[]
+  tr_id: (string | null)[]
+  tr_motifs: (string | null)[]
+  gnomad_str: (string | null)[]
+  allele_methylation: (number | null)[]
+  motif_counts: (number[] | null)[]
+  allele_purity: (number | null)[]
+  populations: Array<{ id: string; af: number }>[]
+}
+
+export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
+  const n = soa.variant_id.length
+  const variants: LRVariant[] = new Array(n)
+  for (let i = 0; i < n; i++) {
+    variants[i] = {
+      variant_id: soa.variant_id[i],
+      chrom: soa.chrom[i],
+      pos: soa.pos[i],
+      end: soa.end[i],
+      ref: soa.ref[i],
+      alt: soa.alt[i],
+      allele_type: soa.allele_type[i],
+      allele_length: soa.allele_length[i],
+      freq: {
+        af: soa.freq_af[i],
+        ac: soa.freq_ac[i],
+        an: soa.freq_an[i],
+      },
+      populations: soa.populations[i],
+      rsid: soa.rsid[i],
+      cadd_phred: soa.cadd_phred[i],
+      phylop: soa.phylop[i],
+      sv_consequences: soa.sv_consequences[i],
+      dbgap_id: soa.dbgap_id[i],
+      tr_id: soa.tr_id[i],
+      tr_motifs: soa.tr_motifs[i],
+      gnomad_str: soa.gnomad_str[i],
+      allele_methylation: soa.allele_methylation[i],
+      motif_counts: soa.motif_counts[i],
+      allele_purity: soa.allele_purity[i],
+    }
+  }
+  return variants
+}
+
 export type RawPayload = {
-  variants: LRVariant[]
+  variants: SoAVariants
   carrier_variant_indices: Record<string, number[]>
   trv_alts?: Record<string, Record<number, string>>
+  auto_defaults?: AutoDefaults
   _timing?: { total_ms: number }
 }
 
@@ -53,36 +117,54 @@ const hashString = (str: string): string => {
   return hash.toString()
 }
 
-// ---- UPGMA Tree (ported from genealogy-math.ts) ----
+// ---- UPGMA Tree (optimized: two-pointer Jaccard + SLINK-style min tracking) ----
 
 const isSV = (v: LRVariant): boolean =>
   Math.abs(v.allele_length) >= 50 || v.allele_type === 'trv'
 
+// Two-pointer Jaccard on sorted integer arrays
+function sortedJaccard(a: number[], b: number[]): number {
+  if (a.length === 0 && b.length === 0) return 0
+  let i = 0, j = 0, intersection = 0
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) { intersection++; i++; j++ }
+    else if (a[i] < b[j]) i++
+    else j++
+  }
+  const union = a.length + b.length - intersection
+  return union === 0 ? 0 : 1 - intersection / union
+}
+
 export const computeSVDistanceMatrix = (groups: HaplotypeGroup[]): number[][] => {
-  const variantSets = groups.map(
-    (g) => new Set(
-      g.variants.variants
-        .filter((v) => isSV(v))
-        .map((v) => v.variant_id)
-    )
-  )
+  // Build sorted integer index arrays for SV variant_ids
+  const allSVIds = new Map<string, number>()
+  for (const g of groups) {
+    for (const v of g.variants.variants) {
+      if (isSV(v) && !allSVIds.has(v.variant_id)) {
+        allSVIds.set(v.variant_id, allSVIds.size)
+      }
+    }
+  }
+
+  const svIndices: number[][] = groups.map((g) => {
+    const indices: number[] = []
+    for (const v of g.variants.variants) {
+      if (isSV(v)) {
+        const idx = allSVIds.get(v.variant_id)
+        if (idx !== undefined) indices.push(idx)
+      }
+    }
+    return indices.sort((a, b) => a - b)
+  })
 
   const n = groups.length
   const matrix: number[][] = Array.from({ length: n }, () => new Array(n).fill(0))
 
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
-      const setI = variantSets[i]
-      const setJ = variantSets[j]
-      let intersection = 0
-      const [smaller, larger] = setI.size <= setJ.size ? [setI, setJ] : [setJ, setI]
-      for (const id of smaller) {
-        if (larger.has(id)) intersection++
-      }
-      const union = setI.size + setJ.size - intersection
-      const distance = union === 0 ? 0 : 1 - intersection / union
-      matrix[i][j] = distance
-      matrix[j][i] = distance
+      const d = sortedJaccard(svIndices[i], svIndices[j])
+      matrix[i][j] = d
+      matrix[j][i] = d
     }
   }
   return matrix
@@ -109,53 +191,95 @@ export const buildUPGMATree = (
     return { tree: leaf, leafOrder: [String(groups[0].hash)] }
   }
 
-  let clusters: TreeNode[] = groups.map((g) => ({
+  const clusters: TreeNode[] = groups.map((g) => ({
     left: null, right: null, distance: 0,
     groupHash: String(g.hash), size: 1,
   }))
 
-  let dist: number[][] = distanceMatrix.map((row) => [...row])
-  let sizes: number[] = new Array(n).fill(1)
-  let active: number[] = Array.from({ length: n }, (_, i) => i)
+  const dist: number[][] = distanceMatrix.map((row) => [...row])
+  const sizes: number[] = new Array(n).fill(1)
+  const active: boolean[] = new Array(n).fill(true)
 
-  while (active.length > 1) {
-    let minDist = Infinity
-    let minI = -1
-    let minJ = -1
-    for (let ai = 0; ai < active.length; ai++) {
-      for (let aj = ai + 1; aj < active.length; aj++) {
-        const d = dist[active[ai]][active[aj]]
-        if (d < minDist) {
-          minDist = d
-          minI = ai
-          minJ = aj
-        }
+  // SLINK-style min tracking: for each row i, track nearest active j > i
+  const rowMin: number[] = new Array(n).fill(Infinity)
+  const rowMinIdx: number[] = new Array(n).fill(-1)
+
+  // Initialize row minimums
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      if (dist[i][j] < rowMin[i]) {
+        rowMin[i] = dist[i][j]
+        rowMinIdx[i] = j
       }
     }
+  }
 
-    const idxI = active[minI]
-    const idxJ = active[minJ]
+  function rescanRow(i: number) {
+    rowMin[i] = Infinity
+    rowMinIdx[i] = -1
+    for (let k = i + 1; k < n; k++) {
+      if (!active[k]) continue
+      if (dist[i][k] < rowMin[i]) {
+        rowMin[i] = dist[i][k]
+        rowMinIdx[i] = k
+      }
+    }
+  }
 
+  for (let step = 0; step < n - 1; step++) {
+    // Find global minimum from row minimums
+    let bestDist = Infinity
+    let idxI = -1
+    for (let i = 0; i < n; i++) {
+      if (!active[i]) continue
+      if (rowMin[i] < bestDist) {
+        bestDist = rowMin[i]
+        idxI = i
+      }
+    }
+    let idxJ = rowMinIdx[idxI]
+
+    // Merge idxI and idxJ (keep idxI, deactivate idxJ)
     const merged: TreeNode = {
       left: clusters[idxI], right: clusters[idxJ],
-      distance: minDist, groupHash: null,
+      distance: bestDist, groupHash: null,
       size: clusters[idxI].size + clusters[idxJ].size,
     }
 
     const sI = sizes[idxI]
     const sJ = sizes[idxJ]
-    for (const k of active) {
-      if (k === idxI || k === idxJ) continue
-      dist[idxI][k] = (dist[idxI][k] * sI + dist[idxJ][k] * sJ) / (sI + sJ)
-      dist[k][idxI] = dist[idxI][k]
+    for (let k = 0; k < n; k++) {
+      if (!active[k] || k === idxI || k === idxJ) continue
+      const d = (dist[idxI][k] * sI + dist[idxJ][k] * sJ) / (sI + sJ)
+      dist[idxI][k] = d
+      dist[k][idxI] = d
     }
 
     sizes[idxI] = sI + sJ
     clusters[idxI] = merged
-    active.splice(minJ, 1)
+    active[idxJ] = false
+
+    // Invalidation step: update row minimums
+    for (let i = 0; i < n; i++) {
+      if (!active[i]) continue
+      if (i === idxI) {
+        rescanRow(i)
+      } else if (rowMinIdx[i] === idxI || rowMinIdx[i] === idxJ) {
+        rescanRow(i)
+      } else if (i < idxI && dist[i][idxI] < rowMin[i]) {
+        rowMin[i] = dist[i][idxI]
+        rowMinIdx[i] = idxI
+      }
+    }
   }
 
-  const tree = clusters[active[0]]
+  // Find the remaining active cluster
+  let rootIdx = 0
+  for (let i = 0; i < n; i++) {
+    if (active[i]) { rootIdx = i; break }
+  }
+  const tree = clusters[rootIdx]
+
   // Iterative in-order traversal to get leaf order
   const leafOrder: string[] = []
   const stack: TreeNode[] = []

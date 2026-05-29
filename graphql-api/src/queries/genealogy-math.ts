@@ -2,8 +2,7 @@
  * Backend UPGMA tree construction for haplotype clustering.
  *
  * Builds a UPGMA tree from SV-only Jaccard distances between haplotype groups.
- * Tree cutting and cluster computation are done client-side
- * (browser/src/Haplotypes/haplotypeCompute.ts).
+ * Optimized: two-pointer Jaccard + SLINK-style min tracking for O(N²) average case.
  */
 
 import type { LRVariant } from './haplotype-grouping'
@@ -16,63 +15,57 @@ export type TreeNode = {
   size: number
 }
 
-/**
- * Check whether a variant qualifies as a structural variant for clustering purposes.
- */
 const isSV = (v: LRVariant): boolean =>
   Math.abs(v.allele_length) >= 50 || v.allele_type === 'trv'
 
-/**
- * Compute pairwise Jaccard distance matrix between haplotype groups,
- * considering only SV variants (abs(allele_length) >= 50 or allele_type === 'trv').
- *
- * Jaccard distance: J(A,B) = 1 - |A ∩ B| / |A ∪ B|
- * If both sets are empty, distance is 0.
- */
+// Two-pointer Jaccard on sorted integer arrays
+function sortedJaccard(a: number[], b: number[]): number {
+  if (a.length === 0 && b.length === 0) return 0
+  let i = 0, j = 0, intersection = 0
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) { intersection++; i++; j++ }
+    else if (a[i] < b[j]) i++
+    else j++
+  }
+  const union = a.length + b.length - intersection
+  return union === 0 ? 0 : 1 - intersection / union
+}
+
 export const computeSVDistanceMatrix = (groups: any[]): number[][] => {
-  // Extract sets of variant_id for SVs only
-  const variantSets = groups.map(
-    (g) => new Set(
-      g.variants.variants
-        .filter((v: LRVariant) => isSV(v))
-        .map((v: LRVariant) => v.variant_id)
-    )
-  )
+  // Build sorted integer index arrays for SV variant_ids
+  const allSVIds = new Map<string, number>()
+  for (const g of groups) {
+    for (const v of g.variants.variants) {
+      if (isSV(v) && !allSVIds.has(v.variant_id)) {
+        allSVIds.set(v.variant_id, allSVIds.size)
+      }
+    }
+  }
+
+  const svIndices: number[][] = groups.map((g) => {
+    const indices: number[] = []
+    for (const v of g.variants.variants) {
+      if (isSV(v)) {
+        const idx = allSVIds.get(v.variant_id)
+        if (idx !== undefined) indices.push(idx)
+      }
+    }
+    return indices.sort((a, b) => a - b)
+  })
 
   const n = groups.length
   const matrix: number[][] = Array.from({ length: n }, () => new Array(n).fill(0))
 
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
-      const setI = variantSets[i]
-      const setJ = variantSets[j]
-
-      // Compute intersection size
-      let intersection = 0
-      const [smaller, larger] = setI.size <= setJ.size ? [setI, setJ] : [setJ, setI]
-      for (const id of smaller) {
-        if (larger.has(id)) intersection++
-      }
-
-      const union = setI.size + setJ.size - intersection
-      const distance = union === 0 ? 0 : 1 - intersection / union
-
-      matrix[i][j] = distance
-      matrix[j][i] = distance
+      const d = sortedJaccard(svIndices[i], svIndices[j])
+      matrix[i][j] = d
+      matrix[j][i] = d
     }
   }
-
   return matrix
 }
 
-/**
- * Build a UPGMA tree from a distance matrix.
- * Returns the root tree node and a leafOrder array of group hashes
- * (in-order traversal for dendrogram row sorting).
- *
- * Ported from browser/src/Haplotypes/genealogy-math.ts, adapted to use
- * string group hashes.
- */
 export const buildUPGMATree = (
   distanceMatrix: number[][],
   groups: any[]
@@ -88,78 +81,97 @@ export const buildUPGMATree = (
 
   if (n === 1) {
     const leaf: TreeNode = {
-      left: null,
-      right: null,
-      distance: 0,
-      groupHash: groups[0].hash,
-      size: 1,
+      left: null, right: null, distance: 0,
+      groupHash: groups[0].hash, size: 1,
     }
     return { tree: leaf, leafOrder: [groups[0].hash] }
   }
 
-  // Initialize clusters: each leaf is its own cluster
-  let clusters: TreeNode[] = groups.map((g) => ({
-    left: null,
-    right: null,
-    distance: 0,
-    groupHash: g.hash,
-    size: 1,
+  const clusters: TreeNode[] = groups.map((g) => ({
+    left: null, right: null, distance: 0,
+    groupHash: g.hash, size: 1,
   }))
 
-  // Copy distance matrix (we'll modify it during merging)
-  let dist: number[][] = distanceMatrix.map((row) => [...row])
-  // Track cluster sizes for UPGMA averaging
-  let sizes: number[] = new Array(n).fill(1)
-  // Active indices
-  let active: number[] = Array.from({ length: n }, (_, i) => i)
+  const dist: number[][] = distanceMatrix.map((row) => [...row])
+  const sizes: number[] = new Array(n).fill(1)
+  const active: boolean[] = new Array(n).fill(true)
 
-  while (active.length > 1) {
-    // Find the two closest active clusters
-    let minDist = Infinity
-    let minI = -1
-    let minJ = -1
-    for (let ai = 0; ai < active.length; ai++) {
-      for (let aj = ai + 1; aj < active.length; aj++) {
-        const d = dist[active[ai]][active[aj]]
-        if (d < minDist) {
-          minDist = d
-          minI = ai
-          minJ = aj
-        }
+  // SLINK-style min tracking
+  const rowMin: number[] = new Array(n).fill(Infinity)
+  const rowMinIdx: number[] = new Array(n).fill(-1)
+
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      if (dist[i][j] < rowMin[i]) {
+        rowMin[i] = dist[i][j]
+        rowMinIdx[i] = j
       }
     }
+  }
 
-    const idxI = active[minI]
-    const idxJ = active[minJ]
+  function rescanRow(i: number) {
+    rowMin[i] = Infinity
+    rowMinIdx[i] = -1
+    for (let k = i + 1; k < n; k++) {
+      if (!active[k]) continue
+      if (dist[i][k] < rowMin[i]) {
+        rowMin[i] = dist[i][k]
+        rowMinIdx[i] = k
+      }
+    }
+  }
 
-    // Merge clusters i and j
+  for (let step = 0; step < n - 1; step++) {
+    let bestDist = Infinity
+    let idxI = -1
+    for (let i = 0; i < n; i++) {
+      if (!active[i]) continue
+      if (rowMin[i] < bestDist) {
+        bestDist = rowMin[i]
+        idxI = i
+      }
+    }
+    let idxJ = rowMinIdx[idxI]
+
     const merged: TreeNode = {
-      left: clusters[idxI],
-      right: clusters[idxJ],
-      distance: minDist,
-      groupHash: null,
+      left: clusters[idxI], right: clusters[idxJ],
+      distance: bestDist, groupHash: null,
       size: clusters[idxI].size + clusters[idxJ].size,
     }
 
-    // Update distances: UPGMA weighted average
     const sI = sizes[idxI]
     const sJ = sizes[idxJ]
-    for (const k of active) {
-      if (k === idxI || k === idxJ) continue
-      dist[idxI][k] = (dist[idxI][k] * sI + dist[idxJ][k] * sJ) / (sI + sJ)
-      dist[k][idxI] = dist[idxI][k]
+    for (let k = 0; k < n; k++) {
+      if (!active[k] || k === idxI || k === idxJ) continue
+      const d = (dist[idxI][k] * sI + dist[idxJ][k] * sJ) / (sI + sJ)
+      dist[idxI][k] = d
+      dist[k][idxI] = d
     }
 
     sizes[idxI] = sI + sJ
     clusters[idxI] = merged
+    active[idxJ] = false
 
-    // Remove j from active
-    active.splice(minJ, 1)
+    for (let i = 0; i < n; i++) {
+      if (!active[i]) continue
+      if (i === idxI) {
+        rescanRow(i)
+      } else if (rowMinIdx[i] === idxI || rowMinIdx[i] === idxJ) {
+        rescanRow(i)
+      } else if (i < idxI && dist[i][idxI] < rowMin[i]) {
+        rowMin[i] = dist[i][idxI]
+        rowMinIdx[i] = idxI
+      }
+    }
   }
 
-  const tree = clusters[active[0]]
+  let rootIdx = 0
+  for (let i = 0; i < n; i++) {
+    if (active[i]) { rootIdx = i; break }
+  }
+  const tree = clusters[rootIdx]
 
-  // In-order traversal to get leaf order
+  // In-order traversal for leaf order
   const leafOrder: string[] = []
   const traverse = (node: TreeNode) => {
     if (node.groupHash !== null) {
@@ -174,6 +186,17 @@ export const buildUPGMATree = (
   return { tree, leafOrder }
 }
 
-// getClustersAtThreshold and getLeafGroupHashes have been consolidated
-// to the frontend (browser/src/Haplotypes/haplotypeCompute.ts).
-// Tree cutting and cluster computation are now done client-side.
+export const getClustersAtThreshold = (root: TreeNode, threshold: number): TreeNode[] => {
+  const results: TreeNode[] = []
+  const stack = [root]
+  while (stack.length > 0) {
+    const node = stack.pop()!
+    if (node.distance <= threshold) {
+      results.push(node)
+    } else {
+      if (node.right) stack.push(node.right)
+      if (node.left) stack.push(node.left)
+    }
+  }
+  return results
+}
