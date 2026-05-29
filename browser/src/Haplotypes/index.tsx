@@ -478,6 +478,9 @@ export const Legend = ({
                 />
                 Diploid view
               </label>
+              <HaplotypeHelpButton title="Diploid View">
+                <DiploidViewHelp />
+              </HaplotypeHelpButton>
             </div>
             {!isDiploidView && (
               <>
@@ -1019,6 +1022,32 @@ const GenealogyHelp = () => (
       scaffold for tracing deep ancestral relationships without being skewed by background
       mutation noise. If you are also using the clustered view, a vertical threshold line will
       appear on the tree that you can drag to adjust your cluster resolution.
+    </p>
+  </>
+)
+
+const DiploidViewHelp = () => (
+  <>
+    <p>
+      Diploid view pairs both strands of each sample together, showing the complete
+      diploid structure. Instead of 584 independent haplotype rows, you see 292 sample
+      rows — each with strand A on top and strand B on bottom.
+    </p>
+    <p>
+      <strong>Runs of Homozygosity (ROH)</strong> — rows tinted gold indicate samples where
+      both strands carry nearly identical variant sets (Jaccard similarity &ge; 0.95).
+      This can indicate consanguinity or identity-by-descent segments.
+    </p>
+    <p>
+      <strong>Compound Heterozygosity [CH]</strong> — a red [CH] badge marks diplotypes
+      where each strand carries a different severe variant (frameshift, stop-gained,
+      splice donor/acceptor, or missense). These samples have both copies of the gene
+      disrupted, which is clinically significant for recessive conditions.
+    </p>
+    <p>
+      Sort modes: <em>Frequency</em> shows the most common diplotypes first.
+      <em>ROH</em> sorts by homozygosity fraction. <em>Comp. Het.</em> bubbles
+      compound heterozygotes to the top.
     </p>
   </>
 )
@@ -2031,6 +2060,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 })
 
 export default HaplotypeTrack
+
 
 
 
