@@ -23,6 +23,7 @@ let autoDefaults: AutoDefaults | null = null
 let baseData: ComputedHaplotypeData | null = null
 let baseDataThreshold = 0
 let currentSortBy = 'similarity_score'
+let isDiploidView = false
 
 // ---- Message types ----
 
@@ -35,6 +36,7 @@ type InitMessage = {
     auto_defaults?: AutoDefaults
   }
   sortBy?: string
+  isDiploidView?: boolean
 }
 
 type UpdateAfMessage = {
@@ -43,6 +45,7 @@ type UpdateAfMessage = {
   isClusteredView: boolean
   clusterThreshold: number
   sortBy: string
+  isDiploidView?: boolean
 }
 
 type UpdateThresholdMessage = {
@@ -64,6 +67,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       trvAlts = msg.rawData.trv_alts
       autoDefaults = msg.rawData.auto_defaults || null
       currentSortBy = msg.sortBy || 'similarity_score'
+      isDiploidView = msg.isDiploidView || false
 
       // Compute base data at floor AF with clustering
       const floorAf = autoDefaults?.floor || 0
@@ -73,7 +77,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
         floorAf, currentSortBy, isClusteredView, clusterThreshold,
-        trvAlts
+        trvAlts, isDiploidView
       )
       baseDataThreshold = clusterThreshold
 
@@ -94,9 +98,17 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
 
     case 'UPDATE_AF': {
       currentSortBy = msg.sortBy
+      if (msg.isDiploidView !== undefined) isDiploidView = msg.isDiploidView
 
       let result: ComputedHaplotypeData
-      if (msg.isClusteredView) {
+      if (isDiploidView) {
+        // Diploid view: grouping by diplotype, no clustering/tree
+        result = computeHaplotypeView(
+          variants, carrierVariantIndices,
+          msg.minAf, currentSortBy, false, msg.clusterThreshold,
+          trvAlts, true
+        )
+      } else if (msg.isClusteredView) {
         // Clustering ON: rebuild baseData if threshold changed, then apply display filter
         if (!baseData || msg.clusterThreshold !== baseDataThreshold) {
           baseData = computeHaplotypeView(

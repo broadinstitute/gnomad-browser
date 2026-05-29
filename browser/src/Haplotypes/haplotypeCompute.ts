@@ -6,6 +6,34 @@
 
 import type { LRVariant, HaplotypeGroup, HaplotypeCluster } from './index'
 
+// ---- Diplotype types ----
+
+type DiplotypeVariantSet = {
+  variants: LRVariant[]
+  readable_id: string
+}
+
+export type DiplotypeSample = {
+  sample_id: string
+  strand_mapping: { strandA: 0 | 1 | null; strandB: 0 | 1 | null }
+}
+
+export type DiplotypeGroup = {
+  is_diplotype: true
+  samples: DiplotypeSample[]
+  haplotypeA: DiplotypeVariantSet
+  haplotypeB: DiplotypeVariantSet
+  below_thresholdA: DiplotypeVariantSet
+  below_thresholdB: DiplotypeVariantSet
+  start: number
+  stop: number
+  hash: number
+  roh_fraction: number
+  is_roh: boolean
+  compound_het_pairs: { variantA: LRVariant; variantB: LRVariant }[]
+  is_compound_het: boolean
+}
+
 // ---- Types ----
 
 export type TreeNode = {
@@ -88,7 +116,7 @@ export type RawPayload = {
 }
 
 export type ComputedHaplotypeData = {
-  groups: HaplotypeGroup[]
+  groups: (HaplotypeGroup | DiplotypeGroup)[]
   clusters?: HaplotypeCluster[]
   tree_json?: string
 }
@@ -522,6 +550,261 @@ export function computeClusters(
   })
 }
 
+// ---- Diplotype helpers: ROH & Compound Het ----
+
+const SEVERE_CONSEQUENCES = new Set([
+  'transcript_ablation',
+  'splice_acceptor_variant',
+  'splice_donor_variant',
+  'stop_gained',
+  'frameshift_variant',
+  'missense_variant',
+])
+
+function calculateROH(
+  variantsA: LRVariant[],
+  variantsB: LRVariant[]
+): { roh_fraction: number; is_roh: boolean } {
+  const setA = new Set(variantsA.map((v) => v.variant_id))
+  const setB = new Set(variantsB.map((v) => v.variant_id))
+
+  let intersection = 0
+  for (const id of setA) {
+    if (setB.has(id)) intersection++
+  }
+  const union = setA.size + setB.size - intersection
+
+  const roh_fraction = union === 0 ? 1 : intersection / union
+  return { roh_fraction, is_roh: roh_fraction >= 0.95 }
+}
+
+function getVariantConsequence(v: LRVariant): string | null {
+  if (v.major_consequence) return v.major_consequence
+  if (v.sv_consequences && v.sv_consequences.length > 0) return v.sv_consequences[0]
+  return null
+}
+
+function detectCompoundHets(
+  variantsA: LRVariant[],
+  variantsB: LRVariant[]
+): { compound_het_pairs: { variantA: LRVariant; variantB: LRVariant }[]; is_compound_het: boolean } {
+  const severeA = variantsA.filter((v) => {
+    const csq = getVariantConsequence(v)
+    return csq != null && SEVERE_CONSEQUENCES.has(csq)
+  })
+  const severeB = variantsB.filter((v) => {
+    const csq = getVariantConsequence(v)
+    return csq != null && SEVERE_CONSEQUENCES.has(csq)
+  })
+
+  const pairs: { variantA: LRVariant; variantB: LRVariant }[] = []
+  for (const varA of severeA) {
+    for (const varB of severeB) {
+      if (varA.pos !== varB.pos) {
+        pairs.push({ variantA: varA, variantB: varB })
+      }
+    }
+  }
+
+  return { compound_het_pairs: pairs, is_compound_het: pairs.length > 0 }
+}
+
+// ---- Diplotype grouping ----
+
+export function groupDiplotypes(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  minAf: number
+): DiplotypeGroup[] {
+  // Build set of variant indices that pass AF threshold
+  const passingIndices = new Set<number>()
+  for (let i = 0; i < variants.length; i++) {
+    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+  }
+
+  // Restructure: sample_id -> { strandA: indices[], strandB: indices[] }
+  // Carrier keys are "sample_id:strand" where strand can be 0/1 or 1/2
+  const sampleStrands = new Map<string, { first: { strand: string; indices: number[] }; second: { strand: string; indices: number[] } }>()
+  for (const [carrierId, variantIdxs] of Object.entries(carrierVariantIndices)) {
+    const colonIdx = carrierId.lastIndexOf(':')
+    const sampleId = carrierId.substring(0, colonIdx)
+    const strandKey = carrierId.substring(colonIdx + 1)
+    const filtered = variantIdxs.filter((i) => passingIndices.has(i))
+    const entry = sampleStrands.get(sampleId)
+    if (!entry) {
+      sampleStrands.set(sampleId, { first: { strand: strandKey, indices: filtered }, second: { strand: '', indices: [] } })
+    } else {
+      entry.second = { strand: strandKey, indices: filtered }
+    }
+  }
+
+  // Also collect below-threshold indices per sample per strand
+  const sampleBelowStrands = new Map<string, { first: number[]; second: number[] }>()
+  for (const [carrierId, variantIdxs] of Object.entries(carrierVariantIndices)) {
+    const colonIdx = carrierId.lastIndexOf(':')
+    const sampleId = carrierId.substring(0, colonIdx)
+    const below = variantIdxs.filter((i) => !passingIndices.has(i))
+    const entry = sampleBelowStrands.get(sampleId)
+    if (!entry) {
+      sampleBelowStrands.set(sampleId, { first: below, second: [] })
+    } else {
+      entry.second = below
+    }
+  }
+
+  // Group by canonical diplotype signature
+  const sigToGroup = new Map<
+    string,
+    {
+      samples: DiplotypeSample[]
+      indicesA: number[]
+      indicesB: number[]
+      belowA: number[]
+      belowB: number[]
+    }
+  >()
+
+  // Generate signatures for each strand
+  const makeSig = (indices: number[]): string =>
+    indices
+      .map((i) => {
+        const v = variants[i]
+        return `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`
+      })
+      .sort()
+      .join(';')
+
+  for (const [sampleId, strands] of sampleStrands) {
+    const idxFirst = strands.first.indices
+    const idxSecond = strands.second.indices
+
+    const sigFirst = makeSig(idxFirst)
+    const sigSecond = makeSig(idxSecond)
+
+    // Canonical ordering: sort signatures so (A,B) and (B,A) hash the same
+    let canonSigA: string, canonSigB: string
+    let indicesA: number[], indicesB: number[]
+    let strandA: 0 | 1 | null, strandB: 0 | 1 | null
+
+    const belowStrands = sampleBelowStrands.get(sampleId) || { first: [], second: [] }
+    let belowA: number[], belowB: number[]
+
+    if (sigFirst <= sigSecond) {
+      canonSigA = sigFirst
+      canonSigB = sigSecond
+      indicesA = idxFirst
+      indicesB = idxSecond
+      strandA = idxFirst.length > 0 ? 0 : null
+      strandB = idxSecond.length > 0 ? 1 : null
+      belowA = belowStrands.first
+      belowB = belowStrands.second
+    } else {
+      canonSigA = sigSecond
+      canonSigB = sigFirst
+      indicesA = idxSecond
+      indicesB = idxFirst
+      strandA = idxSecond.length > 0 ? 1 : null
+      strandB = idxFirst.length > 0 ? 0 : null
+      belowA = belowStrands.second
+      belowB = belowStrands.first
+    }
+
+    const combinedSig = `${canonSigA}||${canonSigB}`
+    const existing = sigToGroup.get(combinedSig)
+
+    if (existing) {
+      existing.samples.push({
+        sample_id: sampleId,
+        strand_mapping: { strandA, strandB },
+      })
+    } else {
+      sigToGroup.set(combinedSig, {
+        samples: [
+          {
+            sample_id: sampleId,
+            strand_mapping: { strandA, strandB },
+          },
+        ],
+        indicesA,
+        indicesB,
+        belowA,
+        belowB,
+      })
+    }
+  }
+
+  // Build DiplotypeGroup objects
+  const groups: DiplotypeGroup[] = []
+  for (const [combinedSig, entry] of sigToGroup) {
+    const variantsA = entry.indicesA.map((i) => variants[i])
+    const variantsB = entry.indicesB.map((i) => variants[i])
+
+    const readableIdA = variantsA
+      .map((v) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
+      .sort()
+      .join(';')
+    const readableIdB = variantsB
+      .map((v) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
+      .sort()
+      .join(';')
+
+    const belowVarA = entry.belowA.map((i) => variants[i])
+    const belowVarB = entry.belowB.map((i) => variants[i])
+
+    const allVariants = [...variantsA, ...variantsB]
+    const allPositions = allVariants.map((v) => v.pos)
+
+    const roh = calculateROH(variantsA, variantsB)
+    const ch = detectCompoundHets(variantsA, variantsB)
+
+    groups.push({
+      is_diplotype: true,
+      samples: entry.samples,
+      haplotypeA: { variants: variantsA, readable_id: readableIdA },
+      haplotypeB: { variants: variantsB, readable_id: readableIdB },
+      below_thresholdA: { variants: belowVarA, readable_id: '' },
+      below_thresholdB: { variants: belowVarB, readable_id: '' },
+      start: allPositions.length > 0 ? Math.min(...allPositions) : Infinity,
+      stop: allPositions.length > 0 ? Math.max(...allPositions) : -Infinity,
+      hash: Number(hashString(combinedSig)),
+      roh_fraction: roh.roh_fraction,
+      is_roh: roh.is_roh,
+      compound_het_pairs: ch.compound_het_pairs,
+      is_compound_het: ch.is_compound_het,
+    })
+  }
+
+  return groups
+}
+
+// ---- Diplotype sorting ----
+
+export function sortDiplotypes(
+  groups: DiplotypeGroup[],
+  sortBy: string
+): DiplotypeGroup[] {
+  const sorted = [...groups]
+  switch (sortBy) {
+    case 'roh_fraction':
+      sorted.sort(
+        (a, b) => b.roh_fraction - a.roh_fraction || b.samples.length - a.samples.length
+      )
+      break
+    case 'compound_het':
+      sorted.sort(
+        (a, b) =>
+          (b.is_compound_het ? 1 : 0) - (a.is_compound_het ? 1 : 0) ||
+          b.samples.length - a.samples.length
+      )
+      break
+    case 'diplotype_frequency':
+    default:
+      sorted.sort((a, b) => b.samples.length - a.samples.length)
+      break
+  }
+  return sorted
+}
+
 // ---- Full pipeline: grouping + tree + clusters ----
 
 export function computeHaplotypeView(
@@ -531,8 +814,15 @@ export function computeHaplotypeView(
   sortBy: string,
   isClusteredView: boolean,
   clusterThreshold: number,
-  trvAlts?: Record<string, Record<number, string>>
+  trvAlts?: Record<string, Record<number, string>>,
+  isDiploidView: boolean = false
 ): ComputedHaplotypeData {
+  if (isDiploidView) {
+    const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf)
+    const sorted = sortDiplotypes(diplotypes, sortBy)
+    return { groups: sorted }
+  }
+
   const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts)
   const sorted = sortGroups(groups, sortBy)
 
@@ -561,42 +851,47 @@ export function filterDisplayVariants(
   minAf: number
 ): ComputedHaplotypeData {
   const groups = data.groups.map((g) => {
-    const filteredVariants = g.variants.variants.filter((v) => v.freq.af >= minAf)
+    // filterDisplayVariants only applies to haplotype (non-diploid) groups
+    if ('is_diplotype' in g && g.is_diplotype) return g
+
+    const hg = g as HaplotypeGroup
+    const filteredVariants = hg.variants.variants.filter((v: LRVariant) => v.freq.af >= minAf)
     const filteredBelow = [
-      ...g.below_threshold.variants,
-      ...g.variants.variants.filter((v) => v.freq.af < minAf).map((v) => ({
+      ...hg.below_threshold.variants,
+      ...hg.variants.variants.filter((v: LRVariant) => v.freq.af < minAf).map((v: LRVariant) => ({
         ...v,
-        in_samples: g.samples.map((s) => s.sample_id),
+        in_samples: hg.samples.map((s) => s.sample_id),
       })),
     ]
     return {
-      ...g,
+      ...hg,
       variants: {
         variants: filteredVariants,
         readable_id: filteredVariants
-          .map((v) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
+          .map((v: LRVariant) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
           .sort()
           .join(';'),
       },
       below_threshold: { variants: filteredBelow, readable_id: '' },
-      samples: g.samples.map((s) => ({
+      samples: hg.samples.map((s) => ({
         ...s,
         variant_sets: s.variant_sets.map((vs) => ({
           ...vs,
-          variants: vs.variants.filter((v) => v.freq.af >= minAf),
+          variants: vs.variants.filter((v: LRVariant) => v.freq.af >= minAf),
         })),
       })),
     }
   })
 
   // Recompute consensus variants for clusters using only the display-filtered variants
+  const haploGroups = groups.filter((g): g is HaplotypeGroup => !('is_diplotype' in g))
   const clusters = data.clusters?.map((c) => {
-    const groupByHash = new Map<string, (typeof groups)[number]>()
-    for (const g of groups) groupByHash.set(String(g.hash), g)
+    const groupByHash = new Map<string, HaplotypeGroup>()
+    for (const g of haploGroups) groupByHash.set(String(g.hash), g)
 
     const memberGroups = c.member_group_hashes
       .map((h) => groupByHash.get(h))
-      .filter((g): g is (typeof groups)[number] => g != null)
+      .filter((g): g is HaplotypeGroup => g != null)
 
     const sampleCount = memberGroups.reduce((sum, g) => sum + g.samples.length, 0)
     const variantTally = new Map<string, { variant: LRVariant; count: number }>()
@@ -811,3 +1106,6 @@ function binarySearchAf(
 
   return Math.max(bestAf, floor)
 }
+
+
+

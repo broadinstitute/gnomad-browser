@@ -142,6 +142,8 @@ export const Legend = ({
   clusterCount = 0,
   minAfFloor = 0,
   minAfCeiling = 1,
+  isDiploidView = false,
+  onIsDiploidViewChange = () => { },
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -174,6 +176,8 @@ export const Legend = ({
   clusterCount?: number
   minAfFloor?: number
   minAfCeiling?: number
+  isDiploidView?: boolean
+  onIsDiploidViewChange?: (isDiploid: boolean) => void
 }) => {
   // Log-scale slider: internal state is 0-100, mapped to log10(minAfFloor)..log10(minAfCeiling)
   const minLog = Math.log10(Math.max(minAfFloor, 0.0001))
@@ -196,6 +200,15 @@ export const Legend = ({
       setSliderValue(afToSlider(initialMinAf))
     }
   }, [initialMinAf])
+
+  // Sync sortMode when initialSortBy changes (e.g., toggling diploid view resets sort)
+  const prevInitialSortBy = useRef(initialSortBy)
+  useEffect(() => {
+    if (initialSortBy !== prevInitialSortBy.current) {
+      prevInitialSortBy.current = initialSortBy
+      setSortMode(initialSortBy)
+    }
+  }, [initialSortBy])
 
   const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSliderValue(parseFloat(event.target.value))
@@ -343,10 +356,17 @@ export const Legend = ({
             <label style={{ fontSize: '12px' }}>Sort:</label>
             <SegmentedControl
               id='sort-mode'
-              options={[
-                { label: 'Similarity', value: 'similarity_score' },
-                { label: 'Count', value: 'sample_count' },
-              ]}
+              options={isDiploidView
+                ? [
+                    { label: 'Frequency', value: 'diplotype_frequency' },
+                    { label: 'ROH', value: 'roh_fraction' },
+                    { label: 'Comp. Het.', value: 'compound_het' },
+                  ]
+                : [
+                    { label: 'Similarity', value: 'similarity_score' },
+                    { label: 'Count', value: 'sample_count' },
+                  ]
+              }
               value={sortMode}
               onChange={(value: any) => handleSortModeChange(value)}
             />
@@ -453,47 +473,61 @@ export const Legend = ({
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
                 <input
                   type='checkbox'
-                  checked={showGenealogy}
-                  onChange={(e) => onShowGenealogyChange(e.target.checked)}
+                  checked={isDiploidView}
+                  onChange={(e) => onIsDiploidViewChange(e.target.checked)}
                 />
-                Genealogy tree
+                Diploid view
               </label>
-              <HaplotypeHelpButton title="Genealogy Tree">
-                <GenealogyHelp />
-              </HaplotypeHelpButton>
             </div>
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                <input
-                  type='checkbox'
-                  checked={isClusteredView}
-                  onChange={(e) => onIsClusteredViewChange(e.target.checked)}
-                />
-                Clustered view
-              </label>
-              <HaplotypeHelpButton title="Clustered View">
-                <ClusteredViewHelp />
-              </HaplotypeHelpButton>
-            </div>
-            {isClusteredView && (
+            {!isDiploidView && (
               <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Cluster resolution:</label>
-                  <input
-                    type='range'
-                    min='0'
-                    max='1'
-                    step='0.01'
-                    value={clusterThreshold}
-                    onChange={(e) => onClusterThresholdChange(parseFloat(e.target.value))}
-                    style={{ width: '80px' }}
-                  />
-                  <span style={{ fontSize: '12px', minWidth: '28px' }}>{clusterThreshold.toFixed(2)}</span>
+                <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                    <input
+                      type='checkbox'
+                      checked={showGenealogy}
+                      onChange={(e) => onShowGenealogyChange(e.target.checked)}
+                    />
+                    Genealogy tree
+                  </label>
+                  <HaplotypeHelpButton title="Genealogy Tree">
+                    <GenealogyHelp />
+                  </HaplotypeHelpButton>
                 </div>
-                {clusterCount > 0 && (
-                  <span style={{ fontSize: '11px', color: '#666' }}>
-                    {clusterCount} cluster{clusterCount !== 1 ? 's' : ''}
-                  </span>
+                <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                    <input
+                      type='checkbox'
+                      checked={isClusteredView}
+                      onChange={(e) => onIsClusteredViewChange(e.target.checked)}
+                    />
+                    Clustered view
+                  </label>
+                  <HaplotypeHelpButton title="Clustered View">
+                    <ClusteredViewHelp />
+                  </HaplotypeHelpButton>
+                </div>
+                {isClusteredView && (
+                  <>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Cluster resolution:</label>
+                      <input
+                        type='range'
+                        min='0'
+                        max='1'
+                        step='0.01'
+                        value={clusterThreshold}
+                        onChange={(e) => onClusterThresholdChange(parseFloat(e.target.value))}
+                        style={{ width: '80px' }}
+                      />
+                      <span style={{ fontSize: '12px', minWidth: '28px' }}>{clusterThreshold.toFixed(2)}</span>
+                    </div>
+                    {clusterCount > 0 && (
+                      <span style={{ fontSize: '11px', color: '#666' }}>
+                        {clusterCount} cluster{clusterCount !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -567,8 +601,15 @@ export type HaplotypeCluster = {
   consensus_variants: ClusterConsensusVariant[]
 }
 
+export type DiplotypeGroupRef = {
+  is_diplotype: true
+  samples: { sample_id: string }[]
+  hash: number
+  [key: string]: any
+}
+
 export type HaplotypeGroups = {
-  groups: HaplotypeGroup[]
+  groups: (HaplotypeGroup | DiplotypeGroupRef)[]
   clusters?: HaplotypeCluster[]
   tree_json?: string
 }
@@ -831,6 +872,8 @@ type HaplotypeTrackProps = {
   treeJson?: string
   minAfFloor?: number
   minAfCeiling?: number
+  isDiploidView?: boolean
+  onIsDiploidViewChange?: (isDiploid: boolean) => void
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1052,6 +1095,7 @@ const HaplotypeInfoBar = ({
   methylationTotalSamples,
   isAutoTuned,
   plotType,
+  isDiploidView = false,
 }: {
   displayGroups: HaplotypeGroup[]
   start: number
@@ -1067,14 +1111,19 @@ const HaplotypeInfoBar = ({
   methylationTotalSamples: number
   isAutoTuned: boolean
   plotType: string
+  isDiploidView?: boolean
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
     let samples = 0
     const loci = new Set<string>()
     for (const group of displayGroups) {
       samples += group.samples.length
-      for (const v of group.variants.variants) {
-        loci.add(v.variant_id)
+      if ('is_diplotype' in group && (group as any).is_diplotype) {
+        const dg = group as any
+        for (const v of (dg.haplotypeA?.variants || [])) loci.add(v.variant_id)
+        for (const v of (dg.haplotypeB?.variants || [])) loci.add(v.variant_id)
+      } else {
+        for (const v of group.variants.variants) loci.add(v.variant_id)
       }
     }
     return { totalSamples: samples, totalVariants: loci.size }
@@ -1094,13 +1143,13 @@ const HaplotypeInfoBar = ({
   return (
     <InfoBarWrapper>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-        <span><strong>{totalSamples.toLocaleString()}</strong> haplotypes</span>
+        <span><strong>{totalSamples.toLocaleString()}</strong> {isDiploidView ? 'samples (diploid)' : 'haplotypes'}</span>
         <span style={{ color: '#999' }}>·</span>
         <span><strong>{totalVariants.toLocaleString()}</strong> variants</span>
         <span style={{ color: '#999' }}>·</span>
         <span>{regionLabel}</span>
         <span style={{ color: '#999' }}>·</span>
-        <span>{isClusteredView ? `Clustered (${clusterCount}) · Resolution: ${clusterThreshold.toFixed(2)}` : 'Unclustered'}</span>
+        <span>{isDiploidView ? 'Diploid Mode' : isClusteredView ? `Clustered (${clusterCount}) · Resolution: ${clusterThreshold.toFixed(2)}` : 'Unclustered'}</span>
         <span style={{ color: '#999' }}>·</span>
         <span>Min AF: {thresholdLabel}</span>
         <span style={{ color: '#999' }}>·</span>
@@ -1668,6 +1717,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   treeJson,
   minAfFloor = 0,
   minAfCeiling = 1,
+  isDiploidView = false,
+  onIsDiploidViewChange,
 }, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -1739,7 +1790,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 
   // UPGMA genealogy tree computation — prefer backend tree_json when available
   const genealogyResult = useMemo(() => {
-    if (!showGenealogy || filteredGroups.length < 2) return null
+    if (!showGenealogy || isDiploidView || filteredGroups.length < 2) return null
 
     // Backend tree: parse tree_json (groupHash is string in backend TreeNode)
     if (treeJson) {
@@ -1809,7 +1860,12 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     [displayGroups]
   )
   const maxVariants = useMemo(
-    () => (displayGroups || []).reduce((max, group) => Math.max(max, group.variants.variants.length), 0),
+    () => (displayGroups || []).reduce((max, group) => {
+      if ('is_diplotype' in group) {
+        return Math.max(max, (group as any).haplotypeA.variants.length + (group as any).haplotypeB.variants.length)
+      }
+      return Math.max(max, group.variants.variants.length)
+    }, 0),
     [displayGroups]
   )
 
@@ -1861,6 +1917,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     clusterCount: clusters?.length || 0,
     minAfFloor,
     minAfCeiling,
+    isDiploidView,
+    onIsDiploidViewChange: onIsDiploidViewChange || (() => { }),
   }
 
   // Build pangenome graph for alluvial/heatmap views
@@ -1895,6 +1953,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           methylationTotalSamples={methylationTotalSamples}
           isAutoTuned={isAutoTuned}
           plotType={plotType}
+          isDiploidView={isDiploidView}
         />
       </StickyHeader>
 
@@ -1931,6 +1990,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             toggleClusterExpansion={toggleClusterExpansion}
             clusterThreshold={clusterThreshold}
             onClusterThresholdChange={onClusterThresholdChange}
+            isDiploidView={isDiploidView}
           />
         </>
       )}
@@ -1971,4 +2031,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 })
 
 export default HaplotypeTrack
+
+
 
