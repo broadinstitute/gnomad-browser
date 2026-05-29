@@ -810,6 +810,7 @@ type HaplotypeTrackProps = {
   methylationSampleCount?: number
   methylationTotalSamples?: number
   haplotypeLoading?: boolean
+  workerComputing?: boolean
   showMqtl?: boolean
   onShowMqtlChange?: (show: boolean) => void
   mqtlLoading?: boolean
@@ -1028,16 +1029,12 @@ const AutoTunedHelp = () => (
 // --- Info bar component ---
 
 const InfoBarWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 5px 12px;
   background: #f8f9fa;
   border-top: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
   font-size: 12px;
   color: #333;
-  gap: 12px;
 `
 
 const HaplotypeInfoBar = ({
@@ -1049,6 +1046,7 @@ const HaplotypeInfoBar = ({
   clusterCount,
   clusterThreshold,
   haplotypeLoading,
+  workerComputing,
   methylationLoading,
   methylationSampleCount,
   methylationTotalSamples,
@@ -1063,6 +1061,7 @@ const HaplotypeInfoBar = ({
   clusterCount: number
   clusterThreshold: number
   haplotypeLoading: boolean
+  workerComputing: boolean
   methylationLoading: boolean
   methylationSampleCount: number
   methylationTotalSamples: number
@@ -1090,7 +1089,7 @@ const HaplotypeInfoBar = ({
     ? `${(threshold * 100).toFixed(1)}%`
     : `${(threshold * 100).toFixed(0)}%`
 
-  const isLoading = haplotypeLoading || methylationLoading
+  const isLoading = haplotypeLoading || workerComputing || methylationLoading
 
   return (
     <InfoBarWrapper>
@@ -1122,27 +1121,31 @@ const HaplotypeInfoBar = ({
             </span>
           </>
         )}
+        {isLoading && (
+          <>
+            <span style={{ color: '#999' }}>·</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#4a90d9', fontWeight: 500 }}>
+              <span style={{
+                display: 'inline-block',
+                width: '11px',
+                height: '11px',
+                border: '2px solid rgba(74, 144, 217, 0.3)',
+                borderTopColor: '#4a90d9',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+              }} />
+              {haplotypeLoading && 'Loading haplotypes…'}
+              {!haplotypeLoading && workerComputing && 'Computing clusters…'}
+              {!haplotypeLoading && !workerComputing && methylationLoading && (
+                methylationTotalSamples > 0
+                  ? `Methylation ${methylationSampleCount}/${methylationTotalSamples}`
+                  : 'Loading methylation…'
+              )}
+              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </span>
+          </>
+        )}
       </div>
-      {isLoading && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#666', flexShrink: 0 }}>
-          <span style={{
-            display: 'inline-block',
-            width: '12px',
-            height: '12px',
-            border: '2px solid #ccc',
-            borderTopColor: '#666',
-            borderRadius: '50%',
-            animation: 'spin 0.8s linear infinite',
-          }} />
-          {haplotypeLoading && 'Loading haplotypes...'}
-          {!haplotypeLoading && methylationLoading && (
-            methylationTotalSamples > 0
-              ? `Loading methylation: ${methylationSampleCount}/${methylationTotalSamples}`
-              : 'Loading methylation...'
-          )}
-          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-        </div>
-      )}
     </InfoBarWrapper>
   )
 }
@@ -1644,6 +1647,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   methylationSampleCount = 0,
   methylationTotalSamples = 0,
   haplotypeLoading = false,
+  workerComputing = false,
   showMqtl = false,
   onShowMqtlChange,
   mqtlLoading = false,
@@ -1885,6 +1889,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           clusterCount={clusters?.length || 0}
           clusterThreshold={clusterThreshold}
           haplotypeLoading={haplotypeLoading}
+          workerComputing={workerComputing}
           methylationLoading={methylationLoading}
           methylationSampleCount={methylationSampleCount}
           methylationTotalSamples={methylationTotalSamples}
@@ -1966,3 +1971,4 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 })
 
 export default HaplotypeTrack
+

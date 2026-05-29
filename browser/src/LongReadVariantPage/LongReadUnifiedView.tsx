@@ -192,6 +192,7 @@ const LongReadUnifiedView = ({
   const workerRef = useRef<Worker | null>(null)
   const rawDataRef = useRef<{ variants: import('../Haplotypes/index').LRVariant[]; carrierIndices: Record<string, number[]>; trvAlts?: Record<string, Record<number, string>> } | null>(null)
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
+  const [workerComputing, setWorkerComputing] = useState(false)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
   const [methylationData, setMethylationData] = useState<Methylation[]>([])
@@ -335,8 +336,10 @@ const LongReadUnifiedView = ({
         if (e.data.type === 'READY') {
           setHaplotypeData(e.data.data)
           setHaplotypeLoading(false)
+          setWorkerComputing(false)
         } else if (e.data.type === 'UPDATED') {
           setHaplotypeData(e.data.data)
+          setWorkerComputing(false)
         }
       }
       w.onerror = () => {
@@ -378,6 +381,7 @@ const LongReadUnifiedView = ({
         setIsClusteredView(defaults.isClusteredView)
 
         if (workerRef.current) {
+          setWorkerComputing(true)
           workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy })
         } else {
           // Main-thread fallback: rehydrate SoA variants and compute directly
@@ -407,6 +411,7 @@ const LongReadUnifiedView = ({
   useEffect(() => {
     if (!hasData) return
     if (workerRef.current) {
+      setWorkerComputing(true)
       workerRef.current.postMessage({
         type: 'UPDATE_AF',
         minAf: threshold,
@@ -700,6 +705,7 @@ const LongReadUnifiedView = ({
               methylationSampleCount={methylationSampleCount}
               methylationTotalSamples={methylationTotalSamples}
               haplotypeLoading={haplotypeLoading}
+              workerComputing={workerComputing}
               showMqtl={showMqtl}
               onShowMqtlChange={setShowMqtl}
               mqtlLoading={mqtlLoading}
