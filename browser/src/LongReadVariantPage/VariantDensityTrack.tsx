@@ -58,22 +58,9 @@ const DensityBars = ({
     const numBins = Math.max(Math.floor(width / 4), 50)
     const binWidth = width / numBins
 
-    // Invert scale to get genomic range from pixel range
-    // Track's scalePosition maps genomic pos → pixel x
-    // We need the genomic start/stop of the visible region
-    // Use the first and last variant positions as bounds since we don't have invert
     if (variants.length === 0) {
       return { bins: [] as Bin[], maxDensity: 0, numBins, binWidth }
     }
-
-    // Find genomic bounds from the variants themselves
-    let minPos = Infinity
-    let maxPos = -Infinity
-    for (const v of variants) {
-      if (v.pos < minPos) minPos = v.pos
-      if (v.pos > maxPos) maxPos = v.pos
-    }
-    const range = maxPos - minPos || 1
 
     const bins: Bin[] = Array.from({ length: numBins }, () => ({
       snv: 0,
@@ -84,12 +71,12 @@ const DensityBars = ({
       total: 0,
     }))
 
+    // Use scalePosition to map each variant's genomic position to pixel x,
+    // then assign to the correct bin. This ensures alignment with all other tracks.
     for (const v of variants) {
       const cat = getVariantCategory(v.allele_type, v.length)
-      const idx = Math.min(
-        Math.floor(((v.pos - minPos) / range) * numBins),
-        numBins - 1
-      )
+      const px = scalePosition(v.pos)
+      const idx = Math.min(Math.max(Math.floor(px / binWidth), 0), numBins - 1)
       bins[idx][cat]++
       bins[idx].total++
     }
@@ -100,7 +87,7 @@ const DensityBars = ({
     }
 
     return { bins, maxDensity, numBins, binWidth }
-  }, [variants, width])
+  }, [variants, width, scalePosition])
 
   if (maxDensity === 0) return <svg height={TRACK_HEIGHT} width={width} />
 
@@ -137,3 +124,4 @@ const DensityBars = ({
 }
 
 export default VariantDensityTrack
+
