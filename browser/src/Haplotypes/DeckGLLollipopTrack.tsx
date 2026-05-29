@@ -1308,18 +1308,21 @@ function DeckGLLollipopCanvas({
 
         const effectiveColorMode = isPopMode ? 'allele' : colorMode
 
-        // Helper to push variants for a strand
-        const pushStrandVariants = (variants: LRVariant[], baseline: number) => {
+        // Helper to push variants for a strand (opacity 0-1 for ghosting ROH strand B)
+        const pushStrandVariants = (variants: LRVariant[], baseline: number, opacity: number = 1) => {
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
             const isLarge = Math.abs(variant.allele_length || 0) >= 50
             if (cat === 'snv' && !lod.showSnvs) continue
             if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
-            const color = getVariantColor(
+            const baseColor = getVariantColor(
               variant, effectiveColorMode, start, stop, sampleMetadata, undefined,
               locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
             )
+            const color: [number, number, number, number] = opacity < 1
+              ? [baseColor[0], baseColor[1], baseColor[2], Math.round(baseColor[3] * opacity)]
+              : baseColor
 
             if ((cat === 'deletion' || cat === 'sv') && isLarge) {
               const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
@@ -1333,9 +1336,9 @@ function DeckGLLollipopCanvas({
           }
         }
 
-        // Strand A variants at yTop, Strand B at yBottom
+        // Strand A at full opacity, strand B ghosted if ROH
         pushStrandVariants(dg.haplotypeA.variants, yTop)
-        pushStrandVariants(dg.haplotypeB.variants, yBottom)
+        pushStrandVariants(dg.haplotypeB.variants, yBottom, dg.is_roh ? 0.2 : 1)
 
         // Below-threshold variants for both strands
         const pushBelowThreshold = (variants: LRVariant[], baseline: number) => {
@@ -2126,6 +2129,7 @@ function ThresholdDragOverlay({
     </div>
   )
 }
+
 
 
 
