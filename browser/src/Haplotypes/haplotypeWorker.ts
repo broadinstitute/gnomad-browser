@@ -12,6 +12,7 @@ import {
   type SoAVariants,
   type ComputedHaplotypeData,
   type AutoDefaults,
+  type DistanceMetric,
 } from './haplotypeCompute'
 
 // ---- Worker state ----
@@ -24,6 +25,7 @@ let baseData: ComputedHaplotypeData | null = null
 let baseDataThreshold = 0
 let currentSortBy = 'similarity_score'
 let isDiploidView = false
+let currentDistanceMetric: DistanceMetric = 'auto'
 
 // ---- Message types ----
 
@@ -37,6 +39,7 @@ type InitMessage = {
   }
   sortBy?: string
   isDiploidView?: boolean
+  distanceMetric?: DistanceMetric
 }
 
 type UpdateAfMessage = {
@@ -46,6 +49,7 @@ type UpdateAfMessage = {
   clusterThreshold: number
   sortBy: string
   isDiploidView?: boolean
+  distanceMetric?: DistanceMetric
 }
 
 type UpdateThresholdMessage = {
@@ -68,6 +72,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       autoDefaults = msg.rawData.auto_defaults || null
       currentSortBy = msg.sortBy || 'similarity_score'
       isDiploidView = msg.isDiploidView || false
+      currentDistanceMetric = msg.distanceMetric || 'auto'
 
       // Compute base data at floor AF with clustering
       const floorAf = autoDefaults?.floor || 0
@@ -77,7 +82,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
         floorAf, currentSortBy, isClusteredView, clusterThreshold,
-        trvAlts, isDiploidView
+        trvAlts, isDiploidView, currentDistanceMetric
       )
       baseDataThreshold = clusterThreshold
 
@@ -99,6 +104,8 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
     case 'UPDATE_AF': {
       currentSortBy = msg.sortBy
       if (msg.isDiploidView !== undefined) isDiploidView = msg.isDiploidView
+      const metricChanged = msg.distanceMetric !== undefined && msg.distanceMetric !== currentDistanceMetric
+      if (msg.distanceMetric !== undefined) currentDistanceMetric = msg.distanceMetric
 
       let result: ComputedHaplotypeData
       if (isDiploidView) {
@@ -109,12 +116,12 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
           trvAlts, true
         )
       } else if (msg.isClusteredView) {
-        // Clustering ON: rebuild baseData if threshold changed, then apply display filter
-        if (!baseData || msg.clusterThreshold !== baseDataThreshold) {
+        // Clustering ON: rebuild baseData if threshold or distance metric changed
+        if (!baseData || msg.clusterThreshold !== baseDataThreshold || metricChanged) {
           baseData = computeHaplotypeView(
             variants, carrierVariantIndices,
             autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
-            trvAlts
+            trvAlts, false, currentDistanceMetric
           )
           baseDataThreshold = msg.clusterThreshold
         }
@@ -126,7 +133,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         result = computeHaplotypeView(
           variants, carrierVariantIndices,
           msg.minAf, currentSortBy, false, msg.clusterThreshold,
-          trvAlts
+          trvAlts, false, currentDistanceMetric
         )
       }
 
@@ -145,7 +152,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
         autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
-        trvAlts
+        trvAlts, false, currentDistanceMetric
       )
       baseDataThreshold = msg.clusterThreshold
 

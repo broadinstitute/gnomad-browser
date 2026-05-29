@@ -205,6 +205,7 @@ const LongReadUnifiedView = ({
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('similarity_score')
   const [isDiploidView, setIsDiploidView] = useState(false)
+  const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'auto')
   const [plotType, setPlotType] = useState('lollipop')
   const [colorMode, setColorMode] = useState('population')
   const showGenealogy = searchParams.get('show_tree') !== 'false'
@@ -392,7 +393,7 @@ const LongReadUnifiedView = ({
 
         if (workerRef.current) {
           setWorkerComputing(true)
-          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy })
+          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy, distanceMetric })
         } else {
           // Main-thread fallback: rehydrate SoA variants and compute directly
           const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
@@ -403,7 +404,7 @@ const LongReadUnifiedView = ({
           const baseData = computeHaplotypeView(
             variants, carrierIndices,
             defaults.defaultAf, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
-            result.trv_alts
+            result.trv_alts, false, distanceMetric
           )
           setHaplotypeData(baseData)
           setHaplotypeLoading(false)
@@ -429,6 +430,7 @@ const LongReadUnifiedView = ({
         clusterThreshold: deferredClusterThreshold,
         sortBy,
         isDiploidView,
+        distanceMetric,
       })
     } else if (rawDataRef.current) {
       const { variants, carrierIndices, trvAlts } = rawDataRef.current
@@ -436,14 +438,14 @@ const LongReadUnifiedView = ({
       if (isDiploidView) {
         result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true)
       } else if (isClusteredView) {
-        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts)
+        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts, false, distanceMetric)
         result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
       } else {
-        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts)
+        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, false, distanceMetric)
       }
       setHaplotypeData(result)
     }
-  }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, isDiploidView, hasData])
+  }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, isDiploidView, distanceMetric, hasData])
 
   const haplotypeGroups: HaplotypeGroups = (haplotypeData as HaplotypeGroups | null) || { groups: [] }
 
@@ -743,6 +745,9 @@ const LongReadUnifiedView = ({
               minAfCeiling={autoDefaults.ceiling}
               isDiploidView={isDiploidView}
               onIsDiploidViewChange={handleDiploidViewChange}
+              distanceMetric={distanceMetric}
+              onDistanceMetricChange={setDistanceMetric}
+              regionSize={regionSize}
             />
           )}
           <PositionAxisTrack />

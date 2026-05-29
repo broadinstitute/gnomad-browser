@@ -144,6 +144,9 @@ export const Legend = ({
   minAfCeiling = 1,
   isDiploidView = false,
   onIsDiploidViewChange = () => { },
+  distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
+  onDistanceMetricChange = (() => { }) as (metric: import('./haplotypeCompute').DistanceMetric) => void,
+  regionSize = 0,
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -178,6 +181,9 @@ export const Legend = ({
   minAfCeiling?: number
   isDiploidView?: boolean
   onIsDiploidViewChange?: (isDiploid: boolean) => void
+  distanceMetric?: import('./haplotypeCompute').DistanceMetric
+  onDistanceMetricChange?: (metric: import('./haplotypeCompute').DistanceMetric) => void
+  regionSize?: number
 }) => {
   // Log-scale slider: internal state is 0-100, mapped to log10(minAfFloor)..log10(minAfCeiling)
   const minLog = Math.log10(Math.max(minAfFloor, 0.0001))
@@ -532,6 +538,21 @@ export const Legend = ({
                     )}
                   </>
                 )}
+                {(showGenealogy || isClusteredView) && (
+                  <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span style={{ fontWeight: 'bold' }}>Cluster by:</span>
+                    <select
+                      value={distanceMetric}
+                      onChange={(e) => onDistanceMetricChange(e.target.value as import('./haplotypeCompute').DistanceMetric)}
+                      style={{ fontSize: '12px', padding: '1px 4px' }}
+                    >
+                      <option value="auto">Auto</option>
+                      <option value="sv_only">SVs/TRs only</option>
+                      <option value="snv_only">SNVs only</option>
+                      <option value="all" disabled={regionSize > 500_000}>All variants</option>
+                    </select>
+                  </div>
+                )}
               </>
             )}
           </>
@@ -877,6 +898,9 @@ type HaplotypeTrackProps = {
   minAfCeiling?: number
   isDiploidView?: boolean
   onIsDiploidViewChange?: (isDiploid: boolean) => void
+  distanceMetric?: import('./haplotypeCompute').DistanceMetric
+  onDistanceMetricChange?: (metric: import('./haplotypeCompute').DistanceMetric) => void
+  regionSize?: number
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1015,10 +1039,14 @@ const GenealogyHelp = () => (
       closely related groups next to each other.
     </p>
     <p>
-      <strong>Distance metric:</strong> For regions with 5+ structural variants, the tree
-      uses SV/TR-only Jaccard distance — structural variants mutate slowly and provide a
-      stable scaffold for tracing ancestral relationships. For smaller regions with few SVs,
-      it falls back to all-variant Jaccard (including SNVs) to produce meaningful clustering.
+      <strong>Distance metric:</strong> Use the <em>Cluster by</em> dropdown to control which
+      variants are used for computing distances between haplotypes:
+      <ul style={{ margin: '4px 0', paddingLeft: '1.2em' }}>
+        <li><strong>Auto</strong> — SVs/TRs when 5+ are present (they mutate slowly, providing stable ancestral signal); falls back to all variants for smaller regions.</li>
+        <li><strong>SVs/TRs only</strong> — Structural variants and tandem repeats only. Best for large regions where SNV density overwhelms the signal.</li>
+        <li><strong>SNVs only</strong> — Single nucleotide variants only. Useful for fine-grained haplotype structure in coding regions where SNVs carry functional signal.</li>
+        <li><strong>All variants</strong> — Every variant type. Most sensitive but slower for large regions (&gt;500kb disabled).</li>
+      </ul>
     </p>
     <p>
       If the clustered view is also active, a vertical threshold line appears on the tree
@@ -1066,10 +1094,10 @@ const ClusteredViewHelp = () => (
       a cluster and see its constituent groups.
     </p>
     <p>
-      <strong>Region size behavior:</strong> Small regions (&lt;50kb) use a lower default
-      threshold (0.20–0.25) and cluster on all variant types including SNVs. Larger regions
-      use higher thresholds (0.35–0.70) and cluster on SVs/TRs only, since structural
-      variants provide more stable groupings at scale.
+      <strong>Region size behavior:</strong> Small regions (&lt;50kb) default to clustering on
+      all variant types with a lower threshold (0.20–0.25). Larger regions default to
+      SVs/TRs only with higher thresholds (0.35–0.70). Use the <em>Cluster by</em> dropdown
+      to override the default metric.
     </p>
     <p>
       Use the cluster resolution slider to adjust where the tree is cut — moving right
@@ -1129,6 +1157,7 @@ const HaplotypeInfoBar = ({
   isAutoTuned,
   plotType,
   isDiploidView = false,
+  distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
 }: {
   displayGroups: HaplotypeGroup[]
   start: number
@@ -1145,6 +1174,7 @@ const HaplotypeInfoBar = ({
   isAutoTuned: boolean
   plotType: string
   isDiploidView?: boolean
+  distanceMetric?: import('./haplotypeCompute').DistanceMetric
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
     let samples = 0
@@ -1171,8 +1201,12 @@ const HaplotypeInfoBar = ({
     ? `${(threshold * 100).toFixed(1)}%`
     : `${(threshold * 100).toFixed(0)}%`
 
-  // Determine distance metric mode from variant data
+  // Determine distance metric mode from selection and variant data
   const distanceMode = useMemo(() => {
+    if (distanceMetric === 'all') return 'All variants'
+    if (distanceMetric === 'snv_only') return 'SNVs only'
+    if (distanceMetric === 'sv_only') return 'SVs/TRs only'
+    // auto mode: check if enough SVs
     const svIds = new Set<string>()
     for (const group of displayGroups) {
       if ('is_diplotype' in group) continue
@@ -1180,8 +1214,9 @@ const HaplotypeInfoBar = ({
         if (Math.abs(v.allele_length) >= 50 || v.allele_type === 'trv') svIds.add(v.variant_id)
       }
     }
-    return svIds.size >= 5 ? 'SV/TR' : 'All variants'
-  }, [displayGroups])
+    if (svIds.size < 5) return 'All variants (auto)'
+    return 'SVs/TRs (auto)'
+  }, [displayGroups, distanceMetric])
 
   const isLoading = haplotypeLoading || workerComputing || methylationLoading
 
@@ -1770,6 +1805,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   minAfCeiling = 1,
   isDiploidView = false,
   onIsDiploidViewChange,
+  distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
+  onDistanceMetricChange,
+  regionSize = 0,
 }, ref) {
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [threshold, setThreshold] = useState(initialMinAf)
@@ -1894,8 +1932,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     return [...filteredGroups].sort((a, b) => (orderMap.get(a.hash) ?? 0) - (orderMap.get(b.hash) ?? 0))
   }, [showGenealogy, genealogyResult, filteredGroups])
 
-  const regionSize = stop - start
-  const variantCircleRadius = regionSize > 100000 ? 2 : 4
+  const effectiveRegionSize = regionSize || (stop - start)
+  const variantCircleRadius = effectiveRegionSize > 100000 ? 2 : 4
 
   // Build lookup from position to summary stats for coloring dots by deviation
   const summaryByPos = React.useMemo(() => {
@@ -1970,6 +2008,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     minAfCeiling,
     isDiploidView,
     onIsDiploidViewChange: onIsDiploidViewChange || (() => { }),
+    distanceMetric,
+    onDistanceMetricChange: onDistanceMetricChange || (() => { }),
+    regionSize,
   }
 
   // Build pangenome graph for alluvial/heatmap views
@@ -2005,6 +2046,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           isAutoTuned={isAutoTuned}
           plotType={plotType}
           isDiploidView={isDiploidView}
+          distanceMetric={distanceMetric}
         />
       </StickyHeader>
 
