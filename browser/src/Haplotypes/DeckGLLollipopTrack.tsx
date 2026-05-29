@@ -35,6 +35,7 @@ type VariantPoint = {
   color: [number, number, number, number]
   variant: Variant
   groupHash: number
+  pxX?: number // pre-computed pixel X for phantom-space below-threshold variants
 }
 
 type StemLine = {
@@ -93,6 +94,17 @@ type PhantomConnector = {
   startOffset: number // 0 for non-carriers, carrier length for partial connectors
   endOffset: number // maxPhantomLength
   centerY: number
+}
+
+type PhantomLabel = {
+  text: string
+  genomicPos: number
+  endOffset: number
+  centerY: number
+}
+
+type DupDecoration = {
+  path: [number, number][]
 }
 
 // HSL string to RGBA array conversion
@@ -1285,6 +1297,10 @@ function DeckGLLollipopCanvas({
     const allClusterBoxes: { yTop: number; yBottom: number }[] = []
     const allPhantomBars: PhantomBar[] = []
     const allPhantomConnectors: PhantomConnector[] = []
+    const allPhantomLabels: PhantomLabel[] = []
+    const allDupArrows: DupDecoration[] = []
+    const allDupChevrons: DupDecoration[] = []
+    const allDupHatching: DupDecoration[] = []
 
     // Accordion phantom region setup
     const accordionActive = !!(mapper && mapper.hasPhantomRegions)
@@ -1331,6 +1347,24 @@ function DeckGLLollipopCanvas({
         variant,
       })
 
+      // Mechanism label when bar is wide enough (> 40px)
+      const pxWidth = effectiveLength * pxPerSynthUnit
+      if (pxWidth > 40) {
+        let labelText: string | null = null
+        if (alleleType === 'alu_ins') labelText = 'ALU'
+        else if (alleleType === 'sva_ins') labelText = 'SVA'
+        else if (alleleType === 'numt') labelText = 'chrM'
+        else if (alleleType === 'trv' && variant.tr_motifs) labelText = variant.tr_motifs
+        if (labelText) {
+          allPhantomLabels.push({
+            text: labelText,
+            genomicPos: variant.pos,
+            endOffset: effectiveLength,
+            centerY,
+          })
+        }
+      }
+
       // Track carrier at this locus for connector logic (use max for multi-allelic)
       const existing = phantomCarriers.get(locus.genomicPos) || 0
       phantomCarriers.set(locus.genomicPos, Math.max(existing, effectiveLength))
@@ -1359,6 +1393,59 @@ function DeckGLLollipopCanvas({
             startOffset: carrierLen,
             endOffset: locus.maxPhantomLength,
             centerY,
+          })
+        }
+      }
+    }
+
+    /** Push duplication decoration overlays for spanning SV subtypes */
+    const pushDupDecorations = (variant: Variant, rowY: number) => {
+      const aType = (variant.allele_type || '').toLowerCase()
+      if (aType !== 'dup_interspersed' && aType !== 'inv_dup' && aType !== 'complex_dup') return
+      const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
+      const pxStart = scalePosition(variant.pos)
+      const pxEnd = scalePosition(endPos)
+      const midX = (pxStart + pxEnd) / 2
+      const centerY = rowY + ROW_CENTER_Y
+      const yTop = centerY - 3
+      const yBot = centerY + 3
+
+      if (aType === 'dup_interspersed') {
+        // Right-facing arrow (→) at center of bar
+        const arrowSize = 4
+        allDupArrows.push({
+          path: [
+            [midX - arrowSize, yTop],
+            [midX + arrowSize, centerY],
+            [midX - arrowSize, yBot],
+          ],
+        })
+      } else if (aType === 'inv_dup') {
+        // Inward chevrons (→←) near center
+        const arrowSize = 3
+        const gap = 4
+        allDupChevrons.push({
+          path: [
+            [midX - gap - arrowSize, yTop],
+            [midX - gap + arrowSize, centerY],
+            [midX - gap - arrowSize, yBot],
+          ],
+        })
+        allDupChevrons.push({
+          path: [
+            [midX + gap + arrowSize, yTop],
+            [midX + gap - arrowSize, centerY],
+            [midX + gap + arrowSize, yBot],
+          ],
+        })
+      } else if (aType === 'complex_dup') {
+        // Hatched diagonal lines across the bar
+        for (let x = pxStart; x < pxEnd; x += 10) {
+          allDupHatching.push({
+            path: [
+              [x, yTop],
+              [Math.min(x + 5, pxEnd), yBot],
+            ],
           })
         }
       }
@@ -1437,6 +1524,7 @@ function DeckGLLollipopCanvas({
             if ((cat === 'deletion' || cat === 'sv') && isLarge) {
               const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
               allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color, variant, groupHash: dg.hash })
+              pushDupDecorations(variant, baseline - ROW_CENTER_Y)
             } else if (cat === 'deletion') {
               const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
               allDeletionLines.push({ position: variant.pos, yTop: baseline - 7.5, yBottom: baseline + 7.5, color, width: thickness, variant })
@@ -1460,7 +1548,19 @@ function DeckGLLollipopCanvas({
             if (shape === 'deletion') {
               allDeletionLines.push({ position: variant.pos, yTop: baseline - 4.5, yBottom: baseline + 4.5, color: [128, 128, 128, 100], width: 1, variant })
             } else {
-              allBelowThresholdPoints.push({ position: variant.pos, y: baseline, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: dg.hash })
+              const point: VariantPoint = { position: variant.pos, y: baseline, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: dg.hash }
+              // Center insertion/TR below-threshold variants in their phantom gap
+              if (accordionActive) {
+                const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+                if (cat === 'insertion' || cat === 'tr' || cat === 'sv') {
+                  const locus = phantomLociByPos.get(variant.pos)
+                  if (locus && locus.maxPhantomLength > 0) {
+                    const halfLen = Math.min(Math.abs(variant.allele_length || 0) / 2, locus.maxPhantomLength)
+                    point.pxX = scalePosition(variant.pos) + halfLen * pxPerSynthUnit
+                  }
+                }
+              }
+              allBelowThresholdPoints.push(point)
             }
           }
         }
@@ -1569,6 +1669,7 @@ function DeckGLLollipopCanvas({
           if ((cat === 'deletion' || cat === 'sv') && isLarge) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
+            pushDupDecorations(variant, rowY)
           } else if (cat === 'deletion') {
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
             allDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
@@ -1600,7 +1701,18 @@ function DeckGLLollipopCanvas({
           if (shape === 'deletion') {
             allDeletionLines.push({ position: variant.pos, yTop: rowY + 8, yBottom: rowY + 17, color: [128, 128, 128, 100], width: 1, variant })
           } else {
-            allBelowThresholdPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: group.hash })
+            const point: VariantPoint = { position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: group.hash }
+            if (accordionActive) {
+              const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+              if (cat === 'insertion' || cat === 'tr' || cat === 'sv') {
+                const locus = phantomLociByPos.get(variant.pos)
+                if (locus && locus.maxPhantomLength > 0) {
+                  const halfLen = Math.min(Math.abs(variant.allele_length || 0) / 2, locus.maxPhantomLength)
+                  point.pxX = scalePosition(variant.pos) + halfLen * pxPerSynthUnit
+                }
+              }
+            }
+            allBelowThresholdPoints.push(point)
           }
         }
 
@@ -1625,6 +1737,7 @@ function DeckGLLollipopCanvas({
           if ((cat === 'deletion' || cat === 'sv') && isLarge) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
+            pushDupDecorations(variant, rowY)
           } else if (cat === 'deletion') {
             const thickness = Math.min(5, 2 + (Math.abs(variant.allele_length || 0) / 100) * 3)
             allDeletionLines.push({ position: variant.pos, yTop: rowY + 5, yBottom: rowY + 20, color, width: thickness, variant })
@@ -1920,6 +2033,56 @@ function DeckGLLollipopCanvas({
         pickable: false,
         updateTriggers: { getPolygon: [scalePosition, pxPerSynthUnit] },
       }))
+
+      // Mechanism labels inside wide phantom bars
+      if (allPhantomLabels.length > 0) {
+        result.push(new TextLayer({
+          id: 'phantom-labels-layer',
+          data: allPhantomLabels,
+          getText: (d: PhantomLabel) => d.text,
+          getPosition: (d: PhantomLabel) => [
+            scalePosition(d.genomicPos) + (d.endOffset * pxPerSynthUnit) / 2,
+            d.centerY,
+            0,
+          ],
+          getSize: 10,
+          getColor: [255, 255, 255, 220],
+          getTextAnchor: 'middle',
+          getAlignmentBaseline: 'center',
+          fontWeight: 700,
+          pickable: false,
+          updateTriggers: {
+            getPosition: [scalePosition, pxPerSynthUnit],
+          },
+        }))
+      }
+    }
+
+    // Truncation indicator: zigzag line at right edge of truncated phantom gaps
+    if (accordionActive) {
+      const truncatedLoci = (phantomLoci as readonly PhantomLocus[]).filter(l => l.isTruncated && l.maxPhantomLength > 0)
+      if (truncatedLoci.length > 0) {
+        const truncationPaths: { path: [number, number][] }[] = []
+        for (const locus of truncatedLoci) {
+          const pxX = scalePosition(locus.genomicPos) + locus.maxPhantomLength * pxPerSynthUnit
+          const zigzag: [number, number][] = []
+          for (let y = 0; y <= totalHeight; y += 6) {
+            const offset = (Math.floor(y / 6) % 2 === 0) ? -2 : 2
+            zigzag.push([pxX + offset, y])
+          }
+          truncationPaths.push({ path: zigzag })
+        }
+        result.push(new PathLayer({
+          id: 'phantom-truncation-layer',
+          data: truncationPaths,
+          getPath: (d: { path: [number, number][] }) => d.path,
+          getColor: [200, 50, 50, 200],
+          getWidth: 2,
+          widthUnits: 'pixels' as const,
+          pickable: false,
+          updateTriggers: { getPath: [scalePosition, pxPerSynthUnit, totalHeight] },
+        }))
+      }
     }
 
     if (allSpanningRects.length > 0) {
@@ -1937,6 +2100,46 @@ function DeckGLLollipopCanvas({
         pickable: true,
         onHover: onHover,
         updateTriggers: { getPolygon: [scalePosition] },
+      }))
+    }
+
+    // Duplication decoration overlays on spanning bars
+    if (allDupArrows.length > 0) {
+      result.push(new PathLayer({
+        id: 'dup-arrows-layer',
+        data: allDupArrows,
+        getPath: (d: DupDecoration) => d.path,
+        getColor: [255, 255, 255, 150],
+        getWidth: 1.5,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getPath: [scalePosition] },
+      }))
+    }
+
+    if (allDupChevrons.length > 0) {
+      result.push(new PathLayer({
+        id: 'dup-chevrons-layer',
+        data: allDupChevrons,
+        getPath: (d: DupDecoration) => d.path,
+        getColor: [255, 255, 255, 150],
+        getWidth: 1.5,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getPath: [scalePosition] },
+      }))
+    }
+
+    if (allDupHatching.length > 0) {
+      result.push(new PathLayer({
+        id: 'dup-hatching-layer',
+        data: allDupHatching,
+        getPath: (d: DupDecoration) => d.path,
+        getColor: [255, 255, 255, 150],
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: { getPath: [scalePosition] },
       }))
     }
 
@@ -1959,7 +2162,7 @@ function DeckGLLollipopCanvas({
       result.push(new ScatterplotLayer({
         id: 'below-threshold-layer',
         data: allBelowThresholdPoints,
-        getPosition: (d: VariantPoint) => [scalePosition(d.position), d.y, 0],
+        getPosition: (d: VariantPoint) => [d.pxX ?? scalePosition(d.position), d.y, 0],
         getRadius: (d: VariantPoint) => d.radius,
         getFillColor: [0, 0, 0, 0],
         getLineColor: (d: VariantPoint) => d.color,
