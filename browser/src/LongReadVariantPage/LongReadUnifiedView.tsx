@@ -9,7 +9,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
-import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint } from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint, LRVariant } from '../Haplotypes'
 import {
   computeHaplotypeView,
   filterDisplayVariants,
@@ -30,6 +30,8 @@ import { getLodVisibility } from './variantUtils'
 import Variants from '../VariantList/Variants'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
+import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
@@ -216,6 +218,7 @@ const LongReadUnifiedView = ({
   const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
 
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
+  const [showPhantomRegions, setShowPhantomRegions] = useState(true)
 
   // Cluster state — two thresholds: visual (immediate) and deferred (debounced).
   // Visual drives the drag line + slider display; deferred drives the expensive recomputation.
@@ -582,6 +585,22 @@ const LongReadUnifiedView = ({
     [displayVariants, zoomRegion]
   )
 
+  // Unfiltered zoom variants for accordion mapper (not AF-filtered)
+  const unfilteredZoomedVariants: LRVariant[] = useMemo(
+    () => filterVariantsInZoomRegion(variants, zoomRegion),
+    [variants, zoomRegion]
+  )
+
+  // Accordion coordinate mapper — creates phantom gaps at insertion/TR loci
+  const accordionViewRegion = useMemo(
+    () => zoomRegion || { start, stop },
+    [zoomRegion, start, stop]
+  )
+  const accordionMapper = useMemo(
+    () => new AccordionCoordinateMapper(accordionViewRegion, unfilteredZoomedVariants, showPhantomRegions),
+    [accordionViewRegion, unfilteredZoomedVariants, showPhantomRegions]
+  )
+
   // Map LR variants into the standard shape expected by Variants/VariantTable
   const mappedVariants = useMemo(
     () =>
@@ -689,7 +708,7 @@ const LongReadUnifiedView = ({
       )}
 
       {viewMode === 'haplotype' && (
-        <>
+        <AccordionRegionViewer mapper={accordionMapper} originalRegion={accordionViewRegion}>
           {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
           <LongReadVariantTrack variants={zoomedVariants} lod={lod} />
           <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
@@ -748,10 +767,12 @@ const LongReadUnifiedView = ({
               distanceMetric={distanceMetric}
               onDistanceMetricChange={setDistanceMetric}
               regionSize={regionSize}
+              showPhantomRegions={showPhantomRegions}
+              onShowPhantomRegionsChange={setShowPhantomRegions}
             />
           )}
           <PositionAxisTrack />
-        </>
+        </AccordionRegionViewer>
       )}
 
       {onChangeZoomRegion && (
