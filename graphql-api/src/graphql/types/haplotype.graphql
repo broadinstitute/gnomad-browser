@@ -37,7 +37,7 @@ type LRVariant {
   tr_id: String
   tr_motifs: String
   gnomad_str: String
-  dbgap_id: String
+  dbsnp_id: String
 
   # Haplotype context (nullable — only populated in haplotype queries)
   allele_methylation: Float

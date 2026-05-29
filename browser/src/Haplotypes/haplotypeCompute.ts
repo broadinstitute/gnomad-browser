@@ -62,7 +62,7 @@ export type SoAVariants = {
   cadd_phred: (number | null)[]
   phylop: (number | null)[]
   sv_consequences: (string[] | null)[]
-  dbgap_id: (string | null)[]
+  dbsnp_id: (string | null)[]
   tr_id: (string | null)[]
   tr_motifs: (string | null)[]
   gnomad_str: (string | null)[]
@@ -95,7 +95,7 @@ export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
       cadd_phred: soa.cadd_phred[i],
       phylop: soa.phylop[i],
       sv_consequences: soa.sv_consequences[i],
-      dbgap_id: soa.dbgap_id[i],
+      dbsnp_id: soa.dbsnp_id[i],
       tr_id: soa.tr_id[i],
       tr_motifs: soa.tr_motifs[i],
       gnomad_str: soa.gnomad_str[i],
