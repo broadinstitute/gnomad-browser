@@ -787,12 +787,13 @@ function DeckGLLollipopCanvas({
   type LeftPanelPopBar = { polygon: [number, number][]; color: [number, number, number, number] }
   type LeftPanelTreeLine = { sourcePosition: [number, number, number]; targetPosition: [number, number, number] }
 
-  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines } = useMemo(() => {
+  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, leftPanelSampleLabels } = useMemo(() => {
     const circles: LeftPanelCircle[] = []
     const texts: LeftPanelText[] = []
     const hitboxes: LeftPanelHitbox[] = []
     const popBars: LeftPanelPopBar[] = []
     const treeLines: LeftPanelTreeLine[] = []
+    const sampleLabels: LeftPanelText[] = []
     const isPopMode = colorMode === 'population'
 
     // Compute total cohort size for diplotype percentage display
@@ -808,15 +809,15 @@ function DeckGLLollipopCanvas({
         const group = item.group
         const popStats = populationStatsByRow[i]
 
-        // Sample ID(s) above the population bar
-        const sampleLabel = group.samples.length <= 3
+        // Sample ID(s) above the population bar — centered, bold
+        const sampleLabel = group.samples.length <= 2
           ? group.samples.map(s => s.sample_id).join(', ')
           : `${group.samples[0].sample_id} +${group.samples.length - 1}`
-        texts.push({
-          position: [5, y - 8, 0],
+        sampleLabels.push({
+          position: [35, y - 13, 0],
           text: sampleLabel,
-          color: [100, 100, 100, 255],
-          size: 8,
+          color: [40, 40, 40, 255],
+          size: 11,
         })
 
         if (isPopMode && popStats && popStats.totalSamples > 0) {
@@ -1033,7 +1034,7 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines }
+    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
   }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, colorMode, populationStatsByRow, isDiploidView])
 
   // Left panel DeckGL layers
@@ -1085,6 +1086,22 @@ function DeckGLLollipopCanvas({
       }))
     }
 
+    if (leftPanelSampleLabels.length > 0) {
+      lpLayers.push(new TextLayer({
+        id: 'left-panel-sample-labels',
+        data: leftPanelSampleLabels,
+        getPosition: (d: LeftPanelText) => d.position,
+        getText: (d: LeftPanelText) => d.text,
+        getSize: (d: LeftPanelText) => d.size,
+        getColor: (d: LeftPanelText) => d.color,
+        getTextAnchor: 'middle',
+        getAlignmentBaseline: 'center',
+        fontWeight: 700,
+        fontSettings: { sdf: true, smoothing: 0.15 },
+        pickable: false,
+      }))
+    }
+
     if (leftPanelTreeLines.length > 0) {
       lpLayers.push(new LineLayer({
         id: 'left-panel-tree-lines',
@@ -1116,7 +1133,7 @@ function DeckGLLollipopCanvas({
     }
 
     return lpLayers
-  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, toggleClusterExpansion, onHover])
+  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, leftPanelSampleLabels, toggleClusterExpansion, onHover])
 
   // Genealogy tree layout — pure data arrays for DeckGL
   const treeLayout = useMemo((): TreeLayout | null => {
@@ -2103,6 +2120,9 @@ function ThresholdDragOverlay({
     </div>
   )
 }
+
+
+
 
 
 
