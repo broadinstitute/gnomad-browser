@@ -31,7 +31,11 @@ function sortedJaccard(a: number[], b: number[]): number {
   return union === 0 ? 0 : 1 - intersection / union
 }
 
-export const computeSVDistanceMatrix = (groups: any[]): number[][] => {
+type DistanceMetric = 'auto' | 'sv_only' | 'snv_only' | 'all'
+
+const isSNV = (v: any): boolean => v.allele_type === 'snv'
+
+export const computeSVDistanceMatrix = (groups: any[], distanceMetric: DistanceMetric = 'auto'): number[][] => {
   // Build sorted integer index arrays for SV variant_ids
   const allSVIds = new Map<string, number>()
   for (const g of groups) {
@@ -42,25 +46,28 @@ export const computeSVDistanceMatrix = (groups: any[]): number[][] => {
     }
   }
 
-  // If too few SVs for meaningful clustering, fall back to all variants
-  const useSVOnly = allSVIds.size >= 5
-  const allVarIds = new Map<string, number>()
-  if (!useSVOnly) {
-    for (const g of groups) {
-      for (const v of g.variants.variants) {
-        if (!allVarIds.has(v.variant_id)) {
-          allVarIds.set(v.variant_id, allVarIds.size)
-        }
+  // Determine which variants to use based on distance metric
+  const useMode: 'sv' | 'snv' | 'all' =
+    distanceMetric === 'sv_only' ? 'sv'
+    : distanceMetric === 'snv_only' ? 'snv'
+    : distanceMetric === 'all' ? 'all'
+    : allSVIds.size >= 5 ? 'sv' : 'all' // auto: SV-only when enough SVs, else all
+
+  const filteredIds = new Map<string, number>()
+  for (const g of groups) {
+    for (const v of g.variants.variants) {
+      if (useMode === 'sv' && !isSV(v)) continue
+      if (useMode === 'snv' && !isSNV(v)) continue
+      if (!filteredIds.has(v.variant_id)) {
+        filteredIds.set(v.variant_id, filteredIds.size)
       }
     }
   }
 
-  const idMap = useSVOnly ? allSVIds : allVarIds
   const varIndices: number[][] = groups.map((g) => {
     const indices: number[] = []
     for (const v of g.variants.variants) {
-      if (useSVOnly && !isSV(v)) continue
-      const idx = idMap.get(v.variant_id)
+      const idx = filteredIds.get(v.variant_id)
       if (idx !== undefined) indices.push(idx)
     }
     return indices.sort((a, b) => a - b)
