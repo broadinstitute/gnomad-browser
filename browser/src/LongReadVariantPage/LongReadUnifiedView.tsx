@@ -680,8 +680,8 @@ const LongReadUnifiedView = ({
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
             <VariantColorLegend />
           </div>
-          {lod.showDensityTrack && <VariantDensityTrack variants={displayVariants} />}
-          <LongReadVariantTrack variants={displayVariants} />
+          {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
+          <LongReadVariantTrack variants={zoomedVariants} />
           <PositionAxisTrack />
         </>
       )}
@@ -790,3 +790,4 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
+
