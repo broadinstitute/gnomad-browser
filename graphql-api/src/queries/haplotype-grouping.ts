@@ -849,7 +849,7 @@ function binarySearchAfServer(
 
 const TARGET_MIN = 15
 const TARGET_MAX = 40
-const MAX_GROUPS_FOR_UPGMA = 150
+const MAX_GROUPS_FOR_UPGMA = 600
 
 export function deriveAutoDefaults(
   variants: LRVariant[],
@@ -877,12 +877,17 @@ export function deriveAutoDefaults(
   let minAf = floor
   let clusterThreshold = baseClusterThreshold
 
+  // Limit how far AF can be raised — don't go past 20% of the way to ceiling
+  const maxAfBump = Math.pow(10, Math.log10(floor) + (Math.log10(ceiling) - Math.log10(floor)) * 0.2)
+
   for (let iter = 0; iter < 10; iter++) {
     const groups = groupCarriersForDefaults(variants, carrierVariantIndices, minAf)
     const N = groups.length
 
     if (N > MAX_GROUPS_FOR_UPGMA) {
-      minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      const newAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      if (newAf > maxAfBump) break // bail out — accept floor AF with whatever clustering gives us
+      minAf = newAf
       continue
     }
 
@@ -897,9 +902,7 @@ export function deriveAutoDefaults(
 
     if (M > TARGET_MAX) {
       clusterThreshold = Math.min(1.0, clusterThreshold + 0.05)
-      if (clusterThreshold >= 0.95) {
-        minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
-      }
+      if (clusterThreshold >= 0.95) break // threshold maxed out, stop
     } else {
       const newAf = Math.pow(10, (Math.log10(floor) + Math.log10(minAf)) / 2)
       if (Math.abs(newAf - minAf) < 1e-6) {
