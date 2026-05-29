@@ -42,13 +42,26 @@ export const computeSVDistanceMatrix = (groups: any[]): number[][] => {
     }
   }
 
-  const svIndices: number[][] = groups.map((g) => {
+  // If too few SVs for meaningful clustering, fall back to all variants
+  const useSVOnly = allSVIds.size >= 5
+  const allVarIds = new Map<string, number>()
+  if (!useSVOnly) {
+    for (const g of groups) {
+      for (const v of g.variants.variants) {
+        if (!allVarIds.has(v.variant_id)) {
+          allVarIds.set(v.variant_id, allVarIds.size)
+        }
+      }
+    }
+  }
+
+  const idMap = useSVOnly ? allSVIds : allVarIds
+  const varIndices: number[][] = groups.map((g) => {
     const indices: number[] = []
     for (const v of g.variants.variants) {
-      if (isSV(v)) {
-        const idx = allSVIds.get(v.variant_id)
-        if (idx !== undefined) indices.push(idx)
-      }
+      if (useSVOnly && !isSV(v)) continue
+      const idx = idMap.get(v.variant_id)
+      if (idx !== undefined) indices.push(idx)
     }
     return indices.sort((a, b) => a - b)
   })
@@ -58,7 +71,7 @@ export const computeSVDistanceMatrix = (groups: any[]): number[][] => {
 
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
-      const d = sortedJaccard(svIndices[i], svIndices[j])
+      const d = sortedJaccard(varIndices[i], varIndices[j])
       matrix[i][j] = d
       matrix[j][i] = d
     }
