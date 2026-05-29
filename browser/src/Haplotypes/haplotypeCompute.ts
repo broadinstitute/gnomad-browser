@@ -699,7 +699,7 @@ export function getAutoClusterThreshold(regionSize: number): number {
 
 const TARGET_MIN = 15
 const TARGET_MAX = 40
-const MAX_GROUPS_FOR_UPGMA = 150
+const MAX_GROUPS_FOR_UPGMA = 600
 
 export function deriveAutoDefaults(
   variants: LRVariant[],
@@ -731,13 +731,18 @@ export function deriveAutoDefaults(
   let clusterThreshold = baseClusterThreshold
   let bestRowCount = 0
 
+  // Limit how far AF can be raised — don't go past 20% of the way to ceiling
+  const maxAfBump = Math.pow(10, Math.log10(floor) + (Math.log10(ceiling) - Math.log10(floor)) * 0.2)
+
   for (let iter = 0; iter < 10; iter++) {
     const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts)
     const N = groups.length
 
     // Too many groups for UPGMA — raise AF to reduce
     if (N > MAX_GROUPS_FOR_UPGMA) {
-      minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      const newAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
+      if (newAf > maxAfBump) break // bail out — accept floor AF with whatever clustering gives us
+      minAf = newAf
       continue
     }
 
@@ -759,10 +764,7 @@ export function deriveAutoDefaults(
     if (M > TARGET_MAX) {
       // Too many clusters — increase threshold to merge more
       clusterThreshold = Math.min(1.0, clusterThreshold + 0.05)
-      if (clusterThreshold >= 0.95) {
-        // Threshold maxed out, raise AF too
-        minAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
-      }
+      if (clusterThreshold >= 0.95) break // threshold maxed out, stop
     } else {
       // Too few clusters — decrease AF to get more differentiated groups
       const newAf = Math.pow(10, (Math.log10(floor) + Math.log10(minAf)) / 2)
