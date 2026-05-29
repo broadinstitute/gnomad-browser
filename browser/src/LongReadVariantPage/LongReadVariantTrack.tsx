@@ -99,7 +99,9 @@ const SvBand = ({ variants, scalePosition, width }: {
   scalePosition: (pos: number) => number
   width: number
 }) => {
-  const { packed, maxRows } = packIntervals(variants)
+  // Filter to variants visible in the current viewport
+  const visible = variants.filter(v => scalePosition(v.stop) >= 0 && scalePosition(v.start) <= width)
+  const { packed, maxRows } = packIntervals(visible)
   const bandHeight = maxRows * ROW_HEIGHT
   const barHeight = ROW_HEIGHT - 4
 
@@ -156,7 +158,8 @@ const TrBand = ({ variants, scalePosition, width }: {
   scalePosition: (pos: number) => number
   width: number
 }) => {
-  const { packed, maxRows } = packIntervals(variants)
+  const visible = variants.filter(v => scalePosition(v.stop) >= 0 && scalePosition(v.start) <= width)
+  const { packed, maxRows } = packIntervals(visible)
   const bandHeight = maxRows * ROW_HEIGHT
   const barHeight = ROW_HEIGHT - 4
 
@@ -254,7 +257,7 @@ const LongReadVariantTrack = ({ variants, lod }: LongReadVariantTrackProps) => {
   }))
 
   return (
-    <div style={{ overflow: 'hidden' }}>
+    <div style={{ overflow: 'hidden', clipPath: 'inset(0)' }}>
       <VariantTrack
         // @ts-expect-error TS(2769) - VariantTrack prop types are loose
         title={`Long Read SNVs (${trackSnvVariants.length})`}
@@ -287,3 +290,4 @@ const LongReadVariantTrack = ({ variants, lod }: LongReadVariantTrackProps) => {
 }
 
 export default LongReadVariantTrack
+
