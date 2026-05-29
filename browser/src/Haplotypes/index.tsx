@@ -597,7 +597,7 @@ export type LRVariant = {
   phylop?: number | null
   filters?: string[] | null
   sv_consequences?: string[] | null
-  dbgap_id?: string | null
+  dbsnp_id?: string | null
   tr_id?: string | null
   tr_motifs?: string | null
   gnomad_str?: string | null

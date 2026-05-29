@@ -32,6 +32,7 @@ import ZoomOverview from '../Haplotypes/ZoomOverview'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
+import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
@@ -771,7 +772,7 @@ const LongReadUnifiedView = ({
               onShowPhantomRegionsChange={setShowPhantomRegions}
             />
           )}
-          <PositionAxisTrack />
+          <AccordionPositionAxisTrack />
         </AccordionRegionViewer>
       )}
 
