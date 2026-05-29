@@ -5,7 +5,9 @@ import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer, TextLayer } 
 import { RegionViewerContext } from '@gnomad/region-viewer'
 import { scaleLinear, scaleLog } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
-import { getVariantCategory, getLodVisibility } from '../LongReadVariantPage/variantUtils'
+import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
+import AccordionContext from './AccordionContext'
+import type { PhantomLocus } from './AccordionCoordinateMapper'
 import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
 import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation } from './index'
@@ -13,6 +15,9 @@ import type { DiplotypeGroup } from './haplotypeCompute'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 type Variant = LRVariant
+
+// Allele types eligible for accordion phantom rendering (matching AccordionCoordinateMapper)
+const ACCORDION_ALLELE_TYPES = new Set(['ins', 'alu_ins', 'sva_ins', 'numt', 'trv'])
 
 // Row height constants
 const VARIANT_ROW_HEIGHT = 25
@@ -72,6 +77,22 @@ type MqtlArc = {
   baseY: number // baseline Y
   color: [number, number, number, number]
   width: number
+}
+
+type PhantomBar = {
+  genomicPos: number
+  endOffset: number // min(abs(allele_length), maxPhantomLength) in bp
+  centerY: number
+  color: [number, number, number, number] // colorMode fill
+  accentColor: [number, number, number, number] // ALLELE_TYPE_COLORS accent stripe
+  variant: Variant
+}
+
+type PhantomConnector = {
+  genomicPos: number
+  startOffset: number // 0 for non-carriers, carrier length for partial connectors
+  endOffset: number // maxPhantomLength
+  centerY: number
 }
 
 // HSL string to RGBA array conversion
@@ -773,6 +794,7 @@ function DeckGLLollipopCanvas({
   isDiploidView,
 }: DeckGLCanvasProps) {
   const canvasWidth = width
+  const { mapper } = useContext(AccordionContext)
 
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
 
@@ -1261,6 +1283,86 @@ function DeckGLLollipopCanvas({
     const allChArcs: { x1: number; y1: number; x2: number; y2: number }[] = []
     const allRohWaves: { startPos: number; stopPos: number; y: number }[] = []
     const allClusterBoxes: { yTop: number; yBottom: number }[] = []
+    const allPhantomBars: PhantomBar[] = []
+    const allPhantomConnectors: PhantomConnector[] = []
+
+    // Accordion phantom region setup
+    const accordionActive = !!(mapper && mapper.hasPhantomRegions)
+    const phantomLoci = accordionActive ? mapper!.getPhantomLoci() : []
+    const phantomLociByPos = new Map<number, PhantomLocus>()
+    if (accordionActive) {
+      for (const locus of phantomLoci) {
+        if (locus.maxPhantomLength > 0) {
+          // Map exact position and ±2bp neighbors (matching mapper's clustering threshold)
+          for (let d = -2; d <= 2; d++) {
+            phantomLociByPos.set(locus.genomicPos + d, locus)
+          }
+        }
+      }
+    }
+    const pxPerSynthUnit = accordionActive
+      ? (scalePosition(stop) - scalePosition(start)) / mapper!.totalVisualLength
+      : 0
+
+    /** Try to create a phantom bar for an accordion-eligible variant. Returns true if handled. */
+    const tryPhantomBar = (
+      variant: Variant,
+      centerY: number,
+      color: [number, number, number, number],
+      phantomCarriers: Map<number, number>
+    ): boolean => {
+      if (!accordionActive) return false
+      const alleleType = (variant.allele_type || '').toLowerCase()
+      if (!ACCORDION_ALLELE_TYPES.has(alleleType)) return false
+      if (Math.abs(variant.allele_length || 0) < 50) return false
+
+      const locus = phantomLociByPos.get(variant.pos)
+      if (!locus || locus.maxPhantomLength <= 0) return false
+
+      const effectiveLength = Math.min(Math.abs(variant.allele_length || 0), locus.maxPhantomLength)
+      const accentColor = cssColorToRgba(ALLELE_TYPE_COLORS[alleleType] || '#888888')
+
+      allPhantomBars.push({
+        genomicPos: variant.pos,
+        endOffset: effectiveLength,
+        centerY,
+        color,
+        accentColor,
+        variant,
+      })
+
+      // Track carrier at this locus for connector logic (use max for multi-allelic)
+      const existing = phantomCarriers.get(locus.genomicPos) || 0
+      phantomCarriers.set(locus.genomicPos, Math.max(existing, effectiveLength))
+
+      return true
+    }
+
+    /** Add connectors for phantom loci not (fully) covered by carriers at this row/strand */
+    const addPhantomConnectors = (centerY: number, phantomCarriers: Map<number, number>) => {
+      if (!accordionActive) return
+      for (const locus of phantomLoci) {
+        if (locus.maxPhantomLength <= 0) continue
+        const carrierLen = phantomCarriers.get(locus.genomicPos)
+        if (carrierLen === undefined) {
+          // No carrier at this locus — full connector
+          allPhantomConnectors.push({
+            genomicPos: locus.genomicPos,
+            startOffset: 0,
+            endOffset: locus.maxPhantomLength,
+            centerY,
+          })
+        } else if (carrierLen < locus.maxPhantomLength) {
+          // Carrier shorter than max gap — partial connector after bar
+          allPhantomConnectors.push({
+            genomicPos: locus.genomicPos,
+            startOffset: carrierLen,
+            endOffset: locus.maxPhantomLength,
+            centerY,
+          })
+        }
+      }
+    }
 
     for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
@@ -1313,7 +1415,8 @@ function DeckGLLollipopCanvas({
         const effectiveColorMode = isPopMode ? 'allele' : colorMode
 
         // Helper to push variants for a strand (opacity 0-1 for ghosting ROH strand B)
-        const pushStrandVariants = (variants: LRVariant[], baseline: number, opacity: number = 1) => {
+        const pushStrandVariants = (variants: LRVariant[], baseline: number, opacity: number = 1): Map<number, number> => {
+          const phantomCarriers = new Map<number, number>()
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
             const isLarge = Math.abs(variant.allele_length || 0) >= 50
@@ -1328,6 +1431,9 @@ function DeckGLLollipopCanvas({
               ? [baseColor[0], baseColor[1], baseColor[2], Math.round(baseColor[3] * opacity)]
               : baseColor
 
+            // Accordion phantom bar for eligible insertions/TRs
+            if (tryPhantomBar(variant, baseline, color, phantomCarriers)) continue
+
             if ((cat === 'deletion' || cat === 'sv') && isLarge) {
               const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
               allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color, variant, groupHash: dg.hash })
@@ -1338,11 +1444,14 @@ function DeckGLLollipopCanvas({
               allVariantPoints.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
             }
           }
+          return phantomCarriers
         }
 
         // Strand A at full opacity, strand B ghosted if ROH
-        pushStrandVariants(dg.haplotypeA.variants, yTop)
-        pushStrandVariants(dg.haplotypeB.variants, yBottom, dg.is_roh ? 0.2 : 1)
+        const carriersA = pushStrandVariants(dg.haplotypeA.variants, yTop)
+        addPhantomConnectors(yTop, carriersA)
+        const carriersB = pushStrandVariants(dg.haplotypeB.variants, yBottom, dg.is_roh ? 0.2 : 1)
+        addPhantomConnectors(yBottom, carriersB)
 
         // Below-threshold variants for both strands
         const pushBelowThreshold = (variants: LRVariant[], baseline: number) => {
@@ -1436,6 +1545,7 @@ function DeckGLLollipopCanvas({
           group: null as any,
         })
 
+        const clusterPhantomCarriers = new Map<number, number>()
         for (const cv of cluster.consensus_variants) {
           if (cv.cluster_af < 0.5) continue
           const variant = cv.variant
@@ -1453,6 +1563,9 @@ function DeckGLLollipopCanvas({
           )
           const color: [number, number, number, number] = [baseColor[0], baseColor[1], baseColor[2], alpha]
 
+          // Accordion phantom bar for eligible insertions/TRs
+          if (tryPhantomBar(variant, rowY + ROW_CENTER_Y, color, clusterPhantomCarriers)) continue
+
           if ((cat === 'deletion' || cat === 'sv') && isLarge) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
@@ -1463,6 +1576,7 @@ function DeckGLLollipopCanvas({
             allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
           }
         }
+        addPhantomConnectors(rowY + ROW_CENTER_Y, clusterPhantomCarriers)
       } else {
         const group = item.group
 
@@ -1493,6 +1607,7 @@ function DeckGLLollipopCanvas({
         // In population mode, use allele coloring for dots (background carries pop signal)
         const effectiveColorMode = isPopMode ? 'allele' : colorMode
 
+        const groupPhantomCarriers = new Map<number, number>()
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
           const isLarge = Math.abs(variant.allele_length || 0) >= 50
@@ -1504,6 +1619,9 @@ function DeckGLLollipopCanvas({
             locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
           )
 
+          // Accordion phantom bar for eligible insertions/TRs
+          if (tryPhantomBar(variant, rowY + ROW_CENTER_Y, color, groupPhantomCarriers)) continue
+
           if ((cat === 'deletion' || cat === 'sv') && isLarge) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
@@ -1514,6 +1632,7 @@ function DeckGLLollipopCanvas({
             allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
           }
         }
+        addPhantomConnectors(rowY + ROW_CENTER_Y, groupPhantomCarriers)
 
         if (showMethylation) {
           const groupSampleIds = new Set(group.samples.map((s) => s.sample_id))
@@ -1580,6 +1699,50 @@ function DeckGLLollipopCanvas({
     // Emit consolidated global layers — one per data type
 
     const result: any[] = []
+
+    // Phantom background shading at accordion loci (drawn beneath everything)
+    if (accordionActive) {
+      const activeLoci = (phantomLoci as readonly PhantomLocus[]).filter(l => l.maxPhantomLength > 0)
+      if (activeLoci.length > 0) {
+        result.push(new SolidPolygonLayer({
+          id: 'phantom-bg-layer',
+          data: activeLoci,
+          getPolygon: (d: PhantomLocus) => {
+            const x1 = scalePosition(d.genomicPos)
+            const x2 = x1 + d.maxPhantomLength * pxPerSynthUnit
+            return [[x1, 0], [x2, 0], [x2, totalHeight], [x1, totalHeight]]
+          },
+          getFillColor: [0, 0, 0, 8], // rgba(0, 0, 0, ~0.03)
+          pickable: false,
+          updateTriggers: { getPolygon: [scalePosition, pxPerSynthUnit, totalHeight] },
+        }))
+
+        // Dashed vertical boundary lines at accordion edges
+        const boundaryData: { genomicPos: number; offset: number }[] = []
+        for (const l of activeLoci) {
+          boundaryData.push({ genomicPos: l.genomicPos, offset: 0 })
+          boundaryData.push({ genomicPos: l.genomicPos, offset: l.maxPhantomLength })
+        }
+        result.push(new LineLayer({
+          id: 'phantom-boundary-layer',
+          data: boundaryData,
+          getSourcePosition: (d: { genomicPos: number; offset: number }) => [
+            scalePosition(d.genomicPos) + d.offset * pxPerSynthUnit, 0, 0,
+          ],
+          getTargetPosition: (d: { genomicPos: number; offset: number }) => [
+            scalePosition(d.genomicPos) + d.offset * pxPerSynthUnit, totalHeight, 0,
+          ],
+          getColor: [0, 0, 0, 30],
+          getWidth: 1,
+          widthUnits: 'pixels' as const,
+          pickable: false,
+          updateTriggers: {
+            getSourcePosition: [scalePosition, pxPerSynthUnit],
+            getTargetPosition: [scalePosition, pxPerSynthUnit, totalHeight],
+          },
+        }))
+      }
+    }
 
     if (allBgRects.length > 0) {
       // Generate rounded-rect polygon (pill shape) for diplotype strand backgrounds
@@ -1693,6 +1856,69 @@ function DeckGLLollipopCanvas({
         widthUnits: 'pixels' as const,
         pickable: false,
         updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
+      }))
+    }
+
+    // Phantom connector lines (non-carrier / partial-carrier horizontal lines through gaps)
+    if (allPhantomConnectors.length > 0) {
+      result.push(new LineLayer({
+        id: 'phantom-connector-layer',
+        data: allPhantomConnectors,
+        getSourcePosition: (d: PhantomConnector) => [
+          scalePosition(d.genomicPos) + d.startOffset * pxPerSynthUnit,
+          d.centerY,
+          0,
+        ],
+        getTargetPosition: (d: PhantomConnector) => [
+          scalePosition(d.genomicPos) + d.endOffset * pxPerSynthUnit,
+          d.centerY,
+          0,
+        ],
+        getColor: [168, 168, 168, 180],
+        getWidth: 1,
+        widthUnits: 'pixels' as const,
+        pickable: false,
+        updateTriggers: {
+          getSourcePosition: [scalePosition, pxPerSynthUnit],
+          getTargetPosition: [scalePosition, pxPerSynthUnit],
+        },
+      }))
+    }
+
+    // Phantom carrier bars (insertion/TR extent within accordion gaps)
+    if (allPhantomBars.length > 0) {
+      // Main body — colored by colorMode
+      result.push(new SolidPolygonLayer({
+        id: 'phantom-bar-layer',
+        data: allPhantomBars,
+        getPolygon: (d: PhantomBar) => {
+          const x1 = scalePosition(d.genomicPos)
+          const x2 = x1 + d.endOffset * pxPerSynthUnit
+          const yTop = d.centerY - 4
+          const yBot = d.centerY + 4
+          return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
+        },
+        getFillColor: (d: PhantomBar) => d.color,
+        pickable: true,
+        onHover: onHover,
+        updateTriggers: { getPolygon: [scalePosition, pxPerSynthUnit] },
+      }))
+
+      // Left accent stripe — 4px wide, colored by allele_type mechanism
+      result.push(new SolidPolygonLayer({
+        id: 'phantom-accent-layer',
+        data: allPhantomBars,
+        getPolygon: (d: PhantomBar) => {
+          const x1 = scalePosition(d.genomicPos)
+          const barWidth = d.endOffset * pxPerSynthUnit
+          const x2 = x1 + Math.min(4, barWidth)
+          const yTop = d.centerY - 4
+          const yBot = d.centerY + 4
+          return [[x1, yTop], [x2, yTop], [x2, yBot], [x1, yBot]]
+        },
+        getFillColor: (d: PhantomBar) => d.accentColor,
+        pickable: false,
+        updateTriggers: { getPolygon: [scalePosition, pxPerSynthUnit] },
       }))
     }
 
@@ -1893,6 +2119,7 @@ function DeckGLLollipopCanvas({
     populationStatsByRow,
     expandedClusterIds,
     isDiploidView,
+    mapper,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers
