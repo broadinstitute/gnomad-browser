@@ -25,6 +25,7 @@ const METH_TRACK_HEIGHT = 40
 const MQTL_TRACK_HEIGHT = 80
 const MQTL_PAD = 8
 const ROW_CENTER_Y = 12.5
+const INSERTION_TYPES = new Set(['ins', 'alu_ins', 'sva_ins', 'numt'])
 const SCROLL_CONTAINER_HEIGHT = 500
 
 // Flattened data types for deck.gl layers
@@ -1521,7 +1522,7 @@ function DeckGLLollipopCanvas({
             // Accordion phantom bar for eligible insertions/TRs
             if (tryPhantomBar(variant, baseline, color, phantomCarriers)) continue
 
-            if ((cat === 'deletion' || cat === 'sv') && isLarge) {
+            if ((cat === 'deletion' || cat === 'sv') && isLarge && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
               const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
               allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color, variant, groupHash: dg.hash })
               pushDupDecorations(variant, baseline - ROW_CENTER_Y)
@@ -1666,7 +1667,7 @@ function DeckGLLollipopCanvas({
           // Accordion phantom bar for eligible insertions/TRs
           if (tryPhantomBar(variant, rowY + ROW_CENTER_Y, color, clusterPhantomCarriers)) continue
 
-          if ((cat === 'deletion' || cat === 'sv') && isLarge) {
+          if ((cat === 'deletion' || cat === 'sv') && isLarge && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
             pushDupDecorations(variant, rowY)
@@ -1734,7 +1735,7 @@ function DeckGLLollipopCanvas({
           // Accordion phantom bar for eligible insertions/TRs
           if (tryPhantomBar(variant, rowY + ROW_CENTER_Y, color, groupPhantomCarriers)) continue
 
-          if ((cat === 'deletion' || cat === 'sv') && isLarge) {
+          if ((cat === 'deletion' || cat === 'sv') && isLarge && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
             const endPos = variant.end ?? (variant.pos + Math.abs(variant.allele_length || 0))
             allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
             pushDupDecorations(variant, rowY)
