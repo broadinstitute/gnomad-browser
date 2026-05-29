@@ -35,6 +35,35 @@ GCS_VCF_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v
 GCS_AF_HISTOGRAMS_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc.af_histograms.tsv"
 GCS_COVERAGE_V2 = "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/gnomAD-LR/v2/hgsvc_hprc.coverage.tsv.gz"
 
+# GCS paths — V3 VCFs (per-chromosome, renamed INFO fields)
+_V3_BASE = "gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/submissions/0d296ecd-ab99-4c53-83c4-dfde50cd4081/RenameInfoFields"
+GCS_VCF_V3_PATHS = {
+    "chr1":  f"{_V3_BASE}/b66e7ba2-d740-4c78-84b4-ea345ff89f44/call-ConcatVcfs/chr1.renamed.vcf.gz",
+    "chr2":  f"{_V3_BASE}/ce2ecb33-eb67-4bae-b325-ed42280b9a46/call-ConcatVcfs/chr2.renamed.vcf.gz",
+    "chr3":  f"{_V3_BASE}/56dea9d0-edb4-4f25-b1cb-172ba6c73d12/call-ConcatVcfs/chr3.renamed.vcf.gz",
+    "chr4":  f"{_V3_BASE}/f5fc8cb9-2d16-40e8-92b1-0a0a399114b4/call-ConcatVcfs/chr4.renamed.vcf.gz",
+    "chr5":  f"{_V3_BASE}/4b5ffb30-bf76-4aa5-b98d-0aa102312481/call-ConcatVcfs/chr5.renamed.vcf.gz",
+    "chr6":  f"{_V3_BASE}/1132d9ba-f502-443d-b751-2599af7f553f/call-ConcatVcfs/chr6.renamed.vcf.gz",
+    "chr7":  f"{_V3_BASE}/80c73ad5-5200-4b76-9199-d8da534db189/call-ConcatVcfs/chr7.renamed.vcf.gz",
+    "chr8":  f"{_V3_BASE}/990d2cd2-e7cd-42c1-92cd-06b12711a75c/call-ConcatVcfs/chr8.renamed.vcf.gz",
+    "chr9":  f"{_V3_BASE}/f0604a1e-ba8a-4748-995d-bb1973ef4981/call-ConcatVcfs/chr9.renamed.vcf.gz",
+    "chr10": f"{_V3_BASE}/2b753806-fa6b-40fa-be20-96887e73114d/call-ConcatVcfs/chr10.renamed.vcf.gz",
+    "chr11": f"{_V3_BASE}/35613034-ce04-4f03-80bb-e15af0e42b89/call-ConcatVcfs/chr11.renamed.vcf.gz",
+    "chr12": f"{_V3_BASE}/d650620a-d2a1-4986-b663-b7ee38faa50d/call-ConcatVcfs/chr12.renamed.vcf.gz",
+    "chr13": f"{_V3_BASE}/8851c55d-6154-46de-9243-1b9bcad36eb1/call-ConcatVcfs/chr13.renamed.vcf.gz",
+    "chr14": f"{_V3_BASE}/bf585eb5-0fcb-42db-8efe-665ab1709512/call-ConcatVcfs/chr14.renamed.vcf.gz",
+    "chr15": f"{_V3_BASE}/2b24f653-84d1-4a40-a9fa-c3e002bbff4b/call-ConcatVcfs/chr15.renamed.vcf.gz",
+    "chr16": f"{_V3_BASE}/e8c5f7d3-7253-4624-892a-f2a00be6ca8d/call-ConcatVcfs/chr16.renamed.vcf.gz",
+    "chr17": f"{_V3_BASE}/80636f0a-6251-49eb-9401-7e89e0b0a7b4/call-ConcatVcfs/chr17.renamed.vcf.gz",
+    "chr18": f"{_V3_BASE}/a6aac8a6-ca9b-4da6-9198-a5a5281307cb/call-ConcatVcfs/chr18.renamed.vcf.gz",
+    "chr19": f"{_V3_BASE}/83032557-01f0-4f58-b318-c0be2b4165c6/call-ConcatVcfs/chr19.renamed.vcf.gz",
+    "chr20": f"{_V3_BASE}/4e9d6bf4-51e1-4e48-83a5-d0ddebbc4715/call-ConcatVcfs/chr20.renamed.vcf.gz",
+    "chr21": f"{_V3_BASE}/735254cf-4444-4e63-9054-c51ecaa0c9c0/call-ConcatVcfs/chr21.renamed.vcf.gz",
+    "chr22": f"{_V3_BASE}/6afe82e1-1300-4312-98bf-11b02b50477b/call-ConcatVcfs/chr22.renamed.vcf.gz",
+    "chrX":  f"{_V3_BASE}/276dc205-af0b-4ecf-b899-a70779c79028/call-ConcatVcfs/chrX.renamed.vcf.gz",
+    "chrY":  f"{_V3_BASE}/49134603-969c-4746-aadb-7ab40a129feb/call-ConcatVcfs/chrY.renamed.vcf.gz",
+}
+
 # HPRC sample metadata
 HPRC_METADATA_URL = "https://raw.githubusercontent.com/human-pangenomics/hprc_intermediate_assembly/main/data_tables/sample/hprc_release2_sample_metadata.csv"
 
@@ -461,7 +490,7 @@ def _safe_float(val, default=0.0):
 def load_variants_vcf(ch_url, region_chrom, region_start, region_stop, vcf_path=None):
     """Stream a VCF from GCS and load site-level variant docs into ClickHouse lr_variants."""
     if vcf_path is None:
-        vcf_path = GCS_VCF_V2
+        vcf_path = GCS_VCF_V3_PATHS.get(region_chrom, GCS_VCF_V2)
 
     print(f"\n=== Loading variants from VCF (site-level) ===")
     print(f"  VCF: {vcf_path}")
@@ -571,7 +600,7 @@ def load_variants_vcf(ch_url, region_chrom, region_start, region_stop, vcf_path=
             "major_consequence": major_consequence,
             "end": parse_info_int(info, "END"),
             "length": parse_info_int(info, "SVLEN"),
-            "cadd_phred": parse_info_float(info, "CADD_PHRED_score"),
+            "cadd_phred": parse_info_float(info, "cadd_phred") if "cadd_phred" in info else parse_info_float(info, "CADD_PHRED_score"),
             "phylop": parse_info_float(info, "phylop"),
             "short_read_match_id": short_read_match_id,
             "short_read_match_type": short_read_match_type,
@@ -663,7 +692,7 @@ def get_hap_value(fmt, key, hap_idx, default=None):
 def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend="es", ch_url=None, vcf_path=None):
     """Stream a VCF from GCS and load per-carrier docs into ES or ClickHouse."""
     if vcf_path is None:
-        vcf_path = GCS_VCF_V2
+        vcf_path = GCS_VCF_V3_PATHS.get(region_chrom, GCS_VCF_V2)
     print(f"\n=== Loading haplotypes from VCF (streaming from GCS) ===")
     print(f"  VCF: {vcf_path}")
     print(f"  Region: {region_chrom}:{region_start}-{region_stop}")
@@ -735,11 +764,11 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
         af_sas = parse_info_float(info, "AF_sas")
 
         # v2 INFO fields
-        cadd_phred = parse_info_float(info, "CADD_PHRED_score")
+        cadd_phred = parse_info_float(info, "cadd_phred") if "cadd_phred" in info else parse_info_float(info, "CADD_PHRED_score")
         phylop = parse_info_float(info, "phylop")
-        dbgap_id = info.get("dbGaP_ID", "")
-        if dbgap_id is True:
-            dbgap_id = ""
+        dbsnp_id = info.get("dbSNP_ID") if "dbSNP_ID" in info else info.get("dbGaP_ID", "")
+        if dbsnp_id is True:
+            dbsnp_id = ""
         tr_id = info.get("TRID", "")
         if tr_id is True:
             tr_id = ""
@@ -876,7 +905,7 @@ def load_haplotypes_vcf(es_url, region_chrom, region_start, region_stop, backend
                         "cadd_phred": cadd_phred,
                         "phylop": phylop,
                         "sv_consequences": sv_consequences,
-                        "dbgap_id": dbgap_id or "",
+                        "dbsnp_id": dbsnp_id or "",
                         "tr_id": tr_id or "",
                         "tr_motifs": tr_motifs or "",
                         "tr_struc": tr_struc or "",

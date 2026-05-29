@@ -45,7 +45,7 @@ type GroupedRow = {
   cadd_phreds: (number | null)[]
   phylops: (number | null)[]
   sv_consequences_arr: (string[] | null)[]
-  dbgap_ids: (string | null)[]
+  dbsnp_ids: (string | null)[]
   tr_ids: (string | null)[]
   tr_motifs_arr: (string | null)[]
   tr_strucs: (string | null)[]
@@ -74,7 +74,7 @@ export type LRVariant = {
   cadd_phred: number | null
   phylop: number | null
   sv_consequences: string[] | null
-  dbgap_id: string | null
+  dbsnp_id: string | null
   tr_id: string | null
   tr_motifs: string | null
   gnomad_str: string | null
@@ -91,7 +91,7 @@ function buildVariant(
   afAfr: number | null, afAmr: number | null, afEas: number | null,
   afNfe: number | null, afSas: number | null,
   caddPhred: number | null, phylop: number | null,
-  svConsequences: string[] | null, dbgapId: string | null,
+  svConsequences: string[] | null, dbsnpId: string | null,
   trId: string | null, trMotifs: string | null, gnomadStr: string | null,
   alleleMethylation: number | null, motifCounts: number[] | null,
   allelePurity: number | null,
@@ -128,7 +128,7 @@ function buildVariant(
     cadd_phred: caddPhred,
     phylop,
     sv_consequences: svConsequences && svConsequences.length > 0 ? svConsequences : null,
-    dbgap_id: dbgapId || null,
+    dbsnp_id: dbsnpId || null,
     tr_id: trId || null,
     tr_motifs: trMotifs || null,
     gnomad_str: gnomadStr || null,
@@ -179,7 +179,7 @@ export const createHaplotypeGroupsFromGrouped = (
         toNum(row.af_afrs?.[i]), toNum(row.af_amrs?.[i]), toNum(row.af_eass?.[i]),
         toNum(row.af_nfes?.[i]), toNum(row.af_sass?.[i]),
         toNum(row.cadd_phreds?.[i]), toNum(row.phylops?.[i]),
-        row.sv_consequences_arr?.[i] || null, toStr(row.dbgap_ids?.[i]),
+        row.sv_consequences_arr?.[i] || null, toStr(row.dbsnp_ids?.[i]),
         toStr(row.tr_ids?.[i]), toStr(row.tr_motifs_arr?.[i]), toStr(row.tr_strucs?.[i]),
         toNum(row.allele_methylations?.[i]), row.motif_counts_arr?.[i] || null,
         toNum(row.allele_purities?.[i]),
@@ -350,7 +350,7 @@ export const assembleHaplotypeGroups = (
       toNum(row.info_AF_nfe), toNum(row.info_AF_sas),
       toNum(row.cadd_phred), toNum(row.phylop),
       row.sv_consequences && row.sv_consequences.length > 0 ? row.sv_consequences : null,
-      toStr(row.dbgap_id),
+      toStr(row.dbsnp_id),
       toStr(row.tr_id), toStr(row.tr_motifs), toStr(row.tr_struc),
       toNum(row.allele_methylation),
       row.motif_counts && row.motif_counts.length > 0 ? row.motif_counts : null,
@@ -620,7 +620,7 @@ export type SoAVariants = {
   cadd_phred: (number | null)[]
   phylop: (number | null)[]
   sv_consequences: (string[] | null)[]
-  dbgap_id: (string | null)[]
+  dbsnp_id: (string | null)[]
   tr_id: (string | null)[]
   tr_motifs: (string | null)[]
   gnomad_str: (string | null)[]
@@ -648,7 +648,7 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
     cadd_phred: new Array(n),
     phylop: new Array(n),
     sv_consequences: new Array(n),
-    dbgap_id: new Array(n),
+    dbsnp_id: new Array(n),
     tr_id: new Array(n),
     tr_motifs: new Array(n),
     gnomad_str: new Array(n),
@@ -674,7 +674,7 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
     soa.cadd_phred[i] = v.cadd_phred
     soa.phylop[i] = v.phylop
     soa.sv_consequences[i] = v.sv_consequences
-    soa.dbgap_id[i] = v.dbgap_id || null
+    soa.dbsnp_id[i] = v.dbsnp_id || null
     soa.tr_id[i] = v.tr_id || null
     soa.tr_motifs[i] = v.tr_motifs || null
     soa.gnomad_str[i] = v.gnomad_str || null
@@ -711,7 +711,7 @@ export const buildVariantsAndCarrierMap = (
       toNum(row.info_AF_nfe), toNum(row.info_AF_sas),
       toNum(row.cadd_phred), toNum(row.phylop),
       row.sv_consequences && row.sv_consequences.length > 0 ? row.sv_consequences : null,
-      toStr(row.dbgap_id),
+      toStr(row.dbsnp_id),
       toStr(row.tr_id), toStr(row.tr_motifs), toStr(row.tr_struc),
       toNum(row.allele_methylation),
       row.motif_counts && row.motif_counts.length > 0 ? row.motif_counts : null,

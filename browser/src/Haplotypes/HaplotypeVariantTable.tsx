@@ -1216,8 +1216,8 @@ const TableRow = React.memo(function TableRow({
             >
               {v.rsid}
             </a>
-          ) : v.dbgap_id ? (
-            <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbgap_id}</span>
+          ) : v.dbsnp_id ? (
+            <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbsnp_id}</span>
           ) : (
             <span style={{ color: '#ccc' }}>—</span>
           )}
@@ -1464,7 +1464,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           cadd_phred: v.cadd_phred ?? null,
           phylop: v.phylop ?? null,
           sv_consequences: v.sv_consequences || null,
-          dbgap_id: null,
+          dbsnp_id: null,
           tr_id: null,
           tr_motifs: v.motifs?.join(',') || null,
           gnomad_str: null,
@@ -1684,7 +1684,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         cadd_phred: v.cadd_phred ?? null,
         phylop: v.phylop ?? null,
         sv_consequences: v.sv_consequences ?? null,
-        dbgap_id: v.dbgap_id ?? null,
+        dbsnp_id: v.dbsnp_id ?? null,
         tr_id: v.tr_id ?? null,
         tr_motifs: v.tr_motifs ?? null,
         gnomad_str: v.gnomad_str ?? null,
@@ -1822,7 +1822,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       'cadd_phred',
       'phylop',
       'sv_consequences',
-      'dbgap_id',
+      'dbsnp_id',
     ]
     const escapeField = (s: string) => (s.includes(',') ? `"${s}"` : s)
     const getPopAf = (v: DerivedVariant, popId: string) =>
@@ -1850,7 +1850,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         v.cadd_phred ?? '',
         v.phylop ?? '',
         v.sv_consequences ? escapeField(v.sv_consequences.join(';')) : '',
-        v.dbgap_id ?? '',
+        v.dbsnp_id ?? '',
       ].join(',')
     )
     const csv = [headers.join(','), ...rows].join('\n')

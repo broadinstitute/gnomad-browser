@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS lr_haplotypes (
     cadd_phred Nullable(Float32),
     phylop Nullable(Float32),
     sv_consequences Array(String),
-    dbgap_id String DEFAULT '',
+    dbsnp_id String DEFAULT '',
     tr_id String DEFAULT '',
     tr_motifs String DEFAULT '',
     tr_struc String DEFAULT '',
