@@ -213,15 +213,23 @@ const TrBand = ({ variants, scalePosition, width }: {
       {packed.map((v) => {
         const rowY = v.row * ROW_HEIGHT + 2
 
-        // TRs with abs(length) >= 50 are accordion candidates — map through phantom space
-        const isTrAccordion = mapper && Math.abs(v.length || 0) >= 50
+        // TRs use accordion when a phantom locus exists at their position.
+        // TRVs always qualify (their allele_length may be small but the phantom
+        // gap was created from their reference region span); others need >= 50bp.
+        const isTrv = (v.allele_type || '').toLowerCase() === 'trv'
+        const isTrAccordion = mapper && (isTrv || Math.abs(v.length || 0) >= 50)
         let startX: number
         let blockWidth: number
 
         if (isTrAccordion) {
+          // Use reference region span for TRV phantom width when allele_length is
+          // small — matches how AccordionCoordinateMapper sizes the gap
+          const phantomLen = isTrv && Math.abs(v.length || 0) < 50
+            ? (v.stop - v.start) || Math.abs(v.length || 0)
+            : Math.abs(v.length || 0)
           startX = scalePosition(v.pos)
           const phantomWidth =
-            (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
+            (mapper.getSyntheticCoordinate(v.pos, phantomLen) -
               mapper.getSyntheticCoordinate(v.pos, 0)) *
             pxPerUnit
           blockWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)

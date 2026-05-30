@@ -34,6 +34,7 @@ type DerivedVariant = LRVariant & {
   tr_allele_structures?: AlleleStructure[]
   tr_flank_prefix?: string
   tr_flank_suffix?: string
+  _trRawSequences?: Map<string, Record<string, number>> // deferred: raw seqs for lazy decomposition
   short_read_match_id?: string | null
   enveloped_ids?: string[] | null
   cluster_distribution?: { cluster_id: string; af: number }[]
@@ -442,6 +443,67 @@ const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
       })()}
     </svg>
   )
+}
+
+// --- Lazy TR decomposition (deferred until row expansion) ---
+
+const trDecomposeCache = new Map<string, { structures: AlleleStructure[]; flankPrefix: string; flankSuffix: string }>()
+
+function lazyDecomposeTr(v: DerivedVariant): { structures: AlleleStructure[]; flankPrefix: string; flankSuffix: string } | null {
+  if (!v._trRawSequences || v._trRawSequences.size === 0 || !v.tr_motifs) return null
+
+  const cacheKey = v.variant_id
+  const cached = trDecomposeCache.get(cacheKey)
+  if (cached) return cached
+
+  console.time(`[perf] TR decompose (lazy) pos=${v.pos} (${v._trRawSequences.size} alleles)`)
+  const motifs = (v.tr_motifs as string).split(',').map((m: string) => m.trim()).filter(Boolean)
+  if (motifs.length === 0) return null
+
+  const refSeq = v.ref as string
+  const refRepeat = refSeq.length > 1 ? refSeq.slice(1) : refSeq
+  const refResult = decomposeSequence(refRepeat, motifs)
+
+  let flankPrefix = ''
+  let flankSuffix = ''
+  if (refResult.tokens.length > 0 && refResult.tokens[0].type === 'interruption') {
+    flankPrefix = refResult.tokens[0].sequence.slice(-5)
+  }
+  if (refResult.tokens.length > 0 && refResult.tokens[refResult.tokens.length - 1].type === 'interruption') {
+    flankSuffix = refResult.tokens[refResult.tokens.length - 1].sequence.slice(0, 5)
+  }
+
+  const interim: Array<{ seq: string; popCounts: Record<string, number>; tokens: SequenceToken[]; algorithm: DecomposeAlgorithm }> = []
+  for (const [seq, popCounts] of v._trRawSequences) {
+    const repeatSeq = seq.length > 1 && refSeq.length > 0 && seq[0] === refSeq[0] ? seq.slice(1) : seq
+    const { tokens, algorithm } = decomposeSequence(repeatSeq, motifs)
+    interim.push({ seq, popCounts, tokens, algorithm })
+  }
+
+  const allTokenLists = interim.map((item) => item.tokens)
+  const refined = refineDecompositions(allTokenLists)
+
+  const structures = interim.map((item, i) => {
+    const tokens = refined[i]
+    const totalMotifUnits = tokens.filter((t) => t.type === 'motif').length
+    const interruptions = tokens.filter((t) => t.type === 'interruption')
+    return {
+      sequence: item.seq,
+      tokens,
+      algorithm: item.algorithm,
+      totalMotifUnits,
+      interruptionCount: interruptions.length,
+      interruptionBases: interruptions.reduce((s, t) => s + t.sequence.length, 0),
+      popCounts: item.popCounts,
+      totalCarriers: Object.values(item.popCounts).reduce((s, c) => s + c, 0),
+    }
+  })
+  structures.sort((a, b) => b.totalCarriers - a.totalCarriers)
+  console.timeEnd(`[perf] TR decompose (lazy) pos=${v.pos} (${v._trRawSequences.size} alleles)`)
+
+  const result = { structures, flankPrefix, flankSuffix }
+  trDecomposeCache.set(cacheKey, result)
+  return result
 }
 
 // --- Helper ---
@@ -1115,35 +1177,6 @@ const AlleleStructureRow = ({
   )
 }
 
-// --- Cluster fingerprint inline visualization ---
-
-const ClusterFingerprint = React.memo(function ClusterFingerprint({
-  distribution,
-}: {
-  distribution: { cluster_id: string; af: number }[]
-}) {
-  const blockW = 8
-  const blockH = 12
-  const gap = 1
-  const totalW = distribution.length * (blockW + gap) - gap
-  return (
-    <svg width={totalW} height={blockH} style={{ verticalAlign: 'middle', marginLeft: 4 }}>
-      {distribution.map((c, i) => (
-        <rect
-          key={c.cluster_id}
-          x={i * (blockW + gap)}
-          y={0}
-          width={blockW}
-          height={blockH}
-          fill={c.af > 0 ? '#1976d2' : '#eee'}
-          opacity={c.af > 0 ? Math.max(0.2, c.af) : 1}
-          rx={1}
-        />
-      ))}
-    </svg>
-  )
-})
-
 // --- Memoized table row ---
 
 type TableRowProps = {
@@ -1219,7 +1252,6 @@ const TableRow = React.memo(function TableRow({
             {isClusteredView && v.cluster_distribution ? (
               <>
                 {v.active_cluster_count} / {totalClusters}
-                <ClusterFingerprint distribution={v.cluster_distribution} />
               </>
             ) : (
               <>{v.group_count} / {totalGroups}</>
@@ -1359,15 +1391,21 @@ const TableRow = React.memo(function TableRow({
                 )}
               </div>
             </div>
-            {/* Allele structure grid (FMR1-style motif visualization) */}
-            {mode === 'haplotype' && v.tr_allele_structures && v.tr_allele_structures.length > 0 && v.tr_motifs && (
-              <AlleleStructureGrid
-                structures={v.tr_allele_structures}
-                motifs={v.tr_motifs.split(',').map((m: string) => m.trim())}
-                flankPrefix={v.tr_flank_prefix}
-                flankSuffix={v.tr_flank_suffix}
-              />
-            )}
+            {/* Allele structure grid (FMR1-style motif visualization) — lazy decomposed */}
+            {mode === 'haplotype' && v.tr_motifs && (v.tr_allele_structures || v._trRawSequences) && (() => {
+              const decomposed = v.tr_allele_structures
+                ? { structures: v.tr_allele_structures, flankPrefix: v.tr_flank_prefix || '', flankSuffix: v.tr_flank_suffix || '' }
+                : lazyDecomposeTr(v)
+              if (!decomposed || decomposed.structures.length === 0) return null
+              return (
+                <AlleleStructureGrid
+                  structures={decomposed.structures}
+                  motifs={v.tr_motifs!.split(',').map((m: string) => m.trim())}
+                  flankPrefix={decomposed.flankPrefix}
+                  flankSuffix={decomposed.flankSuffix}
+                />
+              )
+            })()}
           </td>
         </TrExpandedRow>
       )}
@@ -1702,56 +1740,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         }
       }
 
-      // Build allele structures for TR loci
-      let trAlleleStructures: AlleleStructure[] | undefined
-      let flankPrefix = ''
-      let flankSuffix = ''
-      if (isTrv && trSequences && trSequences.size > 0 && v.tr_motifs) {
-        console.time(`[perf] TR decompose pos=${v.pos} (${trSequences.size} alleles)`)
-        const motifs = (v.tr_motifs as string).split(',').map((m: string) => m.trim()).filter(Boolean)
-        const refSeq = v.ref as string
-        // Compute flanking context from ref: decompose ref (minus anchor) and grab leading/trailing non-motif bases
-        const refRepeat = refSeq.length > 1 ? refSeq.slice(1) : refSeq
-        const refResult = decomposeSequence(refRepeat, motifs)
-        if (refResult.tokens.length > 0 && refResult.tokens[0].type === 'interruption') {
-          flankPrefix = refResult.tokens[0].sequence.slice(-5) // last 5 chars of leading flank
-        }
-        if (refResult.tokens.length > 0 && refResult.tokens[refResult.tokens.length - 1].type === 'interruption') {
-          flankSuffix = refResult.tokens[refResult.tokens.length - 1].sequence.slice(0, 5) // first 5 chars of trailing flank
-        }
-        if (motifs.length > 0) {
-          // Pass 1: decompose each allele sequence
-          const interim: Array<{ seq: string; popCounts: Record<string, number>; tokens: SequenceToken[]; algorithm: DecomposeAlgorithm }> = []
-          for (const [seq, popCounts] of trSequences) {
-            const repeatSeq = seq.length > 1 && refSeq.length > 0 && seq[0] === refSeq[0] ? seq.slice(1) : seq
-            const { tokens, algorithm } = decomposeSequence(repeatSeq, motifs)
-            interim.push({ seq, popCounts, tokens, algorithm })
-          }
-
-          // Pass 2: refine decompositions to normalize boundary ambiguities
-          const allTokenLists = interim.map((item) => item.tokens)
-          const refined = refineDecompositions(allTokenLists)
-
-          // Pass 3: build final allele structures from refined tokens
-          trAlleleStructures = interim.map((item, i) => {
-            const tokens = refined[i]
-            const totalMotifUnits = tokens.filter((t) => t.type === 'motif').length
-            const interruptions = tokens.filter((t) => t.type === 'interruption')
-            return {
-              sequence: item.seq,
-              tokens,
-              algorithm: item.algorithm,
-              totalMotifUnits,
-              interruptionCount: interruptions.length,
-              interruptionBases: interruptions.reduce((s, t) => s + t.sequence.length, 0),
-              popCounts: item.popCounts,
-              totalCarriers: Object.values(item.popCounts).reduce((s, c) => s + c, 0),
-            }
-          })
-          trAlleleStructures.sort((a, b) => b.totalCarriers - a.totalCarriers)
-        }
-        console.timeEnd(`[perf] TR decompose pos=${v.pos} (${trSequences.size} alleles)`)
-      }
+      // Store raw TR sequences for lazy decomposition (deferred to row expansion)
+      const rawSeqs = isTrv && trSequences && trSequences.size > 0 ? trSequences : undefined
 
       const variantId = isTrv
         ? `${v.chrom}-${v.pos}-TR`
@@ -1798,9 +1788,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         tr_distribution: trDistribution,
         min_length_diff: minLengthDiff,
         max_length_diff: maxLengthDiff,
-        tr_allele_structures: trAlleleStructures,
-        tr_flank_prefix: flankPrefix || undefined,
-        tr_flank_suffix: flankSuffix || undefined,
+        tr_allele_structures: undefined,
+        tr_flank_prefix: undefined,
+        tr_flank_suffix: undefined,
+        _trRawSequences: rawSeqs,
         short_read_match_id: null,
         enveloped_ids: null,
         cluster_distribution: clusterDistByKey.get(key),

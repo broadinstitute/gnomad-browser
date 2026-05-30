@@ -128,7 +128,7 @@ const LongReadHaplotypeView = ({
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('similarity_score')
   const [plotType, setPlotType] = useState('lollipop')
-  const [colorMode, setColorMode] = useState('allele')
+  const [colorMode, setColorMode] = useState('sv_type')
   const [showGenealogy, setShowGenealogy] = useState(false)
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
