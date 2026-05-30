@@ -224,6 +224,8 @@ function getVariantColor(
       }
       return cssColorToRgba(SUPERPOPULATION_COLORS[maxPop] || SUPERPOPULATION_COLORS['N/A'])
     }
+    case 'sv_type':
+      return cssColorToRgba(ALLELE_TYPE_COLORS[(variant.allele_type || '').toLowerCase()] || '#888888')
     default:
       return [51, 51, 51, 255]
   }
@@ -317,6 +319,7 @@ type DeckGLLollipopTrackProps = {
   selectedClusterId?: string | null
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
+  showPopBackground?: boolean
 }
 
 export type DeckGLLollipopTrackHandle = {
@@ -355,6 +358,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   selectedClusterId,
   highlightedVariantIds,
   selectedVariantPos,
+  showPopBackground = true,
 }, ref) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -691,6 +695,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           selectedClusterId={selectedClusterId}
           highlightedVariantIds={highlightedVariantIds}
           selectedVariantPos={selectedVariantPos}
+          showPopBackground={showPopBackground}
         />
 
         {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
@@ -768,6 +773,7 @@ type DeckGLCanvasProps = {
   selectedClusterId?: string | null
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
+  showPopBackground: boolean
 }
 
 /** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
@@ -826,6 +832,7 @@ function DeckGLLollipopCanvas({
   selectedClusterId,
   highlightedVariantIds,
   selectedVariantPos,
+  showPopBackground,
 }: DeckGLCanvasProps) {
   const canvasWidth = width
   const { mapper } = useContext(AccordionContext)
@@ -850,8 +857,6 @@ function DeckGLLollipopCanvas({
     const popBars: LeftPanelPopBar[] = []
     const treeLines: LeftPanelTreeLine[] = []
     const sampleLabels: LeftPanelText[] = []
-    const isPopMode = colorMode === 'population'
-
     // Compute total cohort size for diplotype percentage display
     const cohortTotal = isDiploidView
       ? rowItems.reduce((sum, item) => sum + (item.type === 'diplotype' ? item.group.samples.length : 0), 0)
@@ -876,7 +881,7 @@ function DeckGLLollipopCanvas({
           size: 11,
         })
 
-        if (isPopMode && popStats && popStats.totalSamples > 0) {
+        if (popStats && popStats.totalSamples > 0) {
           const barX = 5
           const barWidth = 60
           const barH = 10
@@ -910,7 +915,7 @@ function DeckGLLollipopCanvas({
             texts.push({ position: [badgeX, y, 0], text: '[ROH]', color: [218, 165, 32, 255], size: 8 })
           }
         } else {
-          // Non-pop mode: sample count + percentage + badges
+          // Fallback when no population metadata: sample count + percentage + badges
           const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
           circles.push({ position: [5, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${group.samples.length}` })
           const pct = cohortTotal > 0 ? ((group.samples.length / cohortTotal) * 100).toFixed(1) : '?'
@@ -956,7 +961,7 @@ function DeckGLLollipopCanvas({
           clusterId: cluster.cluster_id,
         })
 
-        if (isPopMode) {
+        {
           // Stacked population bar for cluster
           const popStats = populationStatsByRow[i]
           if (popStats && popStats.totalSamples > 0) {
@@ -982,24 +987,24 @@ function DeckGLLollipopCanvas({
               size: 10,
               tooltipText: `${popStats.totalSamples} samples, ${cluster.member_group_hashes.length} groups`,
             })
+          } else {
+            // Fallback when no population metadata
+            const sampleColor = cssColorToRgba(sampleColorScale(cluster.sample_count))
+            circles.push({ position: [20, y, 0], color: sampleColor, radius: 5, tooltipText: `${cluster.sample_count} samples, ${cluster.member_group_hashes.length} groups` })
+            texts.push({
+              position: [30, y, 0],
+              text: String(cluster.sample_count),
+              color: [0, 0, 0, 255],
+              size: 12,
+              tooltipText: `${cluster.sample_count} samples, ${cluster.member_group_hashes.length} groups`,
+            })
           }
-        } else {
-          // Sample count circle + text
-          const sampleColor = cssColorToRgba(sampleColorScale(cluster.sample_count))
-          circles.push({ position: [20, y, 0], color: sampleColor, radius: 5, tooltipText: `${cluster.sample_count} samples, ${cluster.member_group_hashes.length} groups` })
-          texts.push({
-            position: [30, y, 0],
-            text: String(cluster.sample_count),
-            color: [0, 0, 0, 255],
-            size: 12,
-            tooltipText: `${cluster.sample_count} samples, ${cluster.member_group_hashes.length} groups`,
-          })
         }
       } else {
         const group = item.group
         const indent = item.isChild ? 24 : 0
 
-        if (isPopMode) {
+        {
           // Stacked population bar for group
           const popStats = populationStatsByRow[i]
           if (popStats && popStats.totalSamples > 0) {
@@ -1036,30 +1041,30 @@ function DeckGLLollipopCanvas({
               size: 10,
               tooltipText: `Variants: ${variantCount} variant sites above AF threshold`,
             })
-          }
-        } else {
-          // Sample count circle + text
-          const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
-          circles.push({ position: [5 + indent, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${group.samples.length}` })
-          texts.push({
-            position: [15 + indent, y, 0],
-            text: String(group.samples.length),
-            color: [0, 0, 0, 255],
-            size: 12,
-            tooltipText: `Samples: ${group.samples.length} haplotypes share this variant combination`,
-          })
+          } else {
+            // Fallback when no population metadata
+            const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
+            circles.push({ position: [5 + indent, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${group.samples.length}` })
+            texts.push({
+              position: [15 + indent, y, 0],
+              text: String(group.samples.length),
+              color: [0, 0, 0, 255],
+              size: 12,
+              tooltipText: `Samples: ${group.samples.length} haplotypes share this variant combination`,
+            })
 
-          // Variant count circle + text
-          const vc = group.variants?.variants?.length ?? 0
-          const variantColor = cssColorToRgba(variantColorScale(vc))
-          circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5, tooltipText: `Variants: ${vc}` })
-          texts.push({
-            position: [60 + indent, y, 0],
-            text: String(vc),
-            color: [0, 0, 0, 255],
-            size: 12,
-            tooltipText: `Variants: ${vc} variant sites above AF threshold`,
-          })
+            // Variant count circle + text
+            const vc = group.variants?.variants?.length ?? 0
+            const variantColor = cssColorToRgba(variantColorScale(vc))
+            circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5, tooltipText: `Variants: ${vc}` })
+            texts.push({
+              position: [60 + indent, y, 0],
+              text: String(vc),
+              color: [0, 0, 0, 255],
+              size: 12,
+              tooltipText: `Variants: ${vc} variant sites above AF threshold`,
+            })
+          }
         }
       }
     }
@@ -1099,7 +1104,7 @@ function DeckGLLollipopCanvas({
     }
 
     return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
-  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, colorMode, populationStatsByRow, isDiploidView])
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView])
 
   // Left panel DeckGL layers
   const leftPanelLayers = useMemo(() => {
@@ -1332,8 +1337,10 @@ function DeckGLLollipopCanvas({
     const allInsertionTriangles: VariantPoint[] = []
     const allTrRects: VariantPoint[] = []
 
-    // Accordion phantom region setup
-    const accordionActive = !!(mapper && mapper.hasPhantomRegions)
+    // Accordion phantom region setup — skip for very large regions where
+    // phantom bars would be sub-pixel and the iteration cost is prohibitive
+    const regionSize = stop - start
+    const accordionActive = !!(mapper && mapper.hasPhantomRegions && regionSize < 500_000)
     const phantomLoci = accordionActive ? mapper!.getPhantomLoci() : []
     const phantomLociByPos = new Map<number, PhantomLocus>()
     if (accordionActive) {
@@ -1439,7 +1446,6 @@ function DeckGLLollipopCanvas({
 
       // Population-mode background tint: plurality color with proportional opacity
       const popStats = populationStatsByRow[gi]
-      const isPopMode = colorMode === 'population'
 
       if (item.type === 'diplotype') {
         const dg = item.group
@@ -1452,7 +1458,7 @@ function DeckGLLollipopCanvas({
 
         // Strand backgrounds — ROH merges into one pill, non-ROH shows two separated pills
         let strandColor: [number, number, number, number] = [232, 238, 248, 255]
-        if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
+        if (showPopBackground && popStats && popStats.dominantPop !== 'N/A') {
           const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
           const alpha = Math.round(40 * popStats.dominantFraction)
           strandColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(12, alpha)]
@@ -1481,8 +1487,6 @@ function DeckGLLollipopCanvas({
           })
         }
 
-        const effectiveColorMode = isPopMode ? 'allele' : colorMode
-
         // Helper to push variants for a strand (opacity 0-1 for ghosting ROH strand B)
         const pushStrandVariants = (variants: LRVariant[], baseline: number, opacity: number = 1): Map<number, number> => {
           const phantomCarriers = new Map<number, number>()
@@ -1493,7 +1497,7 @@ function DeckGLLollipopCanvas({
             if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
             const baseColor = getVariantColor(
-              variant, effectiveColorMode, start, stop, sampleMetadata, undefined,
+              variant, colorMode, start, stop, sampleMetadata, undefined,
               locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
             )
             const color: [number, number, number, number] = opacity < 1
@@ -1616,7 +1620,7 @@ function DeckGLLollipopCanvas({
         const cluster = item.cluster
 
         let bgColor: [number, number, number, number] = [215, 225, 240, 255]
-        if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
+        if (showPopBackground && popStats && popStats.dominantPop !== 'N/A') {
           const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
           const alpha = Math.round(40 * popStats.dominantFraction)
           bgColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(10, alpha)]
@@ -1640,10 +1644,8 @@ function DeckGLLollipopCanvas({
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
-          // In population mode, use allele coloring for dots (background carries pop signal)
-          const effectiveColorMode = isPopMode ? 'allele' : colorMode
           const baseColor = getVariantColor(
-            variant, effectiveColorMode, start, stop, sampleMetadata, undefined,
+            variant, colorMode, start, stop, sampleMetadata, undefined,
             locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
           )
           const color: [number, number, number, number] = [baseColor[0], baseColor[1], baseColor[2], alpha]
@@ -1670,7 +1672,7 @@ function DeckGLLollipopCanvas({
         const group = item.group
 
         let bgColor: [number, number, number, number] = item.isChild ? [230, 235, 250, 255] : [240, 240, 240, 255]
-        if (isPopMode && popStats && popStats.dominantPop !== 'N/A') {
+        if (showPopBackground && popStats && popStats.dominantPop !== 'N/A') {
           const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
           const alpha = Math.round(40 * popStats.dominantFraction)
           bgColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(10, alpha)]
@@ -1704,9 +1706,6 @@ function DeckGLLollipopCanvas({
           }
         }
 
-        // In population mode, use allele coloring for dots (background carries pop signal)
-        const effectiveColorMode = isPopMode ? 'allele' : colorMode
-
         const groupPhantomCarriers = new Map<number, number>()
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
@@ -1715,7 +1714,7 @@ function DeckGLLollipopCanvas({
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
           const color = getVariantColor(
-            variant, effectiveColorMode, start, stop, sampleMetadata, group,
+            variant, colorMode, start, stop, sampleMetadata, group,
             locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
           )
 
@@ -2129,7 +2128,7 @@ function DeckGLLollipopCanvas({
         data: allInsertionTriangles,
         getPolygon: (d: VariantPoint) => {
           const px = scalePosition(d.position)
-          return [[px - 3, d.y + 4], [px, d.y - 4], [px + 3, d.y + 4]]
+          return [[px - 6, d.y + 5], [px, d.y - 5], [px + 6, d.y + 5]]
         },
         getFillColor: (d: VariantPoint) => dimVariantColor(d.color, d.variant),
         pickable: true,
@@ -2301,6 +2300,7 @@ function DeckGLLollipopCanvas({
     mapper,
     onVariantClick,
     highlightedVariantIds,
+    showPopBackground,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers

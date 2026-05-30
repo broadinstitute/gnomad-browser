@@ -147,8 +147,19 @@ const hashString = (str: string): string => {
 
 // ---- UPGMA Tree (optimized: two-pointer Jaccard + SLINK-style min tracking) ----
 
-const isSV = (v: LRVariant): boolean =>
-  Math.abs(v.allele_length) >= 50 || v.allele_type === 'trv'
+/** Minimum SV length for distance matrix inclusion, scaled by region size.
+ *  Small regions: 50bp (all SVs/TRs matter).
+ *  Large regions: scale up so sub-pixel variants don't dominate clustering. */
+function getMinSVLength(regionSize?: number): number {
+  if (!regionSize || regionSize < 100_000) return 50
+  if (regionSize > 1_000_000) return 500
+  // Linear interpolation 50→500 over 100kb→1Mb
+  const t = (regionSize - 100_000) / (1_000_000 - 100_000)
+  return Math.round(50 + t * 450)
+}
+
+const isSV = (v: LRVariant, minLength: number = 50): boolean =>
+  Math.abs(v.allele_length) >= minLength || (v.allele_type === 'trv' && Math.abs(v.allele_length) >= minLength)
 
 // Two-pointer Jaccard on sorted integer arrays
 function sortedJaccard(a: number[], b: number[]): number {
@@ -167,12 +178,13 @@ export type DistanceMetric = 'auto' | 'sv_only' | 'snv_only' | 'all'
 
 const isSNV = (v: LRVariant): boolean => v.allele_type === 'snv'
 
-export const computeSVDistanceMatrix = (groups: HaplotypeGroup[], distanceMetric: DistanceMetric = 'auto'): number[][] => {
+export const computeSVDistanceMatrix = (groups: HaplotypeGroup[], distanceMetric: DistanceMetric = 'auto', regionSize?: number): number[][] => {
+  const minLen = getMinSVLength(regionSize)
   // Build sorted integer index arrays for SV variant_ids
   const allSVIds = new Map<string, number>()
   for (const g of groups) {
     for (const v of g.variants.variants) {
-      if (isSV(v) && !allSVIds.has(v.variant_id)) {
+      if (isSV(v, minLen) && !allSVIds.has(v.variant_id)) {
         allSVIds.set(v.variant_id, allSVIds.size)
       }
     }
@@ -188,7 +200,7 @@ export const computeSVDistanceMatrix = (groups: HaplotypeGroup[], distanceMetric
   const filteredIds = new Map<string, number>()
   for (const g of groups) {
     for (const v of g.variants.variants) {
-      if (useMode === 'sv' && !isSV(v)) continue
+      if (useMode === 'sv' && !isSV(v, minLen)) continue
       if (useMode === 'snv' && !isSNV(v)) continue
       if (!filteredIds.has(v.variant_id)) {
         filteredIds.set(v.variant_id, filteredIds.size)
@@ -836,7 +848,9 @@ export function computeHaplotypeView(
   clusterThreshold: number,
   trvAlts?: Record<string, Record<number, string>>,
   isDiploidView: boolean = false,
-  distanceMetric: DistanceMetric = 'auto'
+  distanceMetric: DistanceMetric = 'auto',
+  regionSize?: number,
+  onProgress?: (status: string) => void
 ): ComputedHaplotypeData {
   if (isDiploidView) {
     const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf)
@@ -844,7 +858,9 @@ export function computeHaplotypeView(
     return { groups: sorted }
   }
 
+  let t0 = Date.now()
   const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts)
+  const tGroup = Date.now() - t0
   const sorted = sortGroups(groups, sortBy)
 
   if (sorted.length < 2) {
@@ -852,8 +868,15 @@ export function computeHaplotypeView(
   }
 
   // Always build the UPGMA tree so genealogy and clustering share one tree
-  const distMatrix = computeSVDistanceMatrix(sorted, distanceMetric)
+  onProgress?.(`Computing distances for ${sorted.length} haplotypes…`)
+  t0 = Date.now()
+  const distMatrix = computeSVDistanceMatrix(sorted, distanceMetric, regionSize)
+  const tDist = Date.now() - t0
+  onProgress?.(`Building UPGMA tree (${sorted.length} haplotypes)…`)
+  t0 = Date.now()
   const { tree } = buildUPGMATree(distMatrix, sorted)
+  const tTree = Date.now() - t0
+  console.log(`[perf] computeHaplotypeView: groupCarriers=${tGroup}ms, distMatrix=${tDist}ms (${sorted.length} groups), UPGMA=${tTree}ms`)
   const clusters = isClusteredView ? computeClusters(sorted, tree, clusterThreshold) : undefined
 
   return {
@@ -1069,7 +1092,7 @@ export function deriveAutoDefaults(
       break
     }
 
-    const distMatrix = computeSVDistanceMatrix(groups, distanceMetric)
+    const distMatrix = computeSVDistanceMatrix(groups, distanceMetric, regionSize)
     const { tree } = buildUPGMATree(distMatrix, groups)
     const clusterNodes = getClustersAtThreshold(tree, clusterThreshold)
     const M = clusterNodes.length
@@ -1130,7 +1153,4 @@ function binarySearchAf(
   return Math.max(bestAf, floor)
 }
 
-
-
-
-
+// rebuild

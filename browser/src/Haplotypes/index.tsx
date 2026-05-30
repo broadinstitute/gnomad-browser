@@ -12,6 +12,7 @@ import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { VariantShapeLegend } from '../LongReadVariantPage/VariantLegend'
+import { ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
@@ -27,11 +28,11 @@ export const PLOT_TYPES: { value: string; label: string }[] = [
 ]
 
 export const COLOR_MODES: { value: string; label: string }[] = [
-  { value: 'allele', label: 'Allele' },
+  { value: 'sv_type', label: 'Variant Type' },
+  { value: 'allele', label: 'Allele Fingerprint' },
   { value: 'position', label: 'Position' },
   { value: 'af', label: 'Allele Frequency' },
   { value: 'haplotype_count', label: 'Haplotype Count' },
-  { value: 'population', label: 'Population' },
 ]
 
 const Wrapper = styled.div`
@@ -113,7 +114,7 @@ const LegendItem = styled.div`
 export const Legend = ({
   onMinAfChange = () => { },
   onColorModeChange = () => { },
-  colorMode = 'allele',
+  colorMode = 'sv_type',
   initialMinAf = 0,
   initialSortBy = 'similarity_score',
   onSortModeChange = () => { },
@@ -149,6 +150,8 @@ export const Legend = ({
   regionSize = 0,
   showPhantomRegions = true,
   onShowPhantomRegionsChange = () => { },
+  showPopBackground = true,
+  onShowPopBackgroundChange = () => { },
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -188,6 +191,8 @@ export const Legend = ({
   regionSize?: number
   showPhantomRegions?: boolean
   onShowPhantomRegionsChange?: (show: boolean) => void
+  showPopBackground?: boolean
+  onShowPopBackgroundChange?: (show: boolean) => void
 }) => {
   // Log-scale slider: internal state is 0-100, mapped to log10(minAfFloor)..log10(minAfCeiling)
   const minLog = Math.log10(Math.max(minAfFloor, 0.0001))
@@ -308,15 +313,22 @@ export const Legend = ({
         </LegendItem>
       )
     }
-    if (colorMode === 'population') {
+    if (colorMode === 'sv_type') {
+      const svTypeLegend: [string, string][] = [
+        ['SNV', ALLELE_TYPE_COLORS.snv],
+        ['INS', ALLELE_TYPE_COLORS.ins],
+        ['DEL', ALLELE_TYPE_COLORS.del],
+        ['DUP', ALLELE_TYPE_COLORS.dup],
+        ['TR', ALLELE_TYPE_COLORS.trv],
+      ]
       return (
         <>
-          {Object.entries(SUPERPOPULATION_COLORS).map(([pop, color]) => (
-            <LegendItem key={pop} style={{ marginRight: '0.4em' }}>
+          {svTypeLegend.map(([label, color]) => (
+            <LegendItem key={label} style={{ marginRight: '0.4em' }}>
               <svg width={12} height={12}>
                 <rect x={0} y={0} width={12} height={12} fill={color} rx={2} />
               </svg>
-              <span style={{ marginLeft: '2px' }}>{pop}</span>
+              <span style={{ marginLeft: '2px' }}>{label}</span>
             </LegendItem>
           ))}
         </>
@@ -331,10 +343,23 @@ export const Legend = ({
       <LegendRow>
         {plotType === 'lollipop' && <VariantShapeLegend showPhantomRegions={showPhantomRegions} />}
         {plotType !== 'heatmap' && (
-          <LegendSection>
-            <LegendItem><span style={{ fontWeight: 'bold' }}>Color:</span></LegendItem>
-            {colorLegend()}
-          </LegendSection>
+          <>
+            <LegendSection>
+              <LegendItem><span style={{ fontWeight: 'bold' }}>Color:</span></LegendItem>
+              {colorLegend()}
+            </LegendSection>
+            <LegendSection>
+              <LegendItem><span style={{ fontWeight: 'bold' }}>Pop:</span></LegendItem>
+              {Object.entries(SUPERPOPULATION_COLORS).map(([pop, color]) => (
+                <LegendItem key={pop} style={{ marginRight: '0.4em' }}>
+                  <svg width={12} height={12}>
+                    <rect x={0} y={0} width={12} height={12} fill={color} rx={2} />
+                  </svg>
+                  <span style={{ marginLeft: '2px' }}>{pop}</span>
+                </LegendItem>
+              ))}
+            </LegendSection>
+          </>
         )}
       </LegendRow>
 
@@ -404,6 +429,21 @@ export const Legend = ({
                 <option key={cm.value} value={cm.value}>{cm.label}</option>
               ))}
             </Select>
+            <HaplotypeHelpButton title="Color Modes">
+              <p>Controls how variant dots and shapes are colored in the track. Population ancestry bars on the left panel are always shown regardless of color mode.</p>
+              <dl style={{ margin: 0 }}>
+                <dt style={{ fontWeight: 600, marginTop: 8 }}>Variant Type</dt>
+                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Colors each variant by its structural type using a fixed palette: SNVs (blue), insertions (green), deletions (red), duplications (purple), tandem repeats (orange). Best for seeing what kinds of variants dominate each haplotype.</dd>
+                <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Fingerprint</dt>
+                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Each unique allele (ref/alt combination) gets a deterministic color derived from hashing its ID. Useful for visually tracking the same variant across haplotype rows — identical alleles share the same color.</dd>
+                <dt style={{ fontWeight: 600, marginTop: 8 }}>Position</dt>
+                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Maps variant position to a blue→red gradient across the viewed region (5′ to 3′). Helps see the spatial distribution of variants along each haplotype.</dd>
+                <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Frequency</dt>
+                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Light grey for common variants, dark for rare. Highlights which variants are unusual in the cohort.</dd>
+                <dt style={{ fontWeight: 600, marginTop: 8 }}>Haplotype Count</dt>
+                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Grey→red gradient based on how many haplotype groups share the variant. Red variants are widely shared; grey variants are private or near-private.</dd>
+              </dl>
+            </HaplotypeHelpButton>
           </div>
         )}
         {plotType === 'lollipop' && (
@@ -500,6 +540,16 @@ export const Legend = ({
                   onChange={(e) => onShowPhantomRegionsChange(e.target.checked)}
                 />
                 Expand INS/TRs
+              </label>
+            </div>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type='checkbox'
+                  checked={showPopBackground}
+                  onChange={(e) => onShowPopBackgroundChange(e.target.checked)}
+                />
+                Pop background
               </label>
             </div>
             {!isDiploidView && (
@@ -890,6 +940,7 @@ type HaplotypeTrackProps = {
   methylationTotalSamples?: number
   haplotypeLoading?: boolean
   workerComputing?: boolean
+  loadingStatus?: string
   showMqtl?: boolean
   onShowMqtlChange?: (show: boolean) => void
   mqtlLoading?: boolean
@@ -1172,6 +1223,7 @@ const HaplotypeInfoBar = ({
   clusterThreshold,
   haplotypeLoading,
   workerComputing,
+  loadingStatus = '',
   methylationLoading,
   methylationSampleCount,
   methylationTotalSamples,
@@ -1189,6 +1241,7 @@ const HaplotypeInfoBar = ({
   clusterThreshold: number
   haplotypeLoading: boolean
   workerComputing: boolean
+  loadingStatus: string
   methylationLoading: boolean
   methylationSampleCount: number
   methylationTotalSamples: number
@@ -1227,17 +1280,18 @@ const HaplotypeInfoBar = ({
     if (distanceMetric === 'all') return 'All variants'
     if (distanceMetric === 'snv_only') return 'SNVs only'
     if (distanceMetric === 'sv_only') return 'SVs/TRs only'
-    // auto mode: check if enough SVs
+    // auto mode: check if enough SVs using region-size-scaled threshold
+    const minLen = regionSize > 1_000_000 ? 500 : regionSize > 100_000 ? Math.round(50 + ((regionSize - 100_000) / 900_000) * 450) : 50
     const svIds = new Set<string>()
     for (const group of displayGroups) {
       if ('is_diplotype' in group) continue
       for (const v of (group as any).variants?.variants || []) {
-        if (Math.abs(v.allele_length) >= 50 || v.allele_type === 'trv') svIds.add(v.variant_id)
+        if (Math.abs(v.allele_length) >= minLen) svIds.add(v.variant_id)
       }
     }
     if (svIds.size < 5) return 'All variants (auto)'
-    return 'SVs/TRs (auto)'
-  }, [displayGroups, distanceMetric])
+    return `SVs/TRs ≥${minLen}bp (auto)`
+  }, [displayGroups, distanceMetric, regionSize])
 
   const isLoading = haplotypeLoading || workerComputing || methylationLoading
 
@@ -1290,8 +1344,7 @@ const HaplotypeInfoBar = ({
                 borderRadius: '50%',
                 animation: 'spin 0.8s linear infinite',
               }} />
-              {haplotypeLoading && 'Loading haplotypes…'}
-              {!haplotypeLoading && workerComputing && 'Computing clusters…'}
+              {(haplotypeLoading || workerComputing) && (loadingStatus || (haplotypeLoading ? 'Loading haplotypes…' : 'Computing clusters…'))}
               {!haplotypeLoading && !workerComputing && methylationLoading && (
                 methylationTotalSamples > 0
                   ? `Methylation ${methylationSampleCount}/${methylationTotalSamples}`
@@ -1623,7 +1676,8 @@ const HaplotypeGroupTrack = ({
                 {group.variants.variants.map((variant: LRVariant, variantIndex: number) => {
                   // Determine color from the active color mode
                   let color: string
-                  if (colorMode === 'allele') color = getColorForVariantByHash(variant.variant_id)
+                  if (colorMode === 'sv_type') color = ALLELE_TYPE_COLORS[(variant.allele_type || '').toLowerCase()] || '#888'
+                  else if (colorMode === 'allele') color = getColorForVariantByHash(variant.variant_id)
                   else if (colorMode === 'position') color = getColorForVariantByPosition(variant.pos, start, stop)
                   else if (colorMode === 'af') color = getColorForVariantByAf(variant.freq.af)
                   else if (colorMode === 'haplotype_count') color = getColorForVariantByHaplotypeCount(haplotypeGroups, variant.variant_id)
@@ -1793,7 +1847,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   start,
   stop,
   initialMinAf = 0,
-  initialColorMode = 'allele',
+  initialColorMode = 'sv_type',
   initialSortBy = 'similarity_score',
   onMinAfChange,
   onColorModeChange,
@@ -1804,6 +1858,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   methylationTotalSamples = 0,
   haplotypeLoading = false,
   workerComputing = false,
+  loadingStatus = '',
   showMqtl = false,
   onShowMqtlChange,
   mqtlLoading = false,
@@ -1842,6 +1897,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   const [sortMode, setSortMode] = useState(initialSortBy)
   const [showMethylation, setShowMethylation] = useState(false)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
+  const [showPopBackground, setShowPopBackground] = useState(true)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
 
   const handleColorModeChange = useCallback(
@@ -2041,6 +2097,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     regionSize,
     showPhantomRegions,
     onShowPhantomRegionsChange: onShowPhantomRegionsChange || (() => { }),
+    showPopBackground,
+    onShowPopBackgroundChange: setShowPopBackground,
   }
 
   // Build pangenome graph for alluvial/heatmap views
@@ -2070,6 +2128,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           clusterThreshold={clusterThreshold}
           haplotypeLoading={haplotypeLoading}
           workerComputing={workerComputing}
+          loadingStatus={loadingStatus}
           methylationLoading={methylationLoading}
           methylationSampleCount={methylationSampleCount}
           methylationTotalSamples={methylationTotalSamples}
@@ -2119,6 +2178,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             selectedClusterId={selectedClusterId}
             highlightedVariantIds={highlightedVariantIds}
             selectedVariantPos={selectedVariantPos}
+            showPopBackground={showPopBackground}
           />
         </>
       )}

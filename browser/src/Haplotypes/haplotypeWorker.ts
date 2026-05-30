@@ -26,6 +26,7 @@ let baseDataThreshold = 0
 let currentSortBy = 'similarity_score'
 let isDiploidView = false
 let currentDistanceMetric: DistanceMetric = 'auto'
+let currentRegionSize: number | undefined
 
 // ---- Message types ----
 
@@ -40,6 +41,7 @@ type InitMessage = {
   sortBy?: string
   isDiploidView?: boolean
   distanceMetric?: DistanceMetric
+  regionSize?: number
 }
 
 type UpdateAfMessage = {
@@ -66,32 +68,47 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
 
   switch (msg.type) {
     case 'INIT': {
+      self.postMessage({ type: 'PROGRESS', status: 'Unpacking variant data…' })
+      let t0 = Date.now()
       variants = rehydrateVariants(msg.rawData.variants)
+      const tRehydrate = Date.now() - t0
       carrierVariantIndices = msg.rawData.carrier_variant_indices
       trvAlts = msg.rawData.trv_alts
       autoDefaults = msg.rawData.auto_defaults || null
       currentSortBy = msg.sortBy || 'similarity_score'
       isDiploidView = msg.isDiploidView || false
       currentDistanceMetric = msg.distanceMetric || 'auto'
+      currentRegionSize = msg.regionSize
+
+      const carrierCount = Object.keys(carrierVariantIndices).length
+      self.postMessage({ type: 'PROGRESS', status: `Grouping ${carrierCount} samples into haplotypes…` })
 
       // Compute base data at floor AF with clustering
       const floorAf = autoDefaults?.floor || 0
       const clusterThreshold = autoDefaults?.defaultClusterThreshold || 0
       const isClusteredView = autoDefaults?.isClusteredView || false
 
+      const reportProgress = (status: string) => self.postMessage({ type: 'PROGRESS', status })
+
+      t0 = Date.now()
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
         floorAf, currentSortBy, isClusteredView, clusterThreshold,
-        trvAlts, isDiploidView, currentDistanceMetric
+        trvAlts, isDiploidView, currentDistanceMetric, currentRegionSize,
+        reportProgress
       )
+      const tCompute = Date.now() - t0
       baseDataThreshold = clusterThreshold
 
       // Apply display filtering if default AF > floor
       const defaultAf = autoDefaults?.defaultAf || floorAf
       let result = baseData
       if (isClusteredView && defaultAf > floorAf) {
+        self.postMessage({ type: 'PROGRESS', status: `Filtering ${baseData.groups.length} groups…` })
         result = filterDisplayVariants(baseData, defaultAf)
       }
+
+      console.log(`[perf-worker] INIT: rehydrate=${tRehydrate}ms, compute=${tCompute}ms, groups=${baseData.groups.length}, clusters=${baseData.clusters?.length || 0}`)
 
       self.postMessage({
         type: 'READY',
@@ -113,7 +130,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         result = computeHaplotypeView(
           variants, carrierVariantIndices,
           msg.minAf, currentSortBy, false, msg.clusterThreshold,
-          trvAlts, true
+          trvAlts, true, 'auto', currentRegionSize
         )
       } else if (msg.isClusteredView) {
         // Clustering ON: rebuild baseData if threshold or distance metric changed
@@ -121,7 +138,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
           baseData = computeHaplotypeView(
             variants, carrierVariantIndices,
             autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
-            trvAlts, false, currentDistanceMetric
+            trvAlts, false, currentDistanceMetric, currentRegionSize
           )
           baseDataThreshold = msg.clusterThreshold
         }
@@ -133,7 +150,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         result = computeHaplotypeView(
           variants, carrierVariantIndices,
           msg.minAf, currentSortBy, false, msg.clusterThreshold,
-          trvAlts, false, currentDistanceMetric
+          trvAlts, false, currentDistanceMetric, currentRegionSize
         )
       }
 
@@ -152,7 +169,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
         autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
-        trvAlts, false, currentDistanceMetric
+        trvAlts, false, currentDistanceMetric, currentRegionSize
       )
       baseDataThreshold = msg.clusterThreshold
 
@@ -162,3 +179,5 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
   }
 }
 
+
+// perf timing

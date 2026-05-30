@@ -83,8 +83,18 @@ const fetchHaplotypeDataREST = async (
   const params = new URLSearchParams({
     chrom, start: String(start), stop: String(stop),
   })
+  const t0 = performance.now()
   const response = await fetch(`/api/lr/haplotype-groups?${params}`, { signal })
-  return response.json()
+  const tNetwork = Math.round(performance.now() - t0)
+  const t1 = performance.now()
+  const text = await response.text()
+  const tDownload = Math.round(performance.now() - t1)
+  const t2 = performance.now()
+  const data = JSON.parse(text)
+  const tParse = Math.round(performance.now() - t2)
+  const sizeMB = (text.length / 1024 / 1024).toFixed(2)
+  console.log(`[perf] REST fetch: network=${tNetwork}ms, download=${tDownload}ms, JSON.parse=${tParse}ms, size=${sizeMB}MB`)
+  return data
 }
 
 // --- Styled components ---
@@ -196,6 +206,7 @@ const LongReadUnifiedView = ({
   const rawDataRef = useRef<{ variants: import('../Haplotypes/index').LRVariant[]; carrierIndices: Record<string, number[]>; trvAlts?: Record<string, Record<number, string>> } | null>(null)
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [workerComputing, setWorkerComputing] = useState(false)
+  const [loadingStatus, setLoadingStatus] = useState('')
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
   const [methylationData, setMethylationData] = useState<Methylation[]>([])
@@ -208,9 +219,10 @@ const LongReadUnifiedView = ({
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('similarity_score')
   const [isDiploidView, setIsDiploidView] = useState(false)
-  const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'auto')
+  const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'sv_only')
   const [plotType, setPlotType] = useState('lollipop')
-  const [colorMode, setColorMode] = useState('population')
+  const [colorMode, setColorMode] = useState('sv_type')
+  const [tableDeferred, setTableDeferred] = useState(regionSize > 200_000)
   const showGenealogy = searchParams.get('show_tree') !== 'false'
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
@@ -382,15 +394,28 @@ const LongReadUnifiedView = ({
   useEffect(() => {
     try {
       const w = new Worker(new URL('../Haplotypes/haplotypeWorker.ts', import.meta.url))
+      let workerStartTime = 0
       w.onmessage = (e: MessageEvent) => {
-        if (e.data.type === 'READY') {
+        const elapsed = workerStartTime ? Date.now() - workerStartTime : 0
+        if (e.data.type === 'PROGRESS') {
+          setLoadingStatus(e.data.status)
+        } else if (e.data.type === 'READY') {
+          console.log(`[perf] worker READY in ${elapsed}ms, groups=${e.data.data?.groups?.length || 0}`)
+          setLoadingStatus('')
           setHaplotypeData(e.data.data)
-          setHaplotypeLoading(false)
           setWorkerComputing(false)
         } else if (e.data.type === 'UPDATED') {
+          console.log(`[perf] worker UPDATED in ${elapsed}ms, groups=${e.data.data?.groups?.length || 0}`)
+          setLoadingStatus('')
           setHaplotypeData(e.data.data)
           setWorkerComputing(false)
         }
+      }
+      // Expose start time setter for postMessage callers
+      const origPostMessage = w.postMessage.bind(w)
+      w.postMessage = (msg: any, ...args: any[]) => {
+        workerStartTime = Date.now()
+        return origPostMessage(msg, ...args)
       }
       w.onerror = () => {
         console.warn('[worker] haplotype worker failed, using main thread')
@@ -415,12 +440,17 @@ const LongReadUnifiedView = ({
     abortControllerRef.current = controller
 
     setHaplotypeLoading(true)
+    setLoadingStatus('Fetching variant data…')
     const t0 = performance.now()
 
     fetchHaplotypeDataREST(chrom, start, stop, controller.signal)
       .then((result) => {
         if (controller.signal.aborted) return
-        console.log(`[REST] raw payload: ${result.variants?.variant_id?.length ?? 0} variants, ${Object.keys(result.carrier_variant_indices || {}).length} carriers in ${Math.round(performance.now() - t0)}ms (server: ${result._timing?.total_ms}ms)`)
+        const variantCount = result.variants?.variant_id?.length ?? 0
+        const carrierCount = Object.keys(result.carrier_variant_indices || {}).length
+        const fetchTime = Math.round(performance.now() - t0)
+        console.log(`[REST] raw payload: ${variantCount} variants, ${carrierCount} carriers in ${fetchTime}ms (server: ${result._timing?.total_ms}ms)`)
+        setLoadingStatus(`Received ${variantCount.toLocaleString()} variants, ${carrierCount} samples`)
 
         // Use server-computed auto_defaults
         const defaults = result.auto_defaults || { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
@@ -430,9 +460,11 @@ const LongReadUnifiedView = ({
         setDeferredClusterThreshold(defaults.defaultClusterThreshold)
         setIsClusteredView(defaults.isClusteredView)
 
+        setHaplotypeLoading(false)
         if (workerRef.current) {
           setWorkerComputing(true)
-          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy, distanceMetric })
+          setLoadingStatus(`Grouping ${variantCount.toLocaleString()} variants into haplotypes…`)
+          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy, distanceMetric, regionSize })
         } else {
           // Main-thread fallback: rehydrate SoA variants and compute directly
           const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
@@ -443,7 +475,7 @@ const LongReadUnifiedView = ({
           const baseData = computeHaplotypeView(
             variants, carrierIndices,
             defaults.defaultAf, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
-            result.trv_alts, false, distanceMetric
+            result.trv_alts, false, distanceMetric, regionSize
           )
           setHaplotypeData(baseData)
           setHaplotypeLoading(false)
@@ -475,12 +507,12 @@ const LongReadUnifiedView = ({
       const { variants, carrierIndices, trvAlts } = rawDataRef.current
       let result: ComputedHaplotypeData
       if (isDiploidView) {
-        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true)
+        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true, 'auto', regionSize)
       } else if (isClusteredView) {
-        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts, false, distanceMetric)
+        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize)
         result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
       } else {
-        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, false, distanceMetric)
+        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize)
       }
       setHaplotypeData(result)
     }
@@ -489,8 +521,11 @@ const LongReadUnifiedView = ({
   const haplotypeGroups: HaplotypeGroups = (haplotypeData as HaplotypeGroups | null) || { groups: [] }
 
   // Fetch methylation summary + outliers when entering haplotype mode
+  // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
+  // Users can still enable methylation via the checkbox, which triggers the load-all-samples path.
   useEffect(() => {
     if (viewMode !== 'haplotype') return
+    if (regionSize > 200_000) return
 
     const fetchSummaryAndOutliers = async () => {
       try {
@@ -515,6 +550,7 @@ const LongReadUnifiedView = ({
   const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
     if (viewMode !== 'haplotype') return
+    if (regionSize > 200_000) return
 
     const fetchOutlierMethylation = async () => {
       if (!methylationOutliers?.samples?.length) return
@@ -777,6 +813,7 @@ const LongReadUnifiedView = ({
               methylationTotalSamples={methylationTotalSamples}
               haplotypeLoading={haplotypeLoading}
               workerComputing={workerComputing}
+              loadingStatus={loadingStatus}
               showMqtl={showMqtl}
               onShowMqtlChange={setShowMqtl}
               mqtlLoading={mqtlLoading}
@@ -843,7 +880,7 @@ const LongReadUnifiedView = ({
         </TrackPageSection>
       ) : (
         <TrackPageSection>
-          {haplotypeGroups && (
+          {haplotypeGroups && !tableDeferred && (
             <HaplotypeVariantTable
               ref={tableRef}
               mode="haplotype"
@@ -858,6 +895,19 @@ const LongReadUnifiedView = ({
               onClearClusterFilter={handleClearClusterFilter}
             />
           )}
+          {haplotypeGroups && tableDeferred && (
+            <div style={{ padding: '12px', textAlign: 'center' }}>
+              <button
+                onClick={() => setTableDeferred(false)}
+                style={{ padding: '6px 16px', fontSize: 13, border: '1px solid #ccc', borderRadius: 4, background: '#f5f5f5', cursor: 'pointer' }}
+              >
+                Load variant table ({haplotypeGroups.groups.length} groups)
+              </button>
+              <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>
+                Deferred for large regions to keep the track responsive
+              </div>
+            </div>
+          )}
         </TrackPageSection>
       )}
     </>
@@ -865,4 +915,6 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
+
+
 

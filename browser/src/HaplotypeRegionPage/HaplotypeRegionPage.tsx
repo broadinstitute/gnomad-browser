@@ -138,7 +138,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const initialThreshold = queryParams.threshold ? parseFloat(queryParams.threshold as string) : 0
   const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
   const initialPlotType = (queryParams.plotType as string) || 'lollipop'
-  const initialColorMode = (queryParams.colorMode as string) || 'allele'
+  const initialColorMode = (queryParams.colorMode as string) || 'sv_type'
   const initialShowGenealogy = queryParams.showTree === '1'
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
