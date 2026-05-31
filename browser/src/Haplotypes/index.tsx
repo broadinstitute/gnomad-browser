@@ -340,7 +340,7 @@ export const Legend = ({
     <LegendWrapper>
       {/* Row 1: Legends */}
       <LegendRow>
-        {plotType === 'lollipop' && <VariantShapeLegend showPhantomRegions={showPhantomRegions} />}
+        <VariantShapeLegend showPhantomRegions={showPhantomRegions} plotType={plotType} />
         {plotType !== 'heatmap' && (
           <>
             <LegendSection>
@@ -470,33 +470,38 @@ export const Legend = ({
                   />
                   Outliers only
                 </label>
-                <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                  <input
-                    type='checkbox'
-                    checked={showMqtl}
-                    onChange={(e) => onShowMqtlChange(e.target.checked)}
-                  />
-                  mQTLs{mqtlLoading && ' ...'}
-                </label>
-                {showMqtl && mqtlData && mqtlData.length > 0 && (
-                  <button
-                    onClick={() => {
-                      const header = 'variant_id,variant_pos,cpg_pos,p_value,effect_size,carrier_count,non_carrier_count\n'
-                      const csv = mqtlData.map((d: any) => `${d.variant_id},${d.variant_pos},${d.cpg_pos},${d.p_value},${d.effect_size},${d.carrier_count},${d.non_carrier_count}`).join('\n')
-                      const blob = new Blob([header + csv], { type: 'text/csv' })
-                      const url = URL.createObjectURL(blob)
-                      const a = document.createElement('a')
-                      a.href = url
-                      a.download = 'mqtl_export.csv'
-                      a.click()
-                    }}
-                    style={{
-                      padding: '2px 6px', fontSize: '11px', cursor: 'pointer',
-                      background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '3px',
-                    }}
-                  >
-                    Export {mqtlData.length} mQTLs
-                  </button>
+                {/* TODO: Re-enable mQTL toggle when data source is production-ready */}
+                {false && (
+                  <>
+                    <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                      <input
+                        type='checkbox'
+                        checked={showMqtl}
+                        onChange={(e) => onShowMqtlChange(e.target.checked)}
+                      />
+                      mQTLs{mqtlLoading && ' ...'}
+                    </label>
+                    {showMqtl && mqtlData && mqtlData.length > 0 && (
+                      <button
+                        onClick={() => {
+                          const header = 'variant_id,variant_pos,cpg_pos,p_value,effect_size,carrier_count,non_carrier_count\n'
+                          const csv = mqtlData.map((d: any) => `${d.variant_id},${d.variant_pos},${d.cpg_pos},${d.p_value},${d.effect_size},${d.carrier_count},${d.non_carrier_count}`).join('\n')
+                          const blob = new Blob([header + csv], { type: 'text/csv' })
+                          const url = URL.createObjectURL(blob)
+                          const a = document.createElement('a')
+                          a.href = url
+                          a.download = 'mqtl_export.csv'
+                          a.click()
+                        }}
+                        style={{
+                          padding: '2px 6px', fontSize: '11px', cursor: 'pointer',
+                          background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '3px',
+                        }}
+                      >
+                        Export {mqtlData.length} mQTLs
+                      </button>
+                    )}
+                  </>
                 )}
                 {onLoadAllSamples && (
                   <button
@@ -1051,6 +1056,178 @@ const LollipopHelp = () => (
   </>
 )
 
+const BubbleHelp = () => (
+  <>
+    <h4 style={{ marginTop: 0 }}>Overview</h4>
+    <p>
+      The variation graph shows how haplotypes flow through a
+      sequence of variant sites. Think of the reference genome as a road: at each variant,
+      the road forks — some haplotypes stay on the reference backbone (grey), others take
+      an alternate path (colored arc above). After each variant, paths merge back. Each
+      fork-and-merge is a <strong>bubble</strong>.
+    </p>
+
+    <h4>Nodes &amp; Edges</h4>
+    <ul>
+      <li><strong>Nodes</strong> (vertical bars and shapes) — Variant positions. Each node
+        is a fork point where haplotypes diverge into ref and alt paths. The shape and color
+        encode the variant type.</li>
+      <li><strong>Edges</strong> (ribbons between nodes) — Groups of haplotypes traveling
+        together from one variant to the next. Ribbon <strong>thickness</strong> is
+        proportional to the number of haplotypes. Ribbons are colored by the alt variant
+        they are associated with.</li>
+      <li><strong>Grey backbone</strong> — The reference path. Thickness shows how many
+        haplotypes carry the reference allele at each site.</li>
+    </ul>
+
+    <h4>Variant Shapes</h4>
+    <ul>
+      <li><strong style={{ color: '#4A90D9' }}>Blue ellipse</strong> — SNV (single nucleotide variant).</li>
+      <li><strong style={{ color: '#D73027' }}>Red dashed arc</strong> — Deletion. Arc spans the deleted region; label shows size.</li>
+      <li><strong style={{ color: '#43A047' }}>Green teardrop</strong> — Insertion. Height proportional to inserted sequence length.</li>
+      <li><strong style={{ color: '#9467BD' }}>Purple diamond</strong> — Duplication.</li>
+      <li><strong style={{ color: '#E8A838' }}>Orange wave</strong> — Tandem repeat variant (TR). Number of oscillations reflects allelic diversity; label shows the length range across carriers.</li>
+    </ul>
+
+    <h4>Reading the Flow</h4>
+    <ul>
+      <li><strong>Thick alt arc</strong> — Common variant (many carriers).</li>
+      <li><strong>Thin alt arc</strong> — Rare variant (few carriers).</li>
+      <li><strong>Parallel ribbons</strong> — Variants in linkage disequilibrium (same
+        haplotypes carry both alt alleles).</li>
+      <li><strong>Crossing ribbons</strong> — Recombination between sites: haplotypes
+        that carried alt at one variant switch to ref at the next, or vice versa.</li>
+      <li><strong>Purple shaded region</strong> — Superbubble: a block of consecutive
+        variants in perfect LD, always co-inherited on the same haplotypes.</li>
+    </ul>
+
+    <h4>Interaction</h4>
+    <p>Hover over a node for variant details (type, position, alleles, AF).
+      Hover over a ribbon for transition counts (ref→ref, ref→alt, alt→ref, alt→alt).</p>
+  </>
+)
+
+const AlluvialHelp = () => (
+  <>
+    <h4 style={{ marginTop: 0 }}>Overview</h4>
+    <p>
+      The alluvial (Sankey) view shows haplotype groups as colored ribbons flowing through variant
+      sites across a genomic region. It reveals how haplotypes share or diverge at each variant position.
+    </p>
+
+    <h4>Reading the Plot</h4>
+    <ul>
+      <li><strong>Ribbons</strong> — Each colored ribbon represents a haplotype group. The <strong>thickness</strong> is proportional to the number of samples sharing that haplotype.</li>
+      <li><strong style={{ color: '#4a90d9' }}>Blue dots</strong> — Reference allele nodes. Ribbons passing through a blue dot carry the reference allele at that position.</li>
+      <li><strong style={{ color: '#d73027' }}>Red dots</strong> — Alternate allele nodes. Ribbons passing through a red dot carry an alternate allele.</li>
+      <li><strong>Convergence</strong> — When ribbons merge at the same node, those haplotypes share the same allele at that site.</li>
+      <li><strong>Divergence</strong> — When ribbons split to different nodes, haplotypes differ at that site.</li>
+    </ul>
+
+    <h4>Left Panel Labels</h4>
+    <ul>
+      <li><strong>Orange circle + number</strong> — Sample count (how many haplotypes in this group)</li>
+      <li><strong>Gray circle + number</strong> — Variant count (how many variant sites this group carries)</li>
+      <li><strong>Colored line</strong> — Matches the ribbon color in the plot</li>
+    </ul>
+
+    <h4>Interpreting Patterns</h4>
+    <ul>
+      <li><strong>Wide ribbons</strong> indicate common haplotypes shared by many individuals.</li>
+      <li><strong>Thin ribbons</strong> at the bottom are rare, unique haplotypes.</li>
+      <li>Regions with many red dots and ribbon splitting indicate <strong>high haplotype diversity</strong>.</li>
+      <li>Regions where most ribbons pass through the same node indicate <strong>low diversity</strong> (conserved).</li>
+    </ul>
+
+    <h4>Limitations</h4>
+    <ul>
+      <li>Only the top 30 groups by sample count are shown to avoid visual clutter.</li>
+      <li>X-coordinates use genomic position (proportional spacing), so dense variant clusters may appear cramped.</li>
+      <li>The AF threshold slider filters which variants define groups — raising it simplifies the view.</li>
+    </ul>
+  </>
+)
+
+const HeatmapHelp = () => (
+  <>
+    <h4 style={{ marginTop: 0 }}>Overview</h4>
+    <p>
+      The binned heatmap (ODGI-style) shows each haplotype group as a horizontal row.
+      The genomic region is divided into bins, and each bin is colored by the number of
+      alternate alleles that haplotype carries in that bin.
+    </p>
+
+    <h4>Reading the Plot</h4>
+    <ul>
+      <li><strong style={{ color: '#dde4ea' }}>Light blue-gray</strong> — Reference. No alternate alleles in this bin.</li>
+      <li><strong style={{ color: 'rgb(218,138,137)' }}>Light coral</strong> — 1 alternate allele in this bin.</li>
+      <li><strong style={{ color: 'rgb(216,93,88)' }}>Dark coral</strong> — 2 alternate alleles in this bin.</li>
+      <li><strong style={{ color: '#d73027' }}>Red</strong> — 3 or more alternate alleles in this bin.</li>
+    </ul>
+
+    <h4>Left Panel Labels</h4>
+    <ul>
+      <li><strong>Orange circle + number</strong> — Sample count (how many haplotypes share this group)</li>
+      <li><strong>Gray circle + number</strong> — Variant count (total variant sites in this group)</li>
+      <li>Hover any label to see full details: genomic coordinates, size, and sample IDs.</li>
+    </ul>
+
+    <h4>Interpreting Patterns</h4>
+    <ul>
+      <li><strong>Vertical red stripes</strong> indicate variant hotspots where many haplotype groups carry alternate alleles.</li>
+      <li><strong>Horizontal red rows</strong> indicate haplotype groups with many variants across the region.</li>
+      <li><strong>White/light columns</strong> indicate conserved regions with few variants.</li>
+      <li>Rows are sorted by sample count (most common haplotypes at top).</li>
+    </ul>
+
+    <h4>Limitations</h4>
+    <ul>
+      <li>Only the top 80 groups by sample count are shown.</li>
+      <li>The region is divided into 100 bins, so individual variants may be merged within a bin.</li>
+      <li>The AF threshold slider filters which variants define groups.</li>
+    </ul>
+  </>
+)
+
+const PaintingHelp = () => (
+  <>
+    <h4 style={{ marginTop: 0 }}>Overview</h4>
+    <p>
+      The chromosome painting divides the region into 100 equal-width genomic bins per haplotype row.
+      For each bin, the dominant structural variant (SV/TR) is identified — the one with the highest
+      allele frequency. Each bin is colored by that variant's unique hash color, so bins sharing
+      the same SV get the same color.
+    </p>
+
+    <h4>Reading the Plot</h4>
+    <ul>
+      <li><strong>Colored blocks</strong> — Between structural variants, bins are forward-filled with the
+        color of the preceding SV, creating contiguous colored blocks that represent the structural
+        haplotype backbone.</li>
+      <li><strong>Color transitions</strong> — Mark structural breakpoints where one SV's influence
+        ends and another begins.</li>
+      <li><strong>Grey bins</strong> — No SV was found in that region.</li>
+    </ul>
+
+    <h4>Interpreting Patterns</h4>
+    <ul>
+      <li><strong>Matching color patterns</strong> across rows indicate structurally similar haplotypes —
+        they share the same SV architecture.</li>
+      <li><strong>Different color patterns</strong> indicate distinct structural haplotype backgrounds.</li>
+      <li>Think of it as a visual fingerprint of each haplotype's structural variation landscape —
+        similar to classical chromosome painting in cytogenetics, but at the sequence level using
+        long-read SV calls.</li>
+    </ul>
+
+    <h4>Clustered View</h4>
+    <p>
+      In clustered view, consensus variants (present in ≥50% of cluster samples) determine the painting,
+      with opacity proportional to their frequency in the cluster. This highlights the dominant structural
+      architecture shared by cluster members.
+    </p>
+  </>
+)
+
 const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'similarity' | 'exact' | 'diploid' }) => (
   <>
     {groupingMode === 'similarity' ? (
@@ -1203,6 +1380,8 @@ const HaplotypeInfoBar = ({
   isAutoTuned,
   plotType,
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
+  variationGraph,
+  pangenomeGraph,
 }: {
   displayGroups: HaplotypeGroup[]
   start: number
@@ -1220,6 +1399,8 @@ const HaplotypeInfoBar = ({
   isAutoTuned: boolean
   plotType: string
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
+  variationGraph?: any
+  pangenomeGraph?: any
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
     let samples = 0
@@ -1286,9 +1467,59 @@ const HaplotypeInfoBar = ({
         <span>Min AF: {thresholdLabel}</span>
         <span style={{ color: '#999' }}>·</span>
         <span style={{ textTransform: 'capitalize' }}>{plotType}</span>
-        <HaplotypeHelpButton title="Lollipop View — How to Read This View">
-          <LollipopHelp />
-        </HaplotypeHelpButton>
+        {plotType === 'bubble' && variationGraph && (
+          <>
+            <span style={{ color: '#999' }}>·</span>
+            <span style={{ fontSize: '11px' }}>
+              {variationGraph.bubbles.length} bubbles
+              {variationGraph.bubbles.filter((b: any) => b.isSuperbubble).length > 0 &&
+                `, ${variationGraph.bubbles.filter((b: any) => b.isSuperbubble).length} superbubbles`}
+            </span>
+          </>
+        )}
+        {plotType === 'alluvial' && pangenomeGraph && (
+          <>
+            <span style={{ color: '#999' }}>·</span>
+            <span style={{ fontSize: '11px' }}>
+              {Math.min(30, pangenomeGraph.paths.length)} of {pangenomeGraph.paths.length} groups
+              {pangenomeGraph.paths.length > 30 ? ' (truncated)' : ''}
+            </span>
+          </>
+        )}
+        {plotType === 'heatmap' && pangenomeGraph && (
+          <>
+            <span style={{ color: '#999' }}>·</span>
+            <span style={{ fontSize: '11px' }}>
+              {Math.min(80, pangenomeGraph.paths.length)} of {pangenomeGraph.paths.length} groups
+              {pangenomeGraph.paths.length > 80 ? ' (truncated)' : ''}
+            </span>
+          </>
+        )}
+        {plotType === 'lollipop' && (
+          <HaplotypeHelpButton title="Lollipop View — How to Read This View">
+            <LollipopHelp />
+          </HaplotypeHelpButton>
+        )}
+        {plotType === 'bubble' && (
+          <HaplotypeHelpButton title="Variation Graph — How to Read This View">
+            <BubbleHelp />
+          </HaplotypeHelpButton>
+        )}
+        {plotType === 'alluvial' && (
+          <HaplotypeHelpButton title="Alluvial Flow — How to Read This View">
+            <AlluvialHelp />
+          </HaplotypeHelpButton>
+        )}
+        {plotType === 'heatmap' && (
+          <HaplotypeHelpButton title="Binned Heatmap — How to Read This View">
+            <HeatmapHelp />
+          </HaplotypeHelpButton>
+        )}
+        {plotType === 'painting' && (
+          <HaplotypeHelpButton title="Chromosome Painting — How to Read This View">
+            <PaintingHelp />
+          </HaplotypeHelpButton>
+        )}
         {isAutoTuned && (
           <>
             <span style={{ color: '#999' }}>·</span>
@@ -2105,6 +2336,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           isAutoTuned={isAutoTuned}
           plotType={plotType}
           distanceMetric={distanceMetric}
+          variationGraph={variationGraph}
+          pangenomeGraph={pangenomeGraph}
         />
       </StickyHeader>
 

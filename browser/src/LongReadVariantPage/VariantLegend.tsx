@@ -67,9 +67,78 @@ const SHAPE_ORDER: VariantCategory[] = ['snv', 'insertion', 'deletion', 'sv', 't
 /**
  * Displays variant shape legend items using a neutral gray color.
  * When showPhantomRegions is true, insertion/TR shapes switch to expanded phantom bars.
+ * Supports different plot types with type-appropriate legend items.
  */
-export const VariantShapeLegend = ({ showPhantomRegions = false }: { showPhantomRegions?: boolean }) => {
+export const VariantShapeLegend = ({ showPhantomRegions = false, plotType = 'lollipop' }: { showPhantomRegions?: boolean; plotType?: string }) => {
   const renderers = showPhantomRegions ? EXPANDED_SHAPE_RENDERERS : COMPACT_SHAPE_RENDERERS
+
+  if (plotType === 'bubble') {
+    const items: { label: string; render: React.ReactNode }[] = [
+      { label: 'Ref backbone', render: <rect x={2} y={9} width={18} height={5} fill="#999" rx={1} /> },
+      { label: 'SNV', render: <ellipse cx={11} cy={11} rx={4} ry={4} fill="#4A90D9" /> },
+      { label: 'Deletion', render: <path d="M 3 14 Q 11 4 19 14" fill="none" stroke="#D73027" strokeWidth={2} strokeDasharray="4 2" /> },
+      { label: 'Insertion', render: <path d="M 11 18 C 6 13, 9 8, 11 8 C 13 8, 16 13, 11 18" fill="#43A047" opacity={0.5} stroke="#43A047" strokeWidth={1} /> },
+      { label: 'Duplication', render: <path d="M 11 16 L 7 11 L 11 6 L 15 11 Z" fill="#9467BD" opacity={0.4} stroke="#9467BD" strokeWidth={1} /> },
+      { label: 'Tandem repeat', render: <><rect x={3} y={8} width={16} height={7} fill="#E8A838" opacity={0.7} rx={2} /><line x1={9} y1={8} x2={9} y2={15} stroke="white" strokeWidth={0.7} opacity={0.6} /><line x1={14} y1={8} x2={14} y2={15} stroke="white" strokeWidth={0.7} opacity={0.6} /></> },
+    ]
+    return (
+      <LegendSection>
+        <LegendItem><span style={{ fontWeight: 'bold' }}>Graph:</span></LegendItem>
+        {items.map((item) => (
+          <LegendItem key={item.label}>
+            <svg width={22} height={22}>{item.render}</svg>
+            <span>{item.label}</span>
+          </LegendItem>
+        ))}
+      </LegendSection>
+    )
+  }
+
+  if (plotType === 'alluvial') {
+    return (
+      <LegendSection>
+        <LegendItem><span style={{ fontWeight: 'bold' }}>Flow:</span></LegendItem>
+        <LegendItem>
+          <svg width={22} height={22}><line x1={3} y1={11} x2={19} y2={11} stroke="#1f77b4" strokeWidth={4} strokeOpacity={0.55} /></svg>
+          <span>Path (thickness = count)</span>
+        </LegendItem>
+        <LegendItem>
+          <svg width={22} height={22}><circle cx={11} cy={11} r={4} fill="#4a90d9" stroke="#fff" strokeWidth={1} /></svg>
+          <span>Ref node</span>
+        </LegendItem>
+        <LegendItem>
+          <svg width={22} height={22}><circle cx={11} cy={11} r={4} fill="#d73027" stroke="#fff" strokeWidth={1} /></svg>
+          <span>Alt node</span>
+        </LegendItem>
+      </LegendSection>
+    )
+  }
+
+  if (plotType === 'heatmap') {
+    const items: { label: string; color: string }[] = [
+      { label: 'Reference', color: '#dde4ea' },
+      { label: '1 variant', color: 'rgb(218,138,137)' },
+      { label: '2+ variants', color: 'rgb(216,93,88)' },
+      { label: '3+ variants', color: '#d73027' },
+    ]
+    return (
+      <LegendSection>
+        <LegendItem><span style={{ fontWeight: 'bold' }}>Bins:</span></LegendItem>
+        {items.map((item) => (
+          <LegendItem key={item.label}>
+            <svg width={22} height={22}><rect x={4} y={6} width={14} height={10} fill={item.color} rx={2} /></svg>
+            <span>{item.label}</span>
+          </LegendItem>
+        ))}
+      </LegendSection>
+    )
+  }
+
+  if (plotType === 'painting') {
+    return null
+  }
+
+  // Default: lollipop
   return (
     <LegendSection>
       <LegendItem><span style={{ fontWeight: 'bold' }}>Variants:</span></LegendItem>
