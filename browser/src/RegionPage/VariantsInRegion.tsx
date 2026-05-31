@@ -1,8 +1,6 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React from 'react'
 
 import { DatasetId, labelForDataset, referenceGenome, isLongRead, associatedLongReadDataset } from '@gnomad/dataset-metadata/metadata'
-import { SegmentedControl } from '@gnomad/ui'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
@@ -12,18 +10,10 @@ import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClin
 import mergeLongReadVariants from '../VariantList/mergeLongReadVariants'
 import Variants from '../VariantList/Variants'
 
-const ToggleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-`
-
 type OwnVariantsInRegionProps = {
   clinvarReleaseDate: string
   clinvarVariants?: any[]
   datasetId: DatasetId
-  lrDatasetId?: DatasetId | null
   region: {
     chrom: string
     start: number
@@ -43,66 +33,39 @@ const VariantsInRegion = ({
   clinvarReleaseDate,
   clinvarVariants,
   datasetId,
-  lrDatasetId,
   region,
   variants,
 }: VariantsInRegionProps) => {
   const datasetLabel = labelForDataset(datasetId)
-  const [viewMode, setViewMode] = useState<'summary' | 'haplotype'>('summary')
 
   return (
     <>
-      {lrDatasetId && (
-        <TrackPageSection>
-          <ToggleWrapper>
-            <SegmentedControl
-              id="lr-region-view-mode"
-              options={[
-                { label: 'Variant Table', value: 'summary' },
-                { label: 'Phased Haplotypes', value: 'haplotype' },
-              ]}
-              value={viewMode}
-              onChange={(value: string) => setViewMode(value as 'summary' | 'haplotype')}
-            />
-          </ToggleWrapper>
-        </TrackPageSection>
-      )}
-
-      {viewMode === 'haplotype' && lrDatasetId ? (
-        <LongReadHaplotypeView
-          datasetId={lrDatasetId}
-          gene={{ chrom: region.chrom, start: region.start, stop: region.stop }}
-        />
-      ) : (
+      <TrackPageSection>
+        <h2>ClinVar variants</h2>
+      </TrackPageSection>
+      {clinvarVariants.length > 0 ? (
         <>
-          <TrackPageSection>
-            <h2>ClinVar variants</h2>
-          </TrackPageSection>
-          {clinvarVariants.length > 0 ? (
-            <>
-              <ClinvarVariantTrack
-                referenceGenome={referenceGenome(datasetId)}
-                transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
-                variants={clinvarVariants}
-              />
-              <TrackPageSection as="p">
-                Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
-                release.
-              </TrackPageSection>
-            </>
-          ) : (
-            <TrackPageSection as="p">No ClinVar variants found in this region.</TrackPageSection>
-          )}
-
-          <Variants
-            clinvarReleaseDate={clinvarReleaseDate}
-            context={region}
-            datasetId={datasetId}
-            exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
-            variants={variants}
+          <ClinvarVariantTrack
+            referenceGenome={referenceGenome(datasetId)}
+            transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
+            variants={clinvarVariants}
           />
+          <TrackPageSection as="p">
+            Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
+            release.
+          </TrackPageSection>
         </>
+      ) : (
+        <TrackPageSection as="p">No ClinVar variants found in this region.</TrackPageSection>
       )}
+
+      <Variants
+        clinvarReleaseDate={clinvarReleaseDate}
+        context={region}
+        datasetId={datasetId}
+        exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
+        variants={variants}
+      />
     </>
   )
 }
@@ -387,7 +350,6 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoom
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.region.clinvar_variants}
             datasetId={datasetId}
-            lrDatasetId={lrDatasetId}
             region={region}
             variants={variants}
           />

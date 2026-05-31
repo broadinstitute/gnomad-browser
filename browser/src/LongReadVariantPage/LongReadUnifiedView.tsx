@@ -2,7 +2,6 @@ import { debounce, throttle } from 'lodash-es'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { SegmentedControl } from '@gnomad/ui'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
@@ -166,24 +165,24 @@ const LongReadUnifiedView = ({
   const regionSize = stop - start
   const regionTooLarge = regionSize > MAX_HAPLOTYPE_REGION_SIZE
 
-  // Bug 1: Read lr_view and show_tree from URL params
+  // Read show_haplotypes and show_tree from URL params
   const location = useLocation()
   const history = useHistory()
   const searchParams = new URLSearchParams(location.search)
-  const urlViewMode = searchParams.get('lr_view')
+  const urlShowHaplotypes = searchParams.get('show_haplotypes') === 'true'
 
   // If region is too large and URL requests haplotype, show warning and fall back
   const [showRegionWarning, setShowRegionWarning] = useState(
-    regionTooLarge && urlViewMode === 'haplotype'
+    regionTooLarge && urlShowHaplotypes
   )
-  const viewMode = (
-    !regionTooLarge && urlViewMode === 'haplotype' ? 'haplotype' : 'summary'
-  ) as 'summary' | 'haplotype'
+  const showHaplotypes = !regionTooLarge && urlShowHaplotypes
 
-  const setViewMode = useCallback((mode: string) => {
+  const setShowHaplotypes = useCallback((show: boolean) => {
     const params = new URLSearchParams(location.search)
-    params.set('lr_view', mode)
-    if (mode === 'summary') {
+    if (show) {
+      params.set('show_haplotypes', 'true')
+    } else {
+      params.delete('show_haplotypes')
       params.delete('show_tree')
     }
     history.replace({ ...location, search: params.toString() })
@@ -222,7 +221,7 @@ const LongReadUnifiedView = ({
   const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'sv_only')
   const [plotType, setPlotType] = useState('lollipop')
   const [colorMode, setColorMode] = useState('sv_type')
-  const [tableDeferred, setTableDeferred] = useState(regionSize > 200_000)
+
   const showGenealogy = searchParams.get('show_tree') !== 'false'
 
   const [mqtlData, setMqtlData] = useState<any[]>([])
@@ -369,7 +368,7 @@ const LongReadUnifiedView = ({
 
   // Fetch sample metadata once when entering haplotype mode
   useEffect(() => {
-    if (viewMode !== 'haplotype') return
+    if (!showHaplotypes) return
     if (sampleMetadata.size > 0) return
 
     const fetchMeta = async () => {
@@ -387,7 +386,7 @@ const LongReadUnifiedView = ({
       }
     }
     fetchMeta()
-  }, [viewMode, sampleMetadata.size])
+  }, [showHaplotypes, sampleMetadata.size])
 
   // Initialize Web Worker (with main-thread fallback)
   useEffect(() => {
@@ -432,7 +431,7 @@ const LongReadUnifiedView = ({
   // Fetch raw haplotype data once per region
   const abortControllerRef = useRef<AbortController | null>(null)
   useEffect(() => {
-    if (viewMode !== 'haplotype') return
+    if (!showHaplotypes) return
 
     if (abortControllerRef.current) abortControllerRef.current.abort()
     const controller = new AbortController()
@@ -487,7 +486,7 @@ const LongReadUnifiedView = ({
         console.error('Error fetching haplotype data:', error)
         setHaplotypeLoading(false)
       })
-  }, [viewMode, chrom, start, stop])
+  }, [showHaplotypes, chrom, start, stop])
 
   // Derive booleans from groupingMode for worker/compute compatibility
   const isClusteredView = groupingMode === 'similarity'
@@ -529,7 +528,7 @@ const LongReadUnifiedView = ({
   // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
   // Users can still enable methylation via the checkbox, which triggers the load-all-samples path.
   useEffect(() => {
-    if (viewMode !== 'haplotype') return
+    if (!showHaplotypes) return
     if (regionSize > 200_000) return
 
     const fetchSummaryAndOutliers = async () => {
@@ -549,12 +548,12 @@ const LongReadUnifiedView = ({
       }
     }
     fetchSummaryAndOutliers()
-  }, [viewMode, chrom, start, stop])
+  }, [showHaplotypes, chrom, start, stop])
 
   // Auto-fetch per-sample methylation for top outlier samples
   const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
-    if (viewMode !== 'haplotype') return
+    if (!showHaplotypes) return
     if (regionSize > 200_000) return
 
     const fetchOutlierMethylation = async () => {
@@ -583,7 +582,7 @@ const LongReadUnifiedView = ({
       }
     }
     fetchOutlierMethylation()
-  }, [viewMode, chrom, start, stop, methylationOutliers])
+  }, [showHaplotypes, chrom, start, stop, methylationOutliers])
 
   // Load all sample methylation (triggered from HaplotypeTrack)
   const handleLoadAllSamples = useCallback(async () => {
@@ -624,7 +623,7 @@ const LongReadUnifiedView = ({
 
   // Fetch mQTLs when enabled
   useEffect(() => {
-    if (viewMode !== 'haplotype' || !showMqtl) return
+    if (!showHaplotypes || !showMqtl) return
     const fetchMQTLs = async () => {
       setMqtlLoading(true)
       try {
@@ -639,7 +638,7 @@ const LongReadUnifiedView = ({
       }
     }
     fetchMQTLs()
-  }, [viewMode, chrom, start, stop, threshold, showMqtl])
+  }, [showHaplotypes, chrom, start, stop, threshold, showMqtl])
 
   const withFrequency = (variant: any) => variant.freq !== null
 
@@ -745,52 +744,56 @@ const LongReadUnifiedView = ({
         </div>
       )}
 
+      {onChangeZoomRegion && (
+        <TrackPageSection>
+          <ZoomOverview
+            overviewRegion={{ start, stop }}
+            currentRegion={zoomRegion || { start, stop }}
+            chrom={chrom}
+            genes={genes}
+            variants={displayVariants}
+            onChangeRegion={onChangeZoomRegion}
+            onSetRegion={onSetRegion}
+            onNavigateRegion={onSetRegion ? (region) => onSetRegion({ start: region.start, stop: region.stop }) : undefined}
+          />
+        </TrackPageSection>
+      )}
+
       <AccordionRegionViewer mapper={accordionMapper} originalRegion={accordionViewRegion}>
       <TrackPageSection>
         <ToggleWrapper>
-          <SegmentedControl
-            id="lr-view-mode"
-            options={[
-              { label: 'Summary', value: 'summary' },
-              { label: 'Haplotype', value: 'haplotype', disabled: regionTooLarge },
-            ]}
-            value={viewMode}
-            onChange={(value: string) => {
-              if (value === 'haplotype' && regionTooLarge) return
-              setViewMode(value as 'summary' | 'haplotype')
-            }}
-          />
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: regionTooLarge ? 'not-allowed' : 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={showHaplotypes}
+              disabled={regionTooLarge}
+              onChange={(e) => setShowHaplotypes(e.target.checked)}
+            />
+            <span style={{ fontSize: 14, color: regionTooLarge ? '#999' : undefined }}>
+              Show Phased Haplotypes (292 samples)
+            </span>
+          </label>
           {regionTooLarge && (
             <span style={{ fontSize: 12, color: '#999' }}>
-              Haplotype view requires region &le; {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb
+              Disabled: Region too large for haplotype computation (&gt; {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb)
             </span>
           )}
         </ToggleWrapper>
-
-        {viewMode === 'haplotype' && (
-          <p style={{ fontSize: 13, color: '#666', margin: '0 0 12px 0' }}>
-            Viewing phased haplotypes for a subset of 292 samples.
-          </p>
-        )}
       </TrackPageSection>
 
-      {viewMode === 'summary' && (
-        <>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
-            <VariantColorLegend />
-          </div>
-          {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
-          <LongReadVariantTrack variants={zoomedVariants} />
-          <PositionAxisTrack />
-        </>
-      )}
+      {/* Base layer — always rendered */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 8 }}>
+        <VariantColorLegend />
+      </div>
+      {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
+      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} />
 
-      {viewMode === 'haplotype' && (
+      {/* Haplotype layer — opt-in */}
+      {showHaplotypes && (
         <>
-          {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
-          <LongReadVariantTrack variants={zoomedVariants} lod={lod} />
           <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
-          {showMqtl && (
+          {/* TODO: Re-enable when mQTL data source is production-ready */}
+          {false && showMqtl && (
             <MQTLTrack
               mqtlData={mqtlData}
               loading={mqtlLoading}
@@ -819,7 +822,7 @@ const LongReadUnifiedView = ({
               haplotypeLoading={haplotypeLoading}
               workerComputing={workerComputing}
               loadingStatus={loadingStatus}
-              showMqtl={showMqtl}
+              showMqtl={false}
               onShowMqtlChange={setShowMqtl}
               mqtlLoading={mqtlLoading}
               mqtlData={mqtlData}
@@ -853,66 +856,50 @@ const LongReadUnifiedView = ({
               selectedVariantPos={selectedVariantPos}
             />
           )}
-          <AccordionPositionAxisTrack />
         </>
       )}
 
+      {/* Axis — accordion when haplotypes active, standard otherwise */}
+      {showHaplotypes ? <AccordionPositionAxisTrack /> : <PositionAxisTrack />}
+
       </AccordionRegionViewer>
 
-      {onChangeZoomRegion && (
-        <TrackPageSection>
-          <ZoomOverview
-            overviewRegion={{ start, stop }}
-            currentRegion={zoomRegion || { start, stop }}
-            chrom={chrom}
-            genes={genes}
-            variants={displayVariants}
-            onChangeRegion={onChangeZoomRegion}
-            onSetRegion={onSetRegion}
-          />
-        </TrackPageSection>
-      )}
-
-      {viewMode === 'summary' ? (
-        <TrackPageSection>
-          <HaplotypeVariantTable
-            mode="summary"
-            summaryVariants={zoomedVariants}
-            onHoverVariant={setHoveredVariantPosition}
-          />
-        </TrackPageSection>
-      ) : (
-        <TrackPageSection>
-          {haplotypeGroups && !tableDeferred && (
+      {/* Table with loading overlay during haplotype computation */}
+      <TrackPageSection>
+        <div
+          id="lr-variant-table-container"
+          style={{
+            opacity: (showHaplotypes && (haplotypeLoading || workerComputing)) ? 0.5 : 1,
+            pointerEvents: (showHaplotypes && (haplotypeLoading || workerComputing)) ? 'none' : 'auto',
+            transition: 'opacity 0.2s',
+          }}
+        >
+          {showHaplotypes && haplotypeGroups?.groups.length > 0 ? (
+            <>
+              <HaplotypeVariantTable
+                  ref={tableRef}
+                  mode="haplotype"
+                  summaryVariants={zoomedVariants}
+                  haplotypeGroups={haplotypeGroups as { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }}
+                  sampleMetadata={sampleMetadata}
+                  onHoverVariant={setHoveredVariantPosition}
+                  onVisibleVariantChange={handleVisibleVariantChange}
+                  onFilteredVariantsChange={handleFilteredVariantsChange}
+                  onRowClick={handleRowClick}
+                  isClusteredView={isClusteredView}
+                  selectedClusterId={selectedClusterId}
+                  onClearClusterFilter={handleClearClusterFilter}
+                />
+            </>
+          ) : (
             <HaplotypeVariantTable
-              ref={tableRef}
-              mode="haplotype"
-              haplotypeGroups={haplotypeGroups as { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }}
-              sampleMetadata={sampleMetadata}
+              mode="summary"
+              summaryVariants={zoomedVariants}
               onHoverVariant={setHoveredVariantPosition}
-              onVisibleVariantChange={handleVisibleVariantChange}
-              onFilteredVariantsChange={handleFilteredVariantsChange}
-              onRowClick={handleRowClick}
-              isClusteredView={isClusteredView}
-              selectedClusterId={selectedClusterId}
-              onClearClusterFilter={handleClearClusterFilter}
             />
           )}
-          {haplotypeGroups && tableDeferred && (
-            <div style={{ padding: '12px', textAlign: 'center' }}>
-              <button
-                onClick={() => setTableDeferred(false)}
-                style={{ padding: '6px 16px', fontSize: 13, border: '1px solid #ccc', borderRadius: 4, background: '#f5f5f5', cursor: 'pointer' }}
-              >
-                Load variant table ({haplotypeGroups.groups.length} groups)
-              </button>
-              <div style={{ fontSize: 11, color: '#999', marginTop: 4 }}>
-                Deferred for large regions to keep the track responsive
-              </div>
-            </div>
-          )}
-        </TrackPageSection>
-      )}
+        </div>
+      </TrackPageSection>
     </>
   )
 }
