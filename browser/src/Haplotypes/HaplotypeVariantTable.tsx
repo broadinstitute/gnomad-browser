@@ -1381,7 +1381,7 @@ const TableRow = React.memo(function TableRow({
                         }
                         return (
                           <li key={id} style={{ marginBottom: 4 }}>
-                            <Link to={`/variant/${id}`}>{id}</Link>
+                            <Link to={`/variant/${id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false}>{id}</Link>
                             {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac || 0})
                           </li>
                         )
