@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-
-import { Badge, List, ListItem, Modal, SegmentedControl, TextButton } from '@gnomad/ui'
+import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import {
   DatasetId,
@@ -22,12 +20,6 @@ import mergeLongReadVariants from '../VariantList/mergeLongReadVariants'
 import Variants from '../VariantList/Variants'
 import { Gene } from './GenePage'
 
-const ToggleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
-`
 
 type TranscriptsModalProps = {
   gene: {
@@ -68,7 +60,6 @@ type OwnVariantsInGeneProps = {
   clinvarReleaseDate: string
   clinvarVariants?: any[]
   datasetId: DatasetId
-  lrDatasetId?: DatasetId | null
   gene: {
     gene_id: string
     symbol: string
@@ -108,7 +99,6 @@ const VariantsInGene = ({
   clinvarReleaseDate,
   clinvarVariants,
   datasetId,
-  lrDatasetId,
   gene,
   includeNonCodingTranscripts,
   includeUTRs,
@@ -119,36 +109,12 @@ const VariantsInGene = ({
   const datasetLabel = labelForDataset(datasetId)
 
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
-  const [viewMode, setViewMode] = useState<'summary' | 'haplotype'>('summary')
 
   return (
     <>
-      {lrDatasetId && (
-        <TrackPageSection>
-          <ToggleWrapper>
-            <SegmentedControl
-              id="lr-view-mode"
-              options={[
-                { label: 'Variant Table', value: 'summary' },
-                { label: 'Phased Haplotypes', value: 'haplotype' },
-              ]}
-              value={viewMode}
-              onChange={(value: string) => setViewMode(value as 'summary' | 'haplotype')}
-            />
-          </ToggleWrapper>
-        </TrackPageSection>
-      )}
-
-      {viewMode === 'haplotype' && lrDatasetId ? (
-        <LongReadHaplotypeView
-          datasetId={lrDatasetId}
-          gene={gene}
-        />
-      ) : (
-        <>
-          <TrackPageSection>
-            <h2>ClinVar variants</h2>
-          </TrackPageSection>
+      <TrackPageSection>
+        <h2>ClinVar variants</h2>
+      </TrackPageSection>
           {clinvarVariants.length > 0 ? (
             <>
               <ClinvarVariantTrack
@@ -208,9 +174,6 @@ const VariantsInGene = ({
               />
             )}
           </Variants>
-          )
-        </>
-      )}
     </>
   )
 }
@@ -492,7 +455,6 @@ const ConnectedVariantsInGene = ({
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.gene.clinvar_variants}
             datasetId={srDatasetId}
-            lrDatasetId={lrDatasetId}
             gene={gene}
             variants={variants}
           />

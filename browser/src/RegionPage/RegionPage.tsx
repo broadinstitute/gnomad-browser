@@ -189,14 +189,16 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
               </p>
             )}
           </div>
-          <RegionControlsWrapper>
-            <RegionControls region={region} />
-          </RegionControlsWrapper>
+          {!isLongRead(datasetId) && (
+            <RegionControlsWrapper>
+              <RegionControls region={region} />
+            </RegionControlsWrapper>
+          )}
         </RegionInfoColumnWrapper>
       </TrackPageSection>
       <RegionViewer
         leftPanelWidth={115}
-        regions={[viewRegion]}
+        regions={[isLongRead(datasetId) ? region : viewRegion]}
         rightPanelWidth={isSmallScreen ? 0 : showTree ? 250 : 80}
         width={regionViewerWidth}
       >

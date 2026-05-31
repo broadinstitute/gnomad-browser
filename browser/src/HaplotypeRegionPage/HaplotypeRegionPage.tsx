@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import { Badge, Button } from '@gnomad/ui'
+import { Badge } from '@gnomad/ui'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 import queryString from 'query-string'
 import { debounce } from 'lodash-es'
@@ -106,26 +106,12 @@ const RegionInfoColumnWrapper = styled.div`
   }
 `
 
-const RegionControlsWrapper = styled.div`
-  @media (min-width: 1201px) {
-    margin-top: 1em;
-  }
-`
 
 type HaplotypeRegionPageProps = {
   datasetId: DatasetId
   region: Region
 }
 
-const zoomRegion = (region: { chrom: string; start: number; stop: number }, factor: number) => {
-  const center = (region.start + region.stop) / 2
-  const newSize = (region.stop - region.start + 1) / factor
-  return {
-    chrom: region.chrom,
-    start: Math.max(1, Math.floor(center - newSize / 2)),
-    stop: Math.floor(center + newSize / 2),
-  }
-}
 
 const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) => {
   const { chrom, start, stop } = region
@@ -192,7 +178,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
       setHaplotypeLoading(true)
       try {
         const result = await fetchGraphQL(HAPLOTYPE_GROUPS_QUERY, {
-          chrom, start: viewRegion.start, stop: viewRegion.stop, min_allele_freq: currentThreshold, sort_by: sortBy,
+          chrom, start, stop, min_allele_freq: currentThreshold, sort_by: sortBy,
         })
         if (result.data?.haplotype_groups) {
           setHaplotypeGroups(result.data.haplotype_groups)
@@ -203,7 +189,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         setHaplotypeLoading(false)
       }
     }, 300),
-    [chrom, viewRegion.start, viewRegion.stop, sortBy]
+    [chrom, start, stop, sortBy]
   )
 
   // Fetch sample metadata on mount (small static table)
@@ -322,7 +308,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
-  }, [chrom, viewRegion.start, viewRegion.stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
+  }, [chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
 
   useEffect(() => {
     if (!showMqtl) return
@@ -389,30 +375,6 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
               </p>
             )}
           </div>
-          <RegionControlsWrapper>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5em' }}>
-              <span>Zoom in</span>
-              {[1.5, 3, 10].map((z) => (
-                <Button key={z} onClick={() => {
-                  const r = zoomRegion(region, z)
-                  history.push({
-                    pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
-                    search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
-                  })
-                }}>{z}x</Button>
-              ))}
-              <span style={{ marginLeft: '0.5em' }}>Zoom out</span>
-              {[1.5, 3, 10].map((z) => (
-                <Button key={z} onClick={() => {
-                  const r = zoomRegion(region, 1 / z)
-                  history.push({
-                    pathname: `/haplotype/region/${r.chrom}-${r.start}-${r.stop}`,
-                    search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
-                  })
-                }}>{z}x</Button>
-              ))}
-            </div>
-          </RegionControlsWrapper>
         </RegionInfoColumnWrapper>
         <ZoomOverview
           overviewRegion={{ start, stop }}
@@ -423,6 +385,12 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
           onSetRegion={(newRegion) => {
             history.push({
               pathname: `/haplotype/region/${chrom}-${newRegion.start}-${newRegion.stop}`,
+              search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
+            })
+          }}
+          onNavigateRegion={(newRegion) => {
+            history.push({
+              pathname: `/haplotype/region/${newRegion.chrom}-${newRegion.start}-${newRegion.stop}`,
               search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
             })
           }}
@@ -438,7 +406,8 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 
         <RecombinationRatePlot chrom={viewRegion.chrom} start={viewRegion.start} stop={viewRegion.stop} />
         <GenesInRegionTrack genes={region.genes.filter((g: any) => g.stop >= viewRegion.start && g.start <= viewRegion.stop)} region={viewRegion} />
-        {showMqtl && (
+        {/* TODO: Re-enable when mQTL data source is production-ready */}
+        {false && showMqtl && (
           <MQTLTrack mqtlData={mqtlData} loading={mqtlLoading} minLogP={mqtlMinLogP} onMinLogPChange={setMqtlMinLogP} />
         )}
         {haplotypeGroups && (
@@ -458,7 +427,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             methylationSampleCount={methylationSampleCount}
             methylationTotalSamples={methylationTotalSamples}
             haplotypeLoading={haplotypeLoading}
-            showMqtl={showMqtl}
+            showMqtl={false}
             onShowMqtlChange={setShowMqtl}
             mqtlLoading={mqtlLoading}
             mqtlData={mqtlData}
@@ -488,3 +457,4 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
 }
 
 export default HaplotypeRegionPage
+
