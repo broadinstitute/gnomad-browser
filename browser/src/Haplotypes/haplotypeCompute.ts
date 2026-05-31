@@ -178,12 +178,19 @@ export type DistanceMetric = 'auto' | 'sv_only' | 'snv_only' | 'all'
 
 const isSNV = (v: LRVariant): boolean => v.allele_type === 'snv'
 
-export const computeSVDistanceMatrix = (groups: HaplotypeGroup[], distanceMetric: DistanceMetric = 'auto', regionSize?: number): number[][] => {
+export const computeSVDistanceMatrix = (
+  groups: LightweightGroup[],
+  variants: LRVariant[],
+  distanceMetric: DistanceMetric = 'auto',
+  regionSize?: number
+): number[][] => {
   const minLen = getMinSVLength(regionSize)
-  // Build sorted integer index arrays for SV variant_ids
+
+  // Collect all unique variants across groups for SV count check
   const allSVIds = new Map<string, number>()
   for (const g of groups) {
-    for (const v of g.variants.variants) {
+    for (const idx of g.variantIndices) {
+      const v = variants[idx]
       if (isSV(v, minLen) && !allSVIds.has(v.variant_id)) {
         allSVIds.set(v.variant_id, allSVIds.size)
       }
@@ -195,11 +202,12 @@ export const computeSVDistanceMatrix = (groups: HaplotypeGroup[], distanceMetric
     distanceMetric === 'sv_only' ? 'sv'
     : distanceMetric === 'snv_only' ? 'snv'
     : distanceMetric === 'all' ? 'all'
-    : allSVIds.size >= 5 ? 'sv' : 'all' // auto: SV-only when enough SVs, else all
+    : allSVIds.size >= 5 ? 'sv' : 'all'
 
   const filteredIds = new Map<string, number>()
   for (const g of groups) {
-    for (const v of g.variants.variants) {
+    for (const idx of g.variantIndices) {
+      const v = variants[idx]
       if (useMode === 'sv' && !isSV(v, minLen)) continue
       if (useMode === 'snv' && !isSNV(v)) continue
       if (!filteredIds.has(v.variant_id)) {
@@ -210,9 +218,10 @@ export const computeSVDistanceMatrix = (groups: HaplotypeGroup[], distanceMetric
 
   const varIndices: number[][] = groups.map((g) => {
     const indices: number[] = []
-    for (const v of g.variants.variants) {
-      const idx = filteredIds.get(v.variant_id)
-      if (idx !== undefined) indices.push(idx)
+    for (const idx of g.variantIndices) {
+      const v = variants[idx]
+      const mappedIdx = filteredIds.get(v.variant_id)
+      if (mappedIdx !== undefined) indices.push(mappedIdx)
     }
     return indices.sort((a, b) => a - b)
   })
@@ -232,7 +241,7 @@ export const computeSVDistanceMatrix = (groups: HaplotypeGroup[], distanceMetric
 
 export const buildUPGMATree = (
   distanceMatrix: number[][],
-  groups: HaplotypeGroup[]
+  groups: LightweightGroup[]
 ): { tree: TreeNode; leafOrder: string[] } => {
   const n = groups.length
 
@@ -435,7 +444,133 @@ export function sortGroups(groups: HaplotypeGroup[], sortBy: string): HaplotypeG
   return sorted
 }
 
-// ---- Grouping ----
+// ---- Lightweight grouping (Tier 1) ----
+
+export type LightweightGroup = {
+  signature: string
+  carrierIds: string[]
+  variantIndices: number[]
+  hash: number
+  sampleCount: number
+}
+
+export function groupCarriersLightweight(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  minAf: number
+): LightweightGroup[] {
+  const passingIndices = new Set<number>()
+  for (let i = 0; i < variants.length; i++) {
+    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+  }
+
+  const signatureToCarriers = new Map<string, string[]>()
+  const signatureToIndices = new Map<string, number[]>()
+
+  for (const [carrierId, variantIdxs] of Object.entries(carrierVariantIndices)) {
+    const filtered = variantIdxs.filter((i) => passingIndices.has(i))
+    if (filtered.length === 0) continue
+
+    const sorted = filtered.slice().sort((a, b) => a - b)
+    const signature = sorted.join(',')
+
+    let carriers = signatureToCarriers.get(signature)
+    if (!carriers) {
+      carriers = []
+      signatureToCarriers.set(signature, carriers)
+      signatureToIndices.set(signature, sorted)
+    }
+    carriers.push(carrierId)
+  }
+
+  const groups: LightweightGroup[] = []
+  for (const [signature, carriers] of signatureToCarriers) {
+    groups.push({
+      signature,
+      carrierIds: carriers,
+      variantIndices: signatureToIndices.get(signature)!,
+      hash: Number(hashString(signature)),
+      sampleCount: carriers.length,
+    })
+  }
+
+  return groups
+}
+
+// ---- Inflation (Tier 2) ----
+
+export function inflateGroups(
+  lightGroups: LightweightGroup[],
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  trvAlts: Record<string, Record<number, string>> | undefined,
+  skipBelowThreshold: boolean
+): HaplotypeGroup[] {
+  return lightGroups.map((lg) => {
+    const aboveVariants = lg.variantIndices.map((i) => variants[i])
+    const readableId = aboveVariants
+      .map((v) => `${v.chrom}-${v.pos}:${v.ref}-${v.alt}`)
+      .sort()
+      .join(';')
+    const hasTrv = aboveVariants.some((v) => v.allele_type === 'trv')
+
+    const samples = lg.carrierIds.map((carrierId) => {
+      const sampleId = carrierId.split(':')[0]
+      let carrierVariants = aboveVariants
+      if (hasTrv && trvAlts) {
+        const posMap = trvAlts[carrierId]
+        if (posMap) {
+          carrierVariants = aboveVariants.map((v) => {
+            if (v.allele_type !== 'trv') return v
+            const carrierAlt = posMap[v.pos]
+            if (carrierAlt && carrierAlt !== v.alt) {
+              return { ...v, alt: carrierAlt }
+            }
+            return v
+          })
+        }
+      }
+      return {
+        sample_id: sampleId,
+        variant_sets: [{ variants: carrierVariants, readable_id: readableId }],
+      }
+    })
+
+    const belowVariants: (LRVariant & { in_samples?: string[] })[] = []
+    if (!skipBelowThreshold) {
+      const passingSet = new Set(lg.variantIndices)
+      const belowMap = new Map<number, string[]>()
+      for (const carrierId of lg.carrierIds) {
+        const sampleId = carrierId.split(':')[0]
+        const allIdxs = carrierVariantIndices[carrierId]
+        for (const idx of allIdxs) {
+          if (!passingSet.has(idx)) {
+            const existing = belowMap.get(idx)
+            if (existing) {
+              existing.push(sampleId)
+            } else {
+              belowMap.set(idx, [sampleId])
+            }
+          }
+        }
+      }
+      for (const [idx, sampleIds] of belowMap) {
+        belowVariants.push({ ...variants[idx], in_samples: sampleIds })
+      }
+    }
+
+    return {
+      samples,
+      variants: { variants: aboveVariants, readable_id: readableId },
+      below_threshold: { variants: belowVariants, readable_id: '' },
+      start: aboveVariants.reduce((min, v) => Math.min(min, v.pos), Infinity),
+      stop: aboveVariants.reduce((max, v) => Math.max(max, v.pos), -Infinity),
+      hash: lg.hash,
+    }
+  })
+}
+
+// ---- Grouping (legacy, kept for reference but no longer called) ----
 
 export function groupCarriers(
   variants: LRVariant[],
@@ -541,26 +676,28 @@ export function groupCarriers(
 // ---- Cluster computation ----
 
 export function computeClusters(
-  groups: HaplotypeGroup[],
+  groups: LightweightGroup[],
   tree: TreeNode,
-  clusterThreshold: number
+  clusterThreshold: number,
+  variants: LRVariant[]
 ): HaplotypeCluster[] {
   const clusterNodes = getClustersAtThreshold(tree, clusterThreshold)
-  const groupByHash = new Map<string, HaplotypeGroup>()
+  const groupByHash = new Map<string, LightweightGroup>()
   for (const g of groups) groupByHash.set(String(g.hash), g)
 
   return clusterNodes.map((clusterNode, idx) => {
     const memberHashes = getLeafGroupHashes(clusterNode)
     const memberGroups = memberHashes
       .map((h) => groupByHash.get(h))
-      .filter((g): g is HaplotypeGroup => g != null)
+      .filter((g): g is LightweightGroup => g != null)
 
-    const sampleCount = memberGroups.reduce((sum, g) => sum + g.samples.length, 0)
+    const sampleCount = memberGroups.reduce((sum, g) => sum + g.sampleCount, 0)
 
     const variantTally = new Map<string, { variant: LRVariant; count: number }>()
     for (const g of memberGroups) {
-      const weight = g.samples.length
-      for (const v of g.variants.variants) {
+      const weight = g.sampleCount
+      for (const idx of g.variantIndices) {
+        const v = variants[idx]
         const existing = variantTally.get(v.variant_id)
         if (existing) {
           existing.count += weight
@@ -863,26 +1000,37 @@ export function computeHaplotypeView(
   }
 
   const skipBelow = (regionSize || 0) > 200_000
-  let t0 = Date.now()
-  const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts, skipBelow)
-  const tGroup = Date.now() - t0
-  const sorted = sortGroups(groups, sortBy)
 
-  if (sorted.length < 2) {
-    return { groups: sorted }
+  // Tier 1: Lightweight grouping (no TR alt spreading, no below-threshold, no variant_sets)
+  let t0 = Date.now()
+  const lightGroups = groupCarriersLightweight(variants, carrierVariantIndices, minAf)
+  const tGroup = Date.now() - t0
+
+  if (lightGroups.length < 2) {
+    const inflated = inflateGroups(lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow)
+    return { groups: sortGroups(inflated, sortBy) }
   }
 
-  // Always build the UPGMA tree so genealogy and clustering share one tree
-  onProgress?.(`Computing distances for ${sorted.length} haplotypes…`)
+  // Distance matrix + UPGMA on lightweight groups
+  onProgress?.(`Computing distances for ${lightGroups.length} haplotypes…`)
   t0 = Date.now()
-  const distMatrix = computeSVDistanceMatrix(sorted, distanceMetric, regionSize)
+  const distMatrix = computeSVDistanceMatrix(lightGroups, variants, distanceMetric, regionSize)
   const tDist = Date.now() - t0
-  onProgress?.(`Building UPGMA tree (${sorted.length} haplotypes)…`)
+  onProgress?.(`Building UPGMA tree (${lightGroups.length} haplotypes)…`)
   t0 = Date.now()
-  const { tree } = buildUPGMATree(distMatrix, sorted)
+  const { tree } = buildUPGMATree(distMatrix, lightGroups)
   const tTree = Date.now() - t0
-  console.log(`[perf] computeHaplotypeView: groupCarriers=${tGroup}ms, distMatrix=${tDist}ms (${sorted.length} groups), UPGMA=${tTree}ms`)
-  const clusters = isClusteredView ? computeClusters(sorted, tree, clusterThreshold) : undefined
+
+  // Clustering on lightweight groups
+  const clusters = isClusteredView ? computeClusters(lightGroups, tree, clusterThreshold, variants) : undefined
+
+  // Tier 2: Inflate to full HaplotypeGroup[] for rendering
+  t0 = Date.now()
+  const inflated = inflateGroups(lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow)
+  const tInflate = Date.now() - t0
+  const sorted = sortGroups(inflated, sortBy)
+
+  console.log(`[perf] computeHaplotypeView: lightweight=${tGroup}ms, distMatrix=${tDist}ms (${lightGroups.length} groups), UPGMA=${tTree}ms, inflate=${tInflate}ms`)
 
   return {
     groups: sorted,
@@ -1050,7 +1198,6 @@ export function deriveAutoDefaults(
   variants: LRVariant[],
   carrierVariantIndices: Record<string, number[]>,
   regionSize: number,
-  trvAlts?: Record<string, Record<number, string>>,
   distanceMetric: DistanceMetric = 'auto'
 ): AutoDefaults {
   if (variants.length === 0) {
@@ -1072,7 +1219,7 @@ export function deriveAutoDefaults(
     return { floor, ceiling, defaultAf, defaultClusterThreshold: 0, isClusteredView: false }
   }
 
-  // Joint iterative derivation
+  // Joint iterative derivation — uses lightweight grouping only
   let minAf = floor
   let clusterThreshold = baseClusterThreshold
   let bestRowCount = 0
@@ -1081,13 +1228,13 @@ export function deriveAutoDefaults(
   const maxAfBump = Math.pow(10, Math.log10(floor) + (Math.log10(ceiling) - Math.log10(floor)) * 0.2)
 
   for (let iter = 0; iter < 10; iter++) {
-    const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts, true)
-    const N = groups.length
+    const lightGroups = groupCarriersLightweight(variants, carrierVariantIndices, minAf)
+    const N = lightGroups.length
 
     // Too many groups for UPGMA — raise AF to reduce
     if (N > MAX_GROUPS_FOR_UPGMA) {
       const newAf = Math.pow(10, (Math.log10(minAf) + Math.log10(ceiling)) / 2)
-      if (newAf > maxAfBump) break // bail out — accept floor AF with whatever clustering gives us
+      if (newAf > maxAfBump) break
       minAf = newAf
       continue
     }
@@ -1097,27 +1244,24 @@ export function deriveAutoDefaults(
       break
     }
 
-    const distMatrix = computeSVDistanceMatrix(groups, distanceMetric, regionSize)
-    const { tree } = buildUPGMATree(distMatrix, groups)
+    const distMatrix = computeSVDistanceMatrix(lightGroups, variants, distanceMetric, regionSize)
+    const { tree } = buildUPGMATree(distMatrix, lightGroups)
     const clusterNodes = getClustersAtThreshold(tree, clusterThreshold)
     const M = clusterNodes.length
     bestRowCount = M
 
     if (M >= TARGET_MIN && M <= TARGET_MAX) {
-      break // success
+      break
     }
 
     if (M > TARGET_MAX) {
-      // Too many clusters — increase threshold to merge more
       clusterThreshold = Math.min(1.0, clusterThreshold + 0.05)
-      if (clusterThreshold >= 0.95) break // threshold maxed out, stop
+      if (clusterThreshold >= 0.95) break
     } else {
-      // Too few clusters — decrease AF to get more differentiated groups
       const newAf = Math.pow(10, (Math.log10(floor) + Math.log10(minAf)) / 2)
       if (Math.abs(newAf - minAf) < 1e-6) {
-        // AF can't go lower, try decreasing cluster threshold
         clusterThreshold = Math.max(0, clusterThreshold - 0.05)
-        if (clusterThreshold <= 0.05) break // nothing more we can do
+        if (clusterThreshold <= 0.05) break
       } else {
         minAf = newAf
       }
@@ -1159,3 +1303,4 @@ function binarySearchAf(
 }
 
 // rebuild
+
