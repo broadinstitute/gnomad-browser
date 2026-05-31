@@ -136,15 +136,13 @@ export const Legend = ({
   colorModes = COLOR_MODES,
   showGenealogy = false,
   onShowGenealogyChange = () => { },
-  isClusteredView = false,
-  onIsClusteredViewChange = () => { },
+  groupingMode = 'similarity' as 'similarity' | 'exact' | 'diploid',
+  onGroupingModeChange = (() => { }) as (mode: 'similarity' | 'exact' | 'diploid') => void,
   clusterThreshold = 0,
   onClusterThresholdChange = () => { },
   clusterCount = 0,
   minAfFloor = 0,
   minAfCeiling = 1,
-  isDiploidView = false,
-  onIsDiploidViewChange = () => { },
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   onDistanceMetricChange = (() => { }) as (metric: import('./haplotypeCompute').DistanceMetric) => void,
   regionSize = 0,
@@ -177,15 +175,13 @@ export const Legend = ({
   colorModes?: { value: string; label: string }[]
   showGenealogy?: boolean
   onShowGenealogyChange?: (show: boolean) => void
-  isClusteredView?: boolean
-  onIsClusteredViewChange?: (clustered: boolean) => void
+  groupingMode?: 'similarity' | 'exact' | 'diploid'
+  onGroupingModeChange?: (mode: 'similarity' | 'exact' | 'diploid') => void
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
   clusterCount?: number
   minAfFloor?: number
   minAfCeiling?: number
-  isDiploidView?: boolean
-  onIsDiploidViewChange?: (isDiploid: boolean) => void
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
   onDistanceMetricChange?: (metric: import('./haplotypeCompute').DistanceMetric) => void
   regionSize?: number
@@ -194,6 +190,9 @@ export const Legend = ({
   showPopBackground?: boolean
   onShowPopBackgroundChange?: (show: boolean) => void
 }) => {
+  const isDiploidView = groupingMode === 'diploid'
+  const isClusteredView = groupingMode === 'similarity'
+
   // Log-scale slider: internal state is 0-100, mapped to log10(minAfFloor)..log10(minAfCeiling)
   const minLog = Math.log10(Math.max(minAfFloor, 0.0001))
   const maxLog = Math.log10(Math.max(minAfCeiling, 0.001))
@@ -383,7 +382,7 @@ export const Legend = ({
             {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}
           </span>
           <HaplotypeHelpButton title="Minimum Allele Frequency">
-            <MinAfHelp />
+            <MinAfHelp groupingMode={groupingMode} />
           </HaplotypeHelpButton>
         </div>
         {plotType === 'lollipop' && (
@@ -519,17 +518,18 @@ export const Legend = ({
                 )}
               </>
             )}
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                <input
-                  type='checkbox'
-                  checked={isDiploidView}
-                  onChange={(e) => onIsDiploidViewChange(e.target.checked)}
-                />
-                Diploid view
-              </label>
-              <HaplotypeHelpButton title="Diploid View">
-                <DiploidViewHelp />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <label style={{ fontSize: '12px' }}>Grouping:</label>
+              <Select
+                value={groupingMode}
+                onChange={(e: any) => onGroupingModeChange(e.target.value)}
+              >
+                <option value="similarity">Similarity Clusters</option>
+                <option value="exact">Exact Match</option>
+                <option value="diploid">Diploid</option>
+              </Select>
+              <HaplotypeHelpButton title="Grouping Mode">
+                <GroupingModeHelp />
               </HaplotypeHelpButton>
             </div>
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
@@ -565,19 +565,6 @@ export const Legend = ({
                   </label>
                   <HaplotypeHelpButton title="Genealogy Tree">
                     <GenealogyHelp />
-                  </HaplotypeHelpButton>
-                </div>
-                <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                    <input
-                      type='checkbox'
-                      checked={isClusteredView}
-                      onChange={(e) => onIsClusteredViewChange(e.target.checked)}
-                    />
-                    Clustered view
-                  </label>
-                  <HaplotypeHelpButton title="Clustered View">
-                    <ClusteredViewHelp />
                   </HaplotypeHelpButton>
                 </div>
                 {isClusteredView && (
@@ -952,8 +939,8 @@ type HaplotypeTrackProps = {
   onShowGenealogyChange?: (show: boolean) => void
   hoveredVariantPosition?: number | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
-  isClusteredView?: boolean
-  onIsClusteredViewChange?: (clustered: boolean) => void
+  groupingMode?: 'similarity' | 'exact' | 'diploid'
+  onGroupingModeChange?: (mode: 'similarity' | 'exact' | 'diploid') => void
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
   expandedClusterIds?: Set<string>
@@ -961,8 +948,6 @@ type HaplotypeTrackProps = {
   treeJson?: string
   minAfFloor?: number
   minAfCeiling?: number
-  isDiploidView?: boolean
-  onIsDiploidViewChange?: (isDiploid: boolean) => void
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
   onDistanceMetricChange?: (metric: import('./haplotypeCompute').DistanceMetric) => void
   regionSize?: number
@@ -1066,21 +1051,34 @@ const LollipopHelp = () => (
   </>
 )
 
-const MinAfHelp = () => (
+const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'similarity' | 'exact' | 'diploid' }) => (
   <>
-    <p>
-      This slider filters out rare variants before grouping haplotypes together.
-      Because groups in this view are strictly defined by identical sets of variants,
-      keeping rare or sample-specific variants can fragment your data into many tiny,
-      highly specific groups. Raising the threshold ignores these rare variants, allowing
-      samples to coalesce into major ancestral haplotype blocks defined by common variants.
-    </p>
-    <p>
-      The rare variants aren't hidden completely — they remain visible as small open circles
-      on each group's track so you can still spot them without them breaking up the group.
-      Keep in mind that adjusting this slider recalculates the underlying groups, which will
-      also completely rebuild the genealogical tree and clusters.
-    </p>
+    {groupingMode === 'similarity' ? (
+      <>
+        <p>
+          In <strong>Similarity Clusters</strong> mode, the tree and clusters are computed once at the
+          lowest AF and remain stable. Moving this slider only shows/hides variant dots on each
+          row — it does not rebuild groups or the tree.
+        </p>
+        <p>
+          Rare variants remain visible as small open circles so you can still spot them
+          without them affecting the grouping.
+        </p>
+      </>
+    ) : (
+      <>
+        <p>
+          In <strong>{groupingMode === 'diploid' ? 'Diploid' : 'Exact Match'}</strong> mode,
+          this slider controls which variants are used when matching haplotypes. Variants below
+          this frequency are ignored, directly causing groups to merge. Raising the threshold
+          consolidates samples into fewer, larger groups defined by common variants.
+        </p>
+        <p>
+          Rare variants aren't hidden completely — they remain visible as small open circles
+          on each group's track so you can still spot them without them breaking up the group.
+        </p>
+      </>
+    )}
   </>
 )
 
@@ -1127,54 +1125,29 @@ const GenealogyHelp = () => (
   </>
 )
 
-const DiploidViewHelp = () => (
+const GroupingModeHelp = () => (
   <>
-    <p>
-      Diploid view pairs both strands of each sample together, showing the complete
-      diploid structure. Instead of 584 independent haplotype rows, you see 292 sample
-      rows — each with strand A on top and strand B on bottom.
-    </p>
-    <p>
-      <strong>Runs of Homozygosity (ROH)</strong> — rows tinted gold indicate samples where
-      both strands carry nearly identical variant sets (Jaccard similarity &ge; 0.95).
-      This can indicate consanguinity or identity-by-descent segments.
-    </p>
-    <p>
-      <strong>Compound Heterozygosity [CH]</strong> — a red [CH] badge marks diplotypes
-      where each strand carries a different severe variant (frameshift, stop-gained,
-      splice donor/acceptor, or missense). These samples have both copies of the gene
-      disrupted, which is clinically significant for recessive conditions.
-    </p>
-    <p>
-      Sort modes: <em>Frequency</em> shows the most common diplotypes first.
-      <em>ROH</em> sorts by homozygosity fraction. <em>Comp. Het.</em> bubbles
-      compound heterozygotes to the top.
-    </p>
-  </>
-)
-
-const ClusteredViewHelp = () => (
-  <>
-    <p>
-      Clustering collapses closely related haplotype groups into macro-clusters by cutting
-      the UPGMA tree at a genetic distance threshold. Groups that share a similar variant
-      profile are merged into a single row.
-    </p>
-    <p>
-      Each cluster row shows consensus variants — opacity scales with frequency in the
-      cluster (solid = shared by all, faint = present in half). Click the arrow to expand
-      a cluster and see its constituent groups.
-    </p>
-    <p>
-      <strong>Region size behavior:</strong> Small regions (&lt;50kb) default to clustering on
-      all variant types with a lower threshold (0.20–0.25). Larger regions default to
-      SVs/TRs only with higher thresholds (0.35–0.70). Use the <em>Cluster by</em> dropdown
-      to override the default metric.
-    </p>
-    <p>
-      Use the cluster resolution slider to adjust where the tree is cut — moving right
-      merges more distant groups together.
-    </p>
+    <dl style={{ margin: 0 }}>
+      <dt style={{ fontWeight: 600, marginTop: 4 }}>Similarity Clusters (UPGMA)</dt>
+      <dd style={{ marginLeft: 0, marginBottom: 8 }}>
+        Groups haplotypes by overall structural similarity using hierarchical clustering.
+        Similar-but-not-identical haplotypes are merged into clusters. The Min AF slider
+        only controls which variant dots are displayed — the tree and clusters remain stable.
+        Use the cluster resolution slider to adjust how aggressively groups are merged.
+      </dd>
+      <dt style={{ fontWeight: 600, marginTop: 4 }}>Exact Match</dt>
+      <dd style={{ marginLeft: 0, marginBottom: 8 }}>
+        Strict identity-by-descent matching: haplotypes must share the exact same set of
+        variants above the Min AF threshold. The Min AF slider directly changes group
+        membership — raising it merges groups.
+      </dd>
+      <dt style={{ fontWeight: 600, marginTop: 4 }}>Diploid</dt>
+      <dd style={{ marginLeft: 0, marginBottom: 8 }}>
+        Pairs both strands of each sample together, showing complete diploid structure.
+        Highlights runs of homozygosity (ROH) and compound heterozygosity. The Min AF slider
+        controls grouping, same as Exact Match mode.
+      </dd>
+    </dl>
   </>
 )
 
@@ -1218,7 +1191,7 @@ const HaplotypeInfoBar = ({
   start,
   stop,
   threshold,
-  isClusteredView,
+  groupingMode = 'similarity',
   clusterCount,
   clusterThreshold,
   haplotypeLoading,
@@ -1229,14 +1202,13 @@ const HaplotypeInfoBar = ({
   methylationTotalSamples,
   isAutoTuned,
   plotType,
-  isDiploidView = false,
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
 }: {
   displayGroups: HaplotypeGroup[]
   start: number
   stop: number
   threshold: number
-  isClusteredView: boolean
+  groupingMode?: 'similarity' | 'exact' | 'diploid'
   clusterCount: number
   clusterThreshold: number
   haplotypeLoading: boolean
@@ -1247,7 +1219,6 @@ const HaplotypeInfoBar = ({
   methylationTotalSamples: number
   isAutoTuned: boolean
   plotType: string
-  isDiploidView?: boolean
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
@@ -1298,14 +1269,14 @@ const HaplotypeInfoBar = ({
   return (
     <InfoBarWrapper>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-        <span><strong>{totalSamples.toLocaleString()}</strong> {isDiploidView ? 'samples (diploid)' : 'haplotypes'}</span>
+        <span><strong>{totalSamples.toLocaleString()}</strong> {groupingMode === 'diploid' ? 'samples (diploid)' : 'haplotypes'}</span>
         <span style={{ color: '#999' }}>·</span>
         <span><strong>{totalVariants.toLocaleString()}</strong> variants</span>
         <span style={{ color: '#999' }}>·</span>
         <span>{regionLabel}</span>
         <span style={{ color: '#999' }}>·</span>
-        <span>{isDiploidView ? 'Diploid Mode' : isClusteredView ? `Clustered (${clusterCount}) · Resolution: ${clusterThreshold.toFixed(2)}` : 'Unclustered'}</span>
-        {!isDiploidView && (
+        <span>{groupingMode === 'diploid' ? 'Diploid' : groupingMode === 'similarity' ? `Similarity Clusters (${clusterCount}) · Resolution: ${clusterThreshold.toFixed(2)}` : 'Exact Match'}</span>
+        {groupingMode !== 'diploid' && (
           <>
             <span style={{ color: '#999' }}>·</span>
             <span style={{ color: '#888', fontSize: '11px' }}>Distance: {distanceMode}</span>
@@ -1870,8 +1841,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   onShowGenealogyChange,
   hoveredVariantPosition,
   onVisibleGroupChange,
-  isClusteredView = false,
-  onIsClusteredViewChange,
+  groupingMode = 'similarity',
+  onGroupingModeChange,
   clusterThreshold = 0,
   onClusterThresholdChange,
   expandedClusterIds,
@@ -1879,8 +1850,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   treeJson,
   minAfFloor = 0,
   minAfCeiling = 1,
-  isDiploidView = false,
-  onIsDiploidViewChange,
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   onDistanceMetricChange,
   regionSize = 0,
@@ -1899,6 +1868,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   const [filterToOutliers, setFilterToOutliers] = useState(true)
   const [showPopBackground, setShowPopBackground] = useState(true)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
+
+  const isClusteredView = groupingMode === 'similarity'
+  const isDiploidView = groupingMode === 'diploid'
 
   const handleColorModeChange = useCallback(
     (mode: string) => {
@@ -2080,8 +2052,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     onPlotTypeChange: onPlotTypeChange || (() => { }),
     showGenealogy,
     onShowGenealogyChange: onShowGenealogyChange || (() => { }),
-    isClusteredView,
-    onIsClusteredViewChange: onIsClusteredViewChange || (() => { }),
+    groupingMode,
+    onGroupingModeChange: onGroupingModeChange || (() => { }),
     clusterThreshold,
     onClusterThresholdChange: (t: number) => {
       setIsAutoTuned(false)
@@ -2090,8 +2062,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     clusterCount: clusters?.length || 0,
     minAfFloor,
     minAfCeiling,
-    isDiploidView,
-    onIsDiploidViewChange: onIsDiploidViewChange || (() => { }),
     distanceMetric,
     onDistanceMetricChange: onDistanceMetricChange || (() => { }),
     regionSize,
@@ -2123,7 +2093,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           start={start}
           stop={stop}
           threshold={threshold}
-          isClusteredView={isClusteredView}
+          groupingMode={groupingMode}
           clusterCount={clusters?.length || 0}
           clusterThreshold={clusterThreshold}
           haplotypeLoading={haplotypeLoading}
@@ -2134,7 +2104,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           methylationTotalSamples={methylationTotalSamples}
           isAutoTuned={isAutoTuned}
           plotType={plotType}
-          isDiploidView={isDiploidView}
           distanceMetric={distanceMetric}
         />
       </StickyHeader>
@@ -2219,7 +2188,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 })
 
 export default HaplotypeTrack
-
 
 
 

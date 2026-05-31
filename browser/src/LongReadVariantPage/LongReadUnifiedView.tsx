@@ -218,7 +218,7 @@ const LongReadUnifiedView = ({
 
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('similarity_score')
-  const [isDiploidView, setIsDiploidView] = useState(false)
+  const [groupingMode, setGroupingMode] = useState<'similarity' | 'exact' | 'diploid'>('similarity')
   const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'sv_only')
   const [plotType, setPlotType] = useState('lollipop')
   const [colorMode, setColorMode] = useState('sv_type')
@@ -237,7 +237,6 @@ const LongReadUnifiedView = ({
   // Visual drives the drag line + slider display; deferred drives the expensive recomputation.
   const [clusterThreshold, setClusterThreshold] = useState(() => getAutoClusterThreshold(regionSize))
   const [deferredClusterThreshold, setDeferredClusterThreshold] = useState(() => getAutoClusterThreshold(regionSize))
-  const [isClusteredView, setIsClusteredView] = useState(() => getAutoClusterThreshold(regionSize) > 0)
   const [expandedClusterIds, setExpandedClusterIds] = useState<Set<string>>(new Set())
 
   const debouncedCommitThreshold = useMemo(
@@ -249,11 +248,11 @@ const LongReadUnifiedView = ({
     debouncedCommitThreshold(value)
   }, [debouncedCommitThreshold])
 
-  const handleDiploidViewChange = useCallback((diploid: boolean) => {
-    setIsDiploidView(diploid)
-    if (diploid && !['diplotype_frequency', 'roh_fraction', 'compound_het'].includes(sortBy)) {
+  const handleGroupingModeChange = useCallback((mode: 'similarity' | 'exact' | 'diploid') => {
+    setGroupingMode(mode)
+    if (mode === 'diploid' && !['diplotype_frequency', 'roh_fraction', 'compound_het'].includes(sortBy)) {
       setSortBy('diplotype_frequency')
-    } else if (!diploid && !['similarity_score', 'sample_count'].includes(sortBy)) {
+    } else if (mode !== 'diploid' && !['similarity_score', 'sample_count'].includes(sortBy)) {
       setSortBy('similarity_score')
     }
   }, [sortBy])
@@ -458,7 +457,9 @@ const LongReadUnifiedView = ({
         setThreshold(defaults.defaultAf)
         setClusterThreshold(defaults.defaultClusterThreshold)
         setDeferredClusterThreshold(defaults.defaultClusterThreshold)
-        setIsClusteredView(defaults.isClusteredView)
+        if (defaults.isClusteredView) {
+          setGroupingMode('similarity')
+        }
 
         setHaplotypeLoading(false)
         if (workerRef.current) {
@@ -487,6 +488,10 @@ const LongReadUnifiedView = ({
         setHaplotypeLoading(false)
       })
   }, [viewMode, chrom, start, stop])
+
+  // Derive booleans from groupingMode for worker/compute compatibility
+  const isClusteredView = groupingMode === 'similarity'
+  const isDiploidView = groupingMode === 'diploid'
 
   // Recompute when AF/sort/clustering/diploid changes
   const hasData = haplotypeData !== null
@@ -827,8 +832,8 @@ const LongReadUnifiedView = ({
               onShowGenealogyChange={setShowGenealogyUrl}
               hoveredVariantPosition={hoveredVariantPosition}
               onVisibleGroupChange={handleVisibleGroupChange}
-              isClusteredView={isClusteredView}
-              onIsClusteredViewChange={setIsClusteredView}
+              groupingMode={groupingMode}
+              onGroupingModeChange={handleGroupingModeChange}
               clusterThreshold={clusterThreshold}
               onClusterThresholdChange={handleClusterThresholdChange}
               expandedClusterIds={expandedClusterIds}
@@ -836,8 +841,6 @@ const LongReadUnifiedView = ({
               treeJson={haplotypeGroups.tree_json}
               minAfFloor={autoDefaults.floor}
               minAfCeiling={autoDefaults.ceiling}
-              isDiploidView={isDiploidView}
-              onIsDiploidViewChange={handleDiploidViewChange}
               distanceMetric={distanceMetric}
               onDistanceMetricChange={setDistanceMetric}
               regionSize={regionSize}
