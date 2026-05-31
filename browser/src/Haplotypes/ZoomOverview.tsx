@@ -58,6 +58,32 @@ const ResetButton = styled.button`
   }
 `
 
+const ZoomButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 11px;
+  color: #616161;
+`
+
+const ZoomButton = styled.button`
+  padding: 0.15rem 0.4rem;
+  border: 1px solid #bdbdbd;
+  border-radius: 3px;
+  background: white;
+  color: #424242;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1;
+
+  &:hover {
+    background: #e3f2fd;
+    border-color: #90caf9;
+    color: #1565c0;
+  }
+`
+
 const TrackWrapper = styled.div`
   position: relative;
   user-select: none;
@@ -171,6 +197,7 @@ interface ZoomOverviewProps {
   variants?: any[]
   onChangeRegion: (region: { start: number; stop: number } | null) => void
   onSetRegion?: (region: { start: number; stop: number }) => void
+  onNavigateRegion?: (region: { chrom: string; start: number; stop: number }) => void
 }
 
 export default function ZoomOverview({
@@ -181,6 +208,7 @@ export default function ZoomOverview({
   variants = [],
   onChangeRegion,
   onSetRegion,
+  onNavigateRegion,
 }: ZoomOverviewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(800)
@@ -199,6 +227,27 @@ export default function ZoomOverview({
 
   const dragMovedRef = useRef(false)
   const clickBlockerRef = useRef(false)
+
+  const handleZoom = useCallback(
+    (factor: number) => {
+      const center = (currentRegion.start + currentRegion.stop) / 2
+      const newSize = (currentRegion.stop - currentRegion.start) / factor
+      let newStart = Math.round(center - newSize / 2)
+      let newStop = Math.round(center + newSize / 2)
+
+      if (newStart >= overviewRegion.start && newStop <= overviewRegion.stop) {
+        onChangeRegion({ start: newStart, stop: newStop })
+      } else if (onNavigateRegion) {
+        newStart = Math.max(1, newStart)
+        onNavigateRegion({ chrom, start: newStart, stop: newStop })
+      } else {
+        newStart = Math.max(overviewRegion.start, newStart)
+        newStop = Math.min(overviewRegion.stop, newStop)
+        onChangeRegion({ start: newStart, stop: newStop })
+      }
+    },
+    [currentRegion, overviewRegion, chrom, onChangeRegion, onNavigateRegion]
+  )
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -378,6 +427,16 @@ export default function ZoomOverview({
             Reset zoom
           </ResetButton>
         )}
+        <ZoomButtonGroup>
+          <span>+</span>
+          {[1.5, 3, 10].map((z) => (
+            <ZoomButton key={z} onClick={() => handleZoom(z)}>{z}x</ZoomButton>
+          ))}
+          <span style={{ marginLeft: '0.25rem' }}>−</span>
+          {[1.5, 3, 10].map((z) => (
+            <ZoomButton key={z} onClick={() => handleZoom(1 / z)}>{z}x</ZoomButton>
+          ))}
+        </ZoomButtonGroup>
       </OverviewHeader>
 
       <TrackWrapper ref={containerRef} onClick={handleTrackClick} style={{ height: MINIMAP_HEIGHT }}>
