@@ -4,13 +4,12 @@ import { TooltipAnchor } from '@gnomad/ui'
 import { scaleLinear } from 'd3-scale'
 import { PangenomeGraph, GraphNode } from './pangenome-graph'
 import { PATH_COLORS, SUPERPOPULATION_COLORS } from './colors'
-import HaplotypeHelpButton from './HelpButton'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 const MAX_PATHS = 30
 const NODE_GAP = 10
 const MIN_PATH_HEIGHT = 16
-const HEADER_HEIGHT = 90
+const HEADER_HEIGHT = 20
 
 type Props = {
   graph: PangenomeGraph
@@ -98,46 +97,6 @@ const computeColumnLayout = (
   return pathYPositions
 }
 
-const AlluvialHelp = () => (
-  <>
-    <h4 style={{ marginTop: 0 }}>Overview</h4>
-    <p>
-      The alluvial (Sankey) view shows haplotype groups as colored ribbons flowing through variant
-      sites across a genomic region. It reveals how haplotypes share or diverge at each variant position.
-    </p>
-
-    <h4>Reading the Plot</h4>
-    <ul>
-      <li><strong>Ribbons</strong> — Each colored ribbon represents a haplotype group. The <strong>thickness</strong> is proportional to the number of samples sharing that haplotype.</li>
-      <li><strong style={{ color: '#4a90d9' }}>Blue dots</strong> — Reference allele nodes. Ribbons passing through a blue dot carry the reference allele at that position.</li>
-      <li><strong style={{ color: '#d73027' }}>Red dots</strong> — Alternate allele nodes. Ribbons passing through a red dot carry an alternate allele.</li>
-      <li><strong>Convergence</strong> — When ribbons merge at the same node, those haplotypes share the same allele at that site.</li>
-      <li><strong>Divergence</strong> — When ribbons split to different nodes, haplotypes differ at that site.</li>
-    </ul>
-
-    <h4>Left Panel Labels</h4>
-    <ul>
-      <li><strong>Orange circle + number</strong> — Sample count (how many haplotypes in this group)</li>
-      <li><strong>Gray circle + number</strong> — Variant count (how many variant sites this group carries)</li>
-      <li><strong>Colored line</strong> — Matches the ribbon color in the plot</li>
-    </ul>
-
-    <h4>Interpreting Patterns</h4>
-    <ul>
-      <li><strong>Wide ribbons</strong> indicate common haplotypes shared by many individuals.</li>
-      <li><strong>Thin ribbons</strong> at the bottom are rare, unique haplotypes.</li>
-      <li>Regions with many red dots and ribbon splitting indicate <strong>high haplotype diversity</strong>.</li>
-      <li>Regions where most ribbons pass through the same node indicate <strong>low diversity</strong> (conserved).</li>
-    </ul>
-
-    <h4>Limitations</h4>
-    <ul>
-      <li>Only the top 30 groups by sample count are shown to avoid visual clutter.</li>
-      <li>X-coordinates use genomic position (proportional spacing), so dense variant clusters may appear cramped.</li>
-      <li>The AF threshold slider filters which variants define groups — raising it simplifies the view.</li>
-    </ul>
-  </>
-)
 
 /** Get dominant superpopulation for a group's samples */
 const getDominantPopForGroup = (
@@ -169,7 +128,6 @@ const AlluvialTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
     [graph.paths]
   )
   const displayPaths = sortedPaths.slice(0, MAX_PATHS)
-  const truncated = graph.paths.length > MAX_PATHS
 
   const totalDisplayedSamples = displayPaths.reduce((s, p) => s + p.sampleCount, 0)
   const naturalHeight = displayPaths.length * MIN_PATH_HEIGHT + (displayPaths.length - 1) * NODE_GAP
@@ -218,25 +176,7 @@ const AlluvialTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
     <Track
       renderLeftPanel={() => (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '6px 0 2px 0' }}>
-            <span style={{ fontSize: '11px', fontWeight: 'bold' }}>Haplotype Paths</span>
-            <HaplotypeHelpButton title="Alluvial Flow — How to Read This View">
-              <AlluvialHelp />
-            </HaplotypeHelpButton>
-          </div>
           <svg width={200} height={PLOT_HEIGHT}>
-            <text x={0} y={12} fontSize='9' fill='#666'>
-              {displayPaths.length} of {graph.paths.length} groups
-              {truncated ? ' (truncated)' : ''}
-            </text>
-            {/* Legend */}
-            <line x1={5} y1={45} x2={25} y2={45} stroke={PATH_COLORS[0]} strokeWidth={3} strokeOpacity={0.55} />
-            <text x={30} y={48} fontSize='8' fill='#333'>Path (thickness = sample count)</text>
-            <circle cx={15} cy={60} r={3} fill='#4a90d9' stroke='#fff' strokeWidth={1} />
-            <text x={30} y={63} fontSize='8' fill='#333'>Ref node</text>
-            <circle cx={15} cy={75} r={4} fill='#d73027' stroke='#fff' strokeWidth={1} />
-            <text x={30} y={78} fontSize='8' fill='#333'>Alt node</text>
-
             {/* Per-path labels */}
             {displayPaths.map((path, pathIdx) => {
               const cy = labelYPositions[pathIdx]

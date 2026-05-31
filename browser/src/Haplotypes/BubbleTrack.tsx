@@ -3,7 +3,6 @@ import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import { VariationGraph, ColumnFlow, InterColumnFlow } from './variation-graph'
 import { VARIANT_TYPE_COLORS, SUPERPOPULATION_COLORS } from './colors'
-import HaplotypeHelpButton from './HelpButton'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 const TRACK_HEIGHT = 220
@@ -130,57 +129,6 @@ const TransitionTooltip = ({ t, total }: { t: InterColumnFlow; total: number }) 
   </dl>
 )
 
-const BubbleHelp = () => (
-  <>
-    <h4 style={{ marginTop: 0 }}>Overview</h4>
-    <p>
-      The variation graph shows how haplotypes flow through a
-      sequence of variant sites. Think of the reference genome as a road: at each variant,
-      the road forks — some haplotypes stay on the reference backbone (grey), others take
-      an alternate path (colored arc above). After each variant, paths merge back. Each
-      fork-and-merge is a <strong>bubble</strong>.
-    </p>
-
-    <h4>Nodes &amp; Edges</h4>
-    <ul>
-      <li><strong>Nodes</strong> (vertical bars and shapes) — Variant positions. Each node
-        is a fork point where haplotypes diverge into ref and alt paths. The shape and color
-        encode the variant type.</li>
-      <li><strong>Edges</strong> (ribbons between nodes) — Groups of haplotypes traveling
-        together from one variant to the next. Ribbon <strong>thickness</strong> is
-        proportional to the number of haplotypes. Ribbons are colored by the alt variant
-        they are associated with.</li>
-      <li><strong>Grey backbone</strong> — The reference path. Thickness shows how many
-        haplotypes carry the reference allele at each site.</li>
-    </ul>
-
-    <h4>Variant Shapes</h4>
-    <ul>
-      <li><strong style={{ color: '#4A90D9' }}>Blue ellipse</strong> — SNV (single nucleotide variant).</li>
-      <li><strong style={{ color: '#D73027' }}>Red dashed arc</strong> — Deletion. Arc spans the deleted region; label shows size.</li>
-      <li><strong style={{ color: '#43A047' }}>Green teardrop</strong> — Insertion. Height proportional to inserted sequence length.</li>
-      <li><strong style={{ color: '#9467BD' }}>Purple diamond</strong> — Duplication.</li>
-      <li><strong style={{ color: '#E8A838' }}>Orange wave</strong> — Tandem repeat variant (TR). Number of oscillations reflects allelic diversity; label shows the length range across carriers.</li>
-    </ul>
-
-    <h4>Reading the Flow</h4>
-    <ul>
-      <li><strong>Thick alt arc</strong> — Common variant (many carriers).</li>
-      <li><strong>Thin alt arc</strong> — Rare variant (few carriers).</li>
-      <li><strong>Parallel ribbons</strong> — Variants in linkage disequilibrium (same
-        haplotypes carry both alt alleles).</li>
-      <li><strong>Crossing ribbons</strong> — Recombination between sites: haplotypes
-        that carried alt at one variant switch to ref at the next, or vice versa.</li>
-      <li><strong>Purple shaded region</strong> — Superbubble: a block of consecutive
-        variants in perfect LD, always co-inherited on the same haplotypes.</li>
-    </ul>
-
-    <h4>Interaction</h4>
-    <p>Hover over a node for variant details (type, position, alleles, AF).
-      Hover over a ribbon for transition counts (ref→ref, ref→alt, alt→ref, alt→alt).</p>
-  </>
-)
-
 /**
  * Build an SVG cubic bezier ribbon between two y-positions at two x-positions.
  * The ribbon has a given thickness (half above, half below the center line).
@@ -225,8 +173,6 @@ const getDominantPopForSamples = (
 
 const BubbleTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
   const { columns, transitions, totalHaplotypes, bubbles, edges } = graph
-  const bubbleCount = bubbles.length
-  const superbubbleCount = bubbles.filter((b) => b.isSuperbubble).length
 
   const usePopColors = colorMode === 'population' && sampleMetadata && sampleMetadata.size > 0
 
@@ -261,39 +207,7 @@ const BubbleTrack = ({ graph, colorMode, sampleMetadata }: Props) => {
 
   return (
     <Track
-      renderLeftPanel={() => (
-        <div style={{ display: 'flex', flexDirection: 'column', padding: '6px 0 2px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '11px', fontWeight: 'bold' }}>Variation Graph</span>
-            <HaplotypeHelpButton title="Variation Graph (Bubble) — How to Read This View">
-              <BubbleHelp />
-            </HaplotypeHelpButton>
-          </div>
-          <svg width={200} height={115}>
-            <text x={0} y={12} fontSize="9" fill="#666">
-              {bubbleCount} bubbles{superbubbleCount > 0 ? `, ${superbubbleCount} superbubbles` : ''}
-            </text>
-            <text x={0} y={24} fontSize="9" fill="#666">
-              {totalHaplotypes} haplotypes
-            </text>
-            {/* Legend */}
-            <rect x={5} y={33} width={20} height={6} fill="#999" rx={1} />
-            <text x={30} y={40} fontSize="8" fill="#333">Ref backbone</text>
-            <ellipse cx={15} cy={52} rx={4} ry={4} fill={VARIANT_TYPE_COLORS.snv} />
-            <text x={30} y={55} fontSize="8" fill="#333">SNV</text>
-            <path d="M 5 67 Q 15 57 25 67" fill="none" stroke={VARIANT_TYPE_COLORS.del} strokeWidth={2} strokeDasharray="4 2" />
-            <text x={30} y={70} fontSize="8" fill="#333">Deletion (spans region)</text>
-            <path d="M 15 85 C 8 78, 12 73, 15 73 C 18 73, 22 78, 15 85" fill={VARIANT_TYPE_COLORS.ins} opacity={0.5} stroke={VARIANT_TYPE_COLORS.ins} strokeWidth={1} />
-            <text x={30} y={82} fontSize="8" fill="#333">Insertion (bump)</text>
-            <path d="M 15 100 L 10 94 L 15 88 L 20 94 Z" fill={VARIANT_TYPE_COLORS.dup} opacity={0.4} stroke={VARIANT_TYPE_COLORS.dup} strokeWidth={1} />
-            <text x={30} y={97} fontSize="8" fill="#333">Duplication (diamond)</text>
-            <rect x={5} y={105} width={20} height={8} fill={VARIANT_TYPE_COLORS.trv} opacity={0.7} rx={2} />
-            <line x1={12} y1={105} x2={12} y2={113} stroke="white" strokeWidth={1} opacity={0.6} />
-            <line x1={18} y1={105} x2={18} y2={113} stroke="white" strokeWidth={1} opacity={0.6} />
-            <text x={30} y={113} fontSize="8" fill="#333">Tandem repeat</text>
-          </svg>
-        </div>
-      )}
+      renderLeftPanel={() => <div style={{ width: 200 }} />}
     >
       {({ scalePosition, width }: { scalePosition: (input: number) => number; width: number }) => {
         if (columns.length === 0) {

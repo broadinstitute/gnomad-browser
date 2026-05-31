@@ -3,54 +3,12 @@ import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import { scaleLinear } from 'd3-scale'
 import { PangenomeGraph } from './pangenome-graph'
-import HaplotypeHelpButton from './HelpButton'
-
-const HeatmapHelp = () => (
-  <>
-    <h4 style={{ marginTop: 0 }}>Overview</h4>
-    <p>
-      The binned heatmap (ODGI-style) shows each haplotype group as a horizontal row.
-      The genomic region is divided into bins, and each bin is colored by the number of
-      alternate alleles that haplotype carries in that bin.
-    </p>
-
-    <h4>Reading the Plot</h4>
-    <ul>
-      <li><strong style={{ color: '#dde4ea' }}>Light blue-gray</strong> — Reference. No alternate alleles in this bin.</li>
-      <li><strong style={{ color: 'rgb(218,138,137)' }}>Light coral</strong> — 1 alternate allele in this bin.</li>
-      <li><strong style={{ color: 'rgb(216,93,88)' }}>Dark coral</strong> — 2 alternate alleles in this bin.</li>
-      <li><strong style={{ color: '#d73027' }}>Red</strong> — 3 or more alternate alleles in this bin.</li>
-    </ul>
-
-    <h4>Left Panel Labels</h4>
-    <ul>
-      <li><strong>Orange circle + number</strong> — Sample count (how many haplotypes share this group)</li>
-      <li><strong>Gray circle + number</strong> — Variant count (total variant sites in this group)</li>
-      <li>Hover any label to see full details: genomic coordinates, size, and sample IDs.</li>
-    </ul>
-
-    <h4>Interpreting Patterns</h4>
-    <ul>
-      <li><strong>Vertical red stripes</strong> indicate variant hotspots where many haplotype groups carry alternate alleles.</li>
-      <li><strong>Horizontal red rows</strong> indicate haplotype groups with many variants across the region.</li>
-      <li><strong>White/light columns</strong> indicate conserved regions with few variants.</li>
-      <li>Rows are sorted by sample count (most common haplotypes at top).</li>
-    </ul>
-
-    <h4>Limitations</h4>
-    <ul>
-      <li>Only the top 80 groups by sample count are shown.</li>
-      <li>The region is divided into 100 bins, so individual variants may be merged within a bin.</li>
-      <li>The AF threshold slider filters which variants define groups.</li>
-    </ul>
-  </>
-)
 
 const ROW_HEIGHT = 12
 const ROW_GAP = 2
 const MAX_ROWS = 80
 const NUM_BINS = 100
-const LEFT_PANEL_OFFSET = 35
+const LEFT_PANEL_OFFSET = 10
 
 type Props = {
   graph: PangenomeGraph
@@ -62,10 +20,9 @@ const HeatmapTrack = ({ graph }: Props) => {
     [graph.paths]
   )
   const displayPaths = paths.slice(0, MAX_ROWS)
-  const truncated = paths.length > MAX_ROWS
 
   const totalRows = displayPaths.length
-  const plotHeight = Math.max(60, LEFT_PANEL_OFFSET + totalRows * (ROW_HEIGHT + ROW_GAP) + 25)
+  const plotHeight = Math.max(60, LEFT_PANEL_OFFSET + totalRows * (ROW_HEIGHT + ROW_GAP))
   const binSizeGenomic = Math.ceil((graph.stop - graph.start) / NUM_BINS)
 
   const maxSamples = displayPaths.reduce((max, p) => Math.max(max, p.sampleCount), 0)
@@ -86,17 +43,7 @@ const HeatmapTrack = ({ graph }: Props) => {
     <Track
       renderLeftPanel={() => (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', height: '100%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', padding: '6px 0 2px 0' }}>
-            <span style={{ fontSize: '11px', fontWeight: 'bold' }}>Haplotype Heatmap</span>
-            <HaplotypeHelpButton title="Binned Heatmap — How to Read This View">
-              <HeatmapHelp />
-            </HaplotypeHelpButton>
-          </div>
           <svg width={200} height={plotHeight}>
-            <text x={0} y={12} fontSize='9' fill='#666'>
-              {displayPaths.length} of {paths.length} groups
-              {truncated ? ' (truncated)' : ''}
-            </text>
             {displayPaths.map((path, rowIndex) => {
               const y = LEFT_PANEL_OFFSET + rowIndex * (ROW_HEIGHT + ROW_GAP)
               const cy = y + ROW_HEIGHT / 2
@@ -204,26 +151,6 @@ const HeatmapTrack = ({ graph }: Props) => {
               return <g key={`heatmap-row-${rowIndex}`}>{elements}</g>
             })}
 
-            {/* Legend at bottom */}
-            {(() => {
-              const legendY = LEFT_PANEL_OFFSET + totalRows * (ROW_HEIGHT + ROW_GAP) + 5
-              const legendItems = [
-                { label: 'Reference', color: '#dde4ea' },
-                { label: '1 variant', color: 'rgb(218,138,137)' },
-                { label: '2+ variants', color: 'rgb(216,93,88)' },
-                { label: '3+ variants', color: '#d73027' },
-              ]
-              return (
-                <g>
-                  {legendItems.map((item, i) => (
-                    <g key={`legend-${i}`}>
-                      <rect x={i * 100} y={legendY} width={10} height={8} fill={item.color} rx={1} />
-                      <text x={i * 100 + 13} y={legendY + 7} fontSize={7} fill='#555'>{item.label}</text>
-                    </g>
-                  ))}
-                </g>
-              )
-            })()}
           </svg>
         )
       }}
