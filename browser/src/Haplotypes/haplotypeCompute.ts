@@ -441,7 +441,8 @@ export function groupCarriers(
   variants: LRVariant[],
   carrierVariantIndices: Record<string, number[]>,
   minAf: number,
-  trvAlts?: Record<string, Record<number, string>>
+  trvAlts?: Record<string, Record<number, string>>,
+  skipBelowThreshold: boolean = false
 ): HaplotypeGroup[] {
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
@@ -503,22 +504,25 @@ export function groupCarriers(
     })
 
     // Collect below-threshold variants for this group's carriers
+    // Skip for large datasets where the table is deferred anyway
     const belowVariants: (LRVariant & { in_samples?: string[] })[] = []
-    const belowMap = new Map<number, string[]>()
-    for (const carrierId of carriers) {
-      const allIdxs = carrierVariantIndices[carrierId]
-      for (const idx of allIdxs) {
-        if (passingIndices.has(idx)) continue
-        const existing = belowMap.get(idx)
-        if (existing) {
-          existing.push(carrierId.split(':')[0])
-        } else {
-          belowMap.set(idx, [carrierId.split(':')[0]])
+    if (!skipBelowThreshold) {
+      const belowMap = new Map<number, string[]>()
+      for (const carrierId of carriers) {
+        const allIdxs = carrierVariantIndices[carrierId]
+        for (const idx of allIdxs) {
+          if (passingIndices.has(idx)) continue
+          const existing = belowMap.get(idx)
+          if (existing) {
+            existing.push(carrierId.split(':')[0])
+          } else {
+            belowMap.set(idx, [carrierId.split(':')[0]])
+          }
         }
       }
-    }
-    for (const [idx, sampleIds] of belowMap) {
-      belowVariants.push({ ...variants[idx], in_samples: sampleIds })
+      for (const [idx, sampleIds] of belowMap) {
+        belowVariants.push({ ...variants[idx], in_samples: sampleIds })
+      }
     }
 
     groups.push({
@@ -858,8 +862,9 @@ export function computeHaplotypeView(
     return { groups: sorted }
   }
 
+  const skipBelow = (regionSize || 0) > 200_000
   let t0 = Date.now()
-  const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts)
+  const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts, skipBelow)
   const tGroup = Date.now() - t0
   const sorted = sortGroups(groups, sortBy)
 
@@ -1076,7 +1081,7 @@ export function deriveAutoDefaults(
   const maxAfBump = Math.pow(10, Math.log10(floor) + (Math.log10(ceiling) - Math.log10(floor)) * 0.2)
 
   for (let iter = 0; iter < 10; iter++) {
-    const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts)
+    const groups = groupCarriers(variants, carrierVariantIndices, minAf, trvAlts, true)
     const N = groups.length
 
     // Too many groups for UPGMA — raise AF to reduce
