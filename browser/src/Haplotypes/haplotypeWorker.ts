@@ -27,6 +27,7 @@ let currentSortBy = 'similarity_score'
 let isDiploidView = false
 let currentDistanceMetric: DistanceMetric = 'auto'
 let currentRegionSize: number | undefined
+let wasClusteredView = false
 
 // ---- Message types ----
 
@@ -99,6 +100,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       )
       const tCompute = Date.now() - t0
       baseDataThreshold = clusterThreshold
+      wasClusteredView = isClusteredView
 
       // Apply display filtering if default AF > floor
       const defaultAf = autoDefaults?.defaultAf || floorAf
@@ -124,6 +126,10 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       const metricChanged = msg.distanceMetric !== undefined && msg.distanceMetric !== currentDistanceMetric
       if (msg.distanceMetric !== undefined) currentDistanceMetric = msg.distanceMetric
 
+      // Invalidate baseData when switching into clustered mode from a non-clustered mode
+      const modeChanged = msg.isClusteredView !== wasClusteredView
+      wasClusteredView = msg.isClusteredView
+
       let result: ComputedHaplotypeData
       if (isDiploidView) {
         // Diploid view: grouping by diplotype, no clustering/tree
@@ -133,8 +139,8 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
           trvAlts, true, 'auto', currentRegionSize
         )
       } else if (msg.isClusteredView) {
-        // Clustering ON: rebuild baseData if threshold or distance metric changed
-        if (!baseData || msg.clusterThreshold !== baseDataThreshold || metricChanged) {
+        // Clustering ON: rebuild baseData if threshold, distance metric, or mode changed
+        if (!baseData || msg.clusterThreshold !== baseDataThreshold || metricChanged || modeChanged) {
           baseData = computeHaplotypeView(
             variants, carrierVariantIndices,
             autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
