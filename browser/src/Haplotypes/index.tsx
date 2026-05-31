@@ -546,6 +546,9 @@ export const Legend = ({
                 />
                 Expand INS/TRs
               </label>
+              <HaplotypeHelpButton title="Expand Insertions & Tandem Repeats">
+                <ExpandInsertionsHelp />
+              </HaplotypeHelpButton>
             </div>
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
@@ -1348,6 +1351,38 @@ const AutoTunedHelp = () => (
     <p>
       Both values can be adjusted freely. Once you manually change either slider,
       this indicator disappears.
+    </p>
+  </>
+)
+
+const ExpandInsertionsHelp = () => (
+  <>
+    <p>
+      Insertions and tandem repeat expansions add sequence that isn't in the reference
+      genome. When this toggle is ON, the view allocates visual space for these inserted
+      bases, stretching the coordinate axis to show where new sequence exists.
+    </p>
+    <p>
+      An "accordion" coordinate mapper identifies insertion sites and creates gaps in the
+      genomic axis proportional to the inserted sequence length. All tracks stretch together
+      so variant positions stay vertically aligned. The position axis shows genomic
+      coordinates with gaps marking the phantom (inserted) regions.
+    </p>
+    <p>
+      You'll see the track expand horizontally at insertion sites. Variants that were
+      compressed together at a single position now spread out across the phantom region,
+      revealing their actual inserted sequence structure. TR variants show their full
+      expansion length.
+    </p>
+    <p>
+      <strong>When to use it:</strong> ON (default) — best for examining insertion/TR
+      structure and seeing how sequence is organized. OFF — best for overview navigation
+      and comparing positions across the reference genome without expansion gaps.
+    </p>
+    <p>
+      Per-locus and global caps keep the view from being dominated by very large insertions.
+      Each insertion is capped at 15% of the region width, and total phantom space is capped
+      at 50%.
     </p>
   </>
 )
