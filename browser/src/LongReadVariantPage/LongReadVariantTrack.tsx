@@ -331,6 +331,8 @@ const BandDivider = styled.div`
 
 const GENEALOGY_PANEL_WIDTH = 180
 
+type VariantTypeFilters = Record<string, boolean>
+
 type LongReadVariantTrackProps = {
   variants: LRVariant[]
   lod?: LodVisibility
@@ -338,9 +340,10 @@ type LongReadVariantTrackProps = {
   isDiploidView?: boolean
   hoveredVariantPosition?: number | null
   onHoverVariantPosition?: (pos: number | null) => void
+  typeFilters?: VariantTypeFilters
 }
 
-const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition }: LongReadVariantTrackProps) => {
+const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition, typeFilters }: LongReadVariantTrackProps) => {
   const genealogyActive = showGenealogy && !isDiploidView
 
   // Compute width adjustment from RegionViewerContext — must match
@@ -419,15 +422,24 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
     allele_freq: (v as any).freq?.af,
   }))
 
+  // typeFilters: when set, hide bands whose category is unchecked
+  const showSnvBand = !typeFilters || typeFilters.snv !== false
+  const showInsBand = !typeFilters || typeFilters.insertion !== false
+  const showDelBand = !typeFilters || typeFilters.deletion !== false
+  const showSvBand = !typeFilters || typeFilters.sv !== false
+  const showTrBand = !typeFilters || typeFilters.tr !== false
+
   return (
     <div style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}>
-      <VariantTrack
-        // @ts-expect-error TS(2769) - VariantTrack prop types are loose
-        title={`Long Read SNVs (${trackSnvVariants.length})`}
-        variants={trackSnvVariants}
-      />
+      {showSnvBand && (
+        <VariantTrack
+          // @ts-expect-error TS(2769) - VariantTrack prop types are loose
+          title={`Long Read SNVs (${trackSnvVariants.length})`}
+          variants={trackSnvVariants}
+        />
+      )}
 
-      {insVariants.length > 0 && (
+      {showInsBand && insVariants.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>INS</SidePanel>}>
@@ -436,7 +448,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         </>
       )}
 
-      {delVariants.length > 0 && (
+      {showDelBand && delVariants.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DEL</SidePanel>}>
@@ -445,7 +457,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         </>
       )}
 
-      {svVariants.length > 0 && (
+      {showSvBand && svVariants.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DUP/SV</SidePanel>}>
@@ -454,7 +466,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         </>
       )}
 
-      {trVariants.length > 0 && (
+      {showTrBand && trVariants.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>TRs</SidePanel>}>

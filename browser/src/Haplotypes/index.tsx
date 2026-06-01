@@ -883,6 +883,7 @@ type HaplotypeTrackProps = {
   filterToOutliers?: boolean
   showPopBackground?: boolean
   isAutoTuned?: boolean
+  typeFilters?: Record<string, boolean>
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -2026,6 +2027,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   filterToOutliers = true,
   showPopBackground = true,
   isAutoTuned = true,
+  typeFilters,
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
@@ -2213,6 +2215,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             highlightedVariantIds={highlightedVariantIds}
             selectedVariantPos={selectedVariantPos}
             showPopBackground={showPopBackground}
+            typeFilters={typeFilters}
           />
         </>
       )}

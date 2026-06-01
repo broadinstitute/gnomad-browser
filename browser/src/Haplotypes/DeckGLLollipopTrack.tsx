@@ -324,6 +324,7 @@ type DeckGLLollipopTrackProps = {
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
   showPopBackground?: boolean
+  typeFilters?: Record<string, boolean>
 }
 
 export type DeckGLLollipopTrackHandle = {
@@ -363,6 +364,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   highlightedVariantIds,
   selectedVariantPos,
   showPopBackground = true,
+  typeFilters,
 }, ref) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -700,6 +702,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           highlightedVariantIds={highlightedVariantIds}
           selectedVariantPos={selectedVariantPos}
           showPopBackground={showPopBackground}
+          typeFilters={typeFilters}
         />
 
         {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
@@ -778,6 +781,7 @@ type DeckGLCanvasProps = {
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
   showPopBackground: boolean
+  typeFilters?: Record<string, boolean>
 }
 
 /** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
@@ -837,11 +841,19 @@ function DeckGLLollipopCanvas({
   highlightedVariantIds,
   selectedVariantPos,
   showPopBackground,
+  typeFilters,
 }: DeckGLCanvasProps) {
   const canvasWidth = width
   const { mapper } = useContext(AccordionContext)
 
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+
+  // Visual-only type filter: skip rendering variants whose category is unchecked.
+  // Does NOT affect UPGMA clustering or grouping — only the rendered glyphs.
+  const isTypeVisible = (cat: string): boolean => {
+    if (!typeFilters) return true
+    return typeFilters[cat] !== false
+  }
 
   // Keep dimension refs in sync so the imperative scroll handler can read them
   canvasWidthRef.current = canvasWidth
@@ -1496,6 +1508,7 @@ function DeckGLLollipopCanvas({
           const phantomCarriers = new Map<number, number>()
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+            if (!isTypeVisible(cat)) continue
             const isLarge = getVariantSpan(variant) >= 50
             if (cat === 'snv' && !lod.showSnvs) continue
             if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -1544,6 +1557,7 @@ function DeckGLLollipopCanvas({
         const pushBelowThreshold = (variants: LRVariant[], baseline: number) => {
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+            if (!isTypeVisible(cat)) continue
             const span = getVariantSpan(variant)
             const isLargeBt = span >= 50
 
@@ -1654,6 +1668,7 @@ function DeckGLLollipopCanvas({
           const variant = cv.variant
           const alpha = clusterAfAlpha(cv.cluster_af)
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+          if (!isTypeVisible(cat)) continue
           const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -1708,6 +1723,7 @@ function DeckGLLollipopCanvas({
 
         for (const variant of group.below_threshold.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+          if (!isTypeVisible(cat)) continue
           const span = getVariantSpan(variant)
           const isLargeBt = span >= 50
 
@@ -1734,6 +1750,7 @@ function DeckGLLollipopCanvas({
         const groupPhantomCarriers = new Map<number, number>()
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+          if (!isTypeVisible(cat)) continue
           const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -2333,6 +2350,7 @@ function DeckGLLollipopCanvas({
     onVariantClick,
     highlightedVariantIds,
     showPopBackground,
+    typeFilters,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers

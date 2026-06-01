@@ -1407,6 +1407,8 @@ const TableRow = React.memo(function TableRow({
 
 // --- Main component ---
 
+export type VariantTypeFilters = Record<string, boolean>
+
 type HaplotypeVariantTableProps = {
   mode?: 'summary' | 'haplotype'
   summaryVariants?: any[]
@@ -1422,6 +1424,8 @@ type HaplotypeVariantTableProps = {
   selectedClusterId?: string | null
   onClearClusterFilter?: () => void
   searchText?: string
+  typeFilters?: VariantTypeFilters
+  onTypeFiltersChange?: (filters: VariantTypeFilters) => void
 }
 
 export type HaplotypeVariantTableHandle = {
@@ -1449,16 +1453,20 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   selectedClusterId = null,
   onClearClusterFilter,
   searchText: searchTextProp = '',
+  typeFilters: externalTypeFilters,
+  onTypeFiltersChange,
 }, ref) {
   const [sort, setSort] = useState<SortConfig>({ key: 'pos', direction: 'asc' })
   const searchText = searchTextProp
-  const [typeFilters, setTypeFilters] = useState<Record<string, boolean>>({
+  const [internalTypeFilters, setInternalTypeFilters] = useState<Record<string, boolean>>({
     snv: true,
     deletion: true,
     insertion: true,
     sv: true,
     tr: true,
   })
+  const typeFilters = externalTypeFilters || internalTypeFilters
+  const setTypeFilters = onTypeFiltersChange || setInternalTypeFilters
   const [consequenceFilters, setConsequenceFilters] = useState<Record<string, boolean>>({
     lof: true,
     missense: true,
