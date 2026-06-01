@@ -43,6 +43,16 @@ const LOLLIPOP_TOP = 10
 const MIN_SV_BAR_WIDTH = 3
 const TR_BLOCK_COLOR = VARIANT_CATEGORY_COLORS.tr
 
+/** Map variant AF to opacity: rare variants are fainter, common are bolder.
+ *  Uses log scale: AF 0.1% → 0.25, AF 1% → 0.5, AF 10% → 0.75, AF 50%+ → 1.0 */
+const afToOpacity = (v: any): number => {
+  const af = v.freq?.all?.af ?? v.freq?.af ?? 0
+  if (af <= 0) return 0.2
+  // log10 scale: -3 (0.1%) → 0.25, -2 (1%) → 0.5, -1 (10%) → 0.75, 0 (100%) → 1.0
+  const logAf = Math.log10(Math.max(af, 0.0001))
+  return Math.min(1, Math.max(0.2, 1 + logAf / 4))
+}
+
 // --- Consequence colors for Band 1 ---
 
 const consequenceCategoryColors: Record<string, string> = {
@@ -164,46 +174,25 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
       {packed.map((v) => {
         const color = ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.length)]
         const cat = getVariantCategory(v.allele_type, v.length)
+        const opacity = afToOpacity(v)
         const rowY = v.row * ROW_HEIGHT + 2
 
-        if (cat === 'insertion' && mapper) {
+        if (cat === 'insertion') {
           const startX = scalePosition(v.pos)
-          const phantomWidth =
-            (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
-              mapper.getSyntheticCoordinate(v.pos, 0)) *
-            pxPerUnit
-          const barWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
-
-          if (phantomWidth < MIN_SV_BAR_WIDTH) {
-            return (
-              <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
-                <path
-                  d={`M ${startX} ${rowY} l -4 0 l 4 ${barHeight} l 4 -${barHeight} z`}
-                  fill={color}
-                  {...hoverHandlers(v)}
-                />
-              </Link>
-            )
+          let barWidth = MIN_SV_BAR_WIDTH
+          if (mapper) {
+            const phantomWidth =
+              (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
+                mapper.getSyntheticCoordinate(v.pos, 0)) *
+              pxPerUnit
+            barWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
           }
 
           return (
             <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
               <rect
                 x={startX} y={rowY} width={barWidth} height={barHeight}
-                fill={color} rx={1}
-                {...hoverHandlers(v)}
-              />
-            </Link>
-          )
-        }
-
-        if (cat === 'insertion') {
-          const x = scalePosition(v.pos)
-          return (
-            <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
-              <path
-                d={`M ${x} ${rowY} l -4 0 l 4 ${barHeight} l 4 -${barHeight} z`}
-                fill={color}
+                fill={color} opacity={opacity} rx={1}
                 {...hoverHandlers(v)}
               />
             </Link>
@@ -222,7 +211,7 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
           <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
             <rect
               x={startX} y={rowY} width={stopX - startX} height={barHeight}
-              fill={color} rx={1}
+              fill={color} opacity={opacity} rx={1}
               {...hoverHandlers(v)}
             />
           </Link>
@@ -303,7 +292,7 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
               height={barHeight}
               fill={TR_BLOCK_COLOR}
               rx={2}
-              opacity={0.8}
+              opacity={afToOpacity(v)}
               {...trHover}
             />
           </Link>

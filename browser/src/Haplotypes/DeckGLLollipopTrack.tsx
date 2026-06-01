@@ -2176,8 +2176,7 @@ function DeckGLLollipopCanvas({
         data: allInsertionTriangles,
         getPolygon: (d: VariantPoint) => {
           const px = scalePosition(d.position)
-          const halfW = Math.max(3, d.radius)
-          return [[px - halfW, d.y - 4], [px + halfW, d.y - 4], [px + halfW, d.y + 4], [px - halfW, d.y + 4]]
+          return [[px - 1.5, d.y - 5], [px + 1.5, d.y - 5], [px + 1.5, d.y + 5], [px - 1.5, d.y + 5]]
         },
         getFillColor: (d: VariantPoint) => dimVariantColor(d.color, d.variant),
         pickable: true,
@@ -2187,35 +2186,20 @@ function DeckGLLollipopCanvas({
       }))
     }
 
-    // Rounded rectangles for TRs — filled pill with outline
+    // Small bars for TRs (no accordion expansion)
     if (allTrRects.length > 0) {
-      const trPoly = (d: VariantPoint) => {
-        const px = scalePosition(d.position)
-        return roundedRect(px - 5, d.y - 3.5, px + 5, d.y + 3.5, 3)
-      }
       result.push(new SolidPolygonLayer({
         id: 'tr-rects-layer',
         data: allTrRects,
-        getPolygon: trPoly,
+        getPolygon: (d: VariantPoint) => {
+          const px = scalePosition(d.position)
+          return [[px - 2, d.y - 5], [px + 2, d.y - 5], [px + 2, d.y + 5], [px - 2, d.y + 5]]
+        },
         getFillColor: (d: VariantPoint) => dimVariantColor(d.color, d.variant),
         pickable: true,
         onHover: onHover,
         onClick: handleVariantLayerClick,
         updateTriggers: { getPolygon: [scalePosition] },
-      }))
-      result.push(new PathLayer({
-        id: 'tr-rects-outline-layer',
-        data: allTrRects,
-        getPath: (d: VariantPoint) => {
-          const pts = trPoly(d)
-          pts.push(pts[0]) // close path
-          return pts.map(([x, y]) => [x, y, 0])
-        },
-        getColor: [0, 0, 0, 160],
-        getWidth: 1,
-        widthUnits: 'pixels' as const,
-        pickable: false,
-        updateTriggers: { getPath: [scalePosition] },
       }))
     }
 

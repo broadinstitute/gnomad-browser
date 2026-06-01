@@ -490,7 +490,7 @@ const LongReadUnifiedView = ({
         // Use server-computed auto_defaults
         const defaults = result.auto_defaults || { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
         setAutoDefaults(defaults)
-        setThreshold(defaults.defaultAf)
+        setThreshold(0)
         setClusterThreshold(defaults.defaultClusterThreshold)
         setDeferredClusterThreshold(defaults.defaultClusterThreshold)
         if (defaults.isClusteredView) {
@@ -511,7 +511,7 @@ const LongReadUnifiedView = ({
           rawDataRef.current = { variants, carrierIndices, trvAlts: result.trv_alts }
           const baseData = computeHaplotypeView(
             variants, carrierIndices,
-            defaults.defaultAf, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
+            0, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
             result.trv_alts, false, distanceMetric, regionSize
           )
           setHaplotypeData(baseData)
