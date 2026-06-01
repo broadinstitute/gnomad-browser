@@ -11,8 +11,7 @@ import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
-import { VariantShapeLegend } from '../LongReadVariantPage/VariantLegend'
-import { ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
+import { ALLELE_TYPE_COLORS, VARIANT_CATEGORY_COLORS, type VariantCategory } from '../LongReadVariantPage/variantUtils'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
@@ -48,13 +47,6 @@ const PlotWrapper = styled.div`
   position: relative;
 `
 
-const StickyHeader = styled.div`
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: white;
-`
-
 const RegionAttributeList = styled.dl`
   margin: 0;
 
@@ -83,34 +75,70 @@ export function regionColor(region: { num_samples: number }) {
   }
 }
 
-const LegendWrapper = styled.div`
+const ControlsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 16px;
+  padding: 16px 0;
 `
 
-const LegendRow = styled.div`
+const ControlGroup = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 16px;
 `
 
-const LegendSection = styled.div`
+const FieldsetRow = styled.div`
   display: flex;
-  align-items: center;
-  border: 1px solid lightgrey;
-  border-radius: 5px;
-  padding: 4px 6px;
   flex-wrap: wrap;
+  gap: 8px;
 `
 
-const LegendItem = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 0.75em;
+const Fieldset = styled.fieldset<{ $disabled?: boolean }>`
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 0;
+  background: transparent;
+  opacity: ${(p) => (p.$disabled ? 0.5 : 1)};
+  pointer-events: ${(p) => (p.$disabled ? 'none' : 'auto')};
+`
+
+const FieldsetTitle = styled.legend`
   font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  padding: 0 4px;
 `
+
+// Compact shapes that render each variant category using its actual color
+const COMPACT_COLORED_SHAPES: Record<VariantCategory, React.ReactNode> = {
+  snv: <circle cx={7} cy={7} r={3.5} fill={VARIANT_CATEGORY_COLORS.snv} stroke="#333" strokeWidth={0.4} />,
+  insertion: <path d="M 7 2 L 3 12 L 11 12 Z" fill={VARIANT_CATEGORY_COLORS.insertion} />,
+  deletion: <line x1={7} y1={1} x2={7} y2={13} stroke={VARIANT_CATEGORY_COLORS.deletion} strokeDasharray="3 1.5" strokeWidth={2} />,
+  sv: <path d="M 7 2 L 3 7 L 7 12 L 11 7 Z" fill={VARIANT_CATEGORY_COLORS.sv} opacity={0.8} />,
+  tr: <><rect x={2} y={3} width={10} height={8} fill={VARIANT_CATEGORY_COLORS.tr} opacity={0.85} rx={1.5} /><line x1={5.5} y1={3} x2={5.5} y2={11} stroke="white" strokeWidth={0.6} opacity={0.5} /><line x1={8.5} y1={3} x2={8.5} y2={11} stroke="white" strokeWidth={0.6} opacity={0.5} /></>,
+}
+
+const CATEGORY_LABELS: Record<VariantCategory, string> = {
+  snv: 'SNV', insertion: 'INS', deletion: 'DEL', sv: 'SV', tr: 'TR',
+}
+
+const CATEGORY_ORDER: VariantCategory[] = ['snv', 'insertion', 'deletion', 'sv', 'tr']
+
+const LegendStrip = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #666;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-left: 1px solid #e0e0e0;
+  padding-left: 12px;
+`
+
 export const Legend = ({
   onMinAfChange = () => { },
   onColorModeChange = () => { },
@@ -150,6 +178,8 @@ export const Legend = ({
   onShowPhantomRegionsChange = () => { },
   showPopBackground = true,
   onShowPopBackgroundChange = () => { },
+  showRecombination = false,
+  onShowRecombinationChange = () => { },
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -189,6 +219,8 @@ export const Legend = ({
   onShowPhantomRegionsChange?: (show: boolean) => void
   showPopBackground?: boolean
   onShowPopBackgroundChange?: (show: boolean) => void
+  showRecombination?: boolean
+  onShowRecombinationChange?: (show: boolean) => void
 }) => {
   const isDiploidView = groupingMode === 'diploid'
   const isClusteredView = groupingMode === 'similarity'
@@ -241,129 +273,10 @@ export const Legend = ({
     onShowMethylationChange(show)
   }
 
-  /** Color legend for the current color mode */
-  const colorLegend = () => {
-    if (colorMode === 'allele') {
-      return (
-        <LegendItem>
-          <svg width={22} height={22}>
-            <defs>
-              <linearGradient id='rainbow-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                <stop offset='0%' stopColor='hsl(0, 70%, 50%)' />
-                <stop offset='50%' stopColor='hsl(180, 70%, 50%)' />
-                <stop offset='100%' stopColor='hsl(360, 70%, 50%)' />
-              </linearGradient>
-            </defs>
-            <circle cx={11} cy={11} r={4} fill='url(#rainbow-gradient)' stroke='black' />
-          </svg>
-          <span>Color = unique allele</span>
-        </LegendItem>
-      )
-    }
-    if (colorMode === 'position') {
-      return (
-        <LegendItem>
-          <svg width={60} height={16}>
-            <defs>
-              <linearGradient id='pos-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                <stop offset='0%' stopColor='hsl(240, 100%, 50%)' />
-                <stop offset='100%' stopColor='hsl(0, 100%, 50%)' />
-              </linearGradient>
-            </defs>
-            <rect x={0} y={2} width={60} height={12} fill='url(#pos-gradient)' rx={2} />
-          </svg>
-          <span style={{ marginLeft: '4px' }}>Position (5&apos;→3&apos;)</span>
-        </LegendItem>
-      )
-    }
-    if (colorMode === 'af') {
-      return (
-        <LegendItem>
-          <svg width={80} height={16}>
-            <defs>
-              <linearGradient id='af-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                <stop offset='0%' stopColor='#d3d3d3' />
-                <stop offset='100%' stopColor='#424242' />
-              </linearGradient>
-            </defs>
-            <rect x={0} y={2} width={80} height={12} fill='url(#af-gradient)' rx={2} />
-            <text x={2} y={11} fontSize='8' fill='white'>0.1</text>
-            <text x={62} y={11} fontSize='8' fill='white'>1.0</text>
-          </svg>
-          <span style={{ marginLeft: '4px' }}>Allele frequency</span>
-        </LegendItem>
-      )
-    }
-    if (colorMode === 'haplotype_count') {
-      return (
-        <LegendItem>
-          <svg width={80} height={16}>
-            <defs>
-              <linearGradient id='hc-gradient' x1='0%' y1='0%' x2='100%' y2='0%'>
-                <stop offset='0%' stopColor='#d3d3d3' />
-                <stop offset='100%' stopColor='#ff0000' />
-              </linearGradient>
-            </defs>
-            <rect x={0} y={2} width={80} height={12} fill='url(#hc-gradient)' rx={2} />
-            <text x={2} y={11} fontSize='8' fill='#333'>few</text>
-            <text x={58} y={11} fontSize='8' fill='white'>many</text>
-          </svg>
-          <span style={{ marginLeft: '4px' }}>Groups sharing variant</span>
-        </LegendItem>
-      )
-    }
-    if (colorMode === 'sv_type') {
-      const svTypeLegend: [string, string][] = [
-        ['SNV', ALLELE_TYPE_COLORS.snv],
-        ['INS', ALLELE_TYPE_COLORS.ins],
-        ['DEL', ALLELE_TYPE_COLORS.del],
-        ['DUP', ALLELE_TYPE_COLORS.dup],
-        ['TR', ALLELE_TYPE_COLORS.trv],
-      ]
-      return (
-        <>
-          {svTypeLegend.map(([label, color]) => (
-            <LegendItem key={label} style={{ marginRight: '0.4em' }}>
-              <svg width={12} height={12}>
-                <rect x={0} y={0} width={12} height={12} fill={color} rx={2} />
-              </svg>
-              <span style={{ marginLeft: '2px' }}>{label}</span>
-            </LegendItem>
-          ))}
-        </>
-      )
-    }
-    return null
-  }
-
   return (
-    <LegendWrapper>
-      {/* Row 1: Legends */}
-      <LegendRow>
-        <VariantShapeLegend showPhantomRegions={showPhantomRegions} plotType={plotType} />
-        {plotType !== 'heatmap' && (
-          <>
-            <LegendSection>
-              <LegendItem><span style={{ fontWeight: 'bold' }}>Color:</span></LegendItem>
-              {colorLegend()}
-            </LegendSection>
-            <LegendSection>
-              <LegendItem><span style={{ fontWeight: 'bold' }}>Pop:</span></LegendItem>
-              {Object.entries(SUPERPOPULATION_COLORS).map(([pop, color]) => (
-                <LegendItem key={pop} style={{ marginRight: '0.4em' }}>
-                  <svg width={12} height={12}>
-                    <rect x={0} y={0} width={12} height={12} fill={color} rx={2} />
-                  </svg>
-                  <span style={{ marginLeft: '2px' }}>{pop}</span>
-                </LegendItem>
-              ))}
-            </LegendSection>
-          </>
-        )}
-      </LegendRow>
-
-      {/* Row 2: Controls */}
-      <LegendRow>
+    <ControlsContainer>
+      {/* Top row: Min AF, Grouping, Sort */}
+      <ControlGroup>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Min AF:</label>
           <input
@@ -383,6 +296,20 @@ export const Legend = ({
           </span>
           <HaplotypeHelpButton title="Minimum Allele Frequency">
             <MinAfHelp groupingMode={groupingMode} />
+          </HaplotypeHelpButton>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <label style={{ fontSize: '12px' }}>Grouping:</label>
+          <Select
+            value={groupingMode}
+            onChange={(e: any) => onGroupingModeChange(e.target.value)}
+          >
+            <option value="similarity">Similarity Clusters</option>
+            <option value="exact">Exact Match</option>
+            <option value="diploid">Diploid</option>
+          </Select>
+          <HaplotypeHelpButton title="Grouping Mode">
+            <GroupingModeHelp />
           </HaplotypeHelpButton>
         </div>
         {plotType === 'lollipop' && (
@@ -406,47 +333,156 @@ export const Legend = ({
             />
           </div>
         )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <label style={{ fontSize: '12px' }}>Plot:</label>
-          <Select
-            value={plotType}
-            onChange={(e: any) => onPlotTypeChange(e.target.value)}
-          >
-            {plotTypes.map((pt) => (
-              <option key={pt.value} value={pt.value}>{pt.label}</option>
-            ))}
-          </Select>
-        </div>
-        {plotType !== 'heatmap' && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <label style={{ fontSize: '12px' }}>Color:</label>
-            <Select
-              value={colorMode}
-              onChange={(e: any) => onColorModeChange(e.target.value)}
-            >
-              {colorModes.map((cm) => (
-                <option key={cm.value} value={cm.value}>{cm.label}</option>
+        <LegendStrip>
+          <span style={{ fontWeight: 600, fontSize: 11, color: '#444', alignSelf: 'flex-start', lineHeight: '28px' }}>Legend:</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <span style={{ fontWeight: 600, color: '#555' }}>Variants:</span>
+              {CATEGORY_ORDER.map((cat) => (
+                <span key={cat} style={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                  <svg width={14} height={14}>{COMPACT_COLORED_SHAPES[cat]}</svg>
+                  {CATEGORY_LABELS[cat]}
+                </span>
               ))}
-            </Select>
-            <HaplotypeHelpButton title="Color Modes">
-              <p>Controls how variant dots and shapes are colored in the track. Population ancestry bars on the left panel are always shown regardless of color mode.</p>
-              <dl style={{ margin: 0 }}>
-                <dt style={{ fontWeight: 600, marginTop: 8 }}>Variant Type</dt>
-                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Colors each variant by its structural type using a fixed palette: SNVs (blue), insertions (green), deletions (red), duplications (purple), tandem repeats (orange). Best for seeing what kinds of variants dominate each haplotype.</dd>
-                <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Fingerprint</dt>
-                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Each unique allele (ref/alt combination) gets a deterministic color derived from hashing its ID. Useful for visually tracking the same variant across haplotype rows — identical alleles share the same color.</dd>
-                <dt style={{ fontWeight: 600, marginTop: 8 }}>Position</dt>
-                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Maps variant position to a blue→red gradient across the viewed region (5′ to 3′). Helps see the spatial distribution of variants along each haplotype.</dd>
-                <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Frequency</dt>
-                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Light grey for common variants, dark for rare. Highlights which variants are unusual in the cohort.</dd>
-                <dt style={{ fontWeight: 600, marginTop: 8 }}>Haplotype Count</dt>
-                <dd style={{ marginLeft: 0, marginBottom: 4 }}>Grey→red gradient based on how many haplotype groups share the variant. Red variants are widely shared; grey variants are private or near-private.</dd>
-              </dl>
-            </HaplotypeHelpButton>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <span style={{ fontWeight: 600, color: '#555' }}>Populations:</span>
+              {Object.entries(SUPERPOPULATION_COLORS).map(([pop, color]) => (
+                <span key={pop} style={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                  <svg width={8} height={8}><rect width={8} height={8} fill={color} rx={1} /></svg>
+                  {pop}
+                </span>
+              ))}
+            </div>
           </div>
-        )}
-        {plotType === 'lollipop' && (
-          <>
+        </LegendStrip>
+      </ControlGroup>
+
+      {/* Fieldsets: Clustering + Display + Data Layers side by side */}
+      <FieldsetRow>
+        <Fieldset $disabled={!isClusteredView} style={{ flex: '1.2 1 200px' }}>
+          <FieldsetTitle>Clustering</FieldsetTitle>
+          <ControlGroup>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Resolution:</label>
+              <input
+                type='range'
+                min='0'
+                max='1'
+                step='0.01'
+                value={clusterThreshold}
+                onChange={(e) => onClusterThresholdChange(parseFloat(e.target.value))}
+                style={{ width: '70px' }}
+              />
+              <span style={{ fontSize: '12px', minWidth: '28px' }}>{clusterThreshold.toFixed(2)}</span>
+              {clusterCount > 0 && (
+                <span style={{ fontSize: '11px', color: '#666' }}>
+                  ({clusterCount} cluster{clusterCount !== 1 ? 's' : ''})
+                </span>
+              )}
+            </div>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <label>Cluster by:</label>
+              <select
+                value={distanceMetric}
+                onChange={(e) => onDistanceMetricChange(e.target.value as import('./haplotypeCompute').DistanceMetric)}
+                style={{ fontSize: '12px', padding: '1px 4px' }}
+              >
+                <option value="auto">Auto</option>
+                <option value="sv_only">SVs/TRs only</option>
+                <option value="snv_only">SNVs only</option>
+                <option value="all" disabled={regionSize > 500_000}>All variants</option>
+              </select>
+            </div>
+            {!isDiploidView && (
+              <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                  <input
+                    type='checkbox'
+                    checked={showGenealogy}
+                    onChange={(e) => onShowGenealogyChange(e.target.checked)}
+                  />
+                  Genealogy tree
+                </label>
+                <HaplotypeHelpButton title="Genealogy Tree">
+                  <GenealogyHelp />
+                </HaplotypeHelpButton>
+              </div>
+            )}
+          </ControlGroup>
+        </Fieldset>
+
+        <Fieldset style={{ flex: '1 1 200px' }}>
+          <FieldsetTitle>Display</FieldsetTitle>
+          <ControlGroup>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <label style={{ fontSize: '12px' }}>Plot:</label>
+              <Select
+                value={plotType}
+                onChange={(e: any) => onPlotTypeChange(e.target.value)}
+              >
+                {plotTypes.map((pt) => (
+                  <option key={pt.value} value={pt.value}>{pt.label}</option>
+                ))}
+              </Select>
+            </div>
+            {plotType !== 'heatmap' && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <label style={{ fontSize: '12px' }}>Color:</label>
+                <Select
+                  value={colorMode}
+                  onChange={(e: any) => onColorModeChange(e.target.value)}
+                >
+                  {colorModes.map((cm) => (
+                    <option key={cm.value} value={cm.value}>{cm.label}</option>
+                  ))}
+                </Select>
+                <HaplotypeHelpButton title="Color Modes">
+                  <p>Controls how variant dots and shapes are colored in the track.</p>
+                  <dl style={{ margin: 0 }}>
+                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Variant Type</dt>
+                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Fixed palette: SNVs (blue), insertions (green), deletions (red), duplications (purple), tandem repeats (orange).</dd>
+                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Fingerprint</dt>
+                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Deterministic color per unique allele — identical alleles share the same color.</dd>
+                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Position</dt>
+                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Blue→red gradient across the viewed region (5′ to 3′).</dd>
+                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Frequency</dt>
+                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Light grey for common, dark for rare.</dd>
+                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Haplotype Count</dt>
+                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Grey→red based on how many groups share the variant.</dd>
+                  </dl>
+                </HaplotypeHelpButton>
+              </div>
+            )}
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type='checkbox'
+                  checked={showPopBackground}
+                  onChange={(e) => onShowPopBackgroundChange(e.target.checked)}
+                />
+                Pop bg
+              </label>
+            </div>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type='checkbox'
+                  checked={showPhantomRegions}
+                  onChange={(e) => onShowPhantomRegionsChange(e.target.checked)}
+                />
+                Expand INS/TRs
+              </label>
+              <HaplotypeHelpButton title="Expand Insertions & Tandem Repeats">
+                <ExpandInsertionsHelp />
+              </HaplotypeHelpButton>
+            </div>
+          </ControlGroup>
+        </Fieldset>
+
+        <Fieldset style={{ flex: '0.6 1 150px' }}>
+          <FieldsetTitle>Data Layers</FieldsetTitle>
+          <ControlGroup>
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
                 <input
@@ -470,39 +506,6 @@ export const Legend = ({
                   />
                   Outliers only
                 </label>
-                {/* TODO: Re-enable mQTL toggle when data source is production-ready */}
-                {false && (
-                  <>
-                    <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                      <input
-                        type='checkbox'
-                        checked={showMqtl}
-                        onChange={(e) => onShowMqtlChange(e.target.checked)}
-                      />
-                      mQTLs{mqtlLoading && ' ...'}
-                    </label>
-                    {showMqtl && mqtlData && mqtlData.length > 0 && (
-                      <button
-                        onClick={() => {
-                          const header = 'variant_id,variant_pos,cpg_pos,p_value,effect_size,carrier_count,non_carrier_count\n'
-                          const csv = mqtlData.map((d: any) => `${d.variant_id},${d.variant_pos},${d.cpg_pos},${d.p_value},${d.effect_size},${d.carrier_count},${d.non_carrier_count}`).join('\n')
-                          const blob = new Blob([header + csv], { type: 'text/csv' })
-                          const url = URL.createObjectURL(blob)
-                          const a = document.createElement('a')
-                          a.href = url
-                          a.download = 'mqtl_export.csv'
-                          a.click()
-                        }}
-                        style={{
-                          padding: '2px 6px', fontSize: '11px', cursor: 'pointer',
-                          background: '#f0f0f0', border: '1px solid #ccc', borderRadius: '3px',
-                        }}
-                      >
-                        Export {mqtlData.length} mQTLs
-                      </button>
-                    )}
-                  </>
-                )}
                 {onLoadAllSamples && (
                   <button
                     onClick={onLoadAllSamples}
@@ -523,101 +526,20 @@ export const Legend = ({
                 )}
               </>
             )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <label style={{ fontSize: '12px' }}>Grouping:</label>
-              <Select
-                value={groupingMode}
-                onChange={(e: any) => onGroupingModeChange(e.target.value)}
-              >
-                <option value="similarity">Similarity Clusters</option>
-                <option value="exact">Exact Match</option>
-                <option value="diploid">Diploid</option>
-              </Select>
-              <HaplotypeHelpButton title="Grouping Mode">
-                <GroupingModeHelp />
-              </HaplotypeHelpButton>
-            </div>
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
                 <input
                   type='checkbox'
-                  checked={showPhantomRegions}
-                  onChange={(e) => onShowPhantomRegionsChange(e.target.checked)}
+                  checked={showRecombination}
+                  onChange={(e) => onShowRecombinationChange(e.target.checked)}
                 />
-                Expand INS/TRs
-              </label>
-              <HaplotypeHelpButton title="Expand Insertions & Tandem Repeats">
-                <ExpandInsertionsHelp />
-              </HaplotypeHelpButton>
-            </div>
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                <input
-                  type='checkbox'
-                  checked={showPopBackground}
-                  onChange={(e) => onShowPopBackgroundChange(e.target.checked)}
-                />
-                Pop background
+                Recombination rate
               </label>
             </div>
-            {!isDiploidView && (
-              <>
-                <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                    <input
-                      type='checkbox'
-                      checked={showGenealogy}
-                      onChange={(e) => onShowGenealogyChange(e.target.checked)}
-                    />
-                    Genealogy tree
-                  </label>
-                  <HaplotypeHelpButton title="Genealogy Tree">
-                    <GenealogyHelp />
-                  </HaplotypeHelpButton>
-                </div>
-                {isClusteredView && (
-                  <>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Cluster resolution:</label>
-                      <input
-                        type='range'
-                        min='0'
-                        max='1'
-                        step='0.01'
-                        value={clusterThreshold}
-                        onChange={(e) => onClusterThresholdChange(parseFloat(e.target.value))}
-                        style={{ width: '80px' }}
-                      />
-                      <span style={{ fontSize: '12px', minWidth: '28px' }}>{clusterThreshold.toFixed(2)}</span>
-                    </div>
-                    {clusterCount > 0 && (
-                      <span style={{ fontSize: '11px', color: '#666' }}>
-                        {clusterCount} cluster{clusterCount !== 1 ? 's' : ''}
-                      </span>
-                    )}
-                  </>
-                )}
-                {(showGenealogy || isClusteredView) && (
-                  <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <span style={{ fontWeight: 'bold' }}>Cluster by:</span>
-                    <select
-                      value={distanceMetric}
-                      onChange={(e) => onDistanceMetricChange(e.target.value as import('./haplotypeCompute').DistanceMetric)}
-                      style={{ fontSize: '12px', padding: '1px 4px' }}
-                    >
-                      <option value="auto">Auto</option>
-                      <option value="sv_only">SVs/TRs only</option>
-                      <option value="snv_only">SNVs only</option>
-                      <option value="all" disabled={regionSize > 500_000}>All variants</option>
-                    </select>
-                  </div>
-                )}
-              </>
-            )}
-          </>
-        )}
-      </LegendRow>
-    </LegendWrapper>
+          </ControlGroup>
+        </Fieldset>
+      </FieldsetRow>
+    </ControlsContainer>
   )
 }
 
@@ -926,9 +848,6 @@ type HaplotypeTrackProps = {
   initialMinAf?: number
   initialSortBy?: string
   initialColorMode?: string
-  onMinAfChange?: (threshold: number) => void
-  onColorModeChange?: (mode: string) => void
-  onSortModeChange?: (mode: string) => void
   onLoadAllSamples?: () => void
   methylationLoading?: boolean
   methylationSampleCount?: number
@@ -937,18 +856,14 @@ type HaplotypeTrackProps = {
   workerComputing?: boolean
   loadingStatus?: string
   showMqtl?: boolean
-  onShowMqtlChange?: (show: boolean) => void
   mqtlLoading?: boolean
   mqtlData?: any[]
   mqtlMinLogP?: number
   plotType?: string
-  onPlotTypeChange?: (plotType: string) => void
   showGenealogy?: boolean
-  onShowGenealogyChange?: (show: boolean) => void
   hoveredVariantPosition?: number | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
   groupingMode?: 'similarity' | 'exact' | 'diploid'
-  onGroupingModeChange?: (mode: 'similarity' | 'exact' | 'diploid') => void
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
   expandedClusterIds?: Set<string>
@@ -957,15 +872,17 @@ type HaplotypeTrackProps = {
   minAfFloor?: number
   minAfCeiling?: number
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
-  onDistanceMetricChange?: (metric: import('./haplotypeCompute').DistanceMetric) => void
   regionSize?: number
   showPhantomRegions?: boolean
-  onShowPhantomRegionsChange?: (show: boolean) => void
   onVariantClick?: (pos: number) => void
   onClusterSelect?: (clusterId: string) => void
   selectedClusterId?: string | null
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
+  showMethylation?: boolean
+  filterToOutliers?: boolean
+  showPopBackground?: boolean
+  isAutoTuned?: boolean
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1310,10 +1227,14 @@ const GroupingModeHelp = () => (
     <dl style={{ margin: 0 }}>
       <dt style={{ fontWeight: 600, marginTop: 4 }}>Similarity Clusters (UPGMA)</dt>
       <dd style={{ marginLeft: 0, marginBottom: 8 }}>
-        Groups haplotypes by overall structural similarity using hierarchical clustering.
-        Similar-but-not-identical haplotypes are merged into clusters. The Min AF slider
-        only controls which variant dots are displayed — the tree and clusters remain stable.
-        Use the cluster resolution slider to adjust how aggressively groups are merged.
+        Groups haplotypes by overall structural similarity using UPGMA (Unweighted Pair Group
+        Method with Arithmetic Mean), a bottom-up hierarchical clustering algorithm. It starts
+        with each haplotype as its own cluster, then iteratively merges the two most similar
+        clusters until a single tree is formed. The resolution slider controls where this tree
+        is cut &mdash; lower values produce fewer, larger clusters; higher values produce more,
+        finer-grained clusters. The Min AF slider only controls which variant dots are displayed
+        &mdash; the tree and clusters remain stable. This is the recommended mode for exploring
+        population-level haplotype structure.
       </dd>
       <dt style={{ fontWeight: 600, marginTop: 4 }}>Exact Match</dt>
       <dd style={{ marginLeft: 0, marginBottom: 8 }}>
@@ -1597,21 +1518,6 @@ const HaplotypeInfoBar = ({
 }
 
 // --- Sub-track components ---
-
-const HaplotypeHeaderTrack = ({
-  legendProps,
-}: {
-  legendProps: any
-}) => {
-  return (
-    <Track
-      renderTopPanel={() => <Legend {...legendProps} />}
-      renderLeftPanel={() => <SidePanel><div style={{ height: 1 }} /></SidePanel>}
-    >
-      {() => <div style={{ height: 1 }} />}
-    </Track>
-  )
-}
 
 const MethylationSummaryTrack = ({ methylationSummary }: { methylationSummary: MethylationSummaryPoint[] }) => {
   const summaryTrackHeight = 120
@@ -2085,10 +1991,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   stop,
   initialMinAf = 0,
   initialColorMode = 'sv_type',
-  initialSortBy = 'similarity_score',
-  onMinAfChange,
-  onColorModeChange,
-  onSortModeChange,
   onLoadAllSamples,
   methylationLoading = false,
   methylationSampleCount = 0,
@@ -2097,18 +1999,14 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   workerComputing = false,
   loadingStatus = '',
   showMqtl = false,
-  onShowMqtlChange,
   mqtlLoading = false,
   mqtlData = [],
   mqtlMinLogP = 0,
   plotType = 'lollipop',
-  onPlotTypeChange,
   showGenealogy = false,
-  onShowGenealogyChange,
   hoveredVariantPosition,
   onVisibleGroupChange,
   groupingMode = 'similarity',
-  onGroupingModeChange,
   clusterThreshold = 0,
   onClusterThresholdChange,
   expandedClusterIds,
@@ -2117,55 +2015,20 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   minAfFloor = 0,
   minAfCeiling = 1,
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
-  onDistanceMetricChange,
   regionSize = 0,
   showPhantomRegions = true,
-  onShowPhantomRegionsChange,
   onVariantClick,
   onClusterSelect,
   selectedClusterId,
   highlightedVariantIds,
   selectedVariantPos,
+  showMethylation = false,
+  filterToOutliers = true,
+  showPopBackground = true,
+  isAutoTuned = true,
 }, ref) {
-  const [colorMode, setColorMode] = useState(initialColorMode)
-  const [threshold, setThreshold] = useState(initialMinAf)
-  const [sortMode, setSortMode] = useState(initialSortBy)
-  const [showMethylation, setShowMethylation] = useState(false)
-  const [filterToOutliers, setFilterToOutliers] = useState(true)
-  const [showPopBackground, setShowPopBackground] = useState(true)
-  const [isAutoTuned, setIsAutoTuned] = useState(true)
-
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
-
-  const handleColorModeChange = useCallback(
-    (mode: string) => {
-      setColorMode(mode)
-      onColorModeChange && onColorModeChange(mode)
-    },
-    [onColorModeChange]
-  )
-
-  const handleMinAfChange = useCallback(
-    (newThreshold: number) => {
-      setThreshold(newThreshold)
-      setIsAutoTuned(false)
-      onMinAfChange && onMinAfChange(newThreshold)
-    },
-    [onMinAfChange]
-  )
-
-  const handleSortModeChange = useCallback(
-    (newSortMode: string) => {
-      setSortMode(newSortMode)
-      onSortModeChange && onSortModeChange(newSortMode)
-    },
-    [onSortModeChange]
-  )
-
-  const handleShowMethylationChange = useCallback((show: boolean) => {
-    setShowMethylation(show)
-  }, [])
 
   if (!haplotypeGroups) {
     return (
@@ -2295,48 +2158,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     .domain([0, Math.max(1, maxMeth)])
     .range([65, 35])
 
-  const legendProps = {
-    initialMinAf,
-    initialSortBy,
-    onMinAfChange: handleMinAfChange,
-    onColorModeChange: handleColorModeChange,
-    colorMode,
-    onSortModeChange: handleSortModeChange,
-    showMethylation,
-    onShowMethylationChange: handleShowMethylationChange,
-    filterToOutliers,
-    onFilterToOutliersChange: setFilterToOutliers,
-    onLoadAllSamples,
-    methylationLoading,
-    methylationSampleCount,
-    methylationTotalSamples,
-    showMqtl,
-    onShowMqtlChange: onShowMqtlChange || (() => { }),
-    mqtlLoading,
-    mqtlData,
-    plotType,
-    onPlotTypeChange: onPlotTypeChange || (() => { }),
-    showGenealogy,
-    onShowGenealogyChange: onShowGenealogyChange || (() => { }),
-    groupingMode,
-    onGroupingModeChange: onGroupingModeChange || (() => { }),
-    clusterThreshold,
-    onClusterThresholdChange: (t: number) => {
-      setIsAutoTuned(false)
-      ;(onClusterThresholdChange || (() => { }))(t)
-    },
-    clusterCount: clusters?.length || 0,
-    minAfFloor,
-    minAfCeiling,
-    distanceMetric,
-    onDistanceMetricChange: onDistanceMetricChange || (() => { }),
-    regionSize,
-    showPhantomRegions,
-    onShowPhantomRegionsChange: onShowPhantomRegionsChange || (() => { }),
-    showPopBackground,
-    onShowPopBackgroundChange: setShowPopBackground,
-  }
-
   // Build pangenome graph for alluvial/heatmap views
   const pangenomeGraph = useMemo(() => {
     if (plotType !== 'alluvial' && plotType !== 'heatmap') return null
@@ -2352,30 +2173,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 
   return (
     <Wrapper style={{ flexDirection: 'column' }}>
-      <StickyHeader>
-        <HaplotypeHeaderTrack legendProps={legendProps} />
-        <HaplotypeInfoBar
-          displayGroups={displayGroups}
-          start={start}
-          stop={stop}
-          threshold={threshold}
-          groupingMode={groupingMode}
-          clusterCount={clusters?.length || 0}
-          clusterThreshold={clusterThreshold}
-          haplotypeLoading={haplotypeLoading}
-          workerComputing={workerComputing}
-          loadingStatus={loadingStatus}
-          methylationLoading={methylationLoading}
-          methylationSampleCount={methylationSampleCount}
-          methylationTotalSamples={methylationTotalSamples}
-          isAutoTuned={isAutoTuned}
-          plotType={plotType}
-          distanceMetric={distanceMetric}
-          variationGraph={variationGraph}
-          pangenomeGraph={pangenomeGraph}
-        />
-      </StickyHeader>
-
       {plotType === 'lollipop' && (
         <>
           {showMethylation && methylationSummary.length > 0 && (
@@ -2389,7 +2186,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             clusters={clusters}
             start={start}
             stop={stop}
-            colorMode={colorMode}
+            colorMode={initialColorMode}
             showMethylation={showMethylation}
             methylationData={methylationData}
             summaryByPos={summaryByPos}
@@ -2421,7 +2218,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
       )}
 
       {plotType === 'alluvial' && pangenomeGraph && (
-        <AlluvialTrack graph={pangenomeGraph} colorMode={colorMode} sampleMetadata={sampleMetadata} />
+        <AlluvialTrack graph={pangenomeGraph} colorMode={initialColorMode} sampleMetadata={sampleMetadata} />
       )}
 
       {plotType === 'heatmap' && pangenomeGraph && (
@@ -2429,7 +2226,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
       )}
 
       {plotType === 'bubble' && variationGraph && (
-        <BubbleTrack graph={variationGraph} colorMode={colorMode} sampleMetadata={sampleMetadata} />
+        <BubbleTrack graph={variationGraph} colorMode={initialColorMode} sampleMetadata={sampleMetadata} />
       )}
 
       {plotType === 'painting' && (
@@ -2451,13 +2248,29 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
           onClusterThresholdChange={onClusterThresholdChange}
         />
       )}
+
+      <HaplotypeInfoBar
+        displayGroups={displayGroups}
+        start={start}
+        stop={stop}
+        threshold={initialMinAf}
+        groupingMode={groupingMode}
+        clusterCount={clusters?.length || 0}
+        clusterThreshold={clusterThreshold}
+        haplotypeLoading={haplotypeLoading}
+        workerComputing={workerComputing}
+        loadingStatus={loadingStatus}
+        methylationLoading={methylationLoading}
+        methylationSampleCount={methylationSampleCount}
+        methylationTotalSamples={methylationTotalSamples}
+        isAutoTuned={isAutoTuned}
+        plotType={plotType}
+        distanceMetric={distanceMetric}
+        variationGraph={variationGraph}
+        pangenomeGraph={pangenomeGraph}
+      />
     </Wrapper>
   )
 })
 
 export default HaplotypeTrack
-
-
-
-
-
