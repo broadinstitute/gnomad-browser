@@ -1,5 +1,6 @@
 import React, { useRef, useState, useCallback, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
+import HaplotypeHelpButton from './HelpButton'
 
 const OverviewContainer = styled.div`
   position: relative;
@@ -408,6 +409,22 @@ export default function ZoomOverview({
   return (
     <OverviewContainer>
       <OverviewHeader>
+        <span style={{ fontWeight: 600, fontSize: 12, color: '#555', whiteSpace: 'nowrap' }}>Zoom Controls</span>
+        <HaplotypeHelpButton title="Zoom Controls">
+          <h4 style={{ margin: '0 0 8px' }}>Zooming in (no page reload)</h4>
+          <p>Use the +1.5x / +3x / +10x buttons or drag the edges of the highlight box on the minimap to zoom into a sub-region. This is instant &mdash; it filters the visible data client-side without fetching new data from the server. All tracks, haplotypes, and the variant table update to show only the zoomed region.</p>
+          <h4 style={{ margin: '16px 0 8px' }}>Zooming out (requires page reload)</h4>
+          <p>The &minus;1.5x / &minus;3x / &minus;10x buttons zoom out, but only up to the boundaries of the originally loaded region. To view a larger region than what was initially loaded, you need to navigate to a new region via the browser URL or gene/region search, which triggers a full page reload and new data fetch.</p>
+          <h4 style={{ margin: '16px 0 8px' }}>&ldquo;Set as region&rdquo;</h4>
+          <p>When zoomed in, the <strong>Set as region</strong> button commits the current zoom window as the new page-level region. This triggers a full reload with the narrower coordinates, which is useful when you want to:</p>
+          <ul style={{ margin: '8px 0 0 20px', lineHeight: 1.8 }}>
+            <li>Enable haplotype view on a region that was previously too large</li>
+            <li>Get fresh server-side data (e.g., updated clustering) for the narrower window</li>
+            <li>Share or bookmark the exact zoomed-in coordinates</li>
+          </ul>
+          <h4 style={{ margin: '16px 0 8px' }}>The minimap</h4>
+          <p>The shaded area below shows the full loaded region with a variant density histogram and gene models. The highlighted rectangle is your current zoom window. Click anywhere on the minimap to re-center the zoom, or drag the rectangle edges to resize it.</p>
+        </HaplotypeHelpButton>
         <ZoomInfo>
           Viewing:{' '}
           <strong>

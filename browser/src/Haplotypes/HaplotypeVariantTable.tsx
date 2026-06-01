@@ -71,14 +71,6 @@ const ControlBar = styled.div`
   padding: 6px 0;
 `
 
-const SearchInput = styled.input`
-  padding: 3px 8px;
-  font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  width: 160px;
-`
-
 const ExportButton = styled.button`
   padding: 3px 10px;
   font-size: 12px;
@@ -1429,6 +1421,7 @@ type HaplotypeVariantTableProps = {
   isClusteredView?: boolean
   selectedClusterId?: string | null
   onClearClusterFilter?: () => void
+  searchText?: string
 }
 
 export type HaplotypeVariantTableHandle = {
@@ -1455,9 +1448,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   isClusteredView = false,
   selectedClusterId = null,
   onClearClusterFilter,
+  searchText: searchTextProp = '',
 }, ref) {
   const [sort, setSort] = useState<SortConfig>({ key: 'pos', direction: 'asc' })
-  const [searchText, setSearchText] = useState('')
+  const searchText = searchTextProp
   const [typeFilters, setTypeFilters] = useState<Record<string, boolean>>({
     snv: true,
     deletion: true,
@@ -1798,8 +1792,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         tr_flank_prefix: undefined,
         tr_flank_suffix: undefined,
         _trRawSequences: rawSeqs,
-        short_read_match_id: null,
-        enveloped_ids: null,
+        short_read_match_id: v.short_read_match_id || null,
+        enveloped_ids: v.enveloped_ids || null,
         cluster_distribution: clusterDistByKey.get(key),
         active_cluster_count: clusterDistByKey.get(key)?.filter(c => c.af > 0).length,
       })
@@ -2012,12 +2006,6 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           categorySelections={consequenceFilters}
           id="lr-consequence-filter"
           onChange={setConsequenceFilters}
-        />
-        <SearchInput
-          type="text"
-          placeholder="Search position, rsID, allele…"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
         />
         {selectedClusterId && (
           <span style={{
