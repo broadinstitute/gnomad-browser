@@ -1,5 +1,6 @@
 import { transparentize } from 'polished'
-import React, { useContext } from 'react'
+import React, { useContext, useState, useCallback } from 'react'
+import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
 import { Track } from '@gnomad/region-viewer'
@@ -7,7 +8,7 @@ import { Track } from '@gnomad/region-viewer'
 import Link from '../Link'
 import VariantTrack from '../VariantList/VariantTrack'
 import { getCategoryFromConsequence } from '../vepConsequences'
-import { getVariantCategory, VARIANT_CATEGORY_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
+import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
 
 // --- Types ---
@@ -29,7 +30,7 @@ type LRVariant = {
   sv_consequences: string[] | null
 }
 
-type Band = 'snv' | 'sv' | 'tr'
+type Band = 'snv' | 'ins' | 'del' | 'sv' | 'tr'
 
 type PackedVariant<T> = T & { row: number }
 
@@ -41,7 +42,6 @@ const LOLLIPOP_RADIUS = 3
 const LOLLIPOP_TOP = 10
 const MIN_SV_BAR_WIDTH = 3
 const TR_BLOCK_COLOR = VARIANT_CATEGORY_COLORS.tr
-const MOTIF_LABEL_MIN_WIDTH = 40
 
 // --- Consequence colors for Band 1 ---
 
@@ -91,14 +91,58 @@ const SidePanel = styled.div`
   padding-left: 4px;
 `
 
+// --- Variant tooltip (matches haplotype track layout) ---
+
+type HoveredVariant = {
+  variant: LRVariant
+  x: number
+  y: number
+}
+
+const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
+  const v = hovered.variant
+  const truncate = (s: string | null | undefined, len: number) =>
+    s && s.length > len ? s.substring(0, len) + '...' : s || ''
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        left: hovered.x + 12,
+        top: hovered.y + 12,
+        background: 'white',
+        border: '1px solid #ccc',
+        borderRadius: 4,
+        padding: '6px 8px',
+        fontSize: 12,
+        pointerEvents: 'none',
+        zIndex: 10000,
+        maxWidth: 300,
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+      }}
+    >
+      <div><strong>Position:</strong> {v.pos}</div>
+      <div><strong>Ref:</strong> {truncate((v as any).ref, 10)}</div>
+      <div><strong>Alt:</strong> {truncate((v as any).alt, 10)}</div>
+      {(v as any).freq && (
+        <div><strong>AF:</strong> {((v as any).freq?.all?.af ?? (v as any).freq?.af)?.toFixed(4)}</div>
+      )}
+      {v.variant_id && <div><strong>RSID:</strong> {v.variant_id}</div>}
+      {v.allele_type && <div><strong>Type:</strong> {v.allele_type}</div>}
+    </div>
+  )
+}
+
 // --- Band 2: SV packed ribbons ---
 
 type SvItem = LRVariant & { start: number; stop: number }
 
-const SvBand = ({ variants, scalePosition, width }: {
+const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition }: {
   variants: SvItem[]
   scalePosition: (pos: number) => number
   width: number
+  onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
+  hoveredPosition?: number | null
 }) => {
   const { mapper } = useContext(AccordionContext)
   const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
@@ -109,16 +153,20 @@ const SvBand = ({ variants, scalePosition, width }: {
   const bandHeight = maxRows * ROW_HEIGHT
   const barHeight = ROW_HEIGHT - 4
 
+  const hoverHandlers = (v: LRVariant) => onHoverVariant ? {
+    onMouseEnter: (e: React.MouseEvent) => onHoverVariant(v, e),
+    onMouseMove: (e: React.MouseEvent) => onHoverVariant(v, e),
+    onMouseLeave: () => onHoverVariant(null),
+  } : {}
+
   return (
     <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
       {packed.map((v) => {
+        const color = ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.length)]
         const cat = getVariantCategory(v.allele_type, v.length)
-        const color = VARIANT_CATEGORY_COLORS[cat]
         const rowY = v.row * ROW_HEIGHT + 2
 
         if (cat === 'insertion' && mapper) {
-          // Insertions don't span reference space. Map through phantom coordinates
-          // so the bar physically expands into the accordion gap.
           const startX = scalePosition(v.pos)
           const phantomWidth =
             (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
@@ -127,12 +175,12 @@ const SvBand = ({ variants, scalePosition, width }: {
           const barWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
 
           if (phantomWidth < MIN_SV_BAR_WIDTH) {
-            // Accordion is off or phantom gap too small — render as triangle
             return (
               <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
                 <path
                   d={`M ${startX} ${rowY} l -4 0 l 4 ${barHeight} l 4 -${barHeight} z`}
                   fill={color}
+                  {...hoverHandlers(v)}
                 />
               </Link>
             )
@@ -141,31 +189,27 @@ const SvBand = ({ variants, scalePosition, width }: {
           return (
             <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
               <rect
-                x={startX}
-                y={rowY}
-                width={barWidth}
-                height={barHeight}
-                fill={color}
-                rx={1}
+                x={startX} y={rowY} width={barWidth} height={barHeight}
+                fill={color} rx={1}
+                {...hoverHandlers(v)}
               />
             </Link>
           )
         }
 
         if (cat === 'insertion') {
-          // No mapper — fallback to triangle
           const x = scalePosition(v.pos)
           return (
             <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
               <path
                 d={`M ${x} ${rowY} l -4 0 l 4 ${barHeight} l 4 -${barHeight} z`}
                 fill={color}
+                {...hoverHandlers(v)}
               />
             </Link>
           )
         }
 
-        // Deletions/duplications: reference-spanning, standard mapping
         let startX = scalePosition(v.start)
         let stopX = scalePosition(v.stop)
         if (stopX - startX < MIN_SV_BAR_WIDTH) {
@@ -177,16 +221,19 @@ const SvBand = ({ variants, scalePosition, width }: {
         return (
           <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
             <rect
-              x={startX}
-              y={rowY}
-              width={stopX - startX}
-              height={barHeight}
-              fill={color}
-              rx={1}
+              x={startX} y={rowY} width={stopX - startX} height={barHeight}
+              fill={color} rx={1}
+              {...hoverHandlers(v)}
             />
           </Link>
         )
       })}
+      {hoveredPosition != null && (() => {
+        const hx = scalePosition(hoveredPosition)
+        return hx >= 0 && hx <= width ? (
+          <line x1={hx} y1={0} x2={hx} y2={bandHeight} stroke="#333" strokeWidth={1} opacity={0.5} pointerEvents="none" />
+        ) : null
+      })()}
     </svg>
   )
 }
@@ -195,10 +242,12 @@ const SvBand = ({ variants, scalePosition, width }: {
 
 type TrItem = LRVariant & { start: number; stop: number }
 
-const TrBand = ({ variants, scalePosition, width }: {
+const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition }: {
   variants: TrItem[]
   scalePosition: (pos: number) => number
   width: number
+  onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
+  hoveredPosition?: number | null
 }) => {
   const { mapper } = useContext(AccordionContext)
   const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
@@ -239,37 +288,33 @@ const TrBand = ({ variants, scalePosition, width }: {
           blockWidth = Math.max(stopX - startX, MIN_SV_BAR_WIDTH)
         }
 
-        const showMotif = blockWidth > MOTIF_LABEL_MIN_WIDTH && v.motifs && v.motifs.length > 0
+        const trHover = onHoverVariant ? {
+          onMouseEnter: (e: React.MouseEvent) => onHoverVariant(v, e),
+          onMouseMove: (e: React.MouseEvent) => onHoverVariant(v, e),
+          onMouseLeave: () => onHoverVariant(null),
+        } : {}
 
         return (
           <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
-            <g>
-              <rect
-                x={startX}
-                y={rowY}
-                width={blockWidth}
-                height={barHeight}
-                fill={TR_BLOCK_COLOR}
-                rx={2}
-                opacity={0.8}
-              />
-              {showMotif && (
-                <text
-                  x={startX + blockWidth / 2}
-                  y={rowY + barHeight / 2}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fill="white"
-                  fontSize={9}
-                  style={{ pointerEvents: 'none' }}
-                >
-                  {v.motifs!.join(',')}
-                </text>
-              )}
-            </g>
+            <rect
+              x={startX}
+              y={rowY}
+              width={blockWidth}
+              height={barHeight}
+              fill={TR_BLOCK_COLOR}
+              rx={2}
+              opacity={0.8}
+              {...trHover}
+            />
           </Link>
         )
       })}
+      {hoveredPosition != null && (() => {
+        const hx = scalePosition(hoveredPosition)
+        return hx >= 0 && hx <= width ? (
+          <line x1={hx} y1={0} x2={hx} y2={bandHeight} stroke="#333" strokeWidth={1} opacity={0.5} pointerEvents="none" />
+        ) : null
+      })()}
     </svg>
   )
 }
@@ -284,13 +329,34 @@ const BandDivider = styled.div`
 
 // --- Main component ---
 
+const GENEALOGY_PANEL_WIDTH = 180
+
 type LongReadVariantTrackProps = {
   variants: LRVariant[]
   lod?: LodVisibility
+  showGenealogy?: boolean
+  isDiploidView?: boolean
+  hoveredVariantPosition?: number | null
+  onHoverVariantPosition?: (pos: number | null) => void
 }
 
-const LongReadVariantTrack = ({ variants, lod }: LongReadVariantTrackProps) => {
+const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition }: LongReadVariantTrackProps) => {
+  const genealogyActive = showGenealogy && !isDiploidView
+  const [hovered, setHovered] = useState<HoveredVariant | null>(null)
+
+  const onHoverVariant = useCallback((variant: LRVariant | null, e?: React.MouseEvent) => {
+    if (variant && e) {
+      setHovered({ variant, x: e.clientX, y: e.clientY })
+      onHoverVariantPosition?.(variant.pos)
+    } else {
+      setHovered(null)
+      onHoverVariantPosition?.(null)
+    }
+  }, [onHoverVariantPosition])
+
   const snvVariants: LRVariant[] = []
+  const insVariants: SvItem[] = []
+  const delVariants: SvItem[] = []
   const svVariants: SvItem[] = []
   const trVariants: TrItem[] = []
 
@@ -306,6 +372,14 @@ const LongReadVariantTrack = ({ variants, lod }: LongReadVariantTrackProps) => {
     const band = assignVariantBand(v)
     if (band === 'snv') {
       snvVariants.push(v)
+    } else if (band === 'ins') {
+      const start = v.pos
+      const stop = v.end != null ? v.end : v.pos + Math.abs(v.length || 1)
+      insVariants.push({ ...v, start, stop })
+    } else if (band === 'del') {
+      const start = v.pos
+      const stop = v.end != null ? v.end : v.pos + Math.abs(v.length || 1)
+      delVariants.push({ ...v, start, stop })
     } else if (band === 'sv') {
       const start = v.pos
       const stop = v.end != null ? v.end : v.pos + Math.abs(v.length || 1)
@@ -323,23 +397,55 @@ const LongReadVariantTrack = ({ variants, lod }: LongReadVariantTrackProps) => {
   const trackSnvVariants = snvVariants.map((v) => ({
     ...v,
     consequence: v.major_consequence,
+    allele_freq: (v as any).freq?.af,
   }))
 
   return (
-    <div style={{ overflow: 'hidden', clipPath: 'inset(0)' }}>
+    <div style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}>
       <VariantTrack
         // @ts-expect-error TS(2769) - VariantTrack prop types are loose
         title={`Long Read SNVs (${trackSnvVariants.length})`}
         variants={trackSnvVariants}
       />
 
+      {insVariants.length > 0 && (
+        <>
+          <BandDivider />
+          <Track renderLeftPanel={() => <SidePanel>INS</SidePanel>}>
+            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
+              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
+              const scaleFactor = width > 0 ? adjWidth / width : 1
+              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
+              return <SvBand variants={insVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
+            }}
+          </Track>
+        </>
+      )}
+
+      {delVariants.length > 0 && (
+        <>
+          <BandDivider />
+          <Track renderLeftPanel={() => <SidePanel>DEL</SidePanel>}>
+            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
+              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
+              const scaleFactor = width > 0 ? adjWidth / width : 1
+              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
+              return <SvBand variants={delVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
+            }}
+          </Track>
+        </>
+      )}
+
       {svVariants.length > 0 && (
         <>
           <BandDivider />
-          <Track renderLeftPanel={() => <SidePanel>SVs</SidePanel>}>
-            {({ scalePosition, width }: { scalePosition: (pos: number) => number; width: number }) => (
-              <SvBand variants={svVariants} scalePosition={scalePosition} width={width} />
-            )}
+          <Track renderLeftPanel={() => <SidePanel>DUP/SV</SidePanel>}>
+            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
+              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
+              const scaleFactor = width > 0 ? adjWidth / width : 1
+              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
+              return <SvBand variants={svVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
+            }}
           </Track>
         </>
       )}
@@ -348,12 +454,17 @@ const LongReadVariantTrack = ({ variants, lod }: LongReadVariantTrackProps) => {
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>TRs</SidePanel>}>
-            {({ scalePosition, width }: { scalePosition: (pos: number) => number; width: number }) => (
-              <TrBand variants={trVariants} scalePosition={scalePosition} width={width} />
-            )}
+            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
+              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
+              const scaleFactor = width > 0 ? adjWidth / width : 1
+              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
+              return <TrBand variants={trVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
+            }}
           </Track>
         </>
       )}
+
+      {hovered && ReactDOM.createPortal(<VariantTooltip hovered={hovered} />, document.body)}
     </div>
   )
 }
