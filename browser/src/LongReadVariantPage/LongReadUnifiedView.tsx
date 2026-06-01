@@ -782,7 +782,7 @@ const LongReadUnifiedView = ({
 
       {/* Base layer — always rendered */}
       {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
-      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} />
+      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogy={showHaplotypes && showGenealogy} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} />
 
       {/* Haplotype layer — opt-in */}
       {showHaplotypes && (

@@ -28,6 +28,10 @@ const ROW_CENTER_Y = 12.5
 const INSERTION_TYPES = new Set(['ins', 'alu_ins', 'sva_ins', 'numt'])
 const SCROLL_CONTAINER_HEIGHT = 500
 
+/** Accurate span measurement using end/pos when available, falling back to allele_length */
+const getVariantSpan = (v: { pos: number; end?: number | null; allele_length?: number | null }) =>
+  v.end != null ? Math.max(0, v.end - v.pos) : Math.abs(v.allele_length || 0)
+
 // Flattened data types for deck.gl layers
 type VariantPoint = {
   position: number // raw genomic position — scaled in layer accessor
@@ -1371,10 +1375,10 @@ function DeckGLLollipopCanvas({
       const locus = phantomLociByPos.get(variant.pos)
       if (!locus || locus.maxPhantomLength <= 0) return false
 
-      // For non-TRVs, require allele_length >= 50 (small indels render as circles/triangles)
-      // TRVs always get phantom bars if a locus exists — their allele_length is often small
-      // but the phantom gap was created for this locus's reference region span
-      if (alleleType !== 'trv' && Math.abs(variant.allele_length || 0) < 50) return false
+      // TRVs and insertions always get phantom bars if a locus exists — their phantom gap
+      // was created for this variant. Non-insertion types need >= 50bp to qualify.
+      const isIns = INSERTION_TYPES.has(alleleType)
+      if (alleleType !== 'trv' && !isIns && Math.abs(variant.allele_length || 0) < 50) return false
 
       const effectiveLength = Math.min(Math.max(Math.abs(variant.allele_length || 0), 1), locus.maxPhantomLength)
       const accentColor = cssColorToRgba(ALLELE_TYPE_COLORS[alleleType] || '#888888')
@@ -1492,7 +1496,7 @@ function DeckGLLollipopCanvas({
           const phantomCarriers = new Map<number, number>()
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-            const isLarge = Math.abs(variant.allele_length || 0) >= 50
+            const isLarge = getVariantSpan(variant) >= 50
             if (cat === 'snv' && !lod.showSnvs) continue
             if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
@@ -1516,7 +1520,13 @@ function DeckGLLollipopCanvas({
             } else if (cat === 'insertion' || (cat === 'sv' && INSERTION_TYPES.has((variant.allele_type || '').toLowerCase()))) {
               allInsertionTriangles.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
             } else if (cat === 'tr') {
-              allTrRects.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
+              const trSpan = getVariantSpan(variant)
+              if (trSpan >= 50) {
+                const endPos = variant.end ?? (variant.pos + trSpan)
+                allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color, variant, groupHash: dg.hash })
+              } else {
+                allTrRects.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
+              }
             } else {
               allVariantPoints.push({ position: variant.pos, y: baseline, radius: variantCircleRadius, color, variant, groupHash: dg.hash })
             }
@@ -1533,14 +1543,18 @@ function DeckGLLollipopCanvas({
         // Below-threshold variants for both strands
         const pushBelowThreshold = (variants: LRVariant[], baseline: number) => {
           for (const variant of variants) {
-            const shape = getVariantShape(variant)
-            if (shape === 'deletion') {
+            const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+            const span = getVariantSpan(variant)
+            const isLargeBt = span >= 50
+
+            if ((cat === 'deletion' || cat === 'sv') && isLargeBt && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
+              const endPos = variant.end ?? (variant.pos + span)
+              allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color: [128, 128, 128, 100], variant, groupHash: dg.hash })
+            } else if (cat === 'deletion') {
               allDeletionLines.push({ position: variant.pos, yTop: baseline - 4.5, yBottom: baseline + 4.5, color: [128, 128, 128, 100], width: 1, variant })
             } else {
               const point: VariantPoint = { position: variant.pos, y: baseline, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: dg.hash }
-              // Center insertion/TR below-threshold variants in their phantom gap
               if (accordionActive) {
-                const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
                 if (cat === 'insertion' || cat === 'tr' || cat === 'sv') {
                   const locus = phantomLociByPos.get(variant.pos)
                   if (locus && locus.maxPhantomLength > 0) {
@@ -1640,7 +1654,7 @@ function DeckGLLollipopCanvas({
           const variant = cv.variant
           const alpha = clusterAfAlpha(cv.cluster_af)
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          const isLarge = Math.abs(variant.allele_length || 0) >= 50
+          const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
@@ -1662,7 +1676,13 @@ function DeckGLLollipopCanvas({
           } else if (cat === 'insertion' || (cat === 'sv' && INSERTION_TYPES.has((variant.allele_type || '').toLowerCase()))) {
             allInsertionTriangles.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
           } else if (cat === 'tr') {
-            allTrRects.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
+            const trSpan = getVariantSpan(variant)
+            if (trSpan >= 50) {
+              const endPos = variant.end ?? (variant.pos + trSpan)
+              allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: 0 })
+            } else {
+              allTrRects.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
+            }
           } else {
             allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: 0 })
           }
@@ -1687,13 +1707,18 @@ function DeckGLLollipopCanvas({
         })
 
         for (const variant of group.below_threshold.variants) {
-          const shape = getVariantShape(variant)
-          if (shape === 'deletion') {
+          const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
+          const span = getVariantSpan(variant)
+          const isLargeBt = span >= 50
+
+          if ((cat === 'deletion' || cat === 'sv') && isLargeBt && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
+            const endPos = variant.end ?? (variant.pos + span)
+            allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color: [128, 128, 128, 100], variant, groupHash: group.hash })
+          } else if (cat === 'deletion') {
             allDeletionLines.push({ position: variant.pos, yTop: rowY + 8, yBottom: rowY + 17, color: [128, 128, 128, 100], width: 1, variant })
           } else {
             const point: VariantPoint = { position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: group.hash }
             if (accordionActive) {
-              const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
               if (cat === 'insertion' || cat === 'tr' || cat === 'sv') {
                 const locus = phantomLociByPos.get(variant.pos)
                 if (locus && locus.maxPhantomLength > 0) {
@@ -1709,7 +1734,7 @@ function DeckGLLollipopCanvas({
         const groupPhantomCarriers = new Map<number, number>()
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          const isLarge = Math.abs(variant.allele_length || 0) >= 50
+          const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
@@ -1730,7 +1755,13 @@ function DeckGLLollipopCanvas({
           } else if (cat === 'insertion' || (cat === 'sv' && INSERTION_TYPES.has((variant.allele_type || '').toLowerCase()))) {
             allInsertionTriangles.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
           } else if (cat === 'tr') {
-            allTrRects.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
+            const trSpan = getVariantSpan(variant)
+            if (trSpan >= 50) {
+              const endPos = variant.end ?? (variant.pos + trSpan)
+              allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color, variant, groupHash: group.hash })
+            } else {
+              allTrRects.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
+            }
           } else {
             allVariantPoints.push({ position: variant.pos, y: rowY + ROW_CENTER_Y, radius: variantCircleRadius, color, variant, groupHash: group.hash })
           }
@@ -2121,14 +2152,15 @@ function DeckGLLollipopCanvas({
       }))
     }
 
-    // Upward triangles for insertions
+    // Small bars for insertions (no accordion expansion)
     if (allInsertionTriangles.length > 0) {
       result.push(new SolidPolygonLayer({
-        id: 'insertion-triangles-layer',
+        id: 'insertion-bars-layer',
         data: allInsertionTriangles,
         getPolygon: (d: VariantPoint) => {
           const px = scalePosition(d.position)
-          return [[px - 6, d.y + 5], [px, d.y - 5], [px + 6, d.y + 5]]
+          const halfW = Math.max(3, d.radius)
+          return [[px - halfW, d.y - 4], [px + halfW, d.y - 4], [px + halfW, d.y + 4], [px - halfW, d.y + 4]]
         },
         getFillColor: (d: VariantPoint) => dimVariantColor(d.color, d.variant),
         pickable: true,

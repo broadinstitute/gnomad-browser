@@ -28,10 +28,10 @@ const COMPACT_SHAPE_RENDERERS: Record<VariantCategory, (color: string) => React.
     <line x1={11} y1={4} x2={11} y2={18} stroke={color} strokeDasharray="4 2" strokeWidth={2.5} />
   ),
   insertion: (color) => (
-    <path d="M 11 5 L 6 17 L 16 17 Z" fill={color} stroke={color} strokeWidth={0.5} />
+    <rect x={4} y={9} width={14} height={4} fill={color} opacity={0.8} rx={1} />
   ),
   sv: (color) => (
-    <path d="M 11 5 L 6 11 L 11 17 L 16 11 Z" fill={color} opacity={0.7} stroke={color} strokeWidth={0.5} />
+    <rect x={4} y={9} width={14} height={4} fill={color} opacity={0.8} rx={1} />
   ),
   tr: (color) => (
     <g>
