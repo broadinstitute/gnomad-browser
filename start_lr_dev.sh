@@ -14,6 +14,28 @@ log()  { echo -e "${GREEN}[lr-dev]${NC} $*"; }
 warn() { echo -e "${YELLOW}[lr-dev]${NC} $*"; }
 err()  { echo -e "${RED}[lr-dev]${NC} $*"; }
 
+# --- Parse args ---
+USE_GCP_CH=false
+GCP_CH_LOCAL_PORT="${GCP_CH_PORT:-8125}"
+for arg in "$@"; do
+    case "$arg" in
+        --gcp-clickhouse) USE_GCP_CH=true ;;
+        --help|-h)
+            echo "Usage: $0 [--gcp-clickhouse]"
+            echo ""
+            echo "  --gcp-clickhouse   Use GCP ClickHouse (gnomad-lr-data-vm) via SSH tunnel"
+            echo "                     instead of local Docker ClickHouse."
+            echo "                     Tunnel on localhost:\$GCP_CH_PORT (default: 8125)."
+            echo ""
+            echo "Environment variables:"
+            echo "  CLICKHOUSE_URL     Override ClickHouse URL for GraphQL API"
+            echo "  GCP_CH_PORT        Local port for GCP CH tunnel (default: 8125)"
+            exit 0
+            ;;
+        *) ;;
+    esac
+done
+
 cleanup() {
     log "Shutting down..."
     kill $(jobs -p) 2>/dev/null || true
@@ -43,27 +65,52 @@ else
 fi
 
 # --- 2. ClickHouse ---
-if curl -sf http://localhost:8123/ping &>/dev/null; then
-    log "ClickHouse already running."
-else
-    if docker ps -a --format '{{.Names}}' | grep -q '^clickhouse$'; then
-        log "Starting existing ClickHouse container..."
-        docker start clickhouse
+if $USE_GCP_CH; then
+    # GCP ClickHouse via SSH tunnel
+    CH_URL="http://localhost:${GCP_CH_LOCAL_PORT}"
+    if curl -sf "${CH_URL}/ping" &>/dev/null; then
+        log "GCP ClickHouse tunnel already active on port ${GCP_CH_LOCAL_PORT}."
     else
-        log "Creating new ClickHouse container..."
-        docker run -d --name clickhouse \
-            -p 8123:8123 -p 9000:9000 \
-            -v clickhouse_data:/var/lib/clickhouse \
-            clickhouse/clickhouse-server
+        log "Opening SSH tunnel to GCP ClickHouse (gnomad-lr-data-vm) on port ${GCP_CH_LOCAL_PORT}..."
+        gcloud compute ssh gnomad-lr-data-vm \
+            --project=gnomadev --zone=us-east1-c \
+            --tunnel-through-iap \
+            -- -L "${GCP_CH_LOCAL_PORT}:localhost:8123" -N &
+        CH_TUNNEL_PID=$!
+        log "Waiting for tunnel..."
+        for i in $(seq 1 30); do
+            curl -sf "${CH_URL}/ping" &>/dev/null && break
+            kill -0 $CH_TUNNEL_PID 2>/dev/null || { err "SSH tunnel died"; exit 1; }
+            sleep 1
+        done
+        curl -sf "${CH_URL}/ping" &>/dev/null || { err "GCP ClickHouse tunnel failed"; exit 1; }
+        log "GCP ClickHouse ready at ${CH_URL} (9.3B rows, full genome)."
     fi
-    # Wait for ClickHouse to be ready
-    log "Waiting for ClickHouse..."
-    for i in $(seq 1 30); do
-        curl -sf http://localhost:8123/ping &>/dev/null && break
-        sleep 1
-    done
-    curl -sf http://localhost:8123/ping &>/dev/null || { err "ClickHouse failed to start"; exit 1; }
-    log "ClickHouse is ready."
+else
+    # Local Docker ClickHouse
+    CH_URL="http://localhost:8123"
+    if curl -sf http://localhost:8123/ping &>/dev/null; then
+        log "ClickHouse already running."
+    else
+        if docker ps -a --format '{{.Names}}' | grep -q '^clickhouse$'; then
+            log "Starting existing ClickHouse container..."
+            docker start clickhouse
+        else
+            log "Creating new ClickHouse container..."
+            docker run -d --name clickhouse \
+                -p 8123:8123 -p 9000:9000 \
+                -v clickhouse_data:/var/lib/clickhouse \
+                clickhouse/clickhouse-server
+        fi
+        # Wait for ClickHouse to be ready
+        log "Waiting for ClickHouse..."
+        for i in $(seq 1 30); do
+            curl -sf http://localhost:8123/ping &>/dev/null && break
+            sleep 1
+        done
+        curl -sf http://localhost:8123/ping &>/dev/null || { err "ClickHouse failed to start"; exit 1; }
+        log "ClickHouse is ready."
+    fi
 fi
 
 # --- 3. Elasticsearch (via Cloud Run proxy) ---
@@ -106,6 +153,7 @@ log "Starting GraphQL API on :8010..."
     cd "$ROOT_DIR/graphql-api"
     export NODE_ENV=development
     export PORT=8010
+    export CLICKHOUSE_URL="${CLICKHOUSE_URL:-$CH_URL}"
     export ELASTICSEARCH_URL="${ELASTICSEARCH_URL:-http://127.0.0.1:9200}"
     export CACHE_REDIS_URL="redis://localhost:6379/1"
     export RATE_LIMITER_REDIS_URL="redis://localhost:6379/2"
