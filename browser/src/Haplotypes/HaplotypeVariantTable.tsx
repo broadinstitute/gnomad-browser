@@ -1888,9 +1888,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     [onFilteredVariantsChange]
   )
 
-  // Notify parent when filtered set changes
+  // Notify parent when filtered set changes (exclude typeFilters — those are
+  // handled globally by hiding summary bands + DeckGL variant skip, not dimming)
   const isFiltered = searchText.trim() !== '' || selectedClusterId != null ||
-    Object.values(typeFilters).some(v => !v) || Object.values(consequenceFilters).some(v => !v)
+    Object.values(consequenceFilters).some(v => !v)
 
   const prevFilteredRef = useRef<number>(0)
   if (onFilteredVariantsChange && isFiltered && filtered.length !== prevFilteredRef.current) {
