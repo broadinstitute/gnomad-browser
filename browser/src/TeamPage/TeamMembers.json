@@ -2,13 +2,23 @@
   "gnomadCoDirectors": [
     {
       "name": "Mark J. Daly, Ph.D.,",
-      "bio": "(MPI) is an Institute Member of the Broad Institute, co-director of the Broad’s Program in Medical and Population Genetics and the chair of the Analytic and Translational Genetics Unit (ATGU) at Massachusetts General Hospital. He has developed many genomic analysis tools and has extensive leadership in large-scale data science and genomic sequencing consortia. He is a PI of gnomAD, co-chair of the gnomAD council and is responsible for jointly overseeing all activities.",
+      "bio": "(MPI) is an Institute Member of the Broad Institute, co-director of the Broad’s Program in Medical and Population Genetics and the chair of the Analytic and Translational Genetics Unit (ATGU) at Massachusetts General Hospital. He has developed many genomic analysis tools and has extensive leadership in large-scale data science and genomic sequencing consortia. He is a PI of gnomAD, co-chair of the gnomAD council, and as a gnomAD Co-Director, holds shared responsibity for overseeing all activities.",
       "headshotSource": "mark_daly.jpg"
     },
     {
+      "name": "Konrad Karczewski, Ph.D.,",
+      "bio": "(co-I) is a Senior Computational Biologist in the Program in Medical and Population Genetics at the Broad Institute and Instructor at Massachusetts General Hospital. He has extensive experience in handling and analyzing the world’s largest datasets: he has been involved in processing and analysis of ExAC since its inception, designed and built the browser frameworks, and has led the analytic activities of the gnomAD v2 and v3 datasets. He contributes expertise on scalable data analysis as well as variant annotation methods. As a gnomAD Co-Director, he holds shared responsibity for overseeing all activities.",
+      "headshotSource": "konrad_karczewski.jpg"
+    },
+    {
       "name": "Heidi Rehm, Ph.D., FACMG,",
-      "bio": "(MPI) is Co-Director of Medical and Population Genetics at the Broad Institute, Chief Genomics Officer at Massachusetts General Hospital (MGH) and Professor of Pathology at Harvard Medical School (HMS). She brings long-standing experience in genomic resource management, clinical sequencing, variant interpretation and gene discovery for rare disease. She is a PI of gnomAD, co-chair of the gnomAD council and is responsible for jointly overseeing all activities.",
+      "bio": "(MPI) is Co-Director of Medical and Population Genetics at the Broad Institute, Chief Genomics Officer at Massachusetts General Hospital (MGH) and Professor of Pathology at Harvard Medical School (HMS). She brings long-standing experience in genomic resource management, clinical sequencing, variant interpretation and gene discovery for rare disease. She is a PI of gnomAD, co-chair of the gnomAD council, and as a gnomAD Co-Director, holds shared responsibility for overseeing all activities.",
       "headshotSource": "heidi_rehm.jpg"
+    },
+    {
+      "name": "Kaitlin Samocha, Ph.D.,",
+      "bio": "(co-I) is an Assistant Professor in the Center for Genomic Medicine of Massachusetts General Hospital and an Associated Scientist at the Broad Institute. The focus of her research career has been on developing methods and statistical tools to improve interpretation of genomic variation, particularly rare variation. She was involved in early stages of the creation and analysis of both ExAC and gnomAD, and contributes knowledge about modeling mutation rates and constraint metrics. As a gnomAD Co-Director, she holds shared responsibility for overseeing all activities.",
+      "headshotSource": "kaitlin_samocha.jpg"
     }
   ],
   "gnomadCommittee": [
@@ -28,11 +38,6 @@
       "headshotSource": "julia_goodrich.jpg"
     },
     {
-      "name": "Konrad Karczewski, Ph.D.,",
-      "bio": "(co-I) is a Senior Computational Biologist in the Program in Medical and Population Genetics at the Broad Institute and Instructor at Massachusetts General Hospital. He has extensive experience in handling and analyzing the world’s largest datasets: he has been involved in processing and analysis of ExAC since its inception, designed and built the browser frameworks, and has led the analytic activities of the gnomAD v2 and v3 datasets. He contributes expertise on scalable data analysis as well as variant annotation methods.",
-      "headshotSource": "konrad_karczewski.jpg"
-    },
-    {
       "name": "Daniel G. MacArthur, Ph.D.,",
       "bio": "(co-I) is the Director of the Centre for Population Genomics, jointly based at the Garvan Institute and the Murdoch Children’s Research Institute in Australia, and a visiting researcher at the Broad Institute. He is the founding PI of ExAC and gnomAD and brings leadership in large-scale population genomics, genomic software development and gene discovery. He contributes both historical knowledge as well as ongoing work on loss-of-function variant curation, constraint metrics, and the inclusion of under-represented communities. ",
       "headshotSource": "daniel_macarthur.jpg"
@@ -46,11 +51,6 @@
       "name": "Anne O'Donnell-Luria, M.D., Ph.D.,",
       "bio": "(co-I) is an Associate Member of the Broad Institute and Assistant Professor and Physician in the Division of Genetics and Genomics at Boston Children’s Hospital, Harvard Medical School. Her research focuses on rare disease variant and gene discovery. She has been a member of the gnomAD analysis team since January 2015, providing guidance in the development of gnomAD and browser features for clinical variant interpretation and use in medical genetics.",
       "headshotSource": "anne_odonnell.jpg"
-    },
-    {
-      "name": "Kaitlin Samocha, Ph.D.,",
-      "bio": "(co-I) is an Assistant Professor in the Center for Genomic Medicine of Massachusetts General Hospital and an Associated Scientist at the Broad Institute. The focus of her research career has been on developing methods and statistical tools to improve interpretation of genomic variation, particularly rare variation. She was involved in early stages of the creation and analysis of both ExAC and gnomAD, and contributes knowledge about modeling mutation rates and constraint metrics.",
-      "headshotSource": "kaitlin_samocha.jpg"
     },
     {
       "name": "Matthew Solomonson, Ph.D.,",
@@ -118,11 +118,6 @@
       "alsoOnCommittee": true
     },
     {
-      "name": "Phil Darnowsky",
-      "bio": "",
-      "headshotSource": "blank_profile.jpg"
-    },
-    {
       "name": "Josh Nadeau",
       "bio": "(he/him) is a senior software engineer with a focus on data engineering. He has worked at tech companies of various sizes and stages on data platform and infrastructure teams.",
       "headshotSource": "joshua_nadeau.jpg"
@@ -136,7 +131,7 @@
       "name": "Konrad Karczewski",
       "bio": "works on the gnomAD browser.",
       "headshotSource": "konrad_karczewski.jpg",
-      "alsoOnCommittee": true
+      "alsoCoDirector": true
     },
     {
       "name": "Ben Weisburd",
