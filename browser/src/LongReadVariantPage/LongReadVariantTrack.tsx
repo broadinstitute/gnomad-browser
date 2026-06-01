@@ -3,7 +3,7 @@ import React, { useContext, useState, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
-import { Track } from '@gnomad/region-viewer'
+import { Track, RegionViewerContext } from '@gnomad/region-viewer'
 
 import Link from '../Link'
 import VariantTrack from '../VariantList/VariantTrack'
@@ -342,6 +342,25 @@ type LongReadVariantTrackProps = {
 
 const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition }: LongReadVariantTrackProps) => {
   const genealogyActive = showGenealogy && !isDiploidView
+
+  // Compute width adjustment from RegionViewerContext — must match
+  // DeckGLLollipopTrack's view layout exactly for vertical alignment.
+  // The DeckGL track has a 15px left pad between left panel labels and
+  // the center panel, shifting its center view right by ~7.5px. We replicate
+  // that offset here and also account for genealogy panel width.
+  const DECKGL_LEFT_PAD = 15
+  const { scalePosition: ctxScalePosition, centerPanelWidth: ctxCenterWidth, rightPanelWidth: ctxRightPanelWidth } = useContext(RegionViewerContext)
+  const genealogyRightWidth = genealogyActive ? GENEALOGY_PANEL_WIDTH : 0
+  const extraRightNeeded = Math.max(0, genealogyRightWidth - ctxRightPanelWidth)
+  const adjCenterWidth = ctxCenterWidth - extraRightNeeded
+  const ctxScaleFactor = ctxCenterWidth > 0 ? adjCenterWidth / ctxCenterWidth : 1
+  // DeckGL view offset: center-panel view is (canvasWidth - leftPad) wide,
+  // centered on canvasWidth/2, so data x=0 renders at pixel offset +leftPad/2
+  const deckglOffset = DECKGL_LEFT_PAD / 2
+  const adjScalePosition = ctxScaleFactor === 1
+    ? (pos: number) => ctxScalePosition(pos) + deckglOffset
+    : (pos: number) => ctxScalePosition(pos) * ctxScaleFactor + deckglOffset
+
   const [hovered, setHovered] = useState<HoveredVariant | null>(null)
 
   const onHoverVariant = useCallback((variant: LRVariant | null, e?: React.MouseEvent) => {
@@ -412,12 +431,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>INS</SidePanel>}>
-            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
-              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
-              const scaleFactor = width > 0 ? adjWidth / width : 1
-              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
-              return <SvBand variants={insVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
-            }}
+            {() => <SvBand variants={insVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
           </Track>
         </>
       )}
@@ -426,12 +440,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DEL</SidePanel>}>
-            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
-              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
-              const scaleFactor = width > 0 ? adjWidth / width : 1
-              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
-              return <SvBand variants={delVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
-            }}
+            {() => <SvBand variants={delVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
           </Track>
         </>
       )}
@@ -440,12 +449,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DUP/SV</SidePanel>}>
-            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
-              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
-              const scaleFactor = width > 0 ? adjWidth / width : 1
-              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
-              return <SvBand variants={svVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
-            }}
+            {() => <SvBand variants={svVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
           </Track>
         </>
       )}
@@ -454,12 +458,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>TRs</SidePanel>}>
-            {({ scalePosition, width, rightPanelWidth }: { scalePosition: (pos: number) => number; width: number; rightPanelWidth: number }) => {
-              const adjWidth = genealogyActive ? width - Math.max(0, GENEALOGY_PANEL_WIDTH - rightPanelWidth) : width
-              const scaleFactor = width > 0 ? adjWidth / width : 1
-              const adjScale = scaleFactor === 1 ? scalePosition : (pos: number) => scalePosition(pos) * scaleFactor
-              return <TrBand variants={trVariants} scalePosition={adjScale} width={adjWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />
-            }}
+            {() => <TrBand variants={trVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
           </Track>
         </>
       )}
