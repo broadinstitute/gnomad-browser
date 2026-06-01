@@ -257,7 +257,7 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
         // TRVs always qualify (their allele_length may be small but the phantom
         // gap was created from their reference region span); others need >= 50bp.
         const isTrv = (v.allele_type || '').toLowerCase() === 'trv'
-        const isTrAccordion = mapper && (isTrv || Math.abs(v.length || 0) >= 50)
+        const isTrAccordion = mapper && mapper.hasPhantomRegions && (isTrv || Math.abs(v.length || 0) >= 50)
         let startX: number
         let blockWidth: number
 
