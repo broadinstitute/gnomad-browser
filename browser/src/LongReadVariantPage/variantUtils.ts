@@ -18,7 +18,7 @@ export const getVariantCategory = (
   if (t === 'trv') return 'tr'
   if (t === 'snv') return 'snv'
   if (t === 'ins' || t === 'alu_ins' || t === 'sva_ins' || t === 'numt') {
-    return length != null && Math.abs(length) >= 50 ? 'sv' : 'insertion'
+    return 'insertion'
   }
   if (t === 'del' || t === 'alu_del' || t === 'line_del' || t === 'sva_del') {
     return 'deletion'
@@ -94,7 +94,7 @@ export const assignBand = (alleleType: string, length?: number | null): Band => 
   const cat = getVariantCategory(alleleType, length)
   if (cat === 'tr') return 'tr'
   if (cat === 'snv') return 'snv'
-  if (cat === 'insertion') return length != null && Math.abs(length) >= 50 ? 'ins' : 'snv'
-  if (cat === 'deletion') return length != null && Math.abs(length) >= 50 ? 'del' : 'snv'
+  if (cat === 'insertion') return 'ins'
+  if (cat === 'deletion') return 'del'
   return 'sv' // dup, complex_dup, inv, etc.
 }
