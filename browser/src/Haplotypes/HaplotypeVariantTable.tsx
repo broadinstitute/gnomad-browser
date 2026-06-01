@@ -1544,51 +1544,57 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     return new Map(summaryVariants.map((v: any) => [v.variant_id, v]))
   }, [summaryVariants])
 
-  // Derive unique variant list, grouping TRVs by position
-  const variants = useMemo(() => {
+  // Derive variant list for summary mode (cheap, depends on zoom-filtered variants)
+  const summaryDerivedVariants = useMemo(() => {
+    if (mode !== 'summary') return []
+    return summaryVariants.map((v: any) => {
+      const populations = (v.freq?.populations || []).map((p: any) => ({
+        id: p.id,
+        af: p.af ?? 0,
+      }))
+      return {
+        variant_id: v.variant_id,
+        chrom: v.chrom,
+        pos: v.pos,
+        end: v.end || null,
+        ref: v.ref,
+        alt: v.alt,
+        allele_type: v.allele_type,
+        allele_length: v.length || 0,
+        freq: {
+          af: v.freq?.all?.af || 0,
+          ac: v.freq?.all?.ac || 0,
+          an: v.freq?.all?.an || 0,
+        },
+        populations,
+        rsid: (v.rsids || [])[0] || '',
+        major_consequence: v.major_consequence || null,
+        cadd_phred: v.cadd_phred ?? null,
+        phylop: v.phylop ?? null,
+        sv_consequences: v.sv_consequences || null,
+        dbsnp_id: null,
+        tr_id: null,
+        tr_motifs: v.motifs?.join(',') || null,
+        gnomad_str: null,
+        allele_methylation: null,
+        motif_counts: null,
+        allele_purity: null,
+        // DerivedVariant extensions
+        group_count: 0,
+        carrier_count: v.freq?.all?.ac || 0,
+        short_read_match_id: v.short_read_match_id || null,
+        is_tr: v.allele_type === 'trv',
+        enveloped_ids: v.enveloped_ids || null,
+      } as DerivedVariant
+    })
+  }, [mode, summaryVariants])
+
+  // Derive unique variant list for haplotype mode, grouping TRVs by position.
+  // This is expensive (~8s for large regions) and must NOT depend on summaryVariants
+  // (which changes on zoom). Only haplotypeGroups/sampleMetadata should trigger recomputation.
+  const haplotypeDerivedVariants = useMemo(() => {
+    if (mode !== 'haplotype') return []
     console.time('[perf] HaplotypeVariantTable derive variants')
-    if (mode === 'summary') {
-      return summaryVariants.map((v: any) => {
-        const populations = (v.freq?.populations || []).map((p: any) => ({
-          id: p.id,
-          af: p.af ?? 0,
-        }))
-        return {
-          variant_id: v.variant_id,
-          chrom: v.chrom,
-          pos: v.pos,
-          end: v.end || null,
-          ref: v.ref,
-          alt: v.alt,
-          allele_type: v.allele_type,
-          allele_length: v.length || 0,
-          freq: {
-            af: v.freq?.all?.af || 0,
-            ac: v.freq?.all?.ac || 0,
-            an: v.freq?.all?.an || 0,
-          },
-          populations,
-          rsid: (v.rsids || [])[0] || '',
-          major_consequence: v.major_consequence || null,
-          cadd_phred: v.cadd_phred ?? null,
-          phylop: v.phylop ?? null,
-          sv_consequences: v.sv_consequences || null,
-          dbsnp_id: null,
-          tr_id: null,
-          tr_motifs: v.motifs?.join(',') || null,
-          gnomad_str: null,
-          allele_methylation: null,
-          motif_counts: null,
-          allele_purity: null,
-          // DerivedVariant extensions
-          group_count: 0,
-          carrier_count: v.freq?.all?.ac || 0,
-          short_read_match_id: v.short_read_match_id || null,
-          is_tr: v.allele_type === 'trv',
-          enveloped_ids: v.enveloped_ids || null,
-        } as DerivedVariant
-      })
-    }
 
     // Count unique samples for TR AF calculation
     const allSampleIds = new Set<string>()
@@ -1802,7 +1808,9 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     console.log(`[perf] HaplotypeVariantTable: ${result.length} derived variants (${result.filter(v => v.is_tr).length} TR)`)
     console.timeEnd('[perf] HaplotypeVariantTable derive variants')
     return result
-  }, [mode, summaryVariants, haplotypeGroups, sampleMetadata])
+  }, [mode, haplotypeGroups, sampleMetadata])
+
+  const variants = mode === 'summary' ? summaryDerivedVariants : haplotypeDerivedVariants
 
   const totalGroups = haplotypeGroups.groups.length
   const totalClusters = haplotypeGroups.clusters?.length ?? 0
@@ -2148,5 +2156,6 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 })
 
 export default React.memo(HaplotypeVariantTable)
+
 
 
