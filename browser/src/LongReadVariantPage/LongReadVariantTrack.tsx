@@ -274,9 +274,10 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
             pxPerUnit
           blockWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
         } else {
-          startX = scalePosition(v.start)
-          const stopX = scalePosition(v.stop)
-          blockWidth = Math.max(stopX - startX, MIN_SV_BAR_WIDTH)
+          // Without accordion, render TRs as thin bars at their position
+          // (reference region span is only meaningful with phantom expansion)
+          startX = scalePosition(v.pos)
+          blockWidth = MIN_SV_BAR_WIDTH
         }
 
         const trHover = onHoverVariant ? {
