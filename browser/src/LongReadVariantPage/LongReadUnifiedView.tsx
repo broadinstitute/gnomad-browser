@@ -19,7 +19,7 @@ import {
   type ComputedHaplotypeData,
   type AutoDefaults,
 } from '../Haplotypes/haplotypeCompute'
-import HaplotypeVariantTable, { HaplotypeVariantTableHandle } from '../Haplotypes/HaplotypeVariantTable'
+import HaplotypeVariantTable, { HaplotypeVariantTableHandle, type VariantTypeFilters } from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
@@ -247,6 +247,9 @@ const LongReadUnifiedView = ({
   const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
 
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
+  const [typeFilters, setTypeFilters] = useState<VariantTypeFilters>({
+    snv: true, deletion: true, insertion: true, sv: true, tr: true,
+  })
   const [showPhantomRegions, setShowPhantomRegions] = useState(true)
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
@@ -782,7 +785,7 @@ const LongReadUnifiedView = ({
 
       {/* Base layer — always rendered */}
       {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
-      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogy={showHaplotypes && showGenealogy} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} />
+      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogy={showHaplotypes && showGenealogy} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} />
 
       {/* Haplotype layer — opt-in */}
       {showHaplotypes && (
@@ -845,6 +848,7 @@ const LongReadUnifiedView = ({
               filterToOutliers={filterToOutliers}
               showPopBackground={showPopBackground}
               isAutoTuned={isAutoTuned}
+              typeFilters={typeFilters}
             />
           )}
         </>
@@ -997,6 +1001,8 @@ const LongReadUnifiedView = ({
                   selectedClusterId={selectedClusterId}
                   onClearClusterFilter={handleClearClusterFilter}
                   searchText={searchText}
+                  typeFilters={typeFilters}
+                  onTypeFiltersChange={setTypeFilters}
                 />
             </>
           ) : (
@@ -1005,6 +1011,8 @@ const LongReadUnifiedView = ({
               summaryVariants={zoomedVariants}
               onHoverVariant={setHoveredVariantPosition}
               searchText={searchText}
+              typeFilters={typeFilters}
+              onTypeFiltersChange={setTypeFilters}
             />
           )}
         </div>
