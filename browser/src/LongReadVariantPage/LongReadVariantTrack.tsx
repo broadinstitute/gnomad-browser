@@ -180,12 +180,14 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
         if (cat === 'insertion') {
           const startX = scalePosition(v.pos)
           let barWidth = MIN_SV_BAR_WIDTH
-          if (mapper) {
+          if (mapper && mapper.hasPhantomRegions) {
             const phantomWidth =
               (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
                 mapper.getSyntheticCoordinate(v.pos, 0)) *
               pxPerUnit
-            barWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
+            if (phantomWidth > MIN_SV_BAR_WIDTH) {
+              barWidth = phantomWidth
+            }
           }
 
           return (
