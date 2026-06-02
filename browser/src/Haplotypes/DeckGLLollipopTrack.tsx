@@ -3,9 +3,15 @@ import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
 import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer, TextLayer } from '@deck.gl/layers'
 import { RegionViewerContext } from '@gnomad/region-viewer'
-import { scaleLinear, scaleLog } from 'd3-scale'
+import { scaleLinear } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
+import {
+  hslToRgba, hexToRgba, cssColorToRgba,
+  getColorByHashRGBA, getColorByPositionRGBA, getColorByAfRGBA,
+  getColorByHaplotypeCountRGBA,
+  getVariantRgbaColor,
+} from '../LongReadVariantPage/variantColorUtils'
 import AccordionContext from './AccordionContext'
 import type { PhantomLocus } from './AccordionCoordinateMapper'
 import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
@@ -108,86 +114,7 @@ type PhantomLabel = {
   centerY: number
 }
 
-// HSL string to RGBA array conversion
-function hslToRgba(hsl: string, alpha = 255): [number, number, number, number] {
-  const match = hsl.match(/hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/)
-  if (!match) return hexToRgba(hsl, alpha)
-  const h = parseFloat(match[1]) / 360
-  const s = parseFloat(match[2]) / 100
-  const l = parseFloat(match[3]) / 100
-  const a = s * Math.min(l, 1 - l)
-  const f = (n: number) => {
-    const k = (n + h * 12) % 12
-    return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
-  }
-  return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255), alpha]
-}
-
-function hexToRgba(hex: string, alpha = 255): [number, number, number, number] {
-  const clean = hex.replace('#', '')
-  if (clean.length === 3) {
-    const r = parseInt(clean[0] + clean[0], 16)
-    const g = parseInt(clean[1] + clean[1], 16)
-    const b = parseInt(clean[2] + clean[2], 16)
-    return [r, g, b, alpha]
-  }
-  if (clean.length === 6) {
-    return [
-      parseInt(clean.slice(0, 2), 16),
-      parseInt(clean.slice(2, 4), 16),
-      parseInt(clean.slice(4, 6), 16),
-      alpha,
-    ]
-  }
-  return [128, 128, 128, alpha]
-}
-
-function cssColorToRgba(color: string, alpha = 255): [number, number, number, number] {
-  if (!color) return [128, 128, 128, alpha]
-  if (color.startsWith('hsl')) return hslToRgba(color, alpha)
-  if (color.startsWith('rgb')) {
-    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/)
-    if (match) {
-      return [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10), alpha]
-    }
-  }
-  if (color.startsWith('#')) return hexToRgba(color, alpha)
-  return [128, 128, 128, alpha]
-}
-
-// Color computation helpers (mirrors index.tsx logic)
-const variantColorCache: Record<string, [number, number, number, number]> = {}
-
-function getColorByHash(locus: string): [number, number, number, number] {
-  if (!variantColorCache[locus]) {
-    const variantHash = locus
-      .split('')
-      .reduce((acc, char, idx) => acc + char.charCodeAt(0) * (idx + 1), 0)
-    const randomFactor = Math.sin(variantHash - 3.14) * 10000
-    const hash = (variantHash * 9301 + 49297 + randomFactor) % 233280
-    const hue = Math.floor(Math.abs(hash)) % 360
-    const saturation = 60 + (Math.floor(Math.abs(hash)) % 40)
-    const lightness = 30 + (Math.floor(Math.abs(hash)) % 40)
-    variantColorCache[locus] = hslToRgba(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
-  }
-  return variantColorCache[locus]
-}
-
-function getColorByPosition(
-  position: number,
-  minPos: number,
-  maxPos: number
-): [number, number, number, number] {
-  const fraction = (position - minPos) / (maxPos - minPos || 1)
-  const hue = Math.round(240 * (1 - fraction))
-  return hslToRgba(`hsl(${hue}, 100%, 50%)`)
-}
-
-function getColorByAf(af: number): [number, number, number, number] {
-  const afScale = scaleLog<string>().domain([0.1, 1]).range(['#d3d3d3', '#424242']).clamp(true)
-  return cssColorToRgba(afScale(af))
-}
-
+// Wrapper that adapts the shared getVariantRgbaColor to the old call-site signature
 function getVariantColor(
   variant: Variant,
   colorMode: string,
@@ -198,41 +125,13 @@ function getVariantColor(
   locusCount: number = 0,
   totalGroups: number = 1
 ): [number, number, number, number] {
-  switch (colorMode) {
-    case 'allele':
-      return getColorByHash(variant.variant_id)
-    case 'position':
-      return getColorByPosition(variant.pos, start, stop)
-    case 'af':
-      return getColorByAf(variant.freq.af)
-    case 'haplotype_count': {
-      const scale = scaleLinear<string>()
-        .domain([0, totalGroups])
-        .range(['#d3d3d3', '#ff0000'])
-        .clamp(true)
-      return cssColorToRgba(scale(locusCount))
-    }
-    case 'population': {
-      if (!sampleMetadata || !group) return [51, 51, 51, 255]
-      let maxPop = 'N/A'
-      let maxCount = 0
-      const counts: Record<string, number> = {}
-      for (const s of group.samples) {
-        const meta = sampleMetadata.get(s.sample_id)
-        const pop = meta?.superpopulation || 'N/A'
-        counts[pop] = (counts[pop] || 0) + 1
-        if (counts[pop] > maxCount) {
-          maxCount = counts[pop]
-          maxPop = pop
-        }
-      }
-      return cssColorToRgba(SUPERPOPULATION_COLORS[maxPop] || SUPERPOPULATION_COLORS['N/A'])
-    }
-    case 'sv_type':
-      return cssColorToRgba(ALLELE_TYPE_COLORS[(variant.allele_type || '').toLowerCase()] || '#888888')
-    default:
-      return [51, 51, 51, 255]
-  }
+  return getVariantRgbaColor(variant, colorMode, {
+    start, stop,
+    sampleMetadata,
+    group,
+    locusCount,
+    totalGroups,
+  })
 }
 
 // Variant shape classification — delegates to shared getVariantCategory

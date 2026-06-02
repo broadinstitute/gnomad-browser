@@ -10,6 +10,7 @@ import type {
   HaplotypeCluster,
   LRVariant,
 } from './index'
+import { cssColorToRgba, getColorByHashRGBA } from '../LongReadVariantPage/variantColorUtils'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 // --- Constants ---
@@ -22,59 +23,8 @@ type RowItem =
   | { type: 'cluster'; cluster: HaplotypeCluster }
   | { type: 'group'; group: HaplotypeGroup; isChild: boolean }
 
-// --- Color helpers (reuse getColorByHash from DeckGLLollipopTrack) ---
-function hslToRgba(hsl: string, alpha = 255): [number, number, number, number] {
-  const match = hsl.match(/hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/)
-  if (!match) return [128, 128, 128, alpha]
-  const h = parseFloat(match[1]) / 360
-  const s = parseFloat(match[2]) / 100
-  const l = parseFloat(match[3]) / 100
-  const a = s * Math.min(l, 1 - l)
-  const f = (n: number) => {
-    const k = (n + h * 12) % 12
-    return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1)
-  }
-  return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255), alpha]
-}
-
-function hexToRgba(hex: string, alpha = 255): [number, number, number, number] {
-  const clean = hex.replace('#', '')
-  if (clean.length === 3) {
-    return [parseInt(clean[0] + clean[0], 16), parseInt(clean[1] + clean[1], 16), parseInt(clean[2] + clean[2], 16), alpha]
-  }
-  if (clean.length === 6) {
-    return [parseInt(clean.slice(0, 2), 16), parseInt(clean.slice(2, 4), 16), parseInt(clean.slice(4, 6), 16), alpha]
-  }
-  return [128, 128, 128, alpha]
-}
-
-function cssColorToRgba(color: string, alpha = 255): [number, number, number, number] {
-  if (!color) return [128, 128, 128, alpha]
-  if (color.startsWith('hsl')) return hslToRgba(color, alpha)
-  if (color.startsWith('rgb')) {
-    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/)
-    if (match) return [parseInt(match[1], 10), parseInt(match[2], 10), parseInt(match[3], 10), alpha]
-  }
-  if (color.startsWith('#')) return hexToRgba(color, alpha)
-  return [128, 128, 128, alpha]
-}
-
-const variantColorCache: Record<string, [number, number, number, number]> = {}
-
-function getColorByHash(locus: string): [number, number, number, number] {
-  if (!variantColorCache[locus]) {
-    const variantHash = locus
-      .split('')
-      .reduce((acc, char, idx) => acc + char.charCodeAt(0) * (idx + 1), 0)
-    const randomFactor = Math.sin(variantHash - 3.14) * 10000
-    const hash = (variantHash * 9301 + 49297 + randomFactor) % 233280
-    const hue = Math.floor(Math.abs(hash)) % 360
-    const saturation = 60 + (Math.floor(Math.abs(hash)) % 40)
-    const lightness = 30 + (Math.floor(Math.abs(hash)) % 40)
-    variantColorCache[locus] = hslToRgba(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
-  }
-  return variantColorCache[locus]
-}
+// Alias for call-site compatibility
+const getColorByHash = getColorByHashRGBA
 
 /** Compute alpha for cluster consensus AF */
 function clusterAfAlpha(clusterAf: number): number {

@@ -6,9 +6,10 @@ import styled from 'styled-components'
 import { Track, RegionViewerContext } from '@gnomad/region-viewer'
 
 import Link from '../Link'
-import VariantTrack from '../VariantList/VariantTrack'
+import VariantTrack, { defaultVariantColor } from '../VariantList/VariantTrack'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
+import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
 
 // --- Types ---
@@ -147,12 +148,15 @@ const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
 
 type SvItem = LRVariant & { start: number; stop: number }
 
-const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition }: {
+const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
   variants: SvItem[]
   scalePosition: (pos: number) => number
   width: number
   onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
   hoveredPosition?: number | null
+  colorMode?: string
+  regionStart?: number
+  regionStop?: number
 }) => {
   const { mapper } = useContext(AccordionContext)
   const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
@@ -172,7 +176,9 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
   return (
     <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
       {packed.map((v) => {
-        const color = ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.length)]
+        const color = colorMode === 'sv_type'
+          ? (ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.length)])
+          : getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })
         const cat = getVariantCategory(v.allele_type, v.length)
         const opacity = afToOpacity(v)
         const rowY = v.row * ROW_HEIGHT + 2
@@ -233,12 +239,15 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
 
 type TrItem = LRVariant & { start: number; stop: number }
 
-const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition }: {
+const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
   variants: TrItem[]
   scalePosition: (pos: number) => number
   width: number
   onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
   hoveredPosition?: number | null
+  colorMode?: string
+  regionStart?: number
+  regionStop?: number
 }) => {
   const { mapper } = useContext(AccordionContext)
   const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
@@ -293,7 +302,7 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
               y={rowY}
               width={blockWidth}
               height={barHeight}
-              fill={TR_BLOCK_COLOR}
+              fill={colorMode === 'sv_type' ? TR_BLOCK_COLOR : getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })}
               rx={2}
               opacity={afToOpacity(v)}
               {...trHover}
@@ -333,9 +342,12 @@ type LongReadVariantTrackProps = {
   hoveredVariantPosition?: number | null
   onHoverVariantPosition?: (pos: number | null) => void
   typeFilters?: VariantTypeFilters
+  colorMode?: string
+  regionStart?: number
+  regionStop?: number
 }
 
-const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition, typeFilters }: LongReadVariantTrackProps) => {
+const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition, typeFilters, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: LongReadVariantTrackProps) => {
   const genealogyActive = showGenealogy && !isDiploidView
 
   // Compute width adjustment from RegionViewerContext — must match
@@ -425,9 +437,9 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
     <div style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}>
       {showSnvBand && (
         <VariantTrack
-          // @ts-expect-error TS(2769) - VariantTrack prop types are loose
           title={`Long Read SNVs (${trackSnvVariants.length})`}
           variants={trackSnvVariants}
+          variantColor={colorMode === 'sv_type' ? undefined : (v: any) => getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })}
         />
       )}
 
@@ -435,7 +447,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>INS</SidePanel>}>
-            {() => <SvBand variants={insVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
+            {() => <SvBand variants={insVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
@@ -444,7 +456,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DEL</SidePanel>}>
-            {() => <SvBand variants={delVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
+            {() => <SvBand variants={delVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
@@ -453,7 +465,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DUP/SV</SidePanel>}>
-            {() => <SvBand variants={svVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
+            {() => <SvBand variants={svVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
@@ -462,7 +474,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>TRs</SidePanel>}>
-            {() => <TrBand variants={trVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} />}
+            {() => <TrBand variants={trVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}

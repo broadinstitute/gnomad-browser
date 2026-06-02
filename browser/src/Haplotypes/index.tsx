@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, forwardRef, useRef, useEffect } 
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor, Select } from '@gnomad/ui'
-import { scaleLinear, scaleLog } from 'd3-scale'
+import { scaleLinear } from 'd3-scale'
 import { SegmentedControl } from '@gnomad/ui'
 import { buildPangenomeGraph } from './pangenome-graph'
 import { buildVariationGraph } from './variation-graph'
@@ -12,6 +12,7 @@ import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { ALLELE_TYPE_COLORS, VARIANT_CATEGORY_COLORS, type VariantCategory } from '../LongReadVariantPage/variantUtils'
+import { COLOR_MODES, getVariantCssColor } from '../LongReadVariantPage/variantColorUtils'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
@@ -26,13 +27,7 @@ export const PLOT_TYPES: { value: string; label: string }[] = [
   { value: 'painting', label: 'Chromosome Painting' },
 ]
 
-export const COLOR_MODES: { value: string; label: string }[] = [
-  { value: 'sv_type', label: 'Variant Type' },
-  { value: 'allele', label: 'Allele Fingerprint' },
-  { value: 'position', label: 'Position' },
-  { value: 'af', label: 'Allele Frequency' },
-  { value: 'haplotype_count', label: 'Haplotype Count' },
-]
+export { COLOR_MODES }
 
 const Wrapper = styled.div`
   display: flex;
@@ -426,34 +421,7 @@ export const Legend = ({
                 ))}
               </Select>
             </div>
-            {plotType !== 'heatmap' && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <label style={{ fontSize: '12px' }}>Color:</label>
-                <Select
-                  value={colorMode}
-                  onChange={(e: any) => onColorModeChange(e.target.value)}
-                >
-                  {colorModes.map((cm) => (
-                    <option key={cm.value} value={cm.value}>{cm.label}</option>
-                  ))}
-                </Select>
-                <HaplotypeHelpButton title="Color Modes">
-                  <p>Controls how variant dots and shapes are colored in the track.</p>
-                  <dl style={{ margin: 0 }}>
-                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Variant Type</dt>
-                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Fixed palette: SNVs (blue), insertions (green), deletions (red), duplications (purple), tandem repeats (orange).</dd>
-                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Fingerprint</dt>
-                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Deterministic color per unique allele — identical alleles share the same color.</dd>
-                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Position</dt>
-                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Blue→red gradient across the viewed region (5′ to 3′).</dd>
-                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Allele Frequency</dt>
-                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Light grey for common, dark for rare.</dd>
-                    <dt style={{ fontWeight: 600, marginTop: 8 }}>Haplotype Count</dt>
-                    <dd style={{ marginLeft: 0, marginBottom: 4 }}>Grey→red based on how many groups share the variant.</dd>
-                  </dl>
-                </HaplotypeHelpButton>
-              </div>
-            )}
+            {/* Color dropdown moved to TopBar for unified access */}
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
                 <input
@@ -888,51 +856,7 @@ type HaplotypeTrackProps = {
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
 
-const variantColors: Record<string, string> = {}
-
-const getColorForVariantByHash = (variantId: string) => {
-  if (!variantColors[variantId]) {
-    const variantHash = variantId
-      .split('')
-      .reduce((acc, char, idx) => acc + char.charCodeAt(0) * (idx + 1), 0)
-    const randomFactor = Math.sin(variantHash - 3.14) * 10000
-    const hash = (variantHash * 9301 + 49297 + randomFactor) % 233280
-    const hue = hash % 360
-    const saturation = 60 + (hash % 40)
-    const lightness = 30 + (hash % 40)
-    const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
-    variantColors[variantId] = color
-  }
-  return variantColors[variantId]
-}
-
-const getColorForVariantByAf = (af: number) => {
-  const afScale = scaleLog<string>().domain([0.1, 1]).range(['#d3d3d3', '#424242']).clamp(true)
-  return afScale(af)
-}
-
-const getColorForVariantByPosition = (
-  position: number,
-  minPosition: number,
-  maxPosition: number
-) => {
-  const fraction = (position - minPosition) / (maxPosition - minPosition)
-  const hue = Math.round(240 * (1 - fraction))
-  return `hsl(${hue}, 100%, 50%)`
-}
-
-const getColorForVariantByHaplotypeCount = (haplotypeGroups: HaplotypeGroup[], variantId: string) => {
-  const count = haplotypeGroups.reduce(
-    (acc, group) =>
-      acc + (group.variants.variants.some((variant) => variant.variant_id === variantId) ? 1 : 0),
-    0
-  )
-  const haplotypeCountScale = scaleLinear<string>()
-    .domain([0, haplotypeGroups.length])
-    .range(['#d3d3d3', '#ff0000'])
-    .clamp(true)
-  return haplotypeCountScale(count)
-}
+// CSS color functions now live in variantColorUtils.ts — use getVariantCssColor()
 
 // --- Help content ---
 
@@ -1799,7 +1723,7 @@ const HaplotypeGroupTrack = ({
                 {group.below_threshold.variants.map((variant: LRVariant, index: number) => {
                   const bx = scalePosition(variant.pos)
                   const bType = (variant.allele_type || '').toLowerCase()
-                  const bColor = colorMode === 'allele' ? getColorForVariantByHash(variant.variant_id) : 'grey'
+                  const bColor = colorMode === 'allele' ? getVariantCssColor(variant, 'allele', { start, stop }) : 'grey'
                   return (
                     <TooltipAnchor key={`below-${group.hash}-${index}`} tooltipComponent={() => <VariantTooltip variant={variant} />}>
                       {bType === 'del' ? (
@@ -1820,12 +1744,7 @@ const HaplotypeGroupTrack = ({
                 {group.variants.variants.map((variant: LRVariant, variantIndex: number) => {
                   // Determine color from the active color mode
                   let color: string
-                  if (colorMode === 'sv_type') color = ALLELE_TYPE_COLORS[(variant.allele_type || '').toLowerCase()] || '#888'
-                  else if (colorMode === 'allele') color = getColorForVariantByHash(variant.variant_id)
-                  else if (colorMode === 'position') color = getColorForVariantByPosition(variant.pos, start, stop)
-                  else if (colorMode === 'af') color = getColorForVariantByAf(variant.freq.af)
-                  else if (colorMode === 'haplotype_count') color = getColorForVariantByHaplotypeCount(haplotypeGroups, variant.variant_id)
-                  else color = '#333'
+                  color = getVariantCssColor(variant, colorMode, { start, stop })
 
                   // Determine variant category by allele_type
                   const vType = (variant.allele_type || '').toLowerCase()
