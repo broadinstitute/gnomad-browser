@@ -37,7 +37,9 @@ export const fetchGroupedHaplotypeVariants = async (
       groupArray(tr_struc)      AS tr_strucs,
       groupArray(allele_methylation) AS allele_methylations,
       groupArray(motif_counts)  AS motif_counts_arr,
-      groupArray(allele_purity) AS allele_purities
+      groupArray(allele_purity) AS allele_purities,
+      groupArray(short_read_match_id) AS short_read_match_ids,
+      groupArray(major_consequence)   AS major_consequences
     FROM lr_haplotypes
     WHERE chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
     GROUP BY sample_id, strand
@@ -86,7 +88,9 @@ export const fetchGroupedTrvVariants = async (
       groupArray(tr_struc)      AS tr_strucs,
       groupArray(allele_methylation) AS allele_methylations,
       groupArray(motif_counts)  AS motif_counts_arr,
-      groupArray(allele_purity) AS allele_purities
+      groupArray(allele_purity) AS allele_purities,
+      groupArray(short_read_match_id) AS short_read_match_ids,
+      groupArray(major_consequence)   AS major_consequences
     FROM lr_haplotypes
     WHERE chrom = {chrom:String} AND allele_type = 'trv'
     GROUP BY sample_id, strand
@@ -183,6 +187,8 @@ export const fetchDistinctHaplotypeVariants = async (
       any(h.allele_methylation) AS allele_methylation,
       any(h.motif_counts) AS motif_counts,
       any(h.allele_purity) AS allele_purity,
+      any(h.short_read_match_id) AS short_read_match_id,
+      any(h.major_consequence) AS major_consequence,
       groupArray(tuple(h.sample_id, h.strand)) AS carriers
     FROM lr_haplotypes h
     LEFT JOIN (

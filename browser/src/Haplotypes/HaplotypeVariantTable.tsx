@@ -1562,7 +1562,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         ref: v.ref,
         alt: v.alt,
         allele_type: v.allele_type,
-        allele_length: v.length || 0,
+        allele_length: v.allele_length || v.length || 0,
         freq: {
           af: v.freq?.all?.af || 0,
           ac: v.freq?.all?.ac || 0,
