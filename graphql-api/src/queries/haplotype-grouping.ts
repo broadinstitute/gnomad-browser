@@ -113,7 +113,7 @@ function buildVariant(
   }
 
   return {
-    variant_id: `${chrom}:${pos}`,
+    variant_id: `${chrom.replace(/^chr/, '')}-${pos}-${ref}-${alt}`,
     chrom,
     pos,
     end,
