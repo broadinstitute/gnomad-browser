@@ -1,4 +1,3 @@
-import { transparentize } from 'polished'
 import React, { useContext, useState, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import styled from 'styled-components'
@@ -6,8 +5,6 @@ import styled from 'styled-components'
 import { Track, RegionViewerContext } from '@gnomad/region-viewer'
 
 import Link from '../Link'
-import VariantTrack, { defaultVariantColor } from '../VariantList/VariantTrack'
-import { getCategoryFromConsequence } from '../vepConsequences'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
@@ -18,7 +15,7 @@ type LRVariant = {
   variant_id: string
   pos: number
   end: number | null
-  length: number | null
+  allele_length: number | null
   allele_type: string
   major_consequence: string | null
   motifs: string[] | null
@@ -37,10 +34,8 @@ type PackedVariant<T> = T & { row: number }
 
 // --- Constants ---
 
-const SNV_BAND_HEIGHT = 40
 const ROW_HEIGHT = 14
-const LOLLIPOP_RADIUS = 3
-const LOLLIPOP_TOP = 10
+const SNV_CIRCLE_RADIUS = 3
 const MIN_SV_BAR_WIDTH = 3
 const TR_BLOCK_COLOR = VARIANT_CATEGORY_COLORS.tr
 
@@ -54,21 +49,10 @@ const afToOpacity = (v: any): number => {
   return Math.min(1, Math.max(0.2, 1 + logAf / 4))
 }
 
-// --- Consequence colors for Band 1 ---
-
-const consequenceCategoryColors: Record<string, string> = {
-  lof: transparentize(0.3, '#FF583F'),
-  missense: transparentize(0.3, '#F0C94D'),
-  synonymous: transparentize(0.3, 'green'),
-  other: transparentize(0.6, '#9e9e9e'),
-}
-
-// SV type colors now come from shared VARIANT_CATEGORY_COLORS in variantUtils.ts
-
 // --- Band assignment (delegates to shared variantUtils) ---
 
 function assignVariantBand(variant: LRVariant): Band {
-  return sharedAssignBand(variant.allele_type, variant.length)
+  return sharedAssignBand(variant.allele_type, variant.allele_length)
 }
 
 // --- Interval packing ---
@@ -144,6 +128,83 @@ const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
   )
 }
 
+// --- Band 1: SNV circles with pixel-based row packing ---
+
+const SnvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
+  variants: LRVariant[]
+  scalePosition: (pos: number) => number
+  width: number
+  onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
+  hoveredPosition?: number | null
+  colorMode?: string
+  regionStart?: number
+  regionStop?: number
+}) => {
+  const radius = SNV_CIRCLE_RADIUS
+  const minPxDistance = radius * 2 + 2
+
+  // Compute pixel X positions and filter to viewport
+  const visible = variants
+    .map(v => ({ ...v, x: scalePosition(v.pos) }))
+    .filter(v => v.x >= -radius && v.x <= width + radius)
+
+  // Sort by X position for packing
+  visible.sort((a, b) => a.x - b.x)
+
+  // Pixel-based row packing to avoid visual overlap
+  const rowEnds: number[] = []
+  const packed = visible.map(v => {
+    for (let r = 0; r < rowEnds.length; r++) {
+      if (v.x > rowEnds[r] + minPxDistance) {
+        rowEnds[r] = v.x
+        return { ...v, row: r }
+      }
+    }
+    rowEnds.push(v.x)
+    return { ...v, row: rowEnds.length - 1 }
+  })
+
+  const maxRows = Math.max(rowEnds.length, 1)
+  const bandHeight = maxRows * ROW_HEIGHT
+
+  const hoverHandlers = (v: LRVariant) => onHoverVariant ? {
+    onMouseEnter: (e: React.MouseEvent) => onHoverVariant(v, e),
+    onMouseMove: (e: React.MouseEvent) => onHoverVariant(v, e),
+    onMouseLeave: () => onHoverVariant(null),
+  } : {}
+
+  return (
+    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
+      {packed.map((v) => {
+        const color = colorMode === 'sv_type'
+          ? (VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)])
+          : getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })
+        const opacity = afToOpacity(v)
+        const rowY = v.row * ROW_HEIGHT + ROW_HEIGHT / 2
+
+        return (
+          <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
+            <circle
+              cx={v.x}
+              cy={rowY}
+              r={radius}
+              fill={color}
+              opacity={opacity}
+              {...hoverHandlers(v)}
+            />
+          </Link>
+        )
+      })}
+      {hoveredPosition != null && (() => {
+        const hx = scalePosition(hoveredPosition)
+        return hx >= 0 && hx <= width ? (
+          <line x1={hx} y1={0} x2={hx} y2={bandHeight} stroke="#333" strokeWidth={1} opacity={0.5} pointerEvents="none" />
+        ) : null
+      })()}
+    </svg>
+  )
+}
+
 // --- Band 2: SV packed ribbons ---
 
 type SvItem = LRVariant & { start: number; stop: number }
@@ -177,9 +238,9 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
     <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
       {packed.map((v) => {
         const color = colorMode === 'sv_type'
-          ? (ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.length)])
+          ? (ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)])
           : getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })
-        const cat = getVariantCategory(v.allele_type, v.length)
+        const cat = getVariantCategory(v.allele_type, v.allele_length)
         const opacity = afToOpacity(v)
         const rowY = v.row * ROW_HEIGHT + 2
 
@@ -188,7 +249,7 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
           let barWidth = MIN_SV_BAR_WIDTH
           if (mapper && mapper.hasPhantomRegions) {
             const phantomWidth =
-              (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.length || 0)) -
+              (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.allele_length || 0)) -
                 mapper.getSyntheticCoordinate(v.pos, 0)) *
               pxPerUnit
             if (phantomWidth > MIN_SV_BAR_WIDTH) {
@@ -266,16 +327,16 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
         // TRVs always qualify (their allele_length may be small but the phantom
         // gap was created from their reference region span); others need >= 50bp.
         const isTrv = (v.allele_type || '').toLowerCase() === 'trv'
-        const isTrAccordion = mapper && mapper.hasPhantomRegions && (isTrv || Math.abs(v.length || 0) >= 50)
+        const isTrAccordion = mapper && mapper.hasPhantomRegions && (isTrv || Math.abs(v.allele_length || 0) >= 50)
         let startX: number
         let blockWidth: number
 
         if (isTrAccordion) {
           // Use reference region span for TRV phantom width when allele_length is
           // small — matches how AccordionCoordinateMapper sizes the gap
-          const phantomLen = isTrv && Math.abs(v.length || 0) < 50
-            ? (v.stop - v.start) || Math.abs(v.length || 0)
-            : Math.abs(v.length || 0)
+          const phantomLen = isTrv && Math.abs(v.allele_length || 0) < 50
+            ? (v.stop - v.start) || Math.abs(v.allele_length || 0)
+            : Math.abs(v.allele_length || 0)
           startX = scalePosition(v.pos)
           const phantomWidth =
             (mapper.getSyntheticCoordinate(v.pos, phantomLen) -
@@ -389,8 +450,8 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
   for (const v of variants) {
     // LOD filtering: skip sub-pixel variants when zoomed out
     if (lod) {
-      const cat = getVariantCategory(v.allele_type, v.length)
-      const isLarge = Math.abs(v.length || 0) >= 50
+      const cat = getVariantCategory(v.allele_type, v.allele_length)
+      const isLarge = Math.abs(v.allele_length || 0) >= 50
       if (cat === 'snv' && !lod.showSnvs) continue
       if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
     }
@@ -400,31 +461,24 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
       snvVariants.push(v)
     } else if (band === 'ins') {
       const start = v.pos
-      const stop = v.end != null ? v.end : v.pos + Math.abs(v.length || 1)
+      const stop = v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1)
       insVariants.push({ ...v, start, stop })
     } else if (band === 'del') {
       const start = v.pos
-      const stop = v.end != null ? v.end : v.pos + Math.abs(v.length || 1)
+      const stop = v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1)
       delVariants.push({ ...v, start, stop })
     } else if (band === 'sv') {
       const start = v.pos
-      const stop = v.end != null ? v.end : v.pos + Math.abs(v.length || 1)
+      const stop = v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1)
       svVariants.push({ ...v, start, stop })
     } else {
       // TR: use main_reference_region for span
       const ref = v.main_reference_region
       const start = ref ? ref.start : v.pos
-      const stop = ref ? ref.stop : (v.end != null ? v.end : v.pos + Math.abs(v.length || 1))
+      const stop = ref ? ref.stop : (v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1))
       trVariants.push({ ...v, start, stop })
     }
   }
-
-  // Map SNVs for the standard VariantTrack (needs `consequence` prop)
-  const trackSnvVariants = snvVariants.map((v) => ({
-    ...v,
-    consequence: v.major_consequence,
-    allele_freq: (v as any).freq?.af,
-  }))
 
   // typeFilters: when set, hide bands whose category is unchecked
   const showSnvBand = !typeFilters || typeFilters.snv !== false
@@ -435,12 +489,21 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
 
   return (
     <div style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}>
-      {showSnvBand && (
-        <VariantTrack
-          title={`Long Read SNVs (${trackSnvVariants.length})`}
-          variants={trackSnvVariants}
-          variantColor={colorMode === 'sv_type' ? undefined : (v: any) => getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })}
-        />
+      {showSnvBand && snvVariants.length > 0 && (
+        <Track renderLeftPanel={() => <SidePanel>Long Read SNVs ({snvVariants.length})</SidePanel>}>
+          {() => (
+            <SnvBand
+              variants={snvVariants}
+              scalePosition={adjScalePosition}
+              width={adjCenterWidth}
+              onHoverVariant={onHoverVariant}
+              hoveredPosition={hoveredVariantPosition}
+              colorMode={colorMode}
+              regionStart={regionStart}
+              regionStop={regionStop}
+            />
+          )}
+        </Track>
       )}
 
       {showInsBand && insVariants.length > 0 && (
