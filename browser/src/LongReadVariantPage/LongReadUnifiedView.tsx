@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
-import { SegmentedControl } from '@gnomad/ui'
+import { SegmentedControl, Select } from '@gnomad/ui'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
@@ -28,6 +28,7 @@ import LongReadVariantTrack from './LongReadVariantTrack'
 import VariantDensityTrack from './VariantDensityTrack'
 import LRUniqueDensityTrack from './LRUniqueDensityTrack'
 import { getLodVisibility } from './variantUtils'
+import { COLOR_MODES } from './variantColorUtils'
 import Variants from '../VariantList/Variants'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -787,7 +788,7 @@ const LongReadUnifiedView = ({
       {/* Base layer — always rendered */}
       {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
       <LRUniqueDensityTrack variants={zoomedVariants} />
-      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogy={showHaplotypes && showGenealogy} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} />
+      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogy={showHaplotypes && showGenealogy} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
 
       {/* Haplotype layer — opt-in */}
       {showHaplotypes && (
@@ -889,6 +890,17 @@ const LongReadUnifiedView = ({
             value={showHaplotypes ? 'haplotype' : 'summary'}
             onChange={(val: string) => setShowHaplotypes(val === 'haplotype')}
           />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <label style={{ fontSize: '12px' }}>Color:</label>
+            <Select
+              value={colorMode}
+              onChange={(e: any) => setColorMode(e.target.value)}
+            >
+              {COLOR_MODES.map((cm) => (
+                <option key={cm.value} value={cm.value}>{cm.label}</option>
+              ))}
+            </Select>
+          </div>
           <HaplotypeHelpButton title="Long Read Data Views">
             <h4 style={{ margin: '0 0 8px' }}>Summary View</h4>
             <p>Shows aggregate variant-level statistics across the long-read callset. Each row in the table is a single variant with its allele frequency, type, consequence, and annotations. Use this view to browse what variants exist in the region, filter by type or consequence, and compare long-read frequencies with short-read data. This is the default view and works at any region size.</p>

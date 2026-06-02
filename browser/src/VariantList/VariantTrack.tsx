@@ -13,15 +13,16 @@ const consequenceCategoryColors = {
   other: transparentize(0.3, '#757575'),
 }
 
-const variantColor = (variant: any) => {
+export const defaultVariantColor = (variant: any) => {
   const category = getCategoryFromConsequence(variant.consequence) || 'other'
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   return consequenceCategoryColors[category]
 }
 
-class VariantTrack extends PureComponent {
+class VariantTrack extends PureComponent<any> {
   render() {
-    return <BaseVariantTrack variantColor={variantColor} {...this.props} />
+    const { variantColor: customColor, ...rest } = this.props
+    return <BaseVariantTrack variantColor={customColor || defaultVariantColor} {...rest} />
   }
 }
 
