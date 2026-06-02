@@ -2,7 +2,7 @@ resource "google_compute_disk" "clickhouse_data" {
   name    = "gnomad-lr-clickhouse-data-pd"
   project = "gnomadev"
   zone    = "us-east1-c"
-  size    = 200
+  size    = 500
   type    = "pd-ssd"
 }
 
@@ -30,7 +30,7 @@ resource "google_compute_instance" "clickhouse_vm" {
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-12"
-      size  = 50
+      size  = 500
       type  = "pd-ssd"
     }
     auto_delete = true
