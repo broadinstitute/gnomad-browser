@@ -22,7 +22,7 @@ const mapClickHouseRowToGraphQL = (row: any) => {
   chrom: row.chrom.replace('chr', ''),
   pos: Number(row.position),
   end: row.end != null ? Number(row.end) : null,
-  length: row.length != null ? Number(row.length) : null,
+  length: row.allele_length != null ? Number(row.allele_length) : (row.length != null ? Number(row.length) : null),
   ref: row.ref,
   alt: row.alt,
   xpos: Number(row.xpos),
