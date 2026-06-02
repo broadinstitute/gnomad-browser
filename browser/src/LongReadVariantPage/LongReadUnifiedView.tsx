@@ -26,6 +26,7 @@ import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPa
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import LongReadVariantTrack from './LongReadVariantTrack'
 import VariantDensityTrack from './VariantDensityTrack'
+import LRUniqueDensityTrack from './LRUniqueDensityTrack'
 import { getLodVisibility } from './variantUtils'
 import Variants from '../VariantList/Variants'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
@@ -785,6 +786,7 @@ const LongReadUnifiedView = ({
 
       {/* Base layer — always rendered */}
       {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
+      <LRUniqueDensityTrack variants={zoomedVariants} />
       <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogy={showHaplotypes && showGenealogy} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} />
 
       {/* Haplotype layer — opt-in */}
