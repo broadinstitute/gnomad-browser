@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Track, RegionViewerContext } from '@gnomad/region-viewer'
 
 import Link from '../Link'
+import { getCategoryFromConsequence } from '../vepConsequences'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
@@ -193,6 +194,106 @@ const SnvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositi
               {...hoverHandlers(v)}
             />
           </Link>
+        )
+      })}
+      {hoveredPosition != null && (() => {
+        const hx = scalePosition(hoveredPosition)
+        return hx >= 0 && hx <= width ? (
+          <line x1={hx} y1={0} x2={hx} y2={bandHeight} stroke="#333" strokeWidth={1} opacity={0.5} pointerEvents="none" />
+        ) : null
+      })()}
+    </svg>
+  )
+}
+
+// --- Binned SNV band (single-row, aggregated circles) ---
+
+type SnvBin = {
+  x: number
+  variants: LRVariant[]
+}
+
+const BinnedSnvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
+  variants: LRVariant[]
+  scalePosition: (pos: number) => number
+  width: number
+  onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
+  hoveredPosition?: number | null
+  colorMode?: string
+  regionStart?: number
+  regionStop?: number
+}) => {
+  const minRadius = 2
+  const maxRadius = 6
+  const binWidth = maxRadius * 2
+
+  // Compute pixel X, filter to viewport, sort
+  const visible = variants
+    .map(v => ({ ...v, x: scalePosition(v.pos) }))
+    .filter(v => v.x >= -maxRadius && v.x <= width + maxRadius)
+  visible.sort((a, b) => a.x - b.x)
+
+  // Bin variants by pixel proximity
+  const bins: SnvBin[] = []
+  for (const v of visible) {
+    const last = bins[bins.length - 1]
+    if (last && v.x - last.x < binWidth) {
+      last.variants.push(v)
+      // Update bin center to mean
+      last.x = last.variants.reduce((s, u) => s + (u as any).x, 0) / last.variants.length
+    } else {
+      bins.push({ x: v.x, variants: [v] })
+    }
+  }
+
+  const bandHeight = maxRadius * 2 + 4
+
+  return (
+    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
+      {bins.map((bin, i) => {
+        const count = bin.variants.length
+        const radius = Math.min(minRadius + Math.log2(count) * 1.5, maxRadius)
+        const cy = bandHeight / 2
+
+        // Color: use first variant's color (for non-sv_type modes, pick the highest-AF variant)
+        const rep = count === 1 ? bin.variants[0] : bin.variants.reduce((best, v) => {
+          const af = (v as any).freq?.all?.af ?? (v as any).freq?.af ?? 0
+          const bestAf = (best as any).freq?.all?.af ?? (best as any).freq?.af ?? 0
+          return af > bestAf ? v : best
+        })
+        const color = colorMode === 'sv_type'
+          ? (VARIANT_CATEGORY_COLORS[getVariantCategory(rep.allele_type, rep.allele_length)])
+          : getVariantCssColor(rep, colorMode, { start: regionStart, stop: regionStop })
+
+        // Opacity: average AF across bin
+        const avgOpacity = bin.variants.reduce((s, v) => s + afToOpacity(v), 0) / count
+
+        const hoverHandlers = onHoverVariant ? {
+          onMouseEnter: (e: React.MouseEvent) => onHoverVariant(rep, e),
+          onMouseMove: (e: React.MouseEvent) => onHoverVariant(rep, e),
+          onMouseLeave: () => onHoverVariant(null),
+        } : {}
+
+        // Single variant: link directly; multi-variant bin: no link
+        const circle = (
+          <circle
+            cx={bin.x}
+            cy={cy}
+            r={radius}
+            fill={color}
+            opacity={avgOpacity}
+            stroke={count > 1 ? '#fff' : 'none'}
+            strokeWidth={count > 1 ? 0.5 : 0}
+            {...hoverHandlers}
+          />
+        )
+
+        return count === 1 ? (
+          <Link key={bin.variants[0].variant_id} to={`/variant/${bin.variants[0].variant_id}`}>
+            {circle}
+          </Link>
+        ) : (
+          <g key={`bin-${i}`}>{circle}</g>
         )
       })}
       {hoveredPosition != null && (() => {
@@ -441,7 +542,9 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
     }
   }, [onHoverVariantPosition])
 
-  const snvVariants: LRVariant[] = []
+  const lofSnvs: LRVariant[] = []
+  const missenseSnvs: LRVariant[] = []
+  const otherSnvs: LRVariant[] = []
   const insVariants: SvItem[] = []
   const delVariants: SvItem[] = []
   const svVariants: SvItem[] = []
@@ -458,7 +561,10 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
 
     const band = assignVariantBand(v)
     if (band === 'snv') {
-      snvVariants.push(v)
+      const csqCat = getCategoryFromConsequence(v.major_consequence)
+      if (csqCat === 'lof') lofSnvs.push(v)
+      else if (csqCat === 'missense') missenseSnvs.push(v)
+      else otherSnvs.push(v)
     } else if (band === 'ins') {
       const start = v.pos
       const stop = v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1)
@@ -489,11 +595,11 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
 
   return (
     <div style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}>
-      {showSnvBand && snvVariants.length > 0 && (
-        <Track renderLeftPanel={() => <SidePanel>Long Read SNVs ({snvVariants.length})</SidePanel>}>
+      {showSnvBand && lofSnvs.length > 0 && (
+        <Track renderLeftPanel={() => <SidePanel>pLoF ({lofSnvs.length})</SidePanel>}>
           {() => (
             <SnvBand
-              variants={snvVariants}
+              variants={lofSnvs}
               scalePosition={adjScalePosition}
               width={adjCenterWidth}
               onHoverVariant={onHoverVariant}
@@ -504,6 +610,46 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
             />
           )}
         </Track>
+      )}
+
+      {showSnvBand && missenseSnvs.length > 0 && (
+        <>
+          {lofSnvs.length > 0 && <BandDivider />}
+          <Track renderLeftPanel={() => <SidePanel>Missense ({missenseSnvs.length})</SidePanel>}>
+            {() => (
+              <SnvBand
+                variants={missenseSnvs}
+                scalePosition={adjScalePosition}
+                width={adjCenterWidth}
+                onHoverVariant={onHoverVariant}
+                hoveredPosition={hoveredVariantPosition}
+                colorMode={colorMode}
+                regionStart={regionStart}
+                regionStop={regionStop}
+              />
+            )}
+          </Track>
+        </>
+      )}
+
+      {showSnvBand && otherSnvs.length > 0 && (
+        <>
+          {(lofSnvs.length > 0 || missenseSnvs.length > 0) && <BandDivider />}
+          <Track renderLeftPanel={() => <SidePanel>Other SNVs ({otherSnvs.length})</SidePanel>}>
+            {() => (
+              <BinnedSnvBand
+                variants={otherSnvs}
+                scalePosition={adjScalePosition}
+                width={adjCenterWidth}
+                onHoverVariant={onHoverVariant}
+                hoveredPosition={hoveredVariantPosition}
+                colorMode={colorMode}
+                regionStart={regionStart}
+                regionStop={regionStop}
+              />
+            )}
+          </Track>
+        </>
       )}
 
       {showInsBand && insVariants.length > 0 && (
