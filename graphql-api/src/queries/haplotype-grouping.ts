@@ -52,6 +52,8 @@ type GroupedRow = {
   allele_methylations: (number | null)[]
   motif_counts_arr: (number[] | null)[]
   allele_purities: (number | null)[]
+  short_read_match_ids: (string | null)[]
+  major_consequences: (string | null)[]
 }
 
 export type LRVariant = {
@@ -81,6 +83,7 @@ export type LRVariant = {
   allele_methylation: number | null
   motif_counts: number[] | null
   allele_purity: number | null
+  short_read_match_id: string | null
   in_samples?: string[]
   gt_phased?: boolean
 }
@@ -95,6 +98,7 @@ function buildVariant(
   trId: string | null, trMotifs: string | null, gnomadStr: string | null,
   alleleMethylation: number | null, motifCounts: number[] | null,
   allelePurity: number | null,
+  shortReadMatchId: string | null, majorConsequence: string | null,
 ): LRVariant {
   const populations: Array<{ id: string; af: number }> = []
   if (afAfr != null) populations.push({ id: 'afr', af: afAfr })
@@ -124,7 +128,8 @@ function buildVariant(
     freq: { af, ac, an },
     populations,
     rsid: rsid || '',
-    major_consequence: null,
+    major_consequence: majorConsequence,
+    short_read_match_id: shortReadMatchId,
     cadd_phred: caddPhred,
     phylop,
     sv_consequences: svConsequences && svConsequences.length > 0 ? svConsequences : null,
@@ -183,6 +188,7 @@ export const createHaplotypeGroupsFromGrouped = (
         toStr(row.tr_ids?.[i]), toStr(row.tr_motifs_arr?.[i]), toStr(row.tr_strucs?.[i]),
         toNum(row.allele_methylations?.[i]), row.motif_counts_arr?.[i] || null,
         toNum(row.allele_purities?.[i]),
+        toStr(row.short_read_match_ids?.[i]), toStr(row.major_consequences?.[i]),
       )
 
       if (af >= minAlleleFreq) {
@@ -355,6 +361,7 @@ export const assembleHaplotypeGroups = (
       toNum(row.allele_methylation),
       row.motif_counts && row.motif_counts.length > 0 ? row.motif_counts : null,
       toNum(row.allele_purity),
+      toStr(row.short_read_match_id), toStr(row.major_consequence),
     )
     variantMap.set(key, variant)
   }
@@ -716,6 +723,7 @@ export const buildVariantsAndCarrierMap = (
       toNum(row.allele_methylation),
       row.motif_counts && row.motif_counts.length > 0 ? row.motif_counts : null,
       toNum(row.allele_purity),
+      toStr(row.short_read_match_id), toStr(row.major_consequence),
     )
     variants.push(variant)
   }
