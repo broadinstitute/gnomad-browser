@@ -681,9 +681,15 @@ const LongReadUnifiedView = ({
 
   const withFrequency = (variant: any) => variant.freq !== null
 
-  const displayVariants = useMemo(
-    () => variants.filter(withFrequency),
+  // Standardize length → allele_length so summary and haplotype tracks use the same field name
+  const standardizedVariants = useMemo(
+    () => variants.map((v: any) => ({ ...v, allele_length: v.length })),
     [variants]
+  )
+
+  const displayVariants = useMemo(
+    () => standardizedVariants.filter(withFrequency),
+    [standardizedVariants]
   )
 
   // LOD visibility — determines what to show based on region size
@@ -702,8 +708,8 @@ const LongReadUnifiedView = ({
 
   // Unfiltered zoom variants for accordion mapper (not AF-filtered)
   const unfilteredZoomedVariants: LRVariant[] = useMemo(
-    () => filterVariantsInZoomRegion(variants, zoomRegion),
-    [variants, zoomRegion]
+    () => filterVariantsInZoomRegion(standardizedVariants, zoomRegion),
+    [standardizedVariants, zoomRegion]
   )
 
   // Accordion coordinate mapper — creates phantom gaps at insertion/TR loci
