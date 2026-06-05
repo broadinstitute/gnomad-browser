@@ -107,7 +107,7 @@ resource "google_cloud_run_v2_service" "browser" {
 
       env {
         name  = "API_URL"
-        value = "${google_cloud_run_v2_service.api.uri}/api"
+        value = "${google_cloud_run_v2_service.api.uri}/api/"
       }
 
       resources {
