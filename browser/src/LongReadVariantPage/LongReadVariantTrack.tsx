@@ -143,31 +143,12 @@ const SnvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositi
 }) => {
   // Match haplotype track: 4px radius when < 100kb, 2px when >= 100kb
   const radius = regionSize > 100_000 ? 2 : 4
-  const minPxDistance = radius * 2 + 2
+  const bandHeight = radius * 2 + 4
 
   // Compute pixel X positions and filter to viewport
   const visible = variants
     .map(v => ({ ...v, x: scalePosition(v.pos) }))
     .filter(v => v.x >= -radius && v.x <= width + radius)
-
-  // Sort by X position for packing
-  visible.sort((a, b) => a.x - b.x)
-
-  // Pixel-based row packing to avoid visual overlap
-  const rowEnds: number[] = []
-  const packed = visible.map(v => {
-    for (let r = 0; r < rowEnds.length; r++) {
-      if (v.x > rowEnds[r] + minPxDistance) {
-        rowEnds[r] = v.x
-        return { ...v, row: r }
-      }
-    }
-    rowEnds.push(v.x)
-    return { ...v, row: rowEnds.length - 1 }
-  })
-
-  const maxRows = Math.max(rowEnds.length, 1)
-  const bandHeight = maxRows * ROW_HEIGHT
 
   const hoverHandlers = (v: LRVariant) => onHoverVariant ? {
     onMouseEnter: (e: React.MouseEvent) => onHoverVariant(v, e),
@@ -177,18 +158,18 @@ const SnvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositi
 
   return (
     <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
-      {packed.map((v) => {
+      {visible.map((v) => {
         const color = colorMode === 'sv_type'
           ? (VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)])
           : getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })
         const opacity = afToOpacity(v)
-        const rowY = v.row * ROW_HEIGHT + ROW_HEIGHT / 2
+        const cy = bandHeight / 2
 
         return (
           <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
             <circle
               cx={v.x}
-              cy={rowY}
+              cy={cy}
               r={radius}
               fill={color}
               fillOpacity={opacity}
