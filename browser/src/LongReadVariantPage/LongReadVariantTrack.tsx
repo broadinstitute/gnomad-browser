@@ -143,7 +143,7 @@ const SnvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositi
 }) => {
   // Match haplotype track: 4px radius when < 100kb, 2px when >= 100kb
   const radius = regionSize > 100_000 ? 2 : 4
-  const bandHeight = radius * 2 + 4
+  const bandHeight = radius * 2 + 12
 
   // Compute pixel X positions and filter to viewport
   const visible = variants
