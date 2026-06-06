@@ -1550,10 +1550,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   const summaryDerivedVariants = useMemo(() => {
     if (mode !== 'summary') return []
     return summaryVariants.map((v: any) => {
-      const populations = (v.freq?.populations || []).map((p: any) => ({
-        id: p.id,
-        af: p.af ?? 0,
-      }))
+      const SUPERPOPS = new Set(['afr', 'amr', 'eas', 'nfe', 'sas'])
+      const populations = (v.freq?.populations || [])
+        .filter((p: any) => SUPERPOPS.has(p.id))
+        .map((p: any) => ({ id: p.id, af: p.af ?? 0 }))
       return {
         variant_id: v.variant_id,
         chrom: v.chrom,

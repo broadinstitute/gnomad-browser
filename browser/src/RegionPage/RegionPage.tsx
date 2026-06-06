@@ -123,7 +123,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const isSmallScreen = windowWidth < 900
   const location = useLocation()
   const history = useHistory()
-  const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') === 'true'
+  const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') !== 'false'
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
@@ -240,3 +240,4 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
 }
 
 export default RegionPage
+
