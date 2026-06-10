@@ -11,7 +11,7 @@ The impact of a missense variant depends on both the specific amino acid substit
 
 #### Transcripts included in this analysis
 
-We used the MANE Select (v0.95) or canonical transcripts of protein-coding genes as defined by GENCODE v39. For high quality transcripts, we excluded transcripts that had outlier variant counts: zero expected or too many observed pLoF, missense, or synonymous variants; or too few observed synonymous variants. This totaled 17,841 transcripts, 96% from MANE Select and 4% canonical. We also make MCR and MPC information available for the 1,534 transcripts with outlier counts, but caution that scores may be less accurate in these sequences.
+We used the MANE Select (v0.95) or canonical transcripts of protein-coding genes as defined by GENCODE v39. For high quality transcripts, we excluded transcripts that had outlier variant counts: zero expected or too many observed pLoF, missense, or synonymous variants; or too few observed synonymous variants. This totaled 17,841 transcripts, 96% from MANE Select and 4% canonical. We also make MCR and MPC information available in our [downloadable files](https://gnomad.broadinstitute.org/data#v2-regional-missense-constraint) for the 1,534 transcripts with outlier counts, but caution that scores may be less accurate in these sequences.
 
 ### Coverage
 
