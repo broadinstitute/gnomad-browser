@@ -23,6 +23,9 @@ describe('RegionalMissenseConstraint', () => {
         p_value: 0.45,
         z_score: 0.56,
         chisq_diff_null: undefined,
+        low_coverage: null,
+        percentile: null,
+        no_color: null,
       },
       {
         chrom: '1',
@@ -36,6 +39,9 @@ describe('RegionalMissenseConstraint', () => {
         p_value: 0.46,
         z_score: 0.57,
         chisq_diff_null: undefined,
+        low_coverage: null,
+        percentile: null,
+        no_color: null,
       },
     ]
     const rmc: RegionalMissenseConstraint = { regions, has_no_rmc_evidence: false, passed_qc: true }
