@@ -2,6 +2,10 @@ import hail as hl
 
 
 def prepare_gnomad_regional_missense_constraint(path, version):
+    valid_versions = ["v2", "v4"]
+    if version not in valid_versions:
+        raise ValueError(f"Version must be one of {valid_versions}")
+
     ht_rmc = hl.read_table(path)
 
     # rename key field transcript_id to transcript to allow merging in genes pipeline
@@ -63,7 +67,13 @@ def prepare_gnomad_regional_missense_constraint(path, version):
     #   the browser needs to be able to distinguish between transcripts that were
     #   searched and had no RMC evidence, vs those that were not searched, for display
     #   purposes
-    no_rmc_set = ht_rmc.globals.transcripts_no_rmc
+    no_rmc_set = None
+    if version == "v4":
+        no_rmc_set = ht_rmc.globals.transcripts.transcripts_no_rmc
+    else:
+        no_rmc_set = ht_rmc.globals.transcripts_no_rmc
+
+    # no_rmc_set = ht_rmc.globals.transcripts_no_rmc
     no_rmc_list = list(no_rmc_set.collect()[0])
     ht_transcripts_not_searched = hl.utils.range_table(1)
 

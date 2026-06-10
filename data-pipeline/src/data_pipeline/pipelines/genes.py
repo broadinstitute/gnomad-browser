@@ -41,9 +41,9 @@ from data_pipeline.datasets.gnomad_v4.gnomad_v4_constraint import (
 
 pipeline = Pipeline()
 
-external_sources_subdir = "external_sources/v4.1.1"
-genes_subdir = "v4.1.1/genes"
-constraint_subdir = "v4.1.1/constraint"
+external_sources_subdir = "v4_rmc_demo/external_sources"
+genes_subdir = "v4_rmc_demo/genes"
+constraint_subdir = "v4_rmc_demo/constraint"
 
 
 ###############################################
