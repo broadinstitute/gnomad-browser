@@ -116,7 +116,7 @@ const renderNumberExponential = (number: number | undefined) => {
 
   // -0.01 is a sentinel value signifying to use gnomAD constraint instead
   //   no real pValue here, so render '-'
-  else if (number === -0.01) {
+  if (number === -0.01) {
     return '-'
   }
 
@@ -190,22 +190,21 @@ const formattedOE = (region: RegionalMissenseConstraintRegion) =>
   region.obs_exp ? region.obs_exp.toFixed(2) : ''
 
 type Props = {
-  trackTitle: string
+  trackTitle?: string
   regionalMissenseConstraint: RegionalMissenseConstraint | null
   gene: Gene
 }
 
 type NoRMCProps = {
-  trackTitle?: string
+  trackTitle: string
 }
 
 const NoRMCConstraint = ({ trackTitle }: NoRMCProps) => {
-  const title = trackTitle ? trackTitle : 'Regional missense constraint'
   return (
     <Track
       renderLeftPanel={() => (
         <SidePanel>
-          <span>{title}</span>
+          <span>{trackTitle}</span>
           <InfoButton topic="regional-constraint" />
         </SidePanel>
       )}
@@ -232,7 +231,7 @@ const NoRMCConstraint = ({ trackTitle }: NoRMCProps) => {
 }
 
 const RegionalMissenseConstraintTrack = ({
-  trackTitle,
+  trackTitle = 'Regional missense constraint',
   regionalMissenseConstraint,
   gene,
 }: Props) => {
