@@ -110,7 +110,17 @@ const renderNumber = (number: number | null | undefined) => {
 }
 
 const renderNumberExponential = (number: number | undefined) => {
-  return number === undefined || number === null ? '-' : number.toExponential(3)
+  if (number === undefined || number === null) {
+    return '-'
+  }
+
+  // -0.01 is a sentinel value signifying to use gnomAD constraint instead
+  //   no real pValue here, so render '-'
+  else if (number === -0.01) {
+    return '-'
+  }
+
+  return number.toExponential(3)
 }
 
 const printAAorNA = (aa: string | null) => {
@@ -120,16 +130,15 @@ const printAAorNA = (aa: string | null) => {
   return aa
 }
 
-type RegionTooltipProps = {
+type MissenseConstraintRegionTooltipProps = {
   region: RegionWithUnclamped<RegionalMissenseConstraintRegion>
   isTranscriptWide: boolean
 }
 
-export const RegionTooltip = ({
+export const MissenseConstraintRegionTooltip = ({
   region,
   isTranscriptWide,
-  includeLiftover,
-}: RegionTooltipProps) => {
+}: MissenseConstraintRegionTooltipProps) => {
   if (isTranscriptWide) {
     return (
       <RegionAttributeList>
@@ -280,7 +289,7 @@ const RegionalMissenseConstraintTrack = ({
       infobuttonTopic="regional-constraint"
       colorFn={regionColor}
       legend={<Legend />}
-      tooltipComponent={RegionTooltip}
+      tooltipComponent={MissenseConstraintRegionTooltip}
       valueFn={formattedOE}
     />
   )
