@@ -156,6 +156,9 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
         obs_exp
         chisq_diff_null
         p_value
+        low_coverage
+        percentile
+        no_color
       }
     }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {

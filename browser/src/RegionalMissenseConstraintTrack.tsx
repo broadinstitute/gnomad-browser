@@ -26,6 +26,10 @@ export type RegionalMissenseConstraintRegion = {
   chisq_diff_null: number | undefined
   p_value: number
   z_score: number | null
+
+  low_coverage: boolean | null
+  percentile: number | null
+  no_color: boolean | null
 }
 
 // https://colorbrewer2.org/#type=sequential&scheme=YlOrRd&n=5
@@ -255,6 +259,10 @@ const RegionalMissenseConstraintTrack = ({
           chisq_diff_null: undefined,
           aa_start: null,
           aa_stop: null,
+
+          low_coverage: null,
+          percentile: null,
+          no_color: null,
         },
       ]
     }

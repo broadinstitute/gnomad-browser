@@ -176,7 +176,7 @@ export type Gene = GeneMetadata & {
   }[]
   | null
   exac_regional_missense_constraint_regions: any | null
-  gnomad_v2_regional_missense_constraint: RegionalMissenseConstraint | null
+  gnomad_regional_missense_constraint: RegionalMissenseConstraint | null
   variants: Variant[]
   structural_variants: StructuralVariant[]
   copy_number_variants: CopyNumberVariant[]
