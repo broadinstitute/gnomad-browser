@@ -123,7 +123,6 @@ const printAAorNA = (aa: string | null) => {
 type RegionTooltipProps = {
   region: RegionWithUnclamped<RegionalMissenseConstraintRegion>
   isTranscriptWide: boolean
-  includeLiftover: boolean
 }
 
 export const RegionTooltip = ({
