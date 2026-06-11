@@ -5,7 +5,7 @@ title: 'Regional constraint'
 
 This track shows regional (sub-genic) missense constraint scores for genes, calculated from the gnomAD v4.1.1 dataset.
 
-The impact of a missense variant depends on both the specific amino acid substitution it causes and its position within the gene. By highlighting regions that are intolerant to missense variation, this track is designed to aid in missense variant interpretation and classification.
+The impact of a missense variant depends on both the specific amino acid substitution it causes and its position within the gene. By highlighting regions that are intolerant to missense variation, this track is designed to aid in missense variant interpretation and classification. The missense observed/expected (`o/e`) percentile information available in the track can be used to help interpret how constrained a particular region is; for example, a missense `o/e` percentile of 5 means that coding base pairs within that region are among the most highly missense constrained 5% of coding base pairs.
 
 All regional missense constraint data and scores from its derivative missense variant deleteriousness predictor, MPC, are available in our [downloadable files](https://gnomad.broadinstitute.org/data#v4-regional-missense-constraint)
 
@@ -25,7 +25,7 @@ Note that all low coverage (median %AN < 90) sub-genic regions are displayed on 
 
 #### Observed and expected rare missense variants
 
-The proportion of observed and expected rare missense variants were calculated following the same methods described in calculating [gene-level constraint](https://gnomad.broadinstitute.org/help/constraint).
+The proportion of observed and expected rare missense variants were calculated following the same methods described in calculating [gene-level constraint](https://gnomad.broadinstitute.org/help/constraint). Missense observed/expected percentiles were calculated across all coding base pair sites in the 17,841 high-quality transcripts by assigning each site the observed/expected value of the region containing it.
 
 Note that only high-coverage regions with missense observed/expected values significantly different from 1 (p-value < 0.001) have color in the regional missense constraint track.
 
