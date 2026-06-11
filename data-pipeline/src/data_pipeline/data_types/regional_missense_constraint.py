@@ -59,7 +59,7 @@ def prepare_gnomad_regional_missense_constraint(path, version):
     ht_transcripts_with_rmc = ht_transcripts_with_rmc.annotate(passed_qc=hl.bool(True))
     ht_transcripts_with_rmc = ht_transcripts_with_rmc.select(
         has_no_rmc_evidence=ht_transcripts_with_rmc.has_no_rmc_evidence,
-        passed_qc=ht_transcripts_with_rmc.passed_qc,
+        # passed_qc=ht_transcripts_with_rmc.passed_qc,
         regions=hl.sorted(ht_transcripts_with_rmc.regions_array[0].regions, lambda region: region.start),
     )
 
@@ -69,11 +69,10 @@ def prepare_gnomad_regional_missense_constraint(path, version):
     #   purposes
     no_rmc_set = None
     if version == "v4":
-        no_rmc_set = ht_rmc.globals.transcripts.transcripts_no_rmc
+        no_rmc_set = ht_rmc.globals.all_transcripts.transcripts_no_rmc
     else:
         no_rmc_set = ht_rmc.globals.transcripts_no_rmc
 
-    # no_rmc_set = ht_rmc.globals.transcripts_no_rmc
     no_rmc_list = list(no_rmc_set.collect()[0])
     ht_transcripts_not_searched = hl.utils.range_table(1)
 
@@ -82,7 +81,6 @@ def prepare_gnomad_regional_missense_constraint(path, version):
     ht_transcripts_not_searched = ht_transcripts_not_searched.annotate(
         transcript_id=(hl.array(no_rmc_list)),
         has_no_rmc_evidence=hl.bool(True),
-        passed_qc=hl.bool(False),
         regions=hl.empty_array(ht_transcripts_region_array_type),
     )
 
@@ -92,9 +90,57 @@ def prepare_gnomad_regional_missense_constraint(path, version):
 
     # combine the hail table of those transcripts with evidence, and those transcripts
     #   searched without evidence
-    ht_all_rmc_transcripts = ht_transcripts_with_rmc.union(ht_transcripts_not_searched)
+    ht_rmc_all_transcripts_searched = ht_transcripts_with_rmc.union(ht_transcripts_not_searched)
 
-    # Don't need the information in globals for the browser
-    ht_all_rmc_transcripts = ht_all_rmc_transcripts.select_globals()
+    ht_rmc_all_transcripts_searched = ht_rmc_all_transcripts_searched.annotate(
+        is_outlier=False,
+        is_outlier_no_display=False,
+    )
 
-    return ht_all_rmc_transcripts
+    if version == "v4":
+
+        # get outlier transcript hail table
+        outlier_set = ht_rmc.globals.all_transcripts.all_outlier_transcripts
+        outlier_list = list(outlier_set.collect()[0])
+        ht_outlier_transcripts = hl.utils.range_table(1)
+        ht_outlier_transcripts = ht_outlier_transcripts.annotate(
+            transcript_id=(hl.array(outlier_list)),
+            is_outlier=True,
+        )
+        ht_outlier_transcripts = ht_outlier_transcripts.explode(ht_outlier_transcripts["transcript_id"])
+        ht_outlier_transcripts = ht_outlier_transcripts.key_by("transcript_id")
+        ht_outlier_transcripts = ht_outlier_transcripts.drop("idx")
+
+        # get outlier no display transcript hail table
+        no_display_outlier_set = ht_rmc.globals.all_transcripts.no_exp_outlier_transcripts
+        no_display_outlier_list = list(no_display_outlier_set.collect()[0])
+        ht_no_display_outlier_transcripts = hl.utils.range_table(1)
+        ht_no_display_outlier_transcripts = ht_no_display_outlier_transcripts.annotate(
+            transcript_id=(hl.array(no_display_outlier_list)),
+            is_outlier_no_display=True,
+        )
+        ht_no_display_outlier_transcripts = ht_no_display_outlier_transcripts.explode(
+            ht_no_display_outlier_transcripts["transcript_id"]
+        )
+        ht_no_display_outlier_transcripts = ht_no_display_outlier_transcripts.key_by("transcript_id")
+        ht_no_display_outlier_transcripts = ht_no_display_outlier_transcripts.drop("idx")
+
+        ht_rmc_all_transcripts_searched = ht_rmc_all_transcripts_searched.annotate(
+            is_outlier=hl.if_else(
+                hl.is_defined(ht_outlier_transcripts[ht_rmc_all_transcripts_searched.transcript_id]), True, False
+            ),
+            is_outlier_no_display=hl.if_else(
+                hl.is_defined(ht_no_display_outlier_transcripts[ht_rmc_all_transcripts_searched.transcript_id]),
+                True,
+                False,
+            ),
+        )
+    else:
+        ht_rmc_all_transcripts_searched = ht_rmc_all_transcripts_searched.annotate(
+            is_outlier=False,
+            is_outlier_no_display=False,
+        )
+
+    ht_rmc_all_transcripts_searched = ht_rmc_all_transcripts_searched.select_globals()
+
+    return ht_rmc_all_transcripts_searched

@@ -23,7 +23,7 @@ from data_pipeline.data_types.transcript import (
 from data_pipeline.datasets.exac.exac_constraint import prepare_exac_constraint
 from data_pipeline.datasets.exac.exac_regional_missense_constraint import prepare_exac_regional_missense_constraint
 from data_pipeline.datasets.gnomad_v2.gnomad_v2_constraint import prepare_gnomad_v2_constraint
-from data_pipeline.data_types.regional_missense_contraint import (
+from data_pipeline.data_types.regional_missense_constraint import (
     prepare_gnomad_regional_missense_constraint,
 )
 
@@ -334,7 +334,7 @@ pipeline.add_task(
     prepare_gnomad_regional_missense_constraint,
     f"/{constraint_subdir}/gnomad_v4_regional_missense_constraint.ht",
     {
-        "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2026-06-09_gnomad_v4_regional_missense_constraint.ht",
+        "path": "gs://gnomad-v4-data-pipeline/inputs/secondary-analyses/constraint/2026-06-10_gnomad_v4_regional_missense_constraint.ht",
     },
     {
         "version": "v4",
