@@ -25,9 +25,9 @@ Note that all low coverage (median %AN < 90) sub-genic regions are displayed on 
 
 #### Observed and expected rare missense variants
 
-The proportion of observed and expected rare missense variants were calculated following the same methods described in calculating [gene-level constraint](https://gnomad.broadinstitute.org/help/constraint). Missense observed/expected percentiles were calculated across all coding base pair sites in the 17,841 high-quality transcripts by assigning each site the observed/expected value of the region containing it.
+The proportion of observed and expected rare missense variants were calculated following the same methods described in calculating [gene-level constraint](https://gnomad.broadinstitute.org/help/constraint). Missense observed/expected (`o/e`)percentiles were calculated across all coding base pair sites in the 17,841 high-quality transcripts by assigning each site the `o/e` value of the region containing it.
 
-Note that only high-coverage regions with missense observed/expected values significantly different from 1 (p-value < 0.001) have color in the regional missense constraint track.
+Note that only high-coverage regions with missense `o/e` values significantly different from 1 (p-value < 0.001) have color in the regional missense constraint track.
 
 #### Identification of missense constrained regions
 
