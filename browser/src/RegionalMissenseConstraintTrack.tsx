@@ -232,13 +232,7 @@ const NoRMCConstraint = ({ trackTitle }: NoRMCProps) => {
           <PlotWrapper>
             <svg height={35} width={width}>
               <text x={width / 2} y={35 / 2} dy="1.0rem" textAnchor="middle">
-                <tspan>
-                  This gene was not searched for evidence of regional missense constraint. See our{' '}
-                </tspan>
-                <tspan fill="#0000ff">
-                  <Link to="/help">help page</Link>
-                </tspan>
-                <tspan> for additional information.</tspan>
+                <tspan>Regional missense constraint is not available for this gene.</tspan>
               </text>
             </svg>
           </PlotWrapper>
