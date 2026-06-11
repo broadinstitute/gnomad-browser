@@ -11,12 +11,13 @@ type GnomadRegionalMissenseConstraintRegion {
   p_value: Float
 
   low_coverage: Boolean
-  percentile: Float
+  percentile: String
   no_color: Boolean
 }
 
 type GnomadRegionalMissenseConstraint {
   has_no_rmc_evidence: Boolean
-  passed_qc: Boolean
+  is_outlier: Boolean
+  is_outlier_no_display: Boolean
   regions: [GnomadRegionalMissenseConstraintRegion]
 }
