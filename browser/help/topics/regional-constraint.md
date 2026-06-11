@@ -23,6 +23,8 @@ Note that all low coverage (%AN < 90) sub-genic regions are displayed on the gen
 
 The proportion of observed and expected rare missense variants were calculated following the same methods described in calculating [gene-level constraint](https://gnomad.broadinstitute.org/help/constraint).
 
+Note that only high-coverage regions with missense observed/expected values significantly different from 1 (p-value < 0.001) have color in the regional missense constraint track.
+
 #### Identification of missense constrained regions
 
 We searched for regions within transcripts that were differentially intolerant of missense variation within the v4.1.1 dataset. We used likelihood ratio tests to identify transcripts that had two or more regions with significantly different levels of missense constraint (as measured by depletion of observed rare missense variation compared to expected). Missense constraint values closer to zero indicate increased intolerance against missense variation.
