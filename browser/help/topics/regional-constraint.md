@@ -17,7 +17,7 @@ We used the MANE Select (v0.95) or canonical transcripts of protein-coding genes
 
 [Coverage](https://gnomad.broadinstitute.org/help/how-was-coverage-calculated) for gnomAD v4.1.1 was calculated using information from [sample genomic VCF (gVCF)](https://gatk.broadinstitute.org/hc/en-us/articles/360035531812-GVCF-Genomic-Variant-Call-Format) data rather than from read data. As a result, coverage information for gnomAD v4.1.1 is not as granular due to the reference block structure within gVCFs. To remedy this, we used [allele number](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1/#allele-numbers-across-all-possible-sites) percent (%AN) to proxy coverage for all analyses to improve our ability to capture constraint in lower-coverage sites. Sites with %AN < 20 (0.68% of all possible missense sites with %AN > 0) were excluded from analysis.
 
-Note that all low coverage (%AN < 90) sub-genic regions are displayed on the gene pages using a gray color to indicate lower confidence in these regions.
+Note that all low coverage (median %AN < 90) sub-genic regions are displayed on the gene pages using a gray color to indicate lower confidence in these regions.
 
 #### Observed and expected rare missense variants
 
