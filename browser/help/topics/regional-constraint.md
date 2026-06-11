@@ -15,6 +15,8 @@ All regional missense constraint data and scores from its derivative missense va
 
 We used the MANE Select (v0.95) or canonical transcripts of protein-coding genes as defined by GENCODE v39. For high quality transcripts, we excluded transcripts that had outlier variant counts: zero expected or too many observed pLoF, missense, or synonymous variants; or too few observed synonymous variants. This totaled 17,841 transcripts, 96% from MANE Select and 4% canonical. While the 1,534 transcripts with outlier counts are included in the [downloadable files](https://gnomad.broadinstitute.org/data#v4-regional-missense-constraint), we caution that scores may be less accurate in these sequences.
 
+Note that regional missense constraint for 1,125 outlier transcripts missing expected variation (zero expected variation, zero expected synonymous variants, zero expected missense variants, or zero expected loss-of-function variants) are not displayed on the gnomAD browser.
+
 ### Coverage
 
 [Coverage](https://gnomad.broadinstitute.org/help/how-was-coverage-calculated) for gnomAD v4.1.1 was calculated using information from [sample genomic VCF (gVCF)](https://gatk.broadinstitute.org/hc/en-us/articles/360035531812-GVCF-Genomic-Variant-Call-Format) data rather than from read data. As a result, coverage information for gnomAD v4.1.1 is not as granular due to the reference block structure within gVCFs. To remedy this, we used [allele number](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1/#allele-numbers-across-all-possible-sites) percent (%AN) to proxy coverage for all analyses to improve our ability to capture constraint in lower-coverage sites. Sites with %AN < 20 (0.68% of all possible missense sites with %AN > 0) were excluded from analysis.
