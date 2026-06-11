@@ -13,6 +13,14 @@ import ConstraintTrack, {
   RegionAttributeList,
   RegionWithUnclamped,
 } from './ConstraintTrack'
+import { Badge } from '@gnomad/ui'
+
+export type RegionalMissenseConstraint = {
+  has_no_rmc_evidence: boolean
+  is_outlier: boolean
+  is_outlier_no_display: boolean
+  regions: RegionalMissenseConstraintRegion[]
+}
 
 export type RegionalMissenseConstraintRegion = {
   chrom: string
@@ -28,7 +36,7 @@ export type RegionalMissenseConstraintRegion = {
   z_score: number | null
 
   low_coverage: boolean | null
-  percentile: number | null
+  percentile: string | null
   no_color: boolean | null
 }
 
@@ -47,17 +55,27 @@ function regionColor(region: RegionalMissenseConstraintRegion) {
     return region.z_score > 3.09 ? colorScale.middle : colorScale.not_significant
   }
 
-  if (region.obs_exp !== undefined && region.obs_exp !== null && region.p_value <= 1e-2) {
-    if (region.obs_exp > 0.8) {
+  const regionObsExpExists = region.obs_exp !== undefined && region.obs_exp !== null
+  const regionHasSignificantPValue = region.p_value <= 1e-2
+  const regionHasLowCoverage = region.low_coverage === true
+  const regionHasNoColorFlag = region.no_color === true
+
+  if (
+    regionObsExpExists &&
+    regionHasSignificantPValue &&
+    !regionHasLowCoverage &&
+    !regionHasNoColorFlag
+  ) {
+    if (region.obs_exp! > 0.8) {
       return colorScale.lightest
     }
-    if (region.obs_exp > 0.6) {
+    if (region.obs_exp! > 0.6) {
       return colorScale.lighter
     }
-    if (region.obs_exp > 0.4) {
+    if (region.obs_exp! > 0.4) {
       return colorScale.middle
     }
-    if (region.obs_exp > 0.2) {
+    if (region.obs_exp! > 0.2) {
       return colorScale.darker
     }
     return colorScale.darkest
@@ -176,24 +194,24 @@ export const MissenseConstraintRegionTooltip = ({
           {region.p_value !== null && region.p_value > 0.001 && ' (not significant)'}
         </dd>
       </div>
+      {region.percentile && (
+        <div>
+          <dt>Missense oe percentile:</dt>
+          <dd>{region.percentile}</dd>
+        </div>
+      )}
+      {region.low_coverage === true && (
+        <div>
+          <dt>Warning:</dt>
+          <dd>This region has low coverage</dd>
+        </div>
+      )}
     </RegionAttributeList>
   )
 }
 
-export type RegionalMissenseConstraint = {
-  has_no_rmc_evidence: boolean
-  passed_qc: boolean
-  regions: RegionalMissenseConstraintRegion[]
-}
-
 const formattedOE = (region: RegionalMissenseConstraintRegion) =>
   region.obs_exp ? region.obs_exp.toFixed(2) : ''
-
-type Props = {
-  trackTitle?: string
-  regionalMissenseConstraint: RegionalMissenseConstraint | null
-  gene: Gene
-}
 
 type NoRMCProps = {
   trackTitle: string
@@ -230,17 +248,21 @@ const NoRMCConstraint = ({ trackTitle }: NoRMCProps) => {
   )
 }
 
+type RegionalMissenseConstraintTrackProps = {
+  trackTitle?: string
+  gene: Gene
+  regionalMissenseConstraint: RegionalMissenseConstraint | null
+}
+
 const RegionalMissenseConstraintTrack = ({
   trackTitle = 'Regional missense constraint',
-  regionalMissenseConstraint,
   gene,
-}: Props) => {
-  if (
-    !regionalMissenseConstraint ||
-    regionalMissenseConstraint.regions === null ||
-    (regionalMissenseConstraint.passed_qc === false &&
-      regionalMissenseConstraint.has_no_rmc_evidence === false)
-  ) {
+  regionalMissenseConstraint,
+}: RegionalMissenseConstraintTrackProps) => {
+  const transcriptWasNotSearchedForRMC = regionalMissenseConstraint === null
+  const transcriptHasOutlierDoNotDisplayFlag = regionalMissenseConstraint?.is_outlier_no_display
+
+  if (transcriptWasNotSearchedForRMC || transcriptHasOutlierDoNotDisplayFlag) {
     return <NoRMCConstraint trackTitle={trackTitle} />
   }
 
@@ -281,16 +303,23 @@ const RegionalMissenseConstraintTrack = ({
   )
 
   return (
-    <ConstraintTrack
-      trackTitle={trackTitle}
-      allRegions={regionalMissenseConstraint.regions}
-      constrainedRegions={constraintInCodingSections}
-      infobuttonTopic="regional-constraint"
-      colorFn={regionColor}
-      legend={<Legend />}
-      tooltipComponent={MissenseConstraintRegionTooltip}
-      valueFn={formattedOE}
-    />
+    <>
+      <ConstraintTrack
+        trackTitle={trackTitle}
+        allRegions={regionalMissenseConstraint.regions}
+        constrainedRegions={constraintInCodingSections}
+        infobuttonTopic="regional-constraint"
+        colorFn={regionColor}
+        legend={<Legend />}
+        tooltipComponent={MissenseConstraintRegionTooltip}
+        valueFn={formattedOE}
+      />
+      {regionalMissenseConstraint.is_outlier && (
+        <p style={{ marginTop: '-1rem' }}>
+          <Badge level="info">Note</Badge> This gene has constraint flags
+        </p>
+      )}
+    </>
   )
 }
 

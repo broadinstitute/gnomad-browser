@@ -124,8 +124,9 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       chisq_diff_null
     }
     gnomad_regional_missense_constraint {
-      passed_qc
       has_no_rmc_evidence
+      is_outlier
+      is_outlier_no_display
       regions {
         chrom
         start
