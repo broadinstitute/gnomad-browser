@@ -563,7 +563,6 @@ const GnomadV4Downloads = () => {
               path=""
             />
           </ListItem>
-
           <ListItem>
             <DownloadLinks
               label="Transcript and regional missense constraint TSV (all transcripts)"
@@ -580,25 +579,6 @@ const GnomadV4Downloads = () => {
             <DownloadLinks
               label="Missense observed/expected percentiles TSV"
               path="gs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_coding_locus_oe_percentiles.he"
-            />
-          </ListItem>
-
-          <ListItem>
-            <GetUrlButtons
-              label="Regional missense constraint Hail Table"
-              path="/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"
-            />
-          </ListItem>
-          <ListItem>
-            <DownloadLinks
-              label="Regional missense constraint TSV (transcripts with RMC)"
-              path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_with_rmc.tsv"
-            />
-          </ListItem>
-          <ListItem>
-            <DownloadLinks
-              label="Regional missense constraint TSV (transcripts without RMC)"
-              path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_without_rmc.tsv"
             />
           </ListItem>
         </FileList>
