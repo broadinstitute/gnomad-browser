@@ -404,7 +404,7 @@ const GnomadV2Downloads = () => {
 
       <DownloadsSection>
         <SectionTitle id="v2-regional-missense-constraint">
-          Regional Missense Constraint
+          Regional missense constraint
         </SectionTitle>
         <FileList>
           <ListItem>
