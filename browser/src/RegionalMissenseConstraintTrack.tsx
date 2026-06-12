@@ -180,11 +180,17 @@ export const MissenseConstraintRegionTooltip = ({
         <dd>{`${printAAorNA(region.aa_start)}-${printAAorNA(region.aa_stop)}`}</dd>
       </div>
       <div>
-        <dt>Missense observed/expected:</dt>
+        <dt>Missense o/e:</dt>
         <dd>{`${renderNumber(region.obs_exp)} (${region.obs_mis}/${renderNumber(
           region.exp_mis
         )})`}</dd>
       </div>
+      {region.percentile && (
+        <div>
+          <dt>Missense o/e percentile:</dt>
+          <dd>{region.percentile}</dd>
+        </div>
+      )}
       <div>
         <dt>p-value:</dt>
         <dd>
@@ -192,12 +198,6 @@ export const MissenseConstraintRegionTooltip = ({
           {region.p_value !== null && region.p_value > 0.001 && ' (not significant)'}
         </dd>
       </div>
-      {region.percentile && (
-        <div>
-          <dt>Missense oe percentile:</dt>
-          <dd>{region.percentile}</dd>
-        </div>
-      )}
       {region.low_coverage === true && (
         <div>
           <dt>Warning:</dt>
