@@ -14,10 +14,10 @@ import ConstraintTrack, {
 import { Badge } from '@gnomad/ui'
 
 export type RegionalMissenseConstraint = {
-  has_no_rmc_evidence: boolean
-  is_outlier: boolean
-  is_outlier_no_display: boolean
-  regions: RegionalMissenseConstraintRegion[]
+  has_no_rmc_evidence: boolean | null
+  is_outlier: boolean | null
+  is_outlier_no_display: boolean | null
+  regions: RegionalMissenseConstraintRegion[] | null
 }
 
 export type RegionalMissenseConstraintRegion = {
