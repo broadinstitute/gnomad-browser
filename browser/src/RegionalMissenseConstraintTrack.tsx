@@ -2,8 +2,6 @@ import React from 'react'
 
 import { Track } from '@gnomad/region-viewer'
 
-import Link from './Link'
-
 import InfoButton from './help/InfoButton'
 import { Gene } from './GenePage/GenePage'
 import ConstraintTrack, {
