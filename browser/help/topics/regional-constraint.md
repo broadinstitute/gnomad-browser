@@ -35,6 +35,8 @@ We searched for regions within transcripts that were differentially intolerant o
 
 More details can be found in [Wang _et al._ bioRxiv 2026](https://www.biorxiv.org/content/10.1101/2024.04.11.588920v3), or the open-source [GitHub repository](https://github.com/broadinstitute/regional_missense_constraint/tree/main).
 
+<details>
+
 <summary>Expand to see details for past versions</summary>
 
 Important: There are three distinct views for the regional missense constraint track on the gnomAD v2.1.1 dataset:
