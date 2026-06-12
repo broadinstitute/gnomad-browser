@@ -253,7 +253,8 @@ const RegionalMissenseConstraintTrack = ({
   gene,
   regionalMissenseConstraint,
 }: RegionalMissenseConstraintTrackProps) => {
-  const transcriptWasNotSearchedForRMC = regionalMissenseConstraint === null
+  const transcriptWasNotSearchedForRMC =
+    regionalMissenseConstraint === null || regionalMissenseConstraint.has_no_rmc_evidence === null
   const transcriptHasOutlierDoNotDisplayFlag = regionalMissenseConstraint?.is_outlier_no_display
 
   if (transcriptWasNotSearchedForRMC || transcriptHasOutlierDoNotDisplayFlag) {
@@ -263,7 +264,7 @@ const RegionalMissenseConstraintTrack = ({
   // This transcript was searched, but no RMC evidence was found
   //   instead, use the available gene level constraint data to display a single
   //   region for the RMC track
-  if (regionalMissenseConstraint.has_no_rmc_evidence) {
+  if (regionalMissenseConstraint.has_no_rmc_evidence === true) {
     // eslint-disable-next-line no-param-reassign
     regionalMissenseConstraint.regions = []
 
