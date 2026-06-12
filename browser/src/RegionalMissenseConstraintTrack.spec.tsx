@@ -9,7 +9,7 @@ import { Gene } from './GenePage/GenePage'
 import geneFactory from './__factories__/Gene'
 
 describe('RegionalMissenseConstraint', () => {
-  test('has no unexpected changes when the RMC has evidence and passed QC', () => {
+  test('has no unexpected changes when the RMC has evidence', () => {
     const regions: RegionalMissenseConstraintRegion[] = [
       {
         chrom: '1',
@@ -44,7 +44,13 @@ describe('RegionalMissenseConstraint', () => {
         no_color: null,
       },
     ]
-    const rmc: RegionalMissenseConstraint = { regions, has_no_rmc_evidence: false, passed_qc: true }
+
+    const rmc: RegionalMissenseConstraint = {
+      has_no_rmc_evidence: false,
+      is_outlier: false,
+      is_outlier_no_display: false,
+      regions,
+    }
 
     const gene: Gene = geneFactory.build({
       chrom: '1',
