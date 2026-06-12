@@ -553,6 +553,58 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-regional-missense-constraint">
+          Regional Missense Constraint
+        </SectionTitle>
+        <FileList>
+          <ListItem>
+            <GetUrlButtons
+              label="TK: TO BE STAGED - Regional missense constraint Hail Table"
+              path=""
+            />
+          </ListItem>
+
+          <ListItem>
+            <DownloadLinks
+              label="Transcript and regional missense constraint TSV (all transcripts)"
+              path="/papers/2026-rmc/gnomad_v4.1.1_all_mcrs.tsv"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Transcript and regional missense constraint TSV (high quality transcripts only)"
+              path="gs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_non_outlier_mcrs.tsv"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Missense observed/expected percentiles TSV"
+              path="gs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_coding_locus_oe_percentiles.he"
+            />
+          </ListItem>
+
+          <ListItem>
+            <GetUrlButtons
+              label="Regional missense constraint Hail Table"
+              path="/release/2.1.1/regional_missense_constraint/gnomad_v2.1.1_rmc.ht"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Regional missense constraint TSV (transcripts with RMC)"
+              path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_with_rmc.tsv"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Regional missense constraint TSV (transcripts without RMC)"
+              path="/release/2.1.1/regional_missense_constraint/gnomAD_v2.1.1_transcripts_without_rmc.tsv"
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-clinvar-grch38">ClinVar</SectionTitle>
         <p>
           For more information about these files, including how to download a specific previous
