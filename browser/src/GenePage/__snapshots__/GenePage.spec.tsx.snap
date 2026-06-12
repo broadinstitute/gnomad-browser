@@ -1600,22 +1600,7 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -7795,22 +7780,7 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -10989,22 +10959,7 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -12622,22 +12577,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -14278,22 +14218,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -15934,22 +15859,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -17590,22 +17500,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -19246,22 +19141,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -30268,22 +30148,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -31924,22 +31789,7 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -33560,22 +33410,7 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
