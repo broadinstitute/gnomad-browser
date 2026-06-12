@@ -291,7 +291,7 @@ const RegionalMissenseConstraintTrack = ({
   }
 
   const constraintInCodingSections = regionsInExons(
-    regionalMissenseConstraint.regions,
+    regionalMissenseConstraint.regions ?? [],
     gene.exons.filter((exon) => exon.feature_type === 'CDS')
   )
 
