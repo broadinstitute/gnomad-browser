@@ -30,34 +30,27 @@ This should be enough to use the Docker Compose development environment. However
   pip install -r deploy/deployctl/requirements.txt
   ```
 
-## Browser
+## Frontend
 
 The production API can be used for browser development. To start a local instance of only the browser...
 
-- with Docker
+To start a local instance of the frontend, use `pnpm start:browser`. Set the `GNOMAD_API_URL` to quickly change then URL where the local frontend makes API requests to
+
+- Start a local instance of the frontend, pointing to the production API
 
   ```
-  # create browser/build.env file
-  cat <<EOF > browser/build.env
-  GA_TRACKING_ID=
-  REPORT_VARIANT_URL=
-  REPORT_VARIANT_VARIANT_ID_PARAMETER=
-  REPORT_VARIANT_DATASET_PARAMETER=
-  EOF
-
-  ./development/env.sh browser up
+  GNOMAD_API_URL=https://gnomad.broadinstitute.org/api pnpm start:browser
   ```
 
-- without Docker:
+- Start a local instance of the frontend, pointing to a local API (see below to start a local API)
 
   ```
-  cd browser
-  ./start.sh
+  GNOMAD_API_URL=http://localhost:8010/api pnpm start:browser
   ```
 
 ## API
 
-Because of the size of the gnomAD database, API development is usually done using an Elasticsearch cluster hosted in the cloud. See the [deployment documentation](./deploy/README.md) for instructions on deploying a browser environment in GCP and the [data pipeline documentation](./data-pipeline/README.md) for instructions on populating the database.
+Because of the size of the gnomAD database, API development is usually done using the production Elasticsearch cluster hosted in the cloud. See the [deployment documentation](./deploy/README.md) for instructions on deploying a browser environment in GCP and the [data pipeline documentation](./data-pipeline/README.md) for instructions on populating the database.
 
 - Install and configure the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install).
 
@@ -70,22 +63,18 @@ Because of the size of the gnomAD database, API development is usually done usin
 
 - Start a local instance of the API...
 
-  - with Docker:
+  - Get the `ELASTICSEARCH_PASSWORD` secret to be used for requests;
 
     ```
-    ./development/env.sh api up
+    ELASTICSEARCH_PASSWORD=$(./deployctl elasticsearch get-password)
     ```
 
-    or use `./development/env.sh up` to start both the API and browser
-
-  - without Docker:
+  - Start the local API:
 
     ```
     cd graphql-api
     ELASTICSEARCH_USERNAME=elastic ELASTICSEARCH_PASSWORD=$(../deployctl elasticsearch get-password) ./start.sh
     ```
-
-The [Docker Compose configuration](development/api.docker-compose.yaml) could be modified to run Elasticsearch locally.
 
 ## Data pipeline
 
@@ -108,47 +97,38 @@ Some other conventions are enforced using [ESLint](https://eslint.org/) for Java
 
 ## Tests
 
-[Jest](https://jestjs.io/) is used for JavaScript unit tests. Jest is configured to look for files named `*.spec.js` in the browser and graphql-api directories.
+- [Jest](https://jestjs.io/) is used for JavaScript unit tests. Jest is configured to look for files named `*.spec.js` in the browser and graphql-api directories.
 
-To run all Jest tests, use:
+  - To run all Jest tests, use:
 
-```
-pnpm jest
-```
+    ```
+    pnpm jest
+    ```
 
-To run only tests for one component, use `pnpm jest --projects browser` or `pnpm jest --projects graphql-api`.
+  - To run only tests for one component, use `pnpm jest --projects browser` or `pnpm jest --projects graphql-api`.
 
-[Playwright](https://playwright.dev) is used for a set of minimal e2e tests as a sanity check before promoting off color deployments to production.
+- [Playwright](https://playwright.dev) is used for a set of minimal e2e tests as a sanity check before promoting off color deployments to production.
 
-To run the playwright tests, use:
+  - To run the playwright tests, use:
 
-```
-GNOMAD_API_URL=<YOUR_URL>/api pnpm start:browser
-```
+    ```
+    GNOMAD_API_URL=<YOUR_URL>/api pnpm start:browser
+    ```
 
-e.g., to run the tests against a locally running development backend:
+    e.g., to run the tests against a locally running development backend:
 
-```
-GNOMAD_API_URL=http://localhost:8010/api pnpm start:browser
-```
+    ```
+    GNOMAD_API_URL=http://localhost:8010/api pnpm start:browser
+    ```
 
-To do it for the ingress associated with a new `green` deployment
+    - To run the playwright tests against a new `green` deployment, get the IP associated with the ingress
 
-```
-GNOMAD_API_URL="http://$(kubectl get ingress gnomad-ingress-demo-green -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api" pnpm test:playwright
-```
+      ```
+      GNOMAD_API_URL="http://$(kubectl get ingress gnomad-ingress-demo-green -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api" pnpm test:playwright
+      ```
 
-For blue:
+    - For `blue`:
 
-```
-GNOMAD_API_URL="http://$(kubectl get ingress gnomad-ingress-demo-blue -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api" pnpm test:playwright
-```
-
-## Updating dependencies
-
-Images for the Docker Compose development environment need to be rebuilt after updating dependencies.
-
-```
-./development/env.sh build browser
-./development/env.sh build api
-```
+      ```
+      GNOMAD_API_URL="http://$(kubectl get ingress gnomad-ingress-demo-blue -o jsonpath='{.status.loadBalancer.ingress[0].ip}')/api" pnpm test:playwright
+      ```
