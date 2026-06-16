@@ -400,7 +400,7 @@ const MiniTRPlot = ({ distribution }: { distribution: TrDataPoint[] }) => {
   )
 }
 
-// --- Mini pop AF bar ---
+// --- Mini group AF bar ---
 
 const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
   const pops = (variant.populations || []).map((p) => ({
@@ -2074,7 +2074,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                   Carriers{sortIndicator('carrier_count')}
                 </th>
               )}
-              <th>Pop AF</th>
+              <th>Grp AF</th>
               {mode === 'summary' && (
                 <th onClick={() => handleSort('short_read_match_id')}>
                   SR Match ID{sortIndicator('short_read_match_id')}
