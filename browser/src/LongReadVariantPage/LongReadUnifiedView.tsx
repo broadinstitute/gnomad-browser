@@ -887,26 +887,6 @@ const LongReadUnifiedView = ({
       {/* Top bar: view mode toggle + search */}
       <TrackPageSection>
         <TopBar>
-          <SegmentedControl
-            id="lr-view-mode"
-            options={[
-              { label: 'Summary View', value: 'summary' },
-              { label: 'Haplotype View', value: 'haplotype', disabled: regionTooLarge },
-            ]}
-            value={showHaplotypes ? 'haplotype' : 'summary'}
-            onChange={(val: string) => setShowHaplotypes(val === 'haplotype')}
-          />
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <label style={{ fontSize: '12px' }}>Color:</label>
-            <Select
-              value={colorMode}
-              onChange={(e: any) => setColorMode(e.target.value)}
-            >
-              {COLOR_MODES.map((cm) => (
-                <option key={cm.value} value={cm.value}>{cm.label}</option>
-              ))}
-            </Select>
-          </div>
           <HaplotypeHelpButton title="Long Read Data Views">
             <h4 style={{ margin: '0 0 8px' }}>Summary View</h4>
             <p>Shows aggregate variant-level statistics across the long-read callset. Each row in the table is a single variant with its allele frequency, type, consequence, and annotations. Use this view to browse what variants exist in the region, filter by type or consequence, and compare long-read frequencies with short-read data. This is the default view and works at any region size.</p>
@@ -930,6 +910,26 @@ const LongReadUnifiedView = ({
 
             <p style={{ marginTop: 12, color: '#666' }}>Haplotype view is limited to regions under {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb for performance. Use the zoom controls to narrow the region if needed.</p>
           </HaplotypeHelpButton>
+          <SegmentedControl
+            id="lr-view-mode"
+            options={[
+              { label: 'Summary View', value: 'summary' },
+              { label: 'Haplotype View', value: 'haplotype', disabled: regionTooLarge },
+            ]}
+            value={showHaplotypes ? 'haplotype' : 'summary'}
+            onChange={(val: string) => setShowHaplotypes(val === 'haplotype')}
+          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <label style={{ fontSize: '12px' }}>Color:</label>
+            <Select
+              value={colorMode}
+              onChange={(e: any) => setColorMode(e.target.value)}
+            >
+              {COLOR_MODES.map((cm) => (
+                <option key={cm.value} value={cm.value}>{cm.label}</option>
+              ))}
+            </Select>
+          </div>
           <SearchInline>
             <svg
               style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14 }}
