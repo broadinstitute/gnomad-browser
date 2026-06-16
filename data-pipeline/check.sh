@@ -7,13 +7,13 @@ find . -name "*.pyc" -exec rm -f {} +
 echo "┏━━━ Running pyright ━━━━━━━━━━━━━━━━━━━"
 pyright
 
-echo "┏━━━ Running black ━━━━━━━━━━━━━━━━━━━"
-black src/data_pipeline
-black tests
+echo "┏━━━ Running ruff format ━━━━━━━━━━━━━━━━━━━"
+ruff format src/data_pipeline
+ruff format tests
 
 echo "┏━━━ Running ruff ━━━━━━━━━━━━━━━━━━━"
-ruff src/data_pipeline --fix
-ruff tests --fix
+ruff check src/data_pipeline --fix
+ruff check tests --fix
 
 echo "┏━━━ Running pytest ━━━━━━━━━━━━━━━━━━━"
 if [[ "$1" == "--mock-data" ]]; then

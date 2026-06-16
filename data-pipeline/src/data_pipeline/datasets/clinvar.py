@@ -152,7 +152,7 @@ def _parse_variant(variant_element, tqdm_pbar=None):
                 variant["locations"] = {}
                 allele_element = variant_element.findall("./ClassifiedRecord/SimpleAllele")
                 if tqdm_pbar is not None:
-                    tqdm_pbar.set_postfix_str(f'Skipped AlleleID: {allele_element[0].attrib["AlleleID"]} (Chr: Un)')
+                    tqdm_pbar.set_postfix_str(f"Skipped AlleleID: {allele_element[0].attrib['AlleleID']} (Chr: Un)")
                 break
 
             variant["locations"][element.attrib["Assembly"]] = {
@@ -203,9 +203,7 @@ def parse_clinvar_xml_to_tsv(
 
         open_function = gzip.open if str(input_xml_path).endswith(".gz") else open
         with open_function(input_xml_path, "r") as xml_file:
-
             with open(input_xml_path, "rb") as raw_xml_file:
-
                 # make tqdm bar progress based of bytes processed
                 with tqdm.wrapattr(
                     raw_xml_file, "read", total=file_size, mininterval=5, unit="B", unit_scale=True

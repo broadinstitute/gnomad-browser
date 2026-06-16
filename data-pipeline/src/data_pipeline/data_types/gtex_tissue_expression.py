@@ -8,7 +8,6 @@ def format_tissue_name(tissue_name):
 
 
 def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, tmp_path, recompress=True):
-
     bgz_compressed_transcript_tpms_path = transcript_tpms_path
 
     if recompress:

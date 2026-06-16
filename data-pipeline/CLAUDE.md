@@ -17,12 +17,12 @@ Python 3.9.17 (see `.tool-versions`). Key deps (`requirements.txt`): `hail==0.2.
 
 ```
 pip install -r requirements.txt        # plus repo-root requirements-dev.txt and deploy/deployctl/requirements.txt
-./check.sh                # full local gate: pyright + black + ruff --fix + pytest
+./check.sh                # full local gate: pyright + ruff format + ruff --fix + pytest
 ./check.sh --mock-data    # run only the mock_data-marked tests
 pytest                    # testpaths: tests/pipeline, tests/v4
 pytest -k <expr>          # default addopts already exclude mock_data and broken (see pytest.ini)
-black src/data_pipeline tests   # format, line length 120 (pyproject.toml)
-ruff src/data_pipeline --fix
+ruff format src/data_pipeline tests   # format, line length 120 (pyproject.toml)
+ruff check src/data_pipeline --fix
 pylint src/data_pipeline
 ```
 
@@ -109,5 +109,5 @@ consequence ordering.
 ## Conventions
 
 - `ds` is the conventional variable name for a Hail Table (whitelisted in pylint, see `pyproject.toml`).
-- Formatting: Black (line length 120); linting: ruff + pylint (R/C categories disabled); types: pyright.
+- Formatting: ruff format (line length 120); linting: ruff + pylint (R/C categories disabled); types: pyright.
 - Tests live in `tests/pipeline/` (framework/config tests) and `tests/v4/`.

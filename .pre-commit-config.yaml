@@ -13,6 +13,12 @@ repos:
       - id: black
         language_version: python3
         types: [python]
+        files: ^deploy/deployctl/
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.17 # This should be kept in sync with the version in data-pipeline/requirements.txt
+    hooks:
+      - id: ruff-format
+        files: ^data-pipeline/
   - repo: local
     hooks:
       - id: git-secrets pre-commit
