@@ -72,7 +72,7 @@ export const VARIANT_CATEGORY_LABELS: Record<VariantCategory, string> = {
  * Band assignment for summary variant track (3 bands: snv, sv, tr).
  * Small insertions/deletions go into the SNV band; large ones go to SV.
  */
-export type Band = 'snv' | 'ins' | 'del' | 'sv' | 'tr'
+export type Band = 'snv' | 'ins' | 'del' | 'dup' | 'sv' | 'tr'
 
 /**
  * LOD visibility thresholds based on genomic region size.
@@ -96,5 +96,7 @@ export const assignBand = (alleleType: string, length?: number | null): Band => 
   if (cat === 'snv') return 'snv'
   if (cat === 'insertion') return 'ins'
   if (cat === 'deletion') return 'del'
-  return 'sv' // dup, complex_dup, inv, etc.
+  const t = alleleType.toLowerCase()
+  if (t === 'dup' || t === 'dup_interspersed' || t === 'complex_dup' || t === 'inv_dup') return 'dup'
+  return 'sv' // inv, other SVs
 }
