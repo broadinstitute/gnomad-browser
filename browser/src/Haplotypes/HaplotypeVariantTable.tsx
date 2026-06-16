@@ -1225,7 +1225,9 @@ const TableRow = React.memo(function TableRow({
           {v.is_tr && (
             <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
           )}
-          {v.variant_id}
+          <Link to={`/variant/${v.variant_id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+            {v.variant_id}
+          </Link>
         </td>
         <td>
           <TypeDot $color={VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)]} />
