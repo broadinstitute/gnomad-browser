@@ -60,7 +60,7 @@ const passesFilter = (v: LRUniqueVariant, mode: FilterMode): boolean => {
 }
 
 const LRUniqueDensityTrack = ({ variants }: LRUniqueDensityTrackProps) => {
-  const [filterMode, setFilterMode] = useState<FilterMode>('snv_indel')
+  const [filterMode, setFilterMode] = useState<FilterMode>('all')
 
   return (
     <Track renderLeftPanel={() => (
