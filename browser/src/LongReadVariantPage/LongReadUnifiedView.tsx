@@ -688,7 +688,9 @@ const LongReadUnifiedView = ({
   )
 
   const displayVariants = useMemo(
-    () => standardizedVariants.filter(withFrequency),
+    () => standardizedVariants.filter(
+      (v: any) => withFrequency(v) && !v.enveloping_tr_id
+    ),
     [standardizedVariants]
   )
 
