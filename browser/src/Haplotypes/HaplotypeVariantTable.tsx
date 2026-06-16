@@ -1499,6 +1499,15 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   // to change (scroll moves past half the buffer), NOT on every scroll pixel.
   const [visibleWindow, setVisibleWindow] = useState({ startRow: 0, endRow: Math.ceil(500 / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS })
 
+  // Reset visible window when folding all TR rows — prevents stale spacers
+  // from creating whitespace when virtualization re-enables.
+  useEffect(() => {
+    if (expandedRows.size === 0 && tableScrollRef.current) {
+      tableScrollRef.current.scrollTop = 0
+      setVisibleWindow({ startRow: 0, endRow: Math.ceil(500 / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS })
+    }
+  }, [expandedRows.size])
+
   const handleTableScroll = useCallback(() => {
     if (!tableScrollRef.current) return
     const container = tableScrollRef.current
