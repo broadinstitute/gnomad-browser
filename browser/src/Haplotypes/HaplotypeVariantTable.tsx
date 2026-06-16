@@ -533,16 +533,18 @@ const buildVariantId = (v: {
   allele_type?: string
   allele_length?: number
 }): string => {
+  // Strip 'chr' prefix to match gnomAD variant ID convention (e.g. '1-55039792-G-A')
+  const chrom = v.chrom.replace(/^chr/i, '')
   const isSymbolic = v.alt.startsWith('<') && v.alt.endsWith('>')
   const isLongAllele = v.ref.length > 20 || v.alt.length > 20
 
   if (isSymbolic || isLongAllele) {
     const svtype = v.allele_type || 'SV'
     const len = v.allele_length ? Math.abs(v.allele_length) : Math.abs(v.alt.length - v.ref.length)
-    return `${v.chrom}-${v.pos}-${svtype.toUpperCase()}(${len})`
+    return `${chrom}-${v.pos}-${svtype.toUpperCase()}(${len})`
   }
 
-  return `${v.chrom}-${v.pos}-${v.ref}-${v.alt}`
+  return `${chrom}-${v.pos}-${v.ref}-${v.alt}`
 }
 
 // --- Allele Structure Help ---
@@ -1763,7 +1765,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       const rawSeqs = isTrv && trSequences && trSequences.size > 0 ? trSequences : undefined
 
       const variantId = isTrv
-        ? `${v.chrom}-${v.pos}-TR`
+        ? `${v.chrom.replace(/^chr/i, '')}-${v.pos}-TR`
         : buildVariantId(v)
 
       const af = isTrv
