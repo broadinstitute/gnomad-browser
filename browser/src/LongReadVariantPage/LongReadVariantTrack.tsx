@@ -419,7 +419,7 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
 const BandDivider = styled.div`
   height: 1px;
   background: #e0e0e0;
-  margin: 2px 0;
+  margin: 6px 0;
 `
 
 // --- Main component ---
