@@ -30,7 +30,6 @@ import LRUniqueDensityTrack from './LRUniqueDensityTrack'
 import { getLodVisibility } from './variantUtils'
 import { COLOR_MODES } from './variantColorUtils'
 import Variants from '../VariantList/Variants'
-import ZoomOverview from '../Haplotypes/ZoomOverview'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
@@ -868,21 +867,9 @@ const LongReadUnifiedView = ({
       {/* Axis — accordion when haplotypes active, standard otherwise */}
       {showHaplotypes ? <AccordionPositionAxisTrack /> : <PositionAxisTrack />}
 
-      {/* Zoom overview — below position axis, still inside AccordionRegionViewer */}
-      {onChangeZoomRegion && (
-        <TrackPageSection>
-          <ZoomOverview
-            overviewRegion={{ start, stop }}
-            currentRegion={zoomRegion || { start, stop }}
-            chrom={chrom}
-            genes={genes}
-            variants={displayVariants}
-            onChangeRegion={onChangeZoomRegion}
-            onSetRegion={onSetRegion}
-            onNavigateRegion={onSetRegion ? (region) => onSetRegion({ start: region.start, stop: region.stop }) : undefined}
-          />
-        </TrackPageSection>
-      )}
+      {/* Zoom overview removed — the parent page (GenePage/RegionPage) already
+         provides a zoom region selector in the RegionViewer header, making a
+         second ZoomOverview here redundant. */}
 
       </AccordionRegionViewer>
 
