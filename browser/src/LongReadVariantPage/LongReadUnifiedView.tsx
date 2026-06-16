@@ -900,7 +900,7 @@ const LongReadUnifiedView = ({
             <h4 style={{ margin: '16px 0 8px', fontSize: '13px', color: '#555' }}>Key elements</h4>
             <ul style={{ margin: '0 0 0 20px', lineHeight: 1.8 }}>
               <li><strong>Lollipop dots</strong> &mdash; each dot is a variant on that haplotype. Shape encodes type (circle = SNV, triangle = insertion, dashed line = deletion, diamond = SV, rectangle = tandem repeat). Color is configurable (variant type, allele fingerprint, frequency, etc.).</li>
-              <li><strong>Ancestry bars</strong> &mdash; the colored sidebar shows the superpopulation breakdown (AFR, AMR, EAS, EUR, SAS) of samples carrying each haplotype group.</li>
+              <li><strong>Ancestry bars</strong> &mdash; the colored sidebar shows the genetic ancestry group breakdown (AFR, AMR, EAS, EUR, SAS) of samples carrying each haplotype group.</li>
               <li><strong>Clustering &amp; genealogy tree</strong> &mdash; similarity clustering groups haplotypes by shared variant structure. The optional genealogy tree shows hierarchical relationships between clusters. Adjusting the resolution slider controls how finely clusters are split.</li>
               <li><strong>Accordion regions</strong> &mdash; insertions and tandem repeats can be expanded into &ldquo;phantom&rdquo; coordinate space so their internal structure is visible rather than collapsed to a single point.</li>
             </ul>
