@@ -18,7 +18,8 @@ them into Elasticsearch, and the GraphQL API serves narrow slices to the React f
 ## Toolchain versions
 
 Pinned in `.tool-versions` / `volta`: Node 18.17.1, pnpm 8.14.3, Python 3.9.17. Use pnpm (not npm/yarn)
-for the JS workspace.
+for the JS workspace. The data pipeline's Python deps are managed with uv (`data-pipeline/pyproject.toml`
++ `uv.lock`); see `data-pipeline/CLAUDE.md`.
 
 ## Common commands
 
@@ -46,13 +47,13 @@ Playwright e2e tests run against a deployed/locally-running API; set `GNOMAD_API
 Python data pipeline (run from `data-pipeline/`):
 
 ```
-pip install -r data-pipeline/requirements.txt   # plus requirements-dev.txt and deploy/deployctl/requirements.txt
-./check.sh                # pyright + black + ruff --fix + pytest (the full local check)
+uv sync                   # install deps from pyproject.toml + uv.lock (runtime + dev)
+./check.sh                # pyright + ruff format + ruff --fix + pytest (the full local check)
 ./check.sh --mock-data    # only mock_data tests
-pytest                    # excludes mock_data/broken tests by default (see pytest.ini)
-pytest tests/v4/...       # testpaths are tests/pipeline and tests/v4
-black .                   # format (line length 120, see pyproject.toml)
-pylint data-pipeline/src/data_pipeline
+uv run pytest             # excludes mock_data/broken tests by default (see pytest.ini)
+uv run pytest tests/v4/...   # testpaths are tests/pipeline and tests/v4
+uv run ruff format src/data_pipeline tests   # format (line length 120, see pyproject.toml)
+pylint src/data_pipeline  # pylint installed via repo-root requirements-dev.txt
 ```
 
 ## Running locally

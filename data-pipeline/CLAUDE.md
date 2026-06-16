@@ -10,20 +10,25 @@ Hail (Python) pipelines that transform raw gnomAD / ClinVar / reference data int
 browser, then load them into Elasticsearch. Designed to run on Google Dataproc clusters but also runnable
 locally against `gs://` or local paths.
 
-Python 3.9.17 (see `.tool-versions`). Key deps (`requirements.txt`): `hail==0.2.127`, `elasticsearch~=7.17`,
-`attrs`/`cattrs`, `loguru`, `tqdm`.
+Python 3.9.17 (pinned in `.tool-versions`). Dependencies are managed with
+[uv](https://docs.astral.sh/uv/): runtime deps live in `pyproject.toml` `[project]` (`hail==0.2.127`,
+`elasticsearch~=7.17`, `attrs`/`cattrs`, `loguru`, `tqdm`), dev tools (`pytest`, `ruff`, `pyright`) in
+the `[dependency-groups].dev` group, and exact versions are locked in `uv.lock`. `requirements.txt` is a
+uv-generated artifact (runtime deps only) consumed by the Dataproc cluster launcher — regenerate it with
+`uv pip compile pyproject.toml --no-deps --no-annotate -o requirements.txt`, do not edit by hand.
 
 ## Commands
 
 ```
-pip install -r requirements.txt        # plus repo-root requirements-dev.txt and deploy/deployctl/requirements.txt
-./check.sh                # full local gate: pyright + ruff format + ruff --fix + pytest
+uv sync                   # create/refresh .venv from pyproject + uv.lock (runtime + dev)
+uv run <cmd>              # run a tool inside the project env (e.g. uv run pytest)
+./check.sh                # full local gate: uv sync + pyright + ruff format + ruff --fix + pytest
 ./check.sh --mock-data    # run only the mock_data-marked tests
-pytest                    # testpaths: tests/pipeline, tests/v4
-pytest -k <expr>          # default addopts already exclude mock_data and broken (see pytest.ini)
-ruff format src/data_pipeline tests   # format, line length 120 (pyproject.toml)
-ruff check src/data_pipeline --fix
-pylint src/data_pipeline
+uv run pytest             # testpaths: tests/pipeline, tests/v4
+uv run pytest -k <expr>   # default addopts already exclude mock_data and broken (see pytest.ini)
+uv run ruff format src/data_pipeline tests   # format, line length 120 (pyproject.toml)
+uv run ruff check src/data_pipeline --fix
+pylint src/data_pipeline  # pylint is installed via repo-root requirements-dev.txt
 ```
 
 `pytest.ini` markers: `mock_data` (needs mock datasets present), `broken` (skipped), `only`. The default

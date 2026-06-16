@@ -15,7 +15,7 @@ repos:
         types: [python]
         files: ^deploy/deployctl/
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.17 # This should be kept in sync with the version in data-pipeline/requirements.txt
+    rev: v0.15.17 # This should be kept in sync with the version in data-pipeline/pyproject.toml
     hooks:
       - id: ruff-format
         files: ^data-pipeline/

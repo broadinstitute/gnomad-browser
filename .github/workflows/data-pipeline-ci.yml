@@ -16,24 +16,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.9
-      - name: Use pip cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: pip-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            pip-
+          enable-cache: true
+          cache-dependency-glob: data-pipeline/uv.lock
       - name: Install dependencies
-        run: |
-          pip install wheel
-          pip install -r data-pipeline/requirements.txt
+        run: uv sync
+        working-directory: data-pipeline
       - name: Check formatting
-        run: ruff format --check data-pipeline/src/data_pipeline
+        run: uv run ruff format --check src/data_pipeline
+        working-directory: data-pipeline
       - name: Run Ruff
-        run: ruff check data-pipeline/src/data_pipeline
+        run: uv run ruff check src/data_pipeline
+        working-directory: data-pipeline
       - name: Run Pyright
-        run: pyright --project data-pipeline
+        run: uv run pyright
+        working-directory: data-pipeline

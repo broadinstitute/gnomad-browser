@@ -1,3 +1,28 @@
+[project]
+name = "gnomad-data-pipeline"
+version = "0.0.0"
+description = "Hail data pipelines for the gnomAD browser"
+requires-python = ">=3.9,<3.10"
+dependencies = [
+    "hail==0.2.127",
+    "elasticsearch~=7.17",
+    "tqdm",
+    "loguru",
+    "attrs",
+    "cattrs",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff==0.15.17", # This should be kept in sync with the version in .pre-commit-config.yaml
+    "pyright",
+]
+
+[tool.uv]
+# data_pipeline is consumed via sys.path / zipped upload (see deployctl), not pip-installed.
+package = false
+
 [tool.ruff]
 line-length = 120
 target-version = "py39"

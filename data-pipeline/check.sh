@@ -4,20 +4,23 @@ echo "┏━━━ Clean ━━━━━━━━━━━━━━━━━━�
 find . -type d -name "__pycache__" -exec rm -r {} +
 find . -name "*.pyc" -exec rm -f {} +
 
+echo "┏━━━ Syncing dependencies (uv) ━━━━━━━━━━━━━━━━━━━"
+uv sync
+
 echo "┏━━━ Running pyright ━━━━━━━━━━━━━━━━━━━"
-pyright
+uv run pyright
 
 echo "┏━━━ Running ruff format ━━━━━━━━━━━━━━━━━━━"
-ruff format src/data_pipeline
-ruff format tests
+uv run ruff format src/data_pipeline
+uv run ruff format tests
 
 echo "┏━━━ Running ruff ━━━━━━━━━━━━━━━━━━━"
-ruff check src/data_pipeline --fix
-ruff check tests --fix
+uv run ruff check src/data_pipeline --fix
+uv run ruff check tests --fix
 
 echo "┏━━━ Running pytest ━━━━━━━━━━━━━━━━━━━"
 if [[ "$1" == "--mock-data" ]]; then
-	pytest -k "mock_data"
+	uv run pytest -k "mock_data"
 else
-	pytest
+	uv run pytest
 fi
