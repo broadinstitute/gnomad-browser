@@ -477,6 +477,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
   const snvVariants: LRVariant[] = []
   const insVariants: SvItem[] = []
   const delVariants: SvItem[] = []
+  const dupVariants: SvItem[] = []
   const svVariants: SvItem[] = []
   const trVariants: TrItem[] = []
 
@@ -501,6 +502,10 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
       const start = v.pos
       const stop = v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1)
       delVariants.push({ ...v, start, stop })
+    } else if (band === 'dup') {
+      const start = v.pos
+      const stop = v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1)
+      dupVariants.push({ ...v, start, stop })
     } else if (band === 'sv') {
       const start = v.pos
       const stop = v.end != null ? v.end : v.pos + Math.abs(v.allele_length || 1)
@@ -565,10 +570,19 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         </>
       )}
 
+      {showSvBand && dupVariants.length > 0 && (
+        <>
+          <BandDivider />
+          <Track renderLeftPanel={() => <SidePanel>DUP</SidePanel>}>
+            {() => <SvBand variants={dupVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
+          </Track>
+        </>
+      )}
+
       {showSvBand && svVariants.length > 0 && (
         <>
           <BandDivider />
-          <Track renderLeftPanel={() => <SidePanel>DUP/SV</SidePanel>}>
+          <Track renderLeftPanel={() => <SidePanel>SV</SidePanel>}>
             {() => <SvBand variants={svVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
