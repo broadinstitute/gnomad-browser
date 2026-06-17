@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import Delayed from './Delayed'
 import ErrorBoundary from './ErrorBoundary'
 
+import { FindBarProvider } from './FindBar/FindBarContext'
+import PageFindBar from './FindBar/PageFindBar'
 import Notifications, { showNotification } from './Notifications'
 import StatusMessage from './StatusMessage'
 import userPreferences from './userPreferences'
@@ -123,17 +125,20 @@ const App = () => {
             <StatusMessage>Loading</StatusMessage>
           </Delayed>
         ) : (
-          <Suspense fallback={null}>
-            <TopBarWrapper>
-              <NavBar />
-              {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
-            </TopBarWrapper>
-            <Notifications />
+          <FindBarProvider>
+            <Suspense fallback={null}>
+              <TopBarWrapper>
+                <NavBar />
+                {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
+              </TopBarWrapper>
+              <Notifications />
+              <PageFindBar />
 
-            <Suspense fallback={<PageLoading />}>
-              <Routes />
+              <Suspense fallback={<PageLoading />}>
+                <Routes />
+              </Suspense>
             </Suspense>
-          </Suspense>
+          </FindBarProvider>
         )}
       </ErrorBoundary>
     </Router>
