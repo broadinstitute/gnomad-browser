@@ -10,10 +10,12 @@ pyright
 echo "┏━━━ Running ruff format ━━━━━━━━━━━━━━━━━━━"
 ruff format src/data_pipeline
 ruff format tests
+ruff format caids
 
 echo "┏━━━ Running ruff ━━━━━━━━━━━━━━━━━━━"
 ruff check src/data_pipeline --fix
 ruff check tests --fix
+ruff check caids --fix
 
 echo "┏━━━ Running pytest ━━━━━━━━━━━━━━━━━━━"
 if [[ "$1" == "--mock-data" ]]; then
