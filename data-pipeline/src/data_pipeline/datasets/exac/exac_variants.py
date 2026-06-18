@@ -335,11 +335,13 @@ def import_exac_vcf(path):
     ds = ds.annotate(
         info=ds.info.annotate(
             CSQ=ds.info.CSQ.map(
-                lambda s: s.replace("%3A", ":")
-                .replace("%3B", ";")
-                .replace("%3D", "=")
-                .replace("%25", "%")
-                .replace("%2C", ",")
+                lambda s: (
+                    s.replace("%3A", ":")
+                    .replace("%3B", ";")
+                    .replace("%3D", "=")
+                    .replace("%25", "%")
+                    .replace("%2C", ",")
+                )
             )
         )
     )

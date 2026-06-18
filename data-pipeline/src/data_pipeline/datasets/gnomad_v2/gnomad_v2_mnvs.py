@@ -503,9 +503,11 @@ def prepare_gnomad_v2_mnvs(mnvs_path, three_bp_mnvs_path):
                 "n_individuals",
                 "other_constituent_snvs",
                 changes_amino_acids=hl.bind(
-                    lambda mnv_consequences, related_mnv_consequences: mnv_consequences.key_set()
-                    .union(related_mnv_consequences.key_set())
-                    .any(lambda gene_id: mnv_consequences.get(gene_id) != related_mnv_consequences.get(gene_id)),
+                    lambda mnv_consequences, related_mnv_consequences: (
+                        mnv_consequences.key_set()
+                        .union(related_mnv_consequences.key_set())
+                        .any(lambda gene_id: mnv_consequences.get(gene_id) != related_mnv_consequences.get(gene_id))
+                    ),
                     hl.dict(mnvs.consequences.map(lambda c: (c.gene_id, c.amino_acids.lower()))),
                     hl.dict(related_mnv.consequences.map(lambda c: (c.gene_id, c.amino_acids.lower()))),
                 ),

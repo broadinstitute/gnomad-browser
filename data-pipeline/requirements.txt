@@ -6,5 +6,4 @@ attrs
 cattrs
 pytest
 ruff
-black
 pyright

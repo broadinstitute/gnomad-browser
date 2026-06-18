@@ -214,9 +214,7 @@ def import_svs_from_vcfs(vcf_path):
         freq=ds.freq.annotate(
             hemizygote_count=hl.or_missing(
                 ds.type != "MCNV",
-                hl.if_else(
-                    ((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False), ds.info.N_HEMIALT_XY, 0
-                ),  # noqa: E712
+                hl.if_else(((ds.chrom == "X") | (ds.chrom == "Y")) & (ds.par == False), ds.info.N_HEMIALT_XY, 0),  # noqa: E712
             ),
             populations=hl.if_else(
                 ds.type != "MCNV",
