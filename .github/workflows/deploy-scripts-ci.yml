@@ -33,6 +33,6 @@ jobs:
           pip install -r requirements-dev.txt
           pip install -r deploy/deployctl/requirements.txt
       - name: Check formatting
-        run: black --check deploy/deployctl
+        run: ruff format --check deploy/deployctl
       - name: Run Pylint
         run: pylint --disable=fixme deploy/deployctl

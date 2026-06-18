@@ -82,10 +82,10 @@ See [data-pipeline/README.md](./data-pipeline/README.md).
 
 ## Conventions
 
-All code should formatted using either [Prettier](https://prettier.io/) for JavaScript or [Black](https://black.readthedocs.io/) for Python. To run these formatters, use:
+All code should formatted using either [Prettier](https://prettier.io/) for JavaScript or [Ruff](https://docs.astral.sh/ruff/formatter/) for Python. To run these formatters, use:
 
 - Prettier: `pnpm format`
-- Black: `black .`
+- Ruff: `ruff format .`
 
 If pre-commit hooks are installed, formatters will be automatically run on each commit.
 
