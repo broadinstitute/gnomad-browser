@@ -13,6 +13,8 @@ on:
       - 'reads/**'
       - 'development/scripts/**'
       - '.github/workflows/**'
+permissions:
+  contents: read
 jobs:
   data-pipeline-checks:
     name: Data Pipeline Checks
