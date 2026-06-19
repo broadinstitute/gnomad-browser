@@ -22,16 +22,39 @@ This should be enough to use the Docker Compose development environment. However
   pnpm install
   ```
 
-- For data pipeline development, install [uv](https://docs.astral.sh/uv/) and sync the
-  data-pipeline dependencies. uv reads the pinned Python version and dependencies from
+- For data pipeline development, install [uv](https://docs.astral.sh/uv/). uv reads the
+  pinned Python version and dependencies from
   `data-pipeline/pyproject.toml`/`data-pipeline/uv.lock`, installing them into
-  `data-pipeline/.venv`.
+  `data-pipeline/.venv`. There are two flows depending on whether you are consuming the
+  pinned dependencies or changing them.
+
+  **Setting up (using the pinned dependencies).** This is what you want for normal
+  development: it installs the exact versions from `uv.lock` without re-resolving or
+  modifying the lockfile, so everyone gets an identical environment. It errors out if
+  `pyproject.toml` has drifted from `uv.lock`.
 
   ```
   cd data-pipeline && uv sync --frozen
   ```
 
   Run pipeline tools through uv, e.g. `uv run pytest` or `uv run ruff check src/data_pipeline`.
+
+  **Updating dependencies (changing the lockfile).** Use these when you need to add,
+  remove, or upgrade a dependency. They re-resolve and rewrite `uv.lock`, which should be
+  committed alongside the `pyproject.toml` change.
+
+  ```
+  cd data-pipeline
+
+  uv add <package>                 # add a runtime dependency
+  uv add --dev <package>           # add a development-only dependency
+  uv remove <package>              # remove a dependency
+  uv lock --upgrade-package <package>  # bump a single pin to its latest allowed version
+  uv lock --upgrade                # re-resolve and bump all pins
+  ```
+
+  After updating, run `uv sync` (without `--frozen`) to install the newly resolved
+  versions, and commit both `pyproject.toml` and `uv.lock`.
 
 - For the remaining Python tooling (linters and deploy scripts), install dependencies with pip.
 
