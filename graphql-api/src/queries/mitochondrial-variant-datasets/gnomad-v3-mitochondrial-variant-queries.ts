@@ -1,4 +1,3 @@
-import { omit } from 'lodash'
 import { isRsId } from '@gnomad/identifiers'
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
 import { mergeOverlappingRegions } from '../helpers/region-helpers'
@@ -80,8 +79,16 @@ const shapeMitochondrialVariantSummary = (context: any) => {
     const { variantFlags } = getFlagsForContext(context, variant)
     const flags = variantFlags.filter((f: any) => f !== 'nc_transcript')
 
+    // Destructure to drop fields we don't want to cache (cheaper than lodash.omit, which deep-clones)
+    const {
+      transcript_consequences: _tc,
+      locus: _locus,
+      alleles: _alleles,
+      ...variantRest
+    } = variant
+
     return {
-      ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
+      ...variantRest, // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh38',
       chrom: variant.locus.contig.slice(3), // Remove "chr" prefix
       pos: variant.locus.position,
