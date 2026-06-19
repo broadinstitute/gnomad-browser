@@ -174,7 +174,8 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
       genomeFilters.push('AC0')
     }
 
-    // Destructure to drop fields we don't want to cache (cheaper than lodash.omit, which deep-clones)
+    // Destructure to drop fields we don't want to cache. Cheaper than lodash.omit, which adds
+    // per-call overhead (path parsing, copying every key then deleting the omitted ones).
     const { transcript_consequences: _tc, ...variantRest } = variant
     const { freq: _exomeFreq, ...exomeRest } = variant.exome
     const { freq: _genomeFreq, ...genomeRest } = variant.genome

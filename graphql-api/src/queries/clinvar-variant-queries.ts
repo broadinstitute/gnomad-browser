@@ -151,7 +151,8 @@ const shapeVariantSummary = (context: any) => {
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
 
-    // Destructure to drop fields we don't want to cache (cheaper than lodash.omit, which deep-clones)
+    // Destructure to drop fields we don't want to cache. Cheaper than lodash.omit, which adds
+    // per-call overhead (path parsing, copying every key then deleting the omitted ones).
     const { transcript_consequences: _tc, ...variantRest } = variant
 
     return {
