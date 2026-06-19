@@ -79,7 +79,8 @@ const shapeMitochondrialVariantSummary = (context: any) => {
     const { variantFlags } = getFlagsForContext(context, variant)
     const flags = variantFlags.filter((f: any) => f !== 'nc_transcript')
 
-    // Destructure to drop fields we don't want to cache (cheaper than lodash.omit, which deep-clones)
+    // Destructure to drop fields we don't want to cache. Cheaper than lodash.omit, which adds
+    // per-call overhead (path parsing, copying every key then deleting the omitted ones).
     const {
       transcript_consequences: _tc,
       locus: _locus,
