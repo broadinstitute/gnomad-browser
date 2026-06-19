@@ -14,8 +14,8 @@ on:
       - 'development/scripts/**'
       - '.github/workflows/**'
 jobs:
-  checks:
-    name: Checks
+  data-pipeline-checks:
+    name: Data Pipeline Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,12 +32,10 @@ jobs:
           restore-keys: |
             pip-
       - name: Install dependencies
-        run: |
-          pip install wheel
-          pip install -r data-pipeline/requirements.txt
+        run: make install-py-data-pipeline-dependencies
       - name: Check formatting
-        run: ruff format --check data-pipeline/src/data_pipeline data-pipeline/tests data-pipeline/caids reads development/scripts
-      - name: Run Ruff
-        run: ruff check data-pipeline/src/data_pipeline
-      - name: Run Pyright
-        run: pyright --project data-pipeline
+        run: make check-format-data-pipeline
+      - name: Lint
+        run: make lint-data-pipeline
+      - name: Check types
+        run: make typecheck-data-pipeline

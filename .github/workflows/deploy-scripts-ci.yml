@@ -10,8 +10,8 @@ on:
       - 'deploy/deployctl/**'
       - '.github/workflows/**'
 jobs:
-  checks:
-    name: Checks
+  deployctl-checks:
+    name: Deployctl Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,11 +28,8 @@ jobs:
           restore-keys: |
             pip-
       - name: Install dependencies
-        run: |
-          pip install wheel
-          pip install -r requirements-dev.txt
-          pip install -r deploy/deployctl/requirements.txt
+        run: make install-py-deploy-dependencies
       - name: Check formatting
-        run: ruff format --check deploy/deployctl
-      - name: Run Pylint
-        run: pylint --disable=fixme deploy/deployctl
+        run: make check-format-deploy
+      - name: Lint
+        run: make lint-deploy
