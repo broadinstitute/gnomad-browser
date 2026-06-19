@@ -35,7 +35,7 @@ def get_exons(gencode):
     Filter GENCODE table to exons and format fields.
     """
     exons = gencode.filter(hl.set(["exon", "CDS", "UTR"]).contains(gencode.feature))
-    exons = exons.select(
+    return exons.select(
         feature_type=exons.feature,
         transcript_id=exons.transcript_id.split("\\.")[0],
         transcript_version=exons.transcript_id.split("\\.")[1],
@@ -48,8 +48,6 @@ def get_exons(gencode):
         xstart=x_position(exons.interval.start),
         xstop=x_position(exons.interval.end),
     )
-
-    return exons
 
 
 ###############################################
@@ -76,9 +74,7 @@ def get_genes(gencode):
 
     genes = genes.annotate()
 
-    genes = genes.key_by(genes.gene_id)
-
-    return genes
+    return genes.key_by(genes.gene_id)
 
 
 def collect_gene_exons(gene_exons):
@@ -106,15 +102,12 @@ def collect_gene_exons(gene_exons):
         .extend(merge_overlapping_exons(non_coding_transcript_exons))
     )
 
-    exons = exons.map(lambda exon: exon.select("feature_type", "start", "stop", "xstart", "xstop"))
-
-    return exons
+    return exons.map(lambda exon: exon.select("feature_type", "start", "stop", "xstart", "xstop"))
 
 
 def reject_par_y_genes(genes_path=None):
     genes = hl.read_table(genes_path)
-    genes = genes.filter(genes.gene_version.endswith("_PAR_Y") == hl.literal(False))
-    return genes
+    return genes.filter(genes.gene_version.endswith("_PAR_Y") == hl.literal(False))
 
 
 def patch_rnu4atac(genes_path=None):
@@ -175,8 +168,7 @@ def patch_rnu4atac(genes_path=None):
         transcripts=[correct_transcript],
         mane_select_transcript=correct_mane_select_transcript,
     )
-    genes = genes.union(rnu4atac, unify=True)
-    return genes
+    return genes.union(rnu4atac, unify=True)
 
 
 ###############################################
@@ -202,9 +194,7 @@ def get_transcripts(gencode):
         xstop=x_position(transcripts.interval.end),
     )
 
-    transcripts = transcripts.key_by(transcripts.transcript_id)
-
-    return transcripts
+    return transcripts.key_by(transcripts.transcript_id)
 
 
 def collect_transcript_exons(transcript_exons):
@@ -221,9 +211,7 @@ def collect_transcript_exons(transcript_exons):
 
     exons = hl.if_else(is_coding, transcript_exons.filter(lambda exon: exon.feature_type != "exon"), transcript_exons)
 
-    exons = exons.map(lambda exon: exon.select("feature_type", "start", "stop", "xstart", "xstop"))
-
-    return exons
+    return exons.map(lambda exon: exon.select("feature_type", "start", "stop", "xstart", "xstop"))
 
 
 def annotate_gene_models_with_low_coverage_flag(genes_path, low_coverage_tsv_path):
@@ -233,15 +221,13 @@ def annotate_gene_models_with_low_coverage_flag(genes_path, low_coverage_tsv_pat
     tsv_ht = hl.import_table(low_coverage_tsv_path)
     tsv_ht = tsv_ht.key_by("transcript_id")
 
-    genes_ht = genes_ht.annotate(
+    return genes_ht.annotate(
         flags=hl.if_else(
             hl.is_defined(tsv_ht[genes_ht.canonical_transcript_id]),
             hl.or_else(genes_ht.flags, hl.empty_set(hl.tstr)).add(low_coverage_flag_name),
             genes_ht.flags,
         )
     )
-
-    return genes_ht
 
 
 ###############################################
@@ -279,9 +265,7 @@ def import_gencode(path, reference_genome):
     gene_transcripts = gene_transcripts.group_by(gene_transcripts.gene_id, gene_transcripts.gene_version).aggregate(
         transcripts=hl.agg.collect(gene_transcripts.row_value)
     )
-    genes = genes.annotate(transcripts=gene_transcripts[genes.gene_id, genes.gene_version].transcripts)
-
-    return genes
+    return genes.annotate(transcripts=gene_transcripts[genes.gene_id, genes.gene_version].transcripts)
 
 
 def import_hgnc(path):
@@ -298,12 +282,10 @@ def import_hgnc(path):
         ncbi_id=hl.or_else(ds["NCBI Gene ID"], ds["NCBI Gene ID(supplied by NCBI)"]),
     )
 
-    ds = ds.annotate(
+    return ds.annotate(
         previous_symbols=hl.set(ds.previous_symbols.split(",").map(lambda s: s.strip())),
         alias_symbols=hl.set(ds.alias_symbols.split(",").map(lambda s: s.strip())),
     )
-
-    return ds
 
 
 def prepare_gene_table_for_release(genes_path, keep_mane_version_global_annotation):
@@ -314,8 +296,7 @@ def prepare_gene_table_for_release(genes_path, keep_mane_version_global_annotati
     else:
         ds = ds.select_globals()
 
-    ds = ds.repartition(100)
-    return ds
+    return ds.repartition(100)
 
 
 def prepare_genes(gencode_path, hgnc_path, reference_genome):
@@ -343,8 +324,6 @@ def prepare_genes(gencode_path, hgnc_path, reference_genome):
     )
 
     chip_genes = {"ENSG00000171456", "ENSG00000119772", "ENSG00000168769"}
-    genes = genes.annotate(
+    return genes.annotate(
         flags=hl.set([hl.or_missing(hl.set(chip_genes).contains(genes.gene_id), "chip")]).filter(hl.is_defined)
     )
-
-    return genes

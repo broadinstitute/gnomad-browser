@@ -22,6 +22,4 @@ def get_canonical_transcripts(**sites_table_paths):
         key="gene_id",
     )
 
-    canonical_transcripts = canonical_transcripts.repartition(32, shuffle=True)
-
-    return canonical_transcripts
+    return canonical_transcripts.repartition(32, shuffle=True)

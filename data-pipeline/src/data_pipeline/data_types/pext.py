@@ -159,9 +159,7 @@ def prepare_base_level_pext(base_level_pext_path):
 
     ds = ds.select("gene_id", "chrom", "start", "stop", "mean", tissues=hl.struct(**{t: ds[t] for t in TISSUE_FIELDS}))
 
-    ds = ds.group_by("gene_id").aggregate(regions=hl.agg.collect(ds.row_value.drop("gene_id")))
-
-    return ds
+    return ds.group_by("gene_id").aggregate(regions=hl.agg.collect(ds.row_value.drop("gene_id")))
 
 
 def prepare_pext_data(base_level_pext_path, low_max_pext_genes_path):
@@ -169,15 +167,13 @@ def prepare_pext_data(base_level_pext_path, low_max_pext_genes_path):
 
     low_max_pext_genes = hl.import_table(low_max_pext_genes_path)
     low_max_pext_genes = low_max_pext_genes.aggregate(hl.agg.collect_as_set(low_max_pext_genes.ensg))
-    ds = ds.annotate(
+    return ds.annotate(
         flags=hl.if_else(
             hl.set(low_max_pext_genes).contains(ds.gene_id),
             hl.literal(["low_max_pext"]),
             hl.empty_array(hl.tstr),
         )
     )
-
-    return ds
 
 
 def reshape_pext_data_to_tissue_array(pext_struct_path):
@@ -188,7 +184,7 @@ def reshape_pext_data_to_tissue_array(pext_struct_path):
     if "flags" not in ds.row:
         ds = ds.annotate(flags=hl.empty_array(hl.tstr))
 
-    ds = ds.annotate(
+    return ds.annotate(
         regions=hl.sorted(
             ds.regions.map(
                 lambda region: region.annotate(
@@ -200,4 +196,3 @@ def reshape_pext_data_to_tissue_array(pext_struct_path):
             key=lambda region: region.start,
         )
     )
-    return ds

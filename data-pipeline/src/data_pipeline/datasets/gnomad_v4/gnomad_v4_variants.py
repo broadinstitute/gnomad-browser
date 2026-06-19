@@ -381,21 +381,18 @@ def prepare_gnomad_v4_variants_joint_frequency_helper(variants_joint_frequency_p
         ),
     )
 
-    ds = ds.select(
+    return ds.select(
         "joint",
     )
-
-    return ds
 
 
 def prepare_table_for_release(variants_table_path):
     ds = hl.read_table(variants_table_path)
-    ds = ds.annotate(
+    return ds.annotate(
         exome=ds.exome.drop("faf95", "faf99"),
         genome=ds.genome.drop("faf95", "faf99"),
         joint=ds.joint.drop("faf99_joint", "faf95_joint"),
     )
-    return ds
 
 
 def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: str, variants_joint_frequency_path: str):
@@ -507,5 +504,4 @@ def prepare_gnomad_v4_variants(exome_variants_path: str, genome_variants_path: s
     )
 
     joint_frequency_data = prepare_gnomad_v4_variants_joint_frequency_helper(variants_joint_frequency_path)
-    variants = variants.annotate(**joint_frequency_data[variants.locus, variants.alleles])
-    return variants
+    return variants.annotate(**joint_frequency_data[variants.locus, variants.alleles])

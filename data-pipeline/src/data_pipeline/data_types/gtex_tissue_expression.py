@@ -48,9 +48,7 @@ def prepare_gtex_expression_data(transcript_tpms_path, sample_annotations_path, 
     tissues = [f for f in ds.row_value.dtype.fields if f not in other_fields]
     ds = ds.transmute(tissues=hl.struct(**{format_tissue_name(tissue): ds[tissue] for tissue in tissues}))
 
-    ds = ds.key_by("transcript_id").drop("row_id")
-
-    return ds
+    return ds.key_by("transcript_id").drop("row_id")
 
 
 def reshape_gtex_data_to_tissue_array(gtex_struct_path, exclude_v10_tissues=False):
@@ -82,7 +80,7 @@ def reshape_gtex_data_to_tissue_array(gtex_struct_path, exclude_v10_tissues=Fals
         else {}
     )
 
-    ds = ds.annotate(
+    return ds.annotate(
         tissues=hl.array(
             [
                 hl.struct(tissue=tissue, value=ds.tissues[tissue])
@@ -91,4 +89,3 @@ def reshape_gtex_data_to_tissue_array(gtex_struct_path, exclude_v10_tissues=Fals
             ]
         )
     )
-    return ds

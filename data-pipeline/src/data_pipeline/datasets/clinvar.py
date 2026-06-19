@@ -297,9 +297,7 @@ def import_clinvar_xml(clinvar_xml_path):
         min_partitions=2000,
     )
 
-    ds = ds.annotate_globals(clinvar_release_date=release_date)
-
-    return ds
+    return ds.annotate_globals(clinvar_release_date=release_date)
 
 
 def prepare_clinvar_variants(clinvar_path, reference_genome):
@@ -323,9 +321,7 @@ def prepare_clinvar_variants(clinvar_path, reference_genome):
         alt=ds.alleles[1],
     )
 
-    ds = ds.key_by("locus", "alleles")
-
-    return ds
+    return ds.key_by("locus", "alleles")
 
 
 def _get_gnomad_variants(
@@ -404,5 +400,4 @@ def annotate_clinvar_variants_in_gnomad(
     )
     ds = hl.read_table(clinvar_path)
     ds = ds.annotate(gnomad=gnomad_variants[ds.key])
-    ds = ds.annotate(in_gnomad=hl.is_defined(ds.gnomad))
-    return ds
+    return ds.annotate(in_gnomad=hl.is_defined(ds.gnomad))

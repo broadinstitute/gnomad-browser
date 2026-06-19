@@ -3,7 +3,7 @@ import hail as hl
 
 def patch_rnu4atac_transcript_consequences(variants_path):
     ds = hl.read_table(variants_path)
-    ds = ds.annotate(
+    return ds.annotate(
         transcript_consequences=ds.transcript_consequences.map(
             lambda tc: hl.if_else(
                 tc.transcript_id == "ENST00000580972",
@@ -12,4 +12,3 @@ def patch_rnu4atac_transcript_consequences(variants_path):
             )
         )
     )
-    return ds

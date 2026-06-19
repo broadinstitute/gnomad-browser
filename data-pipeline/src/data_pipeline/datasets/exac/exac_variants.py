@@ -509,6 +509,4 @@ def import_exac_vcf(path):
         vep=ds.vep,
     )
 
-    ds = ds.annotate(genome=hl.null(ds.exome.dtype))
-
-    return ds
+    return ds.annotate(genome=hl.null(ds.exome.dtype))

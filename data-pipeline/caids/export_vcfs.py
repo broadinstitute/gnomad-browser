@@ -37,8 +37,7 @@ def get_gnomad_v2_variants() -> hl.Table:
     genomes = select_locus_alleles(hl.read_table(DATASETS["gnomAD v2.1.1"][DataType.GENOMES]))
 
     ds = exomes.join(genomes, how="outer")
-    ds = ds.repartition(DEFAULT_N_PARTITIONS, shuffle=True)
-    return ds
+    return ds.repartition(DEFAULT_N_PARTITIONS, shuffle=True)
 
 
 def get_exac_variants() -> hl.Table:
@@ -51,8 +50,7 @@ def get_exac_variants() -> hl.Table:
     ds = ds.select_globals()
     ds = hl.split_multi(ds)
     ds = ds.select()
-    ds = ds.repartition(200, shuffle=True)
-    return ds
+    return ds.repartition(200, shuffle=True)
 
 
 VARIANT_GETTERS = {

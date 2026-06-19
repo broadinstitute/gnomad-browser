@@ -62,7 +62,7 @@ def gtf2bed(gtf: hl.Table) -> hl.Table:
         ),
     )
 
-    ds = ds.order_by(
+    return ds.order_by(
         hl.rbind(
             ds.chrom.replace("^chr", ""),
             lambda chrom: (
@@ -71,8 +71,6 @@ def gtf2bed(gtf: hl.Table) -> hl.Table:
         ),
         ds.chromStart,
     ).drop("interval")
-
-    return ds
 
 
 def main():

@@ -294,6 +294,4 @@ def prepare_gnomad_v3_variants(path):
     ################
 
     # Drop unused fields
-    ds = ds.drop("allele_info", "a_index", "info", "popmax", "was_split")
-
-    return ds
+    return ds.drop("allele_info", "a_index", "info", "popmax", "was_split")

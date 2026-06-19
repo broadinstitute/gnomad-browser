@@ -16,9 +16,7 @@ def annotate_gene_transcripts_with_tissue_expression(table_path, gtex_tissue_exp
 
     transcripts = transcripts.group_by("gene_id").aggregate(transcripts=hl.agg.collect(transcripts.transcripts))
 
-    genes = genes.annotate(transcripts=transcripts[genes.gene_id].transcripts)
-
-    return genes
+    return genes.annotate(transcripts=transcripts[genes.gene_id].transcripts)
 
 
 def annotate_gene_transcripts_with_refseq_id(table_path, mane_select_transcripts_path):
@@ -36,7 +34,7 @@ def annotate_gene_transcripts_with_refseq_id(table_path, mane_select_transcripts
 
     genes = hl.read_table(table_path)
 
-    genes = genes.annotate(
+    return genes.annotate(
         transcripts=genes.transcripts.map(
             lambda transcript: transcript.annotate(
                 **ensembl_to_refseq_map.get(
@@ -50,8 +48,6 @@ def annotate_gene_transcripts_with_refseq_id(table_path, mane_select_transcripts
         )
     )
 
-    return genes
-
 
 def extract_transcripts(genes_path):
     ds = hl.read_table(genes_path)
@@ -61,6 +57,4 @@ def extract_transcripts(genes_path):
     ds = ds.explode(ds.transcripts)
     ds = ds.annotate(**ds.transcripts).drop("transcripts")
     ds = ds.key_by("transcript_id")
-    ds = ds.repartition(2000, shuffle=True)
-
-    return ds
+    return ds.repartition(2000, shuffle=True)

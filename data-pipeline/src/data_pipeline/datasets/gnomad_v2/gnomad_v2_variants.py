@@ -312,9 +312,7 @@ def prepare_gnomad_v2_variants_helper(path, exome_or_genome):
     if "_score" in ds.row_value.dtype.fields:
         ds = ds.drop("_score", "_singleton")
 
-    ds = ds.select(**{exome_or_genome: ds.row_value})
-
-    return ds
+    return ds.select(**{exome_or_genome: ds.row_value})
 
 
 def prepare_gnomad_v2_variants(exome_variants_path, genome_variants_path):
@@ -389,7 +387,7 @@ def prepare_gnomad_v2_variants(exome_variants_path, genome_variants_path):
     )
 
     variants = variants.annotate(colocated_variants=variants_by_locus[variants.locus].variant_ids)
-    variants = variants.annotate(
+    return variants.annotate(
         colocated_variants=hl.struct(
             **{
                 subset: variants.colocated_variants[subset].filter(lambda variant_id: variant_id != variants.variant_id)
@@ -397,5 +395,3 @@ def prepare_gnomad_v2_variants(exome_variants_path, genome_variants_path):
             }
         )
     )
-
-    return variants

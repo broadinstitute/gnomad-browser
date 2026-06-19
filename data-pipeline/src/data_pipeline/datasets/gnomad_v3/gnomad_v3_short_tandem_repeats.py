@@ -224,7 +224,7 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
         )
     )
 
-    ds = hl.Table.parallelize(
+    return hl.Table.parallelize(
         ds,
         hl.tstruct(
             id=hl.tstr,
@@ -268,4 +268,3 @@ def prepare_gnomad_v3_short_tandem_repeats(path):
         ),
         n_partitions=1,
     )
-    return ds

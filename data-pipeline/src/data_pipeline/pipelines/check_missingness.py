@@ -39,8 +39,7 @@ def extract_missingness(dataset):
         column_name: hl.agg.any(hl.is_missing(table[column_name])) for column_name in table.row.keys()
     }
 
-    missingness = table.aggregate(hl.struct(**aggregation_params))
-    return missingness
+    return table.aggregate(hl.struct(**aggregation_params))
 
 
 def main(argv):

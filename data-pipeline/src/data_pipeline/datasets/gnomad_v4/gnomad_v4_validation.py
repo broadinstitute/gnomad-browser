@@ -52,9 +52,7 @@ def ht_to_json(ht: hl.Table, field: str = "row"):
         ht = ht.select(data=hl.json(ht.row))
 
     data = ht.collect()
-    objs = [json.loads(g.data) for g in data]
-
-    return objs
+    return [json.loads(g.data) for g in data]
 
 
 def validate_exome_globals_input(pipeline: Pipeline):

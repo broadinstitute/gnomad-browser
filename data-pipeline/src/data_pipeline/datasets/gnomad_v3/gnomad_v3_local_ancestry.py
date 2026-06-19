@@ -42,5 +42,4 @@ def prepare_local_ancestry(sources):
                 genome=result.genome.extend(result.genome_1),
             )
 
-    shaped_result = result.transmute(populations=hl.struct(genome=result.genome))
-    return shaped_result
+    return result.transmute(populations=hl.struct(genome=result.genome))

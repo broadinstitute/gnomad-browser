@@ -47,12 +47,10 @@ def prepare_variant_cooccurrence(path):
 
     ds = ds.key_by()
 
-    ds = ds.select(
+    return ds.select(
         variant_ids=[variant_id(ds.locus1, ds.alleles1), variant_id(ds.locus2, ds.alleles2)],
         **shape_phase_info_data(ds.phase_info["all"]),
         populations=hl.sorted(ds.phase_info.keys())
         .filter(lambda pop: pop != "all")
         .map(lambda pop: hl.struct(id=pop, **shape_phase_info_data(ds.phase_info[pop]))),
     )
-
-    return ds

@@ -41,8 +41,7 @@ def prepare_variant_cooccurrence_counts(tsv_path, field_name_map):
         for (processed_field_name, raw_field_name) in field_name_map.items()
     }
     result = result.annotate(counts=hl.struct(**struct_schema))
-    result = result.select("counts")
-    return result
+    return result.select("counts")
 
 
 def prepare_heterozygous_variant_cooccurrence_counts():
@@ -63,8 +62,7 @@ def prepare_homozygous_variant_cooccurrence_counts():
 def aggregate_counts(counts):
     result = counts.key_by(counts.gene_id)
     result = result.transmute(counts=hl.struct(csq=result.csq, af_cutoff=result.af_cutoff, data=result.counts))
-    result = result.group_by(result.gene_id).aggregate(counts=hl.agg.collect(result.counts))
-    return result
+    return result.group_by(result.gene_id).aggregate(counts=hl.agg.collect(result.counts))
 
 
 def filter_by_af_cutoff(counts, af_cutoffs):
@@ -90,8 +88,7 @@ def annotate_table_with_variant_cooccurrence_counts(
     )
     homozygous_variant_cooccurrence_counts = aggregate_counts(homozygous_variant_cooccurrence_counts)
 
-    genes = genes.annotate(
+    return genes.annotate(
         heterozygous_variant_cooccurrence_counts=heterozygous_variant_cooccurrence_counts[genes.gene_id]["counts"],
         homozygous_variant_cooccurrence_counts=homozygous_variant_cooccurrence_counts[genes.gene_id]["counts"],
     )
-    return genes

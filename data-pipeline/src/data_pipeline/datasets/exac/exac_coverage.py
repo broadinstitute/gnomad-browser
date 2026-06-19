@@ -69,6 +69,4 @@ def import_exac_coverage():
 
     ds = ds.annotate(xpos=x_position(ds.locus))
 
-    ds = ds.repartition(1000, shuffle=True)
-
-    return ds
+    return ds.repartition(1000, shuffle=True)

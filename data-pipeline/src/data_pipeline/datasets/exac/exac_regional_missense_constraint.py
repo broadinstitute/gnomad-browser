@@ -32,6 +32,4 @@ def prepare_exac_regional_missense_constraint(path):
 
     ds = ds.annotate(regions=hl.sorted(ds.regions, lambda region: region.start))
 
-    ds = ds.select(exac_regional_missense_constraint_regions=ds.regions)
-
-    return ds
+    return ds.select(exac_regional_missense_constraint_regions=ds.regions)

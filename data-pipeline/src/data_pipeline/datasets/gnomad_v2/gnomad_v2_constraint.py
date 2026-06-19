@@ -39,6 +39,4 @@ def prepare_gnomad_v2_constraint(path):
         flags=ds.constraint_flag,
     )
 
-    ds = ds.key_by("transcript_id")
-
-    return ds
+    return ds.key_by("transcript_id")

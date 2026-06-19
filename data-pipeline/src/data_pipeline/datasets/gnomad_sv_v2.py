@@ -233,9 +233,7 @@ def import_structural_variants(vcf_path):
     # Re-key
     ds = ds.key_by("variant_id")
 
-    ds = ds.drop("locus", "alleles", "info", "rsid")
-
-    return ds
+    return ds.drop("locus", "alleles", "info", "rsid")
 
 
 def annotate_with_histograms(ds, histograms):
@@ -263,9 +261,7 @@ def annotate_with_histograms(ds, histograms):
 
     histograms = histograms.key_by(histograms.variant_id).drop("locus", "alleles")
 
-    ds = ds.annotate(**hl.or_missing(ds.type != "MCNV", histograms[ds.variant_id]))
-
-    return ds
+    return ds.annotate(**hl.or_missing(ds.type != "MCNV", histograms[ds.variant_id]))
 
 
 def prepare_gnomad_structural_variants(vcf_path, controls_vcf_path, non_neuro_vcf_path, histograms_path):
@@ -277,6 +273,4 @@ def prepare_gnomad_structural_variants(vcf_path, controls_vcf_path, non_neuro_vc
         ds = ds.annotate(freq=ds.freq.annotate(**{subset_name: subset_ds[ds.variant_id].freq}))
 
     histograms = hl.read_table(histograms_path)
-    ds = annotate_with_histograms(ds, histograms)
-
-    return ds
+    return annotate_with_histograms(ds, histograms)

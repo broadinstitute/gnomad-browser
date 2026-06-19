@@ -53,15 +53,13 @@ def prepare_gnomad_v2_liftover(
     )
 
     gnomad_v3_variants = hl.read_table(gnomad_v4_variants_path)
-    ds = ds.annotate(
+    return ds.annotate(
         datasets=hl.if_else(
             hl.is_defined(gnomad_v3_variants[ds.liftover.locus, ds.liftover.alleles]),
             ds.datasets.add("gnomad_r4"),
             ds.datasets,
         )
     )
-
-    return ds
 
 
 pipeline.add_task(

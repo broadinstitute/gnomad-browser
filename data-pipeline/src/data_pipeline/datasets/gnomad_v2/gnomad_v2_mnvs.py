@@ -184,7 +184,7 @@ def import_mnv_file(path, **kwargs):
         )
     )
 
-    ds = ds.annotate(
+    return ds.annotate(
         changes_amino_acids_for_snvs=hl.literal([0, 1])
         .filter(
             lambda idx: ds.consequences.any(
@@ -193,8 +193,6 @@ def import_mnv_file(path, **kwargs):
         )
         .map(lambda idx: ds.constituent_snv_ids[idx])
     )
-
-    return ds
 
 
 def import_three_bp_mnv_file(path, **kwargs):
@@ -406,7 +404,7 @@ def import_three_bp_mnv_file(path, **kwargs):
         )
     )
 
-    ds = ds.annotate(
+    return ds.annotate(
         changes_amino_acids_for_snvs=hl.literal([0, 1, 2])
         .filter(
             lambda idx: ds.consequences.any(
@@ -415,8 +413,6 @@ def import_three_bp_mnv_file(path, **kwargs):
         )
         .map(lambda idx: ds.constituent_snv_ids[idx])
     )
-
-    return ds
 
 
 def prepare_gnomad_v2_mnvs(mnvs_path, three_bp_mnvs_path):
@@ -517,9 +513,7 @@ def prepare_gnomad_v2_mnvs(mnvs_path, three_bp_mnvs_path):
 
     mnvs_3bp = mnvs_3bp.annotate(related_mnvs=hl.empty_array(mnvs.related_mnvs.dtype.element_type))
 
-    mnvs = mnvs.union(mnvs_3bp)
-
-    return mnvs
+    return mnvs.union(mnvs_3bp)
 
 
 def annotate_variants_with_mnvs(variants_path, mnvs_path):
@@ -544,7 +538,7 @@ def annotate_variants_with_mnvs(variants_path, mnvs_path):
     variants = hl.read_table(variants_path)
 
     variants = variants.annotate(multi_nucleotide_variants=ds[variants.key].multi_nucleotide_variants)
-    variants = variants.annotate(
+    return variants.annotate(
         flags=hl.if_else(
             hl.len(variants.multi_nucleotide_variants) > 0,
             variants.flags.add("mnv"),
@@ -560,5 +554,3 @@ def annotate_variants_with_mnvs(variants_path, mnvs_path):
             )
         ),
     )
-
-    return variants

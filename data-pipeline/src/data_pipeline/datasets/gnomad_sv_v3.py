@@ -239,16 +239,13 @@ def import_svs_from_vcfs(vcf_path):
     # Re-key
     ds = ds.key_by("variant_id")
 
-    ds = ds.drop("locus", "alleles", "info", "rsid")
-
-    return ds
+    return ds.drop("locus", "alleles", "info", "rsid")
 
 
 # Add uppercase ID to support case-insensitive searching
 def add_variant_id_upper_case(svs_path):
     ds = hl.read_table(svs_path)
-    ds = ds.annotate(variant_id_upper_case=ds.variant_id.upper())
-    return ds
+    return ds.annotate(variant_id_upper_case=ds.variant_id.upper())
 
 
 def annotate_with_histograms(svs_path, histograms_path):
@@ -278,13 +275,11 @@ def annotate_with_histograms(svs_path, histograms_path):
     histograms = histograms.transmute(variant_id=histograms.rsid.replace("^gnomAD-SV_v3_", ""))
 
     histograms = histograms.key_by(histograms.variant_id).drop("locus", "alleles")
-    ds = ds.annotate(**hl.or_missing(ds.type != "MCNV", histograms[ds.variant_id]))
-    return ds
+    return ds.annotate(**hl.or_missing(ds.type != "MCNV", histograms[ds.variant_id]))
 
 
 def prepare_public_structural_variants(input_path):
     ds = hl.read_table(input_path)
-    ds = ds.transmute(
+    return ds.transmute(
         freq=ds.freq.annotate(all=ds.freq.all.annotate(gen_anc_grps=ds.freq.all.populations).drop("populations"))
     )
-    return ds

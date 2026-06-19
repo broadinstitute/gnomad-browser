@@ -22,6 +22,4 @@ def import_mane_select_transcripts(path):
         refseq_version=ds.RefSeq_nuc.split("\\.")[1],
     )
 
-    ds = ds.key_by("gene_id")
-
-    return ds
+    return ds.key_by("gene_id")

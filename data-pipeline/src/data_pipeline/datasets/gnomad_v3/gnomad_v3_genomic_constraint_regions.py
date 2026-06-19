@@ -18,6 +18,4 @@ def prepare_gnomad_v3_genomic_constraint_regions(genomic_constraint_region_table
         z=hl.float(ds.z),
     )
 
-    ds = ds.key_by("element_id")
-
-    return ds
+    return ds.key_by("element_id")

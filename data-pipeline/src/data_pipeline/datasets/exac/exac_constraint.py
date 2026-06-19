@@ -29,6 +29,4 @@ def prepare_exac_constraint(path):
         pli=hl.float(ds.pLI),
     )
 
-    ds = ds.key_by("transcript_id")
-
-    return ds
+    return ds.key_by("transcript_id")

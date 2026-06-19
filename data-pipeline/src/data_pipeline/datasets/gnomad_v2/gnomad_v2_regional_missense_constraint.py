@@ -71,6 +71,4 @@ def prepare_gnomad_v2_regional_missense_constraint(path):
     ds_all_searched = ds_with_rmc.union(ds_no_rmc)
 
     # Don't need the information in globals for the browser
-    ds_all_searched = ds_all_searched.select_globals()
-
-    return ds_all_searched
+    return ds_all_searched.select_globals()

@@ -458,7 +458,7 @@ def annotate_v4_with_constraint(genes_path, constraint_path):
 
     constraint_match = constraint[genes.preferred_transcript_id]
 
-    genes = genes.annotate(
+    return genes.annotate(
         gnomad_constraint=constraint_match.drop("gene_flags"),
         flags=hl.if_else(
             hl.is_defined(constraint_match.gene_flags),
@@ -468,8 +468,6 @@ def annotate_v4_with_constraint(genes_path, constraint_path):
             genes.flags,
         ),
     )
-
-    return genes
 
 
 pipeline.add_task(
