@@ -41,6 +41,7 @@ Driven from the repo root via `./deployctl` (see `data-pipeline/README.md` and `
 ```
 
 Ordering constraints:
+
 - `genes` must run first (other pipelines depend on its gene/transcript tables).
 - Within a dataset, coverage runs before variants.
 - `genes` shuffles heavily — do NOT run it on clusters with preemptible workers.
@@ -92,6 +93,7 @@ if __name__ == "__main__":
 ```
 
 Framework details (`pipeline.py`):
+
 - `add_task(name, fn, output_path, inputs={}, params={})` — `inputs` values that are task objects become
   dependencies and are passed to `fn` resolved to their output paths; `params` are passed through verbatim.
 - Tasks are **skipped if already computed** — `file_exists`/`modified_time` check for a `_SUCCESS` file
