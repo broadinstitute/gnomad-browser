@@ -1,6 +1,6 @@
-# CLAUDE.md
+# gnomAD Browser - Agent Instructions
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides architectural context and strict execution rules for ANY AI assistant or agent (Cursor, GitHub Copilot, Claude Code, Gemini, etc.) interacting with this repository.
 
 ## Overview
 
@@ -55,6 +55,17 @@ black .                   # format (line length 120, see pyproject.toml)
 pylint data-pipeline/src/data_pipeline
 ```
 
+The `Makefile` in the project root contains targets for common tasks, including installing dependencies, linting, formatting, checking types, and running tests.
+
+The `make` targets:
+
+- `validate-browser`
+- `validate-graphql-api`
+- `validate-data-pipeline`
+- `validate-deploy`
+
+Can be used to easily replicate what will be run in the production CI, and each contain validation steps relevant to the named directory, e.g. `browser`. The target `validate-all` can be used to ensure all checks pass if you're unsure of which scoped `validate` targets to run.
+
 ## Running locally
 
 The Docker Compose dev environment is driven by `development/env.sh`:
@@ -75,7 +86,7 @@ API development normally points at a cloud-hosted Elasticsearch cluster rather t
 ### data-pipeline (`data-pipeline/src/data_pipeline/`)
 
 Hail-based pipelines that produce Hail Tables for the browser and load them into Elasticsearch, run on
-Google Dataproc clusters. This package has its own dedicated `data-pipeline/CLAUDE.md` — read it before
+Google Dataproc clusters. This package has its own dedicated `data-pipeline/AGENTS.md` — read it before
 working there. In brief: `pipelines/` holds one runnable module per dataset, `datasets/` and `data_types/`
 hold the prep logic they call, and `pipeline.py` is the task-DAG framework. The `genes` pipeline must run
 first; within a dataset, coverage runs before variants.
@@ -128,3 +139,23 @@ Separate read-data (BAM/CRAM) API and scripts, deployed independently.
   Pylint/ruff/pyright. pre-commit hooks run Black, Prettier, and git-secrets — install with `pre-commit install`.
 - The variable name `ds` is the conventional name for a Hail Table in the pipeline (whitelisted in pylint).
 - CI runs per-package: `.github/workflows/{browser,graphql-api,data-pipeline,deploy-scripts}-ci.yml`.
+
+## Agent Workflows & Skills
+
+When the user asks you to finish a feature, review code, or prep a branch for a Pull Request, you MUST execute the workflows defined in the `.agents/skills/` directory.
+
+### Branch Submission Lifecycle
+
+Execute these in exact order:
+
+1. **Pre-Review:** Trigger `.agents/skills/review-changes-before-committing/SKILL.md`. This ensure you run some baseline checks for each commit. Fix any issues found.
+
+2. **Atomic Commits:** Do NOT lump all changes into one commit. `git commit -am` and `git add .` are explicitly forbidden. Group the diff logically. Separate UI changes, API/GraphQL changes, and configuration changes into distinct, cleanly named Conventional Commits.
+
+3. **Draft PR:** Trigger `.agents/skills/draft-pull-request-description/SKILL.md`. This will fill out the project's PR template, automatically select the Squash/Rebase merge strategy based on the commit history, and remind the user to upload UI screenshots.
+
+### Branch Cleanup
+
+If the user asks you to tidy up a messy commit history or fix commit names on an existing branch, you must trigger `.agents/skills/branch-cleanup/SKILL.md`. Follow its safety protocols (creating a backup branch and using `git reset --soft`) exactly. As an LLM, never use interactive rebasing, as that risks dropping existing commits.
+
+If the user asks about opening a PR, offer to clean the branch history with the skill referenced above.
