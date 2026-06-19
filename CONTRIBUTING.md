@@ -22,10 +22,20 @@ This should be enough to use the Docker Compose development environment. However
   pnpm install
   ```
 
-- For data pipeline development, install [Python](https://www.python.org/), dependencies, and development tools.
+- For data pipeline development, install [uv](https://docs.astral.sh/uv/) and sync the
+  data-pipeline dependencies. uv reads the pinned Python version and dependencies from
+  `data-pipeline/pyproject.toml`/`data-pipeline/uv.lock`, installing them into
+  `data-pipeline/.venv`.
 
   ```
-  pip install -r data-pipeline/requirements.txt
+  cd data-pipeline && uv sync --frozen
+  ```
+
+  Run pipeline tools through uv, e.g. `uv run pytest` or `uv run ruff check src/data_pipeline`.
+
+- For the remaining Python tooling (linters and deploy scripts), install dependencies with pip.
+
+  ```
   pip install -r requirements-dev.txt
   pip install -r deploy/deployctl/requirements.txt
   ```

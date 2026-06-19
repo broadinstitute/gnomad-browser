@@ -1,3 +1,28 @@
+[project]
+name = "data-pipeline"
+version = "0.1.0"
+description = "gnomAD browser data pipeline"
+requires-python = "==3.9.17"
+dependencies = [
+  "elasticsearch~=7.17",
+  "hail==0.2.127",
+  "tqdm",
+  "loguru",
+  "attrs",
+  "cattrs",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  # Keep in sync with the version in ../requirements-dev.txt and ../.pre-commit-config.yaml
+  "ruff==0.15.18",
+  "pyright",
+]
+
+[tool.uv]
+package = false
+
 [tool.ruff]
 line-length = 120
 target-version = "py39"

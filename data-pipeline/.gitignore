@@ -1,1 +1,4 @@
 data
+
+# uv-managed virtual environment
+.venv

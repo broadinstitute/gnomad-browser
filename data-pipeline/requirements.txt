@@ -1,9 +1,6 @@
-elasticsearch~=7.17
+elasticsearch==7.17.13
 hail==0.2.127
-tqdm
-loguru
-attrs
-cattrs
-pytest
-ruff
-pyright
+tqdm==4.68.3
+loguru==0.7.3
+attrs==26.1.0
+cattrs==25.3.0
