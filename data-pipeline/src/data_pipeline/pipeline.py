@@ -25,7 +25,9 @@ class GoogleCloudStorageFileSystem:
     def modified_time(self, path):  # pylint: disable=no-self-use
         # modification_time is a unix timestamp.
         stat = hfs.stat(path)
-        return stat.modification_time
+        if stat.modification_time is None:
+            raise ValueError(f"No modification time available for {path}")
+        return datetime.datetime.fromtimestamp(stat.modification_time)
 
 
 class LocalFileSystem:
