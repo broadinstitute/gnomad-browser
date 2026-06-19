@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from typing import Awaitable, Callable, TypeVar
 
 import aiohttp
+import hailtop.fs as hfs
 from hailtop.aiotools.router_fs import RouterAsyncFS
 from hailtop.utils import bounded_gather, sleep_before_try
 from hailtop.utils.rich_progress_bar import SimpleCopyToolProgressBar

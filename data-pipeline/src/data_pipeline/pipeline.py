@@ -13,23 +13,19 @@ from collections import OrderedDict
 from loguru import logger
 
 import hail as hl
+import hailtop.fs as hfs
 
 from data_pipeline.config import PipelineConfig
 
 
 class GoogleCloudStorageFileSystem:
     def exists(self, path):  # pylint: disable=no-self-use
-        return hl.hadoop_exists(path)
+        return hfs.exists(path)
 
     def modified_time(self, path):  # pylint: disable=no-self-use
-        # The Hail docs say that stat["modification_time"] should be a string,
-        # but in the case of Google Cloud Storage, it returns an epoch timestamp
-        # as an int. There is a Google Cloud Storage filesystem in the Hail
-        # backend, but no Python bindings for it as of yet; when those bindings
-        # exist, we should probably use that filesystem here instead of a
-        # generic Hadoop FS.
-        stat = hl.hadoop_stat(path)
-        return stat["modification_time"]
+        # modification_time is a unix timestamp.
+        stat = hfs.stat(path)
+        return stat.modification_time
 
 
 class LocalFileSystem:
