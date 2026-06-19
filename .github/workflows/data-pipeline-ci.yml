@@ -14,8 +14,8 @@ on:
       - 'development/scripts/**'
       - '.github/workflows/**'
 jobs:
-  checks:
-    name: Checks
+  data-pipeline-checks:
+    name: Data Pipeline Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,15 +26,12 @@ jobs:
           enable-cache: true
           cache-dependency-glob: 'uv.lock'
       - name: Install dependencies
-        working-directory: data-pipeline
-        # Install the exact dependencies from uv.lock without re-resolving or updating
-        # the lockfile; fails if pyproject.toml has drifted from uv.lock.
-        run: uv sync --frozen
+        run: make install-py-data-pipeline-dependencies
       - name: Check formatting
-        run: uv run ruff format --check data-pipeline
-      - name: Run Ruff
-        run: uv run ruff check data-pipeline
-      - name: Run Pyright
-        run: uv run pyright --project data-pipeline
-      - name: Run pytest
-        run: uv run pytest data-pipeline
+        run: make check-format-data-pipeline
+      - name: Lint
+        run: make lint-data-pipeline
+      - name: Check types
+        run: make typecheck-data-pipeline 
+      - name: Run tests
+        run: make test-data-pipeline
