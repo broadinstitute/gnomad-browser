@@ -9,6 +9,8 @@ on:
     paths:
       - 'deploy/deployctl/**'
       - '.github/workflows/**'
+permissions:
+  contents: read
 jobs:
   deployctl-checks:
     name: Deployctl Checks
