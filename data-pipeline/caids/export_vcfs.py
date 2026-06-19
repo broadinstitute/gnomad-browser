@@ -4,44 +4,47 @@ import argparse
 
 import hail as hl
 
+from core.config import DATASETS
+from core.enums import DataType
+
+DEFAULT_N_PARTITIONS = 5000
+
+
+def select_locus_alleles(ds: hl.Table, n_partitions: int | None = None) -> hl.Table:
+    """Strip a Hail Table down to its locus/alleles key, optionally repartitioning."""
+    ds = ds.select_globals()
+    ds = ds.select()
+    if n_partitions is not None:
+        ds = ds.repartition(n_partitions, shuffle=True)
+    return ds
+
 
 def get_gnomad_v4_variants() -> hl.Table:
     """Get locus/alleles for all gnomAD v4 variants."""
-    ds = hl.read_table("gs://gcp-public-data--gnomad/release/4.0/ht/genomes/gnomad.genomes.v4.0.sites.ht")
-    ds = ds.select_globals()
-    ds = ds.select()
-    ds = ds.repartition(5000, shuffle=True)
-    return ds
+    ds = hl.read_table(DATASETS["gnomAD v4.0"])
+    return select_locus_alleles(ds, n_partitions=DEFAULT_N_PARTITIONS)
 
 
 def get_gnomad_v3_variants() -> hl.Table:
     """Get locus/alleles for all gnomAD v3 variants."""
-    ds = hl.read_table("gs://gcp-public-data--gnomad/release/3.1.1/ht/genomes/gnomad.genomes.v3.1.1.sites.ht")
-    ds = ds.select_globals()
-    ds = ds.select()
-    ds = ds.repartition(5000, shuffle=True)
-    return ds
+    ds = hl.read_table(DATASETS["gnomAD v3.1.1"])
+    return select_locus_alleles(ds, n_partitions=DEFAULT_N_PARTITIONS)
 
 
 def get_gnomad_v2_variants() -> hl.Table:
     """Get locus/alleles for all gnomAD v2 variants."""
-    exomes = hl.read_table("gs://gcp-public-data--gnomad/release/2.1.1/ht/exomes/gnomad.exomes.r2.1.1.sites.ht")
-    exomes = exomes.select_globals()
-    exomes = exomes.select()
-
-    genomes = hl.read_table("gs://gcp-public-data--gnomad/release/2.1.1/ht/genomes/gnomad.genomes.r2.1.1.sites.ht")
-    genomes = genomes.select_globals()
-    genomes = genomes.select()
+    exomes = select_locus_alleles(hl.read_table(DATASETS["gnomAD v2.1.1"][DataType.EXOMES]))
+    genomes = select_locus_alleles(hl.read_table(DATASETS["gnomAD v2.1.1"][DataType.GENOMES]))
 
     ds = exomes.join(genomes, how="outer")
-    ds = ds.repartition(5000, shuffle=True)
+    ds = ds.repartition(DEFAULT_N_PARTITIONS, shuffle=True)
     return ds
 
 
 def get_exac_variants() -> hl.Table:
     """Get locus/alleles for all ExAC variants."""
     ds = hl.import_vcf(
-        "gs://gcp-public-data--gnomad/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz",
+        DATASETS["ExAC"],
         force_bgz=True,
         skip_invalid_loci=True,
     ).rows()
@@ -52,17 +55,21 @@ def get_exac_variants() -> hl.Table:
     return ds
 
 
+VARIANT_GETTERS = {
+    "gnomAD v4.0": get_gnomad_v4_variants,
+    "gnomAD v3.1.1": get_gnomad_v3_variants,
+    "gnomAD v2.1.1": get_gnomad_v2_variants,
+    "ExAC": get_exac_variants,
+}
+
+
 def get_variants(dataset: str) -> hl.Table:
     """Get locus/alleles for all variants in the given dataset."""
-    if dataset == "gnomAD v4.0":
-        return get_gnomad_v4_variants()
-    if dataset == "gnomAD v3.1.1":
-        return get_gnomad_v3_variants()
-    if dataset == "gnomAD v2.1.1":
-        return get_gnomad_v2_variants()
-    if dataset == "ExAC":
-        return get_exac_variants()
-    raise ValueError(f"Unknown dataset '{dataset}'")
+    if dataset not in VARIANT_GETTERS:
+        raise ValueError(
+            f"Unknown dataset '{dataset}', expected one of {list(VARIANT_GETTERS)}"
+        )
+    return VARIANT_GETTERS[dataset]()
 
 
 def export_vcfs(ds: hl.Table, output_url: str) -> None:
@@ -78,21 +85,15 @@ def export_vcfs(ds: hl.Table, output_url: str) -> None:
         and isinstance(ds.alleles.dtype, hl.tarray)
         and ds.alleles.dtype.element_type == hl.tstr
     )
-
-    ds = ds.select_globals()
-    ds = ds.select()
-
+    ds = select_locus_alleles(ds)
     hl.export_vcf(ds, output_url, parallel="separate_header")
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("dataset", choices=("ExAC", "gnomAD v2.1.1", "gnomAD v3.1.1", "gnomAD v4.0"))
+    parser.add_argument("dataset", choices=list(DATASETS))
     parser.add_argument("output_url")
     args = parser.parse_args()
-
-    hl.init()
-
     ds = get_variants(args.dataset)
     export_vcfs(ds, args.output_url)
 
