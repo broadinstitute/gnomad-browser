@@ -117,6 +117,25 @@ const queryComplexityCreateError = (max: any, actual: any) => {
   return new GraphQLError(`Query is too expensive (${actual}). Maximum allowed cost is ${max}.`)
 }
 
+// Count the entities returned by an operation so we can correlate request latency with
+// result-set size in logs. We walk plain objects and sum the length of every array we find,
+// but deliberately do NOT descend into array elements. That way we count the top-level result
+// lists (e.g. `variants`) once, rather than inflating the number with each variant's nested
+// arrays (populations, transcript_consequences, etc.) — and it stays cheap on large payloads.
+const countEntities = (value: any, depth = 0): number => {
+  if (depth > 6 || value === null || typeof value !== 'object') {
+    return 0
+  }
+  if (Array.isArray(value)) {
+    return value.length
+  }
+  let total = 0
+  for (const key of Object.keys(value)) {
+    total += countEntities(value[key], depth + 1)
+  }
+  return total
+}
+
 const graphQLApi = ({ context }: any) =>
   graphqlHTTP(async (request, response, requestParams) => ({
     schema,
@@ -200,7 +219,14 @@ const graphQLApi = ({ context }: any) =>
         throw new GraphQLError(error.message, undefined, undefined, undefined, undefined, error)
       }
 
-      return execute(args)
+      const result = await execute(args)
+
+      // Stash the result-set size on the request so the requestLogMiddleware in app.ts emits it
+      // alongside latency and query cost in a single log line. This lets us check whether request
+      // latency is correlated with the number of entities returned.
+      ;(request as any).graphqlEntityCount = countEntities(result.data)
+
+      return result
     },
 
     customFormatErrorFn: (error: any) =>

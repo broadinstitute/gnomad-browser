@@ -73,6 +73,7 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
             graphqlQueryString: request.graphqlParams.query,
             graphqlQueryVariables: request.graphqlParams.variables,
             graphqlQueryCost: request.graphqlQueryCost,
+            graphqlEntityCount: request.graphqlEntityCount,
           }
         : undefined,
     })
