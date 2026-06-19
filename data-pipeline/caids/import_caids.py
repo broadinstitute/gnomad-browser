@@ -7,9 +7,7 @@ import hail as hl
 from core.enums import ReferenceGenome
 
 
-def import_caids(
-    caids_url: str, output_url: str, reference_genome: ReferenceGenome = ReferenceGenome.GRCh38
-) -> None:
+def import_caids(caids_url: str, output_url: str, reference_genome: ReferenceGenome = ReferenceGenome.GRCh38) -> None:
     """
     Import CAIDs created by `get_caids.py` into a Hail Table.
 

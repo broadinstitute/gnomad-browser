@@ -66,9 +66,7 @@ VARIANT_GETTERS = {
 def get_variants(dataset: str) -> hl.Table:
     """Get locus/alleles for all variants in the given dataset."""
     if dataset not in VARIANT_GETTERS:
-        raise ValueError(
-            f"Unknown dataset '{dataset}', expected one of {list(VARIANT_GETTERS)}"
-        )
+        raise ValueError(f"Unknown dataset '{dataset}', expected one of {list(VARIANT_GETTERS)}")
     return VARIANT_GETTERS[dataset]()
 
 
