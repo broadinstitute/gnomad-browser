@@ -65,11 +65,9 @@ def gtf2bed(gtf: hl.Table) -> hl.Table:
     ds = ds.order_by(
         hl.rbind(
             ds.chrom.replace("^chr", ""),
-            lambda chrom: hl.case()
-            .when(chrom == "X", 23)
-            .when(chrom == "Y", 24)
-            .when(chrom[0] == "M", 25)
-            .default(hl.int(chrom)),
+            lambda chrom: (
+                hl.case().when(chrom == "X", 23).when(chrom == "Y", 24).when(chrom[0] == "M", 25).default(hl.int(chrom))
+            ),
         ),
         ds.chromStart,
     ).drop("interval")

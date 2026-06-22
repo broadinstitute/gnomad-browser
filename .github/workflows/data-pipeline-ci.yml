@@ -5,9 +5,13 @@ on:
       - main
     paths:
       - 'data-pipeline/**'
+      - 'reads/**'
+      - 'development/scripts/**'
   pull_request:
     paths:
       - 'data-pipeline/**'
+      - 'reads/**'
+      - 'development/scripts/**'
       - '.github/workflows/**'
 jobs:
   checks:
@@ -32,7 +36,7 @@ jobs:
           pip install wheel
           pip install -r data-pipeline/requirements.txt
       - name: Check formatting
-        run: ruff format --check data-pipeline/src/data_pipeline
+        run: ruff format --check data-pipeline/src/data_pipeline data-pipeline/tests data-pipeline/caids reads development/scripts
       - name: Run Ruff
         run: ruff check data-pipeline/src/data_pipeline
       - name: Run Pyright

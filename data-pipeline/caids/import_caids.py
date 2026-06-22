@@ -15,7 +15,11 @@ def import_caids(caids_url: str, output_url: str, reference_genome: str = "GRCh3
     caids_url = caids_url.rstrip("/")
     ds = hl.import_table(
         f"{caids_url}/part-*.tsv",
-        types={"locus": hl.tlocus(reference_genome), "alleles": hl.tarray(hl.tstr), "CAID": hl.tstr,},
+        types={
+            "locus": hl.tlocus(reference_genome),
+            "alleles": hl.tarray(hl.tstr),
+            "CAID": hl.tstr,
+        },
         key=("locus", "alleles"),
         missing=".",
     )

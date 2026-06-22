@@ -102,7 +102,13 @@ async def retry_transient_errors(f: Callable[..., Awaitable[T]], max_attempts: i
         await sleep_before_try(tries)
 
 
-async def get_caids(sharded_vcf_url: str, output_url: str, *, parallelism: int = 4, request_timeout: int = 10,) -> None:
+async def get_caids(
+    sharded_vcf_url: str,
+    output_url: str,
+    *,
+    parallelism: int = 4,
+    request_timeout: int = 10,
+) -> None:
     """
     Download ClinGen Canonical Allele IDs for variants in the specified VCF.
 
@@ -119,10 +125,11 @@ async def get_caids(sharded_vcf_url: str, output_url: str, *, parallelism: int =
     output_url = output_url.rstrip("/")
 
     with ThreadPoolExecutor() as thread_pool:
-        local_kwargs = {'thread_pool': thread_pool}
-        async with RouterAsyncFS(
-            local_kwargs=local_kwargs
-        ) as fs, aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=request_timeout * 60)) as session:
+        local_kwargs = {"thread_pool": thread_pool}
+        async with (
+            RouterAsyncFS(local_kwargs=local_kwargs) as fs,
+            aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=request_timeout * 60)) as session,
+        ):
             # The ClinGen Allele Registry API does not accept VCFs with contigs other than 1-22, X, Y, and M.
             # Remove other contigs from the VCF header.
             header_url = f"{sharded_vcf_url}/header"
@@ -160,7 +167,9 @@ async def get_caids(sharded_vcf_url: str, output_url: str, *, parallelism: int =
                 if part_name not in completed_parts:
                     remaining_part_urls.append(part_url)
 
-            logger.warning(f'\n\nParts Counts\nTotal: {len(all_part_urls)}\nCompleted: {len(completed_parts)}\nRemaining: {len(remaining_part_urls)}\n')
+            logger.warning(
+                f"\n\nParts Counts\nTotal: {len(all_part_urls)}\nCompleted: {len(completed_parts)}\nRemaining: {len(remaining_part_urls)}\n"
+            )
 
             with SimpleCopyToolProgressBar(total=len(remaining_part_urls)) as progress:
 
@@ -226,7 +235,12 @@ def main():
     args = parser.parse_args()
 
     return asyncio.get_event_loop().run_until_complete(
-        get_caids(args.vcf_url, args.output_url, parallelism=args.parallelism, request_timeout=args.request_timeout,)
+        get_caids(
+            args.vcf_url,
+            args.output_url,
+            parallelism=args.parallelism,
+            request_timeout=args.request_timeout,
+        )
     )
 
 
