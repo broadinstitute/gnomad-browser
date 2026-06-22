@@ -1,7 +1,7 @@
-# CLAUDE.md — data-pipeline
+# gnomAD Browser - Agent Instructions - data-pipeline
 
-This file provides guidance to Claude Code (claude.ai/code) when working in `data-pipeline/`.
-See the repo-root `CLAUDE.md` for the monorepo-wide picture (the pipeline feeds Elasticsearch, which the
+This file provides guidance to LLM agents (e.g. claude.ai/code) when working in `data-pipeline/`.
+See the repo-root `AGENTS.md` for the monorepo-wide picture (the pipeline feeds Elasticsearch, which the
 graphql-api serves to the browser).
 
 ## What this is

@@ -22,37 +22,48 @@ for the JS workspace.
 
 ## Common commands
 
-JavaScript/TypeScript (run from repo root):
+**JavaScript/TypeScript (run from repo root)**:
 
 ```
-pnpm install              # install JS workspace deps
-pnpm typecheck            # tsc --noEmit across the workspace
-pnpm lint:js              # ESLint
-pnpm lint:css             # Stylelint (CSS + styled-components)
-pnpm format               # Prettier --write
-pnpm test:jest            # all Jest unit tests
-pnpm test:jest --projects browser        # only one package (browser | graphql-api | dataset-metadata)
-pnpm jest <path-or-name>                 # single test file or -t name pattern
-pnpm test:jest:debug      # Jest under node --inspect-brk
-pnpm test:playwright      # Playwright e2e (needs a running backend; see below)
+make install-js-dependencies      # install JS workspace deps
+make typecheck-browser            # tsc --noEmit across the workspace
+make lint-js-browser              # Lint the frontend code with ESLint
+make lint-css-browser             # Lint the CSS + styled-components with Stylelint
+make check-format-browser         # Check frontend formatting with Prettier
+make test-browser                 # Run Jest unit test for the browser code
+make build-browser                # Build the frontend files with pnpm
+pnpm jest <path-or-name>          # Run a single test file or -t name pattern
+pnpm test:jest:debug              # Jest under node --inspect-brk
+pnpm test:playwright              # Playwright e2e (needs a running backend; see below)
+
+make validate-browser             # Run all automated checks that will run in GitHub CI
+
+make fix-browser                  # Run all automated check and write files to fix them
+                                  #     e.g. fix formatting, update snapshot tests, etc
 ```
 
 Jest is configured (`jest.config.ts`) as three projects matching `**/*.spec.(js|jsx|ts|tsx)` in the
 `browser`, `graphql-api`, and `dataset-metadata` packages.
 
-Playwright e2e tests run against a deployed/locally-running API; set `GNOMAD_API_URL`, e.g.
+Playwright e2e tests can run against a deployed/locally-running API; set `GNOMAD_API_URL`, e.g.
 `GNOMAD_API_URL=http://localhost:8010/api pnpm test:playwright`.
 
-Python data pipeline (run from `data-pipeline/`):
+**Python data pipeline (run from `data-pipeline/`)**:
 
 ```
-pip install -r data-pipeline/requirements.txt   # plus requirements-dev.txt and deploy/deployctl/requirements.txt
-./check.sh                # pyright + black + ruff --fix + pytest (the full local check)
-./check.sh --mock-data    # only mock_data tests
-pytest                    # excludes mock_data/broken tests by default (see pytest.ini)
-pytest tests/v4/...       # testpaths are tests/pipeline and tests/v4
-black .                   # format (line length 120, see pyproject.toml)
-pylint data-pipeline/src/data_pipeline
+make install-py-data-pipeline-dependencies     # install wheel, reqs, dev reqs
+make lint-data-pipeline                        # lint data pipeline with ruff check
+make check-format-data-pipeline                # check formatting with ruff format --check
+make typecheck-data-pipeline                   # typecheck data pipeline with pyright
+
+./check.sh --mock-data                         # only mock_data tests
+pytest                                         # excludes mock_data/broken tests by default (see pytest.ini)
+pytest tests/v4/...                            # testpaths are tests/pipeline and tests/v4
+
+make validate-data-pipeline                    # run all checks that happen in GitHub CI
+make fix-data-pipeline                         # Run all automated check and write files to fix them
+                                               #     e.g. fix formatting, correct fixable lint errors, etc
+
 ```
 
 The `Makefile` in the project root contains targets for common tasks, including installing dependencies, linting, formatting, checking types, and running tests.
