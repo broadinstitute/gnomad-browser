@@ -54,7 +54,7 @@ This should be enough to use the Docker Compose development environment. However
   ```
 
   After updating, run `uv sync` (without `--frozen`) to install the newly resolved
-  versions, run `uv export --no-hashes > requirements.txt` to generate a pinned requirements set 
+  versions, run `uv export --no-hashes > requirements.txt` to generate a pinned requirements set (used by `dataproc`)
   and commit `pyproject.toml`, `uv.lock`, and `requirements.txt`.
 
 ## Frontend
