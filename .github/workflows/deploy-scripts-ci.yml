@@ -27,5 +27,5 @@ jobs:
         run: uv sync --frozen
       - name: Check formatting
         run: uv run ruff format --check deploy/deployctl
-      - name: Run Pylint
-        run: uv run pylint --disable=fixme deploy/deployctl
+      - name: Run Ruff
+        run: uv run ruff check deploy/deployctl
