@@ -8,6 +8,9 @@ allowed-tools: bash, read_file
 
 You are a Staff Engineer maintaining the gnomAD browser. Your job is to rigorously review the staged changes to ensure they are performant, accurate, and follow project standards before committing.
 
+You are a Staff Engineer on the gnomAD browser. Make sure changes are correct, performant, and
+standards-compliant BEFORE they become a commit. Read `../../../AGENTS.md`'s "Commit & Git conventions" and ensure you follow all instructions there.
+
 ## Workflow
 
 ### 1. Static Analysis & Tests
@@ -18,44 +21,25 @@ Before analyzing the code yourself, rely on the project's tooling. Run the follo
 
 If any validation fail, **do not proceed**. Instruct the user to fix the errors or offer to fix them yourself.
 
-### 2. GnomAD-Specific Code Review
+### 2. gnomAD-Specific Code Review
 
 Analyze `git diff --cached` with the following strict constraints:
 
 - **Data Fetching:** Are GraphQL queries optimized? gnomAD handles massive datasets; ensure we aren't over-fetching variant data.
 - **React Performance:** Are we unnecessarily re-rendering large data tables? Check for missing `useMemo` or `useCallback` hooks in complex genomic visualizations.
 - **Nomenclature:** Ensure genomic terms are handled correctly (e.g., distinguishing between a `variant_id`, `rsid`, and `transcript_id`).
+- Never assume GraphQL types. If a query is changed, verify it against the schema.
 
-### 3. Generate the Commit Message
+If there are any concerns here, do NOT proceed. Explain the concern to the user, how to fix it, and offer to fix it yourself.
 
-If the code passes review, write a commit message following the Conventional Commits format.
+### 3. Plan the commits
 
-**Format:**
-`<type>[optional scope]: <description>`
+Group the staged diff per the atomicity rules in `../../../AGENTS.md`. If this branch has more than one commit, write a short plan for the user to review (title + files + author per commit). If the commit grouping is ambiguous on how it should be split, present the options and ASK the user which they prefer before committing.
 
-**Types allowed:** `feat`, `fix`, `chore`, `refactor`, `docs`, `test`.
-**Common scopes:** `frontend`, `backend`, `pipelines`, `app`. This is not a comprehensive list, but those listed are the most commonly used, prefer using one of those if appropriate.
+### 4. Commit
 
-e.g. `feat(frontend): my description here`
+For each group, write a Conventional Commit message per `../../../AGENTS.md`, include the `Assisted-by:` trailer mentioned and be sure to NOT include a `Co-authored-by:` trailer for the LLM. Always stage deliberately, do not use `git add .` or `git add -am`. Either make the commits yourself, or output the exact command for the user to run, depending on their preference.
 
-Commit message title length should be limited to 72 characters. If neccesary, include additional context in the description of the commit.
+### 5. Report
 
-Per `../../AGENTS.md`, include an `Assisted-by: _____` tag in the description in the following format:
-
-`Assisted-by: AGENT_NAME:MODEL_VERSION`
-
-e.g.
-
-`Assisted-by: Claude:claude-3-opus`
-
-### 4. Final Output
-
-Output your review.
-
-1. List any warnings or performance concerns you found regarding genomic data rendering.
-2. If the code is good, output the suggested `git commit -m "..."` command for the user to run.
-
-## Constraints
-
-- Do not bypass the linter.
-- Never assume the structure of the GraphQL API; if you modify a query, verify the types.
+Output the commits made. Instruct the user on how to push the changes in their branch to the remote repo on GitHub.
