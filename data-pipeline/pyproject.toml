@@ -29,13 +29,13 @@ target-version = "py39"
 
 [tool.pyright]
 include = [
-"data-pipeline/src/data_pipeline/pipeline.py",
-"data-pipeline/src/data_pipeline/config.py",
-"data-pipeline/src/data_pipeline/helpers/write_schemas.py",
-"data-pipeline/src/data_pipeline/helpers/logging.py",
-"data-pipeline/src/data_pipeline/pipelines/gnomad_v4_variants.py",
-"data-pipeline/src/data_pipeline/pipelines/gnomad_v4_coverage.py",
-"data-pipeline/tests"
+  "src/data_pipeline/pipeline.py",
+  "src/data_pipeline/config.py",
+  "src/data_pipeline/helpers/write_schemas.py",
+  "src/data_pipeline/helpers/logging.py",
+  "src/data_pipeline/pipelines/gnomad_v4_variants.py",
+  "src/data_pipeline/pipelines/gnomad_v4_coverage.py",
+  "tests"
 ]
 reportMissingImports = true
 reportMissingTypeStubs = false
