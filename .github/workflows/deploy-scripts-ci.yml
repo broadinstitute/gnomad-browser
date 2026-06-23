@@ -15,24 +15,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.9
-      - name: Use pip cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: pip-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            pip-
+          enable-cache: true
+          cache-dependency-glob: 'uv.lock'
       - name: Install dependencies
-        run: |
-          pip install wheel
-          pip install -r requirements-dev.txt
-          pip install -r deploy/deployctl/requirements.txt
+        # Install the exact dependencies from uv.lock without re-resolving or updating
+        # the lockfile; fails if pyproject.toml has drifted from uv.lock.
+        run: uv sync --frozen
       - name: Check formatting
-        run: ruff format --check deploy/deployctl
+        run: uv run ruff format --check deploy/deployctl
       - name: Run Pylint
-        run: pylint --disable=fixme deploy/deployctl
+        run: uv run pylint --disable=fixme deploy/deployctl

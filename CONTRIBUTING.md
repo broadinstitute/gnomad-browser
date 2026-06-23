@@ -23,7 +23,7 @@ This should be enough to use the Docker Compose development environment. However
   ```
 
 - For python development, install [uv](https://docs.astral.sh/uv/). uv reads the
-  pinned Python version and dependencies from `data-pipeline/pyproject.toml`/`data-pipeline/uv.lock`, installing them into `data-pipeline/.venv`. There are two flows depending on whether you are consuming the
+  pinned Python version and dependencies from `pyproject.toml`/`uv.lock`, installing them into `.venv`. There are two flows depending on whether you are consuming the
   pinned dependencies or changing them.
 
   **Setting up (using the pinned dependencies).** This is what you want for normal
@@ -32,7 +32,6 @@ This should be enough to use the Docker Compose development environment. However
   `pyproject.toml` has drifted from `uv.lock`.
 
   ```
-  cd data-pipeline
   uv sync --frozen
   uv sync --group dev --frozen
   ```
