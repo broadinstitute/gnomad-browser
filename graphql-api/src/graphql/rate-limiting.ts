@@ -26,9 +26,9 @@ const increaseRateLimitCounter = (key: any, value: any): Promise<number> => {
   if (!rateLimitDb) {
     return Promise.resolve(0)
   }
-  return Promise.race([
-    new Promise((resolve, reject) => {
-      rateLimitDb
+  return Promise.race<number>([
+    new Promise<number>((resolve, reject) => {
+      rateLimitDb!
         .multi()
         .set(key, 0, 'EX', 59, 'NX')
         .incrby(key, value)
@@ -40,7 +40,7 @@ const increaseRateLimitCounter = (key: any, value: any): Promise<number> => {
           }
         })
     }),
-    new Promise((_resolve, reject) => {
+    new Promise<number>((_resolve, reject) => {
       setTimeout(() => {
         reject(new Error('Timed out'))
       }, 500)
