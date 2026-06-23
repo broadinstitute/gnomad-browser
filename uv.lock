@@ -406,6 +406,7 @@ dependencies = [
     { name = "cattrs" },
     { name = "elasticsearch" },
     { name = "hail" },
+    { name = "jinja2" },
     { name = "loguru" },
     { name = "tqdm" },
 ]
@@ -423,6 +424,7 @@ requires-dist = [
     { name = "cattrs" },
     { name = "elasticsearch", specifier = "~=7.17" },
     { name = "hail", specifier = "==0.2.127" },
+    { name = "jinja2", specifier = "==3.1.6" },
     { name = "loguru" },
     { name = "tqdm" },
 ]
