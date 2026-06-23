@@ -31,8 +31,8 @@ jobs:
         # the lockfile; fails if pyproject.toml has drifted from uv.lock.
         run: uv sync --frozen
       - name: Check formatting
-        run: uv run ruff format --check data-pipeline/src/data_pipeline data-pipeline/tests data-pipeline/caids reads development/scripts
+        run: uv run ruff format --check data-pipeline
       - name: Run Ruff
-        run: uv run ruff check data-pipeline/src/data_pipeline
+        run: uv run ruff check data-pipeline
       - name: Run Pyright
         run: uv run pyright --project data-pipeline
