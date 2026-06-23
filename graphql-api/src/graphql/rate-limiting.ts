@@ -6,21 +6,32 @@ import { isWhitelistedIP } from '../whitelist'
 
 let rateLimitDb: Redis
 
-if (config.REDIS_USE_SENTINEL) {
+let increaseRateLimitCounter = async (
+  _key: string,
+  _value: number
+): Promise<number> => 0
+
+
+if (config.REDIS_HOST && config.REDIS_USE_SENTINEL) {
   rateLimitDb = new Redis({
     sentinels: [{ host: config.REDIS_HOST, port: config.REDIS_PORT }],
     name: config.REDIS_GROUP_NAME,
     db: 2,
   })
-} else {
+} else if (config.REDIS_HOST) {
   rateLimitDb = new Redis({
     host: config.REDIS_HOST,
     port: config.REDIS_PORT,
     db: 2,
   })
+} else {
+  logger.warn('No redis configured for rate-limiting')
 }
 
-const increaseRateLimitCounter = (key: any, value: any) => {
+const increaseRateLimitCounter = (key: any, value: any): Promise<number> => {
+  if (!config.REDIS_HOST) {
+    return 0;
+  }
   return Promise.race([
     new Promise((resolve, reject) => {
       rateLimitDb
@@ -58,7 +69,6 @@ export const applyRateLimits = async (request: any) => {
       1
     )
 
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
     if (totalRequestsInWindow > config.MAX_REQUESTS_PER_MINUTE) {
       throw new UserVisibleError('Query rate limit exceeded. Please try again in a few minutes.')
     }
@@ -68,7 +78,6 @@ export const applyRateLimits = async (request: any) => {
       request.graphqlQueryCost || 0
     )
 
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
     if (totalCostInWindow > config.MAX_QUERY_COST_PER_MINUTE) {
       throw new UserVisibleError('Query rate limit exceeded. Please try again in a few minutes.')
     }

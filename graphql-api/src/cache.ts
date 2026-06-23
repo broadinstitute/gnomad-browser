@@ -76,7 +76,7 @@ if (config.REDIS_HOST) {
     config.CACHE_REQUEST_TIMEOUT
   )
 } else {
-  logger.warn('No cache configured')
+  logger.warn('No redis configured for caching')
 }
 
 export const withCache = (

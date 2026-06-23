@@ -33,7 +33,7 @@ const config: Record<string, any> = {
   REDIS_USE_SENTINEL: env.REDIS_USE_SENTINEL,
   CACHE_REQUEST_TIMEOUT: JSON.parse(env.CACHE_REQUEST_TIMEOUT || '15') * 1000,
   // Web server
-  PORT: JSON.parse(env.PORT || '8000'),
+  PORT: JSON.parse(env.PORT || '8010'),
   TRUST_PROXY: parseProxyConfig(env.TRUST_PROXY || 'false'),
   // Rate limiting
   MAX_CONCURRENT_ELASTICSEARCH_REQUESTS: JSON.parse(env.MAX_CONCURRENT_ES_REQUESTS || '100'),
