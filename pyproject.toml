@@ -10,7 +10,8 @@ dependencies = [
   "loguru",
   "attrs",
   "cattrs",
-  "Jinja2==3.1.6"
+  "Jinja2==3.1.6",
+  "setuptools<81",
 ]
 
 [dependency-groups]
