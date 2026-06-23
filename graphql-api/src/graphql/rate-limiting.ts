@@ -47,7 +47,7 @@ if (config.REDIS_HOST) {
     ])
   }
 } else {
-  logger.warn('No cache configured')
+  logger.warn('No redis configured for rate-limiting')
 }
 
 export const applyRateLimits = async (request: any) => {

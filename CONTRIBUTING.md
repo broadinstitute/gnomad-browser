@@ -69,11 +69,13 @@ Because of the size of the gnomAD database, API development is usually done usin
     ELASTICSEARCH_PASSWORD=$(./deployctl elasticsearch get-password)
     ```
 
+  - Follow the [instructions](./deploy/docs/ElasticsearchConnection.md) to establish a connection to production
+  elasticsearch with port-forwarding.
+
   - Start the local API:
 
     ```
-    cd graphql-api
-    ELASTICSEARCH_USERNAME=elastic ELASTICSEARCH_PASSWORD=$(../deployctl elasticsearch get-password) ./start.sh
+    ELASTICSEARCH_USERNAME=elastic ELASTICSEARCH_PASSWORD=$(./deployctl elasticsearch get-password) ELASTICSEARCH_URL=http://localhost:9200 pnpm start:api
     ```
 
 ## Data pipeline
