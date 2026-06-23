@@ -35,7 +35,6 @@ include = [
   "data-pipeline/src/data_pipeline/helpers/logging.py",
   "data-pipeline/src/data_pipeline/pipelines/gnomad_v4_variants.py",
   "data-pipeline/src/data_pipeline/pipelines/gnomad_v4_coverage.py",
-  "data-pipeline/tests"
 ]
 reportMissingImports = true
 reportMissingTypeStubs = false
