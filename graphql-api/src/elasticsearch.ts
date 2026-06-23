@@ -64,7 +64,7 @@ const scheduleElasticsearchRequest = async (fn: any, operation: string) => {
   }, config.ELASTICSEARCH_QUEUE_TIMEOUT)
 
   try {
-    return await esLimiter.schedule(async () => {
+    return esLimiter.schedule(async () => {
       clearTimeout(timeout)
 
       if (canceled) return
