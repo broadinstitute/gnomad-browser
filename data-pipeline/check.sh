@@ -19,3 +19,10 @@ uv run --project .. ruff format caids
 echo "┏━━━ Running ruff ━━━━━━━━━━━━━━━━━━━"
 uv run --project .. ruff check src/data_pipeline --fix
 uv run --project .. ruff check caids --fix
+
+echo "┏━━━ Running pytest ━━━━━━━━━━━━━━━━━━━"
+if [[ "$1" == "--mock-data" ]]; then
+	uv run --project .. pytest -k "mock_data"
+else
+	uv run --project .. pytest
+fi
