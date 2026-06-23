@@ -4,13 +4,7 @@ import { UserVisibleError } from '../errors'
 import logger from '../logger'
 import { isWhitelistedIP } from '../whitelist'
 
-let rateLimitDb: Redis
-
-let increaseRateLimitCounter = async (
-  _key: string,
-  _value: number
-): Promise<number> => 0
-
+let rateLimitDb: Redis | undefined;
 
 if (config.REDIS_HOST && config.REDIS_USE_SENTINEL) {
   rateLimitDb = new Redis({
@@ -29,8 +23,8 @@ if (config.REDIS_HOST && config.REDIS_USE_SENTINEL) {
 }
 
 const increaseRateLimitCounter = (key: any, value: any): Promise<number> => {
-  if (!config.REDIS_HOST) {
-    return 0;
+  if (!rateLimitDb) {
+    return Promise.resolve(0)
   }
   return Promise.race([
     new Promise((resolve, reject) => {
