@@ -11,6 +11,8 @@ dependencies = [
   "attrs",
   "cattrs",
   "Jinja2==3.1.6",
+  # setuptools/pkg_resources issues: https://github.com/pypa/setuptools/issues/5174
+  # our pinned version of hail imports `pkg_resources`.
   "setuptools<81",
 ]
 
