@@ -7,7 +7,7 @@ if [[ -n ${DEBUG:-""} ]]; then
 	# debugger for Node that's built into Chrome.
 	pnpm node -r ts-node/register --inspect ./src/app.ts
 elif [[ -n ${PROFILE:-""} ]]; then
-	pnpm node -r ts-node/register --cpu-prof ./src/app.ts
+	pnpm node -r ts-node/register --inspect --cpu-prof --cpu-prof-dir=./profiles ./src/app.ts
 else
 	pnpm ts-node ./src/app.ts
 fi

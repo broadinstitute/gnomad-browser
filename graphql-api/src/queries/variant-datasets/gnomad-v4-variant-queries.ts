@@ -481,6 +481,7 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
         sort: [{ 'locus.position': { order: 'asc' } }],
       },
     })
+    console.log('huit')
 
     const shapedHits = hits
       .map((hit: any) => hit._source.value)

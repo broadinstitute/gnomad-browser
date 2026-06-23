@@ -45,42 +45,88 @@ export const catchNotFound = (err: any) => {
   throw err
 }
 
-const scheduleElasticsearchRequest = (fn: any) => {
+const scheduleElasticsearchRequest = (
+  fn: any,
+  label = 'elasticsearch',
+) => {
   return new Promise((resolve, reject) => {
     let canceled = false
 
-    // If task sits in the queue for more than 30s, cancel it and notify the user.
+    const queuedAt = Date.now()
+
+    logger.info({
+      label,
+      event: 'es_request_queued',
+      queuedAt,
+    })
+
     const timeout = setTimeout(() => {
       canceled = true
-      logger.warn('Elasticsearch request timed out in queue')
+      logger.warn({
+        label,
+        event: 'es_request_queue_timeout',
+      })
       reject(new UserVisibleError('Request timed out'))
     }, config.ELASTICSEARCH_QUEUE_TIMEOUT)
 
     esLimiter
-      .schedule(() => {
-        // When the request is taken out of the queue...
+      .schedule(async () => {
+        const startExec = Date.now()
+        const queueWait = startExec - queuedAt
 
-        // Cancel timeout timer.
+        logger.info({
+          label,
+          event: 'es_request_started',
+          queuedAt,
+          startExec,
+          queueWait,
+        })
+
         clearTimeout(timeout)
 
-        // If the timeout has expired since the request was queued, do nothing.
         if (canceled) {
           return Promise.resolve(undefined)
         }
 
-        // Otherwise, make the request.
-        return fn()
+        try {
+          const result = await fn()
+
+          const endExec = Date.now()
+
+          logger.info({
+            label,
+            event: 'es_request_finished',
+            startExec,
+            endExec,
+            duration: endExec - startExec,
+          })
+
+          return result
+        } catch (err) {
+          const endExec = Date.now()
+
+          logger.error({
+            label,
+            event: 'es_request_failed',
+            startExec,
+            endExec,
+            duration: endExec - startExec,
+            error: err,
+          })
+
+          throw err
+        }
       })
       .then(resolve, (err: any) => {
-        // If Bottleneck refuses to schedule the request because the queue is full,
-        // notify the user and cancel the timeout timer.
         if (err.message === 'This job has been dropped by Bottleneck') {
           clearTimeout(timeout)
-          logger.warn('Elasticsearch request dropped')
+          logger.warn({
+            label,
+            event: 'es_request_dropped',
+          })
           reject(new UserVisibleError('Service overloaded'))
         }
 
-        // Otherwise, forward the error.
         reject(err)
       })
   })
@@ -91,7 +137,7 @@ const limitedElastic = {
   indices: elastic.indices,
   clearScroll: elastic.clearScroll.bind(elastic),
   search: (...args: Parameters<typeof elastic.search>) =>
-    scheduleElasticsearchRequest(() => elastic.search(...args)).then((response) => {
+    scheduleElasticsearchRequest(() => elastic.search(...args), 'search').then((response) => {
       // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       if (response.body.timed_out) {
         throw new Error('Elasticsearch search timed out')
@@ -104,7 +150,7 @@ const limitedElastic = {
       return response
     }),
   scroll: (...args: Parameters<typeof elastic.scroll>) =>
-    scheduleElasticsearchRequest(() => elastic.scroll(...args)).then((response) => {
+    scheduleElasticsearchRequest(() => elastic.scroll(...args), 'scroll').then((response) => {
       // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       if (response.body.timed_out) {
         throw new Error('Elasticsearch scroll timed out')
@@ -117,7 +163,7 @@ const limitedElastic = {
       return response
     }),
   count: (...args: Parameters<typeof elastic.count>) =>
-    scheduleElasticsearchRequest(() => elastic.count(...args)).then((response) => {
+    scheduleElasticsearchRequest(() => elastic.count(...args), 'count').then((response) => {
       // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       // eslint-disable-next-line no-underscore-dangle
       if (response.body._shards.successful < response.body._shards.total) {
@@ -126,9 +172,9 @@ const limitedElastic = {
       return response
     }),
   get: (...args: Parameters<typeof elastic.get>) =>
-    scheduleElasticsearchRequest(() => elastic.get(...args)),
+    scheduleElasticsearchRequest(() => elastic.get(...args), 'get'),
   mget: (...args: Parameters<typeof elastic.mget>) =>
-    scheduleElasticsearchRequest(() => elastic.mget(...args)),
+    scheduleElasticsearchRequest(() => elastic.mget(...args), 'mget'),
 }
 
 export { limitedElastic as client }

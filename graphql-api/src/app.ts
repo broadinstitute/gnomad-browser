@@ -9,20 +9,9 @@ import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
 
 import { loadWhitelist } from './whitelist'
-
 import startEsStatsPolling from './esPoll'
 
 const STATS_POLL_INTERVAL = 5000
-
-process.on('uncaughtException', (error) => {
-  logger.error(error)
-  process.exit(1)
-})
-
-process.on('unhandledRejection', (error) => {
-  logger.error(error)
-  process.exit(1)
-})
 
 const app = express()
 app.use(compression())
@@ -30,15 +19,10 @@ app.use(cors())
 
 app.set('trust proxy', config.TRUST_PROXY)
 
-// Health check endpoint for load balancer.
-// GCE load balancers require a 200 response from the health check endpoint, so this must be
-// registered before the HTTP=>HTTPS redirect middleware, which would return a 30x response.
 app.get('/health/ready', (_request: any, response: any) => {
   response.send('ok')
 })
 
-// Log requests
-// Add logging here to avoid logging health checks
 app.use(function requestLogMiddleware(request: any, response: any, next: any) {
   request.startAt = process.hrtime()
   response.startAt = undefined
@@ -91,4 +75,33 @@ if (!process.env.NO_ES_STATS_POLL) {
   startEsStatsPolling(STATS_POLL_INTERVAL)
 }
 
-app.listen(config.PORT)
+const server = app.listen(config.PORT, () => {
+  logger.info(`Server listening on port ${config.PORT}`)
+})
+
+let shuttingDown = false
+function shutdown(signal: string, error?: any) {
+  if (shuttingDown) return
+  shuttingDown = true
+  logger.info(`Received ${signal}. Shutting down gracefully...`)
+  if (error) {
+    logger.error(error)
+  }
+  server.close(() => {
+    logger.info('HTTP server closed')
+    process.exit(error ? 1 : 0)
+  })
+  setTimeout(() => {
+    logger.error('Forced shutdown after timeout')
+    process.exit(1)
+  }, 3000).unref()
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGINT', () => shutdown('SIGINT'))
+process.on('uncaughtException', (error) => {
+  shutdown('uncaughtException', error)
+})
+process.on('unhandledRejection', (error) => {
+  shutdown('unhandledRejection', error)
+})
