@@ -398,45 +398,6 @@ wheels = [
 ]
 
 [[package]]
-name = "data-pipeline"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "attrs" },
-    { name = "cattrs" },
-    { name = "elasticsearch" },
-    { name = "hail" },
-    { name = "jinja2" },
-    { name = "loguru" },
-    { name = "tqdm" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "attrs" },
-    { name = "cattrs" },
-    { name = "elasticsearch", specifier = "~=7.17" },
-    { name = "hail", specifier = "==0.2.127" },
-    { name = "jinja2", specifier = "==3.1.6" },
-    { name = "loguru" },
-    { name = "tqdm" },
-]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "pyright" },
-    { name = "pytest" },
-    { name = "ruff", specifier = "==0.15.18" },
-]
-
-[[package]]
 name = "decorator"
 version = "4.4.2"
 source = { registry = "https://pypi.org/simple" }
@@ -514,6 +475,45 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/79/bd/bcc926f87027fad5e59926ff12d136e1082a115025d33c032d1cd69ab377/frozenlist-1.8.0-cp39-cp39-win_amd64.whl", hash = "sha256:7398c222d1d405e796970320036b1b563892b65809d9e5261487bb2c7f7b5c6a", size = 44121, upload-time = "2025-10-06T05:38:14.572Z" },
     { url = "https://files.pythonhosted.org/packages/4c/07/9c2e4eb7584af4b705237b971b89a4155a8e57599c4483a131a39256a9a0/frozenlist-1.8.0-cp39-cp39-win_arm64.whl", hash = "sha256:b4f3b365f31c6cd4af24545ca0a244a53688cad8834e32f56831c4923b50a103", size = 40312, upload-time = "2025-10-06T05:38:15.699Z" },
     { url = "https://files.pythonhosted.org/packages/9a/9a/e35b4a917281c0b8419d4207f4334c8e8c5dbf4f3f5f9ada73958d937dcc/frozenlist-1.8.0-py3-none-any.whl", hash = "sha256:0c18a16eab41e82c295618a77502e17b195883241c563b00f0aa5106fc4eaa0d", size = 13409, upload-time = "2025-10-06T05:38:16.721Z" },
+]
+
+[[package]]
+name = "gnomad-browser-python"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "attrs" },
+    { name = "cattrs" },
+    { name = "elasticsearch" },
+    { name = "hail" },
+    { name = "jinja2" },
+    { name = "loguru" },
+    { name = "tqdm" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "attrs" },
+    { name = "cattrs" },
+    { name = "elasticsearch", specifier = "~=7.17" },
+    { name = "hail", specifier = "==0.2.127" },
+    { name = "jinja2", specifier = "==3.1.6" },
+    { name = "loguru" },
+    { name = "tqdm" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "ruff", specifier = "==0.15.18" },
 ]
 
 [[package]]
