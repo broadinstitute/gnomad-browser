@@ -60,12 +60,11 @@ app.use((req: any, res: any, next: any) => {
       },
     })
     next()
-  });
+  })
 })
 
-// Log requests
-// Add logging here to avoid logging health checks
 app.use((req: any, res: any, next: any) => {
+  // NB: ALS propagation can occasionally surprise in third party contexts?
   const ctx = requestStore.getStore()
   onFinished(res, () => {
     if (!ctx) return
