@@ -1,8 +1,11 @@
+import { AsyncLocalStorage } from 'async_hooks'
 import compression from 'compression'
 import cors from 'cors'
+import { randomUUID } from 'crypto'
 import express from 'express'
 import onFinished from 'on-finished'
 import onHeaders from 'on-headers'
+import { performance } from 'perf_hooks'
 import config from './config'
 import { client as esClient } from './elasticsearch'
 import graphQLApi from './graphql/graphql-api'
@@ -20,6 +23,11 @@ process.on('unhandledRejection', (error) => {
   process.exit(1)
 })
 
+const requestStore = new AsyncLocalStorage<{
+  requestId: string
+  startAt: number
+}>()
+
 const app = express()
 app.use(compression())
 app.use(cors())
@@ -33,54 +41,66 @@ app.get('/health/ready', (_request: any, response: any) => {
   response.send('ok')
 })
 
+app.use((req: any, res: any, next: any) => {
+  const store = {
+    requestId: randomUUID(),
+    startAt: performance.now(),
+  }
+  res.setHeader('x-request-id', store.requestId)
+  requestStore.run(store, () => {
+    logger.info({
+      requestId: store.requestId,
+      event: 'requestStart',
+      httpRequest: {
+        requestMethod: req.method,
+        requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
+        userAgent: req.headers['user-agent'],
+        remoteIp: req.ip,
+        protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
+      },
+    })
+    next()
+  });
+})
+
 // Log requests
 // Add logging here to avoid logging health checks
-app.use(function requestLogMiddleware(request: any, response: any, next: any) {
-  request.startAt = process.hrtime()
-  response.startAt = undefined
-  onHeaders(response, () => {
-    response.startAt = process.hrtime()
-  })
-
-  onFinished(response, () => {
+app.use((req: any, res: any, next: any) => {
+  const ctx = requestStore.getStore()
+  onFinished(res, () => {
+    if (!ctx) return
     logger.info({
+      requestId: ctx.requestId,
+      event: 'requestEnd',
+      latencyMs: performance.now() - ctx.startAt,
       httpRequest: {
-        requestMethod: request.method,
-        requestUrl: `${request.protocol}://${request.hostname}${
-          request.originalUrl || request.url
-        }`,
-        status: response.statusCode,
-        userAgent: request.headers['user-agent'],
-        remoteIp: request.ip,
-        referer: request.headers.referer || request.headers.referrer,
-        latency:
-          request.startAt && response.startAt
-            ? `${(
-                response.startAt[0] -
-                request.startAt[0] +
-                (response.startAt[1] - request.startAt[1]) * 1e-9
-              ).toFixed(3)}s`
-            : undefined,
-        protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
+        requestMethod: req.method,
+        requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
+        status: res.statusCode,
+        userAgent: req.headers['user-agent'],
+        remoteIp: req.ip,
+        referer: req.headers.referer || req.headers.referrer,
+        protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
       },
-      graphqlRequest: request.graphqlParams
-        ? {
-            graphqlQueryOperationName: request.graphqlParams.operationName,
-            graphqlQueryString: request.graphqlParams.query,
-            graphqlQueryVariables: request.graphqlParams.variables,
-            graphqlQueryCost: request.graphqlQueryCost,
-          }
-        : undefined,
     })
   })
-
   next()
 })
 
 loadWhitelist()
 
-const context = { esClient }
-
-app.use('/api/', graphQLApi({ context }))
+app.use('/api/', graphQLApi({
+  context: (req: any) => {
+    const ctx = requestStore.getStore()
+    return {
+      esClient,
+      // requestId resolution order:
+      // 1) AsyncLocalStorage (authoritative per-request value within this process)
+      // 2) incoming x-request-id header (for cross-service trace continuity when ALS is unavailable)
+      // 3) null (explicit absence like tests, avoids silently undefined values in logs/metrics)
+      requestId: ctx?.requestId ?? req.headers['x-request-id'] ?? null,
+    }
+  },
+}))
 
 app.listen(config.PORT)
