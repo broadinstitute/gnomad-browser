@@ -43,8 +43,6 @@ This should be enough to use the Docker Compose development environment. However
   committed alongside the `pyproject.toml` change.
 
   ```
-  cd data-pipeline
-
   uv add <package>                         # add a runtime dependency
   uv add --dev <package>                   # add a development-only dependency
   uv remove <package>                      # remove a dependency
@@ -120,7 +118,7 @@ Some other conventions are enforced using [ESLint](https://eslint.org/) for Java
 
 - ESLint: `pnpm lint:js`
 - Stylelint: `pnpm lint:css`
-- Pylint: `pylint data-pipeline/src/data_pipeline`
+- ruff: `uv run ruff check data-pipeline`
 
 ## Tests
 
