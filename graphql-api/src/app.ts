@@ -1,4 +1,3 @@
-import { AsyncLocalStorage } from 'async_hooks'
 import compression from 'compression'
 import cors from 'cors'
 import { randomUUID } from 'crypto'
@@ -10,7 +9,7 @@ import config from './config'
 import { client as esClient } from './elasticsearch'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
-
+import { requestStore } from './request-context'
 import { loadWhitelist } from './whitelist'
 
 process.on('uncaughtException', (error) => {
@@ -22,11 +21,6 @@ process.on('unhandledRejection', (error) => {
   logger.error(error)
   process.exit(1)
 })
-
-const requestStore = new AsyncLocalStorage<{
-  requestId: string
-  startAt: number
-}>()
 
 const app = express()
 app.use(compression())
@@ -56,6 +50,7 @@ app.use((req: any, res: any, next: any) => {
         requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
         userAgent: req.headers['user-agent'],
         remoteIp: req.ip,
+        referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
       },
     })
@@ -75,11 +70,11 @@ app.use((req: any, res: any, next: any) => {
       httpRequest: {
         requestMethod: req.method,
         requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
-        status: res.statusCode,
         userAgent: req.headers['user-agent'],
         remoteIp: req.ip,
         referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
+        status: res.statusCode,
       },
     })
   })
@@ -93,11 +88,7 @@ app.use('/api/', graphQLApi({
     const ctx = requestStore.getStore()
     return {
       esClient,
-      // requestId resolution order:
-      // 1) AsyncLocalStorage (authoritative per-request value within this process)
-      // 2) incoming x-request-id header (for cross-service trace continuity when ALS is unavailable)
-      // 3) null (explicit absence like tests, avoids silently undefined values in logs/metrics)
-      requestId: ctx?.requestId ?? req.headers['x-request-id'] ?? null,
+      requestId: ctx?.requestId ?? null,
     }
   },
 }))
