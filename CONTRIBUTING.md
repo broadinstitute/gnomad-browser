@@ -43,8 +43,6 @@ This should be enough to use the Docker Compose development environment. However
   committed alongside the `pyproject.toml` change.
 
   ```
-  cd data-pipeline
-
   uv add <package>                         # add a runtime dependency
   uv add --dev <package>                   # add a development-only dependency
   uv remove <package>                      # remove a dependency
