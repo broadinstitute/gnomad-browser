@@ -49,76 +49,76 @@ export const catchNotFound = (err: any) => {
 const scheduleElasticsearchRequest = (fn: any, operation: string) => {
   const ctx = getRequestContext()
   const queuedAt = performance.now()
+  let canceled = false
 
-  return new Promise((resolve, reject) => {
-    let canceled = false
+  // If task sits in the queue for more than 30s, cancel it and notify the user.
+  const timeout = setTimeout(() => {
+    canceled = true
 
-    const timeout = setTimeout(() => {
-      canceled = true
+    logger.warn({
+      requestId: ctx?.requestId,
+      event: 'esRequestQueueTimeout',
+      operation,
+      queueMs: performance.now() - queuedAt,
+    })
+  }, config.ELASTICSEARCH_QUEUE_TIMEOUT)
 
-      logger.warn({
-        requestId: ctx?.requestId,
-        event: 'esRequestQueueTimeout',
-        operation,
-        queueMs: performance.now() - queuedAt,
-      })
+  return esLimiter
+    .schedule(() => {
+      const startedAt = performance.now()
 
-      reject(new UserVisibleError('Request timed out'))
-    }, config.ELASTICSEARCH_QUEUE_TIMEOUT)
-
-    esLimiter.schedule(async () => {
       clearTimeout(timeout)
 
       if (canceled) {
-        return resolve(undefined)
+        return Promise.resolve(undefined)
       }
 
-      const startedAt = performance.now()
+      return fn()
+        .then((result: any) => {
+          logger.info({
+            requestId: ctx?.requestId,
+            event: 'esRequestEnd',
+            operation,
+            queueMs: startedAt - queuedAt,
+            executionMs: performance.now() - startedAt,
+            totalMs: performance.now() - queuedAt,
+          })
 
-      try {
-        const result = await fn()
-
-        logger.info({
-          requestId: ctx?.requestId,
-          event: 'esRequestEnd',
-          operation,
-          queueMs: startedAt - queuedAt,
-          executionMs: performance.now() - startedAt,
-          totalMs: performance.now() - queuedAt,
+          return result
         })
+        .catch((error: any) => {
+          logger.error({
+            requestId: ctx?.requestId,
+            event: 'esRequestError',
+            operation,
+            queueMs: startedAt - queuedAt,
+            executionMs: performance.now() - startedAt,
+            totalMs: performance.now() - queuedAt,
+            error,
+          })
 
-        resolve(result)
-      } catch (error) {
-        logger.error({
-          requestId: ctx?.requestId,
-          event: 'esRequestError',
-          operation,
-          queueMs: startedAt - queuedAt,
-          executionMs: performance.now() - startedAt,
-          totalMs: performance.now() - queuedAt,
-          error,
+          throw error
         })
-
-        reject(error)
-      }
-    }).catch((err: any) => {
-      if (err?.message === 'This job has been dropped by Bottleneck') {
+    })
+    .then(
+      (result: any) => result,
+      (err: any) => {
         clearTimeout(timeout)
 
-        logger.warn({
-          requestId: ctx?.requestId,
-          event: 'esRequestDropped',
-          operation,
-          queueMs: performance.now() - queuedAt,
-        })
+        if (err?.message === 'This job has been dropped by Bottleneck') {
+          logger.warn({
+            requestId: ctx?.requestId,
+            event: 'esRequestDropped',
+            operation,
+            queueMs: performance.now() - queuedAt,
+          })
 
-        reject(new UserVisibleError('Service overloaded'))
-        return
+          throw new UserVisibleError('Service overloaded')
+        }
+
+        throw err
       }
-
-      reject(err)
-    })
-  })
+    )
 }
 
 // This wraps the ES methods used by the API and sends them through the rate limiter
