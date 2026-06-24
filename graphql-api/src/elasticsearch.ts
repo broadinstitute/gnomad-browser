@@ -135,11 +135,9 @@ const limitedElastic = {
   clearScroll: elastic.clearScroll.bind(elastic),
   search: (...args: Parameters<typeof elastic.search>) =>
     scheduleElasticsearchRequest(() => elastic.search(...args), 'search').then((response) => {
-      // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       if (response.body.timed_out) {
         throw new Error('Elasticsearch search timed out')
       }
-      // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       // eslint-disable-next-line no-underscore-dangle
       if (response.body._shards.successful < response.body._shards.total) {
         throw new Error('Elasticsearch search partially failed')
@@ -148,11 +146,9 @@ const limitedElastic = {
     }),
   scroll: (...args: Parameters<typeof elastic.scroll>) =>
     scheduleElasticsearchRequest(() => elastic.scroll(...args), 'scroll').then((response) => {
-      // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       if (response.body.timed_out) {
         throw new Error('Elasticsearch scroll timed out')
       }
-      // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       // eslint-disable-next-line no-underscore-dangle
       if (response.body._shards.successful < response.body._shards.total) {
         throw new Error('Elasticsearch scroll partially failed')
@@ -161,7 +157,6 @@ const limitedElastic = {
     }),
   count: (...args: Parameters<typeof elastic.count>) =>
     scheduleElasticsearchRequest(() => elastic.count(...args), 'count').then((response) => {
-      // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
       // eslint-disable-next-line no-underscore-dangle
       if (response.body._shards.successful < response.body._shards.total) {
         throw new Error('Elasticsearch count partially failed')

@@ -30,14 +30,16 @@ app.set('trust proxy', config.TRUST_PROXY)
 // Health check endpoint for load balancer.
 // GCE load balancers require a 200 response from the health check endpoint, so this must be
 // registered before the HTTP=>HTTPS redirect middleware, which would return a 30x response.
-app.get('/health/ready', (_request: any, response: any) => {
-  response.send('ok')
+app.get('/health/ready', (_req: any, res: any) => {
+  res.send('ok')
 })
 
 app.use((req: any, res: any, next: any) => {
   const store = {
     requestId: randomUUID(),
     startAt: performance.now(),
+    startCpu: process.cpuUsage(),
+    startHeapUsed: process.memoryUsage().heapUsed,
   }
   res.setHeader('x-request-id', store.requestId)
   requestStore.run(store, () => {
@@ -51,12 +53,12 @@ app.use((req: any, res: any, next: any) => {
         remoteIp: req.ip,
         referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
-        graphqlRequest: request.graphqlParams
+        graphqlRequest: req.graphqlParams
           ? {
-              graphqlQueryOperationName: request.graphqlParams.operationName,
-              graphqlQueryString: request.graphqlParams.query,
-              graphqlQueryVariables: request.graphqlParams.variables,
-              graphqlQueryCost: request.graphqlQueryCost,
+              graphqlQueryOperationName: req.graphqlParams.operationName,
+              graphqlQueryString: req.graphqlParams.query,
+              graphqlQueryVariables: req.graphqlParams.variables,
+              graphqlQueryCost: req.graphqlQueryCost,
             }
           : undefined,
       },
@@ -70,10 +72,19 @@ app.use((req: any, res: any, next: any) => {
   const ctx = requestStore.getStore()
   onFinished(res, () => {
     if (!ctx) return
+
+    // Process-wide resources consumed while this request was in flight.
+    // Concurrent requests contribute to these values (both cpu/memory)!
+    const memory = process.memoryUsage()
+    const cpu = process.cpuUsage(ctx.startCpu)
     logger.info({
       requestId: ctx.requestId,
       event: 'requestEnd',
       latencyMs: performance.now() - ctx.startAt,
+      cpuUserMicros: cpu.user,
+      cpuSystemMicros: cpu.system,
+      heapUsed: memory.heapUsed,
+      heapDeltaBytes:  memory.heapUsed - ctx.startHeapUsed,
       httpRequest: {
         requestMethod: req.method,
         requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
@@ -81,15 +92,16 @@ app.use((req: any, res: any, next: any) => {
         remoteIp: req.ip,
         referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
-        graphqlRequest: request.graphqlParams
+        graphqlRequest: req.graphqlParams
           ? {
-              graphqlQueryOperationName: request.graphqlParams.operationName,
-              graphqlQueryString: request.graphqlParams.query,
-              graphqlQueryVariables: request.graphqlParams.variables,
-              graphqlQueryCost: request.graphqlQueryCost,
+              graphqlQueryOperationName: req.graphqlParams.operationName,
+              graphqlQueryString: req.graphqlParams.query,
+              graphqlQueryVariables: req.graphqlParams.variables,
+              graphqlQueryCost: req.graphqlQueryCost,
             }
           : undefined,
         status: res.statusCode,
+        responseSizeBytes: res.getHeader('content-length')
       },
     })
   })
