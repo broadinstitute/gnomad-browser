@@ -60,6 +60,8 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
       event: 'esRequestQueueTimeout',
       operation,
       queueMs: performance.now() - queuedAt,
+      queued: esLimiter.queued(),
+      running: esLimiter.running(),
     })
   }, config.ELASTICSEARCH_QUEUE_TIMEOUT)
 
@@ -82,6 +84,8 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
             queueMs: startedAt - queuedAt,
             executionMs: performance.now() - startedAt,
             totalMs: performance.now() - queuedAt,
+            queued: esLimiter.queued(),
+            running: esLimiter.running(),
           })
 
           return result
@@ -94,6 +98,8 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
             queueMs: startedAt - queuedAt,
             executionMs: performance.now() - startedAt,
             totalMs: performance.now() - queuedAt,
+            queued: esLimiter.queued(),
+            running: esLimiter.running(),
             error,
           })
 
@@ -111,6 +117,8 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
             event: 'esRequestDropped',
             operation,
             queueMs: performance.now() - queuedAt,
+            queued: esLimiter.queued(),
+            running: esLimiter.running(),
           })
 
           throw new UserVisibleError('Service overloaded')
