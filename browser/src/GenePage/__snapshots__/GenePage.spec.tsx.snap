@@ -9100,84 +9100,130 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -12199,8 +12245,129 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
+        <div
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        >
+          <div
+            className="sc-ggWZvA faMivF"
+          >
+            <div
+              className="sc-dTvVRJ ejoLSV"
+            >
+              <div
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                >
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
+                  />
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
           className="sc-ggWZvA faMivF"
         >
@@ -12216,23 +12383,38 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
               >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
+                <span>
+                  Regional missense constraint
+                </span>
                 <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                  className="InfoButton__Button-sc-13t5e82-0 faZoWY"
                   onClick={[Function]}
                   type="button"
                 >
-                  Show
-                   transcripts
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src="test-file-stub"
+                  />
+                  <span
+                    style={
+                      {
+                        "border": "0",
+                        "clip": "rect(0 0 0 0)",
+                        "height": "1px",
+                        "margin": "-1px",
+                        "overflow": "hidden",
+                        "padding": "0",
+                        "position": "absolute",
+                        "whiteSpace": "nowrap",
+                        "width": "1px",
+                      }
+                    }
+                  >
+                    More information
+                  </span>
                 </button>
               </div>
             </div>
@@ -12245,133 +12427,43 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
               >
                 <svg
-                  height={20}
+                  height={35}
                   width={799}
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
-                  />
+                  <text
+                    dy="1.0rem"
+                    textAnchor="middle"
+                    x={399.5}
+                    y={17.5}
+                  >
+                    <tspan>
+                      This gene was not searched for evidence of regional missense constraint. See our
+                       
+                    </tspan>
+                    <tspan
+                      fill="#0000ff"
+                    >
+                      <a
+                        className="Link-sc-14lgydv-0 jtwqlm"
+                        href="/help"
+                        onClick={[Function]}
+                      >
+                        help page
+                      </a>
+                    </tspan>
+                    <tspan>
+                       for additional information.
+                    </tspan>
+                  </text>
                 </svg>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="sc-ggWZvA faMivF"
-      >
-        <div
-          className="sc-dTvVRJ ejoLSV"
-        >
-          <div
-            className="sc-hjsuWn ccbdKG"
-            style={
-              {
-                "width": 115,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
-            >
-              <span>
-                Regional missense constraint
-              </span>
-              <button
-                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-                onClick={[Function]}
-                type="button"
-              >
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  src="test-file-stub"
-                />
-                <span
-                  style={
-                    {
-                      "border": "0",
-                      "clip": "rect(0 0 0 0)",
-                      "height": "1px",
-                      "margin": "-1px",
-                      "overflow": "hidden",
-                      "padding": "0",
-                      "position": "absolute",
-                      "whiteSpace": "nowrap",
-                      "width": "1px",
-                    }
-                  }
-                >
-                  More information
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            className="sc-jJLAfE KfhrV"
-            style={
-              {
-                "width": 799,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
-            >
-              <svg
-                height={35}
-                width={799}
-              >
-                <text
-                  dy="1.0rem"
-                  textAnchor="middle"
-                  x={399.5}
-                  y={17.5}
-                >
-                  <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
-                  </tspan>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -13855,8 +13947,129 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
+        <div
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        >
+          <div
+            className="sc-ggWZvA faMivF"
+          >
+            <div
+              className="sc-dTvVRJ ejoLSV"
+            >
+              <div
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                >
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
+                  />
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
           className="sc-ggWZvA faMivF"
         >
@@ -13872,23 +14085,38 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
               >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
+                <span>
+                  Regional missense constraint
+                </span>
                 <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                  className="InfoButton__Button-sc-13t5e82-0 faZoWY"
                   onClick={[Function]}
                   type="button"
                 >
-                  Show
-                   transcripts
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src="test-file-stub"
+                  />
+                  <span
+                    style={
+                      {
+                        "border": "0",
+                        "clip": "rect(0 0 0 0)",
+                        "height": "1px",
+                        "margin": "-1px",
+                        "overflow": "hidden",
+                        "padding": "0",
+                        "position": "absolute",
+                        "whiteSpace": "nowrap",
+                        "width": "1px",
+                      }
+                    }
+                  >
+                    More information
+                  </span>
                 </button>
               </div>
             </div>
@@ -13901,133 +14129,43 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
               >
                 <svg
-                  height={20}
+                  height={35}
                   width={799}
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
-                  />
+                  <text
+                    dy="1.0rem"
+                    textAnchor="middle"
+                    x={399.5}
+                    y={17.5}
+                  >
+                    <tspan>
+                      This gene was not searched for evidence of regional missense constraint. See our
+                       
+                    </tspan>
+                    <tspan
+                      fill="#0000ff"
+                    >
+                      <a
+                        className="Link-sc-14lgydv-0 jtwqlm"
+                        href="/help"
+                        onClick={[Function]}
+                      >
+                        help page
+                      </a>
+                    </tspan>
+                    <tspan>
+                       for additional information.
+                    </tspan>
+                  </text>
                 </svg>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="sc-ggWZvA faMivF"
-      >
-        <div
-          className="sc-dTvVRJ ejoLSV"
-        >
-          <div
-            className="sc-hjsuWn ccbdKG"
-            style={
-              {
-                "width": 115,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
-            >
-              <span>
-                Regional missense constraint
-              </span>
-              <button
-                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-                onClick={[Function]}
-                type="button"
-              >
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  src="test-file-stub"
-                />
-                <span
-                  style={
-                    {
-                      "border": "0",
-                      "clip": "rect(0 0 0 0)",
-                      "height": "1px",
-                      "margin": "-1px",
-                      "overflow": "hidden",
-                      "padding": "0",
-                      "position": "absolute",
-                      "whiteSpace": "nowrap",
-                      "width": "1px",
-                    }
-                  }
-                >
-                  More information
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            className="sc-jJLAfE KfhrV"
-            style={
-              {
-                "width": 799,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
-            >
-              <svg
-                height={35}
-                width={799}
-              >
-                <text
-                  dy="1.0rem"
-                  textAnchor="middle"
-                  x={399.5}
-                  y={17.5}
-                >
-                  <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
-                  </tspan>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -15511,8 +15649,129 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
+        <div
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        >
+          <div
+            className="sc-ggWZvA faMivF"
+          >
+            <div
+              className="sc-dTvVRJ ejoLSV"
+            >
+              <div
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                >
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
+                  />
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
           className="sc-ggWZvA faMivF"
         >
@@ -15528,23 +15787,38 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
               >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
+                <span>
+                  Regional missense constraint
+                </span>
                 <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                  className="InfoButton__Button-sc-13t5e82-0 faZoWY"
                   onClick={[Function]}
                   type="button"
                 >
-                  Show
-                   transcripts
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src="test-file-stub"
+                  />
+                  <span
+                    style={
+                      {
+                        "border": "0",
+                        "clip": "rect(0 0 0 0)",
+                        "height": "1px",
+                        "margin": "-1px",
+                        "overflow": "hidden",
+                        "padding": "0",
+                        "position": "absolute",
+                        "whiteSpace": "nowrap",
+                        "width": "1px",
+                      }
+                    }
+                  >
+                    More information
+                  </span>
                 </button>
               </div>
             </div>
@@ -15557,133 +15831,43 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
               >
                 <svg
-                  height={20}
+                  height={35}
                   width={799}
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
-                  />
+                  <text
+                    dy="1.0rem"
+                    textAnchor="middle"
+                    x={399.5}
+                    y={17.5}
+                  >
+                    <tspan>
+                      This gene was not searched for evidence of regional missense constraint. See our
+                       
+                    </tspan>
+                    <tspan
+                      fill="#0000ff"
+                    >
+                      <a
+                        className="Link-sc-14lgydv-0 jtwqlm"
+                        href="/help"
+                        onClick={[Function]}
+                      >
+                        help page
+                      </a>
+                    </tspan>
+                    <tspan>
+                       for additional information.
+                    </tspan>
+                  </text>
                 </svg>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="sc-ggWZvA faMivF"
-      >
-        <div
-          className="sc-dTvVRJ ejoLSV"
-        >
-          <div
-            className="sc-hjsuWn ccbdKG"
-            style={
-              {
-                "width": 115,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
-            >
-              <span>
-                Regional missense constraint
-              </span>
-              <button
-                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-                onClick={[Function]}
-                type="button"
-              >
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  src="test-file-stub"
-                />
-                <span
-                  style={
-                    {
-                      "border": "0",
-                      "clip": "rect(0 0 0 0)",
-                      "height": "1px",
-                      "margin": "-1px",
-                      "overflow": "hidden",
-                      "padding": "0",
-                      "position": "absolute",
-                      "whiteSpace": "nowrap",
-                      "width": "1px",
-                    }
-                  }
-                >
-                  More information
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            className="sc-jJLAfE KfhrV"
-            style={
-              {
-                "width": 799,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
-            >
-              <svg
-                height={35}
-                width={799}
-              >
-                <text
-                  dy="1.0rem"
-                  textAnchor="middle"
-                  x={399.5}
-                  y={17.5}
-                >
-                  <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
-                  </tspan>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -17167,8 +17351,129 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
+        <div
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        >
+          <div
+            className="sc-ggWZvA faMivF"
+          >
+            <div
+              className="sc-dTvVRJ ejoLSV"
+            >
+              <div
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                >
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
+                  />
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
           className="sc-ggWZvA faMivF"
         >
@@ -17184,23 +17489,38 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
               >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
+                <span>
+                  Regional missense constraint
+                </span>
                 <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                  className="InfoButton__Button-sc-13t5e82-0 faZoWY"
                   onClick={[Function]}
                   type="button"
                 >
-                  Show
-                   transcripts
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src="test-file-stub"
+                  />
+                  <span
+                    style={
+                      {
+                        "border": "0",
+                        "clip": "rect(0 0 0 0)",
+                        "height": "1px",
+                        "margin": "-1px",
+                        "overflow": "hidden",
+                        "padding": "0",
+                        "position": "absolute",
+                        "whiteSpace": "nowrap",
+                        "width": "1px",
+                      }
+                    }
+                  >
+                    More information
+                  </span>
                 </button>
               </div>
             </div>
@@ -17213,133 +17533,43 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
               >
                 <svg
-                  height={20}
+                  height={35}
                   width={799}
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
-                  />
+                  <text
+                    dy="1.0rem"
+                    textAnchor="middle"
+                    x={399.5}
+                    y={17.5}
+                  >
+                    <tspan>
+                      This gene was not searched for evidence of regional missense constraint. See our
+                       
+                    </tspan>
+                    <tspan
+                      fill="#0000ff"
+                    >
+                      <a
+                        className="Link-sc-14lgydv-0 jtwqlm"
+                        href="/help"
+                        onClick={[Function]}
+                      >
+                        help page
+                      </a>
+                    </tspan>
+                    <tspan>
+                       for additional information.
+                    </tspan>
+                  </text>
                 </svg>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="sc-ggWZvA faMivF"
-      >
-        <div
-          className="sc-dTvVRJ ejoLSV"
-        >
-          <div
-            className="sc-hjsuWn ccbdKG"
-            style={
-              {
-                "width": 115,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
-            >
-              <span>
-                Regional missense constraint
-              </span>
-              <button
-                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-                onClick={[Function]}
-                type="button"
-              >
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  src="test-file-stub"
-                />
-                <span
-                  style={
-                    {
-                      "border": "0",
-                      "clip": "rect(0 0 0 0)",
-                      "height": "1px",
-                      "margin": "-1px",
-                      "overflow": "hidden",
-                      "padding": "0",
-                      "position": "absolute",
-                      "whiteSpace": "nowrap",
-                      "width": "1px",
-                    }
-                  }
-                >
-                  More information
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            className="sc-jJLAfE KfhrV"
-            style={
-              {
-                "width": 799,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
-            >
-              <svg
-                height={35}
-                width={799}
-              >
-                <text
-                  dy="1.0rem"
-                  textAnchor="middle"
-                  x={399.5}
-                  y={17.5}
-                >
-                  <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
-                  </tspan>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -18823,8 +19053,129 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
+        <div
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        >
+          <div
+            className="sc-ggWZvA faMivF"
+          >
+            <div
+              className="sc-dTvVRJ ejoLSV"
+            >
+              <div
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                >
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
+                  />
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div
           className="sc-ggWZvA faMivF"
         >
@@ -18840,23 +19191,38 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               }
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
+                className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
               >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
+                <span>
+                  Regional missense constraint
+                </span>
                 <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                  className="InfoButton__Button-sc-13t5e82-0 faZoWY"
                   onClick={[Function]}
                   type="button"
                 >
-                  Show
-                   transcripts
+                  <img
+                    alt=""
+                    aria-hidden="true"
+                    src="test-file-stub"
+                  />
+                  <span
+                    style={
+                      {
+                        "border": "0",
+                        "clip": "rect(0 0 0 0)",
+                        "height": "1px",
+                        "margin": "-1px",
+                        "overflow": "hidden",
+                        "padding": "0",
+                        "position": "absolute",
+                        "whiteSpace": "nowrap",
+                        "width": "1px",
+                      }
+                    }
+                  >
+                    More information
+                  </span>
                 </button>
               </div>
             </div>
@@ -18869,133 +19235,43 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
               }
             >
               <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
               >
                 <svg
-                  height={20}
+                  height={35}
                   width={799}
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
-                  />
+                  <text
+                    dy="1.0rem"
+                    textAnchor="middle"
+                    x={399.5}
+                    y={17.5}
+                  >
+                    <tspan>
+                      This gene was not searched for evidence of regional missense constraint. See our
+                       
+                    </tspan>
+                    <tspan
+                      fill="#0000ff"
+                    >
+                      <a
+                        className="Link-sc-14lgydv-0 jtwqlm"
+                        href="/help"
+                        onClick={[Function]}
+                      >
+                        help page
+                      </a>
+                    </tspan>
+                    <tspan>
+                       for additional information.
+                    </tspan>
+                  </text>
                 </svg>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="sc-ggWZvA faMivF"
-      >
-        <div
-          className="sc-dTvVRJ ejoLSV"
-        >
-          <div
-            className="sc-hjsuWn ccbdKG"
-            style={
-              {
-                "width": 115,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
-            >
-              <span>
-                Regional missense constraint
-              </span>
-              <button
-                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-                onClick={[Function]}
-                type="button"
-              >
-                <img
-                  alt=""
-                  aria-hidden="true"
-                  src="test-file-stub"
-                />
-                <span
-                  style={
-                    {
-                      "border": "0",
-                      "clip": "rect(0 0 0 0)",
-                      "height": "1px",
-                      "margin": "-1px",
-                      "overflow": "hidden",
-                      "padding": "0",
-                      "position": "absolute",
-                      "whiteSpace": "nowrap",
-                      "width": "1px",
-                    }
-                  }
-                >
-                  More information
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            className="sc-jJLAfE KfhrV"
-            style={
-              {
-                "width": 799,
-              }
-            }
-          >
-            <div
-              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
-            >
-              <svg
-                height={35}
-                width={799}
-              >
-                <text
-                  dy="1.0rem"
-                  textAnchor="middle"
-                  x={399.5}
-                  y={17.5}
-                >
-                  <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
-                  </tspan>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -20479,84 +20755,130 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -22040,84 +22362,130 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -23601,84 +23969,130 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -25162,84 +25576,130 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -26723,84 +27183,130 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -28284,84 +28790,130 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -29845,84 +30397,130 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -31406,84 +32004,130 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
         </ul>
       </div>
       <div
-        className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
+        style={
+          {
+            "paddingTop": "24px",
+          }
+        }
       >
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#000"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={18}
+            y2="100%"
+          />
+          <rect
+            rx={2}
+            ry={2}
+            style={
+              {
+                "display": "none",
+                "fill": "#fff",
+              }
+            }
+          />
+          <text
+            style={
+              {
+                "display": "none",
+                "fill": "#000",
+                "fontSize": "10px",
+              }
+            }
+            textAnchor="middle"
+            x={0}
+            y={14}
+          />
+        </svg>
         <div
-          className="sc-ggWZvA faMivF"
+          className="GenePage__TrackWrapper-sc-rcxzgc-5 inDseh"
         >
           <div
-            className="sc-dTvVRJ ejoLSV"
+            className="sc-ggWZvA faMivF"
           >
             <div
-              className="sc-hjsuWn ccbdKG"
-              style={
-                {
-                  "width": 115,
-                }
-              }
+              className="sc-dTvVRJ ejoLSV"
             >
               <div
-                className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
-              >
-                <img
-                  alt="Positive strand"
-                  height={20}
-                  src="test-file-stub"
-                  width={20}
-                />
-                <button
-                  backgroundColor="#f8f9fa"
-                  borderColor="#6c757d"
-                  className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  Show
-                   transcripts
-                </button>
-              </div>
-            </div>
-            <div
-              className="sc-jJLAfE KfhrV"
-              style={
-                {
-                  "width": 799,
+                className="sc-hjsuWn ccbdKG"
+                style={
+                  {
+                    "width": 115,
+                  }
                 }
-              }
-            >
-              <div
-                className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
               >
-                <svg
-                  height={20}
-                  width={799}
+                <div
+                  className="GenePage__ToggleTranscriptsPanel-sc-rcxzgc-6 ieXGny"
                 >
-                  <line
-                    stroke="#bdbdbd"
-                    strokeWidth={1}
-                    x1={0}
-                    x2={799}
-                    y1={10}
-                    y2={10}
+                  <img
+                    alt="Positive strand"
+                    height={20}
+                    src="test-file-stub"
+                    width={20}
                   />
-                </svg>
+                  <button
+                    backgroundColor="#f8f9fa"
+                    borderColor="#6c757d"
+                    className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Show
+                     transcripts
+                  </button>
+                </div>
+              </div>
+              <div
+                className="sc-jJLAfE KfhrV"
+                style={
+                  {
+                    "width": 799,
+                  }
+                }
+              >
+                <div
+                  className="GenePage__CompositeTranscriptPlotWrapper-sc-rcxzgc-7 UVOxT"
+                >
+                  <svg
+                    height={20}
+                    width={799}
+                  >
+                    <line
+                      stroke="#bdbdbd"
+                      strokeWidth={1}
+                      x1={0}
+                      x2={799}
+                      y1={10}
+                      y2={10}
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        <h2>
-          ClinVar variants
-        </h2>
-      </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
