@@ -51,6 +51,14 @@ app.use((req: any, res: any, next: any) => {
         remoteIp: req.ip,
         referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
+        graphqlRequest: request.graphqlParams
+          ? {
+              graphqlQueryOperationName: request.graphqlParams.operationName,
+              graphqlQueryString: request.graphqlParams.query,
+              graphqlQueryVariables: request.graphqlParams.variables,
+              graphqlQueryCost: request.graphqlQueryCost,
+            }
+          : undefined,
       },
     })
     next()
@@ -73,6 +81,14 @@ app.use((req: any, res: any, next: any) => {
         remoteIp: req.ip,
         referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
+        graphqlRequest: request.graphqlParams
+          ? {
+              graphqlQueryOperationName: request.graphqlParams.operationName,
+              graphqlQueryString: request.graphqlParams.query,
+              graphqlQueryVariables: request.graphqlParams.variables,
+              graphqlQueryCost: request.graphqlQueryCost,
+            }
+          : undefined,
         status: res.statusCode,
       },
     })
