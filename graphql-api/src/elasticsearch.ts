@@ -74,7 +74,14 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
       if (canceled) {
         return Promise.resolve(undefined)
       }
-
+      logger.info({
+        requestId: ctx?.requestId,
+        event: 'esRequestStart',
+        operation,
+        startedAtMs: startedAt,
+        queued: esLimiter.queued(),
+        running: esLimiter.running(),
+      })
       return fn()
         .then((result: any) => {
           logger.info({

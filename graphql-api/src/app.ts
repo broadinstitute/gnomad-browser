@@ -24,6 +24,7 @@ process.on('unhandledRejection', (error) => {
 const app = express()
 app.use(compression())
 app.use(cors())
+app.use(express.json())
 
 app.set('trust proxy', config.TRUST_PROXY)
 
@@ -53,15 +54,17 @@ app.use((req: any, res: any, next: any) => {
         remoteIp: req.ip,
         referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
-        graphqlRequest: req.graphqlParams
-          ? {
-              graphqlQueryOperationName: req.graphqlParams.operationName,
-              graphqlQueryString: req.graphqlParams.query,
-              graphqlQueryVariables: req.graphqlParams.variables,
-              graphqlQueryCost: req.graphqlQueryCost,
-            }
-          : undefined,
       },
+      // graphql variables do not exist until the graphQL middleware runs.
+      graphql: req.body
+        ? {
+            raw: {
+              operationName: req.body.operationName ?? null,
+              query: req.body.query ?? null,
+              variables: req.body.variables ?? null,
+            }
+          }
+        : null,
     })
     next()
   })
@@ -92,17 +95,17 @@ app.use((req: any, res: any, next: any) => {
         remoteIp: req.ip,
         referer: req.headers.referer || req.headers.referrer,
         protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
-        graphqlRequest: req.graphqlParams
-          ? {
-              graphqlQueryOperationName: req.graphqlParams.operationName,
-              graphqlQueryString: req.graphqlParams.query,
-              graphqlQueryVariables: req.graphqlParams.variables,
-              graphqlQueryCost: req.graphqlQueryCost,
-            }
-          : undefined,
         status: res.statusCode,
         responseSizeBytes: res.getHeader('content-length')
       },
+      graphqlRequest: req.graphqlParams
+        ? {
+            graphqlQueryOperationName: req.graphqlParams.operationName,
+            graphqlQueryString: req.graphqlParams.query,
+            graphqlQueryVariables: req.graphqlParams.variables,
+            graphqlQueryCost: req.graphqlQueryCost,
+          }
+        : undefined,
     })
   })
   next()
@@ -110,14 +113,13 @@ app.use((req: any, res: any, next: any) => {
 
 loadWhitelist()
 
-app.use('/api/', graphQLApi({
-  context: (_req: any) => {
-    const ctx = requestStore.getStore()
-    return {
+app.use('/api/',
+  graphQLApi({
+    context: {
       esClient,
-      requestId: ctx?.requestId ?? null,
-    }
-  },
-}))
+      requestId: requestStore.getStore()?.requestId ?? null,
+    },
+  })
+)
 
 app.listen(config.PORT)
