@@ -3,7 +3,6 @@ import cors from 'cors'
 import { randomUUID } from 'crypto'
 import express from 'express'
 import onFinished from 'on-finished'
-import onHeaders from 'on-headers'
 import { performance } from 'perf_hooks'
 import config from './config'
 import { client as esClient } from './elasticsearch'
@@ -84,7 +83,7 @@ app.use((req: any, res: any, next: any) => {
 loadWhitelist()
 
 app.use('/api/', graphQLApi({
-  context: (req: any) => {
+  context: (_req: any) => {
     const ctx = requestStore.getStore()
     return {
       esClient,
