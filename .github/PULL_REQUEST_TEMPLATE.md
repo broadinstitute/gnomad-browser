@@ -41,3 +41,4 @@
 
 - [ ] I have the relevant `make` targets to run CI checks locally and verified that they succeed (e.g. `make validate-browser` if you made changes in the `browser/` directory, or `make validate-all` if you're unsure which checks to run)
 - [ ] (If UI) I have tested this across desktop and mobile breakpoints.
+- [ ] (If a LLM/AI agent runner was used, e.g. OpenCode, Aider, or ClaudeCode) I have instructed the agent runner to load the `AGENTS.md` file into its context, and verified the the required `Assisted-by` trailer is on each commit.

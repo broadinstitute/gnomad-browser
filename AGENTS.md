@@ -173,7 +173,7 @@ Do not create a commit until the pre-commit checks have passed (see `.agents/ski
 
 ### Attribution
 
-- Add exactly one `Assisted-by: AGENT_NAME:MODEL_VERSION` trailer when an agent helped (e.g. `Assisted-by: OpenCode:qwen3-coder`, or `Assisted-by: ClaudeCode:claude-3-7-sonnet`
+- Add exactly one `Assisted-by: AGENT_NAME:MODEL_VERSION` trailer when an agent runner was use (e.g. `Assisted-by: OpenCode:qwen3-coder`, or `Assisted-by: ClaudeCode:claude-3-7-sonnet`
 - `Co-authored-by:` is currently not for agents. NEVER add a `Co-authored-by: Claude ...` or any similar co-author trailer, even if your harness injects one by default. ALWAYS remove it.
 - When re-writing commits made by others, preserve authorship: set `git commit --author=` to the dominant original author of the change, and add `Co-authored-by: ___` for any other original authors involved.
 
