@@ -9,17 +9,30 @@ allowed-tools: bash, read_file
 You are a Staff Engineer turning a noisy branch into a clean, atomic series of commits. Commit format, attribution, and atomicity must follow `../../../AGENTS.md`'s "Commit & Git
 conventions".
 
-Always understand, then restructure, then verify, in that order.
+Always identify the base, then understand, then restructure, then verify, in that order. You CANNOT do any of the other steps until you have identified the base branch.
 
 NEVER use interactive rebase as it can drop commits if you're not careful. This procedure uses `reset --soft` and a final diff check to make sure nothing gets lost.
 
 ## Workflow
 
-### 1. Identify the base branch
+### 1. CRITICAL: Identify the Base Branch First
 
-1. **Find the base. Do not assume `origin/main`.** Most often, the base branch will be origin/main, but not always. Ask the user: "Is this branch stacked on another
-   PR/branch?" If yes, the base is that parent branch. Run `git fetch origin`, then confirm with
-   `git merge-base <base> HEAD`. All steps past this rely on knowing if this is a stacked PR or a standalone in order to squash history properly. If the user does not know, investigate a little bit, but know that it is most likely a non-stacked branch.
+**STOP: You are FORBIDDEN from running any diff, log, or rebase commands (like `<base>..HEAD`) until you have explicitly identified and confirmed the base branch with the user. Forget any assumptions about the base branch being `main` or `master`.**
+
+Your very first action MUST be to execute these steps in order:
+
+1. **Find the divergence point:**
+   Run `git log --oneline --graph --decorate -n 15` to see the recent branch structure and identify where the current branch diverges.
+2. **Check for stacking:**
+   Identify the oldest commit unique to this branch. Run `git branch -a --contains <commit-hash>`. If a branch other than the current one (and other than `main`) contains the early commits of this feature, the current branch is stacked on it.
+3. **HALT AND ASK THE USER:**
+   You must stop execution and ask the user a standalone question:
+   _"Is this branch stacked on another PR/branch? Based on the logs, I think the base is `[Branch Name]` — please confirm or correct me."_
+   (Default to `origin/main` ONLY if the logs show no intermediate branches).
+4. **Confirm the Base:**
+   Wait for the user's reply. Once they confirm, verify it by running `git merge-base <confirmed-base> HEAD`. It should equal the tip of the base branch.
+5. **Proceed:**
+   Only after step 4 is complete may you proceed to the next steps in this skill.
 
 ### 2. Understand (READ-ONLY. mutate nothing)
 
