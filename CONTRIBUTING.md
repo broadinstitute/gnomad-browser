@@ -118,7 +118,7 @@ Some other conventions are enforced using [ESLint](https://eslint.org/) for Java
 
 - ESLint: `pnpm lint:js`
 - Stylelint: `pnpm lint:css`
-- Pylint: `pylint data-pipeline/src/data_pipeline`
+- ruff: `uv run ruff check data-pipeline`
 
 ## Tests
 
