@@ -81,6 +81,8 @@ type OwnVariantsInGeneProps = {
     stop: number
   }
   hasOnlyNonCodingTranscripts?: boolean
+  cursorClick?: { position: number } | null
+  trackWrapper?: (tracks: React.ReactNode) => React.ReactNode
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'VariantsInGeneProps' circularly refere... Remove this comment to see the full error message
@@ -97,12 +99,14 @@ const VariantsInGene = ({
   variants,
   zoomRegion,
   hasOnlyNonCodingTranscripts,
+  cursorClick,
+  trackWrapper,
 }: VariantsInGeneProps) => {
   const datasetLabel = labelForDataset(datasetId)
 
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
 
-  return (
+  const clinvarTracksContent = (
     <>
       <TrackPageSection>
         <h2>ClinVar variants</h2>
@@ -122,6 +126,27 @@ const VariantsInGene = ({
       ) : (
         <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
       )}
+    </>
+  )
+
+  // Compose the parent-supplied trackWrapper so that it wraps both the
+  // ClinVar tracks and the gnomAD tracks together (keeping the variant table
+  // outside).  When no trackWrapper is provided, ClinVar tracks render inline.
+  const combinedTrackWrapper = trackWrapper
+    ? (gnomadTracks: React.ReactNode) =>
+        trackWrapper(
+          <>
+            {clinvarTracksContent}
+            {gnomadTracks}
+          </>
+        )
+    : undefined
+
+  return (
+    <>
+      {/* When trackWrapper is provided, ClinVar tracks are rendered inside
+          the combined wrapper above.  Otherwise render them here. */}
+      {!trackWrapper && clinvarTracksContent}
 
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}
@@ -129,6 +154,9 @@ const VariantsInGene = ({
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${gene.gene_id}`}
         variants={filterVariantsInZoomRegion(variants, zoomRegion)}
+        externalCursorClick={cursorClick}
+        wrapInCursor={false}
+        trackWrapper={combinedTrackWrapper}
       >
         <p>
           <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
@@ -174,6 +202,7 @@ const VariantsInGene = ({
 VariantsInGene.defaultProps = {
   clinvarVariants: null,
   zoomRegion: null,
+  cursorClick: null,
 }
 
 const operationName = 'VariantsInGene'

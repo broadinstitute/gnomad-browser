@@ -42,6 +42,7 @@ import RegionalMissenseConstraintTrack, {
 } from '../RegionalMissenseConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
+import { CursorSyncProvider, SynchronizedCursor } from '../CursorSync'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -357,7 +358,113 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
   const [zoomRegion, setZoomRegion] = useState(null)
 
+  // Most recent click on the cross-track cursor line, forwarded to VariantsInGene
+  // so the variant table can scroll to it. Wrapped in an object so that clicking
+  // the same genomic position twice still produces a new reference and re-triggers
+  // the scroll effect downstream.
+  const [cursorClick, setCursorClick] = useState<{ position: number } | null>(null)
+
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
+
+  // The cross-track hover cursor is only useful when the gnomAD variant table is
+  // shown, since clicking the line scrolls that table. SV/CNV/mitochondrial gene
+  // pages render different variant sections that don't consume the click, so the
+  // cursor is disabled there to avoid drawing a line with no click target.
+  const enableCrossTrackCursor =
+    !hasStructuralVariants(datasetId) && !hasCopyNumberVariants(datasetId) && gene.chrom !== 'M'
+
+  const featureTracks = (
+    <>
+      <TrackWrapper>
+        <Track
+          renderLeftPanel={() => {
+            return (
+              <ToggleTranscriptsPanel>
+                <img
+                  alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
+                  src={gene.strand === '-' ? LeftArrow : RightArrow}
+                  height={20}
+                  width={20}
+                />
+                {gene.chrom === 'M' ? (
+                  'Transcript'
+                ) : (
+                  <Button
+                    onClick={() => {
+                      setShowTranscripts((prevShowTranscripts) => !prevShowTranscripts)
+                    }}
+                  >
+                    {showTranscripts ? 'Hide' : 'Show'} transcripts
+                  </Button>
+                )}
+              </ToggleTranscriptsPanel>
+            )
+          }}
+        >
+          {({ scalePosition, width: trackWidth }: any) => (
+            <CompositeTranscriptPlotWrapper>
+              <TranscriptPlot
+                height={20}
+                scalePosition={scalePosition}
+                showNonCodingExons={includeNonCodingTranscripts}
+                showUTRs={includeUTRs}
+                transcript={{ exons: gene.exons }}
+                width={trackWidth}
+              />
+            </CompositeTranscriptPlotWrapper>
+          )}
+        </Track>
+      </TrackWrapper>
+
+      {showTranscripts && (
+        <TrackWrapper>
+          <GeneTranscriptsTrack
+            datasetId={datasetId}
+            isTissueExpressionAvailable={!!gene.pext}
+            gene={gene}
+            includeNonCodingTranscripts={includeNonCodingTranscripts}
+            includeUTRs={includeUTRs}
+            preferredTranscriptId={preferredTranscriptId}
+            preferredTranscriptDescription={preferredTranscriptDescription}
+          />
+        </TrackWrapper>
+      )}
+
+      {gene.chrom.startsWith('M') && (
+        <MitochondrialRegionConstraintTrack
+          constraintRegions={gene.mitochondrial_missense_constraint_regions}
+          exons={gene.exons}
+          geneSymbol={gene.symbol}
+        />
+      )}
+
+      {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
+        <TissueExpressionTrack
+          exons={cdsCompositeExons}
+          expressionRegions={gene.pext.regions}
+          flags={gene.pext.flags}
+          transcripts={gene.transcripts as TranscriptWithTissueExpression[]} // if a gene has pext, it has gtex
+          preferredTranscriptId={preferredTranscriptId}
+          preferredTranscriptDescription={preferredTranscriptDescription}
+          topLevelDataset={getTopLevelDataset(datasetId)}
+        />
+      )}
+
+      {isExac(datasetId) && gene.exac_regional_missense_constraint_regions && (
+        <RegionalConstraintTrack
+          height={15}
+          regions={gene.exac_regional_missense_constraint_regions}
+        />
+      )}
+
+      {isV2(datasetId) && (
+        <RegionalMissenseConstraintTrack
+          regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
+          gene={gene}
+        />
+      )}
+    </>
+  )
 
   return (
     <TrackPage>
@@ -530,112 +637,43 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           </Legend>
         </ControlPanel>
 
-        <TrackWrapper>
-          <Track
-            renderLeftPanel={() => {
-              return (
-                <ToggleTranscriptsPanel>
-                  <img
-                    alt={`${gene.strand === '-' ? 'Negative' : 'Positive'} strand`}
-                    src={gene.strand === '-' ? LeftArrow : RightArrow}
-                    height={20}
-                    width={20}
-                  />
-                  {gene.chrom === 'M' ? (
-                    'Transcript'
-                  ) : (
-                    <Button
-                      onClick={() => {
-                        setShowTranscripts((prevShowTranscripts) => !prevShowTranscripts)
-                      }}
-                    >
-                      {showTranscripts ? 'Hide' : 'Show'} transcripts
-                    </Button>
-                  )}
-                </ToggleTranscriptsPanel>
-              )
-            }}
-          >
-            {({ scalePosition, width: trackWidth }: any) => (
-              <CompositeTranscriptPlotWrapper>
-                <TranscriptPlot
-                  height={20}
-                  scalePosition={scalePosition}
-                  showNonCodingExons={includeNonCodingTranscripts}
-                  showUTRs={includeUTRs}
-                  transcript={{ exons: gene.exons }}
-                  width={trackWidth}
-                />
-              </CompositeTranscriptPlotWrapper>
-            )}
-          </Track>
-        </TrackWrapper>
+        {enableCrossTrackCursor ? (
+          <CursorSyncProvider onClick={(position: number) => setCursorClick({ position })}>
+            <SynchronizedCursor showLabel>{featureTracks}</SynchronizedCursor>
 
-        {showTranscripts && (
-          <TrackWrapper>
-            <GeneTranscriptsTrack
+            <VariantsInGene
               datasetId={datasetId}
-              isTissueExpressionAvailable={!!gene.pext}
               gene={gene}
               includeNonCodingTranscripts={includeNonCodingTranscripts}
               includeUTRs={includeUTRs}
-              preferredTranscriptId={preferredTranscriptId}
-              preferredTranscriptDescription={preferredTranscriptDescription}
+              zoomRegion={zoomRegion}
+              hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
+              cursorClick={cursorClick}
+              // This is a render prop that wraps tracks, not a component type, so the
+              // "unstable nested component" concern about remounting does not apply.
+              // eslint-disable-next-line react/no-unstable-nested-components
+              trackWrapper={(tracks: React.ReactNode) => (
+                <SynchronizedCursor>{tracks}</SynchronizedCursor>
+              )}
             />
-          </TrackWrapper>
-        )}
-
-        {gene.chrom.startsWith('M') && (
-          <MitochondrialRegionConstraintTrack
-            constraintRegions={gene.mitochondrial_missense_constraint_regions}
-            exons={gene.exons}
-            geneSymbol={gene.symbol}
-          />
-        )}
-
-        {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
-          <TissueExpressionTrack
-            exons={cdsCompositeExons}
-            expressionRegions={gene.pext.regions}
-            flags={gene.pext.flags}
-            transcripts={gene.transcripts as TranscriptWithTissueExpression[]} // if a gene has pext, it has gtex
-            preferredTranscriptId={preferredTranscriptId}
-            preferredTranscriptDescription={preferredTranscriptDescription}
-            topLevelDataset={getTopLevelDataset(datasetId)}
-          />
-        )}
-
-        {isExac(datasetId) && gene.exac_regional_missense_constraint_regions && (
-          <RegionalConstraintTrack
-            height={15}
-            regions={gene.exac_regional_missense_constraint_regions}
-          />
-        )}
-
-        {isV2(datasetId) && (
-          <RegionalMissenseConstraintTrack
-            regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
-            gene={gene}
-          />
-        )}
-
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {hasStructuralVariants(datasetId) ? (
-          <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : // eslint-disable-next-line no-nested-ternary
-        hasCopyNumberVariants(datasetId) ? (
-          <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : gene.chrom === 'M' ? (
-          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+          </CursorSyncProvider>
         ) : (
-          <VariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            includeNonCodingTranscripts={includeNonCodingTranscripts}
-            includeUTRs={includeUTRs}
-            zoomRegion={zoomRegion}
-            hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
-          />
+          <>
+            {featureTracks}
+
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {hasStructuralVariants(datasetId) ? (
+              <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+            ) : hasCopyNumberVariants(datasetId) ? (
+              <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+            ) : (
+              <MitochondrialVariantsInGene
+                datasetId={datasetId}
+                gene={gene}
+                zoomRegion={zoomRegion}
+              />
+            )}
+          </>
         )}
       </RegionViewer>
     </TrackPage>

@@ -50,11 +50,15 @@ type OwnVariantsProps = {
   datasetId: DatasetId
   exportFileName?: string
   variants: Variant[]
+  externalCursorClick?: { position: number } | null
+  wrapInCursor?: boolean
+  trackWrapper?: (tracks: React.ReactNode) => React.ReactNode
 }
 
 const variantsDefaultProps = {
   children: null,
   exportFileName: 'variants',
+  wrapInCursor: true,
 }
 
 type VariantsProps = OwnVariantsProps & typeof variantsDefaultProps
@@ -87,6 +91,9 @@ const Variants = ({
   datasetId,
   exportFileName,
   variants,
+  externalCursorClick,
+  wrapInCursor,
+  trackWrapper,
 }: VariantsProps) => {
   const table = useRef(null)
 
@@ -208,6 +215,17 @@ const Variants = ({
   const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
   const onSearchResult = createCallback('variant_id', setFilter)
 
+  // When the parent page owns the cursor (e.g. the gene page) and reports a click,
+  // mirror it into our internal state so the existing scroll/sort logic below kicks in.
+  // externalCursorClick is a fresh object per click, so re-clicking the same
+  // position still re-runs this effect. onNavigatorClick is intentionally omitted
+  // from the deps: it is recreated each render but is stable in behavior.
+  useEffect(() => {
+    if (externalCursorClick != null) {
+      onNavigatorClick(externalCursorClick.position)
+    }
+  }, [externalCursorClick]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // When a user clicks on the bubble track, update the position in the variant table
   useEffect(() => {
     if (positionLastClicked === null || table.current === null) {
@@ -272,33 +290,41 @@ const Variants = ({
     )
   }
 
-  return (
-    <div>
+  const variantTracks = (
+    <>
+      <VariantTrack
+        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+        title={`${datasetLabel} variants (${renderedVariants.length})`}
+        variants={renderedVariants}
+      />
+
+      <VariantTrack
+        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+        title="Viewing in table"
+        variants={renderedVariants
+          .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+          .map((variant) => ({
+            ...variant,
+            isHighlighted: variant.variant_id === variantHoveredInTable,
+          }))}
+        onHoverVariants={onHoverVariantsInTrack}
+      />
+    </>
+  )
+
+  const tracksContent = (
+    <>
       <TrackPageSection>
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
       </TrackPageSection>
-      <Cursor onClick={onNavigatorClick}>
-        <VariantTrack
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-          title={`${datasetLabel} variants (${renderedVariants.length})`}
-          variants={renderedVariants}
-        />
-
-        <VariantTrack
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-          title="Viewing in table"
-          variants={renderedVariants
-            .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-            .map((variant) => ({
-              ...variant,
-              isHighlighted: variant.variant_id === variantHoveredInTable,
-            }))}
-          onHoverVariants={onHoverVariantsInTrack}
-        />
-      </Cursor>
+      {wrapInCursor ? <Cursor onClick={onNavigatorClick}>{variantTracks}</Cursor> : variantTracks}
 
       <PositionAxisTrack />
+    </>
+  )
 
+  const tableContent = (
+    <>
       <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
         <VariantFilterControls
           onChange={setFilter}
@@ -374,6 +400,13 @@ const Variants = ({
           }}
         />
       )}
+    </>
+  )
+
+  return (
+    <div>
+      {trackWrapper ? trackWrapper(tracksContent) : tracksContent}
+      {tableContent}
     </div>
   )
 }
