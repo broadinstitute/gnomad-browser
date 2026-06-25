@@ -5,7 +5,9 @@ title: 'Regional constraint'
 
 This track shows regional (sub-genic) missense constraint scores for genes, calculated from the gnomAD v4.1.1 dataset.
 
-The impact of a missense variant depends on both the specific amino acid substitution it causes and its position within the gene. By highlighting regions that are intolerant to missense variation, this track is designed to aid in missense variant interpretation and classification. The missense observed/expected (`o/e`) percentile information available in the track can be used to help interpret how constrained a particular region is against missense variation. For example, a missense `o/e` percentile of 5 means that coding base pairs within that region are among the most highly missense constrained 5% of coding base pairs. Note that smaller missense `o/e` percentile values indicate smaller missense `o/e` values and greater constraint against missense variation.
+The impact of a missense variant depends on both the specific amino acid substitution it causes and its position within the gene. By highlighting regions that are intolerant to missense variation, this track is designed to aid in missense variant interpretation and classification. The missense observed/expected (`o/e`) percentile information available in the track can be used to help interpret how constrained a particular region is against missense variation. For example, a missense o/e percentile of 5 means that coding base pairs within that region are in the top 5% most highly missense constrained coding base pairs across all analyzed genes.
+
+Note that smaller missense `o/e` percentile values indicate smaller missense `o/e` values and greater constraint against missense variation.
 
 All regional missense constraint data and scores from its derivative missense variant deleteriousness predictor, MPC, are available in our [downloadable files](https://gnomad.broadinstitute.org/data#v4-regional-missense-constraint)
 
