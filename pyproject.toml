@@ -1,22 +1,42 @@
+[project]
+name = "gnomad-browser-python"
+version = "0.1.0"
+description = "gnomAD browser python dependency management across data-pipeline and deployctl"
+requires-python = "==3.9.17"
+dependencies = [
+  "elasticsearch~=7.17",
+  "hail==0.2.127",
+  "tqdm",
+  "loguru",
+  "attrs",
+  "cattrs",
+  "Jinja2==3.1.6",
+  # setuptools/pkg_resources issues: https://github.com/pypa/setuptools/issues/5174
+  # our pinned version of hail imports `pkg_resources`.
+  "setuptools<81",
+]
+
+[dependency-groups]
+dev = [
+  "ruff==0.15.18",
+  "pytest",
+  "pyright",
+]
+
 [tool.ruff]
 line-length = 120
 target-version = "py39"
 
-[tool.pylint.basic]
-# ds: frequently used name for a variable containing a Hail table
-good-names = [
-  "ds",
+[tool.pyright]
+include = [
+  "data-pipeline/src/data_pipeline/pipeline.py",
+  "data-pipeline/src/data_pipeline/config.py",
+  "data-pipeline/src/data_pipeline/helpers/write_schemas.py",
+  "data-pipeline/src/data_pipeline/helpers/logging.py",
+  "data-pipeline/src/data_pipeline/pipelines/gnomad_v4_variants.py",
+  "data-pipeline/src/data_pipeline/pipelines/gnomad_v4_coverage.py",
 ]
-
-[tool.pylint.messages_control]
-disable = [
-  # Ignore refactor and convention categories
-  "R",
-  "C",
-]
-
-[tool.pylint.miscellaneous]
-notes = [
-  "FIXME",
-  "TODO",
-]
+reportMissingImports = true
+reportMissingTypeStubs = false
+typeCheckingMode = "basic"
+pythonVersion = "3.9"

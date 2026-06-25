@@ -22,10 +22,8 @@ This should be enough to use the Docker Compose development environment. However
   pnpm install
   ```
 
-- For data pipeline development, install [uv](https://docs.astral.sh/uv/). uv reads the
-  pinned Python version and dependencies from
-  `data-pipeline/pyproject.toml`/`data-pipeline/uv.lock`, installing them into
-  `data-pipeline/.venv`. There are two flows depending on whether you are consuming the
+- For python development, install [uv](https://docs.astral.sh/uv/). uv reads the
+  pinned Python version and dependencies from `pyproject.toml`/`uv.lock`, installing them into `.venv`. There are two flows depending on whether you are consuming the
   pinned dependencies or changing them.
 
   **Setting up (using the pinned dependencies).** This is what you want for normal
@@ -34,7 +32,8 @@ This should be enough to use the Docker Compose development environment. However
   `pyproject.toml` has drifted from `uv.lock`.
 
   ```
-  cd data-pipeline && uv sync --frozen
+  uv sync --frozen
+  uv sync --group dev --frozen
   ```
 
   Run pipeline tools through uv, e.g. `uv run pytest` or `uv run ruff check src/data_pipeline`.
@@ -44,24 +43,17 @@ This should be enough to use the Docker Compose development environment. However
   committed alongside the `pyproject.toml` change.
 
   ```
-  cd data-pipeline
-
-  uv add <package>                 # add a runtime dependency
-  uv add --dev <package>           # add a development-only dependency
-  uv remove <package>              # remove a dependency
-  uv lock --upgrade-package <package>  # bump a single pin to its latest allowed version
-  uv lock --upgrade                # re-resolve and bump all pins
+  uv add <package>                         # add a runtime dependency
+  uv add --dev <package>                   # add a development-only dependency
+  uv remove <package>                      # remove a dependency
+  uv lock --upgrade-package <package>      # bump a single pin to its latest allowed version
+  uv lock --upgrade                        # re-resolve and bump all pins
+  uv export --no-hashes > requirements.txt # export requirements for dataproc deployment
   ```
 
   After updating, run `uv sync` (without `--frozen`) to install the newly resolved
-  versions, and commit both `pyproject.toml` and `uv.lock`.
-
-- For the remaining Python tooling (linters and deploy scripts), install dependencies with pip.
-
-  ```
-  pip install -r requirements-dev.txt
-  pip install -r deploy/deployctl/requirements.txt
-  ```
+  versions, run `uv export --no-hashes > requirements.txt` to generate a pinned requirements set (used by `dataproc`)
+  and commit `pyproject.toml`, `uv.lock`, and `requirements.txt`.
 
 ## Frontend
 
@@ -126,7 +118,7 @@ Some other conventions are enforced using [ESLint](https://eslint.org/) for Java
 
 - ESLint: `pnpm lint:js`
 - Stylelint: `pnpm lint:css`
-- Pylint: `pylint data-pipeline/src/data_pipeline`
+- ruff: `uv run ruff check data-pipeline`
 
 ## Tests
 
