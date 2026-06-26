@@ -1,6 +1,6 @@
 ---
 name: draft-pull-request-description
-description: Use this whenever the user wants to open a PR, draft a pull request, or summarize their branch for merging. Fills out the project PR template.
+description: Use this whenever the user wants to open a pull request (PR),  draft a PR, or summarize their branch for merging. Fills out the project PR template.
 allowed-tools: bash, read_file
 ---
 

@@ -168,11 +168,13 @@ We welcome LLM-assisted contributions, provided they meet the repository's stand
 If you are using an agent runner (such as OpenCode, GeminiCLI, Aider, or Claude Code), you must ensure it has loaded `AGENTS.md` into its context before generating code. While many tools read this file natively, others may require you to explicitly point them to it or configure it as a fallback. It is strictly the submitter's responsibility to verify the agent is aware of our conventions.
 
 **Accountability and Expectations**
-We recognize that LLMs are a helpful bridge for contributors working across different domains of the codebase, the human submitter remains responsible for the proposed changes. If you use LLMs to generate code, we expect that you:
+While we recognize that LLMs are a helpful bridge for contributors working across different domains of the codebase, the human submitter remains responsible for the proposed changes. If you use LLMs to generate code, we expect that you:
 
 - **Understand the approach:** You should be able to explain the logic, intent, and design choices behind the generated code during review.
-- **Verify functionality:** Ensure the code integrates properly, passes all automated tests, and satisfies our linting requirements prior to requesting a review.
-- **Commit to iteration:** Be prepared to work with maintainers to refine the output, if neccesary.
+- **Verify functionality:** Ensure the code has the intended effect, passes all automated tests, and satisfies our linting requirements prior to requesting a review.
+- **Commit to iteration:** Be prepared to work with maintainers to refine the output.
+
+_Note: We maintain a zero-tolerance policy for malicious activity. Any submission that intentionally introduces malicious code or known vulnerabilities will result in a permanent ban from contributing to this project._
 
 **Required Attribution**
 To help us track the use of LLMs in our development process, all LLM-assisted pull requests must include the following trailer in the relevant commit message(s):
