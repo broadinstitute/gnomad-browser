@@ -206,7 +206,7 @@ After demo deployments have served their purpose, their resources should be clea
   ./deployctl deployments list
   ```
 
-- Remove `local` deployments with:
+- Remove `local` deployments manifests with:
 
   ```
   ./deployctl deployments clean <DEPLOYMENT_NAME>
@@ -273,7 +273,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
 
    - Remove the old local manifest file
      ```
-     ./deployctl deployments delete <DEPLOYMENT_NAME>
+     ./deployctl deployments clean <DEPLOYMENT_NAME>
      ```
 
 6. Create a local blue/green manifest file to describe the deployment:
@@ -288,7 +288,7 @@ The production gnomad browser uses a [blue/green deployment](https://martinfowle
    ./deployctl deployments apply <DEPLOYMENT_NAME>
    ```
 
-8. (Optional) Apply a demo ingress, allowing access to the pods via an IP address that gets assigned. Do this if you want to double-check your deployment before updating the production ingress.
+8. (Optional) Apply a demo ingress, allowing access to the pods via an IP address that gets assigned. Do this if you want to double-check your deployment before updating the production ingress. The `blue`/`green` deployments used regularly already have demo ingresses associated with them. See [CONTRIBUTING.md#tests](../../CONTRIBUTING.md#tests) for docs on how to run the minimal set of playwright tests against the off color deployment.
 
    ```
    ./deployctl demo apply-ingress <DEPLOYMENT_NAME>
