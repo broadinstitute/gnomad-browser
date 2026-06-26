@@ -10,20 +10,23 @@ Hail (Python) pipelines that transform raw gnomAD / ClinVar / reference data int
 browser, then load them into Elasticsearch. Designed to run on Google Dataproc clusters but also runnable
 locally against `gs://` or local paths.
 
-Python 3.9.17 (see `.tool-versions`). Key deps (`requirements.txt`): `hail==0.2.127`, `elasticsearch~=7.17`,
+Python 3.9.17 (see `.tool-versions`). Key deps (`../pyproject.toml`): `hail==0.2.127`, `elasticsearch~=7.17`,
 `attrs`/`cattrs`, `loguru`, `tqdm`.
 
 ## Commands
 
+Use `make` with targets defined in `../Makefile` to ensure consistency with what gest run in CI.
+
 ```
-pip install -r requirements.txt        # plus repo-root requirements-dev.txt and deploy/deployctl/requirements.txt
-./check.sh                # full local gate: pyright + black + ruff --fix + pytest
-./check.sh --mock-data    # run only the mock_data-marked tests
-pytest                    # testpaths: tests/pipeline, tests/v4
-pytest -k <expr>          # default addopts already exclude mock_data and broken (see pytest.ini)
-black src/data_pipeline tests   # format, line length 120 (pyproject.toml)
-ruff src/data_pipeline --fix
-pylint src/data_pipeline
+make install-py-all-dependencies   # install all dependencies needed
+make validate-data-pipeline        # mimics what gets run in CI: check
+                                   #     formatting, linting, static types,
+                                   #     and a run of all pipeline tests
+./check.sh --mock-data             # run only the mock_data-marked tests
+make test-data-pipeline            # testpaths: tests/pipeline, tests/v4
+uv run pytest -k <expr>            # default addopts already exclude mock_data
+                                   #     and broken (see pytest.ini)
+make fix-data-pipeline             # run tools and fix if possible: formatter, linter
 ```
 
 `pytest.ini` markers: `mock_data` (needs mock datasets present), `broken` (skipped), `only`. The default

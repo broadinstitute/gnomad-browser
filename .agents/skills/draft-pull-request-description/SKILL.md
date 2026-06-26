@@ -8,8 +8,6 @@ allowed-tools: bash, read_file
 
 You are a Staff Engineer preparing a comprehensive, professional, and concise Pull Request description. Your goal is to fill out the project's PR template thoroughly so the reviewer can more quickly understand:
 
-- whether or not this PR should be squashed and merged, or rebased and merged
-  - this lets maintainers know whether to inspect each individual commit
 - the intent of the PR
   - the issue that this PR resolves, if applicable
 - the design/architecture chosen

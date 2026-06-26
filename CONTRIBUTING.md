@@ -170,7 +170,7 @@ If you are using an agent runner (such as OpenCode, GeminiCLI, Aider, or Claude 
 **Accountability and Expectations**
 While we recognize that LLMs are a helpful bridge for contributors working across different domains of the codebase, the human submitter remains responsible for the proposed changes. If you use LLMs to generate code, we expect that you:
 
-- **Understand the approach:** You should be able to explain the logic, intent, and design choices behind the generated code during review.
+- **Understand the approach:** You should be able to explain the logic, intent, and both high-level and low-level design choices behind the generated code during review.
 - **Verify functionality:** Ensure the code has the intended effect, passes all automated tests, and satisfies our linting requirements prior to requesting a review.
 - **Commit to iteration:** Be prepared to work with maintainers to refine the output.
 
