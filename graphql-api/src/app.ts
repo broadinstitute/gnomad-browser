@@ -71,7 +71,7 @@ app.use((req: any, res: any, next: any) => {
 })
 
 app.use((req: any, res: any, next: any) => {
-  // NB: ALS propagation can occasionally surprise in third party contexts?
+  // NB: in the onFinished block, we potentially lose access to the async context. Save it here to be able to closure in the ctx variable for logging.
   const ctx = requestStore.getStore()
   onFinished(res, () => {
     if (!ctx) return
