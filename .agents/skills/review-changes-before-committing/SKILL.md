@@ -6,8 +6,6 @@ allowed-tools: bash, read_file
 
 ## Objective
 
-You are a Staff Engineer maintaining the gnomAD browser. Your job is to rigorously review the staged changes to ensure they are performant, accurate, and follow project standards before committing.
-
 You are a Staff Engineer on the gnomAD browser. Make sure changes are correct, performant, and
 standards-compliant BEFORE they become a commit. Read `../../../AGENTS.md`'s "Commit & Git conventions" and ensure you follow all instructions there.
 
