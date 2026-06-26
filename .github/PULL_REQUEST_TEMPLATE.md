@@ -2,12 +2,9 @@
 
 [If applicable, use one of githubs keywords to link this to the issue, e.g. "resolves: #1337" "closes: #1337" or "fixes: #1337"]
 
-### Should this PR be squashed and merged, or rebased and merged
+### Merge strategy
 
-[Let reviewers know whether to look at each individual commit content/message]
-
-- [ ] Squash into a single commit to be merged into `main`
-- [ ] Rebase all indvidual commits into `main`
+- [ ] I understand that this PR will be squashed down into a single commit in `main`
 
 ### What does this PR do?
 
@@ -24,6 +21,8 @@
 ### Tests
 
 [Were any tests added? What do they test, and why. Were any tests modified? If so, why?]
+
+[Is there any functionality included in this PR that does not have test coverage? If so, why?]
 
 ### UI Changes (If applicable)
 
