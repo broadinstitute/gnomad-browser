@@ -8,6 +8,7 @@ import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import { SynchronizedCursor } from '../CursorSync'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
@@ -81,6 +82,11 @@ type OwnVariantsInGeneProps = {
     stop: number
   }
   hasOnlyNonCodingTranscripts?: boolean
+  cursorClick?: { position: number } | null
+  /** When true, the cross-track cursor line extends through the ClinVar track. */
+  showCursor?: boolean
+  /** The cursor toggle control, rendered under the gnomAD variants heading. */
+  cursorToggle?: React.ReactNode
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'VariantsInGeneProps' circularly refere... Remove this comment to see the full error message
@@ -97,15 +103,29 @@ const VariantsInGene = ({
   variants,
   zoomRegion,
   hasOnlyNonCodingTranscripts,
+  cursorClick,
+  showCursor,
+  cursorToggle,
 }: VariantsInGeneProps) => {
   const datasetLabel = labelForDataset(datasetId)
 
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
 
-  return (
+  const clinvarTracksContent = (
     <>
       <TrackPageSection>
-        <h2>ClinVar variants</h2>
+        {/* inline-block + page-colored background masks the cross-track cursor line
+            behind the heading text only, so the line stays continuous elsewhere. */}
+        <h2
+          style={{
+            display: 'inline-block',
+            position: 'relative',
+            zIndex: 1,
+            background: '#fafafa',
+          }}
+        >
+          ClinVar variants
+        </h2>
       </TrackPageSection>
       {clinvarVariants.length > 0 ? (
         <>
@@ -115,13 +135,38 @@ const VariantsInGene = ({
             variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
           />
           <TrackPageSection as="p">
-            Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
-            release.
+            {/* Mask only the note text (the section has wide padding, so masking
+                it would interrupt the line far past the text). */}
+            <span style={{ position: 'relative', zIndex: 1, background: '#fafafa' }}>
+              Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
+              release.
+            </span>
           </TrackPageSection>
         </>
       ) : (
         <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
       )}
+    </>
+  )
+
+  // The gnomAD variant track always carries the cursor (line on hover +
+  // click-to-scroll); the toggle only controls whether the line extends to the
+  // other tracks, so the always-enabled wrapper lives here.
+  const renderGnomadCursor = (gnomadTracks: React.ReactNode) => (
+    <SynchronizedCursor enabled>{gnomadTracks}</SynchronizedCursor>
+  )
+
+  // The heading + toggle share the cursor only when extended, so the line stays
+  // off the heading (and out of the whitespace above the track) when the toggle
+  // is off, but runs continuously through it when on.
+  const renderGnomadHeader = (gnomadHeader: React.ReactNode) => (
+    <SynchronizedCursor enabled={Boolean(showCursor)}>{gnomadHeader}</SynchronizedCursor>
+  )
+
+  return (
+    <>
+      {/* ClinVar shares the synchronized cursor only when the toggle is on. */}
+      <SynchronizedCursor enabled={Boolean(showCursor)}>{clinvarTracksContent}</SynchronizedCursor>
 
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}
@@ -129,6 +174,11 @@ const VariantsInGene = ({
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${gene.gene_id}`}
         variants={filterVariantsInZoomRegion(variants, zoomRegion)}
+        externalCursorClick={cursorClick}
+        wrapInCursor={false}
+        trackWrapper={renderGnomadCursor}
+        headerWrapper={renderGnomadHeader}
+        headerControl={cursorToggle}
       >
         <p>
           <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
@@ -174,6 +224,7 @@ const VariantsInGene = ({
 VariantsInGene.defaultProps = {
   clinvarVariants: null,
   zoomRegion: null,
+  cursorClick: null,
 }
 
 const operationName = 'VariantsInGene'

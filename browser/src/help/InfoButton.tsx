@@ -30,9 +30,13 @@ const Button = styled.button.attrs({ type: 'button' })`
 
 type Props = {
   topic: string
+  style?: React.CSSProperties
+  // Opaque backdrop behind the (circular) icon. Used to mask the cross-track
+  // cursor line, which would otherwise show through the icon's transparent "?".
+  iconBackgroundColor?: string
 }
 
-const InfoButton = ({ topic: topicId, ...otherProps }: Props) => {
+const InfoButton = ({ topic: topicId, iconBackgroundColor, ...otherProps }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   return (
     <>
@@ -43,7 +47,12 @@ const InfoButton = ({ topic: topicId, ...otherProps }: Props) => {
           event.stopPropagation()
         }}
       >
-        <img src={QuestionMarkIcon} alt="" aria-hidden="true" />
+        <img
+          src={QuestionMarkIcon}
+          alt=""
+          aria-hidden="true"
+          style={iconBackgroundColor ? { backgroundColor: iconBackgroundColor } : undefined}
+        />
         <span style={hideVisually()}>More information</span>
       </Button>
       {isModalOpen && (

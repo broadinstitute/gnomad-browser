@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RegionViewerCursor has no unexpected changes 1`] = `
+<div
+  className="sc-hvigdm kbHgus"
+  onClick={[Function]}
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  onMouseMove={[Function]}
+>
+  <svg
+    className="sc-fhHczv jutZjL"
+    style={
+      {
+        "left": "100px",
+        "width": "500px",
+      }
+    }
+  />
+  <div>
+    Track content
+  </div>
+</div>
+`;

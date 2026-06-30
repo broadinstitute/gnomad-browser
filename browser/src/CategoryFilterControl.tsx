@@ -75,6 +75,11 @@ const CategoryWrapper = styled.span`
   border-style: solid;
   border-width: 1px;
 
+  /* Opaque page-colored backdrop: the label/button above are translucent, so
+     without this an absolutely-positioned cursor line behind the control would
+     show through. Matches the page background, so appearance is unchanged. */
+  background: #fafafa;
+
   &:first-child {
     border-top-left-radius: 0.5em;
     border-bottom-left-radius: 0.5em;
