@@ -673,6 +673,9 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 datasetId={datasetId}
                 gene={gene}
                 zoomRegion={zoomRegion}
+                cursorClick={cursorClick}
+                showCursor={showCursor}
+                cursorToggle={cursorToggle}
               />
             ) : (
               <VariantsInGene

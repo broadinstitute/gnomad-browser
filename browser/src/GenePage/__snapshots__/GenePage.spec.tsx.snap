@@ -34541,17 +34541,57 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
         </div>
       </div>
       <div
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+        className="CursorSync__CursorWrapper-sc-1cvmsa8-0 kNGkRc"
+        onClick={[Function]}
+        onMouseLeave={[Function]}
+        onMouseMove={[Function]}
       >
-        <h2>
-          ClinVar variants
-        </h2>
+        <svg
+          className="CursorSync__CursorOverlay-sc-1cvmsa8-1 gFSOf"
+          style={
+            {
+              "left": "115px",
+              "width": "799px",
+            }
+          }
+        >
+          <line
+            data-testid="region-viewer-cursor-line"
+            stroke="#999"
+            strokeWidth={1}
+            style={
+              {
+                "display": "none",
+              }
+            }
+            x1={0}
+            x2={0}
+            y1={0}
+            y2="100%"
+          />
+        </svg>
+        <div
+          className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+        >
+          <h2
+            style={
+              {
+                "background": "#fafafa",
+                "display": "inline-block",
+                "position": "relative",
+                "zIndex": 1,
+              }
+            }
+          >
+            ClinVar variants
+          </h2>
+        </div>
+        <p
+          className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+        >
+          No ClinVar variants found in this gene.
+        </p>
       </div>
-      <p
-        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
-      >
-        No ClinVar variants found in this gene.
-      </p>
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
@@ -34564,6 +34604,27 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
         >
           gnomAD variants
         </h2>
+        <label
+          className="ChartStyles__Label-sc-atxio9-3 iaGgrF"
+          htmlFor="gene-page-show-position-cursor"
+          style={
+            {
+              "background": "#fafafa",
+              "position": "relative",
+              "width": "fit-content",
+              "zIndex": 1,
+            }
+          }
+        >
+          <input
+            checked={false}
+            className="ChartStyles__CheckboxInput-sc-atxio9-4 ifHXIv"
+            id="gene-page-show-position-cursor"
+            onChange={[Function]}
+            type="checkbox"
+          />
+          Extend position cursor
+        </label>
         <p>
           No gnomAD variants found.
         </p>
