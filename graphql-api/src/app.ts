@@ -5,6 +5,7 @@ import onFinished from 'on-finished'
 import onHeaders from 'on-headers'
 import config from './config'
 import { client as esClient } from './elasticsearch'
+import { esTimingStore, EsTimingAccumulator } from './esTiming'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
 
@@ -26,7 +27,8 @@ process.on('unhandledRejection', (error) => {
 
 const app = express()
 app.use(compression())
-app.use(cors())
+// Expose Server-Timing so the browser can read our server-side timing header cross-origin.
+app.use(cors({ exposedHeaders: ['Server-Timing'] }))
 
 app.set('trust proxy', config.TRUST_PROXY)
 
@@ -79,6 +81,37 @@ app.use(function requestLogMiddleware(request: any, response: any, next: any) {
   })
 
   next()
+})
+
+// Server-Timing: accumulate per-request Elasticsearch time (via AsyncLocalStorage,
+// see esTiming.ts + elasticsearch.ts) and emit it as a Server-Timing response
+// header. onHeaders runs the callback just before headers flush, when they are
+// not yet sent, so setHeader is safe. This applies to both the REST and GraphQL
+// routes registered below.
+app.use(function serverTimingMiddleware(request: any, response: any, next: any) {
+  const accumulator: EsTimingAccumulator = { esMs: 0, esCalls: 0 }
+  response.locals.esTiming = accumulator
+  const startedAt = performance.now()
+
+  onHeaders(response, () => {
+    // Guard against double-setting and against a value already being present.
+    if (response.getHeader('Server-Timing')) {
+      return
+    }
+    const totalMs = performance.now() - startedAt
+    const parts = [
+      `db;dur=${accumulator.esMs.toFixed(1)};desc="Elasticsearch"`,
+      `total;dur=${totalMs.toFixed(1)}`,
+    ]
+    if (accumulator.esCalls > 0) {
+      parts.push(`es_calls;desc="${accumulator.esCalls}"`)
+    }
+    response.setHeader('Server-Timing', parts.join(', '))
+  })
+
+  // Run the rest of the request inside the AsyncLocalStorage context so the ES
+  // client wrapper can attribute its elapsed time to this request's accumulator.
+  esTimingStore.run(accumulator, () => next())
 })
 
 loadWhitelist()
