@@ -3,6 +3,7 @@ import Bottleneck from 'bottleneck'
 import config from './config'
 
 import { UserVisibleError } from './errors'
+import { currentEsTiming } from './esTiming'
 import logger from './logger'
 
 const isCloudRunProxy = config.ELASTICSEARCH_URL?.includes('run.app')
@@ -66,6 +67,12 @@ export const catchNotFound = (err: any) => {
 }
 
 const scheduleElasticsearchRequest = (fn: any) => {
+  // Capture the current request's timing accumulator synchronously, before the
+  // request is handed to Bottleneck (whose internal scheduling might not
+  // propagate AsyncLocalStorage context). Elapsed time for the actual ES call
+  // is added back into this same object below.
+  const esTiming = currentEsTiming()
+
   return new Promise((resolve, reject) => {
     let canceled = false
 
@@ -88,8 +95,15 @@ const scheduleElasticsearchRequest = (fn: any) => {
           return Promise.resolve(undefined)
         }
 
-        // Otherwise, make the request.
-        return fn()
+        // Otherwise, make the request, measuring the elapsed ES round-trip time
+        // and adding it to the current request's accumulator.
+        const startedAt = performance.now()
+        return Promise.resolve(fn()).finally(() => {
+          if (esTiming) {
+            esTiming.esMs += performance.now() - startedAt
+            esTiming.esCalls += 1
+          }
+        })
       })
       .then(resolve, (err: any) => {
         // If Bottleneck refuses to schedule the request because the queue is full,
