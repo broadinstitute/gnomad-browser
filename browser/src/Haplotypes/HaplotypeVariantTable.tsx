@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
+import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
@@ -2166,6 +2166,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 })
 
 export default React.memo(HaplotypeVariantTable)
+
 
 
 
