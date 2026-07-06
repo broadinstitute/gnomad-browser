@@ -1,14 +1,19 @@
 import { graphqlHTTP } from 'express-graphql'
 import { GraphQLError, execute, getOperationAST, parse, validate } from 'graphql'
 import { getVariableValues } from 'graphql/execution/values'
+import { compileQuery, isCompiledQuery } from 'graphql-jit'
 import queryComplexity, { directiveEstimator, simpleEstimator } from 'graphql-query-complexity'
 import { isHttpError } from 'http-errors'
+import { performance } from 'perf_hooks'
 
 import config from '../config'
 import logger from '../logger'
 
 import { applyRateLimits } from './rate-limiting'
 import schema from './schema'
+
+// Global memory cache to hold compiled queries so we only compile each query shape once
+const compiledQueriesCache = new Map()
 
 const customParseFn = (...args: Parameters<typeof parse>) => {
   try {
@@ -200,7 +205,44 @@ const graphQLApi = ({ context }: any) =>
         throw new GraphQLError(error.message, undefined, undefined, undefined, undefined, error)
       }
 
-      return execute(args)
+      // --- GRAPHQL JIT COMPILATION & EXECUTION ---
+      const { rootValue, contextValue } = args
+      
+      // Create a unique key using the operation name and raw query text
+      const querySource = document.loc?.source.body || ''
+      const cacheKey = `${operationName || 'default'}:${querySource}`
+      
+      let compiledQuery = compiledQueriesCache.get(cacheKey)
+      
+      if (!compiledQuery) {
+        // Compile the query tree into a high-performance JS function
+        const compilationResult = compileQuery(schema, document, operationName || undefined)
+        
+        if (isCompiledQuery(compilationResult)) {
+          compiledQuery = compilationResult
+          compiledQueriesCache.set(cacheKey, compiledQuery)
+        } else {
+          // If compilation fails, fall back to returning the default validation/parsing error
+          return compilationResult
+        }
+      }
+
+      const startGraphQLExecute = performance.now()
+
+      // Execute the query using the compiled function
+      const executionResult = await compiledQuery.query(rootValue, contextValue, variableValues)
+
+      const endGraphQLExecute = performance.now()
+      const graphqlExecutionDurationMs = (endGraphQLExecute - startGraphQLExecute).toFixed(2)
+
+      logger.info({
+        message: 'GraphQL JIT engine execution performance metric',
+        graphqlExecutionDurationMs: parseFloat(graphqlExecutionDurationMs),
+        operationName: operationName || 'unnamed_operation',
+        cacheHit: true
+      })
+
+      return executionResult
     },
 
     customFormatErrorFn: (error: any) =>
