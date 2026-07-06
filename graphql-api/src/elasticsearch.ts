@@ -51,7 +51,13 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
   const queuedAt = performance.now()
   let canceled = false
 
-  // If task sits in the queue for more than 30s, cancel it and notify the user.
+  // If the task sits in the queue for more than 30s, cancel it and notify the user.
+  // The timer rejects the returned promise directly (via the Promise.race below) so a
+  // request backed up in the queue fails at the timeout instead of waiting to be dequeued.
+  let rejectQueue!: (reason?: any) => void
+  const queueTimeout = new Promise<never>((_resolve, reject) => {
+    rejectQueue = reject
+  })
   const timeout = setTimeout(() => {
     canceled = true
 
@@ -61,9 +67,11 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
       operation,
       queueMs: performance.now() - queuedAt,
     })
+
+    rejectQueue(new UserVisibleError('Request timed out'))
   }, config.ELASTICSEARCH_QUEUE_TIMEOUT)
 
-  return esLimiter
+  const scheduled = esLimiter
     .schedule(() => {
       const startedAt = performance.now()
 
@@ -124,6 +132,8 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
         throw err
       }
     )
+
+  return Promise.race([scheduled, queueTimeout])
 }
 
 // This wraps the ES methods used by the API and sends them through the rate limiter
