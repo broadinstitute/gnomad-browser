@@ -109,6 +109,14 @@ const formatErrorAndSetNocache = (
     })
   }
 
+  // In development, surface the underlying error message (e.g. a ClickHouse
+  // socket error) instead of the opaque "unknown error" so masked failures are
+  // debuggable. Production still hides internal details from clients.
+  if (!isUserVisible && process.env.NODE_ENV !== 'production') {
+    const originalMessage = error.originalError?.message || error.message
+    return { message: `[dev] ${originalMessage}` }
+  }
+
   const message = isUserVisible ? error.message : 'An unknown error occurred'
   return { message }
 }
