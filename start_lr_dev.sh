@@ -88,8 +88,11 @@ if $USE_GCP_CH; then
     fi
 else
     # Local Docker ClickHouse
-    CH_URL="http://localhost:8123"
-    if curl -sf http://localhost:8123/ping &>/dev/null; then
+    # Use 127.0.0.1 (not localhost) so we don't hit the macOS IPv6 (::1) path,
+    # which the IPv4-only ClickHouse container doesn't listen on. Matches the
+    # graphql-api CLICKHOUSE_URL default.
+    CH_URL="http://127.0.0.1:8123"
+    if curl -sf http://127.0.0.1:8123/ping &>/dev/null; then
         log "ClickHouse already running."
     else
         if docker ps -a --format '{{.Names}}' | grep -q '^clickhouse$'; then
@@ -105,10 +108,10 @@ else
         # Wait for ClickHouse to be ready
         log "Waiting for ClickHouse..."
         for i in $(seq 1 30); do
-            curl -sf http://localhost:8123/ping &>/dev/null && break
+            curl -sf http://127.0.0.1:8123/ping &>/dev/null && break
             sleep 1
         done
-        curl -sf http://localhost:8123/ping &>/dev/null || { err "ClickHouse failed to start"; exit 1; }
+        curl -sf http://127.0.0.1:8123/ping &>/dev/null || { err "ClickHouse failed to start"; exit 1; }
         log "ClickHouse is ready."
     fi
 fi
