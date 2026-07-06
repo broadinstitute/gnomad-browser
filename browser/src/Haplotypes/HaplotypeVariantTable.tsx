@@ -2015,7 +2015,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   }
 
   return (
-    <TableContainer id="lr-variant-table-container">
+    <TableContainer id="haplotype-variant-table-container">
       <ControlBar>
         <CategoryFilterControl
           categories={variantTypeCategories}
