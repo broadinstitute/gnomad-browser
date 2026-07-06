@@ -1529,6 +1529,86 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
         </div>
       </div>
       <div
+        className="sc-ggWZvA faMivF"
+      >
+        <div
+          className="sc-dTvVRJ ejoLSV"
+        >
+          <div
+            className="sc-hjsuWn ccbdKG"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
+            >
+              <span>
+                Regional missense constraint
+              </span>
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            className="sc-jJLAfE KfhrV"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
+            >
+              <svg
+                height={35}
+                width={799}
+              >
+                <text
+                  dy="1.0rem"
+                  textAnchor="middle"
+                  x={399.5}
+                  y={17.5}
+                >
+                  <tspan>
+                    Regional missense constraint is not available for this gene.
+                  </tspan>
+                </text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         className="StatusMessage-sc-neg7mh-0 eWmajh"
       >
         No variants found
@@ -7629,6 +7709,86 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
         </div>
       </div>
       <div
+        className="sc-ggWZvA faMivF"
+      >
+        <div
+          className="sc-dTvVRJ ejoLSV"
+        >
+          <div
+            className="sc-hjsuWn ccbdKG"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
+            >
+              <span>
+                Regional missense constraint
+              </span>
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            className="sc-jJLAfE KfhrV"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
+            >
+              <svg
+                height={35}
+                width={799}
+              >
+                <text
+                  dy="1.0rem"
+                  textAnchor="middle"
+                  x={399.5}
+                  y={17.5}
+                >
+                  <tspan>
+                    Regional missense constraint is not available for this gene.
+                  </tspan>
+                </text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         className="StatusMessage-sc-neg7mh-0 eWmajh"
       >
         No variants found
@@ -10728,6 +10888,86 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
         </div>
       </div>
       <div
+        className="sc-ggWZvA faMivF"
+      >
+        <div
+          className="sc-dTvVRJ ejoLSV"
+        >
+          <div
+            className="sc-hjsuWn ccbdKG"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
+            >
+              <span>
+                Regional missense constraint
+              </span>
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            className="sc-jJLAfE KfhrV"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
+            >
+              <svg
+                height={35}
+                width={799}
+              >
+                <text
+                  dy="1.0rem"
+                  textAnchor="middle"
+                  x={399.5}
+                  y={17.5}
+                >
+                  <tspan>
+                    Regional missense constraint is not available for this gene.
+                  </tspan>
+                </text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         className="StatusMessage-sc-neg7mh-0 eWmajh"
       >
         No variants found
@@ -12337,22 +12577,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -13993,22 +14218,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -15649,22 +15859,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -17305,22 +17500,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -18961,22 +19141,7 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
                   y={17.5}
                 >
                   <tspan>
-                    This gene was not searched for evidence of regional missense constraint. See our
-                     
-                  </tspan>
-                  <tspan
-                    fill="#0000ff"
-                  >
-                    <a
-                      className="Link-sc-14lgydv-0 jtwqlm"
-                      href="/help"
-                      onClick={[Function]}
-                    >
-                      help page
-                    </a>
-                  </tspan>
-                  <tspan>
-                     for additional information.
+                    Regional missense constraint is not available for this gene.
                   </tspan>
                 </text>
               </svg>
@@ -29912,6 +30077,86 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
         </div>
       </div>
       <div
+        className="sc-ggWZvA faMivF"
+      >
+        <div
+          className="sc-dTvVRJ ejoLSV"
+        >
+          <div
+            className="sc-hjsuWn ccbdKG"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
+            >
+              <span>
+                Regional missense constraint
+              </span>
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            className="sc-jJLAfE KfhrV"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
+            >
+              <svg
+                height={35}
+                width={799}
+              >
+                <text
+                  dy="1.0rem"
+                  textAnchor="middle"
+                  x={399.5}
+                  y={17.5}
+                >
+                  <tspan>
+                    Regional missense constraint is not available for this gene.
+                  </tspan>
+                </text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
         <h2>
@@ -31473,6 +31718,86 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
         </div>
       </div>
       <div
+        className="sc-ggWZvA faMivF"
+      >
+        <div
+          className="sc-dTvVRJ ejoLSV"
+        >
+          <div
+            className="sc-hjsuWn ccbdKG"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
+            >
+              <span>
+                Regional missense constraint
+              </span>
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            className="sc-jJLAfE KfhrV"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
+            >
+              <svg
+                height={35}
+                width={799}
+              >
+                <text
+                  dy="1.0rem"
+                  textAnchor="middle"
+                  x={399.5}
+                  y={17.5}
+                >
+                  <tspan>
+                    Regional missense constraint is not available for this gene.
+                  </tspan>
+                </text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
         <h2>
@@ -33009,6 +33334,86 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
                   />
                 </svg>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="sc-ggWZvA faMivF"
+      >
+        <div
+          className="sc-dTvVRJ ejoLSV"
+        >
+          <div
+            className="sc-hjsuWn ccbdKG"
+            style={
+              {
+                "width": 115,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__SidePanel-sc-113yvfg-2 hZWMNP"
+            >
+              <span>
+                Regional missense constraint
+              </span>
+              <button
+                className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+                onClick={[Function]}
+                type="button"
+              >
+                <img
+                  alt=""
+                  aria-hidden="true"
+                  src="test-file-stub"
+                />
+                <span
+                  style={
+                    {
+                      "border": "0",
+                      "clip": "rect(0 0 0 0)",
+                      "height": "1px",
+                      "margin": "-1px",
+                      "overflow": "hidden",
+                      "padding": "0",
+                      "position": "absolute",
+                      "whiteSpace": "nowrap",
+                      "width": "1px",
+                    }
+                  }
+                >
+                  More information
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            className="sc-jJLAfE KfhrV"
+            style={
+              {
+                "width": 799,
+              }
+            }
+          >
+            <div
+              className="ConstraintTrack__PlotWrapper-sc-113yvfg-0 bpKJSQ"
+            >
+              <svg
+                height={35}
+                width={799}
+              >
+                <text
+                  dy="1.0rem"
+                  textAnchor="middle"
+                  x={399.5}
+                  y={17.5}
+                >
+                  <tspan>
+                    Regional missense constraint is not available for this gene.
+                  </tspan>
+                </text>
+              </svg>
             </div>
           </div>
         </div>

@@ -7177,6 +7177,163 @@ exports[`Data Page has no unexpected changes 1`] = `
           <a
             aria-hidden="true"
             className="c11 c12"
+            href="#v4-regional-missense-constraint"
+            id="v4-regional-missense-constraint"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Regional missense constraint
+        </h2>
+      </span>
+      <ul
+        className="c20 c21"
+      >
+        <li
+          className="c22"
+        >
+          <span>
+            TK: TO BE STAGED - Regional missense constraint Hail Table
+          </span>
+          <br />
+          Show URL for
+           
+          <button
+            aria-label="Show Google URL for TK: TO BE STAGED - Regional missense constraint Hail Table"
+            className="c23"
+            onClick={[Function]}
+            type="button"
+          >
+            Google
+          </button>
+           / 
+          <button
+            aria-label="Show Amazon URL for TK: TO BE STAGED - Regional missense constraint Hail Table"
+            className="c23"
+            onClick={[Function]}
+            type="button"
+          >
+            Amazon
+          </button>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Transcript and regional missense constraint TSV (all transcripts)
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Transcript and regional missense constraint TSV (all transcripts) from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_all_mcrs.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Transcript and regional missense constraint TSV (all transcripts) from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/papers/2026-rmc/gnomad_v4.1.1_all_mcrs.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Transcript and regional missense constraint TSV (high quality transcripts only)
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Transcript and regional missense constraint TSV (high quality transcripts only) from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomadgs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_non_outlier_mcrs.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Transcript and regional missense constraint TSV (high quality transcripts only) from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.comgs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_non_outlier_mcrs.tsv"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+        <li
+          className="c22"
+        >
+          <span>
+            Missense observed/expected percentiles TSV
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download Missense observed/expected percentiles TSV from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomadgs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_coding_locus_oe_percentiles.he"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download Missense observed/expected percentiles TSV from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.comgs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_coding_locus_oe_percentiles.he"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+      </ul>
+    </section>
+    <section
+      className="c16"
+    >
+      <span
+        className="c9"
+      >
+        <h2
+          className="c17 "
+        >
+          <a
+            aria-hidden="true"
+            className="c11 c12"
             href="#v4-clinvar-grch38"
             id="v4-clinvar-grch38"
           >
@@ -21188,7 +21345,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               width={12}
             />
           </a>
-          Regional Missense Constraint
+          Regional missense constraint
         </h2>
       </span>
       <ul

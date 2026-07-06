@@ -553,6 +553,38 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
+        <SectionTitle id="v4-regional-missense-constraint">
+          Regional missense constraint
+        </SectionTitle>
+        <FileList>
+          <ListItem>
+            <GetUrlButtons
+              label="TK: TO BE STAGED - Regional missense constraint Hail Table"
+              path=""
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Transcript and regional missense constraint TSV (all transcripts)"
+              path="/papers/2026-rmc/gnomad_v4.1.1_all_mcrs.tsv"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Transcript and regional missense constraint TSV (high quality transcripts only)"
+              path="gs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_non_outlier_mcrs.tsv"
+            />
+          </ListItem>
+          <ListItem>
+            <DownloadLinks
+              label="Missense observed/expected percentiles TSV"
+              path="gs://gcp-public-data--gnomad/papers/2026-rmc/gnomad_v4.1.1_coding_locus_oe_percentiles.he"
+            />
+          </ListItem>
+        </FileList>
+      </DownloadsSection>
+
+      <DownloadsSection>
         <SectionTitle id="v4-clinvar-grch38">ClinVar</SectionTitle>
         <p>
           For more information about these files, including how to download a specific previous

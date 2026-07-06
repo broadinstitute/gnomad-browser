@@ -123,9 +123,10 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
       obs_exp
       chisq_diff_null
     }
-    gnomad_v2_regional_missense_constraint {
-      passed_qc
+    gnomad_regional_missense_constraint {
       has_no_rmc_evidence
+      is_outlier
+      is_outlier_no_display
       regions {
         chrom
         start
@@ -137,6 +138,9 @@ query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: R
         obs_exp
         chisq_diff_null
         p_value
+        low_coverage
+        percentile
+        no_color
       }
     }
     short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {

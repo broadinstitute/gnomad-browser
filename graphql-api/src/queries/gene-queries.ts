@@ -1,11 +1,14 @@
-import { withCache } from '../cache'
+// import { withCache } from '../cache'
 
 import { fetchAllSearchResults } from './helpers/elasticsearch-helpers'
 import { catchNotFound } from '../elasticsearch'
 
 const GENE_INDICES = {
-  GRCh37: 'genes_grch37',
-  GRCh38: 'genes_grch38',
+  // GRCh37: 'genes_grch37',
+  // GRCh38: 'genes_grch38',
+  // TODO: June 2026 v4 RMC indices
+  GRCh37: 'genes_grch37-2026-06-11--00-14',
+  GRCh38: 'genes_grch38-2026-06-11--00-42',
 }
 
 const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {
@@ -23,11 +26,12 @@ const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) 
   }
 }
 
-export const fetchGeneById = withCache(
-  _fetchGeneById,
-  (_: any, geneId: any, referenceGenome: any) => `gene:${geneId}:${referenceGenome}`,
-  { expiration: 86400 }
-)
+// export const fetchGeneById = withCache(
+//   _fetchGeneById,
+//   (_: any, geneId: any, referenceGenome: any) => `gene:${geneId}:${referenceGenome}`,
+//   { expiration: 86400 }
+// )
+export const fetchGeneById = _fetchGeneById
 
 export const fetchGeneBySymbol = async (esClient: any, geneSymbol: any, referenceGenome: any) => {
   const response = await esClient.search({

@@ -1,4 +1,4 @@
-type GnomadV2RegionalMissenseConstraintRegion {
+type GnomadRegionalMissenseConstraintRegion {
   chrom: String
   start: Int
   stop: Int
@@ -9,10 +9,15 @@ type GnomadV2RegionalMissenseConstraintRegion {
   obs_exp: Float
   chisq_diff_null: Float
   p_value: Float
+
+  low_coverage: Boolean
+  percentile: String
+  no_color: Boolean
 }
 
-type GnomadV2RegionalMissenseConstraint {
+type GnomadRegionalMissenseConstraint {
   has_no_rmc_evidence: Boolean
-  passed_qc: Boolean
-  regions: [GnomadV2RegionalMissenseConstraintRegion]
+  is_outlier: Boolean
+  is_outlier_no_display: Boolean
+  regions: [GnomadRegionalMissenseConstraintRegion]
 }
