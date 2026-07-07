@@ -72,7 +72,7 @@ const LRCoverageTrack = ({ chrom, start, stop }: LRCoverageTrackProps) => {
       filenameForExport={() => `${chrom}-${start}-${stop}_lr_coverage`}
       datasets={[
         {
-          color: '#73ab3d',
+          color: '#9c27b0',
           buckets: coverageData,
           name: 'Long Read',
           opacity: 0.7,
