@@ -169,7 +169,7 @@ export const Legend = ({
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   onDistanceMetricChange = (() => { }) as (metric: import('./haplotypeCompute').DistanceMetric) => void,
   regionSize = 0,
-  showPhantomRegions = true,
+  showPhantomRegions = false,
   onShowPhantomRegionsChange = () => { },
   showPopBackground = true,
   onShowPopBackgroundChange = () => { },
@@ -432,6 +432,7 @@ export const Legend = ({
                 Pop bg
               </label>
             </div>
+            {/* Hidden for now (Expand INS/TRs) —
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
                 <input
@@ -445,6 +446,7 @@ export const Legend = ({
                 <ExpandInsertionsHelp />
               </HaplotypeHelpButton>
             </div>
+            */}
           </ControlGroup>
         </Fieldset>
 
@@ -1936,7 +1938,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   minAfCeiling = 1,
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   regionSize = 0,
-  showPhantomRegions = true,
+  showPhantomRegions = false,
   onVariantClick,
   onClusterSelect,
   selectedClusterId,

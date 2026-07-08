@@ -251,7 +251,7 @@ const LongReadUnifiedView = ({
   const [typeFilters, setTypeFilters] = useState<VariantTypeFilters>({
     snv: true, deletion: true, insertion: true, sv: true, tr: true,
   })
-  const [showPhantomRegions, setShowPhantomRegions] = useState(true)
+  const [showPhantomRegions, setShowPhantomRegions] = useState(false)
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
