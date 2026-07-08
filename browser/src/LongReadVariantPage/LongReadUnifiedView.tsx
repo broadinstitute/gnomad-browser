@@ -234,8 +234,8 @@ const LongReadUnifiedView = ({
   const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
 
   const [threshold, setThreshold] = useState(0)
-  const [sortBy, setSortBy] = useState('similarity_score')
-  const [groupingMode, setGroupingMode] = useState<'similarity' | 'exact' | 'diploid'>('similarity')
+  const [sortBy, setSortBy] = useState('diplotype_frequency')
+  const [groupingMode, setGroupingMode] = useState<'similarity' | 'exact' | 'diploid'>('diploid')
   const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'sv_only')
   const [plotType, setPlotType] = useState('lollipop')
   const [colorMode, setColorMode] = useState('sv_type')
@@ -494,15 +494,18 @@ const LongReadUnifiedView = ({
         setThreshold(0)
         setClusterThreshold(defaults.defaultClusterThreshold)
         setDeferredClusterThreshold(defaults.defaultClusterThreshold)
-        if (defaults.isClusteredView) {
-          setGroupingMode('similarity')
-        }
+        // Diploid is the default haplotype view; server-suggested clustering
+        // (defaults.isClusteredView) no longer overrides the initial mode — it's
+        // preserved in autoDefaults for when the user switches to Similarity Clusters.
 
         setHaplotypeLoading(false)
+        // Compute the initial view in the current grouping mode (diploid by default)
+        // so the first render's data shape matches the mode — no mismatch flash.
+        const initDiploid = groupingMode === 'diploid'
         if (workerRef.current) {
           setWorkerComputing(true)
           setLoadingStatus(`Grouping ${variantCount.toLocaleString()} variants into haplotypes…`)
-          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy, distanceMetric, regionSize })
+          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy, distanceMetric, regionSize, isDiploidView: initDiploid })
         } else {
           // Main-thread fallback: rehydrate SoA variants and compute directly
           const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
@@ -512,8 +515,8 @@ const LongReadUnifiedView = ({
           rawDataRef.current = { variants, carrierIndices, trvAlts: result.trv_alts }
           const baseData = computeHaplotypeView(
             variants, carrierIndices,
-            0, sortBy, defaults.isClusteredView, defaults.defaultClusterThreshold,
-            result.trv_alts, false, distanceMetric, regionSize
+            0, sortBy, initDiploid ? false : defaults.isClusteredView, defaults.defaultClusterThreshold,
+            result.trv_alts, initDiploid, distanceMetric, regionSize
           )
           setHaplotypeData(baseData)
           setHaplotypeLoading(false)
@@ -561,6 +564,14 @@ const LongReadUnifiedView = ({
   }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, isDiploidView, distanceMetric, hasData])
 
   const haplotypeGroups: HaplotypeGroups = (haplotypeData as HaplotypeGroups | null) || { groups: [] }
+
+  // `groupingMode` updates synchronously, but the recomputed `haplotypeData` lags
+  // by a render (worker) or an effect tick (main thread). Rendering diplotype-shaped
+  // groups under a non-diploid mode (or vice versa) hits track code paths that assume
+  // the other shape (e.g. `group.variants.variants`, absent on diplotype groups),
+  // which crashes. Suppress the haplotype track until the data shape matches the mode.
+  const dataIsDiploid = haplotypeGroups.groups.length > 0 && 'is_diplotype' in haplotypeGroups.groups[0]
+  const dataMatchesMode = haplotypeGroups.groups.length === 0 || dataIsDiploid === isDiploidView
 
   // Fetch methylation summary + outliers when entering haplotype mode
   // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
@@ -810,7 +821,12 @@ const LongReadUnifiedView = ({
               onMinLogPChange={setMqtlMinLogP}
             />
           )}
-          {haplotypeGroups && (
+          {haplotypeGroups && !dataMatchesMode && (
+            <div style={{ height: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
+              Computing…
+            </div>
+          )}
+          {haplotypeGroups && dataMatchesMode && (
             <HaplotypeTrack
               ref={trackRef}
               haplotypeGroups={haplotypeGroups.groups as HaplotypeGroup[]}
@@ -1031,6 +1047,3 @@ const LongReadUnifiedView = ({
 }
 
 export default LongReadUnifiedView
-
-
-
