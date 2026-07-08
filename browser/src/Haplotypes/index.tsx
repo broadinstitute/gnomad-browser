@@ -171,8 +171,6 @@ export const Legend = ({
   regionSize = 0,
   showPhantomRegions = false,
   onShowPhantomRegionsChange = () => { },
-  showPopBackground = true,
-  onShowPopBackgroundChange = () => { },
   showRecombination = false,
   onShowRecombinationChange = () => { },
 }: {
@@ -212,8 +210,6 @@ export const Legend = ({
   regionSize?: number
   showPhantomRegions?: boolean
   onShowPhantomRegionsChange?: (show: boolean) => void
-  showPopBackground?: boolean
-  onShowPopBackgroundChange?: (show: boolean) => void
   showRecombination?: boolean
   onShowRecombinationChange?: (show: boolean) => void
 }) => {
@@ -422,16 +418,6 @@ export const Legend = ({
               </Select>
             </div>
             {/* Color dropdown moved to TopBar for unified access */}
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                <input
-                  type='checkbox'
-                  checked={showPopBackground}
-                  onChange={(e) => onShowPopBackgroundChange(e.target.checked)}
-                />
-                Pop bg
-              </label>
-            </div>
             {/* Hidden for now (Expand INS/TRs) —
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
@@ -851,7 +837,6 @@ type HaplotypeTrackProps = {
   selectedVariantPos?: number | null
   showMethylation?: boolean
   filterToOutliers?: boolean
-  showPopBackground?: boolean
   isAutoTuned?: boolean
   typeFilters?: Record<string, boolean>
 }
@@ -1946,7 +1931,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   selectedVariantPos,
   showMethylation = false,
   filterToOutliers = true,
-  showPopBackground = true,
   isAutoTuned = true,
   typeFilters,
 }, ref) {
@@ -2135,7 +2119,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             selectedClusterId={selectedClusterId}
             highlightedVariantIds={highlightedVariantIds}
             selectedVariantPos={selectedVariantPos}
-            showPopBackground={showPopBackground}
             typeFilters={typeFilters}
           />
         </>

@@ -222,7 +222,6 @@ type DeckGLLollipopTrackProps = {
   selectedClusterId?: string | null
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
-  showPopBackground?: boolean
   typeFilters?: Record<string, boolean>
 }
 
@@ -262,7 +261,6 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   selectedClusterId,
   highlightedVariantIds,
   selectedVariantPos,
-  showPopBackground = true,
   typeFilters,
 }, ref) {
   const [hovered, setHovered] = useState<{
@@ -600,7 +598,6 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           selectedClusterId={selectedClusterId}
           highlightedVariantIds={highlightedVariantIds}
           selectedVariantPos={selectedVariantPos}
-          showPopBackground={showPopBackground}
           typeFilters={typeFilters}
         />
 
@@ -679,7 +676,6 @@ type DeckGLCanvasProps = {
   selectedClusterId?: string | null
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
-  showPopBackground: boolean
   typeFilters?: Record<string, boolean>
 }
 
@@ -739,7 +735,6 @@ function DeckGLLollipopCanvas({
   selectedClusterId,
   highlightedVariantIds,
   selectedVariantPos,
-  showPopBackground,
   typeFilters,
 }: DeckGLCanvasProps) {
   const canvasWidth = width
@@ -1359,9 +1354,6 @@ function DeckGLLollipopCanvas({
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
 
-      // Population-mode background tint: plurality color with proportional opacity
-      const popStats = populationStatsByRow[gi]
-
       if (item.type === 'diplotype') {
         const dg = item.group
         const yTop = rowY + ROW_CENTER_Y   // 12.5 — strand A baseline
@@ -1372,12 +1364,7 @@ function DeckGLLollipopCanvas({
         allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yBottom })
 
         // Strand backgrounds — ROH merges into one pill, non-ROH shows two separated pills
-        let strandColor: [number, number, number, number] = [232, 238, 248, 255]
-        if (showPopBackground && popStats && popStats.dominantPop !== 'N/A') {
-          const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
-          const alpha = Math.round(40 * popStats.dominantFraction)
-          strandColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(12, alpha)]
-        }
+        const strandColor: [number, number, number, number] = [232, 238, 248, 255]
 
         if (dg.is_roh) {
           // ROH: single merged pill — both strands are identical
@@ -1546,12 +1533,7 @@ function DeckGLLollipopCanvas({
       if (item.type === 'cluster') {
         const cluster = item.cluster
 
-        let bgColor: [number, number, number, number] = [215, 225, 240, 255]
-        if (showPopBackground && popStats && popStats.dominantPop !== 'N/A') {
-          const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
-          const alpha = Math.round(40 * popStats.dominantFraction)
-          bgColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(10, alpha)]
-        }
+        const bgColor: [number, number, number, number] = [215, 225, 240, 255]
 
         allBgRects.push({
           groupStart: start,
@@ -1605,12 +1587,7 @@ function DeckGLLollipopCanvas({
       } else {
         const group = item.group
 
-        let bgColor: [number, number, number, number] = item.isChild ? [230, 235, 250, 255] : [240, 240, 240, 255]
-        if (showPopBackground && popStats && popStats.dominantPop !== 'N/A') {
-          const popRgb = cssColorToRgba(SUPERPOPULATION_COLORS[popStats.dominantPop] || SUPERPOPULATION_COLORS['N/A'])
-          const alpha = Math.round(40 * popStats.dominantFraction)
-          bgColor = [popRgb[0], popRgb[1], popRgb[2], Math.max(10, alpha)]
-        }
+        const bgColor: [number, number, number, number] = item.isChild ? [230, 235, 250, 255] : [240, 240, 240, 255]
 
         allBgRects.push({
           groupStart: group.start,
@@ -2232,7 +2209,6 @@ function DeckGLLollipopCanvas({
     mapper,
     onVariantClick,
     highlightedVariantIds,
-    showPopBackground,
     typeFilters,
   ])
 

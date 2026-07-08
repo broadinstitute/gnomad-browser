@@ -255,7 +255,6 @@ const LongReadUnifiedView = ({
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
-  const [showPopBackground, setShowPopBackground] = useState(true)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
   const [searchText, setSearchText] = useState('')
 
@@ -872,7 +871,6 @@ const LongReadUnifiedView = ({
               selectedVariantPos={selectedVariantPos}
               showMethylation={showMethylation}
               filterToOutliers={filterToOutliers}
-              showPopBackground={showPopBackground}
               isAutoTuned={isAutoTuned}
               typeFilters={typeFilters}
             />
@@ -992,8 +990,6 @@ const LongReadUnifiedView = ({
             regionSize={regionSize}
             showPhantomRegions={showPhantomRegions}
             onShowPhantomRegionsChange={setShowPhantomRegions}
-            showPopBackground={showPopBackground}
-            onShowPopBackgroundChange={setShowPopBackground}
             showRecombination={showRecombination}
             onShowRecombinationChange={setShowRecombination}
           />
