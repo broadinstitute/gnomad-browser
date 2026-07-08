@@ -10,10 +10,6 @@ import logger from './logger'
 
 import { loadWhitelist } from './whitelist'
 
-import startEsStatsPolling from './esPoll'
-
-const STATS_POLL_INTERVAL = 5000
-
 process.on('uncaughtException', (error) => {
   logger.error(error)
   process.exit(1)
@@ -86,9 +82,5 @@ loadWhitelist()
 const context = { esClient }
 
 app.use('/api/', graphQLApi({ context }))
-
-if (!process.env.NO_ES_STATS_POLL) {
-  startEsStatsPolling(STATS_POLL_INTERVAL)
-}
 
 app.listen(config.PORT)
