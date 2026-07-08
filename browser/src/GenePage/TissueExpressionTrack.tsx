@@ -318,6 +318,12 @@ const tissuePredicate = (tissueFilterText: any) => {
 }
 
 const ControlsWrapper = styled.div`
+  position: relative;
+
+  /* Sit above the cross-track cursor line so the line passes behind the tissue
+     track controls. They have their own backgrounds, so the line is hidden
+     behind them but stays visible (continuous) in the empty space between them. */
+  z-index: 1;
   margin: 1em 0 0.5em -115px;
 `
 
@@ -504,7 +510,6 @@ const TissueExpressionTrack = ({
                   {isExpanded ? 'Hide' : 'Show'} tissues
                 </Button>
                 <span style={{ marginRight: '0.25em', textAlign: 'right' }}>Mean pext</span>
-                {/* @ts-expect-error TS(2322) FIXME: Type '{ topic: string; style: { display: string; }... Remove this comment to see the full error message */}
                 <InfoButton topic="pext" style={{ display: 'inline' }} />
               </TissueName>
             )}
@@ -582,7 +587,12 @@ const TissueExpressionTrack = ({
               {() => {
                 return (
                   <ControlsWrapper>
-                    <label htmlFor="tissue-expression-track-sort-tissues-by">
+                    {/* Opaque page-colored backdrops so the cursor line is masked
+                        behind the text controls (it still shows in the gaps). */}
+                    <label
+                      htmlFor="tissue-expression-track-sort-tissues-by"
+                      style={{ background: '#fafafa' }}
+                    >
                       Sort tissues by:{' '}
                       <Select
                         id="tissue-expression-track-sort-tissues-by"
@@ -604,7 +614,8 @@ const TissueExpressionTrack = ({
                       Show transcript tissue expression
                     </Button>
                     <label htmlFor="tissue-expression-track-filter" style={{ marginLeft: '1ch' }}>
-                      Filter tissues:{' '}
+                      {/* mask only the label text, not the open input field next to it */}
+                      <span style={{ background: '#fafafa' }}>Filter tissues:</span>{' '}
                       <SearchInput
                         // @ts-expect-error TS(2322) FIXME: Type '{ id: string; placeholder: string; value: st... Remove this comment to see the full error message
                         id="tissue-expression-track-filter"

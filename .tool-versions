@@ -1,3 +1,4 @@
 nodejs 18.17.1
 pnpm 8.14.3
 python 3.9.17
+uv 0.9.27

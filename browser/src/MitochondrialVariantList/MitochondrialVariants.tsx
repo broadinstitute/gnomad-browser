@@ -54,6 +54,15 @@ type MitochondrialVariantsProps = {
   exportFileName: string
   // @ts-expect-error TS(2749) FIXME: 'StructrualVariantPropType' refers to a value, but... Remove this comment to see the full error message
   variants: StructrualVariantPropType[]
+  wrapInCursor?: boolean
+  /** Wraps the variant tracks (and position axis) — the always-on cursor lives here. */
+  trackWrapper?: (tracks: React.ReactNode) => React.ReactNode
+  /** Wraps the heading + headerControl — the toggle-controlled cursor lives here, so
+      the line only extends through the heading when the cursor is enabled. */
+  headerWrapper?: (header: React.ReactNode) => React.ReactNode
+  externalCursorClick?: { position: number } | null
+  /** Optional control rendered just under the "gnomAD variants" heading (e.g. the cursor toggle). */
+  headerControl?: React.ReactNode
 }
 
 const MitochondrialVariants = ({
@@ -61,6 +70,11 @@ const MitochondrialVariants = ({
   context,
   exportFileName,
   variants,
+  wrapInCursor = true,
+  trackWrapper,
+  headerWrapper,
+  externalCursorClick,
+  headerControl,
 }: MitochondrialVariantsProps) => {
   const table = useRef(null)
 
@@ -174,6 +188,15 @@ const MitochondrialVariants = ({
     setPositionLastClicked(position)
   }, [])
 
+  // A click on a shared cross-track cursor is delivered via externalCursorClick;
+  // route it through the same handler as a click on this track's own cursor. It
+  // is a fresh object per click, so re-clicking the same position still fires.
+  useEffect(() => {
+    if (externalCursorClick != null) {
+      onNavigatorClick(externalCursorClick.position)
+    }
+  }, [externalCursorClick]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (positionLastClicked === null) {
       return
@@ -203,6 +226,7 @@ const MitochondrialVariants = ({
     return (
       <TrackPageSection>
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+        {headerControl}
         <p>No gnomAD variants found.</p>
       </TrackPageSection>
     )
@@ -210,37 +234,66 @@ const MitochondrialVariants = ({
 
   const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
 
-  return (
-    <div>
-      <TrackPageSection>
-        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
-      </TrackPageSection>
-      <Wrapper>
-        <Cursor onClick={onNavigatorClick}>
-          <VariantTrack
-            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-            title={`gnomAD variants\n(${renderedVariants.length})`}
-            variants={renderedVariants.map((variant) => ({
-              ...variant,
-              allele_freq: variant.af,
-            }))}
-          />
+  const variantTracks = (
+    <>
+      <VariantTrack
+        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+        title={`gnomAD variants\n(${renderedVariants.length})`}
+        variants={renderedVariants.map((variant) => ({
+          ...variant,
+          allele_freq: variant.af,
+        }))}
+      />
 
-          <VariantTrack
-            // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-            title="Viewing in table"
-            variants={renderedVariants
-              .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-              .map((variant) => ({
-                ...variant,
-                allele_freq: variant.af,
-                isHighlighted: variant.variant_id === variantHoveredInTable,
-              }))}
-            onHoverVariants={onHoverVariantsInTrack}
-          />
-        </Cursor>
-        <PositionAxisTrack />
-      </Wrapper>
+      <VariantTrack
+        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+        title="Viewing in table"
+        variants={renderedVariants
+          .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+          .map((variant) => ({
+            ...variant,
+            allele_freq: variant.af,
+            isHighlighted: variant.variant_id === variantHoveredInTable,
+          }))}
+        onHoverVariants={onHoverVariantsInTrack}
+      />
+    </>
+  )
+
+  // The heading + toggle are wrapped separately from the tracks so the
+  // toggle-controlled cursor (headerWrapper) only draws a line through this region
+  // when the cursor is enabled, while the always-on track cursor (trackWrapper)
+  // keeps the line on the variant track itself even when the toggle is off.
+  const headerContent = (
+    <>
+      <TrackPageSection>
+        {/* inline-block + page-colored background masks the cursor line behind the
+            heading text only, so the line stays continuous elsewhere. */}
+        <h2
+          style={{
+            display: 'inline-block',
+            margin: '2em 0 0.25em',
+            position: 'relative',
+            zIndex: 1,
+            background: '#fafafa',
+          }}
+        >
+          gnomAD variants
+        </h2>
+      </TrackPageSection>
+      {headerControl && <TrackPageSection>{headerControl}</TrackPageSection>}
+    </>
+  )
+
+  const trackContent = (
+    <Wrapper>
+      {wrapInCursor ? <Cursor onClick={onNavigatorClick}>{variantTracks}</Cursor> : variantTracks}
+      <PositionAxisTrack />
+    </Wrapper>
+  )
+
+  const tableContent = (
+    <>
       <TrackPageSection style={{ fontSize: '14px' }}>
         <Wrapper>
           <MitochondrialVariantFilterControls value={filter} onChange={setFilter} />
@@ -304,6 +357,14 @@ const MitochondrialVariants = ({
           }}
         />
       )}
+    </>
+  )
+
+  return (
+    <div>
+      {headerWrapper ? headerWrapper(headerContent) : headerContent}
+      {trackWrapper ? trackWrapper(trackContent) : trackContent}
+      {tableContent}
     </div>
   )
 }

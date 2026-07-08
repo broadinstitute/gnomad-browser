@@ -17,6 +17,11 @@ import { DatasetId, hasStructuralVariants } from '../../../dataset-metadata/meta
 import { GtexTissueDetail, TranscriptWithTissueExpression } from './TissueExpressionTrack'
 
 const TranscriptsInfoWrapper = styled.div`
+  position: relative;
+
+  /* Sit above the cross-track cursor line so the buttons/note (which have their
+     own backgrounds) mask it; the line still shows in the gaps between them. */
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -98,7 +103,11 @@ const GeneTranscriptsTrack = ({
       >
         {() => (
           <TranscriptsInfoWrapper>
-            <span>{preferredTranscriptDescription && <>* {preferredTranscriptDescription}</>}</span>
+            {/* Page-colored backdrop masks the cursor line behind the note text
+                (the wrapper's z-index puts this row above the line). */}
+            <span style={{ background: '#fafafa' }}>
+              {preferredTranscriptDescription && <>* {preferredTranscriptDescription}</>}
+            </span>
             <span>
               {isTissueExpressionAvailable && (
                 <Button

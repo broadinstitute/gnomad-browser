@@ -1,2 +1,0 @@
-ruff==0.15.17  # This should be kept in sync with the version in .pre-commit-config.yaml
-pylint==2.7.1

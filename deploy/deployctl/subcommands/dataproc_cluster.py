@@ -9,7 +9,7 @@ import importlib.metadata
 from deployctl.config import config
 
 
-DATA_PIPELINE_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../data-pipeline"))
+HOME_DIRECTORY = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
 
 
 def list_clusters() -> None:
@@ -25,7 +25,7 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
     if not config.project:
         raise RuntimeError("project configuration is required")
 
-    with open(os.path.join(DATA_PIPELINE_DIRECTORY, "requirements.txt")) as requirements_file:
+    with open(os.path.join(HOME_DIRECTORY, "requirements.txt")) as requirements_file:
         requirements_hail_version = next(
             (line.strip().split("==")[1] for line in requirements_file if line.strip().startswith("hail==")), None
         )
@@ -35,10 +35,10 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             raise RuntimeError("Hail must be installed locally") from package_not_found
 
         if not requirements_hail_version:
-            raise RuntimeError("Hail must be pinned in data-pipeline/requirements.txt")
+            raise RuntimeError("Hail must be pinned in requirements.txt")
         if requirements_hail_version != local_hail_version:
             raise RuntimeError(
-                f"Local hail version differs from version pinned in data-pipeline/requirements.txt\nRequired version {requirements_hail_version}\nLocal version {local_hail_version}"
+                f"Local hail version differs from version pinned in requirements.txt\nRequired version {requirements_hail_version}\nLocal version {local_hail_version}"
             )
 
         requirements_file.seek(0)

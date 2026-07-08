@@ -9,30 +9,23 @@ on:
     paths:
       - 'deploy/deployctl/**'
       - '.github/workflows/**'
+permissions:
+  contents: read
 jobs:
-  checks:
-    name: Checks
+  deployctl-checks:
+    name: Deployctl Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.9
-      - name: Use pip cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: pip-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            pip-
+          enable-cache: true
+          cache-dependency-glob: 'uv.lock'
       - name: Install dependencies
-        run: |
-          pip install wheel
-          pip install -r requirements-dev.txt
-          pip install -r deploy/deployctl/requirements.txt
+        run: make install-py-deploy-dependencies
       - name: Check formatting
-        run: ruff format --check deploy/deployctl
-      - name: Run Pylint
-        run: pylint --disable=fixme deploy/deployctl
+        run: make check-format-deploy
+      - name: Lint
+        run: make lint-deploy

@@ -13,31 +13,27 @@ on:
       - 'reads/**'
       - 'development/scripts/**'
       - '.github/workflows/**'
+permissions:
+  contents: read
 jobs:
-  checks:
-    name: Checks
+  data-pipeline-checks:
+    name: Data Pipeline Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: 3.9
-      - name: Use pip cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: pip-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            pip-
+          enable-cache: true
+          cache-dependency-glob: 'uv.lock'
       - name: Install dependencies
-        run: |
-          pip install wheel
-          pip install -r data-pipeline/requirements.txt
+        run: make install-py-data-pipeline-dependencies
       - name: Check formatting
-        run: ruff format --check data-pipeline/src/data_pipeline data-pipeline/tests data-pipeline/caids reads development/scripts
-      - name: Run Ruff
-        run: ruff check data-pipeline/src/data_pipeline
-      - name: Run Pyright
-        run: pyright --project data-pipeline
+        run: make check-format-data-pipeline
+      - name: Lint
+        run: make lint-data-pipeline
+      - name: Check types
+        run: make typecheck-data-pipeline 
+      - name: Run tests
+        run: make test-data-pipeline

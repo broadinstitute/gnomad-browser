@@ -60,13 +60,13 @@ Although `oe` and `LOEUF` are continuous values, we understand that it can be us
 
 | LOEUF score | LOEUF percentile | Number of genes |
 | :---------- | ---------------: | --------------: |
-| < 0.15        |               ≤ 1 |             177 |
-| < 0.27        |               ≤ 5 |             861 |
-| < 0.36        |               ≤ 10 |           1,711 |
-| < 0.45        |               ≤ 15 |           2,578 |
-| < 0.60        |               ≤ 25 |           3,433 |
-| < 0.91        |               ≤ 50 |           8,552 |
-| < 1.19        |               ≤ 75 |          12,815 |
+| < 0.15      |              ≤ 1 |             177 |
+| < 0.27      |              ≤ 5 |             861 |
+| < 0.36      |             ≤ 10 |           1,711 |
+| < 0.45      |             ≤ 15 |           2,578 |
+| < 0.60      |             ≤ 25 |           3,433 |
+| < 0.91      |             ≤ 50 |           8,552 |
+| < 1.19      |             ≤ 75 |          12,815 |
 
 This table shows the LOEUF score that corresponds to a LOEUF percentile derived from 17,063 MANE Select transcripts. For the interpretation of Mendelian disease cases, we suggest using a `LOEUF` score < 0.45 (corresponding to a LOEUF percentile of 15, indicating that genes with LOEUF scores at this threshold or below are among the most highly pLoF constrained 15% of genes.) as a threshold if needed. Again, ideally `oe` and `LOEUF` should be used as a continuous values rather than a cutoff.
 
