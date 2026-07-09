@@ -42,11 +42,7 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
             )
 
         requirements_file.seek(0)
-        requirements = [
-            line.strip()
-            for line in requirements_file
-            if line.strip() and not line.strip().startswith("#")
-        ]
+        requirements = [line.strip() for line in requirements_file if line.strip() and not line.strip().startswith("#")]
 
     print(f"\nStarting cluster: '{name}' at {time.strftime('%H:%M:%S')}\n")
     start_time = time.time()
