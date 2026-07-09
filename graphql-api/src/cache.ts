@@ -21,9 +21,10 @@ let fetchCacheValue = () => Promise.resolve(null)
 let setCacheValue = () => Promise.resolve()
 let setCacheExpiration = () => Promise.resolve()
 
+let readCacheDb: Redis | undefined
+let writeCacheDb: Redis | undefined
+
 if (config.REDIS_HOST) {
-  let readCacheDb
-  let writeCacheDb
   if (config.REDIS_USE_SENTINEL) {
     readCacheDb = new Redis({
       sentinels: [{ host: config.REDIS_HOST, port: config.REDIS_PORT }],
@@ -77,6 +78,12 @@ if (config.REDIS_HOST) {
   )
 } else {
   logger.warn('No redis configured for caching')
+}
+
+export const closeCache = async () => {
+  if (config.REDIS_HOST) {
+    await Promise.all([readCacheDb?.quit(), writeCacheDb?.quit()])
+  }
 }
 
 export const withCache = (
