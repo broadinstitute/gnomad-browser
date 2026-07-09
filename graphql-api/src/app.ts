@@ -12,16 +12,6 @@ import { requestStore } from './request-context'
 import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
 
-process.on('uncaughtException', (error) => {
-  logger.error(error)
-  process.exit(1)
-})
-
-process.on('unhandledRejection', (error) => {
-  logger.error(error)
-  process.exit(1)
-})
-
 const app = express()
 app.use(compression())
 app.use(cors())
@@ -123,11 +113,14 @@ app.use('/api/',
   })
 )
 
+// On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
+// requests, drain connections, and close ES/cache clients before exiting. A 10-second timeout forces
+// exit if graceful teardown stalls.
 const server = app.listen(config.PORT, () => {
   logger.info({ event: 'serverStart', port: config.PORT })
 })
 
-const shutdown = (signal: string) => {
+const shutdown = (signal: string, exitCode = 0) => {
   logger.info({ event: 'shutdown', signal })
 
   const forceExit = setTimeout(() => {
@@ -143,9 +136,17 @@ const shutdown = (signal: string) => {
       logger.error(err)
     }
     clearTimeout(forceExit)
-    process.exit(0)
+    process.exit(exitCode)
   })
 }
 
 process.on('SIGTERM', () => shutdown('SIGTERM'))
 process.on('SIGINT', () => shutdown('SIGINT'))
+process.on('uncaughtException', (error) => {
+  logger.error(error)
+  shutdown('uncaughtException', 1)
+})
+process.on('unhandledRejection', (error) => {
+  logger.error(error)
+  shutdown('unhandledRejection', 1)
+})
