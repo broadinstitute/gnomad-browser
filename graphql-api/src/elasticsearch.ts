@@ -177,3 +177,5 @@ const limitedElastic = {
 }
 
 export { limitedElastic as client }
+
+export const closeClient = () => elastic.close()
