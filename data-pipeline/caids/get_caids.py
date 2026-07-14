@@ -16,6 +16,9 @@ from hailtop.utils import bounded_gather, sleep_before_try
 from hailtop.utils.rich_progress_bar import SimpleCopyToolProgressBar
 from rich.console import Console
 
+from core.config import CONTIGS_TO_KEEP
+from core.enums import ReferenceGenome
+
 console = Console()
 
 logger = logging.getLogger("get_caids")
@@ -27,13 +30,9 @@ logger.addHandler(handler)
 
 def filter_vcf_header(header: str) -> str:
     """Filter a VCF header to include only the format line and contigs 1-22, X, Y, and M."""
-    assembly = "GRCh37" if "assembly=GRCh37" in header else "GRCh38"
+    assembly = ReferenceGenome.GRCh37 if "assembly=GRCh37" in header else ReferenceGenome.GRCh38
 
-    contigs_to_keep = set(
-        [str(i) for i in range(1, 23)] + ["X", "Y", "MT"]
-        if assembly == "GRCh37"
-        else [f"chr{i}" for i in range(1, 23)] + ["chrX", "chrY", "chrM"]
-    )
+    contigs_to_keep = CONTIGS_TO_KEEP[assembly]
 
     def should_include_line(line):
         if line.startswith("##"):
@@ -142,7 +141,7 @@ async def get_caids(
             header = header_data.decode("utf-8")
             header = filter_vcf_header(header)
 
-            assembly = "GRCh37" if "assembly=GRCh37" in header else "GRCh38"
+            assembly = ReferenceGenome.GRCh37 if "assembly=GRCh37" in header else ReferenceGenome.GRCh38
 
             # Get list of VCF partitions.
             all_part_urls = [
@@ -188,7 +187,7 @@ async def get_caids(
                             response = await retry_transient_errors(
                                 lambda: session.post(
                                     "https://reg.clinicalgenome.org/annotateVcf",
-                                    params={"assembly": assembly, "ids": "CA"},
+                                    params={"assembly": assembly.value, "ids": "CA"},
                                     data=part_vcf,
                                 )
                             )
