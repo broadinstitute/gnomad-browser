@@ -2,6 +2,7 @@ import csv
 import itertools
 
 import hail as hl
+import hailtop.fs as hfs
 
 from data_pipeline.data_types.locus import normalized_contig, x_position
 from data_pipeline.data_types.variant.transcript_consequence import consequence_term_rank
@@ -15,8 +16,8 @@ class ReplaceQuoteCharacter:
         self.path = path
 
     def write(self, path, overwrite):  # pylint: disable=unused-argument
-        with hl.hadoop_open(self.path, "r") as input_file:
-            with hl.hadoop_open(path, "w") as output_file:
+        with hfs.open(self.path, "r") as input_file:
+            with hfs.open(path, "w") as output_file:
                 reader = csv.reader(input_file, delimiter="\t")
                 writer = csv.writer(output_file, delimiter="\t", quotechar="'")
                 for row in reader:
