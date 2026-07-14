@@ -61,6 +61,14 @@ VARIANT_GETTERS = {
 }
 
 
+VARIANT_GETTERS = {
+    "gnomAD v4.0": get_gnomad_v4_variants,
+    "gnomAD v3.1.1": get_gnomad_v3_variants,
+    "gnomAD v2.1.1": get_gnomad_v2_variants,
+    "ExAC": get_exac_variants,
+}
+
+
 def get_variants(dataset: str) -> hl.Table:
     """Get locus/alleles for all variants in the given dataset."""
     if dataset not in VARIANT_GETTERS:

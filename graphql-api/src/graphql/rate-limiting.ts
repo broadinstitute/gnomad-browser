@@ -4,26 +4,31 @@ import { UserVisibleError } from '../errors'
 import logger from '../logger'
 import { isWhitelistedIP } from '../whitelist'
 
-let rateLimitDb: Redis
+let rateLimitDb: Redis | undefined;
 
-if (config.REDIS_USE_SENTINEL) {
+if (config.REDIS_HOST && config.REDIS_USE_SENTINEL) {
   rateLimitDb = new Redis({
     sentinels: [{ host: config.REDIS_HOST, port: config.REDIS_PORT }],
     name: config.REDIS_GROUP_NAME,
     db: 2,
   })
-} else {
+} else if (config.REDIS_HOST) {
   rateLimitDb = new Redis({
     host: config.REDIS_HOST,
     port: config.REDIS_PORT,
     db: 2,
   })
+} else {
+  logger.warn('No redis configured for rate-limiting')
 }
 
-const increaseRateLimitCounter = (key: any, value: any) => {
-  return Promise.race([
-    new Promise((resolve, reject) => {
-      rateLimitDb
+const increaseRateLimitCounter = (key: any, value: any): Promise<number> => {
+  if (!rateLimitDb) {
+    return Promise.resolve(0)
+  }
+  return Promise.race<number>([
+    new Promise<number>((resolve, reject) => {
+      rateLimitDb!
         .multi()
         .set(key, 0, 'EX', 59, 'NX')
         .incrby(key, value)
@@ -35,7 +40,7 @@ const increaseRateLimitCounter = (key: any, value: any) => {
           }
         })
     }),
-    new Promise((_resolve, reject) => {
+    new Promise<number>((_resolve, reject) => {
       setTimeout(() => {
         reject(new Error('Timed out'))
       }, 500)
@@ -58,7 +63,6 @@ export const applyRateLimits = async (request: any) => {
       1
     )
 
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
     if (totalRequestsInWindow > config.MAX_REQUESTS_PER_MINUTE) {
       throw new UserVisibleError('Query rate limit exceeded. Please try again in a few minutes.')
     }
@@ -68,7 +72,6 @@ export const applyRateLimits = async (request: any) => {
       request.graphqlQueryCost || 0
     )
 
-    // @ts-expect-error TS(2571) FIXME: Object is of type 'unknown'.
     if (totalCostInWindow > config.MAX_QUERY_COST_PER_MINUTE) {
       throw new UserVisibleError('Query rate limit exceeded. Please try again in a few minutes.')
     }

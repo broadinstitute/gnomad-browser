@@ -24,15 +24,17 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-          cache-dependency-glob: 'data-pipeline/uv.lock'
+          cache-dependency-glob: 'uv.lock'
       - name: Install dependencies
         working-directory: data-pipeline
         # Install the exact dependencies from uv.lock without re-resolving or updating
         # the lockfile; fails if pyproject.toml has drifted from uv.lock.
         run: uv sync --frozen
       - name: Check formatting
-        run: uv run --project data-pipeline ruff format --check data-pipeline/src/data_pipeline data-pipeline/tests data-pipeline/caids reads development/scripts
+        run: uv run ruff format --check data-pipeline
       - name: Run Ruff
-        run: uv run --project data-pipeline ruff check data-pipeline/src/data_pipeline
+        run: uv run ruff check data-pipeline
       - name: Run Pyright
-        run: uv run --project data-pipeline pyright --project data-pipeline
+        run: uv run pyright --project data-pipeline
+      - name: Run pytest
+        run: uv run pytest data-pipeline

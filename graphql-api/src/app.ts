@@ -1,94 +1,152 @@
 import compression from 'compression'
 import cors from 'cors'
+import { randomUUID } from 'crypto'
 import express from 'express'
 import onFinished from 'on-finished'
-import onHeaders from 'on-headers'
+import { performance } from 'perf_hooks'
 import config from './config'
-import { client as esClient } from './elasticsearch'
+import { client as esClient, closeClient as closeEsClient } from './elasticsearch'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
-
+import { requestStore } from './request-context'
+import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
-
-import startEsStatsPolling from './esPoll'
-
-const STATS_POLL_INTERVAL = 5000
-
-process.on('uncaughtException', (error) => {
-  logger.error(error)
-  process.exit(1)
-})
-
-process.on('unhandledRejection', (error) => {
-  logger.error(error)
-  process.exit(1)
-})
 
 const app = express()
 app.use(compression())
 app.use(cors())
+app.use(express.json())
 
 app.set('trust proxy', config.TRUST_PROXY)
 
 // Health check endpoint for load balancer.
 // GCE load balancers require a 200 response from the health check endpoint, so this must be
 // registered before the HTTP=>HTTPS redirect middleware, which would return a 30x response.
-app.get('/health/ready', (_request: any, response: any) => {
-  response.send('ok')
+app.get('/health/ready', (_req: any, res: any) => {
+  res.send('ok')
 })
 
-// Log requests
-// Add logging here to avoid logging health checks
-app.use(function requestLogMiddleware(request: any, response: any, next: any) {
-  request.startAt = process.hrtime()
-  response.startAt = undefined
-  onHeaders(response, () => {
-    response.startAt = process.hrtime()
-  })
-
-  onFinished(response, () => {
+app.use((req: any, res: any, next: any) => {
+  const store = {
+    requestId: randomUUID(),
+    startAt: performance.now(),
+    startCpu: process.cpuUsage(),
+    startHeapUsed: process.memoryUsage().heapUsed,
+  }
+  res.setHeader('x-request-id', store.requestId)
+  requestStore.run(store, () => {
     logger.info({
+      requestId: store.requestId,
+      event: 'requestStart',
       httpRequest: {
-        requestMethod: request.method,
-        requestUrl: `${request.protocol}://${request.hostname}${
-          request.originalUrl || request.url
-        }`,
-        status: response.statusCode,
-        userAgent: request.headers['user-agent'],
-        remoteIp: request.ip,
-        referer: request.headers.referer || request.headers.referrer,
-        latency:
-          request.startAt && response.startAt
-            ? `${(
-                response.startAt[0] -
-                request.startAt[0] +
-                (response.startAt[1] - request.startAt[1]) * 1e-9
-              ).toFixed(3)}s`
-            : undefined,
-        protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
+        requestMethod: req.method,
+        requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
+        userAgent: req.headers['user-agent'],
+        remoteIp: req.ip,
+        referer: req.headers.referer || req.headers.referrer,
+        protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
       },
-      graphqlRequest: request.graphqlParams
+      // graphql variables do not exist until the graphQL middleware runs.
+      graphql: req.body
         ? {
-            graphqlQueryOperationName: request.graphqlParams.operationName,
-            graphqlQueryString: request.graphqlParams.query,
-            graphqlQueryVariables: request.graphqlParams.variables,
-            graphqlQueryCost: request.graphqlQueryCost,
+            raw: {
+              operationName: req.body.operationName ?? null,
+              query: req.body.query ?? null,
+              variables: req.body.variables ?? null,
+            }
+          }
+        : null,
+    })
+    next()
+  })
+})
+
+app.use((req: any, res: any, next: any) => {
+  // NB: in the onFinished block, we potentially lose access to the async context. Save it here to be able to closure in the ctx variable for logging.
+  const ctx = requestStore.getStore()
+  onFinished(res, () => {
+    if (!ctx) return
+
+    // Process-wide resources consumed while this request was in flight.
+    // Concurrent requests contribute to these values (both cpu/memory)!
+    const memory = process.memoryUsage()
+    const cpu = process.cpuUsage(ctx.startCpu)
+    logger.info({
+      requestId: ctx.requestId,
+      event: 'requestEnd',
+      latencyMs: performance.now() - ctx.startAt,
+      cpuUserMicros: cpu.user,
+      cpuSystemMicros: cpu.system,
+      heapUsed: memory.heapUsed,
+      heapDeltaBytes:  memory.heapUsed - ctx.startHeapUsed,
+      httpRequest: {
+        requestMethod: req.method,
+        requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
+        userAgent: req.headers['user-agent'],
+        remoteIp: req.ip,
+        referer: req.headers.referer || req.headers.referrer,
+        protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
+        status: res.statusCode,
+        responseSizeBytes: res.getHeader('content-length')
+      },
+      graphqlRequest: req.graphqlParams
+        ? {
+            graphqlQueryOperationName: req.graphqlParams.operationName,
+            graphqlQueryString: req.graphqlParams.query,
+            graphqlQueryVariables: req.graphqlParams.variables,
+            graphqlQueryCost: req.graphqlQueryCost,
           }
         : undefined,
     })
   })
-
   next()
 })
 
 loadWhitelist()
 
-const context = { esClient }
+app.use('/api/',
+  graphQLApi({
+    context: {
+      esClient,
+      requestId: requestStore.getStore()?.requestId ?? null,
+    },
+  })
+)
 
-app.use('/api/', graphQLApi({ context }))
+// On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
+// requests, drain connections, and close ES/cache clients before exiting. A 10-second timeout forces
+// exit if graceful teardown stalls.
+const server = app.listen(config.PORT, () => {
+  logger.info({ event: 'serverStart', port: config.PORT })
+})
 
-if (!process.env.NO_ES_STATS_POLL) {
-  startEsStatsPolling(STATS_POLL_INTERVAL)
+const shutdown = (signal: string, exitCode = 0) => {
+  logger.info({ event: 'shutdown', signal })
+
+  const forceExit = setTimeout(() => {
+    logger.error({ event: 'shutdownTimeout' })
+    process.exit(1)
+  }, 10_000)
+  forceExit.unref()
+
+  server.close(async () => {
+    try {
+      await Promise.all([closeEsClient(), closeCache()])
+    } catch (err) {
+      logger.error(err)
+    }
+    clearTimeout(forceExit)
+    process.exit(exitCode)
+  })
 }
 
-app.listen(config.PORT)
+process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGINT', () => shutdown('SIGINT'))
+process.on('uncaughtException', (error) => {
+  logger.error(error)
+  shutdown('uncaughtException', 1)
+})
+process.on('unhandledRejection', (error) => {
+  logger.error(error)
+  shutdown('unhandledRejection', 1)
+})
