@@ -5,6 +5,8 @@ import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
 import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { FIND_NO_OVERLAY_ATTRIBUTE, useFindBar } from '../FindBar/FindBarContext'
+import useVariantFindBridge from '../FindBar/useVariantFindBridge'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
@@ -88,7 +90,7 @@ const Variants = ({
   exportFileName,
   variants,
 }: VariantsProps) => {
-  const table = useRef(null)
+  const table = useRef<any>(null)
 
   const [selectedColumns, setSelectedColumns] = useState(() => {
     try {
@@ -137,6 +139,22 @@ const Variants = ({
     searchText: '',
   })
 
+  // The find bar (Ctrl/Cmd+F) drives the variant search — applied to the filter
+  // for searching/highlighting/scrolling, but NOT written into the on-page
+  // "Search variant table" box, which keeps the user's own manual search.
+  const { isOpen: findBarOpen, query: findQuery, registerVariantFind } = useFindBar()
+
+  // The find bar is actively driving the search (vs. the user's manual box text).
+  const findBarDriving = findBarOpen && findQuery !== ''
+
+  // Search text used for filtering: the find query while open, else the box text.
+  const effectiveSearchText = findBarDriving ? findQuery : filter.searchText
+
+  const effectiveFilter = useMemo(
+    () => ({ ...filter, searchText: effectiveSearchText }),
+    [filter, effectiveSearchText]
+  )
+
   const [sortState, setSortState] = useState({
     sortKey: 'variant_id',
     sortOrder: 'ascending',
@@ -162,20 +180,65 @@ const Variants = ({
   const filteredVariants = useMemo(() => {
     return mergeExomeAndGenomeData({
       datasetId,
-      variants: filterVariants(variants, filter, renderedTableColumns),
-      preferJointData: filter.includeExomes && filter.includeGenomes,
+      variants: filterVariants(variants, effectiveFilter, renderedTableColumns),
+      preferJointData: effectiveFilter.includeExomes && effectiveFilter.includeGenomes,
     })
-  }, [datasetId, variants, filter, renderedTableColumns])
+  }, [datasetId, variants, effectiveFilter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {
     return sortVariants(filteredVariants, sortState)
   }, [filteredVariants, sortState])
+
+  // Indices (into renderedVariants) of every matching variant, across the whole
+  // list — not just the rendered rows.
+  const matchRowIndices = useMemo(() => {
+    if (effectiveSearchText === '') {
+      return []
+    }
+    const matched = getFilteredVariants(effectiveFilter, renderedVariants, renderedTableColumns)
+    const matchedIds = new Set(matched.map((variant: Variant) => variant.variant_id))
+    const indices: number[] = []
+    renderedVariants.forEach((variant: Variant, index: number) => {
+      if (matchedIds.has(variant.variant_id)) {
+        indices.push(index)
+      }
+    })
+    return indices
+  }, [effectiveFilter, effectiveSearchText, renderedVariants, renderedTableColumns])
+
+  const variantSearchMatchCount = matchRowIndices.length
+
+  useVariantFindBridge({ matchCount: variantSearchMatchCount })
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const [variantHoveredInTable, setVariantHoveredInTable] = useState(null)
   const [variantHoveredInTrack, setVariantHoveredInTrack] = useState(null)
   const [visibleVariantWindow, setVisibleVariantWindow] = useState([0, 19])
   const [currentSearchIndex, setCurrentSearchIndex] = useState(0)
+
+  // Register the table as the find bar's variant-find provider: map a match
+  // index to its row and let the table scroll to / highlight it. Refs keep the
+  // stable callbacks reading the latest matches.
+  const matchRowIndicesRef = useRef(matchRowIndices)
+  matchRowIndicesRef.current = matchRowIndices
+  const renderedVariantsRef = useRef(renderedVariants)
+  renderedVariantsRef.current = renderedVariants
+
+  useEffect(() => {
+    registerVariantFind({
+      focusMatch: (index: number) => {
+        const rows = matchRowIndicesRef.current
+        if (index < 0 || index >= rows.length) {
+          return
+        }
+        const rowIndex = rows[index]
+        const variantId = (renderedVariantsRef.current[rowIndex] as Variant)?.variant_id ?? null
+        table.current?.focusMatch(rowIndex, variantId)
+      },
+      clearMatch: () => table.current?.clearMatch(),
+    })
+    return () => registerVariantFind(null)
+  }, [registerVariantFind])
 
   const onHoverVariantsInTrack = useMemo(
     () =>
@@ -230,24 +293,23 @@ const Variants = ({
       index = renderedVariants.length - 1
     }
 
-    // @ts-expect-error TS(2339) FIXME: 'scrollToDataRow' does not exist on type 'never'.
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // When searching the table with context, scroll to the first hit whenever the
-  //   search text changes
+  // Manual search box (find bar not driving): scroll to the first hit when the
+  // search text changes. The find bar drives its own navigation below.
   useEffect(() => {
-    if (!filter.includeContext) {
+    if (findBarDriving || !effectiveFilter.includeContext) {
       return
     }
 
-    if (filter.searchText === '') {
+    if (effectiveSearchText === '') {
       setCurrentSearchIndex(-1)
       return
     }
 
     const searchIndex = getFirstIndexFromSearchText(
-      filter,
+      effectiveFilter,
       renderedVariants,
       renderedTableColumns,
       visibleVariantWindow
@@ -257,9 +319,8 @@ const Variants = ({
       setCurrentSearchIndex(searchIndex)
     }
 
-    // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(searchIndex)
-  }, [filter.searchText]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [findBarDriving, effectiveSearchText]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
 
@@ -305,6 +366,7 @@ const Variants = ({
           value={filter}
           jumpToRow={onSearchResult}
           position={currentSearchIndex}
+          searchDisabled={findBarOpen}
         />
         <div>
           <ExportVariantsButton
@@ -325,6 +387,8 @@ const Variants = ({
         {children}
 
         <div
+          // The table highlights its own matches; opt out of the find overlay.
+          {...{ [FIND_NO_OVERLAY_ATTRIBUTE]: true }}
           style={{
             // Keep the height of the table section constant when filtering variants, avoid layout shift
             minHeight: '540px',
@@ -334,7 +398,7 @@ const Variants = ({
             <VariantTable
               ref={table}
               columns={renderedTableColumns}
-              highlightText={filter.searchText}
+              highlightText={effectiveSearchText}
               highlightedVariantId={variantHoveredInTrack}
               onHoverVariant={setVariantHoveredInTable}
               onRequestSort={setSortKey}

@@ -44,9 +44,10 @@ const CheckboxSection = styled.div`
   margin-right: 2em;
 `
 
-const SearchWrapper = styled.div`
+const SearchWrapper = styled.div<{ $disabled?: boolean }>`
   width: 210px;
   margin-bottom: 1em;
+  ${({ $disabled }) => $disabled && `opacity: 0.5; pointer-events: none; cursor: not-allowed;`}
 `
 
 const keyboardShortcuts = {
@@ -75,9 +76,17 @@ type Props = {
   }
   jumpToRow: (...args: any[]) => any
   position: number
+  // When the find bar is driving the search, grey out and disable the box.
+  searchDisabled?: boolean
 }
 
-const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) => {
+const VariantFilterControls = ({
+  onChange,
+  value,
+  jumpToRow,
+  position,
+  searchDisabled = false,
+}: Props) => {
   const searchInput = useRef(null)
 
   return (
@@ -183,7 +192,15 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
         </CheckboxSection>
       </CheckboxFiltersWrapper>
 
-      <SearchWrapper>
+      <SearchWrapper
+        $disabled={searchDisabled}
+        aria-disabled={searchDisabled || undefined}
+        title={
+          searchDisabled
+            ? 'The find bar (Ctrl/⌘+F) is currently searching the variant table'
+            : undefined
+        }
+      >
         <SearchInput
           // @ts-expect-error TS(2322) FIXME: Type '{ ref: MutableRefObject<null>; placeholder: ... Remove this comment to see the full error message
           ref={searchInput}
@@ -202,6 +219,10 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
           handler={(e: any) => {
             // preventDefault to avoid typing a "/" in the search input
             e.preventDefault()
+            // Don't focus the box while the find bar owns the search.
+            if (searchDisabled) {
+              return
+            }
             if (searchInput.current) {
               ;(searchInput.current as any).focus()
             }
