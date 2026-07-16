@@ -1541,6 +1541,15 @@ def load_sample_metadata(ch_url):
         print("  No matching samples found in HPRC metadata")
         return 0
 
+    # Truncate before insert: lr_sample_metadata is a ReplacingMergeTree with no
+    # version column, so inserting over existing rows dedups non-deterministically
+    # across parts. Clearing first makes reloads idempotent and correct.
+    truncate_url = f"{ch_url}/?query=TRUNCATE%20TABLE%20IF%20EXISTS%20lr_sample_metadata"
+    try:
+        urllib.request.urlopen(urllib.request.Request(truncate_url, data=b""))
+    except Exception as e:
+        print(f"  Warning: could not truncate lr_sample_metadata before load: {e}")
+
     # Bulk insert into ClickHouse
     tsv_data = "\n".join(rows)
     req = urllib.request.Request(
