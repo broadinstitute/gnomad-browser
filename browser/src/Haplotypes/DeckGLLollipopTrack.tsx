@@ -791,6 +791,31 @@ function DeckGLLollipopCanvas({
           size: 11,
         })
 
+        // Subpopulation code(s) beneath the sample ID / pop bar (diploid mode).
+        // Finer-grained than the superpop-colored bar (e.g. PEL, JPT) — one small
+        // grey line summarizing the distinct labeled subpops of this row's samples.
+        if (sampleMetadata && sampleMetadata.size > 0) {
+          const subpops = Array.from(
+            new Set(
+              group.samples
+                .map(s => sampleMetadata.get(s.sample_id)?.subpopulation)
+                .filter((sp): sp is string => !!sp && sp !== 'N/A')
+            )
+          )
+          if (subpops.length > 0) {
+            const subpopLabel = subpops.length <= 2
+              ? subpops.join(', ')
+              : `${subpops[0]} +${subpops.length - 1}`
+            sampleLabels.push({
+              position: [35, y + 13, 0],
+              text: subpopLabel,
+              color: [110, 110, 110, 255],
+              size: 9,
+              tooltipText: `Subpopulation: ${subpops.join(', ')}`,
+            })
+          }
+        }
+
         if (popStats && popStats.totalSamples > 0) {
           const barX = 5
           const barWidth = 60
@@ -2494,4 +2519,5 @@ function ThresholdDragOverlay({
     </div>
   )
 }
+
 
