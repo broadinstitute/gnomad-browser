@@ -67,6 +67,17 @@ GCS_VCF_V3_PATHS = {
 # HPRC sample metadata
 HPRC_METADATA_URL = "https://raw.githubusercontent.com/human-pangenomics/hprc_intermediate_assembly/main/data_tables/sample/hprc_release2_sample_metadata.csv"
 
+# Supplemental HGSVC+HPRC ancestry labels. The HPRC release2 CSV above only covers
+# ~232 of the ~292 samples in lr_haplotypes; the remaining ~60 (mostly 1000G samples
+# like the HG005xx/HG007xx trios) have no row there and render grey. This TSV covers
+# all samples and supplies a continental superpopulation ('ethnicity' column). We use
+# it ONLY as a superpop fallback for samples missing from the HPRC CSV — its
+# 'Population' column is a per-continent placeholder (all AFR->YRI, EUR->TSI, ...),
+# NOT a real subpopulation, so we never import it into our subpopulation field.
+HGSVC_HPRC_ANCESTRY_TSV = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "ancestry_label.HGSVC_HPRC.tsv"
+)
+
 # 1000 Genomes subpopulation -> superpopulation mapping
 SUBPOP_TO_SUPERPOP = {
     "ACB": "AFR", "ASW": "AFR", "ESN": "AFR", "GWD": "AFR", "LWK": "AFR",
@@ -1503,6 +1514,34 @@ def load_genes(es_url, api_url, chrom, start, stop):
 # --- Sample metadata loading ---
 
 
+def _load_hgsvc_hprc_superpops():
+    """Return {sample_id: superpopulation} from the HGSVC+HPRC ancestry TSV.
+
+    Uses only the 'ethnicity' (continental superpop) column. The TSV's 'Population'
+    column is a per-continent placeholder, not a real subpopulation, so it is ignored.
+    Returns an empty dict (with a warning) if the file is not present.
+    """
+    import csv
+
+    path = HGSVC_HPRC_ANCESTRY_TSV
+    if not os.path.exists(path):
+        print(f"  Warning: HGSVC/HPRC ancestry TSV not found at {path}; "
+              "samples missing from the HPRC CSV will stay N/A")
+        return {}
+    # Normalize the TSV's superpop vocabulary to gnomAD's: it uses "ASK" for
+    # Ashkenazi (gnomAD uses "ASJ"). Other codes (AFR/AMR/EAS/EUR/SAS/OTH) already match.
+    normalize = {"ASK": "ASJ"}
+    mapping = {}
+    with open(path) as fh:
+        for row in csv.DictReader(fh, delimiter="\t"):
+            sid = (row.get("sample") or "").strip()
+            superpop = (row.get("ethnicity") or "").strip()
+            superpop = normalize.get(superpop, superpop)
+            if sid and superpop and superpop != "NA":
+                mapping[sid] = superpop
+    return mapping
+
+
 def load_sample_metadata(ch_url):
     """Fetch HPRC sample metadata CSV and load into ClickHouse lr_sample_metadata table."""
     import csv
@@ -1525,17 +1564,44 @@ def load_sample_metadata(ch_url):
         our_samples = None
         print("  Warning: could not query lr_haplotypes, loading all HPRC samples")
 
+    # HGSVC+HPRC ancestry labels ({sample_id: superpop}), used to (a) fill samples
+    # whose HPRC superpop is N/A and (b) backfill samples missing from the HPRC CSV.
+    ancestry = _load_hgsvc_hprc_superpops()
+
     rows = []
+    covered = set()
+    na_filled = 0
     for row in reader:
         sid = row["sample_id"]
         if our_samples and sid not in our_samples:
             continue
         subpop = row.get("population_abbreviation", "N/A") or "N/A"
         superpop = SUBPOP_TO_SUPERPOP.get(subpop, "N/A")
+        # Fill in ancestry from the TSV when HPRC gives us nothing (e.g. HG002->ASJ,
+        # HG005->EAS). Only overrides N/A, never a real HPRC-derived superpop.
+        if superpop == "N/A" and sid in ancestry:
+            superpop = ancestry[sid]
+            na_filled += 1
         pop_desc = row.get("population_descriptor", "N/A") or "N/A"
         sex = row.get("sex", "N/A") or "N/A"
         collection = row.get("collection", "N/A") or "N/A"
         rows.append(f"{sid}\t{subpop}\t{superpop}\t{pop_desc}\t{sex}\t{collection}")
+        covered.add(sid)
+
+    # Backfill: samples present in lr_haplotypes but absent from the HPRC release2 CSV
+    # get their continental superpopulation from the ancestry TSV so they no longer
+    # render grey. Subpopulation is left N/A (the TSV has no real subpop).
+    added = 0
+    if our_samples:
+        for sid in sorted(our_samples - covered):
+            superpop = ancestry.get(sid)
+            if not superpop:
+                continue
+            rows.append(f"{sid}\tN/A\t{superpop}\tHGSVC/HPRC ancestry label\tN/A\tN/A")
+            added += 1
+    if na_filled or added:
+        print(f"  Ancestry TSV: filled {na_filled} N/A superpops, "
+              f"backfilled {added} samples missing from HPRC CSV")
 
     if not rows:
         print("  No matching samples found in HPRC metadata")
