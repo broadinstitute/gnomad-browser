@@ -20,13 +20,18 @@ export const PATH_COLORS = [
   '#17becf',
 ]
 
-// Superpopulation palette (for job 45 population coloring)
+// Superpopulation palette — canonical gnomAD colors (matches the gnomAD paper and
+// the rest of the browser, e.g. ShortTandemRepeatAlleleSizeDistributionPlot). Keep
+// these in sync with gnomAD's standard population colors so the LR haplotype view
+// reads the same as every other gnomAD view.
 export const SUPERPOPULATION_COLORS: Record<string, string> = {
-  AFR: '#FF6F00',
-  AMR: '#A05EB5',
-  EAS: '#43A047',
-  EUR: '#1E88E5',
-  SAS: '#E53935',
+  AFR: '#941494',
+  AMR: '#EF1E24',
+  EAS: '#128B44',
+  EUR: '#6AA6CE',
+  SAS: '#FE9A10',
+  ASJ: '#FF7E4F',
+  OTH: '#ABB8B9',
   'N/A': '#9E9E9E',
 }
 
