@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y apt-transport-https ca-certificates curl gnupg
+
+# Mount the persistent data disk by its stable GCE device name.
+DATA_DISK=/dev/disk/by-id/google-clickhouse-data
+MOUNT_POINT=/data
+until [ -b "$DATA_DISK" ]; do sleep 1; done
+if ! blkid "$DATA_DISK" >/dev/null 2>&1; then
+  mkfs.ext4 -F "$DATA_DISK"
+fi
+DATA_UUID=$(blkid -s UUID -o value "$DATA_DISK")
+mkdir -p "$MOUNT_POINT"
+if ! grep -q "UUID=$DATA_UUID" /etc/fstab; then
+  # Remove an obsolete Y1 mount entry left by an interrupted bootstrap.
+  sed -i '\| /data ext4 |d' /etc/fstab
+  echo "UUID=$DATA_UUID /data ext4 defaults,nofail 0 2" >> /etc/fstab
+fi
+mountpoint -q "$MOUNT_POINT" || mount "$MOUNT_POINT"
+
+curl -fsSL https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key \
+  | gpg --dearmor -o /usr/share/keyrings/clickhouse-keyring.gpg
+echo 'deb [signed-by=/usr/share/keyrings/clickhouse-keyring.gpg] https://packages.clickhouse.com/deb stable main' \
+  > /etc/apt/sources.list.d/clickhouse.list
+apt-get update
+apt-get install -y \
+  "clickhouse-common-static=${clickhouse_version}" \
+  "clickhouse-server=${clickhouse_version}" \
+  "clickhouse-client=${clickhouse_version}"
+apt-mark hold clickhouse-common-static clickhouse-server clickhouse-client
+
+install -d -o clickhouse -g clickhouse /data/clickhouse
+cat >/etc/clickhouse-server/config.d/y1-demo.xml <<'EOF'
+<clickhouse>
+  <path>/data/clickhouse/</path>
+  <tmp_path>/data/clickhouse/tmp/</tmp_path>
+  <user_files_path>/data/clickhouse/user_files/</user_files_path>
+  <format_schema_path>/data/clickhouse/format_schemas/</format_schema_path>
+
+  <!-- Reachable only through IAP/explicit private firewall rules. -->
+  <listen_host>0.0.0.0</listen_host>
+
+  <!-- Detailed trace/text logs consumed ~16 GB on the legacy demo VM. -->
+  <logger>
+    <level>information</level>
+  </logger>
+  <trace_log remove="1"/>
+  <text_log remove="1"/>
+</clickhouse>
+EOF
+
+# Until a pilot API and Secret Manager credentials are provisioned, permit the
+# default account only through localhost (including an IAP SSH tunnel).
+cat >/etc/clickhouse-server/users.d/y1-local-only.xml <<'EOF'
+<clickhouse>
+  <users>
+    <default>
+      <networks replace="replace">
+        <ip>127.0.0.1</ip>
+        <ip>::1</ip>
+      </networks>
+    </default>
+  </users>
+</clickhouse>
+EOF
+
+chown -R clickhouse:clickhouse /data/clickhouse
+systemctl enable clickhouse-server
+systemctl restart clickhouse-server

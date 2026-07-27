@@ -1,0 +1,41 @@
+{
+  "release": "Y1",
+  "chromosome": "chr22",
+  "copied_at": "2026-07-27",
+  "source_bucket": "fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4",
+  "mirror_prefix": "gs://gnomad-lr-data/y1/sources",
+  "objects": [
+    {
+      "cohort": "hgsvc_hprc",
+      "name": "gnomAD_LR_Y1.hgsvc_hprc.chr22.vcf.gz",
+      "source_generation": "1784223795164521",
+      "mirror_generation": "1785158335564090",
+      "size": 1481939898,
+      "md5_base64": "3Aq7gHWQSTEvet7Pci4OFA=="
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "name": "gnomAD_LR_Y1.hgsvc_hprc.chr22.vcf.gz.tbi",
+      "source_generation": "1784223795124712",
+      "mirror_generation": "1785158337708633",
+      "size": 38228,
+      "md5_base64": "84XBkg3Ifo1yxsKZrDu4tw=="
+    },
+    {
+      "cohort": "aou",
+      "name": "gnomAD_LR_Y1.aou.chr22.vcf.gz",
+      "source_generation": "1784224178088415",
+      "mirror_generation": "1785158360428780",
+      "size": 865372747,
+      "md5_base64": "wqbsKZlYCPSsh/07br5qJg=="
+    },
+    {
+      "cohort": "aou",
+      "name": "gnomAD_LR_Y1.aou.chr22.vcf.gz.tbi",
+      "source_generation": "1784224178087749",
+      "mirror_generation": "1785158362536239",
+      "size": 38904,
+      "md5_base64": "VXqi0c2QjWkgT6z9lKtrug=="
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+# Demo defaults are intentionally modest. The data disk may be expanded later.
+machine_type      = "e2-standard-4"
+data_disk_size_gb = 300
+data_disk_type    = "pd-balanced"
+
+# Leave empty for the scratch-load phase; use an IAP SSH tunnel.
+# Add only the pilot API/loader private CIDRs when those clients exist.
+clickhouse_source_ranges = []
