@@ -39,17 +39,24 @@ const variantDatasets = {
   },
 }
 
+// Downloaded to the container's writable filesystem at startup. Override with STR_READS_DB_URL so
+// that a data-only release does not require a code change.
+const SHORT_TANDEM_REPEAT_READS_DB_URL =
+  process.env.STR_READS_DB_URL ||
+  'https://storage.googleapis.com/gnomad-str-public/release_2026_07/reads_db/str_reads_2026_07_20.db'
+
+// Set STR_READS_DB_PATH to serve a DB already on disk and skip the download entirely (local dev).
+const SHORT_TANDEM_REPEAT_READS_DB_PATH = process.env.STR_READS_DB_PATH || null
+
 const shortTandemRepeatDatasets = {
   gnomad_r3: {
-    dbPath:
-      process.env.STR_READS_DB_PATH ||
-      '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
+    dbPath: SHORT_TANDEM_REPEAT_READS_DB_PATH,
+    dbUrl: SHORT_TANDEM_REPEAT_READS_DB_URL,
     publicPath: 'https://storage.googleapis.com/gnomad-str-public/release_2024_07/readviz_v2',
   },
   gnomad_r4: {
-    dbPath:
-      process.env.STR_READS_DB_PATH ||
-      '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
+    dbPath: SHORT_TANDEM_REPEAT_READS_DB_PATH,
+    dbUrl: SHORT_TANDEM_REPEAT_READS_DB_URL,
     publicPath: 'https://storage.googleapis.com/gnomad-str-public/release_2024_07/readviz_v2',
   },
 }

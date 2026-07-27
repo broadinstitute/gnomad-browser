@@ -32,6 +32,12 @@ module.exports = {
       testMatch: ['<rootDir>/dataset-metadata/**/*.spec.(js|jsx|ts|tsx)'],
       preset: 'ts-jest',
     },
+    {
+      // No ts-jest preset here: reads/ is plain CommonJS JavaScript.
+      displayName: 'reads',
+      testEnvironment: 'node',
+      testMatch: ['<rootDir>/reads/**/*.spec.(js|jsx|ts|tsx)'],
+    },
   ],
   roots: ['<rootDir>', '<rootDir>/tests'],
 }

@@ -72,7 +72,7 @@ module.exports = {
   overrides: [
     {
       // Set environment for tests
-      files: ['**/*spec.ts', '**/*test.ts', 'tests/**/*.ts'],
+      files: ['**/*spec.ts', '**/*spec.js', '**/*test.ts', 'tests/**/*.ts'],
       env: {
         jest: true,
       },

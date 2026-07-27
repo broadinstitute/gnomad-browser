@@ -1,9 +1,11 @@
 const express = require('express')
 const { graphqlHTTP } = require('express-graphql')
 
+const { shortTandemRepeatDatasets } = require('./datasets')
 const { formatError } = require('./errors')
 const logger = require('./logging')
 const schema = require('./schema')
+const { ensureShortTandemRepeatReadsDb } = require('./shortTandemRepeatReadsDb')
 
 // The behavior of Express' trust proxy setting varies based on the type of the argument.
 // Parse the environment variable string into the appropriate type.
@@ -47,6 +49,21 @@ app.use(
   })
 )
 
-app.listen(config.PORT, () => {
-  logger.info(`Listening on ${config.PORT}`)
+// Fetch and validate the tandem repeat reads DB before listening, so that the pod cannot pass its
+// readiness probe until it is actually able to serve read data.
+const main = async () => {
+  await Promise.all(
+    Object.values(shortTandemRepeatDatasets).map((dataset) =>
+      ensureShortTandemRepeatReadsDb(dataset)
+    )
+  )
+
+  app.listen(config.PORT, () => {
+    logger.info(`Listening on ${config.PORT}`)
+  })
+}
+
+main().catch((error) => {
+  logger.error(error)
+  process.exit(1)
 })

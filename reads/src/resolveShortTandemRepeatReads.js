@@ -1,7 +1,11 @@
-const sqlite = require('sqlite')
-const sqlite3 = require('sqlite3')
-
 const { UserVisibleError } = require('./errors')
+const { getShortTandemRepeatReadsDb } = require('./shortTandemRepeatReadsDb')
+
+// Map a locus id to a non-default readviz image folder under publicPath. Needed while a locus's
+// images live in a coordinate-named folder rather than the live <locusId>/ folder (EP400's
+// 548-definition images are staged under EP400__12-132062548-132062611/ so they do not overwrite
+// the wide-definition images still in EP400/). Delete the entry once EP400/ holds those images.
+const READVIZ_FOLDER_BY_LOCUS = { EP400: 'EP400__12-132062548-132062611' }
 
 const buildWhere = ({ id, filter }) => {
   const params = {
@@ -118,17 +122,13 @@ const buildWhere = ({ id, filter }) => {
   return { where, params }
 }
 
-const resolveShortTandemRepeatNumReads = async ({ dbPath }, { id, filter }) => {
+const resolveShortTandemRepeatNumReads = async (dataset, { id, filter }) => {
   const { where, params } = buildWhere({ id, filter })
 
   const query = `SELECT COUNT(*) AS \`num_reads\` FROM \`reads\` WHERE ${where}`
 
-  const db = await sqlite.open({
-    filename: dbPath,
-    driver: sqlite3.Database,
-  })
+  const db = await getShortTandemRepeatReadsDb(dataset)
   const result = await db.get(query, params)
-  await db.close()
 
   return result.num_reads
 }
@@ -136,7 +136,7 @@ const resolveShortTandemRepeatNumReads = async ({ dbPath }, { id, filter }) => {
 const MAX_READS_PER_REQUEST = 1_000
 
 const resolveShortTandemRepeatReads = async (
-  { dbPath, publicPath },
+  dataset,
   { id, filter },
   { limit = 10, offset = 0 }
 ) => {
@@ -179,12 +179,8 @@ const resolveShortTandemRepeatReads = async (
     ':offset': offset,
   })
 
-  const db = await sqlite.open({
-    filename: dbPath,
-    driver: sqlite3.Database,
-  })
+  const db = await getShortTandemRepeatReadsDb(dataset)
   const rows = await db.all(query, params)
-  await db.close()
 
   return rows.map((row) => {
     return {
@@ -222,7 +218,7 @@ const resolveShortTandemRepeatReads = async (
       sex: row.sex,
       age: row.age,
       pcr_protocol: row.pcr_protocol,
-      path: `${publicPath}/${id}/${row.filename}`,
+      path: `${dataset.publicPath}/${READVIZ_FOLDER_BY_LOCUS[id] || id}/${row.filename}`,
       quality_description: row.quality_description,
       q_score: row.q,
     }
