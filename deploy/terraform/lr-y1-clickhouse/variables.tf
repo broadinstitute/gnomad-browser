@@ -60,8 +60,8 @@ variable "clickhouse_version" {
 
 variable "clickhouse_source_ranges" {
   type        = list(string)
-  description = "Private CIDRs allowed to reach ClickHouse. Leave empty until a pilot API is provisioned."
-  default     = []
+  description = "Private CIDRs allowed to reach ClickHouse for the isolated Y1 pool and pilot API."
+  default     = ["192.168.0.0/20"]
 }
 
 variable "source_mirror_bucket_name" {

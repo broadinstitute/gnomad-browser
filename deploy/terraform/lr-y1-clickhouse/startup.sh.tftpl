@@ -52,8 +52,8 @@ cat >/etc/clickhouse-server/config.d/y1-demo.xml <<'EOF'
 </clickhouse>
 EOF
 
-# Until a pilot API and Secret Manager credentials are provisioned, permit the
-# default account only through localhost (including an IAP SSH tunnel).
+# Match the established Genohype loading setup: the default account is
+# unauthenticated but restricted to localhost and the private worker subnet.
 cat >/etc/clickhouse-server/users.d/y1-local-only.xml <<'EOF'
 <clickhouse>
   <users>
@@ -61,6 +61,8 @@ cat >/etc/clickhouse-server/users.d/y1-local-only.xml <<'EOF'
       <networks replace="replace">
         <ip>127.0.0.1</ip>
         <ip>::1</ip>
+        <!-- Match the established Genohype pool pattern: internal VPC only. -->
+        <ip>192.168.0.0/20</ip>
       </networks>
     </default>
   </users>

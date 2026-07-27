@@ -172,7 +172,7 @@ resource "google_compute_firewall" "clickhouse_private" {
 
   allow {
     protocol = "tcp"
-    ports    = ["8123", "9000"]
+    ports    = ["8123"]
   }
 
   source_ranges = var.clickhouse_source_ranges
