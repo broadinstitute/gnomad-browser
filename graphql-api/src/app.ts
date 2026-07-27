@@ -136,8 +136,11 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     const stop = parseInt(req.query.stop, 10)
     const lrCohort = req.query.lr_cohort || 'hgsvc_hprc'
 
-    if (!chrom || isNaN(start) || isNaN(stop)) {
-      return res.status(400).json({ error: 'chrom, start, stop required' })
+    if (!chrom || isNaN(start) || isNaN(stop) || start > stop) {
+      return res.status(400).json({ error: 'valid chrom, start, stop required' })
+    }
+    if (isY1PilotEnabled && stop - start > 100_000) {
+      return res.status(400).json({ error: 'Y1 Haplotype View is limited to 100 kb regions' })
     }
 
     if (lrCohort !== 'hgsvc_hprc') {

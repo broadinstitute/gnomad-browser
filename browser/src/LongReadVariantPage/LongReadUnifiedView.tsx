@@ -169,7 +169,7 @@ const fetchGraphQL = async (query: string, variables: any) => {
 }
 
 
-const MAX_HAPLOTYPE_REGION_SIZE = 5_000_000
+const MAX_HAPLOTYPE_REGION_SIZE = process.env.LR_Y1_ENABLED === 'true' ? 100_000 : 5_000_000
 
 const LongReadUnifiedView = ({
   datasetId,
