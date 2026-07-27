@@ -41,11 +41,15 @@ const variantDatasets = {
 
 const shortTandemRepeatDatasets = {
   gnomad_r3: {
-    dbPath: '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
+    dbPath:
+      process.env.STR_READS_DB_PATH ||
+      '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
     publicPath: 'https://storage.googleapis.com/gnomad-str-public/release_2024_07/readviz_v2',
   },
   gnomad_r4: {
-    dbPath: '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
+    dbPath:
+      process.env.STR_READS_DB_PATH ||
+      '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
     publicPath: 'https://storage.googleapis.com/gnomad-str-public/release_2024_07/readviz_v2',
   },
 }

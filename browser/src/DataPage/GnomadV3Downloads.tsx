@@ -323,6 +323,13 @@ const GnomadV3Downloads = () => (
       <FileList>
         <ListItem>
           <DownloadLinks
+            label="README"
+            loggingLabel="v3.1.3 genotype TSV README (7-20-2026 update)"
+            path="/release/3.1.3/tsv/README__2025_03_17.txt"
+          />
+        </ListItem>
+        <ListItem>
+          <DownloadLinks
             label="Genotypes (TSV)"
             path="/release/3.1.3/tsv/gnomAD_STR_genotypes__2026_07_20.tsv.gz"
           />
