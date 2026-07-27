@@ -211,7 +211,11 @@ Row fields:
 - `symbol_upper_case`: All-caps gene symbol.
 - `search_terms`: Set containing search terms associated with gene.
 - `reference_genome`: Reference genome build associated with this gene.
-- `flags`: Set containing gene flags for this gene.
+- `flags`: Set containing gene flags for this gene. A gene may have any combination of these flags, or none. Possible values are:
+  - `chip`: The gene shows evidence of clonal hematopoiesis of indeterminate potential (CHIP).
+  - `low_exome_coverage`: The gene has low coverage in the v4 exomes.
+  - `low_exome_mapping_quality`: The gene has low mappability in the v4 exomes.
+  - `v4_low_coverage_trancript`: Same as `low_exome_coverage`, but specific to the gene's MANE Select transcript (if one exists) or otherwise its Ensembl canonical transcript.
 - `canonical_transcript_id`: Canonical transcript ID.
 - `mane_select_transcript`: Struct containing MANE Select transcript information.
   - `matched_gene_version`: Version of the matched gene.
@@ -269,7 +273,9 @@ Row fields:
   - `hom_total`: Total count of homozygous variants.
 
 #### gnomAD v4.1 copy number variant (CNV) Hail Table annotations
+
 Row fields:
+
 - `variant_id`: Variant name identifier.
 - `reference_genome`: Reference genome.
 - `chrom`: Chromosome.
@@ -278,8 +284,8 @@ Row fields:
 - `length`: CNV length.
 - `type`: CNV type (deletion vs duplication).
 - `alts`: CNV type (same as `type`).
-- `xpos`:  Genomic start position of CNV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
-- `xend`:  Genomic end position of CNV (format: chromosomeposition).
+- `xpos`: Genomic start position of CNV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
+- `xend`: Genomic end position of CNV (format: chromosomeposition).
 - `genes`: Set of gene(s) impacted by CNV.
 - `freq`: Struct containing variant frequency information.
   - `sc`: Site count; number of individuals with CNV.
@@ -296,7 +302,9 @@ Row fields:
 - `endmax`: Maximum end position across all calls grouped in variant.
 
 #### gnomAD v4.1 browser structural variant (SV) Hail Table annotations
+
 Row fields:
+
 - `qual`: Quality of the structural variant (SV).
 - `filters`: Quality filter of SV.
 - `algorithms`: Source algorithms that contributed to SV call.
@@ -317,12 +325,12 @@ Row fields:
 - `chrom2`: Second chromosome involved in SV.
 - `pos2`: SV start position on `chrom2`.
 - `end2`: SV end position on `chrom2`.
-- `length`: SV length. 
+- `length`: SV length.
 - `type`: SV type.
 - `alts`: SV type, including mobile element insertion types.
 - `xpos`: Genomic start position of SV (format: chromosomeposition). `xpos` can be calculated with (chrom 10^9 + pos). Note that chrX is encoded as 23, chrY as 24, and chrM as 25.
 - `xend`: Genomic end position of SV (format: chromosomeposition).
-- `xpos2`: Genomic start position of SV on second chromosome (format: chromosomeposition). 
+- `xpos2`: Genomic start position of SV on second chromosome (format: chromosomeposition).
 - `xend2`: Genomic end position of SV on the second chromosome (format: chromosomeposition).
 - `consequences`: Array containing SV consequence information.
   - `consequence`: Predicted consequence of the structural variant on gene(s).
@@ -347,13 +355,13 @@ Row fields:
       - `ac`: Allele count of SV.
     - `hemizygote_count`: Number of XY samples with hemizygous genotypes (biallelic sites on sex chromosomes only).
     - `homozygote_count`: Number of samples with homozygous alternate genotypes (biallelic sites only).
-- `age_distribution`:  Struct containing age distribution information for variant.
+- `age_distribution`: Struct containing age distribution information for variant.
   - `het`: Struct containing age distribution information for individuals heterozygous for this variant. Structured to allow easy histogram creation.
     - `bin_freq`: Array containing the frequency of individuals in this bin.
     - `bin_edges`: Array containing the edges of each bin of the histogram.
     - `n_smaller`: Number of individuals with lower age than the lowest bin.
     - `n_larger`: Number of individuals with a higher age than the highest bin.
   - `hom`: Struct containing age distribution information for individuals homozygous for this variant. Structured to allow easy histogram creation. Contains same fields as `het` above.
-- `genotype_quality`:  Struct containing information used to display genotype quality (GQ) histograms.
+- `genotype_quality`: Struct containing information used to display genotype quality (GQ) histograms.
   - `all`: Struct containing GQ information about all samples. Contains same fields as `het` and `hom` in `age_distribution` struct above.
   - `alt`: Struct containing GQ information across samples with alternative alleles (either heterozygous or homozygous). Contains same fields as `het` and `hom` in `age_distribution` struct above.
