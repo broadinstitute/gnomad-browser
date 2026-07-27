@@ -113,3 +113,19 @@ Certain IPs are whitelisted, allowing them to bypass the rate limits imposed by 
 ```
 
 To whitelist additional IPs, add another entry to the `whitelisted_ips` array.
+
+## Isolated long-read Y1 pilot
+
+The legacy long-read queries remain the default. To test the cohort-aware Y1 schema against an isolated ClickHouse database, start a separate API process with all of the following variables:
+
+```bash
+LR_Y1_ENABLED=true
+LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:8126
+LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_scratch_1mb_v2
+LR_Y1_HGSVC_RUN_ID=y1-hgsvc_hprc-...
+LR_Y1_AOU_RUN_ID=y1-aou-...
+```
+
+The GraphQL `lr_cohort` argument defaults to `hgsvc_hprc`. Summary queries support `hgsvc_hprc` and `aou`; the browser disables Haplotype View for AoU. Every Y1 query and cache key includes cohort and uses the explicitly pinned run ID. ALT-expanded browser IDs use `<exact-source-id>~<alt-index>`, while `source_variant_id` preserves the source ID byte-for-byte. AoU IDs are rendered as non-links in the pilot.
+
+Do not set `LR_Y1_ENABLED` on the legacy API or repoint production until a full-chromosome serving run has been validated and activated.

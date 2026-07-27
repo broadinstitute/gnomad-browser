@@ -23,7 +23,7 @@ const config = {
       disableDotRule: true,
     },
     hot: true,
-    port: 8008,
+    port: Number(process.env.BROWSER_PORT || 8008),
     static: {
       publicPath: '/',
     },

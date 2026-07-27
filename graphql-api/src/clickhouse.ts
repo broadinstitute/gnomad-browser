@@ -1,9 +1,11 @@
 import { createClient } from '@clickhouse/client'
 
+const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
+
 export const clickhouseClient = createClient({
   // Default to 127.0.0.1 rather than localhost: on macOS `localhost` resolves to
   // ::1 (IPv6) first, and the ClickHouse container only listens on IPv4.
-  url: process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123',
+  url: clickhouseUrl,
   clickhouse_settings: { readonly: '1' },
   // Recycle idle keep-alive sockets aggressively. The client pools keep-alive
   // sockets, so if the ClickHouse server is restarted while the API stays up,
@@ -12,6 +14,26 @@ export const clickhouseClient = createClient({
   // drains. Keeping the idle TTL well below the server keep-alive timeout means
   // sockets idle longer than this are discarded and a fresh connection is made,
   // so a server restart never wedges the API for more than the TTL window.
+  keep_alive: {
+    enabled: true,
+    idle_socket_ttl: 2000,
+  },
+})
+
+const y1Database = process.env.LR_Y1_CLICKHOUSE_DATABASE || ''
+if (y1Database && !/^gnomad_lr_y1_[a-z0-9_]+$/.test(y1Database)) {
+  throw new Error(`Unsafe LR Y1 ClickHouse database name: ${y1Database}`)
+}
+
+export const isY1PilotEnabled = process.env.LR_Y1_ENABLED === 'true'
+
+// The Y1 pilot is deliberately isolated from the legacy ClickHouse client.
+// Enabling it requires an explicit database and run IDs; production defaults
+// continue to query the legacy tables above.
+export const y1ClickhouseClient = createClient({
+  url: process.env.LR_Y1_CLICKHOUSE_URL || clickhouseUrl,
+  database: y1Database || 'default',
+  clickhouse_settings: { readonly: '1' },
   keep_alive: {
     enabled: true,
     idle_socket_ttl: 2000,

@@ -25,6 +25,8 @@ type AlleleStructure = {
 }
 
 type DerivedVariant = LRVariant & {
+  source_variant_id?: string
+  lr_cohort?: 'hgsvc_hprc' | 'aou'
   group_count: number
   carrier_count: number
   is_tr: boolean
@@ -1227,9 +1229,13 @@ const TableRow = React.memo(function TableRow({
           {v.is_tr && (
             <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
           )}
-          <Link to={`/variant/${v.variant_id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-            {v.variant_id}
-          </Link>
+          {v.lr_cohort === 'aou' ? (
+            <span>{v.source_variant_id || v.variant_id}</span>
+          ) : (
+            <Link to={`/variant/${v.variant_id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
+              {v.source_variant_id || v.variant_id}
+            </Link>
+          )}
         </td>
         <td>
           <TypeDot $color={VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)]} />
@@ -1569,6 +1575,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         .map((p: any) => ({ id: p.id, af: p.af ?? 0 }))
       return {
         variant_id: v.variant_id,
+        source_variant_id: v.source_variant_id,
+        lr_cohort: v.lr_cohort,
         chrom: v.chrom,
         pos: v.pos,
         end: v.end || null,

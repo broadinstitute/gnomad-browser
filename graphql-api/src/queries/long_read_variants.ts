@@ -1,9 +1,15 @@
-import { clickhouseClient } from '../clickhouse'
+import { clickhouseClient, isY1PilotEnabled } from '../clickhouse'
 import { isRsId } from '@gnomad/identifiers'
 import { getFilteredRegions } from './variant-datasets/gnomad-v4-variant-queries'
 import { mergeOverlappingRegions } from './helpers/region-helpers'
 import { withCache } from '../cache'
 import { fetchSTRHistogram } from './haplotype-queries'
+import {
+  fetchY1VariantById,
+  fetchY1VariantsByRegion,
+  fetchY1VariantsByRegions,
+  LongReadCohort,
+} from './long_read_y1_variants'
 
 const normalizeChrom = (chrom: string) =>
   chrom.startsWith('chr') ? chrom : `chr${chrom}`
@@ -109,7 +115,12 @@ const parseGenotypeDistribution = (populations: { key: string; histogram: string
   return results.length > 0 ? results : null
 }
 
-export const fetchVariantById = async (variantId: string) => {
+export const fetchVariantById = async (variantId: string, cohort: LongReadCohort = 'hgsvc_hprc') => {
+  if (isY1PilotEnabled) {
+    if (isRsId(variantId)) return null
+    return fetchY1VariantById(variantId, cohort)
+  }
+
   let query: string
   if (isRsId(variantId)) {
     query = `SELECT * FROM lr_variants WHERE has(rsids, {id:String}) LIMIT 1`
@@ -139,7 +150,7 @@ export const fetchVariantById = async (variantId: string) => {
   return variant
 }
 
-const _fetchVariantsByGene = async (gene: any) => {
+const _fetchVariantsByGene = async (gene: any, cohort: LongReadCohort = 'hgsvc_hprc') => {
   const filteredRegions = getFilteredRegions(gene.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
@@ -161,6 +172,10 @@ const _fetchVariantsByGene = async (gene: any) => {
 
   const chrom = normalizeChrom(gene.chrom)
 
+  if (isY1PilotEnabled) {
+    return fetchY1VariantsByRegions(chrom, mergedRegions, cohort)
+  }
+
   const query = `
     SELECT * FROM lr_variants
     WHERE chrom = {chrom:String} AND (${rangeConditions})
@@ -179,7 +194,8 @@ const _fetchVariantsByGene = async (gene: any) => {
 
 export const fetchVariantsByGene = withCache(
   _fetchVariantsByGene,
-  (gene: any) => `lr_variants:gene:${gene.gene_id}`,
+  (gene: any, cohort: LongReadCohort = 'hgsvc_hprc') =>
+    `lr_variants:${isY1PilotEnabled ? 'y1' : 'legacy'}:${cohort}:gene:${gene.gene_id}`,
   { expiration: 1 }
 )
 
@@ -188,6 +204,10 @@ const countVariantsByRegion = async (...args: any[]) => {
   const region: { chrom: string; start: number; stop: number } =
     args.length > 1 ? args[1] : args[0]
   const chrom = normalizeChrom(region.chrom)
+  if (isY1PilotEnabled) {
+    const cohort: LongReadCohort = args.length > 2 ? args[2] : 'hgsvc_hprc'
+    return (await fetchY1VariantsByRegion(region, cohort)).length
+  }
 
   const query = `
     SELECT count() as count FROM lr_variants
@@ -207,8 +227,15 @@ const countVariantsByRegion = async (...args: any[]) => {
 
 export const countVariantsInRegion = countVariantsByRegion
 
-const _fetchVariantsByRegion = async (region: { chrom: string; start: number; stop: number }) => {
+const _fetchVariantsByRegion = async (
+  region: { chrom: string; start: number; stop: number },
+  cohort: LongReadCohort = 'hgsvc_hprc'
+) => {
   const chrom = normalizeChrom(region.chrom)
+
+  if (isY1PilotEnabled) {
+    return fetchY1VariantsByRegion(region, cohort)
+  }
 
   const query = `
     SELECT * FROM lr_variants
@@ -230,8 +257,11 @@ const _fetchVariantsByRegion = async (region: { chrom: string; start: number; st
 
 export const fetchVariantsByRegion = withCache(
   _fetchVariantsByRegion,
-  (region: { chrom: string; start: number; stop: number }) =>
-    `lr_variants:region:${region.chrom}:${region.start}:${region.stop}`,
+  (
+    region: { chrom: string; start: number; stop: number },
+    cohort: LongReadCohort = 'hgsvc_hprc'
+  ) =>
+    `lr_variants:${isY1PilotEnabled ? 'y1' : 'legacy'}:${cohort}:region:${region.chrom}:${region.start}:${region.stop}`,
   { expiration: 1 }
 )
 

@@ -144,6 +144,7 @@ type LongReadUnifiedViewProps = {
     stop: number
   }
   variants: any[]
+  lrCohort?: 'hgsvc_hprc' | 'aou'
   clinvarReleaseDate?: string
   genes?: ZoomGene[]
   zoomRegion?: { start: number; stop: number } | null
@@ -173,6 +174,7 @@ const LongReadUnifiedView = ({
   datasetId,
   gene,
   variants,
+  lrCohort = 'hgsvc_hprc',
   clinvarReleaseDate,
   genes = [],
   zoomRegion = null,
@@ -193,7 +195,8 @@ const LongReadUnifiedView = ({
   const [showRegionWarning, setShowRegionWarning] = useState(
     regionTooLarge && urlShowHaplotypes
   )
-  const showHaplotypes = !regionTooLarge && urlShowHaplotypes
+  const haplotypesUnavailable = lrCohort === 'aou'
+  const showHaplotypes = !regionTooLarge && !haplotypesUnavailable && urlShowHaplotypes
 
   const setShowHaplotypes = useCallback((show: boolean) => {
     const params = new URLSearchParams(location.search)
@@ -917,7 +920,7 @@ const LongReadUnifiedView = ({
             id="lr-view-mode"
             options={[
               { label: 'Summary View', value: 'summary' },
-              { label: 'Haplotype View', value: 'haplotype', disabled: regionTooLarge },
+              { label: 'Haplotype View', value: 'haplotype', disabled: regionTooLarge || haplotypesUnavailable },
             ]}
             value={showHaplotypes ? 'haplotype' : 'summary'}
             onChange={(val: string) => setShowHaplotypes(val === 'haplotype')}

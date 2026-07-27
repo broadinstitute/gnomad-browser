@@ -38,7 +38,11 @@ type Query {
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 10)
 
-  long_read_variant(variantId: String, rsid: String): LongReadVariant
+  long_read_variant(
+    variantId: String
+    rsid: String
+    lr_cohort: LongReadCohort = hgsvc_hprc
+  ): LongReadVariant
 
   meta: BrowserMetadata!
 }

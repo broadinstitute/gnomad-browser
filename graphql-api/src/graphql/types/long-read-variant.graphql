@@ -1,3 +1,8 @@
+enum LongReadCohort {
+  hgsvc_hprc
+  aou
+}
+
 type LongReadTranscriptConsequence {
   consequence_terms: [String!]
   domains: [String!]
@@ -91,6 +96,9 @@ type LongReadGene {
 
 type LongReadVariant {
   variant_id: String!
+  source_variant_id: String
+  alt_index: Int
+  lr_cohort: LongReadCohort
   reference_genome: ReferenceGenomeId!
   chrom: String!
   pos: Int!

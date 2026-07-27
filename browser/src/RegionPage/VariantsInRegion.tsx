@@ -273,49 +273,83 @@ type ConnectedVariantsInRegionProps = {
 }
 
 const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion }: ConnectedVariantsInRegionProps) => {
+  const initialLrCohort =
+    typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('lr_cohort') === 'aou'
+      ? 'aou'
+      : 'hgsvc_hprc'
+  const [lrCohort, setLrCohort] = React.useState<'hgsvc_hprc' | 'aou'>(initialLrCohort)
+
+  const changeLrCohort = (cohort: 'hgsvc_hprc' | 'aou') => {
+    setLrCohort(cohort)
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href)
+      url.searchParams.set('lr_cohort', cohort)
+      if (cohort === 'aou') url.searchParams.delete('show_haplotypes')
+      window.history.replaceState({}, '', url.toString())
+    }
+  }
+
   // When viewing LR dataset directly, only query LR data — skip the expensive SR query
   if (isLongRead(datasetId)) {
     return (
-      <Query
-        operationName="LongReadVariantsInRegion"
-        query={`query LongReadVariantsInRegion($datasetId: DatasetId!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
-          meta { clinvar_release_date }
-          region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
-            long_read_variants(dataset: $datasetId) {
-              variant_id pos end length ref alt allele_type filters motifs rsids
-              main_reference_region { chrom start stop }
-              sv_consequences major_consequence cadd_phred phylop
-              freq { all { ac an af homozygote_ref_count homozygote_alt_count heterozygote_count } populations { id ac an af } }
-              transcript_consequences { hgvs major_consequence gene_id gene_symbol transcript_id }
-              short_read_match_id enveloping_tr_id enveloped_ids
-              is_likely_tr gnomad_str
+      <>
+        <TrackPageSection>
+          <label htmlFor="lr-cohort">
+            Long-read cohort:{' '}
+            <select
+              id="lr-cohort"
+              value={lrCohort}
+              onChange={(event) => changeLrCohort(event.target.value as 'hgsvc_hprc' | 'aou')}
+            >
+              <option value="hgsvc_hprc">HGSVC/HPRC</option>
+              <option value="aou">All of Us</option>
+            </select>
+          </label>
+          {lrCohort === 'aou' && <p>All of Us is summary-only; Haplotype View is unavailable.</p>}
+        </TrackPageSection>
+        <Query
+          operationName="LongReadVariantsInRegion"
+          query={`query LongReadVariantsInRegion($datasetId: DatasetId!, $lrCohort: LongReadCohort!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+            meta { clinvar_release_date }
+            region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+              long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort) {
+                variant_id source_variant_id alt_index lr_cohort pos end length ref alt allele_type filters motifs rsids
+                main_reference_region { chrom start stop }
+                sv_consequences major_consequence cadd_phred phylop
+                freq { all { ac an af homozygote_ref_count homozygote_alt_count heterozygote_count } populations { id ac an af } }
+                transcript_consequences { hgvs major_consequence gene_id gene_symbol transcript_id }
+                short_read_match_id enveloping_tr_id enveloped_ids
+                is_likely_tr gnomad_str
+              }
             }
-          }
-        }`}
-        variables={{
-          datasetId,
-          chrom: region.chrom,
-          start: region.start,
-          stop: region.stop,
-          referenceGenome: referenceGenome(datasetId),
-        }}
-        loadingMessage="Loading variants"
-        errorMessage="Unable to load variants"
-        success={(data: any) => data.region}
-      >
-        {({ data }: any) => (
-          <LongReadUnifiedView
-            datasetId={datasetId}
-            gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
-            variants={data.region.long_read_variants || []}
-            clinvarReleaseDate={data.meta.clinvar_release_date}
-            genes={region.genes as any[]}
-            zoomRegion={zoomRegion || null}
-            onChangeZoomRegion={onChangeZoomRegion || (() => {})}
-            onSetRegion={onSetRegion || (() => {})}
-          />
-        )}
-      </Query>
+          }`}
+          variables={{
+            datasetId,
+            lrCohort,
+            chrom: region.chrom,
+            start: region.start,
+            stop: region.stop,
+            referenceGenome: referenceGenome(datasetId),
+          }}
+          loadingMessage="Loading variants"
+          errorMessage="Unable to load variants"
+          success={(data: any) => data.region}
+        >
+          {({ data }: any) => (
+            <LongReadUnifiedView
+              datasetId={datasetId}
+              gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
+              variants={data.region.long_read_variants || []}
+              lrCohort={lrCohort}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+              genes={region.genes as any[]}
+              zoomRegion={zoomRegion || null}
+              onChangeZoomRegion={onChangeZoomRegion || (() => {})}
+              onSetRegion={onSetRegion || (() => {})}
+            />
+          )}
+        </Query>
+      </>
     )
   }
 

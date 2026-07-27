@@ -1,6 +1,10 @@
 import { isRsId } from '@gnomad/identifiers'
 import { UserVisibleError } from '../../errors'
-import { fetchVariantById, fetchVariantsByGene, fetchVariantsByRegion } from '../../queries/long_read_variants'
+import {
+  fetchVariantById,
+  fetchVariantsByGene,
+  fetchVariantsByRegion,
+} from '../../queries/long_read_variants'
 
 const addHgvs = (hit: any) => ({
   ...hit,
@@ -32,7 +36,7 @@ const resolveVariant = async (_obj: any, args: any, _ctx: any) => {
     normalizedVariantId = args.rsid.toLowerCase()
   }
 
-  const rawResult = await fetchVariantById(normalizedVariantId)
+  const rawResult = await fetchVariantById(normalizedVariantId, args.lr_cohort)
   if (!rawResult) {
     return rawResult
   }
@@ -40,13 +44,16 @@ const resolveVariant = async (_obj: any, args: any, _ctx: any) => {
   return addHgvs(rawResult)
 }
 
-const resolveVariantsInGene = async (obj: any, _args: any, _ctx: any) => {
-  const hits = await fetchVariantsByGene(obj)
+const resolveVariantsInGene = async (obj: any, args: any, _ctx: any) => {
+  const hits = await fetchVariantsByGene(obj, args.lr_cohort)
   return hits.map(addHgvs)
 }
 
-const resolveVariantsInRegion = async (obj: any, _args: any, _ctx: any) => {
-  const hits = await fetchVariantsByRegion({ chrom: obj.chrom, start: obj.start, stop: obj.stop })
+const resolveVariantsInRegion = async (obj: any, args: any, _ctx: any) => {
+  const hits = await fetchVariantsByRegion(
+    { chrom: obj.chrom, start: obj.start, stop: obj.stop },
+    args.lr_cohort
+  )
   return hits.map(addHgvs)
 }
 
