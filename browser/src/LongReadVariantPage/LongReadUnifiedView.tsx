@@ -79,10 +79,11 @@ const MQTL_QUERY = `
 /** Fetch raw variant + carrier data from the REST endpoint (no grouping/tree on server) */
 const fetchHaplotypeDataREST = async (
   chrom: string, start: number, stop: number,
+  lrCohort: 'hgsvc_hprc' | 'aou',
   signal?: AbortSignal
 ): Promise<RawPayload> => {
   const params = new URLSearchParams({
-    chrom, start: String(start), stop: String(stop),
+    chrom, start: String(start), stop: String(stop), lr_cohort: lrCohort,
   })
   const t0 = performance.now()
   const response = await fetch(`/api/lr/haplotype-groups?${params}`, { signal })
@@ -227,6 +228,7 @@ const LongReadUnifiedView = ({
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [workerComputing, setWorkerComputing] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState('')
+  const [ambiguousUnphasedRows, setAmbiguousUnphasedRows] = useState(0)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
   const [methylationData, setMethylationData] = useState<Methylation[]>([])
@@ -481,7 +483,7 @@ const LongReadUnifiedView = ({
     setLoadingStatus('Fetching variant data…')
     const t0 = performance.now()
 
-    fetchHaplotypeDataREST(chrom, start, stop, controller.signal)
+    fetchHaplotypeDataREST(chrom, start, stop, lrCohort, controller.signal)
       .then((result) => {
         if (controller.signal.aborted) return
         const variantCount = result.variants?.variant_id?.length ?? 0
@@ -489,6 +491,7 @@ const LongReadUnifiedView = ({
         const fetchTime = Math.round(performance.now() - t0)
         console.log(`[REST] raw payload: ${variantCount} variants, ${carrierCount} carriers in ${fetchTime}ms (server: ${result._timing?.total_ms}ms)`)
         setLoadingStatus(`Received ${variantCount.toLocaleString()} variants, ${carrierCount} samples`)
+        setAmbiguousUnphasedRows(result._phase_summary?.ambiguous_unphased_rows || 0)
 
         // Use server-computed auto_defaults
         const defaults = result.auto_defaults || { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
@@ -529,7 +532,7 @@ const LongReadUnifiedView = ({
         console.error('Error fetching haplotype data:', error)
         setHaplotypeLoading(false)
       })
-  }, [showHaplotypes, chrom, start, stop])
+  }, [showHaplotypes, chrom, start, stop, lrCohort])
 
   // Derive booleans from groupingMode for worker/compute compatibility
   const isClusteredView = groupingMode === 'similarity'
@@ -955,6 +958,11 @@ const LongReadUnifiedView = ({
         {regionTooLarge && (
           <div style={{ textAlign: 'center', fontSize: 12, color: '#999', marginBottom: 8 }}>
             Haplotype view disabled: region too large (&gt; {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb)
+          </div>
+        )}
+        {showHaplotypes && ambiguousUnphasedRows > 0 && (
+          <div style={{ textAlign: 'center', fontSize: 12, color: '#856404', marginBottom: 8 }}>
+            {ambiguousUnphasedRows.toLocaleString()} unphased carrier rows are excluded because they cannot be assigned to a biological strand.
           </div>
         )}
       </TrackPageSection>

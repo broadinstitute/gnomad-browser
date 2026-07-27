@@ -128,4 +128,6 @@ LR_Y1_AOU_RUN_ID=y1-aou-...
 
 The GraphQL `lr_cohort` argument defaults to `hgsvc_hprc`. Summary queries support `hgsvc_hprc` and `aou`; the browser disables Haplotype View for AoU. Every Y1 query and cache key includes cohort and uses the explicitly pinned run ID. ALT-expanded browser IDs use `<exact-source-id>~<alt-index>`, while `source_variant_id` preserves the source ID byte-for-byte. AoU IDs are rendered as non-links in the pilot.
 
+Schema v3 materializes ALT-specific RSID, CADD, PhyloP, VEP consequence, and short-read-match annotations in `lr_y1_alleles`; serving queries do not parse the retained source INFO JSON. HGSVC/HPRC Haplotype View reads `lr_y1_carriers`. It places phased calls, haploid calls, and unphased homozygous-ALT calls, but does not invent phase for unphased heterozygous or partial calls. The REST payload reports excluded ambiguous rows in `_phase_summary`, and the browser displays that count.
+
 Do not set `LR_Y1_ENABLED` on the legacy API or repoint production until a full-chromosome serving run has been validated and activated.

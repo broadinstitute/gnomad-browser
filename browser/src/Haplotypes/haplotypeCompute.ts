@@ -112,6 +112,13 @@ export type RawPayload = {
   carrier_variant_indices: Record<string, number[]>
   trv_alts?: Record<string, Record<number, string>>
   auto_defaults?: AutoDefaults
+  _phase_summary?: {
+    total_carrier_rows: number
+    phased_rows: number
+    haploid_rows: number
+    unphased_homozygous_alt_rows: number
+    ambiguous_unphased_rows: number
+  } | null
   _timing?: { total_ms: number }
 }
 

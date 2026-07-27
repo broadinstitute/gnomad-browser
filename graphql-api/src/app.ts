@@ -8,6 +8,13 @@ import { client as esClient } from './elasticsearch'
 import { esTimingStore, EsTimingAccumulator } from './esTiming'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
+import { isY1PilotEnabled } from './clickhouse'
+import {
+  fetchDistinctHaplotypeVariants,
+  fetchTrvCarrierAlts,
+} from './queries/haplotype-queries'
+import { buildVariantsAndCarrierMap, deriveAutoDefaults } from './queries/haplotype-grouping'
+import { fetchY1HaplotypeRows } from './queries/long_read_y1_haplotypes'
 
 import { loadWhitelist } from './whitelist'
 
@@ -119,12 +126,6 @@ loadWhitelist()
 const context = { esClient }
 
 // REST endpoint for haplotype groups — bypasses GraphQL overhead for large payloads
-import {
-  fetchDistinctHaplotypeVariants,
-  fetchTrvCarrierAlts,
-} from './queries/haplotype-queries'
-import { buildVariantsAndCarrierMap, deriveAutoDefaults } from './queries/haplotype-grouping'
-
 app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
   const t0 = performance.now()
   try {
@@ -133,15 +134,30 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       : `chr${req.query.chrom}`
     const start = parseInt(req.query.start, 10)
     const stop = parseInt(req.query.stop, 10)
+    const lrCohort = req.query.lr_cohort || 'hgsvc_hprc'
 
     if (!chrom || isNaN(start) || isNaN(stop)) {
       return res.status(400).json({ error: 'chrom, start, stop required' })
     }
 
-    const [distinctVariants, trvCarriers] = await Promise.all([
-      fetchDistinctHaplotypeVariants(chrom, start, stop),
-      fetchTrvCarrierAlts(chrom, start, stop),
-    ])
+    if (lrCohort !== 'hgsvc_hprc') {
+      return res.status(400).json({ error: 'Haplotype View is available only for HGSVC/HPRC' })
+    }
+
+    let distinctVariants: any[]
+    let trvCarriers: any[]
+    let phaseSummary = null
+    if (isY1PilotEnabled) {
+      const y1Rows = await fetchY1HaplotypeRows(chrom, start, stop)
+      distinctVariants = y1Rows.variants
+      trvCarriers = y1Rows.trvCarriers
+      phaseSummary = y1Rows.phaseSummary
+    } else {
+      ;[distinctVariants, trvCarriers] = await Promise.all([
+        fetchDistinctHaplotypeVariants(chrom, start, stop),
+        fetchTrvCarrierAlts(chrom, start, stop),
+      ])
+    }
 
     const result = buildVariantsAndCarrierMap(
       distinctVariants as any,
@@ -156,16 +172,17 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     )
 
     const ms = performance.now() - t0
-    res.json({
+    return res.json({
       variants: result.soa_variants,
       carrier_variant_indices: result.carrier_variant_indices,
       trv_alts: result.trv_alts,
       auto_defaults: autoDefaults,
+      _phase_summary: phaseSummary,
       _timing: { total_ms: Math.round(ms) },
     })
   } catch (e: any) {
     logger.error(`REST haplotype-groups error: ${e.message}`)
-    res.status(500).json({ error: 'Internal error' })
+    return res.status(500).json({ error: 'Internal error' })
   }
 })
 

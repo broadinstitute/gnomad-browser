@@ -725,6 +725,7 @@ export const buildVariantsAndCarrierMap = (
       toNum(row.allele_purity),
       toStr(row.short_read_match_id), toStr(row.major_consequence),
     )
+    if (row.variant_id) variant.variant_id = row.variant_id
     variants.push(variant)
   }
 
