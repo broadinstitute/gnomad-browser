@@ -318,6 +318,23 @@ const GnomadV3Downloads = () => (
         </ExternalLink>
         .
       </p>
+      <b>Update (July 2026)</b>: [
+      <a href="https://gnomad.broadinstitute.org/news/2026-07-str-data-update/">changelog entry</a>]
+      <FileList>
+        <ListItem>
+          <DownloadLinks
+            label="Genotypes (TSV)"
+            path="/release/3.1.3/tsv/gnomAD_STR_genotypes__2026_07_20.tsv.gz"
+          />
+        </ListItem>
+        <ListItem>
+          <DownloadLinks
+            label="Distributions (JSON)"
+            path="/release/3.1.3/json/gnomAD_STR_distributions__2026_07_20.json.gz"
+          />
+        </ListItem>
+      </FileList>
+      <br />
       <b>Update (March 2025)</b>: [
       <a href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/">
         changelog entry
