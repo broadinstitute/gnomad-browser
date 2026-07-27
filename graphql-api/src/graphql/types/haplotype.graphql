@@ -222,18 +222,21 @@ extend type Query {
     start: Int!
     stop: Int!
     samples: [String!]
+    lr_cohort: LongReadCohort = hgsvc_hprc
   ): [MethylationRecord!]!
 
   methylation_summary(
     chrom: String!
     start: Int!
     stop: Int!
+    lr_cohort: LongReadCohort = hgsvc_hprc
   ): [MethylationSummaryRecord!]!
 
   methylation_outliers(
     chrom: String!
     start: Int!
     stop: Int!
+    lr_cohort: LongReadCohort = hgsvc_hprc
   ): MethylationOutlierRanking
 
   recombination_rate(
@@ -246,9 +249,14 @@ extend type Query {
     chrom: String!
     start: Int!
     stop: Int!
+    lr_cohort: LongReadCohort = hgsvc_hprc
   ): [CoverageBin!]!
 
-  lr_str_histogram(chrom: String!, position: Int!): STRHistogramRecord
+  lr_str_histogram(
+    chrom: String!
+    position: Int!
+    lr_cohort: LongReadCohort = hgsvc_hprc
+  ): STRHistogramRecord
 
   str_catalog(chrom: String!): [StrCatalogLocus!]!
 

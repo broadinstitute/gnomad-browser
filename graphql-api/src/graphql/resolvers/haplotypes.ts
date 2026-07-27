@@ -19,6 +19,7 @@ import {
 import { fetchStrCatalog, categorizeLocus, parseMotifStats } from '../../queries/str-catalog'
 import { withCache } from '../../cache'
 import logger from '../../logger'
+import { isAncillaryUnavailableForCohort } from './ancillary-availability'
 
 // --- Timing helpers ---
 
@@ -157,6 +158,7 @@ const resolvers = {
       }
     },
     methylation: async (_obj: any, args: any, ctx: any) => {
+      if (isAncillaryUnavailableForCohort(args.lr_cohort)) return []
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchMethylationForRegion(ctx.esClient, chrom, args.start, args.stop, args.samples)
@@ -168,6 +170,7 @@ const resolvers = {
       return result
     },
     methylation_summary: async (_obj: any, args: any, ctx: any) => {
+      if (isAncillaryUnavailableForCohort(args.lr_cohort)) return []
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchMethylationSummaryForRegion(ctx.esClient, chrom, args.start, args.stop)
@@ -179,6 +182,7 @@ const resolvers = {
       return result
     },
     methylation_outliers: async (_obj: any, args: any, ctx: any) => {
+      if (isAncillaryUnavailableForCohort(args.lr_cohort)) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchMethylationOutliersForRegion(ctx.esClient, chrom, args.start, args.stop)
@@ -201,6 +205,7 @@ const resolvers = {
       return result
     },
     lr_coverage: async (_obj: any, args: any, ctx: any) => {
+      if (isAncillaryUnavailableForCohort(args.lr_cohort)) return []
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchLRCoverageForRegion(ctx.esClient, chrom, args.start, args.stop)
@@ -212,6 +217,7 @@ const resolvers = {
       return result
     },
     lr_str_histogram: async (_obj: any, args: any, ctx: any) => {
+      if (isAncillaryUnavailableForCohort(args.lr_cohort)) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchSTRHistogram(ctx.esClient, chrom, args.position)

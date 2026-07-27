@@ -44,16 +44,16 @@ const SAMPLE_METADATA_QUERY = `
 `
 
 const METHYLATION_SUMMARY_QUERY = `
-  query RegionMethylationSummary($chrom: String!, $start: Int!, $stop: Int!) {
-    methylation_summary(chrom: $chrom, start: $start, stop: $stop) {
+  query RegionMethylationSummary($chrom: String!, $start: Int!, $stop: Int!, $lr_cohort: LongReadCohort!) {
+    methylation_summary(chrom: $chrom, start: $start, stop: $stop, lr_cohort: $lr_cohort) {
       chrom pos1 pos2 mean_methylation mean_coverage num_samples std_methylation min_methylation max_methylation
     }
   }
 `
 
 const METHYLATION_OUTLIERS_QUERY = `
-  query RegionMethylationOutliers($chrom: String!, $start: Int!, $stop: Int!) {
-    methylation_outliers(chrom: $chrom, start: $start, stop: $stop) {
+  query RegionMethylationOutliers($chrom: String!, $start: Int!, $stop: Int!, $lr_cohort: LongReadCohort!) {
+    methylation_outliers(chrom: $chrom, start: $start, stop: $stop, lr_cohort: $lr_cohort) {
       total_cpg_sites total_samples
       samples { sample_id outlier_count outlier_fraction direction }
     }
@@ -61,8 +61,8 @@ const METHYLATION_OUTLIERS_QUERY = `
 `
 
 const METHYLATION_QUERY = `
-  query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!, $samples: [String!]) {
-    methylation(chrom: $chrom, start: $start, stop: $stop, samples: $samples) {
+  query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!, $samples: [String!], $lr_cohort: LongReadCohort!) {
+    methylation(chrom: $chrom, start: $start, stop: $stop, samples: $samples, lr_cohort: $lr_cohort) {
       chr pos1 pos2 methylation sample coverage
     }
   }
@@ -582,14 +582,17 @@ const LongReadUnifiedView = ({
   // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
   // Users can still enable methylation via the checkbox, which triggers the load-all-samples path.
   useEffect(() => {
+    setMethylationData([])
+    setMethylationSummary([])
+    setMethylationOutliers(null)
     if (!showHaplotypes) return
     if (regionSize > 200_000) return
 
     const fetchSummaryAndOutliers = async () => {
       try {
         const [summaryResult, outlierResult] = await Promise.all([
-          fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop }),
-          fetchGraphQL(METHYLATION_OUTLIERS_QUERY, { chrom, start, stop }),
+          fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop, lr_cohort: lrCohort }),
+          fetchGraphQL(METHYLATION_OUTLIERS_QUERY, { chrom, start, stop, lr_cohort: lrCohort }),
         ])
         if (summaryResult.data?.methylation_summary) {
           setMethylationSummary(summaryResult.data.methylation_summary)
@@ -602,7 +605,7 @@ const LongReadUnifiedView = ({
       }
     }
     fetchSummaryAndOutliers()
-  }, [showHaplotypes, chrom, start, stop])
+  }, [showHaplotypes, chrom, start, stop, lrCohort])
 
   // Auto-fetch per-sample methylation for top outlier samples
   const MAX_AUTO_FETCH_OUTLIERS = 10
@@ -623,7 +626,7 @@ const LongReadUnifiedView = ({
       setMethylationLoading(true)
       try {
         const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: topOutliers,
+          chrom, start, stop, samples: topOutliers, lr_cohort: lrCohort,
         })
         if (result.data?.methylation) {
           setMethylationData(result.data.methylation)
@@ -636,7 +639,7 @@ const LongReadUnifiedView = ({
       }
     }
     fetchOutlierMethylation()
-  }, [showHaplotypes, chrom, start, stop, methylationOutliers])
+  }, [showHaplotypes, chrom, start, stop, methylationOutliers, lrCohort])
 
   // Load all sample methylation (triggered from HaplotypeTrack)
   const handleLoadAllSamples = useCallback(async () => {
@@ -659,7 +662,7 @@ const LongReadUnifiedView = ({
       const batch = allSampleIds.slice(i, i + BATCH_SIZE)
       try {
         const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: batch,
+          chrom, start, stop, samples: batch, lr_cohort: lrCohort,
         })
         if (result.data?.methylation) {
           accumulated = [...accumulated, ...result.data.methylation]
@@ -673,7 +676,7 @@ const LongReadUnifiedView = ({
     }
 
     setMethylationLoading(false)
-  }, [chrom, start, stop, haplotypeGroups, methylationData])
+  }, [chrom, start, stop, haplotypeGroups, methylationData, lrCohort])
 
   // Fetch mQTLs when enabled
   useEffect(() => {
