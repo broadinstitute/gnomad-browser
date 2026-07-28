@@ -1,0 +1,95 @@
+export type TrAlleleRecord = {
+  variant_id: string
+  source_variant_id?: string | null
+  chrom?: string
+  pos: number
+  end: number | null
+  allele_length: number | null
+  main_reference_region: { chrom: string; start: number; stop: number } | null
+  freq?: { all?: { af?: number | null } | null; af?: number | null } | null
+}
+
+export type TrLocus<T extends TrAlleleRecord = TrAlleleRecord> = {
+  key: string
+  chrom: string
+  start: number
+  stop: number
+  alleles: T[]
+  representative: T
+  minLengthDiff: number | null
+  maxLengthDiff: number | null
+  maxAf: number | null
+}
+
+export const getAltAf = (variant: TrAlleleRecord): number | null => {
+  const af = variant.freq?.all?.af ?? variant.freq?.af
+  return typeof af === 'number' && Number.isFinite(af) ? af : null
+}
+
+const coordinates = (variant: TrAlleleRecord) => {
+  const region = variant.main_reference_region
+  const chrom = region?.chrom || variant.chrom || 'unknown'
+  const start = region?.start ?? variant.pos
+  const stop =
+    region?.stop ?? variant.end ?? variant.pos + Math.max(Math.abs(variant.allele_length || 0), 1)
+  return { chrom, start, stop }
+}
+
+/**
+ * Stable source IDs identify a locus across ALT-suffixed records. If unavailable,
+ * only an exact chromosome/start/stop tuple is used. Overlap alone is deliberately
+ * insufficient because independently catalogued TR loci can overlap.
+ */
+export const getTrLocusKey = (variant: TrAlleleRecord): string => {
+  if (variant.source_variant_id) return `source:${variant.source_variant_id}`
+  const locus = coordinates(variant)
+  return `coordinates:${locus.chrom}:${locus.start}:${locus.stop}`
+}
+
+export const aggregateTrLoci = <T extends TrAlleleRecord>(variants: T[]): TrLocus<T>[] => {
+  const groups = variants.reduce((result, variant) => {
+    const key = getTrLocusKey(variant)
+    result.set(key, [...(result.get(key) || []), variant])
+    return result
+  }, new Map<string, T[]>())
+
+  return Array.from(groups, ([key, alleles]) => {
+    const locus = coordinates(alleles[0])
+    const lengths = alleles
+      .map((allele) => allele.allele_length)
+      .filter((length): length is number => typeof length === 'number' && Number.isFinite(length))
+    const availableAfs = alleles.map(getAltAf).filter((af): af is number => af !== null)
+    const maxAf = availableAfs.length > 0 ? Math.max(...availableAfs) : null
+    const representative = alleles.reduce((best, allele) => {
+      const bestAf = getAltAf(best)
+      const alleleAf = getAltAf(allele)
+      if (alleleAf === null) return best
+      return bestAf === null || alleleAf > bestAf ? allele : best
+    }, alleles[0])
+
+    return {
+      key,
+      ...locus,
+      alleles,
+      representative,
+      minLengthDiff: lengths.length > 0 ? Math.min(...lengths) : null,
+      maxLengthDiff: lengths.length > 0 ? Math.max(...lengths) : null,
+      maxAf,
+    }
+  })
+}
+
+export const packTrLoci = <T extends TrLocus>(loci: T[]) => {
+  const sorted = [...loci].sort((a, b) => a.start - b.start || a.stop - b.stop)
+  const rowEnds: number[] = []
+  const packed = sorted.map((locus) => {
+    const row = rowEnds.findIndex((end) => locus.start > end + 2)
+    if (row === -1) {
+      rowEnds.push(locus.stop)
+      return { ...locus, row: rowEnds.length - 1 }
+    }
+    rowEnds[row] = locus.stop
+    return { ...locus, row }
+  })
+  return { packed, maxRows: Math.max(rowEnds.length, 1) }
+}

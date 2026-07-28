@@ -8,11 +8,15 @@ import Link from '../Link'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
+import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributionPlot'
+import { aggregateTrLoci, packTrLoci, type TrLocus } from './trLocusAggregation'
 
 // --- Types ---
 
 type LRVariant = {
   variant_id: string
+  source_variant_id?: string | null
+  chrom?: string
   pos: number
   end: number | null
   allele_length: number | null
@@ -26,9 +30,10 @@ type LRVariant = {
   } | null
   filters: string[] | null
   sv_consequences: string[] | null
+  freq?: { all?: { af?: number | null } | null; af?: number | null } | null
 }
 
-type Band = 'snv' | 'ins' | 'del' | 'sv' | 'tr'
+type Band = 'snv' | 'ins' | 'del' | 'dup' | 'sv' | 'tr'
 
 type PackedVariant<T> = T & { row: number }
 
@@ -92,6 +97,35 @@ type HoveredVariant = {
   variant: LRVariant
   x: number
   y: number
+}
+
+type HoveredTrLocus = {
+  locus: TrLocus<TrItem>
+  x: number
+  y: number
+}
+
+const formatSignedLength = (value: number | null) => {
+  if (value == null) return 'Unavailable'
+  return `${value > 0 ? '+' : ''}${value} bp`
+}
+
+const TrLocusTooltip = ({ hovered }: { hovered: HoveredTrLocus }) => {
+  const { locus } = hovered
+  const distribution: TrDataPoint[] = locus.alleles
+    .filter((allele) => allele.allele_length != null)
+    .map((allele) => ({ length_diff: allele.allele_length as number, pop: 'N/A', count: 1 }))
+
+  return (
+    <div style={{ position: 'fixed', left: hovered.x + 12, top: hovered.y + 12, background: 'white', border: '1px solid #ccc', borderRadius: 4, padding: '6px 8px', fontSize: 12, pointerEvents: 'none', zIndex: 10000, width: 260, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+      <div><strong>TR locus:</strong> {locus.chrom}:{locus.start}-{locus.stop}</div>
+      <div><strong>ALT records:</strong> {locus.alleles.length}</div>
+      <div><strong>Length difference:</strong> {formatSignedLength(locus.minLengthDiff)} to {formatSignedLength(locus.maxLengthDiff)}</div>
+      <div><strong>Maximum ALT AF:</strong> {locus.maxAf == null ? 'Unavailable' : locus.maxAf.toPrecision(4)}</div>
+      {distribution.length > 0 && <TRDistributionPlot distribution={distribution} compact interactive={false} yAxisLabel="ALT records" />}
+      {locus.alleles.length > 1 && <div style={{ color: '#666', marginTop: 2 }}>Click opens the maximum-AF ALT record.</div>}
+    </div>
+  )
 }
 
 const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
@@ -333,11 +367,11 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
 
 type TrItem = LRVariant & { start: number; stop: number }
 
-const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
+const TrBand = ({ variants, scalePosition, width, onHoverLocus, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
   variants: TrItem[]
   scalePosition: (pos: number) => number
   width: number
-  onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
+  onHoverLocus?: (locus: TrLocus<TrItem> | null, e?: React.MouseEvent) => void
   hoveredPosition?: number | null
   colorMode?: string
   regionStart?: number
@@ -347,14 +381,15 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
   const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
 
   const visible = variants.filter(v => scalePosition(v.stop) >= 0 && scalePosition(v.start) <= width)
-  const { packed, maxRows } = packIntervals(visible)
+  const { packed, maxRows } = packTrLoci(aggregateTrLoci(visible))
   const bandHeight = maxRows * ROW_HEIGHT
   const barHeight = ROW_HEIGHT - 4
 
   return (
-    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
-      {packed.map((v) => {
-        const rowY = v.row * ROW_HEIGHT + 2
+    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }} data-tr-locus-count={packed.length}>
+      {packed.map((locus) => {
+        const v = locus.representative
+        const rowY = locus.row * ROW_HEIGHT + 2
 
         // TRs use accordion when a phantom locus exists at their position.
         // TRVs always qualify (their allele_length may be small but the phantom
@@ -383,14 +418,15 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
           blockWidth = MIN_SV_BAR_WIDTH
         }
 
-        const trHover = onHoverVariant ? {
-          onMouseEnter: (e: React.MouseEvent) => onHoverVariant(v, e),
-          onMouseMove: (e: React.MouseEvent) => onHoverVariant(v, e),
-          onMouseLeave: () => onHoverVariant(null),
+        const trHover = onHoverLocus ? {
+          onMouseEnter: (e: React.MouseEvent) => onHoverLocus(locus, e),
+          onMouseMove: (e: React.MouseEvent) => onHoverLocus(locus, e),
+          onMouseLeave: () => onHoverLocus(null),
         } : {}
+        const opacityVariant = locus.maxAf == null ? v : { ...v, freq: { all: { af: locus.maxAf } } }
 
         return (
-          <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
+          <Link key={locus.key} to={`/variant/${v.variant_id}`}>
             <rect
               x={startX}
               y={rowY}
@@ -398,7 +434,7 @@ const TrBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
               height={barHeight}
               fill={colorMode === 'sv_type' ? TR_BLOCK_COLOR : getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })}
               rx={2}
-              opacity={afToOpacity(v)}
+              opacity={afToOpacity(opacityVariant)}
               {...trHover}
             />
           </Link>
@@ -463,6 +499,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
     : (pos: number) => ctxScalePosition(pos) * ctxScaleFactor + deckglOffset
 
   const [hovered, setHovered] = useState<HoveredVariant | null>(null)
+  const [hoveredTrLocus, setHoveredTrLocus] = useState<HoveredTrLocus | null>(null)
 
   const onHoverVariant = useCallback((variant: LRVariant | null, e?: React.MouseEvent) => {
     if (variant && e) {
@@ -470,6 +507,16 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
       onHoverVariantPosition?.(variant.pos)
     } else {
       setHovered(null)
+      onHoverVariantPosition?.(null)
+    }
+  }, [onHoverVariantPosition])
+
+  const onHoverTrLocus = useCallback((locus: TrLocus<TrItem> | null, e?: React.MouseEvent) => {
+    if (locus && e) {
+      setHoveredTrLocus({ locus, x: e.clientX, y: e.clientY })
+      onHoverVariantPosition?.(locus.representative.pos)
+    } else {
+      setHoveredTrLocus(null)
       onHoverVariantPosition?.(null)
     }
   }, [onHoverVariantPosition])
@@ -592,12 +639,13 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>TRs</SidePanel>}>
-            {() => <TrBand variants={trVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
+            {() => <TrBand variants={trVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverLocus={onHoverTrLocus} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
 
       {hovered && ReactDOM.createPortal(<VariantTooltip hovered={hovered} />, document.body)}
+      {hoveredTrLocus && ReactDOM.createPortal(<TrLocusTooltip hovered={hoveredTrLocus} />, document.body)}
     </div>
   )
 }

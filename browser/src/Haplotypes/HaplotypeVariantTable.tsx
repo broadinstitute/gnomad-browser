@@ -11,8 +11,7 @@ import Link from '../Link'
 import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
 import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
 import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
-
-type TrDataPoint = { length_diff: number; pop: string; count: number }
+import TRDistributionPlot, { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 
 type AlleleStructure = {
   sequence: string
@@ -202,205 +201,6 @@ const parseSvConsequence = (csq: string): { type: string; gene: string | null } 
     return { type: cleaned.slice(0, colonIdx), gene: cleaned.slice(colonIdx + 1) }
   }
   return { type: cleaned, gene: null }
-}
-
-// --- Mini TR Distribution Plot ---
-
-const MIN_PLOT_WIDTH = 300
-const BAR_MIN_STEP = 12 // minimum pixels per bar to avoid label overlap
-const PLOT_HEIGHT = 80
-const PLOT_MARGIN = { top: 8, right: 8, bottom: 20, left: 32 }
-
-const POP_ORDER = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS', 'N/A']
-
-const MiniTRPlot = ({ distribution }: { distribution: TrDataPoint[] }) => {
-  const [hoveredBar, setHoveredBar] = useState<{ lengthDiff: number; x: number; y: number } | null>(null)
-
-  // Aggregate by length_diff, then by pop
-  const byLength = useMemo(() => {
-    const map = new Map<number, Record<string, number>>()
-    for (const d of distribution) {
-      let entry = map.get(d.length_diff)
-      if (!entry) {
-        entry = {}
-        map.set(d.length_diff, entry)
-      }
-      entry[d.pop] = (entry[d.pop] || 0) + d.count
-    }
-    return Array.from(map.entries())
-      .sort((a, b) => a[0] - b[0])
-      .map(([lengthDiff, pops]) => ({
-        lengthDiff,
-        pops,
-        total: Object.values(pops).reduce((s, c) => s + c, 0),
-      }))
-  }, [distribution])
-
-  if (byLength.length === 0) return null
-
-  const plotWidth = Math.max(MIN_PLOT_WIDTH, byLength.length * BAR_MIN_STEP + PLOT_MARGIN.left + PLOT_MARGIN.right)
-  const innerWidth = plotWidth - PLOT_MARGIN.left - PLOT_MARGIN.right
-  const innerHeight = PLOT_HEIGHT - PLOT_MARGIN.top - PLOT_MARGIN.bottom
-
-  const maxTotal = Math.max(...byLength.map((d) => d.total), 1)
-  const barWidth = Math.max(4, Math.min(20, innerWidth / byLength.length - 2))
-
-  // Show every Nth label to avoid overlap
-  const labelStep = Math.max(1, Math.ceil(byLength.length / (innerWidth / 20)))
-
-  const xScale = (i: number) =>
-    PLOT_MARGIN.left + (innerWidth / byLength.length) * i + (innerWidth / byLength.length - barWidth) / 2
-  const yScale = (val: number) => PLOT_MARGIN.top + innerHeight * (1 - val / maxTotal)
-
-  return (
-    <div style={{ display: 'inline-block', overflowX: 'auto', maxWidth: '100%' }}>
-      <svg width={plotWidth} height={PLOT_HEIGHT}>
-        {/* Y axis */}
-        <line
-          x1={PLOT_MARGIN.left}
-          y1={PLOT_MARGIN.top}
-          x2={PLOT_MARGIN.left}
-          y2={PLOT_MARGIN.top + innerHeight}
-          stroke="#ccc"
-        />
-        <text
-          x={PLOT_MARGIN.left - 4}
-          y={PLOT_MARGIN.top + 3}
-          fontSize={8}
-          textAnchor="end"
-          fill="#999"
-        >
-          {maxTotal}
-        </text>
-        <text
-          x={PLOT_MARGIN.left - 4}
-          y={PLOT_MARGIN.top + innerHeight + 3}
-          fontSize={8}
-          textAnchor="end"
-          fill="#999"
-        >
-          0
-        </text>
-
-        {/* Baseline */}
-        <line
-          x1={PLOT_MARGIN.left}
-          y1={PLOT_MARGIN.top + innerHeight}
-          x2={plotWidth - PLOT_MARGIN.right}
-          y2={PLOT_MARGIN.top + innerHeight}
-          stroke="#ccc"
-        />
-
-        {/* Stacked bars */}
-        {byLength.map((d, i) => {
-          const bx = xScale(i)
-          let y = PLOT_MARGIN.top + innerHeight
-
-          return (
-            <g
-              key={d.lengthDiff}
-              onMouseEnter={(e) => setHoveredBar({ lengthDiff: d.lengthDiff, x: e.clientX, y: e.clientY })}
-              onMouseLeave={() => setHoveredBar(null)}
-            >
-              {POP_ORDER.map((pop) => {
-                const count = d.pops[pop] || 0
-                if (count === 0) return null
-                const barH = (count / maxTotal) * innerHeight
-                y -= barH
-                return (
-                  <rect
-                    key={pop}
-                    x={bx}
-                    y={y}
-                    width={barWidth}
-                    height={barH}
-                    fill={SUPERPOPULATION_COLORS[pop] || '#999'}
-                  />
-                )
-              })}
-              {/* X tick label — only show every Nth to avoid overlap */}
-              {i % labelStep === 0 && (
-                <text
-                  x={bx + barWidth / 2}
-                  y={PLOT_MARGIN.top + innerHeight + 12}
-                  fontSize={7}
-                  textAnchor="middle"
-                  fill="#666"
-                >
-                  {d.lengthDiff > 0 ? `+${d.lengthDiff}` : d.lengthDiff}
-                </text>
-              )}
-            </g>
-          )
-        })}
-
-        {/* X axis label */}
-        <text
-          x={PLOT_MARGIN.left + innerWidth / 2}
-          y={PLOT_HEIGHT - 1}
-          fontSize={8}
-          textAnchor="middle"
-          fill="#999"
-        >
-          Length diff (bp)
-        </text>
-
-        {/* Y axis label */}
-        <text
-          x={4}
-          y={PLOT_MARGIN.top + innerHeight / 2}
-          fontSize={8}
-          textAnchor="middle"
-          fill="#999"
-          transform={`rotate(-90, 4, ${PLOT_MARGIN.top + innerHeight / 2})`}
-        >
-          Carriers
-        </text>
-      </svg>
-
-      {/* Tooltip */}
-      {hoveredBar && (() => {
-        const d = byLength.find((b) => b.lengthDiff === hoveredBar.lengthDiff)
-        if (!d) return null
-        return (
-          <div
-            style={{
-              position: 'fixed',
-              left: hoveredBar.x + 12,
-              top: hoveredBar.y - 10,
-              background: 'white',
-              border: '1px solid #ccc',
-              borderRadius: 4,
-              padding: '4px 8px',
-              fontSize: 11,
-              zIndex: 1000,
-              pointerEvents: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            }}
-          >
-            <div style={{ fontWeight: 600, marginBottom: 2 }}>
-              Length diff: {d.lengthDiff > 0 ? `+${d.lengthDiff}` : d.lengthDiff}bp
-            </div>
-            {POP_ORDER.filter((p) => (d.pops[p] || 0) > 0).map((pop) => (
-              <div key={pop} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span
-                  style={{
-                    display: 'inline-block',
-                    width: 8,
-                    height: 8,
-                    borderRadius: 2,
-                    background: SUPERPOPULATION_COLORS[pop] || '#999',
-                  }}
-                />
-                {pop}: {d.pops[pop]}
-              </div>
-            ))}
-            <div style={{ marginTop: 2, color: '#666' }}>Total: {d.total}</div>
-          </div>
-        )
-      })()}
-    </div>
-  )
 }
 
 // --- Mini group AF bar ---
@@ -1317,7 +1117,7 @@ const TableRow = React.memo(function TableRow({
         <TrExpandedRow>
           <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-              {v.tr_distribution && <MiniTRPlot distribution={v.tr_distribution} />}
+              {v.tr_distribution && <TRDistributionPlot distribution={v.tr_distribution} />}
               <div style={{ fontSize: 11, color: '#555' }}>
                 <div style={{ fontWeight: 600, marginBottom: 4 }}>
                   TR Locus: {v.chrom}:{v.pos}
