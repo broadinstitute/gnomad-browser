@@ -70,6 +70,8 @@ const Banner = styled.div`
   }
 `
 
+const SHOW_BANNER = false
+
 const BANNER_CONTENT = (
   <>
     Missed our recent talk on common misconceptions about gnomAD?{' '}
@@ -128,7 +130,7 @@ const App = () => {
         <Suspense fallback={null}>
           <TopBarWrapper>
             <NavBar />
-            {BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
+            {SHOW_BANNER && BANNER_CONTENT && <Banner>{BANNER_CONTENT}</Banner>}
           </TopBarWrapper>
           <Notifications />
 
