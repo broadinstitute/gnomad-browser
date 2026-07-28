@@ -245,6 +245,39 @@ describe('verification', () => {
 })
 
 describe('recovery', () => {
+  it('evicts a cached file that fails verification so the next attempt re-downloads', async () => {
+    const { ensureShortTandemRepeatReadsDb } = loadModule()
+
+    const dbPath = path.join(fixtureDir, 'str_reads.db')
+    await writeFixtureDb(dbPath)
+    const good = fs.readFileSync(dbPath)
+
+    let calls = 0
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
+      calls += 1
+      return calls === 1 ? okResponse('this is not a database') : okResponse(good)
+    })
+
+    const dataset = { dbUrl: 'https://example.com/db/str_reads.db' }
+    await expect(ensureShortTandemRepeatReadsDb(dataset)).rejects.toThrow()
+    // The bad file must be gone, or the "reuse cached" branch would replay this failure forever.
+    expect(fs.readdirSync(cacheDir)).toEqual([])
+
+    await expect(ensureShortTandemRepeatReadsDb(dataset)).resolves.toBeTruthy()
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(fs.readdirSync(cacheDir)).toHaveLength(1)
+  }, 20000)
+
+  it('does not delete a caller-supplied dbPath that fails verification', async () => {
+    const { ensureShortTandemRepeatReadsDb } = loadModule()
+
+    const dbPath = path.join(fixtureDir, 'not_a_db.db')
+    fs.writeFileSync(dbPath, 'this is not a database')
+
+    await expect(ensureShortTandemRepeatReadsDb({ dbPath })).rejects.toThrow()
+    expect(fs.existsSync(dbPath)).toBe(true)
+  })
+
   it('retries after a failure instead of replaying the rejection forever', async () => {
     const { ensureShortTandemRepeatReadsDb } = loadModule()
 

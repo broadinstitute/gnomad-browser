@@ -149,7 +149,19 @@ const ensureShortTandemRepeatReadsDb = (dataset) => {
           }
         }
 
-        await verify(dbFilePath)
+        try {
+          await verify(dbFilePath)
+        } catch (error) {
+          // Evict a cached file that does not verify. It is renamed into place before this check
+          // runs, so leaving it would send every later attempt down the "reuse cached" branch above
+          // and fail identically forever, even once the URL serves a good file. A caller-supplied
+          // dbPath is not ours to delete.
+          if (!dataset.dbPath) {
+            await fs.promises.rm(dbFilePath, { force: true })
+          }
+          throw error
+        }
+
         logger.info(`Tandem repeat reads DB ready at ${dbFilePath}`)
 
         return dbFilePath
