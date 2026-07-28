@@ -33,6 +33,9 @@ export const fetchY1HaplotypeRows = async (
       query: `
         SELECT
           a.position AS position,
+          a.reference_end AS reference_end,
+          a.source_variant_id AS source_variant_id,
+          a.alt_index AS alt_index,
           a.ref_allele AS ref,
           a.alt AS alt,
           browser_variant_id,
@@ -94,7 +97,8 @@ export const fetchY1HaplotypeRows = async (
           AND c.chrom = {chrom:String}
           AND c.position BETWEEN {start:UInt32} AND {stop:UInt32}
           AND (${deterministicCarrier})
-        GROUP BY a.position, a.ref_allele, a.alt, browser_variant_id, a.rsids,
+        GROUP BY a.position, a.reference_end, a.source_variant_id, a.alt_index,
+          a.ref_allele, a.alt, browser_variant_id, a.rsids,
           a.af, a.ac, a.an, a.allele_type, a.allele_length,
           f.info_AF_afr, f.info_AF_amr, f.info_AF_eas, f.info_AF_nfe, f.info_AF_sas,
           a.cadd_phred, a.phylop, a.short_read_match_id, a.major_consequence
@@ -159,13 +163,11 @@ export const fetchY1HaplotypeRows = async (
     ambiguous_unphased_rows: Number(raw.ambiguous_unphased_rows || 0),
   }
 
-  // Keep identity construction in one place and guard against SQL drift.
+  // Keep identity construction in one place and preserve the exact source
+  // record identity alongside its ALT-specific browser identity.
   const normalizedVariants = variants.map((row) => ({
     ...row,
-    variant_id: browserVariantId(
-      row.browser_variant_id.replace(/~[1-9][0-9]*$/, ''),
-      Number(row.browser_variant_id.match(/~([1-9][0-9]*)$/)?.[1] || 1)
-    ),
+    variant_id: browserVariantId(row.source_variant_id, Number(row.alt_index)),
   }))
 
   return { variants: normalizedVariants, trvCarriers, phaseSummary }

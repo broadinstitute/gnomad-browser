@@ -99,6 +99,7 @@ function buildVariant(
   alleleMethylation: number | null, motifCounts: number[] | null,
   allelePurity: number | null,
   shortReadMatchId: string | null, majorConsequence: string | null,
+  referenceEnd?: number | null,
 ): LRVariant {
   const populations: Array<{ id: string; af: number }> = []
   if (afAfr != null) populations.push({ id: 'afr', af: afAfr })
@@ -110,9 +111,15 @@ function buildVariant(
   const resolvedAlleleType = alleleType || 'snv'
   const resolvedLength = alleleLength || 0
 
-  // Compute end position for SVs/deletions
+  // reference_end is the genomic coordinate span. allele_length is an
+  // ALT-minus-REF/SVLEN-like measurement and must not be substituted for it
+  // when the authoritative reference coordinate is available (notably TRs,
+  // duplications, and insertions). Keep the fallback for legacy haplotype rows
+  // whose schema predates reference_end.
   let end: number | null = null
-  if (resolvedAlleleType !== 'snv' && Math.abs(resolvedLength) >= 50) {
+  if (referenceEnd != null && Number.isFinite(Number(referenceEnd))) {
+    end = Math.max(pos, Number(referenceEnd))
+  } else if (resolvedAlleleType !== 'snv' && Math.abs(resolvedLength) >= 50) {
     end = pos + Math.abs(resolvedLength)
   }
 
@@ -725,6 +732,7 @@ export const buildVariantsAndCarrierMap = (
       row.motif_counts && row.motif_counts.length > 0 ? row.motif_counts : null,
       toNum(row.allele_purity),
       toStr(row.short_read_match_id), toStr(row.major_consequence),
+      toNum(row.reference_end),
     )
     if (row.variant_id) variant.variant_id = row.variant_id
     variants.push(variant)
