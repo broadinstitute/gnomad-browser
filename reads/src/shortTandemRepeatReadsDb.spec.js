@@ -244,6 +244,26 @@ describe('verification', () => {
   })
 })
 
+describe('recovery', () => {
+  it('retries after a failure instead of replaying the rejection forever', async () => {
+    const { ensureShortTandemRepeatReadsDb } = loadModule()
+
+    const dbPath = path.join(fixtureDir, 'str_reads.db')
+    await writeFixtureDb(dbPath)
+    const contents = fs.readFileSync(dbPath)
+
+    let calls = 0
+    jest.spyOn(global, 'fetch').mockImplementation(() => {
+      calls += 1
+      return calls === 1 ? mockResponse('', { status: 404 }) : okResponse(contents)
+    })
+
+    const dataset = { dbUrl: 'https://example.com/db/str_reads.db' }
+    await expect(ensureShortTandemRepeatReadsDb(dataset)).rejects.toThrow(/returned 404/)
+    await expect(ensureShortTandemRepeatReadsDb(dataset)).resolves.toBeTruthy()
+  }, 20000)
+})
+
 describe('getShortTandemRepeatReadsDb', () => {
   it('returns the same handle for repeated calls and opens it read-only', async () => {
     const { ensureShortTandemRepeatReadsDb, getShortTandemRepeatReadsDb } = loadModule()

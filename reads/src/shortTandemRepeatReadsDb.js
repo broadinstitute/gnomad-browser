@@ -153,7 +153,12 @@ const ensureShortTandemRepeatReadsDb = (dataset) => {
         logger.info(`Tandem repeat reads DB ready at ${dbFilePath}`)
 
         return dbFilePath
-      })()
+      })().catch((error) => {
+        // Drop the memoized rejection so a later request can retry rather than replaying this
+        // failure for the life of the process.
+        downloads.delete(dbFilePath)
+        throw error
+      })
     )
   }
 
@@ -166,7 +171,13 @@ const connections = new Map()
 // promise itself is memoized so that concurrent first requests share a single open() rather than
 // racing. OPEN_READONLY matters: the default mode would create an empty DB if the file were
 // missing, turning a startup failure into a confusing per-request "no such table: reads".
-const getShortTandemRepeatReadsDb = (dataset) => {
+//
+// Awaiting ensure…() here rather than assuming startup completed means a query either waits for
+// the in-flight download or retries one that failed, and surfaces a real error if it still cannot
+// be satisfied — so the reads service can start serving variant reads before this DB is available.
+const getShortTandemRepeatReadsDb = async (dataset) => {
+  await ensureShortTandemRepeatReadsDb(dataset)
+
   const dbFilePath = localDbPath(dataset)
 
   if (!connections.has(dbFilePath)) {

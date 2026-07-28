@@ -49,12 +49,17 @@ app.use(
   })
 )
 
-// Fetch and validate the tandem repeat reads DB before listening, so that the pod cannot pass its
-// readiness probe until it is actually able to serve read data.
+// Fetch and validate the tandem repeat reads DB before listening, so that the common case is a
+// warm process rather than a first request that waits on a ~170MB download. A failure here is
+// logged but not fatal: this service also serves variant reads from the /readviz disk, which have
+// no dependency on this DB, so taking the process down would be a much larger outage than the one
+// being reported. Tandem repeat queries retry the fetch and surface an error until it succeeds.
 const main = async () => {
   await Promise.all(
     Object.values(shortTandemRepeatDatasets).map((dataset) =>
-      ensureShortTandemRepeatReadsDb(dataset)
+      ensureShortTandemRepeatReadsDb(dataset).catch((error) => {
+        logger.error(error)
+      })
     )
   )
 
