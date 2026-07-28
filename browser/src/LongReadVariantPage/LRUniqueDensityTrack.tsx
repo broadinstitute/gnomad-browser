@@ -11,7 +11,7 @@ import {
   type LongReadVariantTypeSelection,
 } from './longReadVariantTypes'
 
-const TRACK_HEIGHT = 30
+const TRACK_HEIGHT = 45
 
 const SidePanel = styled.div`
   display: flex;
