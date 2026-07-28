@@ -393,6 +393,7 @@ type ConnectedVariantsInGeneProps = {
   zoomRegion?: { start: number; stop: number } | null
   onChangeZoomRegion?: (region: { start: number; stop: number } | null) => void
   onSetRegion?: (region: { start: number; stop: number }) => void
+  onGenealogyPanelVisibilityChange?: (visible: boolean) => void
 } & VariantsInGeneProps
 
 const ConnectedVariantsInGene = ({
@@ -401,6 +402,7 @@ const ConnectedVariantsInGene = ({
   zoomRegion,
   onChangeZoomRegion,
   onSetRegion,
+  onGenealogyPanelVisibilityChange,
   ...otherProps
 }: ConnectedVariantsInGeneProps) => {
   // Determine LR dataset: either the associated LR dataset, or the dataset itself if it IS LR
@@ -437,6 +439,7 @@ const ConnectedVariantsInGene = ({
               zoomRegion={zoomRegion || null}
               onChangeZoomRegion={onChangeZoomRegion || (() => {})}
               onSetRegion={onSetRegion || (() => {})}
+              onGenealogyPanelVisibilityChange={onGenealogyPanelVisibilityChange}
             />
           )
         }

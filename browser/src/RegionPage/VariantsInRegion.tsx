@@ -274,6 +274,7 @@ type ConnectedVariantsInRegionProps = {
   onSetRegion?: (region: { start: number; stop: number }) => void
   lrCohort?: 'hgsvc_hprc' | 'aou'
   onChangeLrCohort?: (cohort: 'hgsvc_hprc' | 'aou') => void
+  onGenealogyPanelVisibilityChange?: (visible: boolean) => void
 }
 
 const ConnectedVariantsInRegion = ({
@@ -284,6 +285,7 @@ const ConnectedVariantsInRegion = ({
   onSetRegion,
   lrCohort = 'hgsvc_hprc',
   onChangeLrCohort = () => {},
+  onGenealogyPanelVisibilityChange,
 }: ConnectedVariantsInRegionProps) => {
 
   // When viewing LR dataset directly, only query LR data — skip the expensive SR query
@@ -351,6 +353,7 @@ const ConnectedVariantsInRegion = ({
               zoomRegion={zoomRegion || null}
               onChangeZoomRegion={onChangeZoomRegion || (() => {})}
               onSetRegion={onSetRegion || (() => {})}
+              onGenealogyPanelVisibilityChange={onGenealogyPanelVisibilityChange}
             />
           )}
         </Query>

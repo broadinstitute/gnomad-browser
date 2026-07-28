@@ -48,6 +48,7 @@ import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
 import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
+import { useStableScrollbarGutter } from '../Haplotypes/scrollbarGutter'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
@@ -319,6 +320,7 @@ type Props = {
 }
 
 const GenePage = ({ datasetId, gene, geneId }: Props) => {
+  const haplotypeScrollbarGutter = useStableScrollbarGutter()
   const hasCDS = gene.exons.some((exon) => exon.feature_type === 'CDS')
 
   const [includeNonCodingTranscripts, setIncludeNonCodingTranscripts] = useState(!hasCDS)
@@ -330,10 +332,15 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const isSmallScreen = windowWidth < 900
   const location = useLocation()
   const history = useHistory()
-  const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') !== 'false'
+  const [genealogyPanelVisible, setGenealogyPanelVisible] = useState(false)
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
+  let regionViewerRightPanelWidth = isSmallScreen ? 0 : 80
+  if (isLongRead(datasetId)) {
+    regionViewerRightPanelWidth = haplotypeScrollbarGutter
+    if (genealogyPanelVisible) regionViewerRightPanelWidth = isSmallScreen ? 180 : 250
+  }
 
   const cdsCompositeExons = gene.exons.filter((exon) => exon.feature_type === 'CDS')
   const hasCodingExons = cdsCompositeExons.length > 0
@@ -449,7 +456,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         leftPanelWidth={115}
         width={regionViewerWidth}
         regions={regionViewerRegions}
-        rightPanelWidth={isLongRead(datasetId) ? (!isSmallScreen && showTree ? 250 : 15) : (isSmallScreen ? 0 : 80)}
+        rightPanelWidth={regionViewerRightPanelWidth}
         renderOverview={({ scalePosition, width: overviewWidth }: any) => (
           <TranscriptPlot
             height={10}
@@ -653,6 +660,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             zoomRegion={zoomRegion}
             onChangeZoomRegion={setZoomRegion}
             onSetRegion={handleSetRegion}
+            onGenealogyPanelVisibilityChange={setGenealogyPanelVisible}
             hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
           />
         )}

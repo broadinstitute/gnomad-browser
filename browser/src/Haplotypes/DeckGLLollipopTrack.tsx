@@ -547,7 +547,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     <div
       ref={scrollContainerRef}
       onScroll={handleScroll}
-      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', overflowX: 'hidden', position: 'relative' }}
+      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', overflowX: 'hidden', scrollbarGutter: 'stable', position: 'relative' }}
     >
       {/* Spacer div — establishes native scrollable height */}
       <div style={{ height: totalHeight, position: 'relative' }}>

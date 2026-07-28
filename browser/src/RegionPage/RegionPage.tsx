@@ -23,6 +23,7 @@ import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
 import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
+import { useStableScrollbarGutter } from '../Haplotypes/scrollbarGutter'
 import EditRegion from './EditRegion'
 import GenesInRegionTrack from './GenesInRegionTrack'
 import MitochondrialRegionCoverageTrack from './MitochondrialRegionCoverageTrack'
@@ -91,9 +92,10 @@ type VariantsInRegionRendererProps = {
   onSetRegion: (region: { start: number; stop: number }) => void
   lrCohort: LongReadCohort
   onChangeLrCohort: (cohort: LongReadCohort) => void
+  onGenealogyPanelVisibilityChange: (visible: boolean) => void
 }
 
-const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion, lrCohort, onChangeLrCohort }: VariantsInRegionRendererProps) => {
+const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion, lrCohort, onChangeLrCohort, onGenealogyPanelVisibilityChange }: VariantsInRegionRendererProps) => {
   if (isSVs(datasetId)) {
     return <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
   }
@@ -117,6 +119,7 @@ const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, o
       onSetRegion={onSetRegion}
       lrCohort={lrCohort}
       onChangeLrCohort={onChangeLrCohort}
+      onGenealogyPanelVisibilityChange={onGenealogyPanelVisibilityChange}
     />
   )
 }
@@ -129,7 +132,8 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const isSmallScreen = windowWidth < 900
   const location = useLocation()
   const history = useHistory()
-  const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') !== 'false'
+  const haplotypeScrollbarGutter = useStableScrollbarGutter()
+  const [genealogyPanelVisible, setGenealogyPanelVisible] = useState(false)
   const [lrCohort, setLrCohort] = useState<LongReadCohort>(
     new URLSearchParams(location.search).get('lr_cohort') === 'aou' ? 'aou' : 'hgsvc_hprc'
   )
@@ -144,6 +148,11 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
+  let regionViewerRightPanelWidth = isSmallScreen ? 0 : 80
+  if (isLongRead(datasetId)) {
+    regionViewerRightPanelWidth = haplotypeScrollbarGutter
+    if (genealogyPanelVisible) regionViewerRightPanelWidth = isSmallScreen ? 180 : 250
+  }
 
   const nccToRegion = (ncc: NonCodingConstraint) => {
     return {
@@ -235,7 +244,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
       <RegionViewer
         leftPanelWidth={115}
         regions={[isLongRead(datasetId) ? region : viewRegion]}
-        rightPanelWidth={isLongRead(datasetId) ? (!isSmallScreen && showTree ? 250 : 15) : (isSmallScreen ? 0 : 80)}
+        rightPanelWidth={regionViewerRightPanelWidth}
         width={regionViewerWidth}
       >
         {coverageTrack}
@@ -263,6 +272,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
           onSetRegion: handleSetRegion,
           lrCohort,
           onChangeLrCohort: changeLrCohort,
+          onGenealogyPanelVisibilityChange: setGenealogyPanelVisible,
         })}
       </RegionViewer>
     </TrackPage>

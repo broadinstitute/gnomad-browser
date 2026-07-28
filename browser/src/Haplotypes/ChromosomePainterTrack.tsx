@@ -228,7 +228,7 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
     <div
       ref={scrollContainerRef}
       onScroll={handleScroll}
-      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', position: 'relative' }}
+      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', scrollbarGutter: 'stable', position: 'relative' }}
     >
       {/* Spacer div — establishes native scrollable height */}
       <div style={{ height: totalHeight, position: 'relative' }}>

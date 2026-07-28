@@ -1,35 +1,23 @@
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 
 describe('getGenealogyPanelLayout', () => {
-  test('expands the plot into the reserved right panel when genealogy is disabled', () => {
-    expect(getGenealogyPanelLayout({
-      leftPanelWidth: 150,
-      centerPanelWidth: 770,
-      contextRightPanelWidth: 80,
-      showGenealogyPanel: false,
-    })).toEqual({
-      plotWidth: 835,
-      plotLeft: 150,
-      plotRight: 985,
-      rightPanelWidth: 0,
-      totalWidth: 985,
-    })
-  })
-
-  test('expands the plot when genealogy was requested but cannot be rendered', () => {
-    expect(getGenealogyPanelLayout({
-      leftPanelWidth: 150,
-      centerPanelWidth: 600,
-      contextRightPanelWidth: 250,
-      showGenealogyPanel: false,
-    })).toEqual({
-      plotWidth: 835,
-      plotLeft: 150,
-      plotRight: 985,
-      rightPanelWidth: 0,
-      totalWidth: 985,
-    })
-  })
+  test.each([0, 12, 15, 17])(
+    'expands a no-tree plot through all non-scrollbar space (gutter=%ipx)',
+    scrollbarGutter => {
+      expect(getGenealogyPanelLayout({
+        leftPanelWidth: 150,
+        centerPanelWidth: 850 - scrollbarGutter,
+        contextRightPanelWidth: scrollbarGutter,
+        showGenealogyPanel: false,
+      })).toEqual({
+        plotWidth: 850 - scrollbarGutter,
+        plotLeft: 150,
+        plotRight: 1000 - scrollbarGutter,
+        rightPanelWidth: 0,
+        totalWidth: 1000,
+      })
+    }
+  )
 
   test('allocates a right panel only when the genealogy tree is rendered', () => {
     expect(getGenealogyPanelLayout({
@@ -61,27 +49,27 @@ describe('getGenealogyPanelLayout', () => {
     })
   })
 
-  test.each([false, true])(
-    'maps summary bands and haplotype rows to the same genomic pixel boundaries (genealogy=%s)',
-    showGenealogyPanel => {
-      const regionViewerPanels = {
-        leftPanelWidth: 132,
-        centerPanelWidth: 1091,
-        contextRightPanelWidth: 260,
-        showGenealogyPanel,
+  test.each([
+    { width: 900, left: 115, gutter: 12 },
+    { width: 1200, left: 132, gutter: 15 },
+    { width: 1537, left: 150, gutter: 17 },
+  ])(
+    'maps summary and haplotype genomic boundaries at responsive width $width and gutter $gutter',
+    ({ width, left, gutter }) => {
+      const panels = {
+        leftPanelWidth: left,
+        centerPanelWidth: width - left - gutter,
+        contextRightPanelWidth: gutter,
+        showGenealogyPanel: false,
       }
-
-      // Both stacked track families consume this layout. These assertions guard the
-      // genomic viewport itself rather than the unrelated outer canvas width.
-      const summaryLayout = getGenealogyPanelLayout(regionViewerPanels)
-      const haplotypeLayout = getGenealogyPanelLayout(regionViewerPanels)
+      const summaryLayout = getGenealogyPanelLayout(panels)
+      const haplotypeLayout = getGenealogyPanelLayout(panels)
 
       expect([summaryLayout.plotLeft, summaryLayout.plotRight]).toEqual([
         haplotypeLayout.plotLeft,
         haplotypeLayout.plotRight,
       ])
-      expect(summaryLayout.plotLeft).toBe(132)
-      expect(summaryLayout.plotRight).toBe(showGenealogyPanel ? 1223 : 1468)
+      expect(summaryLayout.plotRight).toBe(width - gutter)
     }
   )
 })

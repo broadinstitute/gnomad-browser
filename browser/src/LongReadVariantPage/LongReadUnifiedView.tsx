@@ -168,6 +168,7 @@ type LongReadUnifiedViewProps = {
   zoomRegion?: { start: number; stop: number } | null
   onChangeZoomRegion?: (region: { start: number; stop: number } | null) => void
   onSetRegion?: (region: { start: number; stop: number }) => void
+  onGenealogyPanelVisibilityChange?: (visible: boolean) => void
 }
 
 const fetchGraphQL = async (query: string, variables: any) => {
@@ -199,6 +200,7 @@ const LongReadUnifiedView = ({
   zoomRegion = null,
   onChangeZoomRegion,
   onSetRegion,
+  onGenealogyPanelVisibilityChange,
 }: LongReadUnifiedViewProps) => {
   const { chrom, start, stop } = gene
   const regionSize = stop - start
@@ -630,6 +632,11 @@ const LongReadUnifiedView = ({
     const outlierSampleIds = new Set(methylationData.map(point => point.sample))
     return groups.filter(group => group.samples.some(sample => outlierSampleIds.has(sample.sample_id))).length >= 2
   }, [showHaplotypes, showGenealogy, isDiploidView, dataMatchesMode, haplotypeGroups.groups, filterToOutliers, showMethylation, methylationData])
+
+  useEffect(() => {
+    onGenealogyPanelVisibilityChange?.(genealogyPanelVisible)
+    return () => onGenealogyPanelVisibilityChange?.(false)
+  }, [genealogyPanelVisible, onGenealogyPanelVisibilityChange])
 
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
