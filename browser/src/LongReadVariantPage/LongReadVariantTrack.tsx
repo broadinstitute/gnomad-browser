@@ -7,6 +7,7 @@ import { Track, RegionViewerContext } from '@gnomad/region-viewer'
 import Link from '../Link'
 import { getAlleleTypeColor, getVariantCategory, VARIANT_CATEGORY_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import { getVariantCssColor } from './variantColorUtils'
+import { passesLongReadVariantTypeFilters } from './longReadVariantTypes'
 import AccordionContext from '../Haplotypes/AccordionContext'
 import { getGenealogyPanelLayout } from '../Haplotypes/genealogyPanelLayout'
 import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributionPlot'
@@ -546,6 +547,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogyPanel = false, isDip
   const trVariants: TrItem[] = []
 
   for (const v of variants) {
+    if (!passesLongReadVariantTypeFilters(v.allele_type, typeFilters)) continue
     const band = assignVariantBand(v)
 
     // LOD filtering: skip sub-pixel non-SNV variants when zoomed out
@@ -594,12 +596,11 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogyPanel = false, isDip
   const dupEvents = sourceEvents.filter(event => eventBand(event) === 'dup')
   const svEvents = sourceEvents.filter(event => eventBand(event) === 'sv')
 
-  // typeFilters: when set, hide bands whose category is unchecked
-  const showSnvBand = !typeFilters || typeFilters.snv !== false
-  const showInsBand = !typeFilters || typeFilters.insertion !== false
-  const showDelBand = !typeFilters || typeFilters.deletion !== false
-  const showSvBand = !typeFilters || typeFilters.sv !== false
-  const showTrBand = !typeFilters || typeFilters.tr !== false
+  const showSnvBand = snvVariants.length > 0
+  const showInsBand = insEvents.length > 0
+  const showDelBand = delEvents.length > 0
+  const showSvBand = dupEvents.length + svEvents.length > 0
+  const showTrBand = trVariants.length > 0
 
   return (
     <div style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}>

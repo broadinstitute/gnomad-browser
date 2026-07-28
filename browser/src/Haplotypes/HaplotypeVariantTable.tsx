@@ -3,7 +3,14 @@ import styled from 'styled-components'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
 import { PATH_COLORS, SUPERPOPULATION_COLORS } from './colors'
-import { getAlleleTypeColor, getVariantCategory, VARIANT_CATEGORY_COLORS, VARIANT_CATEGORY_LABELS } from '../LongReadVariantPage/variantUtils'
+import { getAlleleTypeColor, getVariantCategory } from '../LongReadVariantPage/variantUtils'
+import {
+  allLongReadVariantTypesSelected,
+  getLongReadVariantTypeColor,
+  LONG_READ_VARIANT_TYPE_OPTIONS,
+  passesLongReadVariantTypeFilters,
+  type LongReadVariantTypeFilters,
+} from '../LongReadVariantPage/longReadVariantTypes'
 import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
@@ -1226,7 +1233,7 @@ const TableRow = React.memo(function TableRow({
 
 // --- Main component ---
 
-export type VariantTypeFilters = Record<string, boolean>
+export type VariantTypeFilters = LongReadVariantTypeFilters
 
 type HaplotypeVariantTableProps = {
   mode?: 'summary' | 'haplotype'
@@ -1279,13 +1286,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 }, ref) {
   const [sort, setSort] = useState<SortConfig>({ key: 'pos', direction: 'asc' })
   const searchText = searchTextProp
-  const [internalTypeFilters, setInternalTypeFilters] = useState<Record<string, boolean>>({
-    snv: true,
-    deletion: true,
-    insertion: true,
-    sv: true,
-    tr: true,
-  })
+  const [internalTypeFilters, setInternalTypeFilters] = useState<VariantTypeFilters>(allLongReadVariantTypesSelected)
   const typeFilters = externalTypeFilters || internalTypeFilters
   const setTypeFilters = onTypeFiltersChange || setInternalTypeFilters
   const [consequenceFilters, setConsequenceFilters] = useState<Record<string, boolean>>({
@@ -1679,7 +1680,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     }
 
     // Type filter
-    list = list.filter((v) => typeFilters[getVariantCategory(v.allele_type, v.allele_length)])
+    list = list.filter((v) => passesLongReadVariantTypeFilters(v.allele_type, typeFilters))
 
     // Consequence category filter
     list = list.filter((v) => {
@@ -1766,13 +1767,13 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     other: '#757575',
   }
 
-  const variantTypeCategories = (
-    ['snv', 'deletion', 'insertion', 'sv', 'tr'] as const
-  ).map((cat) => ({
-    id: cat,
-    label: VARIANT_CATEGORY_LABELS[cat],
-    color: VARIANT_CATEGORY_COLORS[cat],
-  }))
+  const variantTypeCategories = LONG_READ_VARIANT_TYPE_OPTIONS
+    .filter((option) => option.id !== 'all')
+    .map((option) => ({
+      id: option.id,
+      label: option.label,
+      color: getLongReadVariantTypeColor(option.id as Exclude<typeof option.id, 'all'>),
+    }))
 
   const consequenceCategories = VEP_CONSEQUENCE_CATEGORIES.map((category) => ({
     id: category,

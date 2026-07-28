@@ -6,6 +6,7 @@ import { RegionViewerContext } from '@gnomad/region-viewer'
 import { scaleLinear } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
+import { passesLongReadVariantTypeFilters } from '../LongReadVariantPage/longReadVariantTypes'
 import {
   hslToRgba, hexToRgba, cssColorToRgba,
   getColorByHashRGBA, getColorByPositionRGBA, getColorByAfRGBA,
@@ -744,12 +745,9 @@ function DeckGLLollipopCanvas({
 
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
 
-  // Visual-only type filter: skip rendering variants whose category is unchecked.
-  // Does NOT affect UPGMA clustering or grouping — only the rendered glyphs.
-  const isTypeVisible = (cat: string): boolean => {
-    if (!typeFilters) return true
-    return typeFilters[cat] !== false
-  }
+  // Visual-only type filter. It does not affect UPGMA clustering or grouping.
+  const isTypeVisible = (alleleType: string): boolean =>
+    passesLongReadVariantTypeFilters(alleleType, typeFilters)
 
   // Keep dimension refs in sync so the imperative scroll handler can read them
   canvasWidthRef.current = canvasWidth
@@ -1402,7 +1400,7 @@ function DeckGLLollipopCanvas({
           const phantomCarriers = new Map<number, number>()
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-            if (!isTypeVisible(cat)) continue
+            if (!isTypeVisible(variant.allele_type || '')) continue
             const isLarge = getVariantSpan(variant) >= 50
             if (cat === 'snv' && !lod.showSnvs) continue
             if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -1451,7 +1449,7 @@ function DeckGLLollipopCanvas({
         const pushBelowThreshold = (variants: LRVariant[], baseline: number) => {
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-            if (!isTypeVisible(cat)) continue
+            if (!isTypeVisible(variant.allele_type || '')) continue
             const span = getVariantSpan(variant)
             const isLargeBt = span >= 50
 
@@ -1547,7 +1545,7 @@ function DeckGLLollipopCanvas({
           const variant = cv.variant
           const alpha = clusterAfAlpha(cv.cluster_af)
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isTypeVisible(cat)) continue
+          if (!isTypeVisible(variant.allele_type || '')) continue
           const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -1587,7 +1585,7 @@ function DeckGLLollipopCanvas({
 
         for (const variant of group.below_threshold.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isTypeVisible(cat)) continue
+          if (!isTypeVisible(variant.allele_type || '')) continue
           const span = getVariantSpan(variant)
           const isLargeBt = span >= 50
 
@@ -1614,7 +1612,7 @@ function DeckGLLollipopCanvas({
         const groupPhantomCarriers = new Map<number, number>()
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isTypeVisible(cat)) continue
+          if (!isTypeVisible(variant.allele_type || '')) continue
           const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue

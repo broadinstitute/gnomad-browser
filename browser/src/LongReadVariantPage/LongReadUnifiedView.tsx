@@ -30,6 +30,7 @@ import LongReadVariantTrack from './LongReadVariantTrack'
 import VariantDensityTrack from './VariantDensityTrack'
 import LRUniqueDensityTrack from './LRUniqueDensityTrack'
 import { getLodVisibility } from './variantUtils'
+import { allLongReadVariantTypesSelected } from './longReadVariantTypes'
 import { COLOR_MODES } from './variantColorUtils'
 import Variants from '../VariantList/Variants'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
@@ -300,9 +301,7 @@ const LongReadUnifiedView = ({
   const [mqtlMinLogP, setMqtlMinLogP] = useState(0)
 
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
-  const [typeFilters, setTypeFilters] = useState<VariantTypeFilters>({
-    snv: true, deletion: true, insertion: true, sv: true, tr: true,
-  })
+  const [typeFilters, setTypeFilters] = useState<VariantTypeFilters>(allLongReadVariantTypesSelected)
   const [showPhantomRegions, setShowPhantomRegions] = useState(false)
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
@@ -900,7 +899,11 @@ const LongReadUnifiedView = ({
 
       {/* Base layer — always rendered */}
       {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
-      <LRUniqueDensityTrack variants={zoomedVariants} />
+      <LRUniqueDensityTrack
+        variants={zoomedVariants}
+        typeFilters={typeFilters}
+        onTypeFiltersChange={setTypeFilters}
+      />
       <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
 
       {/* Haplotype layer — opt-in */}
