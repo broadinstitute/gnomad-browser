@@ -131,3 +131,35 @@ The GraphQL `lr_cohort` argument defaults to `hgsvc_hprc`. Summary queries suppo
 Schema v3 materializes ALT-specific RSID, CADD, PhyloP, VEP consequence, and short-read-match annotations in `lr_y1_alleles`; serving queries do not parse the retained source INFO JSON. HGSVC/HPRC Haplotype View reads `lr_y1_carriers`. It places phased calls, haploid calls, and unphased homozygous-ALT calls, but does not invent phase for unphased heterozygous or partial calls. The REST payload reports excluded ambiguous rows in `_phase_summary`, and the browser displays that count.
 
 Do not set `LR_Y1_ENABLED` on the legacy API or repoint production until a full-chromosome serving run has been validated and activated.
+
+## Opt-in chr22 mixed-provenance prototype
+
+This mode is separate from the default Y1 pilot and is fail-closed. Start only a dedicated non-production API process. It requires active accepted/published pointers; physical rows or free-form run IDs are not sufficient.
+
+```bash
+LR_Y1_ENABLED=true
+LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED=true
+LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:8126
+LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_serving_chr22_r2_rehearsal
+LR_Y1_HGSVC_RUN_ID=y1-full-chr22-hgsvc-hprc-20260728-r2-retry1
+LR_Y1_AOU_RUN_ID=y1-full-chr22-aou-20260728-r2
+LR_Y1_HGSVC_METADATA_RUN_ID=y1-metadata-full-chr22-20260728-r2-retry1
+LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_URL=http://127.0.0.1:8127
+LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_DATABASE=gnomad_lr_y1_prototype_ancillary_chr22
+LR_Y1_PROTOTYPE_ANCILLARY_MODALITIES=coverage,str_histogram,methylation
+LR_Y1_PROTOTYPE_METHYLATION_SAMPLE_ALLOWLIST=./graphql-api/data/lr-y1-prototype-methylation-available-samples.txt
+```
+
+From the repository root, the supported local entrypoint resolves those accepted run IDs and opens three independent IAP tunnels: legacy ClickHouse on `8125`, Y1 serving on `8126`, and isolated prototype ancillary ClickHouse on `8127`:
+
+```bash
+./start_lr_dev.sh --gcp-clickhouse
+```
+
+The legacy `CLICKHOUSE_URL` remains on `8125`; Y1 primary/metadata and prototype ancillary clients never replace it. The script also exports `LR_Y1_ENABLED=true` and `LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED=true` to both the API and browser. Use `LR_DEV_DRY_RUN=1` to print and statically validate the resolved configuration without starting any process. Tunnel ports, database names, run IDs, ancillary modalities, and the methylation allowlist can be overridden with the environment variables shown by `./start_lr_dev.sh --help`.
+
+The ancillary target must be a distinct, read-only prototype database. Allowed modality names are `coverage`, `methylation`, and `str_histogram`; all three are enabled by the one-command prototype default. Each modality is disabled unless its exact startup schema/count/identity preflight passes: 50,818,468 contiguous `lr_y1_coverage` rows, 35,005 exact-key STR rows, and the canonical methylation detail/summary/availability tables. Methylation uses the checked-in exact 210-available-sample allowlist and requires a 292-row availability roster; every excluded row must have an explicit `unavailable_*` status and non-empty reason. Detail must contain 124,477,729 rows across those 210 samples and reconcile exactly to the 655,358-row canonical summary. mQTL is never allowed. A failed capability preflight is unavailable rather than an empty or zero-valued result.
+
+Mixed mode validates that both active primary pointers name published full-chromosome Y1/GRCh38/chr22 runs, that the HGSVC active metadata pointer names an accepted 292-row run, and that metadata/carrier rosters each contain 292 samples. Any mismatch prevents the API from listening. HGSVC ancillary preflight failures become explicit unavailable capabilities; they never become empty arrays or zero. AoU is always summary-only and never dispatches metadata, carrier, haplotype, coverage, methylation, STR, or mQTL queries to the ancillary endpoint.
+
+Use `long_read_prototype_provenance(lr_cohort:, chrom:)` for source/capability labels. Variant responses include `data_source`, `source_release`, and `source_run_id`; the REST haplotype response includes `provenance`. Primary cache identities include release, cohort, reference, prototype mode, and accepted run ID. The mode rejects non-chr22 primary/haplotype requests and never falls back to legacy primary data.

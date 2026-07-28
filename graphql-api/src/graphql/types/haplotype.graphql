@@ -85,6 +85,20 @@ type HaplotypeGroups {
   tree_json: String
 }
 
+enum MethylationAvailabilityStatus {
+  AVAILABLE_COMPLETE
+  UNAVAILABLE_INCOMPLETE
+  UNAVAILABLE_NO_ASSAY_SOURCE
+  UNAVAILABLE_NO_CHR22
+}
+
+type MethylationSampleAvailability {
+  sample_id: String!
+  available: Boolean!
+  status: MethylationAvailabilityStatus!
+  reason: String
+}
+
 type MethylationRecord {
   chr: String!
   pos1: Int!
@@ -136,6 +150,45 @@ type MQTLAssociation {
   effect_size: Float!
   carrier_count: Int!
   non_carrier_count: Int!
+}
+
+enum LongReadDataSource {
+  Y1_ACCEPTED_R2
+  LEGACY_V1
+  MIXED_PROVENANCE_PROTOTYPE
+  EXTERNAL_REFERENCE
+  UNAVAILABLE
+}
+
+enum LongReadModality {
+  PRIMARY_VARIANTS
+  SAMPLE_METADATA
+  HAPLOTYPES
+  COVERAGE
+  STR_HISTOGRAM
+  METHYLATION
+  RECOMBINATION
+}
+
+type LongReadSourceProvenance {
+  modality: LongReadModality!
+  source: LongReadDataSource!
+  release: String
+  cohort: LongReadCohort!
+  reference_genome: String!
+  chromosome: String!
+  run_id: String
+  status: String!
+  available: Boolean!
+  label: String
+}
+
+type LongReadPrototypeProvenance {
+  enabled: Boolean!
+  mixed_provenance: Boolean!
+  scope_label: String!
+  warning: String!
+  sources: [LongReadSourceProvenance!]!
 }
 
 type SampleMetadata {
@@ -198,7 +251,9 @@ type StrCatalogLocus {
 }
 
 extend type Query {
-  sample_metadata: [SampleMetadata!]!
+  sample_metadata(
+    lr_cohort: LongReadCohort = hgsvc_hprc
+  ): [SampleMetadata!]
   mqtl_associations(
     chrom: String!
     start: Int!
@@ -206,7 +261,7 @@ extend type Query {
     min_af: Float
     max_distance: Int
     min_carriers: Int
-  ): [MQTLAssociation!]!
+  ): [MQTLAssociation!]
 
   haplotype_groups(
     chrom: String!
@@ -217,20 +272,24 @@ extend type Query {
     cluster_threshold: Float
   ): HaplotypeGroups
 
+  methylation_sample_availability(
+    lr_cohort: LongReadCohort = hgsvc_hprc
+  ): [MethylationSampleAvailability!]!
+
   methylation(
     chrom: String!
     start: Int!
     stop: Int!
     samples: [String!]
     lr_cohort: LongReadCohort = hgsvc_hprc
-  ): [MethylationRecord!]!
+  ): [MethylationRecord!]
 
   methylation_summary(
     chrom: String!
     start: Int!
     stop: Int!
     lr_cohort: LongReadCohort = hgsvc_hprc
-  ): [MethylationSummaryRecord!]!
+  ): [MethylationSummaryRecord!]
 
   methylation_outliers(
     chrom: String!
@@ -243,14 +302,14 @@ extend type Query {
     chrom: String!
     start: Int!
     stop: Int!
-  ): [RecombinationRateRecord!]!
+  ): [RecombinationRateRecord!]
 
   lr_coverage(
     chrom: String!
     start: Int!
     stop: Int!
     lr_cohort: LongReadCohort = hgsvc_hprc
-  ): [CoverageBin!]!
+  ): [CoverageBin!]
 
   lr_str_histogram(
     chrom: String!
@@ -258,7 +317,12 @@ extend type Query {
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): STRHistogramRecord
 
-  str_catalog(chrom: String!): [StrCatalogLocus!]!
+  long_read_prototype_provenance(
+    lr_cohort: LongReadCohort!
+    chrom: String!
+  ): LongReadPrototypeProvenance!
+
+  str_catalog(chrom: String!): [StrCatalogLocus!]
 
   str_catalog_haplotypes(chrom: String!): HaplotypeGroups
 }

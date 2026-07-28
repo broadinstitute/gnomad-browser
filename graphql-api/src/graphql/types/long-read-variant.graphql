@@ -99,6 +99,9 @@ type LongReadVariant {
   source_variant_id: String
   alt_index: Int
   lr_cohort: LongReadCohort
+  data_source: LongReadDataSource
+  source_release: String
+  source_run_id: String
   reference_genome: ReferenceGenomeId!
   chrom: String!
   pos: Int!

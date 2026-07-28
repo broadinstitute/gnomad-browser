@@ -337,7 +337,8 @@ export const assembleHaplotypeGroups = (
   trvCarriers: TrvCarrierRow[] = [],
   clusterThreshold?: number,
   regionStart?: number,
-  regionStop?: number
+  regionStop?: number,
+  cacheIdentity: string = 'legacy:prototype=false'
 ) => {
   // Step 1: Build variant map keyed by "chrom-pos:ref-alt"
   const variantMap = new Map<string, LRVariant>()
@@ -483,7 +484,7 @@ export const assembleHaplotypeGroups = (
     return { groups, variantMap }
   }
 
-  const cacheKey = `${chrom}:${regionStart ?? 0}-${regionStop ?? 0}`
+  const cacheKey = `${cacheIdentity}:${chrom}:${regionStart ?? 0}-${regionStop ?? 0}`
 
   let treeResult = upgmaTreeCache.get(cacheKey)
   if (!treeResult) {

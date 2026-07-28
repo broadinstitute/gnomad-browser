@@ -8,13 +8,18 @@ import { client as esClient } from './elasticsearch'
 import { esTimingStore, EsTimingAccumulator } from './esTiming'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
-import { isY1PilotEnabled } from './clickhouse'
+import { isY1Chr22MixedProvenanceEnabled, isY1PilotEnabled } from './clickhouse'
 import {
   fetchDistinctHaplotypeVariants,
   fetchTrvCarrierAlts,
 } from './queries/haplotype-queries'
 import { buildVariantsAndCarrierMap, deriveAutoDefaults } from './queries/haplotype-grouping'
 import { fetchY1HaplotypeRows } from './queries/long_read_y1_haplotypes'
+import {
+  getY1SourceSnapshot,
+  preflightY1AcceptedSources,
+} from './queries/long_read_y1_provenance'
+import { preflightPrototypeAncillaries } from './graphql/resolvers/ancillary-availability'
 
 import { loadWhitelist } from './whitelist'
 
@@ -129,29 +134,33 @@ const context = { esClient }
 app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
   const t0 = performance.now()
   try {
-    const chrom = (req.query.chrom || '').startsWith('chr')
-      ? req.query.chrom
-      : `chr${req.query.chrom}`
+    const rawChrom = req.query.chrom || ''
+    const chrom = rawChrom.startsWith('chr') ? rawChrom : `chr${rawChrom}`
     const start = parseInt(req.query.start, 10)
     const stop = parseInt(req.query.stop, 10)
     const lrCohort = req.query.lr_cohort || 'hgsvc_hprc'
 
-    if (!chrom || isNaN(start) || isNaN(stop) || start > stop) {
-      return res.status(400).json({ error: 'valid chrom, start, stop required' })
+    if (!rawChrom || isNaN(start) || isNaN(stop) || start > stop) {
+      return res.status(400).json({ code: 'INVALID_REGION', error: 'valid chrom, start, stop required' })
+    }
+    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
+      return res.status(400).json({ code: 'OUT_OF_SCOPE', error: 'Prototype data are available only on chr22' })
     }
     if (isY1PilotEnabled && stop - start > 100_000) {
-      return res.status(400).json({ error: 'Y1 Haplotype View is limited to 100 kb regions' })
+      return res.status(400).json({ code: 'REGION_TOO_LARGE', error: 'Y1 Haplotype View is limited to 100 kb regions' })
     }
 
     if (lrCohort !== 'hgsvc_hprc') {
-      return res.status(400).json({ error: 'Haplotype View is available only for HGSVC/HPRC' })
+      return res.status(400).json({ code: 'UNAVAILABLE', error: 'Haplotype View is available only for HGSVC/HPRC' })
     }
 
     let distinctVariants: any[]
     let trvCarriers: any[]
     let phaseSummary = null
+    let source = null
     if (isY1PilotEnabled) {
-      const y1Rows = await fetchY1HaplotypeRows(chrom, start, stop)
+      source = await getY1SourceSnapshot('hgsvc_hprc')
+      const y1Rows = await fetchY1HaplotypeRows(chrom, start, stop, source.run_id)
       distinctVariants = y1Rows.variants
       trvCarriers = y1Rows.trvCarriers
       phaseSummary = y1Rows.phaseSummary
@@ -181,6 +190,17 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       trv_alts: result.trv_alts,
       auto_defaults: autoDefaults,
       _phase_summary: phaseSummary,
+      provenance: source ? {
+        modality: 'HAPLOTYPES', source: 'Y1_ACCEPTED_R2', release: source.release,
+        cohort: source.cohort, reference_genome: source.reference_genome,
+        chromosome: source.chrom, run_id: source.run_id, available: true,
+        status: 'accepted', label: 'gnomAD LR Y1 accepted r2',
+        prototype: isY1Chr22MixedProvenanceEnabled,
+      } : {
+        modality: 'HAPLOTYPES', source: 'LEGACY_V1', release: 'legacy',
+        cohort: 'hgsvc_hprc', reference_genome: 'GRCh38', chromosome: chrom,
+        run_id: null, available: true, status: 'legacy', label: 'Legacy LR', prototype: false,
+      },
       _timing: { total_ms: Math.round(ms) },
     })
   } catch (e: any) {
@@ -195,4 +215,16 @@ if (!process.env.NO_ES_STATS_POLL) {
   startEsStatsPolling(STATS_POLL_INTERVAL)
 }
 
-app.listen(config.PORT)
+const start = async () => {
+  // Primary/metadata failures are fatal: mixed mode must never start against an
+  // unaccepted or mismatched pointer. Ancillary failures remain typed
+  // unavailable capabilities and never become an empty/zero response.
+  await preflightY1AcceptedSources()
+  await preflightPrototypeAncillaries()
+  app.listen(config.PORT)
+}
+
+start().catch((error) => {
+  logger.error(`GraphQL API startup preflight failed: ${error.message}`)
+  process.exit(1)
+})

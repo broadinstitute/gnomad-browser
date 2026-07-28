@@ -6,15 +6,6 @@ type Region = { start: number; stop: number }
 
 const normalizeChrom = (chrom: string) => (chrom.startsWith('chr') ? chrom : `chr${chrom}`)
 
-const runIdForCohort = (cohort: LongReadCohort) => {
-  const variable = cohort === 'aou' ? 'LR_Y1_AOU_RUN_ID' : 'LR_Y1_HGSVC_RUN_ID'
-  const runId = process.env[variable]
-  if (!runId) {
-    throw new Error(`Y1 pilot requires ${variable}`)
-  }
-  return runId
-}
-
 export const browserVariantId = (sourceVariantId: string, altIndex: number) =>
   `${sourceVariantId}~${altIndex}`
 
@@ -33,7 +24,12 @@ const optionalNumber = (value: unknown) => {
   return Number.isFinite(number) ? number : null
 }
 
-const mapY1RowToGraphQL = (row: any, cohort: LongReadCohort, populations: any[]) => {
+const mapY1RowToGraphQL = (
+  row: any,
+  cohort: LongReadCohort,
+  populations: any[],
+  runId: string
+) => {
   const altIndex = Number(row.alt_index)
   return {
     // The browser identity is ALT-specific; source_variant_id remains byte-exact.
@@ -41,6 +37,9 @@ const mapY1RowToGraphQL = (row: any, cohort: LongReadCohort, populations: any[])
     source_variant_id: row.source_variant_id,
     alt_index: altIndex,
     lr_cohort: cohort,
+    data_source: 'Y1_ACCEPTED_R2',
+    source_release: 'y1',
+    source_run_id: runId,
     reference_genome: 'GRCh38',
     chrom: row.chrom.replace(/^chr/, ''),
     pos: Number(row.position),
@@ -87,19 +86,21 @@ const fetchPopulationFrequencies = async (
   runId: string,
   chrom: string,
   rangeConditions: string,
-  rangeParams: Record<string, string | number>
+  rangeParams: Record<string, string | number>,
+  cohort: LongReadCohort
 ) => {
   const resultSet = await y1ClickhouseClient.query({
     query: `
       SELECT source_variant_id, alt_index, division AS id, ac, an, af
       FROM lr_y1_frequencies
       WHERE run_id = {runId:String}
+        AND release = 'y1' AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
         AND chrom = {chrom:String}
         AND (${rangeConditions})
         AND division != 'all'
         AND values_available = 1
     `,
-    query_params: { runId, chrom, ...rangeParams },
+    query_params: { runId, chrom, cohort, ...rangeParams },
     format: 'JSONEachRow',
   })
   const rows = (await resultSet.json()) as any[]
@@ -121,15 +122,15 @@ const fetchPopulationFrequencies = async (
 export const fetchY1VariantsByRegions = async (
   chromValue: string,
   regions: Region[],
-  cohort: LongReadCohort
+  cohort: LongReadCohort,
+  runId: string
 ) => {
   if (regions.length === 0) return []
   const chrom = normalizeChrom(chromValue)
-  const runId = runIdForCohort(cohort)
   const rangeConditions = regions
     .map((region, index) => `(position BETWEEN {start${index}:UInt32} AND {stop${index}:UInt32})`)
     .join(' OR ')
-  const queryParams: Record<string, string | number> = { runId, chrom }
+  const queryParams: Record<string, string | number> = { runId, chrom, cohort }
   regions.forEach((region, index) => {
     queryParams[`start${index}`] = region.start
     queryParams[`stop${index}`] = region.stop
@@ -144,6 +145,7 @@ export const fetchY1VariantsByRegions = async (
           short_read_match_type, short_read_match_source
         FROM lr_y1_alleles
         WHERE run_id = {runId:String}
+          AND release = 'y1' AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
           AND chrom = {chrom:String}
           AND (${rangeConditions})
         ORDER BY position, source_variant_id, alt_index
@@ -151,7 +153,7 @@ export const fetchY1VariantsByRegions = async (
       query_params: queryParams,
       format: 'JSONEachRow',
     }),
-    fetchPopulationFrequencies(runId, chrom, rangeConditions, queryParams),
+    fetchPopulationFrequencies(runId, chrom, rangeConditions, queryParams, cohort),
   ])
 
   const rows = (await alleleResult.json()) as any[]
@@ -159,18 +161,23 @@ export const fetchY1VariantsByRegions = async (
     mapY1RowToGraphQL(
       row,
       cohort,
-      populationFrequencies.get(frequencyKey(row.source_variant_id, Number(row.alt_index))) || []
+      populationFrequencies.get(frequencyKey(row.source_variant_id, Number(row.alt_index))) || [],
+      runId
     )
   )
 }
 
 export const fetchY1VariantsByRegion = async (
   region: { chrom: string; start: number; stop: number },
-  cohort: LongReadCohort
-) => fetchY1VariantsByRegions(region.chrom, [region], cohort)
+  cohort: LongReadCohort,
+  runId: string
+) => fetchY1VariantsByRegions(region.chrom, [region], cohort, runId)
 
-export const fetchY1VariantById = async (variantId: string, cohort: LongReadCohort) => {
-  const runId = runIdForCohort(cohort)
+export const fetchY1VariantById = async (
+  variantId: string,
+  cohort: LongReadCohort,
+  runId: string
+) => {
   const { sourceVariantId, altIndex } = sourceIdentityFromBrowserId(variantId)
   const resultSet = await y1ClickhouseClient.query({
     query: `
@@ -180,11 +187,13 @@ export const fetchY1VariantById = async (variantId: string, cohort: LongReadCoho
         short_read_match_type, short_read_match_source
       FROM lr_y1_alleles
       WHERE run_id = {runId:String}
+        AND release = 'y1' AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
+        AND chrom = 'chr22'
         AND source_variant_id = {sourceVariantId:String}
         AND alt_index = {altIndex:UInt16}
       LIMIT 1
     `,
-    query_params: { runId, sourceVariantId, altIndex },
+    query_params: { runId, cohort, sourceVariantId, altIndex },
     format: 'JSONEachRow',
   })
   const rows = (await resultSet.json()) as any[]
@@ -195,11 +204,13 @@ export const fetchY1VariantById = async (variantId: string, cohort: LongReadCoho
     runId,
     row.chrom,
     `source_variant_id = {sourceVariantId:String} AND alt_index = {altIndex:UInt16}`,
-    { sourceVariantId, altIndex }
+    { sourceVariantId, altIndex },
+    cohort
   )
   return mapY1RowToGraphQL(
     row,
     cohort,
-    frequencies.get(frequencyKey(row.source_variant_id, Number(row.alt_index))) || []
+    frequencies.get(frequencyKey(row.source_variant_id, Number(row.alt_index))) || [],
+    runId
   )
 }

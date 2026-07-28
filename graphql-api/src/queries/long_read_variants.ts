@@ -1,4 +1,8 @@
-import { clickhouseClient, isY1PilotEnabled } from '../clickhouse'
+import {
+  clickhouseClient,
+  isY1Chr22MixedProvenanceEnabled,
+  isY1PilotEnabled,
+} from '../clickhouse'
 import { isRsId } from '@gnomad/identifiers'
 import { getFilteredRegions } from './variant-datasets/gnomad-v4-variant-queries'
 import { mergeOverlappingRegions } from './helpers/region-helpers'
@@ -10,6 +14,7 @@ import {
   fetchY1VariantsByRegions,
   LongReadCohort,
 } from './long_read_y1_variants'
+import { getY1SourceSnapshot } from './long_read_y1_provenance'
 
 const normalizeChrom = (chrom: string) =>
   chrom.startsWith('chr') ? chrom : `chr${chrom}`
@@ -24,6 +29,9 @@ const mapClickHouseRowToGraphQL = (row: any) => {
 
   return {
   variant_id: row.variant_id,
+  data_source: 'LEGACY_V1',
+  source_release: 'legacy',
+  source_run_id: null,
   reference_genome: 'GRCh38',
   chrom: row.chrom.replace('chr', ''),
   pos: Number(row.position),
@@ -118,7 +126,11 @@ const parseGenotypeDistribution = (populations: { key: string; histogram: string
 export const fetchVariantById = async (variantId: string, cohort: LongReadCohort = 'hgsvc_hprc') => {
   if (isY1PilotEnabled) {
     if (isRsId(variantId)) return null
-    return fetchY1VariantById(variantId, cohort)
+    if (isY1Chr22MixedProvenanceEnabled && !/^(?:chr)?22[-:]/.test(variantId)) {
+      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
+    }
+    const source = await getY1SourceSnapshot(cohort)
+    return fetchY1VariantById(variantId, cohort, source.run_id)
   }
 
   let query: string
@@ -150,7 +162,11 @@ export const fetchVariantById = async (variantId: string, cohort: LongReadCohort
   return variant
 }
 
-const _fetchVariantsByGene = async (gene: any, cohort: LongReadCohort = 'hgsvc_hprc') => {
+const _fetchVariantsByGene = async (
+  gene: any,
+  cohort: LongReadCohort = 'hgsvc_hprc',
+  y1RunId?: string
+) => {
   const filteredRegions = getFilteredRegions(gene.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
   const padding = 75
@@ -173,7 +189,11 @@ const _fetchVariantsByGene = async (gene: any, cohort: LongReadCohort = 'hgsvc_h
   const chrom = normalizeChrom(gene.chrom)
 
   if (isY1PilotEnabled) {
-    return fetchY1VariantsByRegions(chrom, mergedRegions, cohort)
+    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
+      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
+    }
+    if (!y1RunId) throw new Error('Missing resolved Y1 run identity')
+    return fetchY1VariantsByRegions(chrom, mergedRegions, cohort, y1RunId)
   }
 
   const query = `
@@ -192,12 +212,20 @@ const _fetchVariantsByGene = async (gene: any, cohort: LongReadCohort = 'hgsvc_h
   return rows.map(mapClickHouseRowToGraphQL)
 }
 
-export const fetchVariantsByGene = withCache(
+const cachedVariantsByGene = withCache(
   _fetchVariantsByGene,
-  (gene: any, cohort: LongReadCohort = 'hgsvc_hprc') =>
-    `lr_variants:${isY1PilotEnabled ? 'y1' : 'legacy'}:${cohort}:gene:${gene.gene_id}`,
+  (gene: any, cohort: LongReadCohort = 'hgsvc_hprc', y1RunId?: string) =>
+    `lr_variants:${isY1PilotEnabled ? 'y1:y1:GRCh38:prototype=' + isY1Chr22MixedProvenanceEnabled + ':' + cohort + ':' + (y1RunId || 'unpinned') : 'legacy'}:gene:${gene.gene_id}`,
   { expiration: 1 }
 )
+
+export const fetchVariantsByGene = async (
+  gene: any,
+  cohort: LongReadCohort = 'hgsvc_hprc'
+) => {
+  const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
+  return cachedVariantsByGene(gene, cohort, source?.run_id)
+}
 
 const countVariantsByRegion = async (...args: any[]) => {
   // Called as (esClient, region) from variant-queries.ts or (region) directly
@@ -206,7 +234,11 @@ const countVariantsByRegion = async (...args: any[]) => {
   const chrom = normalizeChrom(region.chrom)
   if (isY1PilotEnabled) {
     const cohort: LongReadCohort = args.length > 2 ? args[2] : 'hgsvc_hprc'
-    return (await fetchY1VariantsByRegion(region, cohort)).length
+    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
+      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
+    }
+    const source = await getY1SourceSnapshot(cohort)
+    return (await fetchY1VariantsByRegion(region, cohort, source.run_id)).length
   }
 
   const query = `
@@ -229,12 +261,17 @@ export const countVariantsInRegion = countVariantsByRegion
 
 const _fetchVariantsByRegion = async (
   region: { chrom: string; start: number; stop: number },
-  cohort: LongReadCohort = 'hgsvc_hprc'
+  cohort: LongReadCohort = 'hgsvc_hprc',
+  y1RunId?: string
 ) => {
   const chrom = normalizeChrom(region.chrom)
 
   if (isY1PilotEnabled) {
-    return fetchY1VariantsByRegion(region, cohort)
+    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
+      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
+    }
+    if (!y1RunId) throw new Error('Missing resolved Y1 run identity')
+    return fetchY1VariantsByRegion(region, cohort, y1RunId)
   }
 
   const query = `
@@ -255,15 +292,24 @@ const _fetchVariantsByRegion = async (
   return rows.map(mapClickHouseRowToGraphQL)
 }
 
-export const fetchVariantsByRegion = withCache(
+const cachedVariantsByRegion = withCache(
   _fetchVariantsByRegion,
   (
     region: { chrom: string; start: number; stop: number },
-    cohort: LongReadCohort = 'hgsvc_hprc'
+    cohort: LongReadCohort = 'hgsvc_hprc',
+    y1RunId?: string
   ) =>
-    `lr_variants:${isY1PilotEnabled ? 'y1' : 'legacy'}:${cohort}:region:${region.chrom}:${region.start}:${region.stop}`,
+    `lr_variants:${isY1PilotEnabled ? 'y1:y1:GRCh38:prototype=' + isY1Chr22MixedProvenanceEnabled + ':' + cohort + ':' + (y1RunId || 'unpinned') : 'legacy'}:region:${region.chrom}:${region.start}:${region.stop}`,
   { expiration: 1 }
 )
+
+export const fetchVariantsByRegion = async (
+  region: { chrom: string; start: number; stop: number },
+  cohort: LongReadCohort = 'hgsvc_hprc'
+) => {
+  const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
+  return cachedVariantsByRegion(region, cohort, source?.run_id)
+}
 
 const queries = {
   countVariantsInRegion,

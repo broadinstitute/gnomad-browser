@@ -1,4 +1,12 @@
-import { clickhouseClient } from '../clickhouse'
+import {
+  clickhouseClient,
+  isY1Chr22MixedProvenanceEnabled,
+  prototypeAncillaryClickhouseClient,
+  y1ClickhouseClient,
+} from '../clickhouse'
+
+const ancillaryClient = () =>
+  isY1Chr22MixedProvenanceEnabled ? prototypeAncillaryClickhouseClient : clickhouseClient
 
 /**
  * Fetch haplotype variants pre-grouped by (sample_id, strand) in ClickHouse.
@@ -266,6 +274,21 @@ export const fetchHaplotypeVariantsForRegion = async (
   return resultSet.json()
 }
 
+export const fetchY1SampleMetadata = async (metadataRunId: string) => {
+  const resultSet = await y1ClickhouseClient.query({
+    query: `
+      SELECT sample_id, subpopulation, superpopulation
+      FROM lr_y1_sample_metadata
+      WHERE metadata_run_id = {metadataRunId:String}
+        AND release = 'y1' AND cohort = 'hgsvc_hprc' AND reference_genome = 'GRCh38'
+      ORDER BY sample_id
+    `,
+    query_params: { metadataRunId },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json()
+}
+
 export const fetchSampleMetadata = async (_esClient: any) => {
   const query = `
     SELECT sample_id, subpopulation, superpopulation
@@ -285,12 +308,20 @@ export const fetchLRCoverageForRegion = async (
   start: number,
   stop: number
 ) => {
-  const query = `
+  const query = isY1Chr22MixedProvenanceEnabled ? `
+    SELECT position AS pos, mean, median,
+           over_1, over_5, over_10, over_15, over_20, over_25, over_30, over_50, over_100
+    FROM lr_y1_coverage
+    WHERE release = 'y1' AND cohort = 'hgsvc_hprc'
+      AND reference_genome = 'GRCh38' AND modality = 'sequencing_coverage'
+      AND chrom = {chrom:String} AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+    ORDER BY position ASC
+  ` : `
     SELECT * FROM lr_coverage
     WHERE chrom = {chrom:String} AND pos BETWEEN {start:UInt32} AND {stop:UInt32}
     ORDER BY pos ASC
   `
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await ancillaryClient().query({
     query,
     query_params: { chrom, start, stop },
     format: 'JSONEachRow',
@@ -312,15 +343,17 @@ export const fetchSTRHistogram = async (
            populations
     FROM lr_str_histograms
     WHERE chrom = {chrom:String} AND position = {position:UInt32}
-    LIMIT 1
+      ${isY1Chr22MixedProvenanceEnabled ? "AND mapping_status = 'available_exact'" : ''}
+    LIMIT 2
   `
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await ancillaryClient().query({
     query,
     query_params: { chrom, position },
     format: 'JSONEachRow',
   })
   const rows = (await resultSet.json()) as any[]
   if (rows.length === 0) return null
+  if (rows.length > 1) throw new Error(`STR histogram invariant failure at ${chrom}:${position}`)
 
   const row = rows[0]
   // Convert populations Map to array of {key, histogram} objects
@@ -337,7 +370,14 @@ export const fetchMethylationSummaryForRegion = async (
   start: number,
   stop: number
 ) => {
-  const query = `
+  const query = isY1Chr22MixedProvenanceEnabled ? `
+    SELECT chrom, pos1, pos2, mean_methylation, mean_coverage,
+           observed_sample_count AS num_samples, std_methylation,
+           min_methylation, max_methylation
+    FROM lr_methylation_summary_canonical_prototype
+    WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+    ORDER BY pos1 ASC
+  ` : `
     SELECT {chrom:String} AS chrom, pos1, pos2,
            avgMerge(mean_methylation_state) AS mean_methylation,
            avgMerge(mean_coverage_state) AS mean_coverage,
@@ -348,7 +388,7 @@ export const fetchMethylationSummaryForRegion = async (
     GROUP BY pos1, pos2
     ORDER BY pos1 ASC
   `
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await ancillaryClient().query({
     query,
     query_params: { chrom, start, stop },
     format: 'JSONEachRow',
@@ -362,25 +402,34 @@ export const fetchMethylationOutliersForRegion = async (
   start: number,
   stop: number
 ) => {
+  const detailTable = isY1Chr22MixedProvenanceEnabled
+    ? 'lr_methylation_canonical_prototype' : 'lr_methylation'
+  const summaryQuery = isY1Chr22MixedProvenanceEnabled ? `
+        SELECT chrom, pos1, pos2, mean_methylation AS site_mean, std_methylation AS site_std
+        FROM lr_methylation_summary_canonical_prototype
+        WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+  ` : `
+        SELECT chrom, pos1, pos2,
+               avgMerge(mean_methylation_state) AS site_mean,
+               sqrt(varPopMerge(var_methylation_state)) AS site_std
+        FROM lr_methylation_summary_mv
+        WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+        GROUP BY chrom, pos1, pos2
+  `
   const query = `
     SELECT sample_id,
            countIf(abs(methylation - site_mean) > 2 * site_std) AS outlier_count,
            count() AS total_sites,
            'mixed' AS direction
-    FROM lr_methylation
-    JOIN (
-        SELECT pos1,
-               avgMerge(mean_methylation_state) AS site_mean,
-               sqrt(varPopMerge(var_methylation_state)) AS site_std
-        FROM lr_methylation_summary_mv
-        WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
-        GROUP BY pos1
-    ) AS stats USING pos1
-    WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+    FROM ${detailTable} AS detail
+    JOIN (${summaryQuery}) AS stats
+      ON detail.chrom = stats.chrom AND detail.pos1 = stats.pos1 AND detail.pos2 = stats.pos2
+    WHERE detail.chrom = {chrom:String}
+      AND detail.pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
     GROUP BY sample_id
     ORDER BY outlier_count DESC
   `
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await ancillaryClient().query({
     query,
     query_params: { chrom, start, stop },
     format: 'JSONEachRow',
@@ -417,7 +466,7 @@ export const fetchMethylationForRegion = async (
   if (samples && samples.length > 0) {
     query = `
       SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
-      FROM lr_methylation
+      FROM ${isY1Chr22MixedProvenanceEnabled ? 'lr_methylation_canonical_prototype' : 'lr_methylation'}
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
         AND sample_id IN ({samples:Array(String)})
@@ -427,7 +476,7 @@ export const fetchMethylationForRegion = async (
     // If undefined is explicitly passed, fetch all samples in the region for mQTL
     query = `
       SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
-      FROM lr_methylation
+      FROM ${isY1Chr22MixedProvenanceEnabled ? 'lr_methylation_canonical_prototype' : 'lr_methylation'}
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
     `
@@ -435,7 +484,7 @@ export const fetchMethylationForRegion = async (
     return [] // samples is explicitly an empty array
   }
 
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await ancillaryClient().query({
     query,
     query_params,
     format: 'JSONEachRow',

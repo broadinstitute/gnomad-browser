@@ -1,12 +1,6 @@
 import { y1ClickhouseClient } from '../clickhouse'
 import { browserVariantId } from './long_read_y1_variants'
 
-const hgsvcRunId = () => {
-  const runId = process.env.LR_Y1_HGSVC_RUN_ID
-  if (!runId) throw new Error('Y1 pilot requires LR_Y1_HGSVC_RUN_ID')
-  return runId
-}
-
 // Unphased heterozygous/partial calls cannot be assigned to a biological strand.
 // Phased, haploid, and unphased homozygous-alt calls have deterministic placement.
 const deterministicCarrier = `
@@ -26,8 +20,12 @@ export type Y1PhaseSummary = {
   ambiguous_unphased_rows: number
 }
 
-export const fetchY1HaplotypeRows = async (chrom: string, start: number, stop: number) => {
-  const runId = hgsvcRunId()
+export const fetchY1HaplotypeRows = async (
+  chrom: string,
+  start: number,
+  stop: number,
+  runId: string
+) => {
   const queryParams = { runId, chrom, start, stop }
 
   const [variantResult, trvResult, phaseResult] = await Promise.all([
@@ -66,6 +64,7 @@ export const fetchY1HaplotypeRows = async (chrom: string, start: number, stop: n
           SELECT *, concat(source_variant_id, '~', toString(alt_index)) AS browser_variant_id
           FROM lr_y1_alleles
           WHERE run_id = {runId:String}
+            AND release = 'y1' AND cohort = 'hgsvc_hprc' AND reference_genome = 'GRCh38'
             AND chrom = {chrom:String}
             AND position BETWEEN {start:UInt32} AND {stop:UInt32}
         ) AS a
@@ -84,12 +83,14 @@ export const fetchY1HaplotypeRows = async (chrom: string, start: number, stop: n
             anyIf(toNullable(af), division = 'sas' AND values_available = 1) AS info_AF_sas
           FROM lr_y1_frequencies
           WHERE run_id = {runId:String}
+            AND release = 'y1' AND cohort = 'hgsvc_hprc' AND reference_genome = 'GRCh38'
             AND chrom = {chrom:String}
             AND position BETWEEN {start:UInt32} AND {stop:UInt32}
           GROUP BY source_variant_id, alt_index
         ) AS f
           ON a.source_variant_id = f.source_variant_id AND a.alt_index = f.alt_index
         WHERE c.run_id = {runId:String}
+          AND c.release = 'y1' AND c.cohort = 'hgsvc_hprc' AND c.reference_genome = 'GRCh38'
           AND c.chrom = {chrom:String}
           AND c.position BETWEEN {start:UInt32} AND {stop:UInt32}
           AND (${deterministicCarrier})
@@ -115,6 +116,7 @@ export const fetchY1HaplotypeRows = async (chrom: string, start: number, stop: n
           AND c.source_variant_id = a.source_variant_id
           AND c.alt_index = a.alt_index
         WHERE c.run_id = {runId:String}
+          AND c.release = 'y1' AND c.cohort = 'hgsvc_hprc' AND c.reference_genome = 'GRCh38'
           AND c.chrom = {chrom:String}
           AND c.position BETWEEN {start:UInt32} AND {stop:UInt32}
           AND a.allele_type = 'trv'
@@ -136,6 +138,7 @@ export const fetchY1HaplotypeRows = async (chrom: string, start: number, stop: n
           countIf(NOT (${deterministicCarrier})) AS ambiguous_unphased_rows
         FROM lr_y1_carriers AS c
         WHERE run_id = {runId:String}
+          AND release = 'y1' AND cohort = 'hgsvc_hprc' AND reference_genome = 'GRCh38'
           AND chrom = {chrom:String}
           AND position BETWEEN {start:UInt32} AND {stop:UInt32}
       `,
