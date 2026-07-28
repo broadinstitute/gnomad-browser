@@ -281,7 +281,7 @@ const LongReadUnifiedView = ({
   )
 
   const [threshold, setThreshold] = useState(0)
-  const [sortBy, setSortBy] = useState('diplotype_frequency')
+  const [sortBy, setSortBy] = useState('sample_id')
   const [groupingMode, setGroupingMode] = useState<'similarity' | 'exact' | 'diploid'>('diploid')
   const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'sv_only')
   const [plotType, setPlotType] = useState('lollipop')
@@ -333,8 +333,8 @@ const LongReadUnifiedView = ({
 
   const handleGroupingModeChange = useCallback((mode: 'similarity' | 'exact' | 'diploid') => {
     setGroupingMode(mode)
-    if (mode === 'diploid' && !['diplotype_frequency', 'roh_fraction', 'compound_het'].includes(sortBy)) {
-      setSortBy('diplotype_frequency')
+    if (mode === 'diploid' && !['sample_id', 'roh_fraction', 'compound_het'].includes(sortBy)) {
+      setSortBy('sample_id')
     } else if (mode !== 'diploid' && !['similarity_score', 'sample_count'].includes(sortBy)) {
       setSortBy('similarity_score')
     }

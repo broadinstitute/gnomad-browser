@@ -963,8 +963,18 @@ export function sortDiplotypes(
   groups: DiplotypeGroup[],
   sortBy: string
 ): DiplotypeGroup[] {
-  const sorted = [...groups]
+  const compareSampleIds = (a: DiplotypeSample, b: DiplotypeSample) => {
+    if (a.sample_id < b.sample_id) return -1
+    if (a.sample_id > b.sample_id) return 1
+    return 0
+  }
+  const sorted = sortBy === 'sample_id'
+    ? groups.map((group) => ({ ...group, samples: [...group.samples].sort(compareSampleIds) }))
+    : [...groups]
   switch (sortBy) {
+    case 'sample_id':
+      sorted.sort((a, b) => compareSampleIds(a.samples[0], b.samples[0]))
+      break
     case 'roh_fraction':
       sorted.sort(
         (a, b) => b.roh_fraction - a.roh_fraction || b.samples.length - a.samples.length

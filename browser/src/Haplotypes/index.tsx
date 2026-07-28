@@ -321,7 +321,7 @@ export const Legend = ({
               id='sort-mode'
               options={isDiploidView
                 ? [
-                    { label: 'Frequency', value: 'diplotype_frequency' },
+                    { label: 'Sample', value: 'sample_id' },
                     { label: 'ROH', value: 'roh_fraction' },
                     { label: 'Comp. Het.', value: 'compound_het' },
                   ]
