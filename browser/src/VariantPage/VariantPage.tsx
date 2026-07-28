@@ -543,7 +543,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
 
 const operationName = 'GnomadVariant'
 const variantQuery = `
-query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeLocalAncestry: Boolean!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
+query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeClinvar: Boolean!, $includeLocalAncestry: Boolean!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
   variant(variantId: $variantId, dataset: $datasetId) {
     variant_id
     reference_genome
@@ -870,7 +870,7 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
     }
   }
 
-  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) {
+  clinvar_variant(variant_id: $variantId, reference_genome: $referenceGenome) @include(if: $includeClinvar) {
     clinical_significance
     clinvar_variation_id
     gold_stars
@@ -962,9 +962,10 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
         query={variantQuery}
         variables={{
           datasetId,
+          includeClinvar: !isLongRead(datasetId),
           includeLocalAncestry: (isV3(datasetId) && !isV3Subset(datasetId)) || isV4(datasetId),
-          includeLiftoverAsSource: isLiftoverSource(datasetId),
-          includeLiftoverAsTarget: isLiftoverTarget(datasetId),
+          includeLiftoverAsSource: !isLongRead(datasetId) && isLiftoverSource(datasetId),
+          includeLiftoverAsTarget: !isLongRead(datasetId) && isLiftoverTarget(datasetId),
           referenceGenome: referenceGenome(datasetId),
           variantId,
         }}
