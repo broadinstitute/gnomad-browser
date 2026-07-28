@@ -338,6 +338,7 @@ const ConnectedVariantsInRegion = ({
         >
           {({ data }: any) => (
             <LongReadUnifiedView
+              key={lrCohort}
               datasetId={datasetId}
               gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
               variants={data.region.long_read_variants || []}

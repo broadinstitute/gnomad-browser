@@ -170,6 +170,25 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
     ? { ...region, start: zoomRegion.start, stop: zoomRegion.stop }
     : region
 
+  let coverageTrack = null
+  if (isLongRead(datasetId)) {
+    coverageTrack = lrCohort === 'hgsvc_hprc'
+      ? <LRCoverageTrack chrom={chrom} start={start} stop={stop} lrCohort={lrCohort} />
+      : null
+  } else if (region.chrom === 'M') {
+    coverageTrack = <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
+  } else {
+    coverageTrack = (
+      <RegionCoverageTrack
+        datasetId={datasetId}
+        chrom={chrom}
+        includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
+        includeGenomeCoverage={regionsHaveGenomeCoverage(datasetId)}
+        start={start}
+        stop={stop}
+      />
+    )
+  }
 
   return (
     <TrackPage>
@@ -219,23 +238,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         rightPanelWidth={isSmallScreen ? 0 : showTree ? 250 : 80}
         width={regionViewerWidth}
       >
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {isLongRead(datasetId) ? (
-          lrCohort === 'hgsvc_hprc' ? (
-            <LRCoverageTrack chrom={chrom} start={start} stop={stop} lrCohort={lrCohort} />
-          ) : null
-        ) : region.chrom === 'M' ? (
-          <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
-        ) : (
-          <RegionCoverageTrack
-            datasetId={datasetId}
-            chrom={chrom}
-            includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
-            includeGenomeCoverage={regionsHaveGenomeCoverage(datasetId)}
-            start={start}
-            stop={stop}
-          />
-        )}
+        {coverageTrack}
 
         <GenesInRegionTrack genes={region.genes} region={viewRegion} />
 

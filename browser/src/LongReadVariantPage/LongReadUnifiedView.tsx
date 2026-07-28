@@ -34,7 +34,7 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
-import {
+import LongReadProvenanceBanner, {
   LongReadPrototypeProvenance,
   modalityAvailable,
   sourceForModality,
@@ -632,7 +632,7 @@ const LongReadUnifiedView = ({
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
     setMethylationAvailability(null)
-    if (!mixedMode || !methylationAvailable || lrCohort !== 'hgsvc_hprc') return
+    if (!mixedMode || !methylationAvailable || lrCohort !== 'hgsvc_hprc') return undefined
     let cancelled = false
     fetchGraphQL(METHYLATION_AVAILABILITY_QUERY, { lr_cohort: lrCohort })
       .then((result) => {
@@ -769,25 +769,6 @@ const LongReadUnifiedView = ({
     fetchMQTLs()
   }, [showHaplotypes, chrom, start, stop, threshold, showMqtl])
 
-  // Clear all cohort-specific state before another cohort can render or issue track requests.
-  useEffect(() => {
-    abortControllerRef.current?.abort()
-    setHaplotypeData(null)
-    rawDataRef.current = null
-    setSampleMetadata(new Map())
-    setMethylationData([])
-    setMethylationSummary([])
-    setMethylationOutliers(null)
-    setMethylationSampleCount(0)
-    setMethylationTotalSamples(0)
-    setShowMethylation(false)
-    setShowRecombination(false)
-    setMqtlData([])
-    setShowMqtl(false)
-    setSelectedClusterId(null)
-    setHighlightedVariantIds(null)
-  }, [lrCohort])
-
   // Standardize length → allele_length so summary and haplotype tracks use the same field name
   const standardizedVariants = useMemo(
     () => variants.map((v: any) => ({ ...v, allele_length: v.length })),
@@ -862,11 +843,14 @@ const LongReadUnifiedView = ({
 
   return (
     <>
+      {provenance && (provenance.enabled || provenance.mixed_provenance) && (
+        <LongReadProvenanceBanner provenance={provenance} />
+      )}
       {mixedMode && methylationAvailability && (
         <TrackPageSection>
           <p>
             <strong>Methylation availability:</strong>{' '}
-            {availableMethylationIds.size}/292 canonical samples available;{' '}
+            {availableMethylationIds.size}/{methylationAvailability.length} canonical samples available;{' '}
             {unavailableMethylation.length} unavailable samples are excluded from requests.
           </p>
           {unavailableMethylation.length > 0 && (

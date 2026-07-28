@@ -79,6 +79,7 @@ test.describe('Long Read chr22 mixed-provenance prototype', () => {
   test('does not render missing frequency values as zero', async ({ page }) => {
     await page.goto('/region/22-11160001-11170000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc')
     const unavailableCell = page.locator('td.numeric span[title="Unavailable"]').first()
-    if (await unavailableCell.count()) await expect(unavailableCell).toHaveText('—')
+    await expect(unavailableCell).toBeVisible()
+    await expect(unavailableCell).toHaveText('—')
   })
 })
