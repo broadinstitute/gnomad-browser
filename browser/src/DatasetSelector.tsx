@@ -16,6 +16,7 @@ import {
   referenceGenome,
   hasCopyNumberVariants,
   shortVariantDatasetId,
+  isLongRead,
   isV2,
 } from '@gnomad/dataset-metadata/metadata'
 import { logButtonClick } from './analytics'
@@ -478,7 +479,9 @@ const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
     urlBuilder = datasetLink,
   } = datasetOptions
 
-  const topLevelShortVariantDataset = shortVariantDatasetId(selectedDataset)
+  const topLevelShortVariantDataset = isLongRead(selectedDataset)
+    ? selectedDataset
+    : shortVariantDatasetId(selectedDataset)
 
   let datasets: any = []
 
