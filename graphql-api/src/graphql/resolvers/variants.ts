@@ -128,6 +128,7 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
           short_read_match_type: lrVariant.short_read_match_type,
           short_read_match_source: lrVariant.short_read_match_source,
           sv_consequences: lrVariant.sv_consequences || [],
+          allelic_series: 'allelic_series' in lrVariant ? lrVariant.allelic_series || [] : [],
           allele_size_distribution: lrVariant.allele_size_distribution,
           genotype_distribution: lrVariant.genotype_distribution,
           max_repunits: lrVariant.max_repunits,

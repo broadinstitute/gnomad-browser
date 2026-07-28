@@ -129,11 +129,13 @@ test.describe('Long Read tandem-repeat variant page', () => {
     ).toBeVisible()
   })
 
-  test('renders available TR-specific content', async () => {
-    const trSections = page.getByRole('heading', {
-      name: /Tandem Repeat Reference Region|Allele Size Distribution|Genotype Distribution/,
+  test('renders the current Y1 TR allelic series without legacy-only plots', async () => {
+    await expect(page.getByRole('heading', { name: 'TR Allelic Series' })).toBeVisible({
+      timeout: 20_000,
     })
-    await expect(trSections.first()).toBeVisible({ timeout: 20_000 })
+    await expect(page.locator('svg[aria-label="TR ALT allele-length distribution"]')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Allele Size Distribution' })).toHaveCount(0)
+    await expect(page.getByRole('heading', { name: 'Genotype Distribution' })).toHaveCount(0)
   })
 
   test('reports a successful variant GraphQL request', async ({}, testInfo) => {

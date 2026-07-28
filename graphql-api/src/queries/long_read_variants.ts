@@ -131,7 +131,30 @@ export const fetchVariantById = async (variantId: string, cohort: LongReadCohort
       throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
     }
     const source = await getY1SourceSnapshot(cohort)
-    return fetchY1VariantById(variantId, cohort, source.run_id)
+    const variant = await fetchY1VariantById(variantId, cohort, source.run_id)
+    if (!variant || variant.allele_type !== 'trv') return variant
+
+    // Y1 does not yet carry the legacy STR histograms. Preserve the meaningful
+    // ALT-length series shown in the LR Summary table by loading the other ALTs
+    // from this exact source record; do not infer genotype or repeat-unit data.
+    const locusAlleles = await fetchY1VariantsByRegion(
+      { chrom: variant.chrom, start: variant.pos, stop: variant.pos },
+      cohort,
+      source.run_id
+    )
+    return {
+      ...variant,
+      allelic_series: locusAlleles
+        .filter((allele) => allele.source_variant_id === variant.source_variant_id)
+        .map((allele) => ({
+          variant_id: allele.variant_id,
+          length: allele.length,
+          ac: allele.freq?.all?.ac,
+          an: allele.freq?.all?.an,
+          af: allele.freq?.all?.af,
+          populations: allele.freq?.populations || [],
+        })),
+    }
   }
 
   let query: string

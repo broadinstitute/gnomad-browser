@@ -13,6 +13,8 @@ import ShortTandemRepeatAlleleSizeDistributionPlot, {
   ScaleType,
 } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from '../ShortTandemRepeatPage/ShortTandemRepeatGenotypeDistributionPlot'
+import TRDistributionPlot from '../Haplotypes/TRDistributionPlot'
+import { getTrLocusDistribution } from '../LongReadVariantPage/trLocusAggregation'
 import {
   consolidateAlleleSizeDistributions,
   ColorByFn,
@@ -36,6 +38,22 @@ type Props = {
 }
 
 type GenotypeDistributionCohort = NonNullable<LongReadDetails['genotype_distribution']>[number]
+type AllelicSeriesAllele = NonNullable<LongReadDetails['allelic_series']>[number]
+
+export const getAllelicSeriesDistribution = (alleles: AllelicSeriesAllele[]) =>
+  getTrLocusDistribution(
+    alleles.map((allele) => ({
+      variant_id: allele.variant_id,
+      pos: 0,
+      end: null,
+      allele_length: allele.length,
+      main_reference_region: null,
+      freq: {
+        all: { ac: allele.ac, an: allele.an, af: allele.af },
+        populations: allele.populations,
+      },
+    }))
+  )
 
 const colorByFn: ColorByFn<AlleleSizeDistributionCohort> = (cohort, colorBy) => {
   if (colorBy === 'sex') {
@@ -62,6 +80,7 @@ const formatAlleleType = (alleleType: string | null) => {
 const LongReadVariantDetails = ({ variantId, chrom, pos, longReadDetails, ref_allele }: Props) => {
   const {
     allele_size_distribution,
+    allelic_series,
     end,
     enveloped_ids,
     enveloping_tr_id,
@@ -147,6 +166,21 @@ const LongReadVariantDetails = ({ variantId, chrom, pos, longReadDetails, ref_al
               classification: 'unknown',
             }))}
             main_reference_region={main_reference_region}
+          />
+        </Section>
+      )}
+
+      {allelic_series && allelic_series.length > 0 && (
+        <Section>
+          <h2>TR Allelic Series</h2>
+          <p>
+            ALT allele-length differences and counts for this tandem-repeat record. Y1 does not yet
+            provide repeat-unit or genotype histograms.
+          </p>
+          <TRDistributionPlot
+            distribution={getAllelicSeriesDistribution(allelic_series)}
+            yAxisLabel="Allele count"
+            ariaLabel="TR ALT allele-length distribution"
           />
         </Section>
       )}

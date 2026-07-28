@@ -117,6 +117,15 @@ type LongReadSequencingTypeData {
   populations: [LongReadVariantPopulationFrequencies]
 }
 
+type LongReadAllelicSeriesAllele {
+  variant_id: String!
+  length: Int
+  ac: Int
+  an: Int
+  af: Float
+  populations: [LongReadVariantPopulationFrequencies!]
+}
+
 type LongReadVariantDetails {
   allele_type: String
   end: Int
@@ -130,6 +139,7 @@ type LongReadVariantDetails {
   short_read_match_type: String
   short_read_match_source: String
   sv_consequences: [String!]
+  allelic_series: [LongReadAllelicSeriesAllele!]
   allele_size_distribution: [LongReadAlleleSizeDistribution!]
   genotype_distribution: [LongReadGenotypeDistribution!]
   max_repunits: Int

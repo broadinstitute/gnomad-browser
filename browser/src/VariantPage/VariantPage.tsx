@@ -335,6 +335,16 @@ export type LongReadDetails = {
   short_read_match_type: string | null
   short_read_match_source: string | null
   sv_consequences: string[] | null
+  allelic_series:
+    | {
+        variant_id: string
+        length: number | null
+        ac: number | null
+        an: number | null
+        af: number | null
+        populations: { id: string; ac: number; an: number; af: number }[]
+      }[]
+    | null
   allele_size_distribution: AlleleSizeDistributionCohort[] | null
   genotype_distribution:
     | {
@@ -797,6 +807,19 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
       short_read_match_type
       short_read_match_source
       sv_consequences
+      allelic_series {
+        variant_id
+        length
+        ac
+        an
+        af
+        populations {
+          id
+          ac
+          an
+          af
+        }
+      }
       max_repunits
       allele_size_distribution {
         ancestry_group
