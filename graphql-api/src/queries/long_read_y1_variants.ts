@@ -1,4 +1,5 @@
 import { y1ClickhouseClient } from '../clickhouse'
+import { resolveY1ReferenceEnd } from './long_read_y1_interval'
 
 export type LongReadCohort = 'hgsvc_hprc' | 'aou'
 
@@ -43,7 +44,12 @@ export const mapY1RowToGraphQL = (
     reference_genome: 'GRCh38',
     chrom: row.chrom.replace(/^chr/, ''),
     pos: Number(row.position),
-    end: Number(row.reference_end),
+    end: resolveY1ReferenceEnd({
+      position: row.position,
+      referenceEnd: row.reference_end,
+      refAllele: row.ref_allele,
+      alleleType: row.allele_type,
+    }),
     // allele_length is the signed ALT-minus-REF difference in the accepted Y1
     // allele contract. Preserve a genuine zero, but never turn a missing value
     // into the scientifically meaningful zero-length bin.

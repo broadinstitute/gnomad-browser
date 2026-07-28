@@ -11,6 +11,7 @@ import {
   getClustersAtThreshold,
   type TreeNode,
 } from './genealogy-math'
+import { resolveY1ReferenceEnd } from './long_read_y1_interval'
 
 // --- UPGMA tree cache (bounded Map, max 5 entries) ---
 const upgmaTreeCache = new Map<string, { tree: TreeNode; leafOrder: string[] }>()
@@ -111,14 +112,17 @@ function buildVariant(
   const resolvedAlleleType = alleleType || 'snv'
   const resolvedLength = alleleLength || 0
 
-  // reference_end is the genomic coordinate span. allele_length is an
-  // ALT-minus-REF/SVLEN-like measurement and must not be substituted for it
-  // when the authoritative reference coordinate is available (notably TRs,
-  // duplications, and insertions). Keep the fallback for legacy haplotype rows
-  // whose schema predates reference_end.
+  // Accepted Y1 rows carry reference_end. Resolve it with the same rule as
+  // GraphQL summary rows; allele_length remains separate ALT-size metadata.
+  // Legacy rows have no reference_end and retain their historical fallback.
   let end: number | null = null
-  if (referenceEnd != null && Number.isFinite(Number(referenceEnd))) {
-    end = Math.max(pos, Number(referenceEnd))
+  if (referenceEnd != null) {
+    end = resolveY1ReferenceEnd({
+      position: pos,
+      referenceEnd,
+      refAllele: ref,
+      alleleType: resolvedAlleleType,
+    })
   } else if (resolvedAlleleType !== 'snv' && Math.abs(resolvedLength) >= 50) {
     end = pos + Math.abs(resolvedLength)
   }

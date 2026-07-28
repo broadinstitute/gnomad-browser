@@ -32,23 +32,45 @@ describe('Y1 long-read browser identity', () => {
   })
 
   it.each([
-    ['TR', 'trv', 100, 120, 80],
-    ['duplication', 'dup', 200, 260, 120],
-    ['deletion', 'del', 300, 350, -120],
-    ['other SV', 'inv', 400, 430, 300],
-    ['insertion', 'ins', 500, 500, 150],
-  ])('uses the same reference interval and canonical ALT ID for %s in both views', (
-    label, alleleType, position, referenceEnd, alleleLength
-  ) => {
-    const sourceVariantId = `chr22-${position}-${String(label).replace(/ /g, '_')}`
+    {
+      label: 'expanded Y1 TR allele',
+      sourceVariantId: 'chr22-20337607-TRV-329',
+      alleleType: 'trv', position: 20337607, referenceEnd: 20337936,
+      ref: 'A'.repeat(330), alt: 'A'.repeat(6440), alleleLength: 6110,
+      expectedEnd: 20337936,
+    },
+    {
+      label: 'sequence-resolved Y1 DUP encoded at an insertion anchor',
+      sourceVariantId: 'chr22-20339401-INS-1617',
+      alleleType: 'dup', position: 20339401, referenceEnd: 20341018,
+      ref: 'T', alt: `T${'A'.repeat(1617)}`, alleleLength: 1617,
+      expectedEnd: 20339401,
+    },
+    {
+      label: 'symbolic tandem DUP with SVLEN-like stale reference_end',
+      sourceVariantId: 'chr22-20345000-DUP-TANDEM',
+      alleleType: 'dup_tandem', position: 20345000, referenceEnd: 20353000,
+      ref: 'N', alt: '<DUP:TANDEM>', alleleLength: 8000,
+      expectedEnd: 20345000,
+    },
+    {
+      label: 'true reference-spanning deletion',
+      sourceVariantId: 'chr22-20346000-DEL-120',
+      alleleType: 'del', position: 20346000, referenceEnd: 20346120,
+      ref: 'A'.repeat(121), alt: 'A', alleleLength: -120,
+      expectedEnd: 20346120,
+    },
+  ])('uses the same bounded reference interval and canonical ALT ID for $label', ({
+    sourceVariantId, alleleType, position, referenceEnd, ref, alt, alleleLength, expectedEnd,
+  }) => {
     const altIndex = 2
     const common = {
       source_variant_id: sourceVariantId,
       alt_index: altIndex,
       position,
       reference_end: referenceEnd,
-      ref_allele: 'N',
-      alt: `<${String(alleleType).toUpperCase()}>`,
+      ref_allele: ref,
+      alt,
       allele_type: alleleType,
       allele_length: alleleLength,
     }
@@ -77,7 +99,7 @@ describe('Y1 long-read browser identity', () => {
       start: summary.pos,
       stop: summary.end,
     })
-    expect(haplotype.end).toBe(referenceEnd)
+    expect(haplotype.end).toBe(expectedEnd)
     expect(haplotype.allele_length).toBe(alleleLength)
   })
 })
