@@ -4,7 +4,6 @@ import { DatasetId, labelForDataset, referenceGenome, isLongRead, associatedLong
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
-import LongReadCohortSelector from './LongReadCohortSelector'
 import Query from '../Query'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
@@ -292,13 +291,9 @@ const ConnectedVariantsInRegion = ({
   // When viewing LR dataset directly, only query LR data — skip the expensive SR query
   if (isLongRead(datasetId)) {
     return (
-      <>
-        <TrackPageSection>
-          <LongReadCohortSelector value={lrCohort} onChange={onChangeLrCohort} />
-        </TrackPageSection>
-        <Query
-          operationName="LongReadVariantsInRegion"
-          query={`query LongReadVariantsInRegion($datasetId: DatasetId!, $lrCohort: LongReadCohort!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
+      <Query
+        operationName="LongReadVariantsInRegion"
+        query={`query LongReadVariantsInRegion($datasetId: DatasetId!, $lrCohort: LongReadCohort!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
             meta { clinvar_release_date }
             long_read_prototype_provenance(lr_cohort: $lrCohort, chrom: $chrom) {
               enabled mixed_provenance scope_label warning
@@ -318,36 +313,42 @@ const ConnectedVariantsInRegion = ({
               }
             }
           }`}
-          variables={{
-            datasetId,
-            lrCohort,
-            chrom: region.chrom,
-            start: region.start,
-            stop: region.stop,
-            referenceGenome: referenceGenome(datasetId),
-          }}
-          loadingMessage="Loading variants"
-          errorMessage="Unable to load variants"
-          success={(data: any) => data.region}
-        >
-          {({ data }: any) => (
-            <LongReadUnifiedView
-              key={lrCohort}
-              datasetId={datasetId}
-              gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
-              variants={data.region.long_read_variants || []}
-              lrCohort={lrCohort}
-              provenance={data.long_read_prototype_provenance}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-              genes={region.genes as any[]}
-              zoomRegion={zoomRegion || null}
-              onChangeZoomRegion={onChangeZoomRegion || (() => {})}
-              onSetRegion={onSetRegion || (() => {})}
-              onGenealogyPanelVisibilityChange={onGenealogyPanelVisibilityChange}
-            />
-          )}
-        </Query>
-      </>
+        variables={{
+          datasetId,
+          lrCohort,
+          chrom: region.chrom,
+          start: region.start,
+          stop: region.stop,
+          referenceGenome: referenceGenome(datasetId),
+        }}
+        loadingMessage="Loading variants"
+        errorMessage="Unable to load variants"
+        success={(data: any) => data.region}
+      >
+        {({ data }: any) => (
+          <LongReadUnifiedView
+            key={lrCohort}
+            datasetId={datasetId}
+            gene={{
+              gene_id: '',
+              symbol: '',
+              chrom: region.chrom,
+              start: region.start,
+              stop: region.stop,
+            }}
+            variants={data.region.long_read_variants || []}
+            lrCohort={lrCohort}
+            onChangeLrCohort={onChangeLrCohort}
+            provenance={data.long_read_prototype_provenance}
+            clinvarReleaseDate={data.meta.clinvar_release_date}
+            genes={region.genes as any[]}
+            zoomRegion={zoomRegion || null}
+            onChangeZoomRegion={onChangeZoomRegion || (() => {})}
+            onSetRegion={onSetRegion || (() => {})}
+            onGenealogyPanelVisibilityChange={onGenealogyPanelVisibilityChange}
+          />
+        )}
+      </Query>
     )
   }
 

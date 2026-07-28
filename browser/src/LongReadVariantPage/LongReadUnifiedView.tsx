@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
-import { SegmentedControl, Select } from '@gnomad/ui'
+import { Select } from '@gnomad/ui'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
@@ -24,6 +24,7 @@ import HaplotypeVariantTable, { HaplotypeVariantTableHandle, type VariantTypeFil
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
+import LongReadViewControls from './LongReadViewControls'
 import LongReadViewHelpButton from './LongReadViewHelpButton'
 import LongReadVariantTrack from './LongReadVariantTrack'
 import VariantDensityTrack from './VariantDensityTrack'
@@ -162,6 +163,7 @@ type LongReadUnifiedViewProps = {
   }
   variants: any[]
   lrCohort?: 'hgsvc_hprc' | 'aou'
+  onChangeLrCohort?: (cohort: 'hgsvc_hprc' | 'aou') => void
   provenance?: LongReadPrototypeProvenance | null
   clinvarReleaseDate?: string
   genes?: ZoomGene[]
@@ -194,6 +196,7 @@ const LongReadUnifiedView = ({
   gene,
   variants,
   lrCohort = 'hgsvc_hprc',
+  onChangeLrCohort,
   provenance = null,
   clinvarReleaseDate,
   genes = [],
@@ -1002,14 +1005,12 @@ const LongReadUnifiedView = ({
       <TrackPageSection>
         <TopBar>
           <LongReadViewHelpButton maxHaplotypeRegionSize={MAX_HAPLOTYPE_REGION_SIZE} />
-          <SegmentedControl
-            id="lr-view-mode"
-            options={[
-              { label: 'Summary View', value: 'summary' },
-              { label: 'Haplotype View', value: 'haplotype', disabled: regionTooLarge || haplotypesUnavailable },
-            ]}
-            value={showHaplotypes ? 'haplotype' : 'summary'}
-            onChange={(val: string) => setShowHaplotypes(val === 'haplotype')}
+          <LongReadViewControls
+            cohort={lrCohort}
+            onChangeCohort={onChangeLrCohort}
+            showHaplotypes={showHaplotypes}
+            haplotypesDisabled={regionTooLarge || haplotypesUnavailable}
+            onChangeShowHaplotypes={setShowHaplotypes}
           />
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <label style={{ fontSize: '12px' }}>Color:</label>
