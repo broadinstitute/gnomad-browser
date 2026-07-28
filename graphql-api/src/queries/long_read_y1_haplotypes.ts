@@ -54,9 +54,9 @@ export const fetchY1HaplotypeRows = async (
           a.phylop,
           [] AS sv_consequences,
           if(length(a.rsids) > 0, a.rsids[1], NULL) AS dbsnp_id,
-          any(nullIf(JSONExtractString(s.source_info_json, 'TRID'), '')) AS tr_id,
-          any(nullIf(JSONExtractString(s.source_info_json, 'MOTIFS'), '')) AS tr_motifs,
-          any(nullIf(JSONExtractString(s.source_info_json, 'STRUC'), '')) AS tr_struc,
+          any(s.tr_id) AS tr_id,
+          any(s.tr_motifs) AS tr_motifs,
+          any(s.tr_struc) AS tr_struc,
           NULL AS allele_methylation,
           [] AS motif_counts,
           NULL AS allele_purity,
@@ -80,10 +80,22 @@ export const fetchY1HaplotypeRows = async (
           AND a.position = c.position
           AND a.source_variant_id = c.source_variant_id
           AND a.alt_index = c.alt_index
-        -- source_info_json is the lossless INFO payload from the same accepted
-        -- Y1 VCF record. Unlike legacy lr_variants, this join is run/cohort/
-        -- assembly scoped and therefore cannot mix catalogs or publications.
-        INNER JOIN lr_y1_summaries AS s
+        -- source_info_json is optional annotation from the same accepted Y1
+        -- VCF record. Pre-aggregate it to one row per source identity, then use
+        -- a LEFT JOIN so missing metadata can never remove carrier variants.
+        LEFT JOIN (
+          SELECT
+            run_id, release, cohort, reference_genome, chrom, position, source_variant_id,
+            any(nullIf(JSONExtractString(source_info_json, 'TRID'), '')) AS tr_id,
+            any(nullIf(JSONExtractString(source_info_json, 'MOTIFS'), '')) AS tr_motifs,
+            any(nullIf(JSONExtractString(source_info_json, 'STRUC'), '')) AS tr_struc
+          FROM lr_y1_summaries
+          WHERE run_id = {runId:String}
+            AND release = 'y1' AND cohort = 'hgsvc_hprc' AND reference_genome = 'GRCh38'
+            AND chrom = {chrom:String}
+            AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+          GROUP BY run_id, release, cohort, reference_genome, chrom, position, source_variant_id
+        ) AS s
           ON a.run_id = s.run_id
           AND a.release = s.release
           AND a.cohort = s.cohort

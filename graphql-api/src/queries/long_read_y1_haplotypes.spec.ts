@@ -26,10 +26,15 @@ describe('Y1 haplotype TR metadata', () => {
     const payload = await fetchY1HaplotypeRows('chr22', 100, 200, 'accepted-run')
     const variantQuery = queryMock.mock.calls[0][0].query as string
 
-    expect(variantQuery).toContain('INNER JOIN lr_y1_summaries AS s')
-    expect(variantQuery).toContain("JSONExtractString(s.source_info_json, 'MOTIFS')")
+    expect(variantQuery).toContain('LEFT JOIN (')
+    expect(variantQuery).toContain('FROM lr_y1_summaries')
+    expect(variantQuery).toContain("JSONExtractString(source_info_json, 'MOTIFS')")
+    expect(variantQuery).toContain(
+      'GROUP BY run_id, release, cohort, reference_genome, chrom, position, source_variant_id'
+    )
     expect(variantQuery).toContain('a.run_id = s.run_id')
     expect(variantQuery).toContain('a.reference_genome = s.reference_genome')
+    expect(variantQuery).not.toContain('INNER JOIN lr_y1_summaries')
     expect(variantQuery).not.toContain('JOIN lr_variants')
     expect(payload.variants[0]).toMatchObject({
       variant_id: 'chr22-100-TRV-1~1', tr_id, tr_motifs, tr_struc,
