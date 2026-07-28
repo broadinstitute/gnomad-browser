@@ -33,18 +33,18 @@ describe('source event hover details', () => {
     expect(screen.getByText(/Click opens the maximum-AF ALT record/)).not.toBeNull()
   })
 
-  test('reports mixed generic SV constituents instead of selecting one subtype', () => {
+  test('reports normalized duplication-family constituents without losing subtype detail', () => {
     const event = aggregateSourceEvents([
-      allele({ allele_type: 'INV', allele_length: -30 }),
-      allele({ variant_id: 'complex', allele_type: 'COMPLEX', allele_length: 45 }),
+      allele({ allele_type: 'DUP', allele_length: 30 }),
+      allele({ variant_id: 'complex', source_variant_id: 'allele-specific', allele_type: 'COMPLEX_DUP', allele_length: 45 }),
     ])[0]
 
     const { container } = render(
-      <SourceEventTooltip hovered={{ event: event as any, band: 'sv', x: 0, y: 0 }} />
+      <SourceEventTooltip hovered={{ event: event as any, band: 'dup', x: 0, y: 0 }} />
     )
 
-    expect(container.textContent).toContain('Constituents: INV, COMPLEX')
-    expect(screen.getByText('-30 bp to +45 bp')).not.toBeNull()
+    expect(container.textContent).toContain('Structural locus: 1:100-130 (duplication)')
+    expect(container.textContent).toContain('Constituents: DUP, COMPLEX_DUP')
     expect(screen.getByText('30 bp to 45 bp')).not.toBeNull()
     expect(screen.getByText('1:100 to 130')).not.toBeNull()
   })

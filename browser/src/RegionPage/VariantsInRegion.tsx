@@ -176,6 +176,7 @@ const shortReadVariantFields = `
 const longReadVariantFields = `
       variant_id
       source_variant_id
+      chrom
       pos
       end
       length
@@ -315,7 +316,7 @@ const ConnectedVariantsInRegion = ({
             }
             region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
               long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort) {
-                variant_id source_variant_id alt_index lr_cohort pos end length ref alt allele_type filters motifs rsids
+                variant_id source_variant_id alt_index lr_cohort chrom pos end length ref alt allele_type filters motifs rsids
                 main_reference_region { chrom start stop }
                 sv_consequences major_consequence cadd_phred phylop
                 freq { all { ac an af homozygote_ref_count homozygote_alt_count heterozygote_count } populations { id ac an af } }

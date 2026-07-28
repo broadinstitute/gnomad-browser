@@ -138,7 +138,7 @@ export const SourceEventTooltip = ({ hovered }: { hovered: HoveredSourceEvent })
 
   return (
     <div style={{ position: 'fixed', left: hovered.x + 12, top: hovered.y + 12, background: 'white', border: '1px solid #ccc', borderRadius: 4, padding: '6px 8px', fontSize: 12, pointerEvents: 'none', zIndex: 10000, width: 270, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
-      <div><strong>Source event:</strong> {event.key.replace(/^source:/, '')}</div>
+      <div><strong>Structural locus:</strong> {event.chrom}:{event.start}-{event.stop} ({event.family})</div>
       <div><strong>{event.subtypes.length === 1 ? 'Subtype' : 'Constituents'}:</strong> {event.subtypes.join(', ')}</div>
       <div><strong>ALT records:</strong> {event.alleles.length}</div>
       {details}
@@ -316,7 +316,7 @@ const SvBand = ({ events, band, scalePosition, width, onHoverEvent, hoveredPosit
   const barHeight = ROW_HEIGHT - 4
 
   return (
-    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }} data-source-event-count={packed.length}>
+    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }} data-source-event-count={packed.length} data-source-event-rows={maxRows}>
       {packed.map((event) => {
         const v = event.representative
         let color = getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })

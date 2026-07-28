@@ -283,6 +283,7 @@ const shortReadVariantFields = `
 const longReadVariantFields = `
 		variant_id
 		source_variant_id
+		chrom
 		pos
 		end
 		length

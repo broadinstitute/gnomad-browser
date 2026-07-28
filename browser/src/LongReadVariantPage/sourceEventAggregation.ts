@@ -25,22 +25,36 @@ export type SourceEvent<T extends SourceEventRecord = SourceEventRecord> = {
   minAbsoluteLength: number | null
   maxAbsoluteLength: number | null
   maxAf: number | null
+  family: string
 }
 
 const eventChrom = (variant: SourceEventRecord) =>
   variant.main_reference_region?.chrom || variant.chrom || 'unknown'
 
-/**
- * A stable source ID is the only non-coordinate evidence that ALT records are
- * one event. Without it, require an exact, type-aware coordinate identity;
- * overlap is intentionally not enough.
+/** Normalize mechanistic subtypes only where the display contract formally
+ * treats them as one structural-event family. Unknown classes remain distinct.
  */
-export const getSourceEventKey = (variant: SourceEventRecord): string => {
-  if (variant.source_variant_id) return `source:${variant.source_variant_id}`
-  return `coordinates:${variant.allele_type.toLowerCase()}:${eventChrom(variant)}:${
-    variant.start
-  }:${variant.stop}`
+export const getSourceEventFamily = (alleleType: string): string => {
+  const type = alleleType.toLowerCase()
+  if (['dup', 'dup_interspersed', 'complex_dup', 'inv_dup'].includes(type)) return 'duplication'
+  if (['ins', 'alu_ins', 'sva_ins', 'numt'].includes(type)) return 'insertion'
+  if (['del', 'alu_del', 'line_del', 'sva_del'].includes(type)) return 'deletion'
+  if (type === 'inv') return 'inversion'
+  return type
 }
+
+/**
+ * Y1 source_variant_id is the byte-exact source record ID, not a guaranteed
+ * shared locus/event ID. AoU emits separate IDs for sequence-distinct alleles
+ * (for example, chr22-20075553-INS-849_1 and ...-849_2). The bounded glyph
+ * identity is therefore an exact reference interval plus normalized event
+ * family. Overlap is intentionally insufficient, and source-ID prefixes are
+ * not parsed because no such prefix contract exists in the serving schema.
+ */
+export const getSourceEventKey = (variant: SourceEventRecord): string =>
+  `locus:${getSourceEventFamily(variant.allele_type)}:${eventChrom(variant)}:${variant.start}:${
+    variant.stop
+  }`
 
 export const aggregateSourceEvents = <T extends SourceEventRecord>(
   variants: T[]
@@ -84,6 +98,7 @@ export const aggregateSourceEvents = <T extends SourceEventRecord>(
       minAbsoluteLength: absoluteLengths.length > 0 ? Math.min(...absoluteLengths) : null,
       maxAbsoluteLength: absoluteLengths.length > 0 ? Math.max(...absoluteLengths) : null,
       maxAf,
+      family: getSourceEventFamily(alleles[0].allele_type),
     }
   })
 }

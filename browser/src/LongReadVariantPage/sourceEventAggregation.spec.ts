@@ -1,6 +1,7 @@
 import {
   aggregateSourceEvents,
   getInsertionLengthDistribution,
+  getSourceEventFamily,
   getSourceEventKey,
   packSourceEvents,
   type SourceEventRecord,
@@ -21,11 +22,12 @@ const allele = (overrides: Partial<SourceEventRecord> = {}): SourceEventRecord =
   ...overrides,
 })
 
-describe('non-TR source event aggregation', () => {
-  test('collapses 100 ALT records to one glyph row and retains max AF representative', () => {
+describe('non-TR structural locus aggregation', () => {
+  test('collapses 100 same-locus ALT records to one glyph row and retains max AF representative', () => {
     const records = Array.from({ length: 100 }, (_, i) =>
       allele({
         variant_id: `alt-${i}`,
+        source_variant_id: `allele-specific-${i}`,
         allele_length: i + 1,
         freq: { all: { af: i / 1000 } },
       })
@@ -41,56 +43,115 @@ describe('non-TR source event aggregation', () => {
     expect(packed.maxRows * 14).toBe(14)
   })
 
-  test('packs genuinely distinct overlapping source IDs separately', () => {
+  test('collapses the observed chr22 complex_dup allelic series despite allele-specific source IDs', () => {
+    const ids = [
+      'chr22-20075553-INS-845',
+      'chr22-20075553-INS-846',
+      'chr22-20075553-INS-848_1',
+      'chr22-20075553-INS-848_2',
+      'chr22-20075553-INS-849_1',
+      'chr22-20075553-INS-849_6',
+      'chr22-20075553-INS-850_4',
+      'chr22-20075553-INS-853_1',
+    ]
+    const records = ids.map((id, index) =>
+      allele({
+        variant_id: `${id}~1`,
+        source_variant_id: id,
+        chrom: '22',
+        pos: 20075553,
+        end: 20075553,
+        start: 20075553,
+        stop: 20075553,
+        allele_length: [845, 846, 848, 848, 849, 849, 850, 853][index],
+        allele_type: 'complex_dup',
+        freq: { all: { af: id.endsWith('849_1') ? 0.8674 : 0.0019 } },
+      })
+    )
+
+    const events = aggregateSourceEvents(records)
+    expect(events).toHaveLength(1)
+    expect(events[0]).toMatchObject({
+      key: 'locus:duplication:22:20075553:20075553',
+      family: 'duplication',
+      minAbsoluteLength: 845,
+      maxAbsoluteLength: 853,
+    })
+    expect(events[0].alleles).toHaveLength(ids.length)
+    expect(events[0].representative.source_variant_id).toBe('chr22-20075553-INS-849_1')
+    expect(packSourceEvents(events).maxRows).toBe(1)
+  })
+
+  test('keeps distinct same-position event families separate', () => {
     const events = aggregateSourceEvents([
-      allele({ source_variant_id: 'event-a' }),
-      allele({ source_variant_id: 'event-b', variant_id: 'other' }),
+      allele({ source_variant_id: 'chr22-20075553-INS-849_1', allele_type: 'complex_dup' }),
+      allele({ source_variant_id: 'chr22-20075553-INS-1387', allele_type: 'ins' }),
+      allele({ source_variant_id: 'chr22-20075553-INV-20', allele_type: 'inv' }),
+    ])
+
+    expect(events.map((event) => event.family).sort()).toEqual([
+      'duplication',
+      'insertion',
+      'inversion',
+    ])
+  })
+
+  test('packs independently located overlapping events separately', () => {
+    const events = aggregateSourceEvents([
+      allele({ source_variant_id: 'event-a', start: 100, stop: 130 }),
+      allele({ source_variant_id: 'event-b', variant_id: 'other', start: 110, stop: 140 }),
     ])
 
     expect(events).toHaveLength(2)
     expect(packSourceEvents(events).maxRows).toBe(2)
   })
 
-  test('fallback identity is exact and type-aware, never overlap-based', () => {
-    const first = allele({ source_variant_id: null })
-    const same = allele({ source_variant_id: null, variant_id: 'same' })
-    const otherType = allele({
-      source_variant_id: null,
-      variant_id: 'deletion',
-      allele_type: 'DEL',
+  test('identity is exact and family-aware, never overlap- or source-prefix-based', () => {
+    const first = allele({ source_variant_id: 'chr1-100-INS-20' })
+    const sameFamily = allele({
+      source_variant_id: 'unrelated-format',
+      variant_id: 'dup-subtype',
+      allele_type: 'complex_dup',
+    })
+    const sameDupFamily = allele({
+      source_variant_id: 'another-id',
+      variant_id: 'dup',
+      allele_type: 'dup',
     })
     const overlap = allele({
-      source_variant_id: null,
+      source_variant_id: 'chr1-105-INS-20',
       variant_id: 'overlap',
       start: 105,
       stop: 125,
     })
 
-    expect(getSourceEventKey(first)).toBe('coordinates:ins:1:100:120')
-    expect(aggregateSourceEvents([first, same, otherType, overlap])).toHaveLength(3)
+    expect(getSourceEventKey(first)).toBe('locus:insertion:1:100:120')
+    expect(getSourceEventFamily('complex_dup')).toBe('duplication')
+    expect(aggregateSourceEvents([first, sameFamily, sameDupFamily, overlap])).toHaveLength(3)
   })
 
-  test('reports heterogeneous subtype constituents and coordinate/length ranges', () => {
+  test('reports normalized subtype constituents and coordinate/length ranges', () => {
     const event = aggregateSourceEvents([
-      allele({ allele_type: 'INV', allele_length: -30, start: 100, stop: 130 }),
+      allele({ allele_type: 'DUP', allele_length: 30, start: 100, stop: 130 }),
       allele({
         variant_id: 'complex',
-        allele_type: 'COMPLEX',
+        source_variant_id: 'other-allele',
+        allele_type: 'COMPLEX_DUP',
         allele_length: 45,
-        start: 98,
-        stop: 143,
+        start: 100,
+        stop: 130,
       }),
     ])[0]
 
-    expect(event.subtypes).toEqual(['INV', 'COMPLEX'])
+    expect(event.subtypes).toEqual(['DUP', 'COMPLEX_DUP'])
     expect(event).toMatchObject({
-      start: 98,
-      stop: 143,
-      minStart: 98,
+      start: 100,
+      stop: 130,
+      minStart: 100,
       maxStart: 100,
       minStop: 130,
-      maxStop: 143,
-      minSignedLength: -30,
+      maxStop: 130,
+      minSignedLength: 30,
       maxSignedLength: 45,
       minAbsoluteLength: 30,
       maxAbsoluteLength: 45,
