@@ -16,12 +16,6 @@ type DiplotypeVariantSet = {
 export type DiplotypeSample = {
   sample_id: string
   strand_mapping: { strandA: 0 | 1 | null; strandB: 0 | 1 | null }
-  // Carrier-resolved copies are required for TR sequence decomposition. The
-  // group-level sets remain the canonical diplotype used for grouping.
-  haplotypeA?: DiplotypeVariantSet
-  haplotypeB?: DiplotypeVariantSet
-  below_thresholdA?: DiplotypeVariantSet
-  below_thresholdB?: DiplotypeVariantSet
 }
 
 export type DiplotypeGroup = {
@@ -800,8 +794,7 @@ function detectCompoundHets(
 export function groupDiplotypes(
   variants: LRVariant[],
   carrierVariantIndices: Record<string, number[]>,
-  minAf: number,
-  trvAlts?: Record<string, Record<number, string>>
+  minAf: number
 ): DiplotypeGroup[] {
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
@@ -861,16 +854,6 @@ export function groupDiplotypes(
       .sort()
       .join(';')
 
-  const carrierVariants = (indices: number[], carrierId: string): LRVariant[] => {
-    const positionAlts = trvAlts?.[carrierId]
-    return indices.map((i) => {
-      const variant = variants[i]
-      if (variant.allele_type !== 'trv' || !positionAlts) return variant
-      const carrierAlt = positionAlts[variant.pos]
-      return carrierAlt && carrierAlt !== variant.alt ? { ...variant, alt: carrierAlt } : variant
-    })
-  }
-
   for (const [sampleId, strands] of sampleStrands) {
     const idxFirst = strands.first.indices
     const idxSecond = strands.second.indices
@@ -885,7 +868,6 @@ export function groupDiplotypes(
 
     const belowStrands = sampleBelowStrands.get(sampleId) || { first: [], second: [] }
     let belowA: number[], belowB: number[]
-    let carrierIdA: string, carrierIdB: string
 
     if (sigFirst <= sigSecond) {
       canonSigA = sigFirst
@@ -896,8 +878,6 @@ export function groupDiplotypes(
       strandB = idxSecond.length > 0 ? 1 : null
       belowA = belowStrands.first
       belowB = belowStrands.second
-      carrierIdA = `${sampleId}:${strands.first.strand}`
-      carrierIdB = `${sampleId}:${strands.second.strand}`
     } else {
       canonSigA = sigSecond
       canonSigB = sigFirst
@@ -907,27 +887,24 @@ export function groupDiplotypes(
       strandB = idxFirst.length > 0 ? 0 : null
       belowA = belowStrands.second
       belowB = belowStrands.first
-      carrierIdA = `${sampleId}:${strands.second.strand}`
-      carrierIdB = `${sampleId}:${strands.first.strand}`
-    }
-
-    const sample: DiplotypeSample = {
-      sample_id: sampleId,
-      strand_mapping: { strandA, strandB },
-      haplotypeA: { variants: carrierVariants(indicesA, carrierIdA), readable_id: canonSigA },
-      haplotypeB: { variants: carrierVariants(indicesB, carrierIdB), readable_id: canonSigB },
-      below_thresholdA: { variants: carrierVariants(belowA, carrierIdA), readable_id: '' },
-      below_thresholdB: { variants: carrierVariants(belowB, carrierIdB), readable_id: '' },
     }
 
     const combinedSig = `${canonSigA}||${canonSigB}`
     const existing = sigToGroup.get(combinedSig)
 
     if (existing) {
-      existing.samples.push(sample)
+      existing.samples.push({
+        sample_id: sampleId,
+        strand_mapping: { strandA, strandB },
+      })
     } else {
       sigToGroup.set(combinedSig, {
-        samples: [sample],
+        samples: [
+          {
+            sample_id: sampleId,
+            strand_mapping: { strandA, strandB },
+          },
+        ],
         indicesA,
         indicesB,
         belowA,
@@ -1034,7 +1011,7 @@ export function computeHaplotypeView(
   onProgress?: (status: string) => void
 ): ComputedHaplotypeData {
   if (isDiploidView) {
-    const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf, trvAlts)
+    const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf)
     const sorted = sortDiplotypes(diplotypes, sortBy)
     return { groups: sorted }
   }
