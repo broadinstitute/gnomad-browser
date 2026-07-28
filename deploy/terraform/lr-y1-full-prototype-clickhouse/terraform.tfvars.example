@@ -1,0 +1,12 @@
+# Defaults are the reviewed 128-worker ingest rung.
+machine_type      = "n2-highmem-32"
+data_disk_size_gb = 3000
+
+# This dedicated /23 is outside the accepted chr22 192.168.0.0/20 firewall
+# allowlist and leaves replacement headroom for 128 workers. Confirm it does
+# not overlap any other VPC subnet in the plan.
+subnet_cidr = "192.168.16.0/23"
+
+# Both are pre-existing shared buckets and remain data-source-only resources.
+source_mirror_bucket_name = "gnomad-lr-data"
+evidence_bucket_name      = "gnomad-lr-y1-reports"
