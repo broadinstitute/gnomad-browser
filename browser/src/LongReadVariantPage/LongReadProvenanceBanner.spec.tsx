@@ -1,8 +1,6 @@
-import React from 'react'
-import renderer from 'react-test-renderer'
 import { describe, expect, test } from '@jest/globals'
 
-import LongReadProvenanceBanner, { modalityAvailable } from './LongReadProvenanceBanner'
+import { modalityAvailable } from './LongReadProvenanceBanner'
 
 const provenance = {
   enabled: true,
@@ -17,18 +15,7 @@ const provenance = {
   ],
 }
 
-describe('LongReadProvenanceBanner', () => {
-  test('renders the persistent warning and authoritative source labels', () => {
-    const tree = renderer.create(<LongReadProvenanceBanner provenance={provenance} />)
-    const text = JSON.stringify(tree.toJSON())
-    expect(text).toContain('Non-production chr22 mixed-provenance prototype')
-    expect(text).toContain('mixed-provenance prototype')
-    expect(text).toContain('Legacy LR ancillary reference')
-    expect(text).toContain('External reference (UCSC hg38)')
-    expect(text).toContain('Unavailable for this cohort/release')
-    expect(text).toContain('run-r2')
-  })
-
+describe('long-read provenance capabilities', () => {
   test('uses server capabilities and fails unknown modalities closed', () => {
     expect(modalityAvailable(provenance, 'METHYLATION')).toBe(true)
     expect(modalityAvailable(provenance, 'COVERAGE')).toBe(false)

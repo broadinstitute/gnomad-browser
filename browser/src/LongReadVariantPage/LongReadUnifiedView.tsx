@@ -35,7 +35,7 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
-import LongReadProvenanceBanner, {
+import {
   LongReadPrototypeProvenance,
   modalityAvailable,
   sourceForModality,
@@ -833,9 +833,6 @@ const LongReadUnifiedView = ({
 
   return (
     <>
-      {provenance && (provenance.enabled || provenance.mixed_provenance) && (
-        <LongReadProvenanceBanner provenance={provenance} />
-      )}
       {outOfScope && (
         <TrackPageSection as="p">
           <strong>Prototype data unavailable outside chr22.</strong> This request was not routed to legacy primary data.
