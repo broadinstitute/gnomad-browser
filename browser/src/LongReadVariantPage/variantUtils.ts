@@ -27,7 +27,7 @@ export const getVariantCategory = (
   const t = alleleType.toLowerCase()
   if (t === 'trv') return 'tr'
   if (t === 'snv') return 'snv'
-  if (t === 'ins' || t === 'alu_ins' || t === 'sva_ins' || t === 'numt') {
+  if (t === 'ins' || t === 'insertion' || t === 'alu_ins' || t === 'line_ins' || t === 'sva_ins' || t === 'numt') {
     return 'insertion'
   }
   if (isDeletionAlleleType(t)) return 'deletion'
@@ -35,38 +35,76 @@ export const getVariantCategory = (
   return 'sv'
 }
 
+export const GNOMAD_SV_CLASS_COLORS = {
+  DEL: '#D43925',
+  DUP: '#2376B2',
+  MCNV: '#7459B2',
+  INS: '#D474E0',
+  INV: '#FA931E',
+  CPX: '#71E38C',
+  OTH: '#397246',
+} as const
+
+export type GnomadSvClass = keyof typeof GNOMAD_SV_CLASS_COLORS
+
+const ALLELE_TYPE_TO_SV_CLASS: Record<string, GnomadSvClass> = {
+  del: 'DEL',
+  deletion: 'DEL',
+  alu_del: 'DEL',
+  alu_deletion: 'DEL',
+  line_del: 'DEL',
+  line_deletion: 'DEL',
+  sva_del: 'DEL',
+  sva_deletion: 'DEL',
+  dup: 'DUP',
+  duplication: 'DUP',
+  dup_interspersed: 'DUP',
+  mcnv: 'MCNV',
+  cnv: 'MCNV',
+  ins: 'INS',
+  insertion: 'INS',
+  alu_ins: 'INS',
+  line_ins: 'INS',
+  sva_ins: 'INS',
+  numt: 'INS',
+  inv: 'INV',
+  inversion: 'INV',
+  complex_dup: 'CPX',
+  inv_dup: 'CPX',
+  cpx: 'CPX',
+  complex: 'CPX',
+  oth: 'OTH',
+  other: 'OTH',
+  bnd: 'OTH',
+  ctx: 'OTH',
+}
+
+export const normalizeAlleleTypeToSvClass = (alleleType: string): GnomadSvClass | null =>
+  ALLELE_TYPE_TO_SV_CLASS[(alleleType || '').toLowerCase()] || null
+
 export const VARIANT_CATEGORY_COLORS: Record<VariantCategory, string> = {
   snv: '#4A90D9',
-  deletion: '#D73027',
-  insertion: '#43A047',
-  sv: '#9467BD',
+  deletion: GNOMAD_SV_CLASS_COLORS.DEL,
+  insertion: GNOMAD_SV_CLASS_COLORS.INS,
+  sv: GNOMAD_SV_CLASS_COLORS.OTH,
   tr: '#E8A838',
 }
 
 /**
- * Per-allele_type mechanism colors for the 14 raw allele_type values.
- * Used for color decisions (left-edge accent stripe on phantom bars, subtype legend).
+ * Per-allele_type colors for raw LR types and accepted browser aliases.
  * Shape/geometry decisions still use getVariantCategory() → 5 categories.
  */
-export const ALLELE_TYPE_COLORS: Record<string, string> = {
-  snv: '#4A90D9',
-  ins: '#43A047',
-  alu_ins: '#7CB342',
-  sva_ins: '#558B2F',
-  numt: '#26A69A',
-  del: '#D73027',
-  deletion: '#D73027',
-  alu_del: '#D73027',
-  alu_deletion: '#D73027',
-  line_del: '#D73027',
-  line_deletion: '#D73027',
-  sva_del: '#D73027',
-  sva_deletion: '#D73027',
-  trv: '#E8A838',
-  dup: '#9467BD',
-  dup_interspersed: '#7E57C2',
-  inv_dup: '#AB47BC',
-  complex_dup: '#78909C',
+export const ALLELE_TYPE_COLORS = Object.keys(ALLELE_TYPE_TO_SV_CLASS).reduce<Record<string, string>>(
+  (colors, alleleType) => ({
+    ...colors,
+    [alleleType]: GNOMAD_SV_CLASS_COLORS[ALLELE_TYPE_TO_SV_CLASS[alleleType]],
+  }),
+  { snv: VARIANT_CATEGORY_COLORS.snv, trv: VARIANT_CATEGORY_COLORS.tr }
+)
+
+export const getAlleleTypeColor = (alleleType: string): string => {
+  const normalized = (alleleType || '').toLowerCase()
+  return ALLELE_TYPE_COLORS[normalized] || GNOMAD_SV_CLASS_COLORS.OTH
 }
 
 /**

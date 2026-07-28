@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { VARIANT_CATEGORY_COLORS, VARIANT_CATEGORY_LABELS, type VariantCategory } from './variantUtils'
+import { GNOMAD_SV_CLASS_COLORS, VARIANT_CATEGORY_COLORS, VARIANT_CATEGORY_LABELS, type VariantCategory } from './variantUtils'
 
 const LegendSection = styled.div`
   display: flex;
@@ -76,9 +76,9 @@ export const VariantShapeLegend = ({ showPhantomRegions = false, plotType = 'lol
     const items: { label: string; render: React.ReactNode }[] = [
       { label: 'Ref backbone', render: <rect x={2} y={9} width={18} height={5} fill="#999" rx={1} /> },
       { label: 'SNV', render: <ellipse cx={11} cy={11} rx={4} ry={4} fill="#4A90D9" /> },
-      { label: 'Deletion', render: <path d="M 3 14 Q 11 4 19 14" fill="none" stroke="#D73027" strokeWidth={2} strokeDasharray="4 2" /> },
-      { label: 'Insertion', render: <path d="M 11 18 C 6 13, 9 8, 11 8 C 13 8, 16 13, 11 18" fill="#43A047" opacity={0.5} stroke="#43A047" strokeWidth={1} /> },
-      { label: 'Duplication', render: <path d="M 11 16 L 7 11 L 11 6 L 15 11 Z" fill="#9467BD" opacity={0.4} stroke="#9467BD" strokeWidth={1} /> },
+      { label: 'Deletion', render: <path d="M 3 14 Q 11 4 19 14" fill="none" stroke={GNOMAD_SV_CLASS_COLORS.DEL} strokeWidth={2} strokeDasharray="4 2" /> },
+      { label: 'Insertion', render: <path d="M 11 18 C 6 13, 9 8, 11 8 C 13 8, 16 13, 11 18" fill={GNOMAD_SV_CLASS_COLORS.INS} opacity={0.5} stroke={GNOMAD_SV_CLASS_COLORS.INS} strokeWidth={1} /> },
+      { label: 'Duplication', render: <path d="M 11 16 L 7 11 L 11 6 L 15 11 Z" fill={GNOMAD_SV_CLASS_COLORS.DUP} opacity={0.4} stroke={GNOMAD_SV_CLASS_COLORS.DUP} strokeWidth={1} /> },
       { label: 'Tandem repeat', render: <><rect x={3} y={8} width={16} height={7} fill="#E8A838" opacity={0.7} rx={2} /><line x1={9} y1={8} x2={9} y2={15} stroke="white" strokeWidth={0.7} opacity={0.6} /><line x1={14} y1={8} x2={14} y2={15} stroke="white" strokeWidth={0.7} opacity={0.6} /></> },
     ]
     return (
@@ -158,15 +158,27 @@ export const VariantShapeLegend = ({ showPhantomRegions = false, plotType = 'lol
  * Displays variant color legend items using VARIANT_CATEGORY_COLORS with their shapes.
  * Used in the summary track to show what each color+shape combination means.
  */
+const COLOR_LEGEND_ITEMS: { key: string; label: string; category: VariantCategory; color: string }[] = [
+  { key: 'snv', label: 'SNV', category: 'snv', color: VARIANT_CATEGORY_COLORS.snv },
+  { key: 'INS', label: 'Insertion', category: 'insertion', color: GNOMAD_SV_CLASS_COLORS.INS },
+  { key: 'DEL', label: 'Deletion', category: 'deletion', color: GNOMAD_SV_CLASS_COLORS.DEL },
+  { key: 'DUP', label: 'Duplication', category: 'sv', color: GNOMAD_SV_CLASS_COLORS.DUP },
+  { key: 'MCNV', label: 'MCNV', category: 'sv', color: GNOMAD_SV_CLASS_COLORS.MCNV },
+  { key: 'INV', label: 'Inversion', category: 'sv', color: GNOMAD_SV_CLASS_COLORS.INV },
+  { key: 'CPX', label: 'Complex', category: 'sv', color: GNOMAD_SV_CLASS_COLORS.CPX },
+  { key: 'OTH', label: 'Other / breakend', category: 'sv', color: GNOMAD_SV_CLASS_COLORS.OTH },
+  { key: 'tr', label: 'TR', category: 'tr', color: VARIANT_CATEGORY_COLORS.tr },
+]
+
 export const VariantColorLegend = () => (
   <LegendSection>
     <LegendItem><span style={{ fontWeight: 'bold' }}>Type Colors:</span></LegendItem>
-    {SHAPE_ORDER.map((cat) => (
-      <LegendItem key={cat}>
+    {COLOR_LEGEND_ITEMS.map((item) => (
+      <LegendItem key={item.key}>
         <svg width={22} height={22}>
-          {SHAPE_RENDERERS[cat](VARIANT_CATEGORY_COLORS[cat])}
+          {SHAPE_RENDERERS[item.category](item.color)}
         </svg>
-        <span>{VARIANT_CATEGORY_LABELS[cat]}</span>
+        <span>{item.label}</span>
       </LegendItem>
     ))}
   </LegendSection>

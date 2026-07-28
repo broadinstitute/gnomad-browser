@@ -5,7 +5,7 @@
  */
 
 import { scaleLinear, scaleLog } from 'd3-scale'
-import { ALLELE_TYPE_COLORS } from './variantUtils'
+import { getAlleleTypeColor } from './variantUtils'
 import { SUPERPOPULATION_COLORS } from '../Haplotypes/colors'
 
 // --- Color mode registry ---
@@ -114,7 +114,7 @@ export function getColorByHaplotypeCountCSS(
 }
 
 export function getColorBySvTypeCSS(alleleType: string): string {
-  return ALLELE_TYPE_COLORS[(alleleType || '').toLowerCase()] || '#888888'
+  return getAlleleTypeColor(alleleType)
 }
 
 // --- RGBA variants (for DeckGL / WebGL) ---

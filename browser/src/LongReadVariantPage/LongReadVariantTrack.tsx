@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Track, RegionViewerContext } from '@gnomad/region-viewer'
 
 import Link from '../Link'
-import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
+import { getAlleleTypeColor, getVariantCategory, VARIANT_CATEGORY_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
 import { getGenealogyPanelLayout } from '../Haplotypes/genealogyPanelLayout'
@@ -336,7 +336,7 @@ const SvBand = ({ events, band, scalePosition, width, onHoverEvent, hoveredPosit
       {packed.map((event) => {
         const v = event.representative
         let color = getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })
-        if (colorMode === 'sv_type') color = event.subtypes.length > 1 ? VARIANT_CATEGORY_COLORS.sv : (ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)])
+        if (colorMode === 'sv_type') color = event.subtypes.length > 1 ? getAlleleTypeColor('cpx') : getAlleleTypeColor(v.allele_type)
         const opacityVariant = event.maxAf == null ? v : { ...v, freq: { all: { af: event.maxAf } } }
         const rowY = event.row * ROW_HEIGHT + 2
         const hoverHandlers = onHoverEvent ? {

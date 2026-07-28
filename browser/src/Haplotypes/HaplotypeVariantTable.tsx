@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, u
 import styled from 'styled-components'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
-import { PATH_COLORS, SUPERPOPULATION_COLORS, VARIANT_TYPE_COLORS } from './colors'
-import { getVariantCategory, VARIANT_CATEGORY_COLORS, VARIANT_CATEGORY_LABELS } from '../LongReadVariantPage/variantUtils'
+import { PATH_COLORS, SUPERPOPULATION_COLORS } from './colors'
+import { getAlleleTypeColor, getVariantCategory, VARIANT_CATEGORY_COLORS, VARIANT_CATEGORY_LABELS } from '../LongReadVariantPage/variantUtils'
 import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant } from './index'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
@@ -1045,7 +1045,7 @@ const TableRow = React.memo(function TableRow({
           )}
         </td>
         <td>
-          <TypeDot $color={VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)]} />
+          <TypeDot $color={getAlleleTypeColor(v.allele_type)} />
           {v.is_tr ? 'TR' : v.allele_type}
         </td>
         <td className="numeric">
