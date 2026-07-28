@@ -10,6 +10,7 @@ import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
 import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeCluster, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint, LRVariant, Legend } from '../Haplotypes'
+import type { MethylationSampleAvailability } from '../Haplotypes/MethylationHelp'
 import {
   computeHaplotypeView,
   filterDisplayVariants,
@@ -48,13 +49,6 @@ const SAMPLE_METADATA_QUERY = `
     sample_metadata(lr_cohort: $lr_cohort) { sample_id subpopulation superpopulation }
   }
 `
-
-type MethylationSampleAvailability = {
-  sample_id: string
-  available: boolean
-  status: 'AVAILABLE_COMPLETE' | 'UNAVAILABLE_INCOMPLETE' | 'UNAVAILABLE_NO_ASSAY_SOURCE' | 'UNAVAILABLE_NO_CHR22'
-  reason: string | null
-}
 
 const METHYLATION_AVAILABILITY_QUERY = `
   query RegionMethylationAvailability($lr_cohort: LongReadCohort!) {
@@ -282,10 +276,6 @@ const LongReadUnifiedView = ({
   const [methylationAvailability, setMethylationAvailability] = useState<MethylationSampleAvailability[] | null>(null)
   const availableMethylationIds = useMemo(
     () => new Set((methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)),
-    [methylationAvailability]
-  )
-  const unavailableMethylation = useMemo(
-    () => (methylationAvailability || []).filter((row) => !row.available),
     [methylationAvailability]
   )
 
@@ -846,27 +836,6 @@ const LongReadUnifiedView = ({
       {provenance && (provenance.enabled || provenance.mixed_provenance) && (
         <LongReadProvenanceBanner provenance={provenance} />
       )}
-      {mixedMode && methylationAvailability && (
-        <TrackPageSection>
-          <p>
-            <strong>Methylation availability:</strong>{' '}
-            {availableMethylationIds.size}/{methylationAvailability.length} canonical samples available;{' '}
-            {unavailableMethylation.length} unavailable samples are excluded from requests.
-          </p>
-          {unavailableMethylation.length > 0 && (
-            <details>
-              <summary>Show unavailable methylation samples and reasons</summary>
-              <ul>
-                {unavailableMethylation.map((row) => (
-                  <li key={row.sample_id}>
-                    {row.sample_id}: {row.status} — {row.reason || 'No reason supplied'}
-                  </li>
-                ))}
-              </ul>
-            </details>
-          )}
-        </TrackPageSection>
-      )}
       {outOfScope && (
         <TrackPageSection as="p">
           <strong>Prototype data unavailable outside chr22.</strong> This request was not routed to legacy primary data.
@@ -1083,6 +1052,7 @@ const LongReadUnifiedView = ({
             onShowMethylationChange={setShowMethylation}
             methylationAvailable={methylationAvailable}
             methylationLabel={sourceForModality(provenance, 'METHYLATION')?.label || 'Legacy — not Y1'}
+            methylationAvailability={mixedMode ? methylationAvailability : undefined}
             filterToOutliers={filterToOutliers}
             onFilterToOutliersChange={setFilterToOutliers}
             onLoadAllSamples={handleLoadAllSamples}

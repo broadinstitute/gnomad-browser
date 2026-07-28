@@ -10,6 +10,7 @@ import AlluvialTrack from './AlluvialTrack'
 import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
+import MethylationHelp, { type MethylationSampleAvailability } from './MethylationHelp'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { ALLELE_TYPE_COLORS, VARIANT_CATEGORY_COLORS, type VariantCategory } from '../LongReadVariantPage/variantUtils'
 import { COLOR_MODES, getVariantCssColor } from '../LongReadVariantPage/variantColorUtils'
@@ -145,6 +146,7 @@ export const Legend = ({
   onShowMethylationChange = () => { },
   methylationAvailable = true,
   methylationLabel = 'Methylation',
+  methylationAvailability,
   filterToOutliers = false,
   onFilterToOutliersChange = () => { },
   onLoadAllSamples,
@@ -188,6 +190,7 @@ export const Legend = ({
   onShowMethylationChange?: (show: boolean) => void
   methylationAvailable?: boolean
   methylationLabel?: string
+  methylationAvailability?: MethylationSampleAvailability[] | null
   filterToOutliers?: boolean
   onFilterToOutliersChange?: (filter: boolean) => void
   onLoadAllSamples?: () => void
@@ -458,7 +461,7 @@ export const Legend = ({
                 Methylation — {methylationAvailable ? methylationLabel : 'Unavailable for this cohort/release'}
               </label>
               <HaplotypeHelpButton title="Methylation">
-                <MethylationHelp />
+                <MethylationHelp availability={methylationAvailability} />
               </HaplotypeHelpButton>
             </div>
             {showMethylation && methylationAvailable && (
@@ -1098,25 +1101,6 @@ const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'similarity
         </p>
       </>
     )}
-  </>
-)
-
-const MethylationHelp = () => (
-  <>
-    <p>
-      Enabling this toggle overlays per-CpG methylation data directly beneath each haplotype
-      group. Because long-read sequencing captures both genetic variants and 5mC epigenetic
-      modifications on the same reads, this lets you visually identify allele-specific
-      methylation (ASM) where specific structural haplotypes drive local hyper- or
-      hypo-methylation.
-    </p>
-    <p>
-      You'll see a track of dots representing the group's mean methylation level at each CpG
-      site. Sites that deviate significantly from the overall population mean are highlighted
-      in red, flagging potential haplotype-driven epigenetic effects. If you check "Outliers
-      only," the view will filter down to groups containing samples that exhibit high regional
-      methylation variance.
-    </p>
   </>
 )
 
