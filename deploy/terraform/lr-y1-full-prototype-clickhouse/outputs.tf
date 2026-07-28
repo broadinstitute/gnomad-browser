@@ -39,5 +39,5 @@ output "bootstrap_snapshot" {
 }
 
 output "iap_tunnel_command" {
-  value = "gcloud compute ssh ${google_compute_instance.clickhouse.name} --project=${var.project_id} --zone=${var.zone} --tunnel-through-iap -- -L 8126:localhost:8123 -N"
+  value = "gcloud compute ssh ${google_compute_instance.clickhouse.name} --project=${var.project_id} --zone=${var.zone} --tunnel-through-iap -- -L 8128:localhost:8123 -N"
 }
