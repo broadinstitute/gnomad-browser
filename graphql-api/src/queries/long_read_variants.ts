@@ -4,6 +4,7 @@ import {
   isY1PilotEnabled,
 } from '../clickhouse'
 import { isRsId } from '@gnomad/identifiers'
+import { parseLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
 import { getFilteredRegions } from './variant-datasets/gnomad-v4-variant-queries'
 import { mergeOverlappingRegions } from './helpers/region-helpers'
 import { withCache } from '../cache'
@@ -134,15 +135,50 @@ export const fetchVariantById = async (variantId: string, cohort: LongReadCohort
   }
 
   let query: string
+  let queryParams: Record<string, unknown>
   if (isRsId(variantId)) {
     query = `SELECT * FROM lr_variants WHERE has(rsids, {id:String}) LIMIT 1`
+    queryParams = { id: variantId }
   } else {
-    query = `SELECT * FROM lr_variants WHERE variant_id = {id:String} LIMIT 1`
+    const parsed = parseLongReadVariantId(variantId)
+    if (!parsed) return null
+
+    const withoutChr = variantId.replace(/^chr/i, '')
+    const aliases = [withoutChr, `chr${withoutChr}`]
+    const locusConditions = [
+      `replaceRegexpOne(chrom, '^chr', '') = {chrom:String}`,
+      `position = {pos:UInt32}`,
+    ]
+    queryParams = { ids: aliases, chrom: parsed.chrom, pos: parsed.pos }
+
+    if (parsed.ref && parsed.alt) {
+      locusConditions.push(`ref = {ref:String}`, `alt = {alt:String}`)
+      queryParams.ref = parsed.ref
+      queryParams.alt = parsed.alt
+    } else if (parsed.alleleType) {
+      const alleleType = parsed.alleleType === 'tr' ? 'trv' : parsed.alleleType
+      locusConditions.push(`lower(allele_type) = {alleleType:String}`)
+      queryParams.alleleType = alleleType
+      if (parsed.alleleLength !== undefined) {
+        locusConditions.push(`abs(allele_length) = {alleleLength:UInt32}`)
+        queryParams.alleleLength = parsed.alleleLength
+      }
+    }
+
+    // Prefer the table's canonical ID. The locus fallback resolves aliases
+    // emitted by the haplotype view (sequence, compact symbolic, or no chr).
+    query = `
+      SELECT * FROM lr_variants
+      WHERE variant_id IN {ids:Array(String)} OR (${locusConditions.join(' AND ')})
+      ORDER BY if(variant_id = {requestedId:String}, 0, if(variant_id IN {ids:Array(String)}, 1, 2))
+      LIMIT 1
+    `
+    queryParams.requestedId = variantId
   }
 
   const resultSet = await clickhouseClient.query({
     query,
-    query_params: { id: variantId },
+    query_params: queryParams,
     format: 'JSONEachRow',
   })
   const rows = (await resultSet.json()) as any[]

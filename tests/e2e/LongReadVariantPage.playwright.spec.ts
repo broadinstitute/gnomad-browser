@@ -5,6 +5,51 @@ import { collectApiMetrics, reportApiMetrics, type ApiMetric } from './helpers/l
 const LR_DATASET = 'gnomad_r4_lr'
 // Known TR variant in the guarded chr22 mixed-provenance fixture.
 const TR_VARIANT = 'chr22-36280147-TRV-17~1'
+const CHR22_TABLE_REGION = '22-36280000-36290000'
+const CHR22_TABLE_VARIANTS = [
+  'chr22-36280147-DEL-1~1', // four-part symbolic ID
+  'chr22-36280147-TRV-17~1', // symbolic ID with provenance
+  'chr22-36280195-C-T~1', // sequence ID with provenance
+]
+
+test.describe('Long Read variant table navigation', () => {
+  test('real chr22 table links open resolved LR variant pages', async ({ page }) => {
+    test.setTimeout(120_000)
+    await page.goto(`/region/${CHR22_TABLE_REGION}?dataset=${LR_DATASET}`)
+    await expect(page.locator('#lr-variant-table-container').first()).toBeVisible({
+      timeout: 30_000,
+    })
+
+    for (const variantId of CHR22_TABLE_VARIANTS) {
+      const link = page.getByRole('link', { name: variantId, exact: true }).first()
+      await expect(link).toBeVisible({ timeout: 30_000 })
+
+      const popupPromise = page.waitForEvent('popup')
+      const variantResponsePromise = page.context().waitForEvent('response', {
+        predicate: (response) => {
+          const body = response.request().postData() || ''
+          return (
+            response.request().method() === 'POST' &&
+            body.includes('query Variant') &&
+            body.includes(variantId)
+          )
+        },
+      })
+      await link.click()
+      const variantPage = await popupPromise
+
+      await expect(variantPage.getByText('Loading variant')).toHaveCount(0, { timeout: 30_000 })
+      await expect(variantPage.getByText('Invalid Variant ID')).toHaveCount(0)
+      await expect(variantPage.getByText('Variant not found')).toHaveCount(0)
+      await expect(
+        variantPage.getByRole('heading', { name: 'Long-Read Variant Details' })
+      ).toBeVisible({ timeout: 30_000 })
+      expect((await variantResponsePromise).status()).toBe(200)
+      expect(decodeURIComponent(new URL(variantPage.url()).pathname)).toBe(`/variant/${variantId}`)
+      await variantPage.close()
+    }
+  })
+})
 
 test.describe('Long Read tandem-repeat variant page', () => {
   let page: Page

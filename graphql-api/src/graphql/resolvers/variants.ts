@@ -1,4 +1,5 @@
 import { isRsId, isVariantId, normalizeVariantId } from '@gnomad/identifiers'
+import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
 
 import { DATASET_REFERENCE_GENOMES } from '../../datasets'
 import { UserVisibleError } from '../../errors'
@@ -16,7 +17,7 @@ import {
 import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-queries'
 import { fetchVariantById as fetchLongReadVariantById } from '../../queries/long_read_variants'
 
-import { hasVRSData } from '../../../../dataset-metadata/metadata'
+import { hasVRSData, isLongRead } from '../../../../dataset-metadata/metadata'
 
 const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   // These are all "variant IDs" of one kind or another but `variantId` here
@@ -36,14 +37,14 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   let isLongReadOnlyId = false
 
   if (variantId) {
-    if (isVariantId(variantId)) {
+    if (isLongRead(dataset) && isLongReadVariantId(variantId)) {
+      // Preserve the exact LR table ID (including chr/provenance) and bypass
+      // short-read normalization so sequence aliases also reach ClickHouse.
+      normalizedVariantId = variantId
+      isLongReadOnlyId = true
+    } else if (isVariantId(variantId)) {
       normalizedVariantId = normalizeVariantId(variantId)
-    } else if (
-      /^(?:chr)?(?:[1-9]|1\d|2[0-2]|X|Y)-\d+-(?:[ACGTN]+-[ACGTN]+|[A-Z]+(?:-\d+)?)(?:~\d+)?$/i.test(
-        variantId
-      )
-    ) {
-      // LR IDs may be symbolic or sequence alleles and may include a provenance suffix.
+    } else if (isLongReadVariantId(variantId)) {
       normalizedVariantId = variantId
       isLongReadOnlyId = true
     } else {

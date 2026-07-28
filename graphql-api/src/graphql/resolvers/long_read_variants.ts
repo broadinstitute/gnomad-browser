@@ -1,4 +1,5 @@
 import { isRsId } from '@gnomad/identifiers'
+import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
 import { UserVisibleError } from '../../errors'
 import {
   fetchVariantById,
@@ -25,6 +26,9 @@ const resolveVariant = async (_obj: any, args: any, _ctx: any) => {
   let normalizedVariantId
 
   if (variantId) {
+    if (!isLongReadVariantId(variantId)) {
+      throw new UserVisibleError('Invalid variant ID')
+    }
     normalizedVariantId = variantId
   }
 

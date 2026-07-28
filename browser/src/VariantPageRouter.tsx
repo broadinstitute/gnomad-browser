@@ -3,6 +3,7 @@ import React, { useCallback, lazy } from 'react'
 import { Redirect } from 'react-router-dom'
 
 import { isVariantId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
+import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
 import { Badge, List, ListItem, Page, PageHeading } from '@gnomad/ui'
 
 import {
@@ -104,11 +105,6 @@ type VariantPageRouterProps = {
   variantId: string
 }
 
-// LR IDs may be symbolic or sequence alleles, optionally use a chr prefix, and
-// may carry a provenance suffix (for example, chr22-36280147-TRV-17~1).
-export const isLrVariantId = (id: string) =>
-  /^(?:chr)?(?:[1-9]|1\d|2[0-2]|X|Y)-\d+-(?:[ACGTN]+-[ACGTN]+|[A-Z]+(?:-\d+)?)(?:~\d+)?$/i.test(id)
-
 const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => {
   if (hasStructuralVariants(datasetId)) {
     return <StructuralVariantPage datasetId={datasetId} variantId={variantId} />
@@ -134,7 +130,7 @@ const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => 
 
   // LR-only variant IDs (e.g., TRV, DEL, INS) route to the standard VariantPage
   // which handles them via the API's LR fallback
-  if (isLrVariantId(variantId)) {
+  if (isLongReadVariantId(variantId)) {
     return <VariantPage datasetId={datasetId} variantId={variantId} />
   }
 

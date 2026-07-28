@@ -328,7 +328,7 @@ const formatBp = (bp: number): string => {
 
 /** Build a display-friendly variant ID.
  *  - Short variants (ref/alt both ≤20bp): chrom-pos-ref-alt (standard gnomAD format)
- *  - True SVs (symbolic alleles like <DEL>, or either allele >20bp): chrom-pos-SVTYPE(length)
+ *  - True SVs (symbolic alleles like <DEL>, or either allele >20bp): chrom-pos-SVTYPE-length
  *
  *  info_SVTYPE is NOT used as the trigger because the LR VCF sets it even for
  *  simple 1bp indels (e.g. info_SVTYPE="DEL" for a 7bp→1bp deletion). */
@@ -348,7 +348,7 @@ const buildVariantId = (v: {
   if (isSymbolic || isLongAllele) {
     const svtype = v.allele_type || 'SV'
     const len = v.allele_length ? Math.abs(v.allele_length) : Math.abs(v.alt.length - v.ref.length)
-    return `${chrom}-${v.pos}-${svtype.toUpperCase()}(${len})`
+    return `${chrom}-${v.pos}-${svtype.toUpperCase()}-${len}`
   }
 
   return `${chrom}-${v.pos}-${v.ref}-${v.alt}`
