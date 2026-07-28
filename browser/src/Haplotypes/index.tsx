@@ -18,6 +18,7 @@ import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
+import { createMinimumAlleleFrequencyScale } from './minimumAlleleFrequency'
 
 // Extensible plot type and color mode registries
 export const PLOT_TYPES: { value: string; label: string }[] = [
@@ -227,14 +228,11 @@ export const Legend = ({
   const isDiploidView = groupingMode === 'diploid'
   const isClusteredView = groupingMode === 'similarity'
 
-  // Log-scale slider: internal state is 0-100, mapped to log10(minAfFloor)..log10(minAfCeiling)
-  const minLog = Math.log10(Math.max(minAfFloor, 0.0001))
-  const maxLog = Math.log10(Math.max(minAfCeiling, 0.001))
-  const afToSlider = (af: number) => {
-    if (maxLog === minLog) return 50
-    return ((Math.log10(Math.max(af, minAfFloor)) - minLog) / (maxLog - minLog)) * 100
-  }
-  const sliderToAf = (val: number) => Math.pow(10, minLog + (val / 100) * (maxLog - minLog))
+  // Reserve the first slider position for zero, then retain the existing log scale.
+  const { afToSlider, sliderToAf } = createMinimumAlleleFrequencyScale(
+    minAfFloor,
+    minAfCeiling
+  )
 
   const [sliderValue, setSliderValue] = useState(() => afToSlider(initialMinAf))
   const [sortMode, setSortMode] = useState(initialSortBy)

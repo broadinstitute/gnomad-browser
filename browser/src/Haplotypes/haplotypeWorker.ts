@@ -14,6 +14,7 @@ import {
   type AutoDefaults,
   type DistanceMetric,
 } from './haplotypeCompute'
+import { minimumAlleleFrequencyOrDefault } from './minimumAlleleFrequency'
 
 // ---- Worker state ----
 
@@ -40,6 +41,7 @@ type InitMessage = {
     auto_defaults?: AutoDefaults
   }
   sortBy?: string
+  minAf?: number
   isDiploidView?: boolean
   distanceMetric?: DistanceMetric
   regionSize?: number
@@ -84,17 +86,22 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       const carrierCount = Object.keys(carrierVariantIndices).length
       self.postMessage({ type: 'PROGRESS', status: `Grouping ${carrierCount} samples into haplotypes…` })
 
-      // Compute base data at floor AF with clustering
-      const floorAf = autoDefaults?.floor || 0
-      const clusterThreshold = autoDefaults?.defaultClusterThreshold || 0
-      const isClusteredView = autoDefaults?.isClusteredView || false
+      // Clustered views need a stable floor for their base tree; other modes use the
+      // requested AF directly, including zero.
+      const floorAf = autoDefaults?.floor ?? 0
+      const clusterThreshold = autoDefaults?.defaultClusterThreshold ?? 0
+      const isClusteredView = autoDefaults?.isClusteredView ?? false
+      const initialAf = minimumAlleleFrequencyOrDefault(
+        msg.minAf,
+        autoDefaults?.defaultAf ?? floorAf
+      )
 
       const reportProgress = (status: string) => self.postMessage({ type: 'PROGRESS', status })
 
       t0 = Date.now()
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
-        floorAf, currentSortBy, isClusteredView, clusterThreshold,
+        isClusteredView ? floorAf : initialAf, currentSortBy, isClusteredView, clusterThreshold,
         trvAlts, isDiploidView, currentDistanceMetric, currentRegionSize,
         reportProgress
       )
@@ -102,12 +109,11 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       baseDataThreshold = clusterThreshold
       wasClusteredView = isClusteredView
 
-      // Apply display filtering if default AF > floor
-      const defaultAf = autoDefaults?.defaultAf || floorAf
+      // Apply display filtering if the initial AF is above the clustering floor.
       let result = baseData
-      if (isClusteredView && defaultAf > floorAf) {
+      if (isClusteredView && initialAf > floorAf) {
         self.postMessage({ type: 'PROGRESS', status: `Filtering ${baseData.groups.length} groups…` })
-        result = filterDisplayVariants(baseData, defaultAf)
+        result = filterDisplayVariants(baseData, initialAf)
       }
 
       console.log(`[perf-worker] INIT: rehydrate=${tRehydrate}ms, compute=${tCompute}ms, groups=${baseData.groups.length}, clusters=${baseData.clusters?.length || 0}`)
@@ -143,12 +149,12 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         if (!baseData || msg.clusterThreshold !== baseDataThreshold || metricChanged || modeChanged) {
           baseData = computeHaplotypeView(
             variants, carrierVariantIndices,
-            autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
+            autoDefaults?.floor ?? 0, currentSortBy, true, msg.clusterThreshold,
             trvAlts, false, currentDistanceMetric, currentRegionSize
           )
           baseDataThreshold = msg.clusterThreshold
         }
-        result = msg.minAf > (autoDefaults?.floor || 0)
+        result = msg.minAf > (autoDefaults?.floor ?? 0)
           ? filterDisplayVariants(baseData, msg.minAf)
           : baseData
       } else {
@@ -174,7 +180,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       // Rebuild base data with new cluster threshold
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
-        autoDefaults?.floor || 0, currentSortBy, true, msg.clusterThreshold,
+        autoDefaults?.floor ?? 0, currentSortBy, true, msg.clusterThreshold,
         trvAlts, false, currentDistanceMetric, currentRegionSize
       )
       baseDataThreshold = msg.clusterThreshold

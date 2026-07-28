@@ -554,7 +554,7 @@ const LongReadUnifiedView = ({
         if (workerRef.current) {
           setWorkerComputing(true)
           setLoadingStatus(`Grouping ${variantCount.toLocaleString()} variants into haplotypes…`)
-          workerRef.current.postMessage({ type: 'INIT', rawData: result, sortBy, distanceMetric, regionSize, isDiploidView: initDiploid })
+          workerRef.current.postMessage({ type: 'INIT', rawData: result, minAf: 0, sortBy, distanceMetric, regionSize, isDiploidView: initDiploid })
         } else {
           // Main-thread fallback: rehydrate SoA variants and compute directly
           const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id

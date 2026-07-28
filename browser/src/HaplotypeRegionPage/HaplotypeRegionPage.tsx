@@ -27,6 +27,7 @@ import ZoomOverview from '../Haplotypes/ZoomOverview'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import LRCoverageTrack from './LRCoverageTrack'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
+import { parseMinimumAlleleFrequency } from '../Haplotypes/minimumAlleleFrequency'
 
 import { Region } from '../RegionPage/RegionPage'
 
@@ -121,7 +122,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const regionViewerWidth = windowWidth - 30
 
   const queryParams = queryString.parse(location.search)
-  const initialThreshold = queryParams.threshold ? parseFloat(queryParams.threshold as string) : 0
+  const initialThreshold = parseMinimumAlleleFrequency(queryParams.threshold)
   const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
   const initialPlotType = (queryParams.plotType as string) || 'lollipop'
   const initialColorMode = (queryParams.colorMode as string) || 'sv_type'

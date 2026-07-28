@@ -139,7 +139,7 @@ const resolvers = {
       if (isY1PilotEnabled) return null
       try {
         const chrom = normalizeChrom(args.chrom)
-        const minAf = args.min_allele_freq || 0
+        const minAf = args.min_allele_freq ?? 0
 
         const tFetch = now()
         const [groupAssignments, distinctVariants, trvCarriers] = await Promise.all([
