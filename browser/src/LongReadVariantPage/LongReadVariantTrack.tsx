@@ -8,6 +8,7 @@ import Link from '../Link'
 import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
+import { getGenealogyPanelLayout } from '../Haplotypes/genealogyPanelLayout'
 import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributionPlot'
 import DeletionAllelicSeriesPlot from './DeletionAllelicSeriesPlot'
 import { aggregateTrLoci, getTrLocusDistribution, packTrLoci, type TrLocus } from './trLocusAggregation'
@@ -468,14 +469,12 @@ const BandDivider = styled.div`
 
 // --- Main component ---
 
-const GENEALOGY_PANEL_WIDTH = 180
-
 type VariantTypeFilters = Record<string, boolean>
 
 type LongReadVariantTrackProps = {
   variants: LRVariant[]
   lod?: LodVisibility
-  showGenealogy?: boolean
+  showGenealogyPanel?: boolean
   isDiploidView?: boolean
   hoveredVariantPosition?: number | null
   onHoverVariantPosition?: (pos: number | null) => void
@@ -485,26 +484,25 @@ type LongReadVariantTrackProps = {
   regionStop?: number
 }
 
-const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition, typeFilters, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: LongReadVariantTrackProps) => {
-  const genealogyActive = showGenealogy && !isDiploidView
-
-  // Compute width adjustment from RegionViewerContext — must match
-  // DeckGLLollipopTrack's view layout exactly for vertical alignment.
-  // The DeckGL track has a 15px left pad between left panel labels and
-  // the center panel, shifting its center view right by ~7.5px. We replicate
-  // that offset here and also account for genealogy panel width.
-  const DECKGL_LEFT_PAD = 15
-  const { scalePosition: ctxScalePosition, centerPanelWidth: ctxCenterWidth, rightPanelWidth: ctxRightPanelWidth } = useContext(RegionViewerContext)
-  const genealogyRightWidth = genealogyActive ? GENEALOGY_PANEL_WIDTH : 0
-  const extraRightNeeded = Math.max(0, genealogyRightWidth - ctxRightPanelWidth)
-  const adjCenterWidth = ctxCenterWidth - extraRightNeeded
+const LongReadVariantTrack = ({ variants, lod, showGenealogyPanel = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition, typeFilters, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: LongReadVariantTrackProps) => {
+  // Summary bands and haplotype rows must share the genomic viewport itself,
+  // not merely outer containers of equal width.
+  const {
+    scalePosition: ctxScalePosition,
+    centerPanelWidth: ctxCenterWidth,
+    leftPanelWidth: ctxLeftPanelWidth,
+    rightPanelWidth: ctxRightPanelWidth,
+  } = useContext(RegionViewerContext)
+  const { plotWidth: adjCenterWidth } = getGenealogyPanelLayout({
+    leftPanelWidth: ctxLeftPanelWidth,
+    centerPanelWidth: ctxCenterWidth,
+    contextRightPanelWidth: ctxRightPanelWidth,
+    showGenealogyPanel: showGenealogyPanel && !isDiploidView,
+  })
   const ctxScaleFactor = ctxCenterWidth > 0 ? adjCenterWidth / ctxCenterWidth : 1
-  // DeckGL view offset: center-panel view is (canvasWidth - leftPad) wide,
-  // centered on canvasWidth/2, so data x=0 renders at pixel offset +leftPad/2
-  const deckglOffset = DECKGL_LEFT_PAD / 2
   const adjScalePosition = ctxScaleFactor === 1
-    ? (pos: number) => ctxScalePosition(pos) + deckglOffset
-    : (pos: number) => ctxScalePosition(pos) * ctxScaleFactor + deckglOffset
+    ? ctxScalePosition
+    : (pos: number) => ctxScalePosition(pos) * ctxScaleFactor
 
   const [hovered, setHovered] = useState<HoveredVariant | null>(null)
   const [hoveredTrLocus, setHoveredTrLocus] = useState<HoveredTrLocus | null>(null)

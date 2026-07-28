@@ -449,7 +449,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         leftPanelWidth={115}
         width={regionViewerWidth}
         regions={regionViewerRegions}
-        rightPanelWidth={isSmallScreen ? 0 : showTree ? 250 : 80}
+        rightPanelWidth={isLongRead(datasetId) ? (!isSmallScreen && showTree ? 250 : 15) : (isSmallScreen ? 0 : 80)}
         renderOverview={({ scalePosition, width: overviewWidth }: any) => (
           <TranscriptPlot
             height={10}

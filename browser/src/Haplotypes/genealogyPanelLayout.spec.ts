@@ -8,9 +8,11 @@ describe('getGenealogyPanelLayout', () => {
       contextRightPanelWidth: 80,
       showGenealogyPanel: false,
     })).toEqual({
-      plotWidth: 850,
+      plotWidth: 835,
+      plotLeft: 150,
+      plotRight: 985,
       rightPanelWidth: 0,
-      totalWidth: 1000,
+      totalWidth: 985,
     })
   })
 
@@ -21,9 +23,11 @@ describe('getGenealogyPanelLayout', () => {
       contextRightPanelWidth: 250,
       showGenealogyPanel: false,
     })).toEqual({
-      plotWidth: 850,
+      plotWidth: 835,
+      plotLeft: 150,
+      plotRight: 985,
       rightPanelWidth: 0,
-      totalWidth: 1000,
+      totalWidth: 985,
     })
   })
 
@@ -35,6 +39,8 @@ describe('getGenealogyPanelLayout', () => {
       showGenealogyPanel: true,
     })).toEqual({
       plotWidth: 670,
+      plotLeft: 150,
+      plotRight: 820,
       rightPanelWidth: 180,
       totalWidth: 1000,
     })
@@ -48,8 +54,34 @@ describe('getGenealogyPanelLayout', () => {
       showGenealogyPanel: true,
     })).toEqual({
       plotWidth: 600,
+      plotLeft: 150,
+      plotRight: 750,
       rightPanelWidth: 250,
       totalWidth: 1000,
     })
   })
+
+  test.each([false, true])(
+    'maps summary bands and haplotype rows to the same genomic pixel boundaries (genealogy=%s)',
+    showGenealogyPanel => {
+      const regionViewerPanels = {
+        leftPanelWidth: 132,
+        centerPanelWidth: 1091,
+        contextRightPanelWidth: 260,
+        showGenealogyPanel,
+      }
+
+      // Both stacked track families consume this layout. These assertions guard the
+      // genomic viewport itself rather than the unrelated outer canvas width.
+      const summaryLayout = getGenealogyPanelLayout(regionViewerPanels)
+      const haplotypeLayout = getGenealogyPanelLayout(regionViewerPanels)
+
+      expect([summaryLayout.plotLeft, summaryLayout.plotRight]).toEqual([
+        haplotypeLayout.plotLeft,
+        haplotypeLayout.plotRight,
+      ])
+      expect(summaryLayout.plotLeft).toBe(132)
+      expect(summaryLayout.plotRight).toBe(showGenealogyPanel ? 1223 : 1468)
+    }
+  )
 })

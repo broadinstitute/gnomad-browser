@@ -2232,13 +2232,13 @@ function DeckGLLollipopCanvas({
     })
   }, [selectedVariantPos, scalePosition, totalHeight])
 
-  // Multi-view: left panel, center (variants), right panel (only when genealogy visible)
+  // Multi-view: the genomic center starts exactly at RegionViewer's panel boundary,
+  // matching the stacked SVG summary tracks above it.
   const views = useMemo(
     () => {
-      const leftPad = 15 // gap between left panel labels and haplotype rows
       const v = [
-        new OrthographicView({ id: 'left-panel', x: 0, y: 0, width: leftPanelWidth + leftPad, height: viewportHeight, flipY: true }),
-        new OrthographicView({ id: 'center-panel', x: leftPanelWidth + leftPad, y: 0, width: canvasWidth - leftPad, height: viewportHeight, flipY: true }),
+        new OrthographicView({ id: 'left-panel', x: 0, y: 0, width: leftPanelWidth, height: viewportHeight, flipY: true }),
+        new OrthographicView({ id: 'center-panel', x: leftPanelWidth, y: 0, width: canvasWidth, height: viewportHeight, flipY: true }),
       ]
       if (rightPanelWidth > 0) {
         v.push(new OrthographicView({ id: 'right-panel', x: leftPanelWidth + canvasWidth, y: 0, width: rightPanelWidth, height: viewportHeight, flipY: true }))

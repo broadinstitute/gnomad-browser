@@ -235,7 +235,7 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
       <RegionViewer
         leftPanelWidth={115}
         regions={[isLongRead(datasetId) ? region : viewRegion]}
-        rightPanelWidth={isSmallScreen ? 0 : showTree ? 250 : 80}
+        rightPanelWidth={isLongRead(datasetId) ? (!isSmallScreen && showTree ? 250 : 15) : (isSmallScreen ? 0 : 80)}
         width={regionViewerWidth}
       >
         {coverageTrack}

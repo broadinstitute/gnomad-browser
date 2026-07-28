@@ -620,6 +620,17 @@ const LongReadUnifiedView = ({
   const dataIsDiploid = haplotypeGroups.groups.length > 0 && 'is_diplotype' in haplotypeGroups.groups[0]
   const dataMatchesMode = haplotypeGroups.groups.length === 0 || dataIsDiploid === isDiploidView
 
+  // Match HaplotypeTrack's genealogy eligibility so summary bands reserve tree space
+  // only when the tree actually renders. In particular, a missing tree lets both
+  // track families expand across RegionViewer's otherwise reserved right panel.
+  const genealogyPanelVisible = useMemo(() => {
+    if (!showHaplotypes || !showGenealogy || isDiploidView || !dataMatchesMode) return false
+    const groups = haplotypeGroups.groups as HaplotypeGroup[]
+    if (!filterToOutliers || !showMethylation) return groups.length >= 2
+    const outlierSampleIds = new Set(methylationData.map(point => point.sample))
+    return groups.filter(group => group.samples.some(sample => outlierSampleIds.has(sample.sample_id))).length >= 2
+  }, [showHaplotypes, showGenealogy, isDiploidView, dataMatchesMode, haplotypeGroups.groups, filterToOutliers, showMethylation, methylationData])
+
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
     setMethylationAvailability(null)
@@ -880,7 +891,7 @@ const LongReadUnifiedView = ({
       {/* Base layer — always rendered */}
       {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
       <LRUniqueDensityTrack variants={zoomedVariants} />
-      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogy={showHaplotypes && showGenealogy} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
+      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
 
       {/* Haplotype layer — opt-in */}
       {showHaplotypes && (
