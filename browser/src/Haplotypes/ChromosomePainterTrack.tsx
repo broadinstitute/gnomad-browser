@@ -4,6 +4,7 @@ import { OrthographicView } from '@deck.gl/core'
 import { SolidPolygonLayer, ScatterplotLayer, LineLayer, TextLayer } from '@deck.gl/layers'
 import { RegionViewerContext } from '@gnomad/region-viewer'
 import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
+import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
 import type {
   HaplotypeGroup,
@@ -136,10 +137,10 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
 
   // Refs for canvas dimensions — avoids stale closures in scroll handler
   const centerWidthRef = useRef(0)
+  const rightPanelWidthRef = useRef(0)
   const viewportHeightRef = useRef(0)
 
   const LEFT_PANEL_WIDTH = 200
-  const RIGHT_PANEL_WIDTH = 180
 
   // Imperative scroll handler — updates DeckGL camera directly, no React re-render
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
@@ -149,14 +150,16 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
     if (deckRef.current?.deck) {
       const vh = viewportHeightRef.current
       const cw = centerWidthRef.current
+      const rw = rightPanelWidthRef.current
       const yTarget = newScrollTop + vh / 2
-      deckRef.current.deck.setProps({
-        viewState: {
-          'left-panel': { target: [LEFT_PANEL_WIDTH / 2, yTarget, 0], zoom: 0 },
-          'center-panel': { target: [cw / 2, yTarget, 0], zoom: 0 },
-          'right-panel': { target: [RIGHT_PANEL_WIDTH / 2, yTarget, 0], zoom: 0 },
-        },
-      })
+      const viewState: Record<string, { target: [number, number, number]; zoom: number }> = {
+        'left-panel': { target: [LEFT_PANEL_WIDTH / 2, yTarget, 0], zoom: 0 },
+        'center-panel': { target: [cw / 2, yTarget, 0], zoom: 0 },
+      }
+      if (rw > 0) {
+        viewState['right-panel'] = { target: [rw / 2, yTarget, 0], zoom: 0 }
+      }
+      deckRef.current.deck.setProps({ viewState })
     }
   }, [])
 
@@ -195,13 +198,31 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
   }, [])
 
   // Consume RegionViewerContext directly — bypass Track component
-  const { scalePosition, centerPanelWidth: centerWidth } = useContext(RegionViewerContext)
+  const {
+    scalePosition,
+    centerPanelWidth: contextCenterWidth,
+    rightPanelWidth: contextRightPanelWidth,
+  } = useContext(RegionViewerContext)
 
-  const totalWidth = LEFT_PANEL_WIDTH + centerWidth + RIGHT_PANEL_WIDTH
-  const showRightPanel = showGenealogy && genealogyResult && leafYPositions.size > 0
+  const showRightPanel = Boolean(showGenealogy && genealogyResult && leafYPositions.size > 0)
+  const {
+    plotWidth: centerWidth,
+    rightPanelWidth,
+    totalWidth,
+  } = getGenealogyPanelLayout({
+    leftPanelWidth: LEFT_PANEL_WIDTH,
+    centerPanelWidth: contextCenterWidth,
+    contextRightPanelWidth,
+    showGenealogyPanel: showRightPanel,
+  })
+  const scaleFactor = contextCenterWidth > 0 ? centerWidth / contextCenterWidth : 1
+  const adjustedScalePosition = scaleFactor === 1
+    ? scalePosition
+    : (pos: number) => scalePosition(pos) * scaleFactor
 
   // Keep dimension refs in sync
   centerWidthRef.current = centerWidth
+  rightPanelWidthRef.current = rightPanelWidth
 
   return (
     <div
@@ -218,10 +239,10 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
           totalHeight={totalHeight}
           totalWidth={totalWidth}
           leftPanelWidth={LEFT_PANEL_WIDTH}
-          rightPanelWidth={RIGHT_PANEL_WIDTH}
+          rightPanelWidth={rightPanelWidth}
           start={start}
           stop={stop}
-          scalePosition={scalePosition}
+          scalePosition={adjustedScalePosition}
           width={centerWidth}
           hovered={hovered}
           onHover={onHover}
@@ -249,7 +270,7 @@ const ChromosomePainterTrack: React.FC<ChromosomePainterTrackProps> = ({
           <CPThresholdDragOverlay
             leftPanelWidth={LEFT_PANEL_WIDTH}
             centerWidth={centerWidth}
-            rightPanelWidth={RIGHT_PANEL_WIDTH}
+            rightPanelWidth={rightPanelWidth}
             totalHeight={totalHeight}
             showGenealogy={showGenealogy}
             genealogyResult={genealogyResult}
@@ -622,21 +643,25 @@ function ChromosomePainterCanvas({
     return result
   }, [treeLayout, totalHeight, onClusterThresholdChange, toggleClusterExpansion, onHover])
 
-  // Multi-view: left panel, center (painted blocks), right panel
-  const views = useMemo(
-    () => [
+  // Multi-view: omit the right panel entirely when no genealogy tree is rendered.
+  const views = useMemo(() => {
+    const result = [
       new OrthographicView({ id: 'left-panel', x: 0, y: 0, width: leftPanelWidth, height: viewportHeight, flipY: true }),
       new OrthographicView({ id: 'center-panel', x: leftPanelWidth, y: 0, width, height: viewportHeight, flipY: true }),
-      new OrthographicView({ id: 'right-panel', x: leftPanelWidth + width, y: 0, width: rightPanelWidth, height: viewportHeight, flipY: true }),
-    ],
-    [leftPanelWidth, width, rightPanelWidth, viewportHeight]
-  )
+    ]
+    if (rightPanelWidth > 0) {
+      result.push(new OrthographicView({ id: 'right-panel', x: leftPanelWidth + width, y: 0, width: rightPanelWidth, height: viewportHeight, flipY: true }))
+    }
+    return result
+  }, [leftPanelWidth, width, rightPanelWidth, viewportHeight])
 
   const yTarget = scrollTopRef.current + viewportHeight / 2
-  const viewState = {
-    'left-panel': { target: [leftPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
-    'center-panel': { target: [width / 2, yTarget, 0] as [number, number, number], zoom: 0 },
-    'right-panel': { target: [rightPanelWidth / 2, yTarget, 0] as [number, number, number], zoom: 0 },
+  const viewState: Record<string, { target: [number, number, number]; zoom: number }> = {
+    'left-panel': { target: [leftPanelWidth / 2, yTarget, 0], zoom: 0 },
+    'center-panel': { target: [width / 2, yTarget, 0], zoom: 0 },
+  }
+  if (rightPanelWidth > 0) {
+    viewState['right-panel'] = { target: [rightPanelWidth / 2, yTarget, 0], zoom: 0 }
   }
 
   return (

@@ -19,6 +19,7 @@ import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from '.
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation } from './index'
 import type { DiplotypeGroup } from './haplotypeCompute'
 import { getRowBackgroundRects } from './haplotypeBackgrounds'
+import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
@@ -514,16 +515,22 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   // Consume RegionViewerContext directly — bypass Track component
   const { scalePosition, centerPanelWidth: contextCenterWidth, leftPanelWidth: contextLeftPanelWidth, rightPanelWidth: contextRightPanelWidth } = useContext(RegionViewerContext)
 
-  // The DeckGL track must fit within the same total width as sibling tracks.
-  // When genealogy is shown, shrink center panel to make room for the tree panel
-  // within the total available width (left + center + right from context).
+  // The tree panel exists only when there is a tree to render. Otherwise the plot
+  // absorbs RegionViewer's reserved right-panel width instead of leaving whitespace.
   const leftPanelWidth = contextLeftPanelWidth
-  const GENEALOGY_PANEL_WIDTH = 180
-  const rightPanelWidth = (showGenealogy && !isDiploidView) ? GENEALOGY_PANEL_WIDTH : 0
-  const extraRightNeeded = Math.max(0, rightPanelWidth - contextRightPanelWidth)
-  const centerWidth = contextCenterWidth - extraRightNeeded
-  const totalWidth = leftPanelWidth + centerWidth + rightPanelWidth
-  const showRightPanel = showGenealogy && genealogyResult && leafYPositions.size > 0
+  const showRightPanel = Boolean(
+    showGenealogy && !isDiploidView && genealogyResult && leafYPositions.size > 0
+  )
+  const {
+    plotWidth: centerWidth,
+    rightPanelWidth,
+    totalWidth,
+  } = getGenealogyPanelLayout({
+    leftPanelWidth,
+    centerPanelWidth: contextCenterWidth,
+    contextRightPanelWidth,
+    showGenealogyPanel: showRightPanel,
+  })
 
   // Rescale genomic positions to fit the (possibly narrower) center panel
   const scaleFactor = contextCenterWidth > 0 ? centerWidth / contextCenterWidth : 1
