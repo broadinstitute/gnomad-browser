@@ -103,7 +103,6 @@ def export_table_to_elasticsearch(
     id_field=None,
     index_fields=None,
     num_shards=1,
-    index_suffix=None,
 ):
     export_time = datetime.datetime.utcnow()
 
@@ -142,9 +141,7 @@ def export_table_to_elasticsearch(
     es_client = elasticsearch.Elasticsearch(host, port=9200, http_auth=auth)
     cluster_name = es_client.cluster.health()["cluster_name"]
 
-    # Defaults to the export timestamp. Callers can pass index_suffix to name the index after the
-    # data release instead (eg. "2026_07_20"), which keeps the index name stable across reloads.
-    index = f"{index}-{index_suffix or export_time.strftime('%Y-%m-%d--%H-%M')}"
+    index = f"{index}-{export_time.strftime('%Y-%m-%d--%H-%M')}"
 
     if es_client.indices.exists(index=index):
         es_client.indices.delete(index=index)
