@@ -4,7 +4,7 @@ import { SUPERPOPULATION_COLORS } from './colors'
 
 export type TrDataPoint = { length_diff: number; pop: string; count: number }
 
-export const POP_ORDER = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS', 'N/A']
+export const POP_ORDER = ['AFR', 'AMR', 'ASJ', 'EAS', 'EUR', 'SAS', 'N/A']
 
 const PLOT_MARGIN = { top: 8, right: 8, bottom: 20, left: 32 }
 

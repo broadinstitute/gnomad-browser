@@ -1,5 +1,6 @@
 import {
   aggregateTrLoci,
+  getTrLocusDistribution,
   getTrLocusKey,
   packTrLoci,
   type TrAlleleRecord,
@@ -13,7 +14,7 @@ const allele = (overrides: Partial<TrAlleleRecord> = {}): TrAlleleRecord => ({
   end: 110,
   allele_length: 1,
   main_reference_region: { chrom: '1', start: 100, stop: 110 },
-  freq: { all: { af: 0.01 } },
+  freq: { all: { af: 0.01, ac: 6 } },
   ...overrides,
 })
 
@@ -66,6 +67,52 @@ describe('TR locus aggregation', () => {
     expect(locus.maxLengthDiff).toBe(41)
     expect(locus.maxAf).toBe(0.2)
     expect(locus.representative.variant_id).toBe('insertion')
+  })
+
+  test('builds a shared multiallelic distribution from signed lengths and population ACs', () => {
+    const alleles = [
+      allele({
+        variant_id: 'short-alt',
+        allele_length: -3,
+        freq: {
+          all: { af: 0.1, ac: 10 },
+          populations: [{ id: 'afr', ac: 4 }, { id: 'nfe', ac: 6 }],
+        },
+      }),
+      allele({
+        variant_id: 'long-alt',
+        allele_length: 5,
+        freq: {
+          all: { af: 0.2, ac: 8 },
+          populations: [{ id: 'afr', ac: 3 }, { id: 'nfe', ac: 5 }],
+        },
+      }),
+    ]
+
+    expect(getTrLocusDistribution(aggregateTrLoci(alleles)[0].alleles)).toEqual([
+      { length_diff: -3, pop: 'AFR', count: 4 },
+      { length_diff: -3, pop: 'EUR', count: 6 },
+      { length_diff: 5, pop: 'AFR', count: 3 },
+      { length_diff: 5, pop: 'EUR', count: 5 },
+    ])
+  })
+
+  test('uses cohort AC only when population ACs are unavailable', () => {
+    expect(getTrLocusDistribution([
+      allele({ allele_length: 2, freq: { all: { af: 0.1, ac: 7 }, populations: [] } }),
+    ])).toEqual([{ length_diff: 2, pop: 'N/A', count: 7 }])
+  })
+
+  test('does not fabricate bins from missing lengths or counts', () => {
+    expect(getTrLocusDistribution([
+      allele({ allele_length: null, freq: { all: { af: 0.1, ac: 7 } } }),
+      allele({ variant_id: 'missing-count', allele_length: 4, freq: { all: { af: 0.1 } } }),
+      allele({
+        variant_id: 'missing-pop-count',
+        allele_length: 8,
+        freq: { all: { af: 0.1 }, populations: [{ id: 'afr', ac: null }] },
+      }),
+    ])).toEqual([])
   })
 
   test('leaves unavailable lengths and frequencies unavailable', () => {

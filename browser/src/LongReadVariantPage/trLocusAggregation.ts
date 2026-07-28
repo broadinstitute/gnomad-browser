@@ -6,8 +6,14 @@ export type TrAlleleRecord = {
   end: number | null
   allele_length: number | null
   main_reference_region: { chrom: string; start: number; stop: number } | null
-  freq?: { all?: { af?: number | null } | null; af?: number | null } | null
+  freq?: {
+    all?: { af?: number | null; ac?: number | null } | null
+    af?: number | null
+    populations?: Array<{ id: string; ac?: number | null }> | null
+  } | null
 }
+
+export type TrDistributionPoint = { length_diff: number; pop: string; count: number }
 
 export type TrLocus<T extends TrAlleleRecord = TrAlleleRecord> = {
   key: string
@@ -44,6 +50,50 @@ export const getTrLocusKey = (variant: TrAlleleRecord): string => {
   if (variant.source_variant_id) return `source:${variant.source_variant_id}`
   const locus = coordinates(variant)
   return `coordinates:${locus.chrom}:${locus.start}:${locus.stop}`
+}
+
+const POPULATION_LABELS: Record<string, string> = {
+  afr: 'AFR',
+  amr: 'AMR',
+  asj: 'ASJ',
+  eas: 'EAS',
+  nfe: 'EUR',
+  sas: 'SAS',
+}
+
+const availableCount = (value: unknown): number | null => {
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0) return null
+  return value
+}
+
+/**
+ * Build an ALT-allele count histogram for a summary TR locus. Y1 allele_length is
+ * the signed ALT-minus-REF base-pair difference. Population ACs are preferred so
+ * stacked bars do not double-count the cohort AC; cohort AC is used only when no
+ * ancestry AC is available for that ALT. Missing lengths/counts stay missing.
+ */
+export const getTrLocusDistribution = <T extends TrAlleleRecord>(
+  alleles: T[]
+): TrDistributionPoint[] => {
+  const distribution: TrDistributionPoint[] = []
+  alleles.forEach((allele) => {
+    const lengthDiff = allele.allele_length
+    if (typeof lengthDiff !== 'number' || !Number.isFinite(lengthDiff)) return
+
+    const populationCounts = (allele.freq?.populations || []).flatMap((population) => {
+      const pop = POPULATION_LABELS[population.id.toLowerCase()]
+      const count = availableCount(population.ac)
+      return pop && count !== null ? [{ length_diff: lengthDiff, pop, count }] : []
+    })
+    if (populationCounts.length > 0) {
+      distribution.push(...populationCounts)
+      return
+    }
+
+    const count = availableCount(allele.freq?.all?.ac)
+    if (count !== null) distribution.push({ length_diff: lengthDiff, pop: 'N/A', count })
+  })
+  return distribution
 }
 
 export const aggregateTrLoci = <T extends TrAlleleRecord>(variants: T[]): TrLocus<T>[] => {

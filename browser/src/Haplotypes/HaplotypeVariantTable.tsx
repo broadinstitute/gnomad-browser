@@ -12,6 +12,7 @@ import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
 import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
 import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
 import TRDistributionPlot, { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
+import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 
 type AlleleStructure = {
   sequence: string
@@ -31,8 +32,8 @@ type DerivedVariant = LRVariant & {
   carrier_count: number
   is_tr: boolean
   tr_distribution?: TrDataPoint[]
-  min_length_diff?: number
-  max_length_diff?: number
+  min_length_diff?: number | null
+  max_length_diff?: number | null
   tr_allele_structures?: AlleleStructure[]
   tr_flank_prefix?: string
   tr_flank_suffix?: string
@@ -182,6 +183,9 @@ const SvCsqBadge = styled.span`
   margin-right: 3px;
   white-space: nowrap;
 `
+
+const formatTrLengthRange = (min: number | null | undefined, max: number | null | undefined) =>
+  min == null || max == null ? '—' : `${min}..${max}bp`
 
 const renderPredictor = (value: number | null | undefined, warnThreshold: number, dangerThreshold: number) => {
   if (value == null) return <span style={{ color: '#ccc' }}>—</span>
@@ -1044,7 +1048,7 @@ const TableRow = React.memo(function TableRow({
         </td>
         <td className="numeric">
           {v.is_tr
-            ? `${v.min_length_diff ?? 0}..${v.max_length_diff ?? 0}bp`
+            ? formatTrLengthRange(v.min_length_diff, v.max_length_diff)
             : v.allele_length}
         </td>
         <td className="numeric"><span title={v.freq.af == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.af, 4)}</span></td>
@@ -1125,7 +1129,7 @@ const TableRow = React.memo(function TableRow({
                 </div>
                 {v.tr_distribution && (
                   <>
-                    <div>Allele length range: {v.min_length_diff ?? 0} to {v.max_length_diff ?? 0}bp</div>
+                    <div>Allele length range: {v.min_length_diff} to {v.max_length_diff}bp</div>
                     <div>Distinct allele lengths: {new Set(v.tr_distribution.map((d) => d.length_diff)).size}</div>
                   </>
                 )}
@@ -1369,11 +1373,19 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   // Derive variant list for summary mode (cheap, depends on zoom-filtered variants)
   const summaryDerivedVariants = useMemo(() => {
     if (mode !== 'summary') return []
+    const trLoci = aggregateTrLoci(
+      summaryVariants.filter((v: any) => (v.allele_type || '').toLowerCase() === 'trv')
+    )
+    const trLociByKey = new Map(trLoci.map((locus) => [locus.key, locus]))
+
     return summaryVariants.map((v: any) => {
       const SUPERPOPS = new Set(['afr', 'amr', 'eas', 'nfe', 'sas'])
       const populations = (v.freq?.populations || [])
         .filter((p: any) => SUPERPOPS.has(p.id) && p.af != null)
-        .map((p: any) => ({ id: p.id, af: p.af }))
+        .map((p: any) => ({ id: p.id, af: p.af, ac: p.ac ?? null }))
+      const isTr = (v.allele_type || '').toLowerCase() === 'trv'
+      const locus = isTr ? trLociByKey.get(getTrLocusKey(v)) : undefined
+      const trDistribution = locus ? getTrLocusDistribution(locus.alleles) : []
       return {
         variant_id: v.variant_id,
         source_variant_id: v.source_variant_id,
@@ -1384,7 +1396,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         ref: v.ref,
         alt: v.alt,
         allele_type: v.allele_type,
-        allele_length: v.allele_length || v.length || 0,
+        allele_length: v.allele_length ?? v.length ?? null,
         freq: nullableLongReadFrequency(v.freq?.all),
         populations,
         rsid: (v.rsids || [])[0] || '',
@@ -1403,7 +1415,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         group_count: 0,
         carrier_count: v.freq?.all?.ac ?? null,
         short_read_match_id: v.short_read_match_id || null,
-        is_tr: v.allele_type === 'trv',
+        is_tr: isTr,
+        tr_distribution: trDistribution.length > 0 ? trDistribution : undefined,
+        min_length_diff: locus?.minLengthDiff ?? null,
+        max_length_diff: locus?.maxLengthDiff ?? null,
         enveloped_ids: v.enveloped_ids || null,
       } as DerivedVariant
     })

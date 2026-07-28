@@ -24,7 +24,7 @@ const optionalNumber = (value: unknown) => {
   return Number.isFinite(number) ? number : null
 }
 
-const mapY1RowToGraphQL = (
+export const mapY1RowToGraphQL = (
   row: any,
   cohort: LongReadCohort,
   populations: any[],
@@ -44,7 +44,10 @@ const mapY1RowToGraphQL = (
     chrom: row.chrom.replace(/^chr/, ''),
     pos: Number(row.position),
     end: Number(row.reference_end),
-    length: Number(row.allele_length),
+    // allele_length is the signed ALT-minus-REF difference in the accepted Y1
+    // allele contract. Preserve a genuine zero, but never turn a missing value
+    // into the scientifically meaningful zero-length bin.
+    length: optionalNumber(row.allele_length),
     ref: row.ref_allele,
     alt: row.alt,
     xpos: Number(row.xpos),

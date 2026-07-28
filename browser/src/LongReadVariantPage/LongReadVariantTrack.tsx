@@ -9,7 +9,7 @@ import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assign
 import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
 import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributionPlot'
-import { aggregateTrLoci, packTrLoci, type TrLocus } from './trLocusAggregation'
+import { aggregateTrLoci, getTrLocusDistribution, packTrLoci, type TrLocus } from './trLocusAggregation'
 
 // --- Types ---
 
@@ -30,7 +30,11 @@ type LRVariant = {
   } | null
   filters: string[] | null
   sv_consequences: string[] | null
-  freq?: { all?: { af?: number | null } | null; af?: number | null } | null
+  freq?: {
+    all?: { af?: number | null; ac?: number | null } | null
+    af?: number | null
+    populations?: Array<{ id: string; ac?: number | null }> | null
+  } | null
 }
 
 type Band = 'snv' | 'ins' | 'del' | 'dup' | 'sv' | 'tr'
@@ -112,9 +116,7 @@ const formatSignedLength = (value: number | null) => {
 
 const TrLocusTooltip = ({ hovered }: { hovered: HoveredTrLocus }) => {
   const { locus } = hovered
-  const distribution: TrDataPoint[] = locus.alleles
-    .filter((allele) => allele.allele_length != null)
-    .map((allele) => ({ length_diff: allele.allele_length as number, pop: 'N/A', count: 1 }))
+  const distribution: TrDataPoint[] = getTrLocusDistribution(locus.alleles)
 
   return (
     <div style={{ position: 'fixed', left: hovered.x + 12, top: hovered.y + 12, background: 'white', border: '1px solid #ccc', borderRadius: 4, padding: '6px 8px', fontSize: 12, pointerEvents: 'none', zIndex: 10000, width: 260, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
@@ -122,7 +124,7 @@ const TrLocusTooltip = ({ hovered }: { hovered: HoveredTrLocus }) => {
       <div><strong>ALT records:</strong> {locus.alleles.length}</div>
       <div><strong>Length difference:</strong> {formatSignedLength(locus.minLengthDiff)} to {formatSignedLength(locus.maxLengthDiff)}</div>
       <div><strong>Maximum ALT AF:</strong> {locus.maxAf == null ? 'Unavailable' : locus.maxAf.toPrecision(4)}</div>
-      {distribution.length > 0 && <TRDistributionPlot distribution={distribution} compact interactive={false} yAxisLabel="ALT records" />}
+      {distribution.length > 0 && <TRDistributionPlot distribution={distribution} compact interactive={false} yAxisLabel="Allele count" />}
       {locus.alleles.length > 1 && <div style={{ color: '#666', marginTop: 2 }}>Click opens the maximum-AF ALT record.</div>}
     </div>
   )
