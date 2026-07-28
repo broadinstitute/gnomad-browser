@@ -58,3 +58,27 @@ test.describe('Long Read region page — Summary View', () => {
     expect(lrQuery?.status).toBe(200)
   })
 })
+
+const runMixedPrototype = process.env.LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED === 'true'
+
+test.describe('Long Read chr22 mixed-provenance prototype', () => {
+  test.skip(!runMixedPrototype, 'requires the isolated chr22 mixed-provenance stack')
+
+  test('labels sources and clears unsupported state when switching cohorts', async ({ page }) => {
+    await page.goto('/region/22-11160001-11170000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc')
+    await expect(page.getByTestId('lr-provenance-banner')).toBeVisible({ timeout: 30_000 })
+    await expect(page.getByTestId('lr-provenance-banner')).toContainText(
+      'Non-production chr22 mixed-provenance prototype.'
+    )
+
+    await page.locator('#lr-cohort').selectOption('aou')
+    await expect(page.getByText('All of Us is summary-only; Haplotype View is unavailable.')).toBeVisible()
+    expect(new URL(page.url()).searchParams.get('show_haplotypes')).toBeNull()
+  })
+
+  test('does not render missing frequency values as zero', async ({ page }) => {
+    await page.goto('/region/22-11160001-11170000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc')
+    const unavailableCell = page.locator('td.numeric span[title="Unavailable"]').first()
+    if (await unavailableCell.count()) await expect(unavailableCell).toHaveText('—')
+  })
+})

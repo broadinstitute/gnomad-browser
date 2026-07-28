@@ -109,6 +109,8 @@ const config = {
       REPORT_VARIANT_VARIANT_ID_PARAMETER: null,
       REPORT_VARIANT_DATASET_PARAMETER: null,
       LR_Y1_ENABLED: false,
+      // Defensive UI defaults only. Provenance/capabilities returned by the API are authoritative.
+      LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED: false,
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),

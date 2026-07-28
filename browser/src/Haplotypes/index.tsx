@@ -143,6 +143,8 @@ export const Legend = ({
   onSortModeChange = () => { },
   showMethylation = true,
   onShowMethylationChange = () => { },
+  methylationAvailable = true,
+  methylationLabel = 'Methylation',
   filterToOutliers = false,
   onFilterToOutliersChange = () => { },
   onLoadAllSamples,
@@ -173,6 +175,8 @@ export const Legend = ({
   onShowPhantomRegionsChange = () => { },
   showRecombination = false,
   onShowRecombinationChange = () => { },
+  recombinationAvailable = true,
+  recombinationLabel = 'External reference (UCSC hg38)',
 }: {
   onMinAfChange?: (threshold: number) => void
   onColorModeChange?: (mode: string) => void
@@ -182,6 +186,8 @@ export const Legend = ({
   onSortModeChange?: (mode: string) => void
   showMethylation?: boolean
   onShowMethylationChange?: (show: boolean) => void
+  methylationAvailable?: boolean
+  methylationLabel?: string
   filterToOutliers?: boolean
   onFilterToOutliersChange?: (filter: boolean) => void
   onLoadAllSamples?: () => void
@@ -212,6 +218,8 @@ export const Legend = ({
   onShowPhantomRegionsChange?: (show: boolean) => void
   showRecombination?: boolean
   onShowRecombinationChange?: (show: boolean) => void
+  recombinationAvailable?: boolean
+  recombinationLabel?: string
 }) => {
   const isDiploidView = groupingMode === 'diploid'
   const isClusteredView = groupingMode === 'similarity'
@@ -443,16 +451,17 @@ export const Legend = ({
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
                 <input
                   type='checkbox'
-                  checked={showMethylation}
+                  checked={showMethylation && methylationAvailable}
+                  disabled={!methylationAvailable}
                   onChange={handleShowMethylationChange}
                 />
-                Methylation
+                Methylation — {methylationAvailable ? methylationLabel : 'Unavailable for this cohort/release'}
               </label>
               <HaplotypeHelpButton title="Methylation">
                 <MethylationHelp />
               </HaplotypeHelpButton>
             </div>
-            {showMethylation && (
+            {showMethylation && methylationAvailable && (
               <>
                 <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
                   <input
@@ -483,13 +492,14 @@ export const Legend = ({
               </>
             )}
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: recombinationAvailable ? 'pointer' : 'not-allowed' }}>
                 <input
                   type='checkbox'
-                  checked={showRecombination}
+                  checked={showRecombination && recombinationAvailable}
+                  disabled={!recombinationAvailable}
                   onChange={(e) => onShowRecombinationChange(e.target.checked)}
                 />
-                Recombination rate
+                Recombination rate — {recombinationAvailable ? recombinationLabel : 'Unavailable for this cohort/release'}
               </label>
             </div>
           </ControlGroup>
@@ -1476,11 +1486,11 @@ const MethylationSummaryTrack = ({ methylationSummary }: { methylationSummary: M
                 ))}
                 {methylationSummary.map((d, i) => {
                   const x = scalePosition(d.pos1)
-                  const isOutlier = (d.std_methylation || 0) > HIGH_VARIANCE_THRESHOLD
-                  const stdVal = d.std_methylation || 0
+                  const stdVal = d.std_methylation
+                  const isOutlier = stdVal != null && stdVal > HIGH_VARIANCE_THRESHOLD
                   const yMean = summaryMethScale(d.mean_methylation)
-                  const yHigh = summaryMethScale(Math.min(100, d.mean_methylation + stdVal))
-                  const yLow = summaryMethScale(Math.max(0, d.mean_methylation - stdVal))
+                  const yHigh = stdVal == null ? yMean : summaryMethScale(Math.min(100, d.mean_methylation + stdVal))
+                  const yLow = stdVal == null ? yMean : summaryMethScale(Math.max(0, d.mean_methylation - stdVal))
                   return (
                     <g key={`summary-${i}`}>
                       <line x1={x} y1={yHigh} x2={x} y2={yLow}
@@ -1491,8 +1501,8 @@ const MethylationSummaryTrack = ({ methylationSummary }: { methylationSummary: M
                           <RegionAttributeList>
                             <div><dt>Position:</dt><dd>{d.pos1}</dd></div>
                             <div><dt>Mean methylation:</dt><dd>{d.mean_methylation.toFixed(1)}%</dd></div>
-                            <div><dt>Std dev:</dt><dd>{stdVal.toFixed(1)}%</dd></div>
-                            <div><dt>Range:</dt><dd>{(d.min_methylation || 0).toFixed(1)}% - {(d.max_methylation || 0).toFixed(1)}%</dd></div>
+                            <div><dt>Std dev:</dt><dd>{stdVal == null ? 'Unavailable' : `${stdVal.toFixed(1)}%`}</dd></div>
+                            <div><dt>Range:</dt><dd>{d.min_methylation == null || d.max_methylation == null ? 'Unavailable' : `${d.min_methylation.toFixed(1)}% - ${d.max_methylation.toFixed(1)}%`}</dd></div>
                             <div><dt>Mean coverage:</dt><dd>{d.mean_coverage.toFixed(0)}x</dd></div>
                             <div><dt>Samples:</dt><dd>{d.num_samples}</dd></div>
                             {isOutlier && <div><dt style={{ color: '#dc2626' }}>High variance site</dt><dd></dd></div>}
@@ -2031,7 +2041,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   const summaryByPos = React.useMemo(() => {
     const map = new Map<number, { mean: number; std: number }>()
     for (const s of methylationSummary) {
-      map.set(s.pos1, { mean: s.mean_methylation, std: s.std_methylation || 0 })
+      if (s.std_methylation != null) {
+        map.set(s.pos1, { mean: s.mean_methylation, std: s.std_methylation })
+      }
     }
     return map
   }, [methylationSummary])

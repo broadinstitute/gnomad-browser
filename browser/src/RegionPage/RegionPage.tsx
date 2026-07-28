@@ -81,15 +81,19 @@ type RegionPageProps = {
   region: Region
 }
 
+type LongReadCohort = 'hgsvc_hprc' | 'aou'
+
 type VariantsInRegionRendererProps = {
   datasetId: DatasetId
   region: Region
   zoomRegion: { start: number; stop: number } | null
   onChangeZoomRegion: (region: { start: number; stop: number } | null) => void
   onSetRegion: (region: { start: number; stop: number }) => void
+  lrCohort: LongReadCohort
+  onChangeLrCohort: (cohort: LongReadCohort) => void
 }
 
-const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion }: VariantsInRegionRendererProps) => {
+const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion, lrCohort, onChangeLrCohort }: VariantsInRegionRendererProps) => {
   if (isSVs(datasetId)) {
     return <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
   }
@@ -111,6 +115,8 @@ const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, o
       zoomRegion={zoomRegion}
       onChangeZoomRegion={onChangeZoomRegion}
       onSetRegion={onSetRegion}
+      lrCohort={lrCohort}
+      onChangeLrCohort={onChangeLrCohort}
     />
   )
 }
@@ -124,6 +130,17 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const location = useLocation()
   const history = useHistory()
   const showTree = isLongRead(datasetId) && new URLSearchParams(location.search).get('show_tree') !== 'false'
+  const [lrCohort, setLrCohort] = useState<LongReadCohort>(
+    new URLSearchParams(location.search).get('lr_cohort') === 'aou' ? 'aou' : 'hgsvc_hprc'
+  )
+
+  const changeLrCohort = useCallback((cohort: LongReadCohort) => {
+    setLrCohort(cohort)
+    const params = new URLSearchParams(location.search)
+    params.set('lr_cohort', cohort)
+    if (cohort === 'aou') params.delete('show_haplotypes')
+    history.replace({ ...location, search: params.toString() })
+  }, [history, location])
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
@@ -204,7 +221,9 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
       >
         {/* eslint-disable-next-line no-nested-ternary */}
         {isLongRead(datasetId) ? (
-          <LRCoverageTrack chrom={chrom} start={start} stop={stop} />
+          lrCohort === 'hgsvc_hprc' ? (
+            <LRCoverageTrack chrom={chrom} start={start} stop={stop} lrCohort={lrCohort} />
+          ) : null
         ) : region.chrom === 'M' ? (
           <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
         ) : (
@@ -233,7 +252,15 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
             />
           </>
         )}
-        {variantsInRegion({ datasetId, region, zoomRegion, onChangeZoomRegion: setZoomRegion, onSetRegion: handleSetRegion })}
+        {variantsInRegion({
+          datasetId,
+          region,
+          zoomRegion,
+          onChangeZoomRegion: setZoomRegion,
+          onSetRegion: handleSetRegion,
+          lrCohort,
+          onChangeLrCohort: changeLrCohort,
+        })}
       </RegionViewer>
     </TrackPage>
   )

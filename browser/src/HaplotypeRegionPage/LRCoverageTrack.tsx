@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import CoverageTrack from '../CoverageTrack'
 
 const LR_COVERAGE_QUERY = `
-  query LRCoverage($chrom: String!, $start: Int!, $stop: Int!) {
-    lr_coverage(chrom: $chrom, start: $start, stop: $stop) {
+  query LRCoverage($chrom: String!, $start: Int!, $stop: Int!, $lrCohort: LongReadCohort!) {
+    lr_coverage(chrom: $chrom, start: $start, stop: $stop, lr_cohort: $lrCohort) {
       pos
       mean
       median
@@ -25,13 +25,19 @@ type LRCoverageTrackProps = {
   chrom: string
   start: number
   stop: number
+  lrCohort?: 'hgsvc_hprc' | 'aou'
 }
 
-const LRCoverageTrack = ({ chrom, start, stop }: LRCoverageTrackProps) => {
+const LRCoverageTrack = ({ chrom, start, stop, lrCohort = 'hgsvc_hprc' }: LRCoverageTrackProps) => {
   const [coverageData, setCoverageData] = useState<any[] | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    setCoverageData(null)
+    setError(null)
+    if (lrCohort === 'aou') return undefined
+
+    const controller = new AbortController()
     const fetchCoverage = async () => {
       try {
         const response = await fetch('/api/', {
@@ -39,22 +45,26 @@ const LRCoverageTrack = ({ chrom, start, stop }: LRCoverageTrackProps) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             query: LR_COVERAGE_QUERY,
-            variables: { chrom, start, stop },
+            variables: { chrom, start, stop, lrCohort },
           }),
+          signal: controller.signal,
         })
         const result = await response.json()
-        if (result.data?.lr_coverage) {
+        if (!controller.signal.aborted && result.data?.lr_coverage) {
           setCoverageData(result.data.lr_coverage)
         }
-      } catch (err) {
-        setError('Unable to load LR coverage')
-        console.error('Error fetching LR coverage:', err)
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          setError('Unable to load LR coverage')
+          console.error('Error fetching LR coverage:', err)
+        }
       }
     }
     fetchCoverage()
-  }, [chrom, start, stop])
+    return () => controller.abort()
+  }, [chrom, start, stop, lrCohort])
 
-  if (error) {
+  if (lrCohort === 'aou' || error) {
     return null
   }
 

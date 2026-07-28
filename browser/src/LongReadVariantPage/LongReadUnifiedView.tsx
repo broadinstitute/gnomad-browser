@@ -34,12 +34,33 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
+import {
+  LongReadPrototypeProvenance,
+  modalityAvailable,
+  sourceForModality,
+} from './LongReadProvenanceBanner'
+import { nullableLongReadFrequency } from './longReadFrequency'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
 const SAMPLE_METADATA_QUERY = `
-  query RegionSampleMetadata {
-    sample_metadata { sample_id subpopulation superpopulation }
+  query RegionSampleMetadata($lr_cohort: LongReadCohort!) {
+    sample_metadata(lr_cohort: $lr_cohort) { sample_id subpopulation superpopulation }
+  }
+`
+
+type MethylationSampleAvailability = {
+  sample_id: string
+  available: boolean
+  status: 'AVAILABLE_COMPLETE' | 'UNAVAILABLE_INCOMPLETE' | 'UNAVAILABLE_NO_ASSAY_SOURCE' | 'UNAVAILABLE_NO_CHR22'
+  reason: string | null
+}
+
+const METHYLATION_AVAILABILITY_QUERY = `
+  query RegionMethylationAvailability($lr_cohort: LongReadCohort!) {
+    methylation_sample_availability(lr_cohort: $lr_cohort) {
+      sample_id available status reason
+    }
   }
 `
 
@@ -146,6 +167,7 @@ type LongReadUnifiedViewProps = {
   }
   variants: any[]
   lrCohort?: 'hgsvc_hprc' | 'aou'
+  provenance?: LongReadPrototypeProvenance | null
   clinvarReleaseDate?: string
   genes?: ZoomGene[]
   zoomRegion?: { start: number; stop: number } | null
@@ -176,6 +198,7 @@ const LongReadUnifiedView = ({
   gene,
   variants,
   lrCohort = 'hgsvc_hprc',
+  provenance = null,
   clinvarReleaseDate,
   genes = [],
   zoomRegion = null,
@@ -196,7 +219,26 @@ const LongReadUnifiedView = ({
   const [showRegionWarning, setShowRegionWarning] = useState(
     regionTooLarge && urlShowHaplotypes
   )
-  const haplotypesUnavailable = lrCohort === 'aou'
+  const mixedMode = provenance?.mixed_provenance === true || process.env.LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED === 'true'
+  // Capabilities from the API are authoritative. The build flag only fails closed while
+  // provenance is unavailable (for example during an API/frontend version transition).
+  const capabilityKnown = (modality: string) => sourceForModality(provenance, modality) !== undefined
+  const haplotypesAvailable = capabilityKnown('HAPLOTYPES')
+    ? modalityAvailable(provenance, 'HAPLOTYPES')
+    : !mixedMode && lrCohort !== 'aou'
+  const metadataAvailable = capabilityKnown('SAMPLE_METADATA')
+    ? modalityAvailable(provenance, 'SAMPLE_METADATA')
+    : !mixedMode && lrCohort !== 'aou'
+  const methylationAvailable = capabilityKnown('METHYLATION')
+    ? modalityAvailable(provenance, 'METHYLATION')
+    : !mixedMode && lrCohort !== 'aou'
+  const recombinationAvailable = capabilityKnown('RECOMBINATION')
+    ? modalityAvailable(provenance, 'RECOMBINATION')
+    : !mixedMode
+  const outOfScope = provenance?.enabled === true && provenance.sources.some(
+    (source) => source.modality === 'PRIMARY_VARIANTS' && !source.available
+  )
+  const haplotypesUnavailable = lrCohort === 'aou' || outOfScope || !haplotypesAvailable
   const showHaplotypes = !regionTooLarge && !haplotypesUnavailable && urlShowHaplotypes
 
   const setShowHaplotypes = useCallback((show: boolean) => {
@@ -237,6 +279,15 @@ const LongReadUnifiedView = ({
   const [methylationLoading, setMethylationLoading] = useState(false)
   const [methylationSampleCount, setMethylationSampleCount] = useState(0)
   const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
+  const [methylationAvailability, setMethylationAvailability] = useState<MethylationSampleAvailability[] | null>(null)
+  const availableMethylationIds = useMemo(
+    () => new Set((methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)),
+    [methylationAvailability]
+  )
+  const unavailableMethylation = useMemo(
+    () => (methylationAvailability || []).filter((row) => !row.available),
+    [methylationAvailability]
+  )
 
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('diplotype_frequency')
@@ -410,12 +461,12 @@ const LongReadUnifiedView = ({
 
   // Fetch sample metadata once when entering haplotype mode
   useEffect(() => {
-    if (!showHaplotypes) return
+    if (!showHaplotypes || !metadataAvailable) return
     if (sampleMetadata.size > 0) return
 
     const fetchMeta = async () => {
       try {
-        const result = await fetchGraphQL(SAMPLE_METADATA_QUERY, {})
+        const result = await fetchGraphQL(SAMPLE_METADATA_QUERY, { lr_cohort: lrCohort })
         if (result.data?.sample_metadata) {
           const map: SampleMetadataMap = new Map()
           for (const s of result.data.sample_metadata) {
@@ -428,7 +479,7 @@ const LongReadUnifiedView = ({
       }
     }
     fetchMeta()
-  }, [showHaplotypes, sampleMetadata.size])
+  }, [showHaplotypes, sampleMetadata.size, lrCohort, metadataAvailable])
 
   // Initialize Web Worker (with main-thread fallback)
   useEffect(() => {
@@ -578,6 +629,19 @@ const LongReadUnifiedView = ({
   const dataIsDiploid = haplotypeGroups.groups.length > 0 && 'is_diplotype' in haplotypeGroups.groups[0]
   const dataMatchesMode = haplotypeGroups.groups.length === 0 || dataIsDiploid === isDiploidView
 
+  // The canonical 292-sample roster is authoritative for which identities may be requested.
+  useEffect(() => {
+    setMethylationAvailability(null)
+    if (!mixedMode || !methylationAvailable || lrCohort !== 'hgsvc_hprc') return
+    let cancelled = false
+    fetchGraphQL(METHYLATION_AVAILABILITY_QUERY, { lr_cohort: lrCohort })
+      .then((result) => {
+        if (!cancelled) setMethylationAvailability(result.data?.methylation_sample_availability || [])
+      })
+      .catch((error) => console.error('Error fetching methylation availability:', error))
+    return () => { cancelled = true }
+  }, [mixedMode, methylationAvailable, lrCohort])
+
   // Fetch methylation summary + outliers when entering haplotype mode
   // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
   // Users can still enable methylation via the checkbox, which triggers the load-all-samples path.
@@ -585,7 +649,7 @@ const LongReadUnifiedView = ({
     setMethylationData([])
     setMethylationSummary([])
     setMethylationOutliers(null)
-    if (!showHaplotypes) return
+    if (!showHaplotypes || !methylationAvailable) return
     if (regionSize > 200_000) return
 
     const fetchSummaryAndOutliers = async () => {
@@ -605,12 +669,12 @@ const LongReadUnifiedView = ({
       }
     }
     fetchSummaryAndOutliers()
-  }, [showHaplotypes, chrom, start, stop, lrCohort])
+  }, [showHaplotypes, chrom, start, stop, lrCohort, methylationAvailable])
 
   // Auto-fetch per-sample methylation for top outlier samples
   const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
-    if (!showHaplotypes) return
+    if (!showHaplotypes || !methylationAvailable) return
     if (regionSize > 200_000) return
 
     const fetchOutlierMethylation = async () => {
@@ -620,6 +684,7 @@ const LongReadUnifiedView = ({
         .slice(0, MAX_AUTO_FETCH_OUTLIERS)
         .filter((s: any) => s.outlier_count > 0)
         .map((s: any) => s.sample_id)
+        .filter((sampleId: string) => !mixedMode || availableMethylationIds.has(sampleId))
 
       if (topOutliers.length === 0) return
 
@@ -639,44 +704,51 @@ const LongReadUnifiedView = ({
       }
     }
     fetchOutlierMethylation()
-  }, [showHaplotypes, chrom, start, stop, methylationOutliers, lrCohort])
+  }, [showHaplotypes, chrom, start, stop, methylationOutliers, lrCohort, methylationAvailable, mixedMode, availableMethylationIds])
 
   // Load all sample methylation (triggered from HaplotypeTrack)
   const handleLoadAllSamples = useCallback(async () => {
-    if (!haplotypeGroups || haplotypeGroups.groups.length === 0) return
+    if (!methylationAvailable || !haplotypeGroups || haplotypeGroups.groups.length === 0) return
 
-    const allSampleIds = Array.from(new Set(
+    if (mixedMode && methylationAvailability === null) return
+    const carrierSampleIds = Array.from(new Set(
       haplotypeGroups.groups.flatMap(g => g.samples.map(s => s.sample_id))
     ))
-    if (allSampleIds.length === 0) return
+    const requestableSampleIds = mixedMode
+      ? carrierSampleIds.filter((sampleId) => availableMethylationIds.has(sampleId))
+      : carrierSampleIds
+    if (requestableSampleIds.length === 0) return
 
     setMethylationLoading(true)
     setMethylationSampleCount(0)
-    setMethylationTotalSamples(allSampleIds.length)
+    setMethylationTotalSamples(requestableSampleIds.length)
 
     const BATCH_SIZE = 5
     let accumulated: Methylation[] = [...methylationData]
-    let completed = 0
+    const loadedSampleIds = new Set<string>()
 
-    for (let i = 0; i < allSampleIds.length; i += BATCH_SIZE) {
-      const batch = allSampleIds.slice(i, i + BATCH_SIZE)
+    for (let i = 0; i < requestableSampleIds.length; i += BATCH_SIZE) {
+      const batch = requestableSampleIds.slice(i, i + BATCH_SIZE)
       try {
         const result = await fetchGraphQL(METHYLATION_QUERY, {
           chrom, start, stop, samples: batch, lr_cohort: lrCohort,
         })
         if (result.data?.methylation) {
           accumulated = [...accumulated, ...result.data.methylation]
+          result.data.methylation.forEach((row: Methylation) => loadedSampleIds.add(row.sample))
           setMethylationData(accumulated)
+          setMethylationSampleCount(loadedSampleIds.size)
         }
       } catch (error) {
         console.error(`Error fetching batch ${i / BATCH_SIZE}:`, error)
       }
-      completed += batch.length
-      setMethylationSampleCount(completed)
     }
 
     setMethylationLoading(false)
-  }, [chrom, start, stop, haplotypeGroups, methylationData, lrCohort])
+  }, [
+    chrom, start, stop, haplotypeGroups, methylationData, lrCohort, methylationAvailable,
+    mixedMode, methylationAvailability, availableMethylationIds,
+  ])
 
   // Fetch mQTLs when enabled
   useEffect(() => {
@@ -697,7 +769,24 @@ const LongReadUnifiedView = ({
     fetchMQTLs()
   }, [showHaplotypes, chrom, start, stop, threshold, showMqtl])
 
-  const withFrequency = (variant: any) => variant.freq !== null
+  // Clear all cohort-specific state before another cohort can render or issue track requests.
+  useEffect(() => {
+    abortControllerRef.current?.abort()
+    setHaplotypeData(null)
+    rawDataRef.current = null
+    setSampleMetadata(new Map())
+    setMethylationData([])
+    setMethylationSummary([])
+    setMethylationOutliers(null)
+    setMethylationSampleCount(0)
+    setMethylationTotalSamples(0)
+    setShowMethylation(false)
+    setShowRecombination(false)
+    setMqtlData([])
+    setShowMqtl(false)
+    setSelectedClusterId(null)
+    setHighlightedVariantIds(null)
+  }, [lrCohort])
 
   // Standardize length → allele_length so summary and haplotype tracks use the same field name
   const standardizedVariants = useMemo(
@@ -707,7 +796,7 @@ const LongReadUnifiedView = ({
 
   const displayVariants = useMemo(
     () => standardizedVariants.filter(
-      (v: any) => withFrequency(v) && !v.enveloping_tr_id
+      (v: any) => !v.enveloping_tr_id
     ),
     [standardizedVariants]
   )
@@ -746,16 +835,16 @@ const LongReadUnifiedView = ({
   const mappedVariants = useMemo(
     () =>
       displayVariants.map((v: any) => {
-        const freq = v.freq?.all || {}
+        const freq = nullableLongReadFrequency(v.freq?.all)
         const tc = v.transcript_consequences?.[0]
         return {
           ...v,
           consequence: v.major_consequence,
-          ac: freq.ac ?? 0,
-          an: freq.an ?? 0,
-          af: freq.af ?? 0,
-          ac_hom: freq.homozygote_alt_count ?? 0,
-          ac_hemi: 0,
+          ac: freq.ac,
+          an: freq.an,
+          af: freq.af,
+          ac_hom: v.freq?.all?.homozygote_alt_count ?? null,
+          ac_hemi: null,
           hgvs: tc?.hgvs || '',
           hgvsc: tc?.hgvsc || '',
           hgvsp: tc?.hgvsp || '',
@@ -773,6 +862,32 @@ const LongReadUnifiedView = ({
 
   return (
     <>
+      {mixedMode && methylationAvailability && (
+        <TrackPageSection>
+          <p>
+            <strong>Methylation availability:</strong>{' '}
+            {availableMethylationIds.size}/292 canonical samples available;{' '}
+            {unavailableMethylation.length} unavailable samples are excluded from requests.
+          </p>
+          {unavailableMethylation.length > 0 && (
+            <details>
+              <summary>Show unavailable methylation samples and reasons</summary>
+              <ul>
+                {unavailableMethylation.map((row) => (
+                  <li key={row.sample_id}>
+                    {row.sample_id}: {row.status} — {row.reason || 'No reason supplied'}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+        </TrackPageSection>
+      )}
+      {outOfScope && (
+        <TrackPageSection as="p">
+          <strong>Prototype data unavailable outside chr22.</strong> This request was not routed to legacy primary data.
+        </TrackPageSection>
+      )}
       {showRegionWarning && (
         <div
           style={{
@@ -819,7 +934,7 @@ const LongReadUnifiedView = ({
       {/* Haplotype layer — opt-in */}
       {showHaplotypes && (
         <>
-          {showRecombination && <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />}
+          {showRecombination && recombinationAvailable && <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />}
           {/* TODO: Re-enable when mQTL data source is production-ready */}
           {false && showMqtl && (
             <MQTLTrack
@@ -982,6 +1097,8 @@ const LongReadUnifiedView = ({
             onSortModeChange={setSortBy}
             showMethylation={showMethylation}
             onShowMethylationChange={setShowMethylation}
+            methylationAvailable={methylationAvailable}
+            methylationLabel={sourceForModality(provenance, 'METHYLATION')?.label || 'Legacy — not Y1'}
             filterToOutliers={filterToOutliers}
             onFilterToOutliersChange={setFilterToOutliers}
             onLoadAllSamples={handleLoadAllSamples}
@@ -1006,6 +1123,8 @@ const LongReadUnifiedView = ({
             onShowPhantomRegionsChange={setShowPhantomRegions}
             showRecombination={showRecombination}
             onShowRecombinationChange={setShowRecombination}
+            recombinationAvailable={recombinationAvailable}
+            recombinationLabel={sourceForModality(provenance, 'RECOMBINATION')?.label || 'External reference (UCSC hg38)'}
           />
         </TrackPageSection>
       )}

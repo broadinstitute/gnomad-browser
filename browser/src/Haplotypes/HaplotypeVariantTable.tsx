@@ -10,6 +10,7 @@ import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPa
 import Link from '../Link'
 import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
 import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
+import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
 
 type TrDataPoint = { length_diff: number; pop: string; count: number }
 
@@ -1246,9 +1247,9 @@ const TableRow = React.memo(function TableRow({
             ? `${v.min_length_diff ?? 0}..${v.max_length_diff ?? 0}bp`
             : v.allele_length}
         </td>
-        <td className="numeric">{v.freq.af.toFixed(4)}</td>
-        {mode === 'summary' && <td className="numeric">{v.freq.ac}</td>}
-        {mode === 'summary' && <td className="numeric">{v.freq.an}</td>}
+        <td className="numeric"><span title={v.freq.af == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.af, 4)}</span></td>
+        {mode === 'summary' && <td className="numeric"><span title={v.freq.ac == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.ac)}</span></td>}
+        {mode === 'summary' && <td className="numeric"><span title={v.freq.an == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.an)}</span></td>}
         {mode === 'haplotype' && (
           <td className="numeric">
             {isClusteredView && v.cluster_distribution ? (
@@ -1384,7 +1385,7 @@ const TableRow = React.memo(function TableRow({
                         return (
                           <li key={id} style={{ marginBottom: 4 }}>
                             <Link to={`/variant/${id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false}>{id}</Link>
-                            {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac || 0})
+                            {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac == null ? 'Unavailable' : envVar.freq.all.ac})
                           </li>
                         )
                       })}
@@ -1571,8 +1572,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     return summaryVariants.map((v: any) => {
       const SUPERPOPS = new Set(['afr', 'amr', 'eas', 'nfe', 'sas'])
       const populations = (v.freq?.populations || [])
-        .filter((p: any) => SUPERPOPS.has(p.id))
-        .map((p: any) => ({ id: p.id, af: p.af ?? 0 }))
+        .filter((p: any) => SUPERPOPS.has(p.id) && p.af != null)
+        .map((p: any) => ({ id: p.id, af: p.af }))
       return {
         variant_id: v.variant_id,
         source_variant_id: v.source_variant_id,
@@ -1584,11 +1585,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         alt: v.alt,
         allele_type: v.allele_type,
         allele_length: v.allele_length || v.length || 0,
-        freq: {
-          af: v.freq?.all?.af || 0,
-          ac: v.freq?.all?.ac || 0,
-          an: v.freq?.all?.an || 0,
-        },
+        freq: nullableLongReadFrequency(v.freq?.all),
         populations,
         rsid: (v.rsids || [])[0] || '',
         major_consequence: v.major_consequence || null,
@@ -1604,7 +1601,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         allele_purity: null,
         // DerivedVariant extensions
         group_count: 0,
-        carrier_count: v.freq?.all?.ac || 0,
+        carrier_count: v.freq?.all?.ac ?? null,
         short_read_match_id: v.short_read_match_id || null,
         is_tr: v.allele_type === 'trv',
         enveloped_ids: v.enveloped_ids || null,

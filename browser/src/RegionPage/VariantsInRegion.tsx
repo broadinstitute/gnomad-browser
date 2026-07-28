@@ -270,24 +270,19 @@ type ConnectedVariantsInRegionProps = {
   zoomRegion?: { start: number; stop: number } | null
   onChangeZoomRegion?: (region: { start: number; stop: number } | null) => void
   onSetRegion?: (region: { start: number; stop: number }) => void
+  lrCohort?: 'hgsvc_hprc' | 'aou'
+  onChangeLrCohort?: (cohort: 'hgsvc_hprc' | 'aou') => void
 }
 
-const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion }: ConnectedVariantsInRegionProps) => {
-  const initialLrCohort =
-    typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('lr_cohort') === 'aou'
-      ? 'aou'
-      : 'hgsvc_hprc'
-  const [lrCohort, setLrCohort] = React.useState<'hgsvc_hprc' | 'aou'>(initialLrCohort)
-
-  const changeLrCohort = (cohort: 'hgsvc_hprc' | 'aou') => {
-    setLrCohort(cohort)
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href)
-      url.searchParams.set('lr_cohort', cohort)
-      if (cohort === 'aou') url.searchParams.delete('show_haplotypes')
-      window.history.replaceState({}, '', url.toString())
-    }
-  }
+const ConnectedVariantsInRegion = ({
+  datasetId,
+  region,
+  zoomRegion,
+  onChangeZoomRegion,
+  onSetRegion,
+  lrCohort = 'hgsvc_hprc',
+  onChangeLrCohort = () => {},
+}: ConnectedVariantsInRegionProps) => {
 
   // When viewing LR dataset directly, only query LR data — skip the expensive SR query
   if (isLongRead(datasetId)) {
@@ -299,7 +294,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoom
             <select
               id="lr-cohort"
               value={lrCohort}
-              onChange={(event) => changeLrCohort(event.target.value as 'hgsvc_hprc' | 'aou')}
+              onChange={(event) => onChangeLrCohort(event.target.value as 'hgsvc_hprc' | 'aou')}
             >
               <option value="hgsvc_hprc">HGSVC/HPRC</option>
               <option value="aou">All of Us</option>
@@ -311,6 +306,12 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoom
           operationName="LongReadVariantsInRegion"
           query={`query LongReadVariantsInRegion($datasetId: DatasetId!, $lrCohort: LongReadCohort!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
             meta { clinvar_release_date }
+            long_read_prototype_provenance(lr_cohort: $lrCohort, chrom: $chrom) {
+              enabled mixed_provenance scope_label warning
+              sources {
+                modality source release cohort reference_genome chromosome run_id status available label
+              }
+            }
             region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
               long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort) {
                 variant_id source_variant_id alt_index lr_cohort pos end length ref alt allele_type filters motifs rsids
@@ -341,6 +342,7 @@ const ConnectedVariantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoom
               gene={{ gene_id: '', symbol: '', chrom: region.chrom, start: region.start, stop: region.stop }}
               variants={data.region.long_read_variants || []}
               lrCohort={lrCohort}
+              provenance={data.long_read_prototype_provenance}
               clinvarReleaseDate={data.meta.clinvar_release_date}
               genes={region.genes as any[]}
               zoomRegion={zoomRegion || null}
