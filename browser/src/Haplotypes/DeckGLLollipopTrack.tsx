@@ -18,6 +18,8 @@ import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
 import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation } from './index'
 import type { DiplotypeGroup } from './haplotypeCompute'
+import { getRowBackgroundRects } from './haplotypeBackgrounds'
+import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 type Variant = LRVariant
@@ -58,14 +60,7 @@ type StemLine = {
   variant: Variant
 }
 
-type BackgroundRect = {
-  groupStart: number // raw genomic position
-  groupStop: number // raw genomic position
-  rowY: number
-  color: [number, number, number, number]
-  group: HaplotypeGroup | DiplotypeGroup | null
-  height?: number // optional dynamic height (default 15)
-}
+type BackgroundRect = RowBackgroundRect<HaplotypeGroup | DiplotypeGroup>
 
 type SpanningRect = {
   start: number // raw genomic position
@@ -1379,6 +1374,8 @@ function DeckGLLollipopCanvas({
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
 
+      allBgRects.push(...getRowBackgroundRects<HaplotypeGroup, DiplotypeGroup>(item, rowY, start, stop))
+
       if (item.type === 'diplotype') {
         const dg = item.group
         const yTop = rowY + ROW_CENTER_Y   // 12.5 — strand A baseline
@@ -1388,30 +1385,9 @@ function DeckGLLollipopCanvas({
         allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yTop })
         allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yBottom })
 
-        // Strand backgrounds — ROH merges into one pill, non-ROH shows two separated pills
-        const strandColor: [number, number, number, number] = [232, 238, 248, 255]
-
+        // The ROH squiggle remains variant-bounded; only the background spans the region.
         if (dg.is_roh) {
-          // ROH: single merged pill — both strands are identical
-          allBgRects.push({
-            groupStart: dg.start, groupStop: dg.stop,
-            rowY: rowY - 2, color: strandColor, group: dg,
-            height: 40,
-          })
-          // Squiggly line between strands to indicate ROH
           allRohWaves.push({ startPos: dg.start, stopPos: dg.stop, y: rowY + 25 })
-        } else {
-          // Non-ROH: two separated pills with gap
-          allBgRects.push({
-            groupStart: dg.start, groupStop: dg.stop,
-            rowY: rowY - 2, color: strandColor, group: dg,
-            height: 19,
-          })
-          allBgRects.push({
-            groupStart: dg.start, groupStop: dg.stop,
-            rowY: rowY + 21, color: strandColor, group: dg,
-            height: 19,
-          })
         }
 
         // Helper to push variants for a strand (opacity 0-1 for ghosting ROH strand B)
@@ -1558,16 +1534,6 @@ function DeckGLLollipopCanvas({
       if (item.type === 'cluster') {
         const cluster = item.cluster
 
-        const bgColor: [number, number, number, number] = [215, 225, 240, 255]
-
-        allBgRects.push({
-          groupStart: start,
-          groupStop: stop,
-          rowY: rowY,
-          color: bgColor,
-          group: null as any,
-        })
-
         const clusterPhantomCarriers = new Map<number, number>()
         for (const cv of cluster.consensus_variants) {
           if (cv.cluster_af < 0.5) continue
@@ -1611,16 +1577,6 @@ function DeckGLLollipopCanvas({
         addPhantomConnectors(rowY + ROW_CENTER_Y, clusterPhantomCarriers)
       } else {
         const group = item.group
-
-        const bgColor: [number, number, number, number] = item.isChild ? [230, 235, 250, 255] : [240, 240, 240, 255]
-
-        allBgRects.push({
-          groupStart: group.start,
-          groupStop: group.stop,
-          rowY: rowY,
-          color: bgColor,
-          group,
-        })
 
         for (const variant of group.below_threshold.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
