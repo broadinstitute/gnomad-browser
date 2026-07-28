@@ -1,6 +1,8 @@
 export type TrAlleleRecord = {
   variant_id: string
   source_variant_id?: string | null
+  alt_index?: number | null
+  lr_cohort?: string | null
   chrom?: string
   pos: number
   end: number | null
@@ -47,9 +49,19 @@ const coordinates = (variant: TrAlleleRecord) => {
  * insufficient because independently catalogued TR loci can overlap.
  */
 export const getTrLocusKey = (variant: TrAlleleRecord): string => {
-  if (variant.source_variant_id) return `source:${variant.source_variant_id}`
+  const scope = variant.lr_cohort ? `cohort:${variant.lr_cohort}:` : ''
+  if (variant.source_variant_id) return `${scope}source:${variant.source_variant_id}`
   const locus = coordinates(variant)
-  return `coordinates:${locus.chrom}:${locus.start}:${locus.stop}`
+  return `${scope}coordinates:${locus.chrom}:${locus.start}:${locus.stop}`
+}
+
+/** ALT identity within a locus. Repeated query/join rows for the same ALT must
+ * not contribute frequency or distribution counts more than once. */
+export const getTrAlleleKey = (variant: TrAlleleRecord): string => {
+  if (variant.source_variant_id && variant.alt_index != null) {
+    return `source-alt:${variant.source_variant_id}:${variant.alt_index}`
+  }
+  return `variant:${variant.variant_id}`
 }
 
 const POPULATION_LABELS: Record<string, string> = {
@@ -97,11 +109,23 @@ export const getTrLocusDistribution = <T extends TrAlleleRecord>(
 }
 
 export const aggregateTrLoci = <T extends TrAlleleRecord>(variants: T[]): TrLocus<T>[] => {
-  const groups = variants.reduce((result, variant) => {
-    const key = getTrLocusKey(variant)
-    result.set(key, [...(result.get(key) || []), variant])
-    return result
-  }, new Map<string, T[]>())
+  const groupedAlleles = new Map<string, Map<string, T>>()
+  variants.forEach((variant) => {
+    const locusKey = getTrLocusKey(variant)
+    let alleles = groupedAlleles.get(locusKey)
+    if (!alleles) {
+      alleles = new Map()
+      groupedAlleles.set(locusKey, alleles)
+    }
+    // Keep the first authoritative row for an ALT. Later identical join rows
+    // are occurrences, not additional alleles.
+    if (!alleles.has(getTrAlleleKey(variant))) {
+      alleles.set(getTrAlleleKey(variant), variant)
+    }
+  })
+  const groups = new Map(
+    Array.from(groupedAlleles, ([key, alleles]) => [key, Array.from(alleles.values())])
+  )
 
   return Array.from(groups, ([key, alleles]) => {
     const locus = coordinates(alleles[0])

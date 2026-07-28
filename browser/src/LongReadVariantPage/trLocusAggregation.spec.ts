@@ -33,6 +33,16 @@ describe('TR locus aggregation', () => {
     expect(packed.maxRows * 14).toBe(14)
   })
 
+  test('deduplicates repeated rows for one ALT before distribution/count aggregation', () => {
+    const first = allele({ alt_index: 1, allele_length: -2, freq: { all: { af: 0.1, ac: 12 } } })
+    const locus = aggregateTrLoci([first, { ...first }])[0]
+
+    expect(locus.alleles).toHaveLength(1)
+    expect(getTrLocusDistribution(locus.alleles)).toEqual([
+      { length_diff: -2, pop: 'N/A', count: 12 },
+    ])
+  })
+
   test('does not merge distinct stable loci merely because they overlap', () => {
     const loci = aggregateTrLoci([
       allele({ source_variant_id: 'catalog-a' }),
@@ -41,6 +51,13 @@ describe('TR locus aggregation', () => {
 
     expect(loci).toHaveLength(2)
     expect(packTrLoci(loci).maxRows).toBe(2)
+  })
+
+  test('does not merge the same source ID across cohort scopes', () => {
+    expect(aggregateTrLoci([
+      allele({ lr_cohort: 'hgsvc_hprc' }),
+      allele({ lr_cohort: 'aou' }),
+    ])).toHaveLength(2)
   })
 
   test('uses exact coordinates as the documented fallback identity', () => {

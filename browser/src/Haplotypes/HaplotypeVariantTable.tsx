@@ -315,7 +315,35 @@ function lazyDecomposeTr(v: DerivedVariant): { structures: AlleleStructure[]; fl
 // --- Helper ---
 
 const isTrVariant = (v: { allele_type?: string }): boolean =>
-  v.allele_type === 'trv'
+  (v.allele_type || '').toLowerCase() === 'trv'
+
+const sourceIdFromAltId = (variantId: string | undefined): string | undefined => {
+  const match = variantId?.match(/^(.*)~[1-9][0-9]*$/)
+  return match?.[1]
+}
+
+/** A source record is the authoritative TR locus identity. Legacy payloads do
+ * not carry it, so only then fall back to an exact normalized reference span. */
+const getHaplotypeTrLocusKey = (v: any): string => {
+  const scope = v.lr_cohort ? `cohort:${v.lr_cohort}:` : ''
+  const sourceId = v.source_variant_id || sourceIdFromAltId(v.variant_id)
+  if (sourceId) return `${scope}source:${sourceId}`
+  const chrom = String(v.chrom || '').replace(/^chr/i, '')
+  const end = v.end ?? (v.pos + Math.max(v.ref?.length || 1, 1) - 1)
+  return `${scope}coordinates:${chrom}:${v.pos}:${end}`
+}
+
+const getHaplotypeVariantKey = (v: any): string =>
+  isTrVariant(v)
+    ? getHaplotypeTrLocusKey(v)
+    : `variant:${v.variant_id || `${v.chrom}:${v.pos}:${v.ref}:${v.alt}`}`
+
+const getTrLengthDiff = (v: any): number => {
+  if (typeof v.alt === 'string' && typeof v.ref === 'string' && !/^<.*>$/.test(v.alt)) {
+    return v.alt.length - v.ref.length
+  }
+  return Number.isFinite(v.allele_length) ? v.allele_length : 0
+}
 
 const getMatchLevel = (matchType: string | null): 'exact' | 'truvari' | 'none' => {
   if (!matchType) return 'none'
@@ -1381,19 +1409,37 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   const summaryDerivedVariants = useMemo(() => {
     if (mode !== 'summary') return []
     const trLoci = aggregateTrLoci(
-      summaryVariants.filter((v: any) => (v.allele_type || '').toLowerCase() === 'trv')
+      summaryVariants
+        .filter((v: any) => isTrVariant(v))
+        .map((v: any) => ({ ...v, allele_length: v.allele_length ?? v.length ?? null }))
     )
     const trLociByKey = new Map(trLoci.map((locus) => [locus.key, locus]))
 
-    return summaryVariants.map((v: any) => {
+    const emittedTrLoci = new Set<string>()
+    return summaryVariants.flatMap((input: any) => {
+      const isTr = isTrVariant(input)
+      const locus = isTr ? trLociByKey.get(getTrLocusKey(input)) : undefined
+      if (locus) {
+        if (emittedTrLoci.has(locus.key)) return []
+        emittedTrLoci.add(locus.key)
+      }
+
+      const v = locus?.representative || input
+      const alleles = locus?.alleles || [v]
+      const trDistribution = locus ? getTrLocusDistribution(alleles) : []
       const SUPERPOPS = new Set(['afr', 'amr', 'eas', 'nfe', 'sas'])
       const populations = (v.freq?.populations || [])
         .filter((p: any) => SUPERPOPS.has(p.id) && p.af != null)
         .map((p: any) => ({ id: p.id, af: p.af, ac: p.ac ?? null }))
-      const isTr = (v.allele_type || '').toLowerCase() === 'trv'
-      const locus = isTr ? trLociByKey.get(getTrLocusKey(v)) : undefined
-      const trDistribution = locus ? getTrLocusDistribution(locus.alleles) : []
-      return {
+      const aggregateAc = locus
+        ? alleles.reduce((sum, allele) => sum + (Number.isFinite(allele.freq?.all?.ac) ? allele.freq.all.ac : 0), 0)
+        : v.freq?.all?.ac
+      const aggregateAn = locus
+        ? Math.max(0, ...alleles.map((allele) => Number.isFinite(allele.freq?.all?.an) ? allele.freq.all.an : 0))
+        : v.freq?.all?.an
+      const aggregateAf = locus && aggregateAn > 0 ? aggregateAc / aggregateAn : v.freq?.all?.af
+
+      return [{
         variant_id: v.variant_id,
         source_variant_id: v.source_variant_id,
         lr_cohort: v.lr_cohort,
@@ -1404,7 +1450,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         alt: v.alt,
         allele_type: v.allele_type,
         allele_length: v.allele_length ?? v.length ?? null,
-        freq: nullableLongReadFrequency(v.freq?.all),
+        freq: nullableLongReadFrequency({ af: aggregateAf, ac: aggregateAc, an: aggregateAn }),
         populations,
         rsid: (v.rsids || [])[0] || '',
         major_consequence: v.major_consequence || null,
@@ -1418,16 +1464,15 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         allele_methylation: null,
         motif_counts: null,
         allele_purity: null,
-        // DerivedVariant extensions
         group_count: 0,
-        carrier_count: v.freq?.all?.ac ?? null,
+        carrier_count: aggregateAc ?? null,
         short_read_match_id: v.short_read_match_id || null,
         is_tr: isTr,
         tr_distribution: trDistribution.length > 0 ? trDistribution : undefined,
         min_length_diff: locus?.minLengthDiff ?? null,
         max_length_diff: locus?.maxLengthDiff ?? null,
-        enveloped_ids: v.enveloped_ids || null,
-      } as DerivedVariant
+        enveloped_ids: Array.from(new Set(alleles.flatMap((allele) => allele.enveloped_ids || []))),
+      } as DerivedVariant]
     })
   }, [mode, summaryVariants])
 
@@ -1452,77 +1497,83 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         variant: any
         groupCount: number
         carrierIds: Set<string>
-        // For TR loci: accumulate per-carrier length diffs by pop
-        trCarriers?: Map<string, { lengthDiff: number; pop: string }[]>
-        // For TR loci: accumulate alt sequences with per-haplotype population counts
-        trSequences?: Map<string, Record<string, number>>
+        // Unique carrier/haplotype allele occurrences. The key includes sample
+        // identity (and diplotype side where available), never the group row.
+        trCarrierAlleles?: Map<string, { lengthDiff: number; pop: string; alt: string }>
       }
     >()
 
-    for (const group of haplotypeGroups.groups) {
-      const seen = new Set<string>()
-      // Include both above-threshold and below-threshold variants
-      let allVariants: any[]
-      if ('is_diplotype' in group && (group as any).is_diplotype) {
-        const dg = group as any
-        allVariants = [
-          ...(dg.haplotypeA?.variants || []),
-          ...(dg.haplotypeB?.variants || []),
-          ...(dg.below_thresholdA?.variants || []),
-          ...(dg.below_thresholdB?.variants || []),
-        ]
-      } else {
-        allVariants = [
-          ...group.variants.variants,
-          ...(group.below_threshold?.variants || []),
-        ]
-      }
-      for (const v of allVariants) {
-        const isTrv = isTrVariant(v)
-        // TR variants group by chrom:pos:TRV; others by pos:ref:alt
-        const key = isTrv
-          ? `${v.chrom}:${v.pos}:TRV`
-          : `${v.pos}:${v.ref}:${v.alt}`
-        if (seen.has(key)) continue
-        seen.add(key)
-
-        let entry = map.get(key)
-        if (!entry) {
-          entry = {
-            variant: v,
-            groupCount: 0,
-            carrierIds: new Set(),
-            ...(isTrv ? { trCarriers: new Map(), trSequences: new Map() } : {}),
-          }
-          map.set(key, entry)
+    const ensureEntry = (v: any) => {
+      const key = getHaplotypeVariantKey(v)
+      let entry = map.get(key)
+      if (!entry) {
+        entry = {
+          variant: v,
+          groupCount: 0,
+          carrierIds: new Set(),
+          ...(isTrVariant(v) ? { trCarrierAlleles: new Map() } : {}),
         }
-        entry.groupCount++
+        map.set(key, entry)
+      }
+      return { key, entry }
+    }
 
-        for (const s of group.samples) {
-          entry.carrierIds.add(s.sample_id)
+    const recordCarrier = (v: any, sampleId: string, haplotypeSlot = '') => {
+      const { entry } = ensureEntry(v)
+      entry.carrierIds.add(sampleId)
+      if (!isTrVariant(v) || !entry.trCarrierAlleles) return
+      const pop = sampleMetadata.get(sampleId)?.superpopulation || 'N/A'
+      // ALT record IDs/indexes can be repeated for the same observed sequence.
+      // Per carrier/haplotype, sequence + signed length is the allele occurrence.
+      const sourceAlt = `${getTrLengthDiff(v)}:${v.alt || ''}`
+      const occurrenceKey = `${sampleId}:${haplotypeSlot}:${sourceAlt}`
+      if (!entry.trCarrierAlleles.has(occurrenceKey)) {
+        entry.trCarrierAlleles.set(occurrenceKey, {
+          lengthDiff: getTrLengthDiff(v), pop, alt: v.alt,
+        })
+      }
+    }
 
-          // Accumulate TR length diff per carrier
-          if (isTrv && entry.trCarriers) {
-            const meta = sampleMetadata.get(s.sample_id)
-            const pop = meta?.superpopulation || 'N/A'
-            const altSeq = v.alt
-            const lengthDiff = altSeq.length - v.ref.length
-            const carrierId = s.sample_id
-            if (!entry.trCarriers.has(carrierId)) {
-              entry.trCarriers.set(carrierId, [])
-            }
-            entry.trCarriers.get(carrierId)!.push({ lengthDiff, pop })
+    for (const group of haplotypeGroups.groups) {
+      const dg = group as any
+      const isDiplotype = Boolean(dg.is_diplotype)
+      const groupVariants = isDiplotype
+        ? [
+            ...(dg.haplotypeA?.variants || []), ...(dg.haplotypeB?.variants || []),
+            ...(dg.below_thresholdA?.variants || []), ...(dg.below_thresholdB?.variants || []),
+          ]
+        : [...group.variants.variants, ...(group.below_threshold?.variants || [])]
 
-            // Track alt sequences with haplotype counts (one per haplotype, not per sample)
-            if (entry.trSequences && altSeq.length <= 10000) {
-              let popCounts = entry.trSequences.get(altSeq)
-              if (!popCounts) {
-                popCounts = {}
-                entry.trSequences.set(altSeq, popCounts)
-              }
-              popCounts[pop] = (popCounts[pop] || 0) + 1
-            }
-          }
+      // Group prevalence is one occurrence per locus per group, regardless of
+      // repeated ALT rows or the locus being present on both diplotype sides.
+      const groupKeys = new Set<string>()
+      groupVariants.forEach((v) => {
+        const { key, entry } = ensureEntry(v)
+        if (!groupKeys.has(key)) {
+          groupKeys.add(key)
+          entry.groupCount++
+        }
+      })
+
+      if (isDiplotype) {
+        for (const sample of dg.samples) {
+          ;(dg.haplotypeA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
+          ;(dg.haplotypeB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
+          ;(dg.below_thresholdA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
+          ;(dg.below_thresholdB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
+        }
+      } else {
+        // Above-threshold sample variant_sets contain the carrier-specific TR
+        // ALT substituted by inflateGroups; group.variants only has a representative ALT.
+        for (const sample of group.samples) {
+          const sampleVariants = sample.variant_sets?.flatMap((set: any) => set.variants || []) || group.variants.variants
+          sampleVariants.forEach((v: any) => recordCarrier(v, sample.sample_id))
+        }
+        for (const v of group.below_threshold?.variants || []) {
+          const sampleIds = v.in_samples?.length
+            ? v.in_samples
+            : group.samples.map((sample) => sample.sample_id)
+          sampleIds.forEach((sampleId: string) => recordCarrier(v, sampleId))
         }
       }
     }
@@ -1535,10 +1586,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       const allKeys = new Set<string>()
       for (const cluster of clusters) {
         for (const cv of cluster.consensus_variants) {
-          const v = cv.variant
-          const isTrv = (v.allele_type || '').toLowerCase() === 'trv'
-          const k = isTrv ? `${v.chrom}:${v.pos}:TRV` : `${v.pos}:${v.ref}:${v.alt}`
-          allKeys.add(k)
+          allKeys.add(getHaplotypeVariantKey(cv.variant))
         }
       }
       for (const k of allKeys) {
@@ -1546,9 +1594,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           // For TRV, take max AF across all TRV alleles at that position
           let af = 0
           for (const cv of c.consensus_variants) {
-            const v = cv.variant
-            const isTrv = (v.allele_type || '').toLowerCase() === 'trv'
-            const cvKey = isTrv ? `${v.chrom}:${v.pos}:TRV` : `${v.pos}:${v.ref}:${v.alt}`
+            const cvKey = getHaplotypeVariantKey(cv.variant)
             if (cvKey === k) af = Math.max(af, cv.cluster_af)
           }
           return { cluster_id: c.cluster_id, af }
@@ -1558,21 +1604,19 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
     // Phase 2: build DerivedVariant array
     const result: DerivedVariant[] = []
-    for (const [key, { variant: v, groupCount, carrierIds, trCarriers, trSequences }] of map) {
-      const isTrv = key.endsWith(':TRV')
+    for (const [key, { variant: v, groupCount, carrierIds, trCarrierAlleles }] of map) {
+      const isTrv = isTrVariant(v)
 
       // Build TR distribution from accumulated carrier data
       let trDistribution: TrDataPoint[] | undefined
       let minLengthDiff: number | undefined
       let maxLengthDiff: number | undefined
 
-      if (isTrv && trCarriers && trCarriers.size > 0) {
+      if (isTrv && trCarrierAlleles && trCarrierAlleles.size > 0) {
         const distMap = new Map<string, number>() // "lengthDiff:pop" -> count
-        for (const [, entries] of trCarriers) {
-          for (const { lengthDiff, pop } of entries) {
-            const dkey = `${lengthDiff}:${pop}`
-            distMap.set(dkey, (distMap.get(dkey) || 0) + 1)
-          }
+        for (const { lengthDiff, pop } of trCarrierAlleles.values()) {
+          const dkey = `${lengthDiff}:${pop}`
+          distMap.set(dkey, (distMap.get(dkey) || 0) + 1)
         }
         trDistribution = []
         const allLengths: number[] = []
@@ -1588,8 +1632,19 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         }
       }
 
-      // Store raw TR sequences for lazy decomposition (deferred to row expansion)
-      const rawSeqs = isTrv && trSequences && trSequences.size > 0 ? trSequences : undefined
+      // Store unique raw TR sequences for lazy decomposition (deferred to row expansion).
+      const rawSeqs = isTrv && trCarrierAlleles
+        ? Array.from(trCarrierAlleles.values()).reduce((sequences, allele) => {
+            if (!allele.alt || allele.alt.length > 10000) return sequences
+            let popCounts = sequences.get(allele.alt)
+            if (!popCounts) {
+              popCounts = {}
+              sequences.set(allele.alt, popCounts)
+            }
+            popCounts[allele.pop] = (popCounts[allele.pop] || 0) + 1
+            return sequences
+          }, new Map<string, Record<string, number>>())
+        : undefined
 
       // Preserve the canonical browser ID supplied by the Y1 haplotype query,
       // including provenance/ALT identity (for example, `chr22-…~2`). Falling
@@ -1605,7 +1660,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       result.push({
         // LRVariant base fields
         variant_id: variantId,
-        source_variant_id: v.source_variant_id,
+        source_variant_id: v.source_variant_id || (isTrv ? sourceIdFromAltId(v.variant_id) : undefined),
         chrom: v.chrom,
         pos: v.pos,
         end: v.end ?? null,

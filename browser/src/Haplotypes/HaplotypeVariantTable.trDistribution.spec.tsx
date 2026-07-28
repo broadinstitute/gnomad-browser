@@ -28,6 +28,31 @@ const summaryTr = (altIndex: number, length: number, ac: number, afrAc: number) 
   },
 })
 
+const haplotypeTr = (altIndex: number, length: number) => ({
+  variant_id: `chr22-22854926-TRV-105TR-2..1bp~${altIndex}`,
+  chrom: 'chr22',
+  pos: 22854926,
+  end: 22855031,
+  ref: 'AAA',
+  alt: 'A'.repeat(3 + length),
+  allele_type: 'trv',
+  allele_length: length,
+  freq: { af: 0.1, ac: 1, an: 584 },
+  populations: [],
+  rsid: '',
+})
+
+const haplotypeGroup = (hash: number, sampleId: string, variants: any[]) => ({
+  hash,
+  start: 22854926,
+  stop: 22855031,
+  samples: [{ sample_id: sampleId, variant_sets: [{ readable_id: '', variants }] }],
+  // Repeated authoritative/group rows reproduce the join inflation that caused
+  // multiple cards and occurrence-based carrier totals.
+  variants: { readable_id: '', variants: [variants[0], variants[0]] },
+  below_threshold: { readable_id: '', variants: [] },
+})
+
 describe('summary variant columns', () => {
   test('hides group AF for AoU while retaining it for HGSVC/HPRC', () => {
     const variant = summaryTr(1, -3, 4, 2)
@@ -49,18 +74,52 @@ describe('summary variant columns', () => {
 })
 
 describe('summary TR accordion distribution', () => {
-  test('keeps ALT rows accessible and renders the shared locus distribution in each accordion', () => {
-    const variants = [summaryTr(1, -3, 4, 2), summaryTr(2, 5, 6, 3)]
+  test('renders one locus row and ignores a repeated ALT record', () => {
+    const first = summaryTr(1, -3, 4, 2)
+    const variants = [first, { ...first }, summaryTr(2, 5, 6, 3)]
     const { container } = render(
       <HaplotypeVariantTable mode="summary" summaryVariants={variants} />
     )
 
-    expect(screen.getAllByText('chr22-100-TRV-9')).toHaveLength(2)
-    fireEvent.click(screen.getAllByText('chr22-100-TRV-9')[0].closest('tr')!)
+    expect(screen.getAllByText('chr22-100-TRV-9')).toHaveLength(1)
+    fireEvent.click(screen.getByText('chr22-100-TRV-9').closest('tr')!)
 
     expect(screen.getByLabelText('TR allele length distribution')).not.toBeNull()
     expect(screen.getByText('Allele length range: -3 to 5bp')).not.toBeNull()
     expect(screen.getByText('Distinct allele lengths: 2')).not.toBeNull()
+    expect(screen.getByText('Total carriers: 10')).not.toBeNull()
     expect(container.querySelectorAll('svg[aria-label="TR allele length distribution"] rect')).toHaveLength(2)
+  })
+})
+
+describe('haplotype TR locus aggregation', () => {
+  test('merges ALT/group rows and counts unique sample carrier identities', () => {
+    const minusTwo = haplotypeTr(1, -2)
+    const groups = [
+      haplotypeGroup(1, 'sample-1', [minusTwo, haplotypeTr(2, 0)]),
+      // Same sample/ALT in another group row is not another carrier occurrence.
+      haplotypeGroup(2, 'sample-1', [{ ...minusTwo }]),
+      haplotypeGroup(3, 'sample-2', [haplotypeTr(3, -1)]),
+      haplotypeGroup(4, 'sample-3', [haplotypeTr(4, 1)]),
+    ]
+
+    render(
+      <HaplotypeVariantTable
+        mode="haplotype"
+        haplotypeGroups={{ groups }}
+        sampleMetadata={new Map([
+          ['sample-1', { superpopulation: 'AFR' }],
+          ['sample-2', { superpopulation: 'EUR' }],
+          ['sample-3', { superpopulation: 'EAS' }],
+        ]) as any}
+      />
+    )
+
+    expect(screen.getAllByText('chr22-22854926-TRV-105TR-2..1bp')).toHaveLength(1)
+    fireEvent.click(screen.getByText('chr22-22854926-TRV-105TR-2..1bp').closest('tr')!)
+
+    expect(screen.getByText('Allele length range: -2 to 1bp')).not.toBeNull()
+    expect(screen.getByText('Distinct allele lengths: 4')).not.toBeNull()
+    expect(screen.getByText('Total carriers: 3')).not.toBeNull()
   })
 })
