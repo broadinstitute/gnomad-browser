@@ -11,9 +11,10 @@ type Props = {
   // undefined means this release does not provide per-sample availability metadata;
   // null means that metadata is still loading.
   availability?: MethylationSampleAvailability[] | null
+  sourceLabel?: string
 }
 
-const MethylationHelp = ({ availability }: Props) => {
+const MethylationHelp = ({ availability, sourceLabel }: Props) => {
   const unavailable = availability?.filter((sample) => !sample.available) || []
   const availableCount = availability?.filter((sample) => sample.available).length || 0
 
@@ -26,6 +27,9 @@ const MethylationHelp = ({ availability }: Props) => {
         methylation (ASM) where specific structural haplotypes drive local hyper- or
         hypo-methylation.
       </p>
+      {sourceLabel && (
+        <p><strong>Source:</strong> {sourceLabel}</p>
+      )}
       <p>
         You&apos;ll see a track of dots representing the group&apos;s mean methylation level at each CpG
         site. Sites that deviate significantly from the overall population mean are highlighted

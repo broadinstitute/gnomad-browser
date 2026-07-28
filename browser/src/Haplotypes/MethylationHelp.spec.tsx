@@ -45,6 +45,14 @@ describe('MethylationHelp', () => {
     expect(text).toContain('No reason supplied')
   })
 
+  test('shows source context in help when provided', () => {
+    const text = renderedText(renderer.create(
+      <MethylationHelp sourceLabel="Pinned CpG mixed-provenance prototype data" />
+    ).toJSON())
+
+    expect(text).toContain('Source: Pinned CpG mixed-provenance prototype data')
+  })
+
   test('distinguishes loading metadata from releases without availability metadata', () => {
     const loading = renderedText(renderer.create(<MethylationHelp availability={null} />).toJSON())
     const generic = renderedText(renderer.create(<MethylationHelp />).toJSON())

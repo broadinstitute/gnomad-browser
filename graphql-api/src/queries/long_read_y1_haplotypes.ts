@@ -1,7 +1,7 @@
 import { y1ClickhouseClient } from '../clickhouse'
 import { browserVariantId } from './long_read_y1_variants'
 
-// Unphased heterozygous/partial calls cannot be assigned to a biological strand.
+// Unphased heterozygous/partial ALT calls cannot be assigned to haplotype 1 or 2.
 // Phased, haploid, and unphased homozygous-alt calls have deterministic placement.
 const deterministicCarrier = `
   c.gt_phased = 1

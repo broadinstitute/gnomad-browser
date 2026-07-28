@@ -947,6 +947,7 @@ const LongReadUnifiedView = ({
               filterToOutliers={filterToOutliers}
               isAutoTuned={isAutoTuned}
               typeFilters={typeFilters}
+              ambiguousUnphasedRows={ambiguousUnphasedRows}
             />
           )}
         </>
@@ -1026,11 +1027,6 @@ const LongReadUnifiedView = ({
         {regionTooLarge && (
           <div style={{ textAlign: 'center', fontSize: 12, color: '#999', marginBottom: 8 }}>
             Haplotype view disabled: region too large (&gt; {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb)
-          </div>
-        )}
-        {showHaplotypes && ambiguousUnphasedRows > 0 && (
-          <div style={{ textAlign: 'center', fontSize: 12, color: '#856404', marginBottom: 8 }}>
-            {ambiguousUnphasedRows.toLocaleString()} unphased carrier rows are excluded because they cannot be assigned to a biological strand.
           </div>
         )}
       </TrackPageSection>

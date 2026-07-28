@@ -458,10 +458,13 @@ export const Legend = ({
                   disabled={!methylationAvailable}
                   onChange={handleShowMethylationChange}
                 />
-                Methylation — {methylationAvailable ? methylationLabel : 'Unavailable for this cohort/release'}
+                Methylation
               </label>
               <HaplotypeHelpButton title="Methylation">
-                <MethylationHelp availability={methylationAvailability} />
+                <MethylationHelp
+                  availability={methylationAvailability}
+                  sourceLabel={methylationAvailable ? methylationLabel : 'Unavailable for this cohort/release'}
+                />
               </HaplotypeHelpButton>
             </div>
             {showMethylation && methylationAvailable && (
@@ -502,8 +505,13 @@ export const Legend = ({
                   disabled={!recombinationAvailable}
                   onChange={(e) => onShowRecombinationChange(e.target.checked)}
                 />
-                Recombination rate — {recombinationAvailable ? recombinationLabel : 'Unavailable for this cohort/release'}
+                Recombination rate
               </label>
+              <HaplotypeHelpButton title="Recombination rate">
+                <RecombinationHelp
+                  sourceLabel={recombinationAvailable ? recombinationLabel : 'Unavailable for this cohort/release'}
+                />
+              </HaplotypeHelpButton>
             </div>
           </ControlGroup>
         </Fieldset>
@@ -852,6 +860,7 @@ type HaplotypeTrackProps = {
   filterToOutliers?: boolean
   isAutoTuned?: boolean
   typeFilters?: Record<string, boolean>
+  ambiguousUnphasedRows?: number
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -1158,6 +1167,24 @@ const GroupingModeHelp = () => (
   </>
 )
 
+export const HaplotypeOmissionHelp = () => (
+  <p>
+    <strong>Unphased</strong> counts per-sample variant carrier records omitted only from
+    Haplotype View because an unphased ALT cannot be assigned to haplotype 1 or 2. The
+    variants and their frequencies remain available in Summary View.
+  </p>
+)
+
+export const RecombinationHelp = ({ sourceLabel }: { sourceLabel: string }) => (
+  <>
+    <p>
+      Overlays the local recombination rate, providing context for where haplotype blocks
+      may be more likely to break across the displayed region.
+    </p>
+    <p><strong>Source:</strong> {sourceLabel}</p>
+  </>
+)
+
 const AutoTunedHelp = () => (
   <>
     <p>
@@ -1225,7 +1252,7 @@ const InfoBarWrapper = styled.div`
   color: #333;
 `
 
-const HaplotypeInfoBar = ({
+export const HaplotypeInfoBar = ({
   displayGroups,
   start,
   stop,
@@ -1244,6 +1271,7 @@ const HaplotypeInfoBar = ({
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   variationGraph,
   pangenomeGraph,
+  ambiguousUnphasedRows = 0,
 }: {
   displayGroups: HaplotypeGroup[]
   start: number
@@ -1263,6 +1291,7 @@ const HaplotypeInfoBar = ({
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
   variationGraph?: any
   pangenomeGraph?: any
+  ambiguousUnphasedRows?: number
 }) => {
   const { totalSamples, totalVariants } = React.useMemo(() => {
     let samples = 0
@@ -1315,6 +1344,12 @@ const HaplotypeInfoBar = ({
         <span><strong>{totalSamples.toLocaleString()}</strong> {groupingMode === 'diploid' ? 'samples (diploid)' : 'haplotypes'}</span>
         <span style={{ color: '#999' }}>·</span>
         <span><strong>{totalVariants.toLocaleString()}</strong> variants</span>
+        {ambiguousUnphasedRows > 0 && (
+          <>
+            <span style={{ color: '#999' }}>·</span>
+            <span>Unphased: <strong>{ambiguousUnphasedRows.toLocaleString()}</strong></span>
+          </>
+        )}
         <span style={{ color: '#999' }}>·</span>
         <span>{regionLabel}</span>
         <span style={{ color: '#999' }}>·</span>
@@ -1359,26 +1394,31 @@ const HaplotypeInfoBar = ({
         )}
         {plotType === 'lollipop' && (
           <HaplotypeHelpButton title="Lollipop View — How to Read This View">
+            <HaplotypeOmissionHelp />
             <LollipopHelp />
           </HaplotypeHelpButton>
         )}
         {plotType === 'bubble' && (
           <HaplotypeHelpButton title="Variation Graph — How to Read This View">
+            <HaplotypeOmissionHelp />
             <BubbleHelp />
           </HaplotypeHelpButton>
         )}
         {plotType === 'alluvial' && (
           <HaplotypeHelpButton title="Alluvial Flow — How to Read This View">
+            <HaplotypeOmissionHelp />
             <AlluvialHelp />
           </HaplotypeHelpButton>
         )}
         {plotType === 'heatmap' && (
           <HaplotypeHelpButton title="Binned Heatmap — How to Read This View">
+            <HaplotypeOmissionHelp />
             <HeatmapHelp />
           </HaplotypeHelpButton>
         )}
         {plotType === 'painting' && (
           <HaplotypeHelpButton title="Chromosome Painting — How to Read This View">
+            <HaplotypeOmissionHelp />
             <PaintingHelp />
           </HaplotypeHelpButton>
         )}
@@ -1927,6 +1967,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   filterToOutliers = true,
   isAutoTuned = true,
   typeFilters,
+  ambiguousUnphasedRows = 0,
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
@@ -2171,6 +2212,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
         distanceMetric={distanceMetric}
         variationGraph={variationGraph}
         pangenomeGraph={pangenomeGraph}
+        ambiguousUnphasedRows={ambiguousUnphasedRows}
       />
     </Wrapper>
   )
