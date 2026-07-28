@@ -42,7 +42,7 @@ const mapClickHouseRowToGraphQL = (row: any) => {
   xpos: Number(row.xpos),
   rsids: row.rsids,
   allele_type: row.allele_type,
-  sv_consequences: [],
+  sv_consequences: Array.isArray(row.sv_consequences) ? row.sv_consequences : [],
   filters,
   intergenic: row.intergenic === 1,
   gene_region: row.gene_region || null,

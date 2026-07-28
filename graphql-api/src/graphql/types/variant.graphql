@@ -119,10 +119,17 @@ type LongReadSequencingTypeData {
 
 type LongReadVariantDetails {
   allele_type: String
+  end: Int
+  length: Int
   motifs: [String!]
   is_likely_tr: Boolean
   enveloping_tr_id: String
+  enveloped_ids: [String!]
   gnomad_str: String
+  short_read_match_id: String
+  short_read_match_type: String
+  short_read_match_source: String
+  sv_consequences: [String!]
   allele_size_distribution: [LongReadAlleleSizeDistribution!]
   genotype_distribution: [LongReadGenotypeDistribution!]
   max_repunits: Int

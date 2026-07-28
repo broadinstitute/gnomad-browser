@@ -104,9 +104,10 @@ type VariantPageRouterProps = {
   variantId: string
 }
 
-// LR variant IDs like "22-20277853-TRV-14" or "X-12345-DEL-100"
-const isLrVariantId = (id: string) =>
-  /^\d{1,2}-\d+-[A-Za-z]+-\d+$/.test(id) || /^[XYxy]-\d+-[A-Za-z]+-\d+$/.test(id)
+// LR IDs may be symbolic or sequence alleles, optionally use a chr prefix, and
+// may carry a provenance suffix (for example, chr22-36280147-TRV-17~1).
+export const isLrVariantId = (id: string) =>
+  /^(?:chr)?(?:[1-9]|1\d|2[0-2]|X|Y)-\d+-(?:[ACGTN]+-[ACGTN]+|[A-Z]+(?:-\d+)?)(?:~\d+)?$/i.test(id)
 
 const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => {
   if (hasStructuralVariants(datasetId)) {

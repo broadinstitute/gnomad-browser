@@ -52,6 +52,7 @@ import {
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
 import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
+import type { Sex } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
 
 export const Section = styled.section`
   width: 100%;
@@ -323,12 +324,31 @@ export type LongReadSequencingType = {
 
 export type LongReadDetails = {
   allele_type: string | null
+  end: number | null
+  length: number | null
   motifs: string[] | null
   is_likely_tr: boolean | null
   enveloping_tr_id: string | null
+  enveloped_ids: string[] | null
   gnomad_str: string | null
+  short_read_match_id: string | null
+  short_read_match_type: string | null
+  short_read_match_source: string | null
+  sv_consequences: string[] | null
   allele_size_distribution: AlleleSizeDistributionCohort[] | null
-  genotype_distribution: any[] | null
+  genotype_distribution:
+    | {
+        ancestry_group: string
+        sex: Sex
+        short_allele_repunit: string
+        long_allele_repunit: string
+        distribution: {
+          short_allele_repunit_count: number
+          long_allele_repunit_count: number
+          frequency: number
+        }[]
+      }[]
+    | null
   max_repunits: number | null
   main_reference_region: {
     reference_genome: string
@@ -426,9 +446,11 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         )}
       </Section>
 
-      {variant.long_read_details?.is_likely_tr && (
+      {variant.long_read_details && (
         <LongReadVariantDetails
           variantId={variant.variant_id}
+          chrom={variant.chrom}
+          pos={variant.pos}
           longReadDetails={variant.long_read_details}
           ref_allele={variant.ref}
         />
@@ -764,10 +786,17 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
     }
     long_read_details {
       allele_type
+      end
+      length
       motifs
       is_likely_tr
       enveloping_tr_id
+      enveloped_ids
       gnomad_str
+      short_read_match_id
+      short_read_match_type
+      short_read_match_source
+      sv_consequences
       max_repunits
       allele_size_distribution {
         ancestry_group

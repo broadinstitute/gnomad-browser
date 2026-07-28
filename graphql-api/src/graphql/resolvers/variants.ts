@@ -38,8 +38,12 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   if (variantId) {
     if (isVariantId(variantId)) {
       normalizedVariantId = normalizeVariantId(variantId)
-    } else if (/^\d{1,2}-\d+-[A-Za-z]+-\d+$/.test(variantId) || /^[XYxy]-\d+-[A-Za-z]+-\d+$/.test(variantId)) {
-      // LR variant IDs like "22-20277853-TRV-14" don't pass standard validation
+    } else if (
+      /^(?:chr)?(?:[1-9]|1\d|2[0-2]|X|Y)-\d+-(?:[ACGTN]+-[ACGTN]+|[A-Z]+(?:-\d+)?)(?:~\d+)?$/i.test(
+        variantId
+      )
+    ) {
+      // LR IDs may be symbolic or sequence alleles and may include a provenance suffix.
       normalizedVariantId = variantId
       isLongReadOnlyId = true
     } else {
@@ -112,10 +116,17 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
 
         long_read_details: {
           allele_type: lrVariant.allele_type,
+          end: lrVariant.end,
+          length: lrVariant.length,
           motifs: lrVariant.motifs,
           is_likely_tr: lrVariant.is_likely_tr,
           enveloping_tr_id: lrVariant.enveloping_tr_id,
+          enveloped_ids: lrVariant.enveloped_ids || [],
           gnomad_str: lrVariant.gnomad_str,
+          short_read_match_id: lrVariant.short_read_match_id,
+          short_read_match_type: lrVariant.short_read_match_type,
+          short_read_match_source: lrVariant.short_read_match_source,
+          sv_consequences: lrVariant.sv_consequences || [],
           allele_size_distribution: lrVariant.allele_size_distribution,
           genotype_distribution: lrVariant.genotype_distribution,
           max_repunits: lrVariant.max_repunits,
@@ -125,7 +136,14 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
         transcript_consequences: lrVariant.transcript_consequences || [],
         sortedTranscriptConsequences: lrVariant.transcript_consequences || [],
         transcript_consequence: lrVariant.transcript_consequences?.[0] || null,
-        in_silico_predictors: [],
+        in_silico_predictors: [
+          lrVariant.cadd_phred != null
+            ? { id: 'cadd', value: String(lrVariant.cadd_phred), flags: [] }
+            : null,
+          lrVariant.phylop != null
+            ? { id: 'phylop', value: String(lrVariant.phylop), flags: [] }
+            : null,
+        ].filter(Boolean),
         non_coding_constraint: null,
 
         // Deprecated fields mapped from transcript_consequences
