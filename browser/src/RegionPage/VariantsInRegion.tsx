@@ -4,6 +4,7 @@ import { DatasetId, labelForDataset, referenceGenome, isLongRead, associatedLong
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
+import LongReadCohortSelector from './LongReadCohortSelector'
 import Query from '../Query'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
@@ -293,18 +294,7 @@ const ConnectedVariantsInRegion = ({
     return (
       <>
         <TrackPageSection>
-          <label htmlFor="lr-cohort">
-            Long-read cohort:{' '}
-            <select
-              id="lr-cohort"
-              value={lrCohort}
-              onChange={(event) => onChangeLrCohort(event.target.value as 'hgsvc_hprc' | 'aou')}
-            >
-              <option value="hgsvc_hprc">HGSVC/HPRC</option>
-              <option value="aou">All of Us</option>
-            </select>
-          </label>
-          {lrCohort === 'aou' && <p>All of Us is summary-only; Haplotype View is unavailable.</p>}
+          <LongReadCohortSelector value={lrCohort} onChange={onChangeLrCohort} />
         </TrackPageSection>
         <Query
           operationName="LongReadVariantsInRegion"

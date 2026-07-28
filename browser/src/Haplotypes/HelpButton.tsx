@@ -44,7 +44,7 @@ const HaplotypeHelpButton = ({ title, children }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>
+      <Button aria-label={title} onClick={() => setIsOpen(true)}>
         <img src={QuestionMarkIcon} alt="" aria-hidden="true" />
       </Button>
       {isOpen && (

@@ -78,13 +78,22 @@ const runMixedPrototype = process.env.LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED === '
 test.describe('Long Read chr22 mixed-provenance prototype', () => {
   test.skip(!runMixedPrototype, 'requires the isolated chr22 mixed-provenance stack')
 
-  test('clears unsupported state when switching cohorts', async ({ page }) => {
-    await page.goto('/region/22-11160001-11170000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc')
-    await page.locator('#lr-cohort').selectOption('aou')
+  test('switches cohorts, clears unsupported state, and keeps the AoU notice in view help', async ({ page }) => {
+    await page.goto('/region/22-11160001-11170000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&show_haplotypes=true')
+
+    const cohortOptions = page.getByRole('group', { name: 'Long-read cohort:' })
+    await expect(cohortOptions.getByRole('radio', { name: 'HGSVC/HPRC' })).toBeChecked()
+    await cohortOptions.getByRole('radio', { name: 'All of Us' }).click()
+
+    await expect(cohortOptions.getByRole('radio', { name: 'All of Us' })).toBeChecked()
+    expect(new URL(page.url()).searchParams.get('lr_cohort')).toBe('aou')
+    expect(new URL(page.url()).searchParams.get('show_haplotypes')).toBeNull()
+    await expect(page.getByText('All of Us is summary-only; Haplotype View is unavailable.')).toHaveCount(0)
+
+    await page.getByRole('button', { name: 'Long Read Data Views' }).click()
     await expect(
       page.getByText('All of Us is summary-only; Haplotype View is unavailable.')
     ).toBeVisible()
-    expect(new URL(page.url()).searchParams.get('show_haplotypes')).toBeNull()
   })
 
   test('does not render missing frequency values as zero', async ({ page }) => {
