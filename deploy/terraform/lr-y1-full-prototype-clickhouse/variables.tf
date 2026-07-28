@@ -53,12 +53,12 @@ variable "boot_disk_size_gb" {
 
 variable "data_disk_size_gb" {
   type        = number
-  description = "Expandable prototype data disk; lowering this value is rejected."
-  default     = 3000
+  description = "Expandable prototype data disk; persistent disks cannot be shrunk."
+  default     = 2000
 
   validation {
-    condition     = var.data_disk_size_gb >= 3000
-    error_message = "The full-genome prototype data disk must be at least 3 TB."
+    condition     = var.data_disk_size_gb >= 2000
+    error_message = "The full-genome prototype data disk must be at least 2 TB."
   }
 }
 

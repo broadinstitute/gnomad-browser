@@ -1,6 +1,6 @@
 # Defaults are the reviewed 128-worker ingest rung.
 machine_type      = "n2-highmem-32"
-data_disk_size_gb = 3000
+data_disk_size_gb = 2000
 
 # This dedicated /23 is outside the accepted chr22 192.168.0.0/20 firewall
 # allowlist and leaves replacement headroom for 128 workers. Confirm it does

@@ -5,10 +5,10 @@ This independent Terraform root plans the third ClickHouse environment for the f
 ## Isolation and sizing
 
 - State: `gs://gnomadev-terraform-state/lr-y1-full-prototype-clickhouse`
-- VM/data disk: `gnomad-lr-y1-full-prototype-clickhouse` and a protected 3 TB `pd-balanced` disk
+- VM/data disk: `gnomad-lr-y1-full-prototype-clickhouse` and a protected 2 TB `pd-balanced` disk, expandable online but not shrinkable
 - Compute: `n2-highmem-32`, 50 GB boot disk, ClickHouse `26.3.9.8`
 - Network: dedicated `192.168.16.0/23` subnet, router, and NAT; private IP only, with replacement headroom for 128 workers
-- Access: IAP SSH to the ClickHouse tag and dedicated pool identities; private TCP 3000 only from workers to the coordinator; TCP 8123 only from workers to ClickHouse, with ClickHouse itself restricted to the dedicated `/24`
+- Access: IAP SSH to the ClickHouse tag and dedicated pool identities; private TCP 3000 only from workers to the coordinator; TCP 8123 only from workers to ClickHouse, with ClickHouse itself restricted to the dedicated `/23`
 - Identity: separate ClickHouse, coordinator, and worker service accounts; the dormant 128-worker profile explicitly selects private-only instances, external firewall management, the dedicated subnet, and both pool identities
 - Recovery: pristine bootstrap snapshot plus a dedicated daily 30-day snapshot policy
 - Labels/tags: `dataset=gnomad-lr-y1`, `purpose=full-prototype`
