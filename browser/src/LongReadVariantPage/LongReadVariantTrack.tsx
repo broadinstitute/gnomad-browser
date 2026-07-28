@@ -9,8 +9,9 @@ import { getVariantCategory, VARIANT_CATEGORY_COLORS, ALLELE_TYPE_COLORS, assign
 import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
 import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributionPlot'
+import DeletionAllelicSeriesPlot from './DeletionAllelicSeriesPlot'
 import { aggregateTrLoci, getTrLocusDistribution, packTrLoci, type TrLocus } from './trLocusAggregation'
-import { aggregateSourceEvents, getInsertionLengthDistribution, packSourceEvents, type SourceEvent } from './sourceEventAggregation'
+import { aggregateSourceEvents, getDeletionAlleleFrequencyPoints, getInsertionLengthDistribution, packSourceEvents, type SourceEvent } from './sourceEventAggregation'
 
 // --- Types ---
 
@@ -32,7 +33,7 @@ type LRVariant = {
   filters: string[] | null
   sv_consequences: string[] | null
   freq?: {
-    all?: { af?: number | null; ac?: number | null } | null
+    all?: { af?: number | null; ac?: number | null; an?: number | null } | null
     af?: number | null
     populations?: Array<{ id: string; ac?: number | null }> | null
   } | null
@@ -128,22 +129,36 @@ const formatCoordinateRange = (event: SourceEvent<SvItem>) => {
   return `${event.chrom}:${starts} to ${stops}`
 }
 
+const formatFrequencyValue = (value: number | null, precision?: number) => {
+  if (value == null) return 'Unavailable'
+  return precision == null ? value.toLocaleString() : value.toPrecision(precision)
+}
+
 export const SourceEventTooltip = ({ hovered }: { hovered: HoveredSourceEvent }) => {
   const { event, band } = hovered
   const insertionDistribution: TrDataPoint[] = band === 'ins' ? getInsertionLengthDistribution(event.alleles) : []
+  const deletionPoints = band === 'del' ? getDeletionAlleleFrequencyPoints(event.alleles) : []
   let details: React.ReactNode
   if (band === 'ins') details = <div><strong>Insertion length:</strong> {formatLengthRange(event.minAbsoluteLength, event.maxAbsoluteLength)}</div>
   else if (band === 'del' || band === 'dup') details = <><div><strong>Length:</strong> {formatLengthRange(event.minAbsoluteLength, event.maxAbsoluteLength)}</div><div><strong>Affected coordinates:</strong> {formatCoordinateRange(event)}</div></>
   else details = <><div><strong>Signed length:</strong> {formatLengthRange(event.minSignedLength, event.maxSignedLength, true)}</div><div><strong>Absolute length:</strong> {formatLengthRange(event.minAbsoluteLength, event.maxAbsoluteLength)}</div><div><strong>Coordinate range:</strong> {formatCoordinateRange(event)}</div></>
 
   return (
-    <div style={{ position: 'fixed', left: hovered.x + 12, top: hovered.y + 12, background: 'white', border: '1px solid #ccc', borderRadius: 4, padding: '6px 8px', fontSize: 12, pointerEvents: 'none', zIndex: 10000, width: 270, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+    <div style={{ position: 'fixed', left: hovered.x + 12, top: hovered.y + 12, background: 'white', border: '1px solid #ccc', borderRadius: 4, padding: '6px 8px', fontSize: 12, pointerEvents: 'none', zIndex: 10000, width: 340, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
       <div><strong>Structural locus:</strong> {event.chrom}:{event.start}-{event.stop} ({event.family})</div>
       <div><strong>{event.subtypes.length === 1 ? 'Subtype' : 'Constituents'}:</strong> {event.subtypes.join(', ')}</div>
       <div><strong>ALT records:</strong> {event.alleles.length}</div>
       {details}
       <div><strong>Maximum ALT AF:</strong> {event.maxAf == null ? 'Unavailable' : event.maxAf.toPrecision(4)}</div>
       {insertionDistribution.length > 0 && <TRDistributionPlot distribution={insertionDistribution} compact interactive={false} yAxisLabel="ALT records" xAxisLabel="Insertion length (bp)" ariaLabel="Insertion length distribution" signedLabels={false} />}
+      {deletionPoints.length > 0 && <>
+        <DeletionAllelicSeriesPlot points={deletionPoints} />
+        <div style={{ maxHeight: 92, overflowY: 'auto', marginTop: 2 }} aria-label="Deletion ALT frequency details">
+          {deletionPoints.map(point => <div key={point.allele.variant_id} style={{ whiteSpace: 'nowrap' }}>
+            {point.length == null ? 'Length unavailable' : `${point.length} bp`}: AC {formatFrequencyValue(point.ac)}, AN {formatFrequencyValue(point.an)}, AF {formatFrequencyValue(point.af, 4)}
+          </div>)}
+        </div>
+      </>}
       {event.alleles.length > 1 && <div style={{ color: '#666', marginTop: 2 }}>Click opens the maximum-AF ALT record; all ALTs remain in the Summary table.</div>}
     </div>
   )

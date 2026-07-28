@@ -6,13 +6,23 @@
 
 export type VariantCategory = 'snv' | 'deletion' | 'insertion' | 'sv' | 'tr'
 
+const DELETION_ALLELE_TYPES = new Set([
+  'del', 'deletion',
+  'alu_del', 'alu_deletion',
+  'line_del', 'line_deletion',
+  'sva_del', 'sva_deletion',
+])
+
+export const isDeletionAlleleType = (alleleType: string) =>
+  DELETION_ALLELE_TYPES.has(alleleType.toLowerCase())
+
 /**
  * Map raw allele_type strings (11 values in DB) to 5 display categories.
  * Used by variant tracks, tables, and DeckGL rendering.
  */
 export const getVariantCategory = (
   alleleType: string,
-  length?: number | null
+  _length?: number | null
 ): VariantCategory => {
   const t = alleleType.toLowerCase()
   if (t === 'trv') return 'tr'
@@ -20,9 +30,7 @@ export const getVariantCategory = (
   if (t === 'ins' || t === 'alu_ins' || t === 'sva_ins' || t === 'numt') {
     return 'insertion'
   }
-  if (t === 'del' || t === 'alu_del' || t === 'line_del' || t === 'sva_del') {
-    return 'deletion'
-  }
+  if (isDeletionAlleleType(t)) return 'deletion'
   // dup, dup_interspersed, complex_dup, inv_dup, inv, etc.
   return 'sv'
 }
@@ -47,9 +55,13 @@ export const ALLELE_TYPE_COLORS: Record<string, string> = {
   sva_ins: '#558B2F',
   numt: '#26A69A',
   del: '#D73027',
+  deletion: '#D73027',
   alu_del: '#D73027',
+  alu_deletion: '#D73027',
   line_del: '#D73027',
+  line_deletion: '#D73027',
   sva_del: '#D73027',
+  sva_deletion: '#D73027',
   trv: '#E8A838',
   dup: '#9467BD',
   dup_interspersed: '#7E57C2',

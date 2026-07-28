@@ -1,11 +1,13 @@
 import {
   aggregateSourceEvents,
+  getDeletionAlleleFrequencyPoints,
   getInsertionLengthDistribution,
   getSourceEventFamily,
   getSourceEventKey,
   packSourceEvents,
   type SourceEventRecord,
 } from './sourceEventAggregation'
+import { assignBand, getVariantCategory } from './variantUtils'
 
 const allele = (overrides: Partial<SourceEventRecord> = {}): SourceEventRecord => ({
   variant_id: '1-100-A-ALT',
@@ -80,6 +82,75 @@ describe('non-TR structural locus aggregation', () => {
     expect(events[0].alleles).toHaveLength(ids.length)
     expect(events[0].representative.source_variant_id).toBe('chr22-20075553-INS-849_1')
     expect(packSourceEvents(events).maxRows).toBe(1)
+  })
+
+  test('groups variable-length chr22 deletions by exact left anchor into two bounded glyphs', () => {
+    const deletionSeries = (anchor: number, lengths: number[]) =>
+      lengths.map((length, index) =>
+        allele({
+          variant_id: `22-${anchor}-del-${length}-${index}`,
+          source_variant_id: `source-${anchor}-${length}-${index}`,
+          chrom: '22',
+          pos: anchor,
+          end: anchor + length,
+          start: anchor,
+          stop: anchor + length,
+          allele_length: -length,
+          allele_type: index % 2 === 0 ? 'DEL' : 'ALU_DEL',
+          freq: { all: { ac: index + 1, an: 200, af: (index + 1) / 200 } },
+        })
+      )
+    const records = [
+      ...deletionSeries(20077152, [7, 8, 9, 10, 12, 16, 17]),
+      ...deletionSeries(20077156, [2, 3, 10, 11, 13, 20]),
+    ]
+
+    const events = aggregateSourceEvents(records).sort((a, b) => a.start - b.start)
+
+    expect(events).toHaveLength(2)
+    expect(events.map((event) => event.key)).toEqual([
+      'locus:deletion:22:20077152',
+      'locus:deletion:22:20077156',
+    ])
+    expect(events[0]).toMatchObject({
+      start: 20077152,
+      stop: 20077169,
+      minAbsoluteLength: 7,
+      maxAbsoluteLength: 17,
+    })
+    expect(events[1]).toMatchObject({
+      start: 20077156,
+      stop: 20077176,
+      minAbsoluteLength: 2,
+      maxAbsoluteLength: 20,
+    })
+    expect(events.map((event) => event.alleles.length)).toEqual([7, 6])
+    expect(packSourceEvents(events)).toMatchObject({ maxRows: 2 })
+  })
+
+  test('keeps independently anchored overlapping deletions and interval-defined SVs separate', () => {
+    const events = aggregateSourceEvents([
+      allele({ variant_id: 'del-a', allele_type: 'del', start: 100, stop: 130 }),
+      allele({ variant_id: 'del-b', allele_type: 'sva_deletion', start: 105, stop: 125 }),
+      allele({ variant_id: 'inv-a', allele_type: 'inv', start: 100, stop: 130 }),
+      allele({ variant_id: 'inv-b', allele_type: 'inv', start: 100, stop: 140 }),
+      allele({ variant_id: 'cnv-a', allele_type: 'cnv', start: 100, stop: 130 }),
+      allele({ variant_id: 'cnv-b', allele_type: 'cnv', start: 100, stop: 140 }),
+    ])
+
+    expect(getVariantCategory('sva_deletion')).toBe('deletion')
+    expect(assignBand('sva_deletion')).toBe('del')
+    expect(events).toHaveLength(6)
+    expect(events.map((event) => event.key)).toEqual(
+      expect.arrayContaining([
+        'locus:deletion:1:100',
+        'locus:deletion:1:105',
+        'locus:inversion:1:100:130',
+        'locus:inversion:1:100:140',
+        'locus:cnv:1:100:130',
+        'locus:cnv:1:100:140',
+      ])
+    )
   })
 
   test('keeps distinct same-position event families separate', () => {
@@ -168,6 +239,24 @@ describe('non-TR structural locus aggregation', () => {
     expect(event.maxAbsoluteLength).toBeNull()
     expect(event.maxAf).toBeNull()
     expect(getInsertionLengthDistribution(event.alleles)).toEqual([])
+  })
+
+  test('preserves per-record deletion AF/AC/AN values without deriving missing values', () => {
+    const points = getDeletionAlleleFrequencyPoints([
+      allele({ allele_length: -7, freq: { all: { af: 0.1, ac: 2, an: 20 } } }),
+      allele({ variant_id: 'missing-af', allele_length: -8, freq: { all: { ac: 1, an: 18 } } }),
+      allele({
+        variant_id: 'missing-length-and-an',
+        allele_length: null,
+        freq: { all: { af: 0.2, ac: 3 } },
+      }),
+    ])
+
+    expect(points.map(({ allele: _allele, ...point }) => point)).toEqual([
+      { length: 7, af: 0.1, ac: 2, an: 20 },
+      { length: 8, af: null, ac: 1, an: 18 },
+      { length: null, af: 0.2, ac: 3, an: null },
+    ])
   })
 
   test('builds an absolute insertion-length distribution per ALT record', () => {

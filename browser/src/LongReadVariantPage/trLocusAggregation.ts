@@ -7,7 +7,7 @@ export type TrAlleleRecord = {
   allele_length: number | null
   main_reference_region: { chrom: string; start: number; stop: number } | null
   freq?: {
-    all?: { af?: number | null; ac?: number | null } | null
+    all?: { af?: number | null; ac?: number | null; an?: number | null } | null
     af?: number | null
     populations?: Array<{ id: string; ac?: number | null }> | null
   } | null

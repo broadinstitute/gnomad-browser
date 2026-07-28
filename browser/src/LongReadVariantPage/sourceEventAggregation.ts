@@ -1,4 +1,5 @@
 import { getAltAf, packLoci, type TrAlleleRecord } from './trLocusAggregation'
+import { isDeletionAlleleType } from './variantUtils'
 
 export type SourceEventRecord = TrAlleleRecord & {
   allele_type: string
@@ -7,6 +8,14 @@ export type SourceEventRecord = TrAlleleRecord & {
 }
 
 export type LengthDistributionPoint = { length_diff: number; pop: 'N/A'; count: number }
+
+export type DeletionAlleleFrequencyPoint<T extends SourceEventRecord = SourceEventRecord> = {
+  allele: T
+  length: number | null
+  af: number | null
+  ac: number | null
+  an: number | null
+}
 
 export type SourceEvent<T extends SourceEventRecord = SourceEventRecord> = {
   key: string
@@ -38,23 +47,23 @@ export const getSourceEventFamily = (alleleType: string): string => {
   const type = alleleType.toLowerCase()
   if (['dup', 'dup_interspersed', 'complex_dup', 'inv_dup'].includes(type)) return 'duplication'
   if (['ins', 'alu_ins', 'sva_ins', 'numt'].includes(type)) return 'insertion'
-  if (['del', 'alu_del', 'line_del', 'sva_del'].includes(type)) return 'deletion'
+  if (isDeletionAlleleType(type)) return 'deletion'
   if (type === 'inv') return 'inversion'
   return type
 }
 
 /**
  * Y1 source_variant_id is the byte-exact source record ID, not a guaranteed
- * shared locus/event ID. AoU emits separate IDs for sequence-distinct alleles
- * (for example, chr22-20075553-INS-849_1 and ...-849_2). The bounded glyph
- * identity is therefore an exact reference interval plus normalized event
- * family. Overlap is intentionally insufficient, and source-ID prefixes are
- * not parsed because no such prefix contract exists in the serving schema.
+ * shared locus/event ID. Normalized deletion alleles form an allelic series at
+ * their exact left VCF/reference anchor even when their deleted spans differ.
+ * Every other family remains keyed by its exact reference interval. Overlap is
+ * intentionally insufficient, and source-ID prefixes are never parsed.
  */
-export const getSourceEventKey = (variant: SourceEventRecord): string =>
-  `locus:${getSourceEventFamily(variant.allele_type)}:${eventChrom(variant)}:${variant.start}:${
-    variant.stop
-  }`
+export const getSourceEventKey = (variant: SourceEventRecord): string => {
+  const family = getSourceEventFamily(variant.allele_type)
+  const interval = family === 'deletion' ? `${variant.start}` : `${variant.start}:${variant.stop}`
+  return `locus:${family}:${eventChrom(variant)}:${interval}`
+}
 
 export const aggregateSourceEvents = <T extends SourceEventRecord>(
   variants: T[]
@@ -102,6 +111,23 @@ export const aggregateSourceEvents = <T extends SourceEventRecord>(
     }
   })
 }
+
+export const getDeletionAlleleFrequencyPoints = <T extends SourceEventRecord>(
+  alleles: T[]
+): DeletionAlleleFrequencyPoint<T>[] =>
+  alleles.map((allele) => {
+    const length = allele.allele_length
+    const all = allele.freq?.all
+    const finiteOrNull = (value: unknown) =>
+      typeof value === 'number' && Number.isFinite(value) ? value : null
+    return {
+      allele,
+      length: finiteOrNull(length == null ? null : Math.abs(length)),
+      af: getAltAf(allele),
+      ac: finiteOrNull(all?.ac),
+      an: finiteOrNull(all?.an),
+    }
+  })
 
 /** One bin contribution per ALT record with an available insertion length. */
 export const getInsertionLengthDistribution = <T extends SourceEventRecord>(
