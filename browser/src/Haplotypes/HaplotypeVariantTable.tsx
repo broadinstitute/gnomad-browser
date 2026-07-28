@@ -985,6 +985,7 @@ type TableRowProps = {
   i: number
   isExpanded: boolean
   mode: 'summary' | 'haplotype'
+  showGroupAf: boolean
   totalGroups: number
   totalClusters: number
   totalSamples: number
@@ -1001,6 +1002,7 @@ const TableRow = React.memo(function TableRow({
   i,
   isExpanded,
   mode,
+  showGroupAf,
   totalGroups,
   totalClusters,
   totalSamples,
@@ -1011,7 +1013,7 @@ const TableRow = React.memo(function TableRow({
   onRowClick,
   toggleExpand,
 }: TableRowProps) {
-  const COL_COUNT = 12
+  const COL_COUNT = showGroupAf ? 12 : 11
   return (
     <React.Fragment key={`${v.pos}-${v.variant_id}-${i}`}>
       <tr
@@ -1070,9 +1072,11 @@ const TableRow = React.memo(function TableRow({
             {v.carrier_count} / {totalSamples}
           </td>
         )}
-        <td>
-          <PopAfBar variant={v} />
-        </td>
+        {showGroupAf && (
+          <td>
+            <PopAfBar variant={v} />
+          </td>
+        )}
         {mode === 'summary' && (
           <td>
             {v.short_read_match_id ? (
@@ -1226,6 +1230,7 @@ export type VariantTypeFilters = Record<string, boolean>
 
 type HaplotypeVariantTableProps = {
   mode?: 'summary' | 'haplotype'
+  lrCohort?: 'hgsvc_hprc' | 'aou'
   summaryVariants?: any[]
   haplotypeGroups?: { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }
   sampleMetadata?: SampleMetadataMap
@@ -1256,6 +1261,7 @@ const EMPTY_SAMPLE_METADATA = new Map() as SampleMetadataMap
 
 const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeVariantTableProps>(function HaplotypeVariantTable({
   mode = 'haplotype',
+  lrCohort = 'hgsvc_hprc',
   summaryVariants = EMPTY_VARIANTS,
   haplotypeGroups = EMPTY_HAPLOTYPE_GROUPS,
   sampleMetadata = EMPTY_SAMPLE_METADATA,
@@ -1911,7 +1917,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                   Carriers{sortIndicator('carrier_count')}
                 </th>
               )}
-              <th>Grp AF</th>
+              {!(mode === 'summary' && lrCohort === 'aou') && <th>Grp AF</th>}
               {mode === 'summary' && (
                 <th onClick={() => handleSort('short_read_match_id')}>
                   SR Match ID{sortIndicator('short_read_match_id')}
@@ -1966,6 +1972,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         i={i}
                         isExpanded={isExpanded}
                         mode={mode}
+                        showGroupAf={!(mode === 'summary' && lrCohort === 'aou')}
                         totalGroups={totalGroups}
                         totalClusters={totalClusters}
                         totalSamples={totalSamples}

@@ -28,6 +28,26 @@ const summaryTr = (altIndex: number, length: number, ac: number, afrAc: number) 
   },
 })
 
+describe('summary variant columns', () => {
+  test('hides group AF for AoU while retaining it for HGSVC/HPRC', () => {
+    const variant = summaryTr(1, -3, 4, 2)
+    const { rerender } = render(
+      <HaplotypeVariantTable
+        mode="summary"
+        lrCohort="aou"
+        summaryVariants={[{ ...variant, lr_cohort: 'aou' }]}
+      />
+    )
+
+    expect(screen.queryByRole('columnheader', { name: 'Grp AF' })).toBeNull()
+
+    rerender(
+      <HaplotypeVariantTable mode="summary" lrCohort="hgsvc_hprc" summaryVariants={[variant]} />
+    )
+    expect(screen.getByRole('columnheader', { name: 'Grp AF' })).not.toBeNull()
+  })
+})
+
 describe('summary TR accordion distribution', () => {
   test('keeps ALT rows accessible and renders the shared locus distribution in each accordion', () => {
     const variants = [summaryTr(1, -3, 4, 2), summaryTr(2, 5, 6, 3)]

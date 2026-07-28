@@ -1127,6 +1127,7 @@ const LongReadUnifiedView = ({
           ) : (
             <HaplotypeVariantTable
               mode="summary"
+              lrCohort={lrCohort}
               summaryVariants={zoomedVariants}
               onHoverVariant={setHoveredVariantPosition}
               searchText={searchText}
