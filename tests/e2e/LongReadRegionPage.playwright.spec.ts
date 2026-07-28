@@ -37,6 +37,20 @@ test.describe('Long Read region page — Summary View', () => {
     expect(new URL(page.url()).searchParams.get('show_haplotypes')).toBeNull()
   })
 
+  test('zoom controls narrow and reset the loaded region without navigation', async () => {
+    await expect(page.getByText('Zoom Controls', { exact: true })).toBeVisible({ timeout: 20_000 })
+
+    const originalUrl = page.url()
+    await page.getByRole('button', { name: '3x' }).first().click()
+
+    await expect(page.getByRole('button', { name: 'Set as region' })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Reset zoom' })).toBeVisible()
+    expect(page.url()).toBe(originalUrl)
+
+    await page.getByRole('button', { name: 'Reset zoom' }).click()
+    await expect(page.getByRole('button', { name: 'Set as region' })).toHaveCount(0)
+  })
+
   test('LR variant table loads with rows', async () => {
     // NOTE: `#lr-variant-table-container` is (a bug) set on two nested divs, so
     // scope to the first. The table is div-based (no semantic `columnheader`
@@ -48,7 +62,7 @@ test.describe('Long Read region page — Summary View', () => {
     await expect(page.getByText(/Showing .* variants/)).toBeVisible({ timeout: 30_000 })
   })
 
-  test('report page-load metrics', async ({}, testInfo) => {
+  test('report page-load metrics', async ({ page: _unusedPage }, testInfo) => {
     // Let any in-flight requests settle so their timing is captured.
     await page.waitForLoadState('networkidle').catch(() => {})
     await reportApiMetrics(testInfo, metrics)
@@ -67,7 +81,9 @@ test.describe('Long Read chr22 mixed-provenance prototype', () => {
   test('clears unsupported state when switching cohorts', async ({ page }) => {
     await page.goto('/region/22-11160001-11170000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc')
     await page.locator('#lr-cohort').selectOption('aou')
-    await expect(page.getByText('All of Us is summary-only; Haplotype View is unavailable.')).toBeVisible()
+    await expect(
+      page.getByText('All of Us is summary-only; Haplotype View is unavailable.')
+    ).toBeVisible()
     expect(new URL(page.url()).searchParams.get('show_haplotypes')).toBeNull()
   })
 
