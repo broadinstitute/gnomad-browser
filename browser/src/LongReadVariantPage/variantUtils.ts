@@ -6,6 +6,15 @@
 
 export type VariantCategory = 'snv' | 'deletion' | 'insertion' | 'sv' | 'tr'
 
+/**
+ * Normalize spelling/case aliases emitted by LR data sources. Legacy
+ * haplotype payloads use `SNP`, while summary and Y1 payloads use `snv`.
+ */
+export const normalizeLongReadAlleleType = (alleleType: string): string => {
+  const normalized = (alleleType || '').trim().toLowerCase()
+  return normalized === 'snp' ? 'snv' : normalized
+}
+
 const DELETION_ALLELE_TYPES = new Set([
   'del', 'deletion',
   'alu_del', 'alu_deletion',
@@ -14,7 +23,7 @@ const DELETION_ALLELE_TYPES = new Set([
 ])
 
 export const isDeletionAlleleType = (alleleType: string) =>
-  DELETION_ALLELE_TYPES.has(alleleType.toLowerCase())
+  DELETION_ALLELE_TYPES.has(normalizeLongReadAlleleType(alleleType))
 
 /**
  * Map raw allele_type strings (11 values in DB) to 5 display categories.
@@ -24,7 +33,7 @@ export const getVariantCategory = (
   alleleType: string,
   _length?: number | null
 ): VariantCategory => {
-  const t = alleleType.toLowerCase()
+  const t = normalizeLongReadAlleleType(alleleType)
   if (t === 'trv') return 'tr'
   if (t === 'snv') return 'snv'
   if (t === 'ins' || t === 'insertion' || t === 'alu_ins' || t === 'line_ins' || t === 'sva_ins' || t === 'numt') {
@@ -80,7 +89,7 @@ const ALLELE_TYPE_TO_SV_CLASS: Record<string, GnomadSvClass> = {
 }
 
 export const normalizeAlleleTypeToSvClass = (alleleType: string): GnomadSvClass | null =>
-  ALLELE_TYPE_TO_SV_CLASS[(alleleType || '').toLowerCase()] || null
+  ALLELE_TYPE_TO_SV_CLASS[normalizeLongReadAlleleType(alleleType)] || null
 
 export const VARIANT_CATEGORY_COLORS: Record<VariantCategory, string> = {
   snv: '#4A90D9',
@@ -103,7 +112,7 @@ export const ALLELE_TYPE_COLORS = Object.keys(ALLELE_TYPE_TO_SV_CLASS).reduce<Re
 )
 
 export const getAlleleTypeColor = (alleleType: string): string => {
-  const normalized = (alleleType || '').toLowerCase()
+  const normalized = normalizeLongReadAlleleType(alleleType)
   return ALLELE_TYPE_COLORS[normalized] || GNOMAD_SV_CLASS_COLORS.OTH
 }
 
@@ -146,7 +155,7 @@ export const assignBand = (alleleType: string, length?: number | null): Band => 
   if (cat === 'snv') return 'snv'
   if (cat === 'insertion') return 'ins'
   if (cat === 'deletion') return 'del'
-  const t = alleleType.toLowerCase()
+  const t = normalizeLongReadAlleleType(alleleType)
   if (t === 'dup' || t === 'dup_interspersed' || t === 'complex_dup' || t === 'inv_dup') return 'dup'
   return 'sv' // inv, other SVs
 }

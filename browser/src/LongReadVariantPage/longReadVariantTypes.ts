@@ -1,4 +1,8 @@
-import { getAlleleTypeColor, normalizeAlleleTypeToSvClass } from './variantUtils'
+import {
+  getAlleleTypeColor,
+  normalizeAlleleTypeToSvClass,
+  normalizeLongReadAlleleType,
+} from './variantUtils'
 
 export type LongReadVariantType =
   | 'snv'
@@ -66,7 +70,7 @@ export const filtersForLongReadVariantType = (
   ) as LongReadVariantTypeFilters
 
 export const getLongReadVariantType = (alleleType: string): LongReadVariantType => {
-  const normalized = (alleleType || '').toLowerCase()
+  const normalized = normalizeLongReadAlleleType(alleleType)
   if (normalized === 'snv') return 'snv'
   if (normalized === 'trv') return 'tr'
 

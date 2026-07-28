@@ -37,6 +37,8 @@ describe('long-read structural variant palette', () => {
 
   test('preserves SNV/TR colors and classifies all LR insertion aliases correctly', () => {
     expect(getAlleleTypeColor('snv')).toBe('#4A90D9')
+    expect(getAlleleTypeColor('SNP')).toBe('#4A90D9')
+    expect(getVariantCategory('SNP')).toBe('snv')
     expect(getAlleleTypeColor('trv')).toBe('#E8A838')
     expect(VARIANT_CATEGORY_COLORS.snv).toBe('#4A90D9')
     expect(VARIANT_CATEGORY_COLORS.tr).toBe('#E8A838')

@@ -65,6 +65,8 @@ describe('long-read variant type filters', () => {
   })
 
   test.each([
+    ['SNP', 'snv'],
+    [' SnV ', 'snv'],
     ['INV', 'inv'],
     ['cnv', 'mcnv'],
     ['MCNV', 'mcnv'],
@@ -76,10 +78,16 @@ describe('long-read variant type filters', () => {
     expect(getLongReadVariantType(rawType)).toBe(expected)
   })
 
+  test('legacy SNP payloads pass All and SNV selections but not nonselected types', () => {
+    expect(passesLongReadVariantTypeFilters('SNP', filtersForLongReadVariantType('all'))).toBe(true)
+    expect(passesLongReadVariantTypeFilters('SNP', filtersForLongReadVariantType('snv'))).toBe(true)
+    expect(passesLongReadVariantTypeFilters('SNP', filtersForLongReadVariantType('del'))).toBe(false)
+  })
+
   test('one shared selection filters summary and haplotype allele types identically', () => {
     const filters = filtersForLongReadVariantType('cpx')
     const summaryAlleleTypes = ['snv', 'complex_dup', 'inv_dup', 'dup', 'trv']
-    const haplotypeAlleleTypes = ['SNV', 'CPX', 'complex_dup', 'DUP', 'TRV']
+    const haplotypeAlleleTypes = ['SNP', 'CPX', 'complex_dup', 'DUP', 'TRV']
 
     expect(
       summaryAlleleTypes.filter((type) => passesLongReadVariantTypeFilters(type, filters))
