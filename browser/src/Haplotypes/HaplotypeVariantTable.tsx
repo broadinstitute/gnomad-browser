@@ -1557,10 +1557,12 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
       if (isDiplotype) {
         for (const sample of dg.samples) {
-          ;(dg.haplotypeA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
-          ;(dg.haplotypeB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
-          ;(dg.below_thresholdA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
-          ;(dg.below_thresholdB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
+          // Default Diploid grouping keeps canonical group variants for the
+          // signature, but carrier-resolved sets contain the observed TR ALT.
+          ;(sample.haplotypeA?.variants || dg.haplotypeA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
+          ;(sample.haplotypeB?.variants || dg.haplotypeB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
+          ;(sample.below_thresholdA?.variants || dg.below_thresholdA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
+          ;(sample.below_thresholdB?.variants || dg.below_thresholdB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
         }
       } else {
         // Above-threshold sample variant_sets contain the carrier-specific TR

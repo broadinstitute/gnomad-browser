@@ -121,5 +121,54 @@ describe('haplotype TR locus aggregation', () => {
     expect(screen.getByText('Allele length range: -2 to 1bp')).not.toBeNull()
     expect(screen.getByText('Distinct allele lengths: 4')).not.toBeNull()
     expect(screen.getByText('Total carriers: 3')).not.toBeNull()
+    expect(screen.queryByText('Motif Structure')).toBeNull()
+  })
+
+  test('renders motif decomposition only when trusted metadata is present', () => {
+    const motifVariant = { ...haplotypeTr(1, -2), tr_motifs: 'A' }
+    render(
+      <HaplotypeVariantTable
+        mode="haplotype"
+        haplotypeGroups={{ groups: [haplotypeGroup(1, 'sample-1', [motifVariant])] }}
+      />
+    )
+
+    fireEvent.click(screen.getByText('chr22-22854926-TRV-105TR-2..1bp').closest('tr')!)
+    expect(screen.getByText('Motif Structure')).not.toBeNull()
+    expect(screen.getByText('Units')).not.toBeNull()
+  })
+
+  test('uses carrier-resolved Diploid sequences for distribution and decomposition', () => {
+    const canonical = { ...haplotypeTr(1, 0), tr_motifs: 'A' }
+    const personalized = (alt: string) => ({ ...canonical, alt, allele_length: alt.length - canonical.ref.length })
+    const group: any = {
+      is_diplotype: true,
+      hash: 1,
+      start: canonical.pos,
+      stop: canonical.end,
+      samples: [
+        {
+          sample_id: 'sample-1', strand_mapping: { strandA: 0, strandB: 1 },
+          haplotypeA: { readable_id: '', variants: [personalized('A')] },
+          haplotypeB: { readable_id: '', variants: [personalized('AAAAAA')] },
+          below_thresholdA: { readable_id: '', variants: [] },
+          below_thresholdB: { readable_id: '', variants: [] },
+        },
+      ],
+      haplotypeA: { readable_id: '', variants: [canonical] },
+      haplotypeB: { readable_id: '', variants: [canonical] },
+      below_thresholdA: { readable_id: '', variants: [] },
+      below_thresholdB: { readable_id: '', variants: [] },
+      roh_fraction: 1,
+      is_roh: true,
+      compound_het_pairs: [],
+      is_compound_het: false,
+    }
+
+    render(<HaplotypeVariantTable mode="haplotype" haplotypeGroups={{ groups: [group] }} />)
+    fireEvent.click(screen.getByText('chr22-22854926-TRV-105TR-2..1bp').closest('tr')!)
+
+    expect(screen.getByText('Allele length range: -2 to 3bp')).not.toBeNull()
+    expect(screen.getByText('Motif Structure')).not.toBeNull()
   })
 })
