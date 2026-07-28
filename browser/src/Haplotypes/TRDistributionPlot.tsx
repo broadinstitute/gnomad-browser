@@ -13,6 +13,9 @@ type Props = {
   compact?: boolean
   interactive?: boolean
   yAxisLabel?: string
+  xAxisLabel?: string
+  ariaLabel?: string
+  signedLabels?: boolean
 }
 
 /** Shared stacked allele-length distribution used by the track tooltip and table detail. */
@@ -21,6 +24,9 @@ const TRDistributionPlot = ({
   compact = false,
   interactive = true,
   yAxisLabel = 'Carriers',
+  xAxisLabel = 'Length diff (bp)',
+  ariaLabel = 'TR allele length distribution',
+  signedLabels = true,
 }: Props) => {
   const [hoveredBar, setHoveredBar] = useState<{
     lengthDiff: number
@@ -65,7 +71,7 @@ const TRDistributionPlot = ({
 
   return (
     <div style={{ display: 'inline-block', overflowX: 'auto', maxWidth: '100%' }}>
-      <svg width={plotWidth} height={height} aria-label="TR allele length distribution">
+      <svg width={plotWidth} height={height} aria-label={ariaLabel}>
         <line
           x1={PLOT_MARGIN.left}
           y1={PLOT_MARGIN.top}
@@ -144,7 +150,7 @@ const TRDistributionPlot = ({
                   textAnchor="middle"
                   fill="#666"
                 >
-                  {d.lengthDiff > 0 ? `+${d.lengthDiff}` : d.lengthDiff}
+                  {signedLabels && d.lengthDiff > 0 ? `+${d.lengthDiff}` : d.lengthDiff}
                 </text>
               )}
             </g>
@@ -159,7 +165,7 @@ const TRDistributionPlot = ({
               textAnchor="middle"
               fill="#999"
             >
-              Length diff (bp)
+              {xAxisLabel}
             </text>
             <text
               x={4}
@@ -196,7 +202,8 @@ const TRDistributionPlot = ({
               }}
             >
               <div style={{ fontWeight: 600, marginBottom: 2 }}>
-                Length diff: {datum.lengthDiff > 0 ? `+${datum.lengthDiff}` : datum.lengthDiff}bp
+                {xAxisLabel}:{' '}
+                {signedLabels && datum.lengthDiff > 0 ? `+${datum.lengthDiff}` : datum.lengthDiff}bp
               </div>
               {Object.entries(datum.pops)
                 .filter(([, count]) => count > 0)

@@ -129,7 +129,7 @@ export const aggregateTrLoci = <T extends TrAlleleRecord>(variants: T[]): TrLocu
   })
 }
 
-export const packTrLoci = <T extends TrLocus>(loci: T[]) => {
+export const packLoci = <T extends { start: number; stop: number }>(loci: T[]) => {
   const sorted = [...loci].sort((a, b) => a.start - b.start || a.stop - b.stop)
   const rowEnds: number[] = []
   const packed = sorted.map((locus) => {
@@ -143,3 +143,7 @@ export const packTrLoci = <T extends TrLocus>(loci: T[]) => {
   })
   return { packed, maxRows: Math.max(rowEnds.length, 1) }
 }
+
+// Retain the TR-specific name for existing consumers while sharing the exact
+// packing behavior with other source-event summary bands.
+export const packTrLoci = <T extends TrLocus>(loci: T[]) => packLoci(loci)

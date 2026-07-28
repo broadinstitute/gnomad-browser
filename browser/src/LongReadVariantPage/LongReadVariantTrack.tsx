@@ -10,6 +10,7 @@ import { getVariantCssColor } from './variantColorUtils'
 import AccordionContext from '../Haplotypes/AccordionContext'
 import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, packTrLoci, type TrLocus } from './trLocusAggregation'
+import { aggregateSourceEvents, getInsertionLengthDistribution, packSourceEvents, type SourceEvent } from './sourceEventAggregation'
 
 // --- Types ---
 
@@ -39,8 +40,6 @@ type LRVariant = {
 
 type Band = 'snv' | 'ins' | 'del' | 'dup' | 'sv' | 'tr'
 
-type PackedVariant<T> = T & { row: number }
-
 // --- Constants ---
 
 const ROW_HEIGHT = 14
@@ -62,26 +61,6 @@ const afToOpacity = (v: any): number => {
 
 function assignVariantBand(variant: LRVariant): Band {
   return sharedAssignBand(variant.allele_type, variant.allele_length)
-}
-
-// --- Interval packing ---
-
-function packIntervals<T extends { start: number; stop: number }>(
-  items: T[]
-): { packed: PackedVariant<T>[]; maxRows: number } {
-  const sorted = [...items].sort((a, b) => a.start - b.start)
-  const rowEnds: number[] = []
-  const packed: PackedVariant<T>[] = sorted.map((item) => {
-    for (let r = 0; r < rowEnds.length; r++) {
-      if (item.start > rowEnds[r] + 2) {
-        rowEnds[r] = item.stop
-        return { ...item, row: r }
-      }
-    }
-    rowEnds.push(item.stop)
-    return { ...item, row: rowEnds.length - 1 }
-  })
-  return { packed, maxRows: Math.max(rowEnds.length, 1) }
 }
 
 // --- Side panel label ---
@@ -109,6 +88,13 @@ type HoveredTrLocus = {
   y: number
 }
 
+type HoveredSourceEvent = {
+  event: SourceEvent<SvItem>
+  band: 'ins' | 'del' | 'dup' | 'sv'
+  x: number
+  y: number
+}
+
 const formatSignedLength = (value: number | null) => {
   if (value == null) return 'Unavailable'
   return `${value > 0 ? '+' : ''}${value} bp`
@@ -126,6 +112,39 @@ const TrLocusTooltip = ({ hovered }: { hovered: HoveredTrLocus }) => {
       <div><strong>Maximum ALT AF:</strong> {locus.maxAf == null ? 'Unavailable' : locus.maxAf.toPrecision(4)}</div>
       {distribution.length > 0 && <TRDistributionPlot distribution={distribution} compact interactive={false} yAxisLabel="Allele count" />}
       {locus.alleles.length > 1 && <div style={{ color: '#666', marginTop: 2 }}>Click opens the maximum-AF ALT record.</div>}
+    </div>
+  )
+}
+
+const formatLengthRange = (minimum: number | null, maximum: number | null, signed = false) => {
+  if (minimum == null || maximum == null) return 'Unavailable'
+  const format = (value: number) => `${signed && value > 0 ? '+' : ''}${value} bp`
+  return minimum === maximum ? format(minimum) : `${format(minimum)} to ${format(maximum)}`
+}
+
+const formatCoordinateRange = (event: SourceEvent<SvItem>) => {
+  const starts = event.minStart === event.maxStart ? `${event.minStart}` : `${event.minStart}-${event.maxStart}`
+  const stops = event.minStop === event.maxStop ? `${event.minStop}` : `${event.minStop}-${event.maxStop}`
+  return `${event.chrom}:${starts} to ${stops}`
+}
+
+export const SourceEventTooltip = ({ hovered }: { hovered: HoveredSourceEvent }) => {
+  const { event, band } = hovered
+  const insertionDistribution: TrDataPoint[] = band === 'ins' ? getInsertionLengthDistribution(event.alleles) : []
+  let details: React.ReactNode
+  if (band === 'ins') details = <div><strong>Insertion length:</strong> {formatLengthRange(event.minAbsoluteLength, event.maxAbsoluteLength)}</div>
+  else if (band === 'del' || band === 'dup') details = <><div><strong>Length:</strong> {formatLengthRange(event.minAbsoluteLength, event.maxAbsoluteLength)}</div><div><strong>Affected coordinates:</strong> {formatCoordinateRange(event)}</div></>
+  else details = <><div><strong>Signed length:</strong> {formatLengthRange(event.minSignedLength, event.maxSignedLength, true)}</div><div><strong>Absolute length:</strong> {formatLengthRange(event.minAbsoluteLength, event.maxAbsoluteLength)}</div><div><strong>Coordinate range:</strong> {formatCoordinateRange(event)}</div></>
+
+  return (
+    <div style={{ position: 'fixed', left: hovered.x + 12, top: hovered.y + 12, background: 'white', border: '1px solid #ccc', borderRadius: 4, padding: '6px 8px', fontSize: 12, pointerEvents: 'none', zIndex: 10000, width: 270, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
+      <div><strong>Source event:</strong> {event.key.replace(/^source:/, '')}</div>
+      <div><strong>{event.subtypes.length === 1 ? 'Subtype' : 'Constituents'}:</strong> {event.subtypes.join(', ')}</div>
+      <div><strong>ALT records:</strong> {event.alleles.length}</div>
+      {details}
+      <div><strong>Maximum ALT AF:</strong> {event.maxAf == null ? 'Unavailable' : event.maxAf.toPrecision(4)}</div>
+      {insertionDistribution.length > 0 && <TRDistributionPlot distribution={insertionDistribution} compact interactive={false} yAxisLabel="ALT records" xAxisLabel="Insertion length (bp)" ariaLabel="Insertion length distribution" signedLabels={false} />}
+      {event.alleles.length > 1 && <div style={{ color: '#666', marginTop: 2 }}>Click opens the maximum-AF ALT record; all ALTs remain in the Summary table.</div>}
     </div>
   )
 }
@@ -278,11 +297,12 @@ const SnvDensityBand = ({ variants, scalePosition, width }: {
 
 type SvItem = LRVariant & { start: number; stop: number }
 
-const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
-  variants: SvItem[]
+const SvBand = ({ events, band, scalePosition, width, onHoverEvent, hoveredPosition, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: {
+  events: SourceEvent<SvItem>[]
+  band: 'ins' | 'del' | 'dup' | 'sv'
   scalePosition: (pos: number) => number
   width: number
-  onHoverVariant?: (variant: LRVariant | null, e?: React.MouseEvent) => void
+  onHoverEvent?: (event: SourceEvent<SvItem> | null, band: 'ins' | 'del' | 'dup' | 'sv', e?: React.MouseEvent) => void
   hoveredPosition?: number | null
   colorMode?: string
   regionStart?: number
@@ -290,76 +310,47 @@ const SvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositio
 }) => {
   const { mapper } = useContext(AccordionContext)
   const pxPerUnit = mapper ? width / mapper.totalVisualLength : 0
-
-  // Filter to variants visible in the current viewport
-  const visible = variants.filter(v => scalePosition(v.stop) >= 0 && scalePosition(v.start) <= width)
-  const { packed, maxRows } = packIntervals(visible)
+  const visible = events.filter(event => scalePosition(event.stop) >= 0 && scalePosition(event.start) <= width)
+  const { packed, maxRows } = packSourceEvents(visible)
   const bandHeight = maxRows * ROW_HEIGHT
   const barHeight = ROW_HEIGHT - 4
 
-  const hoverHandlers = (v: LRVariant) => onHoverVariant ? {
-    onMouseEnter: (e: React.MouseEvent) => onHoverVariant(v, e),
-    onMouseMove: (e: React.MouseEvent) => onHoverVariant(v, e),
-    onMouseLeave: () => onHoverVariant(null),
-  } : {}
-
   return (
-    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }}>
-      {packed.map((v) => {
-        const color = colorMode === 'sv_type'
-          ? (ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)])
-          : getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })
-        const cat = getVariantCategory(v.allele_type, v.allele_length)
-        const opacity = afToOpacity(v)
-        const rowY = v.row * ROW_HEIGHT + 2
+    <svg height={bandHeight} width={width} style={{ overflow: 'hidden' }} data-source-event-count={packed.length}>
+      {packed.map((event) => {
+        const v = event.representative
+        let color = getVariantCssColor(v, colorMode, { start: regionStart, stop: regionStop })
+        if (colorMode === 'sv_type') color = event.subtypes.length > 1 ? VARIANT_CATEGORY_COLORS.sv : (ALLELE_TYPE_COLORS[v.allele_type.toLowerCase()] || VARIANT_CATEGORY_COLORS[getVariantCategory(v.allele_type, v.allele_length)])
+        const opacityVariant = event.maxAf == null ? v : { ...v, freq: { all: { af: event.maxAf } } }
+        const rowY = event.row * ROW_HEIGHT + 2
+        const hoverHandlers = onHoverEvent ? {
+          onMouseEnter: (e: React.MouseEvent) => onHoverEvent(event, band, e),
+          onMouseMove: (e: React.MouseEvent) => onHoverEvent(event, band, e),
+          onMouseLeave: () => onHoverEvent(null, band),
+        } : {}
 
-        if (cat === 'insertion') {
+        if (band === 'ins') {
           const startX = scalePosition(v.pos)
           let barWidth = MIN_SV_BAR_WIDTH
           if (mapper && mapper.hasPhantomRegions) {
-            const phantomWidth =
-              (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.allele_length || 0)) -
-                mapper.getSyntheticCoordinate(v.pos, 0)) *
-              pxPerUnit
-            if (phantomWidth > MIN_SV_BAR_WIDTH) {
-              barWidth = phantomWidth
-            }
+            const phantomWidth = (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.allele_length || 0)) - mapper.getSyntheticCoordinate(v.pos, 0)) * pxPerUnit
+            if (phantomWidth > MIN_SV_BAR_WIDTH) barWidth = phantomWidth
           }
-
-          return (
-            <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
-              <rect
-                x={startX} y={rowY} width={barWidth} height={barHeight}
-                fill={color} opacity={opacity} rx={1}
-                {...hoverHandlers(v)}
-              />
-            </Link>
-          )
+          return <Link key={event.key} to={`/variant/${v.variant_id}`}><rect x={startX} y={rowY} width={barWidth} height={barHeight} fill={color} opacity={afToOpacity(opacityVariant)} rx={1} {...hoverHandlers} /></Link>
         }
 
-        let startX = scalePosition(v.start)
-        let stopX = scalePosition(v.stop)
+        let startX = scalePosition(event.start)
+        let stopX = scalePosition(event.stop)
         if (stopX - startX < MIN_SV_BAR_WIDTH) {
           const mid = (startX + stopX) / 2
           startX = mid - MIN_SV_BAR_WIDTH / 2
           stopX = mid + MIN_SV_BAR_WIDTH / 2
         }
-
-        return (
-          <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
-            <rect
-              x={startX} y={rowY} width={stopX - startX} height={barHeight}
-              fill={color} opacity={opacity} rx={1}
-              {...hoverHandlers(v)}
-            />
-          </Link>
-        )
+        return <Link key={event.key} to={`/variant/${v.variant_id}`}><rect x={startX} y={rowY} width={stopX - startX} height={barHeight} fill={color} opacity={afToOpacity(opacityVariant)} rx={1} {...hoverHandlers} /></Link>
       })}
       {hoveredPosition != null && (() => {
         const hx = scalePosition(hoveredPosition)
-        return hx >= 0 && hx <= width ? (
-          <line x1={hx} y1={0} x2={hx} y2={bandHeight} stroke="#333" strokeWidth={1} opacity={0.5} pointerEvents="none" />
-        ) : null
+        return hx >= 0 && hx <= width ? <line x1={hx} y1={0} x2={hx} y2={bandHeight} stroke="#333" strokeWidth={1} opacity={0.5} pointerEvents="none" /> : null
       })()}
     </svg>
   )
@@ -502,6 +493,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
 
   const [hovered, setHovered] = useState<HoveredVariant | null>(null)
   const [hoveredTrLocus, setHoveredTrLocus] = useState<HoveredTrLocus | null>(null)
+  const [hoveredSourceEvent, setHoveredSourceEvent] = useState<HoveredSourceEvent | null>(null)
 
   const onHoverVariant = useCallback((variant: LRVariant | null, e?: React.MouseEvent) => {
     if (variant && e) {
@@ -509,6 +501,16 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
       onHoverVariantPosition?.(variant.pos)
     } else {
       setHovered(null)
+      onHoverVariantPosition?.(null)
+    }
+  }, [onHoverVariantPosition])
+
+  const onHoverSourceEvent = useCallback((event: SourceEvent<SvItem> | null, band: 'ins' | 'del' | 'dup' | 'sv', e?: React.MouseEvent) => {
+    if (event && e) {
+      setHoveredSourceEvent({ event, band, x: e.clientX, y: e.clientY })
+      onHoverVariantPosition?.(event.representative.pos)
+    } else {
+      setHoveredSourceEvent(null)
       onHoverVariantPosition?.(null)
     }
   }, [onHoverVariantPosition])
@@ -568,6 +570,17 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
     }
   }
 
+  // Aggregate before selecting a band so heterogeneous source events render once.
+  const sourceEvents = aggregateSourceEvents([...insVariants, ...delVariants, ...dupVariants, ...svVariants])
+  const eventBand = (event: SourceEvent<SvItem>): 'ins' | 'del' | 'dup' | 'sv' => {
+    const bands = new Set(event.alleles.map(assignVariantBand))
+    return bands.size === 1 ? Array.from(bands)[0] as 'ins' | 'del' | 'dup' | 'sv' : 'sv'
+  }
+  const insEvents = sourceEvents.filter(event => eventBand(event) === 'ins')
+  const delEvents = sourceEvents.filter(event => eventBand(event) === 'del')
+  const dupEvents = sourceEvents.filter(event => eventBand(event) === 'dup')
+  const svEvents = sourceEvents.filter(event => eventBand(event) === 'sv')
+
   // typeFilters: when set, hide bands whose category is unchecked
   const showSnvBand = !typeFilters || typeFilters.snv !== false
   const showInsBand = !typeFilters || typeFilters.insertion !== false
@@ -601,38 +614,38 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
         </Track>
       )}
 
-      {showInsBand && insVariants.length > 0 && (
+      {showInsBand && insEvents.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>INS</SidePanel>}>
-            {() => <SvBand variants={insVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
+            {() => <SvBand events={insEvents} band="ins" scalePosition={adjScalePosition} width={adjCenterWidth} onHoverEvent={onHoverSourceEvent} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
 
-      {showDelBand && delVariants.length > 0 && (
+      {showDelBand && delEvents.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DEL</SidePanel>}>
-            {() => <SvBand variants={delVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
+            {() => <SvBand events={delEvents} band="del" scalePosition={adjScalePosition} width={adjCenterWidth} onHoverEvent={onHoverSourceEvent} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
 
-      {showSvBand && dupVariants.length > 0 && (
+      {showSvBand && dupEvents.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>DUP</SidePanel>}>
-            {() => <SvBand variants={dupVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
+            {() => <SvBand events={dupEvents} band="dup" scalePosition={adjScalePosition} width={adjCenterWidth} onHoverEvent={onHoverSourceEvent} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
 
-      {showSvBand && svVariants.length > 0 && (
+      {showSvBand && svEvents.length > 0 && (
         <>
           <BandDivider />
           <Track renderLeftPanel={() => <SidePanel>SV</SidePanel>}>
-            {() => <SvBand variants={svVariants} scalePosition={adjScalePosition} width={adjCenterWidth} onHoverVariant={onHoverVariant} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
+            {() => <SvBand events={svEvents} band="sv" scalePosition={adjScalePosition} width={adjCenterWidth} onHoverEvent={onHoverSourceEvent} hoveredPosition={hoveredVariantPosition} colorMode={colorMode} regionStart={regionStart} regionStop={regionStop} />}
           </Track>
         </>
       )}
@@ -647,6 +660,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogy = false, isDiploidV
       )}
 
       {hovered && ReactDOM.createPortal(<VariantTooltip hovered={hovered} />, document.body)}
+      {hoveredSourceEvent && ReactDOM.createPortal(<SourceEventTooltip hovered={hoveredSourceEvent} />, document.body)}
       {hoveredTrLocus && ReactDOM.createPortal(<TrLocusTooltip hovered={hoveredTrLocus} />, document.body)}
     </div>
   )
