@@ -30,7 +30,7 @@ test.describe('Long Read variant table navigation', () => {
           const body = response.request().postData() || ''
           return (
             response.request().method() === 'POST' &&
-            body.includes('query Variant') &&
+            body.includes('GnomadVariant') &&
             body.includes(variantId)
           )
         },
@@ -45,6 +45,57 @@ test.describe('Long Read variant table navigation', () => {
         variantPage.getByRole('heading', { name: 'Long-Read Variant Details' })
       ).toBeVisible({ timeout: 30_000 })
       expect((await variantResponsePromise).status()).toBe(200)
+      expect(decodeURIComponent(new URL(variantPage.url()).pathname)).toBe(`/variant/${variantId}`)
+      await variantPage.close()
+    }
+  })
+
+  test('haplotype table preserves canonical sequence and TR variant identities', async ({
+    page,
+  }) => {
+    test.setTimeout(180_000)
+    await page.goto(
+      `/region/22-36275000-36285000?dataset=${LR_DATASET}&lr_cohort=hgsvc_hprc&show_haplotypes=true`
+    )
+    const table = page.locator('#lr-variant-table-container table').first()
+    await expect(table).toBeVisible({ timeout: 90_000 })
+
+    const canonicalLinks = table.locator('a[href*="/variant/"][href*="~"]')
+    await expect(canonicalLinks.first()).toBeVisible({ timeout: 90_000 })
+    const hrefs = await canonicalLinks.evaluateAll((links) =>
+      links.map((link) => (link as HTMLAnchorElement).getAttribute('href') || '')
+    )
+    const trHref = hrefs.find((href) => /-TRV-\d+~\d+/.test(href))
+    const sequenceHref = hrefs.find((href) => /-[ACGTN]+-[ACGTN]+~\d+/i.test(href))
+    expect(trHref, 'haplotype table should retain a canonical TRV link').toBeTruthy()
+    expect(
+      sequenceHref,
+      'haplotype table should retain a canonical sequence-allele link'
+    ).toBeTruthy()
+
+    for (const href of [sequenceHref!, trHref!]) {
+      const variantId = decodeURIComponent(href.match(/\/variant\/([^?]+)/)![1])
+      const link = table.locator(`a[href="${href}"]`).first()
+      const popupPromise = page.waitForEvent('popup')
+      const responsePromise = page.context().waitForEvent('response', {
+        predicate: (response) => {
+          const body = response.request().postData() || ''
+          return (
+            response.request().method() === 'POST' &&
+            body.includes('GnomadVariant') &&
+            body.includes(variantId)
+          )
+        },
+      })
+      await link.click()
+      const variantPage = await popupPromise
+      await expect(
+        variantPage.getByRole('heading', { name: 'Long-Read Variant Details' })
+      ).toBeVisible({ timeout: 30_000 })
+      await expect(
+        variantPage.getByText(/Page Not Found|Invalid Variant ID|Variant not found/)
+      ).toHaveCount(0)
+      expect((await responsePromise).status()).toBe(200)
       expect(decodeURIComponent(new URL(variantPage.url()).pathname)).toBe(`/variant/${variantId}`)
       await variantPage.close()
     }

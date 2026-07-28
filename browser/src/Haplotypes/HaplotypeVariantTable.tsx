@@ -1584,9 +1584,12 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       // Store raw TR sequences for lazy decomposition (deferred to row expansion)
       const rawSeqs = isTrv && trSequences && trSequences.size > 0 ? trSequences : undefined
 
-      const variantId = isTrv
-        ? `${v.chrom.replace(/^chr/i, '')}-${v.pos}-TR`
-        : buildVariantId(v)
+      // Preserve the canonical browser ID supplied by the Y1 haplotype query,
+      // including provenance/ALT identity (for example, `chr22-…~2`). Falling
+      // back to a synthesized locus ID can silently navigate to the wrong allele.
+      const variantId = v.variant_id || (isTrv
+        ? `${v.chrom.replace(/^chr/i, '')}-${v.pos}-TRV`
+        : buildVariantId(v))
 
       const af = isTrv
         ? carrierIds.size / Math.max(1, sampleCount)
@@ -1595,6 +1598,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       result.push({
         // LRVariant base fields
         variant_id: variantId,
+        source_variant_id: v.source_variant_id,
         chrom: v.chrom,
         pos: v.pos,
         end: v.end ?? null,
