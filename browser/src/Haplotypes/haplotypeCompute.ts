@@ -138,6 +138,38 @@ export type PhaseSetSidecar = Readonly<{
   variant_ids_by_index: readonly string[]
 }>
 
+/**
+ * Structured cloning removes frozen property descriptors. Normalize every
+ * sidecar received from a worker into fresh main-thread-owned frozen values.
+ * This is also used at construction time so both compute paths share one
+ * immutability contract.
+ */
+export function freezePhaseSetSidecar(sidecar: PhaseSetSidecar): PhaseSetSidecar {
+  const byCarrier: Record<string, CarrierPhaseMetadata> = {}
+  Object.entries(sidecar.by_carrier).forEach(([carrierId, carrier]) => {
+    byCarrier[carrierId] = Object.freeze({
+      sample_id: carrier.sample_id,
+      vcf_strand: carrier.vcf_strand,
+      phase_set: carrier.phase_set,
+      variant_indices: Object.freeze([...carrier.variant_indices]),
+      phase_sets: carrier.phase_sets == null
+        ? undefined
+        : Object.freeze([...carrier.phase_sets]),
+      phase_set_by_variant: carrier.phase_set_by_variant == null
+        ? undefined
+        : Object.freeze(carrier.phase_set_by_variant.map((association) => Object.freeze({
+            variant_index: association.variant_index,
+            phase_set: association.phase_set,
+          }))),
+    })
+  })
+
+  return Object.freeze({
+    by_carrier: Object.freeze(byCarrier),
+    variant_ids_by_index: Object.freeze([...sidecar.variant_ids_by_index]),
+  })
+}
+
 export type RawPayload = {
   variants: SoAVariants
   carrier_variant_indices: Record<string, number[]>
@@ -213,13 +245,22 @@ export type ComputedHaplotypeData = {
   phase_set_sidecar: PhaseSetSidecar
 }
 
+export function normalizeHaplotypeWorkerData(
+  data: ComputedHaplotypeData
+): ComputedHaplotypeData {
+  return {
+    ...data,
+    phase_set_sidecar: freezePhaseSetSidecar(data.phase_set_sidecar),
+  }
+}
+
 function phaseSetSidecarFor(
   variants: LRVariant[],
   carrierMetadata: CarrierMetadata
 ): PhaseSetSidecar {
-  return Object.freeze({
+  return freezePhaseSetSidecar({
     by_carrier: carrierMetadata,
-    variant_ids_by_index: Object.freeze(variants.map((variant) => variant.variant_id)),
+    variant_ids_by_index: variants.map((variant) => variant.variant_id),
   })
 }
 

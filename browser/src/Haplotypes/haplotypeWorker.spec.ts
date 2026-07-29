@@ -1,4 +1,17 @@
 import { jest } from '@jest/globals'
+import { MessageChannel } from 'node:worker_threads'
+
+import { normalizeHaplotypeWorkerData } from './haplotypeCompute'
+
+const cloneThroughMessageChannel = <T>(value: T): Promise<T> => new Promise((resolve) => {
+  const { port1, port2 } = new MessageChannel()
+  port1.once('message', (cloned) => {
+    port1.close()
+    port2.close()
+    resolve(cloned)
+  })
+  port2.postMessage(value)
+})
 
 const variants = {
   variant_id: ['variant-1', 'variant-2'],
@@ -27,7 +40,7 @@ const variants = {
 }
 
 describe('haplotype worker VCF carrier identity', () => {
-  test('retains two phase sets on one strand from INIT through READY and diploid UPDATE', () => {
+  test('retains and re-freezes two phase sets across READY and diploid UPDATE', async () => {
     jest.resetModules()
     const postMessage = jest.fn()
     Object.defineProperty(globalThis, 'postMessage', {
@@ -36,6 +49,7 @@ describe('haplotype worker VCF carrier identity', () => {
       writable: true,
     })
 
+    // eslint-disable-next-line global-require
     require('./haplotypeWorker')
     const onmessage = (globalThis as any).onmessage
     expect(typeof onmessage).toBe('function')
@@ -73,7 +87,7 @@ describe('haplotype worker VCF carrier identity', () => {
       vcf_strand: 2,
       phase_set: null,
     })
-    expect(ready.data.phase_set_sidecar).toEqual({
+    const expectedSidecar = {
       by_carrier: {
         'sample-1:2': {
           sample_id: 'sample-1',
@@ -88,7 +102,27 @@ describe('haplotype worker VCF carrier identity', () => {
         },
       },
       variant_ids_by_index: ['variant-1', 'variant-2'],
-    })
+    }
+    expect(ready.data.phase_set_sidecar).toEqual(expectedSidecar)
+
+    const readyAfterWorkerBoundary = await cloneThroughMessageChannel(ready.data)
+    expect(Object.isFrozen(readyAfterWorkerBoundary.phase_set_sidecar)).toBe(false)
+    expect(Object.isFrozen(readyAfterWorkerBoundary.phase_set_sidecar.by_carrier['sample-1:2'])).toBe(false)
+    expect(Object.isFrozen(readyAfterWorkerBoundary.phase_set_sidecar.by_carrier['sample-1:2'].phase_sets)).toBe(false)
+    expect(Object.isFrozen(readyAfterWorkerBoundary.phase_set_sidecar.by_carrier['sample-1:2'].phase_set_by_variant)).toBe(false)
+    expect(Object.isFrozen(readyAfterWorkerBoundary.phase_set_sidecar.variant_ids_by_index)).toBe(false)
+
+    const normalizedReady = normalizeHaplotypeWorkerData(readyAfterWorkerBoundary)
+    const normalizedReadyCarrier = normalizedReady.phase_set_sidecar.by_carrier['sample-1:2']
+    expect(normalizedReady.phase_set_sidecar).toEqual(expectedSidecar)
+    expect(Object.isFrozen(normalizedReady.phase_set_sidecar)).toBe(true)
+    expect(Object.isFrozen(normalizedReady.phase_set_sidecar.by_carrier)).toBe(true)
+    expect(Object.isFrozen(normalizedReadyCarrier)).toBe(true)
+    expect(Object.isFrozen(normalizedReadyCarrier.variant_indices)).toBe(true)
+    expect(Object.isFrozen(normalizedReadyCarrier.phase_sets)).toBe(true)
+    expect(Object.isFrozen(normalizedReadyCarrier.phase_set_by_variant)).toBe(true)
+    expect(normalizedReadyCarrier.phase_set_by_variant?.every(Object.isFrozen)).toBe(true)
+    expect(Object.isFrozen(normalizedReady.phase_set_sidecar.variant_ids_by_index)).toBe(true)
 
     onmessage({
       data: {
@@ -108,5 +142,19 @@ describe('haplotype worker VCF carrier identity', () => {
 
     expect(updated.data.groups[0].samples[0].phase_set_mapping.phaseSetA).toBeNull()
     expect(updated.data.phase_set_sidecar).toEqual(ready.data.phase_set_sidecar)
+
+    const normalizedUpdated = normalizeHaplotypeWorkerData(
+      await cloneThroughMessageChannel(updated.data)
+    )
+    const normalizedUpdatedCarrier = normalizedUpdated.phase_set_sidecar.by_carrier['sample-1:2']
+    expect(normalizedUpdated.phase_set_sidecar).toEqual(expectedSidecar)
+    expect(Object.isFrozen(normalizedUpdated.phase_set_sidecar)).toBe(true)
+    expect(Object.isFrozen(normalizedUpdated.phase_set_sidecar.by_carrier)).toBe(true)
+    expect(Object.isFrozen(normalizedUpdatedCarrier)).toBe(true)
+    expect(Object.isFrozen(normalizedUpdatedCarrier.variant_indices)).toBe(true)
+    expect(Object.isFrozen(normalizedUpdatedCarrier.phase_sets)).toBe(true)
+    expect(Object.isFrozen(normalizedUpdatedCarrier.phase_set_by_variant)).toBe(true)
+    expect(normalizedUpdatedCarrier.phase_set_by_variant?.every(Object.isFrozen)).toBe(true)
+    expect(Object.isFrozen(normalizedUpdated.phase_set_sidecar.variant_ids_by_index)).toBe(true)
   })
 })
