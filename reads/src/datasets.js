@@ -39,13 +39,19 @@ const variantDatasets = {
   },
 }
 
+// Names the release explicitly rather than reusing the previous release's str_reads.db, so that
+// the new DB is added alongside the old one on the /readviz disk instead of overwriting it. That
+// keeps the previous release servable and makes rolling back a code revert rather than a data copy.
+const SHORT_TANDEM_REPEAT_READS_DB_PATH =
+  '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads_2026_07_20.db'
+
 const shortTandemRepeatDatasets = {
   gnomad_r3: {
-    dbPath: '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
+    dbPath: SHORT_TANDEM_REPEAT_READS_DB_PATH,
     publicPath: 'https://storage.googleapis.com/gnomad-str-public/release_2024_07/readviz_v2',
   },
   gnomad_r4: {
-    dbPath: '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads.db',
+    dbPath: SHORT_TANDEM_REPEAT_READS_DB_PATH,
     publicPath: 'https://storage.googleapis.com/gnomad-str-public/release_2024_07/readviz_v2',
   },
 }
