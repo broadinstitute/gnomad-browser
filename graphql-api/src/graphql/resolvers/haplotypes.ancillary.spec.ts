@@ -2,6 +2,8 @@ import {
   ancillaryDecision,
   filterAvailableMethylationSampleIds,
   isAncillaryUnavailableForCohort,
+  phasedMethylationCapability,
+  sampleTotalMethylationRecords,
   typedMethylationStatus,
 } from './ancillary-availability'
 
@@ -52,6 +54,41 @@ describe('ancillary cohort availability', () => {
 
   test('methylation availability reasons are a closed typed contract', () => {
     expect(typedMethylationStatus('unavailable_no_chr22')).toBe('UNAVAILABLE_NO_CHR22')
+    expect(typedMethylationStatus('unavailable_source_marked_skip')).toBe('UNAVAILABLE_SOURCE_MARKED_SKIP')
+    expect(typedMethylationStatus('unavailable_no_contig')).toBe('UNAVAILABLE_NO_CONTIG')
+    expect(typedMethylationStatus('unavailable_orientation_unconfirmed')).toBe('UNAVAILABLE_ORIENTATION_UNCONFIRMED')
+    expect(typedMethylationStatus('unavailable_aou_summary_only')).toBe('UNAVAILABLE_AOU_SUMMARY_ONLY')
     expect(() => typedMethylationStatus('unavailable_unknown')).toThrow('Unknown methylation availability status')
+  })
+
+  test('types compatibility methylation records as sample totals without a phased mapping', () => {
+    expect(sampleTotalMethylationRecords([{
+      chr: 'chr22', pos1: 100, pos2: 101, sample: 'sample-1', methylation: 42,
+    }])).toEqual([{
+      chr: 'chr22', pos1: 100, pos2: 101, sample: 'sample-1', methylation: 42,
+      data_layer: 'SAMPLE_TOTAL', source_haplotype: null, vcf_strand: null, phase_set: null,
+    }])
+  })
+
+  test('phased methylation fails closed without inferring source haplotype orientation', () => {
+    expect(phasedMethylationCapability('hgsvc_hprc')).toEqual({
+      data_layer: 'SOURCE_PHASED',
+      available: false,
+      joinable_to_vcf: false,
+      status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
+      orientation_status: 'UNCONFIRMED',
+      reason: expect.stringContaining('orientation is confirmed'),
+    })
+  })
+
+  test('AoU phased methylation is typed summary-only and never falls back to HGSVC', () => {
+    expect(phasedMethylationCapability('aou')).toEqual({
+      data_layer: 'SOURCE_PHASED',
+      available: false,
+      joinable_to_vcf: false,
+      status: 'UNAVAILABLE_AOU_SUMMARY_ONLY',
+      orientation_status: 'UNCONFIRMED',
+      reason: expect.stringContaining('never used as a fallback'),
+    })
   })
 })

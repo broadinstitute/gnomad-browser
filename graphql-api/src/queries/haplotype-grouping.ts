@@ -28,7 +28,8 @@ function cacheTree(key: string, value: { tree: TreeNode; leafOrder: string[] }) 
 
 type GroupedRow = {
   sample_id: string
-  strand: number
+  vcf_strand: number
+  phase_set?: string | null
   positions: number[]
   refs: string[]
   alts: string[]
@@ -86,8 +87,17 @@ export type LRVariant = {
   allele_purity: number | null
   short_read_match_id: string | null
   in_samples?: string[]
+  in_haplotypes?: HaplotypeCarrierIdentity[]
   gt_phased?: boolean
 }
+
+export type HaplotypeCarrierIdentity = {
+  sample_id: string
+  vcf_strand: number
+  phase_set: string | null
+}
+
+export type CarrierTuple = [string, number, (string | null)?]
 
 function buildVariant(
   chrom: string, pos: number, ref: string, alt: string, rsid: string,
@@ -217,8 +227,13 @@ export const createHaplotypeGroupsFromGrouped = (
       .join(';')
     const groupHash = hashString(readableId)
 
-    const sample = {
+    const carrierIdentity: HaplotypeCarrierIdentity = {
       sample_id: row.sample_id,
+      vcf_strand: Number(row.vcf_strand),
+      phase_set: row.phase_set ?? null,
+    }
+    const sample = {
+      ...carrierIdentity,
       variant_sets: [{ variants: aboveThreshold, readable_id: readableId }],
     }
 
@@ -227,7 +242,11 @@ export const createHaplotypeGroupsFromGrouped = (
         samples: [sample],
         variants: { variants: aboveThreshold, readable_id: readableId },
         below_threshold: {
-          variants: belowThreshold.map((v) => ({ ...v, in_samples: [row.sample_id] })),
+          variants: belowThreshold.map((v) => ({
+            ...v,
+            in_samples: [row.sample_id],
+            in_haplotypes: [carrierIdentity],
+          })),
           readable_id: '',
         },
         start: Math.min(...aboveThreshold.map((v) => v.pos)),
@@ -243,10 +262,12 @@ export const createHaplotypeGroupsFromGrouped = (
         )
         if (existing) {
           existing.in_samples.push(row.sample_id)
+          existing.in_haplotypes.push(carrierIdentity)
         } else {
           haplotypeGroups[groupHash].below_threshold.variants.push({
             ...v,
             in_samples: [row.sample_id],
+            in_haplotypes: [carrierIdentity],
           })
         }
       }
@@ -332,13 +353,14 @@ export type TrvCarrierRow = {
   ref: string
   alt: string
   sample_id: string
-  strand: number
+  vcf_strand: number
+  phase_set?: string | null
 }
 
 export const assembleHaplotypeGroups = (
   groupAssignments: Array<{
     readable_id: string
-    carriers: Array<[string, number]>
+    carriers: CarrierTuple[]
     sample_count: string
   }>,
   distinctVariants: any[],
@@ -381,7 +403,7 @@ export const assembleHaplotypeGroups = (
   // Step 1b: Build TRV carrier lookup: (sampleId:strand) → position → alt
   const trvAltMap = new Map<string, Map<number, string>>()
   for (const row of trvCarriers) {
-    const carrierKey = `${row.sample_id}:${row.strand}`
+    const carrierKey = `${row.sample_id}:${row.vcf_strand}`
     let posMap = trvAltMap.get(carrierKey)
     if (!posMap) {
       posMap = new Map()
@@ -415,7 +437,7 @@ export const assembleHaplotypeGroups = (
     const groupHash = hashString(readableId)
 
     const hasTrv = aboveThreshold.some((v) => v.allele_type === 'trv')
-    const samples = ga.carriers.map(([sampleId, strand]) => {
+    const samples = ga.carriers.map(([sampleId, strand, phaseSet = null]) => {
       let variants = aboveThreshold
       if (hasTrv && trvAltMap.size > 0) {
         const posMap = trvAltMap.get(`${sampleId}:${strand}`)
@@ -432,6 +454,8 @@ export const assembleHaplotypeGroups = (
       }
       return {
         sample_id: sampleId,
+        vcf_strand: Number(strand),
+        phase_set: phaseSet,
         variant_sets: [{ variants, readable_id: readableId }],
       }
     })
@@ -459,24 +483,25 @@ export const assembleHaplotypeGroups = (
     const variant = variantMap.get(key)
     if (!variant) continue
 
-    const carriers: Array<[string, number]> = row.carriers || []
-    // Group carriers by their group index, collecting sample_ids per group
-    const groupSamples = new Map<number, string[]>()
-    for (const [sampleId, strand] of carriers) {
+    const carriers: CarrierTuple[] = row.carriers || []
+    // Group carriers by their group index while retaining composite VCF identity.
+    const groupCarriers = new Map<number, HaplotypeCarrierIdentity[]>()
+    for (const [sampleId, strand, phaseSet = null] of carriers) {
       const gi = carrierToGroup.get(`${sampleId}:${strand}`)
       if (gi === undefined) continue
-      let arr = groupSamples.get(gi)
+      let arr = groupCarriers.get(gi)
       if (!arr) {
         arr = []
-        groupSamples.set(gi, arr)
+        groupCarriers.set(gi, arr)
       }
-      arr.push(sampleId)
+      arr.push({ sample_id: sampleId, vcf_strand: Number(strand), phase_set: phaseSet })
     }
 
-    for (const [gi, sampleIds] of groupSamples) {
+    for (const [gi, carrierIdentities] of groupCarriers) {
       groups[gi].below_threshold.variants.push({
         ...variant,
-        in_samples: sampleIds,
+        in_samples: carrierIdentities.map(({ sample_id }) => sample_id),
+        in_haplotypes: carrierIdentities,
       })
     }
   }
@@ -710,10 +735,24 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
  * Transposes the per-variant carrier arrays into per-carrier variant index arrays.
  * Packs variants into SoA format for smaller JSON payloads.
  */
+export type StructuredCarrier = HaplotypeCarrierIdentity & {
+  variant_indices: number[]
+  phase_sets: string[]
+  phase_set_by_variant: Array<{ variant_index: number; phase_set: string | null }>
+}
+
 export const buildVariantsAndCarrierMap = (
   distinctVariants: any[],
   chrom: string,
-  trvCarriers: Array<{ position: string; ref: string; alt: string; sample_id: string; strand: number }> = [],
+  trvCarriers: Array<{
+    position: string
+    ref: string
+    alt: string
+    sample_id: string
+    strand?: number
+    vcf_strand?: number
+    phase_set?: string | null
+  }> = [],
 ) => {
   const variants: LRVariant[] = []
   for (const row of distinctVariants) {
@@ -744,21 +783,59 @@ export const buildVariantsAndCarrierMap = (
 
   // Transpose: for each carrier, collect which variant indices they carry
   const carrierVariantIndices: Record<string, number[]> = {}
+  const phaseSetsByCarrier = new Map<string, Set<string>>()
+  const phaseSetByVariantAndCarrier = new Map<
+    string,
+    Array<{ variant_index: number; phase_set: string | null }>
+  >()
   for (let i = 0; i < distinctVariants.length; i++) {
-    const carriers: Array<[string, number]> = distinctVariants[i].carriers || []
-    for (const [sampleId, strand] of carriers) {
+    const carriers: CarrierTuple[] = distinctVariants[i].carriers || []
+    for (const [sampleId, strand, phaseSet = null] of carriers) {
       const key = `${sampleId}:${strand}`
       if (!carrierVariantIndices[key]) {
         carrierVariantIndices[key] = []
       }
       carrierVariantIndices[key].push(i)
+      let phaseSetByVariant = phaseSetByVariantAndCarrier.get(key)
+      if (!phaseSetByVariant) {
+        phaseSetByVariant = []
+        phaseSetByVariantAndCarrier.set(key, phaseSetByVariant)
+      }
+      phaseSetByVariant.push({ variant_index: i, phase_set: phaseSet })
+      if (phaseSet != null) {
+        let phaseSets = phaseSetsByCarrier.get(key)
+        if (!phaseSets) {
+          phaseSets = new Set()
+          phaseSetsByCarrier.set(key, phaseSets)
+        }
+        phaseSets.add(String(phaseSet))
+      }
     }
   }
+
+  const carriers: StructuredCarrier[] = Object.entries(carrierVariantIndices).map(
+    ([carrierId, variantIndices]) => {
+      const separator = carrierId.lastIndexOf(':')
+      const phaseSets = [...(phaseSetsByCarrier.get(carrierId) || [])].sort()
+      const phaseSetByVariant = phaseSetByVariantAndCarrier.get(carrierId) || []
+      const hasMissingPhaseSet = phaseSetByVariant.some(({ phase_set }) => phase_set == null)
+      return {
+        sample_id: carrierId.substring(0, separator),
+        vcf_strand: Number(carrierId.substring(separator + 1)),
+        phase_set: phaseSets.length === 1 && !hasMissingPhaseSet ? phaseSets[0] : null,
+        phase_sets: phaseSets,
+        phase_set_by_variant: phaseSetByVariant,
+        variant_indices: variantIndices,
+      }
+    }
+  )
 
   // Build TRV alt map: carrierId → { position → alt }
   const trvAlts: Record<string, Record<number, string>> = {}
   for (const row of trvCarriers) {
-    const key = `${row.sample_id}:${row.strand}`
+    const strand = row.vcf_strand ?? row.strand
+    if (strand == null) throw new Error(`TRV carrier ${row.sample_id} is missing vcf_strand`)
+    const key = `${row.sample_id}:${strand}`
     if (!trvAlts[key]) trvAlts[key] = {}
     trvAlts[key][Number(row.position)] = row.alt
   }
@@ -767,6 +844,7 @@ export const buildVariantsAndCarrierMap = (
     variants,
     soa_variants: packVariantsToSoA(variants),
     carrier_variant_indices: carrierVariantIndices,
+    carriers,
     trv_alts: trvAlts,
   }
 }

@@ -31,6 +31,10 @@ export type MethylationAvailabilityStatus =
   | 'UNAVAILABLE_INCOMPLETE'
   | 'UNAVAILABLE_NO_ASSAY_SOURCE'
   | 'UNAVAILABLE_NO_CHR22'
+  | 'UNAVAILABLE_SOURCE_MARKED_SKIP'
+  | 'UNAVAILABLE_NO_CONTIG'
+  | 'UNAVAILABLE_ORIENTATION_UNCONFIRMED'
+  | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
 
 export type MethylationSampleAvailability = {
   sample_id: string
@@ -48,6 +52,10 @@ export const typedMethylationStatus = (status: string): MethylationAvailabilityS
     'UNAVAILABLE_INCOMPLETE',
     'UNAVAILABLE_NO_ASSAY_SOURCE',
     'UNAVAILABLE_NO_CHR22',
+    'UNAVAILABLE_SOURCE_MARKED_SKIP',
+    'UNAVAILABLE_NO_CONTIG',
+    'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
+    'UNAVAILABLE_AOU_SUMMARY_ONLY',
   ].includes(normalized)) {
     throw new Error(`Unknown methylation availability status: ${status}`)
   }
@@ -67,6 +75,46 @@ export const filterAvailableMethylationSampleIds = (
   const availableIds = new Set(roster.filter((row) => row.available).map((row) => row.sample_id))
   return (requested || [...availableIds]).filter((sampleId) => availableIds.has(sampleId))
 }
+
+export const sampleTotalMethylationRecords = (rows: any[]) => rows.map((row) => ({
+  ...row,
+  data_layer: 'SAMPLE_TOTAL' as const,
+  source_haplotype: null,
+  vcf_strand: null,
+  phase_set: null,
+}))
+
+export type PhasedMethylationCapability = {
+  data_layer: 'SOURCE_PHASED'
+  available: false
+  joinable_to_vcf: false
+  status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED' | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
+  orientation_status: 'UNCONFIRMED'
+  reason: string
+}
+
+// Source BED hap1/hap2 orientation relative to VCF GT positions is not confirmed.
+// This gate is deliberately independent of table presence and therefore cannot
+// accidentally authorize a joined query when a new raw phased table appears.
+export const phasedMethylationCapability = (
+  cohort: string | null | undefined
+): PhasedMethylationCapability => cohort === 'aou'
+  ? {
+      data_layer: 'SOURCE_PHASED',
+      available: false,
+      joinable_to_vcf: false,
+      status: 'UNAVAILABLE_AOU_SUMMARY_ONLY',
+      orientation_status: 'UNCONFIRMED',
+      reason: 'AoU is summary-only; HGSVC/HPRC methylation is never used as a fallback',
+    }
+  : {
+      data_layer: 'SOURCE_PHASED',
+      available: false,
+      joinable_to_vcf: false,
+      status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
+      orientation_status: 'UNCONFIRMED',
+      reason: 'Phased methylation cannot be joined to VCF haplotypes until source orientation is confirmed',
+    }
 
 export const ancillaryDecision = (
   cohort: string | null | undefined,

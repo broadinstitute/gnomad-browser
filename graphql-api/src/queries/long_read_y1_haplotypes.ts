@@ -62,7 +62,11 @@ export const fetchY1HaplotypeRows = async (
           NULL AS allele_purity,
           a.short_read_match_id,
           a.major_consequence,
-          groupUniqArray(tuple(c.sample_id, toUInt16(c.genotype_position + 1))) AS carriers
+          groupUniqArray(tuple(
+            c.sample_id,
+            toUInt16(c.genotype_position + 1),
+            nullIf(JSONExtractString(c.genotype_fields_json, 'PS'), '')
+          )) AS carriers
         FROM (
           SELECT *, concat(source_variant_id, '~', toString(alt_index)) AS browser_variant_id
           FROM lr_y1_alleles
@@ -111,7 +115,8 @@ export const fetchY1HaplotypeRows = async (
       query: `
         SELECT c.position AS position, a.ref_allele AS ref, c.alt AS alt,
           c.sample_id,
-          toUInt16(c.genotype_position + 1) AS strand
+          toUInt16(c.genotype_position + 1) AS vcf_strand,
+          nullIf(JSONExtractString(c.genotype_fields_json, 'PS'), '') AS phase_set
         FROM lr_y1_carriers AS c
         INNER JOIN lr_y1_alleles AS a
           ON c.run_id = a.run_id

@@ -4,7 +4,12 @@
  * to enable zero-latency slider interactions.
  */
 
-import type { LRVariant, HaplotypeGroup, HaplotypeCluster } from './index'
+import type {
+  LRVariant,
+  HaplotypeCarrierIdentity,
+  HaplotypeGroup,
+  HaplotypeCluster,
+} from './index'
 
 // ---- Diplotype types ----
 
@@ -15,7 +20,9 @@ type DiplotypeVariantSet = {
 
 export type DiplotypeSample = {
   sample_id: string
-  strand_mapping: { strandA: 0 | 1 | null; strandB: 0 | 1 | null }
+  // Actual one-based VCF GT positions, not canonical diplotype slots.
+  strand_mapping: { strandA: number | null; strandB: number | null }
+  phase_set_mapping: { phaseSetA: string | null; phaseSetB: string | null }
 }
 
 export type DiplotypeGroup = {
@@ -107,9 +114,18 @@ export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
   return variants
 }
 
+export type StructuredCarrier = HaplotypeCarrierIdentity & {
+  variant_indices: number[]
+  phase_sets?: string[]
+  phase_set_by_variant?: Array<{ variant_index: number; phase_set: string | null }>
+}
+
+export type CarrierMetadata = Record<string, HaplotypeCarrierIdentity>
+
 export type RawPayload = {
   variants: SoAVariants
   carrier_variant_indices: Record<string, number[]>
+  carriers?: StructuredCarrier[]
   trv_alts?: Record<string, Record<number, string>>
   auto_defaults?: AutoDefaults
   _phase_summary?: {
@@ -120,6 +136,42 @@ export type RawPayload = {
     ambiguous_unphased_rows: number
   } | null
   _timing?: { total_ms: number }
+}
+
+export function carrierMetadataFromPayload(
+  carriers: StructuredCarrier[] | null | undefined
+): CarrierMetadata {
+  const metadata: CarrierMetadata = {}
+  for (const carrier of carriers || []) {
+    metadata[`${carrier.sample_id}:${carrier.vcf_strand}`] = {
+      sample_id: carrier.sample_id,
+      vcf_strand: carrier.vcf_strand,
+      phase_set: carrier.phase_set,
+    }
+  }
+  return metadata
+}
+
+function identityForCarrier(
+  carrierId: string,
+  carrierMetadata: CarrierMetadata = {}
+): HaplotypeCarrierIdentity {
+  const structured = carrierMetadata[carrierId]
+  if (structured) return structured
+
+  // Compatibility with v1 REST payloads. Split at the last colon so sample IDs
+  // containing colons remain intact, and retain the VCF value rather than
+  // remapping it to a synthetic 0/1 slot.
+  const separator = carrierId.lastIndexOf(':')
+  const vcfStrand = Number(carrierId.substring(separator + 1))
+  if (separator < 1 || !Number.isInteger(vcfStrand) || vcfStrand < 0) {
+    throw new Error(`Invalid VCF carrier identity: ${carrierId}`)
+  }
+  return {
+    sample_id: carrierId.substring(0, separator),
+    vcf_strand: vcfStrand,
+    phase_set: null,
+  }
 }
 
 export type ComputedHaplotypeData = {
@@ -511,7 +563,8 @@ export function inflateGroups(
   variants: LRVariant[],
   carrierVariantIndices: Record<string, number[]>,
   trvAlts: Record<string, Record<number, string>> | undefined,
-  skipBelowThreshold: boolean
+  skipBelowThreshold: boolean,
+  carrierMetadata: CarrierMetadata = {}
 ): HaplotypeGroup[] {
   return lightGroups.map((lg) => {
     const aboveVariants = lg.variantIndices.map((i) => variants[i])
@@ -522,7 +575,7 @@ export function inflateGroups(
     const hasTrv = aboveVariants.some((v) => v.allele_type === 'trv')
 
     const samples = lg.carrierIds.map((carrierId) => {
-      const sampleId = carrierId.split(':')[0]
+      const identity = identityForCarrier(carrierId, carrierMetadata)
       let carrierVariants = aboveVariants
       if (hasTrv && trvAlts) {
         const posMap = trvAlts[carrierId]
@@ -538,31 +591,35 @@ export function inflateGroups(
         }
       }
       return {
-        sample_id: sampleId,
+        ...identity,
         variant_sets: [{ variants: carrierVariants, readable_id: readableId }],
       }
     })
 
-    const belowVariants: (LRVariant & { in_samples?: string[] })[] = []
+    const belowVariants: LRVariant[] = []
     if (!skipBelowThreshold) {
       const passingSet = new Set(lg.variantIndices)
-      const belowMap = new Map<number, string[]>()
+      const belowMap = new Map<number, HaplotypeCarrierIdentity[]>()
       for (const carrierId of lg.carrierIds) {
-        const sampleId = carrierId.split(':')[0]
+        const identity = identityForCarrier(carrierId, carrierMetadata)
         const allIdxs = carrierVariantIndices[carrierId]
         for (const idx of allIdxs) {
           if (!passingSet.has(idx)) {
             const existing = belowMap.get(idx)
             if (existing) {
-              existing.push(sampleId)
+              existing.push(identity)
             } else {
-              belowMap.set(idx, [sampleId])
+              belowMap.set(idx, [identity])
             }
           }
         }
       }
-      for (const [idx, sampleIds] of belowMap) {
-        belowVariants.push({ ...variants[idx], in_samples: sampleIds })
+      for (const [idx, identities] of belowMap) {
+        belowVariants.push({
+          ...variants[idx],
+          in_samples: identities.map(({ sample_id }) => sample_id),
+          in_haplotypes: identities,
+        })
       }
     }
 
@@ -584,7 +641,8 @@ export function groupCarriers(
   carrierVariantIndices: Record<string, number[]>,
   minAf: number,
   trvAlts?: Record<string, Record<number, string>>,
-  skipBelowThreshold: boolean = false
+  skipBelowThreshold: boolean = false,
+  carrierMetadata: CarrierMetadata = {}
 ): HaplotypeGroup[] {
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
@@ -624,7 +682,7 @@ export function groupCarriers(
     const hasTrv = aboveVariants.some((v) => v.allele_type === 'trv')
 
     const samples = carriers.map((carrierId) => {
-      const sampleId = carrierId.split(':')[0]
+      const identity = identityForCarrier(carrierId, carrierMetadata)
       let carrierVariants = aboveVariants
       if (hasTrv && trvAlts) {
         const posMap = trvAlts[carrierId]
@@ -640,30 +698,35 @@ export function groupCarriers(
         }
       }
       return {
-        sample_id: sampleId,
+        ...identity,
         variant_sets: [{ variants: carrierVariants, readable_id: readableId }],
       }
     })
 
-    // Collect below-threshold variants for this group's carriers
-    // Skip for large datasets where the table is deferred anyway
-    const belowVariants: (LRVariant & { in_samples?: string[] })[] = []
+    // Collect below-threshold variants for this group's carriers.
+    // Keep both the legacy sample-only membership and composite VCF identity.
+    const belowVariants: LRVariant[] = []
     if (!skipBelowThreshold) {
-      const belowMap = new Map<number, string[]>()
+      const belowMap = new Map<number, HaplotypeCarrierIdentity[]>()
       for (const carrierId of carriers) {
+        const identity = identityForCarrier(carrierId, carrierMetadata)
         const allIdxs = carrierVariantIndices[carrierId]
         for (const idx of allIdxs) {
           if (passingIndices.has(idx)) continue
           const existing = belowMap.get(idx)
           if (existing) {
-            existing.push(carrierId.split(':')[0])
+            existing.push(identity)
           } else {
-            belowMap.set(idx, [carrierId.split(':')[0]])
+            belowMap.set(idx, [identity])
           }
         }
       }
-      for (const [idx, sampleIds] of belowMap) {
-        belowVariants.push({ ...variants[idx], in_samples: sampleIds })
+      for (const [idx, identities] of belowMap) {
+        belowVariants.push({
+          ...variants[idx],
+          in_samples: identities.map(({ sample_id }) => sample_id),
+          in_haplotypes: identities,
+        })
       }
     }
 
@@ -794,7 +857,8 @@ function detectCompoundHets(
 export function groupDiplotypes(
   variants: LRVariant[],
   carrierVariantIndices: Record<string, number[]>,
-  minAf: number
+  minAf: number,
+  carrierMetadata: CarrierMetadata = {}
 ): DiplotypeGroup[] {
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
@@ -802,33 +866,23 @@ export function groupDiplotypes(
     if (variants[i].freq.af >= minAf) passingIndices.add(i)
   }
 
-  // Restructure: sample_id -> { strandA: indices[], strandB: indices[] }
-  // Carrier keys are "sample_id:strand" where strand can be 0/1 or 1/2
-  const sampleStrands = new Map<string, { first: { strand: string; indices: number[] }; second: { strand: string; indices: number[] } }>()
+  type CarrierStrand = HaplotypeCarrierIdentity & { indices: number[]; below: number[] }
+  const sampleStrands = new Map<string, CarrierStrand[]>()
   for (const [carrierId, variantIdxs] of Object.entries(carrierVariantIndices)) {
-    const colonIdx = carrierId.lastIndexOf(':')
-    const sampleId = carrierId.substring(0, colonIdx)
-    const strandKey = carrierId.substring(colonIdx + 1)
-    const filtered = variantIdxs.filter((i) => passingIndices.has(i))
-    const entry = sampleStrands.get(sampleId)
-    if (!entry) {
-      sampleStrands.set(sampleId, { first: { strand: strandKey, indices: filtered }, second: { strand: '', indices: [] } })
-    } else {
-      entry.second = { strand: strandKey, indices: filtered }
+    const identity = identityForCarrier(carrierId, carrierMetadata)
+    const strand = {
+      ...identity,
+      indices: variantIdxs.filter((i) => passingIndices.has(i)),
+      below: variantIdxs.filter((i) => !passingIndices.has(i)),
     }
+    const entry = sampleStrands.get(identity.sample_id)
+    if (entry) entry.push(strand)
+    else sampleStrands.set(identity.sample_id, [strand])
   }
-
-  // Also collect below-threshold indices per sample per strand
-  const sampleBelowStrands = new Map<string, { first: number[]; second: number[] }>()
-  for (const [carrierId, variantIdxs] of Object.entries(carrierVariantIndices)) {
-    const colonIdx = carrierId.lastIndexOf(':')
-    const sampleId = carrierId.substring(0, colonIdx)
-    const below = variantIdxs.filter((i) => !passingIndices.has(i))
-    const entry = sampleBelowStrands.get(sampleId)
-    if (!entry) {
-      sampleBelowStrands.set(sampleId, { first: below, second: [] })
-    } else {
-      entry.second = below
+  for (const strands of sampleStrands.values()) {
+    strands.sort((a, b) => a.vcf_strand - b.vcf_strand)
+    if (strands.length > 2) {
+      throw new Error(`Sample ${strands[0].sample_id} has more than two VCF GT positions`)
     }
   }
 
@@ -855,8 +909,10 @@ export function groupDiplotypes(
       .join(';')
 
   for (const [sampleId, strands] of sampleStrands) {
-    const idxFirst = strands.first.indices
-    const idxSecond = strands.second.indices
+    const first = strands[0]
+    const second = strands[1]
+    const idxFirst = first.indices
+    const idxSecond = second?.indices || []
 
     const sigFirst = makeSig(idxFirst)
     const sigSecond = makeSig(idxSecond)
@@ -864,9 +920,8 @@ export function groupDiplotypes(
     // Canonical ordering: sort signatures so (A,B) and (B,A) hash the same
     let canonSigA: string, canonSigB: string
     let indicesA: number[], indicesB: number[]
-    let strandA: 0 | 1 | null, strandB: 0 | 1 | null
-
-    const belowStrands = sampleBelowStrands.get(sampleId) || { first: [], second: [] }
+    let strandA: number | null, strandB: number | null
+    let phaseSetA: string | null, phaseSetB: string | null
     let belowA: number[], belowB: number[]
 
     if (sigFirst <= sigSecond) {
@@ -874,19 +929,23 @@ export function groupDiplotypes(
       canonSigB = sigSecond
       indicesA = idxFirst
       indicesB = idxSecond
-      strandA = idxFirst.length > 0 ? 0 : null
-      strandB = idxSecond.length > 0 ? 1 : null
-      belowA = belowStrands.first
-      belowB = belowStrands.second
+      strandA = first.vcf_strand
+      strandB = second?.vcf_strand ?? null
+      phaseSetA = first.phase_set
+      phaseSetB = second?.phase_set ?? null
+      belowA = first.below
+      belowB = second?.below || []
     } else {
       canonSigA = sigSecond
       canonSigB = sigFirst
       indicesA = idxSecond
       indicesB = idxFirst
-      strandA = idxSecond.length > 0 ? 1 : null
-      strandB = idxFirst.length > 0 ? 0 : null
-      belowA = belowStrands.second
-      belowB = belowStrands.first
+      strandA = second?.vcf_strand ?? null
+      strandB = first.vcf_strand
+      phaseSetA = second?.phase_set ?? null
+      phaseSetB = first.phase_set
+      belowA = second?.below || []
+      belowB = first.below
     }
 
     const combinedSig = `${canonSigA}||${canonSigB}`
@@ -896,6 +955,7 @@ export function groupDiplotypes(
       existing.samples.push({
         sample_id: sampleId,
         strand_mapping: { strandA, strandB },
+        phase_set_mapping: { phaseSetA, phaseSetB },
       })
     } else {
       sigToGroup.set(combinedSig, {
@@ -903,6 +963,7 @@ export function groupDiplotypes(
           {
             sample_id: sampleId,
             strand_mapping: { strandA, strandB },
+            phase_set_mapping: { phaseSetA, phaseSetB },
           },
         ],
         indicesA,
@@ -1008,10 +1069,11 @@ export function computeHaplotypeView(
   isDiploidView: boolean = false,
   distanceMetric: DistanceMetric = 'auto',
   regionSize?: number,
+  carrierMetadata: CarrierMetadata = {},
   onProgress?: (status: string) => void
 ): ComputedHaplotypeData {
   if (isDiploidView) {
-    const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf)
+    const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf, carrierMetadata)
     const sorted = sortDiplotypes(diplotypes, sortBy)
     return { groups: sorted }
   }
@@ -1024,7 +1086,9 @@ export function computeHaplotypeView(
   const tGroup = Date.now() - t0
 
   if (lightGroups.length < 2) {
-    const inflated = inflateGroups(lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow)
+    const inflated = inflateGroups(
+      lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow, carrierMetadata
+    )
     return { groups: sortGroups(inflated, sortBy) }
   }
 
@@ -1043,7 +1107,9 @@ export function computeHaplotypeView(
 
   // Tier 2: Inflate to full HaplotypeGroup[] for rendering
   t0 = Date.now()
-  const inflated = inflateGroups(lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow)
+  const inflated = inflateGroups(
+    lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow, carrierMetadata
+  )
   const tInflate = Date.now() - t0
   const sorted = sortGroups(inflated, sortBy)
 
@@ -1075,6 +1141,9 @@ export function filterDisplayVariants(
       ...hg.variants.variants.filter((v: LRVariant) => v.freq.af < minAf).map((v: LRVariant) => ({
         ...v,
         in_samples: hg.samples.map((s) => s.sample_id),
+        in_haplotypes: hg.samples.map(({ sample_id, vcf_strand, phase_set }) => ({
+          sample_id, vcf_strand, phase_set,
+        })),
       })),
     ]
     return {

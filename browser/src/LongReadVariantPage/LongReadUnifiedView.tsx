@@ -10,8 +10,12 @@ import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
 import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeCluster, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint, LRVariant, Legend } from '../Haplotypes'
-import type { MethylationSampleAvailability } from '../Haplotypes/MethylationHelp'
+import type {
+  MethylationSampleAvailability,
+  PhasedMethylationCapability,
+} from '../Haplotypes/MethylationHelp'
 import {
+  carrierMetadataFromPayload,
   computeHaplotypeView,
   filterDisplayVariants,
   rehydrateVariants,
@@ -19,6 +23,7 @@ import {
   type RawPayload,
   type ComputedHaplotypeData,
   type AutoDefaults,
+  type CarrierMetadata,
 } from '../Haplotypes/haplotypeCompute'
 import HaplotypeVariantTable, { HaplotypeVariantTableHandle, type VariantTypeFilters } from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
@@ -61,6 +66,14 @@ const METHYLATION_AVAILABILITY_QUERY = `
   }
 `
 
+const PHASED_METHYLATION_CAPABILITY_QUERY = `
+  query RegionPhasedMethylationCapability($lr_cohort: LongReadCohort!) {
+    phased_methylation_capability(lr_cohort: $lr_cohort) {
+      data_layer available joinable_to_vcf status orientation_status reason
+    }
+  }
+`
+
 const METHYLATION_SUMMARY_QUERY = `
   query RegionMethylationSummary($chrom: String!, $start: Int!, $stop: Int!, $lr_cohort: LongReadCohort!) {
     methylation_summary(chrom: $chrom, start: $start, stop: $stop, lr_cohort: $lr_cohort) {
@@ -81,7 +94,7 @@ const METHYLATION_OUTLIERS_QUERY = `
 const METHYLATION_QUERY = `
   query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!, $samples: [String!], $lr_cohort: LongReadCohort!) {
     methylation(chrom: $chrom, start: $start, stop: $stop, samples: $samples, lr_cohort: $lr_cohort) {
-      chr pos1 pos2 methylation sample coverage
+      chr pos1 pos2 methylation sample coverage data_layer source_haplotype vcf_strand phase_set
     }
   }
 `
@@ -267,7 +280,12 @@ const LongReadUnifiedView = ({
   const [haplotypeData, setHaplotypeData] = useState<ComputedHaplotypeData | null>(null)
   const [autoDefaults, setAutoDefaults] = useState<AutoDefaults>({ floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false })
   const workerRef = useRef<Worker | null>(null)
-  const rawDataRef = useRef<{ variants: import('../Haplotypes/index').LRVariant[]; carrierIndices: Record<string, number[]>; trvAlts?: Record<string, Record<number, string>> } | null>(null)
+  const rawDataRef = useRef<{
+    variants: import('../Haplotypes/index').LRVariant[]
+    carrierIndices: Record<string, number[]>
+    carrierMetadata: CarrierMetadata
+    trvAlts?: Record<string, Record<number, string>>
+  } | null>(null)
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [workerComputing, setWorkerComputing] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState('')
@@ -281,6 +299,14 @@ const LongReadUnifiedView = ({
   const [methylationSampleCount, setMethylationSampleCount] = useState(0)
   const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
   const [methylationAvailability, setMethylationAvailability] = useState<MethylationSampleAvailability[] | null>(null)
+  const [phasedMethylationCapability, setPhasedMethylationCapability] = useState<PhasedMethylationCapability>({
+    data_layer: 'SOURCE_PHASED',
+    available: false,
+    joinable_to_vcf: false,
+    status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
+    orientation_status: 'UNCONFIRMED',
+    reason: 'Phased methylation orientation has not been confirmed',
+  })
   const availableMethylationIds = useMemo(
     () => new Set((methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)),
     [methylationAvailability]
@@ -563,11 +589,14 @@ const LongReadUnifiedView = ({
             ? rehydrateVariants(result.variants as any)
             : (result.variants as any) || []
           const carrierIndices = result.carrier_variant_indices || {}
-          rawDataRef.current = { variants, carrierIndices, trvAlts: result.trv_alts }
+          const carrierMetadata = carrierMetadataFromPayload(result.carriers)
+          rawDataRef.current = {
+            variants, carrierIndices, carrierMetadata, trvAlts: result.trv_alts,
+          }
           const baseData = computeHaplotypeView(
             variants, carrierIndices,
             0, sortBy, initDiploid ? false : defaults.isClusteredView, defaults.defaultClusterThreshold,
-            result.trv_alts, initDiploid, distanceMetric, regionSize
+            result.trv_alts, initDiploid, distanceMetric, regionSize, carrierMetadata
           )
           setHaplotypeData(baseData)
           setHaplotypeLoading(false)
@@ -600,15 +629,15 @@ const LongReadUnifiedView = ({
         distanceMetric,
       })
     } else if (rawDataRef.current) {
-      const { variants, carrierIndices, trvAlts } = rawDataRef.current
+      const { variants, carrierIndices, carrierMetadata, trvAlts } = rawDataRef.current
       let result: ComputedHaplotypeData
       if (isDiploidView) {
-        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true, 'auto', regionSize)
+        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true, 'auto', regionSize, carrierMetadata)
       } else if (isClusteredView) {
-        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize)
+        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize, carrierMetadata)
         result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
       } else {
-        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize)
+        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize, carrierMetadata)
       }
       setHaplotypeData(result)
     }
@@ -639,6 +668,20 @@ const LongReadUnifiedView = ({
     onGenealogyPanelVisibilityChange?.(genealogyPanelVisible)
     return () => onGenealogyPanelVisibilityChange?.(false)
   }, [genealogyPanelVisible, onGenealogyPanelVisibilityChange])
+
+  useEffect(() => {
+    let cancelled = false
+    fetchGraphQL(PHASED_METHYLATION_CAPABILITY_QUERY, { lr_cohort: lrCohort })
+      .then((result) => {
+        const capability = result.data?.phased_methylation_capability
+        if (!cancelled && capability) setPhasedMethylationCapability(capability)
+      })
+      .catch((error) => {
+        // Keep the initialized fail-closed state on contract/network failure.
+        console.error('Error fetching phased methylation capability:', error)
+      })
+    return () => { cancelled = true }
+  }, [lrCohort])
 
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
@@ -1064,6 +1107,7 @@ const LongReadUnifiedView = ({
             methylationAvailable={methylationAvailable}
             methylationLabel={sourceForModality(provenance, 'METHYLATION')?.label || 'Legacy — not Y1'}
             methylationAvailability={mixedMode ? methylationAvailability : undefined}
+            phasedMethylationCapability={phasedMethylationCapability}
             filterToOutliers={filterToOutliers}
             onFilterToOutliersChange={setFilterToOutliers}
             onLoadAllSamples={handleLoadAllSamples}

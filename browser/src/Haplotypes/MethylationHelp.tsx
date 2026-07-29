@@ -3,8 +3,25 @@ import React from 'react'
 export type MethylationSampleAvailability = {
   sample_id: string
   available: boolean
-  status: 'AVAILABLE_COMPLETE' | 'UNAVAILABLE_INCOMPLETE' | 'UNAVAILABLE_NO_ASSAY_SOURCE' | 'UNAVAILABLE_NO_CHR22'
+  status:
+    | 'AVAILABLE_COMPLETE'
+    | 'UNAVAILABLE_INCOMPLETE'
+    | 'UNAVAILABLE_NO_ASSAY_SOURCE'
+    | 'UNAVAILABLE_NO_CHR22'
+    | 'UNAVAILABLE_SOURCE_MARKED_SKIP'
+    | 'UNAVAILABLE_NO_CONTIG'
+    | 'UNAVAILABLE_ORIENTATION_UNCONFIRMED'
+    | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
   reason: string | null
+}
+
+export type PhasedMethylationCapability = {
+  data_layer: 'SOURCE_PHASED'
+  available: boolean
+  joinable_to_vcf: boolean
+  status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED' | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
+  orientation_status: 'UNCONFIRMED'
+  reason: string
 }
 
 type Props = {
@@ -12,31 +29,35 @@ type Props = {
   // null means that metadata is still loading.
   availability?: MethylationSampleAvailability[] | null
   sourceLabel?: string
+  phasedCapability?: PhasedMethylationCapability
 }
 
-const MethylationHelp = ({ availability, sourceLabel }: Props) => {
+const MethylationHelp = ({ availability, sourceLabel, phasedCapability }: Props) => {
   const unavailable = availability?.filter((sample) => !sample.available) || []
   const availableCount = availability?.filter((sample) => sample.available).length || 0
 
   return (
     <>
       <p>
-        Enabling this toggle overlays per-CpG methylation data directly beneath each haplotype
-        group. Because long-read sequencing captures both genetic variants and 5mC epigenetic
-        modifications on the same reads, this lets you visually identify allele-specific
-        methylation (ASM) where specific structural haplotypes drive local hyper- or
-        hypo-methylation.
+        <strong>Sample total:</strong> Enabling this toggle overlays combined per-sample CpG
+        methylation beneath each group. Values are averaged across the samples represented by
+        the group; they are not allele-specific and are not joined to a VCF haplotype strand.
       </p>
       {sourceLabel && (
         <p><strong>Source:</strong> {sourceLabel}</p>
       )}
       <p>
-        You&apos;ll see a track of dots representing the group&apos;s mean methylation level at each CpG
-        site. Sites that deviate significantly from the overall population mean are highlighted
-        in red, flagging potential haplotype-driven epigenetic effects. If you check &quot;Outliers
-        only,&quot; the view will filter down to groups containing samples that exhibit high regional
-        methylation variance.
+        Dots show the mean of observed sample-total values at each CpG. Red indicates deviation
+        from the population sample-total mean. &quot;Outliers only&quot; filters to groups containing
+        samples with high regional variance; it does not establish haplotype-driven methylation.
       </p>
+      {phasedCapability && (
+        <p>
+          <strong>Phased join:</strong> {phasedCapability.status} — {phasedCapability.reason}
+          {' '}Raw source hap1/hap2 labels remain distinct from VCF strand values while orientation
+          is {phasedCapability.orientation_status.toLowerCase()}.
+        </p>
+      )}
       {availability !== undefined && (
         <section>
           <h4>Sample availability</h4>
@@ -45,7 +66,7 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
           ) : (
             <>
               <p>
-                {availableCount} of {availability.length} canonical samples have methylation data.
+                {availableCount} of {availability.length} canonical roster samples have sample-total methylation data.
                 {unavailable.length > 0 && (
                   <> The remaining {unavailable.length} {unavailable.length === 1 ? 'sample is' : 'samples are'} excluded from methylation requests.</>
                 )}

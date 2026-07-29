@@ -36,13 +36,32 @@ describe('MethylationHelp', () => {
     const tree = renderer.create(<MethylationHelp availability={availability} />)
     const text = renderedText(tree.toJSON())
 
-    expect(text).toContain('1 of 3 canonical samples have methylation data')
+    expect(text).toContain('1 of 3 canonical roster samples have sample-total methylation data')
     expect(text).toContain('remaining 2 samples are excluded from methylation requests')
     expect(text).toContain('Unavailable samples (2) and reasons')
     expect(text).toContain('missing-assay')
     expect(text).toContain('No methylation assay source')
     expect(text).toContain('incomplete-sample')
     expect(text).toContain('No reason supplied')
+  })
+
+  test('labels totals accurately and keeps phased joining unavailable', () => {
+    const text = renderedText(renderer.create(
+      <MethylationHelp phasedCapability={{
+        data_layer: 'SOURCE_PHASED',
+        available: false,
+        joinable_to_vcf: false,
+        status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
+        orientation_status: 'UNCONFIRMED',
+        reason: 'Source orientation is not confirmed',
+      }} />
+    ).toJSON())
+
+    expect(text).toContain('Sample total:')
+    expect(text).toContain('not allele-specific')
+    expect(text).toContain('UNAVAILABLE_ORIENTATION_UNCONFIRMED')
+    expect(text).toContain('Raw source hap1/hap2 labels remain distinct from VCF strand values')
+    expect(text).not.toContain('identify allele-specific methylation')
   })
 
   test('shows source context in help when provided', () => {

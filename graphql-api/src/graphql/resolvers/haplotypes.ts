@@ -25,7 +25,9 @@ import {
   filterAvailableMethylationSampleIds,
   isAncillaryUnavailableForCohort,
   methylationSampleAvailability,
+  phasedMethylationCapability,
   prototypeAncillaryCapabilities,
+  sampleTotalMethylationRecords,
 } from './ancillary-availability'
 import {
   isY1Chr22MixedProvenanceEnabled,
@@ -186,6 +188,8 @@ const resolvers = {
     },
     methylation_sample_availability: (_obj: any, args: any) =>
       methylationSampleAvailability(args.lr_cohort),
+    phased_methylation_capability: (_obj: any, args: any) =>
+      phasedMethylationCapability(args.lr_cohort),
     methylation: async (_obj: any, args: any, ctx: any) => {
       if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, undefined, 'methylation')) return null
@@ -200,7 +204,9 @@ const resolvers = {
         ms: now() - t0,
         meta: { rows: (result as any[]).length },
       })
-      return result
+      // The compatibility endpoint serves combined/sample-total rows only. In
+      // particular, it never maps source hap1/hap2 to a VCF GT position.
+      return sampleTotalMethylationRecords(result as any[])
     },
     methylation_summary: async (_obj: any, args: any, ctx: any) => {
       if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null

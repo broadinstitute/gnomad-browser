@@ -21,7 +21,7 @@ export const fetchGroupedHaplotypeVariants = async (
   const query = `
     SELECT
       sample_id,
-      strand,
+      strand AS vcf_strand,
       groupArray(position)  AS positions,
       groupArray(ref)       AS refs,
       groupArray(alt)       AS alts,
@@ -72,7 +72,7 @@ export const fetchGroupedTrvVariants = async (
   const query = `
     SELECT
       sample_id,
-      strand,
+      strand AS vcf_strand,
       groupArray(position)  AS positions,
       groupArray(ref)       AS refs,
       groupArray(alt)       AS alts,
@@ -228,7 +228,7 @@ export const fetchTrvCarrierAlts = async (
   stop: number
 ) => {
   const query = `
-    SELECT position, ref, alt, sample_id, strand
+    SELECT position, ref, alt, sample_id, strand AS vcf_strand
     FROM lr_haplotypes
     WHERE chrom = {chrom:String}
       AND position BETWEEN {start:UInt32} AND {stop:UInt32}
@@ -245,7 +245,7 @@ export const fetchTrvCarrierAlts = async (
       ref: string
       alt: string
       sample_id: string
-      strand: number
+      vcf_strand: number
     }>
   >
 }

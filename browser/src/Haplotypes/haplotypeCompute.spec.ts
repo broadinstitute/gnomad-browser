@@ -1,6 +1,10 @@
 import { describe, expect, test } from '@jest/globals'
 
 import {
+  carrierMetadataFromPayload,
+  computeHaplotypeView,
+  groupCarriers,
+  groupDiplotypes,
   rehydrateVariants,
   type DiplotypeGroup,
   type SoAVariants,
@@ -15,7 +19,8 @@ const diplotypeGroup = (hash: number, sampleIds: string[]): DiplotypeGroup => ({
   is_diplotype: true,
   samples: sampleIds.map((sample_id) => ({
     sample_id,
-    strand_mapping: { strandA: 0, strandB: 1 },
+    strand_mapping: { strandA: 1, strandB: 2 },
+    phase_set_mapping: { phaseSetA: null, phaseSetB: null },
   })),
   haplotypeA: { variants: [], readable_id: '' },
   haplotypeB: { variants: [], readable_id: '' },
@@ -67,6 +72,105 @@ describe('rehydrateVariants', () => {
       .toHaveLength(3)
     expect(variants.filter((variant) => passesLongReadVariantTypeFilters(variant.allele_type, snv))
       .map((variant) => variant.variant_id)).toEqual(['snp', 'snv'])
+  })
+})
+
+const haplotypeVariant = (id: string, pos: number, af: number) => ({
+  variant_id: id,
+  chrom: 'chr22',
+  pos,
+  end: null,
+  ref: 'A',
+  alt: 'G',
+  allele_type: 'snv',
+  allele_length: 0,
+  freq: { af, ac: 1, an: 4 },
+  populations: [],
+  rsid: '',
+})
+
+describe('VCF carrier identity', () => {
+  const variants = [
+    haplotypeVariant('above', 100, 0.5),
+    haplotypeVariant('below', 200, 0.01),
+  ]
+  const carrierIndices = {
+    'sample:with-colon:1': [0, 1],
+    'sample:with-colon:2': [0, 1],
+  }
+  const carrierMetadata = carrierMetadataFromPayload([
+    {
+      sample_id: 'sample:with-colon', vcf_strand: 1, phase_set: 'ps-1',
+      phase_sets: ['ps-1'], variant_indices: [0, 1],
+    },
+    {
+      sample_id: 'sample:with-colon', vcf_strand: 2, phase_set: 'ps-2',
+      phase_sets: ['ps-2'], variant_indices: [0, 1],
+    },
+  ])
+
+  test('preserves structured identity through the active computation path', () => {
+    const result = computeHaplotypeView(
+      variants as any, carrierIndices, 0.1, 'sample_count', false, 0,
+      undefined, false, 'auto', 1_000, carrierMetadata
+    )
+    const group = result.groups[0] as any
+
+    expect(group.samples.map(({ sample_id, vcf_strand, phase_set }: any) => ({
+      sample_id, vcf_strand, phase_set,
+    }))).toEqual([
+      { sample_id: 'sample:with-colon', vcf_strand: 1, phase_set: 'ps-1' },
+      { sample_id: 'sample:with-colon', vcf_strand: 2, phase_set: 'ps-2' },
+    ])
+    expect(group.below_threshold.variants[0].in_haplotypes).toEqual([
+      { sample_id: 'sample:with-colon', vcf_strand: 1, phase_set: 'ps-1' },
+      { sample_id: 'sample:with-colon', vcf_strand: 2, phase_set: 'ps-2' },
+    ])
+  })
+
+  test('retains actual VCF values in the compatibility grouping path', () => {
+    const groups = groupCarriers(variants as any, carrierIndices, 0.1)
+    expect(groups[0].samples.map(({ sample_id, vcf_strand, phase_set }) => ({
+      sample_id, vcf_strand, phase_set,
+    }))).toEqual([
+      { sample_id: 'sample:with-colon', vcf_strand: 1, phase_set: null },
+      { sample_id: 'sample:with-colon', vcf_strand: 2, phase_set: null },
+    ])
+
+    const zeroBasedLegacy = groupCarriers(
+      [haplotypeVariant('legacy', 100, 0.5)] as any,
+      { 'legacy-sample:0': [0] },
+      0
+    )
+    expect(zeroBasedLegacy[0].samples[0].vcf_strand).toBe(0)
+  })
+
+  test('maps canonical diplotype sides to actual VCF strands and phase sets', () => {
+    const distinctVariants = [
+      haplotypeVariant('strand-1', 100, 0.5),
+      haplotypeVariant('strand-2', 200, 0.5),
+    ]
+    // Reverse insertion order to prove A/B mapping does not synthesize slots
+    // from object order.
+    const diplotypes = groupDiplotypes(
+      distinctVariants as any,
+      { 'sample:with-colon:2': [1], 'sample:with-colon:1': [0] },
+      0,
+      carrierMetadata
+    )
+
+    expect(diplotypes[0].samples[0]).toEqual({
+      sample_id: 'sample:with-colon',
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: 'ps-1', phaseSetB: 'ps-2' },
+    })
+  })
+
+  test('keeps known VCF strands when every variant is below the AF threshold', () => {
+    const diplotypes = groupDiplotypes(
+      variants as any, carrierIndices, 1, carrierMetadata
+    )
+    expect(diplotypes[0].samples[0].strand_mapping).toEqual({ strandA: 1, strandB: 2 })
   })
 })
 

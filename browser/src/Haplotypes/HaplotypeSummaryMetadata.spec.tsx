@@ -25,7 +25,7 @@ const renderedText = (node: any): string => {
 }
 
 const group: HaplotypeGroup = {
-  samples: [{ sample_id: 'sample-1', variant_sets: [] }],
+  samples: [{ sample_id: 'sample-1', vcf_strand: 1, phase_set: null, variant_sets: [] }],
   variants: {
     readable_id: 'group-1',
     variants: [{ variant_id: 'v1' } as any],
@@ -76,6 +76,26 @@ describe('haplotype summary metadata', () => {
     expect(text).toContain('haplotype 1 or 2')
     expect(text).toContain('variants and their frequencies remain available in Summary View')
     expect(text).not.toContain('biological strand')
+  })
+
+  test('labels sample totals and keeps the phased join control disabled with a typed reason', () => {
+    const component = renderer.create(<Legend phasedMethylationCapability={{
+      data_layer: 'SOURCE_PHASED',
+      available: false,
+      joinable_to_vcf: false,
+      status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
+      orientation_status: 'UNCONFIRMED',
+      reason: 'Source orientation is unconfirmed',
+    }} />)
+    const text = renderedText(component.toJSON())
+    const disabledCheckboxes = component.root.findAll(
+      (node) => node.type === 'input' && node.props.type === 'checkbox' && node.props.disabled === true
+    )
+
+    expect(text).toContain('Methylation (sample total)')
+    expect(text).toContain('Phased methylation join')
+    expect(disabledCheckboxes).toHaveLength(1)
+    expect(disabledCheckboxes[0].parent?.props.title).toBe('Source orientation is unconfirmed')
   })
 
   test('keeps data-layer labels compact and places source context in help', () => {

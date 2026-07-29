@@ -187,6 +187,9 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     return res.json({
       variants: result.soa_variants,
       carrier_variant_indices: result.carrier_variant_indices,
+      // Structured v2 carrier identity preserves the original VCF GT position
+      // and FORMAT/PS without changing the compatibility map above.
+      carriers: result.carriers,
       trv_alts: result.trv_alts,
       auto_defaults: autoDefaults,
       _phase_summary: phaseSummary,

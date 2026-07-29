@@ -7,12 +7,15 @@
 import type { LRVariant } from './index'
 import {
   rehydrateVariants,
+  carrierMetadataFromPayload,
   computeHaplotypeView,
   filterDisplayVariants,
   type SoAVariants,
   type ComputedHaplotypeData,
   type AutoDefaults,
+  type CarrierMetadata,
   type DistanceMetric,
+  type StructuredCarrier,
 } from './haplotypeCompute'
 import { minimumAlleleFrequencyOrDefault } from './minimumAlleleFrequency'
 
@@ -20,6 +23,7 @@ import { minimumAlleleFrequencyOrDefault } from './minimumAlleleFrequency'
 
 let variants: LRVariant[] = []
 let carrierVariantIndices: Record<string, number[]> = {}
+let carrierMetadata: CarrierMetadata = {}
 let trvAlts: Record<string, Record<number, string>> | undefined
 let autoDefaults: AutoDefaults | null = null
 let baseData: ComputedHaplotypeData | null = null
@@ -37,6 +41,7 @@ type InitMessage = {
   rawData: {
     variants: SoAVariants
     carrier_variant_indices: Record<string, number[]>
+    carriers?: StructuredCarrier[]
     trv_alts?: Record<string, Record<number, string>>
     auto_defaults?: AutoDefaults
   }
@@ -76,6 +81,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       variants = rehydrateVariants(msg.rawData.variants)
       const tRehydrate = Date.now() - t0
       carrierVariantIndices = msg.rawData.carrier_variant_indices
+      carrierMetadata = carrierMetadataFromPayload(msg.rawData.carriers)
       trvAlts = msg.rawData.trv_alts
       autoDefaults = msg.rawData.auto_defaults || null
       currentSortBy = msg.sortBy || 'similarity_score'
@@ -103,7 +109,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         variants, carrierVariantIndices,
         isClusteredView ? floorAf : initialAf, currentSortBy, isClusteredView, clusterThreshold,
         trvAlts, isDiploidView, currentDistanceMetric, currentRegionSize,
-        reportProgress
+        carrierMetadata, reportProgress
       )
       const tCompute = Date.now() - t0
       baseDataThreshold = clusterThreshold
@@ -142,7 +148,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         result = computeHaplotypeView(
           variants, carrierVariantIndices,
           msg.minAf, currentSortBy, false, msg.clusterThreshold,
-          trvAlts, true, 'auto', currentRegionSize
+          trvAlts, true, 'auto', currentRegionSize, carrierMetadata
         )
       } else if (msg.isClusteredView) {
         // Clustering ON: rebuild baseData if threshold, distance metric, or mode changed
@@ -150,7 +156,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
           baseData = computeHaplotypeView(
             variants, carrierVariantIndices,
             autoDefaults?.floor ?? 0, currentSortBy, true, msg.clusterThreshold,
-            trvAlts, false, currentDistanceMetric, currentRegionSize
+            trvAlts, false, currentDistanceMetric, currentRegionSize, carrierMetadata
           )
           baseDataThreshold = msg.clusterThreshold
         }
@@ -162,7 +168,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
         result = computeHaplotypeView(
           variants, carrierVariantIndices,
           msg.minAf, currentSortBy, false, msg.clusterThreshold,
-          trvAlts, false, currentDistanceMetric, currentRegionSize
+          trvAlts, false, currentDistanceMetric, currentRegionSize, carrierMetadata
         )
       }
 
@@ -181,7 +187,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       baseData = computeHaplotypeView(
         variants, carrierVariantIndices,
         autoDefaults?.floor ?? 0, currentSortBy, true, msg.clusterThreshold,
-        trvAlts, false, currentDistanceMetric, currentRegionSize
+        trvAlts, false, currentDistanceMetric, currentRegionSize, carrierMetadata
       )
       baseDataThreshold = msg.clusterThreshold
 

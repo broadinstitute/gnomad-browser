@@ -10,7 +10,10 @@ import AlluvialTrack from './AlluvialTrack'
 import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
-import MethylationHelp, { type MethylationSampleAvailability } from './MethylationHelp'
+import MethylationHelp, {
+  type MethylationSampleAvailability,
+  type PhasedMethylationCapability,
+} from './MethylationHelp'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { ALLELE_TYPE_COLORS, VARIANT_CATEGORY_COLORS, type VariantCategory } from '../LongReadVariantPage/variantUtils'
 import { COLOR_MODES, getVariantCssColor } from '../LongReadVariantPage/variantColorUtils'
@@ -148,6 +151,7 @@ export const Legend = ({
   methylationAvailable = true,
   methylationLabel = 'Methylation',
   methylationAvailability,
+  phasedMethylationCapability,
   filterToOutliers = false,
   onFilterToOutliersChange = () => { },
   onLoadAllSamples,
@@ -192,6 +196,7 @@ export const Legend = ({
   methylationAvailable?: boolean
   methylationLabel?: string
   methylationAvailability?: MethylationSampleAvailability[] | null
+  phasedMethylationCapability?: PhasedMethylationCapability
   filterToOutliers?: boolean
   onFilterToOutliersChange?: (filter: boolean) => void
   onLoadAllSamples?: () => void
@@ -456,15 +461,23 @@ export const Legend = ({
                   disabled={!methylationAvailable}
                   onChange={handleShowMethylationChange}
                 />
-                Methylation
+                Methylation (sample total)
               </label>
               <HaplotypeHelpButton title="Methylation">
                 <MethylationHelp
                   availability={methylationAvailability}
                   sourceLabel={methylationAvailable ? methylationLabel : 'Unavailable for this cohort/release'}
+                  phasedCapability={phasedMethylationCapability}
                 />
               </HaplotypeHelpButton>
             </div>
+            <label
+              title={phasedMethylationCapability?.reason || 'Phased methylation orientation is unconfirmed'}
+              style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', cursor: 'not-allowed' }}
+            >
+              <input type='checkbox' checked={false} disabled />
+              Phased methylation join
+            </label>
             {showMethylation && methylationAvailable && (
               <>
                 <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
@@ -489,8 +502,8 @@ export const Legend = ({
                     {methylationLoading
                       ? `Loading ${methylationSampleCount}/${methylationTotalSamples}...`
                       : methylationSampleCount > 0 && !methylationLoading
-                        ? `Loaded ${methylationSampleCount} samples`
-                        : 'Load all samples'}
+                        ? `Loaded ${methylationSampleCount} sample totals`
+                        : 'Load all sample totals'}
                   </button>
                 )}
               </>
@@ -547,7 +560,14 @@ export type LRVariant = {
   motif_counts?: number[] | null
   allele_purity?: number | null
   in_samples?: string[]
+  in_haplotypes?: HaplotypeCarrierIdentity[]
   gt_phased?: boolean
+}
+
+export type HaplotypeCarrierIdentity = {
+  sample_id: string
+  vcf_strand: number
+  phase_set: string | null
 }
 
 type VariantSet = {
@@ -555,8 +575,7 @@ type VariantSet = {
   readable_id: string
 }
 
-type Sample = {
-  sample_id: string
+export type Sample = HaplotypeCarrierIdentity & {
   variant_sets: VariantSet[]
 }
 
@@ -583,7 +602,11 @@ export type HaplotypeCluster = {
 
 export type DiplotypeGroupRef = {
   is_diplotype: true
-  samples: { sample_id: string }[]
+  samples: Array<{
+    sample_id: string
+    strand_mapping: { strandA: number | null; strandB: number | null }
+    phase_set_mapping: { phaseSetA: string | null; phaseSetB: string | null }
+  }>
   hash: number
   [key: string]: any
 }
@@ -601,6 +624,15 @@ export type Methylation = {
   pos2: number
   sample: string
   coverage?: number
+  data_layer?: 'SAMPLE_TOTAL' | 'SOURCE_PHASED'
+  // Terra source BED identity. Never infer this from vcf_strand.
+  source_haplotype?: 'HAP1' | 'HAP2' | null
+  // Populated only after an approved source-orientation mapping.
+  vcf_strand?: number | null
+  phase_set?: string | null
+  ancillary_run_id?: string | null
+  source_version?: string | null
+  source_manifest_hash?: string | null
 }
 
 export type MethylationSummaryPoint = {
@@ -1526,7 +1558,7 @@ const MethylationSummaryTrack = ({ methylationSummary }: { methylationSummary: M
                             <div><dt>Std dev:</dt><dd>{stdVal == null ? 'Unavailable' : `${stdVal.toFixed(1)}%`}</dd></div>
                             <div><dt>Range:</dt><dd>{d.min_methylation == null || d.max_methylation == null ? 'Unavailable' : `${d.min_methylation.toFixed(1)}% - ${d.max_methylation.toFixed(1)}%`}</dd></div>
                             <div><dt>Mean coverage:</dt><dd>{d.mean_coverage.toFixed(0)}x</dd></div>
-                            <div><dt>Samples:</dt><dd>{d.num_samples}</dd></div>
+                            <div><dt>Observed sample totals:</dt><dd>{d.num_samples}</dd></div>
                             {isOutlier && <div><dt style={{ color: '#dc2626' }}>High variance site</dt><dd></dd></div>}
                           </RegionAttributeList>
                         )}

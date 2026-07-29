@@ -44,7 +44,16 @@ type LRVariant {
   allele_purity: Float
   motif_counts: [Int!]
   in_samples: [String!]
+  # Composite carrier membership. in_samples remains for legacy clients.
+  in_haplotypes: [HaplotypeCarrierIdentity!]
   gt_phased: Boolean
+}
+
+type HaplotypeCarrierIdentity {
+  sample_id: String!
+  # Original one-based GT position from the source VCF. This is not a biological haplotype label.
+  vcf_strand: Int!
+  phase_set: String
 }
 
 type HaplotypeVariantSet {
@@ -54,6 +63,10 @@ type HaplotypeVariantSet {
 
 type HaplotypeSample {
   sample_id: String!
+  # Original one-based GT position from the source VCF. This is not a biological haplotype label.
+  vcf_strand: Int!
+  # FORMAT/PS when one phase set describes this member; otherwise null.
+  phase_set: String
   variant_sets: [HaplotypeVariantSet!]!
 }
 
@@ -90,6 +103,35 @@ enum MethylationAvailabilityStatus {
   UNAVAILABLE_INCOMPLETE
   UNAVAILABLE_NO_ASSAY_SOURCE
   UNAVAILABLE_NO_CHR22
+  UNAVAILABLE_SOURCE_MARKED_SKIP
+  UNAVAILABLE_NO_CONTIG
+  UNAVAILABLE_ORIENTATION_UNCONFIRMED
+  UNAVAILABLE_AOU_SUMMARY_ONLY
+}
+
+enum MethylationDataLayer {
+  SAMPLE_TOTAL
+  SOURCE_PHASED
+}
+
+enum MethylationSourceHaplotype {
+  HAP1
+  HAP2
+}
+
+enum MethylationOrientationStatus {
+  NOT_APPLICABLE
+  UNCONFIRMED
+  CONFIRMED
+}
+
+type PhasedMethylationCapability {
+  data_layer: MethylationDataLayer!
+  available: Boolean!
+  joinable_to_vcf: Boolean!
+  status: MethylationAvailabilityStatus!
+  orientation_status: MethylationOrientationStatus!
+  reason: String!
 }
 
 type MethylationSampleAvailability {
@@ -106,6 +148,12 @@ type MethylationRecord {
   methylation: Float!
   sample: String!
   coverage: Int
+  data_layer: MethylationDataLayer!
+  # Source BED hap1/hap2 identity. It must remain distinct from vcf_strand.
+  source_haplotype: MethylationSourceHaplotype
+  # Null until an approved source-haplotype-to-VCF mapping exists.
+  vcf_strand: Int
+  phase_set: String
 }
 
 type MethylationSummaryRecord {
@@ -275,6 +323,10 @@ extend type Query {
   methylation_sample_availability(
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): [MethylationSampleAvailability!]!
+
+  phased_methylation_capability(
+    lr_cohort: LongReadCohort = hgsvc_hprc
+  ): PhasedMethylationCapability!
 
   methylation(
     chrom: String!

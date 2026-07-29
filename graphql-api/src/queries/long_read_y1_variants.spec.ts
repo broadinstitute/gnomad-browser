@@ -31,6 +31,42 @@ describe('Y1 long-read browser identity', () => {
     expect(map(null)).toBeNull()
   })
 
+  it('preserves structured VCF strand and per-variant phase-set identity in REST carriers', () => {
+    const row = (position: number, carriers: any[]) => ({
+      source_variant_id: `chr22-${position}-A-G`, alt_index: 1,
+      position, reference_end: position, ref: 'A', alt: 'G', rsid: '',
+      info_AF: 0.2, info_AC: 2, info_AN: 10, allele_type: 'snv', allele_length: 0,
+      carriers,
+    })
+    const payload = buildVariantsAndCarrierMap([
+      row(100, [['sample:with-colon', 1, 'ps-a'], ['sample:with-colon', 2, 'ps-b']]),
+      row(200, [['sample:with-colon', 1, null], ['sample:with-colon', 2, 'ps-b']]),
+    ], 'chr22')
+
+    expect(payload.carrier_variant_indices).toEqual({
+      'sample:with-colon:1': [0, 1],
+      'sample:with-colon:2': [0, 1],
+    })
+    expect(payload.carriers).toEqual([
+      {
+        sample_id: 'sample:with-colon', vcf_strand: 1, phase_set: null,
+        phase_sets: ['ps-a'], variant_indices: [0, 1],
+        phase_set_by_variant: [
+          { variant_index: 0, phase_set: 'ps-a' },
+          { variant_index: 1, phase_set: null },
+        ],
+      },
+      {
+        sample_id: 'sample:with-colon', vcf_strand: 2, phase_set: 'ps-b',
+        phase_sets: ['ps-b'], variant_indices: [0, 1],
+        phase_set_by_variant: [
+          { variant_index: 0, phase_set: 'ps-b' },
+          { variant_index: 1, phase_set: 'ps-b' },
+        ],
+      },
+    ])
+  })
+
   it.each([
     {
       label: 'expanded Y1 TR allele',

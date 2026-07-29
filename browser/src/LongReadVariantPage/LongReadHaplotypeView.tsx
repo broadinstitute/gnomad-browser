@@ -25,7 +25,7 @@ const HAPLOTYPE_GROUPS_QUERY = `
   query RegionHaploGroups($chrom: String!, $start: Int!, $stop: Int!, $min_allele_freq: Float, $sort_by: String) {
     haplotype_groups(chrom: $chrom, start: $start, stop: $stop, min_allele_freq: $min_allele_freq, sort_by: $sort_by) {
       groups {
-        samples { sample_id }
+        samples { sample_id vcf_strand phase_set }
         variants {
           variants { locus chrom position alleles rsid qual filters info_AF info_AC info_AN info_CM info_SVTYPE info_SVLEN gt_alleles gt_phased allele_type allele_length gnomad_v4_match_type info_AF_afr info_AF_amr info_AF_eas info_AF_nfe info_AF_sas cadd_phred phylop sv_consequences dbsnp_id tr_id tr_motifs tr_struc allele_methylation motif_counts allele_purity }
           readable_id

@@ -46,7 +46,12 @@ const haplotypeGroup = (hash: number, sampleId: string, variants: any[]) => ({
   hash,
   start: 22854926,
   stop: 22855031,
-  samples: [{ sample_id: sampleId, variant_sets: [{ readable_id: '', variants }] }],
+  samples: [{
+    sample_id: sampleId,
+    vcf_strand: 1,
+    phase_set: null,
+    variant_sets: [{ readable_id: '', variants }],
+  }],
   // Repeated authoritative/group rows reproduce the join inflation that caused
   // multiple cards and occurrence-based carrier totals.
   variants: { readable_id: '', variants: [variants[0], variants[0]] },

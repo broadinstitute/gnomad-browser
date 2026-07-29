@@ -51,13 +51,13 @@ const HAPLOTYPE_GROUPS_QUERY = `
   query RegionHaploGroups($chrom: String!, $start: Int!, $stop: Int!, $min_allele_freq: Float, $sort_by: String) {
     haplotype_groups(chrom: $chrom, start: $start, stop: $stop, min_allele_freq: $min_allele_freq, sort_by: $sort_by) {
       groups {
-        samples { sample_id }
+        samples { sample_id vcf_strand phase_set }
         variants {
-          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbsnp_id allele_methylation allele_purity motif_counts in_samples gt_phased }
+          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbsnp_id allele_methylation allele_purity motif_counts in_samples in_haplotypes { sample_id vcf_strand phase_set } gt_phased }
           readable_id
         }
         below_threshold {
-          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbsnp_id allele_methylation allele_purity motif_counts in_samples gt_phased }
+          variants { variant_id chrom pos end ref alt allele_type allele_length freq { af ac an } populations { id af } rsid major_consequence cadd_phred phylop filters sv_consequences tr_id tr_motifs gnomad_str dbsnp_id allele_methylation allele_purity motif_counts in_samples in_haplotypes { sample_id vcf_strand phase_set } gt_phased }
           readable_id
         }
         start stop hash
