@@ -3,6 +3,7 @@ import { describe, expect, test } from '@jest/globals'
 import {
   carrierMetadataFromPayload,
   computeHaplotypeView,
+  filterDisplayVariants,
   groupCarriers,
   groupDiplotypes,
   rehydrateVariants,
@@ -171,6 +172,132 @@ describe('VCF carrier identity', () => {
       variants as any, carrierIndices, 1, carrierMetadata
     )
     expect(diplotypes[0].samples[0].strand_mapping).toEqual({ strandA: 1, strandB: 2 })
+  })
+
+  test('preserves two phase sets on one strand through fallback and native below-threshold output', () => {
+    const multiPhaseMetadata = carrierMetadataFromPayload([{
+      sample_id: 'multi-phase-sample',
+      vcf_strand: 1,
+      phase_set: null,
+      phase_sets: ['PS-A', 'PS-B'],
+      variant_indices: [0, 1],
+      phase_set_by_variant: [
+        { variant_index: 0, phase_set: 'PS-A' },
+        { variant_index: 1, phase_set: 'PS-B' },
+      ],
+    }])
+    const result = computeHaplotypeView(
+      variants as any,
+      { 'multi-phase-sample:1': [0, 1] },
+      0.1,
+      'sample_count',
+      false,
+      0,
+      undefined,
+      false,
+      'auto',
+      1_000,
+      multiPhaseMetadata
+    )
+    const group = result.groups[0] as any
+
+    expect(group.samples[0].phase_set).toBeNull()
+    expect(group.below_threshold.variants[0].in_haplotypes[0].phase_set).toBeNull()
+    expect(result.phase_set_sidecar).toEqual({
+      by_carrier: {
+        'multi-phase-sample:1': {
+          sample_id: 'multi-phase-sample',
+          vcf_strand: 1,
+          phase_set: null,
+          phase_sets: ['PS-A', 'PS-B'],
+          variant_indices: [0, 1],
+          phase_set_by_variant: [
+            { variant_index: 0, phase_set: 'PS-A' },
+            { variant_index: 1, phase_set: 'PS-B' },
+          ],
+        },
+      },
+      variant_ids_by_index: ['above', 'below'],
+    })
+    expect(Object.isFrozen(result.phase_set_sidecar)).toBe(true)
+    expect(Object.isFrozen(result.phase_set_sidecar.by_carrier['multi-phase-sample:1'])).toBe(true)
+  })
+
+  test('retains the exact phase-set sidecar when display filtering moves a variant below threshold', () => {
+    const multiPhaseMetadata = carrierMetadataFromPayload([{
+      sample_id: 'multi-phase-sample',
+      vcf_strand: 1,
+      phase_set: null,
+      phase_sets: ['PS-A', 'PS-B'],
+      variant_indices: [0, 1],
+      phase_set_by_variant: [
+        { variant_index: 0, phase_set: 'PS-A' },
+        { variant_index: 1, phase_set: 'PS-B' },
+      ],
+    }])
+    const result = computeHaplotypeView(
+      variants as any,
+      { 'multi-phase-sample:1': [0, 1] },
+      0,
+      'sample_count',
+      false,
+      0,
+      undefined,
+      false,
+      'auto',
+      1_000,
+      multiPhaseMetadata
+    )
+    const filtered = filterDisplayVariants(result, 0.1)
+
+    expect((filtered.groups[0] as any).below_threshold.variants.map((variant: any) => variant.variant_id))
+      .toContain('below')
+    expect(filtered.phase_set_sidecar).toBe(result.phase_set_sidecar)
+    expect(filtered.phase_set_sidecar.by_carrier['multi-phase-sample:1'].phase_set_by_variant)
+      .toEqual([
+        { variant_index: 0, phase_set: 'PS-A' },
+        { variant_index: 1, phase_set: 'PS-B' },
+      ])
+  })
+
+  test('retains exact multi-block metadata in diplotype output when every variant is below threshold', () => {
+    const multiPhaseMetadata = carrierMetadataFromPayload([{
+      sample_id: 'multi-phase-sample',
+      vcf_strand: 2,
+      phase_set: null,
+      phase_sets: ['PS-A', 'PS-B'],
+      variant_indices: [0, 1],
+      phase_set_by_variant: [
+        { variant_index: 0, phase_set: 'PS-A' },
+        { variant_index: 1, phase_set: 'PS-B' },
+      ],
+    }])
+    const result = computeHaplotypeView(
+      variants as any,
+      { 'multi-phase-sample:2': [0, 1] },
+      1,
+      'sample_id',
+      false,
+      0,
+      undefined,
+      true,
+      'auto',
+      1_000,
+      multiPhaseMetadata
+    )
+    const diplotype = result.groups[0] as DiplotypeGroup
+    const strand = diplotype.samples[0].strand_mapping.strandA
+    const carrierKey = `${diplotype.samples[0].sample_id}:${strand}`
+
+    expect(diplotype.samples[0].phase_set_mapping.phaseSetA).toBeNull()
+    expect(result.phase_set_sidecar.by_carrier[carrierKey]).toMatchObject({
+      phase_set: null,
+      phase_sets: ['PS-A', 'PS-B'],
+      phase_set_by_variant: [
+        { variant_index: 0, phase_set: 'PS-A' },
+        { variant_index: 1, phase_set: 'PS-B' },
+      ],
+    })
   })
 })
 

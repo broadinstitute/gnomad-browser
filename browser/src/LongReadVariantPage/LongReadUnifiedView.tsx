@@ -49,6 +49,15 @@ import {
   sourceForModality,
 } from './LongReadProvenanceBanner'
 import { nullableLongReadFrequency } from './longReadFrequency'
+import {
+  incompleteMethylationSampleIds,
+  mergeMethylationRecords,
+  methylationBatchFromGraphQL,
+  methylationRequestScope,
+  methylationSampleIdentity,
+  responseForCurrentMethylationRequest,
+  MethylationRequestGate,
+} from './methylationState'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
@@ -187,11 +196,12 @@ type LongReadUnifiedViewProps = {
   onGenealogyPanelVisibilityChange?: (visible: boolean) => void
 }
 
-const fetchGraphQL = async (query: string, variables: any) => {
+const fetchGraphQL = async (query: string, variables: any, signal?: AbortSignal) => {
   const response = await fetch('/api/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ query, variables }),
+    signal,
   })
   const queryName = query.match(/query\s+(\w+)/)?.[1] || 'unknown'
   console.time(`[perf] JSON parse (${queryName})`)
@@ -204,6 +214,26 @@ const fetchGraphQL = async (query: string, variables: any) => {
 
 
 const MAX_HAPLOTYPE_REGION_SIZE = process.env.LR_Y1_ENABLED === 'true' ? 100_000 : 5_000_000
+
+type MethylationViewState = {
+  scope: string | null
+  rowsByIdentity: Map<string, Methylation>
+  summary: MethylationSummaryPoint[]
+  outliers: any
+  loading: boolean
+  sampleCount: number
+  totalSamples: number
+}
+
+const emptyMethylationViewState = (scope: string | null = null): MethylationViewState => ({
+  scope,
+  rowsByIdentity: new Map(),
+  summary: [],
+  outliers: null,
+  loading: false,
+  sampleCount: 0,
+  totalSamples: 0,
+})
 
 const LongReadUnifiedView = ({
   datasetId,
@@ -292,12 +322,14 @@ const LongReadUnifiedView = ({
   const [ambiguousUnphasedRows, setAmbiguousUnphasedRows] = useState(0)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
-  const [methylationData, setMethylationData] = useState<Methylation[]>([])
-  const [methylationSummary, setMethylationSummary] = useState<MethylationSummaryPoint[]>([])
-  const [methylationOutliers, setMethylationOutliers] = useState<any>(null)
-  const [methylationLoading, setMethylationLoading] = useState(false)
-  const [methylationSampleCount, setMethylationSampleCount] = useState(0)
-  const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
+  const [methylationViewState, setMethylationViewState] = useState<MethylationViewState>(
+    emptyMethylationViewState
+  )
+  const requestedMethylationSampleIdentitiesRef = useRef<Set<string>>(new Set())
+  const completedMethylationSampleIdentitiesRef = useRef<Set<string>>(new Set())
+  const summaryMethylationRequestGateRef = useRef(new MethylationRequestGate())
+  const autoDetailMethylationRequestGateRef = useRef(new MethylationRequestGate())
+  const loadAllMethylationRequestGateRef = useRef(new MethylationRequestGate())
   const [methylationAvailability, setMethylationAvailability] = useState<MethylationSampleAvailability[] | null>(null)
   const [phasedMethylationCapability, setPhasedMethylationCapability] = useState<PhasedMethylationCapability>({
     data_layer: 'SOURCE_PHASED',
@@ -311,6 +343,27 @@ const LongReadUnifiedView = ({
     () => new Set((methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)),
     [methylationAvailability]
   )
+  const methylationSource = sourceForModality(provenance, 'METHYLATION')
+  const methylationScope = methylationRequestScope({
+    cohort: lrCohort,
+    chrom,
+    start,
+    stop,
+    dataLayer: 'SAMPLE_TOTAL',
+    source: methylationSource,
+    enabled: showHaplotypes && methylationAvailable,
+  })
+  // Never paint rows from the preceding scope while passive-effect cleanup runs.
+  const methylationStateIsCurrent = methylationViewState.scope === methylationScope
+  const methylationData = useMemo(
+    () => methylationStateIsCurrent ? [...methylationViewState.rowsByIdentity.values()] : [],
+    [methylationStateIsCurrent, methylationViewState.rowsByIdentity]
+  )
+  const methylationSummary = methylationStateIsCurrent ? methylationViewState.summary : []
+  const methylationOutliers = methylationStateIsCurrent ? methylationViewState.outliers : null
+  const methylationLoading = methylationStateIsCurrent && methylationViewState.loading
+  const methylationSampleCount = methylationStateIsCurrent ? methylationViewState.sampleCount : 0
+  const methylationTotalSamples = methylationStateIsCurrent ? methylationViewState.totalSamples : 0
 
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('sample_id')
@@ -696,111 +749,236 @@ const LongReadUnifiedView = ({
     return () => { cancelled = true }
   }, [mixedMode, methylationAvailable, lrCohort])
 
-  // Fetch methylation summary + outliers when entering haplotype mode
+  // A source/region/cohort change invalidates all three methylation flows and
+  // resets detail, summary, outliers, progress, and loading in one state update.
+  useEffect(() => {
+    const summaryGate = summaryMethylationRequestGateRef.current
+    const autoDetailGate = autoDetailMethylationRequestGateRef.current
+    const loadAllGate = loadAllMethylationRequestGateRef.current
+    summaryGate.invalidate()
+    autoDetailGate.invalidate()
+    loadAllGate.invalidate()
+    requestedMethylationSampleIdentitiesRef.current = new Set()
+    completedMethylationSampleIdentitiesRef.current = new Set()
+    setMethylationViewState(emptyMethylationViewState(methylationScope))
+
+    return () => {
+      summaryGate.invalidate()
+      autoDetailGate.invalidate()
+      loadAllGate.invalidate()
+    }
+  }, [methylationScope])
+
+  // Fetch methylation summary + outliers when entering haplotype mode.
   // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
   // Users can still enable methylation via the checkbox, which triggers the load-all-samples path.
   useEffect(() => {
-    setMethylationData([])
-    setMethylationSummary([])
-    setMethylationOutliers(null)
-    if (!showHaplotypes || !methylationAvailable) return
-    if (regionSize > 200_000) return
+    if (!showHaplotypes || !methylationAvailable || regionSize > 200_000) return undefined
 
+    const gate = summaryMethylationRequestGateRef.current
+    const token = gate.begin(methylationScope)
     const fetchSummaryAndOutliers = async () => {
       try {
         const [summaryResult, outlierResult] = await Promise.all([
-          fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop, lr_cohort: lrCohort }),
-          fetchGraphQL(METHYLATION_OUTLIERS_QUERY, { chrom, start, stop, lr_cohort: lrCohort }),
+          responseForCurrentMethylationRequest(gate, token, (signal) => fetchGraphQL(
+            METHYLATION_SUMMARY_QUERY,
+            { chrom, start, stop, lr_cohort: lrCohort },
+            signal
+          )),
+          responseForCurrentMethylationRequest(gate, token, (signal) => fetchGraphQL(
+            METHYLATION_OUTLIERS_QUERY,
+            { chrom, start, stop, lr_cohort: lrCohort },
+            signal
+          )),
         ])
-        if (summaryResult.data?.methylation_summary) {
-          setMethylationSummary(summaryResult.data.methylation_summary)
+        if (!gate.isCurrent(token) || !summaryResult || !outlierResult) return
+        setMethylationViewState((previous) => ({
+          ...previous,
+          scope: methylationScope,
+          summary: summaryResult.data?.methylation_summary || [],
+          outliers: outlierResult.data?.methylation_outliers || null,
+        }))
+      } catch (error: any) {
+        if (error?.name !== 'AbortError' && gate.isCurrent(token)) {
+          console.error('Error fetching methylation data:', error)
         }
-        if (outlierResult.data?.methylation_outliers) {
-          setMethylationOutliers(outlierResult.data.methylation_outliers)
-        }
-      } catch (error) {
-        console.error('Error fetching methylation data:', error)
       }
     }
     fetchSummaryAndOutliers()
-  }, [showHaplotypes, chrom, start, stop, lrCohort, methylationAvailable])
+    return () => gate.cancel(token)
+  }, [
+    showHaplotypes, chrom, start, stop, lrCohort, methylationAvailable,
+    methylationScope, regionSize,
+  ])
 
-  // Auto-fetch per-sample methylation for top outlier samples
+  // Auto-fetch per-sample methylation for top outlier samples.
   const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
-    if (!showHaplotypes || !methylationAvailable) return
-    if (regionSize > 200_000) return
+    if (!showHaplotypes || !methylationAvailable || regionSize > 200_000) return undefined
+    if (methylationViewState.scope !== methylationScope) return undefined
+    if (!methylationOutliers?.samples?.length) return undefined
+
+    const topOutliers = methylationOutliers.samples
+      .slice(0, MAX_AUTO_FETCH_OUTLIERS)
+      .filter((sample: any) => sample.outlier_count > 0)
+      .map((sample: any) => sample.sample_id)
+      .filter((sampleId: string) => !mixedMode || availableMethylationIds.has(sampleId))
+    const incompleteOutliers = incompleteMethylationSampleIds(
+      topOutliers,
+      completedMethylationSampleIdentitiesRef.current,
+      methylationScope
+    )
+    if (incompleteOutliers.length === 0) return undefined
+
+    const gate = autoDetailMethylationRequestGateRef.current
+    const token = gate.begin(methylationScope)
+    incompleteOutliers.forEach((sampleId) => {
+      requestedMethylationSampleIdentitiesRef.current.add(
+        methylationSampleIdentity(methylationScope, sampleId)
+      )
+    })
+    setMethylationViewState((previous) => ({ ...previous, loading: true }))
 
     const fetchOutlierMethylation = async () => {
-      if (!methylationOutliers?.samples?.length) return
-
-      const topOutliers = methylationOutliers.samples
-        .slice(0, MAX_AUTO_FETCH_OUTLIERS)
-        .filter((s: any) => s.outlier_count > 0)
-        .map((s: any) => s.sample_id)
-        .filter((sampleId: string) => !mixedMode || availableMethylationIds.has(sampleId))
-
-      if (topOutliers.length === 0) return
-
-      setMethylationLoading(true)
       try {
-        const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: topOutliers, lr_cohort: lrCohort,
+        const result = await responseForCurrentMethylationRequest(
+          gate,
+          token,
+          (signal) => fetchGraphQL(METHYLATION_QUERY, {
+            chrom, start, stop, samples: incompleteOutliers, lr_cohort: lrCohort,
+          }, signal)
+        )
+        if (!gate.isCurrent(token) || !result) return
+        const batch = methylationBatchFromGraphQL(result, incompleteOutliers)
+        if (!batch) return
+
+        batch.completedSampleIds.forEach((sampleId) => {
+          completedMethylationSampleIdentitiesRef.current.add(
+            methylationSampleIdentity(methylationScope, sampleId)
+          )
         })
-        if (result.data?.methylation) {
-          setMethylationData(result.data.methylation)
-          setMethylationSampleCount(0)
+        setMethylationViewState((previous) => ({
+          ...previous,
+          rowsByIdentity: mergeMethylationRecords(
+            previous.rowsByIdentity,
+            batch.records,
+            methylationScope
+          ),
+          sampleCount: completedMethylationSampleIdentitiesRef.current.size,
+        }))
+      } catch (error: any) {
+        if (error?.name !== 'AbortError' && gate.isCurrent(token)) {
+          console.error('Error fetching outlier methylation:', error)
         }
-      } catch (error) {
-        console.error('Error fetching outlier methylation:', error)
       } finally {
-        setMethylationLoading(false)
+        if (gate.isCurrent(token)) {
+          setMethylationViewState((previous) => ({ ...previous, loading: false }))
+        }
       }
     }
     fetchOutlierMethylation()
-  }, [showHaplotypes, chrom, start, stop, methylationOutliers, lrCohort, methylationAvailable, mixedMode, availableMethylationIds])
+    return () => {
+      const wasCurrent = gate.isCurrent(token)
+      gate.cancel(token)
+      if (wasCurrent) {
+        setMethylationViewState((previous) => ({ ...previous, loading: false }))
+      }
+    }
+  }, [
+    showHaplotypes, chrom, start, stop, methylationOutliers, methylationViewState.scope, lrCohort,
+    methylationAvailable, mixedMode, availableMethylationIds, methylationScope, regionSize,
+  ])
 
-  // Load all sample methylation (triggered from HaplotypeTrack)
+  // Load all sample methylation (triggered from HaplotypeTrack).
   const handleLoadAllSamples = useCallback(async () => {
-    if (!methylationAvailable || !haplotypeGroups || haplotypeGroups.groups.length === 0) return
-
+    if (!methylationAvailable || haplotypeGroups.groups.length === 0) return
     if (mixedMode && methylationAvailability === null) return
+
     const carrierSampleIds = Array.from(new Set(
-      haplotypeGroups.groups.flatMap(g => g.samples.map(s => s.sample_id))
+      haplotypeGroups.groups.flatMap((group) => group.samples.map((sample) => sample.sample_id))
     ))
     const requestableSampleIds = mixedMode
       ? carrierSampleIds.filter((sampleId) => availableMethylationIds.has(sampleId))
       : carrierSampleIds
     if (requestableSampleIds.length === 0) return
 
-    setMethylationLoading(true)
-    setMethylationSampleCount(0)
-    setMethylationTotalSamples(requestableSampleIds.length)
+    // Load-all supersedes an in-flight auto-detail request. Both flows still use
+    // identity-keyed replacement in case an endpoint repeats a completed row.
+    autoDetailMethylationRequestGateRef.current.invalidate()
+    const gate = loadAllMethylationRequestGateRef.current
+    gate.invalidate()
 
+    const incompleteSampleIds = incompleteMethylationSampleIds(
+      requestableSampleIds,
+      completedMethylationSampleIdentitiesRef.current,
+      methylationScope
+    )
+    const completedRequestableCount = requestableSampleIds.filter((sampleId) =>
+      completedMethylationSampleIdentitiesRef.current.has(
+        methylationSampleIdentity(methylationScope, sampleId)
+      )
+    ).length
+    setMethylationViewState((previous) => ({
+      ...previous,
+      loading: incompleteSampleIds.length > 0,
+      sampleCount: completedRequestableCount,
+      totalSamples: requestableSampleIds.length,
+    }))
+    if (incompleteSampleIds.length === 0) return
+
+    const token = gate.begin(methylationScope)
     const BATCH_SIZE = 5
-    let accumulated: Methylation[] = [...methylationData]
-    const loadedSampleIds = new Set<string>()
+    for (let i = 0; i < incompleteSampleIds.length; i += BATCH_SIZE) {
+      if (!gate.isCurrent(token)) return
+      const requestedBatch = incompleteSampleIds.slice(i, i + BATCH_SIZE)
+      for (const sampleId of requestedBatch) {
+        requestedMethylationSampleIdentitiesRef.current.add(
+          methylationSampleIdentity(methylationScope, sampleId)
+        )
+      }
 
-    for (let i = 0; i < requestableSampleIds.length; i += BATCH_SIZE) {
-      const batch = requestableSampleIds.slice(i, i + BATCH_SIZE)
       try {
-        const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: batch, lr_cohort: lrCohort,
+        const result = await responseForCurrentMethylationRequest(
+          gate,
+          token,
+          (signal) => fetchGraphQL(METHYLATION_QUERY, {
+            chrom, start, stop, samples: requestedBatch, lr_cohort: lrCohort,
+          }, signal)
+        )
+        if (!gate.isCurrent(token) || !result) return
+        const batch = methylationBatchFromGraphQL(result, requestedBatch)
+        if (!batch) continue
+
+        batch.completedSampleIds.forEach((sampleId) => {
+          completedMethylationSampleIdentitiesRef.current.add(
+            methylationSampleIdentity(methylationScope, sampleId)
+          )
         })
-        if (result.data?.methylation) {
-          accumulated = [...accumulated, ...result.data.methylation]
-          result.data.methylation.forEach((row: Methylation) => loadedSampleIds.add(row.sample))
-          setMethylationData(accumulated)
-          setMethylationSampleCount(loadedSampleIds.size)
-        }
-      } catch (error) {
+        const completedCount = requestableSampleIds.filter((sampleId) =>
+          completedMethylationSampleIdentitiesRef.current.has(
+            methylationSampleIdentity(methylationScope, sampleId)
+          )
+        ).length
+        setMethylationViewState((previous) => ({
+          ...previous,
+          rowsByIdentity: mergeMethylationRecords(
+            previous.rowsByIdentity,
+            batch.records,
+            methylationScope
+          ),
+          sampleCount: completedCount,
+        }))
+      } catch (error: any) {
+        if (error?.name === 'AbortError' || !gate.isCurrent(token)) return
         console.error(`Error fetching batch ${i / BATCH_SIZE}:`, error)
       }
     }
 
-    setMethylationLoading(false)
+    if (gate.isCurrent(token)) {
+      setMethylationViewState((previous) => ({ ...previous, loading: false }))
+    }
   }, [
-    chrom, start, stop, haplotypeGroups, methylationData, lrCohort, methylationAvailable,
+    chrom, start, stop, haplotypeGroups, lrCohort, methylationAvailable, methylationScope,
     mixedMode, methylationAvailability, availableMethylationIds,
   ])
 

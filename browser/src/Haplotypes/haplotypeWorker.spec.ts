@@ -1,33 +1,33 @@
 import { jest } from '@jest/globals'
 
 const variants = {
-  variant_id: ['variant-1'],
-  chrom: ['chr22'],
-  pos: [100],
-  end: [null],
-  ref: ['A'],
-  alt: ['G'],
-  allele_type: ['snv'],
-  allele_length: [0],
-  freq_af: [0.5],
-  freq_ac: [1],
-  freq_an: [4],
-  rsid: [''],
-  cadd_phred: [null],
-  phylop: [null],
-  sv_consequences: [null],
-  dbsnp_id: [null],
-  tr_id: [null],
-  tr_motifs: [null],
-  gnomad_str: [null],
-  allele_methylation: [null],
-  motif_counts: [null],
-  allele_purity: [null],
-  populations: [[]],
+  variant_id: ['variant-1', 'variant-2'],
+  chrom: ['chr22', 'chr22'],
+  pos: [100, 200],
+  end: [null, null],
+  ref: ['A', 'C'],
+  alt: ['G', 'T'],
+  allele_type: ['snv', 'snv'],
+  allele_length: [0, 0],
+  freq_af: [0.5, 0.01],
+  freq_ac: [1, 1],
+  freq_an: [4, 4],
+  rsid: ['', ''],
+  cadd_phred: [null, null],
+  phylop: [null, null],
+  sv_consequences: [null, null],
+  dbsnp_id: [null, null],
+  tr_id: [null, null],
+  tr_motifs: [null, null],
+  gnomad_str: [null, null],
+  allele_methylation: [null, null],
+  motif_counts: [null, null],
+  allele_purity: [null, null],
+  populations: [[], []],
 }
 
 describe('haplotype worker VCF carrier identity', () => {
-  test('retains structured vcf_strand and phase_set from INIT to READY', () => {
+  test('retains two phase sets on one strand from INIT through READY and diploid UPDATE', () => {
     jest.resetModules()
     const postMessage = jest.fn()
     Object.defineProperty(globalThis, 'postMessage', {
@@ -45,14 +45,17 @@ describe('haplotype worker VCF carrier identity', () => {
         type: 'INIT',
         rawData: {
           variants,
-          carrier_variant_indices: { 'sample-1:2': [0] },
+          carrier_variant_indices: { 'sample-1:2': [0, 1] },
           carriers: [{
             sample_id: 'sample-1',
             vcf_strand: 2,
-            phase_set: 'ps-2',
-            phase_sets: ['ps-2'],
-            variant_indices: [0],
-            phase_set_by_variant: [{ variant_index: 0, phase_set: 'ps-2' }],
+            phase_set: null,
+            phase_sets: ['ps-a', 'ps-b'],
+            variant_indices: [0, 1],
+            phase_set_by_variant: [
+              { variant_index: 0, phase_set: 'ps-a' },
+              { variant_index: 1, phase_set: 'ps-b' },
+            ],
           }],
         },
         minAf: 0,
@@ -68,7 +71,42 @@ describe('haplotype worker VCF carrier identity', () => {
     expect(ready.data.groups[0].samples[0]).toMatchObject({
       sample_id: 'sample-1',
       vcf_strand: 2,
-      phase_set: 'ps-2',
+      phase_set: null,
     })
+    expect(ready.data.phase_set_sidecar).toEqual({
+      by_carrier: {
+        'sample-1:2': {
+          sample_id: 'sample-1',
+          vcf_strand: 2,
+          phase_set: null,
+          phase_sets: ['ps-a', 'ps-b'],
+          variant_indices: [0, 1],
+          phase_set_by_variant: [
+            { variant_index: 0, phase_set: 'ps-a' },
+            { variant_index: 1, phase_set: 'ps-b' },
+          ],
+        },
+      },
+      variant_ids_by_index: ['variant-1', 'variant-2'],
+    })
+
+    onmessage({
+      data: {
+        type: 'UPDATE_AF',
+        minAf: 1,
+        isClusteredView: false,
+        clusterThreshold: 0,
+        sortBy: 'sample_id',
+        isDiploidView: true,
+        distanceMetric: 'auto',
+      },
+    })
+    const updated = postMessage.mock.calls
+      .map(([message]) => message as any)
+      .filter((message) => message.type === 'UPDATED')
+      .at(-1)
+
+    expect(updated.data.groups[0].samples[0].phase_set_mapping.phaseSetA).toBeNull()
+    expect(updated.data.phase_set_sidecar).toEqual(ready.data.phase_set_sidecar)
   })
 })

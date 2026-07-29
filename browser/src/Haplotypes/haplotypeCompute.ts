@@ -114,13 +114,29 @@ export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
   return variants
 }
 
+export type PhaseSetByVariant = Readonly<{
+  variant_index: number
+  phase_set: string | null
+}>
+
 export type StructuredCarrier = HaplotypeCarrierIdentity & {
   variant_indices: number[]
   phase_sets?: string[]
   phase_set_by_variant?: Array<{ variant_index: number; phase_set: string | null }>
 }
 
-export type CarrierMetadata = Record<string, HaplotypeCarrierIdentity>
+export type CarrierPhaseMetadata = Readonly<HaplotypeCarrierIdentity & {
+  variant_indices: readonly number[]
+  phase_sets?: readonly string[]
+  phase_set_by_variant?: readonly PhaseSetByVariant[]
+}>
+
+export type CarrierMetadata = Readonly<Record<string, CarrierPhaseMetadata>>
+
+export type PhaseSetSidecar = Readonly<{
+  by_carrier: CarrierMetadata
+  variant_ids_by_index: readonly string[]
+}>
 
 export type RawPayload = {
   variants: SoAVariants
@@ -141,15 +157,25 @@ export type RawPayload = {
 export function carrierMetadataFromPayload(
   carriers: StructuredCarrier[] | null | undefined
 ): CarrierMetadata {
-  const metadata: CarrierMetadata = {}
+  const metadata: Record<string, CarrierPhaseMetadata> = {}
   for (const carrier of carriers || []) {
-    metadata[`${carrier.sample_id}:${carrier.vcf_strand}`] = {
+    metadata[`${carrier.sample_id}:${carrier.vcf_strand}`] = Object.freeze({
       sample_id: carrier.sample_id,
       vcf_strand: carrier.vcf_strand,
       phase_set: carrier.phase_set,
-    }
+      variant_indices: Object.freeze([...carrier.variant_indices]),
+      phase_sets: carrier.phase_sets == null
+        ? undefined
+        : Object.freeze([...carrier.phase_sets]),
+      phase_set_by_variant: carrier.phase_set_by_variant == null
+        ? undefined
+        : Object.freeze(carrier.phase_set_by_variant.map((association) => Object.freeze({
+            variant_index: association.variant_index,
+            phase_set: association.phase_set,
+          }))),
+    })
   }
-  return metadata
+  return Object.freeze(metadata)
 }
 
 function identityForCarrier(
@@ -157,7 +183,13 @@ function identityForCarrier(
   carrierMetadata: CarrierMetadata = {}
 ): HaplotypeCarrierIdentity {
   const structured = carrierMetadata[carrierId]
-  if (structured) return structured
+  if (structured) {
+    return {
+      sample_id: structured.sample_id,
+      vcf_strand: structured.vcf_strand,
+      phase_set: structured.phase_set,
+    }
+  }
 
   // Compatibility with v1 REST payloads. Split at the last colon so sample IDs
   // containing colons remain intact, and retain the VCF value rather than
@@ -178,6 +210,17 @@ export type ComputedHaplotypeData = {
   groups: (HaplotypeGroup | DiplotypeGroup)[]
   clusters?: HaplotypeCluster[]
   tree_json?: string
+  phase_set_sidecar: PhaseSetSidecar
+}
+
+function phaseSetSidecarFor(
+  variants: LRVariant[],
+  carrierMetadata: CarrierMetadata
+): PhaseSetSidecar {
+  return Object.freeze({
+    by_carrier: carrierMetadata,
+    variant_ids_by_index: Object.freeze(variants.map((variant) => variant.variant_id)),
+  })
 }
 
 export type SliderRange = {
@@ -1072,10 +1115,11 @@ export function computeHaplotypeView(
   carrierMetadata: CarrierMetadata = {},
   onProgress?: (status: string) => void
 ): ComputedHaplotypeData {
+  const phase_set_sidecar = phaseSetSidecarFor(variants, carrierMetadata)
   if (isDiploidView) {
     const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf, carrierMetadata)
     const sorted = sortDiplotypes(diplotypes, sortBy)
-    return { groups: sorted }
+    return { groups: sorted, phase_set_sidecar }
   }
 
   const skipBelow = (regionSize || 0) > 200_000
@@ -1089,7 +1133,7 @@ export function computeHaplotypeView(
     const inflated = inflateGroups(
       lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow, carrierMetadata
     )
-    return { groups: sortGroups(inflated, sortBy) }
+    return { groups: sortGroups(inflated, sortBy), phase_set_sidecar }
   }
 
   // Distance matrix + UPGMA on lightweight groups
@@ -1119,6 +1163,7 @@ export function computeHaplotypeView(
     groups: sorted,
     clusters,
     tree_json: JSON.stringify(tree),
+    phase_set_sidecar,
   }
 }
 
@@ -1198,7 +1243,7 @@ export function filterDisplayVariants(
     }
   })
 
-  return { groups, clusters, tree_json: data.tree_json }
+  return { ...data, groups, clusters }
 }
 
 // ---- Auto-derive slider range ----
