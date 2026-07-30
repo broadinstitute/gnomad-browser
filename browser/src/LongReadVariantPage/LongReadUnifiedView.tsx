@@ -151,6 +151,12 @@ const TopBar = styled.div`
   padding: 12px 0 8px;
 `
 
+const ViewModeControls = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+`
+
 const SearchInline = styled.div`
   position: relative;
   flex: 0 1 320px;
@@ -1380,14 +1386,16 @@ const LongReadUnifiedView = ({
       {/* Top bar: view mode toggle + search */}
       <TrackPageSection>
         <TopBar>
-          <LongReadViewHelpButton maxHaplotypeRegionSize={MAX_HAPLOTYPE_REGION_SIZE} />
-          <LongReadViewControls
-            cohort={lrCohort}
-            onChangeCohort={onChangeLrCohort}
-            showHaplotypes={showHaplotypes}
-            haplotypesDisabled={regionTooLarge || haplotypesUnavailable}
-            onChangeShowHaplotypes={setShowHaplotypes}
-          />
+          <ViewModeControls>
+            <LongReadViewHelpButton maxHaplotypeRegionSize={MAX_HAPLOTYPE_REGION_SIZE} />
+            <LongReadViewControls
+              cohort={lrCohort}
+              onChangeCohort={onChangeLrCohort}
+              showHaplotypes={showHaplotypes}
+              haplotypesDisabled={regionTooLarge || haplotypesUnavailable}
+              onChangeShowHaplotypes={setShowHaplotypes}
+            />
+          </ViewModeControls>
           <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <label style={{ fontSize: '12px' }}>Color:</label>
             <Select
