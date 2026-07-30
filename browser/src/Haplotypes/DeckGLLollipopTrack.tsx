@@ -16,7 +16,7 @@ import {
 import AccordionContext from './AccordionContext'
 import type { PhantomLocus } from './AccordionCoordinateMapper'
 import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
-import type { TreeBranch, TreeNodePoint, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
+import type { TreeBranch, TreeNodePoint, TreePieWedge, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation } from './index'
 import type { DiplotypeGroup } from './haplotypeCompute'
 import { getRowBackgroundRects } from './haplotypeBackgrounds'
@@ -1176,13 +1176,26 @@ function DeckGLLollipopCanvas({
       }))
     }
 
+    if (treeLayout.pieWedges.length > 0) {
+      result.push(new SolidPolygonLayer({
+        id: 'tree-node-ancestry-pies',
+        data: treeLayout.pieWedges,
+        getPolygon: (d: TreePieWedge) => d.polygon,
+        getFillColor: (d: TreePieWedge) => d.color,
+        stroked: false,
+        pickable: false,
+      }))
+    }
+
     if (treeLayout.nodes.length > 0) {
+      // Transparent fill preserves the original circular hover/click target while
+      // the non-pickable polygons beneath it provide ancestry slices.
       result.push(new ScatterplotLayer({
         id: 'tree-nodes',
         data: treeLayout.nodes,
         getPosition: (d: TreeNodePoint) => d.position,
         getRadius: (d: TreeNodePoint) => d.radius,
-        getFillColor: (d: TreeNodePoint) => d.color,
+        getFillColor: [0, 0, 0, 0],
         getLineColor: [51, 51, 51, 128],
         getLineWidth: 0.5,
         lineWidthUnits: 'pixels' as const,

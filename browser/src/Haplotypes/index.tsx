@@ -1161,6 +1161,13 @@ const GenealogyHelp = () => (
       </ul>
     </p>
     <p>
+      <strong>Ancestry pies:</strong> Each compact tree node shows the superpopulation
+      composition of the samples represented below it, using the standard gnomAD population
+      colors. Leaf pies count samples in that haplotype group; internal pies combine descendant
+      sample counts (so larger groups have proportionally more weight). Gray indicates unknown
+      or unavailable metadata. Hover a node for counts and percentages.
+    </p>
+    <p>
       If the clustered view is also active, a vertical threshold line appears on the tree
       that you can drag to adjust cluster resolution.
     </p>

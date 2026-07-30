@@ -12,14 +12,29 @@ export type TreeBranch = {
   color: [number, number, number, number]
 }
 
+export type TreePieSlice = {
+  population: string
+  count: number
+  fraction: number
+  color: [number, number, number, number]
+}
+
 export type TreeNodePoint = {
   position: [number, number, number]
   radius: number
   color: [number, number, number, number]
+  slices: TreePieSlice[]
+  sampleCount: number
   isThresholdNode: boolean
   distance: number
   type: 'tree-node'
   tooltipText: string
+}
+
+export type TreePieWedge = {
+  polygon: [number, number, number][]
+  color: [number, number, number, number]
+  node: TreeNodePoint
 }
 
 export type TreeClusterMarker = {
@@ -36,6 +51,7 @@ export type TreeClusterMarker = {
 export type TreeLayout = {
   branches: TreeBranch[]
   nodes: TreeNodePoint[]
+  pieWedges: TreePieWedge[]
   clusterMarkers: TreeClusterMarker[]
   thresholdX: number | null
   maxDistance: number
@@ -65,16 +81,69 @@ function hexToRgba(hex: string, alpha = 255): [number, number, number, number] {
   return [128, 128, 128, alpha]
 }
 
+const SUPERPOPULATION_ORDER = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS', 'ASJ', 'OTH', 'N/A']
+
+function normalizeSuperpopulation(population: string | null | undefined): string {
+  return population && SUPERPOPULATION_COLORS[population] ? population : 'N/A'
+}
+
 function getDominantFromCounts(counts: Record<string, number>): string {
-  let maxPop = 'N/A'
-  let maxCount = 0
-  for (const [pop, count] of Object.entries(counts)) {
-    if (count > maxCount) {
-      maxCount = count
-      maxPop = pop
-    }
+  return SUPERPOPULATION_ORDER.reduce(
+    (dominant, population) => (counts[population] || 0) > (counts[dominant] || 0) ? population : dominant,
+    'N/A'
+  )
+}
+
+export function ancestrySlicesFromCounts(
+  counts: Record<string, number>,
+  alpha = 255
+): TreePieSlice[] {
+  const total = Object.values(counts).reduce((sum, count) => sum + count, 0)
+  if (total === 0) {
+    return [{ population: 'N/A', count: 0, fraction: 1, color: hexToRgba(SUPERPOPULATION_COLORS['N/A'], alpha) }]
   }
-  return maxPop
+  return SUPERPOPULATION_ORDER
+    .filter(population => (counts[population] || 0) > 0)
+    .map(population => ({
+      population,
+      count: counts[population],
+      fraction: counts[population] / total,
+      color: hexToRgba(SUPERPOPULATION_COLORS[population], alpha),
+    }))
+}
+
+function ancestryTooltip(counts: Record<string, number>): string {
+  const total = Object.values(counts).reduce((sum, count) => sum + count, 0)
+  const details = ancestrySlicesFromCounts(counts)
+    .filter(slice => slice.count > 0)
+    .map(slice => `${slice.population === 'N/A' ? 'Unknown/unavailable' : slice.population}: ${slice.count} (${(slice.fraction * 100).toFixed(1)}%)`)
+    .join('; ')
+  return total > 0
+    ? `Ancestry of ${total} represented sample${total === 1 ? '' : 's'} — ${details}`
+    : 'Ancestry unavailable — no represented sample metadata'
+}
+
+export function buildTreePieWedges(nodes: TreeNodePoint[]): TreePieWedge[] {
+  return nodes.flatMap(node => node.slices.reduce(
+    (result, slice) => {
+      const endAngle = result.startAngle + slice.fraction * Math.PI * 2
+      // Keep compact nodes smooth without multiplying geometry in dense trees.
+      const steps = Math.max(2, Math.ceil(slice.fraction * 16))
+      const arc = Array.from({ length: steps + 1 }, (_, step) => {
+        const angle = result.startAngle + (endAngle - result.startAngle) * step / steps
+        return [
+          node.position[0] + Math.cos(angle) * node.radius,
+          node.position[1] + Math.sin(angle) * node.radius,
+          node.position[2],
+        ] as [number, number, number]
+      })
+      return {
+        startAngle: endAngle,
+        wedges: [...result.wedges, { polygon: [node.position, ...arc], color: slice.color, node }],
+      }
+    },
+    { startAngle: -Math.PI / 2, wedges: [] as TreePieWedge[] }
+  ).wedges)
 }
 
 function findLCA(node: TreeNode, targetHashes: Set<number>): TreeNode | null {
@@ -129,24 +198,28 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
   const nodes: TreeNodePoint[] = []
   const clusterMarkers: TreeClusterMarker[] = []
 
-  // Build lookups
-  const groupByHash = new Map<number, HaplotypeGroup>()
-  for (const g of groups) {
-    groupByHash.set(g.hash, g)
-  }
+  // Build lookups. Every represented sample contributes one count; absent or
+  // unrecognized metadata is retained as N/A rather than silently omitted.
+  const groupByHash = new Map<number, HaplotypeGroup>(groups.map(group => [group.hash, group]))
+  const countsForGroup = (group: HaplotypeGroup | undefined): Record<string, number> => (
+    (group?.samples || []).reduce((counts, sample) => {
+      const population = normalizeSuperpopulation(sampleMetadata?.get(sample.sample_id)?.superpopulation)
+      return { ...counts, [population]: (counts[population] || 0) + 1 }
+    }, {} as Record<string, number>)
+  )
 
   // Cluster LCA map
   const clusterLCAMap = new Map<string, TreeNode>()
   const nodeToClusterId = new Map<TreeNode, string>()
   if (clusters && isClusteredView) {
-    for (const cluster of clusters) {
+    clusters.forEach(cluster => {
       const hashes = new Set(cluster.member_group_hashes.map((h) => parseInt(String(h), 10)))
       const lca = findLCA(tree, hashes)
       if (lca) {
         clusterLCAMap.set(cluster.cluster_id, lca)
         nodeToClusterId.set(lca, cluster.cluster_id)
       }
-    }
+    })
   }
 
   const maxDistance = Math.max(1, getMaxDistance(tree))
@@ -175,20 +248,14 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
       const memberCount = cluster?.member_group_hashes.length || 0
 
       // Aggregate population for cluster marker color
-      const popCounts: Record<string, number> = {}
-      if (cluster) {
-        for (const h of cluster.member_group_hashes) {
-          const hash = typeof h === 'string' ? (parseInt(h, 10) || 0) : h
-          const group = groupByHash.get(hash)
-          if (group && sampleMetadata) {
-            for (const s of group.samples) {
-              const meta = sampleMetadata.get(s.sample_id)
-              const pop = meta?.superpopulation || 'N/A'
-              popCounts[pop] = (popCounts[pop] || 0) + 1
-            }
-          }
-        }
-      }
+      const popCounts = (cluster?.member_group_hashes || []).reduce((counts, h) => {
+        const hash = typeof h === 'string' ? (parseInt(h, 10) || 0) : h
+        const groupCounts = countsForGroup(groupByHash.get(hash))
+        return Object.entries(groupCounts).reduce(
+          (merged, [population, count]) => ({ ...merged, [population]: (merged[population] || 0) + count }),
+          counts
+        )
+      }, {} as Record<string, number>)
       const dominantPop = getDominantFromCounts(popCounts)
       const clusterColor = hexToRgba(SUPERPOPULATION_COLORS[dominantPop] || SUPERPOPULATION_COLORS['N/A'], 204)
 
@@ -200,7 +267,7 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
         isClusterRoot: true,
         clusterId: clusterId!,
         type: 'cluster-node',
-        tooltipText: `Click to expand cluster (${memberCount} groups)`,
+        tooltipText: `Click to expand cluster (${memberCount} groups). ${ancestryTooltip(popCounts)}`,
       })
       return { y: clusterY, popCounts }
     }
@@ -212,14 +279,7 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
       const x = xPad
 
       const group = groupByHash.get(node.groupHash)
-      const popCounts: Record<string, number> = {}
-      if (group && sampleMetadata) {
-        for (const s of group.samples) {
-          const meta = sampleMetadata.get(s.sample_id)
-          const pop = meta?.superpopulation || 'N/A'
-          popCounts[pop] = (popCounts[pop] || 0) + 1
-        }
-      }
+      const popCounts = countsForGroup(group)
       const pop = getDominantFromCounts(popCounts)
       const colorHex = SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A']
       const color = hexToRgba(colorHex)
@@ -229,14 +289,17 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
         color[3] = 102 // ~40% opacity
       }
 
+      const sampleCount = Object.values(popCounts).reduce((sum, count) => sum + count, 0)
       nodes.push({
         position: [x, y, 0],
         radius: 5,
         color,
+        slices: ancestrySlicesFromCounts(popCounts, color[3]),
+        sampleCount,
         isThresholdNode: false,
         distance: node.distance,
         type: 'tree-node',
-        tooltipText: `Group ${node.groupHash}`,
+        tooltipText: `Group ${node.groupHash}. ${ancestryTooltip(popCounts)}`,
       })
       return { y, popCounts }
     }
@@ -248,23 +311,21 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
     const rightY = rightResult.y
 
     // Merge population counts from children
-    const popCounts: Record<string, number> = { ...leftResult.popCounts }
-    for (const [pop, count] of Object.entries(rightResult.popCounts)) {
-      popCounts[pop] = (popCounts[pop] || 0) + count
-    }
+    const popCounts = Object.entries(rightResult.popCounts).reduce(
+      (counts, [population, count]) => ({ ...counts, [population]: (counts[population] || 0) + count }),
+      { ...leftResult.popCounts }
+    )
 
     const mergeX = Math.max(xScale(node.distance), (node.left ? xPad : 0) + MIN_BRANCH_PX)
 
-    const leftChildX = node.left
-      ? node.left.groupHash !== null
+    const childX = (child: TreeNode | null): number => {
+      if (!child) return mergeX
+      return child.groupHash !== null
         ? xPad
-        : Math.max(xScale(node.left.distance), xPad + MIN_BRANCH_PX)
-      : mergeX
-    const rightChildX = node.right
-      ? node.right.groupHash !== null
-        ? xPad
-        : Math.max(xScale(node.right.distance), xPad + MIN_BRANCH_PX)
-      : mergeX
+        : Math.max(xScale(child.distance), xPad + MIN_BRANCH_PX)
+    }
+    const leftChildX = childX(node.left)
+    const rightChildX = childX(node.right)
 
     // Check for collapsed cluster children
     const leftClusterId = node.left ? nodeToClusterId.get(node.left) : undefined
@@ -312,27 +373,33 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
     const popColor = hexToRgba(SUPERPOPULATION_COLORS[dominantPop] || SUPERPOPULATION_COLORS['N/A'])
 
     if (isAboveThreshold && isClusteredView) {
+      const sampleCount = Object.values(popCounts).reduce((sum, count) => sum + count, 0)
       nodes.push({
         position: [effectiveMergeX, midY, 0],
         radius: 5,
         color: popColor,
+        slices: ancestrySlicesFromCounts(popCounts),
+        sampleCount,
         isThresholdNode: true,
         distance: node.distance,
         type: 'tree-node',
-        tooltipText: `Distance: ${Math.round(node.distance * 100) / 100} — click to set cluster threshold`,
+        tooltipText: `Distance: ${Math.round(node.distance * 100) / 100} — click to set cluster threshold. ${ancestryTooltip(popCounts)}`,
       })
     } else {
       const nodeColor: [number, number, number, number] = isBelowThreshold
         ? [popColor[0], popColor[1], popColor[2], 128]
         : popColor
+      const sampleCount = Object.values(popCounts).reduce((sum, count) => sum + count, 0)
       nodes.push({
         position: [effectiveMergeX, midY, 0],
         radius: 4,
         color: nodeColor,
+        slices: ancestrySlicesFromCounts(popCounts, nodeColor[3]),
+        sampleCount,
         isThresholdNode: false,
         distance: node.distance,
         type: 'tree-node',
-        tooltipText: `Separated by ${Math.round(node.distance)} variant${Math.round(node.distance) !== 1 ? 's' : ''}`,
+        tooltipText: `Separated by ${Math.round(node.distance)} variant${Math.round(node.distance) !== 1 ? 's' : ''}. ${ancestryTooltip(popCounts)}`,
       })
     }
 
@@ -345,5 +412,5 @@ export function buildGenealogyTreeLayout(props: BuildTreeLayoutProps): TreeLayou
     ? xScale(clusterThreshold * maxDistance)
     : null
 
-  return { branches, nodes, clusterMarkers, thresholdX, maxDistance, xScale }
+  return { branches, nodes, pieWedges: buildTreePieWedges(nodes), clusterMarkers, thresholdX, maxDistance, xScale }
 }
