@@ -318,6 +318,34 @@ const GnomadV3Downloads = () => (
         </ExternalLink>
         .
       </p>
+      <b>Update (July 2026)</b>: [
+      <a href="https://gnomad.broadinstitute.org/news/2026-07-str-data-update/">changelog entry</a>]
+      <FileList>
+        <ListItem>
+          {/* The column schema did not change in this release, so this release reuses the
+              March 2025 README rather than publishing an identical new one. */}
+          <DownloadLinks
+            label="README"
+            loggingLabel="v3.1.3 genotype TSV README"
+            path="/release/3.1.3/tsv/README__2025_03_17.txt"
+          />
+        </ListItem>
+        <ListItem>
+          <DownloadLinks
+            label="Genotypes (TSV)"
+            loggingLabel="v3.1.3 genotypes TSV (7-20-2026 update)"
+            path="/release/3.1.3/tsv/gnomAD_STR_genotypes__2026_07_20.tsv.gz"
+          />
+        </ListItem>
+        <ListItem>
+          <DownloadLinks
+            label="Distributions (JSON)"
+            loggingLabel="v3.1.3 distributions JSON (7-20-2026 update)"
+            path="/release/3.1.3/json/gnomAD_STR_distributions__2026_07_20.json.gz"
+          />
+        </ListItem>
+      </FileList>
+      <br />
       <b>Update (March 2025)</b>: [
       <a href="https://gnomad.broadinstitute.org/news/2025-03-known-disease-associated-tandem-repeat-pages/">
         changelog entry

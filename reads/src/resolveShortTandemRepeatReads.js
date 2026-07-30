@@ -3,6 +3,12 @@ const sqlite3 = require('sqlite3')
 
 const { UserVisibleError } = require('./errors')
 
+// Map a locus id to a non-default readviz image folder under publicPath. Needed while a locus's
+// images live in a coordinate-named folder rather than the live <locusId>/ folder (EP400's
+// 548-definition images are staged under EP400__12-132062548-132062611/ so they do not overwrite
+// the wide-definition images still in EP400/). Delete the entry once EP400/ holds those images.
+const READVIZ_FOLDER_BY_LOCUS = { EP400: 'EP400__12-132062548-132062611' }
+
 const buildWhere = ({ id, filter }) => {
   const params = {
     ':id': id,
@@ -222,7 +228,7 @@ const resolveShortTandemRepeatReads = async (
       sex: row.sex,
       age: row.age,
       pcr_protocol: row.pcr_protocol,
-      path: `${publicPath}/${id}/${row.filename}`,
+      path: `${publicPath}/${READVIZ_FOLDER_BY_LOCUS[id] || id}/${row.filename}`,
       quality_description: row.quality_description,
       q_score: row.q,
     }
