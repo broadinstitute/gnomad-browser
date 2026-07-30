@@ -29,9 +29,9 @@ import {
 import HaplotypeVariantTable, { HaplotypeVariantTableHandle, type VariantTypeFilters } from '../Haplotypes/HaplotypeVariantTable'
 import { createHaplotypeWorker } from '../Haplotypes/createHaplotypeWorker'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
-import SourcePhasedMethylationTrack, {
+import HG00097PhasedMethylationComparison, {
   type SourcePhasedMethylationRecord,
-} from '../Haplotypes/SourcePhasedMethylationTrack'
+} from '../Haplotypes/HG00097PhasedMethylationComparison'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import LongReadViewControls from './LongReadViewControls'
@@ -1341,8 +1341,12 @@ const LongReadUnifiedView = ({
       {showHaplotypes && (
         <>
           {showRecombination && recombinationAvailable && <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />}
-          {showSourcePhasedMethylation && (
-            <SourcePhasedMethylationTrack records={sourcePhasedMethylation} />
+          {showSourcePhasedMethylation && haplotypeGroups && dataMatchesMode && (
+            <HG00097PhasedMethylationComparison
+              haplotypeGroups={haplotypeGroups.groups}
+              records={sourcePhasedMethylation}
+              orientationStatus={phasedMethylationCapability.orientation_status}
+            />
           )}
           {/* TODO: Re-enable when mQTL data source is production-ready */}
           {false && showMqtl && (
@@ -1496,10 +1500,10 @@ const LongReadUnifiedView = ({
                 disabled={!phasedMethylationCapability.available || !sourcePhasedEvaluationInScope}
                 onChange={(event) => setShowSourcePhasedMethylationUrl(event.target.checked)}
               />
-              {' '}Show source hap1/hap2 (orientation unconfirmed)
+              {' '}Show pinned HG00097 source hap1/hap2 comparison (orientation unconfirmed)
             </label>
             <div style={{ marginLeft: 20, color: '#666', fontSize: 12 }}>
-              HG00097 only; raw source labels are not VCF haplotype 1/2.
+              HG00097 only; raw source labels are not VCF haplotype 1/2. The cohort view remains visible.
               {sourcePhasedMethylationLoading && ' Loading…'}
               {sourcePhasedMethylationError && ` Error: ${sourcePhasedMethylationError}`}
               {!sourcePhasedEvaluationInScope && ' Available only within chr22:47,040,000-47,050,000.'}

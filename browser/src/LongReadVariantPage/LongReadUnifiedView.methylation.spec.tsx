@@ -144,6 +144,32 @@ const workerData = () => ({
   },
 })
 
+let workerDataOverride: ReturnType<typeof workerData> | null = null
+
+const workerDataWithHG00097 = () => {
+  const data = workerData()
+  data.groups.push({
+    is_diplotype: true,
+    samples: [{
+      sample_id: 'HG00097',
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: 'phase-a', phaseSetB: 'phase-b' },
+    }],
+    haplotypeA: { variants: [], readable_id: 'hg00097-hap1' },
+    haplotypeB: { variants: [], readable_id: 'hg00097-hap2' },
+    below_thresholdA: { variants: [], readable_id: '' },
+    below_thresholdB: { variants: [], readable_id: '' },
+    start: 100,
+    stop: 200,
+    hash: 2,
+    roh_fraction: 0,
+    is_roh: false,
+    compound_het_pairs: [],
+    is_compound_het: false,
+  } as any)
+  return data
+}
+
 class MockWorker {
   onmessage: ((event: MessageEvent) => void) | null = null
 
@@ -152,11 +178,11 @@ class MockWorker {
   postMessage(message: any) {
     if (message.type === 'INIT') {
       this.onmessage?.({
-        data: { type: 'READY', data: JSON.parse(JSON.stringify(workerData())) },
+        data: { type: 'READY', data: JSON.parse(JSON.stringify(workerDataOverride || workerData())) },
       } as MessageEvent)
     } else if (message.type === 'UPDATE_AF') {
       this.onmessage?.({
-        data: { type: 'UPDATED', data: JSON.parse(JSON.stringify(workerData())) },
+        data: { type: 'UPDATED', data: JSON.parse(JSON.stringify(workerDataOverride || workerData())) },
       } as MessageEvent)
     }
   }
@@ -224,6 +250,7 @@ beforeEach(() => {
   mockGraphQLRequests.length = 0
   mockHaplotypeTrackProps.length = 0
   mockPhasedCapability = null
+  workerDataOverride = null
   Object.defineProperty(globalThis, 'Worker', {
     configurable: true,
     writable: true,
@@ -284,14 +311,15 @@ afterEach(() => {
 })
 
 describe('LongReadUnifiedView methylation detail ownership', () => {
-  test('offers and renders both unjoined source-phased tracks while retaining haplotype rows', async () => {
+  test('offers a pinned HG00097 direct comparison while retaining the complete cohort rows', async () => {
+    workerDataOverride = workerDataWithHG00097()
     mockPhasedCapability = {
       data_layer: 'SOURCE_PHASED', available: true, joinable_to_vcf: false,
       status: 'AVAILABLE_ORIENTATION_UNCONFIRMED', orientation_status: 'UNCONFIRMED',
       reason: 'visual evaluation only',
     }
     renderView({ chrom: 'chr22', start: 47_040_000, stop: 47_050_000 })
-    const control = await screen.findByLabelText('Show source hap1/hap2 (orientation unconfirmed)')
+    const control = await screen.findByLabelText('Show pinned HG00097 source hap1/hap2 comparison (orientation unconfirmed)')
     expect((control as HTMLInputElement).disabled).toBe(false)
     fireEvent.click(control)
     await waitFor(() => expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(1))
@@ -309,8 +337,19 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
         },
       ] },
     })
-    expect(await screen.findByText('HG00097 source hap1')).toBeTruthy()
+    expect(await screen.findByRole('region', { name: 'HG00097 pinned phased methylation comparison' })).toBeTruthy()
+    expect(screen.getByTestId('hg00097-source-row-under-vcf-1').getAttribute('data-source-haplotype')).toBe('HAP1')
+    expect(screen.getByTestId('hg00097-source-row-under-vcf-2').getAttribute('data-source-haplotype')).toBe('HAP2')
+    expect(screen.getByText('HG00097 source hap1')).toBeTruthy()
     expect(screen.getByText('HG00097 source hap2')).toBeTruthy()
+    expect(screen.queryByText(/VCF haplotype row unavailable/)).toBeNull()
+
+    fireEvent.click(screen.getByLabelText('swapped'))
+    expect(screen.getByTestId('hg00097-source-row-under-vcf-1').getAttribute('data-source-haplotype')).toBe('HAP2')
+    expect(screen.getByTestId('hg00097-source-row-under-vcf-2').getAttribute('data-source-haplotype')).toBe('HAP1')
+    expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(1)
+
+    expect(screen.getByText(/complete cohort view remains available below/)).toBeTruthy()
     expect(screen.getByTestId('haplotype-rows')).toBeTruthy()
   })
 
