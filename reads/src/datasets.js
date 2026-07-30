@@ -39,7 +39,6 @@ const variantDatasets = {
   },
 }
 
-// mounted via GCS Fuse
 const SHORT_TANDEM_REPEAT_READS_DB_PATH =
   '/readviz/datasets/gnomad_r4_short_tandem_repeats/str_reads_2026_07_20.db'
 
