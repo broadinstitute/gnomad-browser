@@ -30,6 +30,7 @@ const HaplotypeRegionPageContainer = lazy(
 )
 const TrCatalogPage = lazy(() => import('./Haplotypes/TrCatalogPage'))
 const LongReadExamplesPage = lazy(() => import('./LongReadExamplesPage'))
+const LongReadExamples22Page = lazy(() => import('./LongReadExamples22Page'))
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
@@ -83,6 +84,7 @@ const Routes = () => {
       <Route exact path="/haplotype/tr-catalog" component={TrCatalogPage} />
 
       <Route exact path="/long-read-examples" component={LongReadExamplesPage} />
+      <Route exact path="/long-read-examples-22" component={LongReadExamples22Page} />
 
       <Route
         exact
