@@ -8,6 +8,7 @@ import {
   fetchSampleMetadata,
   fetchY1SampleMetadata,
   fetchMethylationForRegion,
+  fetchSourcePhasedMethylationForEvaluation,
   fetchMethylationSummaryForRegion,
   fetchMethylationOutliersForRegion,
   fetchLRCoverageForRegion,
@@ -28,6 +29,8 @@ import {
   phasedMethylationCapability,
   prototypeAncillaryCapabilities,
   sampleTotalMethylationRecords,
+  sourcePhasedEvaluationScope,
+  sourcePhasedMethylationRecords,
 } from './ancillary-availability'
 import {
   isY1Chr22MixedProvenanceEnabled,
@@ -190,6 +193,21 @@ const resolvers = {
       methylationSampleAvailability(args.lr_cohort),
     phased_methylation_capability: (_obj: any, args: any) =>
       phasedMethylationCapability(args.lr_cohort),
+    source_phased_methylation: async (_obj: any, args: any, ctx: any) => {
+      const capability = phasedMethylationCapability(args.lr_cohort)
+      if (!capability.available || args.lr_cohort === 'aou') return null
+      const scope = sourcePhasedEvaluationScope(args.chrom, args.start, args.stop)
+      const t0 = now()
+      const result = await fetchSourcePhasedMethylationForEvaluation(
+        scope.chrom, scope.start, scope.stop
+      )
+      addTiming(ctx, {
+        label: 'source_phased_methylation',
+        ms: now() - t0,
+        meta: { rows: (result as any[]).length, sample: scope.sample_id },
+      })
+      return sourcePhasedMethylationRecords(result as any[])
+    },
     methylation: async (_obj: any, args: any, ctx: any) => {
       if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, undefined, 'methylation')) return null

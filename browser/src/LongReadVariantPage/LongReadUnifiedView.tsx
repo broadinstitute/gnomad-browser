@@ -29,6 +29,9 @@ import {
 import HaplotypeVariantTable, { HaplotypeVariantTableHandle, type VariantTypeFilters } from '../Haplotypes/HaplotypeVariantTable'
 import { createHaplotypeWorker } from '../Haplotypes/createHaplotypeWorker'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
+import SourcePhasedMethylationTrack, {
+  type SourcePhasedMethylationRecord,
+} from '../Haplotypes/SourcePhasedMethylationTrack'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import LongReadViewControls from './LongReadViewControls'
@@ -81,6 +84,14 @@ const PHASED_METHYLATION_CAPABILITY_QUERY = `
   query RegionPhasedMethylationCapability($lr_cohort: LongReadCohort!) {
     phased_methylation_capability(lr_cohort: $lr_cohort) {
       data_layer available joinable_to_vcf status orientation_status reason
+    }
+  }
+`
+
+const SOURCE_PHASED_METHYLATION_QUERY = `
+  query RegionSourcePhasedMethylation($chrom: String!, $start: Int!, $stop: Int!, $lr_cohort: LongReadCohort!) {
+    source_phased_methylation(chrom: $chrom, start: $start, stop: $stop, lr_cohort: $lr_cohort) {
+      chr pos1 pos2 methylation sample coverage data_layer source_haplotype vcf_strand phase_set
     }
   }
 `
@@ -275,6 +286,8 @@ const LongReadUnifiedView = ({
   const history = useHistory()
   const searchParams = new URLSearchParams(location.search)
   const urlShowHaplotypes = searchParams.get('show_haplotypes') === 'true'
+  const urlShowSourcePhasedMethylation =
+    searchParams.get('show_source_phased_methylation') === 'true'
 
   // If region is too large and URL requests haplotype, show warning and fall back
   const [showRegionWarning, setShowRegionWarning] = useState(
@@ -310,6 +323,13 @@ const LongReadUnifiedView = ({
       params.delete('show_haplotypes')
       params.delete('show_tree')
     }
+    history.replace({ ...location, search: params.toString() })
+  }, [history, location])
+
+  const setShowSourcePhasedMethylationUrl = useCallback((show: boolean) => {
+    const params = new URLSearchParams(location.search)
+    if (show) params.set('show_source_phased_methylation', 'true')
+    else params.delete('show_source_phased_methylation')
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
 
@@ -357,6 +377,14 @@ const LongReadUnifiedView = ({
     orientation_status: 'UNCONFIRMED',
     reason: 'Phased methylation orientation has not been confirmed',
   })
+  const [sourcePhasedMethylation, setSourcePhasedMethylation] = useState<SourcePhasedMethylationRecord[]>([])
+  const [sourcePhasedMethylationLoading, setSourcePhasedMethylationLoading] = useState(false)
+  const [sourcePhasedMethylationError, setSourcePhasedMethylationError] = useState<string | null>(null)
+  const sourcePhasedEvaluationInScope = lrCohort === 'hgsvc_hprc' &&
+    (chrom === 'chr22' || chrom === '22') && start >= 47_040_000 && stop <= 47_050_000
+  const showSourcePhasedMethylation = showHaplotypes &&
+    phasedMethylationCapability.available && sourcePhasedEvaluationInScope &&
+    urlShowSourcePhasedMethylation
   const availableMethylationIds = useMemo(
     () => new Set((methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)),
     [methylationAvailability]
@@ -835,6 +863,30 @@ const LongReadUnifiedView = ({
     return () => { cancelled = true }
   }, [lrCohort])
 
+  useEffect(() => {
+    setSourcePhasedMethylation([])
+    setSourcePhasedMethylationError(null)
+    if (!showSourcePhasedMethylation) {
+      setSourcePhasedMethylationLoading(false)
+      return undefined
+    }
+    let cancelled = false
+    setSourcePhasedMethylationLoading(true)
+    fetchGraphQL(SOURCE_PHASED_METHYLATION_QUERY, { chrom, start, stop, lr_cohort: lrCohort })
+      .then((result) => {
+        if (cancelled) return
+        if (result.errors?.length) throw new Error(result.errors[0].message)
+        setSourcePhasedMethylation(result.data?.source_phased_methylation || [])
+      })
+      .catch((error) => {
+        if (!cancelled) setSourcePhasedMethylationError(error.message)
+      })
+      .finally(() => {
+        if (!cancelled) setSourcePhasedMethylationLoading(false)
+      })
+    return () => { cancelled = true }
+  }, [showSourcePhasedMethylation, chrom, start, stop, lrCohort])
+
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
     setMethylationAvailability(null)
@@ -1289,6 +1341,9 @@ const LongReadUnifiedView = ({
       {showHaplotypes && (
         <>
           {showRecombination && recombinationAvailable && <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />}
+          {showSourcePhasedMethylation && (
+            <SourcePhasedMethylationTrack records={sourcePhasedMethylation} />
+          )}
           {/* TODO: Re-enable when mQTL data source is production-ready */}
           {false && showMqtl && (
             <MQTLTrack
@@ -1433,6 +1488,23 @@ const LongReadUnifiedView = ({
       {/* Controls panel — only visible in Haplotype View */}
       {showHaplotypes && (
         <TrackPageSection>
+          <div style={{ marginBottom: 12 }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={showSourcePhasedMethylation}
+                disabled={!phasedMethylationCapability.available || !sourcePhasedEvaluationInScope}
+                onChange={(event) => setShowSourcePhasedMethylationUrl(event.target.checked)}
+              />
+              {' '}Show source hap1/hap2 (orientation unconfirmed)
+            </label>
+            <div style={{ marginLeft: 20, color: '#666', fontSize: 12 }}>
+              HG00097 only; raw source labels are not VCF haplotype 1/2.
+              {sourcePhasedMethylationLoading && ' Loading…'}
+              {sourcePhasedMethylationError && ` Error: ${sourcePhasedMethylationError}`}
+              {!sourcePhasedEvaluationInScope && ' Available only within chr22:47,040,000-47,050,000.'}
+            </div>
+          </div>
           <Legend
             initialMinAf={threshold}
             onMinAfChange={handleManualAfChange}

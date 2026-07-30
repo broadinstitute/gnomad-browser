@@ -160,6 +160,24 @@ The legacy `CLICKHOUSE_URL` remains on `8125`; Y1 primary/metadata and prototype
 
 The ancillary target must be a distinct, read-only prototype database. Allowed modality names are `coverage`, `methylation`, and `str_histogram`; all three are enabled by the one-command prototype default. Each modality is disabled unless its exact startup schema/count/identity preflight passes: 50,818,468 contiguous `lr_y1_coverage` rows, 35,005 exact-key STR rows, and the canonical methylation detail/summary/availability tables. Methylation uses the checked-in exact 210-available-sample allowlist and requires a 292-row availability roster; every excluded row must have an explicit `unavailable_*` status and non-empty reason. Detail must contain 124,477,729 rows across those 210 samples and reconcile exactly to the 655,358-row canonical summary. mQTL is never allowed. A failed capability preflight is unavailable rather than an empty or zero-valued result.
 
+### Retained HG00097 source-phased evaluation
+
+After the coordinator has loaded and retained the fixed evaluation database, restart the dedicated development stack with:
+
+```bash
+export LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER="$Y1_CLICKHOUSE_WORKER_USER"
+export LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD="$Y1_CLICKHOUSE_WORKER_PASSWORD"
+LR_PHASED_METHYLATION_EVALUATION_ENABLED=true ./start_lr_dev.sh --gcp-clickhouse
+```
+
+The coordinator must revoke this principal's evaluation-table `INSERT` grant after the successful load and before restarting development, leaving only the exact database `SELECT` grant used here.
+
+The API pins its read-only client to `gnomad_lr_y1_scratch_phased_methylation_evaluation_v5_hg00097_chr22_47040000_47050000_v1` and table `lr_y1_methylation_phased_staging`; callers cannot select another database, table, sample, source, or interval outside chr22:47,040,000-47,050,000. Startup requires positive rows for both raw source labels and rejects any cross-sample, cross-region, or malformed record. The separate `source_phased_methylation` field always returns `vcf_strand=null`, `phase_set=null`, `joinable_to_vcf=false`, and orientation `UNCONFIRMED`.
+
+Exact evaluation URL:
+
+`http://localhost:8008/region/22-47040000-47050000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&show_haplotypes=true&show_source_phased_methylation=true`
+
 Mixed mode validates that both active primary pointers name published full-chromosome Y1/GRCh38/chr22 runs, that the HGSVC active metadata pointer names an accepted 292-row run, and that metadata/carrier rosters each contain 292 samples. Any mismatch prevents the API from listening. HGSVC ancillary preflight failures become explicit unavailable capabilities; they never become empty arrays or zero. AoU is always summary-only and never dispatches metadata, carrier, haplotype, coverage, methylation, STR, or mQTL queries to the ancillary endpoint.
 
 Use `long_read_prototype_provenance(lr_cohort:, chrom:)` for source/capability labels. Variant responses include `data_source`, `source_release`, and `source_run_id`; the REST haplotype response includes `provenance`. Primary cache identities include release, cohort, reference, prototype mode, and accepted run ID. The mode rejects non-chr22 primary/haplotype requests and never falls back to legacy primary data.

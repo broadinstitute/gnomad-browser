@@ -75,3 +75,31 @@ export const prototypeAncillaryClickhouseClient = createClient({
   clickhouse_settings: { readonly: '1' },
   keep_alive: { enabled: true, idle_socket_ttl: 2000 },
 })
+
+export const PHASED_METHYLATION_EVALUATION_DATABASE =
+  'gnomad_lr_y1_scratch_phased_methylation_evaluation_v5_hg00097_chr22_47040000_47050000_v1'
+export const isPhasedMethylationEvaluationEnabled =
+  process.env.LR_PHASED_METHYLATION_EVALUATION_ENABLED === 'true'
+const phasedMethylationEvaluationUrl =
+  process.env.LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_URL || ''
+const phasedMethylationEvaluationUsername =
+  process.env.LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER || ''
+const phasedMethylationEvaluationPassword =
+  process.env.LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD || ''
+if (isPhasedMethylationEvaluationEnabled && (
+  !phasedMethylationEvaluationUrl || !phasedMethylationEvaluationUsername ||
+  !phasedMethylationEvaluationPassword
+)) {
+  throw new Error('Phased methylation evaluation requires its URL, user, and password')
+}
+
+// This read-only client is pinned to the one retained evaluation database. No
+// environment variable can redirect the feature to another database or table.
+export const phasedMethylationEvaluationClickhouseClient = createClient({
+  url: phasedMethylationEvaluationUrl || clickhouseUrl,
+  username: phasedMethylationEvaluationUsername || 'default',
+  password: phasedMethylationEvaluationPassword,
+  database: PHASED_METHYLATION_EVALUATION_DATABASE,
+  clickhouse_settings: { readonly: '1' },
+  keep_alive: { enabled: true, idle_socket_ttl: 2000 },
+})

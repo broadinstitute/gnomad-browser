@@ -100,6 +100,7 @@ type HaplotypeGroups {
 
 enum MethylationAvailabilityStatus {
   AVAILABLE_COMPLETE
+  AVAILABLE_ORIENTATION_UNCONFIRMED
   UNAVAILABLE_INCOMPLETE
   UNAVAILABLE_NO_ASSAY_SOURCE
   UNAVAILABLE_NO_CHR22
@@ -327,6 +328,13 @@ extend type Query {
   phased_methylation_capability(
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): PhasedMethylationCapability!
+
+  source_phased_methylation(
+    chrom: String!
+    start: Int!
+    stop: Int!
+    lr_cohort: LongReadCohort = hgsvc_hprc
+  ): [MethylationRecord!]
 
   methylation(
     chrom: String!

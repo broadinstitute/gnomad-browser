@@ -1,6 +1,7 @@
 import {
   clickhouseClient,
   isY1Chr22MixedProvenanceEnabled,
+  phasedMethylationEvaluationClickhouseClient,
   prototypeAncillaryClickhouseClient,
   y1ClickhouseClient,
 } from '../clickhouse'
@@ -451,6 +452,30 @@ export const fetchMethylationOutliersForRegion = async (
       direction: s.direction,
     })),
   }
+}
+
+export const fetchSourcePhasedMethylationForEvaluation = async (
+  chrom: string,
+  start: number,
+  stop: number
+) => {
+  const resultSet = await phasedMethylationEvaluationClickhouseClient.query({
+    query: `
+      SELECT chrom AS chr, source_start0 + 1 AS pos1, source_end0 + 1 AS pos2,
+        methylation, coverage, source_haplotype
+      FROM lr_y1_methylation_phased_staging
+      WHERE ancillary_run_id = 'single-owner-evaluation:gnomad_lr_y1_scratch_phased_methylation_evaluation_v5_hg00097_chr22_47040000_47050000_v1'
+        AND attempt_id = 'single-owner' AND release = 'y1' AND cohort = 'hgsvc_hprc'
+        AND reference_genome = 'GRCh38' AND modality = 'per_haplotype_methylation'
+        AND sample_id = 'HG00097' AND chrom = {chrom:String}
+        AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+        AND source_haplotype IN (1, 2)
+      ORDER BY source_haplotype, position
+    `,
+    query_params: { chrom, start, stop },
+    format: 'JSONEachRow',
+  })
+  return resultSet.json()
 }
 
 export const fetchMethylationForRegion = async (

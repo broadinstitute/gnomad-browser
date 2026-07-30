@@ -19,7 +19,7 @@ export type PhasedMethylationCapability = {
   data_layer: 'SOURCE_PHASED'
   available: boolean
   joinable_to_vcf: boolean
-  status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED' | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
+  status: 'AVAILABLE_ORIENTATION_UNCONFIRMED' | 'UNAVAILABLE_ORIENTATION_UNCONFIRMED' | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
   orientation_status: 'UNCONFIRMED'
   reason: string
 }

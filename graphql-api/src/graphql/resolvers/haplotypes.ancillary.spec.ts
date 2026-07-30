@@ -4,6 +4,8 @@ import {
   isAncillaryUnavailableForCohort,
   phasedMethylationCapability,
   sampleTotalMethylationRecords,
+  sourcePhasedEvaluationScope,
+  sourcePhasedMethylationRecords,
   typedMethylationStatus,
 } from './ancillary-availability'
 
@@ -79,6 +81,37 @@ describe('ancillary cohort availability', () => {
       orientation_status: 'UNCONFIRMED',
       reason: expect.stringContaining('orientation is confirmed'),
     })
+  })
+
+  test('retained source-phased evaluation remains available but not joinable', () => {
+    expect(phasedMethylationCapability('hgsvc_hprc', true)).toEqual({
+      data_layer: 'SOURCE_PHASED',
+      available: true,
+      joinable_to_vcf: false,
+      status: 'AVAILABLE_ORIENTATION_UNCONFIRMED',
+      orientation_status: 'UNCONFIRMED',
+      reason: expect.stringContaining('visual evaluation only'),
+    })
+  })
+
+  test('source-phased records preserve labels and never acquire VCF phase fields', () => {
+    expect(sourcePhasedMethylationRecords([
+      { chr: 'chr22', pos1: 47040001, pos2: 47040002, methylation: 25, coverage: 4, source_haplotype: 1 },
+      { chr: 'chr22', pos1: 47040003, pos2: 47040004, methylation: 75, coverage: 8, source_haplotype: 2 },
+    ])).toEqual([
+      expect.objectContaining({ sample: 'HG00097', data_layer: 'SOURCE_PHASED', source_haplotype: 'HAP1', vcf_strand: null, phase_set: null }),
+      expect.objectContaining({ sample: 'HG00097', data_layer: 'SOURCE_PHASED', source_haplotype: 'HAP2', vcf_strand: null, phase_set: null }),
+    ])
+    expect(() => sourcePhasedMethylationRecords([{ source_haplotype: 3 }])).toThrow('Unexpected source haplotype')
+  })
+
+  test('source-phased evaluation rejects cross-sample-by-design and out-of-region requests', () => {
+    expect(sourcePhasedEvaluationScope('22', 47040000, 47050000)).toEqual({
+      chrom: 'chr22', start: 47040000, stop: 47050000, sample_id: 'HG00097',
+    })
+    expect(() => sourcePhasedEvaluationScope('chr21', 47040000, 47050000)).toThrow('restricted')
+    expect(() => sourcePhasedEvaluationScope('chr22', 47039999, 47050000)).toThrow('restricted')
+    expect(() => sourcePhasedEvaluationScope('chr22', 47040000, 47050001)).toThrow('restricted')
   })
 
   test('AoU phased methylation is typed summary-only and never falls back to HGSVC', () => {

@@ -11,10 +11,18 @@ const mockCarrierSampleIds = [
   'carrier-f',
 ]
 const mockHaplotypeTrackProps: any[] = []
+let mockPhasedCapability: any = null
 
-jest.mock('@gnomad/region-viewer', () => ({
-  PositionAxisTrack: () => null,
-}))
+jest.mock('@gnomad/region-viewer', () => {
+  // eslint-disable-next-line global-require
+  const mockReact = require('react')
+  return {
+    PositionAxisTrack: () => null,
+    Track: ({ renderLeftPanel, children }: any) => mockReact.createElement(
+      'div', null, renderLeftPanel(), children({ scalePosition: (position: number) => position, width: 1000 })
+    ),
+  }
+})
 
 jest.mock('@gnomad/ui', () => {
   // eslint-disable-next-line global-require
@@ -39,7 +47,7 @@ jest.mock('../Haplotypes', () => {
     mockHaplotypeTrackProps.push(props)
     return mockReact.createElement(
       'div',
-      null,
+      { 'data-testid': 'haplotype-rows' },
       mockReact.createElement('button', {
         type: 'button',
         'data-testid': 'load-all',
@@ -167,11 +175,14 @@ const resolveRequest = async (request: DeferredGraphQLRequest, payload: any) => 
   })
 }
 
-const renderView = () => render(
-  <MemoryRouter initialEntries={['/?show_haplotypes=true']}>
+const renderView = (
+  gene = { chrom: 'chr22', start: 100, stop: 200 },
+  initialEntry = '/?show_haplotypes=true'
+) => render(
+  <MemoryRouter initialEntries={[initialEntry]}>
     <LongReadUnifiedView
       datasetId={'gnomad_r4' as any}
-      gene={{ chrom: 'chr22', start: 100, stop: 200 }}
+      gene={gene}
       variants={[]}
     />
   </MemoryRouter>
@@ -212,6 +223,7 @@ const resolveSummaryAndOutlier = async () => {
 beforeEach(() => {
   mockGraphQLRequests.length = 0
   mockHaplotypeTrackProps.length = 0
+  mockPhasedCapability = null
   Object.defineProperty(globalThis, 'Worker', {
     configurable: true,
     writable: true,
@@ -243,7 +255,11 @@ beforeEach(() => {
       return Promise.resolve(responseWithJson({ data: { sample_metadata: [] } }) as any)
     }
     if (name === 'RegionPhasedMethylationCapability') {
-      return Promise.resolve(responseWithJson({ data: {} }) as any)
+      return Promise.resolve(responseWithJson({
+        data: mockPhasedCapability
+          ? { phased_methylation_capability: mockPhasedCapability }
+          : {},
+      }) as any)
     }
 
     return new Promise((resolve) => {
@@ -268,6 +284,36 @@ afterEach(() => {
 })
 
 describe('LongReadUnifiedView methylation detail ownership', () => {
+  test('offers and renders both unjoined source-phased tracks while retaining haplotype rows', async () => {
+    mockPhasedCapability = {
+      data_layer: 'SOURCE_PHASED', available: true, joinable_to_vcf: false,
+      status: 'AVAILABLE_ORIENTATION_UNCONFIRMED', orientation_status: 'UNCONFIRMED',
+      reason: 'visual evaluation only',
+    }
+    renderView({ chrom: 'chr22', start: 47_040_000, stop: 47_050_000 })
+    const control = await screen.findByLabelText('Show source hap1/hap2 (orientation unconfirmed)')
+    expect((control as HTMLInputElement).disabled).toBe(false)
+    fireEvent.click(control)
+    await waitFor(() => expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(1))
+    await resolveRequest(requestsNamed('RegionSourcePhasedMethylation')[0], {
+      data: { source_phased_methylation: [
+        {
+          chr: 'chr22', pos1: 47040001, pos2: 47040002, methylation: 25,
+          sample: 'HG00097', coverage: 4, data_layer: 'SOURCE_PHASED',
+          source_haplotype: 'HAP1', vcf_strand: null, phase_set: null,
+        },
+        {
+          chr: 'chr22', pos1: 47040003, pos2: 47040004, methylation: 75,
+          sample: 'HG00097', coverage: 8, data_layer: 'SOURCE_PHASED',
+          source_haplotype: 'HAP2', vcf_strand: null, phase_set: null,
+        },
+      ] },
+    })
+    expect(await screen.findByText('HG00097 source hap1')).toBeTruthy()
+    expect(screen.getByText('HG00097 source hap2')).toBeTruthy()
+    expect(screen.getByTestId('haplotype-rows')).toBeTruthy()
+  })
+
   test('auto-detail cannot clear load-all progress or enable a premature second click', async () => {
     renderView()
     await screen.findByTestId('load-all')
