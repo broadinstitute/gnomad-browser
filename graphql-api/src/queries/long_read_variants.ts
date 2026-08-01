@@ -1,6 +1,5 @@
 import {
   clickhouseClient,
-  isY1Chr22MixedProvenanceEnabled,
   isY1PilotEnabled,
 } from '../clickhouse'
 import { isRsId } from '@gnomad/identifiers'
@@ -127,11 +126,11 @@ const parseGenotypeDistribution = (populations: { key: string; histogram: string
 export const fetchVariantById = async (variantId: string, cohort: LongReadCohort = 'hgsvc_hprc') => {
   if (isY1PilotEnabled) {
     if (isRsId(variantId)) return null
-    if (isY1Chr22MixedProvenanceEnabled && !/^(?:chr)?22[-:]/.test(variantId)) {
-      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
-    }
     const source = await getY1SourceSnapshot(cohort)
-    const variant = await fetchY1VariantById(variantId, cohort, source.run_id)
+    if (!source) return null
+    const variantChrom = normalizeChrom(variantId.split(/[-:]/, 1)[0])
+    if (variantChrom !== source.chrom) return null
+    const variant = await fetchY1VariantById(variantId, cohort, source.run_id, source.chrom)
     if (!variant || variant.allele_type !== 'trv') return variant
 
     // Y1 does not yet carry the legacy STR histograms. Preserve the meaningful
@@ -223,8 +222,9 @@ export const fetchVariantById = async (variantId: string, cohort: LongReadCohort
 
 const _fetchVariantsByGene = async (
   gene: any,
-  cohort: LongReadCohort = 'hgsvc_hprc',
-  y1RunId?: string
+  cohort: LongReadCohort,
+  y1RunId?: string,
+  y1Chrom?: string
 ) => {
   const filteredRegions = getFilteredRegions(gene.exons)
   const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
@@ -248,10 +248,7 @@ const _fetchVariantsByGene = async (
   const chrom = normalizeChrom(gene.chrom)
 
   if (isY1PilotEnabled) {
-    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
-      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
-    }
-    if (!y1RunId) throw new Error('Missing resolved Y1 run identity')
+    if (!y1RunId || chrom !== y1Chrom) return []
     return fetchY1VariantsByRegions(chrom, mergedRegions, cohort, y1RunId)
   }
 
@@ -273,8 +270,10 @@ const _fetchVariantsByGene = async (
 
 const cachedVariantsByGene = withCache(
   _fetchVariantsByGene,
-  (gene: any, cohort: LongReadCohort = 'hgsvc_hprc', y1RunId?: string) =>
-    `lr_variants:${isY1PilotEnabled ? 'y1:y1:GRCh38:prototype=' + isY1Chr22MixedProvenanceEnabled + ':' + cohort + ':' + (y1RunId || 'unpinned') : 'legacy'}:gene:${gene.gene_id}`,
+  (gene: any, cohort: LongReadCohort, y1RunId?: string, y1Chrom?: string) =>
+    `lr_variants:${isY1PilotEnabled
+      ? `y1:${cohort}:${y1RunId || 'unavailable'}:${y1Chrom || 'no-scope'}`
+      : 'legacy'}:gene:${gene.gene_id}`,
   { expiration: 1 }
 )
 
@@ -283,7 +282,7 @@ export const fetchVariantsByGene = async (
   cohort: LongReadCohort = 'hgsvc_hprc'
 ) => {
   const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
-  return cachedVariantsByGene(gene, cohort, source?.run_id)
+  return cachedVariantsByGene(gene, cohort, source?.run_id, source?.chrom)
 }
 
 const countVariantsByRegion = async (...args: any[]) => {
@@ -293,10 +292,8 @@ const countVariantsByRegion = async (...args: any[]) => {
   const chrom = normalizeChrom(region.chrom)
   if (isY1PilotEnabled) {
     const cohort: LongReadCohort = args.length > 2 ? args[2] : 'hgsvc_hprc'
-    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
-      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
-    }
     const source = await getY1SourceSnapshot(cohort)
+    if (!source || chrom !== source.chrom) return 0
     return (await fetchY1VariantsByRegion(region, cohort, source.run_id)).length
   }
 
@@ -320,16 +317,14 @@ export const countVariantsInRegion = countVariantsByRegion
 
 const _fetchVariantsByRegion = async (
   region: { chrom: string; start: number; stop: number },
-  cohort: LongReadCohort = 'hgsvc_hprc',
-  y1RunId?: string
+  cohort: LongReadCohort,
+  y1RunId?: string,
+  y1Chrom?: string
 ) => {
   const chrom = normalizeChrom(region.chrom)
 
   if (isY1PilotEnabled) {
-    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
-      throw new Error('OUT_OF_SCOPE: mixed-provenance Y1 data are available only on chr22')
-    }
-    if (!y1RunId) throw new Error('Missing resolved Y1 run identity')
+    if (!y1RunId || chrom !== y1Chrom) return []
     return fetchY1VariantsByRegion(region, cohort, y1RunId)
   }
 
@@ -355,10 +350,13 @@ const cachedVariantsByRegion = withCache(
   _fetchVariantsByRegion,
   (
     region: { chrom: string; start: number; stop: number },
-    cohort: LongReadCohort = 'hgsvc_hprc',
-    y1RunId?: string
+    cohort: LongReadCohort,
+    y1RunId?: string,
+    y1Chrom?: string
   ) =>
-    `lr_variants:${isY1PilotEnabled ? 'y1:y1:GRCh38:prototype=' + isY1Chr22MixedProvenanceEnabled + ':' + cohort + ':' + (y1RunId || 'unpinned') : 'legacy'}:region:${region.chrom}:${region.start}:${region.stop}`,
+    `lr_variants:${isY1PilotEnabled
+      ? `y1:${cohort}:${y1RunId || 'unavailable'}:${y1Chrom || 'no-scope'}`
+      : 'legacy'}:region:${region.chrom}:${region.start}:${region.stop}`,
   { expiration: 1 }
 )
 
@@ -367,7 +365,7 @@ export const fetchVariantsByRegion = async (
   cohort: LongReadCohort = 'hgsvc_hprc'
 ) => {
   const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
-  return cachedVariantsByRegion(region, cohort, source?.run_id)
+  return cachedVariantsByRegion(region, cohort, source?.run_id, source?.chrom)
 }
 
 const queries = {

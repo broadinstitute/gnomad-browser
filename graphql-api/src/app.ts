@@ -8,7 +8,7 @@ import { client as esClient } from './elasticsearch'
 import { esTimingStore, EsTimingAccumulator } from './esTiming'
 import graphQLApi from './graphql/graphql-api'
 import logger from './logger'
-import { isY1Chr22MixedProvenanceEnabled, isY1PilotEnabled } from './clickhouse'
+import { isY1PilotEnabled } from './clickhouse'
 import {
   fetchDistinctHaplotypeVariants,
   fetchTrvCarrierAlts,
@@ -19,7 +19,7 @@ import {
   getY1SourceSnapshot,
   preflightY1AcceptedSources,
 } from './queries/long_read_y1_provenance'
-import { preflightPrototypeAncillaries } from './graphql/resolvers/ancillary-availability'
+import { preflightY1Ancillaries } from './graphql/resolvers/ancillary-availability'
 
 import { loadWhitelist } from './whitelist'
 
@@ -143,9 +143,6 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     if (!rawChrom || isNaN(start) || isNaN(stop) || start > stop) {
       return res.status(400).json({ code: 'INVALID_REGION', error: 'valid chrom, start, stop required' })
     }
-    if (isY1Chr22MixedProvenanceEnabled && chrom !== 'chr22') {
-      return res.status(400).json({ code: 'OUT_OF_SCOPE', error: 'Prototype data are available only on chr22' })
-    }
     if (isY1PilotEnabled && stop - start > 100_000) {
       return res.status(400).json({ code: 'REGION_TOO_LARGE', error: 'Y1 Haplotype View is limited to 100 kb regions' })
     }
@@ -160,6 +157,12 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     let source = null
     if (isY1PilotEnabled) {
       source = await getY1SourceSnapshot('hgsvc_hprc')
+      if (!source) {
+        return res.status(400).json({ code: 'UNAVAILABLE', error: 'HGSVC/HPRC is unavailable in the configured Y1 database' })
+      }
+      if (chrom !== source.chrom) {
+        return res.status(400).json({ code: 'OUT_OF_SCOPE', error: `Y1 data are available only on ${source.chrom}` })
+      }
       const y1Rows = await fetchY1HaplotypeRows(chrom, start, stop, source.run_id)
       distinctVariants = y1Rows.variants
       trvCarriers = y1Rows.trvCarriers
@@ -194,15 +197,18 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       auto_defaults: autoDefaults,
       _phase_summary: phaseSummary,
       provenance: source ? {
-        modality: 'HAPLOTYPES', source: 'Y1_ACCEPTED_R2', release: source.release,
-        cohort: source.cohort, reference_genome: source.reference_genome,
-        chromosome: source.chrom, run_id: source.run_id, available: true,
-        status: 'accepted', label: 'gnomAD LR Y1 accepted r2',
-        prototype: isY1Chr22MixedProvenanceEnabled,
+        modality: 'HAPLOTYPES', source: 'Y1_ACCEPTED', database: source.database,
+        release: source.release, cohort: source.cohort,
+        reference_genome: source.reference_genome, chromosome: source.chrom,
+        scope: source.load_scope, run_id: source.run_id, available: true,
+        status: source.state,
+        label: `Accepted Y1 — database=${source.database}; cohort=${source.cohort}; ` +
+          `run=${source.run_id}; scope=${source.release}/${source.reference_genome}/` +
+          `${source.chrom}/${source.load_scope}; state=${source.state}`,
       } : {
         modality: 'HAPLOTYPES', source: 'LEGACY_V1', release: 'legacy',
         cohort: 'hgsvc_hprc', reference_genome: 'GRCh38', chromosome: chrom,
-        run_id: null, available: true, status: 'legacy', label: 'Legacy LR', prototype: false,
+        run_id: null, available: true, status: 'legacy', label: 'Legacy LR',
       },
       _timing: { total_ms: Math.round(ms) },
     })
@@ -219,11 +225,10 @@ if (!process.env.NO_ES_STATS_POLL) {
 }
 
 const start = async () => {
-  // Primary/metadata failures are fatal: mixed mode must never start against an
-  // unaccepted or mismatched pointer. Ancillary failures remain typed
-  // unavailable capabilities and never become an empty/zero response.
+  // Primary discovery failures are fatal. Optional metadata and ancillary table
+  // absence is represented as an unavailable capability rather than zero rows.
   await preflightY1AcceptedSources()
-  await preflightPrototypeAncillaries()
+  await preflightY1Ancillaries()
   app.listen(config.PORT)
 }
 

@@ -202,9 +202,9 @@ type MQTLAssociation {
 }
 
 enum LongReadDataSource {
-  Y1_ACCEPTED_R2
+  Y1_ACCEPTED
+  Y1_DATABASE
   LEGACY_V1
-  MIXED_PROVENANCE_PROTOTYPE
   EXTERNAL_REFERENCE
   UNAVAILABLE
 }
@@ -222,21 +222,21 @@ enum LongReadModality {
 type LongReadSourceProvenance {
   modality: LongReadModality!
   source: LongReadDataSource!
+  database: String
   release: String
   cohort: LongReadCohort!
   reference_genome: String!
   chromosome: String!
+  scope: String
   run_id: String
   status: String!
   available: Boolean!
   label: String
 }
 
-type LongReadPrototypeProvenance {
+type LongReadY1Provenance {
   enabled: Boolean!
-  mixed_provenance: Boolean!
   scope_label: String!
-  warning: String!
   sources: [LongReadSourceProvenance!]!
 }
 
@@ -377,10 +377,10 @@ extend type Query {
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): STRHistogramRecord
 
-  long_read_prototype_provenance(
+  long_read_y1_provenance(
     lr_cohort: LongReadCohort!
     chrom: String!
-  ): LongReadPrototypeProvenance!
+  ): LongReadY1Provenance!
 
   str_catalog(chrom: String!): [StrCatalogLocus!]
 

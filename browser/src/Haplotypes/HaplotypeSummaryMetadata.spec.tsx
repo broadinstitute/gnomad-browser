@@ -99,7 +99,7 @@ describe('haplotype summary metadata', () => {
   })
 
   test('keeps data-layer labels compact and places source context in help', () => {
-    const source = 'Pinned CpG mixed-provenance prototype data'
+    const source = 'Optional Y1 CpG ancillary data'
     const legendText = renderedText(
       renderer
         .create(

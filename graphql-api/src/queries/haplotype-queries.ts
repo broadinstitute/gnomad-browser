@@ -1,13 +1,11 @@
 import {
   clickhouseClient,
-  isY1Chr22MixedProvenanceEnabled,
+  isY1PilotEnabled,
   phasedMethylationEvaluationClickhouseClient,
-  prototypeAncillaryClickhouseClient,
   y1ClickhouseClient,
 } from '../clickhouse'
 
-const ancillaryClient = () =>
-  isY1Chr22MixedProvenanceEnabled ? prototypeAncillaryClickhouseClient : clickhouseClient
+const ancillaryClient = () => isY1PilotEnabled ? y1ClickhouseClient : clickhouseClient
 
 /**
  * Fetch haplotype variants pre-grouped by (sample_id, strand) in ClickHouse.
@@ -309,7 +307,7 @@ export const fetchLRCoverageForRegion = async (
   start: number,
   stop: number
 ) => {
-  const query = isY1Chr22MixedProvenanceEnabled ? `
+  const query = isY1PilotEnabled ? `
     SELECT position AS pos, mean, median,
            over_1, over_5, over_10, over_15, over_20, over_25, over_30, over_50, over_100
     FROM lr_y1_coverage
@@ -344,7 +342,7 @@ export const fetchSTRHistogram = async (
            populations
     FROM lr_str_histograms
     WHERE chrom = {chrom:String} AND position = {position:UInt32}
-      ${isY1Chr22MixedProvenanceEnabled ? "AND mapping_status = 'available_exact'" : ''}
+      ${isY1PilotEnabled ? "AND mapping_status = 'available_exact'" : ''}
     LIMIT 2
   `
   const resultSet = await ancillaryClient().query({
@@ -371,7 +369,7 @@ export const fetchMethylationSummaryForRegion = async (
   start: number,
   stop: number
 ) => {
-  const query = isY1Chr22MixedProvenanceEnabled ? `
+  const query = isY1PilotEnabled ? `
     SELECT chrom, pos1, pos2, mean_methylation, mean_coverage,
            observed_sample_count AS num_samples, std_methylation,
            min_methylation, max_methylation
@@ -403,9 +401,9 @@ export const fetchMethylationOutliersForRegion = async (
   start: number,
   stop: number
 ) => {
-  const detailTable = isY1Chr22MixedProvenanceEnabled
+  const detailTable = isY1PilotEnabled
     ? 'lr_methylation_canonical_prototype' : 'lr_methylation'
-  const summaryQuery = isY1Chr22MixedProvenanceEnabled ? `
+  const summaryQuery = isY1PilotEnabled ? `
         SELECT chrom, pos1, pos2, mean_methylation AS site_mean, std_methylation AS site_std
         FROM lr_methylation_summary_canonical_prototype
         WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
@@ -491,7 +489,7 @@ export const fetchMethylationForRegion = async (
   if (samples && samples.length > 0) {
     query = `
       SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
-      FROM ${isY1Chr22MixedProvenanceEnabled ? 'lr_methylation_canonical_prototype' : 'lr_methylation'}
+      FROM ${isY1PilotEnabled ? 'lr_methylation_canonical_prototype' : 'lr_methylation'}
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
         AND sample_id IN ({samples:Array(String)})
@@ -501,7 +499,7 @@ export const fetchMethylationForRegion = async (
     // If undefined is explicitly passed, fetch all samples in the region for mQTL
     query = `
       SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
-      FROM ${isY1Chr22MixedProvenanceEnabled ? 'lr_methylation_canonical_prototype' : 'lr_methylation'}
+      FROM ${isY1PilotEnabled ? 'lr_methylation_canonical_prototype' : 'lr_methylation'}
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
     `

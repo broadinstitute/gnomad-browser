@@ -73,10 +73,10 @@ test.describe('Long Read region page — Summary View', () => {
   })
 })
 
-const runMixedPrototype = process.env.LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED === 'true'
+const runY1 = process.env.LR_Y1_ENABLED === 'true'
 
-test.describe('Long Read chr22 mixed-provenance prototype', () => {
-  test.skip(!runMixedPrototype, 'requires the isolated chr22 mixed-provenance stack')
+test.describe('Long Read Y1 mode', () => {
+  test.skip(!runY1, 'requires a configured Y1 stack containing chr22')
 
   test('switches cohorts, clears unsupported state, and keeps the AoU notice in view help', async ({ page }) => {
     await page.goto('/region/22-11160001-11170000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&show_haplotypes=true')

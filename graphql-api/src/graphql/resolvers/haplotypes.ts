@@ -27,15 +27,12 @@ import {
   isAncillaryUnavailableForCohort,
   methylationSampleAvailability,
   phasedMethylationCapability,
-  prototypeAncillaryCapabilities,
+  y1AncillaryCapabilities,
   sampleTotalMethylationRecords,
   sourcePhasedEvaluationScope,
   sourcePhasedMethylationRecords,
 } from './ancillary-availability'
-import {
-  isY1Chr22MixedProvenanceEnabled,
-  isY1PilotEnabled,
-} from '../../clickhouse'
+import { isY1PilotEnabled } from '../../clickhouse'
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
 
 // --- Timing helpers ---
@@ -68,12 +65,18 @@ const _fetchRecombinationRate = async (chrom: string, start: number, stop: numbe
 const fetchRecombinationRate = withCache(
   _fetchRecombinationRate,
   (chrom: string, start: number, stop: number) =>
-    `recombination:prototype=${isY1Chr22MixedProvenanceEnabled}:hg38:recomb1000GAvg:${chrom}:${start}:${stop}`,
+    `recombination:y1=${isY1PilotEnabled}:hg38:recomb1000GAvg:${chrom}:${start}:${stop}`,
   { expiration: 86400 }
 )
 
 const normalizeChrom = (chrom: string) =>
   chrom.startsWith('chr') ? chrom : `chr${chrom}`
+
+const y1RequestInScope = async (cohort: 'hgsvc_hprc' | 'aou', chrom: string) => {
+  if (!isY1PilotEnabled) return true
+  const source = await getY1SourceSnapshot(cohort)
+  return !!source && source.chrom === normalizeChrom(chrom)
+}
 
 const trvCache = new Map<string, any>()
 
@@ -99,7 +102,7 @@ const resolvers = {
       if (isY1PilotEnabled) {
         if (args.lr_cohort === 'aou') return null
         const source = await getY1SourceSnapshot('hgsvc_hprc')
-        if (!source.metadata_run_id) return null
+        if (!source?.metadata_run_id) return null
         const result = await fetchY1SampleMetadata(source.metadata_run_id)
         addTiming(ctx, {
           label: 'sample_metadata', ms: now() - t0,
@@ -209,11 +212,11 @@ const resolvers = {
       return sourcePhasedMethylationRecords(result as any[])
     },
     methylation: async (_obj: any, args: any, ctx: any) => {
-      if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null
-      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, undefined, 'methylation')) return null
+      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
-      const requestedSamples = isY1Chr22MixedProvenanceEnabled
+      const requestedSamples = isY1PilotEnabled
         ? filterAvailableMethylationSampleIds(args.samples, methylationSampleAvailability(args.lr_cohort))
         : args.samples
       const result = await fetchMethylationForRegion(ctx.esClient, chrom, args.start, args.stop, requestedSamples)
@@ -227,8 +230,8 @@ const resolvers = {
       return sampleTotalMethylationRecords(result as any[])
     },
     methylation_summary: async (_obj: any, args: any, ctx: any) => {
-      if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null
-      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, undefined, 'methylation')) return null
+      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchMethylationSummaryForRegion(ctx.esClient, chrom, args.start, args.stop)
@@ -240,8 +243,8 @@ const resolvers = {
       return result
     },
     methylation_outliers: async (_obj: any, args: any, ctx: any) => {
-      if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null
-      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, undefined, 'methylation')) return null
+      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchMethylationOutliersForRegion(ctx.esClient, chrom, args.start, args.stop)
@@ -264,8 +267,8 @@ const resolvers = {
       return result
     },
     lr_coverage: async (_obj: any, args: any, ctx: any) => {
-      if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null
-      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, undefined, 'coverage')) return null
+      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'coverage')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchLRCoverageForRegion(ctx.esClient, chrom, args.start, args.stop)
@@ -277,8 +280,8 @@ const resolvers = {
       return result
     },
     lr_str_histogram: async (_obj: any, args: any, ctx: any) => {
-      if (normalizeChrom(args.chrom) !== 'chr22' && isY1Chr22MixedProvenanceEnabled) return null
-      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, undefined, 'str_histogram')) return null
+      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'str_histogram')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchSTRHistogram(ctx.esClient, chrom, args.position)
@@ -288,72 +291,70 @@ const resolvers = {
       })
       return result
     },
-    long_read_prototype_provenance: async (_obj: any, args: any) => {
+    long_read_y1_provenance: async (_obj: any, args: any) => {
       const chrom = normalizeChrom(args.chrom)
-      const cohort = args.lr_cohort
-      const inScope = chrom === 'chr22'
-      const primary = isY1PilotEnabled && inScope
-        ? await getY1SourceSnapshot(cohort)
+      const cohort = args.lr_cohort as 'hgsvc_hprc' | 'aou'
+      const configured = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
+      const primary = configured?.chrom === chrom ? configured : null
+      const acceptedLabel = primary
+        ? `Accepted Y1 — database=${primary.database}; cohort=${primary.cohort}; run=${primary.run_id}; ` +
+          `scope=${primary.release}/${primary.reference_genome}/${primary.chrom}/${primary.load_scope}; state=${primary.state}`
         : null
       const metadataAvailable = cohort === 'hgsvc_hprc' && !!primary?.metadata_run_id
-      const ancillary = prototypeAncillaryCapabilities()
+      const ancillary = y1AncillaryCapabilities()
       const sources = [
         {
-          modality: 'PRIMARY_VARIANTS', source: primary ? 'Y1_ACCEPTED_R2' : 'UNAVAILABLE',
-          release: primary?.release || null, cohort, reference_genome: 'GRCh38', chromosome: chrom,
-          run_id: primary?.run_id || null, available: !!primary, status: primary ? 'accepted' : 'unavailable',
-          label: primary ? 'gnomAD LR Y1 accepted r2' : 'Unavailable outside chr22',
+          modality: 'PRIMARY_VARIANTS', source: primary ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
+          database: configured?.database || null, release: configured?.release || null,
+          cohort, reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
+          scope: configured?.load_scope || null, run_id: configured?.run_id || null,
+          available: !!primary, status: primary?.state || 'unavailable',
+          label: acceptedLabel || (configured ? `Unavailable outside ${configured.chrom}` : 'Cohort unavailable'),
         },
         {
-          modality: 'HAPLOTYPES', source: primary && cohort === 'hgsvc_hprc' ? 'Y1_ACCEPTED_R2' : 'UNAVAILABLE',
-          release: primary?.release || null, cohort, reference_genome: 'GRCh38', chromosome: chrom,
-          run_id: primary?.run_id || null, available: !!primary && cohort === 'hgsvc_hprc',
-          status: primary && cohort === 'hgsvc_hprc' ? 'accepted' : 'unavailable',
-          label: cohort === 'aou' ? 'AoU is summary-only' : 'gnomAD LR Y1 accepted r2',
+          modality: 'HAPLOTYPES', source: primary && cohort === 'hgsvc_hprc' ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
+          database: configured?.database || null, release: configured?.release || null,
+          cohort, reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
+          scope: configured?.load_scope || null, run_id: configured?.run_id || null,
+          available: !!primary && cohort === 'hgsvc_hprc',
+          status: primary && cohort === 'hgsvc_hprc' ? primary.state : 'unavailable',
+          label: cohort === 'aou' ? 'AoU is summary-only' : (acceptedLabel || 'Cohort or scope unavailable'),
         },
         {
-          modality: 'SAMPLE_METADATA', source: metadataAvailable ? 'Y1_ACCEPTED_R2' : 'UNAVAILABLE',
-          release: metadataAvailable ? 'y1' : null, cohort, reference_genome: 'GRCh38', chromosome: chrom,
-          run_id: primary?.metadata_run_id || null, available: metadataAvailable,
-          status: metadataAvailable ? 'accepted' : 'unavailable',
-          label: metadataAvailable ? 'Accepted Y1 metadata' : 'Unavailable',
+          modality: 'SAMPLE_METADATA', source: metadataAvailable ? 'Y1_DATABASE' : 'UNAVAILABLE',
+          database: configured?.database || null, release: metadataAvailable ? 'y1' : null,
+          cohort, reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
+          scope: configured?.load_scope || null, run_id: primary?.metadata_run_id || null,
+          available: metadataAvailable, status: metadataAvailable ? 'accepted' : 'unavailable',
+          label: metadataAvailable ? 'Accepted Y1 metadata in configured database' : 'Optional metadata unavailable',
         },
         ...(['coverage', 'methylation', 'str_histogram'] as const).map((modality) => {
-          const decision = ancillaryDecision(cohort, modality)
-          const prototypeLabels = {
-            coverage: 'HGSVC/HPRC v2 aggregate coverage prototype — 50,818,468 chr22 rows; not Y1 accepted',
-            methylation: 'Pinned CpG mixed-provenance prototype — exactly 210 available samples; 82 explicitly unavailable',
-            str_histogram: 'Legacy v2 STR prototype — 35,005 exact Y1 TR-key mappings; histogram payload not scientifically accepted',
-          }
-          const prototypeReceipts = {
-            coverage: 'hgsvc-hprc-v2-coverage-chr22-prototype',
-            methylation: 'pinned-pb-cpg-tools-chr22-210-sample-prototype',
-            str_histogram: 'legacy-default-lr-str-histograms-chr22-exact-y1-tr-key-20260728',
-          }
+          const decision = ancillary.get(modality) || ancillaryDecision(cohort, modality)
+          const available = !!primary && cohort === 'hgsvc_hprc' && decision.available
           return {
-            modality: modality === 'coverage' ? 'COVERAGE' : modality === 'methylation' ? 'METHYLATION' : 'STR_HISTOGRAM',
-            source: inScope ? decision.source : 'UNAVAILABLE',
-            release: inScope && decision.available ? 'mixed-prototype' : null,
-            cohort, reference_genome: 'GRCh38', chromosome: chrom,
-            run_id: inScope && decision.available ? prototypeReceipts[modality] : null,
-            available: inScope && decision.available, status: inScope && decision.available ? 'prototype' : 'unavailable',
-            label: inScope && decision.available
-              ? prototypeLabels[modality]
-              : inScope ? decision.reason : 'Unavailable outside chr22',
+            modality: {
+              coverage: 'COVERAGE', methylation: 'METHYLATION', str_histogram: 'STR_HISTOGRAM',
+            }[modality],
+            source: available ? decision.source : 'UNAVAILABLE',
+            database: configured?.database || null, release: null, cohort,
+            reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
+            scope: configured?.load_scope || null, run_id: null,
+            available, status: available ? 'available' : 'unavailable',
+            label: available ? 'Optional ancillary table in configured Y1 database' : (decision.reason || 'Unavailable'),
           }
         }),
         {
-          modality: 'RECOMBINATION', source: inScope ? 'EXTERNAL_REFERENCE' : 'UNAVAILABLE', release: null, cohort,
-          reference_genome: 'GRCh38', chromosome: chrom, run_id: null, available: inScope,
-          status: inScope ? 'prototype' : 'unavailable',
-          label: inScope ? 'External reference (UCSC hg38 recomb1000GAvg)' : 'Unavailable outside chr22',
+          modality: 'RECOMBINATION', source: 'EXTERNAL_REFERENCE', database: null,
+          release: null, cohort, reference_genome: 'GRCh38', chromosome: chrom,
+          scope: null, run_id: null, available: true, status: 'available',
+          label: 'External reference (UCSC hg38 recomb1000GAvg)',
         },
       ]
       return {
-        enabled: isY1Chr22MixedProvenanceEnabled,
-        mixed_provenance: isY1Chr22MixedProvenanceEnabled,
-        scope_label: 'Non-production chr22 mixed-provenance prototype',
-        warning: 'Variants and HGSVC haplotypes are accepted Y1 r2; ancillary tracks are isolated mixed-provenance prototypes, not Y1 accepted. AoU is summary-only. Unavailable values are not zero.',
+        enabled: isY1PilotEnabled,
+        scope_label: configured
+          ? `${configured.database}: ${configured.chrom} (${configured.load_scope})`
+          : 'Y1 cohort unavailable',
         sources,
       }
     },

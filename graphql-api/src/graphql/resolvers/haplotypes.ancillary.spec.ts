@@ -20,29 +20,25 @@ describe('ancillary cohort availability', () => {
     expect(isAncillaryUnavailableForCohort(undefined, false)).toBe(false)
   })
 
-  test('Y1 fails closed before querying legacy ancillary tables', () => {
-    expect(isAncillaryUnavailableForCohort('hgsvc_hprc', true)).toBe(true)
-    expect(isAncillaryUnavailableForCohort(undefined, true)).toBe(true)
-  })
-
-  test('mixed mode does not imply capability without a successful modality preflight', () => {
-    expect(ancillaryDecision('hgsvc_hprc', 'coverage', true, true)).toEqual({
+  test('missing optional Y1 ancillary tables are unavailable rather than zero', () => {
+    expect(ancillaryDecision('hgsvc_hprc', 'coverage', true)).toEqual({
       available: false,
       source: 'UNAVAILABLE',
-      reason: 'Not allowlisted',
+      reason: 'Optional table is unavailable',
     })
+    expect(isAncillaryUnavailableForCohort('hgsvc_hprc', true)).toBe(true)
   })
 
-  test('AoU remains summary-only even when mixed mode is requested', () => {
-    expect(ancillaryDecision('aou', 'str_histogram', true, true)).toEqual({
+  test('AoU remains summary-only in the sole Y1 mode', () => {
+    expect(ancillaryDecision('aou', 'str_histogram', true)).toEqual({
       available: false,
       source: 'UNAVAILABLE',
       reason: 'AoU is summary-only',
     })
   })
 
-  test('mQTL is never authorized in mixed mode', () => {
-    expect(ancillaryDecision('hgsvc_hprc', 'mqtl', true, true).available).toBe(false)
+  test('mQTL is never authorized in Y1', () => {
+    expect(ancillaryDecision('hgsvc_hprc', 'mqtl', true).available).toBe(false)
   })
 
   test('canonical methylation requests contain only available identities', () => {

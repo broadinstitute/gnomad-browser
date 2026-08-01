@@ -59,7 +59,7 @@ const examples = [
   {
     section: 'Methylation signals',
     description:
-      'Exploratory windows from the separate mixed-provenance chr22 methylation prototype. Values are individual-level summaries and are not phased to either haplotype.',
+      'Exploratory windows from the optional Y1 chr22 methylation tables. Values are individual-level summaries and are not phased to either haplotype.',
     items: [
       {
         title: 'Variable methylation near 18.83 Mb',
@@ -94,7 +94,7 @@ const examples = [
   {
     section: 'Data-driven chr22 discovery regions',
     description:
-      'High-complexity windows found by grouping HGSVC/HPRC Y1 allele rows from the loaded chromosome 22 ClickHouse candidate. Counts describe ALT allele rows, not independent participants or clinical events.',
+      'High-complexity windows found by grouping HGSVC/HPRC Y1 allele rows from the configured chromosome 22 ClickHouse database. Counts describe ALT allele rows, not independent participants or clinical events.',
     items: [
       {
         title: 'Pericentromeric FAM230D region',

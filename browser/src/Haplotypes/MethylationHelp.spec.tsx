@@ -66,10 +66,10 @@ describe('MethylationHelp', () => {
 
   test('shows source context in help when provided', () => {
     const text = renderedText(renderer.create(
-      <MethylationHelp sourceLabel="Pinned CpG mixed-provenance prototype data" />
+      <MethylationHelp sourceLabel="Optional Y1 CpG ancillary data" />
     ).toJSON())
 
-    expect(text).toContain('Source: Pinned CpG mixed-provenance prototype data')
+    expect(text).toContain('Source: Optional Y1 CpG ancillary data')
   })
 
   test('distinguishes loading metadata from releases without availability metadata', () => {

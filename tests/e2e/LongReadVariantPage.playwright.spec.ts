@@ -3,7 +3,7 @@ import { test, expect, type Page } from '@playwright/test'
 import { collectApiMetrics, reportApiMetrics, type ApiMetric } from './helpers/lrMetrics'
 
 const LR_DATASET = 'gnomad_r4_lr'
-// Known TR variant in the guarded chr22 mixed-provenance fixture.
+// Known TR variant in the disposable Y1 chr22 fixture.
 const TR_VARIANT = 'chr22-36280147-TRV-17~1'
 const CHR22_TABLE_REGION = '22-36280000-36290000'
 const CHR22_TABLE_VARIANTS = [

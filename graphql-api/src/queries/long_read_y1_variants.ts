@@ -38,7 +38,7 @@ export const mapY1RowToGraphQL = (
     source_variant_id: row.source_variant_id,
     alt_index: altIndex,
     lr_cohort: cohort,
-    data_source: 'Y1_ACCEPTED_R2',
+    data_source: 'Y1_ACCEPTED',
     source_release: 'y1',
     source_run_id: runId,
     reference_genome: 'GRCh38',
@@ -185,7 +185,8 @@ export const fetchY1VariantsByRegion = async (
 export const fetchY1VariantById = async (
   variantId: string,
   cohort: LongReadCohort,
-  runId: string
+  runId: string,
+  chrom: string
 ) => {
   const { sourceVariantId, altIndex } = sourceIdentityFromBrowserId(variantId)
   const resultSet = await y1ClickhouseClient.query({
@@ -197,12 +198,12 @@ export const fetchY1VariantById = async (
       FROM lr_y1_alleles
       WHERE run_id = {runId:String}
         AND release = 'y1' AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
-        AND chrom = 'chr22'
+        AND chrom = {chrom:String}
         AND source_variant_id = {sourceVariantId:String}
         AND alt_index = {altIndex:UInt16}
       LIMIT 1
     `,
-    query_params: { runId, cohort, sourceVariantId, altIndex },
+    query_params: { runId, cohort, chrom, sourceVariantId, altIndex },
     format: 'JSONEachRow',
   })
   const rows = (await resultSet.json()) as any[]

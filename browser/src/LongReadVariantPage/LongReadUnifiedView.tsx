@@ -49,7 +49,7 @@ import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapp
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
 import {
-  LongReadPrototypeProvenance,
+  LongReadY1Provenance,
   modalityAvailable,
   sourceForModality,
 } from './LongReadProvenanceBanner'
@@ -206,7 +206,7 @@ type LongReadUnifiedViewProps = {
   variants: any[]
   lrCohort?: 'hgsvc_hprc' | 'aou'
   onChangeLrCohort?: (cohort: 'hgsvc_hprc' | 'aou') => void
-  provenance?: LongReadPrototypeProvenance | null
+  provenance?: LongReadY1Provenance | null
   clinvarReleaseDate?: string
   genes?: ZoomGene[]
   zoomRegion?: { start: number; stop: number } | null
@@ -293,22 +293,22 @@ const LongReadUnifiedView = ({
   const [showRegionWarning, setShowRegionWarning] = useState(
     regionTooLarge && urlShowHaplotypes
   )
-  const mixedMode = provenance?.mixed_provenance === true || process.env.LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED === 'true'
+  const y1Mode = provenance?.enabled === true || process.env.LR_Y1_ENABLED === 'true'
   // Capabilities from the API are authoritative. The build flag only fails closed while
   // provenance is unavailable (for example during an API/frontend version transition).
   const capabilityKnown = (modality: string) => sourceForModality(provenance, modality) !== undefined
   const haplotypesAvailable = capabilityKnown('HAPLOTYPES')
     ? modalityAvailable(provenance, 'HAPLOTYPES')
-    : !mixedMode && lrCohort !== 'aou'
+    : !y1Mode && lrCohort !== 'aou'
   const metadataAvailable = capabilityKnown('SAMPLE_METADATA')
     ? modalityAvailable(provenance, 'SAMPLE_METADATA')
-    : !mixedMode && lrCohort !== 'aou'
+    : !y1Mode && lrCohort !== 'aou'
   const methylationAvailable = capabilityKnown('METHYLATION')
     ? modalityAvailable(provenance, 'METHYLATION')
-    : !mixedMode && lrCohort !== 'aou'
+    : !y1Mode && lrCohort !== 'aou'
   const recombinationAvailable = capabilityKnown('RECOMBINATION')
     ? modalityAvailable(provenance, 'RECOMBINATION')
-    : !mixedMode
+    : !y1Mode
   const outOfScope = provenance?.enabled === true && provenance.sources.some(
     (source) => source.modality === 'PRIMARY_VARIANTS' && !source.available
   )
@@ -890,7 +890,7 @@ const LongReadUnifiedView = ({
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
     setMethylationAvailability(null)
-    if (!mixedMode || !methylationAvailable || lrCohort !== 'hgsvc_hprc') return undefined
+    if (!y1Mode || !methylationAvailable || lrCohort !== 'hgsvc_hprc') return undefined
     let cancelled = false
     fetchGraphQL(METHYLATION_AVAILABILITY_QUERY, { lr_cohort: lrCohort })
       .then((result) => {
@@ -898,7 +898,7 @@ const LongReadUnifiedView = ({
       })
       .catch((error) => console.error('Error fetching methylation availability:', error))
     return () => { cancelled = true }
-  }, [mixedMode, methylationAvailable, lrCohort])
+  }, [y1Mode, methylationAvailable, lrCohort])
 
   // A source/region/cohort change invalidates both methylation owners and resets
   // detail, summary, outliers, progress, and loading in one state update.
@@ -989,7 +989,7 @@ const LongReadUnifiedView = ({
       .slice(0, MAX_AUTO_FETCH_OUTLIERS)
       .filter((sample: any) => sample.outlier_count > 0)
       .map((sample: any) => sample.sample_id)
-      .filter((sampleId: string) => !mixedMode || availableMethylationIds.has(sampleId))))
+      .filter((sampleId: string) => !y1Mode || availableMethylationIds.has(sampleId))))
     const incompleteOutliers = incompleteMethylationSampleIds(
       topOutliers,
       completedMethylationSampleIdentitiesRef.current,
@@ -1077,7 +1077,7 @@ const LongReadUnifiedView = ({
     }
   }, [
     showHaplotypes, chrom, start, stop, methylationOutliers, methylationViewState.scope, lrCohort,
-    methylationAvailable, mixedMode, availableMethylationIds, methylationScope, regionSize,
+    methylationAvailable, y1Mode, availableMethylationIds, methylationScope, regionSize,
     beginDetailOperation, cancelDetailOperation, detailOperationIsCurrent,
     finishDetailOperation, markDetailOperationSamplesInFlight,
     releaseDetailOperationSamples, updateMethylationForDetailOperation,
@@ -1087,7 +1087,7 @@ const LongReadUnifiedView = ({
   // one immutable carrier roster and supersedes any prior detail operation.
   const handleLoadAllSamples = useCallback(async () => {
     if (!methylationAvailable || haplotypeGroups.groups.length === 0) return
-    if (mixedMode && methylationAvailability === null) return
+    if (y1Mode && methylationAvailability === null) return
 
     const activeOperation = activeMethylationDetailOperationRef.current
     if (activeOperation?.kind === 'load-all' && detailOperationIsCurrent(activeOperation)) return
@@ -1095,7 +1095,7 @@ const LongReadUnifiedView = ({
     const carrierSampleIds = Array.from(new Set(
       haplotypeGroups.groups.flatMap((group) => group.samples.map((sample) => sample.sample_id))
     ))
-    const requestableSampleIds = mixedMode
+    const requestableSampleIds = y1Mode
       ? carrierSampleIds.filter((sampleId) => availableMethylationIds.has(sampleId))
       : carrierSampleIds
     if (requestableSampleIds.length === 0) return
@@ -1187,7 +1187,7 @@ const LongReadUnifiedView = ({
     }
   }, [
     chrom, start, stop, haplotypeGroups, lrCohort, methylationAvailable, methylationScope,
-    mixedMode, methylationAvailability, availableMethylationIds, beginDetailOperation,
+    y1Mode, methylationAvailability, availableMethylationIds, beginDetailOperation,
     detailOperationIsCurrent, finishDetailOperation, markDetailOperationSamplesInFlight,
     releaseDetailOperationSamples, updateMethylationForDetailOperation,
   ])
@@ -1520,7 +1520,7 @@ const LongReadUnifiedView = ({
             onShowMethylationChange={setShowMethylation}
             methylationAvailable={methylationAvailable}
             methylationLabel={sourceForModality(provenance, 'METHYLATION')?.label || 'Legacy — not Y1'}
-            methylationAvailability={mixedMode ? methylationAvailability : undefined}
+            methylationAvailability={y1Mode ? methylationAvailability : undefined}
             phasedMethylationCapability={phasedMethylationCapability}
             filterToOutliers={filterToOutliers}
             onFilterToOutliersChange={setFilterToOutliers}

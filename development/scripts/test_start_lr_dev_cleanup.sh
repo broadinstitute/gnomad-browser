@@ -31,8 +31,7 @@ cat >"$MOCK_BIN/curl" <<'EOF'
 case "$*" in
     *127.0.0.1:8125/ping*) test -e "$LR_TEST_STATE/tunnel-8125-ready" ;;
     *127.0.0.1:8126/ping*) test -e "$LR_TEST_STATE/tunnel-8126-ready" ;;
-    *127.0.0.1:8127/ping*) test -e "$LR_TEST_STATE/tunnel-8127-ready" ;;
-    *127.0.0.1:8126/*EXISTS*|*127.0.0.1:8127/*EXISTS*) printf '1' ;;
+    *127.0.0.1:8126/*EXISTS*) printf '1' ;;
     *127.0.0.1:9200/*) test -e "$LR_TEST_STATE/es-ready" ;;
     *127.0.0.1:8010/health/ready*) test -e "$LR_TEST_STATE/api-ready" ;;
     *) exit 1 ;;
@@ -89,7 +88,7 @@ sleep 300 &
 PREEXISTING_PID=$!
 
 PATH="$MOCK_BIN:$PATH" LR_TEST_STATE="$STATE_DIR" \
-    "$ROOT_DIR/start_lr_dev.sh" --gcp-clickhouse >"$TMP_DIR/output.log" 2>&1 &
+    "$ROOT_DIR/start_lr_dev.sh" --gcp-clickhouse --y1-clickhouse-port 8126 >"$TMP_DIR/output.log" 2>&1 &
 RUN_PID=$!
 
 for _ in $(seq 1 200); do
@@ -122,7 +121,7 @@ kill -0 "$PREEXISTING_PID" 2>/dev/null || {
     exit 1
 }
 
-for name in tunnel-8125 tunnel-8126 tunnel-8127 es api browser; do
+for name in tunnel-8125 tunnel-8126 es api browser; do
     pid="$(cat "$STATE_DIR/$name-child.pid")"
     if ps -o stat= -p "$pid" 2>/dev/null | grep -qv '^Z'; then
         echo "$name descendant $pid survived cleanup" >&2
@@ -130,7 +129,7 @@ for name in tunnel-8125 tunnel-8126 tunnel-8127 es api browser; do
     fi
 done
 
-for name in tunnel-8125 tunnel-8126 tunnel-8127 es; do
+for name in tunnel-8125 tunnel-8126 es; do
     port="$(cat "$STATE_DIR/$name-listener.port")"
     if python3 - "$port" <<'PY'
 import socket

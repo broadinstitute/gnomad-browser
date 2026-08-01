@@ -17,41 +17,38 @@ err()  { printf '%b[lr-dev]%b %s\n' "$RED" "$NC" "$*" >&2; }
 die()  { err "$*"; exit 1; }
 
 USE_GCP_CH=false
-for arg in "$@"; do
-    case "$arg" in
-        --gcp-clickhouse) USE_GCP_CH=true ;;
+USE_Y1=false
+Y1_PORT=""
+while (($#)); do
+    case "$1" in
+        --gcp-clickhouse)
+            USE_GCP_CH=true
+            shift
+            ;;
+        --y1-clickhouse-port)
+            (($# >= 2)) || die "--y1-clickhouse-port requires PORT"
+            Y1_PORT="$2"
+            [[ "$Y1_PORT" =~ ^[0-9]+$ ]] && ((Y1_PORT >= 1 && Y1_PORT <= 65535)) ||
+                die "Invalid Y1 ClickHouse port: $Y1_PORT"
+            USE_Y1=true
+            shift 2
+            ;;
         --help|-h)
             cat <<'EOF'
-Usage: ./start_lr_dev.sh [--gcp-clickhouse]
+Usage: ./start_lr_dev.sh [--gcp-clickhouse] [--y1-clickhouse-port PORT]
 
-  --gcp-clickhouse   Start the chr22 Y1 mixed-provenance prototype. The API
-                     keeps legacy ClickHouse on a separate tunnel for existing
-                     non-prototype paths.
+  --y1-clickhouse-port PORT  Use the Y1 ClickHouse server on 127.0.0.1:PORT.
+  --gcp-clickhouse           Open the GCP ClickHouse tunnels. This selects the
+                             connection only; it does not select a data/provenance mode.
 
-GCP mode ports (all may be overridden):
-  GCP_CH_PORT=8125                 legacy gnomad-lr-data-vm
-  LR_Y1_GCP_CH_PORT=8126           accepted Y1 primary and metadata
-  LR_Y1_ANCILLARY_GCP_CH_PORT=8127 isolated prototype ancillary data
-
-Prototype configuration:
-  LR_Y1_CLICKHOUSE_DATABASE
-  LR_Y1_HGSVC_RUN_ID
-  LR_Y1_AOU_RUN_ID
-  LR_Y1_HGSVC_METADATA_RUN_ID
-  LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_DATABASE
-  LR_Y1_PROTOTYPE_ANCILLARY_MODALITIES
-  LR_Y1_PROTOTYPE_METHYLATION_SAMPLE_ALLOWLIST
-  LR_PHASED_METHYLATION_EVALUATION_ENABLED=true  retained HG00097 source tracks
-  LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER
-  LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD
-
-Defaults are the accepted chr22 r2 rehearsal identities documented by the API.
-Set LR_DEV_DRY_RUN=1 to validate and print the resolved configuration without
-starting Docker, tunnels, the API, or the browser.
+Y1 always reads the disposable database gnomad_lr_y1_scratch_v5_current.
+Tests and advanced users may explicitly set LR_Y1_CLICKHOUSE_URL and may override
+LR_Y1_CLICKHOUSE_DATABASE. Run IDs are discovered from lr_y1_load_runs at startup.
+Set LR_DEV_DRY_RUN=1 to print configuration without starting services.
 EOF
             exit 0
             ;;
-        *) die "Unknown argument: $arg (use --help)" ;;
+        *) die "Unknown argument: $1 (use --help)" ;;
     esac
 done
 
@@ -60,79 +57,28 @@ GCP_ZONE="${GCP_ZONE:-us-east1-c}"
 LEGACY_GCP_CH_VM="${LEGACY_GCP_CH_VM:-gnomad-lr-data-vm}"
 Y1_GCP_CH_VM="${LR_Y1_GCP_CH_VM:-gnomad-lr-y1-clickhouse}"
 GCP_CH_LOCAL_PORT="${GCP_CH_PORT:-8125}"
-Y1_GCP_CH_LOCAL_PORT="${LR_Y1_GCP_CH_PORT:-8126}"
-ANCILLARY_GCP_CH_LOCAL_PORT="${LR_Y1_ANCILLARY_GCP_CH_PORT:-8127}"
-
-Y1_DATABASE="${LR_Y1_CLICKHOUSE_DATABASE:-gnomad_lr_y1_serving_chr22_r2_rehearsal}"
-Y1_HGSVC_RUN_ID="${LR_Y1_HGSVC_RUN_ID:-y1-full-chr22-hgsvc-hprc-20260728-r2-retry1}"
-Y1_AOU_RUN_ID="${LR_Y1_AOU_RUN_ID:-y1-full-chr22-aou-20260728-r2}"
-Y1_METADATA_RUN_ID="${LR_Y1_HGSVC_METADATA_RUN_ID:-y1-metadata-full-chr22-20260728-r2-retry1}"
-ANCILLARY_DATABASE="${LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_DATABASE:-gnomad_lr_y1_prototype_ancillary_chr22}"
-ANCILLARY_MODALITIES="${LR_Y1_PROTOTYPE_ANCILLARY_MODALITIES-coverage,str_histogram,methylation}"
-PHASED_EVALUATION_ENABLED="${LR_PHASED_METHYLATION_EVALUATION_ENABLED:-false}"
-[[ "$PHASED_EVALUATION_ENABLED" == true || "$PHASED_EVALUATION_ENABLED" == false ]] ||
-    die "LR_PHASED_METHYLATION_EVALUATION_ENABLED must be true or false"
-if [[ "$PHASED_EVALUATION_ENABLED" == true ]]; then
-    [[ -n "${LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER:-}" ]] ||
-        die "Evaluation ClickHouse user is required"
-    [[ -n "${LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD:-}" ]] ||
-        die "Evaluation ClickHouse password is required"
-fi
+Y1_GCP_CH_LOCAL_PORT="${Y1_PORT:-${LR_Y1_GCP_CH_PORT:-8126}}"
+Y1_DATABASE="${LR_Y1_CLICKHOUSE_DATABASE:-gnomad_lr_y1_scratch_v5_current}"
+Y1_CH_URL="${LR_Y1_CLICKHOUSE_URL:-http://127.0.0.1:${Y1_GCP_CH_LOCAL_PORT}}"
 
 [[ "$Y1_DATABASE" =~ ^gnomad_lr_y1_[a-z0-9_]+$ ]] ||
     die "Unsafe LR_Y1_CLICKHOUSE_DATABASE: $Y1_DATABASE"
-[[ "$ANCILLARY_DATABASE" =~ ^gnomad_lr_(y1_)?(legacy_)?prototype_[a-z0-9_]+$ ]] ||
-    die "Unsafe LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_DATABASE: $ANCILLARY_DATABASE"
-
-IFS=',' read -r -a modality_list <<< "$ANCILLARY_MODALITIES"
-for modality in "${modality_list[@]}"; do
-    case "$modality" in
-        coverage|methylation|str_histogram|'') ;;
-        *) die "Unsupported prototype ancillary modality '$modality'; expected coverage, methylation, or str_histogram" ;;
-    esac
-done
-
-METHYLATION_ALLOWLIST="${LR_Y1_PROTOTYPE_METHYLATION_SAMPLE_ALLOWLIST:-}"
-DEFAULT_METHYLATION_ALLOWLIST="$ROOT_DIR/graphql-api/data/lr-y1-prototype-methylation-available-samples.txt"
-if [[ ",$ANCILLARY_MODALITIES," == *,methylation,* ]]; then
-    if [[ -z "$METHYLATION_ALLOWLIST" && -f "$DEFAULT_METHYLATION_ALLOWLIST" ]]; then
-        METHYLATION_ALLOWLIST="$DEFAULT_METHYLATION_ALLOWLIST"
-    fi
-    [[ -n "$METHYLATION_ALLOWLIST" ]] || die "methylation is configured, but no validated allowlist was found; set LR_Y1_PROTOTYPE_METHYLATION_SAMPLE_ALLOWLIST or choose other modalities"
-    [[ -r "$METHYLATION_ALLOWLIST" ]] || die "Methylation allowlist is not readable: $METHYLATION_ALLOWLIST"
-    allowlist_count="$(awk 'NF { seen[$0]=1 } END { print length(seen) }' "$METHYLATION_ALLOWLIST")"
-    [[ "$allowlist_count" == 210 ]] || die "Methylation allowlist must contain exactly 210 unique available sample IDs (found $allowlist_count): $METHYLATION_ALLOWLIST"
+if [[ "$USE_GCP_CH" == true && "$GCP_CH_LOCAL_PORT" == "$Y1_GCP_CH_LOCAL_PORT" ]]; then
+    die "Legacy and Y1 tunnel ports must be distinct"
 fi
-
-if [[ "$USE_GCP_CH" == true ]]; then
-    [[ "$GCP_CH_LOCAL_PORT" != "$Y1_GCP_CH_LOCAL_PORT" &&
-       "$GCP_CH_LOCAL_PORT" != "$ANCILLARY_GCP_CH_LOCAL_PORT" &&
-       "$Y1_GCP_CH_LOCAL_PORT" != "$ANCILLARY_GCP_CH_LOCAL_PORT" ]] ||
-        die "Legacy, Y1 primary, and ancillary tunnel ports must be distinct"
-fi
+if [[ -n "${LR_Y1_CLICKHOUSE_URL:-}" ]]; then USE_Y1=true; fi
+if [[ "${LR_Y1_ENABLED:-false}" == true ]]; then USE_Y1=true; fi
 
 if [[ "${LR_DEV_DRY_RUN:-0}" == 1 ]]; then
     log "Dry run: configuration is statically valid."
-    printf 'mode=%s\n' "$([[ "$USE_GCP_CH" == true ]] && echo chr22-mixed || echo local-legacy)"
+    printf 'mode=%s\n' "$([[ "$USE_Y1" == true ]] && echo y1 || echo legacy)"
     if [[ "$USE_GCP_CH" == true ]]; then
         printf 'CLICKHOUSE_URL=http://127.0.0.1:%s\n' "$GCP_CH_LOCAL_PORT"
-        printf 'LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:%s\n' "$Y1_GCP_CH_LOCAL_PORT"
+    fi
+    if [[ "$USE_Y1" == true ]]; then
+        printf 'LR_Y1_ENABLED=true\n'
+        printf 'LR_Y1_CLICKHOUSE_URL=%s\n' "$Y1_CH_URL"
         printf 'LR_Y1_CLICKHOUSE_DATABASE=%s\n' "$Y1_DATABASE"
-        printf 'LR_Y1_HGSVC_RUN_ID=%s\n' "$Y1_HGSVC_RUN_ID"
-        printf 'LR_Y1_AOU_RUN_ID=%s\n' "$Y1_AOU_RUN_ID"
-        printf 'LR_Y1_HGSVC_METADATA_RUN_ID=%s\n' "$Y1_METADATA_RUN_ID"
-        printf 'LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_URL=http://127.0.0.1:%s\n' "$ANCILLARY_GCP_CH_LOCAL_PORT"
-        printf 'LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_DATABASE=%s\n' "$ANCILLARY_DATABASE"
-        printf 'LR_Y1_PROTOTYPE_ANCILLARY_MODALITIES=%s\n' "$ANCILLARY_MODALITIES"
-        printf 'LR_PHASED_METHYLATION_EVALUATION_ENABLED=%s\n' "$PHASED_EVALUATION_ENABLED"
-        if [[ "$PHASED_EVALUATION_ENABLED" == true ]]; then
-            printf 'LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_URL=http://127.0.0.1:%s\n' "$ANCILLARY_GCP_CH_LOCAL_PORT"
-            printf 'LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER=%s\n' "$LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER"
-            printf 'LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD=<redacted>\n'
-        fi
-        if [[ -n "$METHYLATION_ALLOWLIST" ]]; then
-            printf 'LR_Y1_PROTOTYPE_METHYLATION_SAMPLE_ALLOWLIST=%s\n' "$METHYLATION_ALLOWLIST"
-        fi
     fi
     exit 0
 fi
@@ -280,11 +226,10 @@ fi
 # 2. ClickHouse endpoints
 if [[ "$USE_GCP_CH" == true ]]; then
     start_tunnel "legacy" "$LEGACY_GCP_CH_VM" "$GCP_CH_LOCAL_PORT"
-    start_tunnel "Y1 primary/metadata" "$Y1_GCP_CH_VM" "$Y1_GCP_CH_LOCAL_PORT" "$Y1_DATABASE"
-    start_tunnel "prototype ancillary" "$Y1_GCP_CH_VM" "$ANCILLARY_GCP_CH_LOCAL_PORT" "$ANCILLARY_DATABASE"
+    if [[ "$USE_Y1" == true ]]; then
+        start_tunnel "Y1" "$Y1_GCP_CH_VM" "$Y1_GCP_CH_LOCAL_PORT" "$Y1_DATABASE"
+    fi
     CH_URL="http://127.0.0.1:${GCP_CH_LOCAL_PORT}"
-    Y1_CH_URL="http://127.0.0.1:${Y1_GCP_CH_LOCAL_PORT}"
-    ANCILLARY_CH_URL="http://127.0.0.1:${ANCILLARY_GCP_CH_LOCAL_PORT}"
 else
     CH_URL="http://127.0.0.1:8123"
     if curl -fsS "$CH_URL/ping" >/dev/null 2>&1; then
@@ -298,6 +243,13 @@ else
         docker run -d --name clickhouse -p 8123:8123 -p 9000:9000 \
             -v clickhouse_data:/var/lib/clickhouse clickhouse/clickhouse-server >/dev/null
         wait_for_http "local ClickHouse" "$CH_URL/ping" '' 30
+    fi
+    if [[ "$USE_Y1" == true ]]; then
+        wait_for_http "Y1 ClickHouse" "$Y1_CH_URL/ping" '' 5
+        y1_exists="$(curl -fsS --max-time 10 "$Y1_CH_URL/" \
+            --data-binary "EXISTS DATABASE ${Y1_DATABASE} FORMAT TabSeparated")" ||
+            die "Y1 ClickHouse is reachable, but database readiness check failed for $Y1_DATABASE"
+        [[ "$y1_exists" == 1 ]] || die "Y1 database does not exist: $Y1_DATABASE"
     fi
 fi
 
@@ -333,30 +285,12 @@ API_ENV=(
     CACHE_REDIS_URL=redis://localhost:6379/1
     RATE_LIMITER_REDIS_URL=redis://localhost:6379/2
 )
-if [[ "$USE_GCP_CH" == true ]]; then
+if [[ "$USE_Y1" == true ]]; then
     API_ENV+=(
         LR_Y1_ENABLED=true
-        LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED=true
-        LR_Y1_CLICKHOUSE_URL="${LR_Y1_CLICKHOUSE_URL:-$Y1_CH_URL}"
+        LR_Y1_CLICKHOUSE_URL="$Y1_CH_URL"
         LR_Y1_CLICKHOUSE_DATABASE="$Y1_DATABASE"
-        LR_Y1_HGSVC_RUN_ID="$Y1_HGSVC_RUN_ID"
-        LR_Y1_AOU_RUN_ID="$Y1_AOU_RUN_ID"
-        LR_Y1_HGSVC_METADATA_RUN_ID="$Y1_METADATA_RUN_ID"
-        LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_URL="${LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_URL:-$ANCILLARY_CH_URL}"
-        LR_Y1_PROTOTYPE_ANCILLARY_CLICKHOUSE_DATABASE="$ANCILLARY_DATABASE"
-        LR_Y1_PROTOTYPE_ANCILLARY_MODALITIES="$ANCILLARY_MODALITIES"
-        LR_PHASED_METHYLATION_EVALUATION_ENABLED="$PHASED_EVALUATION_ENABLED"
     )
-    if [[ "$PHASED_EVALUATION_ENABLED" == true ]]; then
-        API_ENV+=(
-            LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_URL="${LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_URL:-$ANCILLARY_CH_URL}"
-            LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER="$LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER"
-            LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD="$LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD"
-        )
-    fi
-    if [[ -n "$METHYLATION_ALLOWLIST" ]]; then
-        API_ENV+=(LR_Y1_PROTOTYPE_METHYLATION_SAMPLE_ALLOWLIST="$METHYLATION_ALLOWLIST")
-    fi
 fi
 # $1 is expanded by the child bash.
 # shellcheck disable=SC2016
@@ -372,8 +306,8 @@ BROWSER_ENV=(
     GNOMAD_API_URL=http://127.0.0.1:8010/api
     READS_API_URL=https://gnomad.broadinstitute.org/reads
 )
-if [[ "$USE_GCP_CH" == true ]]; then
-    BROWSER_ENV+=(LR_Y1_ENABLED=true LR_Y1_CHR22_MIXED_PROVENANCE_ENABLED=true)
+if [[ "$USE_Y1" == true ]]; then
+    BROWSER_ENV+=(LR_Y1_ENABLED=true)
 fi
 # $1 is expanded by the child bash.
 # shellcheck disable=SC2016

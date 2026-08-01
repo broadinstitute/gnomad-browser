@@ -295,10 +295,10 @@ const ConnectedVariantsInRegion = ({
         operationName="LongReadVariantsInRegion"
         query={`query LongReadVariantsInRegion($datasetId: DatasetId!, $lrCohort: LongReadCohort!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
             meta { clinvar_release_date }
-            long_read_prototype_provenance(lr_cohort: $lrCohort, chrom: $chrom) {
-              enabled mixed_provenance scope_label warning
+            long_read_y1_provenance(lr_cohort: $lrCohort, chrom: $chrom) {
+              enabled scope_label
               sources {
-                modality source release cohort reference_genome chromosome run_id status available label
+                modality source database release cohort reference_genome chromosome scope run_id status available label
               }
             }
             region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
@@ -339,7 +339,7 @@ const ConnectedVariantsInRegion = ({
             variants={data.region.long_read_variants || []}
             lrCohort={lrCohort}
             onChangeLrCohort={onChangeLrCohort}
-            provenance={data.long_read_prototype_provenance}
+            provenance={data.long_read_y1_provenance}
             clinvarReleaseDate={data.meta.clinvar_release_date}
             genes={region.genes as any[]}
             zoomRegion={zoomRegion || null}

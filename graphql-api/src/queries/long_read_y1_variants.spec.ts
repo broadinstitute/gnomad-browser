@@ -1,5 +1,17 @@
+import { jest } from '@jest/globals'
 import { buildVariantsAndCarrierMap } from './haplotype-grouping'
-import { browserVariantId, mapY1RowToGraphQL, sourceIdentityFromBrowserId } from './long_read_y1_variants'
+
+const mockQuery = jest.fn()
+jest.mock('../clickhouse', () => ({
+  y1ClickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
+}))
+
+import {
+  browserVariantId,
+  fetchY1VariantsByRegion,
+  mapY1RowToGraphQL,
+  sourceIdentityFromBrowserId,
+} from './long_read_y1_variants'
 
 describe('Y1 long-read browser identity', () => {
   it('keeps the exact source ID separate from the ALT-specific browser ID', () => {
@@ -65,6 +77,25 @@ describe('Y1 long-read browser identity', () => {
         ],
       },
     ])
+  })
+
+  it('uses the discovered AoU run ID and never queries carriers', async () => {
+    mockQuery.mockReset()
+    mockQuery.mockImplementation(() => Promise.resolve({ json: async () => [] }))
+
+    await fetchY1VariantsByRegion(
+      { chrom: 'chr22', start: 100, stop: 200 },
+      'aou',
+      'discovered-aou-run'
+    )
+
+    expect(mockQuery).toHaveBeenCalledTimes(2)
+    for (const [call] of mockQuery.mock.calls as any[]) {
+      expect(call.query).not.toContain('lr_y1_carriers')
+      expect(call.query_params).toMatchObject({
+        runId: 'discovered-aou-run', cohort: 'aou', chrom: 'chr22',
+      })
+    }
   })
 
   it.each([
