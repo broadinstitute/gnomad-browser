@@ -15,6 +15,9 @@ import RegionPage from './RegionPage'
 const operationName = 'Region'
 const query = `
   query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+    meta {
+      long_read_cohorts
+    }
     region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
       genes {
         gene_id
@@ -86,6 +89,7 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
         return (
           <RegionPage
             datasetId={datasetId}
+            availableLrCohorts={data.meta?.long_read_cohorts || ['hgsvc_hprc']}
             region={{
               ...data.region,
               reference_genome: referenceGenome(datasetId),

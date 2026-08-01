@@ -28,6 +28,7 @@ import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandem
 import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
 import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
+import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 
 type Props = {
   variantId: string
@@ -35,6 +36,7 @@ type Props = {
   pos: number
   longReadDetails: LongReadDetails
   ref_allele: string
+  lrCohort: LongReadCohort
 }
 
 type GenotypeDistributionCohort = NonNullable<LongReadDetails['genotype_distribution']>[number]
@@ -77,7 +79,14 @@ const formatAlleleType = (alleleType: string | null) => {
   return labels[alleleType.toLowerCase()] || alleleType.toUpperCase()
 }
 
-const LongReadVariantDetails = ({ variantId, chrom, pos, longReadDetails, ref_allele }: Props) => {
+const LongReadVariantDetails = ({
+  variantId,
+  chrom,
+  pos,
+  longReadDetails,
+  ref_allele,
+  lrCohort,
+}: Props) => {
   const {
     allele_size_distribution,
     allelic_series,
@@ -210,7 +219,7 @@ const LongReadVariantDetails = ({ variantId, chrom, pos, longReadDetails, ref_al
           <p>
             This variant falls within a tandem-repeat region.{' '}
             <Link
-              to={`/variant/${enveloping_tr_id}?dataset=gnomad_r4_lr`}
+              to={longReadVariantUrl(enveloping_tr_id, lrCohort)}
               preserveSelectedDataset={false}
             >
               View parent TR: {enveloping_tr_id}
@@ -229,7 +238,7 @@ const LongReadVariantDetails = ({ variantId, chrom, pos, longReadDetails, ref_al
           <ul>
             {enveloped_ids.map((id) => (
               <li key={id}>
-                <Link to={`/variant/${id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false}>
+                <Link to={longReadVariantUrl(id, lrCohort)} preserveSelectedDataset={false}>
                   {id}
                 </Link>
               </li>

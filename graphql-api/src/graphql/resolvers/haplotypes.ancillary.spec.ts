@@ -20,14 +20,17 @@ describe('ancillary cohort availability', () => {
     expect(isAncillaryUnavailableForCohort(undefined, false)).toBe(false)
   })
 
-  test('missing optional Y1 ancillary tables are unavailable rather than zero', () => {
-    expect(ancillaryDecision('hgsvc_hprc', 'coverage', true)).toEqual({
-      available: false,
-      source: 'UNAVAILABLE',
-      reason: 'Optional table is unavailable',
-    })
-    expect(isAncillaryUnavailableForCohort('hgsvc_hprc', true)).toBe(true)
-  })
+  test.each(['coverage', 'str_histogram', 'methylation'] as const)(
+    'Y1 %s is unavailable without a uniquely pinned ancillary run',
+    (modality) => {
+      expect(ancillaryDecision('hgsvc_hprc', modality, true)).toEqual({
+        available: false,
+        source: 'UNAVAILABLE',
+        reason: 'Optional table is unavailable',
+      })
+      expect(isAncillaryUnavailableForCohort('hgsvc_hprc', true, modality)).toBe(true)
+    }
+  )
 
   test('AoU remains summary-only in the sole Y1 mode', () => {
     expect(ancillaryDecision('aou', 'str_histogram', true)).toEqual({
@@ -79,14 +82,14 @@ describe('ancillary cohort availability', () => {
     })
   })
 
-  test('retained source-phased evaluation remains available but not joinable', () => {
+  test('even a retained source-phased evaluation is unavailable without ancillary provenance', () => {
     expect(phasedMethylationCapability('hgsvc_hprc', true)).toEqual({
       data_layer: 'SOURCE_PHASED',
-      available: true,
+      available: false,
       joinable_to_vcf: false,
-      status: 'AVAILABLE_ORIENTATION_UNCONFIRMED',
+      status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
       orientation_status: 'UNCONFIRMED',
-      reason: expect.stringContaining('visual evaluation only'),
+      reason: expect.stringContaining('orientation is confirmed'),
     })
   })
 

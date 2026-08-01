@@ -75,7 +75,7 @@ type Gene {
   variants(dataset: DatasetId!): [Variant!]! @cost(value: 10)
   long_read_variants(
     dataset: DatasetId!
-    lr_cohort: LongReadCohort = hgsvc_hprc
+    lr_cohort: LongReadCohort
   ): [LongReadVariant!] @cost(value: 10)
   structural_variants(dataset: StructuralVariantDatasetId!): [StructuralVariant!]! @cost(value: 10)
   mitochondrial_variants(dataset: DatasetId!): [MitochondrialVariant!]! @cost(value: 10)

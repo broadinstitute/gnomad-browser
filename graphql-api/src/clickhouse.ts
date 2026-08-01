@@ -1,5 +1,5 @@
 import { createClient } from '@clickhouse/client'
-import { resolveY1ClickHouseConfig } from './y1_config'
+import { DEFAULT_Y1_CLICKHOUSE_DATABASE, resolveY1ClickHouseConfig } from './y1_config'
 
 const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
 
@@ -16,7 +16,14 @@ export const clickhouseClient = createClient({
 })
 
 export const isY1PilotEnabled = process.env.LR_Y1_ENABLED === 'true'
-export const y1ClickhouseConfig = resolveY1ClickHouseConfig()
+export const y1ClickhouseConfig = isY1PilotEnabled
+  ? resolveY1ClickHouseConfig()
+  : {
+      // The disabled client must never inherit the generic/legacy URL. No query
+      // reaches this non-routable endpoint while Y1 mode is disabled.
+      url: 'http://y1-disabled.invalid',
+      database: DEFAULT_Y1_CLICKHOUSE_DATABASE,
+    }
 
 // Y1 has one read-only connection and one fixed disposable database. Operators
 // select the server by URL (the launcher turns a port into this URL); run IDs are
@@ -37,10 +44,12 @@ const phasedMethylationEvaluationUsername =
   process.env.LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER || ''
 const phasedMethylationEvaluationPassword =
   process.env.LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD || ''
-if (isPhasedMethylationEvaluationEnabled && (
-  !phasedMethylationEvaluationUrl || !phasedMethylationEvaluationUsername ||
-  !phasedMethylationEvaluationPassword
-)) {
+if (
+  isPhasedMethylationEvaluationEnabled &&
+  (!phasedMethylationEvaluationUrl ||
+    !phasedMethylationEvaluationUsername ||
+    !phasedMethylationEvaluationPassword)
+) {
   throw new Error('Phased methylation evaluation requires its URL, user, and password')
 }
 

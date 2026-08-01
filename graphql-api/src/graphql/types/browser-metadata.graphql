@@ -1,3 +1,4 @@
 type BrowserMetadata {
   clinvar_release_date: String!
+  long_read_cohorts: [LongReadCohort!]!
 }

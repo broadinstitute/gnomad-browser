@@ -32,6 +32,7 @@ import RegionControls from './RegionControls'
 import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
 import RegularVariantsInRegion from './VariantsInRegion'
+import { parseLongReadCohort, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
 import CopyNumberVariantsInRegion from './CopyNumberVariantsInRegion'
 
@@ -80,9 +81,8 @@ export type Region = {
 type RegionPageProps = {
   datasetId: DatasetId
   region: Region
+  availableLrCohorts?: LongReadCohort[]
 }
-
-type LongReadCohort = 'hgsvc_hprc' | 'aou'
 
 type VariantsInRegionRendererProps = {
   datasetId: DatasetId
@@ -124,7 +124,7 @@ const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, o
   )
 }
 
-const RegionPage = ({ datasetId, region }: RegionPageProps) => {
+const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: RegionPageProps) => {
   const { chrom, start, stop } = region
   const [zoomRegion, setZoomRegion] = useState<{ start: number; stop: number } | null>(null)
 
@@ -134,9 +134,9 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   const history = useHistory()
   const haplotypeScrollbarGutter = useStableScrollbarGutter()
   const [genealogyPanelVisible, setGenealogyPanelVisible] = useState(false)
-  const [lrCohort, setLrCohort] = useState<LongReadCohort>(
-    new URLSearchParams(location.search).get('lr_cohort') === 'aou' ? 'aou' : 'hgsvc_hprc'
-  )
+  const requestedLrCohort = parseLongReadCohort(new URLSearchParams(location.search).get('lr_cohort'))
+  const defaultLrCohort = availableLrCohorts.length === 1 ? availableLrCohorts[0] : 'hgsvc_hprc'
+  const [lrCohort, setLrCohort] = useState<LongReadCohort>(requestedLrCohort || defaultLrCohort)
 
   const changeLrCohort = useCallback((cohort: LongReadCohort) => {
     setLrCohort(cohort)

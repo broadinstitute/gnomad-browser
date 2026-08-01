@@ -175,6 +175,7 @@ const shortReadVariantFields = `
 
 const longReadVariantFields = `
       variant_id
+      lr_cohort
       source_variant_id
       chrom
       pos

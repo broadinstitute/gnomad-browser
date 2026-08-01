@@ -7,6 +7,7 @@ import { Page, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import { parseLongReadCohort } from './LongReadVariantPage/longReadCohort'
 
 // Content pages
 const AcOfOnePage = lazy(() => import('./AcOfOnePage'))
@@ -164,7 +165,14 @@ const Routes = () => {
         render={({ location, match }: any) => {
           const queryParams = queryString.parse(location.search)
           const datasetId = queryParams.dataset || defaultDataset
-          return <VariantPageRouter datasetId={datasetId} variantId={match.params.variantId} />
+          const lrCohort = parseLongReadCohort(queryParams.lr_cohort)
+          return (
+            <VariantPageRouter
+              datasetId={datasetId}
+              variantId={match.params.variantId}
+              lrCohort={lrCohort}
+            />
+          )
         }}
       />
 

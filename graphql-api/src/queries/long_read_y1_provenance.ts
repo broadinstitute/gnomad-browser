@@ -1,8 +1,4 @@
-import {
-  isY1PilotEnabled,
-  y1ClickhouseClient,
-  y1ClickhouseConfig,
-} from '../clickhouse'
+import { isY1PilotEnabled, y1ClickhouseClient, y1ClickhouseConfig } from '../clickhouse'
 import type { LongReadCohort } from './long_read_y1_variants'
 
 // The current finalizer name lives in one place so a backend rename to
@@ -23,28 +19,76 @@ export type Y1SourceSnapshot = {
 
 type RunRow = Omit<Y1SourceSnapshot, 'database' | 'metadata_run_id' | 'state'> & {
   state: string
+  interval_start: number
+  interval_end: number
+  summary_rows: number
+  allele_rows: number
+  frequency_rows: number
+  carrier_rows: number
+  latest_revision_rows: number
 }
 
 type TableColumns = Map<string, Set<string>>
 
 const requiredColumns: Record<string, string[]> = {
   lr_y1_load_runs: [
-    'run_id', 'revision', 'release', 'cohort', 'reference_genome', 'chrom',
-    'load_scope', 'state',
+    'run_id',
+    'revision',
+    'release',
+    'cohort',
+    'reference_genome',
+    'chrom',
+    'load_scope',
+    'interval_start',
+    'interval_end',
+    'state',
+    'summary_rows',
+    'allele_rows',
+    'frequency_rows',
+    'carrier_rows',
   ],
-  lr_y1_summaries: [
-    'run_id', 'release', 'cohort', 'reference_genome', 'chrom',
-  ],
+  lr_y1_summaries: ['run_id', 'release', 'cohort', 'reference_genome', 'chrom'],
   lr_y1_alleles: [
-    'run_id', 'release', 'cohort', 'reference_genome', 'chrom', 'position',
-    'reference_end', 'xpos', 'source_variant_id', 'alt_index', 'ref_allele', 'alt',
-    'allele_type', 'filters', 'ac', 'an', 'af', 'allele_length', 'rsids',
-    'cadd_phred', 'phylop', 'major_consequence', 'short_read_match_id',
-    'short_read_match_type', 'short_read_match_source',
+    'run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'chrom',
+    'position',
+    'reference_end',
+    'xpos',
+    'source_variant_id',
+    'alt_index',
+    'ref_allele',
+    'alt',
+    'allele_type',
+    'filters',
+    'ac',
+    'an',
+    'af',
+    'allele_length',
+    'rsids',
+    'cadd_phred',
+    'phylop',
+    'major_consequence',
+    'short_read_match_id',
+    'short_read_match_type',
+    'short_read_match_source',
   ],
   lr_y1_frequencies: [
-    'run_id', 'release', 'cohort', 'reference_genome', 'chrom', 'position',
-    'source_variant_id', 'alt_index', 'division', 'ac', 'an', 'af', 'values_available',
+    'run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'chrom',
+    'position',
+    'source_variant_id',
+    'alt_index',
+    'division',
+    'ac',
+    'an',
+    'af',
+    'values_available',
   ],
 }
 
@@ -60,14 +104,7 @@ const loadTableColumns = async (): Promise<TableColumns> => {
   const schemaRows = await rows(`
     SELECT table, name
     FROM system.columns
-    WHERE database = currentDatabase() AND (
-      startsWith(table, 'lr_y1_') OR table IN (
-        'lr_str_histograms',
-        'lr_methylation_canonical_prototype',
-        'lr_methylation_summary_canonical_prototype',
-        'lr_methylation_sample_availability_canonical_prototype'
-      )
-    )
+    WHERE database = currentDatabase() AND startsWith(table, 'lr_y1_')
     ORDER BY table, position
   `)
   const columns: TableColumns = new Map()
@@ -84,24 +121,43 @@ const requirePrimarySchema = (columns: TableColumns) => {
     const actual = columns.get(table)
     if (!actual) throw new Error(`Y1 database is missing required table ${table}`)
     const missing = required.filter((column) => !actual.has(column))
-    if (missing.length) throw new Error(`${table} is missing required columns: ${missing.join(', ')}`)
+    if (missing.length)
+      throw new Error(`${table} is missing required columns: ${missing.join(', ')}`)
   }
 }
 
-const discoverRunRows = async (): Promise<RunRow[]> => rows(`
-  SELECT run_id,
-    argMax(release, revision) AS release,
-    argMax(cohort, revision) AS cohort,
-    argMax(reference_genome, revision) AS reference_genome,
-    argMax(chrom, revision) AS chrom,
-    argMax(load_scope, revision) AS load_scope,
-    argMax(state, revision) AS state
-  FROM lr_y1_load_runs
-  GROUP BY run_id
-  ORDER BY cohort, run_id
+// Join back to the physical maximum-revision rows instead of independently
+// argMax-ing columns. The window count makes an equal-maximum conflict visible.
+const discoverRunRows = async (): Promise<RunRow[]> =>
+  rows(`
+  SELECT ledger.run_id, ledger.release, ledger.cohort, ledger.reference_genome,
+    ledger.chrom, ledger.load_scope, ledger.interval_start, ledger.interval_end,
+    ledger.state, ledger.summary_rows, ledger.allele_rows, ledger.frequency_rows,
+    ledger.carrier_rows,
+    count() OVER (PARTITION BY ledger.run_id) AS latest_revision_rows
+  FROM lr_y1_load_runs AS ledger
+  INNER JOIN (
+    SELECT run_id, max(revision) AS revision
+    FROM lr_y1_load_runs
+    GROUP BY run_id
+  ) AS latest
+    ON ledger.run_id = latest.run_id AND ledger.revision = latest.revision
+  ORDER BY ledger.cohort, ledger.run_id
 `)
 
 const acceptedRuns = (runRows: RunRow[]) => {
+  const conflicted = runRows.find((run) => Number(run.latest_revision_rows) !== 1)
+  if (conflicted) {
+    throw new Error(`Y1 run ${conflicted.run_id} has duplicate rows at its maximum revision`)
+  }
+  const runIds = new Set<string>()
+  for (const run of runRows) {
+    if (runIds.has(run.run_id)) {
+      throw new Error(`Y1 run ${run.run_id} has duplicate rows at its maximum revision`)
+    }
+    runIds.add(run.run_id)
+  }
+
   const recognized = runRows.filter(
     (run): run is RunRow & { cohort: LongReadCohort } =>
       run.cohort === 'hgsvc_hprc' || run.cohort === 'aou'
@@ -124,14 +180,23 @@ const acceptedRuns = (runRows: RunRow[]) => {
 
   const selected = [...byCohort.values()].map(([run]) => run)
   for (const run of selected) {
-    if (!run.run_id || run.release !== 'y1' || run.reference_genome !== 'GRCh38' ||
-        !run.chrom || !run.load_scope) {
-      throw new Error(`Accepted Y1 run ${run.run_id || '<missing>'} has malformed provenance`)
+    if (
+      !run.run_id ||
+      run.release !== 'y1' ||
+      run.reference_genome !== 'GRCh38' ||
+      !run.chrom ||
+      run.load_scope !== 'full_chromosome'
+    ) {
+      throw new Error(
+        `Accepted Y1 run ${run.run_id || '<missing>'} must have full-chromosome provenance`
+      )
     }
   }
-  const scopeKeys = new Set(selected.map(
-    (run) => [run.release, run.reference_genome, run.chrom, run.load_scope].join('\u0000')
-  ))
+  const scopeKeys = new Set(
+    selected.map((run) =>
+      [run.release, run.reference_genome, run.chrom, run.load_scope].join('\u0000')
+    )
+  )
   if (scopeKeys.size !== 1) {
     throw new Error('Accepted Y1 cohort runs have conflicting release/reference/chrom/scope')
   }
@@ -139,29 +204,46 @@ const acceptedRuns = (runRows: RunRow[]) => {
 }
 
 const requireCanonicalRows = async (run: RunRow) => {
-  const counts = await rows(`
-    SELECT 'lr_y1_summaries' AS table, count() AS n FROM lr_y1_summaries
-      WHERE run_id = {runId:String} AND release = {release:String}
-        AND cohort = {cohort:String} AND reference_genome = {referenceGenome:String}
-        AND chrom = {chrom:String}
+  const counts = await rows(
+    `
+    SELECT 'lr_y1_summaries' AS table, count() AS total,
+      countIf(release = {release:String} AND cohort = {cohort:String}
+        AND reference_genome = {referenceGenome:String} AND chrom = {chrom:String}) AS exact
+    FROM lr_y1_summaries WHERE run_id = {runId:String}
     UNION ALL
-    SELECT 'lr_y1_alleles' AS table, count() AS n FROM lr_y1_alleles
-      WHERE run_id = {runId:String} AND release = {release:String}
-        AND cohort = {cohort:String} AND reference_genome = {referenceGenome:String}
-        AND chrom = {chrom:String}
+    SELECT 'lr_y1_alleles' AS table, count() AS total,
+      countIf(release = {release:String} AND cohort = {cohort:String}
+        AND reference_genome = {referenceGenome:String} AND chrom = {chrom:String}) AS exact
+    FROM lr_y1_alleles WHERE run_id = {runId:String}
     UNION ALL
-    SELECT 'lr_y1_frequencies' AS table, count() AS n FROM lr_y1_frequencies
-      WHERE run_id = {runId:String} AND release = {release:String}
-        AND cohort = {cohort:String} AND reference_genome = {referenceGenome:String}
-        AND chrom = {chrom:String}
-  `, {
-    runId: run.run_id, release: run.release, cohort: run.cohort,
-    referenceGenome: run.reference_genome, chrom: run.chrom,
-  })
-  const countsByTable = new Map(counts.map((row) => [String(row.table), Number(row.n)]))
-  for (const table of ['lr_y1_summaries', 'lr_y1_alleles', 'lr_y1_frequencies']) {
-    if (!countsByTable.get(table)) {
-      throw new Error(`Accepted Y1 run ${run.run_id} has no canonical rows in ${table}`)
+    SELECT 'lr_y1_frequencies' AS table, count() AS total,
+      countIf(release = {release:String} AND cohort = {cohort:String}
+        AND reference_genome = {referenceGenome:String} AND chrom = {chrom:String}) AS exact
+    FROM lr_y1_frequencies WHERE run_id = {runId:String}
+  `,
+    {
+      runId: run.run_id,
+      release: run.release,
+      cohort: run.cohort,
+      referenceGenome: run.reference_genome,
+      chrom: run.chrom,
+    }
+  )
+  const expected = new Map([
+    ['lr_y1_summaries', Number(run.summary_rows)],
+    ['lr_y1_alleles', Number(run.allele_rows)],
+    ['lr_y1_frequencies', Number(run.frequency_rows)],
+  ])
+  const observed = new Map(counts.map((row) => [String(row.table), row]))
+  for (const [table, expectedRows] of expected) {
+    const row = observed.get(table)
+    const total = Number(row?.total ?? -1)
+    const exact = Number(row?.exact ?? -1)
+    if (expectedRows <= 0 || total !== expectedRows || exact !== expectedRows) {
+      throw new Error(
+        `Accepted Y1 run ${run.run_id} ${table} count/identity mismatch: ` +
+          `ledger=${expectedRows}, total=${total}, exact=${exact}`
+      )
     }
   }
 }
@@ -175,27 +257,79 @@ const validateCarrierStructure = async (
   if (hgsvc) {
     if (!carriers) throw new Error('HGSVC/HPRC haplotypes require lr_y1_carriers')
     const missing = [
-      'run_id', 'release', 'cohort', 'reference_genome', 'chrom', 'position',
-      'source_variant_id', 'alt_index', 'alt', 'sample_id', 'genotype_position',
-      'genotype_fields_json', 'gt_phased', 'gt_alleles',
+      'run_id',
+      'release',
+      'cohort',
+      'reference_genome',
+      'chrom',
+      'position',
+      'source_variant_id',
+      'alt_index',
+      'alt',
+      'sample_id',
+      'genotype_position',
+      'genotype_fields_json',
+      'gt_phased',
+      'gt_alleles',
     ].filter((column) => !carriers.has(column))
-    if (missing.length) throw new Error(`lr_y1_carriers is missing required columns: ${missing.join(', ')}`)
+    if (missing.length)
+      throw new Error(`lr_y1_carriers is missing required columns: ${missing.join(', ')}`)
   }
-  if (!carriers) return
 
-  const carrierCounts = await rows(`
-    SELECT run_id, cohort, count() AS n
-    FROM lr_y1_carriers
-    GROUP BY run_id, cohort
-  `)
-  if (carrierCounts.some((row) => row.cohort === 'aou' && Number(row.n) > 0)) {
-    throw new Error('AoU is summary-only and must not have carrier rows')
-  }
-  if (hgsvc && !carrierCounts.some(
-    (row) => row.run_id === hgsvc.run_id && row.cohort === 'hgsvc_hprc' && Number(row.n) > 0
-  )) {
-    throw new Error(`Accepted HGSVC/HPRC run ${hgsvc.run_id} has no carrier rows`)
-  }
+  await Promise.all(
+    [...runs].map(async ([cohort, [run]]) => {
+      const expected = Number(run.carrier_rows)
+      if (cohort === 'aou' && expected !== 0) {
+        throw new Error(`Accepted AoU run ${run.run_id} ledger must declare zero carrier rows`)
+      }
+      if (!carriers) {
+        if (expected !== 0) throw new Error(`Accepted Y1 run ${run.run_id} is missing carrier rows`)
+        return
+      }
+      const countRows = await rows(
+        `
+      SELECT count() AS total,
+        countIf(release = {release:String} AND cohort = {cohort:String}
+          AND reference_genome = {referenceGenome:String} AND chrom = {chrom:String}) AS exact
+      FROM lr_y1_carriers
+      WHERE run_id = {runId:String}
+    `,
+        {
+          runId: run.run_id,
+          release: run.release,
+          cohort: run.cohort,
+          referenceGenome: run.reference_genome,
+          chrom: run.chrom,
+        }
+      )
+      const total = Number(countRows[0]?.total ?? -1)
+      const exact = Number(countRows[0]?.exact ?? -1)
+      if (cohort === 'aou') {
+        if (total !== 0 || exact !== 0) {
+          throw new Error(`Accepted AoU run ${run.run_id} must not have physical carrier rows`)
+        }
+      } else if (expected <= 0 || total !== expected || exact !== expected) {
+        throw new Error(
+          `Accepted HGSVC/HPRC run ${run.run_id} carrier count/identity mismatch: ` +
+            `ledger=${expected}, total=${total}, exact=${exact}`
+        )
+      }
+    })
+  )
+}
+
+type MetadataRunRow = {
+  metadata_run_id: string
+  state: string
+  release: string
+  cohort: string
+  reference_genome: string
+  source_manifest_id: string
+  source_manifest_sha256: string
+  expected_roster_rows: number
+  observed_roster_rows: number
+  output_rows: number
+  latest_revision_rows: number
 }
 
 const resolveOptionalMetadataRun = async (
@@ -206,33 +340,99 @@ const resolveOptionalMetadataRun = async (
   const runColumns = columns.get('lr_y1_metadata_runs')
   const dataColumns = columns.get('lr_y1_sample_metadata')
   if (!runColumns || !dataColumns) return null
-  const requiredRunColumns = ['metadata_run_id', 'revision', 'state', 'release', 'cohort', 'reference_genome']
-  const requiredDataColumns = [
-    'metadata_run_id', 'release', 'cohort', 'reference_genome', 'sample_id',
-    'subpopulation', 'superpopulation',
+  const requiredRunColumns = [
+    'metadata_run_id',
+    'revision',
+    'state',
+    'release',
+    'cohort',
+    'reference_genome',
+    'source_manifest_id',
+    'source_manifest_sha256',
+    'expected_roster_rows',
+    'observed_roster_rows',
+    'output_rows',
   ]
-  if (requiredRunColumns.some((column) => !runColumns.has(column)) ||
-      requiredDataColumns.some((column) => !dataColumns.has(column))) return null
+  const requiredDataColumns = [
+    'metadata_run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'sample_id',
+    'source_manifest_id',
+    'source_manifest_sha256',
+    'subpopulation',
+    'superpopulation',
+  ]
+  if (
+    requiredRunColumns.some((column) => !runColumns.has(column)) ||
+    requiredDataColumns.some((column) => !dataColumns.has(column))
+  )
+    return null
 
-  const metadataRuns = await rows(`
-    SELECT metadata_run_id, argMax(state, revision) AS state,
-      argMax(release, revision) AS release,
-      argMax(cohort, revision) AS cohort,
-      argMax(reference_genome, revision) AS reference_genome
-    FROM lr_y1_metadata_runs
-    GROUP BY metadata_run_id
-  `)
-  const accepted = metadataRuns.filter((run) =>
-    run.state === 'accepted' && run.release === hgsvcRun.release &&
-    run.cohort === 'hgsvc_hprc' && run.reference_genome === hgsvcRun.reference_genome
+  const metadataRuns = (await rows(`
+    SELECT ledger.metadata_run_id, ledger.state, ledger.release, ledger.cohort,
+      ledger.reference_genome, ledger.source_manifest_id, ledger.source_manifest_sha256,
+      ledger.expected_roster_rows, ledger.observed_roster_rows, ledger.output_rows,
+      count() OVER (PARTITION BY ledger.metadata_run_id) AS latest_revision_rows
+    FROM lr_y1_metadata_runs AS ledger
+    INNER JOIN (
+      SELECT metadata_run_id, max(revision) AS revision
+      FROM lr_y1_metadata_runs
+      GROUP BY metadata_run_id
+    ) AS latest
+      ON ledger.metadata_run_id = latest.metadata_run_id
+      AND ledger.revision = latest.revision
+  `)) as MetadataRunRow[]
+  if (metadataRuns.some((run) => Number(run.latest_revision_rows) !== 1)) return null
+  const accepted = metadataRuns.filter(
+    (run) =>
+      run.state === 'accepted' &&
+      run.release === hgsvcRun.release &&
+      run.cohort === hgsvcRun.cohort &&
+      run.reference_genome === hgsvcRun.reference_genome
   )
   if (accepted.length !== 1) return null
-  const metadataRunId = String(accepted[0].metadata_run_id)
-  const countRows = await rows(`
-    SELECT count() AS n FROM lr_y1_sample_metadata
+  const run = accepted[0]
+  const expected = Number(run.output_rows)
+  if (
+    expected <= 0 ||
+    Number(run.expected_roster_rows) !== expected ||
+    Number(run.observed_roster_rows) !== expected
+  )
+    return null
+
+  const countRows = await rows(
+    `
+    SELECT count() AS total,
+      countIf(release = {release:String} AND cohort = {cohort:String}
+        AND reference_genome = {referenceGenome:String}
+        AND source_manifest_id = {sourceManifestId:String}
+        AND source_manifest_sha256 = {sourceManifestSha256:String}) AS exact,
+      uniqExactIf(sample_id, release = {release:String} AND cohort = {cohort:String}
+        AND reference_genome = {referenceGenome:String}
+        AND source_manifest_id = {sourceManifestId:String}
+        AND source_manifest_sha256 = {sourceManifestSha256:String}) AS unique_samples
+    FROM lr_y1_sample_metadata
     WHERE metadata_run_id = {metadataRunId:String}
-  `, { metadataRunId })
-  return Number(countRows[0]?.n) > 0 ? metadataRunId : null
+  `,
+    {
+      metadataRunId: run.metadata_run_id,
+      release: run.release,
+      cohort: run.cohort,
+      referenceGenome: run.reference_genome,
+      sourceManifestId: run.source_manifest_id,
+      sourceManifestSha256: run.source_manifest_sha256,
+    }
+  )
+  const counts = countRows[0] || {}
+  if (
+    Number(counts.total) !== expected ||
+    Number(counts.exact) !== expected ||
+    Number(counts.unique_samples) !== expected
+  )
+    return null
+  return String(run.metadata_run_id)
 }
 
 export const preflightY1AcceptedSources = async () => {
@@ -267,6 +467,24 @@ export const getY1SourceSnapshot = async (cohort: LongReadCohort) => {
   if (!isY1PilotEnabled) return null
   if (!snapshots) await preflightY1AcceptedSources()
   return snapshots!.get(cohort) || null
+}
+
+export const resolveY1Cohort = async (
+  requested?: LongReadCohort | null
+): Promise<LongReadCohort> => {
+  // Explicit identity is fail-closed: an unavailable AoU request stays AoU and
+  // can never be silently retried against HGSVC/HPRC.
+  if (requested === 'aou' || requested === 'hgsvc_hprc') return requested
+  if (!isY1PilotEnabled) return 'hgsvc_hprc'
+  if (!snapshots) await preflightY1AcceptedSources()
+  const available = [...snapshots!.keys()]
+  return available.length === 1 ? available[0] : 'hgsvc_hprc'
+}
+
+export const getY1AvailableCohorts = async (): Promise<LongReadCohort[]> => {
+  if (!isY1PilotEnabled) return ['hgsvc_hprc']
+  if (!snapshots) await preflightY1AcceptedSources()
+  return [...snapshots!.keys()]
 }
 
 export const getY1DiscoveredTableColumns = () => discoveredColumns

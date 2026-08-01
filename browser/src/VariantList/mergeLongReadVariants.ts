@@ -46,6 +46,7 @@ export type LongReadVariantDetails = {
 // Raw LR variant shape from the GraphQL long_read_variants query
 type RawLongReadVariant = {
   variant_id: string
+  lr_cohort?: 'hgsvc_hprc' | 'aou' | null
   pos: number
   end?: number | null
   length?: number | null
@@ -185,13 +186,22 @@ function mapTranscriptConsequence(lr: RawLongReadVariant) {
 export const mergeLongReadVariants = <T extends { variant_id: string }>(
   srVariants: T[],
   lrVariants: RawLongReadVariant[]
-): (T & { long_read?: LongReadSequencingTypeData | null; long_read_details?: LongReadVariantDetails | null })[] => {
+): (T & {
+  long_read?: LongReadSequencingTypeData | null
+  long_read_details?: LongReadVariantDetails | null
+})[] => {
   if (!lrVariants || lrVariants.length === 0) {
     return srVariants
   }
 
   // Clone SR variants so we don't mutate the originals
-  const srMap = new Map<string, T & { long_read?: LongReadSequencingTypeData | null; long_read_details?: LongReadVariantDetails | null }>()
+  const srMap = new Map<
+    string,
+    T & {
+      long_read?: LongReadSequencingTypeData | null
+      long_read_details?: LongReadVariantDetails | null
+    }
+  >()
   const result = srVariants.map((v) => {
     const cloned = { ...v }
     srMap.set(v.variant_id, cloned)
@@ -210,6 +220,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
       const srVariant = srMap.get(matchId)!
       srVariant.long_read = longRead
       srVariant.long_read_details = longReadDetails
+      ;(srVariant as any).lr_cohort = lr.lr_cohort || 'hgsvc_hprc'
     } else {
       // Synthesize a new variant row for LR-only data
       const chrom = lr.chrom || chromFromVariantId(lr.variant_id)
@@ -217,6 +228,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
 
       lrOnlyVariants.push({
         variant_id: lr.variant_id,
+        lr_cohort: lr.lr_cohort || 'hgsvc_hprc',
         reference_genome: lr.reference_genome || 'GRCh38',
         chrom,
         pos: lr.pos,

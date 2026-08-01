@@ -77,6 +77,9 @@ export const fetchY1HaplotypeRows = async (
         ) AS a
         INNER JOIN lr_y1_carriers AS c
           ON a.run_id = c.run_id
+          AND a.release = c.release
+          AND a.cohort = c.cohort
+          AND a.reference_genome = c.reference_genome
           AND a.chrom = c.chrom
           AND a.position = c.position
           AND a.source_variant_id = c.source_variant_id
@@ -120,6 +123,9 @@ export const fetchY1HaplotypeRows = async (
         FROM lr_y1_carriers AS c
         INNER JOIN lr_y1_alleles AS a
           ON c.run_id = a.run_id
+          AND c.release = a.release
+          AND c.cohort = a.cohort
+          AND c.reference_genome = a.reference_genome
           AND c.chrom = a.chrom
           AND c.position = a.position
           AND c.source_variant_id = a.source_variant_id

@@ -16,6 +16,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import { TitleWrapper, Separator, VariantIdWrapper } from '../VariantPage/VariantPageTitle'
 import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import LongReadVariantPageContent from './LongReadVariantPageContent'
+import type { LongReadCohort } from './longReadCohort'
 
 const ALLELE_TYPE_LABELS: Record<string, string> = {
   snv: 'SNV',
@@ -61,6 +62,7 @@ const VariantPageTitle = ({
 
 export type LongReadVariant = {
   variant_id: string
+  lr_cohort?: LongReadCohort | null
   chrom: string
   pos: number
   end: number | null
@@ -114,17 +116,20 @@ export type LongReadVariant = {
 const LongReadVariantPage = ({
   datasetId,
   variantId,
+  lrCohort,
 }: {
   datasetId: DatasetId
   variantId: string
+  lrCohort?: LongReadCohort
 }) => {
   const operationName = 'LongReadVariant'
   let geneId: string | null = null
   let variantAlleleType: string = 'Variant'
   const variantQuery = `
-	query ${operationName}($variantId: String!) {
-	  long_read_variant(variantId: $variantId) {
+	query ${operationName}($variantId: String!, $lrCohort: LongReadCohort) {
+	  long_read_variant(variantId: $variantId, lr_cohort: $lrCohort) {
 	    variant_id
+	    lr_cohort
 	    chrom
 	    pos
 	    end
@@ -215,6 +220,7 @@ const LongReadVariantPage = ({
           query={variantQuery}
           variables={{
             variantId,
+            lrCohort,
           }}
         >
           {({ data, error, graphQLErrors, loading }: any) => {
@@ -261,9 +267,7 @@ const LongReadVariantPage = ({
                 geneId = geneData.ensembleId
               }
 
-              pageContent = (
-                <LongReadVariantPageContent datasetId={datasetId} variant={variant} />
-              )
+              pageContent = <LongReadVariantPageContent datasetId={datasetId} variant={variant} />
             }
 
             return (

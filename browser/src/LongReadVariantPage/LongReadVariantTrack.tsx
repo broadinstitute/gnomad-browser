@@ -14,11 +14,13 @@ import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributi
 import DeletionAllelicSeriesPlot from './DeletionAllelicSeriesPlot'
 import { aggregateTrLoci, getTrLocusDistribution, packTrLoci, type TrLocus } from './trLocusAggregation'
 import { aggregateSourceEvents, getDeletionAlleleFrequencyPoints, getInsertionLengthDistribution, packSourceEvents, type SourceEvent } from './sourceEventAggregation'
+import { longReadVariantUrl, type LongReadCohort } from './longReadCohort'
 
 // --- Types ---
 
 type LRVariant = {
   variant_id: string
+  lr_cohort?: LongReadCohort
   source_variant_id?: string | null
   chrom?: string
   pos: number
@@ -238,7 +240,7 @@ const SnvBand = ({ variants, scalePosition, width, onHoverVariant, hoveredPositi
         const cy = bandHeight / 2
 
         return (
-          <Link key={v.variant_id} to={`/variant/${v.variant_id}`}>
+          <Link key={v.variant_id} to={longReadVariantUrl(v.variant_id, v.lr_cohort || 'hgsvc_hprc')} preserveSelectedDataset={false}>
             <circle
               cx={v.x}
               cy={cy}
@@ -353,7 +355,7 @@ const SvBand = ({ events, band, scalePosition, width, onHoverEvent, hoveredPosit
             const phantomWidth = (mapper.getSyntheticCoordinate(v.pos, Math.abs(v.allele_length || 0)) - mapper.getSyntheticCoordinate(v.pos, 0)) * pxPerUnit
             if (phantomWidth > MIN_SV_BAR_WIDTH) barWidth = phantomWidth
           }
-          return <Link key={event.key} to={`/variant/${v.variant_id}`}><rect x={startX} y={rowY} width={barWidth} height={barHeight} fill={color} opacity={afToOpacity(opacityVariant)} rx={1} {...hoverHandlers} /></Link>
+          return <Link key={event.key} to={longReadVariantUrl(v.variant_id, v.lr_cohort || 'hgsvc_hprc')} preserveSelectedDataset={false}><rect x={startX} y={rowY} width={barWidth} height={barHeight} fill={color} opacity={afToOpacity(opacityVariant)} rx={1} {...hoverHandlers} /></Link>
         }
 
         let startX = scalePosition(event.start)
@@ -363,7 +365,7 @@ const SvBand = ({ events, band, scalePosition, width, onHoverEvent, hoveredPosit
           startX = mid - MIN_SV_BAR_WIDTH / 2
           stopX = mid + MIN_SV_BAR_WIDTH / 2
         }
-        return <Link key={event.key} to={`/variant/${v.variant_id}`}><rect x={startX} y={rowY} width={stopX - startX} height={barHeight} fill={color} opacity={afToOpacity(opacityVariant)} rx={1} {...hoverHandlers} /></Link>
+        return <Link key={event.key} to={longReadVariantUrl(v.variant_id, v.lr_cohort || 'hgsvc_hprc')} preserveSelectedDataset={false}><rect x={startX} y={rowY} width={stopX - startX} height={barHeight} fill={color} opacity={afToOpacity(opacityVariant)} rx={1} {...hoverHandlers} /></Link>
       })}
       {hoveredPosition != null && (() => {
         const hx = scalePosition(hoveredPosition)
@@ -436,7 +438,7 @@ const TrBand = ({ variants, scalePosition, width, onHoverLocus, hoveredPosition,
         const opacityVariant = locus.maxAf == null ? v : { ...v, freq: { all: { af: locus.maxAf } } }
 
         return (
-          <Link key={locus.key} to={`/variant/${v.variant_id}`}>
+          <Link key={locus.key} to={longReadVariantUrl(v.variant_id, v.lr_cohort || 'hgsvc_hprc')} preserveSelectedDataset={false}>
             <rect
               x={startX}
               y={rowY}

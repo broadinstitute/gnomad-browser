@@ -20,6 +20,7 @@ import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
 import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
 import TRDistributionPlot, { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
+import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 
 type AlleleStructure = {
   sequence: string
@@ -1027,6 +1028,7 @@ type TableRowProps = {
   isClusteredView: boolean
   highlightedPosition: number | null
   variantDict: Map<string, any>
+  lrCohort: LongReadCohort
   onHoverVariant?: (position: number | null) => void
   onRowClick?: (pos: number) => void
   toggleExpand: (id: string) => void
@@ -1044,6 +1046,7 @@ const TableRow = React.memo(function TableRow({
   isClusteredView,
   highlightedPosition,
   variantDict,
+  lrCohort,
   onHoverVariant,
   onRowClick,
   toggleExpand,
@@ -1071,13 +1074,13 @@ const TableRow = React.memo(function TableRow({
           {v.is_tr && (
             <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
           )}
-          {v.lr_cohort === 'aou' ? (
-            <span>{v.source_variant_id || v.variant_id}</span>
-          ) : (
-            <Link to={`/variant/${v.variant_id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
-              {v.source_variant_id || v.variant_id}
-            </Link>
-          )}
+          <Link
+            to={longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)}
+            preserveSelectedDataset={false}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          >
+            {v.source_variant_id || v.variant_id}
+          </Link>
         </td>
         <td>
           <TypeDot $color={getAlleleTypeColor(v.allele_type)} />
@@ -1227,7 +1230,7 @@ const TableRow = React.memo(function TableRow({
                         }
                         return (
                           <li key={id} style={{ marginBottom: 4 }}>
-                            <Link to={`/variant/${id}?dataset=gnomad_r4_lr`} preserveSelectedDataset={false}>{id}</Link>
+                            <Link to={longReadVariantUrl(id, v.lr_cohort || lrCohort)} preserveSelectedDataset={false}>{id}</Link>
                             {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac == null ? 'Unavailable' : envVar.freq.all.ac})
                           </li>
                         )
@@ -2035,6 +2038,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         isClusteredView={isClusteredView}
                         highlightedPosition={highlightedPosition}
                         variantDict={variantDict}
+                        lrCohort={lrCohort}
                         onHoverVariant={onHoverVariant}
                         onRowClick={onRowClick}
                         toggleExpand={toggleExpand}

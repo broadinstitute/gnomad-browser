@@ -14,7 +14,7 @@ import {
   fetchY1VariantsByRegions,
   LongReadCohort,
 } from './long_read_y1_variants'
-import { getY1SourceSnapshot } from './long_read_y1_provenance'
+import { getY1SourceSnapshot, resolveY1Cohort } from './long_read_y1_provenance'
 
 const normalizeChrom = (chrom: string) =>
   chrom.startsWith('chr') ? chrom : `chr${chrom}`
@@ -32,6 +32,7 @@ const mapClickHouseRowToGraphQL = (row: any) => {
   data_source: 'LEGACY_V1',
   source_release: 'legacy',
   source_run_id: null,
+  lr_cohort: 'hgsvc_hprc',
   reference_genome: 'GRCh38',
   chrom: row.chrom.replace('chr', ''),
   pos: Number(row.position),
@@ -123,7 +124,8 @@ const parseGenotypeDistribution = (populations: { key: string; histogram: string
   return results.length > 0 ? results : null
 }
 
-export const fetchVariantById = async (variantId: string, cohort: LongReadCohort = 'hgsvc_hprc') => {
+export const fetchVariantById = async (variantId: string, requestedCohort?: LongReadCohort | null) => {
+  const cohort = await resolveY1Cohort(requestedCohort)
   if (isY1PilotEnabled) {
     if (isRsId(variantId)) return null
     const source = await getY1SourceSnapshot(cohort)
@@ -279,8 +281,9 @@ const cachedVariantsByGene = withCache(
 
 export const fetchVariantsByGene = async (
   gene: any,
-  cohort: LongReadCohort = 'hgsvc_hprc'
+  requestedCohort?: LongReadCohort | null
 ) => {
+  const cohort = await resolveY1Cohort(requestedCohort)
   const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
   return cachedVariantsByGene(gene, cohort, source?.run_id, source?.chrom)
 }
@@ -362,8 +365,9 @@ const cachedVariantsByRegion = withCache(
 
 export const fetchVariantsByRegion = async (
   region: { chrom: string; start: number; stop: number },
-  cohort: LongReadCohort = 'hgsvc_hprc'
+  requestedCohort?: LongReadCohort | null
 ) => {
+  const cohort = await resolveY1Cohort(requestedCohort)
   const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
   return cachedVariantsByRegion(region, cohort, source?.run_id, source?.chrom)
 }

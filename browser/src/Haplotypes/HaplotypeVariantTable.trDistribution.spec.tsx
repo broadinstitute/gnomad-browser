@@ -3,7 +3,11 @@ import { fireEvent, render, screen } from '@testing-library/react'
 
 import HaplotypeVariantTable from './HaplotypeVariantTable'
 
-jest.mock('../Link', () => ({ children, to, onClick }: any) => <a href={to} onClick={onClick}>{children}</a>)
+jest.mock('../Link', () => ({ children, to, onClick }: any) => (
+  <a href={to} onClick={onClick}>
+    {children}
+  </a>
+))
 
 const summaryTr = (altIndex: number, length: number, ac: number, afrAc: number) => ({
   variant_id: `chr22-100-TRV-9~${altIndex}`,
@@ -46,12 +50,14 @@ const haplotypeGroup = (hash: number, sampleId: string, variants: any[]) => ({
   hash,
   start: 22854926,
   stop: 22855031,
-  samples: [{
-    sample_id: sampleId,
-    vcf_strand: 1,
-    phase_set: null,
-    variant_sets: [{ readable_id: '', variants }],
-  }],
+  samples: [
+    {
+      sample_id: sampleId,
+      vcf_strand: 1,
+      phase_set: null,
+      variant_sets: [{ readable_id: '', variants }],
+    },
+  ],
   // Repeated authoritative/group rows reproduce the join inflation that caused
   // multiple cards and occurrence-based carrier totals.
   variants: { readable_id: '', variants: [variants[0], variants[0]] },
@@ -76,6 +82,54 @@ describe('summary variant columns', () => {
     )
     expect(screen.getByRole('columnheader', { name: 'Grp AF' })).not.toBeNull()
   })
+
+  test('AoU-only primary and enveloped navigation stays explicitly AoU', () => {
+    const enveloped = {
+      ...summaryTr(2, 5, 2, 0),
+      variant_id: 'chr22-101-INS~2',
+      source_variant_id: 'chr22-101-INS',
+      pos: 101,
+      allele_type: 'ins',
+      lr_cohort: 'aou',
+    }
+    const parent = {
+      ...summaryTr(1, -3, 4, 0),
+      lr_cohort: 'aou',
+      enveloped_ids: [enveloped.variant_id],
+    }
+    render(
+      <HaplotypeVariantTable mode="summary" lrCohort="aou" summaryVariants={[parent, enveloped]} />
+    )
+
+    expect(screen.getByRole('link', { name: parent.source_variant_id }).getAttribute('href')).toBe(
+      `/variant/${parent.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
+    )
+    fireEvent.click(screen.getByText(parent.source_variant_id).closest('tr')!)
+    expect(screen.getByRole('link', { name: enveloped.variant_id }).getAttribute('href')).toBe(
+      `/variant/${enveloped.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
+    )
+  })
+
+  test('both-cohort rows preserve each row cohort in navigation', () => {
+    const hgsvc = summaryTr(1, -3, 4, 2)
+    const aou = {
+      ...summaryTr(2, 5, 6, 0),
+      variant_id: 'chr22-200-TRV-10~2',
+      source_variant_id: 'chr22-200-TRV-10',
+      pos: 200,
+      lr_cohort: 'aou',
+    }
+    render(
+      <HaplotypeVariantTable mode="summary" lrCohort="hgsvc_hprc" summaryVariants={[hgsvc, aou]} />
+    )
+
+    expect(screen.getByRole('link', { name: hgsvc.source_variant_id }).getAttribute('href')).toBe(
+      `/variant/${hgsvc.variant_id}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
+    )
+    expect(screen.getByRole('link', { name: aou.source_variant_id }).getAttribute('href')).toBe(
+      `/variant/${aou.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
+    )
+  })
 })
 
 describe('summary TR accordion distribution', () => {
@@ -93,7 +147,9 @@ describe('summary TR accordion distribution', () => {
     expect(screen.getByText('Allele length range: -3 to 5bp')).not.toBeNull()
     expect(screen.getByText('Distinct allele lengths: 2')).not.toBeNull()
     expect(screen.getByText('Total carriers: 10')).not.toBeNull()
-    expect(container.querySelectorAll('svg[aria-label="TR allele length distribution"] rect')).toHaveLength(2)
+    expect(
+      container.querySelectorAll('svg[aria-label="TR allele length distribution"] rect')
+    ).toHaveLength(2)
   })
 })
 
@@ -112,11 +168,13 @@ describe('haplotype TR locus aggregation', () => {
       <HaplotypeVariantTable
         mode="haplotype"
         haplotypeGroups={{ groups }}
-        sampleMetadata={new Map([
-          ['sample-1', { superpopulation: 'AFR' }],
-          ['sample-2', { superpopulation: 'EUR' }],
-          ['sample-3', { superpopulation: 'EAS' }],
-        ]) as any}
+        sampleMetadata={
+          new Map([
+            ['sample-1', { superpopulation: 'AFR' }],
+            ['sample-2', { superpopulation: 'EUR' }],
+            ['sample-3', { superpopulation: 'EAS' }],
+          ]) as any
+        }
       />
     )
 

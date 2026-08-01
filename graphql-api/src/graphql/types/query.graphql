@@ -16,7 +16,13 @@ type Query {
     variantId: String!
     dataset: StructuralVariantDatasetId!
   ): StructuralVariantDetails @cost(value: 1)
-  variant(variantId: String, rsid: String, vrsId: String, dataset: DatasetId!): VariantDetails
+  variant(
+    variantId: String
+    rsid: String
+    vrsId: String
+    dataset: DatasetId!
+    lr_cohort: LongReadCohort
+  ): VariantDetails
     @cost(value: 1)
   copy_number_variant(
     variantId: String!
@@ -41,7 +47,7 @@ type Query {
   long_read_variant(
     variantId: String
     rsid: String
-    lr_cohort: LongReadCohort = hgsvc_hprc
+    lr_cohort: LongReadCohort
   ): LongReadVariant
 
   meta: BrowserMetadata!

@@ -53,6 +53,7 @@ import {
 import { Filter } from '../QCFilter'
 import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import type { Sex } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
+import type { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 
 export const Section = styled.section`
   width: 100%;
@@ -370,6 +371,7 @@ export type LongReadDetails = {
 
 export type Variant = {
   variant_id: string
+  lr_cohort?: LongReadCohort | null
   reference_genome: ReferenceGenome
   colocated_variants: string[] | null
   faf95_joint: Faf95
@@ -463,6 +465,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
           pos={variant.pos}
           longReadDetails={variant.long_read_details}
           ref_allele={variant.ref}
+          lrCohort={variant.lr_cohort || 'hgsvc_hprc'}
         />
       )}
 
@@ -553,9 +556,10 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
 
 const operationName = 'GnomadVariant'
 const variantQuery = `
-query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeClinvar: Boolean!, $includeLocalAncestry: Boolean!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
-  variant(variantId: $variantId, dataset: $datasetId) {
+query ${operationName}($variantId: String!, $datasetId: DatasetId!, $lrCohort: LongReadCohort, $referenceGenome: ReferenceGenomeId!, $includeClinvar: Boolean!, $includeLocalAncestry: Boolean!, $includeLiftoverAsSource: Boolean!, $includeLiftoverAsTarget: Boolean!) {
+  variant(variantId: $variantId, dataset: $datasetId, lr_cohort: $lrCohort) {
     variant_id
+    lr_cohort
     reference_genome
     chrom
     pos
@@ -929,6 +933,7 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
 
   meta {
     clinvar_release_date
+    long_read_cohorts
   }
 }
 `
@@ -936,6 +941,7 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $referenceGe
 type VariantPageProps = {
   datasetId: DatasetId
   variantId: string
+  lrCohort?: LongReadCohort
 }
 
 // Returns the gene_id to be linked to in the Variant page header
@@ -974,13 +980,13 @@ export const checkGeneLink = (transcript_consequences: TranscriptConsequence[] |
   }
 }
 
-const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
+const VariantPage = ({ datasetId, variantId, lrCohort }: VariantPageProps) => {
   const gene = { ensembleId: '' }
   return (
     <Page>
       <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
       <BaseQuery
-        key={datasetId}
+        key={`${datasetId}:${lrCohort || 'auto'}`}
         operationName={operationName}
         query={variantQuery}
         variables={{
@@ -991,6 +997,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
           includeLiftoverAsTarget: !isLongRead(datasetId) && isLiftoverTarget(datasetId),
           referenceGenome: referenceGenome(datasetId),
           variantId,
+          lrCohort,
         }}
       >
         {({ data, error, graphQLErrors, loading }: any) => {
@@ -1046,6 +1053,11 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
           }
 
           const datasetLinkWithLiftover: URLBuilder = (currentLocation, toDatasetId) => {
+            const availableLrCohorts: LongReadCohort[] = data?.meta?.long_read_cohorts || []
+            const selectedLrCohort =
+              data?.variant?.lr_cohort ||
+              lrCohort ||
+              (availableLrCohorts.length === 1 ? availableLrCohorts[0] : 'hgsvc_hprc')
             const needsLiftoverDisambiguation =
               (isLiftoverSource(datasetId) && isLiftoverTarget(toDatasetId)) ||
               (isLiftoverSource(toDatasetId) && isLiftoverTarget(datasetId))
@@ -1059,7 +1071,10 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               : {
                   ...currentLocation,
                   pathname: `/variant/${variantId}`,
-                  search: `?dataset=${toDatasetId}`,
+                  search:
+                    toDatasetId === 'gnomad_r4_lr'
+                      ? `?dataset=${toDatasetId}&lr_cohort=${selectedLrCohort}`
+                      : `?dataset=${toDatasetId}`,
                 }
           }
 

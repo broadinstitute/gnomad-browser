@@ -17,6 +17,7 @@ import Link from './Link'
 import useRequest from './useRequest'
 import StatusMessage from './StatusMessage'
 import { fetchVariantSearchResults } from './search'
+import type { LongReadCohort } from './LongReadVariantPage/longReadCohort'
 
 const MitochondrialVariantPage = lazy(
   () => import('./MitochondrialVariantPage/MitochondrialVariantPage')
@@ -103,9 +104,10 @@ const VariantSearchPage = ({ datasetId, query }: VariantSearchPageProps) => {
 type VariantPageRouterProps = {
   datasetId: DatasetId
   variantId: string
+  lrCohort?: LongReadCohort
 }
 
-const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => {
+const VariantPageRouter = ({ datasetId, variantId, lrCohort }: VariantPageRouterProps) => {
   if (hasStructuralVariants(datasetId)) {
     return <StructuralVariantPage datasetId={datasetId} variantId={variantId} />
   }
@@ -125,13 +127,13 @@ const VariantPageRouter = ({ datasetId, variantId }: VariantPageRouterProps) => 
       return <MitochondrialVariantPage datasetId={datasetId} variantId={normalizedVariantId} />
     }
 
-    return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} />
+    return <VariantPage datasetId={datasetId} variantId={normalizedVariantId} lrCohort={lrCohort} />
   }
 
   // LR-only variant IDs (e.g., TRV, DEL, INS) route to the standard VariantPage
   // which handles them via the API's LR fallback
   if (isLongReadVariantId(variantId)) {
-    return <VariantPage datasetId={datasetId} variantId={variantId} />
+    return <VariantPage datasetId={datasetId} variantId={variantId} lrCohort={lrCohort} />
   }
 
   if (isRsId(variantId) || /^CA[0-9]+$/i.test(variantId) || /^[0-9]+$/.test(variantId)) {

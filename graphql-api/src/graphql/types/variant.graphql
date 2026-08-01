@@ -335,6 +335,7 @@ type VariantInSilicoPredictor {
 
 type VariantDetails {
   variant_id: String!
+  lr_cohort: LongReadCohort
   reference_genome: ReferenceGenomeId!
   chrom: String!
   pos: Int!

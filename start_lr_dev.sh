@@ -42,8 +42,9 @@ Usage: ./start_lr_dev.sh [--gcp-clickhouse] [--y1-clickhouse-port PORT]
                              connection only; it does not select a data/provenance mode.
 
 Y1 always reads the disposable database gnomad_lr_y1_scratch_v5_current.
-Tests and advanced users may explicitly set LR_Y1_CLICKHOUSE_URL and may override
-LR_Y1_CLICKHOUSE_DATABASE. Run IDs are discovered from lr_y1_load_runs at startup.
+Advanced users may explicitly set LR_Y1_CLICKHOUSE_URL. The generic CLICKHOUSE_URL
+and database environment variables never select the Y1 source. Run IDs are
+discovered from lr_y1_load_runs at startup.
 Set LR_DEV_DRY_RUN=1 to print configuration without starting services.
 EOF
             exit 0
@@ -57,17 +58,24 @@ GCP_ZONE="${GCP_ZONE:-us-east1-c}"
 LEGACY_GCP_CH_VM="${LEGACY_GCP_CH_VM:-gnomad-lr-data-vm}"
 Y1_GCP_CH_VM="${LR_Y1_GCP_CH_VM:-gnomad-lr-y1-clickhouse}"
 GCP_CH_LOCAL_PORT="${GCP_CH_PORT:-8125}"
-Y1_GCP_CH_LOCAL_PORT="${Y1_PORT:-${LR_Y1_GCP_CH_PORT:-8126}}"
-Y1_DATABASE="${LR_Y1_CLICKHOUSE_DATABASE:-gnomad_lr_y1_scratch_v5_current}"
-Y1_CH_URL="${LR_Y1_CLICKHOUSE_URL:-http://127.0.0.1:${Y1_GCP_CH_LOCAL_PORT}}"
+Y1_GCP_CH_LOCAL_PORT="${Y1_PORT:-8126}"
+Y1_DATABASE="gnomad_lr_y1_scratch_v5_current"
+if [[ -n "$Y1_PORT" ]]; then
+    # The command-line port is an explicit launcher selection and always wins
+    # over inherited environment.
+    Y1_CH_URL="http://127.0.0.1:${Y1_PORT}"
+else
+    Y1_CH_URL="${LR_Y1_CLICKHOUSE_URL:-}"
+fi
 
-[[ "$Y1_DATABASE" =~ ^gnomad_lr_y1_[a-z0-9_]+$ ]] ||
-    die "Unsafe LR_Y1_CLICKHOUSE_DATABASE: $Y1_DATABASE"
 if [[ "$USE_GCP_CH" == true && "$GCP_CH_LOCAL_PORT" == "$Y1_GCP_CH_LOCAL_PORT" ]]; then
     die "Legacy and Y1 tunnel ports must be distinct"
 fi
 if [[ -n "${LR_Y1_CLICKHOUSE_URL:-}" ]]; then USE_Y1=true; fi
 if [[ "${LR_Y1_ENABLED:-false}" == true ]]; then USE_Y1=true; fi
+if [[ "$USE_Y1" == true && -z "$Y1_CH_URL" ]]; then
+    die "Y1 mode requires --y1-clickhouse-port PORT or explicit LR_Y1_CLICKHOUSE_URL"
+fi
 
 if [[ "${LR_DEV_DRY_RUN:-0}" == 1 ]]; then
     log "Dry run: configuration is statically valid."
@@ -289,7 +297,6 @@ if [[ "$USE_Y1" == true ]]; then
     API_ENV+=(
         LR_Y1_ENABLED=true
         LR_Y1_CLICKHOUSE_URL="$Y1_CH_URL"
-        LR_Y1_CLICKHOUSE_DATABASE="$Y1_DATABASE"
     )
 fi
 # $1 is expanded by the child bash.

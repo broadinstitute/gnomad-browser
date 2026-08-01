@@ -22,7 +22,7 @@ import { hasVRSData, isLongRead } from '../../../../dataset-metadata/metadata'
 const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   // These are all "variant IDs" of one kind or another but `variantId` here
   // specifically refers to the chrom-pos-ref-alt style ubiquitous in gnomAD
-  const { rsid, variantId, vrsId, dataset } = args
+  const { rsid, variantId, vrsId, dataset, lr_cohort } = args
 
   if (!dataset) {
     throw new UserVisibleError('Dataset is required')
@@ -76,7 +76,7 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
     variant = await fetchVariantById(ctx.esClient, dataset, normalizedVariantId)
   } catch (error: any) {
     if (error instanceof UserVisibleError && error.message === 'Variant not found') {
-      const lrVariant = await fetchLongReadVariantById(normalizedVariantId)
+      const lrVariant = await fetchLongReadVariantById(normalizedVariantId, lr_cohort)
       if (!lrVariant) {
         throw error
       }
@@ -84,6 +84,7 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
       variant = {
         variant_id: lrVariant.variant_id,
         variantId: lrVariant.variant_id,
+        lr_cohort: lrVariant.lr_cohort,
         reference_genome: lrVariant.reference_genome,
         chrom: lrVariant.chrom,
         pos: lrVariant.pos,

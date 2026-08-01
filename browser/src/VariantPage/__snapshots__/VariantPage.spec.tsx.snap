@@ -169,7 +169,7 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r4_lr"
-                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -7597,7 +7597,7 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r4_lr"
-                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -15028,7 +15028,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r4_lr"
-                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -22459,7 +22459,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r4_lr"
-                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -29890,7 +29890,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r4_lr"
-                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}
@@ -37321,7 +37321,7 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
                 <a
                   className="DatasetSelector__SubNavigationLink-sc-1p2fxbn-5 fAkdhO"
                   data-item="gnomad_r4_lr"
-                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr"
+                  href="/variant/13-123-A-C?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onKeyDown={[Function]}

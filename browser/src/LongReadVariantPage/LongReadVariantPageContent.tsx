@@ -5,6 +5,7 @@ import { ExternalLink, TooltipHint, TooltipAnchor, Badge } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 import { LongReadVariant } from './LongReadVariantPage'
+import { longReadVariantUrl } from './longReadCohort'
 import TableWrapper from '../TableWrapper'
 import sampleCounts from '@gnomad/dataset-metadata/datasets/gnomad-v4-lr/sampleCounts'
 import { variantFeedbackUrl } from '../variantFeedback'
@@ -122,7 +123,7 @@ const LongReadVariantPageContent = ({ datasetId, variant }: Props) => {
             {variant.enveloped_ids.map((id: string) => (
               <li key={id}>
                 <Link
-                  to={`/variant/${id}?dataset=gnomad_r4_lr`}
+                  to={longReadVariantUrl(id, variant.lr_cohort || 'hgsvc_hprc')}
                   preserveSelectedDataset={false}
                 >
                   {id}
@@ -176,7 +177,7 @@ const LongReadVariantAttributeTable = ({ variant }: { variant: LongReadVariant }
             <th scope="row">Enveloping TR</th>
             <td>
               <Link
-                to={`/variant/${variant.enveloping_tr_id}?dataset=gnomad_r4_lr`}
+                to={longReadVariantUrl(variant.enveloping_tr_id, variant.lr_cohort || 'hgsvc_hprc')}
                 preserveSelectedDataset={false}
               >
                 {variant.enveloping_tr_id}
