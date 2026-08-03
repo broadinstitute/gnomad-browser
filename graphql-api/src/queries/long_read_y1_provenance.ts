@@ -1,4 +1,9 @@
-import { isY1PilotEnabled, y1ClickhouseClient, y1ClickhouseConfig } from '../clickhouse'
+import {
+  isY1PilotEnabled,
+  y1ClickhouseClient,
+  y1ClickhouseConfig,
+  y1PrimaryRunMap,
+} from '../clickhouse'
 import type { LongReadCohort } from './long_read_y1_variants'
 
 // The current finalizer name lives in one place so a backend rename to
@@ -13,7 +18,7 @@ export type Y1SourceSnapshot = {
   chrom: string
   load_scope: string
   run_id: string
-  state: typeof ACCEPTED_Y1_RUN_STATE
+  state: typeof ACCEPTED_Y1_RUN_STATE | 'accepted_tasks'
   metadata_run_id: string | null
 }
 
@@ -25,6 +30,7 @@ type RunRow = Omit<Y1SourceSnapshot, 'database' | 'metadata_run_id' | 'state'> &
   allele_rows: number
   frequency_rows: number
   carrier_rows: number
+  expected_tasks: number
   latest_revision_rows: number
 }
 
@@ -46,6 +52,7 @@ const requiredColumns: Record<string, string[]> = {
     'allele_rows',
     'frequency_rows',
     'carrier_rows',
+    'expected_tasks',
   ],
   lr_y1_summaries: ['run_id', 'release', 'cohort', 'reference_genome', 'chrom'],
   lr_y1_alleles: [
@@ -92,8 +99,11 @@ const requiredColumns: Record<string, string[]> = {
   ],
 }
 
-let snapshots: Map<LongReadCohort, Y1SourceSnapshot> | null = null
+let snapshots: Map<string, Y1SourceSnapshot> | null = null
 let discoveredColumns: TableColumns | null = null
+
+const snapshotKey = (cohort: LongReadCohort, chrom: string) => `${cohort}\u0000${chrom}`
+const normalizedChrom = (chrom: string) => (chrom.startsWith('chr') ? chrom : `chr${chrom}`)
 
 const rows = async (query: string, query_params: Record<string, unknown> = {}) => {
   const result = await y1ClickhouseClient.query({ query, query_params, format: 'JSONEachRow' })
@@ -133,7 +143,7 @@ const discoverRunRows = async (): Promise<RunRow[]> =>
   SELECT ledger.run_id, ledger.release, ledger.cohort, ledger.reference_genome,
     ledger.chrom, ledger.load_scope, ledger.interval_start, ledger.interval_end,
     ledger.state, ledger.summary_rows, ledger.allele_rows, ledger.frequency_rows,
-    ledger.carrier_rows,
+    ledger.carrier_rows, ledger.expected_tasks,
     count() OVER (PARTITION BY ledger.run_id) AS latest_revision_rows
   FROM lr_y1_load_runs AS ledger
   INNER JOIN (
@@ -203,7 +213,10 @@ const acceptedRuns = (runRows: RunRow[]) => {
   return byCohort
 }
 
-const requireCanonicalRows = async (run: RunRow) => {
+const requireCanonicalRows = async (
+  run: RunRow,
+  receiptCounts?: { summaries: number; alleles: number; frequencies: number }
+) => {
   const counts = await rows(
     `
     SELECT 'lr_y1_summaries' AS table, count() AS total,
@@ -230,9 +243,9 @@ const requireCanonicalRows = async (run: RunRow) => {
     }
   )
   const expected = new Map([
-    ['lr_y1_summaries', Number(run.summary_rows)],
-    ['lr_y1_alleles', Number(run.allele_rows)],
-    ['lr_y1_frequencies', Number(run.frequency_rows)],
+    ['lr_y1_summaries', receiptCounts?.summaries ?? Number(run.summary_rows)],
+    ['lr_y1_alleles', receiptCounts?.alleles ?? Number(run.allele_rows)],
+    ['lr_y1_frequencies', receiptCounts?.frequencies ?? Number(run.frequency_rows)],
   ])
   const observed = new Map(counts.map((row) => [String(row.table), row]))
   for (const [table, expectedRows] of expected) {
@@ -316,6 +329,110 @@ const validateCarrierStructure = async (
       }
     })
   )
+}
+
+type AcceptedTaskCounts = {
+  attempts: number
+  tasks: number
+  accepted: number
+  accepted_tasks: number
+  invalid_identity: number
+  rejected: number
+  summaries: number
+  alleles: number
+  frequencies: number
+  carriers: number
+  physical_rejects: number
+}
+
+const requireAcceptedTaskReceipts = async (run: RunRow): Promise<AcceptedTaskCounts> => {
+  const receiptRows = await rows(
+    `
+    SELECT count() AS attempts, uniqExact(task_id) AS tasks,
+      countIf(state = 'accepted') AS accepted,
+      uniqExactIf(task_id, state = 'accepted') AS accepted_tasks,
+      countIf(chrom != {chrom:String} OR interval_end <= interval_start) AS invalid_identity,
+      sumIf(rejected_records, state = 'accepted') AS rejected,
+      sumIf(summary_rows, state = 'accepted') AS summaries,
+      sumIf(allele_rows, state = 'accepted') AS alleles,
+      sumIf(frequency_rows, state = 'accepted') AS frequencies,
+      sumIf(carrier_rows, state = 'accepted') AS carriers
+    FROM (
+      SELECT ledger.*
+      FROM lr_y1_task_attempts AS ledger
+      INNER JOIN (
+        SELECT run_id, task_id, attempt_id, max(revision) AS revision
+        FROM lr_y1_task_attempts
+        WHERE run_id = {runId:String}
+        GROUP BY run_id, task_id, attempt_id
+      ) AS latest USING (run_id, task_id, attempt_id, revision)
+      WHERE ledger.run_id = {runId:String}
+    )
+  `,
+    { runId: run.run_id, chrom: run.chrom }
+  )
+  const rejectRows = await rows(
+    `SELECT count() AS physical_rejects FROM lr_y1_rejects_staging WHERE run_id = {runId:String}`,
+    { runId: run.run_id }
+  )
+  const raw = receiptRows[0] || {}
+  const counts: AcceptedTaskCounts = {
+    attempts: Number(raw.attempts || 0),
+    tasks: Number(raw.tasks || 0),
+    accepted: Number(raw.accepted || 0),
+    accepted_tasks: Number(raw.accepted_tasks || 0),
+    invalid_identity: Number(raw.invalid_identity || 0),
+    rejected: Number(raw.rejected || 0),
+    summaries: Number(raw.summaries || 0),
+    alleles: Number(raw.alleles || 0),
+    frequencies: Number(raw.frequencies || 0),
+    carriers: Number(raw.carriers || 0),
+    physical_rejects: Number(rejectRows[0]?.physical_rejects || 0),
+  }
+  const expected = Number(run.expected_tasks)
+  if (
+    expected <= 0 || counts.tasks !== expected || counts.accepted !== expected ||
+    counts.accepted_tasks !== expected || counts.invalid_identity !== 0 ||
+    counts.rejected !== 0 || counts.physical_rejects !== 0
+  ) {
+    throw new Error(
+      `Y1 presentation run ${run.run_id} task receipts are incomplete or rejected: ` +
+      `expected=${expected}, attempts=${counts.attempts}, tasks=${counts.tasks}, ` +
+      `accepted=${counts.accepted}, accepted_tasks=${counts.accepted_tasks}, ` +
+      `invalid_identity=${counts.invalid_identity}, rejected=${counts.rejected}, ` +
+      `physical_rejects=${counts.physical_rejects}`
+    )
+  }
+  if (counts.summaries <= 0 || counts.alleles <= 0 || counts.frequencies <= 0) {
+    throw new Error(`Y1 presentation run ${run.run_id} has empty accepted primary receipts`)
+  }
+  if (run.cohort === 'aou' ? counts.carriers !== 0 : counts.carriers <= 0) {
+    throw new Error(`Y1 presentation run ${run.run_id} has invalid accepted carrier receipts`)
+  }
+  return counts
+}
+
+const configuredRuns = async (runRows: RunRow[]) => {
+  if (!y1PrimaryRunMap) return null
+  const byId = new Map(runRows.map((run) => [run.run_id, run]))
+  const selected = new Map<string, RunRow>()
+  for (const [cohort, chromRuns] of y1PrimaryRunMap) {
+    for (const [chrom, runId] of chromRuns) {
+      const run = byId.get(runId)
+      if (!run) throw new Error(`Configured Y1 run ${runId} is absent from lr_y1_load_runs`)
+      if (Number(run.latest_revision_rows) !== 1) {
+        throw new Error(`Y1 run ${runId} has duplicate rows at its maximum revision`)
+      }
+      if (
+        run.release !== 'y1' || run.cohort !== cohort || run.reference_genome !== 'GRCh38' ||
+        run.chrom !== chrom || run.load_scope !== 'full_chromosome'
+      ) {
+        throw new Error(`Configured Y1 run ${runId} does not match ${cohort}/${chrom}`)
+      }
+      selected.set(snapshotKey(cohort, chrom), run)
+    }
+  }
+  return selected
 }
 
 type MetadataRunRow = {
@@ -442,31 +559,73 @@ export const preflightY1AcceptedSources = async () => {
 
   const columns = await loadTableColumns()
   requirePrimarySchema(columns)
-  const runs = acceptedRuns(await discoverRunRows())
-  await Promise.all([...runs.values()].map(([run]) => requireCanonicalRows(run)))
-  await validateCarrierStructure(columns, runs)
-  const metadataRunId = await resolveOptionalMetadataRun(columns, runs.get('hgsvc_hprc')?.[0])
+  const runRows = await discoverRunRows()
+  const presentationRuns = await configuredRuns(runRows)
 
-  for (const [cohort, [run]] of runs) {
-    snapshots.set(cohort, {
-      database: y1ClickhouseConfig.database,
-      release: run.release,
-      cohort,
-      reference_genome: run.reference_genome,
-      chrom: run.chrom,
-      load_scope: run.load_scope,
-      run_id: run.run_id,
-      state: ACCEPTED_Y1_RUN_STATE,
-      metadata_run_id: cohort === 'hgsvc_hprc' ? metadataRunId : null,
-    })
+  if (presentationRuns) {
+    const hgsvcForMetadata = [...presentationRuns.values()].find(
+      (run) => run.cohort === 'hgsvc_hprc'
+    )
+    const metadataRunId = await resolveOptionalMetadataRun(columns, hgsvcForMetadata)
+    const validated = await Promise.all([...presentationRuns].map(async ([key, run]) => {
+      const receipts = await requireAcceptedTaskReceipts(run)
+      await requireCanonicalRows(run, receipts)
+      const carrierRows = await rows(
+        `
+        SELECT count() AS total,
+          countIf(release = 'y1' AND cohort = {cohort:String}
+            AND reference_genome = 'GRCh38' AND chrom = {chrom:String}) AS exact
+        FROM lr_y1_carriers WHERE run_id = {runId:String}
+      `,
+        { runId: run.run_id, cohort: run.cohort, chrom: run.chrom }
+      )
+      const total = Number(carrierRows[0]?.total || 0)
+      const exact = Number(carrierRows[0]?.exact || 0)
+      if (total !== receipts.carriers || exact !== receipts.carriers) {
+        throw new Error(`Y1 presentation run ${run.run_id} carrier count/identity mismatch`)
+      }
+      const snapshot: Y1SourceSnapshot = {
+        database: y1ClickhouseConfig.database,
+        release: run.release,
+        cohort: run.cohort as LongReadCohort,
+        reference_genome: run.reference_genome,
+        chrom: run.chrom,
+        load_scope: run.load_scope,
+        run_id: run.run_id,
+        state: 'accepted_tasks',
+        metadata_run_id: run.cohort === 'hgsvc_hprc' ? metadataRunId : null,
+      }
+      return [key, snapshot] as const
+    }))
+    for (const [key, snapshot] of validated) snapshots.set(key, snapshot)
+  } else {
+    const runs = acceptedRuns(runRows)
+    await Promise.all([...runs.values()].map(([run]) => requireCanonicalRows(run)))
+    await validateCarrierStructure(columns, runs)
+    const metadataRunId = await resolveOptionalMetadataRun(columns, runs.get('hgsvc_hprc')?.[0])
+
+    for (const [cohort, [run]] of runs) {
+      snapshots.set(snapshotKey(cohort, run.chrom), {
+        database: y1ClickhouseConfig.database,
+        release: run.release,
+        cohort,
+        reference_genome: run.reference_genome,
+        chrom: run.chrom,
+        load_scope: run.load_scope,
+        run_id: run.run_id,
+        state: ACCEPTED_Y1_RUN_STATE,
+        metadata_run_id: cohort === 'hgsvc_hprc' ? metadataRunId : null,
+      })
+    }
   }
   discoveredColumns = columns
 }
 
-export const getY1SourceSnapshot = async (cohort: LongReadCohort) => {
+export const getY1SourceSnapshot = async (cohort: LongReadCohort, chrom?: string | null) => {
   if (!isY1PilotEnabled) return null
   if (!snapshots) await preflightY1AcceptedSources()
-  return snapshots!.get(cohort) || null
+  if (chrom) return snapshots!.get(snapshotKey(cohort, normalizedChrom(chrom))) || null
+  return [...snapshots!.values()].find((snapshot) => snapshot.cohort === cohort) || null
 }
 
 export const resolveY1Cohort = async (
@@ -477,14 +636,14 @@ export const resolveY1Cohort = async (
   if (requested === 'aou' || requested === 'hgsvc_hprc') return requested
   if (!isY1PilotEnabled) return 'hgsvc_hprc'
   if (!snapshots) await preflightY1AcceptedSources()
-  const available = [...snapshots!.keys()]
+  const available = [...new Set([...snapshots!.values()].map((snapshot) => snapshot.cohort))]
   return available.length === 1 ? available[0] : 'hgsvc_hprc'
 }
 
 export const getY1AvailableCohorts = async (): Promise<LongReadCohort[]> => {
   if (!isY1PilotEnabled) return ['hgsvc_hprc']
   if (!snapshots) await preflightY1AcceptedSources()
-  return [...snapshots!.keys()]
+  return [...new Set([...snapshots!.values()].map((snapshot) => snapshot.cohort))]
 }
 
 export const getY1DiscoveredTableColumns = () => discoveredColumns

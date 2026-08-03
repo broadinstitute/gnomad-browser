@@ -13,8 +13,8 @@ port_output="$(
 grep -q '^mode=y1$' <<<"$port_output"
 grep -q '^LR_Y1_ENABLED=true$' <<<"$port_output"
 grep -q '^LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:9134$' <<<"$port_output"
-grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_scratch_v5_current$' <<<"$port_output"
-if grep -Eq 'wrong_database|inherited-legacy|CHR22_MIXED|RUN_ID|published|candidate|accepted.*r2' <<<"$port_output"; then
+grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_wrong_database$' <<<"$port_output"
+if grep -Eq 'inherited-legacy|CHR22_MIXED|RUN_ID|published|candidate|accepted.*r2' <<<"$port_output"; then
     echo "inherited or obsolete Y1 configuration leaked into launcher output" >&2
     exit 1
 fi
@@ -34,14 +34,14 @@ url_output="$(
     LR_DEV_DRY_RUN=1 \
     LR_Y1_CLICKHOUSE_URL=http://clickhouse.test:8123 \
     LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_test_fixture \
+    LR_Y1_RUN_MAP='{"hgsvc_hprc":{"chr1":"run-1"}}' \
+    LR_Y1_ANCILLARY_ROUTES='{"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1"}}}' \
     "$ROOT_DIR/start_lr_dev.sh"
 )"
 grep -q '^LR_Y1_CLICKHOUSE_URL=http://clickhouse.test:8123$' <<<"$url_output"
-grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_scratch_v5_current$' <<<"$url_output"
-if grep -q 'gnomad_lr_y1_test_fixture' <<<"$url_output"; then
-    echo "database environment override was accepted" >&2
-    exit 1
-fi
+grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_test_fixture$' <<<"$url_output"
+grep -q '^LR_Y1_RUN_MAP={"hgsvc_hprc":{"chr1":"run-1"}}$' <<<"$url_output"
+grep -q '^LR_Y1_ANCILLARY_ROUTES={"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1"}}}$' <<<"$url_output"
 
 if LR_DEV_DRY_RUN=1 LR_Y1_ENABLED=true env -u LR_Y1_CLICKHOUSE_URL \
     "$ROOT_DIR/start_lr_dev.sh" >/dev/null 2>&1; then

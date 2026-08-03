@@ -128,23 +128,32 @@ export const fetchVariantById = async (variantId: string, requestedCohort?: Long
   const cohort = await resolveY1Cohort(requestedCohort)
   if (isY1PilotEnabled) {
     if (isRsId(variantId)) return null
-    const source = await getY1SourceSnapshot(cohort)
-    if (!source) return null
     const variantChrom = normalizeChrom(variantId.split(/[-:]/, 1)[0])
-    if (variantChrom !== source.chrom) return null
+    const source = await getY1SourceSnapshot(cohort, variantChrom)
+    if (!source) return null
     const variant = await fetchY1VariantById(variantId, cohort, source.run_id, source.chrom)
     if (!variant || variant.allele_type !== 'trv') return variant
 
-    // Y1 does not yet carry the legacy STR histograms. Preserve the meaningful
-    // ALT-length series shown in the LR Summary table by loading the other ALTs
-    // from this exact source record; do not infer genotype or repeat-unit data.
-    const locusAlleles = await fetchY1VariantsByRegion(
-      { chrom: variant.chrom, start: variant.pos, stop: variant.pos },
-      cohort,
-      source.run_id
-    )
+    // Preserve the exact ALT series even when no independently routed STR
+    // histogram exists. A configured histogram augments only the existing
+    // compatible fields and never substitutes another cohort's source.
+    const [locusAlleles, histogram] = await Promise.all([
+      fetchY1VariantsByRegion(
+        { chrom: variant.chrom, start: variant.pos, stop: variant.pos },
+        cohort,
+        source.run_id
+      ),
+      fetchSTRHistogram(null, source.chrom, variant.pos, cohort),
+    ])
     return {
       ...variant,
+      allele_size_distribution: histogram
+        ? parseAlleleSizeDistribution(histogram.populations)
+        : variant.allele_size_distribution,
+      genotype_distribution: histogram
+        ? parseGenotypeDistribution(histogram.populations)
+        : variant.genotype_distribution,
+      max_repunits: histogram?.max_repeats ? Number(histogram.max_repeats) : variant.max_repunits,
       allelic_series: locusAlleles
         .filter((allele) => allele.source_variant_id === variant.source_variant_id)
         .map((allele) => ({
@@ -284,7 +293,7 @@ export const fetchVariantsByGene = async (
   requestedCohort?: LongReadCohort | null
 ) => {
   const cohort = await resolveY1Cohort(requestedCohort)
-  const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
+  const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort, gene.chrom) : null
   return cachedVariantsByGene(gene, cohort, source?.run_id, source?.chrom)
 }
 
@@ -295,8 +304,8 @@ const countVariantsByRegion = async (...args: any[]) => {
   const chrom = normalizeChrom(region.chrom)
   if (isY1PilotEnabled) {
     const cohort: LongReadCohort = args.length > 2 ? args[2] : 'hgsvc_hprc'
-    const source = await getY1SourceSnapshot(cohort)
-    if (!source || chrom !== source.chrom) return 0
+    const source = await getY1SourceSnapshot(cohort, chrom)
+    if (!source) return 0
     return (await fetchY1VariantsByRegion(region, cohort, source.run_id)).length
   }
 
@@ -368,7 +377,7 @@ export const fetchVariantsByRegion = async (
   requestedCohort?: LongReadCohort | null
 ) => {
   const cohort = await resolveY1Cohort(requestedCohort)
-  const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
+  const source = isY1PilotEnabled ? await getY1SourceSnapshot(cohort, region.chrom) : null
   return cachedVariantsByRegion(region, cohort, source?.run_id, source?.chrom)
 }
 

@@ -1,6 +1,5 @@
 import { fetchMQTLAssociations } from '../../queries/mqtl-queries'
 import {
-  fetchGroupedHaplotypeVariants,
   fetchGroupedTrvVariants,
   fetchHaplotypeGroupAssignments,
   fetchDistinctHaplotypeVariants,
@@ -24,10 +23,10 @@ import logger from '../../logger'
 import {
   ancillaryDecision,
   filterAvailableMethylationSampleIds,
+  getY1AncillaryRoute,
   isAncillaryUnavailableForCohort,
   methylationSampleAvailability,
   phasedMethylationCapability,
-  y1AncillaryCapabilities,
   sampleTotalMethylationRecords,
   sourcePhasedEvaluationScope,
   sourcePhasedMethylationRecords,
@@ -74,8 +73,8 @@ const normalizeChrom = (chrom: string) =>
 
 const y1RequestInScope = async (cohort: 'hgsvc_hprc' | 'aou', chrom: string) => {
   if (!isY1PilotEnabled) return true
-  const source = await getY1SourceSnapshot(cohort)
-  return !!source && source.chrom === normalizeChrom(chrom)
+  const source = await getY1SourceSnapshot(cohort, chrom)
+  return !!source
 }
 
 const trvCache = new Map<string, any>()
@@ -219,7 +218,9 @@ const resolvers = {
       const requestedSamples = isY1PilotEnabled
         ? filterAvailableMethylationSampleIds(args.samples, methylationSampleAvailability(args.lr_cohort))
         : args.samples
-      const result = await fetchMethylationForRegion(ctx.esClient, chrom, args.start, args.stop, requestedSamples)
+      const result = await fetchMethylationForRegion(
+        ctx.esClient, chrom, args.start, args.stop, requestedSamples, args.lr_cohort
+      )
       addTiming(ctx, {
         label: 'methylation',
         ms: now() - t0,
@@ -234,7 +235,9 @@ const resolvers = {
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
-      const result = await fetchMethylationSummaryForRegion(ctx.esClient, chrom, args.start, args.stop)
+      const result = await fetchMethylationSummaryForRegion(
+        ctx.esClient, chrom, args.start, args.stop, args.lr_cohort
+      )
       addTiming(ctx, {
         label: 'methylation_summary',
         ms: now() - t0,
@@ -247,7 +250,9 @@ const resolvers = {
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
-      const result = await fetchMethylationOutliersForRegion(ctx.esClient, chrom, args.start, args.stop)
+      const result = await fetchMethylationOutliersForRegion(
+        ctx.esClient, chrom, args.start, args.stop, args.lr_cohort
+      )
       addTiming(ctx, {
         label: 'methylation_outliers',
         ms: now() - t0,
@@ -271,7 +276,9 @@ const resolvers = {
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'coverage')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
-      const result = await fetchLRCoverageForRegion(ctx.esClient, chrom, args.start, args.stop)
+      const result = await fetchLRCoverageForRegion(
+        ctx.esClient, chrom, args.start, args.stop, args.lr_cohort
+      )
       addTiming(ctx, {
         label: 'lr_coverage',
         ms: now() - t0,
@@ -284,7 +291,7 @@ const resolvers = {
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'str_histogram')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
-      const result = await fetchSTRHistogram(ctx.esClient, chrom, args.position)
+      const result = await fetchSTRHistogram(ctx.esClient, chrom, args.position, args.lr_cohort)
       addTiming(ctx, {
         label: 'lr_str_histogram',
         ms: now() - t0,
@@ -294,14 +301,13 @@ const resolvers = {
     long_read_y1_provenance: async (_obj: any, args: any) => {
       const chrom = normalizeChrom(args.chrom)
       const cohort = args.lr_cohort as 'hgsvc_hprc' | 'aou'
-      const configured = isY1PilotEnabled ? await getY1SourceSnapshot(cohort) : null
-      const primary = configured?.chrom === chrom ? configured : null
+      const configured = isY1PilotEnabled ? await getY1SourceSnapshot(cohort, chrom) : null
+      const primary = configured
       const acceptedLabel = primary
         ? `Accepted Y1 — database=${primary.database}; cohort=${primary.cohort}; run=${primary.run_id}; ` +
           `scope=${primary.release}/${primary.reference_genome}/${primary.chrom}/${primary.load_scope}; state=${primary.state}`
         : null
       const metadataAvailable = cohort === 'hgsvc_hprc' && !!primary?.metadata_run_id
-      const ancillary = y1AncillaryCapabilities()
       const sources = [
         {
           modality: 'PRIMARY_VARIANTS', source: primary ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
@@ -329,16 +335,17 @@ const resolvers = {
           label: metadataAvailable ? 'Accepted Y1 metadata in configured database' : 'Optional metadata unavailable',
         },
         ...(['coverage', 'methylation', 'str_histogram'] as const).map((modality) => {
-          const decision = ancillary.get(modality) || ancillaryDecision(cohort, modality)
-          const available = !!primary && cohort === 'hgsvc_hprc' && decision.available
+          const decision = ancillaryDecision(cohort, modality)
+          const route = getY1AncillaryRoute(cohort, modality)
+          const available = !!primary && decision.available && !!route
           return {
             modality: {
               coverage: 'COVERAGE', methylation: 'METHYLATION', str_histogram: 'STR_HISTOGRAM',
             }[modality],
             source: available ? decision.source : 'UNAVAILABLE',
-            database: configured?.database || null, release: null, cohort,
+            database: route?.database || null, release: available ? 'y1' : null, cohort,
             reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
-            scope: configured?.load_scope || null, run_id: null,
+            scope: available ? 'full_genome' : null, run_id: route?.run_id || null,
             available, status: available ? 'available' : 'unavailable',
             label: available ? 'Optional ancillary table in configured Y1 database' : (decision.reason || 'Unavailable'),
           }

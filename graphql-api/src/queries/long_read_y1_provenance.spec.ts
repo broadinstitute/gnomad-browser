@@ -34,6 +34,7 @@ const requiredSchema: Record<string, string[]> = {
     'allele_rows',
     'frequency_rows',
     'carrier_rows',
+    'expected_tasks',
   ],
   lr_y1_summaries: ['run_id', 'release', 'cohort', 'reference_genome', 'chrom'],
   lr_y1_alleles: [
@@ -137,6 +138,7 @@ const run = (cohort: Cohort, overrides: Record<string, unknown> = {}) => ({
   allele_rows: 13,
   frequency_rows: 17,
   carrier_rows: cohort === 'hgsvc_hprc' ? 19 : 0,
+  expected_tasks: 1,
   latest_revision_rows: 1,
   ...overrides,
 })

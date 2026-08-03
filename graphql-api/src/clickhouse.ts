@@ -1,5 +1,11 @@
 import { createClient } from '@clickhouse/client'
-import { DEFAULT_Y1_CLICKHOUSE_DATABASE, resolveY1ClickHouseConfig } from './y1_config'
+import {
+  DEFAULT_Y1_CLICKHOUSE_DATABASE,
+  resolveY1AncillaryRoutes,
+  resolveY1ClickHouseConfig,
+  resolveY1PrimaryRunMap,
+  type Y1AncillaryRoute,
+} from './y1_config'
 
 const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
 
@@ -24,15 +30,28 @@ export const y1ClickhouseConfig = isY1PilotEnabled
       url: 'http://y1-disabled.invalid',
       database: DEFAULT_Y1_CLICKHOUSE_DATABASE,
     }
+export const y1PrimaryRunMap = isY1PilotEnabled ? resolveY1PrimaryRunMap() : null
+export const y1AncillaryRoutes = isY1PilotEnabled ? resolveY1AncillaryRoutes() : []
 
-// Y1 has one read-only connection and one fixed disposable database. Operators
-// select the server by URL (the launcher turns a port into this URL); run IDs are
-// discovered from the database at startup rather than supplied as configuration.
 export const y1ClickhouseClient = createClient({
   url: y1ClickhouseConfig.url,
   database: y1ClickhouseConfig.database,
   ...readonlyClientOptions,
 })
+
+const y1AncillaryClients = new Map<string, ReturnType<typeof createClient>>()
+export const getY1AncillaryClickhouseClient = (route: Y1AncillaryRoute) => {
+  let client = y1AncillaryClients.get(route.database)
+  if (!client) {
+    client = createClient({
+      url: y1ClickhouseConfig.url,
+      database: route.database,
+      ...readonlyClientOptions,
+    })
+    y1AncillaryClients.set(route.database, client)
+  }
+  return client
+}
 
 export const PHASED_METHYLATION_EVALUATION_DATABASE =
   'gnomad_lr_y1_scratch_phased_methylation_evaluation_v5_hg00097_chr22_47040000_47050000_v1'

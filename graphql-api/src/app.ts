@@ -156,12 +156,9 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     let phaseSummary = null
     let source = null
     if (isY1PilotEnabled) {
-      source = await getY1SourceSnapshot('hgsvc_hprc')
+      source = await getY1SourceSnapshot('hgsvc_hprc', chrom)
       if (!source) {
         return res.status(400).json({ code: 'UNAVAILABLE', error: 'HGSVC/HPRC is unavailable in the configured Y1 database' })
-      }
-      if (chrom !== source.chrom) {
-        return res.status(400).json({ code: 'OUT_OF_SCOPE', error: `Y1 data are available only on ${source.chrom}` })
       }
       const y1Rows = await fetchY1HaplotypeRows(chrom, start, stop, source.run_id)
       distinctVariants = y1Rows.variants

@@ -1,8 +1,10 @@
 import {
   clickhouseClient,
+  getY1AncillaryClickhouseClient,
   isY1PilotEnabled,
   y1ClickhouseClient,
 } from '../clickhouse'
+import { getY1AncillaryRoute } from '../graphql/resolvers/ancillary-availability'
 
 /**
  * Fetch haplotype variants pre-grouped by (sample_id, strand) in ClickHouse.
@@ -302,16 +304,34 @@ export const fetchLRCoverageForRegion = async (
   _esClient: any,
   chrom: string,
   start: number,
-  stop: number
+  stop: number,
+  cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
-  if (isY1PilotEnabled) return []
-  const query = `
-    SELECT * FROM lr_coverage
-    WHERE chrom = {chrom:String} AND pos BETWEEN {start:UInt32} AND {stop:UInt32}
-    ORDER BY pos ASC
-  `
+  if (isY1PilotEnabled) {
+    if (stop < start || stop - start > 1_000_000) throw new Error('Y1 coverage range is too large')
+    const route = getY1AncillaryRoute(cohort, 'coverage')
+    if (!route) return []
+    const resultSet = await getY1AncillaryClickhouseClient(route).query({
+      query: `
+        SELECT position AS pos, mean, median, over_1, over_5, over_10, over_15,
+          over_20, over_25, over_30, over_50, over_100
+        FROM lr_y1_coverage
+        WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+          AND chrom = {chrom:String}
+          AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+        ORDER BY position ASC
+      `,
+      query_params: { runId: route.run_id, cohort, chrom, start, stop },
+      format: 'JSONEachRow',
+    })
+    return resultSet.json()
+  }
   const resultSet = await clickhouseClient.query({
-    query,
+    query: `
+      SELECT * FROM lr_coverage
+      WHERE chrom = {chrom:String} AND pos BETWEEN {start:UInt32} AND {stop:UInt32}
+      ORDER BY pos ASC
+    `,
     query_params: { chrom, start, stop },
     format: 'JSONEachRow',
   })
@@ -321,23 +341,26 @@ export const fetchLRCoverageForRegion = async (
 export const fetchSTRHistogram = async (
   _esClient: any,
   chrom: string,
-  position: number
+  position: number,
+  cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
-  if (isY1PilotEnabled) return null
+  const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'str_histogram') : null
+  if (isY1PilotEnabled && !route) return null
   const query = `
-    SELECT chrom, position, end_position, motif,
+    SELECT chrom, ${isY1PilotEnabled ? 'source_start AS position, source_end AS end_position' : 'position, end_position'}, motif,
            allele_size_histogram, biallelic_histogram,
            min_repeats, mode_repeats, mean_repeats, stdev_repeats,
            median_repeats, p99_repeats, max_repeats,
            unique_allele_lengths, num_called_alleles,
            populations
-    FROM lr_str_histograms
-    WHERE chrom = {chrom:String} AND position = {position:UInt32}
+    FROM ${isY1PilotEnabled ? 'lr_y1_str_histograms' : 'lr_str_histograms'}
+    WHERE ${isY1PilotEnabled ? 'ancillary_run_id = {runId:String} AND cohort = {cohort:String} AND ' : ''}
+      chrom = {chrom:String} AND ${isY1PilotEnabled ? 'source_start' : 'position'} = {position:UInt32}
     LIMIT 2
   `
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await (route ? getY1AncillaryClickhouseClient(route) : clickhouseClient).query({
     query,
-    query_params: { chrom, position },
+    query_params: { runId: route?.run_id, cohort, chrom, position },
     format: 'JSONEachRow',
   })
   const rows = (await resultSet.json()) as any[]
@@ -357,22 +380,43 @@ export const fetchMethylationSummaryForRegion = async (
   _esClient: any,
   chrom: string,
   start: number,
-  stop: number
+  stop: number,
+  cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
-  if (isY1PilotEnabled) return []
-  const query = `
-    SELECT {chrom:String} AS chrom, pos1, pos2,
-           avgMerge(mean_methylation_state) AS mean_methylation,
-           avgMerge(mean_coverage_state) AS mean_coverage,
-           countMerge(num_samples_state) AS num_samples,
-           sqrt(varPopMerge(var_methylation_state)) AS std_methylation
-    FROM lr_methylation_summary_mv
-    WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
-    GROUP BY pos1, pos2
-    ORDER BY pos1 ASC
-  `
+  if (isY1PilotEnabled) {
+    if (stop < start || stop - start > 1_000_000) throw new Error('Y1 methylation range is too large')
+    const route = getY1AncillaryRoute(cohort, 'methylation')
+    if (!route) return []
+    const resultSet = await getY1AncillaryClickhouseClient(route).query({
+      query: `
+        SELECT chrom, pos1, pos2, mean_methylation, mean_coverage, num_samples,
+          std_methylation, min_methylation, max_methylation
+        FROM lr_methylation_summary
+        WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+          AND 1 = (
+            SELECT count() FROM lr_methylation_cohort_availability
+            WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+              AND availability = 'available_sample_total'
+          )
+        ORDER BY pos1 ASC
+      `,
+      query_params: { runId: route.run_id, cohort, chrom, start, stop },
+      format: 'JSONEachRow',
+    })
+    return resultSet.json()
+  }
   const resultSet = await clickhouseClient.query({
-    query,
+    query: `
+      SELECT {chrom:String} AS chrom, pos1, pos2,
+             avgMerge(mean_methylation_state) AS mean_methylation,
+             avgMerge(mean_coverage_state) AS mean_coverage,
+             countMerge(num_samples_state) AS num_samples,
+             sqrt(varPopMerge(var_methylation_state)) AS std_methylation
+      FROM lr_methylation_summary_mv
+      WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+      GROUP BY pos1, pos2
+      ORDER BY pos1 ASC
+    `,
     query_params: { chrom, start, stop },
     format: 'JSONEachRow',
   })
@@ -383,10 +427,20 @@ export const fetchMethylationOutliersForRegion = async (
   _esClient: any,
   chrom: string,
   start: number,
-  stop: number
+  stop: number,
+  cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
-  if (isY1PilotEnabled) return null
-  const summaryQuery = `
+  if (isY1PilotEnabled && (stop < start || stop - start > 1_000_000)) {
+    throw new Error('Y1 methylation range is too large')
+  }
+  const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'methylation') : null
+  if (isY1PilotEnabled && !route) return null
+  const summaryQuery = isY1PilotEnabled ? `
+        SELECT chrom, pos1, pos2, mean_methylation AS site_mean,
+               std_methylation AS site_std
+        FROM lr_methylation_summary
+        WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+  ` : `
         SELECT chrom, pos1, pos2,
                avgMerge(mean_methylation_state) AS site_mean,
                sqrt(varPopMerge(var_methylation_state)) AS site_std
@@ -404,12 +458,17 @@ export const fetchMethylationOutliersForRegion = async (
       ON detail.chrom = stats.chrom AND detail.pos1 = stats.pos1 AND detail.pos2 = stats.pos2
     WHERE detail.chrom = {chrom:String}
       AND detail.pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+      ${isY1PilotEnabled ? `AND 1 = (
+        SELECT count() FROM lr_methylation_cohort_availability
+        WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+          AND availability = 'available_sample_total'
+      )` : ''}
     GROUP BY sample_id
     ORDER BY outlier_count DESC
   `
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await (route ? getY1AncillaryClickhouseClient(route) : clickhouseClient).query({
     query,
-    query_params: { chrom, start, stop },
+    query_params: { runId: route?.run_id, cohort, chrom, start, stop },
     format: 'JSONEachRow',
   })
   const samples = (await resultSet.json()) as any[]
@@ -442,11 +501,17 @@ export const fetchMethylationForRegion = async (
   chrom: string,
   start: number,
   stop: number,
-  samples?: string[]
+  samples?: string[],
+  cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
-  if (isY1PilotEnabled) return []
+  const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'methylation') : null
+  if (isY1PilotEnabled && !route) return []
+  if (isY1PilotEnabled && (stop < start || stop - start > 1_000_000)) {
+    throw new Error('Y1 methylation range is too large')
+  }
+  if (samples && samples.length > 500) throw new Error('Too many methylation samples requested')
   let query = ''
-  const query_params: any = { chrom, start, stop }
+  const query_params: any = { runId: route?.run_id, cohort, chrom, start, stop }
 
   if (samples && samples.length > 0) {
     query = `
@@ -454,22 +519,31 @@ export const fetchMethylationForRegion = async (
       FROM lr_methylation
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+        ${isY1PilotEnabled ? `AND 1 = (
+          SELECT count() FROM lr_methylation_cohort_availability
+          WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+            AND availability = 'available_sample_total'
+        )` : ''}
         AND sample_id IN ({samples:Array(String)})
     `
     query_params.samples = samples
   } else if (!samples) {
-    // If undefined is explicitly passed, fetch all samples in the region for mQTL
     query = `
       SELECT chrom AS chr, pos1, pos2, methylation, coverage, sample_id AS sample
       FROM lr_methylation
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+        ${isY1PilotEnabled ? `AND 1 = (
+          SELECT count() FROM lr_methylation_cohort_availability
+          WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+            AND availability = 'available_sample_total'
+        )` : ''}
     `
   } else {
-    return [] // samples is explicitly an empty array
+    return []
   }
 
-  const resultSet = await clickhouseClient.query({
+  const resultSet = await (route ? getY1AncillaryClickhouseClient(route) : clickhouseClient).query({
     query,
     query_params,
     format: 'JSONEachRow',
