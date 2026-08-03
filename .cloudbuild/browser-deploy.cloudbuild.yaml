@@ -1,0 +1,24 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+    [
+      'run',
+      'services',
+      'update',
+      '${_SERVICE_NAME}',
+      '--project',
+      '$PROJECT_ID',
+      '--region',
+      '${_SERVICE_REGION}',
+      '--labels',
+      'git-sha=${IMAGE_TAG}',
+      '--container',
+      'browser-api',
+      '--image',
+      'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-api:${_IMAGE_TAG}',
+      '--container',
+      'browser-server',
+      '--image',
+      'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-browser:${_IMAGE_TAG}',
+    ]
