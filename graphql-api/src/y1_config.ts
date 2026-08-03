@@ -1,3 +1,5 @@
+import { readY1AncillaryReceipt, type Y1AncillaryReceipt } from './y1_admission_config'
+
 export const DEFAULT_Y1_CLICKHOUSE_DATABASE = 'gnomad_lr_y1_scratch_v5_current'
 
 export type Y1Cohort = 'hgsvc_hprc' | 'aou'
@@ -10,6 +12,8 @@ export type Y1AncillaryRoute = {
   cohort: Y1Cohort
   database: string
   run_id: string
+  receipt_path: string
+  receipt: Y1AncillaryReceipt
 }
 
 export type Y1ClickHouseConfig = {
@@ -65,9 +69,7 @@ export const resolveY1ClickHouseConfig = (
   env: NodeJS.ProcessEnv = process.env
 ): Y1ClickHouseConfig => ({
   url: requireExplicitUrl(env.LR_Y1_CLICKHOUSE_URL),
-  database: safeDatabase(
-    (env.LR_Y1_CLICKHOUSE_DATABASE || DEFAULT_Y1_CLICKHOUSE_DATABASE).trim()
-  ),
+  database: safeDatabase((env.LR_Y1_CLICKHOUSE_DATABASE || DEFAULT_Y1_CLICKHOUSE_DATABASE).trim()),
 })
 
 // Optional presentation routing is an exact cohort/chromosome -> run-ID map.
@@ -97,10 +99,9 @@ export const resolveY1PrimaryRunMap = (
       if (runs.size) result.set(cohort, runs)
     }
   }
-  const unknown = Object.keys(parsed).filter(
-    (key) => key !== 'hgsvc_hprc' && key !== 'aou'
-  )
-  if (unknown.length) throw new Error(`LR_Y1_RUN_MAP contains unknown cohorts: ${unknown.join(', ')}`)
+  const unknown = Object.keys(parsed).filter((key) => key !== 'hgsvc_hprc' && key !== 'aou')
+  if (unknown.length)
+    throw new Error(`LR_Y1_RUN_MAP contains unknown cohorts: ${unknown.join(', ')}`)
   if (!result.size) throw new Error('LR_Y1_RUN_MAP contains zero routed runs')
   return result
 }
@@ -132,16 +133,28 @@ export const resolveY1AncillaryRoutes = (
           throw new Error(`LR_Y1_ANCILLARY_ROUTES.${modality}.${cohort} must be an object`)
         }
         const entry = value as Record<string, unknown>
+        const database = safeDatabase(String(entry.database || ''))
+        const run_id = safeRunId(entry.run_id, `${modality}/${cohort}`)
+        if (typeof entry.receipt_path !== 'string' || !entry.receipt_path.trim()) {
+          throw new Error(`LR_Y1_ANCILLARY_ROUTES.${modality}.${cohort} requires receipt_path`)
+        }
+        const receipt_path = entry.receipt_path.trim()
         routes.push({
           modality,
           cohort,
-          database: safeDatabase(String(entry.database || '')),
-          run_id: safeRunId(entry.run_id, `${modality}/${cohort}`),
+          database,
+          run_id,
+          receipt_path,
+          receipt: readY1AncillaryReceipt(receipt_path, { modality, cohort, database, run_id }),
         })
-        const unknownKeys = Object.keys(entry).filter((key) => key !== 'database' && key !== 'run_id')
+        const unknownKeys = Object.keys(entry).filter(
+          (key) => key !== 'database' && key !== 'run_id' && key !== 'receipt_path'
+        )
         if (unknownKeys.length) {
           throw new Error(
-            `LR_Y1_ANCILLARY_ROUTES.${modality}.${cohort} contains unknown keys: ${unknownKeys.join(', ')}`
+            `LR_Y1_ANCILLARY_ROUTES.${modality}.${cohort} contains unknown keys: ${unknownKeys.join(
+              ', '
+            )}`
           )
         }
       }
@@ -151,7 +164,9 @@ export const resolveY1AncillaryRoutes = (
     (key) => key !== 'coverage' && key !== 'str_histogram' && key !== 'methylation'
   )
   if (unknownModalities.length) {
-    throw new Error(`LR_Y1_ANCILLARY_ROUTES contains unknown modalities: ${unknownModalities.join(', ')}`)
+    throw new Error(
+      `LR_Y1_ANCILLARY_ROUTES contains unknown modalities: ${unknownModalities.join(', ')}`
+    )
   }
   return routes
 }

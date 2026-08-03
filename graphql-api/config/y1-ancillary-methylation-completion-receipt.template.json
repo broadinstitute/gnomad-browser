@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "database": "REPLACE_WITH_EXACT_DATABASE",
+  "run_id": "REPLACE_WITH_EXACT_RUN_ID",
+  "cohort": "hgsvc_hprc",
+  "job_uuid": "REPLACE_WITH_EXACT_JOB_UUID",
+  "receipts": {
+    "expected": "REPLACE_WITH_EXPECTED_TASKS",
+    "accepted": "REPLACE_WITH_ACCEPTED_TASKS",
+    "failed_attempts": 0,
+    "rejects": 0
+  },
+  "modality": "methylation",
+  "reconciliation": {
+    "roster_rows": "REPLACE_WITH_ROSTER_ROWS",
+    "included_samples": "REPLACE_WITH_INCLUDED_SAMPLES",
+    "detail_rows": "REPLACE_WITH_TOTAL_DETAIL_ROWS",
+    "summary_rows": "REPLACE_WITH_TOTAL_SUMMARY_ROWS",
+    "availability_rows": "REPLACE_WITH_SAMPLE_AVAILABILITY_ROWS",
+    "detail_contigs": [
+      {
+        "chrom": "chr1",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr2",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr3",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr4",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr5",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr6",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr7",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr8",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr9",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr10",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr11",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr12",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr13",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr14",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr15",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr16",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr17",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr18",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr19",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr20",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr21",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr22",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chrX",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chrY",
+        "rows": "REPLACE_WITH_ROWS"
+      }
+    ],
+    "summary_contigs": [
+      {
+        "chrom": "chr1",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr2",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr3",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr4",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr5",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr6",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr7",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr8",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr9",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr10",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr11",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr12",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr13",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr14",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr15",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr16",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr17",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr18",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr19",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr20",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr21",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chr22",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chrX",
+        "rows": "REPLACE_WITH_ROWS"
+      },
+      {
+        "chrom": "chrY",
+        "rows": "REPLACE_WITH_ROWS"
+      }
+    ],
+    "samples": [
+      {
+        "sample_id": "REPLACE_WITH_SAMPLE_ID",
+        "included": "REPLACE_WITH_BOOLEAN",
+        "availability": "REPLACE_WITH_EXACT_AVAILABILITY",
+        "detail_rows": "REPLACE_WITH_DETAIL_ROWS",
+        "indexed_contigs": [
+          "REPLACE_WITH_EXACT_CONTIGS"
+        ]
+      }
+    ]
+  }
+}

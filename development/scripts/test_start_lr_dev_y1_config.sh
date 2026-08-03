@@ -35,13 +35,15 @@ url_output="$(
     LR_Y1_CLICKHOUSE_URL=http://clickhouse.test:8123 \
     LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_test_fixture \
     LR_Y1_RUN_MAP='{"hgsvc_hprc":{"chr1":"run-1"}}' \
-    LR_Y1_ANCILLARY_ROUTES='{"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1"}}}' \
+    LR_Y1_PRIMARY_MANIFEST_PATH=/tmp/primary-manifests.json \
+    LR_Y1_ANCILLARY_ROUTES='{"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1","receipt_path":"/tmp/cov-receipt.json"}}}' \
     "$ROOT_DIR/start_lr_dev.sh"
 )"
 grep -q '^LR_Y1_CLICKHOUSE_URL=http://clickhouse.test:8123$' <<<"$url_output"
 grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_test_fixture$' <<<"$url_output"
 grep -q '^LR_Y1_RUN_MAP={"hgsvc_hprc":{"chr1":"run-1"}}$' <<<"$url_output"
-grep -q '^LR_Y1_ANCILLARY_ROUTES={"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1"}}}$' <<<"$url_output"
+grep -q '^LR_Y1_PRIMARY_MANIFEST_PATH=/tmp/primary-manifests.json$' <<<"$url_output"
+grep -q '^LR_Y1_ANCILLARY_ROUTES={"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1","receipt_path":"/tmp/cov-receipt.json"}}}$' <<<"$url_output"
 
 if LR_DEV_DRY_RUN=1 LR_Y1_ENABLED=true env -u LR_Y1_CLICKHOUSE_URL \
     "$ROOT_DIR/start_lr_dev.sh" >/dev/null 2>&1; then

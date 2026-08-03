@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "database": "REPLACE_WITH_EXACT_DATABASE",
+  "run_id": "REPLACE_WITH_EXACT_RUN_ID",
+  "cohort": "REPLACE_WITH_hgsvc_hprc_OR_aou",
+  "job_uuid": "REPLACE_WITH_EXACT_JOB_UUID",
+  "receipts": {
+    "expected": "REPLACE_WITH_EXPECTED_TASKS",
+    "accepted": "REPLACE_WITH_ACCEPTED_TASKS",
+    "failed_attempts": 0,
+    "rejects": 0
+  },
+  "modality": "str_histogram",
+  "reconciliation": {
+    "mapping_rows": "REPLACE_WITH_MAPPING_ROWS",
+    "available_rows": "REPLACE_WITH_AVAILABLE_ROWS",
+    "unavailable_rows": "REPLACE_WITH_UNAVAILABLE_ROWS",
+    "ambiguous_rows": 0,
+    "canonical_rows": "REPLACE_WITH_EXACT_PHYSICAL_CANONICAL_ROWS",
+    "key_mismatches": 0,
+    "contigs": [
+      {
+        "chrom": "chr1",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr2",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr3",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr4",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr5",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr6",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr7",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr8",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr9",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr10",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr11",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr12",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr13",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr14",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr15",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr16",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr17",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr18",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr19",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr20",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr21",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chr22",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chrX",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      },
+      {
+        "chrom": "chrY",
+        "rows": "REPLACE_WITH_ROWS",
+        "min_start": "REPLACE_WITH_MIN_SOURCE_START",
+        "max_end": "REPLACE_WITH_MAX_SOURCE_END"
+      }
+    ]
+  }
+}

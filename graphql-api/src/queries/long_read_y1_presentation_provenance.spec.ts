@@ -12,11 +12,40 @@ const configuredMap = new Map([
   ],
   ['aou', new Map([['chr1', 'aou-chr1']])],
 ])
+const source = {
+  source_uri: 'gs://bucket/source.vcf.gz',
+  source_generation: '123',
+  source_checksum_algorithm: 'md5_base64',
+  source_checksum: 'AAAAAAAAAAAAAAAAAAAAAA==',
+  source_size_bytes: 100,
+  source_index_uri: 'gs://bucket/source.vcf.gz.tbi',
+  source_index_generation: '124',
+  source_index_checksum_algorithm: 'md5_base64',
+  source_index_checksum: 'BBBBBBBBBBBBBBBBBBBBBB==',
+  source_index_size_bytes: 10,
+}
+const manifestFor = (cohort: string, chrom: string, run_id: string) => ({
+  cohort,
+  chrom,
+  run_id,
+  manifest_sha256: 'a'.repeat(64),
+  source,
+  tasks: [
+    { task_id: `${run_id}-task-1`, start: 1, stop: 100 },
+    { task_id: `${run_id}-task-2`, start: 101, stop: 200 },
+  ],
+})
+const configuredManifests = new Map([
+  ['hgsvc_hprc\u0000chr1', manifestFor('hgsvc_hprc', 'chr1', 'hgsvc-chr1')],
+  ['hgsvc_hprc\u0000chr2', manifestFor('hgsvc_hprc', 'chr2', 'hgsvc-chr2')],
+  ['aou\u0000chr1', manifestFor('aou', 'chr1', 'aou-chr1')],
+])
 
 jest.mock('../clickhouse', () => ({
   isY1PilotEnabled: true,
   y1ClickhouseConfig: { url: 'http://127.0.0.1:9999', database: 'gnomad_lr_y1_demo' },
   y1PrimaryRunMap: configuredMap,
+  y1PrimaryManifests: configuredManifests,
   y1ClickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
 }))
 
@@ -99,8 +128,8 @@ const runs = [
   release: 'y1',
   reference_genome: 'GRCh38',
   load_scope: 'full_chromosome',
-  interval_start: 0,
-  interval_end: 0,
+  interval_start: 1,
+  interval_end: 200,
   state: 'loading',
   summary_rows: 0,
   allele_rows: 0,
@@ -110,36 +139,101 @@ const runs = [
   latest_revision_rows: 1,
 }))
 
-const installFixture = (acceptedTasks = 2, attempts = acceptedTasks, tasks = acceptedTasks) => {
+type FixtureOptions = {
+  omitSecond?: boolean
+  substituteTask?: boolean
+  duplicateBounds?: boolean
+  wrongGeneration?: boolean
+  failedThenAccepted?: boolean
+}
+
+const installFixture = (options: FixtureOptions = {}) => {
   mockQuery.mockImplementation(({ query, query_params = {} }: any) => {
-    if (query.includes('FROM system.columns'))
+    if (query.includes('FROM system.columns')) {
       return Promise.resolve({
         json: async () =>
           Object.entries(schema).flatMap(([table, columns]) =>
             columns.map((name) => ({ table, name }))
           ),
       })
+    }
     if (query.includes('FROM lr_y1_load_runs AS ledger')) {
       return Promise.resolve({ json: async () => runs })
     }
-    if (query.includes('FROM lr_y1_task_attempts AS ledger')) {
-      const carriers = String(query_params.runId).startsWith('hgsvc') ? 13 : 0
-      return Promise.resolve({
-        json: async () => [
-          {
-            attempts,
-            tasks,
-            accepted: acceptedTasks,
-            accepted_tasks: acceptedTasks,
-            invalid_identity: 0,
-            rejected: 0,
-            summaries: 11,
-            alleles: 17,
-            frequencies: 23,
-            carriers,
-          },
-        ],
+    if (query.includes('FROM lr_y1_task_attempts')) {
+      const runId = String(query_params.runId)
+      const manifest = [...configuredManifests.values()].find((entry) => entry.run_id === runId)!
+      const accepted = manifest.tasks.map((task, index) => {
+        const taskId = options.substituteTask && index === 1 ? `${runId}-substitute` : task.task_id
+        const start = options.duplicateBounds && index === 1 ? 1 : task.start
+        const stop = options.duplicateBounds && index === 1 ? 100 : task.stop
+        const carriers = runId.startsWith('hgsvc') ? [6, 7][index] : 0
+        const ledgerCounts = {
+          source_records: index + 30,
+          summaries: index === 0 ? 5 : 6,
+          alleles: index === 0 ? 8 : 9,
+          frequencies: index === 0 ? 11 : 12,
+          carriers,
+          rejects: 0,
+        }
+        return {
+          task_id: taskId,
+          attempt_id: `accepted-${index}`,
+          state: 'accepted',
+          chrom: manifest.chrom,
+          interval_start: start,
+          interval_end: stop,
+          source_records: ledgerCounts.source_records,
+          summary_rows: ledgerCounts.summaries,
+          allele_rows: ledgerCounts.alleles,
+          frequency_rows: ledgerCounts.frequencies,
+          carrier_rows: ledgerCounts.carriers,
+          rejected_records: ledgerCounts.rejects,
+          report_json: JSON.stringify({
+            run_id: runId,
+            task_id: taskId,
+            attempt_id: `accepted-${index}`,
+            cohort: manifest.cohort,
+            chrom: manifest.chrom,
+            start,
+            stop,
+            ...source,
+            source_generation:
+              options.wrongGeneration && index === 1 ? 'wrong' : source.source_generation,
+            state: 'accepted',
+            counts: ledgerCounts,
+          }),
+        }
       })
+      if (options.omitSecond) accepted.pop()
+      if (options.failedThenAccepted) {
+        const task = manifest.tasks[0]
+        accepted.unshift({
+          ...accepted[0],
+          attempt_id: 'failed-0',
+          state: 'failed',
+          report_json: JSON.stringify({
+            run_id: runId,
+            task_id: task.task_id,
+            attempt_id: 'failed-0',
+            cohort: manifest.cohort,
+            chrom: manifest.chrom,
+            start: task.start,
+            stop: task.stop,
+            ...source,
+            state: 'failed',
+            counts: {
+              source_records: 30,
+              summaries: 5,
+              alleles: 8,
+              frequencies: 11,
+              carriers: runId.startsWith('hgsvc') ? 6 : 0,
+              rejects: 0,
+            },
+          }),
+        })
+      }
+      return Promise.resolve({ json: async () => accepted })
     }
     if (query.includes('FROM lr_y1_rejects_staging')) {
       return Promise.resolve({ json: async () => [{ physical_rejects: 0 }] })
@@ -161,30 +255,32 @@ const installFixture = (acceptedTasks = 2, attempts = acceptedTasks, tasks = acc
   })
 }
 
-describe('Y1 presentation task-accepted run routing', () => {
+describe('Y1 checked-manifest presentation routing', () => {
   beforeEach(() => {
     mockQuery.mockReset()
     resetY1SourceSnapshotForTests()
   })
 
-  test('selects exact runs by cohort and chromosome without cross-cohort leakage', async () => {
+  test('accepts exact manifest tasks and preserves cohort/chromosome isolation', async () => {
     installFixture()
     await preflightY1AcceptedSources()
-    expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr1'))?.run_id).toBe('hgsvc-chr1')
-    expect((await getY1SourceSnapshot('hgsvc_hprc', '2'))?.run_id).toBe('hgsvc-chr2')
+    expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr2'))?.run_id).toBe('hgsvc-chr2')
     expect((await getY1SourceSnapshot('aou', 'chr1'))?.run_id).toBe('aou-chr1')
     expect(await getY1SourceSnapshot('aou', 'chr2')).toBeNull()
-    expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr1'))?.state).toBe('accepted_tasks')
   })
 
-  test('accepts a failed attempt followed by one accepted attempt for the same task', async () => {
-    installFixture(2, 3, 2)
+  test('accepts a failed attempt followed by one exact accepted attempt', async () => {
+    installFixture({ failedThenAccepted: true })
     await expect(preflightY1AcceptedSources()).resolves.toBeUndefined()
-    expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr2'))?.run_id).toBe('hgsvc-chr2')
   })
 
-  test('rejects a configured run before routing when accepted task receipts are incomplete', async () => {
-    installFixture(1)
-    await expect(preflightY1AcceptedSources()).rejects.toThrow('task receipts are incomplete')
+  test.each([
+    [{ omitSecond: true }, 'accepted current attempt'],
+    [{ substituteTask: true }, 'absent from its checked manifest'],
+    [{ duplicateBounds: true }, 'substituted bounds'],
+    [{ wrongGeneration: true }, 'source_generation'],
+  ])('fails closed for incomplete or substituted current receipts %#', async (options, error) => {
+    installFixture(options as FixtureOptions)
+    await expect(preflightY1AcceptedSources()).rejects.toThrow(error as string)
   })
 })

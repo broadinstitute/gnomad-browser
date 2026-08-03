@@ -88,6 +88,7 @@ if [[ "${LR_DEV_DRY_RUN:-0}" == 1 ]]; then
         printf 'LR_Y1_CLICKHOUSE_URL=%s\n' "$Y1_CH_URL"
         printf 'LR_Y1_CLICKHOUSE_DATABASE=%s\n' "$Y1_DATABASE"
         if [[ -n "${LR_Y1_RUN_MAP:-}" ]]; then printf 'LR_Y1_RUN_MAP=%s\n' "$LR_Y1_RUN_MAP"; fi
+        if [[ -n "${LR_Y1_PRIMARY_MANIFEST_PATH:-}" ]]; then printf 'LR_Y1_PRIMARY_MANIFEST_PATH=%s\n' "$LR_Y1_PRIMARY_MANIFEST_PATH"; fi
         if [[ -n "${LR_Y1_ANCILLARY_ROUTES:-}" ]]; then printf 'LR_Y1_ANCILLARY_ROUTES=%s\n' "$LR_Y1_ANCILLARY_ROUTES"; fi
     fi
     exit 0
@@ -302,6 +303,9 @@ if [[ "$USE_Y1" == true ]]; then
         LR_Y1_CLICKHOUSE_DATABASE="$Y1_DATABASE"
     )
     if [[ -n "${LR_Y1_RUN_MAP:-}" ]]; then API_ENV+=(LR_Y1_RUN_MAP="$LR_Y1_RUN_MAP"); fi
+    if [[ -n "${LR_Y1_PRIMARY_MANIFEST_PATH:-}" ]]; then
+        API_ENV+=(LR_Y1_PRIMARY_MANIFEST_PATH="$LR_Y1_PRIMARY_MANIFEST_PATH")
+    fi
     if [[ -n "${LR_Y1_ANCILLARY_ROUTES:-}" ]]; then
         API_ENV+=(LR_Y1_ANCILLARY_ROUTES="$LR_Y1_ANCILLARY_ROUTES")
     fi

@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "database": "REPLACE_WITH_EXACT_DATABASE",
+  "run_id": "REPLACE_WITH_EXACT_RUN_ID",
+  "cohort": "REPLACE_WITH_hgsvc_hprc_OR_aou",
+  "job_uuid": "REPLACE_WITH_EXACT_JOB_UUID",
+  "receipts": {
+    "expected": "REPLACE_WITH_EXPECTED_TASKS",
+    "accepted": "REPLACE_WITH_ACCEPTED_TASKS",
+    "failed_attempts": 0,
+    "rejects": 0
+  },
+  "modality": "coverage",
+  "reconciliation": {
+    "canonical_rows": 3088269832,
+    "contigs": [
+      {
+        "chrom": "chr1",
+        "rows": 248956422,
+        "unique_positions": 248956422,
+        "min_position": 1,
+        "max_position": 248956422
+      },
+      {
+        "chrom": "chr2",
+        "rows": 242193529,
+        "unique_positions": 242193529,
+        "min_position": 1,
+        "max_position": 242193529
+      },
+      {
+        "chrom": "chr3",
+        "rows": 198295559,
+        "unique_positions": 198295559,
+        "min_position": 1,
+        "max_position": 198295559
+      },
+      {
+        "chrom": "chr4",
+        "rows": 190214555,
+        "unique_positions": 190214555,
+        "min_position": 1,
+        "max_position": 190214555
+      },
+      {
+        "chrom": "chr5",
+        "rows": 181538259,
+        "unique_positions": 181538259,
+        "min_position": 1,
+        "max_position": 181538259
+      },
+      {
+        "chrom": "chr6",
+        "rows": 170805979,
+        "unique_positions": 170805979,
+        "min_position": 1,
+        "max_position": 170805979
+      },
+      {
+        "chrom": "chr7",
+        "rows": 159345973,
+        "unique_positions": 159345973,
+        "min_position": 1,
+        "max_position": 159345973
+      },
+      {
+        "chrom": "chr8",
+        "rows": 145138636,
+        "unique_positions": 145138636,
+        "min_position": 1,
+        "max_position": 145138636
+      },
+      {
+        "chrom": "chr9",
+        "rows": 138394717,
+        "unique_positions": 138394717,
+        "min_position": 1,
+        "max_position": 138394717
+      },
+      {
+        "chrom": "chr10",
+        "rows": 133797422,
+        "unique_positions": 133797422,
+        "min_position": 1,
+        "max_position": 133797422
+      },
+      {
+        "chrom": "chr11",
+        "rows": 135086622,
+        "unique_positions": 135086622,
+        "min_position": 1,
+        "max_position": 135086622
+      },
+      {
+        "chrom": "chr12",
+        "rows": 133275309,
+        "unique_positions": 133275309,
+        "min_position": 1,
+        "max_position": 133275309
+      },
+      {
+        "chrom": "chr13",
+        "rows": 114364328,
+        "unique_positions": 114364328,
+        "min_position": 1,
+        "max_position": 114364328
+      },
+      {
+        "chrom": "chr14",
+        "rows": 107043718,
+        "unique_positions": 107043718,
+        "min_position": 1,
+        "max_position": 107043718
+      },
+      {
+        "chrom": "chr15",
+        "rows": 101991189,
+        "unique_positions": 101991189,
+        "min_position": 1,
+        "max_position": 101991189
+      },
+      {
+        "chrom": "chr16",
+        "rows": 90338345,
+        "unique_positions": 90338345,
+        "min_position": 1,
+        "max_position": 90338345
+      },
+      {
+        "chrom": "chr17",
+        "rows": 83257441,
+        "unique_positions": 83257441,
+        "min_position": 1,
+        "max_position": 83257441
+      },
+      {
+        "chrom": "chr18",
+        "rows": 80373285,
+        "unique_positions": 80373285,
+        "min_position": 1,
+        "max_position": 80373285
+      },
+      {
+        "chrom": "chr19",
+        "rows": 58617616,
+        "unique_positions": 58617616,
+        "min_position": 1,
+        "max_position": 58617616
+      },
+      {
+        "chrom": "chr20",
+        "rows": 64444167,
+        "unique_positions": 64444167,
+        "min_position": 1,
+        "max_position": 64444167
+      },
+      {
+        "chrom": "chr21",
+        "rows": 46709983,
+        "unique_positions": 46709983,
+        "min_position": 1,
+        "max_position": 46709983
+      },
+      {
+        "chrom": "chr22",
+        "rows": 50818468,
+        "unique_positions": 50818468,
+        "min_position": 1,
+        "max_position": 50818468
+      },
+      {
+        "chrom": "chrX",
+        "rows": 156040895,
+        "unique_positions": 156040895,
+        "min_position": 1,
+        "max_position": 156040895
+      },
+      {
+        "chrom": "chrY",
+        "rows": 57227415,
+        "unique_positions": 57227415,
+        "min_position": 1,
+        "max_position": 57227415
+      }
+    ]
+  }
+}

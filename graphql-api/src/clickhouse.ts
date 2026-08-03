@@ -6,6 +6,7 @@ import {
   resolveY1PrimaryRunMap,
   type Y1AncillaryRoute,
 } from './y1_config'
+import { resolveY1PrimaryManifests } from './y1_admission_config'
 
 const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
 
@@ -31,6 +32,9 @@ export const y1ClickhouseConfig = isY1PilotEnabled
       database: DEFAULT_Y1_CLICKHOUSE_DATABASE,
     }
 export const y1PrimaryRunMap = isY1PilotEnabled ? resolveY1PrimaryRunMap() : null
+export const y1PrimaryManifests = isY1PilotEnabled
+  ? resolveY1PrimaryManifests(y1PrimaryRunMap)
+  : null
 export const y1AncillaryRoutes = isY1PilotEnabled ? resolveY1AncillaryRoutes() : []
 
 export const y1ClickhouseClient = createClient({

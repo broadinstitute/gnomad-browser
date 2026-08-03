@@ -2,8 +2,10 @@ import {
   isY1PilotEnabled,
   y1ClickhouseClient,
   y1ClickhouseConfig,
+  y1PrimaryManifests,
   y1PrimaryRunMap,
 } from '../clickhouse'
+import type { Y1PrimaryManifest } from '../y1_admission_config'
 import type { LongReadCohort } from './long_read_y1_variants'
 
 // The current finalizer name lives in one place so a backend rename to
@@ -332,75 +334,166 @@ const validateCarrierStructure = async (
 }
 
 type AcceptedTaskCounts = {
-  attempts: number
-  tasks: number
-  accepted: number
-  accepted_tasks: number
-  invalid_identity: number
-  rejected: number
   summaries: number
   alleles: number
   frequencies: number
   carriers: number
-  physical_rejects: number
 }
 
-const requireAcceptedTaskReceipts = async (run: RunRow): Promise<AcceptedTaskCounts> => {
-  const receiptRows = await rows(
-    `
-    SELECT count() AS attempts, uniqExact(task_id) AS tasks,
-      countIf(state = 'accepted') AS accepted,
-      uniqExactIf(task_id, state = 'accepted') AS accepted_tasks,
-      countIf(chrom != {chrom:String} OR interval_end <= interval_start) AS invalid_identity,
-      sumIf(rejected_records, state = 'accepted') AS rejected,
-      sumIf(summary_rows, state = 'accepted') AS summaries,
-      sumIf(allele_rows, state = 'accepted') AS alleles,
-      sumIf(frequency_rows, state = 'accepted') AS frequencies,
-      sumIf(carrier_rows, state = 'accepted') AS carriers
-    FROM (
-      SELECT ledger.*
-      FROM lr_y1_task_attempts AS ledger
-      INNER JOIN (
-        SELECT run_id, task_id, attempt_id, max(revision) AS revision
-        FROM lr_y1_task_attempts
-        WHERE run_id = {runId:String}
-        GROUP BY run_id, task_id, attempt_id
-      ) AS latest USING (run_id, task_id, attempt_id, revision)
-      WHERE ledger.run_id = {runId:String}
+type AttemptRow = {
+  task_id: string
+  attempt_id: string
+  state: string
+  chrom: string
+  interval_start: number
+  interval_end: number
+  source_records: number
+  summary_rows: number
+  allele_rows: number
+  frequency_rows: number
+  carrier_rows: number
+  rejected_records: number
+  report_json: string
+}
+
+const requireAcceptedTaskReceipts = async (
+  run: RunRow,
+  manifest: Y1PrimaryManifest
+): Promise<AcceptedTaskCounts> => {
+  if (Number(run.expected_tasks) !== manifest.tasks.length) {
+    throw new Error(
+      `Y1 presentation run ${run.run_id} expected task count does not match its checked manifest`
     )
+  }
+  const attemptRows = (await rows(
+    `
+    SELECT task_id, attempt_id, argMax(state, revision) AS state,
+      argMax(chrom, revision) AS chrom,
+      argMax(interval_start, revision) AS interval_start,
+      argMax(interval_end, revision) AS interval_end,
+      argMax(source_records, revision) AS source_records,
+      argMax(summary_rows, revision) AS summary_rows,
+      argMax(allele_rows, revision) AS allele_rows,
+      argMax(frequency_rows, revision) AS frequency_rows,
+      argMax(carrier_rows, revision) AS carrier_rows,
+      argMax(rejected_records, revision) AS rejected_records,
+      argMax(report_json, revision) AS report_json
+    FROM lr_y1_task_attempts
+    WHERE run_id = {runId:String}
+    GROUP BY task_id, attempt_id
+    ORDER BY task_id, attempt_id
   `,
-    { runId: run.run_id, chrom: run.chrom }
-  )
+    { runId: run.run_id }
+  )) as AttemptRow[]
   const rejectRows = await rows(
     `SELECT count() AS physical_rejects FROM lr_y1_rejects_staging WHERE run_id = {runId:String}`,
     { runId: run.run_id }
   )
-  const raw = receiptRows[0] || {}
-  const counts: AcceptedTaskCounts = {
-    attempts: Number(raw.attempts || 0),
-    tasks: Number(raw.tasks || 0),
-    accepted: Number(raw.accepted || 0),
-    accepted_tasks: Number(raw.accepted_tasks || 0),
-    invalid_identity: Number(raw.invalid_identity || 0),
-    rejected: Number(raw.rejected || 0),
-    summaries: Number(raw.summaries || 0),
-    alleles: Number(raw.alleles || 0),
-    frequencies: Number(raw.frequencies || 0),
-    carriers: Number(raw.carriers || 0),
-    physical_rejects: Number(rejectRows[0]?.physical_rejects || 0),
+  if (Number(rejectRows[0]?.physical_rejects || 0) !== 0) {
+    throw new Error(`Y1 presentation run ${run.run_id} has physical rejects`)
   }
-  const expected = Number(run.expected_tasks)
+
+  const expected = new Map(manifest.tasks.map((task) => [task.task_id, task]))
+  const accepted = new Set<string>()
+  const counts: AcceptedTaskCounts = { summaries: 0, alleles: 0, frequencies: 0, carriers: 0 }
+  for (const row of attemptRows) {
+    const task = expected.get(String(row.task_id))
+    if (!task) {
+      throw new Error(
+        `Y1 presentation run ${run.run_id} contains task absent from its checked manifest`
+      )
+    }
+    if (
+      !row.attempt_id ||
+      row.chrom !== manifest.chrom ||
+      Number(row.interval_start) !== task.start ||
+      Number(row.interval_end) !== task.stop
+    ) {
+      throw new Error(
+        `Y1 presentation run ${run.run_id} task ${row.task_id} has substituted bounds`
+      )
+    }
+    if (row.state !== 'accepted' && row.state !== 'failed') {
+      throw new Error(`Y1 presentation run ${run.run_id} contains nonterminal task attempts`)
+    }
+    let report: any
+    try {
+      report = JSON.parse(String(row.report_json))
+    } catch {
+      throw new Error(`Y1 presentation run ${run.run_id} has invalid task report JSON`)
+    }
+    const exactStrings: Record<string, string> = {
+      run_id: run.run_id,
+      task_id: String(row.task_id),
+      attempt_id: String(row.attempt_id),
+      cohort: manifest.cohort,
+      chrom: manifest.chrom,
+      source_uri: manifest.source.source_uri,
+      source_generation: manifest.source.source_generation,
+      source_checksum_algorithm: manifest.source.source_checksum_algorithm,
+      source_checksum: manifest.source.source_checksum,
+      source_index_uri: manifest.source.source_index_uri,
+      source_index_generation: manifest.source.source_index_generation,
+      source_index_checksum_algorithm: manifest.source.source_index_checksum_algorithm,
+      source_index_checksum: manifest.source.source_index_checksum,
+      state: row.state,
+    }
+    const wrongString = Object.entries(exactStrings).find(
+      ([field, value]) => report?.[field] !== value
+    )
+    if (wrongString) {
+      throw new Error(
+        `Y1 presentation run ${run.run_id} task ${row.task_id} report ${wrongString[0]} ` +
+          'does not match its checked manifest/current attempt'
+      )
+    }
+    if (
+      report.start !== task.start ||
+      report.stop !== task.stop ||
+      report.source_size_bytes !== manifest.source.source_size_bytes ||
+      report.source_index_size_bytes !== manifest.source.source_index_size_bytes
+    ) {
+      throw new Error(
+        `Y1 presentation run ${run.run_id} task ${row.task_id} report source/bounds ` +
+          'do not match its checked manifest'
+      )
+    }
+    const ledgerCounts = {
+      source_records: Number(row.source_records),
+      summaries: Number(row.summary_rows),
+      alleles: Number(row.allele_rows),
+      frequencies: Number(row.frequency_rows),
+      carriers: Number(row.carrier_rows),
+      rejects: Number(row.rejected_records),
+    }
+    if (
+      !report.counts ||
+      Object.entries(ledgerCounts).some(([field, value]) => report.counts[field] !== value)
+    ) {
+      throw new Error(
+        `Y1 presentation run ${run.run_id} task ${row.task_id} report counts mismatch`
+      )
+    }
+    if (row.state === 'accepted') {
+      if (accepted.has(row.task_id) || ledgerCounts.rejects !== 0) {
+        throw new Error(
+          `Y1 presentation run ${run.run_id} lacks exactly one zero-reject accepted attempt per task`
+        )
+      }
+      accepted.add(row.task_id)
+      counts.summaries += ledgerCounts.summaries
+      counts.alleles += ledgerCounts.alleles
+      counts.frequencies += ledgerCounts.frequencies
+      counts.carriers += ledgerCounts.carriers
+    }
+  }
   if (
-    expected <= 0 || counts.tasks !== expected || counts.accepted !== expected ||
-    counts.accepted_tasks !== expected || counts.invalid_identity !== 0 ||
-    counts.rejected !== 0 || counts.physical_rejects !== 0
+    accepted.size !== manifest.tasks.length ||
+    manifest.tasks.some((task) => !accepted.has(task.task_id))
   ) {
     throw new Error(
-      `Y1 presentation run ${run.run_id} task receipts are incomplete or rejected: ` +
-      `expected=${expected}, attempts=${counts.attempts}, tasks=${counts.tasks}, ` +
-      `accepted=${counts.accepted}, accepted_tasks=${counts.accepted_tasks}, ` +
-      `invalid_identity=${counts.invalid_identity}, rejected=${counts.rejected}, ` +
-      `physical_rejects=${counts.physical_rejects}`
+      `Y1 presentation run ${run.run_id} lacks exactly one accepted current attempt ` +
+        'for every checked manifest task'
     )
   }
   if (counts.summaries <= 0 || counts.alleles <= 0 || counts.frequencies <= 0) {
@@ -424,8 +517,11 @@ const configuredRuns = async (runRows: RunRow[]) => {
         throw new Error(`Y1 run ${runId} has duplicate rows at its maximum revision`)
       }
       if (
-        run.release !== 'y1' || run.cohort !== cohort || run.reference_genome !== 'GRCh38' ||
-        run.chrom !== chrom || run.load_scope !== 'full_chromosome'
+        run.release !== 'y1' ||
+        run.cohort !== cohort ||
+        run.reference_genome !== 'GRCh38' ||
+        run.chrom !== chrom ||
+        run.load_scope !== 'full_chromosome'
       ) {
         throw new Error(`Configured Y1 run ${runId} does not match ${cohort}/${chrom}`)
       }
@@ -563,40 +659,50 @@ export const preflightY1AcceptedSources = async () => {
   const presentationRuns = await configuredRuns(runRows)
 
   if (presentationRuns) {
+    if (!y1PrimaryManifests) {
+      throw new Error('Configured Y1 presentation routing has no checked manifest bundle')
+    }
+    const primaryManifests = y1PrimaryManifests
     const hgsvcForMetadata = [...presentationRuns.values()].find(
       (run) => run.cohort === 'hgsvc_hprc'
     )
     const metadataRunId = await resolveOptionalMetadataRun(columns, hgsvcForMetadata)
-    const validated = await Promise.all([...presentationRuns].map(async ([key, run]) => {
-      const receipts = await requireAcceptedTaskReceipts(run)
-      await requireCanonicalRows(run, receipts)
-      const carrierRows = await rows(
-        `
+    const validated = await Promise.all(
+      [...presentationRuns].map(async ([key, run]) => {
+        const manifest = primaryManifests.get(key)
+        if (!manifest || manifest.run_id !== run.run_id) {
+          throw new Error(`Configured Y1 run ${run.run_id} has no exact checked manifest`)
+        }
+        const receipts = await requireAcceptedTaskReceipts(run, manifest)
+        await requireCanonicalRows(run, receipts)
+        const carrierRows = await rows(
+          `
         SELECT count() AS total,
           countIf(release = 'y1' AND cohort = {cohort:String}
             AND reference_genome = 'GRCh38' AND chrom = {chrom:String}) AS exact
         FROM lr_y1_carriers WHERE run_id = {runId:String}
       `,
-        { runId: run.run_id, cohort: run.cohort, chrom: run.chrom }
-      )
-      const total = Number(carrierRows[0]?.total || 0)
-      const exact = Number(carrierRows[0]?.exact || 0)
-      if (total !== receipts.carriers || exact !== receipts.carriers) {
-        throw new Error(`Y1 presentation run ${run.run_id} carrier count/identity mismatch`)
-      }
-      const snapshot: Y1SourceSnapshot = {
-        database: y1ClickhouseConfig.database,
-        release: run.release,
-        cohort: run.cohort as LongReadCohort,
-        reference_genome: run.reference_genome,
-        chrom: run.chrom,
-        load_scope: run.load_scope,
-        run_id: run.run_id,
-        state: 'accepted_tasks',
-        metadata_run_id: run.cohort === 'hgsvc_hprc' ? metadataRunId : null,
-      }
-      return [key, snapshot] as const
-    }))
+          { runId: run.run_id, cohort: run.cohort, chrom: run.chrom }
+        )
+        const total = Number(carrierRows[0]?.total || 0)
+        const exact = Number(carrierRows[0]?.exact || 0)
+        if (total !== receipts.carriers || exact !== receipts.carriers) {
+          throw new Error(`Y1 presentation run ${run.run_id} carrier count/identity mismatch`)
+        }
+        const snapshot: Y1SourceSnapshot = {
+          database: y1ClickhouseConfig.database,
+          release: run.release,
+          cohort: run.cohort as LongReadCohort,
+          reference_genome: run.reference_genome,
+          chrom: run.chrom,
+          load_scope: run.load_scope,
+          run_id: run.run_id,
+          state: 'accepted_tasks',
+          metadata_run_id: run.cohort === 'hgsvc_hprc' ? metadataRunId : null,
+        }
+        return [key, snapshot] as const
+      })
+    )
     for (const [key, snapshot] of validated) snapshots.set(key, snapshot)
   } else {
     const runs = acceptedRuns(runRows)
