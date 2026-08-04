@@ -148,23 +148,31 @@ The GraphQL `lr_cohort` argument defaults to `hgsvc_hprc`. Queries select primar
 
 Optional presentation ancillaries use `LR_Y1_ANCILLARY_ROUTES`, mapping modality and cohort to an exact `{database, run_id, receipt_path}`. The receipt is mandatory, deny-unknown-fields JSON with completed expected/accepted task counts, zero failures/rejects, and modality-specific reconciliation. Startup compares it to live physical data before advertising the route: coverage requires every GRCh38 position exactly once on all 24 contigs; STR requires exact mapping/available/unavailable/ambiguous counts, one-to-one mapping/canonical key reconciliation, and canonical row/contig reconciliation; methylation requires an exact roster with no orphan physical samples, each sample's declared rows/contigs and availability, and detail/summary totals by contig. Methylation also accepts the fenced `validated_success` terminal sample-total campaign receipt and derives the exact roster/contig reconciliation from read-only physical queries. Templates requiring execution-time replacement are in `config/y1-ancillary-*-completion-receipt.template.json`. Missing, partial, stale, or mismatched artifacts fail configured startup; unconfigured routes remain unavailable. Coverage and STR may be configured independently for HGSVC/HPRC and AoU; sample-total methylation remains HGSVC/HPRC-only. The ClickHouse client always sets `readonly=1`. Use `long_read_y1_provenance(lr_cohort:, chrom:)` for accepted-Y1 identity and capability labels.
 
-### Retained HG00097 source-phased evaluation
+### Full-genome source-labelled hap1/hap2 methylation
 
-After the coordinator has loaded and retained the fixed evaluation database, restart the dedicated development stack with:
+Configure the exact source-only route separately from sample-total methylation:
 
 ```bash
-export LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_URL=http://127.0.0.1:8126
-export LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_USER="$Y1_CLICKHOUSE_WORKER_USER"
-export LR_PHASED_METHYLATION_EVALUATION_CLICKHOUSE_PASSWORD="$Y1_CLICKHOUSE_WORKER_PASSWORD"
-LR_PHASED_METHYLATION_EVALUATION_ENABLED=true ./start_lr_dev.sh --gcp-clickhouse
+export LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE="$(jq -cn \
+  --arg database gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3 \
+  --arg run_id y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1 \
+  --arg receipt_path "$PWD/graphql-api/config/y1-source-phased-methylation-serving-receipt.json" \
+  '{database:$database,run_id:$run_id,receipt_path:$receipt_path}')"
 ```
 
-The coordinator must revoke this principal's evaluation-table `INSERT` grant after the successful load and before restarting development, leaving only the exact database `SELECT` grant used here.
+The deny-unknown-fields receipt binds completion receipt SHA-256 `f259273f...d23f85`,
+the exact 12,162,269,986-row product, 10,392 accepted tasks, 231 source-present samples,
+23 nonempty contigs, the frozen source manifest, and the exact browser primary VCF manifest
+bundle. Startup admits the route only when the table's eight-column MergeTree schema,
+constraints, partition/sort keys, and every physical partition row count match the receipt.
+AoU and samples absent from the 231-sample source roster are rejected; there is no
+sample-total fallback.
 
-The API pins its read-only client to `gnomad_lr_y1_scratch_phased_methylation_evaluation_v5_hg00097_chr22_47040000_47050000_v1` and table `lr_y1_methylation_phased_staging`; callers cannot select another database, table, sample, source, or interval outside chr22:47,040,000-47,050,000. Startup requires positive rows for both raw source labels and rejects any cross-sample, cross-region, or malformed record. The separate `source_phased_methylation` field always returns `vcf_strand=null`, `phase_set=null`, `joinable_to_vcf=false`, and orientation `UNCONFIRMED`.
-
-Exact evaluation URL:
-
-`http://localhost:8008/region/22-47040000-47050000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&show_haplotypes=true&show_source_phased_methylation=true`
-
-The retained source-phased evaluation remains a separate, explicitly pinned read-only diagnostic source. It does not change Y1 run discovery, provenance, or the configured Y1 database. Variant responses include `data_source`, `source_release`, and the discovered `source_run_id`; the REST haplotype response includes the same generic accepted-Y1 provenance.
+The operator confirmation available for this change did not name an immutable VCF object or
+the exact browser primary VCF bundle. Therefore this route is intentionally
+`source_labelled_only`: `source_haplotype` remains HAP1/HAP2, while `vcf_strand` and
+`phase_set` remain null and `joinable_to_vcf=false`. The browser shows separate VCF GT rows
+and source BED tracks, explicitly without visual or contract alignment. A later joined view
+requires the one missing approval receipt named in the serving receipt: it must bind the
+1→GT1 and 2→GT2 mapping to the exact browser VCF manifest bundle and immutable VCF/TBI
+identities.

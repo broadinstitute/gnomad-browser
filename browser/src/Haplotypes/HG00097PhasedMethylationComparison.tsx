@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import { Track } from '@gnomad/region-viewer'
 
 import type { DiplotypeGroupRef, HaplotypeGroup, LRVariant } from './index'
@@ -8,7 +8,7 @@ export type SourcePhasedMethylationRecord = {
   pos1: number
   pos2: number
   methylation: number
-  sample: 'HG00097'
+  sample: string
   coverage: number | null
   data_layer: 'SOURCE_PHASED'
   source_haplotype: 'HAP1' | 'HAP2'
@@ -16,11 +16,11 @@ export type SourcePhasedMethylationRecord = {
   phase_set: null
 }
 
-type DisplayAlignment = 'direct' | 'swapped'
 type VcfHaplotype = 1 | 2
 type ComparisonGroup = HaplotypeGroup | DiplotypeGroupRef
 
 type Props = {
+  sampleId: string
   haplotypeGroups: ComparisonGroup[]
   records: SourcePhasedMethylationRecord[]
   orientationStatus: 'UNCONFIRMED'
@@ -32,171 +32,162 @@ const isDiplotypeGroup = (group: ComparisonGroup): group is DiplotypeGroupRef =>
   'is_diplotype' in group && group.is_diplotype === true
 )
 
-const sourceForDisplayRow = (
-  vcfHaplotype: VcfHaplotype,
-  alignment: DisplayAlignment
-): SourcePhasedMethylationRecord['source_haplotype'] => {
-  if (alignment === 'direct') return vcfHaplotype === 1 ? 'HAP1' : 'HAP2'
-  return vcfHaplotype === 1 ? 'HAP2' : 'HAP1'
-}
-
-const variantsForVcfHaplotype = (
+const vcfRowForSample = (
   groups: ComparisonGroup[],
+  sampleId: string,
   vcfHaplotype: VcfHaplotype
-): LRVariant[] | null => {
-  const matchingVariants = groups.map((group) => {
+): { variants: LRVariant[] | null; phaseSets: string[] } => {
+  const row = groups.map((group) => {
     if (isDiplotypeGroup(group)) {
-      const sample = group.samples.find(({ sample_id }) => sample_id === 'HG00097')
-      if (sample?.strand_mapping.strandA === vcfHaplotype) return group.haplotypeA.variants
-      if (sample?.strand_mapping.strandB === vcfHaplotype) return group.haplotypeB.variants
-      return undefined
+      const sample = group.samples.find(({ sample_id }) => sample_id === sampleId)
+      if (sample?.strand_mapping.strandA === vcfHaplotype) {
+        return {
+          variants: group.haplotypeA.variants,
+          phaseSets: sample.phase_set_mapping.phaseSetA ? [sample.phase_set_mapping.phaseSetA] : [],
+        }
+      }
+      if (sample?.strand_mapping.strandB === vcfHaplotype) {
+        return {
+          variants: group.haplotypeB.variants,
+          phaseSets: sample.phase_set_mapping.phaseSetB ? [sample.phase_set_mapping.phaseSetB] : [],
+        }
+      }
+      return null
     }
-
-    return group.samples.some(
-      ({ sample_id, vcf_strand }) => sample_id === 'HG00097' && vcf_strand === vcfHaplotype
-    ) ? group.variants.variants : undefined
-  }).find((variants) => variants !== undefined)
-
-  return matchingVariants ?? null
+    const memberships = group.samples.filter(
+      ({ sample_id, vcf_strand }) => sample_id === sampleId && vcf_strand === vcfHaplotype
+    )
+    return memberships.length ? {
+      variants: group.variants.variants,
+      phaseSets: [...new Set(memberships.flatMap(({ phase_set }) => phase_set ? [phase_set] : []))],
+    } : null
+  }).find((candidate) => candidate !== null)
+  return row || { variants: null, phaseSets: [] }
 }
 
-const labelForSource = (sourceHaplotype: 'HAP1' | 'HAP2') => (
+const sourceLabel = (sourceHaplotype: 'HAP1' | 'HAP2') => (
   sourceHaplotype === 'HAP1' ? 'source hap1' : 'source hap2'
 )
 
-const HG00097PhasedMethylationComparison = ({
+const SourcePhasedMethylationComparison = ({
+  sampleId,
   haplotypeGroups,
   records,
   orientationStatus,
 }: Props) => {
-  // Deliberately local display state: it is not written to the URL or sent to an API.
-  const [displayAlignment, setDisplayAlignment] = useState<DisplayAlignment>('direct')
-  const variantsByVcfHaplotype = useMemo(() => ({
-    1: variantsForVcfHaplotype(haplotypeGroups, 1),
-    2: variantsForVcfHaplotype(haplotypeGroups, 2),
-  }), [haplotypeGroups])
+  const vcfRows = useMemo(() => ({
+    1: vcfRowForSample(haplotypeGroups, sampleId, 1),
+    2: vcfRowForSample(haplotypeGroups, sampleId, 2),
+  }), [haplotypeGroups, sampleId])
 
   return (
-    <section aria-label="HG00097 pinned phased methylation comparison">
+    <section aria-label={`${sampleId} source-labelled methylation comparison`}>
       <div style={{ padding: '8px', border: '1px solid #ddd', background: '#fafafa' }}>
-        <strong>Pinned HG00097 comparison</strong>
+        <strong>{sampleId} source-labelled hap1/hap2 methylation</strong>
         <span style={{ marginLeft: 8, color: '#a33', fontSize: 12 }}>
-          orientation {orientationStatus.toLowerCase()}
+          browser VCF orientation {orientationStatus.toLowerCase()}
         </span>
-        <fieldset
-          aria-label="Exploratory source display alignment"
-          style={{ display: 'inline-flex', gap: 12, margin: '0 0 0 16px', border: 0, padding: 0 }}
-        >
-          <legend style={{ float: 'left', marginRight: 8, fontSize: 12 }}>Display alignment only:</legend>
-          {(['direct', 'swapped'] as const).map((alignment) => (
-            <label key={alignment} style={{ fontSize: 12 }}>
-              <input
-                type="radio"
-                name="hg00097-source-display-alignment"
-                value={alignment}
-                checked={displayAlignment === alignment}
-                onChange={() => setDisplayAlignment(alignment)}
-              />
-              {' '}{alignment}
-            </label>
-          ))}
-        </fieldset>
         <div style={{ color: '#666', fontSize: 12, marginTop: 4 }}>
-          Exploratory display only. This does not record a scientific mapping or enable the phased methylation join.
-          The complete cohort view remains available below.
+          VCF GT rows and source methylation rows share genomic coordinates only. The source
+          rows are not attached to GT1/GT2 or to a VCF phase block; their vcf_strand and
+          phase_set values remain null.
         </div>
       </div>
 
       {([1, 2] as const).map((vcfHaplotype) => {
-        const sourceHaplotype = sourceForDisplayRow(vcfHaplotype, displayAlignment)
-        const sourceLabel = labelForSource(sourceHaplotype)
-        const variants = variantsByVcfHaplotype[vcfHaplotype]
-        const points = records.filter((record) => record.source_haplotype === sourceHaplotype)
-
+        const row = vcfRows[vcfHaplotype]
         return (
-          <section
-            key={vcfHaplotype}
-            data-testid={`hg00097-vcf-haplotype-${vcfHaplotype}-comparison`}
-            aria-label={`HG00097 VCF haplotype ${vcfHaplotype} pinned comparison rows`}
+          <Track
+            key={`vcf-${vcfHaplotype}`}
+            renderLeftPanel={() => (
+              <div style={{ padding: '8px', fontSize: 12, lineHeight: 1.3 }}>
+                <strong>{sampleId} VCF GT position {vcfHaplotype}</strong>
+                <div style={{ color: '#666' }}>
+                  {row.phaseSets.length
+                    ? `phase set${row.phaseSets.length === 1 ? '' : 's'} ${row.phaseSets.join(', ')}`
+                    : 'phase set unavailable'}
+                </div>
+              </div>
+            )}
+          >
+            {({ scalePosition, width }: { scalePosition: (position: number) => number; width: number }) => (
+              <svg
+                width={width}
+                height={42}
+                role="img"
+                aria-label={`${sampleId} VCF GT position ${vcfHaplotype} variants`}
+              >
+                <line x1={0} x2={width} y1={30} y2={30} stroke="#aaa" />
+                {(row.variants || []).map((variant) => (
+                  <circle
+                    key={`${variant.variant_id}-${variant.pos}`}
+                    cx={scalePosition(variant.pos)}
+                    cy={30}
+                    r={4}
+                    fill="#4c78a8"
+                  >
+                    <title>{variant.variant_id}</title>
+                  </circle>
+                ))}
+                {row.variants === null && (
+                  <text x={8} y={20} fill="#777" fontSize={11}>
+                    VCF GT row unavailable in the current cohort view
+                  </text>
+                )}
+              </svg>
+            )}
+          </Track>
+        )
+      })}
+
+      <div style={{ padding: '5px 8px', borderTop: '1px solid #ddd', color: '#666', fontSize: 11 }}>
+        Independent source BED tracks (no visual or data-contract alignment to the VCF rows above)
+      </div>
+      {(['HAP1', 'HAP2'] as const).map((sourceHaplotype) => {
+        const points = records.filter(
+          (record) => record.sample === sampleId && record.source_haplotype === sourceHaplotype
+        )
+        const label = sourceLabel(sourceHaplotype)
+        return (
+          <div
+            key={sourceHaplotype}
+            data-testid={`${sampleId}-${sourceHaplotype.toLowerCase()}-source-row`}
+            data-source-haplotype={sourceHaplotype}
+            data-vcf-strand=""
+            data-phase-set=""
           >
             <Track
               renderLeftPanel={() => (
-                <div style={{ padding: '8px', fontSize: 12, lineHeight: 1.3 }}>
-                  <strong>HG00097 VCF haplotype {vcfHaplotype}</strong>
-                  <div style={{ color: '#666' }}>pinned variant row</div>
+                <div style={{ padding: '8px 8px 12px 24px', fontSize: 12, lineHeight: 1.3 }}>
+                  <strong>{sampleId} {label}</strong>
+                  <div style={{ color: '#666' }}>raw source label; not a VCF side</div>
                 </div>
               )}
             >
               {({ scalePosition, width }: { scalePosition: (position: number) => number; width: number }) => (
-                <svg
-                  width={width}
-                  height={42}
-                  role="img"
-                  aria-label={`HG00097 VCF haplotype ${vcfHaplotype} variants`}
-                >
-                  <line x1={0} x2={width} y1={30} y2={30} stroke="#aaa" />
-                  {(variants || []).map((variant) => (
+                <svg width={width} height={58} role="img" aria-label={`${sampleId} ${label} methylation`}>
+                  <line x1={0} x2={width} y1={52} y2={52} stroke="#ddd" />
+                  {points.map((point) => (
                     <circle
-                      key={`${variant.variant_id}-${variant.pos}`}
-                      cx={scalePosition(variant.pos)}
-                      cy={30}
-                      r={4}
-                      fill="#4c78a8"
+                      key={`${sourceHaplotype}-${point.pos1}`}
+                      cx={scalePosition(point.pos1)}
+                      cy={52 - (Math.max(0, Math.min(100, point.methylation)) * 0.44)}
+                      r={2.5}
+                      fill={sourceColors[sourceHaplotype]}
                     >
-                      <title>{variant.variant_id}</title>
+                      <title>
+                        {`${point.chr}:${point.pos1.toLocaleString()} ${label}: ${point.methylation}% (${point.coverage ?? 'unknown'} reads)`}
+                      </title>
                     </circle>
                   ))}
-                  {variants === null && (
-                    <text x={8} y={20} fill="#777" fontSize={11}>
-                      HG00097 VCF haplotype row unavailable in the current cohort view
-                    </text>
-                  )}
                 </svg>
               )}
             </Track>
-            <div
-              data-testid={`hg00097-source-row-under-vcf-${vcfHaplotype}`}
-              data-source-haplotype={sourceHaplotype}
-              data-display-vcf-haplotype={vcfHaplotype}
-            >
-              <Track
-                renderLeftPanel={() => (
-                  <div style={{ padding: '8px 8px 12px 24px', fontSize: 12, lineHeight: 1.3 }}>
-                    <strong>HG00097 {sourceLabel}</strong>
-                    <div style={{ color: '#666' }}>raw source label; display alignment only</div>
-                  </div>
-                )}
-              >
-                {({ scalePosition, width }: { scalePosition: (position: number) => number; width: number }) => (
-                  <svg
-                    width={width}
-                    height={58}
-                    role="img"
-                    aria-label={`HG00097 ${sourceLabel} methylation displayed under VCF haplotype ${vcfHaplotype}`}
-                  >
-                    <line x1={0} x2={width} y1={52} y2={52} stroke="#ddd" />
-                    {points.map((point) => (
-                      <circle
-                        key={`${sourceHaplotype}-${point.pos1}`}
-                        cx={scalePosition(point.pos1)}
-                        cy={52 - (Math.max(0, Math.min(100, point.methylation)) * 0.44)}
-                        r={2.5}
-                        fill={sourceColors[sourceHaplotype]}
-                      >
-                        <title>
-                          {`${point.chr}:${point.pos1.toLocaleString()} ${sourceLabel}: ${point.methylation}% (${point.coverage ?? 'unknown'} reads)`}
-                        </title>
-                      </circle>
-                    ))}
-                  </svg>
-                )}
-              </Track>
-            </div>
-          </section>
+          </div>
         )
       })}
     </section>
   )
 }
 
-export default HG00097PhasedMethylationComparison
+export default SourcePhasedMethylationComparison

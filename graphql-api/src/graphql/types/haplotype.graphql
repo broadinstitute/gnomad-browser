@@ -133,6 +133,9 @@ type PhasedMethylationCapability {
   joinable_to_vcf: Boolean!
   status: MethylationAvailabilityStatus!
   orientation_status: MethylationOrientationStatus!
+  phase_set_semantics: String!
+  route_run_id: String
+  source_sample_ids: [String!]!
   reason: String!
 }
 
@@ -217,6 +220,7 @@ enum LongReadModality {
   COVERAGE
   STR_HISTOGRAM
   METHYLATION
+  SOURCE_PHASED_METHYLATION
   RECOMBINATION
 }
 
@@ -334,6 +338,7 @@ extend type Query {
     chrom: String!
     start: Int!
     stop: Int!
+    sample_id: String!
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): [MethylationRecord!]
 

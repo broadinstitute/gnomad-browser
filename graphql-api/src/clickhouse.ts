@@ -7,6 +7,10 @@ import {
   type Y1AncillaryRoute,
 } from './y1_config'
 import { resolveY1PrimaryManifests } from './y1_admission_config'
+import {
+  resolveSourcePhasedMethylationRoute,
+  type SourcePhasedMethylationRoute,
+} from './source_phased_methylation_config'
 
 const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
 
@@ -36,6 +40,9 @@ export const y1PrimaryManifests = isY1PilotEnabled
   ? resolveY1PrimaryManifests(y1PrimaryRunMap)
   : null
 export const y1AncillaryRoutes = isY1PilotEnabled ? resolveY1AncillaryRoutes() : []
+export const sourcePhasedMethylationRoute = isY1PilotEnabled
+  ? resolveSourcePhasedMethylationRoute()
+  : null
 
 export const y1ClickhouseClient = createClient({
   url: y1ClickhouseConfig.url,
@@ -53,6 +60,22 @@ export const getY1AncillaryClickhouseClient = (route: Y1AncillaryRoute) => {
       ...readonlyClientOptions,
     })
     y1AncillaryClients.set(route.database, client)
+  }
+  return client
+}
+
+const sourcePhasedMethylationClients = new Map<string, ReturnType<typeof createClient>>()
+export const getSourcePhasedMethylationClickhouseClient = (
+  route: SourcePhasedMethylationRoute
+) => {
+  let client = sourcePhasedMethylationClients.get(route.database)
+  if (!client) {
+    client = createClient({
+      url: y1ClickhouseConfig.url,
+      database: route.database,
+      ...readonlyClientOptions,
+    })
+    sourcePhasedMethylationClients.set(route.database, client)
   }
   return client
 }

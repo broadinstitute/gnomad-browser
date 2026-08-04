@@ -53,6 +53,9 @@ describe('MethylationHelp', () => {
         joinable_to_vcf: false,
         status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
         orientation_status: 'UNCONFIRMED',
+        phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET',
+        route_run_id: null,
+        source_sample_ids: [],
         reason: 'Source orientation is not confirmed',
       }} />
     ).toJSON())
@@ -60,7 +63,8 @@ describe('MethylationHelp', () => {
     expect(text).toContain('Sample total:')
     expect(text).toContain('not allele-specific')
     expect(text).toContain('UNAVAILABLE_ORIENTATION_UNCONFIRMED')
-    expect(text).toContain('Raw source hap1/hap2 labels remain distinct from VCF strand values')
+    expect(text).toContain('source labels remain distinct from VCF GT positions')
+    expect(text).toContain('phase set is null')
     expect(text).not.toContain('identify allele-specific methylation')
   })
 

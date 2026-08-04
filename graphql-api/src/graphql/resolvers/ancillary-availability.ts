@@ -1,8 +1,14 @@
 import {
+  getSourcePhasedMethylationClickhouseClient,
   getY1AncillaryClickhouseClient,
   isY1PilotEnabled,
+  sourcePhasedMethylationRoute,
   y1AncillaryRoutes,
 } from '../../clickhouse'
+import {
+  SOURCE_PHASED_METHYLATION_TABLE,
+  type SourcePhasedMethylationRoute,
+} from '../../source_phased_methylation_config'
 import {
   canonicalY1ContigLengths,
   y1CoverageRawColumnShape,
@@ -40,7 +46,7 @@ export type MethylationSampleAvailability = {
 }
 
 let methylationAvailability: MethylationSampleAvailability[] = []
-let phasedEvaluationAvailable = false
+let activeSourcePhasedMethylationRoute: SourcePhasedMethylationRoute | null = null
 
 export const typedMethylationStatus = (status: string): MethylationAvailabilityStatus => {
   const normalized = status.toUpperCase() as MethylationAvailabilityStatus
@@ -93,15 +99,31 @@ export type PhasedMethylationCapability = {
     | 'UNAVAILABLE_ORIENTATION_UNCONFIRMED'
     | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
   orientation_status: 'UNCONFIRMED'
+  phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET'
+  route_run_id: string | null
+  source_sample_ids: string[]
   reason: string
 }
 
-export const sourcePhasedEvaluationScope = (chrom: string, start: number, stop: number) => {
+export const sourcePhasedEvaluationScope = (
+  chrom: string,
+  start: number,
+  stop: number,
+  sampleId: string,
+  route = activeSourcePhasedMethylationRoute
+) => {
   const normalizedChrom = chrom.startsWith('chr') ? chrom : `chr${chrom}`
-  if (normalizedChrom !== 'chr22' || start < 47_040_000 || stop > 47_050_000 || start > stop) {
-    throw new Error('Source-phased evaluation is restricted to HG00097 chr22:47040000-47050000')
+  if (!route) throw new Error('Source-phased methylation route is unavailable')
+  if (start < 0 || stop < start || stop - start > 100_000) {
+    throw new Error('Source-phased methylation range must be ordered and at most 100 kb')
   }
-  return { chrom: 'chr22', start, stop, sample_id: 'HG00097' as const }
+  if (!route.receipt.contigs.some((contig) => contig.chrom === normalizedChrom)) {
+    throw new Error(`Source-phased methylation is unavailable for ${normalizedChrom}`)
+  }
+  if (!route.receipt.source_sample_ids.includes(sampleId)) {
+    throw new Error(`Source-phased methylation is unavailable for sample ${sampleId}`)
+  }
+  return { chrom: normalizedChrom, start, stop, sample_id: sampleId }
 }
 
 export const sourcePhasedMethylationRecords = (rows: any[]) =>
@@ -115,10 +137,12 @@ export const sourcePhasedMethylationRecords = (rows: any[]) =>
       pos1: Number(row.pos1),
       pos2: Number(row.pos2),
       methylation: Number(row.methylation),
-      sample: 'HG00097',
+      sample: String(row.sample),
       coverage: Number(row.coverage),
       data_layer: 'SOURCE_PHASED' as const,
       source_haplotype: sourceHaplotype === 1 ? ('HAP1' as const) : ('HAP2' as const),
+      // The source-labelled serving contract deliberately does not attach rows to
+      // a VCF GT position or phase block.
       vcf_strand: null,
       phase_set: null,
     }
@@ -126,26 +150,41 @@ export const sourcePhasedMethylationRecords = (rows: any[]) =>
 
 export const phasedMethylationCapability = (
   cohort: string | null | undefined,
-  _evaluationAvailable = phasedEvaluationAvailable
+  route = activeSourcePhasedMethylationRoute
 ): PhasedMethylationCapability => {
+  const common = {
+    data_layer: 'SOURCE_PHASED' as const,
+    joinable_to_vcf: false as const,
+    orientation_status: 'UNCONFIRMED' as const,
+    phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET' as const,
+  }
   if (cohort === 'aou') {
     return {
-      data_layer: 'SOURCE_PHASED',
+      ...common,
       available: false,
-      joinable_to_vcf: false,
       status: 'UNAVAILABLE_AOU_SUMMARY_ONLY',
-      orientation_status: 'UNCONFIRMED',
+      route_run_id: null,
+      source_sample_ids: [],
       reason: 'AoU is summary-only; HGSVC/HPRC methylation is never used as a fallback',
     }
   }
+  if (!route) {
+    return {
+      ...common,
+      available: false,
+      status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
+      route_run_id: null,
+      source_sample_ids: [],
+      reason: 'Source-labelled hap1/hap2 methylation has no admitted serving route',
+    }
+  }
   return {
-    data_layer: 'SOURCE_PHASED',
-    available: false,
-    joinable_to_vcf: false,
-    status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
-    orientation_status: 'UNCONFIRMED',
-    reason:
-      'Phased methylation cannot be joined to VCF haplotypes until source orientation is confirmed',
+    ...common,
+    available: true,
+    status: 'AVAILABLE_ORIENTATION_UNCONFIRMED',
+    route_run_id: route.run_id,
+    source_sample_ids: route.receipt.source_sample_ids,
+    reason: route.receipt.missing_orientation_evidence,
   }
 }
 
@@ -403,6 +442,95 @@ const sortedContigRows = (rows: any[], coordinateFields: string[] = []) =>
     .sort((left, right) => left.chrom.localeCompare(right.chrom))
 
 const exactJson = (left: unknown, right: unknown) => JSON.stringify(left) === JSON.stringify(right)
+
+const sourcePhasedColumnShape = [
+  ['stable_key', 'FixedString(64)'],
+  ['chrom', 'LowCardinality(String)'],
+  ['pos1', 'UInt32'],
+  ['pos2', 'UInt32'],
+  ['sample_id', 'LowCardinality(String)'],
+  ['source_haplotype', 'UInt8'],
+  ['methylation', 'Float32'],
+  ['coverage', 'UInt32'],
+] as const
+
+export const validateSourcePhasedMethylationPhysicalState = (
+  route: SourcePhasedMethylationRoute,
+  state: { tables: any[]; columns: any[]; parts: any[] }
+) => {
+  if (state.tables.length !== 1) {
+    throw new Error('Source-phased methylation requires exactly one presentation table')
+  }
+  const table = state.tables[0]
+  const definition = String(table.create_table_query || '').replace(/`/g, '')
+  if (
+    String(table.name) !== SOURCE_PHASED_METHYLATION_TABLE ||
+    String(table.engine) !== 'MergeTree' ||
+    String(table.partition_key).replace(/`/g, '') !== 'chrom' ||
+    String(table.sorting_key).replace(/`/g, '').replace(/ /g, '') !==
+      '(chrom,pos1,sample_id,source_haplotype,stable_key)' ||
+    !definition.includes('source_haplotype_is_1_or_2') ||
+    !/source_haplotype\s+IN\s*\(\s*1\s*,\s*2\s*\)/.test(definition) ||
+    !definition.includes('one_base_bed_interval') ||
+    !/pos2\s*=\s*pos1\s*\+\s*1/.test(definition) ||
+    !definition.includes('methylation_percentage') ||
+    !/methylation\s*>=\s*0/.test(definition) ||
+    !/methylation\s*<=\s*100/.test(definition)
+  ) {
+    throw new Error('Source-phased methylation table storage contract is not exact')
+  }
+  const columns = state.columns
+    .sort((left, right) => Number(left.position) - Number(right.position))
+    .map((row) => [String(row.name), String(row.type)])
+  if (!exactJson(columns, sourcePhasedColumnShape)) {
+    throw new Error('Source-phased methylation table has an unexpected column shape')
+  }
+  const physical = state.parts
+    .map((row) => ({
+      chrom: String(row.chrom).replace(/^'+|'+$/g, ''),
+      rows: Number(row.rows),
+    }))
+    .sort((left, right) => left.chrom.localeCompare(right.chrom))
+  const expected = route.receipt.contigs
+    .map(({ chrom, rows }) => ({ chrom, rows }))
+    .sort((left, right) => left.chrom.localeCompare(right.chrom))
+  if (
+    !exactJson(physical, expected) ||
+    physical.reduce((total, row) => total + row.rows, 0) !== route.receipt.detail_rows
+  ) {
+    throw new Error('Source-phased methylation physical partitions do not match the serving receipt')
+  }
+}
+
+const preflightSourcePhasedMethylation = async (route: SourcePhasedMethylationRoute) => {
+  const client = getSourcePhasedMethylationClickhouseClient(route)
+  const query = async (sql: string, query_params: Record<string, unknown> = {}) => {
+    const result = await client.query({ query: sql, query_params, format: 'JSONEachRow' })
+    return (await result.json()) as any[]
+  }
+  const [tables, columns, parts] = await Promise.all([
+    query(
+      `SELECT name, engine, partition_key, sorting_key, create_table_query
+       FROM system.tables
+       WHERE database = currentDatabase() AND name = {table:String}`,
+      { table: SOURCE_PHASED_METHYLATION_TABLE }
+    ),
+    query(
+      `SELECT name, type, position FROM system.columns
+       WHERE database = currentDatabase() AND table = {table:String}
+       ORDER BY position`,
+      { table: SOURCE_PHASED_METHYLATION_TABLE }
+    ),
+    query(
+      `SELECT partition AS chrom, sum(rows) AS rows FROM system.parts
+       WHERE active AND database = currentDatabase() AND table = {table:String}
+       GROUP BY partition ORDER BY partition`,
+      { table: SOURCE_PHASED_METHYLATION_TABLE }
+    ),
+  ])
+  validateSourcePhasedMethylationPhysicalState(route, { tables, columns, parts })
+  activeSourcePhasedMethylationRoute = route
+}
 
 const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
   const rawBackedCoverageView =
@@ -927,7 +1055,7 @@ export const preflightY1Ancillaries = async () => {
   capabilities.clear()
   activeRoutes.clear()
   methylationAvailability = []
-  phasedEvaluationAvailable = false
+  activeSourcePhasedMethylationRoute = null
   if (!isY1PilotEnabled) return
 
   for (const modality of ['coverage', 'methylation', 'str_histogram'] as const) {
@@ -937,8 +1065,15 @@ export const preflightY1Ancillaries = async () => {
       reason: 'Unavailable until a unique ancillary run and provenance are validated',
     })
   }
-  await Promise.all(y1AncillaryRoutes.map((route) => preflightConfiguredRoute(route)))
+  await Promise.all([
+    ...y1AncillaryRoutes.map((route) => preflightConfiguredRoute(route)),
+    ...(sourcePhasedMethylationRoute
+      ? [preflightSourcePhasedMethylation(sourcePhasedMethylationRoute)]
+      : []),
+  ])
 }
+
+export const getSourcePhasedMethylationRoute = () => activeSourcePhasedMethylationRoute
 
 export const getY1AncillaryRoute = (
   cohort: string | null | undefined,

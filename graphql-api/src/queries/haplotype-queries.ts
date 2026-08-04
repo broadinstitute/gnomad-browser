@@ -1,10 +1,14 @@
 import {
   clickhouseClient,
+  getSourcePhasedMethylationClickhouseClient,
   getY1AncillaryClickhouseClient,
   isY1PilotEnabled,
   y1ClickhouseClient,
 } from '../clickhouse'
-import { getY1AncillaryRoute } from '../graphql/resolvers/ancillary-availability'
+import {
+  getSourcePhasedMethylationRoute,
+  getY1AncillaryRoute,
+} from '../graphql/resolvers/ancillary-availability'
 
 /**
  * Fetch haplotype variants pre-grouped by (sample_id, strand) in ClickHouse.
@@ -495,10 +499,29 @@ export const fetchMethylationOutliersForRegion = async (
 }
 
 export const fetchSourcePhasedMethylationForEvaluation = async (
-  _chrom: string,
-  _start: number,
-  _stop: number
-) => []
+  chrom: string,
+  start: number,
+  stop: number,
+  sampleId: string
+) => {
+  const route = getSourcePhasedMethylationRoute()
+  if (!route) return []
+  const result = await getSourcePhasedMethylationClickhouseClient(route).query({
+    query: `
+      SELECT chrom AS chr, pos1, pos2, methylation, sample_id AS sample,
+        coverage, source_haplotype
+      FROM lr_y1_methylation_source_haplotype_presentation
+      WHERE chrom = {chrom:String}
+        AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
+        AND sample_id = {sampleId:String}
+        AND source_haplotype IN (1, 2)
+      ORDER BY pos1, source_haplotype
+    `,
+    query_params: { chrom, start, stop, sampleId },
+    format: 'JSONEachRow',
+  })
+  return result.json()
+}
 
 export const fetchMethylationForRegion = async (
   _esClient: any,

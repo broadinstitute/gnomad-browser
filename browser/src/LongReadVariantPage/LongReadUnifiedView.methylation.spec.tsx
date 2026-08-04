@@ -115,6 +115,8 @@ type DeferredGraphQLRequest = {
 const mockGraphQLRequests: DeferredGraphQLRequest[] = []
 
 const responseWithJson = (payload: any) => ({
+  ok: true,
+  status: 200,
   text: async () => JSON.stringify(payload),
 })
 
@@ -311,18 +313,20 @@ afterEach(() => {
 })
 
 describe('LongReadUnifiedView methylation detail ownership', () => {
-  test('offers a pinned HG00097 direct comparison while retaining the complete cohort rows', async () => {
+  test('offers a source-labelled sample comparison without claiming browser VCF alignment', async () => {
     workerDataOverride = workerDataWithHG00097()
     mockPhasedCapability = {
       data_layer: 'SOURCE_PHASED', available: true, joinable_to_vcf: false,
       status: 'AVAILABLE_ORIENTATION_UNCONFIRMED', orientation_status: 'UNCONFIRMED',
-      reason: 'visual evaluation only',
+      phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET', route_run_id: 'source-only-v1',
+      source_sample_ids: ['HG00097'], reason: 'exact VCF mapping receipt missing',
     }
     renderView({ chrom: 'chr22', start: 47_040_000, stop: 47_050_000 })
-    const control = await screen.findByLabelText('Show pinned HG00097 source hap1/hap2 comparison (orientation unconfirmed)')
+    const control = await screen.findByLabelText('Show source-labelled hap1/hap2 methylation (orientation unconfirmed)')
     expect((control as HTMLInputElement).disabled).toBe(false)
     fireEvent.click(control)
     await waitFor(() => expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(1))
+    expect(requestsNamed('RegionSourcePhasedMethylation')[0].variables.sample_id).toBe('HG00097')
     await resolveRequest(requestsNamed('RegionSourcePhasedMethylation')[0], {
       data: { source_phased_methylation: [
         {
@@ -337,19 +341,15 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
         },
       ] },
     })
-    expect(await screen.findByRole('region', { name: 'HG00097 pinned phased methylation comparison' })).toBeTruthy()
-    expect(screen.getByTestId('hg00097-source-row-under-vcf-1').getAttribute('data-source-haplotype')).toBe('HAP1')
-    expect(screen.getByTestId('hg00097-source-row-under-vcf-2').getAttribute('data-source-haplotype')).toBe('HAP2')
+    expect(await screen.findByRole('region', { name: 'HG00097 source-labelled methylation comparison' })).toBeTruthy()
+    expect(screen.getByTestId('HG00097-hap1-source-row').getAttribute('data-source-haplotype')).toBe('HAP1')
+    expect(screen.getByTestId('HG00097-hap2-source-row').getAttribute('data-source-haplotype')).toBe('HAP2')
     expect(screen.getByText('HG00097 source hap1')).toBeTruthy()
     expect(screen.getByText('HG00097 source hap2')).toBeTruthy()
-    expect(screen.queryByText(/VCF haplotype row unavailable/)).toBeNull()
-
-    fireEvent.click(screen.getByLabelText('swapped'))
-    expect(screen.getByTestId('hg00097-source-row-under-vcf-1').getAttribute('data-source-haplotype')).toBe('HAP2')
-    expect(screen.getByTestId('hg00097-source-row-under-vcf-2').getAttribute('data-source-haplotype')).toBe('HAP1')
+    expect(screen.getByText(/no visual or data-contract alignment/)).toBeTruthy()
+    expect(screen.queryByLabelText('swapped')).toBeNull()
     expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(1)
 
-    expect(screen.getByText(/complete cohort view remains available below/)).toBeTruthy()
     expect(screen.getByTestId('haplotype-rows')).toBeTruthy()
   })
 

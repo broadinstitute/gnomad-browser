@@ -23,6 +23,7 @@ import logger from '../../logger'
 import {
   ancillaryDecision,
   filterAvailableMethylationSampleIds,
+  getSourcePhasedMethylationRoute,
   getY1AncillaryRoute,
   isAncillaryUnavailableForCohort,
   methylationSampleAvailability,
@@ -198,10 +199,13 @@ const resolvers = {
     source_phased_methylation: async (_obj: any, args: any, ctx: any) => {
       const capability = phasedMethylationCapability(args.lr_cohort)
       if (!capability.available || args.lr_cohort === 'aou') return null
-      const scope = sourcePhasedEvaluationScope(args.chrom, args.start, args.stop)
+      if (!await y1RequestInScope('hgsvc_hprc', args.chrom)) return null
+      const scope = sourcePhasedEvaluationScope(
+        args.chrom, args.start, args.stop, args.sample_id
+      )
       const t0 = now()
       const result = await fetchSourcePhasedMethylationForEvaluation(
-        scope.chrom, scope.start, scope.stop
+        scope.chrom, scope.start, scope.stop, scope.sample_id
       )
       addTiming(ctx, {
         label: 'source_phased_methylation',
@@ -351,6 +355,27 @@ const resolvers = {
             label: available ? 'Optional ancillary table in configured Y1 database' : (decision.reason || 'Unavailable'),
           }
         }),
+        (() => {
+          const route = getSourcePhasedMethylationRoute()
+          const capability = phasedMethylationCapability(cohort)
+          const available = !!primary && capability.available && !!route
+          return {
+            modality: 'SOURCE_PHASED_METHYLATION',
+            source: available ? 'Y1_DATABASE' : 'UNAVAILABLE',
+            database: route?.database || null,
+            release: available ? 'y1' : null,
+            cohort,
+            reference_genome: configured?.reference_genome || 'GRCh38',
+            chromosome: chrom,
+            scope: available ? 'full_genome_source_labelled_only' : null,
+            run_id: route?.run_id || null,
+            available,
+            status: available ? 'available_orientation_unconfirmed' : 'unavailable',
+            label: available
+              ? 'Source-labelled hap1/hap2 methylation; not joined to VCF GT sides or phase blocks'
+              : capability.reason,
+          }
+        })(),
         {
           modality: 'RECOMBINATION', source: 'EXTERNAL_REFERENCE', database: null,
           release: null, cohort, reference_genome: 'GRCh38', chromosome: chrom,

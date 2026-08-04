@@ -84,14 +84,15 @@ const METHYLATION_AVAILABILITY_QUERY = `
 const PHASED_METHYLATION_CAPABILITY_QUERY = `
   query RegionPhasedMethylationCapability($lr_cohort: LongReadCohort!) {
     phased_methylation_capability(lr_cohort: $lr_cohort) {
-      data_layer available joinable_to_vcf status orientation_status reason
+      data_layer available joinable_to_vcf status orientation_status phase_set_semantics
+      route_run_id source_sample_ids reason
     }
   }
 `
 
 const SOURCE_PHASED_METHYLATION_QUERY = `
-  query RegionSourcePhasedMethylation($chrom: String!, $start: Int!, $stop: Int!, $lr_cohort: LongReadCohort!) {
-    source_phased_methylation(chrom: $chrom, start: $start, stop: $stop, lr_cohort: $lr_cohort) {
+  query RegionSourcePhasedMethylation($chrom: String!, $start: Int!, $stop: Int!, $sample_id: String!, $lr_cohort: LongReadCohort!) {
+    source_phased_methylation(chrom: $chrom, start: $start, stop: $stop, sample_id: $sample_id, lr_cohort: $lr_cohort) {
       chr pos1 pos2 methylation sample coverage data_layer source_haplotype vcf_strand phase_set
     }
   }
@@ -264,6 +265,12 @@ const emptyMethylationViewState = (scope: string | null = null): MethylationView
   detailOperationId: null,
 })
 
+const selectedSourcePhasedSample = (sampleIds: string[], requested: string | null) => {
+  if (requested && sampleIds.includes(requested)) return requested
+  if (sampleIds.includes('HG00097')) return 'HG00097'
+  return sampleIds[0] || null
+}
+
 const LongReadUnifiedView = ({
   datasetId,
   gene,
@@ -289,6 +296,8 @@ const LongReadUnifiedView = ({
   const urlShowHaplotypes = searchParams.get('show_haplotypes') === 'true'
   const urlShowSourcePhasedMethylation =
     searchParams.get('show_source_phased_methylation') === 'true'
+  const urlSourcePhasedMethylationSample =
+    searchParams.get('source_phased_methylation_sample')
 
   // If region is too large and URL requests haplotype, show warning and fall back
   const [showRegionWarning, setShowRegionWarning] = useState(
@@ -331,6 +340,12 @@ const LongReadUnifiedView = ({
     const params = new URLSearchParams(location.search)
     if (show) params.set('show_source_phased_methylation', 'true')
     else params.delete('show_source_phased_methylation')
+    history.replace({ ...location, search: params.toString() })
+  }, [history, location])
+
+  const setSourcePhasedMethylationSampleUrl = useCallback((sampleId: string) => {
+    const params = new URLSearchParams(location.search)
+    params.set('source_phased_methylation_sample', sampleId)
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
 
@@ -377,15 +392,23 @@ const LongReadUnifiedView = ({
     joinable_to_vcf: false,
     status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
     orientation_status: 'UNCONFIRMED',
-    reason: 'Phased methylation orientation has not been confirmed',
+    phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET',
+    route_run_id: null,
+    source_sample_ids: [],
+    reason: 'Source-labelled methylation has no admitted serving route',
   })
   const [sourcePhasedMethylation, setSourcePhasedMethylation] = useState<SourcePhasedMethylationRecord[]>([])
   const [sourcePhasedMethylationLoading, setSourcePhasedMethylationLoading] = useState(false)
   const [sourcePhasedMethylationError, setSourcePhasedMethylationError] = useState<string | null>(null)
-  const sourcePhasedEvaluationInScope = lrCohort === 'hgsvc_hprc' &&
-    (chrom === 'chr22' || chrom === '22') && start >= 47_040_000 && stop <= 47_050_000
+  const sourcePhasedSampleIds = phasedMethylationCapability.source_sample_ids || []
+  const sourcePhasedSampleId = selectedSourcePhasedSample(
+    sourcePhasedSampleIds,
+    urlSourcePhasedMethylationSample
+  )
+  const sourcePhasedRouteInScope = lrCohort === 'hgsvc_hprc' && regionSize <= 100_000 &&
+    sourcePhasedSampleId !== null
   const showSourcePhasedMethylation = showHaplotypes &&
-    phasedMethylationCapability.available && sourcePhasedEvaluationInScope &&
+    phasedMethylationCapability.available && sourcePhasedRouteInScope &&
     urlShowSourcePhasedMethylation
   const availableMethylationIds = useMemo(
     () => new Set((methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)),
@@ -888,7 +911,9 @@ const LongReadUnifiedView = ({
     }
     let cancelled = false
     setSourcePhasedMethylationLoading(true)
-    fetchGraphQL(SOURCE_PHASED_METHYLATION_QUERY, { chrom, start, stop, lr_cohort: lrCohort })
+    fetchGraphQL(SOURCE_PHASED_METHYLATION_QUERY, {
+      chrom, start, stop, sample_id: sourcePhasedSampleId, lr_cohort: lrCohort,
+    })
       .then((result) => {
         if (cancelled) return
         if (result.errors?.length) throw new Error(result.errors[0].message)
@@ -901,7 +926,7 @@ const LongReadUnifiedView = ({
         if (!cancelled) setSourcePhasedMethylationLoading(false)
       })
     return () => { cancelled = true }
-  }, [showSourcePhasedMethylation, chrom, start, stop, lrCohort])
+  }, [showSourcePhasedMethylation, chrom, start, stop, sourcePhasedSampleId, lrCohort])
 
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
@@ -1362,8 +1387,9 @@ const LongReadUnifiedView = ({
       {showHaplotypes && (
         <>
           {showRecombination && recombinationAvailable && <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />}
-          {showSourcePhasedMethylation && haplotypeGroups && dataMatchesMode && (
+          {showSourcePhasedMethylation && sourcePhasedSampleId && haplotypeGroups && dataMatchesMode && (
             <HG00097PhasedMethylationComparison
+              sampleId={sourcePhasedSampleId}
               haplotypeGroups={haplotypeGroups.groups}
               records={sourcePhasedMethylation}
               orientationStatus={phasedMethylationCapability.orientation_status}
@@ -1518,16 +1544,31 @@ const LongReadUnifiedView = ({
               <input
                 type="checkbox"
                 checked={showSourcePhasedMethylation}
-                disabled={!phasedMethylationCapability.available || !sourcePhasedEvaluationInScope}
+                disabled={!phasedMethylationCapability.available || !sourcePhasedRouteInScope}
                 onChange={(event) => setShowSourcePhasedMethylationUrl(event.target.checked)}
               />
-              {' '}Show pinned HG00097 source hap1/hap2 comparison (orientation unconfirmed)
+              {' '}Show source-labelled hap1/hap2 methylation (orientation unconfirmed)
             </label>
+            {sourcePhasedSampleIds.length > 0 && (
+              <label style={{ marginLeft: 12, fontSize: 12 }}>
+                Sample:{' '}
+                <select
+                  aria-label="Source-labelled methylation sample"
+                  value={sourcePhasedSampleId || ''}
+                  onChange={(event) => setSourcePhasedMethylationSampleUrl(event.target.value)}
+                >
+                  {sourcePhasedSampleIds.map((sampleId) => (
+                    <option key={sampleId} value={sampleId}>{sampleId}</option>
+                  ))}
+                </select>
+              </label>
+            )}
             <div style={{ marginLeft: 20, color: '#666', fontSize: 12 }}>
-              HG00097 only; raw source labels are not VCF haplotype 1/2. The cohort view remains visible.
+              231 HGSVC/HPRC source-present samples only; no AoU or sample-total fallback.
+              Source labels are not attached to browser VCF GT positions or phase blocks.
               {sourcePhasedMethylationLoading && ' Loading…'}
               {sourcePhasedMethylationError && ` Error: ${sourcePhasedMethylationError}`}
-              {!sourcePhasedEvaluationInScope && ' Available only within chr22:47,040,000-47,050,000.'}
+              {!sourcePhasedRouteInScope && ' Available only for admitted samples in regions up to 100 kb.'}
             </div>
           </div>
           <Legend

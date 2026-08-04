@@ -18,9 +18,12 @@ export type MethylationSampleAvailability = {
 export type PhasedMethylationCapability = {
   data_layer: 'SOURCE_PHASED'
   available: boolean
-  joinable_to_vcf: boolean
+  joinable_to_vcf: false
   status: 'AVAILABLE_ORIENTATION_UNCONFIRMED' | 'UNAVAILABLE_ORIENTATION_UNCONFIRMED' | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
   orientation_status: 'UNCONFIRMED'
+  phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET'
+  route_run_id: string | null
+  source_sample_ids: string[]
   reason: string
 }
 
@@ -53,9 +56,9 @@ const MethylationHelp = ({ availability, sourceLabel, phasedCapability }: Props)
       </p>
       {phasedCapability && (
         <p>
-          <strong>Phased join:</strong> {phasedCapability.status} — {phasedCapability.reason}
-          {' '}Raw source hap1/hap2 labels remain distinct from VCF strand values while orientation
-          is {phasedCapability.orientation_status.toLowerCase()}.
+          <strong>Source hap1/hap2:</strong> {phasedCapability.status} — {phasedCapability.reason}
+          {' '}These source labels remain distinct from VCF GT positions. Their phase set is null
+          because a source methylation track does not define a browser VCF phase block.
         </p>
       )}
       {availability !== undefined && (

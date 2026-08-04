@@ -85,6 +85,9 @@ describe('haplotype summary metadata', () => {
       joinable_to_vcf: false,
       status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
       orientation_status: 'UNCONFIRMED',
+      phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET',
+      route_run_id: null,
+      source_sample_ids: [],
       reason: 'Source orientation is unconfirmed',
     }} />)
     const text = renderedText(component.toJSON())
