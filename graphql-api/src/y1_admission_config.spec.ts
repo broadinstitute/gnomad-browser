@@ -367,6 +367,104 @@ describe('Y1 startup admission artifacts', () => {
     }
   })
 
+  test('accepts a strict full-genome STR completion receipt and rejects identity/count drift', () => {
+    const contigCoverage = [...canonicalY1ContigLengths].map(([chrom, length]) => ({
+      chrom,
+      mapping_count: 2,
+      available_exact: 1,
+      unavailable_no_exact_key: 1,
+      min_position: 1,
+      max_position: length,
+    }))
+    const receipt = {
+      schema_version: 1,
+      status: 'validated_success',
+      database: 'gnomad_lr_y1_str_aou',
+      ancillary_run_id: 'str-aou',
+      cohort: 'aou',
+      modality: 'str',
+      job_uuid: '123e4567-e89b-42d3-a456-426614174000',
+      job_expected_tasks: 2,
+      job_accepted_tasks: 2,
+      cohort_expected_tasks: 1,
+      cohort_accepted_tasks: 1,
+      failed_attempts: 0,
+      rejects: 0,
+      receipt_items_processed: 100,
+      raw_rows: 100,
+      selected_primary_runs: 24,
+      selected_primary_direct_tr_count: 48,
+      mapping_count: 48,
+      mapping_statuses: {
+        available_exact: 24,
+        unavailable_no_exact_key: 24,
+        unavailable_ambiguous: 0,
+      },
+      physical_rows: 24,
+      duplicate_primary_ids: 0,
+      duplicate_exact_keys: 0,
+      duplicate_positions: 0,
+      unavailable_canonical_joins: 0,
+      contig_coverage: contigCoverage,
+      source: {
+        cohort: 'aou',
+        modality: 'str',
+        uri: 'gs://source/aou.str.tsv',
+        generation: '123',
+        byte_size: 100,
+        md5_base64: 'AAAAAAAAAAAAAAAAAAAAAA==',
+        crc32c_base64: 'AAAAAA==',
+        runtime_uri: 'gs://mirror/aou.str.tsv',
+        runtime_generation: '456',
+        runtime_byte_size: 100,
+        runtime_md5_base64: 'AAAAAAAAAAAAAAAAAAAAAA==',
+        runtime_crc32c_base64: 'AAAAAA==',
+        source_access: 'direct',
+        mirror_verified_by_worker: true,
+      },
+      writer_fenced_and_revoked: true,
+    }
+    const expected = {
+      database: receipt.database,
+      run_id: receipt.ancillary_run_id,
+      cohort: 'aou' as const,
+      modality: 'str_histogram' as const,
+    }
+    const file = tempJson(receipt)
+    try {
+      const parsed = readY1AncillaryReceipt(file.path, expected)
+      expect(parsed.source_format).toBe('str_completion')
+      expect(parsed.reconciliation).toMatchObject({
+        raw_rows: 100,
+        mapping_rows: 48,
+        canonical_rows: 24,
+        ambiguous_rows: 0,
+      })
+    } finally {
+      file.cleanup()
+    }
+
+    for (const invalidReceipt of [
+      { ...receipt, ancillary_run_id: 'other' },
+      { ...receipt, physical_rows: 23 },
+      { ...receipt, duplicate_positions: 1 },
+      { ...receipt, writer_fenced_and_revoked: false },
+      {
+        ...receipt,
+        mapping_statuses: { ...receipt.mapping_statuses, unavailable_ambiguous: 1 },
+      },
+    ]) {
+      const invalid = tempJson(invalidReceipt)
+      try {
+        expect(() => readY1AncillaryReceipt(invalid.path, expected)).toThrow(
+          'exact fenced STR presentation product'
+        )
+      } finally {
+        invalid.cleanup()
+      }
+    }
+  })
+
   test('accepts an exact coverage completion receipt and rejects identity/count drift', () => {
     const receipt = {
       schema_version: 1,

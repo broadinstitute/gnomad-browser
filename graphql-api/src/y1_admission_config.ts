@@ -43,7 +43,11 @@ export type Y1AncillaryReceipt = {
   run_id: string
   cohort: Y1Cohort
   modality: Y1AncillaryModality
-  source_format: 'presentation' | 'sample_total_completion' | 'coverage_view_completion'
+  source_format:
+    | 'presentation'
+    | 'sample_total_completion'
+    | 'coverage_view_completion'
+    | 'str_completion'
   job_uuid: string | null
   receipts: {
     expected: number
@@ -652,6 +656,241 @@ export const readY1AncillaryReceipt = (
           max_position: contig.max_pos,
         })),
         column_shape: columnShape,
+        source,
+      },
+    }
+  }
+  if (expected.modality === 'str_histogram' && receipt.status === 'validated_success') {
+    exactKeys(
+      receipt,
+      [
+        'schema_version',
+        'status',
+        'database',
+        'ancillary_run_id',
+        'cohort',
+        'modality',
+        'job_uuid',
+        'job_expected_tasks',
+        'job_accepted_tasks',
+        'cohort_expected_tasks',
+        'cohort_accepted_tasks',
+        'failed_attempts',
+        'rejects',
+        'receipt_items_processed',
+        'raw_rows',
+        'selected_primary_runs',
+        'selected_primary_direct_tr_count',
+        'mapping_count',
+        'mapping_statuses',
+        'physical_rows',
+        'duplicate_primary_ids',
+        'duplicate_exact_keys',
+        'duplicate_positions',
+        'unavailable_canonical_joins',
+        'contig_coverage',
+        'source',
+        'writer_fenced_and_revoked',
+      ],
+      label
+    )
+    const jobUuid = string(receipt.job_uuid, `${label}.job_uuid`)
+    if (
+      !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(jobUuid)
+    ) {
+      throw new Error(`${label}.job_uuid must be a UUID`)
+    }
+    const rawRows = integer(receipt.raw_rows, `${label}.raw_rows`, 1)
+    const mappingRows = integer(receipt.mapping_count, `${label}.mapping_count`, 1)
+    const canonicalRows = integer(receipt.physical_rows, `${label}.physical_rows`, 1)
+    const mappingStatuses = object(receipt.mapping_statuses, `${label}.mapping_statuses`)
+    exactKeys(
+      mappingStatuses,
+      ['available_exact', 'unavailable_no_exact_key', 'unavailable_ambiguous'],
+      `${label}.mapping_statuses`
+    )
+    const availableRows = integer(
+      mappingStatuses.available_exact,
+      `${label}.mapping_statuses.available_exact`,
+      1
+    )
+    const unavailableRows = integer(
+      mappingStatuses.unavailable_no_exact_key,
+      `${label}.mapping_statuses.unavailable_no_exact_key`
+    )
+    const ambiguousRows = integer(
+      mappingStatuses.unavailable_ambiguous,
+      `${label}.mapping_statuses.unavailable_ambiguous`
+    )
+    if (
+      receipt.schema_version !== 1 ||
+      receipt.database !== expected.database ||
+      receipt.ancillary_run_id !== expected.run_id ||
+      receipt.cohort !== expected.cohort ||
+      receipt.modality !== 'str' ||
+      integer(receipt.job_expected_tasks, `${label}.job_expected_tasks`, 1) !== 2 ||
+      integer(receipt.job_accepted_tasks, `${label}.job_accepted_tasks`, 1) !== 2 ||
+      integer(receipt.cohort_expected_tasks, `${label}.cohort_expected_tasks`, 1) !== 1 ||
+      integer(receipt.cohort_accepted_tasks, `${label}.cohort_accepted_tasks`, 1) !== 1 ||
+      integer(receipt.failed_attempts, `${label}.failed_attempts`) !== 0 ||
+      integer(receipt.rejects, `${label}.rejects`) !== 0 ||
+      integer(receipt.receipt_items_processed, `${label}.receipt_items_processed`, 1) !== rawRows ||
+      integer(receipt.selected_primary_runs, `${label}.selected_primary_runs`, 1) !== 24 ||
+      integer(
+        receipt.selected_primary_direct_tr_count,
+        `${label}.selected_primary_direct_tr_count`,
+        1
+      ) !== mappingRows ||
+      mappingRows !== availableRows + unavailableRows + ambiguousRows ||
+      ambiguousRows !== 0 ||
+      canonicalRows !== availableRows ||
+      integer(receipt.duplicate_primary_ids, `${label}.duplicate_primary_ids`) !== 0 ||
+      integer(receipt.duplicate_exact_keys, `${label}.duplicate_exact_keys`) !== 0 ||
+      integer(receipt.duplicate_positions, `${label}.duplicate_positions`) !== 0 ||
+      integer(receipt.unavailable_canonical_joins, `${label}.unavailable_canonical_joins`) !== 0 ||
+      receipt.writer_fenced_and_revoked !== true
+    ) {
+      throw new Error(`${label} does not declare an exact fenced STR presentation product`)
+    }
+
+    if (!Array.isArray(receipt.contig_coverage) || receipt.contig_coverage.length !== 24) {
+      throw new Error(`${label}.contig_coverage must contain exactly 24 canonical contigs`)
+    }
+    const seenContigs = new Set<string>()
+    const contigs = receipt.contig_coverage.map((raw, index) => {
+      const row = object(raw, `${label}.contig_coverage[${index}]`)
+      exactKeys(
+        row,
+        [
+          'chrom',
+          'mapping_count',
+          'available_exact',
+          'unavailable_no_exact_key',
+          'min_position',
+          'max_position',
+        ],
+        `${label}.contig_coverage[${index}]`
+      )
+      const chrom = string(row.chrom, `${label}.contig_coverage[${index}].chrom`)
+      const contigLength = canonicalY1ContigLengths.get(chrom)
+      if (!contigLength || seenContigs.has(chrom)) {
+        throw new Error(`${label} contains duplicate or noncanonical chromosome ${chrom}`)
+      }
+      seenContigs.add(chrom)
+      const mapping = integer(
+        row.mapping_count,
+        `${label}.contig_coverage[${index}].mapping_count`,
+        1
+      )
+      const available = integer(
+        row.available_exact,
+        `${label}.contig_coverage[${index}].available_exact`,
+        1
+      )
+      const unavailable = integer(
+        row.unavailable_no_exact_key,
+        `${label}.contig_coverage[${index}].unavailable_no_exact_key`
+      )
+      const minPosition = integer(
+        row.min_position,
+        `${label}.contig_coverage[${index}].min_position`,
+        1
+      )
+      const maxPosition = integer(
+        row.max_position,
+        `${label}.contig_coverage[${index}].max_position`,
+        1
+      )
+      if (
+        mapping !== available + unavailable ||
+        minPosition > maxPosition ||
+        maxPosition > contigLength
+      ) {
+        throw new Error(`${label} has inconsistent STR reconciliation for ${chrom}`)
+      }
+      return {
+        chrom,
+        mapping_count: mapping,
+        available_exact: available,
+        unavailable_no_exact_key: unavailable,
+        min_position: minPosition,
+        max_position: maxPosition,
+      }
+    })
+    if (
+      contigs.reduce((total, row) => total + row.mapping_count, 0) !== mappingRows ||
+      contigs.reduce((total, row) => total + row.available_exact, 0) !== availableRows ||
+      contigs.reduce((total, row) => total + row.unavailable_no_exact_key, 0) !== unavailableRows
+    ) {
+      throw new Error(`${label} per-contig STR counts do not equal global reconciliation`)
+    }
+
+    const source = object(receipt.source, `${label}.source`)
+    exactKeys(
+      source,
+      [
+        'cohort',
+        'modality',
+        'uri',
+        'generation',
+        'byte_size',
+        'md5_base64',
+        'crc32c_base64',
+        'runtime_uri',
+        'runtime_generation',
+        'runtime_byte_size',
+        'runtime_md5_base64',
+        'runtime_crc32c_base64',
+        'source_access',
+        'mirror_verified_by_worker',
+      ],
+      `${label}.source`
+    )
+    const sourceMd5 = string(source.md5_base64, `${label}.source.md5_base64`)
+    const runtimeMd5 = string(source.runtime_md5_base64, `${label}.source.runtime_md5_base64`)
+    const sourceCrc32c = string(source.crc32c_base64, `${label}.source.crc32c_base64`)
+    const runtimeCrc32c = string(
+      source.runtime_crc32c_base64,
+      `${label}.source.runtime_crc32c_base64`
+    )
+    string(source.source_access, `${label}.source.source_access`)
+    if (
+      source.cohort !== expected.cohort ||
+      source.modality !== 'str' ||
+      !string(source.uri, `${label}.source.uri`).startsWith('gs://') ||
+      !/^[1-9][0-9]*$/.test(string(source.generation, `${label}.source.generation`)) ||
+      integer(source.byte_size, `${label}.source.byte_size`, 1) !==
+        integer(source.runtime_byte_size, `${label}.source.runtime_byte_size`, 1) ||
+      sourceMd5 !== runtimeMd5 ||
+      sourceCrc32c !== runtimeCrc32c ||
+      !string(source.runtime_uri, `${label}.source.runtime_uri`).startsWith('gs://') ||
+      !/^[1-9][0-9]*$/.test(
+        string(source.runtime_generation, `${label}.source.runtime_generation`)
+      ) ||
+      source.mirror_verified_by_worker !== true
+    ) {
+      throw new Error(`${label} has an invalid or cross-cohort STR source identity`)
+    }
+
+    return {
+      schema_version: 1,
+      status: 'completed',
+      database: expected.database,
+      run_id: expected.run_id,
+      cohort: expected.cohort,
+      modality: expected.modality,
+      source_format: 'str_completion',
+      job_uuid: jobUuid,
+      receipts: { expected: 1, accepted: 1, failed_attempts: 0, rejects: 0 },
+      reconciliation: {
+        raw_rows: rawRows,
+        mapping_rows: mappingRows,
+        available_rows: availableRows,
+        unavailable_rows: unavailableRows,
+        ambiguous_rows: ambiguousRows,
+        canonical_rows: canonicalRows,
+        key_mismatches: 0,
+        contigs,
         source,
       },
     }

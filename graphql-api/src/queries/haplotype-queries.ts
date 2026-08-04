@@ -346,8 +346,10 @@ export const fetchSTRHistogram = async (
 ) => {
   const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'str_histogram') : null
   if (isY1PilotEnabled && !route) return null
+  const strictStrRoute = route?.receipt?.source_format === 'str_completion'
+  const y1Position = strictStrRoute ? 'position' : 'source_start'
   const query = `
-    SELECT chrom, ${isY1PilotEnabled ? 'source_start AS position, source_end AS end_position' : 'position, end_position'}, motif,
+    SELECT chrom, ${isY1PilotEnabled ? `${y1Position} AS position, source_end AS end_position` : 'position, end_position'}, motif,
            allele_size_histogram, biallelic_histogram,
            min_repeats, mode_repeats, mean_repeats, stdev_repeats,
            median_repeats, p99_repeats, max_repeats,
@@ -355,7 +357,7 @@ export const fetchSTRHistogram = async (
            populations
     FROM ${isY1PilotEnabled ? 'lr_y1_str_histograms' : 'lr_str_histograms'}
     WHERE ${isY1PilotEnabled ? 'ancillary_run_id = {runId:String} AND cohort = {cohort:String} AND ' : ''}
-      chrom = {chrom:String} AND ${isY1PilotEnabled ? 'source_start' : 'position'} = {position:UInt32}
+      chrom = {chrom:String} AND ${isY1PilotEnabled ? y1Position : 'position'} = {position:UInt32}
     LIMIT 2
   `
   const resultSet = await (route ? getY1AncillaryClickhouseClient(route) : clickhouseClient).query({

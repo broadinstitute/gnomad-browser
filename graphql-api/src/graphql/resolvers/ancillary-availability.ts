@@ -236,6 +236,70 @@ const requiredAncillaryColumns: Record<
   },
 }
 
+const strictStrRequiredColumns: Record<string, string[]> = {
+  lr_y1_str_histograms: [
+    'ancillary_run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'modality',
+    'source_uri',
+    'source_generation',
+    'source_size_bytes',
+    'source_checksum_algorithm',
+    'source_checksum',
+    'runtime_source_uri',
+    'runtime_source_generation',
+    'primary_database',
+    'primary_run_id',
+    'primary_task_id',
+    'primary_attempt_id',
+    'y1_source_variant_id',
+    'chrom',
+    'position',
+    'source_end',
+    'motif',
+    'allele_size_histogram',
+    'biallelic_histogram',
+    'min_repeats',
+    'mode_repeats',
+    'mean_repeats',
+    'stdev_repeats',
+    'median_repeats',
+    'p99_repeats',
+    'max_repeats',
+    'unique_allele_lengths',
+    'num_called_alleles',
+    'populations',
+    'mapping_status',
+  ],
+  lr_y1_str_histogram_mapping: [
+    'ancillary_run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'modality',
+    'source_uri',
+    'source_generation',
+    'source_size_bytes',
+    'source_checksum_algorithm',
+    'source_checksum',
+    'runtime_source_uri',
+    'runtime_source_generation',
+    'primary_database',
+    'primary_run_id',
+    'primary_task_id',
+    'primary_attempt_id',
+    'y1_source_variant_id',
+    'chrom',
+    'position',
+    'source_end',
+    'motif',
+    'raw_match_count',
+    'mapping_status',
+  ],
+}
+
 const queryRows = async (
   route: Y1AncillaryRoute,
   query: string,
@@ -249,8 +313,10 @@ const queryRows = async (
   return (await result.json()) as any[]
 }
 
-const requireAncillarySchema = async (route: Y1AncillaryRoute) => {
-  const required = requiredAncillaryColumns[route.modality]
+const requireAncillarySchema = async (
+  route: Y1AncillaryRoute,
+  required = requiredAncillaryColumns[route.modality]
+) => {
   const rows = await queryRows(
     route,
     `
@@ -341,7 +407,10 @@ const exactJson = (left: unknown, right: unknown) => JSON.stringify(left) === JS
 const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
   const rawBackedCoverageView =
     route.modality === 'coverage' && route.receipt.source_format === 'coverage_view_completion'
+  const strictStrCompletion =
+    route.modality === 'str_histogram' && route.receipt.source_format === 'str_completion'
   if (rawBackedCoverageView) await requireCoverageViewStorage(route)
+  else if (strictStrCompletion) await requireAncillarySchema(route, strictStrRequiredColumns)
   else await requireAncillarySchema(route)
   const reconciliation = route.receipt.reconciliation as any
   if (rawBackedCoverageView) {
@@ -439,6 +508,170 @@ const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
     ) {
       throw new Error(
         `Configured coverage route ${route.cohort}/${route.run_id} does not match its completion receipt`
+      )
+    }
+  } else if (strictStrCompletion) {
+    const [tables, mappingContigs, canonicalContigs, canonicalTotals, keyRows] = await Promise.all([
+      queryRows(
+        route,
+        `
+        SELECT name, engine FROM system.tables
+        WHERE database = currentDatabase()
+          AND name IN ('lr_y1_str_histograms', 'lr_y1_str_histogram_mapping')
+        ORDER BY name
+      `
+      ),
+      queryRows(
+        route,
+        `
+        SELECT chrom, count() AS mapping_count,
+          countIf(mapping_status = 'available_exact') AS available_exact,
+          countIf(mapping_status = 'unavailable_no_exact_key') AS unavailable_no_exact_key,
+          countIf(mapping_status NOT IN ('available_exact', 'unavailable_no_exact_key')) AS invalid,
+          min(position) AS min_position, max(position) AS max_position,
+          countIf(ancillary_run_id = {runId:String} AND release = 'y1'
+            AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
+            AND modality = 'str_histogram'
+            AND source_uri = {sourceUri:String}
+            AND source_generation = {sourceGeneration:String}
+            AND source_size_bytes = {sourceSize:UInt64}
+            AND source_checksum_algorithm = 'md5_base64'
+            AND source_checksum = {sourceChecksum:String}
+            AND runtime_source_uri = {runtimeSourceUri:String}
+            AND runtime_source_generation = {runtimeSourceGeneration:String}) AS exact
+        FROM lr_y1_str_histogram_mapping
+        WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+        GROUP BY chrom
+        ORDER BY chrom
+      `,
+        {
+          runId: route.run_id,
+          cohort: route.cohort,
+          sourceUri: reconciliation.source.uri,
+          sourceGeneration: reconciliation.source.generation,
+          sourceSize: reconciliation.source.byte_size,
+          sourceChecksum: reconciliation.source.md5_base64,
+          runtimeSourceUri: reconciliation.source.runtime_uri,
+          runtimeSourceGeneration: reconciliation.source.runtime_generation,
+        }
+      ),
+      queryRows(
+        route,
+        `
+        SELECT chrom, count() AS rows,
+          countIf(mapping_status = 'available_exact' AND ancillary_run_id = {runId:String}
+            AND release = 'y1' AND cohort = {cohort:String}
+            AND reference_genome = 'GRCh38' AND modality = 'str_histogram'
+            AND source_uri = {sourceUri:String}
+            AND source_generation = {sourceGeneration:String}
+            AND source_size_bytes = {sourceSize:UInt64}
+            AND source_checksum_algorithm = 'md5_base64'
+            AND source_checksum = {sourceChecksum:String}
+            AND runtime_source_uri = {runtimeSourceUri:String}
+            AND runtime_source_generation = {runtimeSourceGeneration:String}) AS exact
+        FROM lr_y1_str_histograms
+        WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+        GROUP BY chrom
+        ORDER BY chrom
+      `,
+        {
+          runId: route.run_id,
+          cohort: route.cohort,
+          sourceUri: reconciliation.source.uri,
+          sourceGeneration: reconciliation.source.generation,
+          sourceSize: reconciliation.source.byte_size,
+          sourceChecksum: reconciliation.source.md5_base64,
+          runtimeSourceUri: reconciliation.source.runtime_uri,
+          runtimeSourceGeneration: reconciliation.source.runtime_generation,
+        }
+      ),
+      queryRows(
+        route,
+        `
+        SELECT count() AS rows,
+          uniqExact((primary_run_id, y1_source_variant_id)) AS primary_ids,
+          uniqExact((chrom, position, source_end, motif)) AS exact_keys,
+          uniqExact((chrom, position)) AS positions
+        FROM lr_y1_str_histograms
+        WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+      `,
+        { runId: route.run_id, cohort: route.cohort }
+      ),
+      queryRows(
+        route,
+        `
+        SELECT countIf(mapping_rows != 1 OR canonical_rows != 1) AS key_mismatches
+        FROM (
+          SELECT y1_source_variant_id, chrom, position, source_end, motif,
+            count() AS mapping_rows
+          FROM lr_y1_str_histogram_mapping
+          WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+            AND mapping_status = 'available_exact'
+          GROUP BY y1_source_variant_id, chrom, position, source_end, motif
+        ) AS mapping
+        FULL OUTER JOIN (
+          SELECT y1_source_variant_id, chrom, position, source_end, motif,
+            count() AS canonical_rows
+          FROM lr_y1_str_histograms
+          WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
+          GROUP BY y1_source_variant_id, chrom, position, source_end, motif
+        ) AS canonical
+        USING (y1_source_variant_id, chrom, position, source_end, motif)
+      `,
+        { runId: route.run_id, cohort: route.cohort }
+      ),
+    ])
+    const engines = new Map(tables.map((row) => [String(row.name), String(row.engine)]))
+    const observedMapping = mappingContigs
+      .map((row) => ({
+        chrom: String(row.chrom),
+        mapping_count: Number(row.mapping_count),
+        available_exact: Number(row.available_exact),
+        unavailable_no_exact_key: Number(row.unavailable_no_exact_key),
+        min_position: Number(row.min_position),
+        max_position: Number(row.max_position),
+      }))
+      .sort((left, right) => left.chrom.localeCompare(right.chrom))
+    const expectedMapping = (reconciliation.contigs as any[])
+      .map((row) => ({
+        chrom: String(row.chrom),
+        mapping_count: Number(row.mapping_count),
+        available_exact: Number(row.available_exact),
+        unavailable_no_exact_key: Number(row.unavailable_no_exact_key),
+        min_position: Number(row.min_position),
+        max_position: Number(row.max_position),
+      }))
+      .sort((left, right) => left.chrom.localeCompare(right.chrom))
+    const observedCanonical = new Map(
+      canonicalContigs.map((row) => [String(row.chrom), Number(row.rows)])
+    )
+    const totals = canonicalTotals[0] || {}
+    if (
+      engines.get('lr_y1_str_histogram_mapping') !== 'MergeTree' ||
+      engines.get('lr_y1_str_histograms') !== 'MergeTree' ||
+      !exactJson(observedMapping, expectedMapping) ||
+      mappingContigs.some(
+        (row) => Number(row.invalid) !== 0 || Number(row.exact) !== Number(row.mapping_count)
+      ) ||
+      canonicalContigs.some(
+        (row) =>
+          Number(row.exact) !== Number(row.rows) ||
+          Number(row.rows) !==
+            Number(
+              (reconciliation.contigs as any[]).find(
+                (contig) => String(contig.chrom) === String(row.chrom)
+              )?.available_exact
+            )
+      ) ||
+      observedCanonical.size !== (reconciliation.contigs as any[]).length ||
+      Number(totals.rows) !== Number(reconciliation.canonical_rows) ||
+      Number(totals.primary_ids) !== Number(reconciliation.canonical_rows) ||
+      Number(totals.exact_keys) !== Number(reconciliation.canonical_rows) ||
+      Number(totals.positions) !== Number(reconciliation.canonical_rows) ||
+      Number(keyRows[0]?.key_mismatches ?? -1) !== 0
+    ) {
+      throw new Error(
+        `Configured STR route ${route.cohort}/${route.run_id} does not match its completion receipt`
       )
     }
   } else if (route.modality === 'str_histogram') {

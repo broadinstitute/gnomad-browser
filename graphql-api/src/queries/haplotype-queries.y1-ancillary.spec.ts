@@ -61,6 +61,21 @@ describe('Y1 ancillary query routing', () => {
     expect(mockQuery).not.toHaveBeenCalled()
   })
 
+  test('uses canonical position for strict full-genome STR routes', async () => {
+    mockRoute.mockReturnValue({
+      modality: 'str_histogram',
+      cohort: 'aou',
+      database: 'gnomad_lr_y1_str_aou',
+      run_id: 'str-aou',
+      receipt: { source_format: 'str_completion' },
+    })
+    mockQuery.mockImplementation(async () => ({ json: async () => [] }))
+    await expect(fetchSTRHistogram(null, 'chr1', 10616, 'aou')).resolves.toBeNull()
+    const call = mockQuery.mock.calls[0][0] as any
+    expect(call.query).toContain('position AS position, source_end AS end_position')
+    expect(call.query).toContain('chrom = {chrom:String} AND position = {position:UInt32}')
+  })
+
   test('keeps the STR duplicate-at-position invariant on the exact cohort route', async () => {
     mockRoute.mockReturnValue({
       modality: 'str_histogram',
