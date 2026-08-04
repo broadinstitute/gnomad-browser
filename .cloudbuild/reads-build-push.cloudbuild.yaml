@@ -29,7 +29,7 @@ steps:
       ]
 options:
   dynamicSubstitutions: true
-  logging: CLOUD_LOGGING_ONLY
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 substitutions:
   _BUILD_TAG: '${_BRANCH_FOR_IMAGE_NAME}-${BUILD_ID}'
 
