@@ -103,22 +103,57 @@ export const fetchExpandedTrDistribution = (
   return request
 }
 
-const Panel = styled.section`
-  margin-bottom: 14px;
-  padding: 10px 12px;
+const Disclosure = styled.details`
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #e0d8bd;
   border-radius: 4px;
+  margin-bottom: 14px;
   background: #fff;
   white-space: normal;
 `
 
+const DisclosureSummary = styled.summary`
+  padding: 9px 12px;
+  color: #555;
+  cursor: pointer;
+  line-height: 1.4;
+
+  &:focus-visible {
+    outline: 2px solid #428bca;
+    outline-offset: -2px;
+  }
+
+  strong {
+    color: #333;
+  }
+`
+
+const ExpandedContent = styled.div`
+  overflow-x: auto;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0 12px 10px;
+  border-top: 1px solid #eee7d1;
+`
+
 const PlotGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-  gap: 20px;
+  /* stylelint-disable unit-whitelist */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  /* stylelint-enable unit-whitelist */
+  gap: 16px;
+  width: 100%;
+  max-width: 1100px;
 
   > div {
+    overflow: hidden;
     min-width: 0;
+    max-width: 100%;
   }
 `
 
@@ -129,7 +164,7 @@ const Message = styled.p`
 
 const cohortLabel = (cohort: LongReadCohort) => (cohort === 'aou' ? 'All of Us' : 'HGSVC/HPRC')
 
-const ExpandedTrDistributions = ({
+const ExpandedTrDistributionContent = ({
   variantId,
   lrCohort,
 }: {
@@ -189,13 +224,8 @@ const ExpandedTrDistributions = ({
   const repeatUnit = motifs.join(', ')
 
   return (
-    <Panel aria-label="Optional full cohort repeat-count context">
-      <h3 style={{ margin: 0 }}>Optional context: full-cohort repeat-count distributions</h3>
-      <Message>
-        Aggregate repeat counts for all called {cohortLabel(lrCohort)} alleles at this locus.
-        These plots do not encode motif order, interruptions, or exact ALT sequences.
-        {motifs.length ? ` Repeat motif: ${repeatUnit}.` : ''}
-      </Message>
+    <ExpandedContent>
+      {motifs.length > 0 && <Message>Repeat motif: {repeatUnit}.</Message>}
       {state.loading && <Message role="status">Loading full cohort STR distributions…</Message>}
       {state.error && <Message role="alert">{state.error}</Message>}
       {!state.loading && !state.error && !hasFullDistribution && (
@@ -214,6 +244,7 @@ const ExpandedTrDistributions = ({
                 maxRepunits={state.data!.max_repunits!}
                 repeatUnit={repeatUnit || undefined}
                 headingLevel="h4"
+                compact
               />
             </div>
           )}
@@ -224,12 +255,38 @@ const ExpandedTrDistributions = ({
                 genotypeDistribution={genotypeDistribution!}
                 repeatUnit={repeatUnit || undefined}
                 headingLevel="h4"
+                compact
               />
             </div>
           )}
         </PlotGrid>
       )}
-    </Panel>
+    </ExpandedContent>
+  )
+}
+
+const ExpandedTrDistributions = ({
+  variantId,
+  lrCohort,
+}: {
+  variantId: string
+  lrCohort: LongReadCohort
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <Disclosure
+      aria-label="Optional full cohort repeat-count context"
+      onToggle={(event) => setIsOpen(event.currentTarget.open)}
+    >
+      <DisclosureSummary>
+        <strong>Optional context: full-cohort repeat-count distributions</strong>
+        {' — '}
+        Aggregate repeat counts for all called {cohortLabel(lrCohort)} alleles; excludes motif
+        order, interruptions, and exact ALT sequences.
+      </DisclosureSummary>
+      {isOpen && <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />}
+    </Disclosure>
   )
 }
 

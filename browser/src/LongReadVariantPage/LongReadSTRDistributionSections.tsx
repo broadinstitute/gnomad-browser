@@ -49,12 +49,14 @@ export const LongReadAlleleSizeDistributionSection = ({
   maxRepunits,
   repeatUnit,
   headingLevel = 'h2',
+  compact = false,
 }: {
   variantId: string
   alleleSizeDistribution: AlleleSizeDistributionCohort[]
   maxRepunits: number
   repeatUnit?: string
   headingLevel?: HeadingLevel
+  compact?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -97,7 +99,19 @@ export const LongReadAlleleSizeDistributionSection = ({
           scaleType={selectedScaleType}
         />
       </div>
-      <ControlSection style={{ marginTop: '0.5em' }}>
+      <ControlSection
+        style={
+          compact
+            ? {
+                marginTop: '0.5em',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px 16px',
+              }
+            : { marginTop: '0.5em' }
+        }
+      >
         <ShortTandemRepeatPopulationOptions
           id={`${variantId}-repeat-counts`}
           populations={populations}
@@ -142,11 +156,13 @@ export const LongReadGenotypeDistributionSection = ({
   genotypeDistribution,
   repeatUnit,
   headingLevel = 'h2',
+  compact = false,
 }: {
   variantId: string
   genotypeDistribution: GenotypeDistributionCohort[]
   repeatUnit?: string
   headingLevel?: HeadingLevel
+  compact?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -168,7 +184,14 @@ export const LongReadGenotypeDistributionSection = ({
       <Heading>
         Genotype Distribution <InfoButton topic="str-genotype-distribution" />
       </Heading>
-      <div style={{ width: '100%', maxHeight: 500, aspectRatio: '1 / 1' }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: compact ? 320 : undefined,
+          maxHeight: compact ? 320 : 500,
+          aspectRatio: '1 / 1',
+        }}
+      >
         <ShortTandemRepeatGenotypeDistributionPlot
           axisLabels={
             repeatUnit
@@ -184,7 +207,19 @@ export const LongReadGenotypeDistributionSection = ({
           selectedSex={selectedSex}
         />
       </div>
-      <ControlSection style={{ marginTop: '0.5em' }}>
+      <ControlSection
+        style={
+          compact
+            ? {
+                marginTop: '0.5em',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                gap: '8px 16px',
+              }
+            : { marginTop: '0.5em' }
+        }
+      >
         <ShortTandemRepeatPopulationOptions
           id={`${variantId}-genotype-distribution`}
           populations={populations}

@@ -174,6 +174,13 @@ const renderTable = () =>
   )
 
 const expandRow = () => fireEvent.click(screen.getByText(sourceVariantId).closest('tr')!)
+const expandFullCohortDisclosure = () => {
+  const disclosure = screen.getByLabelText(
+    'Optional full cohort repeat-count context'
+  ) as HTMLDetailsElement
+  disclosure.open = true
+  fireEvent(disclosure, new Event('toggle', { bubbles: true }))
+}
 
 describe('expanded TR full-cohort distributions', () => {
   beforeEach(() => {
@@ -189,6 +196,14 @@ describe('expanded TR full-cohort distributions', () => {
     expect(fetchMock).not.toHaveBeenCalled()
 
     expandRow()
+    const disclosure = screen.getByLabelText('Optional full cohort repeat-count context')
+    expect(disclosure.tagName).toBe('DETAILS')
+    expect(disclosure.hasAttribute('open')).toBe(false)
+    expect(screen.queryByRole('status')).toBeNull()
+    expect(screen.queryByLabelText('full allele size distribution')).toBeNull()
+    expect(fetchMock).not.toHaveBeenCalled()
+
+    expandFullCohortDisclosure()
     expect(screen.getByRole('status').textContent).toContain(
       'Loading full cohort STR distributions'
     )
@@ -200,6 +215,8 @@ describe('expanded TR full-cohort distributions', () => {
     expect(allelePlot.getAttribute('data-repeat-unit')).toBe('T')
     expect(allelePlot.parentElement?.style.height).toBe('300px')
     expect(genotypePlot.parentElement?.style.aspectRatio).toBe('1 / 1')
+    expect(genotypePlot.parentElement?.style.maxWidth).toBe('320px')
+    expect(genotypePlot.parentElement?.style.maxHeight).toBe('320px')
     expect(genotypePlot.getAttribute('data-genotypes')).toBe('13/19,14/20,19/21,20/22,21/21')
     expect(genotypePlot.getAttribute('data-total')).toBe('29')
     expect(genotypePlot.getAttribute('data-axis-labels')).toBe('longer T allele,shorter T allele')
@@ -240,6 +257,8 @@ describe('expanded TR full-cohort distributions', () => {
     expandRow()
     expect(screen.queryByLabelText('Optional full cohort repeat-count context')).toBeNull()
     expandRow()
+    expect(screen.queryByLabelText('full allele size distribution')).toBeNull()
+    expandFullCohortDisclosure()
     await screen.findByLabelText('full allele size distribution')
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
@@ -257,6 +276,7 @@ describe('expanded TR full-cohort distributions', () => {
 
     renderTable()
     expandRow()
+    expandFullCohortDisclosure()
 
     expect(await screen.findByText(/Full cohort STR distributions are unavailable/)).not.toBeNull()
     expect(
@@ -272,6 +292,7 @@ describe('expanded TR full-cohort distributions', () => {
 
     renderTable()
     expandRow()
+    expandFullCohortDisclosure()
 
     expect((await screen.findByRole('alert')).textContent).toContain(
       'Unable to load the full cohort STR distributions.'
