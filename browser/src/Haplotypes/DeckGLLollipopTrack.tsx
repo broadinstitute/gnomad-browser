@@ -5,6 +5,7 @@ import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer, TextLayer } 
 import { RegionViewerContext } from '@gnomad/region-viewer'
 import { scaleLinear } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
+import { getDiploidSampleLabelColor } from './diploidSampleLabelColor'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
 import { passesLongReadVariantTypeFilters } from '../LongReadVariantPage/longReadVariantTypes'
 import {
@@ -787,7 +788,7 @@ function DeckGLLollipopCanvas({
         sampleLabels.push({
           position: [35, y - 13, 0],
           text: sampleLabel,
-          color: [40, 40, 40, 255],
+          color: getDiploidSampleLabelColor(group.samples, sampleMetadata),
           size: 11,
         })
 
@@ -1039,7 +1040,7 @@ function DeckGLLollipopCanvas({
     }
 
     return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
-  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView])
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, sampleMetadata])
 
   // Left panel DeckGL layers
   const leftPanelLayers = useMemo(() => {
