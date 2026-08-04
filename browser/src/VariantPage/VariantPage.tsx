@@ -51,8 +51,6 @@ import {
   FullLocalAncestryPopulationId,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
-import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
-import type { Sex } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
 import type { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 
 export const Section = styled.section`
@@ -346,21 +344,6 @@ export type LongReadDetails = {
         populations: { id: string; ac: number; an: number; af: number }[]
       }[]
     | null
-  allele_size_distribution: AlleleSizeDistributionCohort[] | null
-  genotype_distribution:
-    | {
-        ancestry_group: string
-        sex: Sex
-        short_allele_repunit: string
-        long_allele_repunit: string
-        distribution: {
-          short_allele_repunit_count: number
-          long_allele_repunit_count: number
-          frequency: number
-        }[]
-      }[]
-    | null
-  max_repunits: number | null
   main_reference_region: {
     reference_genome: string
     chrom: string
@@ -404,9 +387,14 @@ export type Variant = {
 type VariantPageContentProps = {
   datasetId: DatasetId
   variant: Variant
+  requestedVariantId?: string
 }
 
-export const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
+export const VariantPageContent = ({
+  datasetId,
+  variant,
+  requestedVariantId = variant.variant_id,
+}: VariantPageContentProps) => {
   const isLrOnly = !variant.exome && !variant.genome && Boolean(variant.long_read)
 
   return (
@@ -460,7 +448,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
 
       {variant.long_read_details && (
         <LongReadVariantDetails
-          variantId={variant.variant_id}
+          variantId={requestedVariantId}
           chrom={variant.chrom}
           pos={variant.pos}
           longReadDetails={variant.long_read_details}
@@ -824,27 +812,6 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $lrCohort: L
           af
         }
       }
-      max_repunits
-      allele_size_distribution {
-        ancestry_group
-        sex
-        repunit
-        distribution {
-          repunit_count
-          frequency
-        }
-      }
-      genotype_distribution {
-        ancestry_group
-        sex
-        short_allele_repunit
-        long_allele_repunit
-        distribution {
-          short_allele_repunit_count
-          long_allele_repunit_count
-          frequency
-        }
-      }
       main_reference_region {
         reference_genome
         chrom
@@ -1049,7 +1016,13 @@ const VariantPage = ({ datasetId, variantId, lrCohort }: VariantPageProps) => {
               gene.ensembleId = geneData.ensembleId
             }
 
-            pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />
+            pageContent = (
+              <VariantPageContent
+                datasetId={datasetId}
+                variant={variant}
+                requestedVariantId={variantId}
+              />
+            )
           }
 
           const datasetLinkWithLiftover: URLBuilder = (currentLocation, toDatasetId) => {

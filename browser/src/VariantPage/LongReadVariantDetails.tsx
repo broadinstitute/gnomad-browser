@@ -4,17 +4,13 @@ import { Table } from './VariantOccurrenceTable'
 
 import Link from '../Link'
 import { LongReadDetails, Section } from './VariantPage'
+import ExpandedTrDistributions from '../Haplotypes/ExpandedTrDistributions'
 import TRDistributionPlot from '../Haplotypes/TRDistributionPlot'
 import { getTrLocusDistribution } from '../LongReadVariantPage/trLocusAggregation'
 import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
-import {
-  LongReadAlleleSizeDistributionSection,
-  LongReadGenotypeDistributionSection,
-  selectGenotypeDistribution,
-} from '../LongReadVariantPage/LongReadSTRDistributionSections'
 
-export { selectGenotypeDistribution }
+export { selectGenotypeDistribution } from '../LongReadVariantPage/LongReadSTRDistributionSections'
 
 type Props = {
   variantId: string
@@ -63,15 +59,12 @@ const LongReadVariantDetails = ({
   lrCohort,
 }: Props) => {
   const {
-    allele_size_distribution,
     allelic_series,
     end,
     enveloped_ids,
     enveloping_tr_id,
-    genotype_distribution,
     length,
     main_reference_region,
-    max_repunits,
     motifs,
     short_read_match_id,
     short_read_match_source,
@@ -80,6 +73,7 @@ const LongReadVariantDetails = ({
   } = longReadDetails
 
   const repeatUnits = motifs && motifs.length > 0 ? motifs : [ref_allele]
+  const isTandemRepeat = longReadDetails.allele_type?.toLowerCase() === 'trv'
 
   return (
     <>
@@ -158,8 +152,8 @@ const LongReadVariantDetails = ({
         <Section>
           <h2>TR Allelic Series</h2>
           <p>
-            ALT allele-length differences and counts for this tandem-repeat record. Y1 does not yet
-            provide repeat-unit or genotype histograms.
+            Exact ALT allele-length differences and counts for this tandem-repeat record. This
+            allelic series is distinct from the full-cohort repeat-count distributions below.
           </p>
           <TRDistributionPlot
             distribution={getAllelicSeriesDistribution(allelic_series)}
@@ -169,23 +163,8 @@ const LongReadVariantDetails = ({
         </Section>
       )}
 
-      {allele_size_distribution && max_repunits != null && (
-        <Section>
-          <LongReadAlleleSizeDistributionSection
-            variantId={variantId}
-            alleleSizeDistribution={allele_size_distribution}
-            maxRepunits={max_repunits}
-          />
-        </Section>
-      )}
-
-      {genotype_distribution && genotype_distribution.length > 0 && (
-        <Section>
-          <LongReadGenotypeDistributionSection
-            variantId={variantId}
-            genotypeDistribution={genotype_distribution}
-          />
-        </Section>
+      {isTandemRepeat && (
+        <ExpandedTrDistributions variantId={variantId} lrCohort={lrCohort} headingLevel="h2" />
       )}
 
       {enveloping_tr_id && (

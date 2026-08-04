@@ -14,6 +14,7 @@ const FULL_TR_DISTRIBUTION_QUERY = `
   query ExpandedTrDistributions($variantId: String!, $lrCohort: LongReadCohort!) {
     long_read_variant(variantId: $variantId, lr_cohort: $lrCohort) {
       variant_id
+      lr_cohort
       motifs
       allele_size_distribution {
         ancestry_group
@@ -47,6 +48,7 @@ const FULL_TR_DISTRIBUTION_QUERY = `
 
 export type ExpandedTrDistributionData = {
   variant_id: string
+  lr_cohort: LongReadCohort
   motifs: string[] | null
   allele_size_distribution: AlleleSizeDistributionCohort[] | null
   max_repunits: number | null
@@ -89,7 +91,12 @@ export const fetchExpandedTrDistribution = (
           payload.errors.map((error: { message: string }) => error.message).join(', ')
         )
       }
-      return (payload.data?.long_read_variant || null) as ExpandedTrDistributionData | null
+      const result = (payload.data?.long_read_variant || null) as ExpandedTrDistributionData | null
+      // Ancillary distributions must be for the exact requested record and cohort. Treat any
+      // resolver fallback or mismatched response as unavailable rather than leaking data across
+      // variant or cohort scopes.
+      if (result && (result.variant_id !== variantId || result.lr_cohort !== lrCohort)) return null
+      return result
     })
     .catch((error) => {
       // Successful and no-data responses stay cached across collapse/re-expand.
@@ -278,19 +285,25 @@ const ExpandedTrDistributionContent = ({
 const ExpandedTrDistributions = ({
   variantId,
   lrCohort,
+  headingLevel = 'h3',
 }: {
   variantId: string
   lrCohort: LongReadCohort
-}) => (
-  <DistributionSection aria-label="Full-cohort repeat-count distributions">
-    <DistributionHeader>
-      <h3>Full-cohort repeat-count distributions</h3>
-      <HaplotypeHelpButton title="About full-cohort repeat-count distributions">
-        <FullCohortRepeatCountHelp lrCohort={lrCohort} />
-      </HaplotypeHelpButton>
-    </DistributionHeader>
-    <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />
-  </DistributionSection>
-)
+  headingLevel?: 'h2' | 'h3'
+}) => {
+  const Heading = headingLevel
+
+  return (
+    <DistributionSection aria-label="Full-cohort repeat-count distributions">
+      <DistributionHeader>
+        <Heading>Full-cohort repeat-count distributions</Heading>
+        <HaplotypeHelpButton title="About full-cohort repeat-count distributions">
+          <FullCohortRepeatCountHelp lrCohort={lrCohort} />
+        </HaplotypeHelpButton>
+      </DistributionHeader>
+      <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />
+    </DistributionSection>
+  )
+}
 
 export default ExpandedTrDistributions

@@ -89,6 +89,7 @@ const haplotypeGroups = {
 
 const fullDistribution = {
   variant_id: variantId,
+  lr_cohort: 'hgsvc_hprc',
   // Exercise the component's repeat-unit fallback when motifs are absent.
   motifs: [],
   max_repunits: 24,
