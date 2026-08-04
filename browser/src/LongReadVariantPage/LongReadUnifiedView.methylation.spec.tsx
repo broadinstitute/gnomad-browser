@@ -353,6 +353,26 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     expect(screen.getByTestId('haplotype-rows')).toBeTruthy()
   })
 
+  test('an invalid explicit source-labelled sample fails closed instead of selecting another sample', async () => {
+    mockPhasedCapability = {
+      data_layer: 'SOURCE_PHASED', available: true, joinable_to_vcf: false,
+      status: 'AVAILABLE_ORIENTATION_UNCONFIRMED', orientation_status: 'UNCONFIRMED',
+      phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET', route_run_id: 'source-only-v1',
+      source_sample_ids: ['HG00097'], reason: 'exact VCF mapping receipt missing',
+    }
+    renderView(
+      { chrom: 'chr22', start: 47_040_000, stop: 47_050_000 },
+      '/?show_haplotypes=true&show_source_phased_methylation=true&source_phased_methylation_sample=NOT_REAL'
+    )
+
+    const control = await screen.findByLabelText(
+      'Show source-labelled hap1/hap2 methylation (orientation unconfirmed)'
+    )
+    expect((control as HTMLInputElement).checked).toBe(false)
+    expect((control as HTMLInputElement).disabled).toBe(true)
+    expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(0)
+  })
+
   test('auto-detail cannot clear load-all progress or enable a premature second click', async () => {
     renderView()
     await screen.findByTestId('load-all')

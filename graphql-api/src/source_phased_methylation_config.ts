@@ -1,8 +1,14 @@
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 
+export const SOURCE_PHASED_METHYLATION_DATABASE =
+  'gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3'
+export const SOURCE_PHASED_METHYLATION_RUN_ID =
+  'y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1'
 export const SOURCE_PHASED_METHYLATION_TABLE =
   'lr_y1_methylation_source_haplotype_presentation'
+export const SOURCE_PHASED_SERVING_RECEIPT_SHA256 =
+  'be522cfe12455af49127ba8cf84ccb102af0c408112d6ec7b650892815aec218'
 export const SOURCE_PHASED_COMPLETION_RECEIPT_SHA256 =
   'f259273f4c66ae18f80884cfbb6640a603e0708765a059a68e75bb1b85d23f85'
 export const SOURCE_PHASED_SOURCE_MANIFEST_SHA256 =
@@ -48,8 +54,8 @@ export type SourcePhasedMethylationServingReceipt = {
 }
 
 export type SourcePhasedMethylationRoute = {
-  database: string
-  run_id: string
+  database: typeof SOURCE_PHASED_METHYLATION_DATABASE
+  run_id: typeof SOURCE_PHASED_METHYLATION_RUN_ID
   receipt_path: string
   receipt: SourcePhasedMethylationServingReceipt
 }
@@ -172,6 +178,12 @@ export const readSourcePhasedMethylationServingReceipt = (
 
   const database = safeDatabase(receipt.database)
   const routeRunId = safeRunId(receipt.route_run_id)
+  if (
+    database !== SOURCE_PHASED_METHYLATION_DATABASE ||
+    routeRunId !== SOURCE_PHASED_METHYLATION_RUN_ID
+  ) {
+    throw new Error('Source-phased methylation receipt does not name the pinned v3 product')
+  }
   const detailRows = positiveInteger(receipt.detail_rows, 'receipt.detail_rows')
   const acceptedTasks = positiveInteger(receipt.accepted_tasks, 'receipt.accepted_tasks')
   const sourceSampleCount = positiveInteger(receipt.source_sample_count, 'receipt.source_sample_count')
@@ -264,6 +276,14 @@ export const resolveSourcePhasedMethylationRoute = (
   const database = safeDatabase(route.database)
   const run_id = safeRunId(route.run_id)
   const receipt_path = nonemptyString(route.receipt_path, 'source-phased methylation receipt path')
+  if (
+    database !== SOURCE_PHASED_METHYLATION_DATABASE ||
+    run_id !== SOURCE_PHASED_METHYLATION_RUN_ID ||
+    sha256File(receipt_path, 'source-phased methylation serving receipt') !==
+      SOURCE_PHASED_SERVING_RECEIPT_SHA256
+  ) {
+    throw new Error('Source-phased methylation route is not the pinned v3 product receipt')
+  }
   const receipt = readSourcePhasedMethylationServingReceipt(receipt_path)
   if (receipt.database !== database || receipt.route_run_id !== run_id) {
     throw new Error('Source-phased methylation route does not exactly match its serving receipt')
@@ -278,5 +298,10 @@ export const resolveSourcePhasedMethylationRoute = (
   ) {
     throw new Error('Source-phased methylation receipt does not bind the configured browser VCF bundle')
   }
-  return { database, run_id, receipt_path, receipt }
+  return {
+    database: database as typeof SOURCE_PHASED_METHYLATION_DATABASE,
+    run_id: run_id as typeof SOURCE_PHASED_METHYLATION_RUN_ID,
+    receipt_path,
+    receipt,
+  }
 }

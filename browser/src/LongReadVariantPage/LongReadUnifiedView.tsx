@@ -266,7 +266,7 @@ const emptyMethylationViewState = (scope: string | null = null): MethylationView
 })
 
 const selectedSourcePhasedSample = (sampleIds: string[], requested: string | null) => {
-  if (requested && sampleIds.includes(requested)) return requested
+  if (requested !== null) return sampleIds.includes(requested) ? requested : null
   if (sampleIds.includes('HG00097')) return 'HG00097'
   return sampleIds[0] || null
 }

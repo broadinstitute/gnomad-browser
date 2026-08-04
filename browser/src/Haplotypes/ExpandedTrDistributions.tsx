@@ -111,7 +111,7 @@ export const fetchExpandedTrDistribution = (
   return request
 }
 
-const DistributionSection = styled.section`
+const DistributionSection = styled.details`
   overflow: hidden;
   width: 100%;
   min-width: 0;
@@ -123,12 +123,21 @@ const DistributionSection = styled.section`
   white-space: normal;
 `
 
-const DistributionHeader = styled.div`
+const DistributionHeader = styled.summary`
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 9px 12px;
+  color: #555;
+  cursor: pointer;
+  line-height: 1.4;
 
+  &:focus-visible {
+    outline: 2px solid #428bca;
+    outline-offset: -2px;
+  }
+
+  h2,
   h3 {
     margin: 0;
     color: #333;
@@ -292,16 +301,21 @@ const ExpandedTrDistributions = ({
   headingLevel?: 'h2' | 'h3'
 }) => {
   const Heading = headingLevel
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <DistributionSection aria-label="Full-cohort repeat-count distributions">
+    <DistributionSection
+      aria-label="Full-cohort repeat-count distributions"
+      onToggle={(event) => setIsOpen(event.currentTarget.open)}
+    >
       <DistributionHeader>
         <Heading>Full-cohort repeat-count distributions</Heading>
+        <span>— aggregate called-allele repeat counts</span>
         <HaplotypeHelpButton title="About full-cohort repeat-count distributions">
           <FullCohortRepeatCountHelp lrCohort={lrCohort} />
         </HaplotypeHelpButton>
       </DistributionHeader>
-      <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />
+      {isOpen && <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />}
     </DistributionSection>
   )
 }

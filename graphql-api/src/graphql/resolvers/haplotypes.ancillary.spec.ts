@@ -8,6 +8,7 @@ import {
   sourcePhasedMethylationRecords,
   typedMethylationStatus,
   validateSourcePhasedMethylationPhysicalState,
+  validateSourcePhasedMethylationRepresentative,
 } from './ancillary-availability'
 
 describe('ancillary cohort availability', () => {
@@ -164,6 +165,15 @@ describe('ancillary cohort availability', () => {
       ...state,
       parts: [{ chrom: 'chr22', rows: 11 }],
     })).toThrow('partitions')
+
+    const representative = [{
+      rows: 508, unique_keys: 508, hap1: 254, hap2: 254,
+      min_pos1: 47_040_006, max_pos2: 47_049_910, exact: 508,
+    }]
+    expect(() => validateSourcePhasedMethylationRepresentative(representative)).not.toThrow()
+    expect(() => validateSourcePhasedMethylationRepresentative([
+      { ...representative[0], hap2: 253 },
+    ])).toThrow('representative product semantics')
   })
 
   test('AoU phased methylation is typed summary-only and never falls back to HGSVC', () => {

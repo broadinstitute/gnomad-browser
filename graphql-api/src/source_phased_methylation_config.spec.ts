@@ -35,6 +35,10 @@ describe('source-phased methylation serving configuration', () => {
         receipt_path: receiptPath,
       }),
     })
+    expect(route?.database).toBe('gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3')
+    expect(route?.run_id).toBe(
+      'y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1'
+    )
     expect(route?.receipt.completion_receipt_sha256).toBe(
       'f259273f4c66ae18f80884cfbb6640a603e0708765a059a68e75bb1b85d23f85'
     )
@@ -49,6 +53,6 @@ describe('source-phased methylation serving configuration', () => {
         run_id: 'wrong',
         receipt_path: receiptPath,
       }),
-    })).toThrow('does not exactly match')
+    })).toThrow('not the pinned v3 product receipt')
   })
 })

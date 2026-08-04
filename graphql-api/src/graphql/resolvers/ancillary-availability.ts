@@ -502,6 +502,22 @@ export const validateSourcePhasedMethylationPhysicalState = (
   }
 }
 
+export const validateSourcePhasedMethylationRepresentative = (rows: any[]) => {
+  const row = rows[0] || {}
+  if (
+    rows.length !== 1 ||
+    Number(row.rows) !== 508 ||
+    Number(row.unique_keys) !== 508 ||
+    Number(row.hap1) !== 254 ||
+    Number(row.hap2) !== 254 ||
+    Number(row.min_pos1) !== 47_040_006 ||
+    Number(row.max_pos2) !== 47_049_910 ||
+    Number(row.exact) !== 508
+  ) {
+    throw new Error('Source-phased methylation representative product semantics do not match v3')
+  }
+}
+
 const preflightSourcePhasedMethylation = async (route: SourcePhasedMethylationRoute) => {
   const client = getSourcePhasedMethylationClickhouseClient(route)
   const query = async (sql: string, query_params: Record<string, unknown> = {}) => {
@@ -529,6 +545,17 @@ const preflightSourcePhasedMethylation = async (route: SourcePhasedMethylationRo
     ),
   ])
   validateSourcePhasedMethylationPhysicalState(route, { tables, columns, parts })
+  const representative = await query(
+    `SELECT count() AS rows, uniqExact(stable_key) AS unique_keys,
+       countIf(source_haplotype = 1) AS hap1, countIf(source_haplotype = 2) AS hap2,
+       min(pos1) AS min_pos1, max(pos2) AS max_pos2,
+       countIf(source_haplotype IN (1, 2) AND pos2 = pos1 + 1
+         AND isFinite(methylation) AND methylation BETWEEN 0 AND 100) AS exact
+     FROM ${SOURCE_PHASED_METHYLATION_TABLE}
+     WHERE chrom = 'chr22' AND pos1 BETWEEN 47040000 AND 47050000
+       AND sample_id = 'HG00097'`
+  )
+  validateSourcePhasedMethylationRepresentative(representative)
   activeSourcePhasedMethylationRoute = route
 }
 
