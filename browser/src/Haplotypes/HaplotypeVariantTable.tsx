@@ -1186,7 +1186,7 @@ const TableRow = React.memo(function TableRow({
                   style={{
                     marginBottom: 14,
                     padding: '10px 12px',
-                    border: '2px solid #9c7a25',
+                    border: '1px solid #e0d8bd',
                     borderRadius: 4,
                     background: '#fff',
                     whiteSpace: 'normal',
