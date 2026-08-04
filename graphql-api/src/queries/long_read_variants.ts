@@ -15,6 +15,7 @@ import {
   LongReadCohort,
 } from './long_read_y1_variants'
 import { getY1SourceSnapshot, resolveY1Cohort } from './long_read_y1_provenance'
+import { enrichVariantWithSTRHistogram } from './long_read_str_histogram'
 
 const normalizeChrom = (chrom: string) =>
   chrom.startsWith('chr') ? chrom : `chr${chrom}`
@@ -72,58 +73,6 @@ const mapClickHouseRowToGraphQL = (row: any) => {
 }
 }
 
-const parseAlleleSizeDistribution = (populations: { key: string; histogram: string }[]) => {
-  const results: any[] = []
-  for (const { key, histogram } of populations) {
-    if (!key.startsWith('AlleleSizeHistogram:')) continue
-    const parts = key.split(':')
-    const ancestry_group = parts[1]
-    const sex = parts[2] === 'female' ? 'XX' : 'XY'
-    const bins = (histogram as string)
-      .split(',')
-      .filter((b: string) => b.includes('x'))
-      .map((b: string) => {
-        const [countStr, freqStr] = b.split(':')
-        return {
-          repunit_count: parseInt(countStr.replace('x', ''), 10),
-          frequency: parseInt(freqStr, 10),
-        }
-      })
-    results.push({ ancestry_group, sex, repunit: '', distribution: bins })
-  }
-  return results.length > 0 ? results : null
-}
-
-const parseGenotypeDistribution = (populations: { key: string; histogram: string }[]) => {
-  const results: any[] = []
-  for (const { key, histogram } of populations) {
-    if (!key.startsWith('BiallelicHistogram:')) continue
-    const parts = key.split(':')
-    const ancestry_group = parts[1]
-    const sex = parts[2] === 'female' ? 'XX' : 'XY'
-    const bins = (histogram as string)
-      .split(',')
-      .filter((b: string) => b.includes(':'))
-      .map((b: string) => {
-        const [countsStr, freqStr] = b.split(':')
-        const [shortStr, longStr] = countsStr.split('/')
-        return {
-          short_allele_repunit_count: parseInt(shortStr, 10),
-          long_allele_repunit_count: parseInt(longStr, 10),
-          frequency: parseInt(freqStr, 10),
-        }
-      })
-    results.push({
-      ancestry_group,
-      sex,
-      short_allele_repunit: '',
-      long_allele_repunit: '',
-      distribution: bins,
-    })
-  }
-  return results.length > 0 ? results : null
-}
-
 export const fetchVariantById = async (variantId: string, requestedCohort?: LongReadCohort | null) => {
   const cohort = await resolveY1Cohort(requestedCohort)
   if (isY1PilotEnabled) {
@@ -146,14 +95,7 @@ export const fetchVariantById = async (variantId: string, requestedCohort?: Long
       fetchSTRHistogram(null, source.chrom, variant.pos, cohort),
     ])
     return {
-      ...variant,
-      allele_size_distribution: histogram
-        ? parseAlleleSizeDistribution(histogram.populations)
-        : variant.allele_size_distribution,
-      genotype_distribution: histogram
-        ? parseGenotypeDistribution(histogram.populations)
-        : variant.genotype_distribution,
-      max_repunits: histogram?.max_repeats ? Number(histogram.max_repeats) : variant.max_repunits,
+      ...(histogram ? enrichVariantWithSTRHistogram(variant, histogram) : variant),
       allelic_series: locusAlleles
         .filter((allele) => allele.source_variant_id === variant.source_variant_id)
         .map((allele) => ({
@@ -221,11 +163,7 @@ export const fetchVariantById = async (variantId: string, requestedCohort?: Long
 
   if (rows[0].allele_type === 'trv') {
     const histogram = await fetchSTRHistogram(null, rows[0].chrom, Number(rows[0].position))
-    if (histogram) {
-      variant.allele_size_distribution = parseAlleleSizeDistribution(histogram.populations)
-      variant.genotype_distribution = parseGenotypeDistribution(histogram.populations)
-      variant.max_repunits = histogram.max_repeats ? Number(histogram.max_repeats) : null
-    }
+    if (histogram) return enrichVariantWithSTRHistogram(variant, histogram)
   }
 
   return variant

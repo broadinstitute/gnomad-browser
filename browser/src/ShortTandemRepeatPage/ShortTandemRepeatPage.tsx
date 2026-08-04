@@ -44,7 +44,7 @@ export type ShortTandemRepeatReferenceRegion = {
   stop: number
 }
 
-export type Sex = 'XX' | 'XY'
+export type Sex = 'XX' | 'XY' | 'unknown'
 
 export type AlleleSizeDistributionCohort = {
   ancestry_group: PopulationId

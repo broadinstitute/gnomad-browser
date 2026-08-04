@@ -173,13 +173,27 @@ const ExpandedTrDistributions = ({
   )
   const hasGenotypeDistribution = Boolean(genotypeDistribution && genotypeDistribution.length > 0)
   const hasFullDistribution = hasAlleleDistribution || hasGenotypeDistribution
+  const distributionMotifs = [
+    ...(alleleDistribution || []).map((cohort) => cohort.repunit),
+    ...(genotypeDistribution || []).flatMap((cohort) => [
+      cohort.short_allele_repunit,
+      cohort.long_allele_repunit,
+    ]),
+  ]
+    .flatMap((motif) => motif.split(','))
+    .map((motif) => motif.trim())
+    .filter(Boolean)
+  const motifs = state.data?.motifs?.filter(Boolean).length
+    ? state.data.motifs.filter(Boolean)
+    : [...new Set(distributionMotifs)]
+  const repeatUnit = motifs.join(', ')
 
   return (
     <Panel aria-label="Full cohort STR distributions">
       <h3 style={{ margin: 0 }}>Full cohort STR distributions</h3>
       <Message>
         All called {cohortLabel(lrCohort)} alleles at this locus, loaded when this row was expanded.
-        {state.data?.motifs?.length ? ` Repeat motif: ${state.data.motifs.join(', ')}.` : ''}
+        {motifs.length ? ` Repeat motif: ${repeatUnit}.` : ''}
       </Message>
       {state.loading && <Message role="status">Loading full cohort STR distributions…</Message>}
       {state.error && <Message role="alert">{state.error}</Message>}
@@ -197,6 +211,7 @@ const ExpandedTrDistributions = ({
                 variantId={`${lrCohort}-${variantId}-expanded`}
                 alleleSizeDistribution={alleleDistribution!}
                 maxRepunits={state.data!.max_repunits!}
+                repeatUnit={repeatUnit || undefined}
                 headingLevel="h4"
               />
             </div>
@@ -206,6 +221,7 @@ const ExpandedTrDistributions = ({
               <LongReadGenotypeDistributionSection
                 variantId={`${lrCohort}-${variantId}-expanded`}
                 genotypeDistribution={genotypeDistribution!}
+                repeatUnit={repeatUnit || undefined}
                 headingLevel="h4"
               />
             </div>

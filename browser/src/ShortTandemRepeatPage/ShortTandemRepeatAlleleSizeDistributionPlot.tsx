@@ -92,6 +92,7 @@ const colorMap: Record<ColorBy | '', Record<string, string>> = {
   sex: {
     XX: '#F7C3CC',
     XY: '#6AA6CE',
+    unknown: '#8C8C8C',
   },
   population: {
     nfe: '#6AA6CE',
@@ -110,6 +111,7 @@ const colorMap: Record<ColorBy | '', Record<string, string>> = {
 const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
   quality_description: qualityDescriptionLabels,
   q_score: qScoreLabels,
+  sex: { XX: 'XX', XY: 'XY', unknown: 'Unknown' },
   population: GNOMAD_POPULATION_NAMES,
 }
 
@@ -145,6 +147,7 @@ type Props = {
   alleleSizeDistribution: AlleleSizeDistributionItem[]
   colorBy: ColorBy | null
   repeatUnitLength: number | null
+  repeatUnit?: string
   scaleType: ScaleType
   ranges?: Range[]
   size: { width: number }
@@ -159,7 +162,7 @@ type Bin = Partial<Record<ColorByValue | '', number>> & {
 const legendKeys: Record<ColorBy, string[]> = {
   quality_description: [...genotypeQualityKeys],
   q_score: [...qScoreKeys],
-  sex: ['XX', 'XY'],
+  sex: ['XX', 'XY', 'unknown'],
   // default v4 populations uses "remaining" for "Remaining Individuals" ID, but this data uses the deprecated "oth" ID
   population: getPopulationsInDataset('gnomad_r4').map((populationId) =>
     populationId === 'remaining' ? 'oth' : populationId
@@ -200,6 +203,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     alleleSizeDistribution,
     colorBy,
     repeatUnitLength,
+    repeatUnit,
     size: { width },
     scaleType = 'linear',
     ranges = [],
@@ -303,7 +307,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
         <LegendFromColorBy colorBy={colorBy} />
         <svg height={binSize === 1 ? height - 20 : height} width={width}>
           <AxisBottom
-            label="Repeats"
+            label={repeatUnit ? `Repeats of ${repeatUnit}` : 'Repeats'}
             labelOffset={binSize === 1 ? 10 : 30}
             labelProps={labelProps}
             left={margin.left}

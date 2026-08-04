@@ -13,26 +13,38 @@ jest.mock('../Link', () => ({ children, to, onClick }: any) => (
 
 jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot', () => ({
   __esModule: true,
-  default: ({ alleleSizeDistribution }: any) => (
+  default: ({ alleleSizeDistribution, repeatUnit }: any) => (
     <div
       aria-label="full allele size distribution"
       data-repeats={alleleSizeDistribution
         .map((item: any) => item.repunit_count)
         .sort((a: number, b: number) => a - b)
         .join(',')}
+      data-total={alleleSizeDistribution.reduce(
+        (sum: number, item: any) => sum + item.frequency,
+        0
+      )}
+      data-colors={alleleSizeDistribution
+        .map((item: any) => item.colorByValue)
+        .filter(Boolean)
+        .sort()
+        .join(',')}
+      data-repeat-unit={repeatUnit || ''}
     />
   ),
 }))
 
 jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatGenotypeDistributionPlot', () => ({
   __esModule: true,
-  default: ({ genotypeDistribution }: any) => (
+  default: ({ genotypeDistribution, axisLabels }: any) => (
     <div
       aria-label="full genotype distribution"
       data-genotypes={genotypeDistribution
         .map((item: any) => `${item.short_allele_repunit_count}/${item.long_allele_repunit_count}`)
         .sort()
         .join(',')}
+      data-total={genotypeDistribution.reduce((sum: number, item: any) => sum + item.frequency, 0)}
+      data-axis-labels={axisLabels.join(',')}
     />
   ),
 }))
@@ -77,8 +89,9 @@ const haplotypeGroups = {
 
 const fullDistribution = {
   variant_id: variantId,
-  motifs: ['T'],
-  max_repunits: 21,
+  // Exercise the component's repeat-unit fallback when motifs are absent.
+  motifs: [],
+  max_repunits: 24,
   main_reference_region: { chrom: 'chr4', start: 39279700, stop: 39279721 },
   allele_size_distribution: [
     {
@@ -103,6 +116,12 @@ const fullDistribution = {
         { repunit_count: 21, frequency: 36 },
       ],
     },
+    {
+      ancestry_group: 'afr',
+      sex: 'unknown',
+      repunit: 'T',
+      distribution: [{ repunit_count: 22, frequency: 7 }],
+    },
   ],
   genotype_distribution: [
     {
@@ -123,6 +142,15 @@ const fullDistribution = {
       distribution: [
         { short_allele_repunit_count: 14, long_allele_repunit_count: 20, frequency: 1 },
         { short_allele_repunit_count: 21, long_allele_repunit_count: 21, frequency: 5 },
+      ],
+    },
+    {
+      ancestry_group: 'afr',
+      sex: 'unknown',
+      short_allele_repunit: 'T',
+      long_allele_repunit: 'T',
+      distribution: [
+        { short_allele_repunit_count: 20, long_allele_repunit_count: 22, frequency: 4 },
       ],
     },
   ],
@@ -167,8 +195,12 @@ describe('expanded TR full-cohort distributions', () => {
 
     const allelePlot = await screen.findByLabelText('full allele size distribution')
     const genotypePlot = screen.getByLabelText('full genotype distribution')
-    expect(allelePlot.getAttribute('data-repeats')).toBe('13,14,18,19,20,21')
-    expect(genotypePlot.getAttribute('data-genotypes')).toBe('13/19,14/20,19/21,21/21')
+    expect(allelePlot.getAttribute('data-repeats')).toBe('13,14,18,19,20,21,22')
+    expect(allelePlot.getAttribute('data-total')).toBe('591')
+    expect(allelePlot.getAttribute('data-repeat-unit')).toBe('T')
+    expect(genotypePlot.getAttribute('data-genotypes')).toBe('13/19,14/20,19/21,20/22,21/21')
+    expect(genotypePlot.getAttribute('data-total')).toBe('29')
+    expect(genotypePlot.getAttribute('data-axis-labels')).toBe('longer T allele,shorter T allele')
     expect(screen.getByText(/Repeat motif: T/)).not.toBeNull()
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -179,9 +211,27 @@ describe('expanded TR full-cohort distributions', () => {
     expect(body.query).toContain('genotype_distribution')
     expect(body.variables).toEqual({ variantId, lrCohort: 'hgsvc_hprc' })
 
+    const colorByControl = screen.getByLabelText(/Color by/)
+    fireEvent.change(colorByControl, { target: { value: 'sex' } })
+    expect(allelePlot.getAttribute('data-colors')).toBe('XX,XX,XX,XY,XY,XY,XY,XY,unknown')
+
+    const sexControls = screen.getAllByLabelText(/Sex:/)
+    expect(
+      Array.from((sexControls[0] as HTMLSelectElement).options).map((option) => option.text)
+    ).toContain('Unknown')
+    fireEvent.change(sexControls[0], { target: { value: 'unknown' } })
+    expect(allelePlot.getAttribute('data-repeats')).toBe('22')
+    expect(allelePlot.getAttribute('data-total')).toBe('7')
+    expect(allelePlot.getAttribute('data-colors')).toBe('unknown')
+    fireEvent.change(sexControls[1], { target: { value: 'unknown' } })
+    expect(genotypePlot.getAttribute('data-genotypes')).toBe('20/22')
+    expect(genotypePlot.getAttribute('data-total')).toBe('4')
+
     const ancestryControls = screen.getAllByLabelText(/Genetic ancestry group/)
+    fireEvent.change(sexControls[0], { target: { value: '' } })
     fireEvent.change(ancestryControls[0], { target: { value: 'afr' } })
-    expect(allelePlot.getAttribute('data-repeats')).toBe('13,19,21')
+    expect(allelePlot.getAttribute('data-repeats')).toBe('13,19,21,22')
+    fireEvent.change(sexControls[1], { target: { value: '' } })
     fireEvent.change(ancestryControls[1], { target: { value: 'nfe' } })
     expect(genotypePlot.getAttribute('data-genotypes')).toBe('14/20,21/21')
 
@@ -206,9 +256,7 @@ describe('expanded TR full-cohort distributions', () => {
     renderTable()
     expandRow()
 
-    expect(
-      await screen.findByText(/Full cohort STR distributions are unavailable/)
-    ).not.toBeNull()
+    expect(await screen.findByText(/Full cohort STR distributions are unavailable/)).not.toBeNull()
     expect(
       screen.getByText('Haplotype-only carrier distribution (context/fallback)')
     ).not.toBeNull()

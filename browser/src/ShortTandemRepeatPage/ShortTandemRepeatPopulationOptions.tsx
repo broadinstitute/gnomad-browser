@@ -77,6 +77,7 @@ const ShortTandemRepeatPopulationOptions = ({
           <option value="">All</option>
           <option value="XX">XX</option>
           <option value="XY">XY</option>
+          <option value="unknown">Unknown</option>
         </Select>
       </Label>
     </Wrapper>

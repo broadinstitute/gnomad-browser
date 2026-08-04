@@ -47,11 +47,13 @@ export const LongReadAlleleSizeDistributionSection = ({
   variantId,
   alleleSizeDistribution,
   maxRepunits,
+  repeatUnit,
   headingLevel = 'h2',
 }: {
   variantId: string
   alleleSizeDistribution: AlleleSizeDistributionCohort[]
   maxRepunits: number
+  repeatUnit?: string
   headingLevel?: HeadingLevel
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
@@ -87,6 +89,7 @@ export const LongReadAlleleSizeDistributionSection = ({
         )}
         colorBy={selectedColorBy}
         repeatUnitLength={null}
+        repeatUnit={repeatUnit}
         scaleType={selectedScaleType}
       />
       <ControlSection style={{ marginTop: '0.5em' }}>
@@ -132,10 +135,12 @@ export const selectGenotypeDistribution = (
 export const LongReadGenotypeDistributionSection = ({
   variantId,
   genotypeDistribution,
+  repeatUnit,
   headingLevel = 'h2',
 }: {
   variantId: string
   genotypeDistribution: GenotypeDistributionCohort[]
+  repeatUnit?: string
   headingLevel?: HeadingLevel
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
@@ -159,7 +164,11 @@ export const LongReadGenotypeDistributionSection = ({
         Genotype Distribution <InfoButton topic="str-genotype-distribution" />
       </Heading>
       <ShortTandemRepeatGenotypeDistributionPlot
-        axisLabels={['longer allele', 'shorter allele']}
+        axisLabels={
+          repeatUnit
+            ? [`longer ${repeatUnit} allele`, `shorter ${repeatUnit} allele`]
+            : ['longer allele', 'shorter allele']
+        }
         maxRepeats={[maxLongAllele, maxShortAllele]}
         genotypeDistribution={selectedDistribution}
         xRanges={[]}
