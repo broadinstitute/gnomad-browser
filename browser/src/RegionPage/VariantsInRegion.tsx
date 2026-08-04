@@ -1,4 +1,5 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { DatasetId, labelForDataset, referenceGenome, isLongRead, associatedLongReadDataset } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
@@ -9,6 +10,7 @@ import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import mergeLongReadVariants from '../VariantList/mergeLongReadVariants'
 import Variants from '../VariantList/Variants'
+import { variantSearchFromUrl } from './variantSearchParam'
 
 type OwnVariantsInRegionProps = {
   clinvarReleaseDate: string
@@ -288,6 +290,8 @@ const ConnectedVariantsInRegion = ({
   onChangeLrCohort = () => {},
   onGenealogyPanelVisibilityChange,
 }: ConnectedVariantsInRegionProps) => {
+  const location = useLocation()
+  const variantSearch = variantSearchFromUrl(location.search)
 
   // When viewing LR dataset directly, only query LR data — skip the expensive SR query
   if (isLongRead(datasetId)) {
@@ -338,6 +342,7 @@ const ConnectedVariantsInRegion = ({
               stop: region.stop,
             }}
             variants={data.region.long_read_variants || []}
+            variantSearch={variantSearch}
             lrCohort={lrCohort}
             onChangeLrCohort={onChangeLrCohort}
             provenance={data.long_read_y1_provenance}

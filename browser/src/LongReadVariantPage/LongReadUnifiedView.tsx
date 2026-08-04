@@ -48,6 +48,7 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
+import { useVariantSearchText } from '../RegionPage/variantSearchParam'
 import {
   LongReadY1Provenance,
   modalityAvailable,
@@ -206,6 +207,7 @@ type LongReadUnifiedViewProps = {
     stop: number
   }
   variants: any[]
+  variantSearch?: string | null
   lrCohort?: 'hgsvc_hprc' | 'aou'
   onChangeLrCohort?: (cohort: 'hgsvc_hprc' | 'aou') => void
   provenance?: LongReadY1Provenance | null
@@ -275,6 +277,7 @@ const LongReadUnifiedView = ({
   datasetId,
   gene,
   variants,
+  variantSearch = null,
   lrCohort = 'hgsvc_hprc',
   onChangeLrCohort,
   provenance = null,
@@ -538,7 +541,7 @@ const LongReadUnifiedView = ({
   const [showMethylation, setShowMethylation] = useState(false)
   const [filterToOutliers, setFilterToOutliers] = useState(true)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
-  const [searchText, setSearchText] = useState('')
+  const [searchText, setSearchText] = useVariantSearchText(variantSearch)
 
   // Cluster state — two thresholds: visual (immediate) and deferred (debounced).
   // Visual drives the drag line + slider display; deferred drives the expensive recomputation.
