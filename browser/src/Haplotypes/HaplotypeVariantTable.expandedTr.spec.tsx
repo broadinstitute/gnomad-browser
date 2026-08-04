@@ -176,7 +176,7 @@ const renderTable = () =>
 const expandRow = () => fireEvent.click(screen.getByText(sourceVariantId).closest('tr')!)
 const expandFullCohortDisclosure = () => {
   const disclosure = screen.getByLabelText(
-    'Optional full cohort repeat-count context'
+    'Full-cohort repeat-count distributions'
   ) as HTMLDetailsElement
   disclosure.open = true
   fireEvent(disclosure, new Event('toggle', { bubbles: true }))
@@ -188,6 +188,28 @@ describe('expanded TR full-cohort distributions', () => {
     global.fetch = jest.fn() as typeof fetch
   })
 
+  test('keeps full-cohort semantics in help without expanding or fetching', () => {
+    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
+
+    renderTable()
+    expandRow()
+
+    const disclosure = screen.getByLabelText('Full-cohort repeat-count distributions')
+    expect(disclosure.textContent).toContain('Full-cohort repeat-count distributions (optional)')
+    expect(disclosure.textContent).not.toContain('aggregate repeat counts')
+    expect(disclosure.textContent).not.toContain('exact ALT sequences')
+
+    fireEvent.click(screen.getByLabelText('About full-cohort repeat-count distributions'))
+
+    expect(disclosure.hasAttribute('open')).toBe(false)
+    expect(fetchMock).not.toHaveBeenCalled()
+    expect(screen.getByText(/aggregate repeat counts for all called HGSVC\/HPRC/)).not.toBeNull()
+    expect(screen.getByText(/not sequence-structure distributions/)).not.toBeNull()
+    expect(
+      screen.getByText(/do not encode motif order, interruptions, or exact ALT sequences/)
+    ).not.toBeNull()
+  })
+
   test('fetches structured long_read_variant data only on expansion, renders full data and caches re-expansion', async () => {
     const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
     fetchMock.mockResolvedValue(responseWithVariant(fullDistribution) as any)
@@ -196,7 +218,7 @@ describe('expanded TR full-cohort distributions', () => {
     expect(fetchMock).not.toHaveBeenCalled()
 
     expandRow()
-    const disclosure = screen.getByLabelText('Optional full cohort repeat-count context')
+    const disclosure = screen.getByLabelText('Full-cohort repeat-count distributions')
     expect(disclosure.tagName).toBe('DETAILS')
     expect(disclosure.hasAttribute('open')).toBe(false)
     expect(screen.queryByRole('status')).toBeNull()
@@ -255,7 +277,7 @@ describe('expanded TR full-cohort distributions', () => {
     expect(genotypePlot.getAttribute('data-genotypes')).toBe('14/20,21/21')
 
     expandRow()
-    expect(screen.queryByLabelText('Optional full cohort repeat-count context')).toBeNull()
+    expect(screen.queryByLabelText('Full-cohort repeat-count distributions')).toBeNull()
     expandRow()
     expect(screen.queryByLabelText('full allele size distribution')).toBeNull()
     expandFullCohortDisclosure()
@@ -278,11 +300,14 @@ describe('expanded TR full-cohort distributions', () => {
     expandRow()
     expandFullCohortDisclosure()
 
-    expect(await screen.findByText(/Full cohort STR distributions are unavailable/)).not.toBeNull()
-    expect(
-      screen.getByText('Haplotype-only carrier distribution (context/fallback)')
-    ).not.toBeNull()
+    expect(await screen.findByText(/Full-cohort STR distributions are unavailable/)).not.toBeNull()
+    expect(screen.getByText('Assigned-carrier length distribution')).not.toBeNull()
+    expect(screen.queryByText(/not the complete cohort STR distribution/)).toBeNull()
+
+    fireEvent.click(screen.getByLabelText('About the assigned-carrier length distribution'))
+    expect(screen.getByText(/partial distribution of assigned carriers/)).not.toBeNull()
     expect(screen.getByText(/not the complete cohort STR distribution/)).not.toBeNull()
+    expect(screen.getByText(/fallback when the optional full-cohort/)).not.toBeNull()
     expect(screen.getByLabelText('TR allele length distribution')).not.toBeNull()
   })
 
@@ -297,8 +322,6 @@ describe('expanded TR full-cohort distributions', () => {
     expect((await screen.findByRole('alert')).textContent).toContain(
       'Unable to load the full cohort STR distributions.'
     )
-    expect(
-      screen.getByText('Haplotype-only carrier distribution (context/fallback)')
-    ).not.toBeNull()
+    expect(screen.getByText('Assigned-carrier length distribution')).not.toBeNull()
   })
 })

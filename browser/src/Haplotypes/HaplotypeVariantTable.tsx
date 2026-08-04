@@ -393,13 +393,29 @@ const buildVariantId = (v: {
 
 // --- Allele Structure Help ---
 
-const AlleleStructureHelp = () => (
+export const AlleleStructureHelp = ({
+  ambiguousUnphasedRows = 0,
+}: {
+  ambiguousUnphasedRows?: number
+}) => (
   <>
-    <h4 style={{ marginTop: 0 }}>Overview</h4>
+    <h4 style={{ marginTop: 0 }}>Scope</h4>
     <p>
       The motif structure grid shows how each exact tandem repeat ALT copy that can be
-      assigned deterministically to a haplotype is composed at the sequence level. It is
-      a partial assigned-copy view, not a full-cohort sequence-structure distribution.
+      assigned deterministically to a haplotype is composed at the sequence level. Included
+      copies come from phased, haploid, or unphased homozygous-ALT calls.
+    </p>
+    <p>
+      This is a partial assigned-copy view, not a full-cohort sequence-structure distribution.
+      Percentages use only the exact assigned ALT copies displayed in the grid. The separate
+      full-cohort plots summarize repeat counts and do not encode exact ALT sequences.
+    </p>
+    <p>
+      Ambiguous unphased heterozygous carrier rows are excluded because the call does not
+      identify whether the ALT copy belongs to haplotype 1 or haplotype 2.
+      {ambiguousUnphasedRows > 0 && (
+        <> Across the loaded region, this excludes {ambiguousUnphasedRows.toLocaleString()} carrier {ambiguousUnphasedRows === 1 ? 'row' : 'rows'} from assigned-haplotype views.</>
+      )}
     </p>
 
     <h4>Reading the Grid</h4>
@@ -504,9 +520,6 @@ const AlleleStructureGrid = ({
           />
           interruption
         </span>
-        <HaplotypeHelpButton title="Motif Structure — How to Read This View">
-          <AlleleStructureHelp />
-        </HaplotypeHelpButton>
       </div>
 
       {/* Column headers */}
@@ -1179,17 +1192,16 @@ const TableRow = React.memo(function TableRow({
                     whiteSpace: 'normal',
                   }}
                 >
-                  <h3 style={{ margin: 0 }}>Deterministically haplotype-assigned motif structures</h3>
-                  <p style={{ margin: '6px 0', maxWidth: 900, fontSize: 12, color: '#555' }}>
-                    Partial sequence view of exact ALT copies for phased, haploid, or unphased
-                    homozygous-ALT calls. It is not a full-cohort sequence-structure distribution.
-                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <h3 style={{ margin: 0 }}>Assigned motif structures</h3>
+                    <HaplotypeHelpButton title="About assigned motif structures">
+                      <AlleleStructureHelp ambiguousUnphasedRows={ambiguousUnphasedRows} />
+                    </HaplotypeHelpButton>
+                  </div>
                   {ambiguousUnphasedRows > 0 && (
-                    <p style={{ margin: '0 0 6px', fontSize: 12, color: '#8a4b08' }}>
-                      Across the loaded region, {ambiguousUnphasedRows.toLocaleString()} ambiguous
-                      unphased carrier {ambiguousUnphasedRows === 1 ? 'row was' : 'rows were'} excluded
-                      because no deterministic haplotype assignment was possible.
-                    </p>
+                    <div style={{ margin: '4px 0 0', fontSize: 12, color: '#8a4b08' }}>
+                      Ambiguous unphased carrier rows excluded: {ambiguousUnphasedRows.toLocaleString()}
+                    </div>
                   )}
                   <AlleleStructureGrid
                     structures={decomposed.structures}
@@ -1206,13 +1218,20 @@ const TableRow = React.memo(function TableRow({
             />
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
               <div style={{ minWidth: 320 }}>
-                <h4 style={{ margin: '0 0 4px', fontSize: 12 }}>
-                  Haplotype-only carrier distribution (context/fallback)
-                </h4>
-                <p style={{ margin: '0 0 6px', maxWidth: 380, fontSize: 11, color: '#666', whiteSpace: 'normal' }}>
-                  Includes only carriers that can be placed deterministically on a haplotype; it is
-                  not the complete cohort STR distribution.
-                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 4 }}>
+                  <h4 style={{ margin: 0, fontSize: 12 }}>Assigned-carrier length distribution</h4>
+                  <HaplotypeHelpButton title="About the assigned-carrier length distribution">
+                    <p style={{ marginTop: 0 }}>
+                      This haplotype-only plot includes carriers that can be placed deterministically
+                      on a haplotype. It is a partial distribution of assigned carriers, not the
+                      complete cohort STR distribution.
+                    </p>
+                    <p style={{ marginBottom: 0 }}>
+                      Use it as context for the assigned motif structures and as a fallback when the
+                      optional full-cohort repeat-count distributions are unavailable.
+                    </p>
+                  </HaplotypeHelpButton>
+                </div>
                 {v.tr_distribution
                   ? <TRDistributionPlot distribution={v.tr_distribution} />
                   : <span style={{ fontSize: 11, color: '#888' }}>No deterministic haplotype carriers.</span>}
@@ -1268,13 +1287,17 @@ const TableRow = React.memo(function TableRow({
                 {/* Overlapping variant calls (enveloped variants) */}
                 {v.enveloped_ids && v.enveloped_ids.length > 0 && (
                   <div style={{ marginTop: 12 }}>
-                    <h4 style={{ marginTop: 0, marginBottom: 4, fontSize: 12 }}>
-                      Overlapping variant calls ({v.enveloped_ids.length})
-                    </h4>
-                    <p style={{ fontSize: 11, color: '#666', marginTop: 0, marginBottom: 8 }}>
-                      These variants were independently called within this repeat region
-                      and may be artifacts of repeat-length variation.
-                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 4 }}>
+                      <h4 style={{ margin: 0, fontSize: 12 }}>
+                        Overlapping variant calls ({v.enveloped_ids.length})
+                      </h4>
+                      <HaplotypeHelpButton title="About overlapping variant calls">
+                        <p style={{ margin: 0 }}>
+                          These variants were independently called within this repeat region and may
+                          be artifacts of repeat-length variation.
+                        </p>
+                      </HaplotypeHelpButton>
+                    </div>
                     <ul style={{ fontSize: 11, margin: 0, paddingLeft: 16 }}>
                       {v.enveloped_ids.map((id: string) => {
                         const envVar = variantDict.get(id)

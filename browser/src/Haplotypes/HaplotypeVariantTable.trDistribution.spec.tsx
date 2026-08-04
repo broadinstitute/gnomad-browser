@@ -235,8 +235,10 @@ describe('haplotype TR locus aggregation', () => {
     expect(screen.getByText('Allele length range: -2 to 1bp')).not.toBeNull()
     expect(screen.getByText('Distinct allele lengths: 4')).not.toBeNull()
     expect(screen.getByText('Total carriers: 3')).not.toBeNull()
-    expect(screen.queryByLabelText('Deterministically haplotype-assigned motif structures')).toBeNull()
-    expect(screen.getByText('Optional context: full-cohort repeat-count distributions')).not.toBeNull()
+    expect(
+      screen.queryByLabelText('Deterministically haplotype-assigned motif structures')
+    ).toBeNull()
+    expect(screen.getByText('Full-cohort repeat-count distributions')).not.toBeNull()
   })
 
   test('prioritizes the partial motif grid and uses carrier-resolved Diploid ALT copies', () => {
@@ -251,15 +253,17 @@ describe('haplotype TR locus aggregation', () => {
       hash: 1,
       start: canonical.pos,
       stop: canonical.end,
-      samples: [{
-        sample_id: 'sample-1',
-        strand_mapping: { strandA: 1, strandB: 2 },
-        phase_set_mapping: { phaseSetA: 'ps-a', phaseSetB: 'ps-b' },
-        haplotypeA: { readable_id: '', variants: [personalized('A')] },
-        haplotypeB: { readable_id: '', variants: [personalized('AAAAAA')] },
-        below_thresholdA: { readable_id: '', variants: [] },
-        below_thresholdB: { readable_id: '', variants: [] },
-      }],
+      samples: [
+        {
+          sample_id: 'sample-1',
+          strand_mapping: { strandA: 1, strandB: 2 },
+          phase_set_mapping: { phaseSetA: 'ps-a', phaseSetB: 'ps-b' },
+          haplotypeA: { readable_id: '', variants: [personalized('A')] },
+          haplotypeB: { readable_id: '', variants: [personalized('AAAAAA')] },
+          below_thresholdA: { readable_id: '', variants: [] },
+          below_thresholdB: { readable_id: '', variants: [] },
+        },
+      ],
       haplotypeA: { readable_id: '', variants: [canonical] },
       haplotypeB: { readable_id: '', variants: [canonical] },
       below_thresholdA: { readable_id: '', variants: [] },
@@ -281,10 +285,18 @@ describe('haplotype TR locus aggregation', () => {
 
     const grid = screen.getByLabelText('Deterministically haplotype-assigned motif structures')
     expect(grid).not.toBeNull()
-    expect(grid.textContent).toContain('Partial sequence view of exact ALT copies')
-    expect(grid.textContent).toContain('85 ambiguous unphased carrier rows were excluded')
+    expect(grid.textContent).toContain('Assigned motif structures')
+    expect(grid.textContent).toContain('Ambiguous unphased carrier rows excluded: 85')
+    expect(grid.textContent).not.toContain('partial assigned-copy view')
+    expect(grid.textContent).not.toContain('does not identify whether the ALT copy belongs')
     expect(screen.getByText('Assigned copies')).not.toBeNull()
+
+    fireEvent.click(screen.getByLabelText('About assigned motif structures'))
+    expect(screen.getByText(/partial assigned-copy view/)).not.toBeNull()
+    expect(screen.getByText(/does not identify whether the ALT copy belongs/)).not.toBeNull()
+    expect(screen.getByText(/this excludes 85 carrier rows/)).not.toBeNull()
+
     expect(screen.getByText('Allele length range: -2 to 3bp')).not.toBeNull()
-    expect(screen.getByText('Optional context: full-cohort repeat-count distributions')).not.toBeNull()
+    expect(screen.getByText('Full-cohort repeat-count distributions')).not.toBeNull()
   })
 })

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
+import HaplotypeHelpButton from './HelpButton'
 import type { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import type { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
@@ -104,6 +105,7 @@ export const fetchExpandedTrDistribution = (
 }
 
 const Disclosure = styled.details`
+  position: relative;
   overflow: hidden;
   width: 100%;
   min-width: 0;
@@ -129,6 +131,13 @@ const DisclosureSummary = styled.summary`
   strong {
     color: #333;
   }
+`
+
+const DisclosureHelp = styled.span`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
 `
 
 const ExpandedContent = styled.div`
@@ -163,6 +172,21 @@ const Message = styled.p`
 `
 
 const cohortLabel = (cohort: LongReadCohort) => (cohort === 'aou' ? 'All of Us' : 'HGSVC/HPRC')
+
+export const FullCohortRepeatCountHelp = ({ lrCohort }: { lrCohort: LongReadCohort }) => (
+  <>
+    <p style={{ marginTop: 0 }}>
+      These optional plots summarize aggregate repeat counts for all called {cohortLabel(lrCohort)}{' '}
+      alleles at this locus. The allele-size plot counts alleles; the genotype plot pairs the
+      shorter and longer called alleles where genotype data are available.
+    </p>
+    <p style={{ marginBottom: 0 }}>
+      They are full-cohort repeat-count distributions, not sequence-structure distributions. They do
+      not encode motif order, interruptions, or exact ALT sequences and must not be interpreted as
+      the cohort distribution of the assigned motif structures shown above.
+    </p>
+  </>
+)
 
 const ExpandedTrDistributionContent = ({
   variantId,
@@ -229,10 +253,7 @@ const ExpandedTrDistributionContent = ({
       {state.loading && <Message role="status">Loading full cohort STR distributions…</Message>}
       {state.error && <Message role="alert">{state.error}</Message>}
       {!state.loading && !state.error && !hasFullDistribution && (
-        <Message>
-          Full cohort STR distributions are unavailable for this cohort and locus. The
-          haplotype-only carrier distribution below remains as context.
-        </Message>
+        <Message>Full-cohort STR distributions are unavailable for this cohort and locus.</Message>
       )}
       {hasFullDistribution && (
         <PlotGrid>
@@ -276,15 +297,18 @@ const ExpandedTrDistributions = ({
 
   return (
     <Disclosure
-      aria-label="Optional full cohort repeat-count context"
+      aria-label="Full-cohort repeat-count distributions"
       onToggle={(event) => setIsOpen(event.currentTarget.open)}
     >
       <DisclosureSummary>
-        <strong>Optional context: full-cohort repeat-count distributions</strong>
-        {' — '}
-        Aggregate repeat counts for all called {cohortLabel(lrCohort)} alleles; excludes motif
-        order, interruptions, and exact ALT sequences.
+        <strong>Full-cohort repeat-count distributions</strong>
+        <span> (optional)</span>
       </DisclosureSummary>
+      <DisclosureHelp>
+        <HaplotypeHelpButton title="About full-cohort repeat-count distributions">
+          <FullCohortRepeatCountHelp lrCohort={lrCohort} />
+        </HaplotypeHelpButton>
+      </DisclosureHelp>
       {isOpen && <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />}
     </Disclosure>
   )
