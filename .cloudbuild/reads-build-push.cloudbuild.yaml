@@ -29,6 +29,7 @@ steps:
       ]
 options:
   dynamicSubstitutions: true
+  logging: CLOUD_LOGGING_ONLY
 substitutions:
   _BUILD_TAG: '${_BRANCH_FOR_IMAGE_NAME}-${BUILD_ID}'
 

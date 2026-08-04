@@ -22,3 +22,5 @@ steps:
       '--image',
       'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-browser:${_IMAGE_TAG}',
     ]
+options:
+  logging: CLOUD_LOGGING_ONLY
