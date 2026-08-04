@@ -198,6 +198,8 @@ describe('expanded TR full-cohort distributions', () => {
     expect(allelePlot.getAttribute('data-repeats')).toBe('13,14,18,19,20,21,22')
     expect(allelePlot.getAttribute('data-total')).toBe('591')
     expect(allelePlot.getAttribute('data-repeat-unit')).toBe('T')
+    expect(allelePlot.parentElement?.style.height).toBe('300px')
+    expect(genotypePlot.parentElement?.style.aspectRatio).toBe('1 / 1')
     expect(genotypePlot.getAttribute('data-genotypes')).toBe('13/19,14/20,19/21,20/22,21/21')
     expect(genotypePlot.getAttribute('data-total')).toBe('29')
     expect(genotypePlot.getAttribute('data-axis-labels')).toBe('longer T allele,shorter T allele')
@@ -236,7 +238,7 @@ describe('expanded TR full-cohort distributions', () => {
     expect(genotypePlot.getAttribute('data-genotypes')).toBe('14/20,21/21')
 
     expandRow()
-    expect(screen.queryByLabelText('Full cohort STR distributions')).toBeNull()
+    expect(screen.queryByLabelText('Optional full cohort repeat-count context')).toBeNull()
     expandRow()
     await screen.findByLabelText('full allele size distribution')
     expect(fetchMock).toHaveBeenCalledTimes(1)

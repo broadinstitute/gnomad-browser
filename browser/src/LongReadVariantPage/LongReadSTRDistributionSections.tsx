@@ -76,22 +76,27 @@ export const LongReadAlleleSizeDistributionSection = ({
       <Heading>
         Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
       </Heading>
-      <ShortTandemRepeatAlleleSizeDistributionPlot
-        maxRepeats={maxRepunits}
-        alleleSizeDistribution={consolidateAlleleSizeDistributions(
-          alleleSizeDistribution,
-          colorByFn,
-          selectedPopulation,
-          selectedSex,
-          selectedColorBy,
-          null,
-          null
-        )}
-        colorBy={selectedColorBy}
-        repeatUnitLength={null}
-        repeatUnit={repeatUnit}
-        scaleType={selectedScaleType}
-      />
+      {/* The responsive plot wrapper uses height: 100%. Give it an explicit
+          containing height so its SVG participates in document flow instead
+          of overlapping the controls and the next expanded-row section. */}
+      <div style={{ height: 300 }}>
+        <ShortTandemRepeatAlleleSizeDistributionPlot
+          maxRepeats={maxRepunits}
+          alleleSizeDistribution={consolidateAlleleSizeDistributions(
+            alleleSizeDistribution,
+            colorByFn,
+            selectedPopulation,
+            selectedSex,
+            selectedColorBy,
+            null,
+            null
+          )}
+          colorBy={selectedColorBy}
+          repeatUnitLength={null}
+          repeatUnit={repeatUnit}
+          scaleType={selectedScaleType}
+        />
+      </div>
       <ControlSection style={{ marginTop: '0.5em' }}>
         <ShortTandemRepeatPopulationOptions
           id={`${variantId}-repeat-counts`}
@@ -163,20 +168,22 @@ export const LongReadGenotypeDistributionSection = ({
       <Heading>
         Genotype Distribution <InfoButton topic="str-genotype-distribution" />
       </Heading>
-      <ShortTandemRepeatGenotypeDistributionPlot
-        axisLabels={
-          repeatUnit
-            ? [`longer ${repeatUnit} allele`, `shorter ${repeatUnit} allele`]
-            : ['longer allele', 'shorter allele']
-        }
-        maxRepeats={[maxLongAllele, maxShortAllele]}
-        genotypeDistribution={selectedDistribution}
-        xRanges={[]}
-        yRanges={[]}
-        onSelectBin={() => {}}
-        selectedPopulation={selectedPopulation}
-        selectedSex={selectedSex}
-      />
+      <div style={{ width: '100%', maxHeight: 500, aspectRatio: '1 / 1' }}>
+        <ShortTandemRepeatGenotypeDistributionPlot
+          axisLabels={
+            repeatUnit
+              ? [`longer ${repeatUnit} allele`, `shorter ${repeatUnit} allele`]
+              : ['longer allele', 'shorter allele']
+          }
+          maxRepeats={[maxLongAllele, maxShortAllele]}
+          genotypeDistribution={selectedDistribution}
+          xRanges={[]}
+          yRanges={[]}
+          onSelectBin={() => {}}
+          selectedPopulation={selectedPopulation}
+          selectedSex={selectedSex}
+        />
+      </div>
       <ControlSection style={{ marginTop: '0.5em' }}>
         <ShortTandemRepeatPopulationOptions
           id={`${variantId}-genotype-distribution`}

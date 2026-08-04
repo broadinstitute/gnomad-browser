@@ -34,6 +34,7 @@ describe('Y1 haplotype VCF identity query', () => {
       return Promise.resolve({
         json: async () => [{
           source_variant_id: 'chr22-100-A-G', alt_index: 1,
+          tr_id: null, tr_motifs: null, tr_struc: null,
           carriers: [['sample-1', 1, 'ps-1'], ['sample-1', 2, null]],
         }],
       })
@@ -58,5 +59,29 @@ describe('Y1 haplotype VCF identity query', () => {
       { position: 100, ref: 'A', alt: 'G', sample_id: 'sample-1', vcf_strand: 1, phase_set: 'ps-1' },
       { position: 100, ref: 'A', alt: 'G', sample_id: 'sample-1', vcf_strand: 2, phase_set: null },
     ])
+  })
+
+  test('LEFT JOINs pre-aggregated optional motif metadata without filtering variants', async () => {
+    const result = await fetchY1HaplotypeRows('chr22', 1, 200, 'run-1')
+    const variantQuery = mockQuery.mock.calls
+      .map(([call]: any[]) => call.query as string)
+      .find((query) => query.includes('groupUniqArray(tuple'))!
+
+    expect(variantQuery).toContain('LEFT JOIN (')
+    expect(variantQuery).toContain('FROM lr_y1_summaries')
+    expect(variantQuery).toContain("JSONExtractString(source_info_json, 'MOTIFS')")
+    expect(variantQuery).toContain(
+      'GROUP BY run_id, release, cohort, reference_genome, chrom, position, source_variant_id'
+    )
+    expect(variantQuery).toContain('a.run_id = s.run_id')
+    expect(variantQuery).toContain('a.reference_genome = s.reference_genome')
+    expect(variantQuery).not.toContain('INNER JOIN lr_y1_summaries')
+    expect(result.variants).toHaveLength(1)
+    expect(result.variants[0]).toMatchObject({
+      variant_id: 'chr22-100-A-G~1',
+      tr_id: null,
+      tr_motifs: null,
+      tr_struc: null,
+    })
   })
 })

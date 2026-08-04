@@ -189,10 +189,11 @@ const ExpandedTrDistributions = ({
   const repeatUnit = motifs.join(', ')
 
   return (
-    <Panel aria-label="Full cohort STR distributions">
-      <h3 style={{ margin: 0 }}>Full cohort STR distributions</h3>
+    <Panel aria-label="Optional full cohort repeat-count context">
+      <h3 style={{ margin: 0 }}>Optional context: full-cohort repeat-count distributions</h3>
       <Message>
-        All called {cohortLabel(lrCohort)} alleles at this locus, loaded when this row was expanded.
+        Aggregate repeat counts for all called {cohortLabel(lrCohort)} alleles at this locus.
+        These plots do not encode motif order, interruptions, or exact ALT sequences.
         {motifs.length ? ` Repeat motif: ${repeatUnit}.` : ''}
       </Message>
       {state.loading && <Message role="status">Loading full cohort STR distributions…</Message>}

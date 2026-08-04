@@ -177,6 +177,39 @@ describe('VCF carrier identity', () => {
     })
   })
 
+  test('keeps carrier-resolved exact TR ALTs in default diploid mode with phase metadata', () => {
+    const trVariant = {
+      ...haplotypeVariant('chr22-100-TRV-1~1', 100, 0.5),
+      ref: 'AAAA',
+      alt: 'AAAA',
+      allele_type: 'trv',
+      tr_motifs: 'A',
+    }
+    const result = computeHaplotypeView(
+      [trVariant] as any,
+      { 'sample:with-colon:1': [0], 'sample:with-colon:2': [0] },
+      0,
+      'diplotype_frequency',
+      false,
+      0,
+      {
+        'sample:with-colon:1': { 100: 'AAAAAA' },
+        'sample:with-colon:2': { 100: 'AA' },
+      },
+      true,
+      'auto',
+      1_000,
+      carrierMetadata
+    )
+    const sample = (result.groups[0] as DiplotypeGroup).samples[0]
+
+    expect(sample.haplotypeA?.variants[0].alt).toBe('AAAAAA')
+    expect(sample.haplotypeB?.variants[0].alt).toBe('AA')
+    expect(sample.phase_set_mapping).toEqual({ phaseSetA: 'ps-1', phaseSetB: 'ps-2' })
+    expect(result.phase_set_sidecar.by_carrier['sample:with-colon:1'].phase_set).toBe('ps-1')
+    expect(result.phase_set_sidecar.by_carrier['sample:with-colon:2'].phase_set).toBe('ps-2')
+  })
+
   test('keeps known VCF strands when every variant is below the AF threshold', () => {
     const diplotypes = groupDiplotypes(
       variants as any, carrierIndices, 1, carrierMetadata

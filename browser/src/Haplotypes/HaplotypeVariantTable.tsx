@@ -397,8 +397,9 @@ const AlleleStructureHelp = () => (
   <>
     <h4 style={{ marginTop: 0 }}>Overview</h4>
     <p>
-      The motif structure grid shows how each distinct tandem repeat allele is composed
-      at the sequence level. Each row is a unique allele structure observed in the cohort.
+      The motif structure grid shows how each exact tandem repeat ALT copy that can be
+      assigned deterministically to a haplotype is composed at the sequence level. It is
+      a partial assigned-copy view, not a full-cohort sequence-structure distribution.
     </p>
 
     <h4>Reading the Grid</h4>
@@ -408,7 +409,7 @@ const AlleleStructureHelp = () => (
       <li><strong>Block width</strong> is proportional to the nucleotide length of each unit.</li>
       <li><strong>Units</strong> — total number of motif repeat units in the allele.</li>
       <li><strong>Interruptions</strong> — count of interruption segments and their total base length.</li>
-      <li><strong>Haplotypes</strong> — number of haplotypes carrying this exact allele structure, with population-colored bar. Percentages are relative to total haplotypes (each diploid sample contributes two).</li>
+      <li><strong>Assigned copies</strong> — deterministically haplotype-assigned ALT copies with this exact structure, with a population-colored bar. Percentages use only the exact assigned copies displayed in this grid.</li>
     </ul>
 
     <h4>Purity Heatmap (Large Expansions)</h4>
@@ -472,7 +473,8 @@ const AlleleStructureGrid = ({
   const maxCarriers = Math.max(...structures.map((s) => s.totalCarriers), 1)
 
   return (
-    <div style={{ marginTop: 8 }}>
+    <div style={{ marginTop: 8, maxWidth: '100%', overflowX: 'auto' }}>
+      <div style={{ minWidth: STRUCTURE_MAX_GRID_WIDTH + 300 }}>
       {/* Motif legend */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 6, fontSize: 11 }}>
         {motifs.map((motif, i) => (
@@ -525,7 +527,7 @@ const AlleleStructureGrid = ({
         <span style={{ width: STRUCTURE_MAX_GRID_WIDTH, flexShrink: 0 }}>Motif Structure</span>
         <span style={{ width: 40, textAlign: 'right' }}>Units</span>
         <span style={{ width: 80, textAlign: 'right' }}>Interruptions</span>
-        <span style={{ width: 120 }}>Haplotypes</span>
+        <span style={{ width: 120 }}>Assigned copies</span>
         <button
           onClick={() => setExpandAllSeqs(!expandAllSeqs)}
           style={{
@@ -577,6 +579,7 @@ const AlleleStructureGrid = ({
           {showAll ? 'Show fewer' : `Show ${hiddenCount} more rare alleles`}
         </button>
       )}
+      </div>
     </div>
   )
 }
@@ -1026,6 +1029,7 @@ type TableRowProps = {
   totalGroups: number
   totalClusters: number
   totalSamples: number
+  ambiguousUnphasedRows: number
   isClusteredView: boolean
   highlightedPosition: number | null
   variantDict: Map<string, any>
@@ -1044,6 +1048,7 @@ const TableRow = React.memo(function TableRow({
   totalGroups,
   totalClusters,
   totalSamples,
+  ambiguousUnphasedRows,
   isClusteredView,
   highlightedPosition,
   variantDict,
@@ -1156,6 +1161,45 @@ const TableRow = React.memo(function TableRow({
       {isExpanded && (
         <TrExpandedRow>
           <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
+            {/* Primary sequence-level view: exact assigned ALT copies only. */}
+            {mode === 'haplotype' && v.tr_motifs && (v.tr_allele_structures || v._trRawSequences) && (() => {
+              const decomposed = v.tr_allele_structures
+                ? { structures: v.tr_allele_structures, flankPrefix: v.tr_flank_prefix || '', flankSuffix: v.tr_flank_suffix || '' }
+                : lazyDecomposeTr(v)
+              if (!decomposed || decomposed.structures.length === 0) return null
+              return (
+                <section
+                  aria-label="Deterministically haplotype-assigned motif structures"
+                  style={{
+                    marginBottom: 14,
+                    padding: '10px 12px',
+                    border: '2px solid #9c7a25',
+                    borderRadius: 4,
+                    background: '#fff',
+                    whiteSpace: 'normal',
+                  }}
+                >
+                  <h3 style={{ margin: 0 }}>Deterministically haplotype-assigned motif structures</h3>
+                  <p style={{ margin: '6px 0', maxWidth: 900, fontSize: 12, color: '#555' }}>
+                    Partial sequence view of exact ALT copies for phased, haploid, or unphased
+                    homozygous-ALT calls. It is not a full-cohort sequence-structure distribution.
+                  </p>
+                  {ambiguousUnphasedRows > 0 && (
+                    <p style={{ margin: '0 0 6px', fontSize: 12, color: '#8a4b08' }}>
+                      Across the loaded region, {ambiguousUnphasedRows.toLocaleString()} ambiguous
+                      unphased carrier {ambiguousUnphasedRows === 1 ? 'row was' : 'rows were'} excluded
+                      because no deterministic haplotype assignment was possible.
+                    </p>
+                  )}
+                  <AlleleStructureGrid
+                    structures={decomposed.structures}
+                    motifs={v.tr_motifs!.split(',').map((m: string) => m.trim())}
+                    flankPrefix={decomposed.flankPrefix}
+                    flankSuffix={decomposed.flankSuffix}
+                  />
+                </section>
+              )
+            })()}
             <ExpandedTrDistributions
               variantId={v.variant_id}
               lrCohort={v.lr_cohort || lrCohort}
@@ -1249,21 +1293,6 @@ const TableRow = React.memo(function TableRow({
                 )}
               </div>
             </div>
-            {/* Allele structure grid (FMR1-style motif visualization) — lazy decomposed */}
-            {mode === 'haplotype' && v.tr_motifs && (v.tr_allele_structures || v._trRawSequences) && (() => {
-              const decomposed = v.tr_allele_structures
-                ? { structures: v.tr_allele_structures, flankPrefix: v.tr_flank_prefix || '', flankSuffix: v.tr_flank_suffix || '' }
-                : lazyDecomposeTr(v)
-              if (!decomposed || decomposed.structures.length === 0) return null
-              return (
-                <AlleleStructureGrid
-                  structures={decomposed.structures}
-                  motifs={v.tr_motifs!.split(',').map((m: string) => m.trim())}
-                  flankPrefix={decomposed.flankPrefix}
-                  flankSuffix={decomposed.flankSuffix}
-                />
-              )
-            })()}
           </td>
         </TrExpandedRow>
       )}
@@ -1282,6 +1311,7 @@ type HaplotypeVariantTableProps = {
   haplotypeGroups?: { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }
   sampleMetadata?: SampleMetadataMap
   totalGroups?: number
+  ambiguousUnphasedRows?: number
   onHoverVariant?: (position: number | null) => void
   onVisibleVariantChange?: (pos: number) => void
   onFilteredVariantsChange?: (variantIds: Set<string>) => void
@@ -1312,6 +1342,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   summaryVariants = EMPTY_VARIANTS,
   haplotypeGroups = EMPTY_HAPLOTYPE_GROUPS,
   sampleMetadata = EMPTY_SAMPLE_METADATA,
+  ambiguousUnphasedRows = 0,
   onHoverVariant,
   onVisibleVariantChange,
   onFilteredVariantsChange,
@@ -1569,24 +1600,22 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
       if (isDiplotype) {
         for (const sample of dg.samples) {
-          ;(dg.haplotypeA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
-          ;(dg.haplotypeB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
-          ;(dg.below_thresholdA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
-          ;(dg.below_thresholdB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
+          // Canonical group variants define the diplotype signature; optional
+          // sample sets retain each carrier's exact TR ALT from the sidecar.
+          ;(sample.haplotypeA?.variants || dg.haplotypeA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
+          ;(sample.haplotypeB?.variants || dg.haplotypeB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
+          ;(sample.below_thresholdA?.variants || dg.below_thresholdA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
+          ;(sample.below_thresholdB?.variants || dg.below_thresholdB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
         }
       } else {
         // Above-threshold sample variant_sets contain the carrier-specific TR
         // ALT substituted by inflateGroups; group.variants only has a representative ALT.
         for (const sample of group.samples) {
           const sampleVariants = sample.variant_sets?.flatMap((set: any) => set.variants || []) || group.variants.variants
-          sampleVariants.forEach((v: any) => recordCarrier(v, sample.sample_id))
+          sampleVariants.forEach((v: any) => recordCarrier(v, sample.sample_id, String(sample.vcf_strand)))
         }
-        for (const v of group.below_threshold?.variants || []) {
-          const sampleIds = v.in_samples?.length
-            ? v.in_samples
-            : group.samples.map((sample) => sample.sample_id)
-          sampleIds.forEach((sampleId: string) => recordCarrier(v, sampleId))
-        }
+        // Below-threshold non-diploid rows are group representatives and do not
+        // retain per-carrier ALT bytes. Do not present them as exact structures.
       }
     }
 
@@ -2044,6 +2073,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         totalGroups={totalGroups}
                         totalClusters={totalClusters}
                         totalSamples={totalSamples}
+                        ambiguousUnphasedRows={ambiguousUnphasedRows}
                         isClusteredView={isClusteredView}
                         highlightedPosition={highlightedPosition}
                         variantDict={variantDict}

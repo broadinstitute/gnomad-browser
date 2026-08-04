@@ -1591,6 +1591,7 @@ const LongReadUnifiedView = ({
                   summaryVariants={zoomedVariants}
                   haplotypeGroups={haplotypeGroups as { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }}
                   sampleMetadata={sampleMetadata}
+                  ambiguousUnphasedRows={ambiguousUnphasedRows}
                   onHoverVariant={setHoveredVariantPosition}
                   onVisibleVariantChange={handleVisibleVariantChange}
                   onFilteredVariantsChange={handleFilteredVariantsChange}

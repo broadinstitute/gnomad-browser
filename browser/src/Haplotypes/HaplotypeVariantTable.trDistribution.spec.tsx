@@ -235,5 +235,56 @@ describe('haplotype TR locus aggregation', () => {
     expect(screen.getByText('Allele length range: -2 to 1bp')).not.toBeNull()
     expect(screen.getByText('Distinct allele lengths: 4')).not.toBeNull()
     expect(screen.getByText('Total carriers: 3')).not.toBeNull()
+    expect(screen.queryByLabelText('Deterministically haplotype-assigned motif structures')).toBeNull()
+    expect(screen.getByText('Optional context: full-cohort repeat-count distributions')).not.toBeNull()
+  })
+
+  test('prioritizes the partial motif grid and uses carrier-resolved Diploid ALT copies', () => {
+    const canonical = { ...haplotypeTr(1, 0), tr_motifs: 'A' }
+    const personalized = (alt: string) => ({
+      ...canonical,
+      alt,
+      allele_length: alt.length - canonical.ref.length,
+    })
+    const group: any = {
+      is_diplotype: true,
+      hash: 1,
+      start: canonical.pos,
+      stop: canonical.end,
+      samples: [{
+        sample_id: 'sample-1',
+        strand_mapping: { strandA: 1, strandB: 2 },
+        phase_set_mapping: { phaseSetA: 'ps-a', phaseSetB: 'ps-b' },
+        haplotypeA: { readable_id: '', variants: [personalized('A')] },
+        haplotypeB: { readable_id: '', variants: [personalized('AAAAAA')] },
+        below_thresholdA: { readable_id: '', variants: [] },
+        below_thresholdB: { readable_id: '', variants: [] },
+      }],
+      haplotypeA: { readable_id: '', variants: [canonical] },
+      haplotypeB: { readable_id: '', variants: [canonical] },
+      below_thresholdA: { readable_id: '', variants: [] },
+      below_thresholdB: { readable_id: '', variants: [] },
+      roh_fraction: 1,
+      is_roh: true,
+      compound_het_pairs: [],
+      is_compound_het: false,
+    }
+
+    render(
+      <HaplotypeVariantTable
+        mode="haplotype"
+        haplotypeGroups={{ groups: [group] }}
+        ambiguousUnphasedRows={85}
+      />
+    )
+    fireEvent.click(screen.getByText('chr22-22854926-TRV-105TR-2..1bp').closest('tr')!)
+
+    const grid = screen.getByLabelText('Deterministically haplotype-assigned motif structures')
+    expect(grid).not.toBeNull()
+    expect(grid.textContent).toContain('Partial sequence view of exact ALT copies')
+    expect(grid.textContent).toContain('85 ambiguous unphased carrier rows were excluded')
+    expect(screen.getByText('Assigned copies')).not.toBeNull()
+    expect(screen.getByText('Allele length range: -2 to 3bp')).not.toBeNull()
+    expect(screen.getByText('Optional context: full-cohort repeat-count distributions')).not.toBeNull()
   })
 })

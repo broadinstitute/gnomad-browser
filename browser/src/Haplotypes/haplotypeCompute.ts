@@ -23,6 +23,12 @@ export type DiplotypeSample = {
   // Actual one-based VCF GT positions, not canonical diplotype slots.
   strand_mapping: { strandA: number | null; strandB: number | null }
   phase_set_mapping: { phaseSetA: string | null; phaseSetB: string | null }
+  // Group-level sets define the canonical diplotype signature. These optional
+  // sample sets retain carrier-resolved exact TR ALT copies for sequence views.
+  haplotypeA?: DiplotypeVariantSet
+  haplotypeB?: DiplotypeVariantSet
+  below_thresholdA?: DiplotypeVariantSet
+  below_thresholdB?: DiplotypeVariantSet
 }
 
 export type DiplotypeGroup = {
@@ -944,7 +950,8 @@ export function groupDiplotypes(
   variants: LRVariant[],
   carrierVariantIndices: Record<string, number[]>,
   minAf: number,
-  carrierMetadata: CarrierMetadata = {}
+  carrierMetadata: CarrierMetadata = {},
+  trvAlts: Record<string, Record<number, string>> | undefined = undefined
 ): DiplotypeGroup[] {
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
@@ -952,12 +959,17 @@ export function groupDiplotypes(
     if (variants[i].freq.af >= minAf) passingIndices.add(i)
   }
 
-  type CarrierStrand = HaplotypeCarrierIdentity & { indices: number[]; below: number[] }
+  type CarrierStrand = HaplotypeCarrierIdentity & {
+    carrierId: string
+    indices: number[]
+    below: number[]
+  }
   const sampleStrands = new Map<string, CarrierStrand[]>()
   for (const [carrierId, variantIdxs] of Object.entries(carrierVariantIndices)) {
     const identity = identityForCarrier(carrierId, carrierMetadata)
     const strand = {
       ...identity,
+      carrierId,
       indices: variantIdxs.filter((i) => passingIndices.has(i)),
       below: variantIdxs.filter((i) => !passingIndices.has(i)),
     }
@@ -994,6 +1006,16 @@ export function groupDiplotypes(
       .sort()
       .join(';')
 
+  const carrierVariants = (indices: number[], carrierId: string | undefined): LRVariant[] => {
+    const positionAlts = carrierId ? trvAlts?.[carrierId] : undefined
+    return indices.map((i) => {
+      const variant = variants[i]
+      if (variant.allele_type !== 'trv' || !positionAlts) return variant
+      const carrierAlt = positionAlts[variant.pos]
+      return carrierAlt && carrierAlt !== variant.alt ? { ...variant, alt: carrierAlt } : variant
+    })
+  }
+
   for (const [sampleId, strands] of sampleStrands) {
     const first = strands[0]
     const second = strands[1]
@@ -1008,6 +1030,8 @@ export function groupDiplotypes(
     let indicesA: number[], indicesB: number[]
     let strandA: number | null, strandB: number | null
     let phaseSetA: string | null, phaseSetB: string | null
+    let carrierIdA: string | undefined
+    let carrierIdB: string | undefined
     let belowA: number[], belowB: number[]
 
     if (sigFirst <= sigSecond) {
@@ -1019,6 +1043,8 @@ export function groupDiplotypes(
       strandB = second?.vcf_strand ?? null
       phaseSetA = first.phase_set
       phaseSetB = second?.phase_set ?? null
+      carrierIdA = first.carrierId
+      carrierIdB = second?.carrierId
       belowA = first.below
       belowB = second?.below || []
     } else {
@@ -1030,28 +1056,32 @@ export function groupDiplotypes(
       strandB = first.vcf_strand
       phaseSetA = second?.phase_set ?? null
       phaseSetB = first.phase_set
+      carrierIdA = second?.carrierId
+      carrierIdB = first.carrierId
       belowA = second?.below || []
       belowB = first.below
+    }
+
+    const sample: DiplotypeSample = {
+      sample_id: sampleId,
+      strand_mapping: { strandA, strandB },
+      phase_set_mapping: { phaseSetA, phaseSetB },
+      ...(trvAlts ? {
+        haplotypeA: { variants: carrierVariants(indicesA, carrierIdA), readable_id: canonSigA },
+        haplotypeB: { variants: carrierVariants(indicesB, carrierIdB), readable_id: canonSigB },
+        below_thresholdA: { variants: carrierVariants(belowA, carrierIdA), readable_id: '' },
+        below_thresholdB: { variants: carrierVariants(belowB, carrierIdB), readable_id: '' },
+      } : {}),
     }
 
     const combinedSig = `${canonSigA}||${canonSigB}`
     const existing = sigToGroup.get(combinedSig)
 
     if (existing) {
-      existing.samples.push({
-        sample_id: sampleId,
-        strand_mapping: { strandA, strandB },
-        phase_set_mapping: { phaseSetA, phaseSetB },
-      })
+      existing.samples.push(sample)
     } else {
       sigToGroup.set(combinedSig, {
-        samples: [
-          {
-            sample_id: sampleId,
-            strand_mapping: { strandA, strandB },
-            phase_set_mapping: { phaseSetA, phaseSetB },
-          },
-        ],
+        samples: [sample],
         indicesA,
         indicesB,
         belowA,
@@ -1160,7 +1190,9 @@ export function computeHaplotypeView(
 ): ComputedHaplotypeData {
   const phase_set_sidecar = phaseSetSidecarFor(variants, carrierMetadata)
   if (isDiploidView) {
-    const diplotypes = groupDiplotypes(variants, carrierVariantIndices, minAf, carrierMetadata)
+    const diplotypes = groupDiplotypes(
+      variants, carrierVariantIndices, minAf, carrierMetadata, trvAlts
+    )
     const sorted = sortDiplotypes(diplotypes, sortBy)
     return { groups: sorted, phase_set_sidecar }
   }
