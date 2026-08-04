@@ -8,12 +8,14 @@ port_output="$(
     LR_Y1_CLICKHOUSE_URL=http://inherited-legacy.example:8123 \
     LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_wrong_database \
     CLICKHOUSE_URL=http://generic-legacy.example:8123 \
-    "$ROOT_DIR/start_lr_dev.sh" --gcp-clickhouse --y1-clickhouse-port 9134
+    "$ROOT_DIR/start_lr_dev.sh" --gcp-clickhouse --y1-clickhouse-port 9134 \
+      --y1-clickhouse-vm gnomad-lr-y1-full-genome-clickhouse
 )"
 grep -q '^mode=y1$' <<<"$port_output"
 grep -q '^LR_Y1_ENABLED=true$' <<<"$port_output"
 grep -q '^LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:9134$' <<<"$port_output"
 grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_wrong_database$' <<<"$port_output"
+grep -q '^LR_Y1_GCP_CH_VM=gnomad-lr-y1-full-genome-clickhouse$' <<<"$port_output"
 if grep -Eq 'inherited-legacy|CHR22_MIXED|RUN_ID|published|candidate|accepted.*r2' <<<"$port_output"; then
     echo "inherited or obsolete Y1 configuration leaked into launcher output" >&2
     exit 1
@@ -53,6 +55,12 @@ fi
 
 if LR_DEV_DRY_RUN=1 "$ROOT_DIR/start_lr_dev.sh" --y1-clickhouse-port invalid >/dev/null 2>&1; then
     echo "invalid port was accepted" >&2
+    exit 1
+fi
+
+if LR_DEV_DRY_RUN=1 "$ROOT_DIR/start_lr_dev.sh" \
+    --y1-clickhouse-vm gnomad-lr-y1-full-genome-clickhouse >/dev/null 2>&1; then
+    echo "explicit GCP instance without --gcp-clickhouse was accepted" >&2
     exit 1
 fi
 

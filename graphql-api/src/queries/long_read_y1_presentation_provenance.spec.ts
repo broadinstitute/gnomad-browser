@@ -29,6 +29,8 @@ const manifestFor = (cohort: string, chrom: string, run_id: string) => ({
   chrom,
   run_id,
   manifest_sha256: 'a'.repeat(64),
+  primary_load_mode: 'standard',
+  carrier_loading_status: 'available',
   source,
   tasks: [
     { task_id: `${run_id}-task-1`, start: 1, stop: 100 },
@@ -145,6 +147,7 @@ type FixtureOptions = {
   duplicateBounds?: boolean
   wrongGeneration?: boolean
   failedThenAccepted?: boolean
+  emptyRunLedger?: boolean
 }
 
 const installFixture = (options: FixtureOptions = {}) => {
@@ -158,7 +161,7 @@ const installFixture = (options: FixtureOptions = {}) => {
       })
     }
     if (query.includes('FROM lr_y1_load_runs AS ledger')) {
-      return Promise.resolve({ json: async () => runs })
+      return Promise.resolve({ json: async () => (options.emptyRunLedger ? [] : runs) })
     }
     if (query.includes('FROM lr_y1_task_attempts')) {
       const runId = String(query_params.runId)
@@ -167,7 +170,10 @@ const installFixture = (options: FixtureOptions = {}) => {
         const taskId = options.substituteTask && index === 1 ? `${runId}-substitute` : task.task_id
         const start = options.duplicateBounds && index === 1 ? 1 : task.start
         const stop = options.duplicateBounds && index === 1 ? 100 : task.stop
-        const carriers = runId.startsWith('hgsvc') ? [6, 7][index] : 0
+        const carriers =
+          runId.startsWith('hgsvc') && manifest.carrier_loading_status !== 'unavailable_not_loaded'
+            ? [6, 7][index]
+            : 0
         const ledgerCounts = {
           source_records: index + 30,
           summaries: index === 0 ? 5 : 6,
@@ -248,7 +254,14 @@ const installFixture = (options: FixtureOptions = {}) => {
       })
     }
     if (query.includes('FROM lr_y1_carriers WHERE run_id')) {
-      const carriers = String(query_params.runId).startsWith('hgsvc') ? 13 : 0
+      const manifest = [...configuredManifests.values()].find(
+        (entry) => entry.run_id === String(query_params.runId)
+      )!
+      const carriers =
+        manifest.cohort === 'hgsvc_hprc' &&
+        manifest.carrier_loading_status !== 'unavailable_not_loaded'
+          ? 13
+          : 0
       return Promise.resolve({ json: async () => [{ total: carriers, exact: carriers }] })
     }
     throw new Error(`Unexpected query: ${query}`)
@@ -267,6 +280,25 @@ describe('Y1 checked-manifest presentation routing', () => {
     expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr2'))?.run_id).toBe('hgsvc-chr2')
     expect((await getY1SourceSnapshot('aou', 'chr1'))?.run_id).toBe('aou-chr1')
     expect(await getY1SourceSnapshot('aou', 'chr2')).toBeNull()
+  })
+
+  test('admits an unfinalized presentation campaign from exact terminal task attempts', async () => {
+    installFixture({ emptyRunLedger: true })
+    await expect(preflightY1AcceptedSources()).resolves.toBeUndefined()
+  })
+
+  test('marks exact aggregate-only HGSVC chromosomes carrier-unavailable', async () => {
+    const manifest = configuredManifests.get('hgsvc_hprc\u0000chr2')! as any
+    manifest.primary_load_mode = 'aggregate_only_no_carriers'
+    manifest.carrier_loading_status = 'unavailable_not_loaded'
+    try {
+      installFixture({ emptyRunLedger: true })
+      await preflightY1AcceptedSources()
+      expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr2'))?.carriers_available).toBe(false)
+    } finally {
+      delete manifest.primary_load_mode
+      delete manifest.carrier_loading_status
+    }
   })
 
   test('accepts a failed attempt followed by one exact accepted attempt', async () => {

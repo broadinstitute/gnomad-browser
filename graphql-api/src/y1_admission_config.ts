@@ -12,6 +12,8 @@ export type Y1PrimaryManifest = {
   chrom: string
   run_id: string
   manifest_sha256: string
+  primary_load_mode: 'standard' | 'aggregate_only_no_carriers'
+  carrier_loading_status: 'available' | 'unavailable_not_loaded'
   source: {
     source_uri: string
     source_generation: string
@@ -41,7 +43,8 @@ export type Y1AncillaryReceipt = {
   run_id: string
   cohort: Y1Cohort
   modality: Y1AncillaryModality
-  job_uuid: string
+  source_format: 'presentation' | 'sample_total_completion'
+  job_uuid: string | null
   receipts: {
     expected: number
     accepted: number
@@ -170,7 +173,30 @@ const parseSource = (value: unknown, label: string): Y1PrimaryManifest['source']
 const parsePrimaryManifest = (value: unknown, index: number): Y1PrimaryManifest => {
   const label = `primary manifest entry ${index}`
   const entry = object(value, label)
-  exactKeys(entry, ['cohort', 'chrom', 'run_id', 'manifest_sha256', 'source', 'tasks'], label)
+  exactKeys(
+    entry,
+    [
+      'cohort',
+      'chrom',
+      'run_id',
+      'manifest_sha256',
+      'source',
+      'tasks',
+      ...(entry.primary_load_mode === undefined && entry.carrier_loading_status === undefined
+        ? []
+        : ['primary_load_mode', 'carrier_loading_status']),
+    ],
+    label
+  )
+  const aggregateOnly =
+    entry.primary_load_mode === 'aggregate_only_no_carriers' &&
+    entry.carrier_loading_status === 'unavailable_not_loaded'
+  if (
+    !aggregateOnly &&
+    (entry.primary_load_mode !== undefined || entry.carrier_loading_status !== undefined)
+  ) {
+    throw new Error(`${label} has invalid aggregate-only carrier availability fields`)
+  }
   const cohort = string(entry.cohort, `${label}.cohort`)
   if (cohort !== 'hgsvc_hprc' && cohort !== 'aou') throw new Error(`${label} has invalid cohort`)
   const chrom = string(entry.chrom, `${label}.chrom`)
@@ -217,6 +243,8 @@ const parsePrimaryManifest = (value: unknown, index: number): Y1PrimaryManifest 
     chrom,
     run_id: string(entry.run_id, `${label}.run_id`),
     manifest_sha256: hash,
+    primary_load_mode: aggregateOnly ? 'aggregate_only_no_carriers' : 'standard',
+    carrier_loading_status: aggregateOnly ? 'unavailable_not_loaded' : 'available',
     source,
     tasks,
   }
@@ -318,6 +346,87 @@ export const readY1AncillaryReceipt = (
 ): Y1AncillaryReceipt => {
   const label = `ancillary receipt ${expected.modality}/${expected.cohort}`
   const receipt = object(readJson(path, label), label)
+  if (expected.modality === 'methylation' && receipt.status === 'validated_success') {
+    exactKeys(
+      receipt,
+      [
+        'status',
+        'completed_at',
+        'database',
+        'writer',
+        'writer_remained_fenced_and_revoked',
+        'jobs',
+        'tasks',
+        'accepted',
+        'failed_attempts',
+        'receipt_items_processed',
+        'detail_rows',
+        'summary_rows',
+        'summary_num_samples_sum',
+        'summary_keys_unique',
+        'availability_rows',
+        'availability_complete',
+        'availability_partial',
+        'availability_source_marked_skip',
+        'availability_no_source',
+        'unavailable_detail_rows',
+        'cohort_rows',
+        'planning_envelope_used',
+        'authoritative_count_source',
+      ],
+      label
+    )
+    const tasks = integer(receipt.tasks, `${label}.tasks`, 1)
+    const accepted = integer(receipt.accepted, `${label}.accepted`, 1)
+    const detailRows = integer(receipt.detail_rows, `${label}.detail_rows`, 1)
+    const summaryRows = integer(receipt.summary_rows, `${label}.summary_rows`, 1)
+    const rosterRows = integer(receipt.availability_rows, `${label}.availability_rows`, 1)
+    const complete = integer(receipt.availability_complete, `${label}.availability_complete`)
+    const partial = integer(receipt.availability_partial, `${label}.availability_partial`)
+    const sourceSkipped = integer(
+      receipt.availability_source_marked_skip,
+      `${label}.availability_source_marked_skip`
+    )
+    const noSource = integer(receipt.availability_no_source, `${label}.availability_no_source`)
+    if (
+      receipt.database !== expected.database ||
+      receipt.writer_remained_fenced_and_revoked !== true ||
+      receipt.summary_keys_unique !== true ||
+      tasks !== accepted ||
+      integer(receipt.failed_attempts, `${label}.failed_attempts`) !== 0 ||
+      integer(receipt.receipt_items_processed, `${label}.receipt_items_processed`, 1) !==
+        detailRows ||
+      integer(receipt.summary_num_samples_sum, `${label}.summary_num_samples_sum`, 1) !==
+        detailRows ||
+      complete + partial + sourceSkipped + noSource !== rosterRows ||
+      integer(receipt.unavailable_detail_rows, `${label}.unavailable_detail_rows`) !== 0 ||
+      integer(receipt.cohort_rows, `${label}.cohort_rows`) !== 2
+    ) {
+      throw new Error(`${label} does not declare a complete fenced sample-total product`)
+    }
+    return {
+      schema_version: 1,
+      status: 'completed',
+      database: expected.database,
+      run_id: expected.run_id,
+      cohort: expected.cohort,
+      modality: expected.modality,
+      source_format: 'sample_total_completion',
+      job_uuid: null,
+      receipts: { expected: tasks, accepted, failed_attempts: 0, rejects: 0 },
+      reconciliation: {
+        roster_rows: rosterRows,
+        included_samples: complete + partial,
+        detail_rows: detailRows,
+        summary_rows: summaryRows,
+        availability_rows: rosterRows,
+        availability_complete: complete,
+        availability_partial: partial,
+        availability_source_marked_skip: sourceSkipped,
+        availability_no_source: noSource,
+      },
+    }
+  }
   exactKeys(
     receipt,
     [
@@ -502,6 +611,7 @@ export const readY1AncillaryReceipt = (
     run_id: expected.run_id,
     cohort: expected.cohort,
     modality: expected.modality,
+    source_format: 'presentation',
     job_uuid: jobUuid,
     receipts,
     reconciliation,

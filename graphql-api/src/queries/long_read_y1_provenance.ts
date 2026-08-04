@@ -5,7 +5,7 @@ import {
   y1PrimaryManifests,
   y1PrimaryRunMap,
 } from '../clickhouse'
-import type { Y1PrimaryManifest } from '../y1_admission_config'
+import { canonicalY1ContigLengths, type Y1PrimaryManifest } from '../y1_admission_config'
 import type { LongReadCohort } from './long_read_y1_variants'
 
 // The current finalizer name lives in one place so a backend rename to
@@ -22,9 +22,13 @@ export type Y1SourceSnapshot = {
   run_id: string
   state: typeof ACCEPTED_Y1_RUN_STATE | 'accepted_tasks'
   metadata_run_id: string | null
+  carriers_available: boolean
 }
 
-type RunRow = Omit<Y1SourceSnapshot, 'database' | 'metadata_run_id' | 'state'> & {
+type RunRow = Omit<
+  Y1SourceSnapshot,
+  'database' | 'metadata_run_id' | 'state' | 'carriers_available'
+> & {
   state: string
   interval_start: number
   interval_end: number
@@ -499,7 +503,12 @@ const requireAcceptedTaskReceipts = async (
   if (counts.summaries <= 0 || counts.alleles <= 0 || counts.frequencies <= 0) {
     throw new Error(`Y1 presentation run ${run.run_id} has empty accepted primary receipts`)
   }
-  if (run.cohort === 'aou' ? counts.carriers !== 0 : counts.carriers <= 0) {
+  const carriersExpected = manifest.carrier_loading_status !== 'unavailable_not_loaded'
+  if (
+    (counts.carriers !== 0 && !carriersExpected) ||
+    (counts.carriers <= 0 && carriersExpected && run.cohort === 'hgsvc_hprc') ||
+    (counts.carriers !== 0 && run.cohort === 'aou')
+  ) {
     throw new Error(`Y1 presentation run ${run.run_id} has invalid accepted carrier receipts`)
   }
   return counts
@@ -507,12 +516,37 @@ const requireAcceptedTaskReceipts = async (
 
 const configuredRuns = async (runRows: RunRow[]) => {
   if (!y1PrimaryRunMap) return null
+  if (!y1PrimaryManifests) {
+    throw new Error('Configured Y1 presentation routing has no checked manifest bundle')
+  }
   const byId = new Map(runRows.map((run) => [run.run_id, run]))
   const selected = new Map<string, RunRow>()
   for (const [cohort, chromRuns] of y1PrimaryRunMap) {
     for (const [chrom, runId] of chromRuns) {
-      const run = byId.get(runId)
-      if (!run) throw new Error(`Configured Y1 run ${runId} is absent from lr_y1_load_runs`)
+      const manifest = y1PrimaryManifests.get(snapshotKey(cohort, chrom))
+      if (!manifest || manifest.run_id !== runId) {
+        throw new Error(`Configured Y1 run ${runId} has no exact checked manifest`)
+      }
+      // Presentation campaigns are admitted from immutable manifests plus exact
+      // terminal task attempts. Their lr_y1_load_runs ledger can legitimately
+      // remain empty because these runs are served without primary finalization.
+      const run = byId.get(runId) || {
+        run_id: runId,
+        release: 'y1',
+        cohort,
+        reference_genome: 'GRCh38',
+        chrom,
+        load_scope: 'full_chromosome',
+        state: 'accepted_tasks',
+        interval_start: 1,
+        interval_end: canonicalY1ContigLengths.get(chrom)!,
+        summary_rows: 0,
+        allele_rows: 0,
+        frequency_rows: 0,
+        carrier_rows: 0,
+        expected_tasks: manifest.tasks.length,
+        latest_revision_rows: 1,
+      }
       if (Number(run.latest_revision_rows) !== 1) {
         throw new Error(`Y1 run ${runId} has duplicate rows at its maximum revision`)
       }
@@ -699,6 +733,8 @@ export const preflightY1AcceptedSources = async () => {
           run_id: run.run_id,
           state: 'accepted_tasks',
           metadata_run_id: run.cohort === 'hgsvc_hprc' ? metadataRunId : null,
+          carriers_available:
+            run.cohort === 'hgsvc_hprc' && manifest.carrier_loading_status === 'available',
         }
         return [key, snapshot] as const
       })
@@ -721,6 +757,7 @@ export const preflightY1AcceptedSources = async () => {
         run_id: run.run_id,
         state: ACCEPTED_Y1_RUN_STATE,
         metadata_run_id: cohort === 'hgsvc_hprc' ? metadataRunId : null,
+        carriers_available: cohort === 'hgsvc_hprc',
       })
     }
   }

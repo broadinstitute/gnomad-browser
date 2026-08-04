@@ -318,12 +318,13 @@ const resolvers = {
           label: acceptedLabel || (configured ? `Unavailable outside ${configured.chrom}` : 'Cohort unavailable'),
         },
         {
-          modality: 'HAPLOTYPES', source: primary && cohort === 'hgsvc_hprc' ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
+          modality: 'HAPLOTYPES',
+          source: primary?.carriers_available ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
           database: configured?.database || null, release: configured?.release || null,
           cohort, reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
           scope: configured?.load_scope || null, run_id: configured?.run_id || null,
-          available: !!primary && cohort === 'hgsvc_hprc',
-          status: primary && cohort === 'hgsvc_hprc' ? primary.state : 'unavailable',
+          available: !!primary?.carriers_available,
+          status: primary?.carriers_available ? primary.state : 'unavailable',
           label: cohort === 'aou' ? 'AoU is summary-only' : (acceptedLabel || 'Cohort or scope unavailable'),
         },
         {

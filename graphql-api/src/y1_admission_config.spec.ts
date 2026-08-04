@@ -55,6 +55,12 @@ describe('Y1 startup admission artifacts', () => {
     expect(
       [...manifests.values()].reduce((total, manifest) => total + manifest.tasks.length, 0)
     ).toBe(6204)
+    expect(manifests.get('hgsvc_hprc\u0000chrX')?.carrier_loading_status).toBe(
+      'unavailable_not_loaded'
+    )
+    expect(manifests.get('hgsvc_hprc\u0000chrY')?.carrier_loading_status).toBe(
+      'unavailable_not_loaded'
+    )
   })
 
   test('accepts an exact gapless checked primary manifest bundle', () => {
@@ -106,6 +112,35 @@ describe('Y1 startup admission artifacts', () => {
     }
   })
 
+  test('accepts only the exact aggregate-only carrier-unavailable manifest markers', () => {
+    const entry = primaryEntry()
+    const aggregate = {
+      ...entry,
+      cohort: 'hgsvc_hprc',
+      primary_load_mode: 'aggregate_only_no_carriers',
+      carrier_loading_status: 'unavailable_not_loaded',
+      source: {
+        ...entry.source,
+        source_uri: entry.source.source_uri
+          .replace('/aou/', '/hgsvc_hprc/')
+          .replace('.aou.', '.hgsvc_hprc.'),
+        source_index_uri: entry.source.source_index_uri
+          .replace('/aou/', '/hgsvc_hprc/')
+          .replace('.aou.', '.hgsvc_hprc.'),
+      },
+    }
+    const file = tempJson({ schema_version: 1, entries: [aggregate] })
+    try {
+      const runMap = new Map<any, any>([['hgsvc_hprc', new Map([['chrY', 'aou-chrY']])]])
+      const manifest = resolveY1PrimaryManifests(runMap, {
+        LR_Y1_PRIMARY_MANIFEST_PATH: file.path,
+      })!.get('hgsvc_hprc\u0000chrY')!
+      expect(manifest.carrier_loading_status).toBe('unavailable_not_loaded')
+    } finally {
+      file.cleanup()
+    }
+  })
+
   test('rejects methylation receipts whose per-sample rows do not sum to the global total', () => {
     const contigs = [...canonicalY1ContigLengths.keys()]
     const file = tempJson({
@@ -145,6 +180,51 @@ describe('Y1 startup admission artifacts', () => {
           modality: 'methylation',
         })
       ).toThrow('per-sample detail rows')
+    } finally {
+      file.cleanup()
+    }
+  })
+
+  test('accepts a fenced terminal sample-total completion receipt', () => {
+    const file = tempJson({
+      status: 'validated_success',
+      completed_at: '2026-08-04T01:51:08Z',
+      database: 'gnomad_lr_y1_methylation',
+      writer: 'methylation-writer',
+      writer_remained_fenced_and_revoked: true,
+      jobs: 24,
+      tasks: 10,
+      accepted: 10,
+      failed_attempts: 0,
+      receipt_items_processed: 100,
+      detail_rows: 100,
+      summary_rows: 20,
+      summary_num_samples_sum: 100,
+      summary_keys_unique: true,
+      availability_rows: 4,
+      availability_complete: 1,
+      availability_partial: 1,
+      availability_source_marked_skip: 1,
+      availability_no_source: 1,
+      unavailable_detail_rows: 0,
+      cohort_rows: 2,
+      planning_envelope_used: false,
+      authoritative_count_source: 'exact durable receipts',
+    })
+    try {
+      const receipt = readY1AncillaryReceipt(file.path, {
+        database: 'gnomad_lr_y1_methylation',
+        run_id: 'methylation-run',
+        cohort: 'hgsvc_hprc',
+        modality: 'methylation',
+      })
+      expect(receipt.source_format).toBe('sample_total_completion')
+      expect(receipt.receipts).toEqual({
+        expected: 10,
+        accepted: 10,
+        failed_attempts: 0,
+        rejects: 0,
+      })
     } finally {
       file.cleanup()
     }

@@ -19,6 +19,7 @@ die()  { err "$*"; exit 1; }
 USE_GCP_CH=false
 USE_Y1=false
 Y1_PORT=""
+Y1_VM=""
 while (($#)); do
     case "$1" in
         --gcp-clickhouse)
@@ -33,11 +34,21 @@ while (($#)); do
             USE_Y1=true
             shift 2
             ;;
+        --y1-clickhouse-vm)
+            (($# >= 2)) || die "--y1-clickhouse-vm requires INSTANCE"
+            Y1_VM="$2"
+            [[ "$Y1_VM" =~ ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$ ]] ||
+                die "Invalid Y1 ClickHouse instance: $Y1_VM"
+            USE_Y1=true
+            shift 2
+            ;;
         --help|-h)
             cat <<'EOF'
-Usage: ./start_lr_dev.sh [--gcp-clickhouse] [--y1-clickhouse-port PORT]
+Usage: ./start_lr_dev.sh [--gcp-clickhouse] [--y1-clickhouse-port PORT] [--y1-clickhouse-vm INSTANCE]
 
   --y1-clickhouse-port PORT  Use the Y1 ClickHouse server on 127.0.0.1:PORT.
+  --y1-clickhouse-vm INSTANCE
+                             With --gcp-clickhouse, tunnel to this Y1 GCP instance.
   --gcp-clickhouse           Open the GCP ClickHouse tunnels. This selects the
                              connection only; it does not select a data/provenance mode.
 
@@ -56,7 +67,7 @@ done
 GCP_PROJECT="${GCP_PROJECT:-gnomadev}"
 GCP_ZONE="${GCP_ZONE:-us-east1-c}"
 LEGACY_GCP_CH_VM="${LEGACY_GCP_CH_VM:-gnomad-lr-data-vm}"
-Y1_GCP_CH_VM="${LR_Y1_GCP_CH_VM:-gnomad-lr-y1-clickhouse}"
+Y1_GCP_CH_VM="${Y1_VM:-${LR_Y1_GCP_CH_VM:-gnomad-lr-y1-clickhouse}}"
 GCP_CH_LOCAL_PORT="${GCP_CH_PORT:-8125}"
 Y1_GCP_CH_LOCAL_PORT="${Y1_PORT:-8126}"
 Y1_DATABASE="${LR_Y1_CLICKHOUSE_DATABASE:-gnomad_lr_y1_scratch_v5_current}"
@@ -68,6 +79,9 @@ else
     Y1_CH_URL="${LR_Y1_CLICKHOUSE_URL:-}"
 fi
 
+if [[ -n "$Y1_VM" && "$USE_GCP_CH" != true ]]; then
+    die "--y1-clickhouse-vm requires --gcp-clickhouse"
+fi
 if [[ "$USE_GCP_CH" == true && "$GCP_CH_LOCAL_PORT" == "$Y1_GCP_CH_LOCAL_PORT" ]]; then
     die "Legacy and Y1 tunnel ports must be distinct"
 fi
@@ -87,6 +101,7 @@ if [[ "${LR_DEV_DRY_RUN:-0}" == 1 ]]; then
         printf 'LR_Y1_ENABLED=true\n'
         printf 'LR_Y1_CLICKHOUSE_URL=%s\n' "$Y1_CH_URL"
         printf 'LR_Y1_CLICKHOUSE_DATABASE=%s\n' "$Y1_DATABASE"
+        if [[ "$USE_GCP_CH" == true ]]; then printf 'LR_Y1_GCP_CH_VM=%s\n' "$Y1_GCP_CH_VM"; fi
         if [[ -n "${LR_Y1_RUN_MAP:-}" ]]; then printf 'LR_Y1_RUN_MAP=%s\n' "$LR_Y1_RUN_MAP"; fi
         if [[ -n "${LR_Y1_PRIMARY_MANIFEST_PATH:-}" ]]; then printf 'LR_Y1_PRIMARY_MANIFEST_PATH=%s\n' "$LR_Y1_PRIMARY_MANIFEST_PATH"; fi
         if [[ -n "${LR_Y1_ANCILLARY_ROUTES:-}" ]]; then printf 'LR_Y1_ANCILLARY_ROUTES=%s\n' "$LR_Y1_ANCILLARY_ROUTES"; fi
@@ -314,7 +329,9 @@ fi
 # shellcheck disable=SC2016
 start_owned API_PID env "${API_ENV[@]}" \
     bash -c 'cd "$1/graphql-api"; pnpm ts-node ./src/app.ts 2>&1 | sed '\''s/^/[api] /'\''' _ "$ROOT_DIR"
-wait_for_http "GraphQL API" "http://127.0.0.1:8010/health/ready" "$API_PID" 45
+API_READY_ATTEMPTS=45
+if [[ "$USE_Y1" == true && -n "${LR_Y1_RUN_MAP:-}" ]]; then API_READY_ATTEMPTS=300; fi
+wait_for_http "GraphQL API" "http://127.0.0.1:8010/health/ready" "$API_PID" "$API_READY_ATTEMPTS"
 log "GraphQL API is ready."
 
 # 6. Browser frontend

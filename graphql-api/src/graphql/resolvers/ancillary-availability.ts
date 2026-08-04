@@ -3,6 +3,7 @@ import {
   isY1PilotEnabled,
   y1AncillaryRoutes,
 } from '../../clickhouse'
+import { canonicalY1ContigLengths } from '../../y1_admission_config'
 import type { Y1AncillaryRoute } from '../../y1_config'
 
 export type AncillaryModality = 'coverage' | 'methylation' | 'str_histogram' | 'mqtl'
@@ -447,19 +448,27 @@ const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
       current.contigs.push(String(row.chrom))
       physicalBySample.set(sample, current)
     }
+    const strictReceipt = route.receipt.source_format !== 'sample_total_completion'
     const expectedSamples = new Map(
-      (reconciliation.samples as any[]).map((sample) => [String(sample.sample_id), sample])
+      strictReceipt
+        ? (reconciliation.samples as any[]).map((sample) => [String(sample.sample_id), sample])
+        : []
     )
     const availabilityIds = sampleRows.map((row) => String(row.sample_id)).sort()
-    const expectedIds = [...expectedSamples.keys()].sort()
     const physicalIds = [...physicalBySample.keys()].sort()
-    const expectedPhysicalIds = [...expectedSamples.values()]
-      .filter((sample) => sample.detail_rows > 0)
-      .map((sample) => String(sample.sample_id))
-      .sort()
+    const expectedPhysicalIds = strictReceipt
+      ? [...expectedSamples.values()]
+          .filter((sample) => sample.detail_rows > 0)
+          .map((sample) => String(sample.sample_id))
+          .sort()
+      : sampleRows
+          .filter((row) => Number(row.included) === 1)
+          .map((row) => String(row.sample_id))
+          .sort()
+    const expectedIds = strictReceipt ? [...expectedSamples.keys()].sort() : availabilityIds
     if (
       sampleRows.length !== Number(reconciliation.roster_rows) ||
-      sampleRows.length !== expectedSamples.size ||
+      (strictReceipt && sampleRows.length !== expectedSamples.size) ||
       new Set(availabilityIds).size !== availabilityIds.length ||
       !exactJson(availabilityIds, expectedIds) ||
       !exactJson(physicalIds, expectedPhysicalIds)
@@ -470,21 +479,45 @@ const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
     }
     for (const row of sampleRows) {
       const sampleId = String(row.sample_id)
-      const expected = expectedSamples.get(sampleId)
+      const expected = strictReceipt ? expectedSamples.get(sampleId) : null
       const physical = physicalBySample.get(sampleId) || { rows: 0, contigs: [] }
       const indexed = (row.indexed_contigs || []).map(String).sort()
       physical.contigs.sort()
       if (
-        !expected ||
-        expected.availability !== String(row.availability) ||
-        expected.included !== (Number(row.included) === 1) ||
-        expected.detail_rows !== Number(row.detail_rows) ||
-        !exactJson(expected.indexed_contigs, indexed) ||
-        expected.detail_rows !== physical.rows ||
-        !exactJson(expected.indexed_contigs, physical.contigs)
+        (strictReceipt &&
+          (!expected ||
+            expected.availability !== String(row.availability) ||
+            expected.included !== (Number(row.included) === 1) ||
+            expected.detail_rows !== Number(row.detail_rows) ||
+            !exactJson(expected.indexed_contigs, indexed))) ||
+        Number(row.detail_rows) !== physical.rows ||
+        !exactJson(indexed, physical.contigs)
       ) {
         throw new Error(
           `Configured methylation route ${route.run_id} sample ${sampleId} is partial or mismatched`
+        )
+      }
+    }
+    if (!strictReceipt) {
+      const availabilityCounts = new Map<string, number>()
+      for (const row of sampleRows) {
+        const status = String(row.availability)
+        availabilityCounts.set(status, (availabilityCounts.get(status) || 0) + 1)
+      }
+      const expectedAvailability = new Map([
+        ['available_complete_source', Number(reconciliation.availability_complete)],
+        ['available_partial_source', Number(reconciliation.availability_partial)],
+        ['unavailable_source_marked_skip', Number(reconciliation.availability_source_marked_skip)],
+        ['unavailable_no_assay_source', Number(reconciliation.availability_no_source)],
+      ])
+      if (
+        availabilityCounts.size !== expectedAvailability.size ||
+        [...expectedAvailability].some(
+          ([status, count]) => availabilityCounts.get(status) !== count
+        )
+      ) {
+        throw new Error(
+          `Configured methylation route ${route.run_id} availability does not match its completion receipt`
         )
       }
     }
@@ -497,15 +530,19 @@ const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
       }))
     )
     const observedSummaryContigs = sortedContigRows(summaryRows)
-    const expectedDetailContigs = sortedContigRows(reconciliation.detail_contigs)
-    const expectedSummaryContigs = sortedContigRows(reconciliation.summary_contigs)
     const detailTotal = observedDetailContigs.reduce((sum, row) => sum + row.rows, 0)
     const summaryTotal = observedSummaryContigs.reduce((sum, row) => sum + row.rows, 0)
+    const observedChroms = (rows: { chrom: string }[]) => rows.map((row) => row.chrom).sort()
+    const canonicalChroms = [...canonicalY1ContigLengths.keys()].sort()
     if (
       detailTotal !== Number(reconciliation.detail_rows) ||
       summaryTotal !== Number(reconciliation.summary_rows) ||
-      !exactJson(observedDetailContigs, expectedDetailContigs) ||
-      !exactJson(observedSummaryContigs, expectedSummaryContigs)
+      (strictReceipt &&
+        (!exactJson(observedDetailContigs, sortedContigRows(reconciliation.detail_contigs)) ||
+          !exactJson(observedSummaryContigs, sortedContigRows(reconciliation.summary_contigs)))) ||
+      (!strictReceipt &&
+        (!exactJson(observedChroms(observedDetailContigs), canonicalChroms) ||
+          !exactJson(observedChroms(observedSummaryContigs), canonicalChroms)))
     ) {
       throw new Error(
         `Configured methylation route ${route.run_id} detail/summary counts do not match its completion receipt`

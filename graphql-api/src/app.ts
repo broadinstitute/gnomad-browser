@@ -160,6 +160,12 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       if (!source) {
         return res.status(400).json({ code: 'UNAVAILABLE', error: 'HGSVC/HPRC is unavailable in the configured Y1 database' })
       }
+      if (!source.carriers_available) {
+        return res.status(400).json({
+          code: 'UNAVAILABLE',
+          error: 'Carrier data was not loaded for this aggregate-only Y1 chromosome',
+        })
+      }
       const y1Rows = await fetchY1HaplotypeRows(chrom, start, stop, source.run_id)
       distinctVariants = y1Rows.variants
       trvCarriers = y1Rows.trvCarriers
