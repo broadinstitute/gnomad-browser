@@ -42,6 +42,7 @@ describe('Y1 ancillary query routing', () => {
     expect(call.query).toContain('WHERE chrom = {chrom:String}')
     expect(call.query).toContain('position BETWEEN {start:UInt32} AND {stop:UInt32}')
     expect(call.query).toContain('ancillary_run_id = {runId:String}')
+    expect(call.query).toContain('ORDER BY position ASC')
     expect(call.query_params).toEqual({
       runId: 'cov-aou',
       cohort: 'aou',
@@ -52,6 +53,12 @@ describe('Y1 ancillary query routing', () => {
     await expect(fetchLRCoverageForRegion(null, 'chr1', 0, 1_000_001, 'aou')).rejects.toThrow(
       'range is too large'
     )
+  })
+
+  test('returns no coverage without an admitted cohort route', async () => {
+    mockRoute.mockReturnValue(null)
+    await expect(fetchLRCoverageForRegion(null, 'chr1', 100, 200, 'aou')).resolves.toEqual([])
+    expect(mockQuery).not.toHaveBeenCalled()
   })
 
   test('keeps the STR duplicate-at-position invariant on the exact cohort route', async () => {

@@ -76,30 +76,56 @@ const columns = [
   })),
 ]
 
-const installFixture = (drift: 'none' | 'engine' | 'parts' | 'identity' = 'none') => {
+type Drift =
+  | 'none'
+  | 'raw-engine'
+  | 'view-engine'
+  | 'backing'
+  | 'raw-shape'
+  | 'view-shape'
+  | 'parts'
+  | 'missing-partition'
+  | 'identity'
+  | 'representative'
+
+const installFixture = (drift: Drift = 'none') => {
   mockQuery.mockImplementation(({ query }: any) => {
     if (query.includes('FROM system.tables')) {
       return Promise.resolve({
         json: async () => [
           {
             name: 'lr_coverage',
-            engine: 'MergeTree',
+            engine: drift === 'raw-engine' ? 'Log' : 'MergeTree',
             create_table_query: 'CREATE TABLE lr_coverage',
           },
           {
             name: 'lr_y1_coverage',
-            engine: drift === 'engine' ? 'MergeTree' : 'View',
-            create_table_query: `CREATE VIEW ${database}.lr_y1_coverage AS SELECT * FROM ${database}.lr_coverage`,
+            engine: drift === 'view-engine' ? 'MergeTree' : 'View',
+            create_table_query: `CREATE VIEW ${database}.lr_y1_coverage AS SELECT * FROM ${database}.${
+              drift === 'backing' ? 'other' : 'lr_coverage'
+            }`,
           },
         ],
       })
     }
     if (query.includes('FROM system.columns')) {
-      return Promise.resolve({ json: async () => columns })
+      const actualColumns = columns.map((column) => ({ ...column }))
+      if (drift === 'raw-shape') {
+        actualColumns.find(
+          (column) => column.table === 'lr_coverage' && column.name === 'pos'
+        )!.type = 'UInt64'
+      }
+      if (drift === 'view-shape') {
+        actualColumns.find(
+          (column) => column.table === 'lr_y1_coverage' && column.name === 'position'
+        )!.type = 'UInt64'
+      }
+      return Promise.resolve({ json: async () => actualColumns })
     }
     if (query.includes('FROM system.parts')) {
       const partRows = contigs.map(({ chrom, rows }) => ({ chrom, rows }))
       if (drift === 'parts') partRows[0].rows -= 1
+      if (drift === 'missing-partition') partRows.pop()
       return Promise.resolve({ json: async () => partRows })
     }
     if (query.includes('FROM lr_y1_coverage')) {
@@ -108,7 +134,7 @@ const installFixture = (drift: 'none' | 'engine' | 'parts' | 'identity' = 'none'
           {
             rows: 10,
             min_position: 100000,
-            max_position: 100009,
+            max_position: drift === 'representative' ? 100008 : 100009,
             unique_positions: 10,
             exact: drift === 'identity' ? 9 : 10,
           },
@@ -136,7 +162,17 @@ describe('raw-backed Y1 coverage View startup admission', () => {
     expect(viewQuery).toContain('position BETWEEN 100000 AND 100009')
   })
 
-  test.each(['engine', 'parts', 'identity'] as const)('fails closed on %s drift', async (drift) => {
+  test.each([
+    'raw-engine',
+    'view-engine',
+    'backing',
+    'raw-shape',
+    'view-shape',
+    'parts',
+    'missing-partition',
+    'identity',
+    'representative',
+  ] as const)('fails closed on %s drift', async (drift) => {
     installFixture(drift)
     await expect(preflightY1Ancillaries()).rejects.toThrow(/coverage route/)
     expect(getY1AncillaryRoute('hgsvc_hprc', 'coverage')).toBeNull()

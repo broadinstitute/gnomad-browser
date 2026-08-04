@@ -303,12 +303,64 @@ describe('Y1 startup admission artifacts', () => {
       { canonical_backing_table: 'other' },
       { physical_copy_rows: 1 },
       { writer_fenced_and_revoked: false },
+      { logical_rows: fullGrch38PositionCount - 1 },
     ]) {
       const invalid = tempJson({ ...receipt, ...drift })
       try {
         expect(() => readY1AncillaryReceipt(invalid.path, expected)).toThrow(
           'exact fenced raw-backed coverage view'
         )
+      } finally {
+        invalid.cleanup()
+      }
+    }
+
+    const strictDrifts: Array<[unknown, RegExp]> = [
+      [{ ...receipt, unknown_evidence: true }, /invalid keys/],
+      [
+        {
+          ...receipt,
+          contig_coverage: receipt.contig_coverage.map((row, index) =>
+            index === 0 ? { ...row, rows: row.rows - 1 } : row
+          ),
+        },
+        /incomplete raw positional bounds/,
+      ],
+      [
+        {
+          ...receipt,
+          numeric_violations: { ...receipt.numeric_violations, nonfinite: 1 },
+        },
+        /invalid coverage measurements/,
+      ],
+      [
+        {
+          ...receipt,
+          representative_view_query: { ...receipt.representative_view_query, rows: 9 },
+        },
+        /representative coverage view validation/,
+      ],
+      [
+        {
+          ...receipt,
+          column_shape: receipt.column_shape.map((column, index) =>
+            index === 0 ? { ...column, type: 'UInt64' } : column
+          ),
+        },
+        /unexpected canonical coverage view shape/,
+      ],
+      [
+        {
+          ...receipt,
+          source: { ...receipt.source, cohort: 'hgsvc_hprc' },
+        },
+        /invalid or cross-cohort coverage source identity/,
+      ],
+    ]
+    for (const [invalidReceipt, error] of strictDrifts) {
+      const invalid = tempJson(invalidReceipt)
+      try {
+        expect(() => readY1AncillaryReceipt(invalid.path, expected)).toThrow(error)
       } finally {
         invalid.cleanup()
       }
