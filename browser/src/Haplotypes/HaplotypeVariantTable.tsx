@@ -21,6 +21,7 @@ import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadV
 import TRDistributionPlot, { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import ExpandedTrDistributions from './ExpandedTrDistributions'
 
 type AlleleStructure = {
   sequence: string
@@ -1155,8 +1156,23 @@ const TableRow = React.memo(function TableRow({
       {isExpanded && (
         <TrExpandedRow>
           <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
+            <ExpandedTrDistributions
+              variantId={v.variant_id}
+              lrCohort={v.lr_cohort || lrCohort}
+            />
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-              {v.tr_distribution && <TRDistributionPlot distribution={v.tr_distribution} />}
+              <div style={{ minWidth: 320 }}>
+                <h4 style={{ margin: '0 0 4px', fontSize: 12 }}>
+                  Haplotype-only carrier distribution (context/fallback)
+                </h4>
+                <p style={{ margin: '0 0 6px', maxWidth: 380, fontSize: 11, color: '#666', whiteSpace: 'normal' }}>
+                  Includes only carriers that can be placed deterministically on a haplotype; it is
+                  not the complete cohort STR distribution.
+                </p>
+                {v.tr_distribution
+                  ? <TRDistributionPlot distribution={v.tr_distribution} />
+                  : <span style={{ fontSize: 11, color: '#888' }}>No deterministic haplotype carriers.</span>}
+              </div>
               <div style={{ fontSize: 11, color: '#555' }}>
                 <div style={{ fontWeight: 600, marginBottom: 4 }}>
                   TR Locus: {v.chrom}:{v.pos}
