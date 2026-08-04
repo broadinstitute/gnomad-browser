@@ -158,4 +158,34 @@ describe('haplotype worker VCF carrier identity', () => {
     expect(normalizedUpdatedCarrier.phase_set_by_variant?.every(Object.isFrozen)).toBe(true)
     expect(Object.isFrozen(normalizedUpdated.phase_set_sidecar.variant_ids_by_index)).toBe(true)
   })
+
+  test('reports malformed payload failures instead of leaving the last progress message stuck', () => {
+    jest.resetModules()
+    const postMessage = jest.fn()
+    Object.defineProperty(globalThis, 'postMessage', {
+      value: postMessage,
+      configurable: true,
+      writable: true,
+    })
+
+    // eslint-disable-next-line global-require
+    require('./haplotypeWorker')
+    const onmessage = (globalThis as any).onmessage
+
+    expect(() => onmessage({
+      data: {
+        type: 'INIT',
+        rawData: { error: 'Internal error' },
+      },
+    })).not.toThrow()
+
+    expect(postMessage.mock.calls.map(([message]) => (message as any).type)).toEqual([
+      'PROGRESS',
+      'ERROR',
+    ])
+    expect(postMessage.mock.calls[1][0]).toMatchObject({
+      type: 'ERROR',
+      error: expect.stringContaining('variant_id'),
+    })
+  })
 })

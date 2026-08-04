@@ -71,9 +71,7 @@ type WorkerMessage = InitMessage | UpdateAfMessage | UpdateThresholdMessage
 
 // ---- Handler ----
 
-self.onmessage = (e: MessageEvent<WorkerMessage>) => {
-  const msg = e.data
-
+const handleMessage = (msg: WorkerMessage) => {
   switch (msg.type) {
     case 'INIT': {
       self.postMessage({ type: 'PROGRESS', status: 'Unpacking variant data…' })
@@ -194,6 +192,17 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
       self.postMessage({ type: 'UPDATED', data: baseData })
       break
     }
+  }
+}
+
+self.onmessage = (e: MessageEvent<WorkerMessage>) => {
+  try {
+    handleMessage(e.data)
+  } catch (error) {
+    self.postMessage({
+      type: 'ERROR',
+      error: error instanceof Error ? error.message : String(error),
+    })
   }
 }
 

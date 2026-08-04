@@ -54,6 +54,7 @@ import {
   sourceForModality,
 } from './LongReadProvenanceBanner'
 import { nullableLongReadFrequency } from './longReadFrequency'
+import { parseHaplotypeResponse } from './haplotypeResponse'
 import {
   incompleteMethylationSampleIds,
   mergeMethylationRecords,
@@ -145,7 +146,7 @@ const fetchHaplotypeDataREST = async (
   const text = await response.text()
   const tDownload = Math.round(performance.now() - t1)
   const t2 = performance.now()
-  const data = JSON.parse(text)
+  const data = parseHaplotypeResponse(response, text)
   const tParse = Math.round(performance.now() - t2)
   const sizeMB = (text.length / 1024 / 1024).toFixed(2)
   console.log(`[perf] REST fetch: network=${tNetwork}ms, download=${tDownload}ms, JSON.parse=${tParse}ms, size=${sizeMB}MB`)
@@ -356,6 +357,7 @@ const LongReadUnifiedView = ({
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [workerComputing, setWorkerComputing] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState('')
+  const [haplotypeError, setHaplotypeError] = useState<string | null>(null)
   const [ambiguousUnphasedRows, setAmbiguousUnphasedRows] = useState(0)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
@@ -701,6 +703,11 @@ const LongReadUnifiedView = ({
           setLoadingStatus('')
           setHaplotypeData(normalizeHaplotypeWorkerData(e.data.data))
           setWorkerComputing(false)
+        } else if (e.data.type === 'ERROR') {
+          console.error('[worker] haplotype computation failed:', e.data.error)
+          setLoadingStatus('')
+          setWorkerComputing(false)
+          setHaplotypeError('Haplotype computation failed. Reload the page to retry.')
         }
       }
       // Expose start time setter for postMessage callers
@@ -710,9 +717,12 @@ const LongReadUnifiedView = ({
         return origPostMessage(msg, ...args)
       }
       w.onerror = () => {
-        console.warn('[worker] haplotype worker failed, using main thread')
+        console.warn('[worker] haplotype worker failed')
         w.terminate()
         workerRef.current = null
+        setWorkerComputing(false)
+        setLoadingStatus('')
+        setHaplotypeError('Haplotype computation failed. Reload the page to retry.')
       }
       workerRef.current = w
       console.log('[worker] haplotype worker initialized')
@@ -732,6 +742,7 @@ const LongReadUnifiedView = ({
     abortControllerRef.current = controller
 
     setHaplotypeLoading(true)
+    setHaplotypeError(null)
     setLoadingStatus('Fetching variant data…')
     const t0 = performance.now()
 
@@ -786,6 +797,11 @@ const LongReadUnifiedView = ({
         if (error?.name === 'AbortError') return
         console.error('Error fetching haplotype data:', error)
         setHaplotypeLoading(false)
+        setWorkerComputing(false)
+        setLoadingStatus('')
+        setHaplotypeError(
+          error instanceof Error ? error.message : 'Unable to load haplotype data.'
+        )
       })
   }, [showHaplotypes, chrom, start, stop, lrCohort])
 
@@ -1288,6 +1304,11 @@ const LongReadUnifiedView = ({
       {outOfScope && (
         <TrackPageSection as="p">
           <strong>Prototype data unavailable outside chr22.</strong> This request was not routed to legacy primary data.
+        </TrackPageSection>
+      )}
+      {showHaplotypes && haplotypeError && (
+        <TrackPageSection as="p" role="alert">
+          <strong>Unable to load Haplotype View.</strong> {haplotypeError}
         </TrackPageSection>
       )}
       {showRegionWarning && (
