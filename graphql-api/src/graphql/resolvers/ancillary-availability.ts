@@ -467,12 +467,12 @@ export const validateSourcePhasedMethylationPhysicalState = (
     String(table.name) !== SOURCE_PHASED_METHYLATION_TABLE ||
     String(table.engine) !== 'MergeTree' ||
     String(table.partition_key).replace(/`/g, '') !== 'chrom' ||
-    String(table.sorting_key).replace(/`/g, '').replace(/ /g, '') !==
-      '(chrom,pos1,sample_id,source_haplotype,stable_key)' ||
+    String(table.sorting_key).replace(/[`()\s]/g, '') !==
+      'chrom,pos1,sample_id,source_haplotype,stable_key' ||
     !definition.includes('source_haplotype_is_1_or_2') ||
     !/source_haplotype\s+IN\s*\(\s*1\s*,\s*2\s*\)/.test(definition) ||
     !definition.includes('one_base_bed_interval') ||
-    !/pos2\s*=\s*pos1\s*\+\s*1/.test(definition) ||
+    !/pos2\s*=\s*\(?\s*pos1\s*\+\s*1\s*\)?/.test(definition) ||
     !definition.includes('methylation_percentage') ||
     !/methylation\s*>=\s*0/.test(definition) ||
     !/methylation\s*<=\s*100/.test(definition)

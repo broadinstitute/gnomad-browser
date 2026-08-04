@@ -142,10 +142,10 @@ describe('ancillary cohort availability', () => {
         name: 'lr_y1_methylation_source_haplotype_presentation',
         engine: 'MergeTree',
         partition_key: 'chrom',
-        sorting_key: '(chrom, pos1, sample_id, source_haplotype, stable_key)',
+        sorting_key: 'chrom, pos1, sample_id, source_haplotype, stable_key',
         create_table_query: `CONSTRAINT source_haplotype_is_1_or_2 CHECK source_haplotype IN (1, 2)
-          CONSTRAINT one_base_bed_interval CHECK pos2 = pos1 + 1
-          CONSTRAINT methylation_percentage CHECK methylation >= 0 AND methylation <= 100`,
+          CONSTRAINT one_base_bed_interval CHECK pos2 = (pos1 + 1)
+          CONSTRAINT methylation_percentage CHECK isFinite(methylation) AND (methylation >= 0) AND (methylation <= 100)`,
       }],
       columns: [
         ['stable_key', 'FixedString(64)'], ['chrom', 'LowCardinality(String)'],
