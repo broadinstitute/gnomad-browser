@@ -309,6 +309,7 @@ export const fetchLRCoverageForRegion = async (
 ) => {
   if (isY1PilotEnabled) {
     if (stop < start || stop - start > 1_000_000) throw new Error('Y1 coverage range is too large')
+    const normalizedChrom = chrom.startsWith('chr') ? chrom : `chr${chrom}`
     const route = getY1AncillaryRoute(cohort, 'coverage')
     if (!route) return []
     const resultSet = await getY1AncillaryClickhouseClient(route).query({
@@ -321,7 +322,7 @@ export const fetchLRCoverageForRegion = async (
           AND ancillary_run_id = {runId:String} AND cohort = {cohort:String}
         ORDER BY position ASC
       `,
-      query_params: { runId: route.run_id, cohort, chrom, start, stop },
+      query_params: { runId: route.run_id, cohort, chrom: normalizedChrom, start, stop },
       format: 'JSONEachRow',
     })
     return resultSet.json()
@@ -348,6 +349,7 @@ export const fetchSTRHistogram = async (
   if (isY1PilotEnabled && !route) return null
   const strictStrRoute = route?.receipt?.source_format === 'str_completion'
   const y1Position = strictStrRoute ? 'position' : 'source_start'
+  const normalizedChrom = isY1PilotEnabled && !chrom.startsWith('chr') ? `chr${chrom}` : chrom
   const query = `
     SELECT chrom, ${isY1PilotEnabled ? `${y1Position} AS position, source_end AS end_position` : 'position, end_position'}, motif,
            allele_size_histogram, biallelic_histogram,
@@ -362,7 +364,7 @@ export const fetchSTRHistogram = async (
   `
   const resultSet = await (route ? getY1AncillaryClickhouseClient(route) : clickhouseClient).query({
     query,
-    query_params: { runId: route?.run_id, cohort, chrom, position },
+    query_params: { runId: route?.run_id, cohort, chrom: normalizedChrom, position },
     format: 'JSONEachRow',
   })
   const rows = (await resultSet.json()) as any[]
