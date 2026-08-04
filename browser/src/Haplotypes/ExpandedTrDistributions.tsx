@@ -104,8 +104,7 @@ export const fetchExpandedTrDistribution = (
   return request
 }
 
-const Disclosure = styled.details`
-  position: relative;
+const DistributionSection = styled.section`
   overflow: hidden;
   width: 100%;
   min-width: 0;
@@ -117,27 +116,17 @@ const Disclosure = styled.details`
   white-space: normal;
 `
 
-const DisclosureSummary = styled.summary`
+const DistributionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   padding: 9px 12px;
-  color: #555;
-  cursor: pointer;
-  line-height: 1.4;
 
-  &:focus-visible {
-    outline: 2px solid #428bca;
-    outline-offset: -2px;
-  }
-
-  strong {
+  h3 {
+    margin: 0;
     color: #333;
+    font-size: 14px;
   }
-`
-
-const DisclosureHelp = styled.span`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 1;
 `
 
 const ExpandedContent = styled.div`
@@ -176,9 +165,9 @@ const cohortLabel = (cohort: LongReadCohort) => (cohort === 'aou' ? 'All of Us' 
 export const FullCohortRepeatCountHelp = ({ lrCohort }: { lrCohort: LongReadCohort }) => (
   <>
     <p style={{ marginTop: 0 }}>
-      These optional plots summarize aggregate repeat counts for all called {cohortLabel(lrCohort)}{' '}
-      alleles at this locus. The allele-size plot counts alleles; the genotype plot pairs the
-      shorter and longer called alleles where genotype data are available.
+      These plots summarize aggregate repeat counts for all called {cohortLabel(lrCohort)} alleles
+      at this locus. The allele-size plot counts alleles; the genotype plot pairs the shorter and
+      longer called alleles where genotype data are available.
     </p>
     <p style={{ marginBottom: 0 }}>
       They are full-cohort repeat-count distributions, not sequence-structure distributions. They do
@@ -292,26 +281,16 @@ const ExpandedTrDistributions = ({
 }: {
   variantId: string
   lrCohort: LongReadCohort
-}) => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <Disclosure
-      aria-label="Full-cohort repeat-count distributions"
-      onToggle={(event) => setIsOpen(event.currentTarget.open)}
-    >
-      <DisclosureSummary>
-        <strong>Full-cohort repeat-count distributions</strong>
-        <span> (optional)</span>
-      </DisclosureSummary>
-      <DisclosureHelp>
-        <HaplotypeHelpButton title="About full-cohort repeat-count distributions">
-          <FullCohortRepeatCountHelp lrCohort={lrCohort} />
-        </HaplotypeHelpButton>
-      </DisclosureHelp>
-      {isOpen && <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />}
-    </Disclosure>
-  )
-}
+}) => (
+  <DistributionSection aria-label="Full-cohort repeat-count distributions">
+    <DistributionHeader>
+      <h3>Full-cohort repeat-count distributions</h3>
+      <HaplotypeHelpButton title="About full-cohort repeat-count distributions">
+        <FullCohortRepeatCountHelp lrCohort={lrCohort} />
+      </HaplotypeHelpButton>
+    </DistributionHeader>
+    <ExpandedTrDistributionContent variantId={variantId} lrCohort={lrCohort} />
+  </DistributionSection>
+)
 
 export default ExpandedTrDistributions

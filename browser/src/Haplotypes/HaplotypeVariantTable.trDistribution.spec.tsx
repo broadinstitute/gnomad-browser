@@ -2,12 +2,18 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import HaplotypeVariantTable from './HaplotypeVariantTable'
+import { clearExpandedTrDistributionCache } from './ExpandedTrDistributions'
 
 jest.mock('../Link', () => ({ children, to, onClick }: any) => (
   <a href={to} onClick={onClick}>
     {children}
   </a>
 ))
+
+beforeEach(() => {
+  clearExpandedTrDistributionCache()
+  global.fetch = jest.fn(() => new Promise(() => {})) as typeof fetch
+})
 
 const summaryTr = (altIndex: number, length: number, ac: number, afrAc: number) => ({
   variant_id: `chr22-100-TRV-9~${altIndex}`,
@@ -183,24 +189,20 @@ describe('haplotype short-read match column', () => {
   })
 })
 
-describe('summary TR accordion distribution', () => {
-  test('renders one locus row and ignores a repeated ALT record', () => {
+describe('summary TR expanded row', () => {
+  test('renders one locus row, ignores a repeated ALT record, and hides the assigned plot', () => {
     const first = summaryTr(1, -3, 4, 2)
     const variants = [first, { ...first }, summaryTr(2, 5, 6, 3)]
-    const { container } = render(
-      <HaplotypeVariantTable mode="summary" summaryVariants={variants} />
-    )
+    render(<HaplotypeVariantTable mode="summary" summaryVariants={variants} />)
 
     expect(screen.getAllByText('chr22-100-TRV-9')).toHaveLength(1)
     fireEvent.click(screen.getByText('chr22-100-TRV-9').closest('tr')!)
 
-    expect(screen.getByLabelText('TR allele length distribution')).not.toBeNull()
+    expect(screen.queryByText('Assigned-carrier length distribution')).toBeNull()
+    expect(screen.queryByLabelText('TR allele length distribution')).toBeNull()
     expect(screen.getByText('Allele length range: -3 to 5bp')).not.toBeNull()
     expect(screen.getByText('Distinct allele lengths: 2')).not.toBeNull()
     expect(screen.getByText('Total carriers: 10')).not.toBeNull()
-    expect(
-      container.querySelectorAll('svg[aria-label="TR allele length distribution"] rect')
-    ).toHaveLength(2)
   })
 })
 
@@ -239,6 +241,8 @@ describe('haplotype TR locus aggregation', () => {
       screen.queryByLabelText('Deterministically haplotype-assigned motif structures')
     ).toBeNull()
     expect(screen.getByText('Full-cohort repeat-count distributions')).not.toBeNull()
+    expect(screen.queryByText('Assigned-carrier length distribution')).toBeNull()
+    expect(screen.queryByLabelText('TR allele length distribution')).toBeNull()
   })
 
   test('prioritizes the partial motif grid and uses carrier-resolved Diploid ALT copies', () => {
@@ -298,5 +302,7 @@ describe('haplotype TR locus aggregation', () => {
 
     expect(screen.getByText('Allele length range: -2 to 3bp')).not.toBeNull()
     expect(screen.getByText('Full-cohort repeat-count distributions')).not.toBeNull()
+    expect(screen.queryByText('Assigned-carrier length distribution')).toBeNull()
+    expect(screen.queryByLabelText('TR allele length distribution')).toBeNull()
   })
 })

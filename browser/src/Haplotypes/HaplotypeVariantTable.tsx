@@ -18,7 +18,7 @@ import Link from '../Link'
 import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
 import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
 import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
-import TRDistributionPlot, { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
+import { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import ExpandedTrDistributions from './ExpandedTrDistributions'
@@ -1216,27 +1216,7 @@ const TableRow = React.memo(function TableRow({
               variantId={v.variant_id}
               lrCohort={v.lr_cohort || lrCohort}
             />
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-              <div style={{ minWidth: 320 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 4 }}>
-                  <h4 style={{ margin: 0, fontSize: 12 }}>Assigned-carrier length distribution</h4>
-                  <HaplotypeHelpButton title="About the assigned-carrier length distribution">
-                    <p style={{ marginTop: 0 }}>
-                      This haplotype-only plot includes carriers that can be placed deterministically
-                      on a haplotype. It is a partial distribution of assigned carriers, not the
-                      complete cohort STR distribution.
-                    </p>
-                    <p style={{ marginBottom: 0 }}>
-                      Use it as context for the assigned motif structures and as a fallback when the
-                      optional full-cohort repeat-count distributions are unavailable.
-                    </p>
-                  </HaplotypeHelpButton>
-                </div>
-                {v.tr_distribution
-                  ? <TRDistributionPlot distribution={v.tr_distribution} />
-                  : <span style={{ fontSize: 11, color: '#888' }}>No deterministic haplotype carriers.</span>}
-              </div>
-              <div style={{ fontSize: 11, color: '#555' }}>
+            <div style={{ fontSize: 11, color: '#555' }}>
                 <div style={{ fontWeight: 600, marginBottom: 4 }}>
                   TR Locus: {v.chrom}:{v.pos}
                   {v.tr_id && <span style={{ fontWeight: 400, marginLeft: 8, color: '#888' }}>({v.tr_id})</span>}
@@ -1314,7 +1294,6 @@ const TableRow = React.memo(function TableRow({
                     </ul>
                   </div>
                 )}
-              </div>
             </div>
           </td>
         </TrExpandedRow>
