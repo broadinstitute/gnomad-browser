@@ -43,7 +43,7 @@ export type Y1AncillaryReceipt = {
   run_id: string
   cohort: Y1Cohort
   modality: Y1AncillaryModality
-  source_format: 'presentation' | 'sample_total_completion'
+  source_format: 'presentation' | 'sample_total_completion' | 'coverage_view_completion'
   job_uuid: string | null
   receipts: {
     expected: number
@@ -86,6 +86,52 @@ export const fullGrch38PositionCount = [...canonicalY1ContigLengths.values()].re
   (total, length) => total + length,
   0
 )
+
+export const y1CoverageRawColumnShape = [
+  ['chrom', 'LowCardinality(String)'],
+  ['pos', 'UInt32'],
+  ['mean', 'Float32'],
+  ['median', 'Float32'],
+  ['over_1', 'Float32'],
+  ['over_5', 'Float32'],
+  ['over_10', 'Float32'],
+  ['over_15', 'Float32'],
+  ['over_20', 'Float32'],
+  ['over_25', 'Float32'],
+  ['over_30', 'Float32'],
+  ['over_50', 'Float32'],
+  ['over_100', 'Float32'],
+] as const
+
+export const y1CoverageViewColumnShape = [
+  ['ancillary_run_id', 'String'],
+  ['release', 'LowCardinality(String)'],
+  ['cohort', 'LowCardinality(String)'],
+  ['reference_genome', 'LowCardinality(String)'],
+  ['modality', 'LowCardinality(String)'],
+  ['source_version', 'String'],
+  ['source_uri', 'String'],
+  ['source_generation', 'String'],
+  ['source_size_bytes', 'UInt64'],
+  ['source_checksum_algorithm', 'LowCardinality(String)'],
+  ['source_checksum', 'String'],
+  ['runtime_source_uri', 'String'],
+  ['runtime_source_generation', 'String'],
+  ['chrom', 'LowCardinality(String)'],
+  ['position', 'UInt32'],
+  ['mean', 'Float32'],
+  ['median', 'Float32'],
+  ['over_1', 'Float32'],
+  ['over_5', 'Float32'],
+  ['over_10', 'Float32'],
+  ['over_15', 'Float32'],
+  ['over_20', 'Float32'],
+  ['over_25', 'Float32'],
+  ['over_30', 'Float32'],
+  ['over_50', 'Float32'],
+  ['over_100', 'Float32'],
+  ['is_source_zero', 'UInt8'],
+] as const
 
 const object = (value: unknown, label: string): Record<string, unknown> => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -296,7 +342,10 @@ export const resolveY1PrimaryManifests = (
 const parseContigs = (
   value: unknown,
   label: string,
-  coordinateKeys: ['min_position', 'max_position', 'unique_positions'] | ['min_start', 'max_end']
+  coordinateKeys:
+    | ['min_position', 'max_position', 'unique_positions']
+    | ['min_pos', 'max_pos', 'unique_positions']
+    | ['min_start', 'max_end']
 ) => {
   if (!Array.isArray(value) || value.length !== canonicalY1ContigLengths.size) {
     throw new Error(`${label} must contain exactly 24 canonical contigs`)
@@ -424,6 +473,186 @@ export const readY1AncillaryReceipt = (
         availability_partial: partial,
         availability_source_marked_skip: sourceSkipped,
         availability_no_source: noSource,
+      },
+    }
+  }
+  if (expected.modality === 'coverage' && receipt.status === 'validated_success') {
+    exactKeys(
+      receipt,
+      [
+        'schema_version',
+        'status',
+        'database',
+        'canonical_object',
+        'canonical_engine',
+        'canonical_backing_database',
+        'canonical_backing_table',
+        'logical_rows',
+        'physical_copy_rows',
+        'receipt_items_processed',
+        'contig_coverage',
+        'numeric_violations',
+        'representative_view_query',
+        'column_shape',
+        'source',
+        'writer_fenced_and_revoked',
+      ],
+      label
+    )
+    const canonicalRows = integer(receipt.logical_rows, `${label}.logical_rows`, 1)
+    if (
+      receipt.schema_version !== 1 ||
+      receipt.database !== expected.database ||
+      receipt.canonical_object !== 'lr_y1_coverage' ||
+      receipt.canonical_engine !== 'View' ||
+      receipt.canonical_backing_database !== expected.database ||
+      receipt.canonical_backing_table !== 'lr_coverage' ||
+      canonicalRows !== fullGrch38PositionCount ||
+      integer(receipt.physical_copy_rows, `${label}.physical_copy_rows`) !== 0 ||
+      integer(receipt.receipt_items_processed, `${label}.receipt_items_processed`, 1) !==
+        canonicalRows ||
+      receipt.writer_fenced_and_revoked !== true
+    ) {
+      throw new Error(`${label} does not declare an exact fenced raw-backed coverage view`)
+    }
+
+    if (!Array.isArray(receipt.column_shape)) {
+      throw new Error(`${label}.column_shape must be an array`)
+    }
+    const columnShape = receipt.column_shape.map((raw, index) => {
+      const row = object(raw, `${label}.column_shape[${index}]`)
+      exactKeys(row, ['name', 'type'], `${label}.column_shape[${index}]`)
+      return [
+        string(row.name, `${label}.column_shape[${index}].name`),
+        string(row.type, `${label}.column_shape[${index}].type`),
+      ]
+    })
+    if (JSON.stringify(columnShape) !== JSON.stringify(y1CoverageViewColumnShape)) {
+      throw new Error(`${label} has an unexpected canonical coverage view shape`)
+    }
+
+    const contigs: any[] = parseContigs(receipt.contig_coverage, `${label}.contig_coverage`, [
+      'min_pos',
+      'max_pos',
+      'unique_positions',
+    ])
+    for (const contig of contigs) {
+      const length = canonicalY1ContigLengths.get(contig.chrom)!
+      if (
+        contig.rows !== length ||
+        contig.unique_positions !== length ||
+        contig.min_pos !== 1 ||
+        contig.max_pos !== length
+      ) {
+        throw new Error(`${label} has incomplete raw positional bounds for ${contig.chrom}`)
+      }
+    }
+
+    const numeric = object(receipt.numeric_violations, `${label}.numeric_violations`)
+    exactKeys(
+      numeric,
+      ['nonfinite', 'negative_depth', 'fraction_range_violations', 'monotonicity_violations'],
+      `${label}.numeric_violations`
+    )
+    if (
+      Object.values(numeric).some((value) => integer(value, `${label}.numeric_violations`) !== 0)
+    ) {
+      throw new Error(`${label} declares invalid coverage measurements`)
+    }
+
+    const representative = object(
+      receipt.representative_view_query,
+      `${label}.representative_view_query`
+    )
+    exactKeys(
+      representative,
+      ['rows', 'min_position', 'max_position', 'unique_positions', 'runs', 'cohorts'],
+      `${label}.representative_view_query`
+    )
+    if (
+      integer(representative.rows, `${label}.representative_view_query.rows`) !== 10 ||
+      integer(representative.min_position, `${label}.representative_view_query.min_position`) !==
+        100000 ||
+      integer(representative.max_position, `${label}.representative_view_query.max_position`) !==
+        100009 ||
+      integer(
+        representative.unique_positions,
+        `${label}.representative_view_query.unique_positions`
+      ) !== 10 ||
+      integer(representative.runs, `${label}.representative_view_query.runs`) !== 1 ||
+      integer(representative.cohorts, `${label}.representative_view_query.cohorts`) !== 1
+    ) {
+      throw new Error(`${label} lacks the exact representative coverage view validation`)
+    }
+
+    const source = object(receipt.source, `${label}.source`)
+    exactKeys(
+      source,
+      [
+        'cohort',
+        'modality',
+        'uri',
+        'generation',
+        'byte_size',
+        'md5_base64',
+        'crc32c_base64',
+        'runtime_uri',
+        'runtime_generation',
+        'runtime_byte_size',
+        'runtime_md5_base64',
+        'runtime_crc32c_base64',
+        'source_access',
+        'mirror_verified_by_worker',
+      ],
+      `${label}.source`
+    )
+    const sourceMd5 = string(source.md5_base64, `${label}.source.md5_base64`)
+    const runtimeMd5 = string(source.runtime_md5_base64, `${label}.source.runtime_md5_base64`)
+    const sourceCrc32c = string(source.crc32c_base64, `${label}.source.crc32c_base64`)
+    const runtimeCrc32c = string(
+      source.runtime_crc32c_base64,
+      `${label}.source.runtime_crc32c_base64`
+    )
+    string(source.source_access, `${label}.source.source_access`)
+    if (
+      source.cohort !== expected.cohort ||
+      source.modality !== 'coverage' ||
+      !string(source.uri, `${label}.source.uri`).startsWith('gs://') ||
+      !/^[1-9][0-9]*$/.test(string(source.generation, `${label}.source.generation`)) ||
+      integer(source.byte_size, `${label}.source.byte_size`, 1) !==
+        integer(source.runtime_byte_size, `${label}.source.runtime_byte_size`, 1) ||
+      sourceMd5 !== runtimeMd5 ||
+      sourceCrc32c !== runtimeCrc32c ||
+      !string(source.runtime_uri, `${label}.source.runtime_uri`).startsWith('gs://') ||
+      !/^[1-9][0-9]*$/.test(
+        string(source.runtime_generation, `${label}.source.runtime_generation`)
+      ) ||
+      source.mirror_verified_by_worker !== true
+    ) {
+      throw new Error(`${label} has an invalid or cross-cohort coverage source identity`)
+    }
+
+    return {
+      schema_version: 1,
+      status: 'completed',
+      database: expected.database,
+      run_id: expected.run_id,
+      cohort: expected.cohort,
+      modality: expected.modality,
+      source_format: 'coverage_view_completion',
+      job_uuid: null,
+      receipts: { expected: 1, accepted: 1, failed_attempts: 0, rejects: 0 },
+      reconciliation: {
+        canonical_rows: canonicalRows,
+        contigs: contigs.map((contig) => ({
+          chrom: contig.chrom,
+          rows: contig.rows,
+          unique_positions: contig.unique_positions,
+          min_position: contig.min_pos,
+          max_position: contig.max_pos,
+        })),
+        column_shape: columnShape,
+        source,
       },
     }
   }

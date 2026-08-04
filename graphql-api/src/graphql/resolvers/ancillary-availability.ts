@@ -3,7 +3,11 @@ import {
   isY1PilotEnabled,
   y1AncillaryRoutes,
 } from '../../clickhouse'
-import { canonicalY1ContigLengths } from '../../y1_admission_config'
+import {
+  canonicalY1ContigLengths,
+  y1CoverageRawColumnShape,
+  y1CoverageViewColumnShape,
+} from '../../y1_admission_config'
 import type { Y1AncillaryRoute } from '../../y1_config'
 
 export type AncillaryModality = 'coverage' | 'methylation' | 'str_histogram' | 'mqtl'
@@ -268,6 +272,61 @@ const requireAncillarySchema = async (route: Y1AncillaryRoute) => {
   }
 }
 
+const requireCoverageViewStorage = async (route: Y1AncillaryRoute) => {
+  const [tables, columns] = await Promise.all([
+    queryRows(
+      route,
+      `
+      SELECT name, engine, create_table_query
+      FROM system.tables
+      WHERE database = currentDatabase() AND name IN ('lr_coverage', 'lr_y1_coverage')
+      ORDER BY name
+    `
+    ),
+    queryRows(
+      route,
+      `
+      SELECT table, name, type, position
+      FROM system.columns
+      WHERE database = currentDatabase() AND table IN ('lr_coverage', 'lr_y1_coverage')
+      ORDER BY table, position
+    `
+    ),
+  ])
+  const engines = new Map(tables.map((row) => [String(row.name), String(row.engine)]))
+  if (engines.get('lr_coverage') !== 'MergeTree' || engines.get('lr_y1_coverage') !== 'View') {
+    throw new Error(
+      `Configured coverage route ${route.cohort}/${route.run_id} is not a raw MergeTree backed canonical View`
+    )
+  }
+  const viewDefinition = String(
+    tables.find((row) => String(row.name) === 'lr_y1_coverage')?.create_table_query || ''
+  )
+  const escapedDatabase = route.database.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const backingPattern = new RegExp(
+    `\\bFROM\\s+(?:\`?${escapedDatabase}\`?\\.)?\`?lr_coverage\`?\\s*;?\\s*$`,
+    'i'
+  )
+  if (!backingPattern.test(viewDefinition) || /\b(?:JOIN|UNION)\b/i.test(viewDefinition)) {
+    throw new Error(
+      `Configured coverage route ${route.cohort}/${route.run_id} View is not directly backed by lr_coverage`
+    )
+  }
+  const shape = (table: string) =>
+    columns
+      .filter((row) => String(row.table) === table)
+      .sort((left, right) => Number(left.position) - Number(right.position))
+      .map((row) => [String(row.name), String(row.type)])
+  if (
+    !exactJson(shape('lr_coverage'), y1CoverageRawColumnShape) ||
+    !exactJson(shape('lr_y1_coverage'), y1CoverageViewColumnShape)
+  ) {
+    throw new Error(
+      `Configured coverage route ${route.cohort}/${route.run_id} has an unexpected raw/View column shape`
+    )
+  }
+}
+
 const sortedContigRows = (rows: any[], coordinateFields: string[] = []) =>
   rows
     .map((row) => ({
@@ -280,9 +339,74 @@ const sortedContigRows = (rows: any[], coordinateFields: string[] = []) =>
 const exactJson = (left: unknown, right: unknown) => JSON.stringify(left) === JSON.stringify(right)
 
 const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
-  await requireAncillarySchema(route)
+  const rawBackedCoverageView =
+    route.modality === 'coverage' && route.receipt.source_format === 'coverage_view_completion'
+  if (rawBackedCoverageView) await requireCoverageViewStorage(route)
+  else await requireAncillarySchema(route)
   const reconciliation = route.receipt.reconciliation as any
-  if (route.modality === 'coverage') {
+  if (rawBackedCoverageView) {
+    const [rawParts, representative] = await Promise.all([
+      queryRows(
+        route,
+        `
+        SELECT partition AS chrom, sum(rows) AS rows
+        FROM system.parts
+        WHERE active AND database = currentDatabase() AND table = 'lr_coverage'
+        GROUP BY partition
+        ORDER BY partition
+      `
+      ),
+      queryRows(
+        route,
+        `
+        SELECT count() AS rows, min(position) AS min_position, max(position) AS max_position,
+          uniqExact(position) AS unique_positions,
+          countIf(ancillary_run_id = {runId:String} AND release = 'y1'
+            AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
+            AND modality = 'sequencing_coverage' AND source_version = 'gnomad-lr-v2'
+            AND source_uri = {sourceUri:String}
+            AND source_generation = {sourceGeneration:String}
+            AND source_size_bytes = {sourceSize:UInt64}
+            AND source_checksum_algorithm = 'md5_base64'
+            AND source_checksum = {sourceChecksum:String}
+            AND runtime_source_uri = {runtimeSourceUri:String}
+            AND runtime_source_generation = {runtimeSourceGeneration:String}) AS exact
+        FROM lr_y1_coverage
+        WHERE chrom = 'chr22' AND position BETWEEN 100000 AND 100009
+      `,
+        {
+          runId: route.run_id,
+          cohort: route.cohort,
+          sourceUri: reconciliation.source.uri,
+          sourceGeneration: reconciliation.source.generation,
+          sourceSize: reconciliation.source.byte_size,
+          sourceChecksum: reconciliation.source.md5_base64,
+          runtimeSourceUri: reconciliation.source.runtime_uri,
+          runtimeSourceGeneration: reconciliation.source.runtime_generation,
+        }
+      ),
+    ])
+    const observedParts = sortedContigRows(rawParts)
+    const expectedParts = sortedContigRows(reconciliation.contigs).map(({ chrom, rows }) => ({
+      chrom,
+      rows,
+    }))
+    const sample = representative[0] || {}
+    if (
+      !exactJson(observedParts, expectedParts) ||
+      observedParts.reduce((total, row) => total + row.rows, 0) !==
+        Number(reconciliation.canonical_rows) ||
+      Number(sample.rows) !== 10 ||
+      Number(sample.min_position) !== 100000 ||
+      Number(sample.max_position) !== 100009 ||
+      Number(sample.unique_positions) !== 10 ||
+      Number(sample.exact) !== 10
+    ) {
+      throw new Error(
+        `Configured coverage route ${route.cohort}/${route.run_id} raw backing/View does not match its completion receipt`
+      )
+    }
+  } else if (route.modality === 'coverage') {
     const physical = await queryRows(
       route,
       `

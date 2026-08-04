@@ -316,9 +316,9 @@ export const fetchLRCoverageForRegion = async (
         SELECT position AS pos, mean, median, over_1, over_5, over_10, over_15,
           over_20, over_25, over_30, over_50, over_100
         FROM lr_y1_coverage
-        WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
-          AND chrom = {chrom:String}
+        WHERE chrom = {chrom:String}
           AND position BETWEEN {start:UInt32} AND {stop:UInt32}
+          AND ancillary_run_id = {runId:String} AND cohort = {cohort:String}
         ORDER BY position ASC
       `,
       query_params: { runId: route.run_id, cohort, chrom, start, stop },

@@ -38,6 +38,9 @@ describe('Y1 ancillary query routing', () => {
       { pos: 100, mean: 20 },
     ])
     const call = mockQuery.mock.calls[0][0] as any
+    expect(call.query).toContain('FROM lr_y1_coverage')
+    expect(call.query).toContain('WHERE chrom = {chrom:String}')
+    expect(call.query).toContain('position BETWEEN {start:UInt32} AND {stop:UInt32}')
     expect(call.query).toContain('ancillary_run_id = {runId:String}')
     expect(call.query_params).toEqual({
       runId: 'cov-aou',

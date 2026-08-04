@@ -6,6 +6,7 @@ import {
   fullGrch38PositionCount,
   readY1AncillaryReceipt,
   resolveY1PrimaryManifests,
+  y1CoverageViewColumnShape,
 } from './y1_admission_config'
 
 const tempJson = (value: unknown) => {
@@ -227,6 +228,90 @@ describe('Y1 startup admission artifacts', () => {
       })
     } finally {
       file.cleanup()
+    }
+  })
+
+  test('accepts a strict raw-backed coverage View receipt and rejects storage drift', () => {
+    const receipt = {
+      schema_version: 1,
+      status: 'validated_success',
+      database: 'gnomad_lr_y1_cov_aou',
+      canonical_object: 'lr_y1_coverage',
+      canonical_engine: 'View',
+      canonical_backing_database: 'gnomad_lr_y1_cov_aou',
+      canonical_backing_table: 'lr_coverage',
+      logical_rows: fullGrch38PositionCount,
+      physical_copy_rows: 0,
+      receipt_items_processed: fullGrch38PositionCount,
+      contig_coverage: [...canonicalY1ContigLengths].map(([chrom, length]) => ({
+        chrom,
+        rows: length,
+        unique_positions: length,
+        min_pos: 1,
+        max_pos: length,
+      })),
+      numeric_violations: {
+        nonfinite: 0,
+        negative_depth: 0,
+        fraction_range_violations: 0,
+        monotonicity_violations: 0,
+      },
+      representative_view_query: {
+        rows: 10,
+        min_position: 100000,
+        max_position: 100009,
+        unique_positions: 10,
+        runs: 1,
+        cohorts: 1,
+      },
+      column_shape: y1CoverageViewColumnShape.map(([name, type]) => ({ name, type })),
+      source: {
+        cohort: 'aou',
+        modality: 'coverage',
+        uri: 'gs://source/aou.coverage.tsv.gz',
+        generation: '123',
+        byte_size: 100,
+        md5_base64: 'AAAAAAAAAAAAAAAAAAAAAA==',
+        crc32c_base64: 'AAAAAA==',
+        runtime_uri: 'gs://mirror/aou.coverage.tsv.gz',
+        runtime_generation: '456',
+        runtime_byte_size: 100,
+        runtime_md5_base64: 'AAAAAAAAAAAAAAAAAAAAAA==',
+        runtime_crc32c_base64: 'AAAAAA==',
+        source_access: 'direct',
+        mirror_verified_by_worker: true,
+      },
+      writer_fenced_and_revoked: true,
+    }
+    const expected = {
+      database: receipt.database,
+      run_id: 'coverage-aou',
+      cohort: 'aou' as const,
+      modality: 'coverage' as const,
+    }
+    const file = tempJson(receipt)
+    try {
+      const parsed = readY1AncillaryReceipt(file.path, expected)
+      expect(parsed.source_format).toBe('coverage_view_completion')
+      expect(parsed.reconciliation.canonical_rows).toBe(fullGrch38PositionCount)
+    } finally {
+      file.cleanup()
+    }
+
+    for (const drift of [
+      { canonical_engine: 'MergeTree' },
+      { canonical_backing_table: 'other' },
+      { physical_copy_rows: 1 },
+      { writer_fenced_and_revoked: false },
+    ]) {
+      const invalid = tempJson({ ...receipt, ...drift })
+      try {
+        expect(() => readY1AncillaryReceipt(invalid.path, expected)).toThrow(
+          'exact fenced raw-backed coverage view'
+        )
+      } finally {
+        invalid.cleanup()
+      }
     }
   })
 
