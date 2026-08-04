@@ -36,6 +36,7 @@ const variants = {
   allele_methylation: [null, null],
   motif_counts: [null, null],
   allele_purity: [null, null],
+  short_read_match_id: [null, null],
   populations: [[], []],
 }
 

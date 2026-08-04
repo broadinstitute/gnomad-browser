@@ -132,6 +132,57 @@ describe('summary variant columns', () => {
   })
 })
 
+describe('haplotype short-read match column', () => {
+  test('links matched IDs and renders a neutral dash for null IDs', () => {
+    const matched = {
+      ...haplotypeTr(1, 0),
+      variant_id: '22-100-A-T',
+      pos: 100,
+      end: null,
+      ref: 'A',
+      alt: 'T',
+      allele_type: 'snv',
+      allele_length: 0,
+      short_read_match_id: '22-100-A-G',
+    }
+    const unmatched = {
+      ...matched,
+      variant_id: '22-101-C-T',
+      pos: 101,
+      ref: 'C',
+      short_read_match_id: null,
+    }
+
+    render(
+      <HaplotypeVariantTable
+        mode="haplotype"
+        haplotypeGroups={{
+          groups: [
+            haplotypeGroup(1, 'sample-1', [matched]),
+            haplotypeGroup(2, 'sample-2', [unmatched]),
+          ],
+        }}
+      />
+    )
+
+    const headers = screen.getAllByRole('columnheader')
+    const srColumn = headers.findIndex((header) => header.textContent === 'SR Match')
+    expect(srColumn).toBeGreaterThan(-1)
+
+    const matchedRow = screen.getByRole('link', { name: matched.variant_id }).closest('tr')!
+    const matchedCell = matchedRow.querySelectorAll('td')[srColumn]
+    expect(matchedCell.textContent).toBe('22-100-A-G')
+    expect(matchedCell.querySelector('a')?.getAttribute('href')).toBe(
+      '/variant/22-100-A-G?dataset=gnomad_r4'
+    )
+
+    const unmatchedRow = screen.getByRole('link', { name: unmatched.variant_id }).closest('tr')!
+    const unmatchedCell = unmatchedRow.querySelectorAll('td')[srColumn]
+    expect(unmatchedCell.textContent).toBe('—')
+    expect(unmatchedCell.querySelector('a')).toBeNull()
+  })
+})
+
 describe('summary TR accordion distribution', () => {
   test('renders one locus row and ignores a repeated ALT record', () => {
     const first = summaryTr(1, -3, 4, 2)

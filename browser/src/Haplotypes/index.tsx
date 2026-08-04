@@ -559,6 +559,7 @@ export type LRVariant = {
   allele_methylation?: number | null
   motif_counts?: number[] | null
   allele_purity?: number | null
+  short_read_match_id?: string | null
   in_samples?: string[]
   in_haplotypes?: HaplotypeCarrierIdentity[]
   gt_phased?: boolean

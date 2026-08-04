@@ -671,6 +671,7 @@ export type SoAVariants = {
   allele_methylation: (number | null)[]
   motif_counts: (number[] | null)[]
   allele_purity: (number | null)[]
+  short_read_match_id: (string | null)[]
   populations: Array<{ id: string; af: number }>[]
 }
 
@@ -699,6 +700,7 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
     allele_methylation: new Array(n),
     motif_counts: new Array(n),
     allele_purity: new Array(n),
+    short_read_match_id: new Array(n),
     populations: new Array(n),
   }
   for (let i = 0; i < n; i++) {
@@ -725,6 +727,7 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
     soa.allele_methylation[i] = v.allele_methylation ?? null
     soa.motif_counts[i] = v.motif_counts
     soa.allele_purity[i] = v.allele_purity ?? null
+    soa.short_read_match_id[i] = v.short_read_match_id ?? null
     soa.populations[i] = v.populations
   }
   return soa

@@ -1115,26 +1115,19 @@ const TableRow = React.memo(function TableRow({
             <PopAfBar variant={v} />
           </td>
         )}
-        {mode === 'summary' && (
-          <td>
-            {v.short_read_match_id ? (
-              <Link
-                to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`}
-                preserveSelectedDataset={false}
-                title={v.short_read_match_id}
-              >
-                {v.short_read_match_id.length > 20
-                  ? `${v.short_read_match_id.slice(0, 20)}…`
-                  : v.short_read_match_id}
-              </Link>
-            ) : <span style={{ color: '#ccc' }}>—</span>}
-          </td>
-        )}
-        {mode === 'haplotype' && (
-          <td>
-            <span style={{ color: '#ccc' }}>—</span>
-          </td>
-        )}
+        <td>
+          {v.short_read_match_id ? (
+            <Link
+              to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`}
+              preserveSelectedDataset={false}
+              title={v.short_read_match_id}
+            >
+              {v.short_read_match_id.length > 20
+                ? `${v.short_read_match_id.slice(0, 20)}…`
+                : v.short_read_match_id}
+            </Link>
+          ) : <span style={{ color: '#ccc' }}>—</span>}
+        </td>
         <td className="numeric">{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
         <td className="numeric">{renderPredictor(v.phylop, 7.367, 9.741)}</td>
         <td>

@@ -76,6 +76,7 @@ export type SoAVariants = {
   allele_methylation: (number | null)[]
   motif_counts: (number[] | null)[]
   allele_purity: (number | null)[]
+  short_read_match_id?: (string | null)[]
   populations: Array<{ id: string; af: number }>[]
 }
 
@@ -109,6 +110,7 @@ export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
       allele_methylation: soa.allele_methylation[i],
       motif_counts: soa.motif_counts[i],
       allele_purity: soa.allele_purity[i],
+      short_read_match_id: soa.short_read_match_id?.[i] ?? null,
     }
   }
   return variants

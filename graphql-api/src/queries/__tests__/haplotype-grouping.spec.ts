@@ -1,5 +1,6 @@
 import {
   assembleHaplotypeGroups,
+  buildVariantsAndCarrierMap,
   createHaplotypeGroups,
   createHaplotypeGroupsFromGrouped,
   reconstructSamplesFromVariants,
@@ -105,6 +106,30 @@ describe('Haplotype Grouping Algorithm', () => {
       { sample_id: 'same-sample', vcf_strand: 1, phase_set: null },
       { sample_id: 'same-sample', vcf_strand: 2, phase_set: null },
     ])
+  })
+
+  it('packs matched and null short-read IDs into the REST SoA payload', () => {
+    const variant = (position: number, shortReadMatchId: string | null) => ({
+      variant_id: `chr22-${position}-A-G`,
+      position,
+      ref: 'A',
+      alt: 'G',
+      rsid: '',
+      info_AF: 0.1,
+      info_AC: 1,
+      info_AN: 10,
+      allele_type: 'snv',
+      allele_length: 0,
+      short_read_match_id: shortReadMatchId,
+      carriers: [],
+    })
+
+    const result = buildVariantsAndCarrierMap([
+      variant(100, '22-100-A-G'),
+      variant(200, null),
+    ], 'chr22')
+
+    expect(result.soa_variants.short_read_match_id).toEqual(['22-100-A-G', null])
   })
 
   it('retains VCF strand and phase set in the assignment assembly path', () => {

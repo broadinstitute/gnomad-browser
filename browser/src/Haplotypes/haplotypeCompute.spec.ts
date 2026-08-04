@@ -61,6 +61,7 @@ describe('rehydrateVariants', () => {
       allele_methylation: [null, null, null],
       motif_counts: [null, null, null],
       allele_purity: [null, null, null],
+      short_read_match_id: ['22-100-A-G', null, null],
       populations: [[], [], []],
     }
 
@@ -69,10 +70,19 @@ describe('rehydrateVariants', () => {
     const snv = filtersForLongReadVariantType('snv')
 
     expect(variants.map((variant) => variant.allele_type)).toEqual(['SNP', 'snv', 'DEL'])
+    expect(variants.map((variant) => variant.short_read_match_id)).toEqual([
+      '22-100-A-G', null, null,
+    ])
     expect(variants.filter((variant) => passesLongReadVariantTypeFilters(variant.allele_type, all)))
       .toHaveLength(3)
     expect(variants.filter((variant) => passesLongReadVariantTypeFilters(variant.allele_type, snv))
       .map((variant) => variant.variant_id)).toEqual(['snp', 'snv'])
+
+    const legacyPayload = { ...payload }
+    delete legacyPayload.short_read_match_id
+    expect(rehydrateVariants(legacyPayload).map((variant) => variant.short_read_match_id)).toEqual([
+      null, null, null,
+    ])
   })
 })
 
