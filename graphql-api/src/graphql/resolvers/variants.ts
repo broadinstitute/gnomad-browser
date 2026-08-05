@@ -1,5 +1,5 @@
 import { isRsId, isVariantId, normalizeVariantId } from '@gnomad/identifiers'
-import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
+import { isLongReadVariantId } from '../../../../dataset-metadata/longReadVariantId'
 
 import { DATASET_REFERENCE_GENOMES } from '../../datasets'
 import { UserVisibleError } from '../../errors'

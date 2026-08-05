@@ -51,7 +51,9 @@ cd "$REPO_ROOT"
 SOURCE_SHA="$(git rev-parse HEAD)"
 [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "Unable to resolve a full git SHA" >&2; exit 1; }
 CREATED="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-TAG="fullgenome-${SOURCE_SHA:0:12}-$(date -u +%Y%m%dt%H%M%Sz)"
+STAMP="$(date -u +%Y%m%dt%H%M%Sz)"
+TAG="fullgenome-${SOURCE_SHA:0:12}-${STAMP}"
+CLOUD_RUN_TAG="fg-${SOURCE_SHA:0:8}-${STAMP}"
 ROUTING_MANIFEST_SHA256="$(python3 - "$ROUTING_MANIFEST" <<'PY'
 import hashlib, pathlib, sys
 print(hashlib.sha256(pathlib.Path(sys.argv[1]).read_bytes()).hexdigest())
@@ -63,25 +65,42 @@ python3 "$SCRIPT_DIR/verify-release-config.py"
 build_one() {
   local component="$1" dockerfile="$2"
   local image="${REGISTRY}/gnomad-lr-${component}"
-  local build_id digest
+  local build_id build_output digest
   if gcloud artifacts docker images describe "${image}:${TAG}" \
     --project="$PROJECT_ID" >/dev/null 2>&1; then
     echo "Refusing to overwrite existing image tag: ${image}:${TAG}" >&2
     exit 1
   fi
   echo ">>> Building ${image}:${TAG} from ${SOURCE_SHA}"
-  build_id="$(gcloud builds submit \
+  build_output="$(gcloud builds submit \
     --project="$PROJECT_ID" \
     --config="$CLOUDBUILD_CONFIG" \
     --substitutions="_DOCKERFILE=${dockerfile},_IMAGE=${image},_TAG=${TAG},_SOURCE_SHA=${SOURCE_SHA},_CREATED=${CREATED},_ROUTING_MANIFEST_SHA256=${ROUTING_MANIFEST_SHA256},_LR_Y1_ENABLED=true" \
     --timeout=15m \
     --format='value(id)' \
     .)"
+  build_id="$(python3 - "$build_output" <<'PY'
+import re, sys
+matches = sorted(set(re.findall(r"(?i)(?<![0-9a-f])[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?![0-9a-f])", sys.argv[1])))
+if len(matches) != 1:
+    raise SystemExit(f"expected one Cloud Build UUID, got {matches}")
+print(matches[0])
+PY
+)"
   digest="$(gcloud artifacts docker images describe "${image}:${TAG}" \
     --project="$PROJECT_ID" \
     --format='value(image_summary.digest)')"
   [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "Invalid resolved digest: $digest" >&2; exit 1; }
-  printf '%s\t%s\t%s\t%s\n' "$component" "$image" "$build_id" "$digest" >>"$RESULTS_FILE"
+  python3 - "$RESULTS_FILE" "$component" "$image" "$build_id" "$digest" <<'PY'
+import json, sys
+with open(sys.argv[1], "a", encoding="utf-8") as stream:
+    stream.write(json.dumps({
+        "component": sys.argv[2],
+        "image": sys.argv[3],
+        "build_id": sys.argv[4],
+        "digest": sys.argv[5],
+    }, separators=(",", ":")) + "\n")
+PY
 }
 
 RESULTS_FILE="$(mktemp)"
@@ -92,16 +111,18 @@ $BUILD_BROWSER && build_one browser deploy/dockerfiles/browser/browser.dockerfil
 if [[ -z "$RECEIPT_PATH" ]]; then
   RECEIPT_PATH="/tmp/gnomad-lr-${TAG}-images.json"
 fi
-python3 - "$RESULTS_FILE" "$RECEIPT_PATH" "$SOURCE_SHA" "$TAG" "$CREATED" "$ROUTING_MANIFEST_SHA256" <<'PY'
+python3 - "$RESULTS_FILE" "$RECEIPT_PATH" "$SOURCE_SHA" "$TAG" "$CREATED" "$ROUTING_MANIFEST_SHA256" "$CLOUD_RUN_TAG" <<'PY'
 import json, pathlib, sys
 rows = {}
 for line in pathlib.Path(sys.argv[1]).read_text().splitlines():
-    component, image, build_id, digest = line.split("\t")
-    rows[component] = {"image": image, "tag": sys.argv[4], "digest": digest, "build_id": build_id}
+    record = json.loads(line)
+    component = record.pop("component")
+    rows[component] = {**record, "tag": sys.argv[4]}
 out = {
     "schema_version": 1,
     "source_sha": sys.argv[3],
     "tag": sys.argv[4],
+    "cloud_run_tag": sys.argv[7],
     "created": sys.argv[5],
     "routing_artifact_manifest_sha256": sys.argv[6],
     "images": rows,

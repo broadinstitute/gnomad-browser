@@ -1,5 +1,5 @@
 import { isRsId } from '@gnomad/identifiers'
-import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
+import { isLongReadVariantId } from '../../../../dataset-metadata/longReadVariantId'
 import { UserVisibleError } from '../../errors'
 import {
   fetchVariantById,

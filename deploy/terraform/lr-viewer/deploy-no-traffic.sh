@@ -21,7 +21,7 @@ CONFIRMED=false
 usage() {
   cat <<'USAGE'
 Usage: deploy-no-traffic.sh --api-digest sha256:... --browser-digest sha256:... \
-  --tag fullgenome-<12sha>-<UTC> --evidence-dir DIR --confirm-no-traffic-deploy
+  --tag fg-<8sha>-<UTC> --evidence-dir DIR --confirm-no-traffic-deploy
 
 Queries and archives live service state, patches only image/env on the existing
 services, and creates tagged revisions with --no-traffic. The browser is pointed at
@@ -46,6 +46,10 @@ done
 [[ "$API_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "Invalid --api-digest" >&2; exit 2; }
 [[ "$BROWSER_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "Invalid --browser-digest" >&2; exit 2; }
 [[ "$TAG" =~ ^[a-z][a-z0-9-]{0,62}$ ]] || { echo "Invalid Cloud Run tag" >&2; exit 2; }
+# Cloud Run tagged hostnames reserve at most 46 characters for service + tag.
+# Check both services locally so a valid image tag cannot reach a partial deployment.
+(( ${#TAG} + ${#API_SERVICE} <= 46 )) || { echo "Cloud Run tag is too long for ${API_SERVICE}" >&2; exit 2; }
+(( ${#TAG} + ${#BROWSER_SERVICE} <= 46 )) || { echo "Cloud Run tag is too long for ${BROWSER_SERVICE}" >&2; exit 2; }
 [[ -n "$EVIDENCE_DIR" ]] || { echo "--evidence-dir is required" >&2; exit 2; }
 command -v gcloud >/dev/null || { echo "gcloud is required" >&2; exit 1; }
 command -v python3 >/dev/null || { echo "python3 is required" >&2; exit 1; }

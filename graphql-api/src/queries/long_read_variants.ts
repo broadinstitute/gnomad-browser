@@ -3,7 +3,7 @@ import {
   isY1PilotEnabled,
 } from '../clickhouse'
 import { isRsId } from '@gnomad/identifiers'
-import { parseLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
+import { parseLongReadVariantId } from '../../../dataset-metadata/longReadVariantId'
 import { getFilteredRegions } from './variant-datasets/gnomad-v4-variant-queries'
 import { mergeOverlappingRegions } from './helpers/region-helpers'
 import { withCache } from '../cache'

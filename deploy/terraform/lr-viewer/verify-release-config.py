@@ -75,6 +75,20 @@ def main() -> None:
     require("node:18.17-alpine@sha256:" in api_dockerfile, "API Node base is not digest pinned")
     require("pnpm@8.14.3" in api_dockerfile and "pnpm@^" not in api_dockerfile, "API pnpm is not exactly pinned")
 
+    runtime_imports = {
+        ROOT / "graphql-api/src/graphql/resolvers/variants.ts": "../../../../dataset-metadata/longReadVariantId",
+        ROOT / "graphql-api/src/graphql/resolvers/long_read_variants.ts": "../../../../dataset-metadata/longReadVariantId",
+        ROOT / "graphql-api/src/queries/long_read_variants.ts": "../../../dataset-metadata/longReadVariantId",
+    }
+    for path, expected_import in runtime_imports.items():
+        source = path.read_text()
+        require(expected_import in source, f"{path.relative_to(ROOT)} does not use the emitted relative module")
+        require("@gnomad/dataset-metadata/longReadVariantId" not in source, f"{path.relative_to(ROOT)} retains a source-only runtime import")
+
+    packaging_test = (SCRIPT_DIR / "test-api-production-emit.sh").read_text()
+    require("tsconfig.build.json" in packaging_test, "API packaging regression does not run the production emit")
+    require("NODE_ENV=production" in packaging_test and "node -" in packaging_test, "API packaging regression does not load output with raw Node")
+
     browser_dockerfile = (ROOT / "deploy/dockerfiles/browser/browser.dockerfile").read_text()
     require("ARG LR_Y1_ENABLED=false" in browser_dockerfile, "browser LR_Y1_ENABLED build input is not explicit")
     require("browser/build.env" not in browser_dockerfile, "browser build still depends on ignored build.env")
@@ -99,7 +113,10 @@ def main() -> None:
     build_script = (SCRIPT_DIR / "deploy.sh").read_text()
     stage_script = (SCRIPT_DIR / "deploy-no-traffic.sh").read_text()
     require("--confirm-build-push" in build_script and "terraform apply" not in build_script.lower(), "build script is not safely build-only")
+    require('"cloud_run_tag"' in build_script, "build receipt omits a generated Cloud Run staging tag")
+    require("json.dumps" in build_script and 'line.split("\\t")' not in build_script, "build receipt still uses fragile TSV serialization")
     require("--no-traffic" in stage_script and "@${API_DIGEST}" in stage_script, "staging script is not no-traffic/digest pinned")
+    require("${#TAG} + ${#BROWSER_SERVICE} <= 46" in stage_script, "staging script does not enforce Cloud Run hostname length")
     require("terraform apply" not in stage_script.lower(), "staging script applies Terraform")
 
     for path in [MANIFEST_PATH, API_ENV_PATH]:

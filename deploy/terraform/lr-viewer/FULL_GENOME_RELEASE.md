@@ -29,9 +29,11 @@ deploy/terraform/lr-viewer/deploy.sh \
   --receipt /secure/evidence/images.json
 ```
 
-The script creates one unique `fullgenome-<12sha>-<UTC>` tag per component, embeds
-OCI source/routing labels, requests Cloud Build verified provenance, resolves each
-pushed digest, and writes an image receipt. It never writes `:latest`.
+The script creates one unique `fullgenome-<12sha>-<UTC>` image tag per component,
+embeds OCI source/routing labels, requests Cloud Build verified provenance, resolves
+each pushed digest, and writes an image receipt. The receipt also supplies a shorter
+`cloud_run_tag` (`fg-<8sha>-<UTC>`) that is valid with both service names. The script
+never writes `:latest`.
 
 ## Authorized tagged no-traffic phase
 
@@ -41,7 +43,7 @@ After separately approving the resolved digests:
 deploy/terraform/lr-viewer/deploy-no-traffic.sh \
   --api-digest sha256:... \
   --browser-digest sha256:... \
-  --tag fullgenome-<12sha>-<UTC> \
+  --tag fg-<8sha>-<UTC> \
   --evidence-dir /secure/evidence/no-traffic \
   --confirm-no-traffic-deploy
 ```
