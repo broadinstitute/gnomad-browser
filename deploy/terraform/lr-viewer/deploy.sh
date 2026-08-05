@@ -61,7 +61,8 @@ PY
 python3 "$SCRIPT_DIR/verify-release-config.py"
 
 build_one() {
-  local component="$1" dockerfile="$2" image="${REGISTRY}/gnomad-lr-${component}"
+  local component="$1" dockerfile="$2"
+  local image="${REGISTRY}/gnomad-lr-${component}"
   local build_id digest
   if gcloud artifacts docker images describe "${image}:${TAG}" \
     --project="$PROJECT_ID" >/dev/null 2>&1; then
