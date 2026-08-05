@@ -12,7 +12,7 @@ ROOT = SCRIPT_DIR.parents[2]
 CONFIG_DIR = ROOT / "graphql-api" / "config"
 MANIFEST_PATH = CONFIG_DIR / "full-genome-routing-artifact-manifest.json"
 API_ENV_PATH = SCRIPT_DIR / "full-genome-api-env.json"
-EXPECTED_ENV_SHA256 = "52d4e56101f5f3eb83e818386b17a49a0940aaf706b7f5ca8fda6e93b3a09acf"
+EXPECTED_ENV_SHA256 = "58528d7925accc3bf0dabb6fabdc56b28f02b732a65e1942794d3132dd6d90f5"
 EXPECTED_ARTIFACTS = {
     "y1-presentation-primary-manifests.json",
     "y1-source-phased-methylation-serving-receipt.json",
@@ -56,9 +56,9 @@ def main() -> None:
     api_env = json.loads(env_bytes)
     require(api_env["CLICKHOUSE_URL"] == "http://192.168.0.124:8123", "generic ClickHouse endpoint is wrong")
     require(api_env["LR_Y1_CLICKHOUSE_URL"] == "http://192.168.0.124:8123", "Y1 ClickHouse endpoint is wrong")
-    require(api_env["REDIS_HOST"] == "192.168.0.6", "Redis host must remain on the old data VM")
-    require(api_env["CACHE_REDIS_URL"] == "redis://192.168.0.6:6379/1", "cache Redis route is wrong")
-    require(api_env["RATE_LIMITER_REDIS_URL"] == "redis://192.168.0.6:6379/2", "rate-limiter Redis route is wrong")
+    require(api_env["REDIS_HOST"] == "10.252.0.3", "Redis host must use the managed Redis instance")
+    require(api_env["CACHE_REDIS_URL"] == "redis://10.252.0.3:6379/1", "cache Redis route is wrong")
+    require(api_env["RATE_LIMITER_REDIS_URL"] == "redis://10.252.0.3:6379/2", "rate-limiter Redis route is wrong")
     require(api_env["LR_Y1_ENABLED"] == "true", "API Y1 mode must be enabled")
     require(json.loads(api_env["LR_Y1_RUN_MAP"])["hgsvc_hprc"]["chr3"].endswith("recovery-r2"), "approved chr3 recovery route is missing")
 

@@ -28,7 +28,7 @@ resource "google_cloud_run_v2_service" "api" {
       }
 
       # This checked map deliberately decouples full-genome ClickHouse
-      # (192.168.0.124) from Redis on the legacy data VM (192.168.0.6).
+      # (192.168.0.124) from the managed Redis instance (10.252.0.3).
       dynamic "env" {
         for_each = local.full_genome_api_env
         content {

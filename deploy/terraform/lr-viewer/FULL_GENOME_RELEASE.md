@@ -9,7 +9,8 @@ Terraform or changes traffic.
   API routing/admission artifacts by repository path, image path, byte count, and
   SHA-256.
 - `full-genome-api-env.json` is the exact API runtime map. ClickHouse uses
-  `192.168.0.124:8123`; Redis remains on `192.168.0.6:6379`.
+  `192.168.0.124:8123`; cache and rate limiting use the managed Redis instance at
+  `10.252.0.3:6379` (databases 1 and 2, respectively).
 - `verify-release-config.py` checks artifact hashes, the exact Docker build allowlist,
   browser compile-time Y1 input, immutable image handling, and endpoint separation.
 
