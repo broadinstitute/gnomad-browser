@@ -29,7 +29,6 @@ steps:
       ]
 options:
   dynamicSubstitutions: true
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 substitutions:
   _BUILD_TAG: '${_BRANCH_FOR_IMAGE_NAME}-${BUILD_ID}'
 

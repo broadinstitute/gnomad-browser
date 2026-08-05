@@ -22,3 +22,5 @@ steps:
       '--image',
       'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-api:${_IMAGE_TAG}',
     ]
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
