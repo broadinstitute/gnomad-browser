@@ -1,6 +1,14 @@
-FROM --platform=linux/amd64 node:18.17-alpine as build
-RUN apk add bash
-RUN npm install -g pnpm@^8.14.3
+# check=skip=JSONArgsRecommended
+# The final shell-form CMD intentionally renders nginx config from runtime env.
+FROM node:18.17-alpine@sha256:3482a20c97e401b56ac50ba8920cc7b5b2022bfc6aa7d4e4c231755770cf892f AS build
+RUN apk add --no-cache bash
+RUN npm install -g pnpm@8.14.3
+
+# Browser feature switches are compile-time inputs, not Cloud Run runtime env.
+ARG LR_Y1_ENABLED=false
+ARG REPORT_VARIANT_URL=
+ARG REPORT_VARIANT_VARIANT_ID_PARAMETER=
+ARG REPORT_VARIANT_DATASET_PARAMETER=
 
 RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
 WORKDIR /home/node/app
@@ -25,16 +33,15 @@ COPY --chown=node:node tsconfig.build.json .
 COPY --chown=node:node dataset-metadata dataset-metadata
 COPY --chown=node:node browser browser
 
-# Build
-COPY --chown=node:node browser/build.env .
-RUN export $(cat build.env | xargs); cd browser && pnpm build
+# Build with the explicit ARG values above available to webpack.
+RUN cd browser && pnpm build
 
 # Compress static files for use with nginx's gzip_static
 RUN find browser/dist/public -type f | grep -E '\.(css|html|js|json|map|svg|xml)$' \
   | xargs -I{} -n1 sh -c 'gzip -9 -c "$1" > "$1".gz; MTIME=$(date -R -r "$1" +"%Y-%m-%d %H:%M:%S"); touch -d "$MTIME" "$1.gz"' -- {}
 
 ###############################################################################
-FROM --platform=linux/amd64 nginx:stable-alpine
+FROM nginx:stable-alpine@sha256:97d490c12ba55b4946b01546d1c3ed324e8d41ab1c9fcb2a616aa470620e5b46
 
 COPY --from=build /home/node/app/browser/dist/public /usr/share/nginx/html
 

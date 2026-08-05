@@ -1,0 +1,241 @@
+{
+  "ancillary_run_id": "demo-str-aou-full-genome-20260804-r1",
+  "cohort": "aou",
+  "cohort_accepted_tasks": 1,
+  "cohort_expected_tasks": 1,
+  "contig_coverage": [
+    {
+      "available_exact": 354881,
+      "chrom": "chr1",
+      "mapping_count": 368644,
+      "max_position": 248944937,
+      "min_position": 10616,
+      "unavailable_no_exact_key": 13763
+    },
+    {
+      "available_exact": 204248,
+      "chrom": "chr10",
+      "mapping_count": 212803,
+      "max_position": 133786695,
+      "min_position": 14662,
+      "unavailable_no_exact_key": 8555
+    },
+    {
+      "available_exact": 199351,
+      "chrom": "chr11",
+      "mapping_count": 207291,
+      "max_position": 135076167,
+      "min_position": 64558,
+      "unavailable_no_exact_key": 7940
+    },
+    {
+      "available_exact": 208965,
+      "chrom": "chr12",
+      "mapping_count": 217303,
+      "max_position": 133264213,
+      "min_position": 10736,
+      "unavailable_no_exact_key": 8338
+    },
+    {
+      "available_exact": 144606,
+      "chrom": "chr13",
+      "mapping_count": 150737,
+      "max_position": 114353574,
+      "min_position": 18174587,
+      "unavailable_no_exact_key": 6131
+    },
+    {
+      "available_exact": 137000,
+      "chrom": "chr14",
+      "mapping_count": 142542,
+      "max_position": 106883178,
+      "min_position": 16040616,
+      "unavailable_no_exact_key": 5542
+    },
+    {
+      "available_exact": 124948,
+      "chrom": "chr15",
+      "mapping_count": 129925,
+      "max_position": 101980165,
+      "min_position": 17002779,
+      "unavailable_no_exact_key": 4977
+    },
+    {
+      "available_exact": 135343,
+      "chrom": "chr16",
+      "mapping_count": 141223,
+      "max_position": 90224451,
+      "min_position": 10426,
+      "unavailable_no_exact_key": 5880
+    },
+    {
+      "available_exact": 140528,
+      "chrom": "chr17",
+      "mapping_count": 146442,
+      "max_position": 83243703,
+      "min_position": 107403,
+      "unavailable_no_exact_key": 5914
+    },
+    {
+      "available_exact": 111919,
+      "chrom": "chr18",
+      "mapping_count": 116586,
+      "max_position": 80261999,
+      "min_position": 10928,
+      "unavailable_no_exact_key": 4667
+    },
+    {
+      "available_exact": 111920,
+      "chrom": "chr19",
+      "mapping_count": 117585,
+      "max_position": 58606903,
+      "min_position": 60913,
+      "unavailable_no_exact_key": 5665
+    },
+    {
+      "available_exact": 360524,
+      "chrom": "chr2",
+      "mapping_count": 374176,
+      "max_position": 242182001,
+      "min_position": 10834,
+      "unavailable_no_exact_key": 13652
+    },
+    {
+      "available_exact": 96700,
+      "chrom": "chr20",
+      "mapping_count": 100858,
+      "max_position": 64333295,
+      "min_position": 68409,
+      "unavailable_no_exact_key": 4158
+    },
+    {
+      "available_exact": 52884,
+      "chrom": "chr21",
+      "mapping_count": 55454,
+      "max_position": 46698809,
+      "min_position": 5055118,
+      "unavailable_no_exact_key": 2570
+    },
+    {
+      "available_exact": 61763,
+      "chrom": "chr22",
+      "mapping_count": 64786,
+      "max_position": 50806958,
+      "min_position": 10515024,
+      "unavailable_no_exact_key": 3023
+    },
+    {
+      "available_exact": 293440,
+      "chrom": "chr3",
+      "mapping_count": 304623,
+      "max_position": 198234261,
+      "min_position": 10973,
+      "unavailable_no_exact_key": 11183
+    },
+    {
+      "available_exact": 281550,
+      "chrom": "chr4",
+      "mapping_count": 293066,
+      "max_position": 190203208,
+      "min_position": 10531,
+      "unavailable_no_exact_key": 11516
+    },
+    {
+      "available_exact": 264226,
+      "chrom": "chr5",
+      "mapping_count": 274183,
+      "max_position": 181477858,
+      "min_position": 10992,
+      "unavailable_no_exact_key": 9957
+    },
+    {
+      "available_exact": 253908,
+      "chrom": "chr6",
+      "mapping_count": 264266,
+      "max_position": 170744468,
+      "min_position": 62121,
+      "unavailable_no_exact_key": 10358
+    },
+    {
+      "available_exact": 244065,
+      "chrom": "chr7",
+      "mapping_count": 254419,
+      "max_position": 159335240,
+      "min_position": 10699,
+      "unavailable_no_exact_key": 10354
+    },
+    {
+      "available_exact": 214837,
+      "chrom": "chr8",
+      "mapping_count": 223440,
+      "max_position": 145076919,
+      "min_position": 64867,
+      "unavailable_no_exact_key": 8603
+    },
+    {
+      "available_exact": 176702,
+      "chrom": "chr9",
+      "mapping_count": 183919,
+      "max_position": 138323804,
+      "min_position": 10974,
+      "unavailable_no_exact_key": 7217
+    },
+    {
+      "available_exact": 219928,
+      "chrom": "chrX",
+      "mapping_count": 227226,
+      "max_position": 156028976,
+      "min_position": 11121,
+      "unavailable_no_exact_key": 7298
+    },
+    {
+      "available_exact": 27452,
+      "chrom": "chrY",
+      "mapping_count": 27677,
+      "max_position": 56887101,
+      "min_position": 2782327,
+      "unavailable_no_exact_key": 225
+    }
+  ],
+  "database": "gnomad_lr_y1_scratch_demo_str_aou_fg_20260804_r1",
+  "duplicate_exact_keys": 0,
+  "duplicate_positions": 0,
+  "duplicate_primary_ids": 0,
+  "failed_attempts": 0,
+  "job_accepted_tasks": 2,
+  "job_expected_tasks": 2,
+  "job_uuid": "31e231c6-1f05-4fb2-bc97-bb15f4441274",
+  "mapping_count": 4599174,
+  "mapping_statuses": {
+    "available_exact": 4421688,
+    "unavailable_ambiguous": 0,
+    "unavailable_no_exact_key": 177486
+  },
+  "modality": "str",
+  "physical_rows": 4421688,
+  "raw_rows": 4771463,
+  "receipt_items_processed": 4771463,
+  "rejects": 0,
+  "schema_version": 1,
+  "selected_primary_direct_tr_count": 4599174,
+  "selected_primary_runs": 24,
+  "source": {
+    "byte_size": 1959427791,
+    "cohort": "aou",
+    "crc32c_base64": "FZB2qw==",
+    "generation": "1784224300545239",
+    "md5_base64": "ap9Wx7n/hcp+FaOF5DjR9Q==",
+    "mirror_verified_by_worker": true,
+    "modality": "str",
+    "runtime_byte_size": 1959427791,
+    "runtime_crc32c_base64": "FZB2qw==",
+    "runtime_generation": "1785829280396632",
+    "runtime_md5_base64": "ap9Wx7n/hcp+FaOF5DjR9Q==",
+    "runtime_uri": "gs://gnomad-lr-data/ancillary/y1-full-genome-coverage-str-20260804-r1-611d22d7/objects/fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv",
+    "source_access": "worker_403_mirrored",
+    "uri": "gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv"
+  },
+  "status": "validated_success",
+  "unavailable_canonical_joins": 0,
+  "writer_fenced_and_revoked": true
+}

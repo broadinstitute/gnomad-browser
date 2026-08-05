@@ -9,10 +9,6 @@ terraform {
       source  = "hashicorp/google"
       version = ">= 7.22.0"
     }
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = ">= 3.0.0"
-    }
   }
 }
 
@@ -22,30 +18,30 @@ provider "google" {
   zone    = "us-east1-c"
 }
 
-provider "docker" {
-  registry_auth {
-    address     = "us-docker.pkg.dev"
-    config_file = pathexpand("~/.docker/config.json")
+variable "api_image_digest" {
+  description = "Immutable gnomad-lr-api image digest (sha256:...)"
+  type        = string
+
+  validation {
+    condition     = can(regex("^sha256:[0-9a-f]{64}$", var.api_image_digest))
+    error_message = "api_image_digest must be an immutable sha256 digest."
   }
 }
 
-variable "es_proxy_url" {
-  description = "URL of the read-only ES proxy Cloud Run service"
+variable "browser_image_digest" {
+  description = "Immutable gnomad-lr-browser image digest (sha256:...)"
   type        = string
+
+  validation {
+    condition     = can(regex("^sha256:[0-9a-f]{64}$", var.browser_image_digest))
+    error_message = "browser_image_digest must be an immutable sha256 digest."
+  }
 }
 
 locals {
-  api_image_name     = "us-docker.pkg.dev/gnomadev/gnomad/gnomad-lr-api"
-  browser_image_name = "us-docker.pkg.dev/gnomadev/gnomad/gnomad-lr-browser"
-}
-
-# Look up image digests — changes whenever an image is pushed
-data "docker_registry_image" "api" {
-  name = "${local.api_image_name}:latest"
-}
-
-data "docker_registry_image" "browser" {
-  name = "${local.browser_image_name}:latest"
+  api_image_name      = "us-docker.pkg.dev/gnomadev/gnomad/gnomad-lr-api"
+  browser_image_name  = "us-docker.pkg.dev/gnomadev/gnomad/gnomad-lr-browser"
+  full_genome_api_env = jsondecode(file("${path.module}/full-genome-api-env.json"))
 }
 
 # --- Networking ---

@@ -1,0 +1,113 @@
+#!/usr/bin/env python3
+"""Offline checks for the immutable gnomAD-LR full-genome release inputs."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT = SCRIPT_DIR.parents[2]
+CONFIG_DIR = ROOT / "graphql-api" / "config"
+MANIFEST_PATH = CONFIG_DIR / "full-genome-routing-artifact-manifest.json"
+API_ENV_PATH = SCRIPT_DIR / "full-genome-api-env.json"
+EXPECTED_ENV_SHA256 = "52d4e56101f5f3eb83e818386b17a49a0940aaf706b7f5ca8fda6e93b3a09acf"
+EXPECTED_ARTIFACTS = {
+    "y1-presentation-primary-manifests.json",
+    "y1-source-phased-methylation-serving-receipt.json",
+    "completion-receipt-coverage-aou.json",
+    "completion-receipt-coverage-hgsvc_hprc.json",
+    "completion-receipt-str-aou.json",
+    "completion-receipt-str-hgsvc_hprc.json",
+    "sample-total-completion-receipt.json",
+    "terminal-metadata-receipt.json",
+}
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise SystemExit(f"release config check failed: {message}")
+
+
+def main() -> None:
+    manifest = json.loads(MANIFEST_PATH.read_text())
+    require(manifest.get("schema_version") == 1, "unexpected artifact manifest schema")
+    artifacts = manifest.get("artifacts", [])
+    names = {Path(item["path"]).name for item in artifacts}
+    require(len(artifacts) == 8 and names == EXPECTED_ARTIFACTS, "artifact allowlist is not the exact eight-file bundle")
+
+    for item in artifacts:
+        relative = Path(item["path"])
+        require(not relative.is_absolute() and ".." not in relative.parts, f"unsafe artifact path {relative}")
+        path = ROOT / relative
+        require(path.parent == CONFIG_DIR, f"artifact is outside graphql-api/config: {relative}")
+        require(path.is_file(), f"missing artifact {relative}")
+        require(path.stat().st_size == item["bytes"], f"byte count mismatch for {relative}")
+        require(sha256(path) == item["sha256"], f"SHA-256 mismatch for {relative}")
+        require(item["target_in_image"] == f"/app/graphql-api/config/{path.name}", f"bad image target for {relative}")
+
+    env_bytes = API_ENV_PATH.read_bytes()
+    require(hashlib.sha256(env_bytes).hexdigest() == EXPECTED_ENV_SHA256, "full-genome API env differs from the approved proposal")
+    api_env = json.loads(env_bytes)
+    require(api_env["CLICKHOUSE_URL"] == "http://192.168.0.124:8123", "generic ClickHouse endpoint is wrong")
+    require(api_env["LR_Y1_CLICKHOUSE_URL"] == "http://192.168.0.124:8123", "Y1 ClickHouse endpoint is wrong")
+    require(api_env["REDIS_HOST"] == "192.168.0.6", "Redis host must remain on the old data VM")
+    require(api_env["CACHE_REDIS_URL"] == "redis://192.168.0.6:6379/1", "cache Redis route is wrong")
+    require(api_env["RATE_LIMITER_REDIS_URL"] == "redis://192.168.0.6:6379/2", "rate-limiter Redis route is wrong")
+    require(api_env["LR_Y1_ENABLED"] == "true", "API Y1 mode must be enabled")
+    require(json.loads(api_env["LR_Y1_RUN_MAP"])["hgsvc_hprc"]["chr3"].endswith("recovery-r2"), "approved chr3 recovery route is missing")
+
+    api_dockerfile = (ROOT / "deploy/dockerfiles/browser/api.dockerfile").read_text()
+    api_ignore = (ROOT / "deploy/dockerfiles/browser/api.dockerfile.dockerignore").read_text().splitlines()
+    config_negations = {line[1:] for line in api_ignore if line.startswith("!graphql-api/config/")}
+    require(config_negations == {f"graphql-api/config/{name}" for name in EXPECTED_ARTIFACTS}, "API dockerignore config allowlist is not exact")
+    copy_lines = [line for line in api_dockerfile.splitlines() if line.startswith("COPY ")]
+    for name in EXPECTED_ARTIFACTS:
+        source = f"graphql-api/config/{name}"
+        matches = [line for line in copy_lines if line.split()[2] == source]
+        require(len(matches) == 1, f"API Dockerfile must copy {name} exactly once")
+    require("COPY --chown=node:node graphql-api/config /app" not in api_dockerfile, "API Dockerfile copies config wholesale")
+    require("node:18.17-alpine@sha256:" in api_dockerfile, "API Node base is not digest pinned")
+    require("pnpm@8.14.3" in api_dockerfile and "pnpm@^" not in api_dockerfile, "API pnpm is not exactly pinned")
+
+    browser_dockerfile = (ROOT / "deploy/dockerfiles/browser/browser.dockerfile").read_text()
+    require("ARG LR_Y1_ENABLED=false" in browser_dockerfile, "browser LR_Y1_ENABLED build input is not explicit")
+    require("browser/build.env" not in browser_dockerfile, "browser build still depends on ignored build.env")
+    require("node:18.17-alpine@sha256:" in browser_dockerfile, "browser Node base is not digest pinned")
+    require("nginx:stable-alpine@sha256:" in browser_dockerfile, "browser nginx base is not digest pinned")
+    require("pnpm@8.14.3" in browser_dockerfile and "pnpm@^" not in browser_dockerfile, "browser pnpm is not exactly pinned")
+
+    cloudbuild = (SCRIPT_DIR / "cloudbuild.yaml").read_text()
+    require("${_IMAGE}:${_TAG}" in cloudbuild and ":latest" not in cloudbuild, "Cloud Build does not use only a unique supplied tag")
+    require("LR_Y1_ENABLED=${_LR_Y1_ENABLED}" in cloudbuild, "Cloud Build omits browser Y1 input")
+    require("org.opencontainers.image.revision" in cloudbuild, "Cloud Build omits OCI source revision")
+    require("org.gnomad.lr.routing-manifest.sha256" in cloudbuild, "Cloud Build omits routing provenance")
+    require("requestedVerifyOption: VERIFIED" in cloudbuild, "Cloud Build provenance verification is not requested")
+
+    main_tf = (SCRIPT_DIR / "main.tf").read_text()
+    cloud_run_tf = (SCRIPT_DIR / "cloud-run.tf").read_text()
+    require(":latest" not in main_tf and "docker_registry_image" not in main_tf, "Terraform still resolves mutable tags")
+    require("var.api_image_digest" in cloud_run_tf and "var.browser_image_digest" in cloud_run_tf, "Terraform images are not digest inputs")
+    require("local.full_genome_api_env" in cloud_run_tf, "Terraform does not use the approved exact env map")
+    require("google_compute_instance.clickhouse_vm.network_interface" not in cloud_run_tf, "Cloud Run env still couples ClickHouse/Redis to one VM")
+
+    build_script = (SCRIPT_DIR / "deploy.sh").read_text()
+    stage_script = (SCRIPT_DIR / "deploy-no-traffic.sh").read_text()
+    require("--confirm-build-push" in build_script and "terraform apply" not in build_script.lower(), "build script is not safely build-only")
+    require("--no-traffic" in stage_script and "@${API_DIGEST}" in stage_script, "staging script is not no-traffic/digest pinned")
+    require("terraform apply" not in stage_script.lower(), "staging script applies Terraform")
+
+    for path in [MANIFEST_PATH, API_ENV_PATH]:
+        require("/Users/" not in path.read_text(), f"local absolute path leaked into {path.relative_to(ROOT)}")
+
+    print(f"verified 8 artifacts; routing manifest sha256={sha256(MANIFEST_PATH)}")
+    print(f"verified approved API env sha256={EXPECTED_ENV_SHA256}")
+
+
+if __name__ == "__main__":
+    main()

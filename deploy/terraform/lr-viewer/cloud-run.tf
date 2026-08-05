@@ -21,39 +21,20 @@ resource "google_cloud_run_v2_service" "api" {
     }
 
     containers {
-      image = "${local.api_image_name}@${data.docker_registry_image.api.sha256_digest}"
+      image = "${local.api_image_name}@${var.api_image_digest}"
 
       ports {
         container_port = 8000
       }
 
-      env {
-        name  = "NODE_ENV"
-        value = "production"
-      }
-      env {
-        name  = "CLICKHOUSE_URL"
-        value = "http://${google_compute_instance.clickhouse_vm.network_interface.0.network_ip}:8123"
-      }
-      env {
-        name  = "ELASTICSEARCH_URL"
-        value = var.es_proxy_url
-      }
-      env {
-        name  = "REDIS_HOST"
-        value = google_compute_instance.clickhouse_vm.network_interface.0.network_ip
-      }
-      env {
-        name  = "CACHE_REDIS_URL"
-        value = "redis://${google_compute_instance.clickhouse_vm.network_interface.0.network_ip}:6379/1"
-      }
-      env {
-        name  = "RATE_LIMITER_REDIS_URL"
-        value = "redis://${google_compute_instance.clickhouse_vm.network_interface.0.network_ip}:6379/2"
-      }
-      env {
-        name  = "NODE_OPTIONS"
-        value = "--max-old-space-size=6144"
+      # This checked map deliberately decouples full-genome ClickHouse
+      # (192.168.0.124) from Redis on the legacy data VM (192.168.0.6).
+      dynamic "env" {
+        for_each = local.full_genome_api_env
+        content {
+          name  = env.key
+          value = env.value
+        }
       }
 
       resources {
@@ -99,7 +80,7 @@ resource "google_cloud_run_v2_service" "browser" {
     }
 
     containers {
-      image = "${local.browser_image_name}@${data.docker_registry_image.browser.sha256_digest}"
+      image = "${local.browser_image_name}@${var.browser_image_digest}"
 
       ports {
         container_port = 80

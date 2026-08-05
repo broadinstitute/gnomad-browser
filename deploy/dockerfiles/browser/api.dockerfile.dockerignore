@@ -8,3 +8,12 @@
 !pnpm-workspace-api-docker.yaml
 !package.json
 !graphql-api/static_data
+!graphql-api/config
+!graphql-api/config/y1-presentation-primary-manifests.json
+!graphql-api/config/y1-source-phased-methylation-serving-receipt.json
+!graphql-api/config/completion-receipt-coverage-aou.json
+!graphql-api/config/completion-receipt-coverage-hgsvc_hprc.json
+!graphql-api/config/completion-receipt-str-aou.json
+!graphql-api/config/completion-receipt-str-hgsvc_hprc.json
+!graphql-api/config/sample-total-completion-receipt.json
+!graphql-api/config/terminal-metadata-receipt.json

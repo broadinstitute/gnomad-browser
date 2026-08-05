@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "completed_at_epoch": 1785838434,
+  "target_vm": "gnomad-lr-y1-full-genome-clickhouse",
+  "target_private_endpoint": "192.168.0.124:8123",
+  "database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+  "metadata_run_id": "y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1",
+  "status": "accepted_browser_admissible",
+  "activation": {
+    "requested": true,
+    "performed": false,
+    "reason": "repository activate-y1-metadata requires a serving-class target; this database is scratch-class; operator explicitly prohibited bypass",
+    "active_pointer_rows": 0
+  },
+  "source_evidence": {
+    "normalized_terra_snapshot_sha256": "1c3314f2f1ea2e99374a31b8e858d5851021e3913e216574fd2ac83656879485",
+    "metadata_source_manifest_sha256": "f78b3e3bda689d4c32df0f323ff71f986cfdbfd7ed6c2978aa9fbdaeefeba9ad",
+    "rows_sha256": "c28589e4ca14bc844467d6b8b0410fd6500720ebbdfbeedb57c05a1d6913c096",
+    "audit_sha256": "7a0dd8a001c8c6c209b74f5ae928bfb886b24319f708501cdf1dba16f74d1fa8",
+    "report_sha256": "1a4b29d9a0e827809d31ec64717efb43b234cf9da51ba32dbea7e7f721a19764"
+  },
+  "browser_shaped_lookup": {
+    "rows": 292,
+    "sha256": "5010cff5e7e0d802fb424434fba8368bf5b1578a94d9bbc7db002900e6c3b6d0",
+    "representatives": [
+      {
+        "sample_id": "HG00096",
+        "subpopulation": "N/A",
+        "superpopulation": "EUR"
+      },
+      {
+        "sample_id": "HG00126",
+        "subpopulation": "GBR",
+        "superpopulation": "EUR"
+      },
+      {
+        "sample_id": "HG002",
+        "subpopulation": "N/A",
+        "superpopulation": "ASJ"
+      },
+      {
+        "sample_id": "HG00408",
+        "subpopulation": "CHS",
+        "superpopulation": "EAS"
+      },
+      {
+        "sample_id": "HG01928",
+        "subpopulation": "PEL",
+        "superpopulation": "AMR"
+      },
+      {
+        "sample_id": "HG02486",
+        "subpopulation": "ACB",
+        "superpopulation": "AFR"
+      },
+      {
+        "sample_id": "HG02602",
+        "subpopulation": "PJL",
+        "superpopulation": "SAS"
+      }
+    ]
+  },
+  "expected_distributions_from_immutable_report": {
+    "superpopulation": {
+      "AFR": 97,
+      "AMR": 52,
+      "ASJ": 1,
+      "EAS": 61,
+      "EUR": 37,
+      "SAS": 44
+    },
+    "subpopulation": {
+      "ACB": 12,
+      "ASL": 1,
+      "ASW": 6,
+      "BEB": 10,
+      "CDX": 5,
+      "CHB": 5,
+      "CHS": 11,
+      "CLM": 11,
+      "ESN": 10,
+      "FIN": 9,
+      "GBR": 10,
+      "GIH": 8,
+      "GWD": 17,
+      "IBS": 3,
+      "ITU": 3,
+      "JPT": 16,
+      "KHV": 13,
+      "LWK": 6,
+      "MKK": 1,
+      "MSL": 9,
+      "MXL": 2,
+      "N/A": 62,
+      "PEL": 15,
+      "PJL": 10,
+      "PUR": 16,
+      "STU": 5,
+      "TSI": 8,
+      "YRI": 8
+    },
+    "sex": {
+      "N/A": 60,
+      "female": 116,
+      "male": 116
+    },
+    "collection": {
+      "1000G": 228,
+      "GIAB": 2,
+      "HapMap": 1,
+      "N/A": 61
+    },
+    "ancestry_source": {
+      "hprc": 230,
+      "supplemental": 62
+    }
+  },
+  "queries": {
+    "latest_metadata_runs": "SELECT ledger.metadata_run_id,ledger.state,ledger.release,ledger.cohort,ledger.reference_genome,ledger.source_manifest_id,toString(ledger.source_manifest_sha256) source_manifest_sha256,ledger.expected_roster_rows,ledger.observed_roster_rows,ledger.output_rows,ledger.publisher_identity,ledger.report_sha256,count() OVER (PARTITION BY ledger.metadata_run_id) latest_revision_rows FROM lr_y1_metadata_runs ledger INNER JOIN (SELECT metadata_run_id,max(revision) revision FROM lr_y1_metadata_runs GROUP BY metadata_run_id) latest ON ledger.metadata_run_id=latest.metadata_run_id AND ledger.revision=latest.revision FORMAT JSONEachRow",
+    "browser_admission_counts": "SELECT count() total,countIf(release='y1' AND cohort='hgsvc_hprc' AND reference_genome='GRCh38' AND source_manifest_id='hgsvc-hprc-y1-metadata-v1' AND source_manifest_sha256='f78b3e3bda689d4c32df0f323ff71f986cfdbfd7ed6c2978aa9fbdaeefeba9ad') exact,uniqExactIf(sample_id,release='y1' AND cohort='hgsvc_hprc' AND reference_genome='GRCh38' AND source_manifest_id='hgsvc-hprc-y1-metadata-v1' AND source_manifest_sha256='f78b3e3bda689d4c32df0f323ff71f986cfdbfd7ed6c2978aa9fbdaeefeba9ad') unique_samples FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' FORMAT JSONEachRow",
+    "row_integrity": "SELECT count() rows,uniqExact(sample_id) unique_samples,uniqExact(roster_index) unique_roster_indexes,countIf(empty(sample_id)) blank_sample_ids,countIf(roster_index>291) bad_roster_indexes,countIf(superpopulation='N/A' OR empty(superpopulation)) missing_superpopulation,countIf(subpopulation='N/A') missing_subpopulation,countIf(sex='N/A') missing_sex,countIf(collection='N/A') missing_collection FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' FORMAT JSONEachRow",
+    "duplicate_samples": "SELECT sample_id,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY sample_id HAVING rows!=1 FORMAT JSONEachRow",
+    "duplicate_roster_indexes": "SELECT roster_index,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY roster_index HAVING rows!=1 FORMAT JSONEachRow",
+    "superpopulation_distribution": "SELECT superpopulation label,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY superpopulation ORDER BY label FORMAT JSONEachRow",
+    "subpopulation_distribution": "SELECT subpopulation label,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY subpopulation ORDER BY label FORMAT JSONEachRow",
+    "sex_distribution": "SELECT sex label,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY sex ORDER BY label FORMAT JSONEachRow",
+    "collection_distribution": "SELECT collection label,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY collection ORDER BY label FORMAT JSONEachRow",
+    "ancestry_source_distribution": "SELECT ancestry_source label,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY ancestry_source ORDER BY label FORMAT JSONEachRow",
+    "primary_presence_distribution": "SELECT primary_metadata_present label,count() rows FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' GROUP BY primary_metadata_present ORDER BY label FORMAT JSONEachRow",
+    "browser_representative_lookup": "SELECT sample_id,subpopulation,superpopulation FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' AND release='y1' AND cohort='hgsvc_hprc' AND reference_genome='GRCh38' AND sample_id IN ('HG00096','HG002','HG00408','HG01928','HG02486','HG02602','HG00126') ORDER BY sample_id FORMAT JSONEachRow",
+    "browser_full_lookup": "SELECT sample_id,subpopulation,superpopulation FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' AND release='y1' AND cohort='hgsvc_hprc' AND reference_genome='GRCh38' ORDER BY sample_id FORMAT JSONEachRow",
+    "carrier_join_postcheck": "WITH carriers AS (SELECT sample_id,count() rows FROM lr_y1_carriers WHERE run_id IN ('y1-full-prototype-hgsvc-hprc-chr1-20260728-r1','y1-full-prototype-hgsvc-hprc-chr2-20260728-r1','y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2','y1-full-prototype-hgsvc-hprc-chr4-20260728-r1','y1-full-prototype-hgsvc-hprc-chr5-20260728-r1','y1-full-prototype-hgsvc-hprc-chr6-20260728-r1','y1-full-prototype-hgsvc-hprc-chr7-20260728-r1','y1-full-prototype-hgsvc-hprc-chr8-20260728-r1','y1-full-prototype-hgsvc-hprc-chr9-20260728-r1','y1-full-prototype-hgsvc-hprc-chr10-20260728-r1','y1-full-prototype-hgsvc-hprc-chr11-20260728-r1','y1-full-prototype-hgsvc-hprc-chr12-20260728-r1','y1-full-prototype-hgsvc-hprc-chr13-20260728-r1','y1-full-prototype-hgsvc-hprc-chr14-20260728-r1','y1-full-prototype-hgsvc-hprc-chr15-20260728-r1','y1-full-prototype-hgsvc-hprc-chr16-20260728-r1','y1-full-prototype-hgsvc-hprc-chr17-20260728-r1','y1-full-prototype-hgsvc-hprc-chr18-20260728-r1','y1-full-prototype-hgsvc-hprc-chr19-20260728-r1','y1-full-prototype-hgsvc-hprc-chr20-20260728-r1','y1-full-prototype-hgsvc-hprc-chr21-20260728-r1','y1-full-prototype-hgsvc-hprc-chr22-20260728-r1') AND release='y1' AND cohort='hgsvc_hprc' AND reference_genome='GRCh38' GROUP BY sample_id),metadata AS (SELECT sample_id,count() matches FROM lr_y1_sample_metadata WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' AND release='y1' AND cohort='hgsvc_hprc' AND reference_genome='GRCh38' GROUP BY sample_id) SELECT sum(carriers.rows) carrier_rows,count() distinct_carrier_samples,countIf(ifNull(metadata.matches,0)=0) unmatched_samples,countIf(ifNull(metadata.matches,0)>1) one_to_many_samples FROM carriers LEFT JOIN metadata USING sample_id FORMAT JSONEachRow",
+    "aou_absence": "SELECT (SELECT count() FROM lr_y1_carriers WHERE cohort='aou') aou_carriers,(SELECT count() FROM lr_y1_sample_metadata WHERE cohort='aou') aou_metadata,(SELECT count() FROM lr_y1_sample_metadata WHERE metadata_run_id!='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1') other_metadata_rows FORMAT JSONEachRow",
+    "primary_physical_counts": "SELECT table,sum(rows) rows FROM system.parts WHERE active AND database=currentDatabase() AND table IN ('lr_y1_summaries','lr_y1_alleles','lr_y1_frequencies','lr_y1_carriers') GROUP BY table ORDER BY table FORMAT JSONEachRow",
+    "active_metadata_pointer": "SELECT release,cohort,reference_genome,argMax(metadata_run_id,revision) metadata_run_id,max(revision) latest_revision,argMax(activated_by,revision) activated_by FROM lr_y1_active_metadata GROUP BY release,cohort,reference_genome FORMAT JSONEachRow",
+    "audit_counts": "SELECT count() rows,countIf(event_type='ancestry_from_supplemental') supplemental_assignments,countIf(event_type='source_conflict_primary_retained') primary_retained_conflicts,countIf(event_type='exact_duplicate_supplemental_row') exact_supplemental_duplicates FROM lr_y1_metadata_audit WHERE metadata_run_id='y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1' FORMAT JSONEachRow"
+  },
+  "results": {
+    "latest_metadata_runs": [
+      {
+        "metadata_run_id": "y1-full-genome-metadata-20260804T100822Z-7e1797dd-r1",
+        "state": "accepted",
+        "release": "y1",
+        "cohort": "hgsvc_hprc",
+        "reference_genome": "GRCh38",
+        "source_manifest_id": "hgsvc-hprc-y1-metadata-v1",
+        "source_manifest_sha256": "f78b3e3bda689d4c32df0f323ff71f986cfdbfd7ed6c2978aa9fbdaeefeba9ad",
+        "expected_roster_rows": 292,
+        "observed_roster_rows": 292,
+        "output_rows": 292,
+        "publisher_identity": "flow:load-and-activate-full-genome-sample-metadata-subj-7e1797dd@7dc2690",
+        "report_sha256": "1a4b29d9a0e827809d31ec64717efb43b234cf9da51ba32dbea7e7f721a19764",
+        "latest_revision_rows": 1
+      }
+    ],
+    "browser_admission_counts": [
+      {
+        "total": 292,
+        "exact": 292,
+        "unique_samples": 292
+      }
+    ],
+    "row_integrity": [
+      {
+        "rows": 292,
+        "unique_samples": 292,
+        "unique_roster_indexes": 292,
+        "blank_sample_ids": 0,
+        "bad_roster_indexes": 0,
+        "missing_superpopulation": 0,
+        "missing_subpopulation": 62,
+        "missing_sex": 60,
+        "missing_collection": 61
+      }
+    ],
+    "duplicate_samples": [],
+    "duplicate_roster_indexes": [],
+    "superpopulation_distribution": [
+      {
+        "label": "AFR",
+        "rows": 97
+      },
+      {
+        "label": "AMR",
+        "rows": 52
+      },
+      {
+        "label": "ASJ",
+        "rows": 1
+      },
+      {
+        "label": "EAS",
+        "rows": 61
+      },
+      {
+        "label": "EUR",
+        "rows": 37
+      },
+      {
+        "label": "SAS",
+        "rows": 44
+      }
+    ],
+    "subpopulation_distribution": [
+      {
+        "label": "ACB",
+        "rows": 12
+      },
+      {
+        "label": "ASL",
+        "rows": 1
+      },
+      {
+        "label": "ASW",
+        "rows": 6
+      },
+      {
+        "label": "BEB",
+        "rows": 10
+      },
+      {
+        "label": "CDX",
+        "rows": 5
+      },
+      {
+        "label": "CHB",
+        "rows": 5
+      },
+      {
+        "label": "CHS",
+        "rows": 11
+      },
+      {
+        "label": "CLM",
+        "rows": 11
+      },
+      {
+        "label": "ESN",
+        "rows": 10
+      },
+      {
+        "label": "FIN",
+        "rows": 9
+      },
+      {
+        "label": "GBR",
+        "rows": 10
+      },
+      {
+        "label": "GIH",
+        "rows": 8
+      },
+      {
+        "label": "GWD",
+        "rows": 17
+      },
+      {
+        "label": "IBS",
+        "rows": 3
+      },
+      {
+        "label": "ITU",
+        "rows": 3
+      },
+      {
+        "label": "JPT",
+        "rows": 16
+      },
+      {
+        "label": "KHV",
+        "rows": 13
+      },
+      {
+        "label": "LWK",
+        "rows": 6
+      },
+      {
+        "label": "MKK",
+        "rows": 1
+      },
+      {
+        "label": "MSL",
+        "rows": 9
+      },
+      {
+        "label": "MXL",
+        "rows": 2
+      },
+      {
+        "label": "N/A",
+        "rows": 62
+      },
+      {
+        "label": "PEL",
+        "rows": 15
+      },
+      {
+        "label": "PJL",
+        "rows": 10
+      },
+      {
+        "label": "PUR",
+        "rows": 16
+      },
+      {
+        "label": "STU",
+        "rows": 5
+      },
+      {
+        "label": "TSI",
+        "rows": 8
+      },
+      {
+        "label": "YRI",
+        "rows": 8
+      }
+    ],
+    "sex_distribution": [
+      {
+        "label": "N/A",
+        "rows": 60
+      },
+      {
+        "label": "female",
+        "rows": 116
+      },
+      {
+        "label": "male",
+        "rows": 116
+      }
+    ],
+    "collection_distribution": [
+      {
+        "label": "1000G",
+        "rows": 228
+      },
+      {
+        "label": "GIAB",
+        "rows": 2
+      },
+      {
+        "label": "HapMap",
+        "rows": 1
+      },
+      {
+        "label": "N/A",
+        "rows": 61
+      }
+    ],
+    "ancestry_source_distribution": [
+      {
+        "label": "hprc",
+        "rows": 230
+      },
+      {
+        "label": "supplemental",
+        "rows": 62
+      }
+    ],
+    "primary_presence_distribution": [
+      {
+        "label": 0,
+        "rows": 60
+      },
+      {
+        "label": 1,
+        "rows": 232
+      }
+    ],
+    "browser_representative_lookup": [
+      {
+        "sample_id": "HG00096",
+        "subpopulation": "N/A",
+        "superpopulation": "EUR"
+      },
+      {
+        "sample_id": "HG00126",
+        "subpopulation": "GBR",
+        "superpopulation": "EUR"
+      },
+      {
+        "sample_id": "HG002",
+        "subpopulation": "N/A",
+        "superpopulation": "ASJ"
+      },
+      {
+        "sample_id": "HG00408",
+        "subpopulation": "CHS",
+        "superpopulation": "EAS"
+      },
+      {
+        "sample_id": "HG01928",
+        "subpopulation": "PEL",
+        "superpopulation": "AMR"
+      },
+      {
+        "sample_id": "HG02486",
+        "subpopulation": "ACB",
+        "superpopulation": "AFR"
+      },
+      {
+        "sample_id": "HG02602",
+        "subpopulation": "PJL",
+        "superpopulation": "SAS"
+      }
+    ],
+    "carrier_join_postcheck": [
+      {
+        "carrier_rows": 2545711973,
+        "distinct_carrier_samples": 292,
+        "unmatched_samples": 0,
+        "one_to_many_samples": 0
+      }
+    ],
+    "aou_absence": [
+      {
+        "aou_carriers": 0,
+        "aou_metadata": 0,
+        "other_metadata_rows": 0
+      }
+    ],
+    "primary_physical_counts": [
+      {
+        "table": "lr_y1_alleles",
+        "rows": 261690603
+      },
+      {
+        "table": "lr_y1_carriers",
+        "rows": 2831522925
+      },
+      {
+        "table": "lr_y1_frequencies",
+        "rows": 2692136208
+      },
+      {
+        "table": "lr_y1_summaries",
+        "rows": 139746210
+      }
+    ],
+    "active_metadata_pointer": [],
+    "audit_counts": [
+      {
+        "rows": 296,
+        "supplemental_assignments": 62,
+        "primary_retained_conflicts": 2,
+        "exact_supplemental_duplicates": 4
+      }
+    ]
+  },
+  "checks": {
+    "one_unique_latest_accepted_run": true,
+    "browser_admission_exact_292": true,
+    "no_duplicates": true,
+    "honest_missing_values_preserved": true,
+    "all_carriers_mapped": true,
+    "no_aou_individual_data": true,
+    "primary_counts_unchanged": true,
+    "browser_manager_action": "restart/re-preflight required after metadata acceptance"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "artifacts": [
+    {
+      "path": "graphql-api/config/y1-presentation-primary-manifests.json",
+      "target_in_image": "/app/graphql-api/config/y1-presentation-primary-manifests.json",
+      "sha256": "7aee998adbb40b50d920c81061dcec7437db04fd8d4c72ff12dfc40abe160c9a",
+      "bytes": 885423,
+      "purpose": "startup-consumed primary route manifest"
+    },
+    {
+      "path": "graphql-api/config/y1-source-phased-methylation-serving-receipt.json",
+      "target_in_image": "/app/graphql-api/config/y1-source-phased-methylation-serving-receipt.json",
+      "sha256": "be522cfe12455af49127ba8cf84ccb102af0c408112d6ec7b650892815aec218",
+      "bytes": 8918,
+      "purpose": "startup-consumed source-phased methylation receipt"
+    },
+    {
+      "path": "graphql-api/config/completion-receipt-coverage-aou.json",
+      "target_in_image": "/app/graphql-api/config/completion-receipt-coverage-aou.json",
+      "sha256": "ebefa180f7a0412d7d55f58f15a0dd723926800e15bde950bfb98e9c3be24f82",
+      "bytes": 6936,
+      "purpose": "startup-consumed ancillary receipt"
+    },
+    {
+      "path": "graphql-api/config/completion-receipt-coverage-hgsvc_hprc.json",
+      "target_in_image": "/app/graphql-api/config/completion-receipt-coverage-hgsvc_hprc.json",
+      "sha256": "e6cec83b75be8299ace1e0feb6bc2bb1dc77d90534e6074c6fd2536cfe73c9b9",
+      "bytes": 6955,
+      "purpose": "startup-consumed ancillary receipt"
+    },
+    {
+      "path": "graphql-api/config/completion-receipt-str-aou.json",
+      "target_in_image": "/app/graphql-api/config/completion-receipt-str-aou.json",
+      "sha256": "2b1f83ca2958668c70654471597ea2a7dbbdadc27c30c685546c6540c7465b25",
+      "bytes": 6576,
+      "purpose": "startup-consumed ancillary receipt"
+    },
+    {
+      "path": "graphql-api/config/completion-receipt-str-hgsvc_hprc.json",
+      "target_in_image": "/app/graphql-api/config/completion-receipt-str-hgsvc_hprc.json",
+      "sha256": "b00bd4c6a0dc763dcd7ae62f5ba3d6738c0293bd35c8356e6e71b49c17abf98a",
+      "bytes": 6585,
+      "purpose": "startup-consumed ancillary receipt"
+    },
+    {
+      "path": "graphql-api/config/sample-total-completion-receipt.json",
+      "target_in_image": "/app/graphql-api/config/sample-total-completion-receipt.json",
+      "sha256": "2d88911a1f1775d9e3e216d7fc76391c680a04fbb6e1f941b241e37786aecdc3",
+      "bytes": 893,
+      "purpose": "startup-consumed ancillary receipt"
+    },
+    {
+      "path": "graphql-api/config/terminal-metadata-receipt.json",
+      "target_in_image": "/app/graphql-api/config/terminal-metadata-receipt.json",
+      "sha256": "1abd3f37a2378f90a00d978dd1bed7edd6d206d2859091461c32ff7e499e9ef8",
+      "bytes": 16861,
+      "purpose": "audit-only; metadata admission is from DB ledger, not a path env"
+    }
+  ]
+}

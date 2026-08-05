@@ -1,0 +1,323 @@
+{
+  "canonical_backing_database": "gnomad_lr_y1_scratch_demo_cov_aou_fg_20260804_r1",
+  "canonical_backing_table": "lr_coverage",
+  "canonical_engine": "View",
+  "canonical_object": "lr_y1_coverage",
+  "column_shape": [
+    {
+      "name": "ancillary_run_id",
+      "type": "String"
+    },
+    {
+      "name": "release",
+      "type": "LowCardinality(String)"
+    },
+    {
+      "name": "cohort",
+      "type": "LowCardinality(String)"
+    },
+    {
+      "name": "reference_genome",
+      "type": "LowCardinality(String)"
+    },
+    {
+      "name": "modality",
+      "type": "LowCardinality(String)"
+    },
+    {
+      "name": "source_version",
+      "type": "String"
+    },
+    {
+      "name": "source_uri",
+      "type": "String"
+    },
+    {
+      "name": "source_generation",
+      "type": "String"
+    },
+    {
+      "name": "source_size_bytes",
+      "type": "UInt64"
+    },
+    {
+      "name": "source_checksum_algorithm",
+      "type": "LowCardinality(String)"
+    },
+    {
+      "name": "source_checksum",
+      "type": "String"
+    },
+    {
+      "name": "runtime_source_uri",
+      "type": "String"
+    },
+    {
+      "name": "runtime_source_generation",
+      "type": "String"
+    },
+    {
+      "name": "chrom",
+      "type": "LowCardinality(String)"
+    },
+    {
+      "name": "position",
+      "type": "UInt32"
+    },
+    {
+      "name": "mean",
+      "type": "Float32"
+    },
+    {
+      "name": "median",
+      "type": "Float32"
+    },
+    {
+      "name": "over_1",
+      "type": "Float32"
+    },
+    {
+      "name": "over_5",
+      "type": "Float32"
+    },
+    {
+      "name": "over_10",
+      "type": "Float32"
+    },
+    {
+      "name": "over_15",
+      "type": "Float32"
+    },
+    {
+      "name": "over_20",
+      "type": "Float32"
+    },
+    {
+      "name": "over_25",
+      "type": "Float32"
+    },
+    {
+      "name": "over_30",
+      "type": "Float32"
+    },
+    {
+      "name": "over_50",
+      "type": "Float32"
+    },
+    {
+      "name": "over_100",
+      "type": "Float32"
+    },
+    {
+      "name": "is_source_zero",
+      "type": "UInt8"
+    }
+  ],
+  "contig_coverage": [
+    {
+      "chrom": "chr1",
+      "max_pos": 248956422,
+      "min_pos": 1,
+      "rows": 248956422,
+      "unique_positions": 248956422
+    },
+    {
+      "chrom": "chr10",
+      "max_pos": 133797422,
+      "min_pos": 1,
+      "rows": 133797422,
+      "unique_positions": 133797422
+    },
+    {
+      "chrom": "chr11",
+      "max_pos": 135086622,
+      "min_pos": 1,
+      "rows": 135086622,
+      "unique_positions": 135086622
+    },
+    {
+      "chrom": "chr12",
+      "max_pos": 133275309,
+      "min_pos": 1,
+      "rows": 133275309,
+      "unique_positions": 133275309
+    },
+    {
+      "chrom": "chr13",
+      "max_pos": 114364328,
+      "min_pos": 1,
+      "rows": 114364328,
+      "unique_positions": 114364328
+    },
+    {
+      "chrom": "chr14",
+      "max_pos": 107043718,
+      "min_pos": 1,
+      "rows": 107043718,
+      "unique_positions": 107043718
+    },
+    {
+      "chrom": "chr15",
+      "max_pos": 101991189,
+      "min_pos": 1,
+      "rows": 101991189,
+      "unique_positions": 101991189
+    },
+    {
+      "chrom": "chr16",
+      "max_pos": 90338345,
+      "min_pos": 1,
+      "rows": 90338345,
+      "unique_positions": 90338345
+    },
+    {
+      "chrom": "chr17",
+      "max_pos": 83257441,
+      "min_pos": 1,
+      "rows": 83257441,
+      "unique_positions": 83257441
+    },
+    {
+      "chrom": "chr18",
+      "max_pos": 80373285,
+      "min_pos": 1,
+      "rows": 80373285,
+      "unique_positions": 80373285
+    },
+    {
+      "chrom": "chr19",
+      "max_pos": 58617616,
+      "min_pos": 1,
+      "rows": 58617616,
+      "unique_positions": 58617616
+    },
+    {
+      "chrom": "chr2",
+      "max_pos": 242193529,
+      "min_pos": 1,
+      "rows": 242193529,
+      "unique_positions": 242193529
+    },
+    {
+      "chrom": "chr20",
+      "max_pos": 64444167,
+      "min_pos": 1,
+      "rows": 64444167,
+      "unique_positions": 64444167
+    },
+    {
+      "chrom": "chr21",
+      "max_pos": 46709983,
+      "min_pos": 1,
+      "rows": 46709983,
+      "unique_positions": 46709983
+    },
+    {
+      "chrom": "chr22",
+      "max_pos": 50818468,
+      "min_pos": 1,
+      "rows": 50818468,
+      "unique_positions": 50818468
+    },
+    {
+      "chrom": "chr3",
+      "max_pos": 198295559,
+      "min_pos": 1,
+      "rows": 198295559,
+      "unique_positions": 198295559
+    },
+    {
+      "chrom": "chr4",
+      "max_pos": 190214555,
+      "min_pos": 1,
+      "rows": 190214555,
+      "unique_positions": 190214555
+    },
+    {
+      "chrom": "chr5",
+      "max_pos": 181538259,
+      "min_pos": 1,
+      "rows": 181538259,
+      "unique_positions": 181538259
+    },
+    {
+      "chrom": "chr6",
+      "max_pos": 170805979,
+      "min_pos": 1,
+      "rows": 170805979,
+      "unique_positions": 170805979
+    },
+    {
+      "chrom": "chr7",
+      "max_pos": 159345973,
+      "min_pos": 1,
+      "rows": 159345973,
+      "unique_positions": 159345973
+    },
+    {
+      "chrom": "chr8",
+      "max_pos": 145138636,
+      "min_pos": 1,
+      "rows": 145138636,
+      "unique_positions": 145138636
+    },
+    {
+      "chrom": "chr9",
+      "max_pos": 138394717,
+      "min_pos": 1,
+      "rows": 138394717,
+      "unique_positions": 138394717
+    },
+    {
+      "chrom": "chrX",
+      "max_pos": 156040895,
+      "min_pos": 1,
+      "rows": 156040895,
+      "unique_positions": 156040895
+    },
+    {
+      "chrom": "chrY",
+      "max_pos": 57227415,
+      "min_pos": 1,
+      "rows": 57227415,
+      "unique_positions": 57227415
+    }
+  ],
+  "database": "gnomad_lr_y1_scratch_demo_cov_aou_fg_20260804_r1",
+  "logical_rows": 3088269832,
+  "numeric_violations": {
+    "fraction_range_violations": 0,
+    "monotonicity_violations": 0,
+    "negative_depth": 0,
+    "nonfinite": 0
+  },
+  "physical_copy_rows": 0,
+  "receipt_items_processed": 3088269832,
+  "representative_view_query": {
+    "cohorts": 1,
+    "max_position": 100009,
+    "min_position": 100000,
+    "rows": 10,
+    "runs": 1,
+    "unique_positions": 10
+  },
+  "schema_version": 1,
+  "source": {
+    "byte_size": 18471486031,
+    "cohort": "aou",
+    "crc32c_base64": "DqiE/Q==",
+    "generation": "1784224300602385",
+    "md5_base64": "UekfuRU1sje2CfqTHj4QNg==",
+    "mirror_verified_by_worker": true,
+    "modality": "coverage",
+    "runtime_byte_size": 18471486031,
+    "runtime_crc32c_base64": "DqiE/Q==",
+    "runtime_generation": "1785829784223160",
+    "runtime_md5_base64": "UekfuRU1sje2CfqTHj4QNg==",
+    "runtime_uri": "gs://gnomad-lr-data/ancillary/y1-full-genome-coverage-str-20260804-r1-611d22d7/objects/fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/gnomAD_LR_vcfs/aou/data/aou_phase1.coverage.tsv.gz",
+    "source_access": "worker_403_mirrored",
+    "uri": "gs://fc-fd42e80c-b41e-4e60-a9cf-b7c0ade168c4/gnomAD_LR_vcfs/aou/data/aou_phase1.coverage.tsv.gz"
+  },
+  "status": "validated_success",
+  "writer_fenced_and_revoked": true
+}

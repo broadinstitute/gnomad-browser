@@ -6,7 +6,6 @@
 !browser/.browserslistrc
 !browser/about
 !browser/build
-!browser/build.env
 !browser/build.sh
 !browser/help
 !browser/package.json
