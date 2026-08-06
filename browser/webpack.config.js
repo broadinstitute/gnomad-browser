@@ -104,6 +104,15 @@ const config = {
     new CopyWebpackPlugin({
       patterns: [path.resolve(__dirname, './src/robots.txt')],
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, './public/papers'),
+          to: 'papers',
+          noErrorOnMissing: true,
+        },
+      ],
+    }),
     new EnvironmentPlugin({
       REPORT_VARIANT_URL: null,
       REPORT_VARIANT_VARIANT_ID_PARAMETER: null,

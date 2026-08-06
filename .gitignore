@@ -21,6 +21,9 @@ browser/build.env
 # Build outputs
 browser/dist
 
+# Locally sourced LR literature PDFs (copied into browser builds when present)
+browser/public/papers/
+
 # Hail logs
 hail-*.log
 
