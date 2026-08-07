@@ -7,6 +7,7 @@ import {
   fetchSampleMetadata,
   fetchY1SampleMetadata,
   fetchMethylationForRegion,
+  fetchJoinedPhasedMethylationForRegion,
   fetchSourcePhasedMethylationForEvaluation,
   fetchMethylationSummaryForRegion,
   fetchMethylationOutliersForRegion,
@@ -34,6 +35,14 @@ import {
 } from './ancillary-availability'
 import { isY1PilotEnabled } from '../../clickhouse'
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
+import {
+  getJoinedPhasedMethylationRoute,
+  joinedIdentity,
+  joinedPhasedCapability,
+  joinedRegionScope,
+  projectJoinedRows,
+} from './joined-phased-methylation'
+import { joinedMethylationError } from '../joined-phased-methylation-errors'
 
 // --- Timing helpers ---
 
@@ -69,8 +78,7 @@ const fetchRecombinationRate = withCache(
   { expiration: 86400 }
 )
 
-const normalizeChrom = (chrom: string) =>
-  chrom.startsWith('chr') ? chrom : `chr${chrom}`
+const normalizeChrom = (chrom: string) => (chrom.startsWith('chr') ? chrom : `chr${chrom}`)
 
 const y1RequestInScope = async (cohort: 'hgsvc_hprc' | 'aou', chrom: string) => {
   if (!isY1PilotEnabled) return true
@@ -105,7 +113,8 @@ const resolvers = {
         if (!source?.metadata_run_id) return null
         const result = await fetchY1SampleMetadata(source.metadata_run_id)
         addTiming(ctx, {
-          label: 'sample_metadata', ms: now() - t0,
+          label: 'sample_metadata',
+          ms: now() - t0,
           meta: { rows: (result as any[]).length, run_id: source.metadata_run_id },
         })
         return result
@@ -157,7 +166,9 @@ const resolvers = {
         ])
         const fetchMs = now() - tFetch
 
-        logger.info(`haplotype_groups: fetched ${groupAssignments.length} groups, ${distinctVariants.length} distinct variants, ${trvCarriers.length} TRV carriers for ${chrom}:${args.start}-${args.stop}`)
+        logger.info(
+          `haplotype_groups: fetched ${groupAssignments.length} groups, ${distinctVariants.length} distinct variants, ${trvCarriers.length} TRV carriers for ${chrom}:${args.start}-${args.stop}`
+        )
 
         const tAssemble = now()
         const result = assembleHaplotypeGroups(
@@ -199,13 +210,14 @@ const resolvers = {
     source_phased_methylation: async (_obj: any, args: any, ctx: any) => {
       const capability = phasedMethylationCapability(args.lr_cohort)
       if (!capability.available || args.lr_cohort === 'aou') return null
-      if (!await y1RequestInScope('hgsvc_hprc', args.chrom)) return null
-      const scope = sourcePhasedEvaluationScope(
-        args.chrom, args.start, args.stop, args.sample_id
-      )
+      if (!(await y1RequestInScope('hgsvc_hprc', args.chrom))) return null
+      const scope = sourcePhasedEvaluationScope(args.chrom, args.start, args.stop, args.sample_id)
       const t0 = now()
       const result = await fetchSourcePhasedMethylationForEvaluation(
-        scope.chrom, scope.start, scope.stop, scope.sample_id
+        scope.chrom,
+        scope.start,
+        scope.stop,
+        scope.sample_id
       )
       addTiming(ctx, {
         label: 'source_phased_methylation',
@@ -214,16 +226,84 @@ const resolvers = {
       })
       return sourcePhasedMethylationRecords(result as any[])
     },
+    joined_phased_methylation_capability: (_obj: any, args: any) =>
+      joinedPhasedCapability(args.lr_cohort, args.chrom),
+    joined_phased_methylation_region: async (_obj: any, args: any, ctx: any) => {
+      // This check is intentionally independent of capability admission. A nullable,
+      // missing, or future cohort value must never select the HGSVC/HPRC route.
+      if (args.lr_cohort !== 'hgsvc_hprc') {
+        if (args.lr_cohort === 'aou') return null
+        throw joinedMethylationError(
+          'BAD_USER_INPUT',
+          'Joined methylation requires the hgsvc_hprc cohort'
+        )
+      }
+      const admittedRoute = getJoinedPhasedMethylationRoute()
+      const capability = await joinedPhasedCapability(args.lr_cohort, args.chrom, admittedRoute)
+      if (!capability.available) return null
+      if (!admittedRoute)
+        throw joinedMethylationError(
+          'JOINED_METHYLATION_CONTRACT_MISMATCH',
+          'Joined methylation route disappeared after capability admission',
+          { reason: 'route_disappeared_after_capability_admission', chrom: args.chrom }
+        )
+      const scope = joinedRegionScope(
+        args.chrom,
+        args.start,
+        args.stop,
+        args.sample_ids,
+        args.expected_orientation_receipt_sha256,
+        admittedRoute
+      )
+      const t0 = now()
+      const rows = scope.completed_sample_ids.length
+        ? await fetchJoinedPhasedMethylationForRegion(
+            admittedRoute.source_route,
+            scope.chrom,
+            scope.start,
+            scope.stop,
+            scope.completed_sample_ids
+          )
+        : []
+      const records = projectJoinedRows(rows as any[], {
+        completed_sample_ids: scope.completed_sample_ids,
+        chrom: scope.chrom,
+        start: scope.start,
+        stop: scope.stop,
+        source_run_id: admittedRoute.run_id,
+        orientation_receipt_sha256: admittedRoute.orientation_receipt_sha256,
+      })
+      addTiming(ctx, {
+        label: 'joined_phased_methylation_region',
+        ms: now() - t0,
+        meta: { rows: records.length, samples: scope.completed_sample_ids.length },
+      })
+      return {
+        identity: joinedIdentity(admittedRoute, scope.chrom),
+        requested_sample_ids: scope.requested_sample_ids,
+        completed_sample_ids: scope.completed_sample_ids,
+        unavailable_samples: scope.unavailable_samples,
+        records,
+      }
+    },
     methylation: async (_obj: any, args: any, ctx: any) => {
-      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (!(await y1RequestInScope(args.lr_cohort, args.chrom))) return null
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const requestedSamples = isY1PilotEnabled
-        ? filterAvailableMethylationSampleIds(args.samples, methylationSampleAvailability(args.lr_cohort))
+        ? filterAvailableMethylationSampleIds(
+            args.samples,
+            methylationSampleAvailability(args.lr_cohort)
+          )
         : args.samples
       const result = await fetchMethylationForRegion(
-        ctx.esClient, chrom, args.start, args.stop, requestedSamples, args.lr_cohort
+        ctx.esClient,
+        chrom,
+        args.start,
+        args.stop,
+        requestedSamples,
+        args.lr_cohort
       )
       addTiming(ctx, {
         label: 'methylation',
@@ -235,12 +315,16 @@ const resolvers = {
       return sampleTotalMethylationRecords(result as any[])
     },
     methylation_summary: async (_obj: any, args: any, ctx: any) => {
-      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (!(await y1RequestInScope(args.lr_cohort, args.chrom))) return null
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchMethylationSummaryForRegion(
-        ctx.esClient, chrom, args.start, args.stop, args.lr_cohort
+        ctx.esClient,
+        chrom,
+        args.start,
+        args.stop,
+        args.lr_cohort
       )
       addTiming(ctx, {
         label: 'methylation_summary',
@@ -250,12 +334,16 @@ const resolvers = {
       return result
     },
     methylation_outliers: async (_obj: any, args: any, ctx: any) => {
-      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (!(await y1RequestInScope(args.lr_cohort, args.chrom))) return null
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'methylation')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchMethylationOutliersForRegion(
-        ctx.esClient, chrom, args.start, args.stop, args.lr_cohort
+        ctx.esClient,
+        chrom,
+        args.start,
+        args.stop,
+        args.lr_cohort
       )
       addTiming(ctx, {
         label: 'methylation_outliers',
@@ -276,12 +364,16 @@ const resolvers = {
       return result
     },
     lr_coverage: async (_obj: any, args: any, ctx: any) => {
-      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (!(await y1RequestInScope(args.lr_cohort, args.chrom))) return null
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'coverage')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
       const result = await fetchLRCoverageForRegion(
-        ctx.esClient, chrom, args.start, args.stop, args.lr_cohort
+        ctx.esClient,
+        chrom,
+        args.start,
+        args.stop,
+        args.lr_cohort
       )
       addTiming(ctx, {
         label: 'lr_coverage',
@@ -291,7 +383,7 @@ const resolvers = {
       return result
     },
     lr_str_histogram: async (_obj: any, args: any, ctx: any) => {
-      if (!await y1RequestInScope(args.lr_cohort, args.chrom)) return null
+      if (!(await y1RequestInScope(args.lr_cohort, args.chrom))) return null
       if (isAncillaryUnavailableForCohort(args.lr_cohort, undefined, 'str_histogram')) return null
       const t0 = now()
       const chrom = normalizeChrom(args.chrom)
@@ -314,30 +406,53 @@ const resolvers = {
       const metadataAvailable = cohort === 'hgsvc_hprc' && !!primary?.metadata_run_id
       const sources = [
         {
-          modality: 'PRIMARY_VARIANTS', source: primary ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
-          database: configured?.database || null, release: configured?.release || null,
-          cohort, reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
-          scope: configured?.load_scope || null, run_id: configured?.run_id || null,
-          available: !!primary, status: primary?.state || 'unavailable',
-          label: acceptedLabel || (configured ? `Unavailable outside ${configured.chrom}` : 'Cohort unavailable'),
+          modality: 'PRIMARY_VARIANTS',
+          source: primary ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
+          database: configured?.database || null,
+          release: configured?.release || null,
+          cohort,
+          reference_genome: configured?.reference_genome || 'GRCh38',
+          chromosome: chrom,
+          scope: configured?.load_scope || null,
+          run_id: configured?.run_id || null,
+          available: !!primary,
+          status: primary?.state || 'unavailable',
+          label:
+            acceptedLabel ||
+            (configured ? `Unavailable outside ${configured.chrom}` : 'Cohort unavailable'),
         },
         {
           modality: 'HAPLOTYPES',
           source: primary?.carriers_available ? 'Y1_ACCEPTED' : 'UNAVAILABLE',
-          database: configured?.database || null, release: configured?.release || null,
-          cohort, reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
-          scope: configured?.load_scope || null, run_id: configured?.run_id || null,
+          database: configured?.database || null,
+          release: configured?.release || null,
+          cohort,
+          reference_genome: configured?.reference_genome || 'GRCh38',
+          chromosome: chrom,
+          scope: configured?.load_scope || null,
+          run_id: configured?.run_id || null,
           available: !!primary?.carriers_available,
           status: primary?.carriers_available ? primary.state : 'unavailable',
-          label: cohort === 'aou' ? 'AoU is summary-only' : (acceptedLabel || 'Cohort or scope unavailable'),
+          label:
+            cohort === 'aou'
+              ? 'AoU is summary-only'
+              : acceptedLabel || 'Cohort or scope unavailable',
         },
         {
-          modality: 'SAMPLE_METADATA', source: metadataAvailable ? 'Y1_DATABASE' : 'UNAVAILABLE',
-          database: configured?.database || null, release: metadataAvailable ? 'y1' : null,
-          cohort, reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
-          scope: configured?.load_scope || null, run_id: primary?.metadata_run_id || null,
-          available: metadataAvailable, status: metadataAvailable ? 'accepted' : 'unavailable',
-          label: metadataAvailable ? 'Accepted Y1 metadata in configured database' : 'Optional metadata unavailable',
+          modality: 'SAMPLE_METADATA',
+          source: metadataAvailable ? 'Y1_DATABASE' : 'UNAVAILABLE',
+          database: configured?.database || null,
+          release: metadataAvailable ? 'y1' : null,
+          cohort,
+          reference_genome: configured?.reference_genome || 'GRCh38',
+          chromosome: chrom,
+          scope: configured?.load_scope || null,
+          run_id: primary?.metadata_run_id || null,
+          available: metadataAvailable,
+          status: metadataAvailable ? 'accepted' : 'unavailable',
+          label: metadataAvailable
+            ? 'Accepted Y1 metadata in configured database'
+            : 'Optional metadata unavailable',
         },
         ...(['coverage', 'methylation', 'str_histogram'] as const).map((modality) => {
           const decision = ancillaryDecision(cohort, modality)
@@ -345,14 +460,23 @@ const resolvers = {
           const available = !!primary && decision.available && !!route
           return {
             modality: {
-              coverage: 'COVERAGE', methylation: 'METHYLATION', str_histogram: 'STR_HISTOGRAM',
+              coverage: 'COVERAGE',
+              methylation: 'METHYLATION',
+              str_histogram: 'STR_HISTOGRAM',
             }[modality],
             source: available ? decision.source : 'UNAVAILABLE',
-            database: route?.database || null, release: available ? 'y1' : null, cohort,
-            reference_genome: configured?.reference_genome || 'GRCh38', chromosome: chrom,
-            scope: available ? 'full_genome' : null, run_id: route?.run_id || null,
-            available, status: available ? 'available' : 'unavailable',
-            label: available ? 'Optional ancillary table in configured Y1 database' : (decision.reason || 'Unavailable'),
+            database: route?.database || null,
+            release: available ? 'y1' : null,
+            cohort,
+            reference_genome: configured?.reference_genome || 'GRCh38',
+            chromosome: chrom,
+            scope: available ? 'full_genome' : null,
+            run_id: route?.run_id || null,
+            available,
+            status: available ? 'available' : 'unavailable',
+            label: available
+              ? 'Optional ancillary table in configured Y1 database'
+              : decision.reason || 'Unavailable',
           }
         }),
         (() => {
@@ -377,9 +501,17 @@ const resolvers = {
           }
         })(),
         {
-          modality: 'RECOMBINATION', source: 'EXTERNAL_REFERENCE', database: null,
-          release: null, cohort, reference_genome: 'GRCh38', chromosome: chrom,
-          scope: null, run_id: null, available: true, status: 'available',
+          modality: 'RECOMBINATION',
+          source: 'EXTERNAL_REFERENCE',
+          database: null,
+          release: null,
+          cohort,
+          reference_genome: 'GRCh38',
+          chromosome: chrom,
+          scope: null,
+          run_id: null,
+          available: true,
+          status: 'available',
           label: 'External reference (UCSC hg38 recomb1000GAvg)',
         },
       ]

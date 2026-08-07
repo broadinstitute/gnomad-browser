@@ -139,6 +139,83 @@ type PhasedMethylationCapability {
   reason: String!
 }
 
+enum MethylationMappingScope {
+  CHROMOSOME_WIDE
+  PHASE_BLOCK
+}
+
+enum JoinedPhasedMethylationCapabilityStatus {
+  AVAILABLE_CONFIRMED
+  UNAVAILABLE_NOT_CONFIGURED
+  UNAVAILABLE_PRIMARY_CARRIERS
+  UNAVAILABLE_ORIENTATION_EXCLUDED_CONTIG
+  UNAVAILABLE_AOU_SUMMARY_ONLY
+}
+
+enum JoinedPhasedMethylationSampleStatus {
+  UNAVAILABLE_NO_ASSAY_SOURCE
+  UNAVAILABLE_SOURCE_MARKED_SKIP
+}
+
+type JoinedPhasedMethylationIdentity {
+  source_run_id: String!
+  source_completion_receipt_sha256: String!
+  source_manifest_sha256: String!
+  browser_vcf_manifest_bundle_sha256: String!
+  browser_vcf_manifest_sha256: String!
+  browser_vcf_run_id: String!
+  orientation_receipt_id: String!
+  orientation_receipt_sha256: String!
+  mapping_artifact_sha256: String
+  mapping_scope: MethylationMappingScope!
+}
+
+type JoinedPhasedMethylationCapability {
+  available: Boolean!
+  joinable_to_vcf: Boolean!
+  status: JoinedPhasedMethylationCapabilityStatus!
+  identity: JoinedPhasedMethylationIdentity
+  source_sample_ids: [String!]!
+  max_span_bp: Int!
+  max_samples: Int!
+  max_records: Int!
+  reason: String!
+}
+
+type JoinedPhasedMethylationUnavailableSample {
+  sample_id: String!
+  status: JoinedPhasedMethylationSampleStatus!
+  reason: String!
+}
+
+type JoinedPhasedMethylationRecord {
+  source_row_key: String!
+  chr: String!
+  """
+  Canonical one-based CpG position (raw BED start0 + 1).
+  """
+  pos1: Int!
+  """
+  Canonical half-open end for a one-base CpG (raw BED end0 + 1, equal to pos1 + 1).
+  """
+  pos2: Int!
+  sample: String!
+  methylation: Float!
+  coverage: Int!
+  source_haplotype: MethylationSourceHaplotype!
+  vcf_strand: Int!
+  mapping_scope: MethylationMappingScope!
+  phase_set: String
+}
+
+type JoinedPhasedMethylationRegion {
+  identity: JoinedPhasedMethylationIdentity!
+  requested_sample_ids: [String!]!
+  completed_sample_ids: [String!]!
+  unavailable_samples: [JoinedPhasedMethylationUnavailableSample!]!
+  records: [JoinedPhasedMethylationRecord!]!
+}
+
 type MethylationSampleAvailability {
   sample_id: String!
   available: Boolean!
@@ -305,9 +382,7 @@ type StrCatalogLocus {
 }
 
 extend type Query {
-  sample_metadata(
-    lr_cohort: LongReadCohort = hgsvc_hprc
-  ): [SampleMetadata!]
+  sample_metadata(lr_cohort: LongReadCohort = hgsvc_hprc): [SampleMetadata!]
   mqtl_associations(
     chrom: String!
     start: Int!
@@ -342,6 +417,25 @@ extend type Query {
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): [MethylationRecord!]
 
+  joined_phased_methylation_capability(
+    chrom: String!
+    lr_cohort: LongReadCohort! = hgsvc_hprc
+  ): JoinedPhasedMethylationCapability! @cost(value: 10)
+
+  """
+  Return joined CpGs in the inclusive, one-based browser range [start, stop].
+  start must be at least 1. Source rows are raw BED 0-based half-open one-base intervals;
+  malformed or non-one-base rows fail the complete response closed.
+  """
+  joined_phased_methylation_region(
+    chrom: String!
+    start: Int!
+    stop: Int!
+    sample_ids: [String!]!
+    expected_orientation_receipt_sha256: String!
+    lr_cohort: LongReadCohort! = hgsvc_hprc
+  ): JoinedPhasedMethylationRegion @cost(value: 25)
+
   methylation(
     chrom: String!
     start: Int!
@@ -364,11 +458,7 @@ extend type Query {
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): MethylationOutlierRanking
 
-  recombination_rate(
-    chrom: String!
-    start: Int!
-    stop: Int!
-  ): [RecombinationRateRecord!]
+  recombination_rate(chrom: String!, start: Int!, stop: Int!): [RecombinationRateRecord!]
 
   lr_coverage(
     chrom: String!
@@ -383,10 +473,7 @@ extend type Query {
     lr_cohort: LongReadCohort = hgsvc_hprc
   ): STRHistogramRecord
 
-  long_read_y1_provenance(
-    lr_cohort: LongReadCohort!
-    chrom: String!
-  ): LongReadY1Provenance!
+  long_read_y1_provenance(lr_cohort: LongReadCohort!, chrom: String!): LongReadY1Provenance!
 
   str_catalog(chrom: String!): [StrCatalogLocus!]
 

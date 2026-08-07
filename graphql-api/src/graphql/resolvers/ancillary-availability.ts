@@ -15,6 +15,11 @@ import {
   y1CoverageViewColumnShape,
 } from '../../y1_admission_config'
 import type { Y1AncillaryRoute } from '../../y1_config'
+import {
+  joinedPhasedMethylationRoute,
+  preflightJoinedPhasedMethylation,
+  resetJoinedPhasedMethylation,
+} from './joined-phased-methylation'
 
 export type AncillaryModality = 'coverage' | 'methylation' | 'str_histogram' | 'mqtl'
 export type AncillaryDecision = {
@@ -1083,6 +1088,7 @@ export const preflightY1Ancillaries = async () => {
   activeRoutes.clear()
   methylationAvailability = []
   activeSourcePhasedMethylationRoute = null
+  resetJoinedPhasedMethylation()
   if (!isY1PilotEnabled) return
 
   for (const modality of ['coverage', 'methylation', 'str_histogram'] as const) {
@@ -1098,6 +1104,12 @@ export const preflightY1Ancillaries = async () => {
       ? [preflightSourcePhasedMethylation(sourcePhasedMethylationRoute)]
       : []),
   ])
+  if (joinedPhasedMethylationRoute) {
+    await preflightJoinedPhasedMethylation(
+      joinedPhasedMethylationRoute,
+      activeSourcePhasedMethylationRoute
+    )
+  }
 }
 
 export const getSourcePhasedMethylationRoute = () => activeSourcePhasedMethylationRoute

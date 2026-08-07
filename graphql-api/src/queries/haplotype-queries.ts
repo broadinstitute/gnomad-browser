@@ -9,6 +9,8 @@ import {
   getSourcePhasedMethylationRoute,
   getY1AncillaryRoute,
 } from '../graphql/resolvers/ancillary-availability'
+import { joinedMethylationError } from '../graphql/joined-phased-methylation-errors'
+import type { SourcePhasedMethylationRoute } from '../source_phased_methylation_config'
 
 /**
  * Fetch haplotype variants pre-grouped by (sample_id, strand) in ClickHouse.
@@ -67,10 +69,7 @@ export const fetchGroupedHaplotypeVariants = async (
  * Fetch only TRV (tandem repeat variant) haplotypes across a whole chromosome.
  * Same grouped shape as fetchGroupedHaplotypeVariants but filtered to allele_type = 'trv'.
  */
-export const fetchGroupedTrvVariants = async (
-  _esClient: any,
-  chrom: string,
-) => {
+export const fetchGroupedTrvVariants = async (_esClient: any, chrom: string) => {
   const query = `
     SELECT
       sample_id,
@@ -224,11 +223,7 @@ export const fetchDistinctHaplotypeVariants = async (
  * Returns ~few thousand rows (only TR carriers) vs ~1M total.
  * Used to rebuild per-carrier length distributions in the frontend.
  */
-export const fetchTrvCarrierAlts = async (
-  chrom: string,
-  start: number,
-  stop: number
-) => {
+export const fetchTrvCarrierAlts = async (chrom: string, start: number, stop: number) => {
   const query = `
     SELECT position, ref, alt, sample_id, strand AS vcf_strand
     FROM lr_haplotypes
@@ -355,14 +350,20 @@ export const fetchSTRHistogram = async (
   const y1Position = strictStrRoute ? 'position' : 'source_start'
   const normalizedChrom = isY1PilotEnabled && !chrom.startsWith('chr') ? `chr${chrom}` : chrom
   const query = `
-    SELECT chrom, ${isY1PilotEnabled ? `${y1Position} AS position, source_end AS end_position` : 'position, end_position'}, motif,
+    SELECT chrom, ${
+      isY1PilotEnabled
+        ? `${y1Position} AS position, source_end AS end_position`
+        : 'position, end_position'
+    }, motif,
            allele_size_histogram, biallelic_histogram,
            min_repeats, mode_repeats, mean_repeats, stdev_repeats,
            median_repeats, p99_repeats, max_repeats,
            unique_allele_lengths, num_called_alleles,
            populations
     FROM ${isY1PilotEnabled ? 'lr_y1_str_histograms' : 'lr_str_histograms'}
-    WHERE ${isY1PilotEnabled ? 'ancillary_run_id = {runId:String} AND cohort = {cohort:String} AND ' : ''}
+    WHERE ${
+      isY1PilotEnabled ? 'ancillary_run_id = {runId:String} AND cohort = {cohort:String} AND ' : ''
+    }
       chrom = {chrom:String} AND ${isY1PilotEnabled ? y1Position : 'position'} = {position:UInt32}
     LIMIT 2
   `
@@ -392,7 +393,8 @@ export const fetchMethylationSummaryForRegion = async (
   cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
   if (isY1PilotEnabled) {
-    if (stop < start || stop - start > 1_000_000) throw new Error('Y1 methylation range is too large')
+    if (stop < start || stop - start > 1_000_000)
+      throw new Error('Y1 methylation range is too large')
     const route = getY1AncillaryRoute(cohort, 'methylation')
     if (!route) return []
     const resultSet = await getY1AncillaryClickhouseClient(route).query({
@@ -443,12 +445,14 @@ export const fetchMethylationOutliersForRegion = async (
   }
   const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'methylation') : null
   if (isY1PilotEnabled && !route) return null
-  const summaryQuery = isY1PilotEnabled ? `
+  const summaryQuery = isY1PilotEnabled
+    ? `
         SELECT chrom, pos1, pos2, mean_methylation AS site_mean,
                std_methylation AS site_std
         FROM lr_methylation_summary
         WHERE chrom = {chrom:String} AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
-  ` : `
+  `
+    : `
         SELECT chrom, pos1, pos2,
                avgMerge(mean_methylation_state) AS site_mean,
                sqrt(varPopMerge(var_methylation_state)) AS site_std
@@ -466,11 +470,15 @@ export const fetchMethylationOutliersForRegion = async (
       ON detail.chrom = stats.chrom AND detail.pos1 = stats.pos1 AND detail.pos2 = stats.pos2
     WHERE detail.chrom = {chrom:String}
       AND detail.pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
-      ${isY1PilotEnabled ? `AND 1 = (
+      ${
+        isY1PilotEnabled
+          ? `AND 1 = (
         SELECT count() FROM lr_methylation_cohort_availability
         WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
           AND availability = 'available_sample_total'
-      )` : ''}
+      )`
+          : ''
+      }
     GROUP BY sample_id
     ORDER BY outlier_count DESC
   `
@@ -496,6 +504,67 @@ export const fetchMethylationOutliersForRegion = async (
       direction: s.direction,
     })),
   }
+}
+
+export const fetchJoinedPhasedMethylationForRegion = async (
+  admittedRoute: SourcePhasedMethylationRoute,
+  chrom: string,
+  start: number,
+  stop: number,
+  sampleIds: string[]
+) => {
+  if (!sampleIds.length) return []
+  const activeRoute = getSourcePhasedMethylationRoute()
+  if (
+    !activeRoute ||
+    activeRoute.database !== admittedRoute.database ||
+    activeRoute.run_id !== admittedRoute.run_id ||
+    activeRoute.receipt_path !== admittedRoute.receipt_path ||
+    activeRoute.receipt.route_run_id !== admittedRoute.receipt.route_run_id ||
+    activeRoute.receipt.completion_receipt_sha256 !==
+      admittedRoute.receipt.completion_receipt_sha256 ||
+    activeRoute.receipt.source_manifest_sha256 !== admittedRoute.receipt.source_manifest_sha256
+  )
+    throw joinedMethylationError(
+      'JOINED_METHYLATION_CONTRACT_MISMATCH',
+      'Joined methylation raw route no longer matches admission',
+      {
+        reason: 'raw_route_identity_changed',
+        source_run_id: admittedRoute.run_id,
+        chrom,
+        start,
+        stop,
+      }
+    )
+  // Joined GraphQL coordinates are inclusive and one-based. The source table
+  // intentionally preserves raw BED 0-based half-open coordinates.
+  const rawStart0 = start - 1
+  const rawStop0 = stop - 1
+  const result = await getSourcePhasedMethylationClickhouseClient(admittedRoute).query({
+    query: `
+      SELECT stable_key AS source_row_key, chrom AS chr, pos1, pos2, methylation,
+        sample_id AS sample, coverage, source_haplotype,
+        source_haplotype AS vcf_strand
+      FROM lr_y1_methylation_source_haplotype_presentation
+      WHERE chrom = {chrom:String}
+        AND pos1 BETWEEN {rawStart0:UInt32} AND {rawStop0:UInt32}
+        AND sample_id IN ({sampleIds:Array(String)})
+        AND source_haplotype IN (1, 2)
+      ORDER BY pos1, sample_id, source_haplotype, stable_key
+      LIMIT 250001
+    `,
+    query_params: { chrom, rawStart0, rawStop0, sampleIds },
+    clickhouse_settings: {
+      max_execution_time: 30,
+      max_result_rows: '250001',
+      result_overflow_mode: 'throw',
+      max_rows_to_read: '10000000',
+      read_overflow_mode: 'throw',
+      max_bytes_to_read: '1073741824',
+    },
+    format: 'JSONEachRow',
+  })
+  return result.json()
 }
 
 export const fetchSourcePhasedMethylationForEvaluation = async (
@@ -546,11 +615,15 @@ export const fetchMethylationForRegion = async (
       FROM lr_methylation
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
-        ${isY1PilotEnabled ? `AND 1 = (
+        ${
+          isY1PilotEnabled
+            ? `AND 1 = (
           SELECT count() FROM lr_methylation_cohort_availability
           WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
             AND availability = 'available_sample_total'
-        )` : ''}
+        )`
+            : ''
+        }
         AND sample_id IN ({samples:Array(String)})
     `
     query_params.samples = samples
@@ -560,11 +633,15 @@ export const fetchMethylationForRegion = async (
       FROM lr_methylation
       WHERE chrom = {chrom:String}
         AND pos1 BETWEEN {start:UInt32} AND {stop:UInt32}
-        ${isY1PilotEnabled ? `AND 1 = (
+        ${
+          isY1PilotEnabled
+            ? `AND 1 = (
           SELECT count() FROM lr_methylation_cohort_availability
           WHERE ancillary_run_id = {runId:String} AND cohort = {cohort:String}
             AND availability = 'available_sample_total'
-        )` : ''}
+        )`
+            : ''
+        }
     `
   } else {
     return []

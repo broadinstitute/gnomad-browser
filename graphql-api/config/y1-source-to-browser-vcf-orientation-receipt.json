@@ -1,0 +1,1712 @@
+{
+  "approval_basis": {
+    "approved_at": "2026-08-06T14:57:45.89893-04:00",
+    "approved_role": "gnomAD-LR operator",
+    "cryptographic_human_signature": false,
+    "decision_artifact_ref": "flow://rolling/implement-operator-approved-direct-methylation-ori-ecf9c6ce/briefing-1786042659.xml",
+    "decision_artifact_sha256": "ac8224a72ae98298e55be7debde87bd40c39840cd691a4fa169ce653d5a61df6",
+    "independently_machine_verified_lineage": false,
+    "intermediate_objects_available_for_verification": false,
+    "kind": "operator_direct_mapping_assumption",
+    "operator_instructed_assume_yes": true,
+    "production_release_gate": "Release review must accept this hash-bound operator assumption; this receipt is not independent scientific lineage verification or a cryptographic human signature.",
+    "scope": "All source-present HGSVC/HPRC samples, all phase blocks, and chr1-chr22 in browser VCF manifest bundle 7aee998adbb40b50d920c81061dcec7437db04fd8d4c72ff12dfc40abe160c9a.",
+    "statement": "Across all source-present HGSVC/HPRC samples and chr1-chr22 in the exact pinned browser VCF bundle, methylation source HAP1 is the first phased GT value (VCF strand 1) and HAP2 is the second phased GT value (VCF strand 2).",
+    "statement_sha256": "108dbe49d6305f34fe9559b821912613c1748ecff65850261f0e2051023de6e1"
+  },
+  "browser_product": {
+    "cohort": "hgsvc_hprc",
+    "entries": [
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr1",
+        "manifest_sha256": "76b2a1f2c9a7c5b865a87647a79a2881759fda5bbde634a54846d9110bf9df8d",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+        "tbi": {
+          "checksum": "QOOsy50BX65KTIvGloRniA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785247565258004",
+          "size_bytes": 228693,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr1.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "Y9s9Z+eq/AX6Vn06+bTtgQ==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785247560614238",
+          "size_bytes": 7139116601,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr1.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr2",
+        "manifest_sha256": "70a0b15789844d1e654758891067bbddf1ab83554565b9dfd5d8417a396fcce9",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
+        "tbi": {
+          "checksum": "jc0nm4qiVRV00DjuzNgIUA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785247763702142",
+          "size_bytes": 239638,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr2.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "hceQ/ItVTcibq/PVa/D8bA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785247759099914",
+          "size_bytes": 7211691464,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr2.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr3",
+        "manifest_sha256": "13bf0c6cbe138e6f0a4a3c1ffe1c90543922f3600c1fa9d8690323d211961407",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
+        "tbi": {
+          "checksum": "PAXazbknH1/skaSL3Zm93g==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785247916962937",
+          "size_bytes": 195569,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr3.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "A7vDJzIyx6EyM6mJB9PO0w==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785247912621965",
+          "size_bytes": 6121507332,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr3.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr4",
+        "manifest_sha256": "a714659288b31bfbf1b6760c9a16fac7e94832de4afb755842712834935dcea0",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
+        "tbi": {
+          "checksum": "dWE33iaD9RP8SrPdaD92Vg==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248051777254",
+          "size_bytes": 189327,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr4.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "cUhgmk2Fh+JQ5uSKw7tN4w==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248047778434",
+          "size_bytes": 5857340947,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr4.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr5",
+        "manifest_sha256": "184c66a163cc1355ded2a51b3f37cd0f2692a0009b1ddcf819ea2b81e6db8ddd",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1",
+        "tbi": {
+          "checksum": "1YBmVaW2DIEQGcU3I1ReyQ==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248189048469",
+          "size_bytes": 178454,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr5.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "5Qb9m9Mns1nqJJpWF77bww==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248184600948",
+          "size_bytes": 5358208739,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr5.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr6",
+        "manifest_sha256": "6d71035eba0ee8a1b25076eee13a9b6bed4effe35788c38a91199c53c719049f",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
+        "tbi": {
+          "checksum": "fGhygSr3V5U8qod9t+PgVA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248328496518",
+          "size_bytes": 168483,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr6.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "X5nlsXjv5zI7qRW0vaxJNA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248324229327",
+          "size_bytes": 5335906131,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr6.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr7",
+        "manifest_sha256": "360dcc12f79ce7905a05de73e32f1ec96b47231ce4c850034aed4db6cc7eab1d",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
+        "tbi": {
+          "checksum": "x6zz6nMDlKphIAkgKus0hw==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248465430916",
+          "size_bytes": 159767,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr7.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "CpSDEpPW8Com0KFqdqVx+w==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248461288801",
+          "size_bytes": 5480532178,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr7.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr8",
+        "manifest_sha256": "e48864a440e8a74e1608f6a64dc18a30a2486b9480456b2f790871a4e40f4aea",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr8-20260728-r1",
+        "tbi": {
+          "checksum": "bDbgkVnDw30JP+vMz0/HWA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248580588325",
+          "size_bytes": 144700,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr8.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "vkHlmF2EyBvQmhphMImbFg==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248576478723",
+          "size_bytes": 4672449827,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr8.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr9",
+        "manifest_sha256": "f0f5f576d89a428cd8fd76ecaf5e73d8771aa1e04979219b2408d5eca216d165",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1",
+        "tbi": {
+          "checksum": "snpzxrWo4KU1cOnwRzlUBQ==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248680598017",
+          "size_bytes": 121384,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr9.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "bRcggbSPOG+8GmUMM+XvVw==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248676422011",
+          "size_bytes": 4023618747,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr9.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr10",
+        "manifest_sha256": "905f909f4f12679b5c6df90296b54a2b993e5a71302288b315f5b3c724d6e3df",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr10-20260728-r1",
+        "tbi": {
+          "checksum": "1T5mUoEXUyxEpz3ra63aFg==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248799693996",
+          "size_bytes": 132708,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr10.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "iMwJXY27K441SpDmKLo5RQ==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248795654409",
+          "size_bytes": 4480562698,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr10.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr11",
+        "manifest_sha256": "950464d98e92c391702f8ba3819bb7a9e2476bfee45f2576b22c5b95ad99b00a",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr11-20260728-r1",
+        "tbi": {
+          "checksum": "pW8vU4v1uG4k/QRN9SjLAg==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248904369978",
+          "size_bytes": 134268,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr11.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "/d67Q/KEOHd9TwrnwiGxPw==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785248899738405",
+          "size_bytes": 4539010672,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr11.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr12",
+        "manifest_sha256": "f9151cb27bd966301142063ac5fc56f29da0e6ade4e50dd975a95ba80758cb75",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
+        "tbi": {
+          "checksum": "JP514cH2bHChX8Lsy6MA2g==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249016745054",
+          "size_bytes": 132948,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr12.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "I5+5bYP/phW5iZZuOTAy4Q==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249012684237",
+          "size_bytes": 4383287291,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr12.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr13",
+        "manifest_sha256": "c03d269498c8c1ceb3dc7d4b2fd061a6caeadbe27410da0920753a24581670ec",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1",
+        "tbi": {
+          "checksum": "W5TWaDaK09/87Jd4J4Soxg==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249094921723",
+          "size_bytes": 97511,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr13.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "wFj8txViVA9dg7C+SXoB/A==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249090860675",
+          "size_bytes": 3012077835,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr13.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr14",
+        "manifest_sha256": "0e9c9af22ba2ffb9d84e4e673e18b3999f80c4b8e3ed0b4b047cffd2f6fa0eb6",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr14-20260728-r1",
+        "tbi": {
+          "checksum": "2NcA7Njhu1Iv4T8UrAe7zA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249166304936",
+          "size_bytes": 87691,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr14.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "AeTdtt2OGeyIczBvCYKWjA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249162099850",
+          "size_bytes": 2853350374,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr14.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr15",
+        "manifest_sha256": "a2e49c5a2add7a6de974f4d7d54f6caf27a781e22ba8ef6dfee6646f69ccd60d",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr15-20260728-r1",
+        "tbi": {
+          "checksum": "IPLPmneku12UtR5eJXrn8g==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249246285170",
+          "size_bytes": 85088,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr15.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "s+e9fHrIauUcLsHFxzMX6g==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249242167137",
+          "size_bytes": 2847176629,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr15.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr16",
+        "manifest_sha256": "aa5eb1083ae14470553565be2d91baf1dc4699b2cbc2583bd81242ed2c6042a5",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+        "tbi": {
+          "checksum": "1J1/KZTFjxrzNWOfG/Ki0w==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249321654228",
+          "size_bytes": 83100,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr16.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "+3rboPQe1um3YJqWfliNfg==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249317380457",
+          "size_bytes": 3094857120,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr16.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr17",
+        "manifest_sha256": "40d699552fcbaf02600f2e6e8faccb6d0d198bbc382fcf9e5b04f08eb44b0f49",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr17-20260728-r1",
+        "tbi": {
+          "checksum": "4a3Fw29ELmVvFgTQrs6QPA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249397808113",
+          "size_bytes": 83843,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr17.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "u6ZqQLAYNVkKcIPxkT8pDw==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249393678481",
+          "size_bytes": 2891440764,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr17.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr18",
+        "manifest_sha256": "572326fbd36f9b51e738364165ac3c95c77d4d695934c19f8859fbc2efe6ee2b",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr18-20260728-r1",
+        "tbi": {
+          "checksum": "4Gs19NK7c+txdKTbpmIieQ==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249465886173",
+          "size_bytes": 80043,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr18.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "IHm9/EhpofQAl0KyC02q+w==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249461730050",
+          "size_bytes": 2718225108,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr18.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr19",
+        "manifest_sha256": "dce6ca1ff3489110504c01b8d65f5a11528bc65f982de305e9b11d399f58ec57",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
+        "tbi": {
+          "checksum": "CUvELQ2D6EpDwGIcyUJkeA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249534649589",
+          "size_bytes": 57214,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr19.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "OfPMPV78lojvBYdrq76UZg==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249530566144",
+          "size_bytes": 2374254918,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr19.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr20",
+        "manifest_sha256": "ec4d4fa7927a9da8e69643d4193ba2b05aa32be899c7b5d1aef1f52b57afec6a",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr20-20260728-r1",
+        "tbi": {
+          "checksum": "GqhzXaORVkMDYwOG+nqjnQ==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249593254219",
+          "size_bytes": 63438,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr20.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "2wRlCYXCvg53PYxykaI6Ew==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249589072358",
+          "size_bytes": 2128437056,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr20.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr21",
+        "manifest_sha256": "62c1a4c446bff4993536a3a605ca6c08ddfaf4b892e9a4bc45b1181742bc1d5b",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr21-20260728-r1",
+        "tbi": {
+          "checksum": "wzD9fOLwGCY8QQ2uoUY7lA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249632607175",
+          "size_bytes": 38559,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr21.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "swD6WWopjsxnsgmax/r3hw==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785249628698762",
+          "size_bytes": 1391278193,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr21.vcf.gz"
+        }
+      },
+      {
+        "carrier_loading_status": "available",
+        "chrom": "chr22",
+        "manifest_sha256": "a269a918eaeab75d1f8e24459eb816666546e972f28fada12388c2c7ccb2e5c3",
+        "run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1",
+        "tbi": {
+          "checksum": "84XBkg3Ifo1yxsKZrDu4tw==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785158337708633",
+          "size_bytes": 38228,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr22.vcf.gz.tbi"
+        },
+        "vcf": {
+          "checksum": "3Aq7gHWQSTEvet7Pci4OFA==",
+          "checksum_algorithm": "md5_base64",
+          "generation": "1785158335564090",
+          "size_bytes": 1481939898,
+          "uri": "gs://gnomad-lr-data/y1/sources/hgsvc_hprc/vcfs/gnomAD_LR_Y1.hgsvc_hprc.chr22.vcf.gz"
+        }
+      }
+    ],
+    "primary_manifest_bundle_sha256": "7aee998adbb40b50d920c81061dcec7437db04fd8d4c72ff12dfc40abe160c9a",
+    "reference_genome": "GRCh38"
+  },
+  "coverage": {
+    "no_output_count": 60,
+    "roster": [
+      {
+        "sample_id": "HG00096",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00097",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00099",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00126",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00128",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00133",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00140",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00146",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00171",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG002",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00232",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00235",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00253",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00268",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00272",
+        "source_status": "source_marked_skip"
+      },
+      {
+        "sample_id": "HG00280",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00290",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00320",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00321",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00323",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00329",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00344",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00350",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00358",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00408",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00423",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00438",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG005",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00512",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00513",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00514",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00544",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00558",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00597",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00609",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00621",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00639",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00642",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00658",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00673",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00706",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00731",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00732",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG00733",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00735",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00738",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00741",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG00864",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01071",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01074",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01081",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01099",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01106",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01109",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01114",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01123",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01150",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01167",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01175",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01192",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01243",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01252",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01255",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01258",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01261",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01346",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01352",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01358",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01361",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01433",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01457",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01496",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01505",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01530",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01573",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01596",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01784",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01786",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01884",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01890",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG01891",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01928",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01934",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01940",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01943",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01952",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01960",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01969",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01975",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01978",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01981",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG01993",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02004",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02011",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02015",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02018",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02027",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02040",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02055",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02056",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02059",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02071",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02074",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02080",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02083",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02106",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02109",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02129",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02132",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02135",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02145",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02148",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02155",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02165",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02178",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02257",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02258",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02273",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02280",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02282",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02293",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02300",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02391",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02392",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02451",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02486",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02492",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02514",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02523",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02554",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02559",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02572",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02583",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02587",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02602",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02615",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02622",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02630",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02647",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02666",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02668",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02698",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02717",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02723",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02735",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02738",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02769",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02809",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02818",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02841",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02886",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02922",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02953",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG02965",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02976",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG02984",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03009",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03017",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03041",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03050",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03065",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03098",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03130",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03139",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03195",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03209",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03225",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03239",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03248",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03270",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03369",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03371",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03452",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03453",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03456",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03470",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03471",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03486",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03516",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03520",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03521",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03540",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03579",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03583",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03654",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03669",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03683",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03688",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03704",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03710",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03732",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03742",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03784",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03804",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03807",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG03816",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03831",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03834",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03874",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03927",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG03942",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04036",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG04115",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04157",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04160",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04184",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04187",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04199",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04204",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG04217",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "HG04228",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "HG06807",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA12329",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA18505",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18508",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18522",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18534",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA18565",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18570",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18608",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18620",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18747",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18879",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18906",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18939",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA18940",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18943",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18944",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18945",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18948",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18952",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18959",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18960",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18967",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18970",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18971",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18974",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18976",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18982",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18983",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA18989",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19036",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19043",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19087",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19129",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19159",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19185",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19238",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19239",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19240",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19317",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19331",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19338",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19347",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19384",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19391",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19434",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19443",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19468",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19650",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19682",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19700",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19705",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19776",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19835",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19836",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA19909",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA19983",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA20129",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20282",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20346",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20355",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA20503",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20509",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA20752",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20762",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20799",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20805",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20806",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20809",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20827",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20847",
+        "source_status": "no_methylation_output"
+      },
+      {
+        "sample_id": "NA20850",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20870",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA20905",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA21093",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA21102",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA21106",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA21110",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA21144",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA21309",
+        "source_status": "source_present"
+      },
+      {
+        "sample_id": "NA21487",
+        "source_status": "no_methylation_output"
+      }
+    ],
+    "roster_count": 292,
+    "source_marked_skip_count": 1,
+    "source_present_count": 231,
+    "supported_cohort": "hgsvc_hprc",
+    "supported_contigs": [
+      "chr1",
+      "chr2",
+      "chr3",
+      "chr4",
+      "chr5",
+      "chr6",
+      "chr7",
+      "chr8",
+      "chr9",
+      "chr10",
+      "chr11",
+      "chr12",
+      "chr13",
+      "chr14",
+      "chr15",
+      "chr16",
+      "chr17",
+      "chr18",
+      "chr19",
+      "chr20",
+      "chr21",
+      "chr22"
+    ],
+    "unsupported_contigs": ["chrX", "chrY"]
+  },
+  "exclusions": [
+    "aou",
+    "source_absent",
+    "sample_total",
+    "cross_cohort",
+    "fallback",
+    "chrX",
+    "chrY",
+    "maternal_or_paternal_identity"
+  ],
+  "integrity": {
+    "algorithm": "sha256",
+    "receipt_strategy": "Hash the exact receipt file bytes; configuration must supply and match the expected SHA-256 before parsing or admission.",
+    "referenced_artifact_strategy": "Hash exact bytes of the historical raw serving receipt and browser primary manifest bundle, then compare every in-scope manifest and immutable VCF/TBI identity.",
+    "self_hash_embedded": false
+  },
+  "issued_at": "2026-08-06T00:00:00Z",
+  "mapping_contract": {
+    "canonical_browser_ab_derived_at_render_time": true,
+    "parental_homolog_claim": false,
+    "phase_set_semantics": "NULL_BECAUSE_MAPPING_IS_CHROMOSOME_WIDE",
+    "scope": "CHROMOSOME_WIDE",
+    "source_hap1_vcf_strand": 1,
+    "source_hap2_vcf_strand": 2
+  },
+  "receipt_id": "y1-hgsvc-hprc-direct-source-haplotype-to-browser-vcf-v1",
+  "schema_version": 1,
+  "source_product": {
+    "accepted_tasks": 10392,
+    "completion_receipt_archived_generation": "1785828593250138",
+    "completion_receipt_sha256": "f259273f4c66ae18f80884cfbb6640a603e0708765a059a68e75bb1b85d23f85",
+    "database": "gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3",
+    "detail_rows": 12162269986,
+    "loaded_mirror_ledger_content_sha256": "631b201f12fcb519a99ccbb27a8d718a689f2a63d388e9b9d96fd65615321fa3",
+    "loaded_mirror_ledger_sha256": "1fc17cf2eb161ff2aefff65cd0250833c5a31e45ebe0ed5f22e23c654c6ca263",
+    "object_count": 924,
+    "pinned_original_object_inventory_sha256": "76f389cb85959c1e5fe605c0aa568cfbb253abc23484d42eee9aab63720585f0",
+    "raw_serving_receipt_sha256": "be522cfe12455af49127ba8cf84ccb102af0c408112d6ec7b650892815aec218",
+    "route_run_id": "y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1",
+    "source_manifest_content_sha256": "f585cbc2b806dcb52944af2ecabe634338a41323f89e3938336235c7729e8743",
+    "source_manifest_sha256": "cd12abd8ebef56f55d0c18c5d8db60bfe5672869a990c90932168d603cb2da69",
+    "source_present_samples": 231,
+    "table": "lr_y1_methylation_source_haplotype_presentation",
+    "task_request_sha256": "8f3fec45d9b057f6601e6f8b26695fa74770f82afd12051f5e265a42e4344568"
+  },
+  "status": "operator_assumption_approved"
+}

@@ -11,6 +11,7 @@ import {
   resolveSourcePhasedMethylationRoute,
   type SourcePhasedMethylationRoute,
 } from './source_phased_methylation_config'
+import { resolveJoinedPhasedMethylationRoute } from './joined_phased_methylation_config'
 
 const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
 
@@ -42,6 +43,9 @@ export const y1PrimaryManifests = isY1PilotEnabled
 export const y1AncillaryRoutes = isY1PilotEnabled ? resolveY1AncillaryRoutes() : []
 export const sourcePhasedMethylationRoute = isY1PilotEnabled
   ? resolveSourcePhasedMethylationRoute()
+  : null
+export const joinedPhasedMethylationRoute = isY1PilotEnabled
+  ? resolveJoinedPhasedMethylationRoute()
   : null
 
 export const y1ClickhouseClient = createClient({

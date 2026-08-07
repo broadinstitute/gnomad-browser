@@ -65,7 +65,8 @@ export const fetchY1HaplotypeRows = async (
           groupUniqArray(tuple(
             c.sample_id,
             toUInt16(c.genotype_position + 1),
-            nullIf(JSONExtractString(c.genotype_fields_json, 'PS'), '')
+            nullIf(JSONExtractString(c.genotype_fields_json, 'PS'), ''),
+            toUInt16(length(c.gt_alleles))
           )) AS carriers
         FROM (
           SELECT *, concat(source_variant_id, '~', toString(alt_index)) AS browser_variant_id

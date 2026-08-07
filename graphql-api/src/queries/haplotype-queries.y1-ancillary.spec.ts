@@ -9,12 +9,17 @@ jest.mock('../clickhouse', () => ({
   clickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
   y1ClickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
   getY1AncillaryClickhouseClient: () => ({ query: (...args: any[]) => mockQuery(...args) }),
+  getSourcePhasedMethylationClickhouseClient: () => ({
+    query: (...args: any[]) => mockQuery(...args),
+  }),
 }))
 jest.mock('../graphql/resolvers/ancillary-availability', () => ({
   getY1AncillaryRoute: (...args: any[]) => mockRoute(...args),
+  getSourcePhasedMethylationRoute: (...args: any[]) => mockRoute(...args),
 }))
 
 import {
+  fetchJoinedPhasedMethylationForRegion,
   fetchLRCoverageForRegion,
   fetchMethylationForRegion,
   fetchSTRHistogram,
@@ -120,6 +125,115 @@ describe('Y1 ancillary query routing', () => {
       stop: 200,
       samples: ['sample-1'],
     })
+  })
+
+  test('binds the joined batch query to the exact admitted route and overflow sentinel', async () => {
+    const admittedRoute = {
+      database: 'exact-source-product',
+      run_id: 'exact-run',
+      receipt_path: '/exact/receipt.json',
+      receipt: {
+        route_run_id: 'exact-run',
+        completion_receipt_sha256: 'completion',
+        source_manifest_sha256: 'manifest',
+      },
+    } as any
+    mockRoute.mockReturnValue(admittedRoute)
+    mockQuery.mockImplementation(async () => ({ json: async () => [] }))
+    await fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 100, 200, [
+      'HG00097',
+      'HG00126',
+    ])
+    const call = mockQuery.mock.calls[0][0] as any
+    expect(call.query).toContain('stable_key AS source_row_key')
+    expect(call.query).toContain('source_haplotype AS vcf_strand')
+    expect(call.query).toContain('pos1 BETWEEN {rawStart0:UInt32} AND {rawStop0:UInt32}')
+    expect(call.query).toContain('sample_id IN ({sampleIds:Array(String)})')
+    expect(call.query).toContain('ORDER BY pos1, sample_id, source_haplotype, stable_key')
+    expect(call.query).toContain('LIMIT 250001')
+    expect(call.query_params).toEqual({
+      chrom: 'chr22',
+      rawStart0: 99,
+      rawStop0: 199,
+      sampleIds: ['HG00097', 'HG00126'],
+    })
+    expect(call.clickhouse_settings).toMatchObject({
+      max_execution_time: 30,
+      max_result_rows: '250001',
+      result_overflow_mode: 'throw',
+      max_rows_to_read: '10000000',
+      read_overflow_mode: 'throw',
+      max_bytes_to_read: '1073741824',
+    })
+  })
+
+  test('queries canonical first/last boundaries as raw BED start0 without stop+1 admission', async () => {
+    const admittedRoute = {
+      database: 'exact-source-product',
+      run_id: 'exact-run',
+      receipt_path: '/exact/receipt.json',
+      receipt: {
+        route_run_id: 'exact-run',
+        completion_receipt_sha256: 'completion',
+        source_manifest_sha256: 'manifest',
+      },
+    } as any
+    mockRoute.mockReturnValue(admittedRoute)
+    mockQuery.mockImplementation(async () => ({ json: async () => [] }))
+    await fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr1', 1, 2, ['HG00097'])
+    expect((mockQuery.mock.calls[0][0] as any).query_params).toMatchObject({
+      rawStart0: 0,
+      rawStop0: 1,
+    })
+  })
+
+  test('fails closed when the raw route is lost or mismatched after admission', async () => {
+    const admittedRoute = {
+      database: 'exact-source-product',
+      run_id: 'exact-run',
+      receipt_path: '/exact/receipt.json',
+      receipt: {
+        route_run_id: 'exact-run',
+        completion_receipt_sha256: 'completion',
+        source_manifest_sha256: 'manifest',
+      },
+    } as any
+    for (const currentRoute of [
+      null,
+      { ...admittedRoute, run_id: 'other-run' },
+      {
+        ...admittedRoute,
+        receipt: { ...admittedRoute.receipt, source_manifest_sha256: 'other-manifest' },
+      },
+    ]) {
+      mockRoute.mockReturnValue(currentRoute)
+      await expect(
+        fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 100, 200, ['HG00097'])
+      ).rejects.toMatchObject({
+        extensions: { code: 'JOINED_METHYLATION_CONTRACT_MISMATCH' },
+      })
+    }
+    expect(mockQuery).not.toHaveBeenCalled()
+  })
+
+  test('does not convert a joined ClickHouse failure into an empty result', async () => {
+    const admittedRoute = {
+      database: 'exact-source-product',
+      run_id: 'exact-run',
+      receipt_path: '/exact/receipt.json',
+      receipt: {
+        route_run_id: 'exact-run',
+        completion_receipt_sha256: 'completion',
+        source_manifest_sha256: 'manifest',
+      },
+    } as any
+    mockRoute.mockReturnValue(admittedRoute)
+    mockQuery.mockImplementation(async () => {
+      throw new Error('private ClickHouse failure')
+    })
+    await expect(
+      fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 100, 200, ['HG00097'])
+    ).rejects.toThrow('private ClickHouse failure')
   })
 
   test('returns absent AoU methylation without querying or falling back to HGSVC', async () => {

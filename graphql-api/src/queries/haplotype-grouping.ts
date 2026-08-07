@@ -97,7 +97,7 @@ export type HaplotypeCarrierIdentity = {
   phase_set: string | null
 }
 
-export type CarrierTuple = [string, number, (string | null)?]
+export type CarrierTuple = [string, number, (string | null)?, number?]
 
 function buildVariant(
   chrom: string, pos: number, ref: string, alt: string, rsid: string,
@@ -739,6 +739,7 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
  * Packs variants into SoA format for smaller JSON payloads.
  */
 export type StructuredCarrier = HaplotypeCarrierIdentity & {
+  genotype_ploidy: number | null
   variant_indices: number[]
   phase_sets: string[]
   phase_set_by_variant: Array<{ variant_index: number; phase_set: string | null }>
@@ -787,18 +788,27 @@ export const buildVariantsAndCarrierMap = (
   // Transpose: for each carrier, collect which variant indices they carry
   const carrierVariantIndices: Record<string, number[]> = {}
   const phaseSetsByCarrier = new Map<string, Set<string>>()
+  const verifiedPloidyByCarrier = new Map<string, number | null>()
   const phaseSetByVariantAndCarrier = new Map<
     string,
     Array<{ variant_index: number; phase_set: string | null }>
   >()
   for (let i = 0; i < distinctVariants.length; i++) {
     const carriers: CarrierTuple[] = distinctVariants[i].carriers || []
-    for (const [sampleId, strand, phaseSet = null] of carriers) {
+    for (const [sampleId, strand, phaseSet = null, genotypePloidy] of carriers) {
       const key = `${sampleId}:${strand}`
       if (!carrierVariantIndices[key]) {
         carrierVariantIndices[key] = []
       }
       carrierVariantIndices[key].push(i)
+      const validPloidy = Number.isSafeInteger(genotypePloidy) && Number(genotypePloidy) > 0
+        ? Number(genotypePloidy)
+        : null
+      if (!verifiedPloidyByCarrier.has(key)) {
+        verifiedPloidyByCarrier.set(key, validPloidy)
+      } else if (verifiedPloidyByCarrier.get(key) !== validPloidy) {
+        verifiedPloidyByCarrier.set(key, null)
+      }
       let phaseSetByVariant = phaseSetByVariantAndCarrier.get(key)
       if (!phaseSetByVariant) {
         phaseSetByVariant = []
@@ -826,6 +836,7 @@ export const buildVariantsAndCarrierMap = (
         sample_id: carrierId.substring(0, separator),
         vcf_strand: Number(carrierId.substring(separator + 1)),
         phase_set: phaseSets.length === 1 && !hasMissingPhaseSet ? phaseSets[0] : null,
+        genotype_ploidy: verifiedPloidyByCarrier.get(carrierId) ?? null,
         phase_sets: phaseSets,
         phase_set_by_variant: phaseSetByVariant,
         variant_indices: variantIndices,

@@ -51,8 +51,8 @@ describe('Y1 long-read browser identity', () => {
       carriers,
     })
     const payload = buildVariantsAndCarrierMap([
-      row(100, [['sample:with-colon', 1, 'ps-a'], ['sample:with-colon', 2, 'ps-b']]),
-      row(200, [['sample:with-colon', 1, null], ['sample:with-colon', 2, 'ps-b']]),
+      row(100, [['sample:with-colon', 1, 'ps-a', 2], ['sample:with-colon', 2, 'ps-b', 2]]),
+      row(200, [['sample:with-colon', 1, null, 2], ['sample:with-colon', 2, 'ps-b', 2]]),
     ], 'chr22')
 
     expect(payload.carrier_variant_indices).toEqual({
@@ -62,7 +62,7 @@ describe('Y1 long-read browser identity', () => {
     expect(payload.carriers).toEqual([
       {
         sample_id: 'sample:with-colon', vcf_strand: 1, phase_set: null,
-        phase_sets: ['ps-a'], variant_indices: [0, 1],
+        genotype_ploidy: 2, phase_sets: ['ps-a'], variant_indices: [0, 1],
         phase_set_by_variant: [
           { variant_index: 0, phase_set: 'ps-a' },
           { variant_index: 1, phase_set: null },
@@ -70,7 +70,7 @@ describe('Y1 long-read browser identity', () => {
       },
       {
         sample_id: 'sample:with-colon', vcf_strand: 2, phase_set: 'ps-b',
-        phase_sets: ['ps-b'], variant_indices: [0, 1],
+        genotype_ploidy: 2, phase_sets: ['ps-b'], variant_indices: [0, 1],
         phase_set_by_variant: [
           { variant_index: 0, phase_set: 'ps-b' },
           { variant_index: 1, phase_set: 'ps-b' },

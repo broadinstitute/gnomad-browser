@@ -172,7 +172,50 @@ The operator confirmation available for this change did not name an immutable VC
 the exact browser primary VCF bundle. Therefore this route is intentionally
 `source_labelled_only`: `source_haplotype` remains HAP1/HAP2, while `vcf_strand` and
 `phase_set` remain null and `joinable_to_vcf=false`. The browser shows separate VCF GT rows
-and source BED tracks, explicitly without visual or contract alignment. A later joined view
-requires the one missing approval receipt named in the serving receipt: it must bind the
-1→GT1 and 2→GT2 mapping to the exact browser VCF manifest bundle and immutable VCF/TBI
-identities.
+and source BED tracks, explicitly without visual or contract alignment. That historical raw
+receipt is not rewritten. The separate additive receipt below supplies the later operator
+assumption binding 1→GT1 and 2→GT2 to the exact browser VCF manifest bundle and immutable
+VCF/TBI identities.
+
+### Operator-approved joined phased methylation (local only)
+
+The additive joined query uses the raw route above plus a distinct, hash-pinned orientation
+receipt. For local startup, also set:
+
+```bash
+export LR_Y1_JOINED_PHASED_METHYLATION_ROUTE="$(jq -cn \
+  --arg database gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3 \
+  --arg run_id y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1 \
+  --arg raw_receipt_path "$PWD/graphql-api/config/y1-source-phased-methylation-serving-receipt.json" \
+  --arg orientation_receipt_path "$PWD/graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json" \
+  --arg expected_orientation_receipt_sha256 e3d7c819e0cb8fb759d8ce1611eec1228ae3a40d6f9407cbbfbe50551809e460 \
+  '{database:$database,run_id:$run_id,raw_receipt_path:$raw_receipt_path,orientation_receipt_path:$orientation_receipt_path,expected_orientation_receipt_sha256:$expected_orientation_receipt_sha256}')"
+```
+
+Startup fails closed unless the exact raw product, orientation receipt, primary manifest
+bundle, all chr1-chr22 immutable VCF/TBI identities, and active primary carrier runs agree.
+The approved semantics are chromosome-wide direct HAP1→GT1 and HAP2→GT2; `phase_set` is
+therefore null. This is an explicit operator assumption, not independently machine-verified
+lineage and not a maternal/paternal claim. The receipt binds the exact statement, scope,
+operator role, decision timestamp, and SHA-256 of the recorded Flow user-request artifact.
+It explicitly records that this is not a cryptographic human signature. Production release
+review must accept that assumption as a release gate rather than treating it as scientific
+lineage verification. `chrX`, `chrY`, AoU, source-absent samples, sample-total data, and all
+fallback behavior are excluded.
+
+The joined region arguments and records use an explicit browser coordinate contract:
+`start` and `stop` are an inclusive one-based range and `start >= 1`. The source table remains
+raw BED 0-based half-open. A one-base source row `[start0,end0)` is selected when `start0` is
+in `[start-1,stop-1]`, and the joined response exposes `pos1=start0+1` and `pos2=end0+1`
+(`pos2=pos1+1`). Any non-one-base row or row outside the canonical request fails the response
+closed. The historical source-labelled endpoint retains its raw source coordinates.
+
+Each joined region field costs 25 and each roster-bearing capability field costs 10 against
+the default maximum query cost of 35. Independent validation caps allow only one of each joined
+field per GraphQL document. The bounded ClickHouse
+query also applies a 30-second execution limit, result/read row limits, and a 1 GiB read limit;
+the existing 250,001-row overflow sentinel remains authoritative.
+
+No release packaging is changed here. A future release must explicitly add the orientation
+receipt to the API image allowlist/artifact manifest and set the joined route environment;
+Terraform, Docker, and deployed configuration intentionally remain untouched in this phase.

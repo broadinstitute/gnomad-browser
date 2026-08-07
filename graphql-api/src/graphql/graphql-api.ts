@@ -8,6 +8,11 @@ import config from '../config'
 import logger from '../logger'
 
 import { applyRateLimits } from './rate-limiting'
+import {
+  joinedMethylationInternalContext,
+  joinedMethylationPublicCode,
+} from './joined-phased-methylation-errors'
+import { joinedPhasedMethylationSingleFieldRule } from './joined-phased-methylation-validation'
 import schema from './schema'
 
 const customParseFn = (...args: Parameters<typeof parse>) => {
@@ -52,7 +57,7 @@ const customValidateFn = (...args: Parameters<typeof validate>) => {
   )
 }
 
-const formatErrorAndSetNocache = (
+export const formatErrorAndSetNocache = (
   error: any,
   request: any,
   graphqlRequestParams: any,
@@ -86,13 +91,16 @@ const formatErrorAndSetNocache = (
     )
   }
 
-  const isUserVisible = error.extensions && error.extensions.isUserVisible
+  const joinedPublicCode = joinedMethylationPublicCode(error)
+  const joinedInternalContext = joinedMethylationInternalContext(error)
+  const isUserVisible =
+    joinedPublicCode !== null || (error.extensions && error.extensions.isUserVisible)
 
-  // User visible errors (such as variant not found) are expected to occur during normal use of the
-  // browser and do not need to be logged.
-  if (!isUserVisible) {
+  // Routine client errors are intentionally quiet. Scientific contract/integrity
+  // failures retain a safe public code but are operational errors and must be logged.
+  if (!isUserVisible || joinedInternalContext) {
     logger.error({
-      message: error.stack,
+      message: joinedInternalContext ? 'Joined methylation contract mismatch' : error.stack,
       context: {
         httpRequest: {
           requestMethod: request.method,
@@ -105,8 +113,23 @@ const formatErrorAndSetNocache = (
           protocol: `HTTP/${request.httpVersionMajor}.${request.httpVersionMinor}`,
         },
         graphql: graphqlRequestParams,
+        ...(joinedInternalContext ? { joinedMethylation: joinedInternalContext } : {}),
       },
     })
+  }
+
+  // Joined methylation exposes only its reviewed public code and a generic message
+  // for internal contract mismatches. Strip all other extensions and SQL details.
+  if (joinedPublicCode) {
+    return new GraphQLError(
+      joinedInternalContext ? 'Joined methylation contract mismatch' : error.message,
+      error.nodes,
+      error.source,
+      error.positions,
+      error.path,
+      error.originalError,
+      { code: joinedPublicCode }
+    )
   }
 
   // In development, surface the underlying error message (e.g. a ClickHouse
@@ -125,6 +148,11 @@ const queryComplexityCreateError = (max: any, actual: any) => {
   return new GraphQLError(`Query is too expensive (${actual}). Maximum allowed cost is ${max}.`)
 }
 
+export const recordGraphqlQueryCost = (request: any, requestParams: any, cost: number) => {
+  request.graphqlQueryCost = cost
+  request.graphqlParams = requestParams
+}
+
 const graphQLApi = ({ context }: any) =>
   graphqlHTTP(async (request, response, requestParams) => ({
     schema,
@@ -132,6 +160,7 @@ const graphQLApi = ({ context }: any) =>
     context,
 
     validationRules: [
+      joinedPhasedMethylationSingleFieldRule,
       queryComplexity({
         maximumComplexity: config.MAX_QUERY_COST,
         variables: requestParams && requestParams.variables ? requestParams.variables : undefined,
@@ -140,10 +169,7 @@ const graphQLApi = ({ context }: any) =>
           simpleEstimator({ defaultComplexity: 0 }),
         ],
         createError: queryComplexityCreateError,
-        onComplete: (cost: any) => {
-          ;(request as any).graphqlQueryCost = cost
-          ;(request as any).graphqlParams = requestParams
-        },
+        onComplete: (cost: any) => recordGraphqlQueryCost(request, requestParams, cost),
       }),
     ],
 

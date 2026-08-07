@@ -35,7 +35,7 @@ describe('Y1 haplotype VCF identity query', () => {
         json: async () => [{
           source_variant_id: 'chr22-100-A-G', alt_index: 1,
           tr_id: null, tr_motifs: null, tr_struc: null,
-          carriers: [['sample-1', 1, 'ps-1'], ['sample-1', 2, null]],
+          carriers: [['sample-1', 1, 'ps-1', 2], ['sample-1', 2, null, 2]],
         }],
       })
     })
@@ -49,11 +49,12 @@ describe('Y1 haplotype VCF identity query', () => {
 
     expect(variantQuery).toContain('toUInt16(c.genotype_position + 1)')
     expect(variantQuery).toContain("nullIf(JSONExtractString(c.genotype_fields_json, 'PS'), '')")
+    expect(variantQuery).toContain('toUInt16(length(c.gt_alleles))')
     expect(trvQuery).toContain('toUInt16(c.genotype_position + 1) AS vcf_strand')
     expect(trvQuery).toContain("AS phase_set")
     expect(result.variants[0].carriers).toEqual([
-      ['sample-1', 1, 'ps-1'],
-      ['sample-1', 2, null],
+      ['sample-1', 1, 'ps-1', 2],
+      ['sample-1', 2, null, 2],
     ])
     expect(result.trvCarriers).toEqual([
       { position: 100, ref: 'A', alt: 'G', sample_id: 'sample-1', vcf_strand: 1, phase_set: 'ps-1' },
