@@ -177,6 +177,84 @@ describe('VCF carrier identity', () => {
     })
   })
 
+  test.each([
+    { observedStrand: 1, expectedMapping: { strandA: 2, strandB: 1 } },
+    { observedStrand: 2, expectedMapping: { strandA: 1, strandB: 2 } },
+  ])(
+    'maps a one-sided autosomal GT$observedStrand carrier to its complementary reference copy',
+    ({ observedStrand, expectedMapping }) => {
+      const oneSidedMetadata = carrierMetadataFromPayload([
+        {
+          sample_id: 'one-sided',
+          vcf_strand: observedStrand,
+          phase_set: `ps-${observedStrand}`,
+          genotype_ploidy: 2,
+          variant_indices: [0],
+        },
+      ])
+      const diplotype = groupDiplotypes(
+        [haplotypeVariant('carrier-alt', 100, 0.5)] as any,
+        { [`one-sided:${observedStrand}`]: [0] },
+        0,
+        oneSidedMetadata
+      )[0]
+
+      expect(diplotype.haplotypeA.variants).toEqual([])
+      expect(diplotype.haplotypeB.variants.map((variant) => variant.variant_id)).toEqual([
+        'carrier-alt',
+      ])
+      expect(diplotype.samples[0]).toEqual({
+        sample_id: 'one-sided',
+        strand_mapping: expectedMapping,
+        phase_set_mapping: { phaseSetA: null, phaseSetB: `ps-${observedStrand}` },
+      })
+    }
+  )
+
+  test.each([
+    { chrom: 'chr22', observedStrand: 0 },
+    { chrom: 'chr22', observedStrand: 3 },
+    { chrom: 'chrX', observedStrand: 1 },
+  ])(
+    'does not infer a reference copy for $chrom GT$observedStrand',
+    ({ chrom, observedStrand }) => {
+      const variant = { ...haplotypeVariant('unsupported', 100, 0.5), chrom }
+      const diplotype = groupDiplotypes(
+        [variant] as any,
+        { [`unsupported:${observedStrand}`]: [0] },
+        0
+      )[0]
+
+      expect(diplotype.samples[0].strand_mapping).toEqual({
+        strandA: null,
+        strandB: observedStrand,
+      })
+    }
+  )
+
+  test.each([1, null])(
+    'does not infer a reference copy without verified diploid ploidy (ploidy %s)',
+    (genotypePloidy) => {
+      const carrierMetadata = carrierMetadataFromPayload([
+        {
+          sample_id: 'non-diploid',
+          vcf_strand: 1,
+          phase_set: null,
+          genotype_ploidy: genotypePloidy,
+          variant_indices: [0],
+        },
+      ])
+      const diplotype = groupDiplotypes(
+        [haplotypeVariant('non-diploid-alt', 100, 0.5)] as any,
+        { 'non-diploid:1': [0] },
+        0,
+        carrierMetadata
+      )[0]
+
+      expect(diplotype.samples[0].strand_mapping).toEqual({ strandA: null, strandB: 1 })
+    }
+  )
+
   test('keeps carrier-resolved exact TR ALTs in default diploid mode with phase metadata', () => {
     const trVariant = {
       ...haplotypeVariant('chr22-100-TRV-1~1', 100, 0.5),

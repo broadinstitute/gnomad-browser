@@ -128,12 +128,14 @@ export type PhaseSetByVariant = Readonly<{
 }>
 
 export type StructuredCarrier = HaplotypeCarrierIdentity & {
+  genotype_ploidy?: number | null
   variant_indices: number[]
   phase_sets?: string[]
   phase_set_by_variant?: Array<{ variant_index: number; phase_set: string | null }>
 }
 
 export type CarrierPhaseMetadata = Readonly<HaplotypeCarrierIdentity & {
+  genotype_ploidy?: number
   variant_indices: readonly number[]
   phase_sets?: readonly string[]
   phase_set_by_variant?: readonly PhaseSetByVariant[]
@@ -159,6 +161,9 @@ export function freezePhaseSetSidecar(sidecar: PhaseSetSidecar): PhaseSetSidecar
       sample_id: carrier.sample_id,
       vcf_strand: carrier.vcf_strand,
       phase_set: carrier.phase_set,
+      ...(carrier.genotype_ploidy == null
+        ? {}
+        : { genotype_ploidy: carrier.genotype_ploidy }),
       variant_indices: Object.freeze([...carrier.variant_indices]),
       phase_sets: carrier.phase_sets == null
         ? undefined
@@ -203,6 +208,9 @@ export function carrierMetadataFromPayload(
       sample_id: carrier.sample_id,
       vcf_strand: carrier.vcf_strand,
       phase_set: carrier.phase_set,
+      ...(Number.isSafeInteger(carrier.genotype_ploidy) && Number(carrier.genotype_ploidy) > 0
+        ? { genotype_ploidy: Number(carrier.genotype_ploidy) }
+        : {}),
       variant_indices: Object.freeze([...carrier.variant_indices]),
       phase_sets: carrier.phase_sets == null
         ? undefined
@@ -984,6 +992,13 @@ export function groupDiplotypes(
     }
   }
 
+  const regionChromosomes = new Set(
+    variants.map((variant) => String(variant.chrom).replace(/^chr/i, ''))
+  )
+  const regionChromosome = regionChromosomes.size === 1 ? [...regionChromosomes][0] : null
+  const isDiploidAutosomalRegion =
+    regionChromosome !== null && /^(?:[1-9]|1[0-9]|2[0-2])$/.test(regionChromosome)
+
   // Group by canonical diplotype signature
   const sigToGroup = new Map<
     string,
@@ -1024,6 +1039,17 @@ export function groupDiplotypes(
 
     const sigFirst = makeSig(idxFirst)
     const sigSecond = makeSig(idxSecond)
+    // On an admitted diploid autosome, a lone ALT-carrier GT position implies
+    // that the unobserved canonical side is the complementary reference copy.
+    // Keep this deliberately narrow: legacy/unknown identities and ambiguous
+    // multi-carrier inputs retain only their observed mappings.
+    const complementaryReferenceStrand =
+      isDiploidAutosomalRegion &&
+      strands.length === 1 &&
+      carrierMetadata[first.carrierId]?.genotype_ploidy === 2 &&
+      (first.vcf_strand === 1 || first.vcf_strand === 2)
+        ? 3 - first.vcf_strand
+        : null
 
     // Canonical ordering: sort signatures so (A,B) and (B,A) hash the same
     let canonSigA: string, canonSigB: string
@@ -1040,7 +1066,7 @@ export function groupDiplotypes(
       indicesA = idxFirst
       indicesB = idxSecond
       strandA = first.vcf_strand
-      strandB = second?.vcf_strand ?? null
+      strandB = second?.vcf_strand ?? complementaryReferenceStrand
       phaseSetA = first.phase_set
       phaseSetB = second?.phase_set ?? null
       carrierIdA = first.carrierId
@@ -1052,7 +1078,7 @@ export function groupDiplotypes(
       canonSigB = sigFirst
       indicesA = idxSecond
       indicesB = idxFirst
-      strandA = second?.vcf_strand ?? null
+      strandA = second?.vcf_strand ?? complementaryReferenceStrand
       strandB = first.vcf_strand
       phaseSetA = second?.phase_set ?? null
       phaseSetB = first.phase_set

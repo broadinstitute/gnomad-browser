@@ -9,11 +9,17 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
 import { TrackPageSection } from '../TrackPage'
 
-import HaplotypeTrack, { HaplotypeGroup, HaplotypeGroups, HaplotypeCluster, HaplotypeTrackHandle, Methylation, MethylationSummaryPoint, LRVariant, Legend } from '../Haplotypes'
-import type {
-  MethylationSampleAvailability,
-  PhasedMethylationCapability,
-} from '../Haplotypes/MethylationHelp'
+import HaplotypeTrack, {
+  HaplotypeGroup,
+  HaplotypeGroups,
+  HaplotypeCluster,
+  HaplotypeTrackHandle,
+  Methylation,
+  MethylationSummaryPoint,
+  LRVariant,
+  Legend,
+} from '../Haplotypes'
+import type { MethylationSampleAvailability } from '../Haplotypes/MethylationHelp'
 import {
   carrierMetadataFromPayload,
   computeHaplotypeView,
@@ -26,12 +32,12 @@ import {
   type AutoDefaults,
   type CarrierMetadata,
 } from '../Haplotypes/haplotypeCompute'
-import HaplotypeVariantTable, { HaplotypeVariantTableHandle, type VariantTypeFilters } from '../Haplotypes/HaplotypeVariantTable'
+import HaplotypeVariantTable, {
+  HaplotypeVariantTableHandle,
+  type VariantTypeFilters,
+} from '../Haplotypes/HaplotypeVariantTable'
 import { createHaplotypeWorker } from '../Haplotypes/createHaplotypeWorker'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
-import HG00097PhasedMethylationComparison, {
-  type SourcePhasedMethylationRecord,
-} from '../Haplotypes/HG00097PhasedMethylationComparison'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import LongReadViewControls from './LongReadViewControls'
@@ -65,6 +71,19 @@ import {
   responseForCurrentMethylationRequest,
   MethylationRequestGate,
 } from './methylationState'
+import {
+  deterministicSampleBatches,
+  filterGroupsToSourceSamples,
+  inclusiveRegionSpanBp,
+  joinedMethylationRecordIdentity,
+  joinedMethylationUsabilityForRegion,
+  joinedMethylationRequestScope,
+  perCopyLoadingProgress,
+  validateJoinedMethylationBatch,
+  type JoinedPhasedMethylationCapability,
+  type JoinedPhasedMethylationRecord,
+  type PerCopyMethylationSampleState,
+} from './perCopyMethylation'
 
 // --- GraphQL queries (ported from HaplotypeRegionPage) ---
 
@@ -82,19 +101,40 @@ const METHYLATION_AVAILABILITY_QUERY = `
   }
 `
 
-const PHASED_METHYLATION_CAPABILITY_QUERY = `
-  query RegionPhasedMethylationCapability($lr_cohort: LongReadCohort!) {
-    phased_methylation_capability(lr_cohort: $lr_cohort) {
-      data_layer available joinable_to_vcf status orientation_status phase_set_semantics
-      route_run_id source_sample_ids reason
+const JOINED_PHASED_METHYLATION_CAPABILITY_QUERY = `
+  query RegionJoinedPhasedMethylationCapability($chrom: String!, $lr_cohort: LongReadCohort!) {
+    joined_phased_methylation_capability(chrom: $chrom, lr_cohort: $lr_cohort) {
+      available joinable_to_vcf status source_sample_ids max_span_bp max_samples max_records reason
+      identity {
+        source_run_id source_completion_receipt_sha256 source_manifest_sha256
+        browser_vcf_manifest_bundle_sha256 browser_vcf_manifest_sha256 browser_vcf_run_id
+        orientation_receipt_id orientation_receipt_sha256 mapping_artifact_sha256 mapping_scope
+      }
     }
   }
 `
 
-const SOURCE_PHASED_METHYLATION_QUERY = `
-  query RegionSourcePhasedMethylation($chrom: String!, $start: Int!, $stop: Int!, $sample_id: String!, $lr_cohort: LongReadCohort!) {
-    source_phased_methylation(chrom: $chrom, start: $start, stop: $stop, sample_id: $sample_id, lr_cohort: $lr_cohort) {
-      chr pos1 pos2 methylation sample coverage data_layer source_haplotype vcf_strand phase_set
+const JOINED_PHASED_METHYLATION_REGION_QUERY = `
+  query RegionJoinedPhasedMethylation($chrom: String!, $start: Int!, $stop: Int!, $sample_ids: [String!]!, $expected_orientation_receipt_sha256: String!, $lr_cohort: LongReadCohort!) {
+    joined_phased_methylation_region(
+      chrom: $chrom
+      start: $start
+      stop: $stop
+      sample_ids: $sample_ids
+      expected_orientation_receipt_sha256: $expected_orientation_receipt_sha256
+      lr_cohort: $lr_cohort
+    ) {
+      identity {
+        source_run_id source_completion_receipt_sha256 source_manifest_sha256
+        browser_vcf_manifest_bundle_sha256 browser_vcf_manifest_sha256 browser_vcf_run_id
+        orientation_receipt_id orientation_receipt_sha256 mapping_artifact_sha256 mapping_scope
+      }
+      requested_sample_ids completed_sample_ids
+      unavailable_samples { sample_id status reason }
+      records {
+        source_row_key chr pos1 pos2 sample methylation coverage source_haplotype
+        vcf_strand mapping_scope phase_set
+      }
     }
   }
 `
@@ -134,12 +174,17 @@ const MQTL_QUERY = `
 
 /** Fetch raw variant + carrier data from the REST endpoint (no grouping/tree on server) */
 const fetchHaplotypeDataREST = async (
-  chrom: string, start: number, stop: number,
+  chrom: string,
+  start: number,
+  stop: number,
   lrCohort: 'hgsvc_hprc' | 'aou',
   signal?: AbortSignal
 ): Promise<RawPayload> => {
   const params = new URLSearchParams({
-    chrom, start: String(start), stop: String(stop), lr_cohort: lrCohort,
+    chrom,
+    start: String(start),
+    stop: String(stop),
+    lr_cohort: lrCohort,
   })
   const t0 = performance.now()
   const response = await fetch(`/api/lr/haplotype-groups?${params}`, { signal })
@@ -151,7 +196,9 @@ const fetchHaplotypeDataREST = async (
   const data = parseHaplotypeResponse(response, text)
   const tParse = Math.round(performance.now() - t2)
   const sizeMB = (text.length / 1024 / 1024).toFixed(2)
-  console.log(`[perf] REST fetch: network=${tNetwork}ms, download=${tDownload}ms, JSON.parse=${tParse}ms, size=${sizeMB}MB`)
+  console.log(
+    `[perf] REST fetch: network=${tNetwork}ms, download=${tDownload}ms, JSON.parse=${tParse}ms, size=${sizeMB}MB`
+  )
   return data
 }
 
@@ -267,11 +314,24 @@ const emptyMethylationViewState = (scope: string | null = null): MethylationView
   detailOperationId: null,
 })
 
-const selectedSourcePhasedSample = (sampleIds: string[], requested: string | null) => {
-  if (requested !== null) return sampleIds.includes(requested) ? requested : null
-  if (sampleIds.includes('HG00097')) return 'HG00097'
-  return sampleIds[0] || null
+type JoinedMethylationCapabilityQueryState =
+  | { scope: string | null; status: 'loading' }
+  | { scope: string; status: 'resolved'; capability: JoinedPhasedMethylationCapability }
+  | { scope: string; status: 'error'; reason: string }
+
+type JoinedMethylationViewState = {
+  scope: string
+  recordsByIdentity: Map<string, JoinedPhasedMethylationRecord>
+  sampleStates: Map<string, PerCopyMethylationSampleState>
+  version: number
 }
+
+const emptyJoinedMethylationViewState = (scope: string): JoinedMethylationViewState => ({
+  scope,
+  recordsByIdentity: new Map(),
+  sampleStates: new Map(),
+  version: 0,
+})
 
 const LongReadUnifiedView = ({
   datasetId,
@@ -297,19 +357,14 @@ const LongReadUnifiedView = ({
   const history = useHistory()
   const searchParams = new URLSearchParams(location.search)
   const urlShowHaplotypes = searchParams.get('show_haplotypes') === 'true'
-  const urlShowSourcePhasedMethylation =
-    searchParams.get('show_source_phased_methylation') === 'true'
-  const urlSourcePhasedMethylationSample =
-    searchParams.get('source_phased_methylation_sample')
 
   // If region is too large and URL requests haplotype, show warning and fall back
-  const [showRegionWarning, setShowRegionWarning] = useState(
-    regionTooLarge && urlShowHaplotypes
-  )
+  const [showRegionWarning, setShowRegionWarning] = useState(regionTooLarge && urlShowHaplotypes)
   const y1Mode = provenance?.enabled === true || process.env.LR_Y1_ENABLED === 'true'
   // Capabilities from the API are authoritative. The build flag only fails closed while
   // provenance is unavailable (for example during an API/frontend version transition).
-  const capabilityKnown = (modality: string) => sourceForModality(provenance, modality) !== undefined
+  const capabilityKnown = (modality: string) =>
+    sourceForModality(provenance, modality) !== undefined
   const haplotypesAvailable = capabilityKnown('HAPLOTYPES')
     ? modalityAvailable(provenance, 'HAPLOTYPES')
     : !y1Mode && lrCohort !== 'aou'
@@ -322,35 +377,34 @@ const LongReadUnifiedView = ({
   const recombinationAvailable = capabilityKnown('RECOMBINATION')
     ? modalityAvailable(provenance, 'RECOMBINATION')
     : !y1Mode
-  const outOfScope = provenance?.enabled === true && provenance.sources.some(
-    (source) => source.modality === 'PRIMARY_VARIANTS' && !source.available
-  )
+  const outOfScope =
+    provenance?.enabled === true &&
+    provenance.sources.some((source) => source.modality === 'PRIMARY_VARIANTS' && !source.available)
   const haplotypesUnavailable = lrCohort === 'aou' || outOfScope || !haplotypesAvailable
   const showHaplotypes = !regionTooLarge && !haplotypesUnavailable && urlShowHaplotypes
 
-  const setShowHaplotypes = useCallback((show: boolean) => {
-    const params = new URLSearchParams(location.search)
-    if (show) {
-      params.set('show_haplotypes', 'true')
-    } else {
-      params.delete('show_haplotypes')
-      params.delete('show_tree')
-    }
-    history.replace({ ...location, search: params.toString() })
-  }, [history, location])
+  const [threshold, setThreshold] = useState(0)
+  const [sortBy, setSortBy] = useState('sample_id')
+  const [groupingMode, setGroupingMode] = useState<'similarity' | 'exact' | 'diploid'>('diploid')
+  const [distanceMetric, setDistanceMetric] = useState<
+    import('../Haplotypes/haplotypeCompute').DistanceMetric
+  >(regionSize < 50_000 ? 'all' : 'sv_only')
+  const [colorMode, setColorMode] = useState('sv_type')
+  const isDiploidView = groupingMode === 'diploid'
 
-  const setShowSourcePhasedMethylationUrl = useCallback((show: boolean) => {
-    const params = new URLSearchParams(location.search)
-    if (show) params.set('show_source_phased_methylation', 'true')
-    else params.delete('show_source_phased_methylation')
-    history.replace({ ...location, search: params.toString() })
-  }, [history, location])
-
-  const setSourcePhasedMethylationSampleUrl = useCallback((sampleId: string) => {
-    const params = new URLSearchParams(location.search)
-    params.set('source_phased_methylation_sample', sampleId)
-    history.replace({ ...location, search: params.toString() })
-  }, [history, location])
+  const setShowHaplotypes = useCallback(
+    (show: boolean) => {
+      const params = new URLSearchParams(location.search)
+      if (show) {
+        params.set('show_haplotypes', 'true')
+      } else {
+        params.delete('show_haplotypes')
+        params.delete('show_tree')
+      }
+      history.replace({ ...location, search: params.toString() })
+    },
+    [history, location]
+  )
 
   const setShowGenealogyUrl = useCallback((show: boolean) => {
     const params = new URLSearchParams(location.search)
@@ -388,33 +442,74 @@ const LongReadUnifiedView = ({
   const detailMethylationRequestGateRef = useRef(new MethylationRequestGate())
   const activeMethylationDetailOperationRef = useRef<MethylationDetailOperation | null>(null)
   const loadAllClaimedMethylationScopeRef = useRef<string | null>(null)
-  const [methylationAvailability, setMethylationAvailability] = useState<MethylationSampleAvailability[] | null>(null)
-  const [phasedMethylationCapability, setPhasedMethylationCapability] = useState<PhasedMethylationCapability>({
-    data_layer: 'SOURCE_PHASED',
-    available: false,
-    joinable_to_vcf: false,
-    status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
-    orientation_status: 'UNCONFIRMED',
-    phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET',
-    route_run_id: null,
-    source_sample_ids: [],
-    reason: 'Source-labelled methylation has no admitted serving route',
-  })
-  const [sourcePhasedMethylation, setSourcePhasedMethylation] = useState<SourcePhasedMethylationRecord[]>([])
-  const [sourcePhasedMethylationLoading, setSourcePhasedMethylationLoading] = useState(false)
-  const [sourcePhasedMethylationError, setSourcePhasedMethylationError] = useState<string | null>(null)
-  const sourcePhasedSampleIds = phasedMethylationCapability.source_sample_ids || []
-  const sourcePhasedSampleId = selectedSourcePhasedSample(
-    sourcePhasedSampleIds,
-    urlSourcePhasedMethylationSample
+  const [methylationAvailability, setMethylationAvailability] = useState<
+    MethylationSampleAvailability[] | null
+  >(null)
+  const joinedMethylationCapabilityScope = JSON.stringify([lrCohort, chrom])
+  const [joinedMethylationCapabilityState, setJoinedMethylationCapabilityState] =
+    useState<JoinedMethylationCapabilityQueryState>({ scope: null, status: 'loading' })
+  const joinedMethylationCapability =
+    joinedMethylationCapabilityState.scope === joinedMethylationCapabilityScope &&
+    joinedMethylationCapabilityState.status === 'resolved'
+      ? joinedMethylationCapabilityState.capability
+      : null
+  const joinedMethylationUsability =
+    joinedMethylationCapabilityState.scope === joinedMethylationCapabilityScope &&
+    joinedMethylationCapabilityState.status === 'error'
+      ? { usable: false as const, reason: joinedMethylationCapabilityState.reason }
+      : joinedMethylationUsabilityForRegion(
+          joinedMethylationCapability,
+          inclusiveRegionSpanBp(start, stop),
+          isDiploidView
+        )
+  const joinedMethylationUsableForRegion = joinedMethylationUsability.usable
+  const confirmedJoinedMethylationCapability = joinedMethylationUsability.usable
+    ? joinedMethylationUsability.capability
+    : null
+  const [showPerCopyMethylation, setShowPerCopyMethylation] = useState(false)
+  const [methylationSamplesOnly, setMethylationSamplesOnly] = useState(false)
+  const [loadAllJoinedMethylationScope, setLoadAllJoinedMethylationScope] = useState<string | null>(
+    null
   )
-  const sourcePhasedRouteInScope = lrCohort === 'hgsvc_hprc' && regionSize <= 100_000 &&
-    sourcePhasedSampleId !== null
-  const showSourcePhasedMethylation = showHaplotypes &&
-    phasedMethylationCapability.available && sourcePhasedRouteInScope &&
-    urlShowSourcePhasedMethylation
+  const perCopyMethylationUserChoiceRef = useRef(false)
+  const joinedMethylationScope = joinedMethylationRequestScope({
+    cohort: lrCohort,
+    chrom,
+    start,
+    stop,
+    mode: groupingMode,
+    enabled: showHaplotypes && showPerCopyMethylation && joinedMethylationUsableForRegion,
+    identity: confirmedJoinedMethylationCapability?.identity || null,
+  })
+  const [joinedMethylationDemand, setJoinedMethylationDemand] = useState<{
+    scope: string
+    sampleIds: Set<string>
+    reported: boolean
+  }>({ scope: joinedMethylationScope, sampleIds: new Set(), reported: false })
+  const [joinedMethylationViewState, setJoinedMethylationViewState] =
+    useState<JoinedMethylationViewState>(emptyJoinedMethylationViewState(joinedMethylationScope))
+  const joinedMethylationRequestGateRef = useRef(new MethylationRequestGate())
+  const joinedMethylationStateIsCurrent =
+    joinedMethylationViewState.scope === joinedMethylationScope
+  const perCopyMethylationRecords = useMemo(
+    () =>
+      joinedMethylationStateIsCurrent
+        ? [...joinedMethylationViewState.recordsByIdentity.values()]
+        : [],
+    [joinedMethylationStateIsCurrent, joinedMethylationViewState.recordsByIdentity]
+  )
+  const perCopyMethylationSampleStates = joinedMethylationStateIsCurrent
+    ? joinedMethylationViewState.sampleStates
+    : new Map<string, PerCopyMethylationSampleState>()
+  const handleShowPerCopyMethylationChange = useCallback((show: boolean) => {
+    perCopyMethylationUserChoiceRef.current = true
+    setShowPerCopyMethylation(show)
+  }, [])
   const availableMethylationIds = useMemo(
-    () => new Set((methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)),
+    () =>
+      new Set(
+        (methylationAvailability || []).filter((row) => row.available).map((row) => row.sample_id)
+      ),
     [methylationAvailability]
   )
   const methylationSource = sourceForModality(provenance, 'METHYLATION')
@@ -516,16 +611,11 @@ const LongReadUnifiedView = ({
   const finishDetailOperation = useCallback((operation: MethylationDetailOperation) => {
     if (!detailOperationIsCurrent(operation)) return
     releaseDetailOperationIdentities(operation)
-    detailMethylationRequestGateRef.current.cancel(operation.token)
-    activeMethylationDetailOperationRef.current = null
-  }, [detailOperationIsCurrent, releaseDetailOperationIdentities])
-
-  const [threshold, setThreshold] = useState(0)
-  const [sortBy, setSortBy] = useState('sample_id')
-  const [groupingMode, setGroupingMode] = useState<'similarity' | 'exact' | 'diploid'>('diploid')
-  const [distanceMetric, setDistanceMetric] = useState<import('../Haplotypes/haplotypeCompute').DistanceMetric>(regionSize < 50_000 ? 'all' : 'sv_only')
-  const [plotType, setPlotType] = useState('lollipop')
-  const [colorMode, setColorMode] = useState('sv_type')
+      detailMethylationRequestGateRef.current.cancel(operation.token)
+      activeMethylationDetailOperationRef.current = null
+    },
+    [detailOperationIsCurrent, releaseDetailOperationIdentities]
+  )
 
   const showGenealogy = searchParams.get('show_tree') !== 'false'
 
@@ -833,7 +923,6 @@ const LongReadUnifiedView = ({
 
   // Derive booleans from groupingMode for worker/compute compatibility
   const isClusteredView = groupingMode === 'similarity'
-  const isDiploidView = groupingMode === 'diploid'
 
   // Recompute when AF/sort/clustering/diploid changes
   const hasData = haplotypeData !== null
@@ -863,9 +952,95 @@ const LongReadUnifiedView = ({
       }
       setHaplotypeData(result)
     }
-  }, [threshold, sortBy, isClusteredView, deferredClusterThreshold, isDiploidView, distanceMetric, hasData])
+  }, [
+    threshold,
+    sortBy,
+    isClusteredView,
+    deferredClusterThreshold,
+    isDiploidView,
+    distanceMetric,
+    hasData,
+  ])
 
-  const haplotypeGroups: HaplotypeGroups = (haplotypeData as HaplotypeGroups | null) || { groups: [] }
+  const unfilteredHaplotypeGroups: HaplotypeGroups = (haplotypeData as HaplotypeGroups | null) || {
+    groups: [],
+  }
+  const sourceSampleIds = useMemo(
+    () => confirmedJoinedMethylationCapability?.source_sample_ids || [],
+    [confirmedJoinedMethylationCapability]
+  )
+  const sourceSampleIdSet = useMemo(() => new Set(sourceSampleIds), [sourceSampleIds])
+  const haplotypeGroups: HaplotypeGroups = useMemo(
+    () =>
+      methylationSamplesOnly && isDiploidView && confirmedJoinedMethylationCapability
+        ? {
+            ...unfilteredHaplotypeGroups,
+            groups: filterGroupsToSourceSamples(unfilteredHaplotypeGroups.groups, sourceSampleIds),
+          }
+        : unfilteredHaplotypeGroups,
+    [
+      methylationSamplesOnly,
+      isDiploidView,
+      confirmedJoinedMethylationCapability,
+      unfilteredHaplotypeGroups,
+      sourceSampleIds,
+    ]
+  )
+  const allDisplayedSourceSampleIds = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          unfilteredHaplotypeGroups.groups.flatMap((group) =>
+            group.samples
+              .map((sample) => sample.sample_id)
+              .filter((sampleId) => sourceSampleIdSet.has(sampleId))
+          )
+        )
+      ).sort((left, right) => left.localeCompare(right)),
+    [unfilteredHaplotypeGroups.groups, sourceSampleIdSet]
+  )
+  const visibleJoinedSampleIds = useMemo(
+    () =>
+      joinedMethylationDemand.scope === joinedMethylationScope && joinedMethylationDemand.reported
+        ? joinedMethylationDemand.sampleIds
+        : new Set<string>(),
+    [joinedMethylationDemand, joinedMethylationScope]
+  )
+  const loadAllJoinedMethylation = loadAllJoinedMethylationScope === joinedMethylationScope
+  const neededJoinedSampleIds = useMemo(() => {
+    const needed = new Set(visibleJoinedSampleIds)
+    if (loadAllJoinedMethylation) {
+      allDisplayedSourceSampleIds.forEach((sampleId) => needed.add(sampleId))
+    }
+    return needed
+  }, [visibleJoinedSampleIds, loadAllJoinedMethylation, allDisplayedSourceSampleIds])
+  const visibleMethylationProgress =
+    joinedMethylationDemand.scope === joinedMethylationScope && joinedMethylationDemand.reported
+      ? perCopyLoadingProgress(
+          [...joinedMethylationDemand.sampleIds],
+          perCopyMethylationSampleStates
+        )
+      : null
+  const allMethylationProgress = loadAllJoinedMethylation
+    ? perCopyLoadingProgress(allDisplayedSourceSampleIds, perCopyMethylationSampleStates)
+    : null
+  const handleLoadAllPerCopyMethylation = useCallback(() => {
+    setLoadAllJoinedMethylationScope(joinedMethylationScope)
+  }, [joinedMethylationScope])
+  const handleRetryPerCopyMethylation = useCallback(() => {
+    setJoinedMethylationViewState((previous) => {
+      if (previous.scope !== joinedMethylationScope) return previous
+      let changed = false
+      const sampleStates = new Map(previous.sampleStates)
+      sampleStates.forEach((state, sampleId) => {
+        if (state.status === 'error') {
+          sampleStates.set(sampleId, { status: 'loading' })
+          changed = true
+        }
+      })
+      return changed ? { ...previous, sampleStates, version: previous.version + 1 } : previous
+    })
+  }, [joinedMethylationScope])
 
   // `groupingMode` updates synchronously, but the recomputed `haplotypeData` lags
   // by a render (worker) or an effect tick (main thread). Rendering diplotype-shaped
@@ -893,56 +1068,217 @@ const LongReadUnifiedView = ({
 
   useEffect(() => {
     let cancelled = false
-    fetchGraphQL(PHASED_METHYLATION_CAPABILITY_QUERY, { lr_cohort: lrCohort })
-      .then((result) => {
-        const capability = result.data?.phased_methylation_capability
-        if (!cancelled && capability) setPhasedMethylationCapability(capability)
-      })
-      .catch((error) => {
-        // Keep the initialized fail-closed state on contract/network failure.
-        console.error('Error fetching phased methylation capability:', error)
-      })
-    return () => { cancelled = true }
-  }, [lrCohort])
-
-  useEffect(() => {
-    setSourcePhasedMethylation([])
-    setSourcePhasedMethylationError(null)
-    if (!showSourcePhasedMethylation) {
-      setSourcePhasedMethylationLoading(false)
-      return undefined
-    }
-    let cancelled = false
-    setSourcePhasedMethylationLoading(true)
-    fetchGraphQL(SOURCE_PHASED_METHYLATION_QUERY, {
-      chrom, start, stop, sample_id: sourcePhasedSampleId, lr_cohort: lrCohort,
+    setJoinedMethylationCapabilityState({
+      scope: joinedMethylationCapabilityScope,
+      status: 'loading',
     })
+    fetchGraphQL(JOINED_PHASED_METHYLATION_CAPABILITY_QUERY, { chrom, lr_cohort: lrCohort })
       .then((result) => {
         if (cancelled) return
         if (result.errors?.length) throw new Error(result.errors[0].message)
-        setSourcePhasedMethylation(result.data?.source_phased_methylation || [])
+        const capability = result.data?.joined_phased_methylation_capability
+        if (!capability) throw new Error('Joined methylation capability response was empty')
+        setJoinedMethylationCapabilityState({
+          scope: joinedMethylationCapabilityScope,
+          status: 'resolved',
+          capability,
+        })
       })
       .catch((error) => {
-        if (!cancelled) setSourcePhasedMethylationError(error.message)
+        if (cancelled) return
+        console.error('Error fetching joined methylation capability:', error)
+        setJoinedMethylationCapabilityState({
+          scope: joinedMethylationCapabilityScope,
+          status: 'error',
+          reason:
+            'Per-copy methylation API is unavailable; restart with the joined methylation route enabled.',
+        })
       })
-      .finally(() => {
-        if (!cancelled) setSourcePhasedMethylationLoading(false)
+    return () => {
+      cancelled = true
+    }
+  }, [chrom, lrCohort, joinedMethylationCapabilityScope])
+
+  useEffect(() => {
+    if (joinedMethylationUsableForRegion && !perCopyMethylationUserChoiceRef.current) {
+      setShowPerCopyMethylation(true)
+    }
+  }, [joinedMethylationUsableForRegion])
+
+  const handleVisibleDiploidSampleIdsChange = useCallback(
+    (sampleIds: string[]) => {
+      const next =
+        showHaplotypes && showPerCopyMethylation && joinedMethylationUsableForRegion
+          ? new Set(sampleIds)
+          : new Set<string>()
+      setJoinedMethylationDemand((previous) => {
+        if (
+          previous.scope === joinedMethylationScope &&
+          previous.reported &&
+          previous.sampleIds.size === next.size &&
+          [...next].every((sampleId) => previous.sampleIds.has(sampleId))
+        ) {
+          return previous
+        }
+        return { scope: joinedMethylationScope, sampleIds: next, reported: true }
       })
-    return () => { cancelled = true }
-  }, [showSourcePhasedMethylation, chrom, start, stop, sourcePhasedSampleId, lrCohort])
+    },
+    [
+      showHaplotypes,
+      showPerCopyMethylation,
+      joinedMethylationUsableForRegion,
+      joinedMethylationScope,
+    ]
+  )
+
+  useEffect(() => {
+    const gate = joinedMethylationRequestGateRef.current
+    gate.invalidate()
+    // Load All is one explicit user action for one uninterrupted scope lifetime. Clearing
+    // the claim here prevents a recreated scope from silently resurrecting bulk demand.
+    setLoadAllJoinedMethylationScope(null)
+    setJoinedMethylationViewState(emptyJoinedMethylationViewState(joinedMethylationScope))
+    return () => gate.invalidate()
+  }, [joinedMethylationScope])
+
+  // Fetch only samples represented by visible diploid rows, in deterministic batches.
+  useEffect(() => {
+    if (
+      !showHaplotypes ||
+      !showPerCopyMethylation ||
+      !joinedMethylationUsableForRegion ||
+      !confirmedJoinedMethylationCapability ||
+      joinedMethylationViewState.scope !== joinedMethylationScope
+    )
+      return undefined
+
+    const isPending = (sampleId: string) => {
+      const state = joinedMethylationViewState.sampleStates.get(sampleId)
+      return state === undefined || state.status === 'loading'
+    }
+    const pendingVisible = [...visibleJoinedSampleIds].filter(isPending)
+    const pendingAll = [...neededJoinedSampleIds].filter(
+      (sampleId) => !visibleJoinedSampleIds.has(sampleId) && isPending(sampleId)
+    )
+    const maxBatchSize = Math.min(25, confirmedJoinedMethylationCapability.max_samples)
+    const requestedSampleIds =
+      deterministicSampleBatches(pendingVisible, maxBatchSize)[0] ||
+      deterministicSampleBatches(pendingAll, maxBatchSize)[0]
+    if (!requestedSampleIds?.length) return undefined
+
+    const gate = joinedMethylationRequestGateRef.current
+    const token = gate.begin(joinedMethylationScope)
+    setJoinedMethylationViewState((previous) => {
+      if (previous.scope !== joinedMethylationScope) return previous
+      const sampleStates = new Map(previous.sampleStates)
+      requestedSampleIds.forEach((sampleId) => sampleStates.set(sampleId, { status: 'loading' }))
+      return { ...previous, sampleStates }
+    })
+
+    const fetchBatch = async () => {
+      try {
+        const result = await responseForCurrentMethylationRequest(gate, token, (signal) =>
+          fetchGraphQL(
+            JOINED_PHASED_METHYLATION_REGION_QUERY,
+            {
+              chrom,
+              start,
+              stop,
+              sample_ids: requestedSampleIds,
+              expected_orientation_receipt_sha256:
+                confirmedJoinedMethylationCapability.identity.orientation_receipt_sha256,
+              lr_cohort: lrCohort,
+            },
+            signal
+          )
+        )
+        if (!result || !gate.isCurrent(token)) return
+        if (result.errors?.length) {
+          const graphQLError = result.errors[0]
+          const error = new Error(graphQLError.message) as Error & { code?: string }
+          error.code = graphQLError.extensions?.code || 'JOINED_METHYLATION_QUERY_ERROR'
+          throw error
+        }
+        const region = validateJoinedMethylationBatch(
+          result.data?.joined_phased_methylation_region,
+          {
+            requestedSampleIds,
+            identity: confirmedJoinedMethylationCapability.identity,
+            chrom,
+            start,
+            stop,
+          }
+        )
+        if (!gate.isCurrent(token)) return
+        setJoinedMethylationViewState((previous) => {
+          if (previous.scope !== joinedMethylationScope) return previous
+          const recordsByIdentity = new Map(previous.recordsByIdentity)
+          region.records.forEach((record) => {
+            recordsByIdentity.set(joinedMethylationRecordIdentity(record), record)
+          })
+          const sampleStates = new Map(previous.sampleStates)
+          region.completed_sample_ids.forEach((sampleId) => {
+            sampleStates.set(sampleId, {
+              status: 'complete',
+              recordCount: region.records.filter((record) => record.sample === sampleId).length,
+            })
+          })
+          region.unavailable_samples.forEach((sample) => {
+            sampleStates.set(sample.sample_id, { status: 'unavailable', reason: sample.reason })
+          })
+          return { ...previous, recordsByIdentity, sampleStates, version: previous.version + 1 }
+        })
+      } catch (error: any) {
+        if (error?.name === 'AbortError' || !gate.isCurrent(token)) return
+        setJoinedMethylationViewState((previous) => {
+          if (previous.scope !== joinedMethylationScope) return previous
+          const sampleStates = new Map(previous.sampleStates)
+          requestedSampleIds.forEach((sampleId) =>
+            sampleStates.set(sampleId, {
+              status: 'error',
+              code: error.code || error.message || 'JOINED_METHYLATION_QUERY_ERROR',
+              reason: error.message || 'Joined methylation query failed',
+            })
+          )
+          return { ...previous, sampleStates, version: previous.version + 1 }
+        })
+      }
+    }
+    fetchBatch()
+    return () => gate.cancel(token)
+  }, [
+    showHaplotypes,
+    showPerCopyMethylation,
+    joinedMethylationUsableForRegion,
+    confirmedJoinedMethylationCapability,
+    joinedMethylationScope,
+    joinedMethylationViewState.scope,
+    joinedMethylationViewState.version,
+    neededJoinedSampleIds,
+    visibleJoinedSampleIds,
+    regionSize,
+    chrom,
+    start,
+    stop,
+    lrCohort,
+  ])
 
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
     setMethylationAvailability(null)
-    if (!y1Mode || !methylationAvailable || lrCohort !== 'hgsvc_hprc') return undefined
+    if (!showMethylation || !y1Mode || !methylationAvailable || lrCohort !== 'hgsvc_hprc')
+      return undefined
     let cancelled = false
     fetchGraphQL(METHYLATION_AVAILABILITY_QUERY, { lr_cohort: lrCohort })
       .then((result) => {
-        if (!cancelled) setMethylationAvailability(result.data?.methylation_sample_availability || [])
+        if (!cancelled)
+          setMethylationAvailability(result.data?.methylation_sample_availability || [])
       })
       .catch((error) => console.error('Error fetching methylation availability:', error))
-    return () => { cancelled = true }
-  }, [y1Mode, methylationAvailable, lrCohort])
+    return () => {
+      cancelled = true
+    }
+  }, [showMethylation, y1Mode, methylationAvailable, lrCohort])
 
   // A source/region/cohort change invalidates both methylation owners and resets
   // detail, summary, outliers, progress, and loading in one state update.
@@ -975,23 +1311,28 @@ const LongReadUnifiedView = ({
   // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
   // Users can still enable methylation via the checkbox, which triggers the load-all-samples path.
   useEffect(() => {
-    if (!showHaplotypes || !methylationAvailable || regionSize > 200_000) return undefined
+    if (!showHaplotypes || !showMethylation || !methylationAvailable || regionSize > 200_000)
+      return undefined
 
     const gate = summaryMethylationRequestGateRef.current
     const token = gate.begin(methylationScope)
     const fetchSummaryAndOutliers = async () => {
       try {
         const [summaryResult, outlierResult] = await Promise.all([
-          responseForCurrentMethylationRequest(gate, token, (signal) => fetchGraphQL(
-            METHYLATION_SUMMARY_QUERY,
-            { chrom, start, stop, lr_cohort: lrCohort },
-            signal
-          )),
-          responseForCurrentMethylationRequest(gate, token, (signal) => fetchGraphQL(
-            METHYLATION_OUTLIERS_QUERY,
-            { chrom, start, stop, lr_cohort: lrCohort },
-            signal
-          )),
+          responseForCurrentMethylationRequest(gate, token, (signal) =>
+            fetchGraphQL(
+              METHYLATION_SUMMARY_QUERY,
+              { chrom, start, stop, lr_cohort: lrCohort },
+              signal
+            )
+          ),
+          responseForCurrentMethylationRequest(gate, token, (signal) =>
+            fetchGraphQL(
+              METHYLATION_OUTLIERS_QUERY,
+              { chrom, start, stop, lr_cohort: lrCohort },
+              signal
+            )
+          ),
         ])
         if (!gate.isCurrent(token) || !summaryResult || !outlierResult) return
         setMethylationViewState((previous) => ({
@@ -1009,8 +1350,15 @@ const LongReadUnifiedView = ({
     fetchSummaryAndOutliers()
     return () => gate.cancel(token)
   }, [
-    showHaplotypes, chrom, start, stop, lrCohort, methylationAvailable,
-    methylationScope, regionSize,
+    showHaplotypes,
+    showMethylation,
+    chrom,
+    start,
+    stop,
+    lrCohort,
+    methylationAvailable,
+    methylationScope,
+    regionSize,
   ])
 
   // Auto-fetch per-sample methylation for top outlier samples. Once load-all
@@ -1018,7 +1366,8 @@ const LongReadUnifiedView = ({
   // summary/outlier completion cannot start a non-carrier detail operation.
   const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
-    if (!showHaplotypes || !methylationAvailable || regionSize > 200_000) return undefined
+    if (!showHaplotypes || !showMethylation || !methylationAvailable || regionSize > 200_000)
+      return undefined
     if (methylationViewState.scope !== methylationScope) return undefined
     if (!methylationOutliers?.samples?.length) return undefined
 
@@ -1120,7 +1469,14 @@ const LongReadUnifiedView = ({
       }
     }
   }, [
-    showHaplotypes, chrom, start, stop, methylationOutliers, methylationViewState.scope, lrCohort,
+    showHaplotypes,
+    showMethylation,
+    chrom,
+    start,
+    stop,
+    methylationOutliers,
+    methylationViewState.scope,
+    lrCohort,
     methylationAvailable, y1Mode, availableMethylationIds, methylationScope, regionSize,
     beginDetailOperation, cancelDetailOperation, detailOperationIsCurrent,
     finishDetailOperation, markDetailOperationSamplesInFlight,
@@ -1387,64 +1743,69 @@ const LongReadUnifiedView = ({
       <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
 
       {/* Haplotype layer — opt-in */}
-      {showHaplotypes && (
-        <>
-          {showRecombination && recombinationAvailable && <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />}
-          {showSourcePhasedMethylation && sourcePhasedSampleId && haplotypeGroups && dataMatchesMode && (
-            <HG00097PhasedMethylationComparison
-              sampleId={sourcePhasedSampleId}
-              haplotypeGroups={haplotypeGroups.groups}
-              records={sourcePhasedMethylation}
-              orientationStatus={phasedMethylationCapability.orientation_status}
-            />
-          )}
-          {/* TODO: Re-enable when mQTL data source is production-ready */}
-          {false && showMqtl && (
-            <MQTLTrack
-              mqtlData={mqtlData}
-              loading={mqtlLoading}
-              minLogP={mqtlMinLogP}
-              onMinLogPChange={setMqtlMinLogP}
-            />
-          )}
-          {haplotypeGroups && !dataMatchesMode && (
-            <div style={{ height: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
-              Computing…
-            </div>
-          )}
-          {haplotypeGroups && dataMatchesMode && (
-            <HaplotypeTrack
-              ref={trackRef}
-              haplotypeGroups={haplotypeGroups.groups as HaplotypeGroup[]}
-              clusters={haplotypeGroups.clusters}
-              methylationData={methylationData}
-              methylationSummary={methylationSummary}
-              sampleMetadata={sampleMetadata}
-              start={start}
-              stop={stop}
-              initialMinAf={threshold}
-              initialSortBy={sortBy}
-              onLoadAllSamples={handleLoadAllSamples}
-              methylationLoading={methylationLoading}
-              methylationSampleCount={methylationSampleCount}
-              methylationTotalSamples={methylationTotalSamples}
-              haplotypeLoading={haplotypeLoading}
-              workerComputing={workerComputing}
-              loadingStatus={loadingStatus}
-              showMqtl={false}
-              mqtlLoading={mqtlLoading}
-              mqtlData={mqtlData}
-              mqtlMinLogP={mqtlMinLogP}
-              plotType={plotType}
-              initialColorMode={colorMode}
-              showGenealogy={showGenealogy}
-              hoveredVariantPosition={hoveredVariantPosition}
-              onVisibleGroupChange={handleVisibleGroupChange}
-              groupingMode={groupingMode}
-              clusterThreshold={clusterThreshold}
-              onClusterThresholdChange={handleClusterThresholdChange}
-              expandedClusterIds={expandedClusterIds}
-              toggleClusterExpansion={toggleClusterExpansion}
+        {showHaplotypes && (
+          <>
+            {showRecombination && recombinationAvailable && (
+              <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
+            )}
+            {/* TODO: Re-enable when mQTL data source is production-ready */}
+            {false && showMqtl && (
+              <MQTLTrack
+                mqtlData={mqtlData}
+                loading={mqtlLoading}
+                minLogP={mqtlMinLogP}
+                onMinLogPChange={setMqtlMinLogP}
+              />
+            )}
+            {haplotypeGroups && !dataMatchesMode && (
+              <div
+                style={{
+                  height: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#666',
+                }}
+              >
+                Computing…
+              </div>
+            )}
+            {haplotypeGroups && dataMatchesMode && (
+              <HaplotypeTrack
+                ref={trackRef}
+                haplotypeGroups={haplotypeGroups.groups as HaplotypeGroup[]}
+                clusters={haplotypeGroups.clusters}
+                methylationData={methylationData}
+                methylationSummary={methylationSummary}
+                showPerCopyMethylation={showPerCopyMethylation && joinedMethylationUsableForRegion}
+                perCopyMethylationRecords={perCopyMethylationRecords}
+                perCopyMethylationSampleStates={perCopyMethylationSampleStates}
+                sampleMetadata={sampleMetadata}
+                start={start}
+                stop={stop}
+                initialMinAf={threshold}
+                initialSortBy={sortBy}
+                onLoadAllSamples={handleLoadAllSamples}
+                methylationLoading={methylationLoading}
+                methylationSampleCount={methylationSampleCount}
+                methylationTotalSamples={methylationTotalSamples}
+                haplotypeLoading={haplotypeLoading}
+                workerComputing={workerComputing}
+                loadingStatus={loadingStatus}
+                showMqtl={false}
+                mqtlLoading={mqtlLoading}
+                mqtlData={mqtlData}
+                mqtlMinLogP={mqtlMinLogP}
+                initialColorMode={colorMode}
+                showGenealogy={showGenealogy}
+                hoveredVariantPosition={hoveredVariantPosition}
+                onVisibleGroupChange={handleVisibleGroupChange}
+                onVisibleDiploidSampleIdsChange={handleVisibleDiploidSampleIdsChange}
+                groupingMode={groupingMode}
+                clusterThreshold={clusterThreshold}
+                onClusterThresholdChange={handleClusterThresholdChange}
+                expandedClusterIds={expandedClusterIds}
+                toggleClusterExpansion={toggleClusterExpansion}
               treeJson={haplotypeGroups.tree_json}
               minAfFloor={autoDefaults.floor}
               minAfCeiling={autoDefaults.ceiling}
@@ -1542,38 +1903,6 @@ const LongReadUnifiedView = ({
       {/* Controls panel — only visible in Haplotype View */}
       {showHaplotypes && (
         <TrackPageSection>
-          <div style={{ marginBottom: 12 }}>
-            <label>
-              <input
-                type="checkbox"
-                checked={showSourcePhasedMethylation}
-                disabled={!phasedMethylationCapability.available || !sourcePhasedRouteInScope}
-                onChange={(event) => setShowSourcePhasedMethylationUrl(event.target.checked)}
-              />
-              {' '}Show source-labelled hap1/hap2 methylation (orientation unconfirmed)
-            </label>
-            {sourcePhasedSampleIds.length > 0 && (
-              <label style={{ marginLeft: 12, fontSize: 12 }}>
-                Sample:{' '}
-                <select
-                  aria-label="Source-labelled methylation sample"
-                  value={sourcePhasedSampleId || ''}
-                  onChange={(event) => setSourcePhasedMethylationSampleUrl(event.target.value)}
-                >
-                  {sourcePhasedSampleIds.map((sampleId) => (
-                    <option key={sampleId} value={sampleId}>{sampleId}</option>
-                  ))}
-                </select>
-              </label>
-            )}
-            <div style={{ marginLeft: 20, color: '#666', fontSize: 12 }}>
-              231 HGSVC/HPRC source-present samples only; no AoU or sample-total fallback.
-              Source labels are not attached to browser VCF GT positions or phase blocks.
-              {sourcePhasedMethylationLoading && ' Loading…'}
-              {sourcePhasedMethylationError && ` Error: ${sourcePhasedMethylationError}`}
-              {!sourcePhasedRouteInScope && ' Available only for admitted samples in regions up to 100 kb.'}
-            </div>
-          </div>
           <Legend
             initialMinAf={threshold}
             onMinAfChange={handleManualAfChange}
@@ -1584,17 +1913,27 @@ const LongReadUnifiedView = ({
             showMethylation={showMethylation}
             onShowMethylationChange={setShowMethylation}
             methylationAvailable={methylationAvailable}
-            methylationLabel={sourceForModality(provenance, 'METHYLATION')?.label || 'Legacy — not Y1'}
+            methylationLabel={
+              sourceForModality(provenance, 'METHYLATION')?.label || 'Legacy — not Y1'
+            }
             methylationAvailability={y1Mode ? methylationAvailability : undefined}
-            phasedMethylationCapability={phasedMethylationCapability}
+            showPerCopyMethylation={showPerCopyMethylation}
+            onShowPerCopyMethylationChange={handleShowPerCopyMethylationChange}
+            joinedMethylationCapability={joinedMethylationCapability}
+            joinedMethylationUsableForRegion={joinedMethylationUsableForRegion}
+            joinedMethylationUnavailableReason={joinedMethylationUsability.reason}
+            methylationSamplesOnly={methylationSamplesOnly}
+            onMethylationSamplesOnlyChange={setMethylationSamplesOnly}
+            visibleMethylationProgress={visibleMethylationProgress}
+            allMethylationProgress={allMethylationProgress}
+            onLoadAllPerCopyMethylation={handleLoadAllPerCopyMethylation}
+            onRetryPerCopyMethylation={handleRetryPerCopyMethylation}
             filterToOutliers={filterToOutliers}
             onFilterToOutliersChange={setFilterToOutliers}
             onLoadAllSamples={handleLoadAllSamples}
             methylationLoading={methylationLoading}
             methylationSampleCount={methylationSampleCount}
             methylationTotalSamples={methylationTotalSamples}
-            plotType={plotType}
-            onPlotTypeChange={setPlotType}
             showGenealogy={showGenealogy}
             onShowGenealogyChange={setShowGenealogyUrl}
             groupingMode={groupingMode}

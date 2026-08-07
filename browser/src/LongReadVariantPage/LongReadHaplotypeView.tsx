@@ -7,7 +7,7 @@ import { debounce } from 'lodash-es'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { TrackPageSection } from '../TrackPage'
 
-import HaplotypeTrack, { HaplotypeGroups, Methylation, MethylationSummaryPoint } from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroups } from '../Haplotypes'
 import HaplotypeVariantTable from '../Haplotypes/HaplotypeVariantTable'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
 import MQTLTrack from '../Haplotypes/MQTLTrack'
@@ -36,31 +36,6 @@ const HAPLOTYPE_GROUPS_QUERY = `
         }
         start stop hash
       }
-    }
-  }
-`
-
-const METHYLATION_SUMMARY_QUERY = `
-  query RegionMethylationSummary($chrom: String!, $start: Int!, $stop: Int!) {
-    methylation_summary(chrom: $chrom, start: $start, stop: $stop) {
-      chrom pos1 pos2 mean_methylation mean_coverage num_samples std_methylation min_methylation max_methylation
-    }
-  }
-`
-
-const METHYLATION_OUTLIERS_QUERY = `
-  query RegionMethylationOutliers($chrom: String!, $start: Int!, $stop: Int!) {
-    methylation_outliers(chrom: $chrom, start: $start, stop: $stop) {
-      total_cpg_sites total_samples
-      samples { sample_id outlier_count outlier_fraction direction }
-    }
-  }
-`
-
-const METHYLATION_QUERY = `
-  query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!, $samples: [String!]) {
-    methylation(chrom: $chrom, start: $start, stop: $stop, samples: $samples) {
-      chr pos1 pos2 methylation sample coverage
     }
   }
 `
@@ -118,16 +93,8 @@ const LongReadHaplotypeView = ({
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
 
-  const [methylationData, setMethylationData] = useState<Methylation[]>([])
-  const [methylationSummary, setMethylationSummary] = useState<MethylationSummaryPoint[]>([])
-  const [methylationOutliers, setMethylationOutliers] = useState<any>(null)
-  const [methylationLoading, setMethylationLoading] = useState(false)
-  const [methylationSampleCount, setMethylationSampleCount] = useState(0)
-  const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
-
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('similarity_score')
-  const [plotType, setPlotType] = useState('lollipop')
   const [colorMode, setColorMode] = useState('sv_type')
   const [showGenealogy, setShowGenealogy] = useState(false)
 
@@ -188,95 +155,6 @@ const LongReadHaplotypeView = ({
     debouncedFetchHaplotypeGroups(threshold)
   }, [chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
 
-  // Fetch methylation summary + outliers
-  useEffect(() => {
-    const fetchSummaryAndOutliers = async () => {
-      try {
-        const [summaryResult, outlierResult] = await Promise.all([
-          fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop }),
-          fetchGraphQL(METHYLATION_OUTLIERS_QUERY, { chrom, start, stop }),
-        ])
-        if (summaryResult.data?.methylation_summary) {
-          setMethylationSummary(summaryResult.data.methylation_summary)
-        }
-        if (outlierResult.data?.methylation_outliers) {
-          setMethylationOutliers(outlierResult.data.methylation_outliers)
-        }
-      } catch (error) {
-        console.error('Error fetching methylation data:', error)
-      }
-    }
-    fetchSummaryAndOutliers()
-  }, [chrom, start, stop])
-
-  // Auto-fetch per-sample methylation for top outlier samples
-  const MAX_AUTO_FETCH_OUTLIERS = 10
-  useEffect(() => {
-    const fetchOutlierMethylation = async () => {
-      if (!methylationOutliers?.samples?.length) return
-
-      const topOutliers = methylationOutliers.samples
-        .slice(0, MAX_AUTO_FETCH_OUTLIERS)
-        .filter((s: any) => s.outlier_count > 0)
-        .map((s: any) => s.sample_id)
-
-      if (topOutliers.length === 0) return
-
-      setMethylationLoading(true)
-      try {
-        const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: topOutliers,
-        })
-        if (result.data?.methylation) {
-          setMethylationData(result.data.methylation)
-          setMethylationSampleCount(0)
-        }
-      } catch (error) {
-        console.error('Error fetching outlier methylation:', error)
-      } finally {
-        setMethylationLoading(false)
-      }
-    }
-    fetchOutlierMethylation()
-  }, [chrom, start, stop, methylationOutliers])
-
-  // Load all sample methylation (triggered from HaplotypeTrack)
-  const handleLoadAllSamples = useCallback(async () => {
-    if (!haplotypeGroups || haplotypeGroups.groups.length === 0) return
-
-    const allSampleIds = Array.from(new Set(
-      haplotypeGroups.groups.flatMap(g => g.samples.map(s => s.sample_id))
-    ))
-    if (allSampleIds.length === 0) return
-
-    setMethylationLoading(true)
-    setMethylationSampleCount(0)
-    setMethylationTotalSamples(allSampleIds.length)
-
-    const BATCH_SIZE = 5
-    let accumulated: Methylation[] = [...methylationData]
-    let completed = 0
-
-    for (let i = 0; i < allSampleIds.length; i += BATCH_SIZE) {
-      const batch = allSampleIds.slice(i, i + BATCH_SIZE)
-      try {
-        const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: batch,
-        })
-        if (result.data?.methylation) {
-          accumulated = [...accumulated, ...result.data.methylation]
-          setMethylationData(accumulated)
-        }
-      } catch (error) {
-        console.error(`Error fetching batch ${i / BATCH_SIZE}:`, error)
-      }
-      completed += batch.length
-      setMethylationSampleCount(completed)
-    }
-
-    setMethylationLoading(false)
-  }, [chrom, start, stop, haplotypeGroups, methylationData])
-
   // Fetch mQTLs when enabled
   useEffect(() => {
     if (!showMqtl) return
@@ -310,8 +188,7 @@ const LongReadHaplotypeView = ({
       {haplotypeGroups && (
         <HaplotypeTrack
           haplotypeGroups={haplotypeGroups.groups}
-          methylationData={methylationData}
-          methylationSummary={methylationSummary}
+          methylationData={[]}
           sampleMetadata={sampleMetadata}
           start={start}
           stop={stop}
@@ -319,18 +196,12 @@ const LongReadHaplotypeView = ({
           onMinAfChange={setThreshold}
           initialSortBy={sortBy}
           onSortModeChange={setSortBy}
-          onLoadAllSamples={handleLoadAllSamples}
-          methylationLoading={methylationLoading}
-          methylationSampleCount={methylationSampleCount}
-          methylationTotalSamples={methylationTotalSamples}
           haplotypeLoading={haplotypeLoading}
           showMqtl={showMqtl}
           onShowMqtlChange={setShowMqtl}
           mqtlLoading={mqtlLoading}
           mqtlData={mqtlData}
           mqtlMinLogP={mqtlMinLogP}
-          plotType={plotType}
-          onPlotTypeChange={setPlotType}
           initialColorMode={colorMode}
           onColorModeChange={setColorMode}
           showGenealogy={showGenealogy}

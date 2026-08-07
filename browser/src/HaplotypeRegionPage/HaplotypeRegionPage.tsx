@@ -21,7 +21,7 @@ import EditRegion from '../RegionPage/EditRegion'
 import GenesInRegionTrack from '../RegionPage/GenesInRegionTrack'
 import RegionInfo from '../RegionPage/RegionInfo'
 
-import HaplotypeTrack, { HaplotypeGroups, Methylation, MethylationSummaryPoint } from '../Haplotypes'
+import HaplotypeTrack, { HaplotypeGroups } from '../Haplotypes'
 import HaplotypeVariantTable from '../Haplotypes/HaplotypeVariantTable'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
 import RecombinationRatePlot from '../Haplotypes/RecombinationRate'
@@ -66,31 +66,6 @@ const HAPLOTYPE_GROUPS_QUERY = `
   }
 `
 
-const METHYLATION_SUMMARY_QUERY = `
-  query RegionMethylationSummary($chrom: String!, $start: Int!, $stop: Int!) {
-    methylation_summary(chrom: $chrom, start: $start, stop: $stop) {
-      chrom pos1 pos2 mean_methylation mean_coverage num_samples std_methylation min_methylation max_methylation
-    }
-  }
-`
-
-const METHYLATION_OUTLIERS_QUERY = `
-  query RegionMethylationOutliers($chrom: String!, $start: Int!, $stop: Int!) {
-    methylation_outliers(chrom: $chrom, start: $start, stop: $stop) {
-      total_cpg_sites total_samples
-      samples { sample_id outlier_count outlier_fraction direction }
-    }
-  }
-`
-
-const METHYLATION_QUERY = `
-  query RegionMethylation($chrom: String!, $start: Int!, $stop: Int!, $samples: [String!]) {
-    methylation(chrom: $chrom, start: $start, stop: $stop, samples: $samples) {
-      chr pos1 pos2 methylation sample coverage
-    }
-  }
-`
-
 const RegionInfoColumnWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -124,21 +99,13 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
   const queryParams = queryString.parse(location.search)
   const initialThreshold = parseMinimumAlleleFrequency(queryParams.threshold)
   const initialSortBy = queryParams.sortBy ? (queryParams.sortBy as string) : 'similarity_score'
-  const initialPlotType = (queryParams.plotType as string) || 'lollipop'
   const initialColorMode = (queryParams.colorMode as string) || 'sv_type'
   const initialShowGenealogy = queryParams.showTree === '1'
 
   const [haplotypeGroups, setHaplotypeGroups] = useState<HaplotypeGroups>({ groups: [] })
   const [haplotypeLoading, setHaplotypeLoading] = useState(true)
-  const [methylationData, setMethylationData] = useState<Methylation[]>([])
-  const [methylationSummary, setMethylationSummary] = useState<MethylationSummaryPoint[]>([])
-  const [methylationOutliers, setMethylationOutliers] = useState<any>(null)
-  const [methylationLoading, setMethylationLoading] = useState(false)
-  const [methylationSampleCount, setMethylationSampleCount] = useState(0)
-  const [methylationTotalSamples, setMethylationTotalSamples] = useState(0)
   const [threshold, setThreshold] = useState(initialThreshold)
   const [sortBy, setSortBy] = useState(initialSortBy)
-  const [plotType, setPlotType] = useState(initialPlotType)
   const [colorMode, setColorMode] = useState(initialColorMode)
   const [showGenealogy, setShowGenealogy] = useState(initialShowGenealogy)
 
@@ -212,101 +179,6 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
     fetchMeta()
   }, [])
 
-  // Fetch summary + outlier ranking on mount
-  useEffect(() => {
-    const fetchSummaryAndOutliers = async () => {
-      try {
-        const [summaryResult, outlierResult] = await Promise.all([
-          fetchGraphQL(METHYLATION_SUMMARY_QUERY, { chrom, start, stop }),
-          fetchGraphQL(METHYLATION_OUTLIERS_QUERY, { chrom, start, stop }),
-        ])
-        if (summaryResult.data?.methylation_summary) {
-          setMethylationSummary(summaryResult.data.methylation_summary)
-        }
-        if (outlierResult.data?.methylation_outliers) {
-          setMethylationOutliers(outlierResult.data.methylation_outliers)
-        }
-      } catch (error) {
-        console.error('Error fetching methylation data:', error)
-      }
-    }
-    fetchSummaryAndOutliers()
-  }, [chrom, start, stop])
-
-  // Auto-fetch per-sample methylation for top outlier samples
-  const MAX_AUTO_FETCH_OUTLIERS = 10
-  useEffect(() => {
-    const fetchOutlierMethylation = async () => {
-      if (!methylationOutliers?.samples?.length) return
-
-      // Take top N outlier samples by outlier_count
-      const topOutliers = methylationOutliers.samples
-        .slice(0, MAX_AUTO_FETCH_OUTLIERS)
-        .filter((s: any) => s.outlier_count > 0)
-        .map((s: any) => s.sample_id)
-
-      if (topOutliers.length === 0) return
-
-      console.log(`Fetching methylation for ${topOutliers.length} outlier samples`)
-      setMethylationLoading(true)
-
-      try {
-        const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: topOutliers,
-        })
-        if (result.data?.methylation) {
-          setMethylationData(result.data.methylation)
-          setMethylationSampleCount(0) // reset — these are just outliers
-        }
-      } catch (error) {
-        console.error('Error fetching outlier methylation:', error)
-      } finally {
-        setMethylationLoading(false)
-      }
-    }
-    fetchOutlierMethylation()
-  }, [chrom, start, stop, methylationOutliers])
-
-  const handleLoadAllSamples = useCallback(async () => {
-    if (!haplotypeGroups || haplotypeGroups.groups.length === 0) return
-
-    const allSampleIds = Array.from(new Set(
-      haplotypeGroups.groups.flatMap(g => g.samples.map(s => s.sample_id))
-    ))
-
-    if (allSampleIds.length === 0) return
-
-    setMethylationLoading(true)
-    setMethylationSampleCount(0)
-    setMethylationTotalSamples(allSampleIds.length)
-    console.log(`Loading methylation for all ${allSampleIds.length} haplotype samples`)
-
-    // Query in small batches, accumulate results progressively
-    const BATCH_SIZE = 5
-    let accumulated: Methylation[] = [...methylationData]
-    let completed = 0
-    const total = allSampleIds.length
-
-    for (let i = 0; i < allSampleIds.length; i += BATCH_SIZE) {
-      const batch = allSampleIds.slice(i, i + BATCH_SIZE)
-      try {
-        const result = await fetchGraphQL(METHYLATION_QUERY, {
-          chrom, start, stop, samples: batch,
-        })
-        if (result.data?.methylation) {
-          accumulated = [...accumulated, ...result.data.methylation]
-          setMethylationData(accumulated)
-        }
-      } catch (error) {
-        console.error(`Error fetching batch ${i / BATCH_SIZE}:`, error)
-      }
-      completed += batch.length
-      setMethylationSampleCount(completed)
-    }
-
-    setMethylationLoading(false)
-  }, [chrom, start, stop, haplotypeGroups, methylationData])
-
   useEffect(() => {
     debouncedFetchHaplotypeGroups(threshold)
   }, [chrom, start, stop, threshold, debouncedFetchHaplotypeGroups, sortBy])
@@ -334,12 +206,12 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
       ...queryParams,
       threshold: threshold.toString(),
       sortBy,
-      plotType,
+      plotType: undefined,
       colorMode,
       ...(showGenealogy ? { showTree: '1' } : { showTree: undefined }),
     })
     window.history.pushState({}, '', `${location.pathname}?${newSearchParams}`)
-  }, [threshold, sortBy, plotType, colorMode, showGenealogy])
+  }, [threshold, sortBy, colorMode, showGenealogy])
 
   return (
     <TrackPage>
@@ -386,13 +258,13 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
           onSetRegion={(newRegion) => {
             history.push({
               pathname: `/haplotype/region/${chrom}-${newRegion.start}-${newRegion.stop}`,
-              search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
+              search: queryString.stringify({ threshold, sortBy, colorMode }),
             })
           }}
           onNavigateRegion={(newRegion) => {
             history.push({
               pathname: `/haplotype/region/${newRegion.chrom}-${newRegion.start}-${newRegion.stop}`,
-              search: queryString.stringify({ threshold, sortBy, plotType, colorMode }),
+              search: queryString.stringify({ threshold, sortBy, colorMode }),
             })
           }}
         />
@@ -400,7 +272,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
       <RegionViewer
         leftPanelWidth={150}
         regions={[viewRegion]}
-        rightPanelWidth={isSmallScreen ? 0 : showGenealogy && plotType === 'lollipop' ? 250 : 80}
+        rightPanelWidth={isSmallScreen ? 0 : showGenealogy ? 250 : 80}
         width={regionViewerWidth}
       >
         <LRCoverageTrack chrom={viewRegion.chrom} start={viewRegion.start} stop={viewRegion.stop} />
@@ -414,8 +286,7 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         {haplotypeGroups && (
           <HaplotypeTrack
             haplotypeGroups={haplotypeGroups.groups}
-            methylationData={methylationData}
-            methylationSummary={methylationSummary}
+            methylationData={[]}
             sampleMetadata={sampleMetadata}
             start={viewRegion.start}
             stop={viewRegion.stop}
@@ -423,18 +294,12 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
             onMinAfChange={setThreshold}
             initialSortBy={sortBy}
             onSortModeChange={setSortBy}
-            onLoadAllSamples={handleLoadAllSamples}
-            methylationLoading={methylationLoading}
-            methylationSampleCount={methylationSampleCount}
-            methylationTotalSamples={methylationTotalSamples}
             haplotypeLoading={haplotypeLoading}
             showMqtl={false}
             onShowMqtlChange={setShowMqtl}
             mqtlLoading={mqtlLoading}
             mqtlData={mqtlData}
             mqtlMinLogP={mqtlMinLogP}
-            plotType={plotType}
-            onPlotTypeChange={setPlotType}
             initialColorMode={colorMode}
             onColorModeChange={setColorMode}
             showGenealogy={showGenealogy}

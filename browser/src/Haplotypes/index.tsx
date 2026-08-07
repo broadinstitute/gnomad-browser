@@ -10,10 +10,13 @@ import AlluvialTrack from './AlluvialTrack'
 import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
-import MethylationHelp, {
-  type MethylationSampleAvailability,
-  type PhasedMethylationCapability,
-} from './MethylationHelp'
+import { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
+import type {
+  JoinedPhasedMethylationCapability,
+  JoinedPhasedMethylationRecord,
+  PerCopyLoadingProgress,
+  PerCopyMethylationSampleState,
+} from '../LongReadVariantPage/perCopyMethylation'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { ALLELE_TYPE_COLORS, VARIANT_CATEGORY_COLORS, type VariantCategory } from '../LongReadVariantPage/variantUtils'
 import { COLOR_MODES, getVariantCssColor } from '../LongReadVariantPage/variantColorUtils'
@@ -22,15 +25,6 @@ import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipop
 import ChromosomePainterTrack from './ChromosomePainterTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import { createMinimumAlleleFrequencyScale } from './minimumAlleleFrequency'
-
-// Extensible plot type and color mode registries
-export const PLOT_TYPES: { value: string; label: string }[] = [
-  { value: 'lollipop', label: 'Lollipop' },
-  { value: 'alluvial', label: 'Alluvial Flow' },
-  { value: 'heatmap', label: 'Binned Heatmap' },
-  { value: 'bubble', label: 'Variation Graph' },
-  { value: 'painting', label: 'Chromosome Painting' },
-]
 
 export { COLOR_MODES }
 
@@ -139,6 +133,32 @@ const LegendStrip = styled.div`
   padding-left: 12px;
 `
 
+const visibleMethylationProgressText = (progress?: PerCopyLoadingProgress | null) => {
+  if (progress?.status === 'error') {
+    return `Methylation loading error for visible samples (${progress.errorCodes.join(', ')})`
+  }
+  if (progress?.status === 'loading') {
+    return `Loading methylation ${progress.terminalCount}/${progress.totalCount} visible samples…`
+  }
+  if (progress?.status === 'loaded') return `Loaded ${progress.totalCount} visible samples`
+  if (progress?.status === 'empty') return 'No visible methylation samples'
+  return null
+}
+
+const allMethylationProgressText = (progress?: PerCopyLoadingProgress | null) => {
+  if (progress?.status === 'error') {
+    return `Methylation loading error (${progress.errorCodes.join(', ')})`
+  }
+  if (progress?.status === 'loading') {
+    return `Loading all methylation ${progress.terminalCount}/${progress.totalCount} samples…`
+  }
+  if (progress?.status === 'loaded') {
+    return `Loaded all ${progress.totalCount} methylation samples`
+  }
+  if (progress?.status === 'empty') return 'No methylation samples to load'
+  return 'Load all methylation samples'
+}
+
 export const Legend = ({
   onMinAfChange = () => { },
   onColorModeChange = () => { },
@@ -146,25 +166,21 @@ export const Legend = ({
   initialMinAf = 0,
   initialSortBy = 'similarity_score',
   onSortModeChange = () => { },
-  showMethylation = true,
-  onShowMethylationChange = () => { },
-  methylationAvailable = true,
-  methylationLabel = 'Methylation',
-  methylationAvailability,
-  phasedMethylationCapability,
-  filterToOutliers = false,
-  onFilterToOutliersChange = () => { },
-  onLoadAllSamples,
-  methylationLoading = false,
-  methylationSampleCount = 0,
-  methylationTotalSamples = 0,
+  showPerCopyMethylation = false,
+  onShowPerCopyMethylationChange = () => { },
+  joinedMethylationCapability,
+  joinedMethylationUsableForRegion = false,
+  joinedMethylationUnavailableReason,
+  methylationSamplesOnly = false,
+  onMethylationSamplesOnlyChange = () => { },
+  visibleMethylationProgress,
+  allMethylationProgress,
+  onLoadAllPerCopyMethylation,
+  onRetryPerCopyMethylation,
   showMqtl = false,
   onShowMqtlChange = () => { },
   mqtlLoading = false,
   mqtlData = [],
-  plotType = 'lollipop',
-  onPlotTypeChange = () => { },
-  plotTypes = PLOT_TYPES,
   colorModes = COLOR_MODES,
   showGenealogy = false,
   onShowGenealogyChange = () => { },
@@ -196,7 +212,17 @@ export const Legend = ({
   methylationAvailable?: boolean
   methylationLabel?: string
   methylationAvailability?: MethylationSampleAvailability[] | null
-  phasedMethylationCapability?: PhasedMethylationCapability
+  showPerCopyMethylation?: boolean
+  onShowPerCopyMethylationChange?: (show: boolean) => void
+  joinedMethylationCapability?: JoinedPhasedMethylationCapability | null
+  joinedMethylationUsableForRegion?: boolean
+  joinedMethylationUnavailableReason?: string | null
+  methylationSamplesOnly?: boolean
+  onMethylationSamplesOnlyChange?: (filter: boolean) => void
+  visibleMethylationProgress?: PerCopyLoadingProgress | null
+  allMethylationProgress?: PerCopyLoadingProgress | null
+  onLoadAllPerCopyMethylation?: () => void
+  onRetryPerCopyMethylation?: () => void
   filterToOutliers?: boolean
   onFilterToOutliersChange?: (filter: boolean) => void
   onLoadAllSamples?: () => void
@@ -207,9 +233,6 @@ export const Legend = ({
   onShowMqtlChange?: (show: boolean) => void
   mqtlLoading?: boolean
   mqtlData?: any[]
-  plotType?: string
-  onPlotTypeChange?: (plotType: string) => void
-  plotTypes?: { value: string; label: string }[]
   colorModes?: { value: string; label: string }[]
   showGenealogy?: boolean
   onShowGenealogyChange?: (show: boolean) => void
@@ -232,6 +255,13 @@ export const Legend = ({
 }) => {
   const isDiploidView = groupingMode === 'diploid'
   const isClusteredView = groupingMode === 'similarity'
+  const perCopyMethylationReason = joinedMethylationUnavailableReason
+    ?? joinedMethylationCapability?.reason
+    ?? 'Per-copy methylation capability is loading'
+  const visibleMethylationProgressLabel = visibleMethylationProgressText(visibleMethylationProgress)
+  const allMethylationProgressLabel = allMethylationProgressText(allMethylationProgress)
+  const methylationRetryAvailable =
+    visibleMethylationProgress?.status === 'error' || allMethylationProgress?.status === 'error'
 
   // Reserve the first slider position for zero, then retain the existing log scale.
   const { afToSlider, sliderToAf } = createMinimumAlleleFrequencyScale(
@@ -273,11 +303,6 @@ export const Legend = ({
     onSortModeChange(value)
   }
 
-  const handleShowMethylationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const show = event.target.checked
-    onShowMethylationChange(show)
-  }
-
   return (
     <ControlsContainer>
       {/* Top row: Min AF, Grouping, Sort */}
@@ -317,27 +342,24 @@ export const Legend = ({
             <GroupingModeHelp />
           </HaplotypeHelpButton>
         </div>
-        {plotType === 'lollipop' && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <label style={{ fontSize: '12px' }}>Sort:</label>
-            <SegmentedControl
-              id='sort-mode'
-              options={isDiploidView
-                ? [
-                    { label: 'Sample', value: 'sample_id' },
-                    { label: 'ROH', value: 'roh_fraction' },
-                    { label: 'Comp. Het.', value: 'compound_het' },
-                  ]
-                : [
-                    { label: 'Similarity', value: 'similarity_score' },
-                    { label: 'Count', value: 'sample_count' },
-                  ]
-              }
-              value={sortMode}
-              onChange={(value: any) => handleSortModeChange(value)}
-            />
-          </div>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <label style={{ fontSize: '12px' }}>Sort:</label>
+          <SegmentedControl
+            id='sort-mode'
+            options={isDiploidView
+              ? [
+                  { label: 'Sample', value: 'sample_id' },
+                  { label: 'ROH', value: 'roh_fraction' },
+                ]
+              : [
+                  { label: 'Similarity', value: 'similarity_score' },
+                  { label: 'Count', value: 'sample_count' },
+                ]
+            }
+            value={sortMode}
+            onChange={(value: any) => handleSortModeChange(value)}
+          />
+        </div>
         <LegendStrip>
           <span style={{ fontWeight: 600, fontSize: 11, color: '#444', alignSelf: 'flex-start', lineHeight: '28px' }}>Legend:</span>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -363,7 +385,7 @@ export const Legend = ({
         </LegendStrip>
       </ControlGroup>
 
-      {/* Fieldsets: Clustering + Display + Data Layers side by side */}
+      {/* Fieldsets: Clustering + Data Layers side by side */}
       <FieldsetRow>
         <Fieldset $disabled={!isClusteredView} style={{ flex: '1.2 1 200px' }}>
           <FieldsetTitle>Clustering</FieldsetTitle>
@@ -417,97 +439,91 @@ export const Legend = ({
           </ControlGroup>
         </Fieldset>
 
-        <Fieldset style={{ flex: '1 1 200px' }}>
-          <FieldsetTitle>Display</FieldsetTitle>
-          <ControlGroup>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <label style={{ fontSize: '12px' }}>Plot:</label>
-              <Select
-                value={plotType}
-                onChange={(e: any) => onPlotTypeChange(e.target.value)}
-              >
-                {plotTypes.map((pt) => (
-                  <option key={pt.value} value={pt.value}>{pt.label}</option>
-                ))}
-              </Select>
-            </div>
-            {/* Color dropdown moved to TopBar for unified access */}
-            {/* Hidden for now (Expand INS/TRs) —
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                <input
-                  type='checkbox'
-                  checked={showPhantomRegions}
-                  onChange={(e) => onShowPhantomRegionsChange(e.target.checked)}
-                />
-                Expand INS/TRs
-              </label>
-              <HaplotypeHelpButton title="Expand Insertions & Tandem Repeats">
-                <ExpandInsertionsHelp />
-              </HaplotypeHelpButton>
-            </div>
-            */}
-          </ControlGroup>
-        </Fieldset>
-
         <Fieldset style={{ flex: '0.6 1 150px' }}>
           <FieldsetTitle>Data Layers</FieldsetTitle>
           <ControlGroup>
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
+              <label
+                title={perCopyMethylationReason}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '3px',
+                  cursor: joinedMethylationUsableForRegion ? 'pointer' : 'not-allowed',
+                }}
+              >
                 <input
                   type='checkbox'
-                  checked={showMethylation && methylationAvailable}
-                  disabled={!methylationAvailable}
-                  onChange={handleShowMethylationChange}
+                  checked={showPerCopyMethylation && joinedMethylationUsableForRegion}
+                  disabled={!joinedMethylationUsableForRegion}
+                  onChange={(event) => onShowPerCopyMethylationChange(event.target.checked)}
                 />
-                Methylation (sample total)
+                Per-copy methylation
               </label>
-              <HaplotypeHelpButton title="Methylation">
-                <MethylationHelp
-                  availability={methylationAvailability}
-                  sourceLabel={methylationAvailable ? methylationLabel : 'Unavailable for this cohort/release'}
-                  phasedCapability={phasedMethylationCapability}
+              <HaplotypeHelpButton title="Per-copy methylation">
+                <PerCopyMethylationHelp
+                  capability={joinedMethylationCapability}
+                  unavailableReason={joinedMethylationUsableForRegion ? null : perCopyMethylationReason}
                 />
               </HaplotypeHelpButton>
+              {!joinedMethylationUsableForRegion && perCopyMethylationReason && (
+                <span role='status' style={{ color: '#8a4b08', fontSize: '11px' }}>
+                  {perCopyMethylationReason}
+                </span>
+              )}
+              {joinedMethylationUsableForRegion && (
+                <>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                    <input
+                      type='checkbox'
+                      checked={methylationSamplesOnly}
+                      onChange={(event) => onMethylationSamplesOnlyChange(event.target.checked)}
+                    />
+                    Methylation samples only
+                  </label>
+                  {showPerCopyMethylation && visibleMethylationProgressLabel && (
+                    <button
+                      type='button'
+                      disabled
+                      aria-live='polite'
+                      style={{
+                        padding: '2px 6px', fontSize: '11px',
+                        background: visibleMethylationProgress?.status === 'error' ? '#fff1f0' : '#f0f0f0',
+                        border: '1px solid #ccc', borderRadius: '3px',
+                      }}
+                    >
+                      {visibleMethylationProgressLabel}
+                    </button>
+                  )}
+                  {showPerCopyMethylation && onLoadAllPerCopyMethylation && (
+                    <button
+                      type='button'
+                      onClick={onLoadAllPerCopyMethylation}
+                      disabled={allMethylationProgress !== null && allMethylationProgress !== undefined}
+                      aria-live='polite'
+                      style={{
+                        padding: '2px 6px', fontSize: '11px',
+                        cursor: allMethylationProgress ? 'default' : 'pointer',
+                        background: allMethylationProgress?.status === 'error' ? '#fff1f0' : '#f0f0f0',
+                        border: '1px solid #ccc', borderRadius: '3px',
+                      }}
+                    >
+                      {allMethylationProgressLabel}
+                    </button>
+                  )}
+                  {showPerCopyMethylation && methylationRetryAvailable && onRetryPerCopyMethylation && (
+                    <button
+                      type='button'
+                      onClick={onRetryPerCopyMethylation}
+                      style={{
+                        padding: '2px 6px', fontSize: '11px', cursor: 'pointer',
+                        background: '#fff1f0', border: '1px solid #c62828', borderRadius: '3px',
+                      }}
+                    >
+                      Retry methylation
+                    </button>
+                  )}
+                </>
+              )}
             </div>
-            <label
-              title={phasedMethylationCapability?.reason || 'Phased methylation orientation is unconfirmed'}
-              style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', cursor: 'not-allowed' }}
-            >
-              <input type='checkbox' checked={false} disabled />
-              Phased methylation join
-            </label>
-            {showMethylation && methylationAvailable && (
-              <>
-                <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                  <input
-                    type='checkbox'
-                    checked={filterToOutliers}
-                    onChange={(e) => onFilterToOutliersChange(e.target.checked)}
-                  />
-                  Outliers only
-                </label>
-                {onLoadAllSamples && (
-                  <button
-                    onClick={onLoadAllSamples}
-                    disabled={methylationLoading}
-                    style={{
-                      padding: '2px 6px', fontSize: '11px',
-                      cursor: methylationLoading ? 'wait' : 'pointer',
-                      background: methylationLoading ? '#e0e0e0' : '#f0f0f0',
-                      border: '1px solid #ccc', borderRadius: '3px',
-                    }}
-                  >
-                    {methylationLoading
-                      ? `Loading ${methylationSampleCount}/${methylationTotalSamples}...`
-                      : methylationSampleCount > 0 && !methylationLoading
-                        ? `Loaded ${methylationSampleCount} sample totals`
-                        : 'Load all sample totals'}
-                  </button>
-                )}
-              </>
-            )}
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: recombinationAvailable ? 'pointer' : 'not-allowed' }}>
                 <input
@@ -852,6 +868,9 @@ type HaplotypeTrackProps = {
   clusters?: HaplotypeCluster[]
   methylationData: Methylation[]
   methylationSummary?: MethylationSummaryPoint[]
+  showPerCopyMethylation?: boolean
+  perCopyMethylationRecords?: JoinedPhasedMethylationRecord[]
+  perCopyMethylationSampleStates?: ReadonlyMap<string, PerCopyMethylationSampleState>
   sampleMetadata?: SampleMetadataMap
   initialMinAf?: number
   initialSortBy?: string
@@ -867,10 +886,10 @@ type HaplotypeTrackProps = {
   mqtlLoading?: boolean
   mqtlData?: any[]
   mqtlMinLogP?: number
-  plotType?: string
   showGenealogy?: boolean
   hoveredVariantPosition?: number | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
+  onVisibleDiploidSampleIdsChange?: (sampleIds: string[]) => void
   groupingMode?: 'similarity' | 'exact' | 'diploid'
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
@@ -1965,6 +1984,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   clusters,
   methylationData,
   methylationSummary = [],
+  showPerCopyMethylation = false,
+  perCopyMethylationRecords = [],
+  perCopyMethylationSampleStates = new Map(),
   sampleMetadata,
   start,
   stop,
@@ -1981,10 +2003,10 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   mqtlLoading = false,
   mqtlData = [],
   mqtlMinLogP = 0,
-  plotType = 'lollipop',
   showGenealogy = false,
   hoveredVariantPosition,
   onVisibleGroupChange,
+  onVisibleDiploidSampleIdsChange,
   groupingMode = 'similarity',
   clusterThreshold = 0,
   onClusterThresholdChange,
@@ -2009,6 +2031,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
+  // Alternate renderer implementations remain dormant, but callers cannot select them.
+  const plotType: string = 'lollipop'
 
   if (!haplotypeGroups) {
     return (
@@ -2171,6 +2195,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             colorMode={initialColorMode}
             showMethylation={showMethylation}
             methylationData={methylationData}
+            showPerCopyMethylation={showPerCopyMethylation && isDiploidView}
+            perCopyMethylationRecords={perCopyMethylationRecords}
+            perCopyMethylationSampleStates={perCopyMethylationSampleStates}
             summaryByPos={summaryByPos}
             variantCircleRadius={variantCircleRadius}
             sampleColorScale={sampleColorScale}
@@ -2183,6 +2210,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             showGenealogy={showGenealogy}
             genealogyResult={genealogyResult}
             onVisibleGroupChange={onVisibleGroupChange}
+            onVisibleDiploidSampleIdsChange={onVisibleDiploidSampleIdsChange}
             isClusteredView={isClusteredView}
             expandedClusterIds={expandedClusterIds}
             toggleClusterExpansion={toggleClusterExpansion}

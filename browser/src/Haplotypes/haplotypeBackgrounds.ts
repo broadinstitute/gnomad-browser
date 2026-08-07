@@ -21,18 +21,19 @@ export function getRowBackgroundRects<Haplotype, Diplotype>(
   row: BackgroundRow<Haplotype, Diplotype>,
   rowY: number,
   regionStart: number,
-  regionStop: number
+  regionStop: number,
+  diplotypeSecondCopyOffset = 25
 ): RowBackgroundRect<Haplotype | Diplotype>[] {
   const bounds = { groupStart: regionStart, groupStop: regionStop }
 
   if (row.type === 'diplotype') {
     const color: [number, number, number, number] = [232, 238, 248, 255]
-    if (row.group.is_roh) {
+    if (row.group.is_roh && diplotypeSecondCopyOffset === 25) {
       return [{ ...bounds, rowY: rowY - 2, color, group: row.group, height: 40 }]
     }
     return [
       { ...bounds, rowY: rowY - 2, color, group: row.group, height: 19 },
-      { ...bounds, rowY: rowY + 21, color, group: row.group, height: 19 },
+      { ...bounds, rowY: rowY + diplotypeSecondCopyOffset - 4, color, group: row.group, height: 19 },
     ]
   }
 

@@ -10,8 +10,16 @@ const mockCarrierSampleIds = [
   'carrier-e',
   'carrier-f',
 ]
+const mockSourceSampleIds = [
+  ...mockCarrierSampleIds,
+  ...Array.from({ length: 225 }, (_, index) => `source-${String(index).padStart(3, '0')}`),
+].sort((left, right) => left.localeCompare(right))
+let mockVisibleSampleIds = mockCarrierSampleIds
 const mockHaplotypeTrackProps: any[] = []
-let mockPhasedCapability: any = null
+const mockLegendProps: any[] = []
+let mockJoinedCapability: any = null
+let mockJoinedCapabilityFailure: 'graphql' | 'network' | null = null
+let mockDeferJoinedCapability = false
 
 jest.mock('@gnomad/region-viewer', () => {
   // eslint-disable-next-line global-require
@@ -45,6 +53,9 @@ jest.mock('../Haplotypes', () => {
   const mockReact = require('react')
   const HaplotypeTrack = mockReact.forwardRef((props: any, _ref: any) => {
     mockHaplotypeTrackProps.push(props)
+    mockReact.useEffect(() => {
+      props.onVisibleDiploidSampleIdsChange?.(mockVisibleSampleIds)
+    }, [props.onVisibleDiploidSampleIdsChange])
     return mockReact.createElement(
       'div',
       { 'data-testid': 'haplotype-rows' },
@@ -61,11 +72,78 @@ jest.mock('../Haplotypes', () => {
       )
     )
   })
-  return {
-    __esModule: true,
-    default: HaplotypeTrack,
-    Legend: () => null,
+  const Legend = (props: any) => {
+    mockLegendProps.push(props)
+    const visible = props.visibleMethylationProgress
+    const visibleLabel =
+      visible?.status === 'error'
+        ? `Methylation loading error for visible samples (${visible.errorCodes.join(', ')})`
+        : visible?.status === 'loading'
+        ? `Loading methylation ${visible.terminalCount}/${visible.totalCount} visible samples…`
+        : visible?.status === 'loaded'
+        ? `Loaded ${visible.totalCount} visible samples`
+        : visible?.status === 'empty'
+        ? 'No visible methylation samples'
+        : null
+    return mockReact.createElement(
+      'div',
+      null,
+      mockReact.createElement(
+        'label',
+        null,
+        mockReact.createElement('input', {
+          type: 'checkbox',
+          'aria-label': 'Per-copy methylation',
+          checked: props.showPerCopyMethylation && props.joinedMethylationUsableForRegion,
+          disabled: !props.joinedMethylationUsableForRegion,
+          onChange: (event: any) => props.onShowPerCopyMethylationChange(event.target.checked),
+        }),
+        'Per-copy methylation'
+      ),
+      props.joinedMethylationUsableForRegion
+        ? mockReact.createElement(
+            'label',
+            null,
+            mockReact.createElement('input', {
+              type: 'checkbox',
+              'aria-label': 'Methylation samples only',
+              checked: props.methylationSamplesOnly,
+              onChange: (event: any) => props.onMethylationSamplesOnlyChange(event.target.checked),
+            }),
+            'Methylation samples only'
+          )
+        : null,
+      visibleLabel ? mockReact.createElement('span', { role: 'status' }, visibleLabel) : null,
+      props.showPerCopyMethylation && props.joinedMethylationUsableForRegion
+        ? mockReact.createElement(
+            'button',
+            {
+              type: 'button',
+              onClick: props.onLoadAllPerCopyMethylation,
+              disabled: Boolean(props.allMethylationProgress),
+            },
+            'Load all methylation samples'
+          )
+        : null,
+      props.showPerCopyMethylation &&
+      (props.visibleMethylationProgress?.status === 'error' ||
+        props.allMethylationProgress?.status === 'error')
+        ? mockReact.createElement(
+            'button',
+            { type: 'button', onClick: props.onRetryPerCopyMethylation },
+            'Retry methylation'
+          )
+        : null,
+      !props.joinedMethylationUsableForRegion && props.joinedMethylationUnavailableReason
+        ? mockReact.createElement(
+            'span',
+            { role: 'status' },
+            props.joinedMethylationUnavailableReason
+          )
+        : null
+    )
   }
+  return { __esModule: true, default: HaplotypeTrack, Legend }
 })
 
 jest.mock('../RegionViewerCursor', () => () => null)
@@ -104,12 +182,14 @@ jest.mock('../Haplotypes/AccordionCoordinateMapper', () => ({
 // Jest mocks must be registered before importing the component under test.
 // eslint-disable-next-line import/first
 import LongReadUnifiedView from './LongReadUnifiedView'
+import { perCopyMethylationForReadyRow } from './perCopyMethylation'
 
 type DeferredGraphQLRequest = {
   name: string
   variables: any
   signal?: AbortSignal
   resolve: (response: any) => void
+  reject: (error: Error) => void
 }
 
 const mockGraphQLRequests: DeferredGraphQLRequest[] = []
@@ -120,12 +200,38 @@ const responseWithJson = (payload: any) => ({
   text: async () => JSON.stringify(payload),
 })
 
+const joinedIdentity = {
+  source_run_id: 'source-run',
+  source_completion_receipt_sha256: 'source-receipt',
+  source_manifest_sha256: 'source-manifest',
+  browser_vcf_manifest_bundle_sha256: 'browser-bundle',
+  browser_vcf_manifest_sha256: 'browser-manifest',
+  browser_vcf_run_id: 'browser-run',
+  orientation_receipt_id: 'orientation-id',
+  orientation_receipt_sha256: 'orientation-sha',
+  mapping_artifact_sha256: null,
+  mapping_scope: 'CHROMOSOME_WIDE',
+}
+
+const confirmedCapability = (overrides: Record<string, unknown> = {}) => ({
+  available: true,
+  joinable_to_vcf: true,
+  status: 'AVAILABLE_CONFIRMED',
+  identity: joinedIdentity,
+  max_span_bp: 100000,
+  max_samples: 25,
+  max_records: 250000,
+  reason: 'Confirmed for the pinned bundle',
+  source_sample_ids: mockSourceSampleIds,
+  ...overrides,
+})
+
 const workerData = () => ({
   groups: [{
     is_diplotype: true,
     samples: mockCarrierSampleIds.map((sampleId) => ({
       sample_id: sampleId,
-      strand_mapping: { strandA: null, strandB: null },
+        strand_mapping: { strandA: 1, strandB: 2 },
       phase_set_mapping: { phaseSetA: null, phaseSetB: null },
     })),
     haplotypeA: { variants: [], readable_id: '' },
@@ -148,30 +254,6 @@ const workerData = () => ({
 
 let workerDataOverride: ReturnType<typeof workerData> | null = null
 
-const workerDataWithHG00097 = () => {
-  const data = workerData()
-  data.groups.push({
-    is_diplotype: true,
-    samples: [{
-      sample_id: 'HG00097',
-      strand_mapping: { strandA: 1, strandB: 2 },
-      phase_set_mapping: { phaseSetA: 'phase-a', phaseSetB: 'phase-b' },
-    }],
-    haplotypeA: { variants: [], readable_id: 'hg00097-hap1' },
-    haplotypeB: { variants: [], readable_id: 'hg00097-hap2' },
-    below_thresholdA: { variants: [], readable_id: '' },
-    below_thresholdB: { variants: [], readable_id: '' },
-    start: 100,
-    stop: 200,
-    hash: 2,
-    roh_fraction: 0,
-    is_roh: false,
-    compound_het_pairs: [],
-    is_compound_het: false,
-  } as any)
-  return data
-}
-
 class MockWorker {
   onmessage: ((event: MessageEvent) => void) | null = null
 
@@ -193,7 +275,43 @@ class MockWorker {
 }
 
 const requestsNamed = (name: string) => mockGraphQLRequests.filter((request) => request.name === name)
-const detailRequests = () => requestsNamed('RegionMethylation')
+
+const joinedRegion = (
+  requestedSampleIds: string[],
+  completedSampleIds: string[],
+  unavailableSamples: any[] = [],
+  records: any[] = []
+) => ({
+  identity: joinedIdentity,
+  requested_sample_ids: requestedSampleIds,
+  completed_sample_ids: completedSampleIds,
+  unavailable_samples: unavailableSamples,
+  records,
+})
+
+const joinedRecord = (sampleId: string, index: number) => ({
+  source_row_key: `${sampleId}-${index}`,
+  chr: 'chr22',
+  pos1: 110 + index,
+  pos2: 111 + index,
+  sample: sampleId,
+  methylation: 25,
+  coverage: 4,
+  source_haplotype: 'HAP1',
+  vcf_strand: 1,
+  mapping_scope: 'CHROMOSOME_WIDE',
+  phase_set: null,
+})
+
+const joinedRecordForStrand = (sampleId: string, vcfStrand: 1 | 2, methylation: number) => ({
+  ...joinedRecord(sampleId, vcfStrand),
+  source_row_key: `${sampleId}-GT${vcfStrand}`,
+  pos1: 110,
+  pos2: 111,
+  methylation,
+  source_haplotype: vcfStrand === 1 ? 'HAP1' : 'HAP2',
+  vcf_strand: vcfStrand,
+})
 
 const resolveRequest = async (request: DeferredGraphQLRequest, payload: any) => {
   await act(async () => {
@@ -203,55 +321,53 @@ const resolveRequest = async (request: DeferredGraphQLRequest, payload: any) => 
   })
 }
 
-const renderView = (
-  gene = { chrom: 'chr22', start: 100, stop: 200 },
-  initialEntry = '/?show_haplotypes=true'
-) => render(
-  <MemoryRouter initialEntries={[initialEntry]}>
-    <LongReadUnifiedView
-      datasetId={'gnomad_r4' as any}
-      gene={gene}
-      variants={[]}
-    />
-  </MemoryRouter>
-)
-
-const resolveSummaryAndOutlier = async () => {
-  await waitFor(() => {
-    expect(requestsNamed('RegionMethylationSummary')).toHaveLength(1)
-    expect(requestsNamed('RegionMethylationOutliers')).toHaveLength(1)
-  })
-  await resolveRequest(requestsNamed('RegionMethylationSummary')[0], {
-    data: { methylation_summary: [] },
-  })
-  await resolveRequest(requestsNamed('RegionMethylationOutliers')[0], {
-    data: {
-      methylation_outliers: {
-        total_cpg_sites: 1,
-        total_samples: 2,
-        samples: [
-          {
-            sample_id: 'carrier-a',
-            outlier_count: 2,
-            outlier_fraction: 1,
-            direction: 'high',
-          },
-          {
-            sample_id: 'non-carrier-outlier',
-            outlier_count: 1,
-            outlier_fraction: 1,
-            direction: 'high',
-          },
-        ],
-      },
-    },
+const rejectRequest = async (request: DeferredGraphQLRequest, error: Error) => {
+  await act(async () => {
+    request.reject(error)
+    await Promise.resolve()
+    await Promise.resolve()
   })
 }
 
+const renderView = (
+  gene = { chrom: 'chr22', start: 100, stop: 200 },
+  initialEntry = '/?show_haplotypes=true',
+  lrCohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
+) => render(
+  <MemoryRouter initialEntries={[initialEntry]}>
+      <LongReadUnifiedView
+        datasetId={'gnomad_r4' as any}
+        gene={gene}
+        variants={[]}
+        lrCohort={lrCohort}
+      />
+  </MemoryRouter>
+)
+
+const enablePerCopyMethylation = async () => {
+  const control = await screen.findByLabelText('Per-copy methylation')
+  await waitFor(() => expect((control as HTMLInputElement).disabled).toBe(false))
+  if (!(control as HTMLInputElement).checked) fireEvent.click(control)
+}
+
 beforeEach(() => {
+  mockVisibleSampleIds = mockCarrierSampleIds
   mockGraphQLRequests.length = 0
   mockHaplotypeTrackProps.length = 0
-  mockPhasedCapability = null
+  mockLegendProps.length = 0
+  mockJoinedCapabilityFailure = null
+  mockDeferJoinedCapability = false
+  mockJoinedCapability = {
+    available: false,
+    joinable_to_vcf: false,
+    status: 'UNAVAILABLE_NOT_CONFIGURED',
+    identity: null,
+    source_sample_ids: [],
+    max_span_bp: 100000,
+    max_samples: 25,
+    max_records: 250000,
+    reason: 'No admitted joined route',
+  }
   workerDataOverride = null
   Object.defineProperty(globalThis, 'Worker', {
     configurable: true,
@@ -259,6 +375,7 @@ beforeEach(() => {
     value: MockWorker,
   })
   jest.spyOn(console, 'log').mockImplementation(() => {})
+  jest.spyOn(console, 'error').mockImplementation(() => {})
   jest.spyOn(console, 'time').mockImplementation(() => {})
   jest.spyOn(console, 'timeEnd').mockImplementation(() => {})
 
@@ -283,20 +400,41 @@ beforeEach(() => {
     if (name === 'RegionSampleMetadata') {
       return Promise.resolve(responseWithJson({ data: { sample_metadata: [] } }) as any)
     }
-    if (name === 'RegionPhasedMethylationCapability') {
+    if (name === 'RegionJoinedPhasedMethylationCapability') {
+      if (mockDeferJoinedCapability) {
+        return new Promise((resolve, reject) => {
+          mockGraphQLRequests.push({
+            name,
+            variables: body.variables,
+            signal: init?.signal,
+            resolve,
+            reject,
+          })
+        }) as any
+      }
+      if (mockJoinedCapabilityFailure === 'graphql') {
+        return Promise.resolve(
+          responseWithJson({
+            data: null,
+            errors: [{ message: 'Cannot query field joined_phased_methylation_capability' }],
+          }) as any
+        )
+      }
+      if (mockJoinedCapabilityFailure === 'network') {
+        return Promise.reject(new Error('API connection refused'))
+      }
       return Promise.resolve(responseWithJson({
-        data: mockPhasedCapability
-          ? { phased_methylation_capability: mockPhasedCapability }
-          : {},
+          data: { joined_phased_methylation_capability: mockJoinedCapability },
       }) as any)
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       mockGraphQLRequests.push({
         name,
         variables: body.variables,
         signal: init?.signal,
         resolve,
+        reject,
       })
     }) as any
   })
@@ -313,144 +451,803 @@ afterEach(() => {
 })
 
 describe('LongReadUnifiedView methylation detail ownership', () => {
-  test('offers a source-labelled sample comparison without claiming browser VCF alignment', async () => {
-    workerDataOverride = workerDataWithHG00097()
-    mockPhasedCapability = {
-      data_layer: 'SOURCE_PHASED', available: true, joinable_to_vcf: false,
-      status: 'AVAILABLE_ORIENTATION_UNCONFIRMED', orientation_status: 'UNCONFIRMED',
-      phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET', route_run_id: 'source-only-v1',
-      source_sample_ids: ['HG00097'], reason: 'exact VCF mapping receipt missing',
-    }
-    renderView({ chrom: 'chr22', start: 47_040_000, stop: 47_050_000 })
-    const control = await screen.findByLabelText('Show source-labelled hap1/hap2 methylation (orientation unconfirmed)')
-    expect((control as HTMLInputElement).disabled).toBe(false)
-    fireEvent.click(control)
-    await waitFor(() => expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(1))
-    expect(requestsNamed('RegionSourcePhasedMethylation')[0].variables.sample_id).toBe('HG00097')
-    await resolveRequest(requestsNamed('RegionSourcePhasedMethylation')[0], {
-      data: { source_phased_methylation: [
-        {
-          chr: 'chr22', pos1: 47040001, pos2: 47040002, methylation: 25,
-          sample: 'HG00097', coverage: 4, data_layer: 'SOURCE_PHASED',
-          source_haplotype: 'HAP1', vcf_strand: null, phase_set: null,
-        },
-        {
-          chr: 'chr22', pos1: 47040003, pos2: 47040004, methylation: 75,
-          sample: 'HG00097', coverage: 8, data_layer: 'SOURCE_PHASED',
-          source_haplotype: 'HAP2', vcf_strand: null, phase_set: null,
-        },
-      ] },
-    })
-    expect(await screen.findByRole('region', { name: 'HG00097 source-labelled methylation comparison' })).toBeTruthy()
-    expect(screen.getByTestId('HG00097-hap1-source-row').getAttribute('data-source-haplotype')).toBe('HAP1')
-    expect(screen.getByTestId('HG00097-hap2-source-row').getAttribute('data-source-haplotype')).toBe('HAP2')
-    expect(screen.getByText('HG00097 source hap1')).toBeTruthy()
-    expect(screen.getByText('HG00097 source hap2')).toBeTruthy()
-    expect(screen.getByText(/no visual or data-contract alignment/)).toBeTruthy()
-    expect(screen.queryByLabelText('swapped')).toBeNull()
-    expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(1)
+  test('paints both A/B copies for one-sided GT1 and GT2 carrier rows', async () => {
+    const sampleIds = ['gt1-carrier', 'gt2-carrier']
+    mockVisibleSampleIds = sampleIds
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = [
+      {
+        sample_id: 'gt1-carrier',
+        strand_mapping: { strandA: 2, strandB: 1 },
+        phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+      },
+      {
+        sample_id: 'gt2-carrier',
+        strand_mapping: { strandA: 1, strandB: 2 },
+        phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+      },
+    ]
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
 
-    expect(screen.getByTestId('haplotype-rows')).toBeTruthy()
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const request = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    const records = [
+      joinedRecordForStrand('gt1-carrier', 1, 10),
+      joinedRecordForStrand('gt1-carrier', 2, 20),
+      joinedRecordForStrand('gt2-carrier', 1, 30),
+      joinedRecordForStrand('gt2-carrier', 2, 40),
+    ]
+    await resolveRequest(request, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(sampleIds, sampleIds, [], records),
+      },
+    })
+
+    await waitFor(() => {
+      const props = mockHaplotypeTrackProps.at(-1)
+      const result = perCopyMethylationForReadyRow(
+        props.perCopyMethylationRecords,
+        workerDataOverride!.groups[0].samples,
+        props.perCopyMethylationSampleStates
+      )
+      expect(result.readiness).toBe('ready')
+      expect(result.points.A).toEqual([
+        expect.objectContaining({ sampleCount: 2, vcfStrands: [1, 2] }),
+      ])
+      expect(result.points.B).toEqual([
+        expect.objectContaining({ sampleCount: 2, vcfStrands: [1, 2] }),
+      ])
+    })
   })
 
-  test('an invalid explicit source-labelled sample fails closed instead of selecting another sample', async () => {
-    mockPhasedCapability = {
-      data_layer: 'SOURCE_PHASED', available: true, joinable_to_vcf: false,
-      status: 'AVAILABLE_ORIENTATION_UNCONFIRMED', orientation_status: 'UNCONFIRMED',
-      phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET', route_run_id: 'source-only-v1',
-      source_sample_ids: ['HG00097'], reason: 'exact VCF mapping receipt missing',
+  test('retries only failed visible samples while preserving completed records and bulk intent', async () => {
+    const sampleIds = Array.from(
+      { length: 27 },
+      (_, index) => `carrier-${String(index).padStart(2, '0')}`
+    )
+    mockVisibleSampleIds = sampleIds
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = sampleIds.map((sampleId) => ({
+      sample_id: sampleId,
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+    }))
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    expect(await screen.findByText('Loading methylation 0/27 visible samples…')).not.toBeNull()
+    const first = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    expect(first.variables.sample_ids).toHaveLength(25)
+    const firstRecords = first.variables.sample_ids.map((sampleId: string) =>
+      joinedRecord(sampleId, 0)
+    )
+    await resolveRequest(first, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          first.variables.sample_ids,
+          first.variables.sample_ids,
+          [],
+          firstRecords
+        ),
+      },
+    })
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const second = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    expect(second.variables.sample_ids).toHaveLength(2)
+    expect(await screen.findByText('Loading methylation 25/27 visible samples…')).not.toBeNull()
+    let props = mockHaplotypeTrackProps.at(-1)
+    expect(
+      perCopyMethylationForReadyRow(
+        props.perCopyMethylationRecords,
+        workerDataOverride.groups[0].samples,
+        props.perCopyMethylationSampleStates
+      )
+    ).toEqual({ readiness: 'loading', points: { A: [], B: [] } })
+
+    await resolveRequest(second, {
+      data: { joined_phased_methylation_region: null },
+      errors: [{ message: 'batch two failed', extensions: { code: 'FAILED_BATCH' } }],
+    })
+    await waitFor(() => {
+      props = mockHaplotypeTrackProps.at(-1)
+      expect(props.perCopyMethylationSampleStates.get(second.variables.sample_ids[0])).toEqual({
+        status: 'error',
+        code: 'FAILED_BATCH',
+        reason: 'batch two failed',
+      })
+    })
+    expect(
+      perCopyMethylationForReadyRow(
+        props.perCopyMethylationRecords,
+        workerDataOverride.groups[0].samples,
+        props.perCopyMethylationSampleStates
+      )
+    ).toEqual({ readiness: 'error', points: { A: [], B: [] } })
+    expect(
+      await screen.findByText('Methylation loading error for visible samples (FAILED_BATCH)')
+    ).not.toBeNull()
+
+    const loadAll = screen.getByRole('button', { name: 'Load all methylation samples' })
+    expect((loadAll as HTMLButtonElement).disabled).toBe(false)
+    fireEvent.click(await screen.findByRole('button', { name: 'Retry methylation' }))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(3))
+    const retry = requestsNamed('RegionJoinedPhasedMethylation')[2]
+    expect(retry.variables.sample_ids).toEqual(second.variables.sample_ids)
+    props = mockHaplotypeTrackProps.at(-1)
+    expect(props.perCopyMethylationRecords).toHaveLength(25)
+    expect(props.perCopyMethylationSampleStates.get(first.variables.sample_ids[0])).toEqual({
+      status: 'complete',
+      recordCount: 1,
+    })
+
+    await resolveRequest(retry, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          retry.variables.sample_ids,
+          [retry.variables.sample_ids[0]],
+          [{
+            sample_id: retry.variables.sample_ids[1],
+            status: 'UNAVAILABLE_NO_ASSAY_SOURCE',
+            reason: 'No source output',
+          }],
+          [joinedRecord(retry.variables.sample_ids[0], 0)]
+        ),
+      },
+    })
+    await waitFor(() => {
+      props = mockHaplotypeTrackProps.at(-1)
+      expect(props.perCopyMethylationRecords).toHaveLength(26)
+      expect(
+        perCopyMethylationForReadyRow(
+          props.perCopyMethylationRecords,
+          workerDataOverride!.groups[0].samples,
+          props.perCopyMethylationSampleStates
+        ).readiness
+      ).toBe('ready')
+    })
+    expect(mockLegendProps.at(-1).allMethylationProgress).toBeNull()
+    expect((screen.getByRole('button', { name: 'Load all methylation samples' }) as HTMLButtonElement).disabled).toBe(false)
+  })
+
+  test('retries only failed Load All samples and preserves terminal samples', async () => {
+    const allSampleIds = mockSourceSampleIds.slice(0, 26)
+    const visibleSampleId = allSampleIds[25]
+    mockVisibleSampleIds = [visibleSampleId]
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = allSampleIds.map((sampleId) => ({
+      sample_id: sampleId,
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+    }))
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    await resolveRequest(requestsNamed('RegionJoinedPhasedMethylation')[0], {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          [visibleSampleId],
+          [visibleSampleId],
+          [],
+          [joinedRecord(visibleSampleId, 0)]
+        ),
+      },
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Load all methylation samples' }))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const failedBulk = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    expect(failedBulk.variables.sample_ids).toHaveLength(25)
+    await resolveRequest(failedBulk, {
+      data: { joined_phased_methylation_region: null },
+      errors: [{ message: 'bulk failed', extensions: { code: 'BULK_FAILURE' } }],
+    })
+
+    await waitFor(() => {
+      expect(mockLegendProps.at(-1).allMethylationProgress).toMatchObject({
+        status: 'error',
+        errorCodes: ['BULK_FAILURE'],
+      })
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Retry methylation' }))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(3))
+    const retry = requestsNamed('RegionJoinedPhasedMethylation')[2]
+    expect(retry.variables.sample_ids).toEqual(failedBulk.variables.sample_ids)
+    let props = mockHaplotypeTrackProps.at(-1)
+    expect(props.perCopyMethylationSampleStates.get(visibleSampleId)).toEqual({
+      status: 'complete',
+      recordCount: 1,
+    })
+    expect(props.perCopyMethylationRecords).toEqual([joinedRecord(visibleSampleId, 0)])
+
+    await resolveRequest(retry, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          retry.variables.sample_ids,
+          retry.variables.sample_ids,
+          [],
+          []
+        ),
+      },
+    })
+    await waitFor(() => {
+      props = mockHaplotypeTrackProps.at(-1)
+      expect(props.perCopyMethylationSampleStates.get(visibleSampleId)).toEqual({
+        status: 'complete',
+        recordCount: 1,
+      })
+      expect(mockLegendProps.at(-1).allMethylationProgress).toMatchObject({
+        status: 'loaded',
+        terminalCount: 26,
+        totalCount: 26,
+      })
+    })
+  })
+
+  test('aggregates a 27-sample row only when all batches are complete or unavailable', async () => {
+    const sampleIds = Array.from(
+      { length: 27 },
+      (_, index) => `carrier-${String(index).padStart(2, '0')}`
+    )
+    mockVisibleSampleIds = sampleIds
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = sampleIds.map((sampleId) => ({
+      sample_id: sampleId,
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+    }))
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const first = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    await resolveRequest(first, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          first.variables.sample_ids,
+          first.variables.sample_ids,
+          [],
+          first.variables.sample_ids.map((sampleId: string) => joinedRecord(sampleId, 0))
+        ),
+      },
+    })
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const second = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    const completed = [second.variables.sample_ids[0]]
+    await resolveRequest(second, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          second.variables.sample_ids,
+          completed,
+          [
+            {
+              sample_id: second.variables.sample_ids[1],
+              status: 'UNAVAILABLE_NO_ASSAY_SOURCE',
+              reason: 'No source output',
+            },
+          ],
+          completed.map((sampleId) => joinedRecord(sampleId, 0))
+        ),
+      },
+    })
+
+    await waitFor(() => {
+      const props = mockHaplotypeTrackProps.at(-1)
+      const result = perCopyMethylationForReadyRow(
+        props.perCopyMethylationRecords,
+        workerDataOverride!.groups[0].samples,
+        props.perCopyMethylationSampleStates
+      )
+      expect(result.readiness).toBe('ready')
+      expect(result.points.A).toEqual([expect.objectContaining({ sampleCount: 26 })])
+      expect(screen.getByText('Loaded 27 visible samples')).not.toBeNull()
+    })
+  })
+
+  test('replaces visible demand and does not refetch old rows after a region scope change', async () => {
+    mockVisibleSampleIds = ['carrier-a']
+    mockJoinedCapability = confirmedCapability()
+    const rendered = renderView()
+    await enablePerCopyMethylation()
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const first = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    expect(first.variables.sample_ids).toEqual(['carrier-a'])
+
+    await act(async () => {
+      mockHaplotypeTrackProps.at(-1).onVisibleDiploidSampleIdsChange(['carrier-b'])
+      await Promise.resolve()
+    })
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const second = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    expect(second.variables.sample_ids).toEqual(['carrier-b'])
+    expect(first.signal?.aborted).toBe(true)
+    await resolveRequest(second, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          ['carrier-b'],
+          ['carrier-b'],
+          [],
+          [joinedRecord('carrier-b', 0)]
+        ),
+      },
+    })
+
+    mockVisibleSampleIds = ['carrier-b']
+    rendered.rerender(
+      <MemoryRouter initialEntries={['/?show_haplotypes=true']}>
+        <LongReadUnifiedView
+          datasetId={'gnomad_r4' as any}
+          gene={{ chrom: 'chr22', start: 300, stop: 400 }}
+          variants={[]}
+          lrCohort="hgsvc_hprc"
+        />
+      </MemoryRouter>
+    )
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(3))
+    expect(requestsNamed('RegionJoinedPhasedMethylation')[2].variables).toEqual(
+      expect.objectContaining({ start: 300, stop: 400, sample_ids: ['carrier-b'] })
+    )
+    expect(
+      requestsNamed('RegionJoinedPhasedMethylation')
+        .slice(1)
+        .some((request) => request.variables.sample_ids.includes('carrier-a'))
+    ).toBe(false)
+  })
+
+  test.each([
+    ['GraphQL schema error', 'graphql'],
+    ['network rejection', 'network'],
+  ] as const)('fails closed when the capability query has a %s', async (_label, failure) => {
+    mockJoinedCapabilityFailure = failure
+    renderView()
+
+    const control = await screen.findByLabelText('Per-copy methylation')
+    expect(
+      await screen.findByText(
+        'Per-copy methylation API is unavailable; restart with the joined methylation route enabled.'
+      )
+    ).not.toBeNull()
+    expect((control as HTMLInputElement).disabled).toBe(true)
+    expect((control as HTMLInputElement).checked).toBe(false)
+    expect(screen.queryByText('Per-copy methylation capability is loading')).toBeNull()
+    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
+  })
+
+  test('ignores a stale capability failure after the region changes', async () => {
+    mockDeferJoinedCapability = true
+    const rendered = renderView()
+    await waitFor(() => {
+      expect(requestsNamed('RegionJoinedPhasedMethylationCapability')).toHaveLength(1)
+    })
+    const staleRequest = requestsNamed('RegionJoinedPhasedMethylationCapability')[0]
+
+    mockDeferJoinedCapability = false
+    rendered.rerender(
+      <MemoryRouter initialEntries={['/?show_haplotypes=true']}>
+        <LongReadUnifiedView
+          datasetId={'gnomad_r4' as any}
+          gene={{ chrom: 'chr21', start: 300, stop: 400 }}
+          variants={[]}
+          lrCohort="hgsvc_hprc"
+        />
+      </MemoryRouter>
+    )
+
+    expect(await screen.findByText('No admitted joined route')).not.toBeNull()
+    await rejectRequest(staleRequest, new Error('stale API connection refused'))
+    expect(screen.queryByText(/Per-copy methylation API is unavailable/)).toBeNull()
+    expect(screen.getByText('No admitted joined route')).not.toBeNull()
+    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
+  })
+
+  test('shows unavailable reasons and never fetches over-span or malformed capabilities', async () => {
+    mockJoinedCapability = confirmedCapability({ max_span_bp: 50 })
+    const overSpan = renderView()
+    const control = await screen.findByLabelText('Per-copy methylation')
+    expect((control as HTMLInputElement).disabled).toBe(true)
+    expect(await screen.findByText(/region spans 101 bp; maximum is 50 bp/)).not.toBeNull()
+    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
+    overSpan.unmount()
+
+    mockJoinedCapability = confirmedCapability({ identity: null })
+    renderView()
+    const malformed = await screen.findByLabelText('Per-copy methylation')
+    expect((malformed as HTMLInputElement).disabled).toBe(true)
+    expect(await screen.findByText(/capability identity is not admitted/)).not.toBeNull()
+    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
+  })
+
+  test('defaults confirmed joined methylation on and progressively fetches only visible row samples', async () => {
+    const identity = {
+      source_run_id: 'source-run',
+      source_completion_receipt_sha256: 'source-receipt',
+      source_manifest_sha256: 'source-manifest',
+      browser_vcf_manifest_bundle_sha256: 'browser-bundle',
+      browser_vcf_manifest_sha256: 'browser-manifest',
+      browser_vcf_run_id: 'browser-run',
+      orientation_receipt_id: 'orientation-id',
+      orientation_receipt_sha256: 'orientation-sha',
+      mapping_artifact_sha256: null,
+      mapping_scope: 'CHROMOSOME_WIDE',
     }
+    mockJoinedCapability = confirmedCapability({ identity })
     renderView(
-      { chrom: 'chr22', start: 47_040_000, stop: 47_050_000 },
+      { chrom: 'chr22', start: 100, stop: 200 },
       '/?show_haplotypes=true&show_source_phased_methylation=true&source_phased_methylation_sample=NOT_REAL'
     )
 
-    const control = await screen.findByLabelText(
-      'Show source-labelled hap1/hap2 methylation (orientation unconfirmed)'
-    )
-    expect((control as HTMLInputElement).checked).toBe(false)
-    expect((control as HTMLInputElement).disabled).toBe(true)
+    const control = await screen.findByLabelText('Per-copy methylation')
+    await waitFor(() => expect((control as HTMLInputElement).checked).toBe(true))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const request = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    expect(request.variables.sample_ids).toEqual(mockCarrierSampleIds)
+    expect(request.variables.sample_ids.length).toBeLessThanOrEqual(25)
+    expect(request.variables.expected_orientation_receipt_sha256).toBe('orientation-sha')
+
+    await resolveRequest(request, {
+      data: {
+        joined_phased_methylation_region: {
+          identity,
+          requested_sample_ids: mockCarrierSampleIds,
+          completed_sample_ids: mockCarrierSampleIds.slice(0, 5),
+          unavailable_samples: [
+            {
+              sample_id: 'carrier-f',
+              status: 'UNAVAILABLE_NO_ASSAY_SOURCE',
+              reason: 'No phased methylation source output',
+            },
+          ],
+          records: [
+            {
+              source_row_key: 'row-a-1',
+              chr: 'chr22',
+              pos1: 110,
+              pos2: 111,
+              sample: 'carrier-a',
+              methylation: 25,
+              coverage: 4,
+              source_haplotype: 'HAP1',
+              vcf_strand: 1,
+              mapping_scope: 'CHROMOSOME_WIDE',
+              phase_set: null,
+            },
+          ],
+        },
+      },
+    })
+
+    await waitFor(() => {
+      const props = mockHaplotypeTrackProps.at(-1)
+      expect(props.perCopyMethylationRecords).toHaveLength(1)
+      expect(props.perCopyMethylationSampleStates.get('carrier-b')).toEqual({
+        status: 'complete',
+        recordCount: 0,
+      })
+      expect(props.perCopyMethylationSampleStates.get('carrier-f')).toEqual({
+        status: 'unavailable',
+        reason: 'No phased methylation source output',
+      })
+      expect(props.methylationData).toEqual([])
+    })
+    expect(screen.queryByText(/Show source-labelled hap1\/hap2/)).toBeNull()
     expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(0)
   })
 
-  test('auto-detail cannot clear load-all progress or enable a premature second click', async () => {
+  test('surfaces typed joined query errors without painting points', async () => {
+    const identity = {
+      source_run_id: 'source-run',
+      source_completion_receipt_sha256: 'source-receipt',
+      source_manifest_sha256: 'source-manifest',
+      browser_vcf_manifest_bundle_sha256: 'browser-bundle',
+      browser_vcf_manifest_sha256: 'browser-manifest',
+      browser_vcf_run_id: 'browser-run',
+      orientation_receipt_id: 'orientation-id',
+      orientation_receipt_sha256: 'orientation-sha',
+      mapping_artifact_sha256: null,
+      mapping_scope: 'CHROMOSOME_WIDE',
+    }
+    mockJoinedCapability = confirmedCapability({ identity })
     renderView()
-    await screen.findByTestId('load-all')
-    await resolveSummaryAndOutlier()
-
-    await waitFor(() => expect(detailRequests()).toHaveLength(1))
-    const autoRequest = detailRequests()[0]
-    expect(autoRequest.variables.samples).toEqual(['carrier-a', 'non-carrier-outlier'])
-
-    await act(async () => {
-      mockHaplotypeTrackProps.at(-1).onLoadAllSamples()
-      await Promise.resolve()
+    const control = await screen.findByLabelText('Per-copy methylation')
+    if (!(control as HTMLInputElement).checked) fireEvent.click(control)
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    await resolveRequest(requestsNamed('RegionJoinedPhasedMethylation')[0], {
+      data: { joined_phased_methylation_region: null },
+      errors: [
+        {
+          message: 'Joined result is too large',
+          extensions: { code: 'JOINED_METHYLATION_RESULT_TOO_LARGE' },
+        },
+      ],
     })
-    await waitFor(() => expect(detailRequests()).toHaveLength(2))
-    const firstLoadAllRequest = detailRequests()[1]
-    expect(autoRequest.signal?.aborted).toBe(true)
-    expect(firstLoadAllRequest.variables.samples).toEqual(mockCarrierSampleIds.slice(0, 5))
-    expect(screen.getByTestId('detail-status').textContent).toBe('true:0/6')
-
-    // The cancelled auto request resolves after load-all owns progress. Its stale
-    // finally must not clear load-all's loading state or use the non-carrier in
-    // the captured six-carrier roster.
-    await resolveRequest(autoRequest, { data: { methylation: [] } })
-    expect(screen.getByTestId('detail-status').textContent).toBe('true:0/6')
-
-    expect((screen.getByTestId('load-all') as HTMLButtonElement).disabled).toBe(true)
-    fireEvent.click(screen.getByTestId('load-all'))
-    expect(detailRequests()).toHaveLength(2)
-
-    await resolveRequest(firstLoadAllRequest, { data: { methylation: [] } })
-    await waitFor(() => expect(detailRequests()).toHaveLength(3))
-    expect(detailRequests()[2].variables.samples).toEqual(['carrier-f'])
-    expect(screen.getByTestId('detail-status').textContent).toBe('true:5/6')
-
-    await resolveRequest(detailRequests()[2], { data: { methylation: [] } })
     await waitFor(() => {
-      expect(screen.getByTestId('detail-status').textContent).toBe('false:6/6')
+      const props = mockHaplotypeTrackProps.at(-1)
+      expect(props.perCopyMethylationRecords).toEqual([])
+      expect(props.perCopyMethylationSampleStates.get('carrier-a')).toEqual({
+        status: 'error',
+        code: 'JOINED_METHYLATION_RESULT_TOO_LARGE',
+        reason: 'Joined result is too large',
+      })
     })
-    expect(detailRequests()).toHaveLength(3)
-
-    // A later click sees the completed captured roster and issues no duplicate.
-    fireEvent.click(screen.getByTestId('load-all'))
-    expect(detailRequests()).toHaveLength(3)
-    expect(mockHaplotypeTrackProps.every((props) => (
-      props.methylationSampleCount <= props.methylationTotalSamples
-    ))).toBe(true)
   })
 
-  test('load-all retains ownership when a non-carrier outlier arrives, including after completion', async () => {
-    renderView()
-    await screen.findByTestId('load-all')
-
-    fireEvent.click(screen.getByTestId('load-all'))
-    await waitFor(() => expect(detailRequests()).toHaveLength(1))
-    const firstLoadAllRequest = detailRequests()[0]
-    expect(firstLoadAllRequest.variables.samples).toEqual(mockCarrierSampleIds.slice(0, 5))
-
-    await resolveSummaryAndOutlier()
+  test('fails closed for AoU and ignores retired URL params', async () => {
+    mockJoinedCapability = {
+      ...mockJoinedCapability,
+      status: 'UNAVAILABLE_AOU_SUMMARY_ONLY',
+      reason: 'AoU is summary-only',
+    }
+    renderView(
+      { chrom: 'chr22', start: 100, stop: 200 },
+      '/?show_haplotypes=true&show_source_phased_methylation=true&source_phased_methylation_sample=HG00097',
+      'aou'
+    )
     await act(async () => { await Promise.resolve() })
-    expect(detailRequests()).toHaveLength(1)
-    expect(screen.getByTestId('detail-status').textContent).toBe('true:0/6')
+    expect(screen.queryByLabelText('Per-copy methylation')).toBeNull()
+    expect(mockLegendProps).toHaveLength(0)
+    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
+    expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(0)
+  })
 
-    await resolveRequest(firstLoadAllRequest, { data: { methylation: [] } })
-    await waitFor(() => expect(detailRequests()).toHaveLength(2))
-    expect(detailRequests()[1].variables.samples).toEqual(['carrier-f'])
-    await resolveRequest(detailRequests()[1], { data: { methylation: [] } })
+  test('keeps sample-total controls and automatic queries dormant', async () => {
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+    expect(screen.queryByText('Methylation (sample total)')).toBeNull()
+    expect(screen.queryByText('Outliers only')).toBeNull()
+    expect(screen.queryByText('Load all sample totals')).toBeNull()
+    expect(requestsNamed('RegionMethylationAvailability')).toHaveLength(0)
+    expect(requestsNamed('RegionMethylationSummary')).toHaveLength(0)
+    expect(requestsNamed('RegionMethylationOutliers')).toHaveLength(0)
+    expect(requestsNamed('RegionMethylation')).toHaveLength(0)
+  })
 
+  test('filters diplotype samples from the capability roster and restores all groups', async () => {
+    workerDataOverride = workerData()
+    workerDataOverride.groups = [
+      {
+        ...workerDataOverride.groups[0],
+        hash: 1,
+        samples: [
+          workerDataOverride.groups[0].samples[0],
+          { ...workerDataOverride.groups[0].samples[1], sample_id: 'source-absent' },
+        ],
+      },
+      {
+        ...workerDataOverride.groups[0],
+        hash: 2,
+        samples: [{ ...workerDataOverride.groups[0].samples[2], sample_id: 'absent-only' }],
+      },
+    ]
+    mockVisibleSampleIds = ['carrier-a', 'source-absent', 'absent-only']
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    const filter = await screen.findByLabelText('Methylation samples only')
+    fireEvent.click(filter)
     await waitFor(() => {
-      expect(screen.getByTestId('detail-status').textContent).toBe('false:6/6')
+      const groups = mockHaplotypeTrackProps.at(-1).haplotypeGroups
+      expect(groups).toHaveLength(1)
+      expect(groups[0].samples.map((sample: any) => sample.sample_id)).toEqual(['carrier-a'])
     })
-    expect(detailRequests()).toHaveLength(2)
-    expect(mockHaplotypeTrackProps.some((props) => (
-      props.methylationLoading === false &&
-      props.methylationSampleCount === 6 &&
-      props.methylationTotalSamples === 6
-    ))).toBe(true)
+    fireEvent.click(filter)
+    await waitFor(() => {
+      const groups = mockHaplotypeTrackProps.at(-1).haplotypeGroups
+      expect(groups).toHaveLength(2)
+      expect(groups.flatMap((group: any) => group.samples)).toHaveLength(3)
+    })
+  })
 
-    fireEvent.click(screen.getByTestId('load-all'))
-    expect(detailRequests()).toHaveLength(2)
+  test('does not resurrect Load All after the per-copy layer is turned off and on', async () => {
+    const allSampleIds = mockSourceSampleIds.slice(0, 27)
+    const visibleSampleId = allSampleIds[26]
+    mockVisibleSampleIds = [visibleSampleId]
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = allSampleIds.map((sampleId) => ({
+      sample_id: sampleId,
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+    }))
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const visible = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    await resolveRequest(visible, {
+      data: {
+        joined_phased_methylation_region: joinedRegion([visibleSampleId], [visibleSampleId]),
+      },
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Load all methylation samples' }))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const staleBulk = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    expect(staleBulk.variables.sample_ids).toHaveLength(25)
+
+    const layer = screen.getByLabelText('Per-copy methylation')
+    fireEvent.click(layer)
+    await waitFor(() => expect(staleBulk.signal?.aborted).toBe(true))
+    fireEvent.click(layer)
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(3))
+    expect(requestsNamed('RegionJoinedPhasedMethylation')[2].variables.sample_ids).toEqual([
+      visibleSampleId,
+    ])
+    expect(mockLegendProps.at(-1).allMethylationProgress).toBeNull()
+  })
+
+  test('does not resurrect Load All after leaving and returning to Diploid mode', async () => {
+    const allSampleIds = mockSourceSampleIds.slice(0, 27)
+    const visibleSampleId = allSampleIds[26]
+    mockVisibleSampleIds = [visibleSampleId]
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = allSampleIds.map((sampleId) => ({
+      sample_id: sampleId,
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+    }))
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    await resolveRequest(requestsNamed('RegionJoinedPhasedMethylation')[0], {
+      data: {
+        joined_phased_methylation_region: joinedRegion([visibleSampleId], [visibleSampleId]),
+      },
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Load all methylation samples' }))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const staleBulk = requestsNamed('RegionJoinedPhasedMethylation')[1]
+
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('similarity'))
+    await waitFor(() => expect(mockLegendProps.at(-1).groupingMode).toBe('similarity'))
+    expect(staleBulk.signal?.aborted).toBe(true)
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('diploid'))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(3))
+    expect(requestsNamed('RegionJoinedPhasedMethylation')[2].variables.sample_ids).toEqual([
+      visibleSampleId,
+    ])
+    expect(mockLegendProps.at(-1).allMethylationProgress).toBeNull()
+  })
+
+  test('does not resurrect Load All when an exact region scope is revisited', async () => {
+    const allSampleIds = mockSourceSampleIds.slice(0, 27)
+    const visibleSampleId = allSampleIds[26]
+    mockVisibleSampleIds = [visibleSampleId]
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = allSampleIds.map((sampleId) => ({
+      sample_id: sampleId,
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+    }))
+    mockJoinedCapability = confirmedCapability()
+    const rendered = renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    await resolveRequest(requestsNamed('RegionJoinedPhasedMethylation')[0], {
+      data: {
+        joined_phased_methylation_region: joinedRegion([visibleSampleId], [visibleSampleId]),
+      },
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Load all methylation samples' }))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const staleBulk = requestsNamed('RegionJoinedPhasedMethylation')[1]
+
+    rendered.rerender(
+      <MemoryRouter initialEntries={['/?show_haplotypes=true']}>
+        <LongReadUnifiedView
+          datasetId={'gnomad_r4' as any}
+          gene={{ chrom: 'chr22', start: 300, stop: 400 }}
+          variants={[]}
+          lrCohort="hgsvc_hprc"
+        />
+      </MemoryRouter>
+    )
+    await waitFor(() => {
+      expect(
+        requestsNamed('RegionJoinedPhasedMethylation')
+          .slice(2)
+          .some((request) => request.variables.start === 300)
+      ).toBe(true)
+    })
+    expect(staleBulk.signal?.aborted).toBe(true)
+
+    rendered.rerender(
+      <MemoryRouter initialEntries={['/?show_haplotypes=true']}>
+        <LongReadUnifiedView
+          datasetId={'gnomad_r4' as any}
+          gene={{ chrom: 'chr22', start: 100, stop: 200 }}
+          variants={[]}
+          lrCohort="hgsvc_hprc"
+        />
+      </MemoryRouter>
+    )
+    await waitFor(() => {
+      expect(
+        requestsNamed('RegionJoinedPhasedMethylation')
+          .slice(2)
+          .some((request) => request.variables.start === 100)
+      ).toBe(true)
+    })
+    expect(
+      requestsNamed('RegionJoinedPhasedMethylation')
+        .slice(2)
+        .every((request) =>
+          request.variables.sample_ids.length === 1 &&
+          request.variables.sample_ids[0] === visibleSampleId
+        )
+    ).toBe(true)
+    expect(mockLegendProps.at(-1).allMethylationProgress).toBeNull()
+  })
+
+  test('fetches all admitted display samples in batches while retaining visible-row priority', async () => {
+    const allSampleIds = mockSourceSampleIds.slice(0, 27)
+    mockVisibleSampleIds = [allSampleIds[26]]
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = allSampleIds.map((sampleId) => ({
+      sample_id: sampleId,
+      strand_mapping: { strandA: 1, strandB: 2 },
+      phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+    }))
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const visibleRequest = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    expect(visibleRequest.variables.sample_ids).toEqual([allSampleIds[26]])
+    await resolveRequest(visibleRequest, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          visibleRequest.variables.sample_ids,
+          visibleRequest.variables.sample_ids,
+          [],
+          []
+        ),
+      },
+    })
+    fireEvent.click(await screen.findByRole('button', { name: 'Load all methylation samples' }))
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const firstAllBatch = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    expect(firstAllBatch.variables.sample_ids).toHaveLength(25)
+    await resolveRequest(firstAllBatch, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          firstAllBatch.variables.sample_ids,
+          firstAllBatch.variables.sample_ids,
+          [],
+          []
+        ),
+      },
+    })
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(3))
+    const secondAllBatch = requestsNamed('RegionJoinedPhasedMethylation')[2]
+    expect(secondAllBatch.variables.sample_ids).toHaveLength(1)
+    await resolveRequest(secondAllBatch, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          secondAllBatch.variables.sample_ids,
+          secondAllBatch.variables.sample_ids,
+          [],
+          []
+        ),
+      },
+    })
+    await waitFor(() => {
+      expect(mockLegendProps.at(-1).allMethylationProgress).toMatchObject({
+        status: 'loaded',
+        terminalCount: 27,
+        totalCount: 27,
+      })
+    })
   })
 })

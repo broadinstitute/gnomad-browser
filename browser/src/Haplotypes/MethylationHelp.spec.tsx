@@ -2,7 +2,10 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { describe, expect, test } from '@jest/globals'
 
-import MethylationHelp, { type MethylationSampleAvailability } from './MethylationHelp'
+import MethylationHelp, {
+  PerCopyMethylationHelp,
+  type MethylationSampleAvailability,
+} from './MethylationHelp'
 
 const availability: MethylationSampleAvailability[] = [
   {
@@ -45,33 +48,42 @@ describe('MethylationHelp', () => {
     expect(text).toContain('No reason supplied')
   })
 
-  test('labels totals accurately and keeps phased joining unavailable', () => {
-    const text = renderedText(renderer.create(
-      <MethylationHelp phasedCapability={{
-        data_layer: 'SOURCE_PHASED',
-        available: false,
-        joinable_to_vcf: false,
-        status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
-        orientation_status: 'UNCONFIRMED',
-        phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET',
-        route_run_id: null,
-        source_sample_ids: [],
-        reason: 'Source orientation is not confirmed',
-      }} />
-    ).toJSON())
+  test('keeps sample totals separate and explains the confirmed per-copy mapping', () => {
+    const sampleTotalText = renderedText(renderer.create(<MethylationHelp />).toJSON())
+    const perCopyText = renderedText(
+      renderer
+        .create(
+          <PerCopyMethylationHelp
+            capability={{
+              available: true,
+              joinable_to_vcf: true,
+              status: 'AVAILABLE_CONFIRMED',
+              identity: null,
+              source_sample_ids: [],
+              max_span_bp: 100000,
+              max_samples: 25,
+              max_records: 250000,
+              reason: 'Confirmed for the pinned browser bundle',
+            }}
+          />
+        )
+        .toJSON()
+    )
 
-    expect(text).toContain('Sample total:')
-    expect(text).toContain('not allele-specific')
-    expect(text).toContain('UNAVAILABLE_ORIENTATION_UNCONFIRMED')
-    expect(text).toContain('source labels remain distinct from VCF GT positions')
-    expect(text).toContain('phase set is null')
-    expect(text).not.toContain('identify allele-specific methylation')
+    expect(sampleTotalText).toContain('Sample total:')
+    expect(sampleTotalText).toContain('not allele-specific')
+    expect(perCopyText).toContain('Copy A is not necessarily VCF GT strand 1')
+    expect(perCopyText).toContain('source HAP1 maps to VCF GT strand 1')
+    expect(perCopyText).toContain('source HAP2 maps to VCF GT strand 2')
+    expect(perCopyText).toContain('maps GT1/GT2 to canonical copy A/B')
+    expect(perCopyText).toContain('no maternal or paternal meaning')
+    expect(perCopyText).toContain('AVAILABLE_CONFIRMED')
   })
 
   test('shows source context in help when provided', () => {
-    const text = renderedText(renderer.create(
-      <MethylationHelp sourceLabel="Optional Y1 CpG ancillary data" />
-    ).toJSON())
+    const text = renderedText(
+      renderer.create(<MethylationHelp sourceLabel="Optional Y1 CpG ancillary data" />).toJSON()
+    )
 
     expect(text).toContain('Source: Optional Y1 CpG ancillary data')
   })

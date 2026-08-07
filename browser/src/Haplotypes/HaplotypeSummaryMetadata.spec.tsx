@@ -1,7 +1,7 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import renderer, { act } from 'react-test-renderer'
 import { describe, expect, jest, test } from '@jest/globals'
-import {
+import HaplotypeTrack, {
   HaplotypeInfoBar,
   HaplotypeOmissionHelp,
   Legend,
@@ -11,7 +11,9 @@ import {
 
 jest.mock('./DeckGLLollipopTrack', () => ({
   __esModule: true,
-  default: () => null,
+  default: jest
+    .requireActual<typeof import('react')>('react')
+    .forwardRef(() => 'Lollipop renderer'),
 }))
 jest.mock('./ChromosomePainterTrack', () => ({
   __esModule: true,
@@ -78,27 +80,132 @@ describe('haplotype summary metadata', () => {
     expect(text).not.toContain('biological strand')
   })
 
-  test('labels sample totals and keeps the phased join control disabled with a typed reason', () => {
-    const component = renderer.create(<Legend phasedMethylationCapability={{
-      data_layer: 'SOURCE_PHASED',
-      available: false,
-      joinable_to_vcf: false,
-      status: 'UNAVAILABLE_ORIENTATION_UNCONFIRMED',
-      orientation_status: 'UNCONFIRMED',
-      phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET',
-      route_run_id: null,
-      source_sample_ids: [],
-      reason: 'Source orientation is unconfirmed',
-    }} />)
-    const text = renderedText(component.toJSON())
-    const disabledCheckboxes = component.root.findAll(
-      (node) => node.type === 'input' && node.props.type === 'checkbox' && node.props.disabled === true
+  test('only exposes lollipop controls and omits compound-het sorting', () => {
+    const diploidText = renderedText(
+      renderer.create(<Legend groupingMode="diploid" initialSortBy="sample_id" />).toJSON()
+    )
+    const haploidText = renderedText(renderer.create(<Legend />).toJSON())
+
+    expect(diploidText).toContain('Clustering')
+    expect(diploidText).toContain('Data Layers')
+    expect(diploidText).toContain('Sample')
+    expect(diploidText).toContain('ROH')
+    expect(diploidText).not.toContain('Display')
+    expect(diploidText).not.toContain('Plot:')
+    expect(diploidText).not.toContain('Comp. Het.')
+    expect(haploidText).toContain('Similarity')
+    expect(haploidText).toContain('Count')
+  })
+
+  test('ignores a legacy alternate plot prop and renders lollipop', () => {
+    const text = renderedText(
+      renderer
+        .create(
+          React.createElement(HaplotypeTrack as any, {
+            haplotypeGroups: [group],
+            methylationData: [],
+            start: 100,
+            stop: 1100,
+            plotType: 'bubble',
+          })
+        )
+        .toJSON()
     )
 
-    expect(text).toContain('Methylation (sample total)')
-    expect(text).toContain('Phased methylation join')
+    expect(text).toContain('Lollipop renderer')
+    expect(text).toContain('lollipop')
+    expect(text).not.toContain('bubble')
+  })
+
+  test('hides sample totals and fails the per-copy control closed with a typed reason', () => {
+    const component = renderer.create(
+      <Legend
+        joinedMethylationCapability={{
+          available: false,
+          joinable_to_vcf: false,
+          status: 'UNAVAILABLE_AOU_SUMMARY_ONLY',
+          identity: null,
+          source_sample_ids: [],
+          max_span_bp: 100000,
+          max_samples: 25,
+          max_records: 250000,
+          reason: 'AoU is summary-only',
+        }}
+        groupingMode="diploid"
+      />
+    )
+    const text = renderedText(component.toJSON())
+    const disabledCheckboxes = component.root.findAll(
+      (node) =>
+        node.type === 'input' && node.props.type === 'checkbox' && node.props.disabled === true
+    )
+
+    expect(text).not.toContain('Methylation (sample total)')
+    expect(text).not.toContain('Outliers only')
+    expect(text).not.toContain('Load all sample totals')
+    expect(text).toContain('Per-copy methylation')
     expect(disabledCheckboxes).toHaveLength(1)
-    expect(disabledCheckboxes[0].parent?.props.title).toBe('Source orientation is unconfirmed')
+    expect(disabledCheckboxes[0].parent?.props.title).toBe('AoU is summary-only')
+  })
+
+  test('integrates the real Legend methylation loading, error, retry, and roster filter controls', () => {
+    const retry = jest.fn()
+    const filter = jest.fn()
+    const loadingProgress = {
+      status: 'loading' as const,
+      terminalCount: 1,
+      totalCount: 3,
+      errorCodes: [],
+    }
+    const component = renderer.create(
+      <Legend
+        groupingMode="diploid"
+        showPerCopyMethylation
+        joinedMethylationUsableForRegion
+        methylationSamplesOnly={false}
+        onMethylationSamplesOnlyChange={filter}
+        visibleMethylationProgress={loadingProgress}
+        onRetryPerCopyMethylation={retry}
+      />
+    )
+
+    let text = renderedText(component.toJSON())
+    expect(text).toContain('Loading methylation 1/3 visible samples…')
+    expect(text).toContain('Methylation samples only')
+    expect(text).not.toContain('Methylation (sample total)')
+    expect(text).not.toContain('Outliers only')
+    expect(text).not.toContain('Load all sample totals')
+
+    const uncheckedControls = component.root.findAll(
+      (node) => node.type === 'input' && node.props.type === 'checkbox' && node.props.checked === false
+    )
+    act(() => uncheckedControls[0].props.onChange({ target: { checked: true } }))
+    expect(filter).toHaveBeenCalledWith(true)
+
+    act(() => component.update(
+      <Legend
+        groupingMode="diploid"
+        showPerCopyMethylation
+        joinedMethylationUsableForRegion
+        methylationSamplesOnly
+        onMethylationSamplesOnlyChange={filter}
+        visibleMethylationProgress={{
+          status: 'error',
+          terminalCount: 1,
+          totalCount: 3,
+          errorCodes: ['TYPED_FAILURE'],
+        }}
+        onRetryPerCopyMethylation={retry}
+      />
+    ))
+    text = renderedText(component.toJSON())
+    expect(text).toContain('Methylation loading error for visible samples (TYPED_FAILURE)')
+    expect(text).toContain('Retry methylation')
+    const retryButton = component.root.find(
+      (node) => node.type === 'button' && renderedText(node) === 'Retry methylation'
+    )
+    act(() => retryButton.props.onClick())
+    expect(retry).toHaveBeenCalledTimes(1)
   })
 
   test('keeps data-layer labels compact and places source context in help', () => {
@@ -114,7 +221,7 @@ describe('haplotype summary metadata', () => {
       renderer.create(<RecombinationHelp sourceLabel="External reference (UCSC hg38)" />).toJSON()
     )
 
-    expect(legendText).toContain('Methylation')
+    expect(legendText).toContain('Per-copy methylation')
     expect(legendText).toContain('Recombination rate')
     expect(legendText).not.toContain(source)
     expect(legendText).not.toContain('External reference')

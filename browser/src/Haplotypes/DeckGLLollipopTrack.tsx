@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useRef, useContext, forwardRef, useImperativeHandle } from 'react'
+import React, { useMemo, useState, useCallback, useRef, useContext, forwardRef, useImperativeHandle, useEffect } from 'react'
 import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
 import { ScatterplotLayer, LineLayer, SolidPolygonLayer, PathLayer, TextLayer } from '@deck.gl/layers'
@@ -24,6 +24,15 @@ import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
+import {
+  diploidPerCopyLayout,
+  perCopyEmptyLabel,
+  perCopyMethylationForReadyRow,
+  PER_COPY_METHYLATION_BAND_HEIGHT,
+  type JoinedPhasedMethylationRecord,
+  type PerCopyMethylationPoint,
+  type PerCopyMethylationSampleState,
+} from '../LongReadVariantPage/perCopyMethylation'
 
 type Variant = LRVariant
 
@@ -77,6 +86,13 @@ type SpanningRect = {
 type MethPoint = {
   position: number // raw genomic position
   y: number
+  color: [number, number, number, number]
+  perCopy?: PerCopyMethylationPoint
+}
+
+type MethStatusLabel = {
+  position: [number, number, number]
+  text: string
   color: [number, number, number, number]
 }
 
@@ -197,6 +213,9 @@ type DeckGLLollipopTrackProps = {
   colorMode: string
   showMethylation: boolean
   methylationData: Methylation[]
+  showPerCopyMethylation: boolean
+  perCopyMethylationRecords: JoinedPhasedMethylationRecord[]
+  perCopyMethylationSampleStates: ReadonlyMap<string, PerCopyMethylationSampleState>
   summaryByPos: Map<number, { mean: number; std: number }>
   variantCircleRadius: number
   sampleColorScale: (n: number) => string
@@ -209,6 +228,7 @@ type DeckGLLollipopTrackProps = {
   showGenealogy?: boolean
   genealogyResult?: { tree: any; leafOrder: number[] } | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
+  onVisibleDiploidSampleIdsChange?: (sampleIds: string[]) => void
   isClusteredView?: boolean
   expandedClusterIds?: Set<string>
   toggleClusterExpansion?: (clusterId: string) => void
@@ -236,6 +256,9 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   colorMode,
   showMethylation,
   methylationData,
+      showPerCopyMethylation,
+      perCopyMethylationRecords,
+      perCopyMethylationSampleStates,
   summaryByPos,
   variantCircleRadius,
   sampleColorScale,
@@ -248,6 +271,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   showGenealogy = false,
   genealogyResult,
   onVisibleGroupChange,
+      onVisibleDiploidSampleIdsChange,
   isClusteredView = false,
   expandedClusterIds,
   toggleClusterExpansion,
@@ -347,7 +371,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       if (item.type === 'cluster') {
         cumY += VARIANT_ROW_HEIGHT
       } else if (item.type === 'diplotype') {
-        let h = VARIANT_ROW_HEIGHT * 2 + 8 // 58px: double-height + padding between diplotypes
+        let h = diploidPerCopyLayout(0, showPerCopyMethylation).rowHeight
         if (showMethylation) h += METH_TRACK_HEIGHT
         if (showMqtl && mqtlData.length > 0) {
           const allVars = [...item.group.haplotypeA.variants, ...item.group.haplotypeB.variants]
@@ -373,13 +397,35 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       }
     }
     return { rowOffsets: offsets, totalHeight: cumY }
-  }, [rowItems, showMethylation, showMqtl, mqtlData, mqtlMinLogP])
+  }, [rowItems, showMethylation, showPerCopyMethylation, showMqtl, mqtlData, mqtlMinLogP])
 
   // Refs for scroll-sync (avoids stale closure in debounced callback)
   const rowOffsetsRef = useRef(rowOffsets)
   rowOffsetsRef.current = rowOffsets
   const rowItemsRef = useRef(rowItems)
   rowItemsRef.current = rowItems
+
+  const notifyVisibleDiploidSamples = useCallback(
+    (scrollTop: number) => {
+      if (!onVisibleDiploidSampleIdsChange) return
+      const viewportBottom = scrollTop + Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+      const visibleSampleIds = new Set<string>()
+      rowItemsRef.current.forEach((item, index) => {
+        if (item.type !== 'diplotype') return
+        const rowTop = rowOffsetsRef.current[index]
+        const rowBottom = rowOffsetsRef.current[index + 1] ?? totalHeight
+        if (rowBottom > scrollTop && rowTop < viewportBottom) {
+          item.group.samples.forEach((sample) => visibleSampleIds.add(sample.sample_id))
+        }
+      })
+      onVisibleDiploidSampleIdsChange([...visibleSampleIds].sort((a, b) => a.localeCompare(b)))
+    },
+    [onVisibleDiploidSampleIdsChange, totalHeight]
+  )
+
+  useEffect(() => {
+    notifyVisibleDiploidSamples(scrollTopRef.current)
+  }, [notifyVisibleDiploidSamples, rowItems, rowOffsets])
 
   // Debounced group-change notification (doesn't need to be instant)
   const debouncedGroupChange = useMemo(
@@ -436,7 +482,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     }
 
     debouncedGroupChange(newScrollTop)
-  }, [debouncedGroupChange])
+    notifyVisibleDiploidSamples(newScrollTop)
+  }, [debouncedGroupChange, notifyVisibleDiploidSamples])
 
   // Expose scrollToPosition for external sync
   useImperativeHandle(ref, () => ({
@@ -563,6 +610,9 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           colorMode={colorMode}
           showMethylation={showMethylation}
           methylationData={methylationData}
+            showPerCopyMethylation={showPerCopyMethylation}
+            perCopyMethylationRecords={perCopyMethylationRecords}
+            perCopyMethylationSampleStates={perCopyMethylationSampleStates}
           summaryByPos={summaryByPos}
           variantCircleRadius={variantCircleRadius}
           mqtlData={mqtlData}
@@ -641,6 +691,9 @@ type DeckGLCanvasProps = {
   colorMode: string
   showMethylation: boolean
   methylationData: Methylation[]
+  showPerCopyMethylation: boolean
+  perCopyMethylationRecords: JoinedPhasedMethylationRecord[]
+  perCopyMethylationSampleStates: ReadonlyMap<string, PerCopyMethylationSampleState>
   summaryByPos: Map<number, { mean: number; std: number }>
   variantCircleRadius: number
   mqtlData: any[]
@@ -700,6 +753,9 @@ function DeckGLLollipopCanvas({
   colorMode,
   showMethylation,
   methylationData,
+  showPerCopyMethylation,
+  perCopyMethylationRecords,
+  perCopyMethylationSampleStates,
   summaryByPos,
   variantCircleRadius,
   mqtlData,
@@ -1274,6 +1330,7 @@ function DeckGLLollipopCanvas({
     const allDeletionLines: StemLine[] = []
     const allSpanningRects: SpanningRect[] = []
     const allMethPoints: MethPoint[] = []
+    const allMethStatusLabels: MethStatusLabel[] = []
     const allMqtlArcs: MqtlArc[] = []
     const allCenterLines: { groupStart: number; groupStop: number; y: number }[] = []
     const allDashedSeparators: { groupStart: number; groupStop: number; y: number }[] = []
@@ -1392,13 +1449,22 @@ function DeckGLLollipopCanvas({
     for (let gi = 0; gi < rowItems.length; gi++) {
       const item = rowItems[gi]
       const rowY = rowOffsets[gi]
+      const diploidLayout = item.type === 'diplotype'
+        ? diploidPerCopyLayout(rowY, showPerCopyMethylation)
+        : null
 
-      allBgRects.push(...getRowBackgroundRects<HaplotypeGroup, DiplotypeGroup>(item, rowY, start, stop))
+      allBgRects.push(...getRowBackgroundRects<HaplotypeGroup, DiplotypeGroup>(
+        item, rowY, start, stop,
+        diploidLayout
+          ? diploidLayout.variantBBaseline - diploidLayout.variantABaseline
+          : VARIANT_ROW_HEIGHT
+      ))
 
       if (item.type === 'diplotype') {
         const dg = item.group
-        const yTop = rowY + ROW_CENTER_Y   // 12.5 — strand A baseline
-        const yBottom = rowY + 37.5         // strand B baseline
+        const layout = diploidLayout!
+        const yTop = layout.variantABaseline
+        const yBottom = layout.variantBBaseline
 
         // Center lines for both strands
         allCenterLines.push({ groupStart: dg.start, groupStop: dg.stop, y: yTop })
@@ -1406,7 +1472,11 @@ function DeckGLLollipopCanvas({
 
         // The ROH squiggle remains variant-bounded; only the background spans the region.
         if (dg.is_roh) {
-          allRohWaves.push({ startPos: dg.start, stopPos: dg.stop, y: rowY + 25 })
+          allRohWaves.push({
+            startPos: dg.start,
+            stopPos: dg.stop,
+            y: layout.relationshipMarkY,
+          })
         }
 
         // Helper to push variants for a strand (opacity 0-1 for ghosting ROH strand B)
@@ -1497,9 +1567,61 @@ function DeckGLLollipopCanvas({
           }
         }
 
-        // Methylation — centered between strands
+        const groupSampleIds = new Set(dg.samples.map((sample) => sample.sample_id))
+
+        // Map each sample through canonical A/B before calculating any CpG mean.
+        if (
+          showPerCopyMethylation &&
+          layout.methylationABandTop !== null &&
+          layout.methylationBBandTop !== null
+        ) {
+          const joinedForGroup = perCopyMethylationRecords.filter((record) =>
+            groupSampleIds.has(record.sample)
+          )
+          // A scientific row is atomic: do not aggregate any completed subset while
+          // another represented sample is absent, loading, or failed.
+          const { points: perCopy } = perCopyMethylationForReadyRow(
+            joinedForGroup,
+            dg.samples,
+            perCopyMethylationSampleStates
+          )
+          const perCopyYScale = scaleLinear()
+            .domain([0, 100])
+            .range([PER_COPY_METHYLATION_BAND_HEIGHT - 4, 4])
+          const addCopyBand = (
+            copy: 'A' | 'B',
+            bandTop: number,
+            points: PerCopyMethylationPoint[]
+          ) => {
+            const status =
+              points.length === 0
+                ? perCopyEmptyLabel([...groupSampleIds], perCopyMethylationSampleStates)
+                : null
+            allMethStatusLabels.push({
+              position: [
+                scalePosition(start) + 4,
+                bandTop + PER_COPY_METHYLATION_BAND_HEIGHT / 2,
+                0,
+              ],
+              text: status ? `${copy}: ${status}` : `${copy} methylation`,
+              color: status === 'error' ? [180, 50, 50, 210] : [105, 105, 105, 190],
+            })
+            if (points.length === 0) return
+            points.forEach((point) => {
+              allMethPoints.push({
+                position: point.pos1,
+                y: bandTop + perCopyYScale(point.meanMethylation),
+                color: copy === 'A' ? [42, 111, 151, 255] : [161, 85, 34, 255],
+                perCopy: point,
+              })
+            })
+          }
+          addCopyBand('A', layout.methylationABandTop, perCopy.A)
+          addCopyBand('B', layout.methylationBBandTop, perCopy.B)
+        }
+
+        // Sample-total methylation remains a separate, explicitly enabled layer.
         if (showMethylation) {
-          const groupSampleIds = new Set(dg.samples.map((s) => s.sample_id))
           const methSampleData = methylationData.filter((d) => groupSampleIds.has(d.sample))
           if (methSampleData.length > 0) {
             const byPos = new Map<number, number[]>()
@@ -1508,8 +1630,7 @@ function DeckGLLollipopCanvas({
               if (arr) arr.push(d.methylation)
               else byPos.set(d.pos1, [d.methylation])
             }
-            // Place methylation below the diplotype block
-            const methBaseY = rowY + VARIANT_ROW_HEIGHT * 2
+            const methBaseY = layout.afterCopies
             const methYScale = scaleLinear().domain([0, 100]).range([METH_TRACK_HEIGHT - 4, 4])
             for (const [pos, values] of byPos) {
               const mean = values.reduce((a, b) => a + b, 0) / values.length
@@ -1526,7 +1647,7 @@ function DeckGLLollipopCanvas({
             (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= (mqtlMinLogP || 0)
           )
           if (groupMqtl.length > 0) {
-            const mqtlBaseY = rowY + VARIANT_ROW_HEIGHT * 2 + (showMethylation ? METH_TRACK_HEIGHT : 0) + MQTL_PAD + MQTL_TRACK_HEIGHT
+            const mqtlBaseY = layout.afterCopies + (showMethylation ? METH_TRACK_HEIGHT : 0) + MQTL_PAD + MQTL_TRACK_HEIGHT
             const maxLogP = Math.max(2, ...groupMqtl.map((d: any) => -Math.log10(d.p_value)))
             const hScale = scaleLinear().domain([0, maxLogP]).range([0, MQTL_TRACK_HEIGHT - 4])
             for (const d of groupMqtl) {
@@ -2079,16 +2200,17 @@ function DeckGLLollipopCanvas({
       }))
     }
 
-    if (allMethPoints.length > 0) {
-      result.push(new ScatterplotLayer({
-        id: 'methylation-layer',
-        data: allMethPoints,
-        getPosition: (d: MethPoint) => [scalePosition(d.position), d.y, 0],
-        getRadius: 2,
-        getFillColor: (d: MethPoint) => d.color,
-        radiusUnits: 'pixels' as const,
+    if (allMethStatusLabels.length > 0) {
+      result.push(new TextLayer({
+        id: 'methylation-status-labels',
+        data: allMethStatusLabels,
+        getPosition: (d: MethStatusLabel) => d.position,
+        getText: (d: MethStatusLabel) => d.text,
+        getSize: 9,
+        getColor: (d: MethStatusLabel) => d.color,
+        getTextAnchor: 'start',
+        getAlignmentBaseline: 'center',
         pickable: false,
-        updateTriggers: { getPosition: [scalePosition] },
       }))
     }
 
@@ -2145,14 +2267,8 @@ function DeckGLLollipopCanvas({
         getColor: [220, 38, 38, 200],
         getWidth: 2,
         widthUnits: 'pixels' as const,
-        pickable: true,
-        onHover: (info: any) => {
-          if (info.picked && info.object) {
-            onHover({ ...info, object: { ...info.object, tooltipText: 'Compound Heterozygous Pair' } })
-          } else {
-            onHover(info)
-          }
-        },
+        // Relationship geometry deliberately sits below the pickable CpG layer.
+        pickable: false,
         updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
       }))
     }
@@ -2184,6 +2300,24 @@ function DeckGLLollipopCanvas({
       }))
     }
 
+    // Render CpGs after all copy-relationship marks so dots remain visually on top;
+    // compound-het marks are non-pickable, making CpG hover deterministic at crossings.
+    if (allMethPoints.length > 0) {
+      result.push(
+        new ScatterplotLayer({
+          id: 'methylation-layer',
+          data: allMethPoints,
+          getPosition: (d: MethPoint) => [scalePosition(d.position), d.y, 0],
+          getRadius: 2,
+          getFillColor: (d: MethPoint) => d.color,
+          radiusUnits: 'pixels' as const,
+          pickable: true,
+          onHover,
+          updateTriggers: { getPosition: [scalePosition] },
+        })
+      )
+    }
+
     console.timeEnd('[perf] DeckGL global layers')
     return result
   }, [
@@ -2197,6 +2331,9 @@ function DeckGLLollipopCanvas({
     variantCircleRadius,
     showMethylation,
     methylationData,
+    showPerCopyMethylation,
+    perCopyMethylationRecords,
+    perCopyMethylationSampleStates,
     showMqtl,
     mqtlData,
     mqtlMinLogP,
@@ -2337,7 +2474,41 @@ function Tooltip({
     return <div style={tooltipStyle}><span>{object.tooltipText}</span></div>
   }
 
-  // Center panel: variant tooltips
+  // Center panel: per-copy methylation or variant tooltips
+  const perCopy = object.perCopy as PerCopyMethylationPoint | undefined
+  if (perCopy) {
+    return (
+      <div style={tooltipStyle}>
+        <div>
+          <strong>Canonical copy:</strong> {perCopy.copy}
+        </div>
+        <div>
+          <strong>CpG:</strong> {perCopy.pos1}-{perCopy.pos2}
+        </div>
+        <div>
+          <strong>Mean methylation:</strong> {perCopy.meanMethylation.toFixed(1)}%
+        </div>
+        <div>
+          <strong>Samples contributing at this CpG:</strong> {perCopy.sampleCount}
+        </div>
+        <div>
+          <strong>VCF GT strand(s):</strong> {perCopy.vcfStrands.join(', ')}
+        </div>
+        <div>
+          <strong>Source haplotype label(s):</strong> {perCopy.sourceHaplotypes.join(', ')}
+        </div>
+        <div>
+          <strong>Mapping:</strong> admitted chromosome-wide receipt; phase set null
+        </div>
+        <div style={{ marginTop: 4 }}>
+          The receipt maps source HAP1 to VCF GT1 and HAP2 to VCF GT2; each sample&apos;s
+          GT-to-canonical mapping then places GT1/GT2 on A/B. None of these labels means maternal or
+          paternal.
+        </div>
+      </div>
+    )
+  }
+
   const variant = object.variant as Variant | undefined
   if (!variant) return null
 
