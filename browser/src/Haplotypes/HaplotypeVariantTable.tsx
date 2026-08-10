@@ -22,6 +22,11 @@ import { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import ExpandedTrDistributions from './ExpandedTrDistributions'
+import {
+  matchesLongReadVariantSearch,
+  parseLongReadVariantSearch,
+  type LongReadVariantSearchResult,
+} from '../LongReadVariantPage/longReadVariantSearch'
 
 type AlleleStructure = {
   sequence: string
@@ -51,6 +56,7 @@ type DerivedVariant = LRVariant & {
   enveloped_ids?: string[] | null
   cluster_distribution?: { cluster_id: string; af: number }[]
   active_cluster_count?: number
+  search_identifiers?: string[]
 }
 
 type SortKey = keyof DerivedVariant | 'freq.af' | 'freq.ac' | 'freq.an'
@@ -1323,6 +1329,7 @@ type HaplotypeVariantTableProps = {
   selectedClusterId?: string | null
   onClearClusterFilter?: () => void
   searchText?: string
+  parsedSearch?: LongReadVariantSearchResult
   typeFilters?: VariantTypeFilters
   onTypeFiltersChange?: (filters: VariantTypeFilters) => void
 }
@@ -1354,11 +1361,17 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   selectedClusterId = null,
   onClearClusterFilter,
   searchText: searchTextProp = '',
+  parsedSearch: parsedSearchProp,
   typeFilters: externalTypeFilters,
   onTypeFiltersChange,
 }, ref) {
   const [sort, setSort] = useState<SortConfig>({ key: 'pos', direction: 'asc' })
   const searchText = searchTextProp
+  const parsedSearch = useMemo(
+    () => parsedSearchProp || parseLongReadVariantSearch(searchText),
+    [parsedSearchProp, searchText]
+  )
+  const searchIsActive = parsedSearch.status !== 'empty'
   const [internalTypeFilters, setInternalTypeFilters] = useState<VariantTypeFilters>(allLongReadVariantTypesSelected)
   const typeFilters = externalTypeFilters || internalTypeFilters
   const setTypeFilters = onTypeFiltersChange || setInternalTypeFilters
@@ -1517,6 +1530,13 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         min_length_diff: locus?.minLengthDiff ?? null,
         max_length_diff: locus?.maxLengthDiff ?? null,
         enveloped_ids: Array.from(new Set(alleles.flatMap((allele) => allele.enveloped_ids || []))),
+        search_identifiers: Array.from(new Set(alleles.flatMap((allele) => [
+          allele.variant_id,
+          allele.source_variant_id,
+          allele.short_read_match_id,
+          allele.gnomad_str,
+          ...(allele.rsids || []),
+        ].filter(Boolean)))),
       } as DerivedVariant]
     })
   }, [mode, summaryVariants])
@@ -1545,6 +1565,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         // Unique carrier/haplotype allele occurrences. The key includes sample
         // identity (and diplotype side where available), never the group row.
         trCarrierAlleles?: Map<string, { lengthDiff: number; pop: string; alt: string }>
+        searchIdentifiers: Set<string>
       }
     >()
 
@@ -1556,10 +1577,20 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           variant: v,
           groupCount: 0,
           carrierIds: new Set(),
+          searchIdentifiers: new Set(),
           ...(isTrVariant(v) ? { trCarrierAlleles: new Map() } : {}),
         }
         map.set(key, entry)
       }
+      ;[
+        v.variant_id,
+        v.source_variant_id,
+        v.short_read_match_id,
+        v.gnomad_str,
+        v.tr_id,
+        ...(v.rsids || []),
+        v.rsid,
+      ].filter(Boolean).forEach((identifier) => entry!.searchIdentifiers.add(String(identifier)))
       return { key, entry }
     }
 
@@ -1647,7 +1678,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
     // Phase 2: build DerivedVariant array
     const result: DerivedVariant[] = []
-    for (const [key, { variant: v, groupCount, carrierIds, trCarrierAlleles }] of map) {
+    for (const [key, { variant: v, groupCount, carrierIds, trCarrierAlleles, searchIdentifiers }] of map) {
       const isTrv = isTrVariant(v)
 
       // Build TR distribution from accumulated carrier data
@@ -1746,6 +1777,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         enveloped_ids: v.enveloped_ids || null,
         cluster_distribution: clusterDistByKey.get(key),
         active_cluster_count: clusterDistByKey.get(key)?.filter(c => c.af > 0).length,
+        search_identifiers: Array.from(searchIdentifiers),
       })
     }
 
@@ -1786,21 +1818,13 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       return consequenceFilters[cat]
     })
 
-    // Search filter
-    if (searchText.trim()) {
-      const q = searchText.trim().toLowerCase()
-      list = list.filter(
-        (v) =>
-          v.variant_id.toLowerCase().includes(q) ||
-          String(v.pos).includes(q) ||
-          v.rsid.toLowerCase().includes(q) ||
-          v.ref.toLowerCase().includes(q) ||
-          v.alt.toLowerCase().includes(q)
-      )
+    // Search uses the same normalized parser/matcher as summary tracks and haplotypes.
+    if (searchIsActive) {
+      list = list.filter((variant) => matchesLongReadVariantSearch(variant, parsedSearch))
     }
 
     return list
-  }, [variants, typeFilters, consequenceFilters, searchText, selectedClusterId])
+  }, [variants, typeFilters, consequenceFilters, searchIsActive, parsedSearch, selectedClusterId])
 
   // Sort
   const sorted = useMemo(() => {
@@ -1830,20 +1854,17 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     [onFilteredVariantsChange]
   )
 
-  // Notify parent when filtered set changes (exclude typeFilters — those are
-  // handled globally by hiding summary bands + DeckGL variant skip, not dimming)
-  const isFiltered = searchText.trim() !== '' || selectedClusterId != null ||
+  // Search visibility is applied directly with the shared matcher. This callback
+  // remains for cluster/consequence dimming and must update even when two filters
+  // happen to produce the same number of variants.
+  const isFiltered = selectedClusterId != null ||
     Object.values(consequenceFilters).some(v => !v)
 
-  const prevFilteredRef = useRef<number>(0)
-  if (onFilteredVariantsChange && isFiltered && filtered.length !== prevFilteredRef.current) {
-    prevFilteredRef.current = filtered.length
-    const ids = new Set(filtered.map(v => v.variant_id))
-    debouncedFilterNotify(ids)
-  } else if (onFilteredVariantsChange && !isFiltered && prevFilteredRef.current !== 0) {
-    prevFilteredRef.current = 0
-    debouncedFilterNotify(new Set())
-  }
+  useEffect(() => {
+    if (!onFilteredVariantsChange) return undefined
+    debouncedFilterNotify(isFiltered ? new Set(filtered.map((variant) => variant.variant_id)) : new Set())
+    return undefined
+  }, [onFilteredVariantsChange, debouncedFilterNotify, isFiltered, filtered])
 
   const handleSort = (key: SortKey) => {
     setSort((prev) =>

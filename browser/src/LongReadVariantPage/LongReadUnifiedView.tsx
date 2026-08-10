@@ -54,7 +54,15 @@ import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegi
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
-import { useVariantSearchText } from '../RegionPage/variantSearchParam'
+import { useVariantSearchText, withVariantSearchParam } from '../RegionPage/variantSearchParam'
+import {
+  matchesLongReadVariantSearch,
+  parseLongReadVariantSearch,
+} from './longReadVariantSearch'
+import {
+  countMatchingHaplotypes,
+  type VariantMatchPredicate,
+} from './haplotypeSearchFiltering'
 import {
   LongReadY1Provenance,
   modalityAvailable,
@@ -222,6 +230,25 @@ const SearchInline = styled.div`
   position: relative;
   flex: 0 1 320px;
   min-width: 180px;
+`
+
+const SearchStatus = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 22px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #555;
+
+  button {
+    padding: 2px 7px;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    background: #fff;
+    cursor: pointer;
+  }
 `
 
 const SearchInput = styled.input`
@@ -632,6 +659,30 @@ const LongReadUnifiedView = ({
   const [filterToOutliers, setFilterToOutliers] = useState(true)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
   const [searchText, setSearchText] = useVariantSearchText(variantSearch)
+  const [showOnlyMatchingHaplotypes, setShowOnlyMatchingHaplotypes] = useState(false)
+  const parsedSearch = useMemo(
+    () => parseLongReadVariantSearch(searchText, { chrom, start, stop }),
+    [searchText, chrom, start, stop]
+  )
+  const searchIsActive = parsedSearch.status !== 'empty'
+  const hasLocalSearchTerms = parsedSearch.validTerms.length > 0
+  const variantMatchesSearch = useCallback<VariantMatchPredicate>(
+    (variant) => matchesLongReadVariantSearch(variant, parsedSearch),
+    [parsedSearch]
+  )
+
+  // Keep committed search state shareable while avoiding one history entry per keypress.
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const nextSearch = withVariantSearchParam(location.search, searchText)
+      if (nextSearch !== location.search) history.replace({ ...location, search: nextSearch })
+    }, 250)
+    return () => clearTimeout(timeout)
+  }, [history, location, searchText])
+
+  useEffect(() => {
+    if (!hasLocalSearchTerms) setShowOnlyMatchingHaplotypes(false)
+  }, [hasLocalSearchTerms])
 
   // Cluster state — two thresholds: visual (immediate) and deferred (debounced).
   // Visual drives the drag line + slider display; deferred drives the expensive recomputation.
@@ -1637,6 +1688,20 @@ const LongReadUnifiedView = ({
     () => filterVariantsInZoomRegion(displayVariants, zoomRegion),
     [displayVariants, zoomRegion]
   )
+  const searchedZoomedVariants = useMemo(
+    () => searchIsActive
+      ? zoomedVariants.filter((variant: LRVariant) => variantMatchesSearch(variant))
+      : zoomedVariants,
+    [zoomedVariants, searchIsActive, variantMatchesSearch]
+  )
+  const haplotypeSearchCounts = useMemo(
+    () => hasLocalSearchTerms
+      ? countMatchingHaplotypes(haplotypeGroups.groups, variantMatchesSearch)
+      : null,
+    [hasLocalSearchTerms, haplotypeGroups.groups, variantMatchesSearch]
+  )
+  const outOfRegionSearchTerm = parsedSearch.terms.find((term) => term.status === 'out_of_region')
+  const malformedSearchTerms = parsedSearch.terms.filter((term) => term.status === 'malformed')
 
   // Unfiltered zoom variants for accordion mapper (not AF-filtered)
   const unfilteredZoomedVariants: LRVariant[] = useMemo(
@@ -1734,13 +1799,13 @@ const LongReadUnifiedView = ({
       <AccordionRegionViewer mapper={accordionMapper} originalRegion={accordionViewRegion}>
 
       {/* Base layer — always rendered */}
-      {lod.showDensityTrack && <VariantDensityTrack variants={zoomedVariants} />}
+      {lod.showDensityTrack && <VariantDensityTrack variants={searchedZoomedVariants} />}
       <LRUniqueDensityTrack
-        variants={zoomedVariants}
+        variants={searchedZoomedVariants}
         typeFilters={typeFilters}
         onTypeFiltersChange={setTypeFilters}
       />
-      <LongReadVariantTrack variants={zoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
+      <LongReadVariantTrack variants={searchedZoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
 
       {/* Haplotype layer — opt-in */}
         {showHaplotypes && (
@@ -1821,6 +1886,8 @@ const LongReadUnifiedView = ({
               filterToOutliers={filterToOutliers}
               isAutoTuned={isAutoTuned}
               typeFilters={typeFilters}
+              variantMatchesSearch={searchIsActive ? variantMatchesSearch : undefined}
+              showOnlyMatchingHaplotypes={showOnlyMatchingHaplotypes}
               ambiguousUnphasedRows={ambiguousUnphasedRows}
             />
           )}
@@ -1887,12 +1954,66 @@ const LongReadUnifiedView = ({
             </svg>
             <SearchInput
               type="text"
-              placeholder="Search position, rsID, allele…"
+              aria-label="Filter long-read variants"
+              placeholder="Position, rsID, REF>ALT, variant/SV/TR ID…"
               value={searchText}
+              maxLength={512}
               onChange={(e) => setSearchText(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Escape') setSearchText('')
+              }}
             />
           </SearchInline>
         </TopBar>
+        {searchIsActive && (
+          <SearchStatus role={parsedSearch.status === 'invalid' || parsedSearch.status === 'limit_exceeded' ? 'alert' : 'status'}>
+            {hasLocalSearchTerms && (
+              <span>
+                {searchedZoomedVariants.length.toLocaleString()} matching variant{searchedZoomedVariants.length === 1 ? '' : 's'} in this region
+                {parsedSearch.validTerms.length > 1 ? ` (${parsedSearch.validTerms.length} terms, OR)` : ''}.
+              </span>
+            )}
+            {!hasLocalSearchTerms && !outOfRegionSearchTerm && (
+              <span>{parsedSearch.issues[0]?.message || malformedSearchTerms[0]?.message || 'Enter a recognized variant search.'}</span>
+            )}
+            {malformedSearchTerms.length > 0 && hasLocalSearchTerms && (
+              <span>{malformedSearchTerms.length} unrecognized term{malformedSearchTerms.length === 1 ? '' : 's'} ignored.</span>
+            )}
+            {outOfRegionSearchTerm && outOfRegionSearchTerm.start != null && outOfRegionSearchTerm.end != null && (
+              <>
+                <span>{outOfRegionSearchTerm.message}.</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const targetChrom = outOfRegionSearchTerm.chrom || chrom.replace(/^chr/i, '')
+                    const point = outOfRegionSearchTerm.start === outOfRegionSearchTerm.end
+                    const targetStart = point ? Math.max(1, outOfRegionSearchTerm.start! - 500) : outOfRegionSearchTerm.start!
+                    const targetStop = point ? outOfRegionSearchTerm.end! + 500 : outOfRegionSearchTerm.end!
+                    history.push({
+                      pathname: `/region/${targetChrom}-${targetStart}-${targetStop}`,
+                      search: location.search,
+                    })
+                  }}
+                >
+                  Go to {outOfRegionSearchTerm.chrom || chrom}:{outOfRegionSearchTerm.start.toLocaleString()}{outOfRegionSearchTerm.end !== outOfRegionSearchTerm.start ? `-${outOfRegionSearchTerm.end.toLocaleString()}` : ''}
+                </button>
+              </>
+            )}
+            {showHaplotypes && hasLocalSearchTerms && haplotypeGroups.groups.length > 0 && haplotypeSearchCounts && (
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showOnlyMatchingHaplotypes}
+                  onChange={(event) => setShowOnlyMatchingHaplotypes(event.target.checked)}
+                />{' '}
+                Show only containing haplotypes ({haplotypeSearchCounts.matchingGroupRows}/{haplotypeSearchCounts.totalGroupRows} rows;{' '}
+                {haplotypeSearchCounts.matchingSamples}/{haplotypeSearchCounts.totalSamples} samples;{' '}
+                {haplotypeSearchCounts.matchingChromosomeCopies}/{haplotypeSearchCounts.totalChromosomeCopies} chromosome copies)
+              </label>
+            )}
+            <button type="button" onClick={() => setSearchText('')}>Clear search</button>
+          </SearchStatus>
+        )}
         {regionTooLarge && (
           <div style={{ textAlign: 'center', fontSize: 12, color: '#999', marginBottom: 8 }}>
             Haplotype view disabled: region too large (&gt; {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb)
@@ -1983,6 +2104,7 @@ const LongReadUnifiedView = ({
                   selectedClusterId={selectedClusterId}
                   onClearClusterFilter={handleClearClusterFilter}
                   searchText={searchText}
+                  parsedSearch={parsedSearch}
                   typeFilters={typeFilters}
                   onTypeFiltersChange={setTypeFilters}
                 />
@@ -1994,6 +2116,7 @@ const LongReadUnifiedView = ({
               summaryVariants={zoomedVariants}
               onHoverVariant={setHoveredVariantPosition}
               searchText={searchText}
+              parsedSearch={parsedSearch}
               typeFilters={typeFilters}
               onTypeFiltersChange={setTypeFilters}
             />

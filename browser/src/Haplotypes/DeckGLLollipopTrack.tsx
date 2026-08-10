@@ -23,6 +23,7 @@ import type { DiplotypeGroup } from './haplotypeCompute'
 import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
+import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSearchFiltering'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import {
   diploidPerCopyLayout,
@@ -206,6 +207,7 @@ function computePopulationStats(
 
 type DeckGLLollipopTrackProps = {
   displayGroups: HaplotypeGroup[]
+  variantMatchesSearch?: VariantMatchPredicate
   haplotypeGroups: HaplotypeGroup[]
   clusters?: HaplotypeCluster[]
   start: number
@@ -249,6 +251,7 @@ export type DeckGLLollipopTrackHandle = {
 
 const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipopTrackProps>(function DeckGLLollipopTrack({
   displayGroups,
+  variantMatchesSearch,
   haplotypeGroups,
   clusters,
   start,
@@ -653,6 +656,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           highlightedVariantIds={highlightedVariantIds}
           selectedVariantPos={selectedVariantPos}
           typeFilters={typeFilters}
+          variantMatchesSearch={variantMatchesSearch}
         />
 
         {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
@@ -684,6 +688,7 @@ export default DeckGLLollipopTrack
 
 type DeckGLCanvasProps = {
   displayGroups: HaplotypeGroup[]
+  variantMatchesSearch?: VariantMatchPredicate
   haplotypeGroups: HaplotypeGroup[]
   rowItems: RowItem[]
   start: number
@@ -746,6 +751,7 @@ function clusterAfAlpha(clusterAf: number): number {
 // Inner component — consumes scalePosition from context (no Track)
 function DeckGLLollipopCanvas({
   displayGroups,
+  variantMatchesSearch,
   haplotypeGroups,
   rowItems,
   start,
@@ -802,9 +808,10 @@ function DeckGLLollipopCanvas({
 
   const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
 
-  // Visual-only type filter. It does not affect UPGMA clustering or grouping.
-  const isTypeVisible = (alleleType: string): boolean =>
-    passesLongReadVariantTypeFilters(alleleType, typeFilters)
+  // Visual-only filters. They do not affect UPGMA clustering or scientific denominators.
+  const isVariantVisible = (variant: LRVariant): boolean =>
+    passesLongReadVariantTypeFilters(variant.allele_type || '', typeFilters) &&
+    (!variantMatchesSearch || variantMatchesSearch(variant))
 
   // Keep dimension refs in sync so the imperative scroll handler can read them
   canvasWidthRef.current = canvasWidth
@@ -1484,7 +1491,7 @@ function DeckGLLollipopCanvas({
           const phantomCarriers = new Map<number, number>()
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-            if (!isTypeVisible(variant.allele_type || '')) continue
+            if (!isVariantVisible(variant)) continue
             const isLarge = getVariantSpan(variant) >= 50
             if (cat === 'snv' && !lod.showSnvs) continue
             if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -1533,7 +1540,7 @@ function DeckGLLollipopCanvas({
         const pushBelowThreshold = (variants: LRVariant[], baseline: number) => {
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-            if (!isTypeVisible(variant.allele_type || '')) continue
+            if (!isVariantVisible(variant)) continue
             const span = getVariantSpan(variant)
             const isLargeBt = span >= 50
 
@@ -1680,7 +1687,7 @@ function DeckGLLollipopCanvas({
           const variant = cv.variant
           const alpha = clusterAfAlpha(cv.cluster_af)
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isTypeVisible(variant.allele_type || '')) continue
+          if (!isVariantVisible(variant)) continue
           const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -1720,7 +1727,7 @@ function DeckGLLollipopCanvas({
 
         for (const variant of group.below_threshold.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isTypeVisible(variant.allele_type || '')) continue
+          if (!isVariantVisible(variant)) continue
           const span = getVariantSpan(variant)
           const isLargeBt = span >= 50
 
@@ -1747,7 +1754,7 @@ function DeckGLLollipopCanvas({
         const groupPhantomCarriers = new Map<number, number>()
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isTypeVisible(variant.allele_type || '')) continue
+          if (!isVariantVisible(variant)) continue
           const isLarge = getVariantSpan(variant) >= 50
           if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
@@ -2347,6 +2354,7 @@ function DeckGLLollipopCanvas({
     onVariantClick,
     highlightedVariantIds,
     typeFilters,
+    variantMatchesSearch,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers

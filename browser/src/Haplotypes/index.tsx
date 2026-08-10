@@ -25,6 +25,10 @@ import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipop
 import ChromosomePainterTrack from './ChromosomePainterTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import { createMinimumAlleleFrequencyScale } from './minimumAlleleFrequency'
+import {
+  filterHaplotypeGroupsToMatches,
+  type VariantMatchPredicate,
+} from '../LongReadVariantPage/haplotypeSearchFiltering'
 
 export { COLOR_MODES }
 
@@ -910,6 +914,8 @@ type HaplotypeTrackProps = {
   filterToOutliers?: boolean
   isAutoTuned?: boolean
   typeFilters?: Record<string, boolean>
+  variantMatchesSearch?: VariantMatchPredicate
+  showOnlyMatchingHaplotypes?: boolean
   ambiguousUnphasedRows?: number
 }
 
@@ -2027,6 +2033,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   filterToOutliers = true,
   isAutoTuned = true,
   typeFilters,
+  variantMatchesSearch,
+  showOnlyMatchingHaplotypes = false,
   ambiguousUnphasedRows = 0,
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
@@ -2058,13 +2066,30 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 
   // When filtering to outliers, only show groups containing samples with methylation data
   const filteredGroups = useMemo(() => {
+    const searchFilteredGroups = showOnlyMatchingHaplotypes && variantMatchesSearch
+      ? filterHaplotypeGroupsToMatches(haplotypeGroups, variantMatchesSearch)
+      : haplotypeGroups
     const outlierSampleIds = filterToOutliers && showMethylation
       ? new Set(methylationData.map(d => d.sample))
       : null
     return outlierSampleIds
-      ? haplotypeGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
-      : haplotypeGroups
-  }, [haplotypeGroups, filterToOutliers, showMethylation, methylationData])
+      ? searchFilteredGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
+      : searchFilteredGroups
+  }, [haplotypeGroups, showOnlyMatchingHaplotypes, variantMatchesSearch, filterToOutliers, showMethylation, methylationData])
+
+  const filteredClusters = useMemo(() => {
+    if (!showOnlyMatchingHaplotypes || !variantMatchesSearch || !clusters) return clusters
+    const groupsByHash = new Map(filteredGroups.map((group) => [String(group.hash), group]))
+    return clusters.flatMap((cluster) => {
+      const matchingHashes = cluster.member_group_hashes.filter((hash) => groupsByHash.has(String(hash)))
+      if (matchingHashes.length === 0) return []
+      const sampleCount = matchingHashes.reduce(
+        (count, hash) => count + (groupsByHash.get(String(hash))?.samples.length || 0),
+        0
+      )
+      return [{ ...cluster, member_group_hashes: matchingHashes, sample_count: sampleCount }]
+    })
+  }, [clusters, filteredGroups, showOnlyMatchingHaplotypes, variantMatchesSearch])
 
   // UPGMA genealogy tree computation — prefer backend tree_json when available
   const genealogyResult = useMemo(() => {
@@ -2189,7 +2214,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             ref={ref}
             displayGroups={displayGroups}
             haplotypeGroups={haplotypeGroups}
-            clusters={clusters}
+            clusters={filteredClusters}
             start={start}
             stop={stop}
             colorMode={initialColorMode}
@@ -2223,6 +2248,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             highlightedVariantIds={highlightedVariantIds}
             selectedVariantPos={selectedVariantPos}
             typeFilters={typeFilters}
+            variantMatchesSearch={variantMatchesSearch}
           />
         </>
       )}
