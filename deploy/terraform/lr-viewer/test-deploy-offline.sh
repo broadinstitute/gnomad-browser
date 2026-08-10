@@ -33,6 +33,8 @@ API_BUILD="11111111-2222-4333-8444-555555555555"
 BROWSER_BUILD="66666666-7777-4888-8999-aaaaaaaaaaaa"
 export ROOT REAL_SHA FAKE_DIGEST FAKE_BROWSER_DIGEST API_BUILD BROWSER_BUILD
 
+python3 "$SCRIPT_DIR/test-verify-release-config.py"
+
 cat >"$TMP_DIR/bin/gcloud" <<'PY'
 #!/usr/bin/env python3
 import base64, hashlib, json, os, pathlib, shutil, sys, tempfile

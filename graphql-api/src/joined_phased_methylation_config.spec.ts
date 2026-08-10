@@ -109,15 +109,20 @@ describe('joined phased methylation configuration', () => {
 
   test('is absent when unconfigured and fails closed for stale or mutated identity', () => {
     expect(resolveJoinedPhasedMethylationRoute({})).toBeNull()
-    const stale = routeEnv()
-    stale.LR_Y1_JOINED_PHASED_METHYLATION_ROUTE =
-      stale.LR_Y1_JOINED_PHASED_METHYLATION_ROUTE.replace(
-        JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
-        '0'.repeat(64)
-      )
-    expect(() => resolveJoinedPhasedMethylationRoute(stale)).toThrow(
-      'exact approved receipt/product'
-    )
+    const invalidFields = {
+      database: 'wrong_database',
+      run_id: 'wrong_run',
+      raw_receipt_path: orientationPath,
+      orientation_receipt_path: rawPath,
+      expected_orientation_receipt_sha256: '0'.repeat(64),
+    }
+    for (const [field, value] of Object.entries(invalidFields)) {
+      const invalid = routeEnv()
+      const route = JSON.parse(invalid.LR_Y1_JOINED_PHASED_METHYLATION_ROUTE)
+      route[field] = value
+      invalid.LR_Y1_JOINED_PHASED_METHYLATION_ROUTE = JSON.stringify(route)
+      expect(() => resolveJoinedPhasedMethylationRoute(invalid)).toThrow()
+    }
 
     const dir = mkdtempSync(path.join(tmpdir(), 'joined-methylation-'))
     const mutated = path.join(dir, 'receipt.json')

@@ -38,6 +38,7 @@ RUN pnpm tsc -p /app/graphql-api/tsconfig.build.json
 COPY --chown=node:node graphql-api/static_data /app/static_data
 COPY --chown=node:node graphql-api/config/y1-presentation-primary-manifests.json /app/graphql-api/config/y1-presentation-primary-manifests.json
 COPY --chown=node:node graphql-api/config/y1-source-phased-methylation-serving-receipt.json /app/graphql-api/config/y1-source-phased-methylation-serving-receipt.json
+COPY --chown=node:node graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json /app/graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json
 COPY --chown=node:node graphql-api/config/completion-receipt-coverage-aou.json /app/graphql-api/config/completion-receipt-coverage-aou.json
 COPY --chown=node:node graphql-api/config/completion-receipt-coverage-hgsvc_hprc.json /app/graphql-api/config/completion-receipt-coverage-hgsvc_hprc.json
 COPY --chown=node:node graphql-api/config/completion-receipt-str-aou.json /app/graphql-api/config/completion-receipt-str-aou.json

@@ -16,6 +16,13 @@
       "purpose": "startup-consumed source-phased methylation receipt"
     },
     {
+      "path": "graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json",
+      "target_in_image": "/app/graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json",
+      "sha256": "e3d7c819e0cb8fb759d8ce1611eec1228ae3a40d6f9407cbbfbe50551809e460",
+      "bytes": 50525,
+      "purpose": "startup-consumed joined phased-methylation orientation receipt"
+    },
+    {
       "path": "graphql-api/config/completion-receipt-coverage-aou.json",
       "target_in_image": "/app/graphql-api/config/completion-receipt-coverage-aou.json",
       "sha256": "ebefa180f7a0412d7d55f58f15a0dd723926800e15bde950bfb98e9c3be24f82",

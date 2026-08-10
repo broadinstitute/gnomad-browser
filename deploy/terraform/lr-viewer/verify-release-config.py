@@ -12,16 +12,24 @@ ROOT = SCRIPT_DIR.parents[2]
 CONFIG_DIR = ROOT / "graphql-api" / "config"
 MANIFEST_PATH = CONFIG_DIR / "full-genome-routing-artifact-manifest.json"
 API_ENV_PATH = SCRIPT_DIR / "full-genome-api-env.json"
-EXPECTED_ENV_SHA256 = "58528d7925accc3bf0dabb6fabdc56b28f02b732a65e1942794d3132dd6d90f5"
+EXPECTED_ENV_SHA256 = "743ad9147ba9f93d23fb39883bfb7b84b3f228ef59a2e4ff84d51bb58cf81213"
 EXPECTED_ARTIFACTS = {
     "y1-presentation-primary-manifests.json",
     "y1-source-phased-methylation-serving-receipt.json",
+    "y1-source-to-browser-vcf-orientation-receipt.json",
     "completion-receipt-coverage-aou.json",
     "completion-receipt-coverage-hgsvc_hprc.json",
     "completion-receipt-str-aou.json",
     "completion-receipt-str-hgsvc_hprc.json",
     "sample-total-completion-receipt.json",
     "terminal-metadata-receipt.json",
+}
+EXPECTED_JOINED_ROUTE = {
+    "database": "gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3",
+    "run_id": "y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1",
+    "raw_receipt_path": "/app/graphql-api/config/y1-source-phased-methylation-serving-receipt.json",
+    "orientation_receipt_path": "/app/graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json",
+    "expected_orientation_receipt_sha256": "e3d7c819e0cb8fb759d8ce1611eec1228ae3a40d6f9407cbbfbe50551809e460",
 }
 
 
@@ -34,12 +42,25 @@ def require(condition: bool, message: str) -> None:
         raise SystemExit(f"release config check failed: {message}")
 
 
+def require_exact_joined_route(api_env: dict[str, object]) -> None:
+    raw = api_env.get("LR_Y1_JOINED_PHASED_METHYLATION_ROUTE")
+    require(isinstance(raw, str), "joined phased-methylation route is omitted")
+    try:
+        route = json.loads(raw)
+    except (TypeError, json.JSONDecodeError):
+        require(False, "joined phased-methylation route is not valid JSON")
+    require(
+        route == EXPECTED_JOINED_ROUTE,
+        "joined phased-methylation route is not the exact approved identity",
+    )
+
+
 def main() -> None:
     manifest = json.loads(MANIFEST_PATH.read_text())
     require(manifest.get("schema_version") == 1, "unexpected artifact manifest schema")
     artifacts = manifest.get("artifacts", [])
     names = {Path(item["path"]).name for item in artifacts}
-    require(len(artifacts) == 8 and names == EXPECTED_ARTIFACTS, "artifact allowlist is not the exact eight-file bundle")
+    require(len(artifacts) == 9 and names == EXPECTED_ARTIFACTS, "artifact allowlist is not the exact nine-file bundle")
 
     for item in artifacts:
         relative = Path(item["path"])
@@ -61,6 +82,7 @@ def main() -> None:
     require(api_env["RATE_LIMITER_REDIS_URL"] == "redis://10.252.0.3:6379/2", "rate-limiter Redis route is wrong")
     require(api_env["LR_Y1_ENABLED"] == "true", "API Y1 mode must be enabled")
     require(json.loads(api_env["LR_Y1_RUN_MAP"])["hgsvc_hprc"]["chr3"].endswith("recovery-r2"), "approved chr3 recovery route is missing")
+    require_exact_joined_route(api_env)
 
     api_dockerfile = (ROOT / "deploy/dockerfiles/browser/api.dockerfile").read_text()
     api_ignore = (ROOT / "deploy/dockerfiles/browser/api.dockerfile.dockerignore").read_text().splitlines()
@@ -133,7 +155,7 @@ def main() -> None:
     for path in [MANIFEST_PATH, API_ENV_PATH]:
         require("/Users/" not in path.read_text(), f"local absolute path leaked into {path.relative_to(ROOT)}")
 
-    print(f"verified 8 artifacts; routing manifest sha256={sha256(MANIFEST_PATH)}")
+    print(f"verified 9 artifacts; routing manifest sha256={sha256(MANIFEST_PATH)}")
     print(f"verified approved API env sha256={EXPECTED_ENV_SHA256}")
 
 
