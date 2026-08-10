@@ -2,7 +2,11 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import HaplotypeVariantTable from '../Haplotypes/HaplotypeVariantTable'
-import { useVariantSearchText, variantSearchFromUrl } from './variantSearchParam'
+import {
+  useVariantSearchText,
+  variantSearchFromUrl,
+  withVariantSearchParam,
+} from './variantSearchParam'
 
 jest.mock('../Link', () => ({ children, to, onClick }: any) => (
   <a href={to} onClick={onClick}>
@@ -66,8 +70,19 @@ describe('variant_id region URL parameter', () => {
       '22-100-A>T/complex'
     )
     expect(variantSearchFromUrl('?variant_id=%00%0922-100-A-T%0A')).toBe('22-100-A-T')
+    expect(variantSearchFromUrl('?variant_id=rs123%0Ars456')).toBe('rs123,rs456')
     expect(variantSearchFromUrl(`?variant_id=${'x'.repeat(600)}`)).toHaveLength(512)
     expect(() => variantSearchFromUrl('?variant_id=%E0%A4%A')).not.toThrow()
+  })
+
+  test('updates and clears search while preserving unrelated URL state', () => {
+    const initial = '?dataset=gnomad_r4_lr&show_haplotypes=true'
+    const updated = withVariantSearchParam(initial, ' chr22:100 A>T ')
+
+    expect(new URLSearchParams(updated).get('variant_id')).toBe('chr22:100 A>T')
+    expect(new URLSearchParams(updated).get('dataset')).toBe('gnomad_r4_lr')
+    expect(new URLSearchParams(updated).get('show_haplotypes')).toBe('true')
+    expect(new URLSearchParams(withVariantSearchParam(updated, '')).get('variant_id')).toBeNull()
   })
 
   test('leaves ordinary URLs without the parameter unfiltered', () => {
@@ -97,6 +112,14 @@ describe('variant_id region URL parameter', () => {
     rerender(<SearchHarness variantSearch="22-100-A-T" variants={[variant]} />)
     expect(screen.getByText('Showing 1 of 1 variants')).not.toBeNull()
     expect(screen.getByRole('link', { name: '22-100-A-T' })).not.toBeNull()
+  })
+
+  test('uses normalized exact coordinate matching instead of position substrings', () => {
+    render(<SearchHarness variantSearch="10" variants={[variant]} />)
+    expect(screen.getByText('Showing 0 of 1 variants')).not.toBeNull()
+
+    fireEvent.change(screen.getByLabelText('variant search'), { target: { value: 'RS123' } })
+    expect(screen.getByText('Showing 1 of 1 variants')).not.toBeNull()
   })
 
   test('responds to URL value changes without overwriting later user edits', () => {
