@@ -12,6 +12,8 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 
+from gcloud_storage_metadata import object_md5
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 import importlib.util
@@ -102,7 +104,11 @@ def main() -> None:
         require(normalized_source == recorded_source, f"{component} resolved source identity changed")
         metadata = gcloud_json("storage", "objects", "describe", f"gs://{source['bucket']}/{source['object']}#{source['generation']}")
         require((metadata.get("bucket") or source["bucket"]) == source["bucket"] and metadata.get("name") == source["object"] and str(metadata.get("generation", "")) == str(source["generation"]), f"{component} source object generation mismatch")
-        require(metadata.get("md5Hash") == identity["source_archive_md5"], f"{component} service-reported source checksum mismatch")
+        try:
+            service_md5 = object_md5(metadata)
+        except ValueError as error:
+            raise SystemExit(f"provenance verification failed: {component} {error}") from error
+        require(service_md5 == identity["source_archive_md5"], f"{component} service-reported source checksum mismatch")
         received_sha256, received_md5 = hash_generation(recorded_source)
         require(received_sha256 == identity["source_archive_sha256"] and received_md5 == identity["source_archive_md5"], f"{component} actual received source bytes differ from pre-hashed archive")
         results = build.get("results", {}).get("images", [])

@@ -100,7 +100,14 @@ if args[:2]==['builds','describe']:
       'results':{'images':[{'name':image+':'+receipt['tag'],'digest':digest}]}}); sys.exit(0)
 if args[:3]==['storage','objects','describe']:
     url=args[3]; bucket=url.split('/')[2]; name=url.split('/',3)[-1].rsplit('#',1)[0]; p=pathlib.Path(os.environ['FAKE_OBJECT_DIR'])/'immutable-source.tgz'; data=p.read_bytes()
-    out({'bucket':bucket,'name':name,'generation':'1','md5Hash':base64.b64encode(hashlib.md5(data).digest()).decode()}); sys.exit(0)
+    checksum=base64.b64encode(hashlib.md5(data).digest()).decode(); shape=os.environ.get('FAKE_MD5_SHAPE','snake')
+    metadata={'bucket':bucket,'name':name,'generation':'1'}
+    if shape=='snake': metadata['md5_hash']=checksum
+    elif shape=='camel': metadata['md5Hash']=checksum
+    elif shape=='both': metadata.update({'md5_hash':checksum,'md5Hash':checksum})
+    elif shape=='conflict': metadata.update({'md5_hash':checksum,'md5Hash':base64.b64encode(bytes(16)).decode()})
+    elif shape!='missing': raise AssertionError('unknown FAKE_MD5_SHAPE '+shape)
+    out(metadata); sys.exit(0)
 if args[:2]==['storage','cp']:
     source,destination=args[2:4]; objects=pathlib.Path(os.environ['FAKE_OBJECT_DIR']); objects.mkdir(parents=True,exist_ok=True)
     if destination=='-': sys.stdout.buffer.write((objects/'immutable-source.tgz').read_bytes()); sys.exit(0)
@@ -182,7 +189,40 @@ import json,re,sys
 v=json.load(open(sys.argv[1])); assert v['status']=='complete'; assert v['source_sha']==sys.argv[2]
 assert re.fullmatch('[0-9a-f]{64}',v['source_archive_sha256']); assert set(v['images'])=={'api','browser'}
 assert all(v['components'][c]['state']=='recorded' for c in ('api','browser'))
+assert v['source_object']['md5_hash']==v['source_archive_md5']
 PY
+
+# Both gcloud checksum spellings normalize to the canonical receipt field. Missing,
+# malformed, and conflicting metadata fail closed before any build submission.
+python3 - "$SCRIPT_DIR" <<'PY'
+import base64,sys
+sys.path.insert(0,sys.argv[1])
+from gcloud_storage_metadata import object_md5
+checksum=base64.b64encode(bytes(range(16))).decode()
+assert object_md5({'md5_hash':checksum})==checksum
+assert object_md5({'md5Hash':checksum})==checksum
+assert object_md5({'md5_hash':checksum,'md5Hash':checksum})==checksum
+for metadata in ({},{'md5_hash':''},{'md5Hash':'not-base64'},{'md5_hash':checksum,'md5Hash':base64.b64encode(bytes(16)).decode()}):
+    try: object_md5(metadata)
+    except ValueError: pass
+    else: raise AssertionError(f'accepted invalid checksum metadata: {metadata}')
+PY
+export ACTIVE_RECEIPT="$TMP_DIR/camel-build.json" FAKE_MD5_SHAPE=camel
+"$SCRIPT_DIR/deploy.sh" --confirm-build-push --api-only --receipt "$ACTIVE_RECEIPT" >/dev/null
+[[ "$(python3 "$SCRIPT_DIR/release-evidence.py" get "$ACTIVE_RECEIPT" source_object.md5_hash)" == "$(python3 "$SCRIPT_DIR/release-evidence.py" get "$ACTIVE_RECEIPT" source_archive_md5)" ]]
+for shape in missing conflict; do
+  export ACTIVE_RECEIPT="$TMP_DIR/${shape}-checksum.json" FAKE_MD5_SHAPE="$shape"
+  set +e
+  "$SCRIPT_DIR/deploy.sh" --confirm-build-push --api-only --receipt "$ACTIVE_RECEIPT" >"$TMP_DIR/${shape}-checksum.out" 2>&1
+  checksum_status=$?
+  set -e
+  [[ $checksum_status -ne 0 ]]
+done
+grep -q 'missing an MD5 checksum' "$TMP_DIR/missing-checksum.out"
+grep -q 'conflicting MD5 checksum aliases' "$TMP_DIR/conflict-checksum.out"
+unset FAKE_MD5_SHAPE
+export ACTIVE_RECEIPT="$TMP_DIR/build.json"
+
 # The review's mismatched SHA/tag/run-tag and malformed timestamp receipt is rejected.
 python3 - "$ACTIVE_RECEIPT" "$TMP_DIR/mismatched-receipt.json" <<'PY'
 import json,pathlib,sys
@@ -283,8 +323,22 @@ for comp in ('api','browser'):
 PY
 }
 
-# Provenance downloads each exact generation: altered received bytes are rejected.
+# Provenance accepts both live metadata schemas and rejects missing/conflicting aliases.
 python3 "$SCRIPT_DIR/release-evidence.py" identity-init "$ACTIVE_RECEIPT" "$TMP_DIR/provenance-receipt.json" "$TMP_DIR/provenance-identity.json" >/dev/null
+for shape in snake camel both; do
+  FAKE_MD5_SHAPE="$shape" python3 "$SCRIPT_DIR/verify-build-provenance.py" "$TMP_DIR/provenance-identity.json" "$TMP_DIR/${shape}-provenance.json" >/dev/null
+done
+for shape in missing conflict; do
+  set +e
+  FAKE_MD5_SHAPE="$shape" python3 "$SCRIPT_DIR/verify-build-provenance.py" "$TMP_DIR/provenance-identity.json" "$TMP_DIR/${shape}-provenance.json" >"$TMP_DIR/${shape}-provenance.out" 2>&1
+  provenance_status=$?
+  set -e
+  [[ $provenance_status -ne 0 ]]
+done
+grep -q 'missing an MD5 checksum' "$TMP_DIR/missing-provenance.out"
+grep -q 'conflicting MD5 checksum aliases' "$TMP_DIR/conflict-provenance.out"
+
+# Provenance downloads each exact generation: altered received bytes are rejected.
 cp "$FAKE_OBJECT_DIR/immutable-source.tgz" "$TMP_DIR/browser-source.backup"
 printf 'substituted' >>"$FAKE_OBJECT_DIR/immutable-source.tgz"
 set +e

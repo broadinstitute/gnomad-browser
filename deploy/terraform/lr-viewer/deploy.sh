@@ -152,11 +152,15 @@ else
     gcloud storage cp "$ARCHIVE" "$SOURCE_URI" --if-generation-match=0 --content-md5="$SOURCE_ARCHIVE_MD5" >/dev/null
     gcloud storage objects describe "$SOURCE_URI" --format=json >"$SOURCE_METADATA"
   fi
-  read -r SOURCE_GENERATION SERVICE_MD5 < <(python3 - "$SOURCE_METADATA" "$SOURCE_BUCKET" "$SOURCE_OBJECT" <<'PY'
+  read -r SOURCE_GENERATION SERVICE_MD5 < <(python3 - "$SOURCE_METADATA" "$SOURCE_BUCKET" "$SOURCE_OBJECT" "$SCRIPT_DIR" <<'PY'
 import json,sys
-v=json.load(open(sys.argv[1])); bucket,obj=sys.argv[2:]
+sys.path.insert(0,sys.argv[4])
+from gcloud_storage_metadata import object_md5
+v=json.load(open(sys.argv[1])); bucket,obj=sys.argv[2:4]
 if (v.get('bucket') or bucket)!=bucket or v.get('name')!=obj or not str(v.get('generation','')).isdigit(): raise SystemExit('uploaded source object identity mismatch')
-print(v['generation'],v.get('md5Hash',''))
+try: md5_hash=object_md5(v)
+except ValueError as error: raise SystemExit(error)
+print(v['generation'],md5_hash)
 PY
 )
   [[ "$SERVICE_MD5" == "$SOURCE_ARCHIVE_MD5" ]] || { echo "uploaded source checksum mismatch" >&2; exit 1; }
@@ -192,12 +196,15 @@ PY
 )"
   IFS=$'\t' read -r bucket object generation <<<"$source_fields"
   gcloud storage objects describe "gs://${bucket}/${object}#${generation}" --format=json >"$object_json"
-  md5_hash="$(python3 - "$object_json" "$bucket" "$object" "$generation" <<'PY'
+  md5_hash="$(python3 - "$object_json" "$bucket" "$object" "$generation" "$SCRIPT_DIR" <<'PY'
 import json,sys
-v=json.load(open(sys.argv[1])); bucket,obj,generation=sys.argv[2:]
+sys.path.insert(0,sys.argv[5])
+from gcloud_storage_metadata import object_md5
+v=json.load(open(sys.argv[1])); bucket,obj,generation=sys.argv[2:5]
 actual_bucket=v.get('bucket') or bucket
 if actual_bucket!=bucket or v.get('name')!=obj or str(v.get('generation',''))!=generation: raise SystemExit('source object identity mismatch')
-print(v.get('md5Hash',''))
+try: print(object_md5(v))
+except ValueError as error: raise SystemExit(error)
 PY
 )"
   [[ "$md5_hash" == "$SOURCE_ARCHIVE_MD5" ]] || { echo "Cloud Build received source checksum differs from pre-hashed archive" >&2; return 1; }
