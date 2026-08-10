@@ -4,12 +4,15 @@ import AccordionContext from './AccordionContext'
 
 const PHANTOM_LABEL_COLOR = '#2196F3'
 
+export const accordionAxisIntervalCount = (width: number): number =>
+  Math.max(1, Math.min(10, Math.floor(Math.max(0, width) / 90)))
+
 const AccordionPositionAxis = () => {
   const { scalePosition, centerPanelWidth: width } = useContext(RegionViewerContext)
   const { mapper } = useContext(AccordionContext)
 
   const height = 15
-  const numIntervals = Math.min(10, Math.floor(width / 90))
+  const numIntervals = accordionAxisIntervalCount(width)
   const tickInterval = width / numIntervals
 
   // Build phantom gap pixel ranges for suppressing reference ticks that land inside gaps
