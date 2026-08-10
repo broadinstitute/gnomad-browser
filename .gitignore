@@ -39,8 +39,12 @@ hail-*.log
 
 # Reads metadata databases
 reads/*.db
-# Playwright MCP
+# Local agent state and evidence
 .playwright-mcp/
+.agent/
+.agents/
+.pi/
+.grove/
 
 # Terraform
 .terraform/
@@ -48,3 +52,6 @@ reads/*.db
 *.tfstate
 *.tfstate.backup
 *.tfvars
+
+# Local pointer used by the guarded lr-viewer Terraform apply workflow.
+deploy/terraform/lr-viewer/.latest-release-evidence.json

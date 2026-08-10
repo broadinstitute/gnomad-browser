@@ -73,7 +73,8 @@ def main() -> None:
         require(len(matches) == 1, f"API Dockerfile must copy {name} exactly once")
     require("COPY --chown=node:node graphql-api/config /app" not in api_dockerfile, "API Dockerfile copies config wholesale")
     require("node:18.17-alpine@sha256:" in api_dockerfile, "API Node base is not digest pinned")
-    require("pnpm@8.14.3" in api_dockerfile and "pnpm@^" not in api_dockerfile, "API pnpm is not exactly pinned")
+    require("pnpm-8.14.3.tgz" in api_dockerfile and "PNPM_TARBALL_SHA512=" in api_dockerfile, "API pnpm tarball is not integrity pinned")
+    require("sha512sum -c" in api_dockerfile and "npm install -g --offline /tmp/pnpm.tgz" in api_dockerfile, "API pnpm is not verified before offline install")
 
     runtime_imports = {
         ROOT / "graphql-api/src/graphql/resolvers/variants.ts": "../../../../dataset-metadata/longReadVariantId",
@@ -94,14 +95,20 @@ def main() -> None:
     require("browser/build.env" not in browser_dockerfile, "browser build still depends on ignored build.env")
     require("node:18.17-alpine@sha256:" in browser_dockerfile, "browser Node base is not digest pinned")
     require("nginx:stable-alpine@sha256:" in browser_dockerfile, "browser nginx base is not digest pinned")
-    require("pnpm@8.14.3" in browser_dockerfile and "pnpm@^" not in browser_dockerfile, "browser pnpm is not exactly pinned")
+    require("pnpm-8.14.3.tgz" in browser_dockerfile and "PNPM_TARBALL_SHA512=" in browser_dockerfile, "browser pnpm tarball is not integrity pinned")
+    require("sha512sum -c" in browser_dockerfile and "npm install -g --offline /tmp/pnpm.tgz" in browser_dockerfile, "browser pnpm is not verified before offline install")
+    require("apk add" not in browser_dockerfile, "browser build installs mutable Alpine packages")
 
     cloudbuild = (SCRIPT_DIR / "cloudbuild.yaml").read_text()
+    cloudbuild_value = json.loads(cloudbuild)
     require("${_IMAGE}:${_TAG}" in cloudbuild and ":latest" not in cloudbuild, "Cloud Build does not use only a unique supplied tag")
     require("LR_Y1_ENABLED=${_LR_Y1_ENABLED}" in cloudbuild, "Cloud Build omits browser Y1 input")
     require("org.opencontainers.image.revision" in cloudbuild, "Cloud Build omits OCI source revision")
+    require("org.gnomad.source-archive.sha256" in cloudbuild, "Cloud Build omits source archive identity")
     require("org.gnomad.lr.routing-manifest.sha256" in cloudbuild, "Cloud Build omits routing provenance")
-    require("requestedVerifyOption: VERIFIED" in cloudbuild, "Cloud Build provenance verification is not requested")
+    for key in ("_SUBMISSION_INTENT", "_SOURCE_GENERATION", "_COMPONENT"):
+        require(key in cloudbuild, f"Cloud Build omits durable submission metadata {key}")
+    require(cloudbuild_value.get("options", {}).get("requestedVerifyOption") == "VERIFIED", "Cloud Build provenance verification is not requested")
 
     main_tf = (SCRIPT_DIR / "main.tf").read_text()
     cloud_run_tf = (SCRIPT_DIR / "cloud-run.tf").read_text()
@@ -109,13 +116,17 @@ def main() -> None:
     require("var.api_image_digest" in cloud_run_tf and "var.browser_image_digest" in cloud_run_tf, "Terraform images are not digest inputs")
     require("local.full_genome_api_env" in cloud_run_tf, "Terraform does not use the approved exact env map")
     require("google_compute_instance.clickhouse_vm.network_interface" not in cloud_run_tf, "Cloud Run env still couples ClickHouse/Redis to one VM")
+    require(cloud_run_tf.count("ignore_changes") == 2 and cloud_run_tf.count("template[0].containers[0].image") == 2, "Terraform release ownership boundary is missing")
 
     build_script = (SCRIPT_DIR / "deploy.sh").read_text()
     stage_script = (SCRIPT_DIR / "deploy-no-traffic.sh").read_text()
     require("--confirm-build-push" in build_script and "terraform apply" not in build_script.lower(), "build script is not safely build-only")
-    require('"cloud_run_tag"' in build_script, "build receipt omits a generated Cloud Run staging tag")
-    require("json.dumps" in build_script and 'line.split("\\t")' not in build_script, "build receipt still uses fragile TSV serialization")
-    require("--no-traffic" in stage_script and "@${API_DIGEST}" in stage_script, "staging script is not no-traffic/digest pinned")
+    require("git archive" in build_script and 'chmod 700 "$WORK_DIR"' in build_script, "build script does not use a private immutable archive")
+    require("source_archive_sha256" in (SCRIPT_DIR / "release-evidence.py").read_text(), "build receipt omits source archive identity")
+    require("build-fail" in build_script and "build-finish" in build_script, "build receipt has no durable lifecycle")
+    require("--no-traffic" in stage_script and "--receipt" in stage_script, "staging script is not receipt-gated/no-traffic")
+    require("verify-build-provenance.py" in stage_script, "staging does not verify remote provenance")
+    require("phase-journal.json" in stage_script and "rollback_component" in stage_script, "staging lacks journaled rollback")
     require("${#TAG} + ${#BROWSER_SERVICE} <= 46" in stage_script, "staging script does not enforce Cloud Run hostname length")
     require("terraform apply" not in stage_script.lower(), "staging script applies Terraform")
 

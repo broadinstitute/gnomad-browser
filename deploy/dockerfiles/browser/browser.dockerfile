@@ -1,8 +1,14 @@
 # check=skip=JSONArgsRecommended
 # The final shell-form CMD intentionally renders nginx config from runtime env.
 FROM node:18.17-alpine@sha256:3482a20c97e401b56ac50ba8920cc7b5b2022bfc6aa7d4e4c231755770cf892f AS build
-RUN apk add --no-cache bash
-RUN npm install -g pnpm@8.14.3
+# The browser build uses /bin/sh; no network-selected Alpine packages are installed.
+# pnpm 8.14.3 is pinned to its npm dist.integrity SHA-512 before offline install.
+ARG PNPM_TARBALL_URL=https://registry.npmjs.org/pnpm/-/pnpm-8.14.3.tgz
+ARG PNPM_TARBALL_SHA512=c3ed80eb583be3e2b7ef31eb96b8b9cfaa0503e5d44ec717514120b5187b2f933736e9038c51a5a23ad582790ba41d4ab784618c89fa7e2365f6665685d612ee
+RUN wget -q -O /tmp/pnpm.tgz "$PNPM_TARBALL_URL" \
+  && echo "$PNPM_TARBALL_SHA512  /tmp/pnpm.tgz" | sha512sum -c - \
+  && npm install -g --offline /tmp/pnpm.tgz \
+  && rm /tmp/pnpm.tgz
 
 # Browser feature switches are compile-time inputs, not Cloud Run runtime env.
 ARG LR_Y1_ENABLED=false

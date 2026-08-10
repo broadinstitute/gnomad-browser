@@ -4,6 +4,15 @@ resource "google_cloud_run_v2_service" "api" {
   project             = "gnomadev"
   deletion_protection = false
 
+  # The receipt-gated release workflow exclusively owns image and runtime env.
+  # Terraform retains all other service fields but cannot roll these back.
+  lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image,
+      template[0].containers[0].env,
+    ]
+  }
+
   template {
     service_account = google_service_account.gnomad_lr_sa.email
 
@@ -62,6 +71,14 @@ resource "google_cloud_run_v2_service" "browser" {
   location            = "us-east1"
   project             = "gnomadev"
   deletion_protection = false
+
+  # Releases, not Terraform, own the browser image and API_URL fields.
+  lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image,
+      template[0].containers[0].env,
+    ]
+  }
 
   template {
     service_account = google_service_account.gnomad_lr_sa.email

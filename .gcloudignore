@@ -1,7 +1,25 @@
+#!include:.gitignore
+# Defense in depth only: release builds submit an extracted git archive, not the worktree.
 .git
+.gitignore
+.gcloudignore
 node_modules
 .grove-worktrees
+.grove
 .playwright-mcp
+.claude
+.pi
+.agent
+.agents
 *.pyc
 __pycache__
 .terraform
+*.tfvars
+*.tfstate*
+*.tfplan
+deploy_config.json
+browser/build.env
+**/.env
+**/.env.*
+**/*secret*
+**/*credential*
