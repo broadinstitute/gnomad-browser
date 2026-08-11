@@ -40,7 +40,7 @@ test.describe('Long-read literature workflow detail', () => {
 
     await page.goto('/long-read-literature-examples')
     const detailLinks = page.getByRole('link', { name: 'Detailed workflow' })
-    await expect(detailLinks).toHaveCount(20)
+    await expect(detailLinks).toHaveCount(28)
     const detailHrefs = await detailLinks.evaluateAll((links) =>
       links.map((link) => link.getAttribute('href'))
     )
@@ -79,6 +79,58 @@ test.describe('Long-read literature workflow detail', () => {
       }
     }
     /* eslint-enable no-await-in-loop, no-restricted-syntax */
+  })
+
+  test('routes all eight Batch 3 dossiers with cohort-specific, provisional, and blocked actions', async ({
+    page,
+  }) => {
+    const records = [
+      ['dmpk-interruptions-mosaicism', 'Open AoU aggregate locus'],
+      ['ube3a-imprinting-multimodal-state', null],
+      ['cyp2d6-cyp2d7-hybrid-star-allele', 'Open provisional locus overview'],
+      ['dmd-line1-exonization', 'Open provisional locus overview'],
+      ['g6pc1-trans-alu-deletion', 'Open provisional locus overview'],
+      ['mink1-balanced-translocation', null],
+      ['rare-sv-expression-outlier-filter', null],
+      ['brca1-founder-breakpoint-architecture', 'Open provisional locus overview'],
+    ] as const
+
+    await page.goto('/long-read-literature-examples')
+    const detailLinks = page.getByRole('link', { name: 'Detailed workflow' })
+    await expect(detailLinks).toHaveCount(28)
+    const detailHrefs = await detailLinks.evaluateAll((links) =>
+      links.map((link) => link.getAttribute('href'))
+    )
+    records.forEach(([slug]) => {
+      expect(detailHrefs).toContain(`/long-read-literature-examples/paper/${slug}`)
+    })
+
+    /* eslint-disable no-await-in-loop, no-restricted-syntax */
+    for (const [slug, action] of records) {
+      await page.goto(`/long-read-literature-examples/paper/${slug}`)
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+      if (action) {
+        await expect(page.getByRole('link', { name: action })).toBeVisible()
+      } else {
+        await expect(
+          page.getByRole('link', { name: /Try in browser|locus overview|AoU aggregate/i })
+        ).toHaveCount(0)
+        await expect(page.getByRole('status')).toContainText(
+          /No single|No one-region|no browser CTA/i
+        )
+      }
+    }
+    /* eslint-enable no-await-in-loop, no-restricted-syntax */
+
+    await page.goto('/long-read-literature-examples/paper/dmpk-interruptions-mosaicism')
+    const aouLink = page.getByRole('link', { name: 'Open AoU aggregate locus' })
+    await expect(aouLink).toHaveAttribute('href', /lr_cohort=aou/)
+    await expect(aouLink).toHaveAttribute('href', /show_haplotypes=false/)
+    await expect(page.getByText(/event as unavailable in HGSVC\/HPRC/i)).toBeVisible()
+
+    await page.goto('/long-read-literature-examples/paper/brca1-founder-breakpoint-architecture')
+    await expect(page.getByRole('status')).toContainText(/does not prove an exact linked event/i)
+    await expect(page.getByRole('status')).toContainText(/founder comparison remains data-blocked/i)
   })
 
   test('contains the capability matrix at a 390 px viewport', async ({ page }) => {

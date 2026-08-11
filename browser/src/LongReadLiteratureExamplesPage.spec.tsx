@@ -30,11 +30,11 @@ describe('LongReadLiteratureExamplesPage', () => {
     expect(pdfLink?.getAttribute('href')).toBe(example!.pdfUrl)
   })
 
-  test('links all 20 curated papers, including both eight-paper batches', () => {
+  test('links all 28 curated papers, including all three eight-paper batches', () => {
     render(<LongReadLiteratureExamplesPage />)
 
     const detailLinks = screen.getAllByRole('link', { name: 'Detailed workflow' })
-    expect(detailLinks).toHaveLength(20)
+    expect(detailLinks).toHaveLength(28)
     expect(detailLinks.map((link) => link.getAttribute('href')).sort()).toEqual(
       literatureWorkflows.map((workflow) => literatureWorkflowPath(workflow.slug)).sort()
     )
@@ -53,6 +53,14 @@ describe('LongReadLiteratureExamplesPage', () => {
       .map((workflow) => literatureWorkflowPath(workflow.slug))
     expect(
       detailLinks.filter((link) => batchTwoPaths.includes(link.getAttribute('href')!))
+    ).toHaveLength(8)
+
+    const batchThreeRefs = new Set(['4', '14', '48', '98', '99', '106', '110', '141'])
+    const batchThreePaths = literatureWorkflows
+      .filter((workflow) => batchThreeRefs.has(workflow.ref))
+      .map((workflow) => literatureWorkflowPath(workflow.slug))
+    expect(
+      detailLinks.filter((link) => batchThreePaths.includes(link.getAttribute('href')!))
     ).toHaveLength(8)
   })
 
@@ -102,6 +110,38 @@ describe('LongReadLiteratureExamplesPage', () => {
       expect(example.region).toBeNull()
       expect(within(card).queryByRole('link', { name: /browser|locus overview/i })).toBeNull()
       expect(within(card).getByRole('link', { name: 'Detailed workflow' })).not.toBeNull()
+    })
+  })
+
+  test('uses safe Batch 3 index actions and the AoU-only DMPK route', () => {
+    render(<LongReadLiteratureExamplesPage />)
+
+    const dmpk = examples.find((item) => item.ref === '99')!
+    const dmpkCard = screen.getByText(dmpk.title).parentElement!
+    const dmpkLink = within(dmpkCard).getByRole('link', { name: 'Open AoU aggregate locus' })
+    expect(dmpkLink.getAttribute('href')).toContain('lr_cohort=aou')
+    expect(dmpkLink.getAttribute('href')).toContain('show_haplotypes=false')
+    ;['48', '98', '14'].forEach((ref) => {
+      const example = examples.find((item) => item.ref === ref)!
+      const card = screen.getByText(example.title).parentElement!
+      expect(example.region).toBeNull()
+      expect(within(card).queryByRole('link', { name: /browser|locus|AoU/i })).toBeNull()
+      expect(within(card).getByRole('link', { name: 'Detailed workflow' })).not.toBeNull()
+    })
+
+    const provisionalRegions: Record<string, { chrom: string; start: number; stop: number }> = {
+      '110': { chrom: '22', start: 42118682, stop: 42150000 },
+      '141': { chrom: 'X', start: 33204343, stop: 33214343 },
+      '4': { chrom: '17', start: 42897618, stop: 42917618 },
+      '106': { chrom: '17', start: 43073282, stop: 43163674 },
+    }
+    Object.entries(provisionalRegions).forEach(([ref, region]) => {
+      const example = examples.find((item) => item.ref === ref)!
+      const card = screen.getByText(example.title).parentElement!
+      expect(example.region).toMatchObject({ ...region, verified: false })
+      expect(
+        within(card).getByRole('link', { name: 'Open provisional locus overview' })
+      ).not.toBeNull()
     })
   })
 

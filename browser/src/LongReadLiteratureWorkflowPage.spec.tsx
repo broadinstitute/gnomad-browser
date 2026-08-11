@@ -21,35 +21,116 @@ const renderRoute = (slug: string) =>
     </MemoryRouter>
   )
 
+const expectedBrowserAction = (workflow: (typeof literatureWorkflows)[number]) => {
+  if (workflow.browserRegionStatus === 'provisional') return 'Open provisional locus overview'
+  if (workflow.browserCohort === 'aou') return 'Open AoU aggregate locus'
+  return 'Try in browser'
+}
+
 const batchOneRefs = ['1', '10', '34', '72', '78', '88', '93', '140']
 const batchTwoRefs = ['3', '5', '19', '32', '44', '91', '104', '129']
+const batchThreeRefs = ['4', '14', '48', '98', '99', '106', '110', '141']
+const batchThreeIdentities = [
+  {
+    ref: '99',
+    slug: 'dmpk-interruptions-mosaicism',
+    title:
+      'Robust Detection of Somatic Mosaicism and Repeat Interruptions by Long-Read Targeted Sequencing in Myotonic Dystrophy Type 1',
+    pmid: '33807660',
+    doi: '10.3390/ijms22052616',
+  },
+  {
+    ref: '48',
+    slug: 'ube3a-imprinting-multimodal-state',
+    title:
+      'Concordance of whole-genome long-read sequencing with standard clinical testing for Prader-Willi and Angelman syndromes',
+    pmid: null,
+    doi: '10.1101/2024.04.02.24305233',
+  },
+  {
+    ref: '110',
+    slug: 'cyp2d6-cyp2d7-hybrid-star-allele',
+    title:
+      'Cas9 targeted nanopore sequencing with enhanced variant calling improves CYP2D6 - CYP2D7 hybrid allele genotyping',
+    pmid: null,
+    doi: '10.1101/2022.03.31.486504',
+  },
+  {
+    ref: '141',
+    slug: 'dmd-line1-exonization',
+    title:
+      'Exonization of a deep intronic long interspersed nuclear element in Becker muscular dystrophy',
+    pmid: '36092865',
+    doi: '10.3389/fgene.2022.979732',
+  },
+  {
+    ref: '4',
+    slug: 'g6pc1-trans-alu-deletion',
+    title:
+      'Long-read sequencing identified a causal structural variant in an exome-negative case and enabled preimplantation genetic diagnosis',
+    pmid: '30279644',
+    doi: '10.1186/s41065-018-0069-1',
+  },
+  {
+    ref: '98',
+    slug: 'mink1-balanced-translocation',
+    title:
+      'Multi-Omic Investigations of a 17–19 Translocation Links MINK1 Disruption to Autism, Epilepsy and Osteoporosis',
+    pmid: '36012658',
+    doi: '10.3390/ijms23169392',
+  },
+  {
+    ref: '14',
+    slug: 'rare-sv-expression-outlier-filter',
+    title:
+      'Integration of transcriptomics and long-read genomics prioritizes structural variants in rare disease',
+    pmid: '38585781',
+    doi: '10.1101/2024.03.22.24304565',
+  },
+  {
+    ref: '106',
+    slug: 'brca1-founder-breakpoint-architecture',
+    title:
+      'Defining the heterogeneity of unbalanced structural variation underlying breast cancer susceptibility by nanopore genome sequencing',
+    pmid: '36797466',
+    doi: '10.1038/s41431-023-01284-1',
+  },
+] as const
 const authoritativePkd1Title =
   'Detecting PKD1 variants in polycystic kidney disease patients by single-molecule long-read sequencing'
 
 describe('LongReadLiteratureWorkflowPage', () => {
-  test('the 20 stable workflow records match their literature paper identities and contracts', () => {
+  test('the 28 stable workflow records match their literature paper identities and contracts', () => {
     expect(literatureWorkflows.map((workflow) => workflow.ref).sort()).toEqual(
       [
         '1',
         '3',
+        '4',
         '5',
         '10',
+        '14',
         '19',
         '25',
         '32',
         '34',
         '40',
         '44',
+        '48',
         '59',
         '72',
         '78',
         '88',
         '91',
         '93',
+        '98',
+        '99',
         '104',
+        '106',
+        '110',
         '111',
         '129',
         '140',
+        '141',
       ].sort()
     )
 
@@ -81,14 +162,40 @@ describe('LongReadLiteratureWorkflowPage', () => {
       if (workflow.browserRegion) {
         expect(workflow.browserRegion.stop).toBeGreaterThan(workflow.browserRegion.start)
       } else {
-        expect(workflow.browserRegionBlockedReason).toMatch(/data-blocked/)
+        expect(workflow.browserRegionBlockedReason).not.toBe('')
         expect(literatureWorkflowBrowserPath(workflow)).toBeNull()
       }
     })
 
-    expect(new Set(literatureWorkflows.map((workflow) => workflow.slug)).size).toBe(20)
-    expect(new Set(literatureWorkflows.map((workflow) => workflow.ref)).size).toBe(20)
+    expect(new Set(literatureWorkflows.map((workflow) => workflow.slug)).size).toBe(28)
+    expect(new Set(literatureWorkflows.map((workflow) => workflow.ref)).size).toBe(28)
   })
+
+  test.each(batchThreeIdentities)(
+    'pins Batch 3 ref $ref to its authoritative title, DOI, PMID, slug, and PDF identity',
+    (identity) => {
+      const example = examples.find((paper) => paper.ref === identity.ref)!
+      const workflow = literatureWorkflows.find((paper) => paper.ref === identity.ref)!
+
+      expect(example).toMatchObject({
+        ref: identity.ref,
+        title: identity.title,
+        pmid: identity.pmid,
+        doi: identity.doi,
+        pdfUrl: `/papers/${identity.ref}.pdf`,
+      })
+      expect(workflow).toMatchObject({
+        ref: identity.ref,
+        slug: identity.slug,
+        paper: {
+          title: identity.title,
+          pmid: identity.pmid,
+          doi: identity.doi,
+          pdfUrl: `/papers/${identity.ref}.pdf`,
+        },
+      })
+    }
+  )
 
   test('pins ref 32 to the authoritative DOI/PDF paper title', () => {
     expect(examples.find((paper) => paper.ref === '32')!.title).toBe(authoritativePkd1Title)
@@ -117,16 +224,15 @@ describe('LongReadLiteratureWorkflowPage', () => {
 
     const browserPath = literatureWorkflowBrowserPath(workflow)
     if (browserPath) {
-      const browserLink = screen.getByRole('link', {
-        name:
-          workflow.browserRegionStatus === 'provisional'
-            ? 'Open provisional locus overview'
-            : 'Try in browser',
-      })
+      const browserLink = screen.getByRole('link', { name: expectedBrowserAction(workflow) })
       expect(browserLink.getAttribute('href')).toBe(browserPath)
       expect(browserLink.getAttribute('href')).toContain('dataset=gnomad_r4_lr')
-      expect(browserLink.getAttribute('href')).toContain('lr_cohort=hgsvc_hprc')
-      expect(browserLink.getAttribute('href')).toContain('show_haplotypes=true')
+      expect(browserLink.getAttribute('href')).toContain(
+        `lr_cohort=${workflow.browserCohort || 'hgsvc_hprc'}`
+      )
+      expect(browserLink.getAttribute('href')).toContain(
+        `show_haplotypes=${workflow.browserShowHaplotypes ?? true}`
+      )
     } else {
       expect(screen.queryByRole('link', { name: 'Try in browser' })).toBeNull()
       expect(screen.getByRole('status').textContent).toBe(workflow.browserRegionBlockedReason)
@@ -342,6 +448,90 @@ describe('LongReadLiteratureWorkflowPage', () => {
     expect(source('44')).toMatch(/Population occurrence.*must (?:never |not )reclassify/i)
   })
 
+  test('preserves Batch 3 route semantics, branch triples, denominators, and safety boundaries', () => {
+    const workflows = new Map(literatureWorkflows.map((workflow) => [workflow.ref, workflow]))
+    const branchCounts: Record<string, number> = {
+      '99': 8,
+      '48': 11,
+      '110': 13,
+      '141': 8,
+      '4': 9,
+      '98': 8,
+      '14': 9,
+      '106': 11,
+    }
+    Object.entries(branchCounts).forEach(([ref, count]) => {
+      expect(workflows.get(ref)!.branches).toHaveLength(count)
+    })
+
+    const dmpk = workflows.get('99')!
+    expect(dmpk.browserCohort).toBe('aou')
+    expect(dmpk.browserShowHaplotypes).toBe(false)
+    expect(literatureWorkflowBrowserPath(dmpk)).toContain('lr_cohort=aou&show_haplotypes=false')
+    expect(JSON.stringify(dmpk)).toMatch(/event as unavailable in HGSVC\/HPRC/i)
+    expect(JSON.stringify(dmpk)).toMatch(/tissue somatic distribution unavailable/i)
+
+    const ube3a = workflows.get('48')!
+    expect(ube3a.browserRegion).toBeNull()
+    expect(ube3a.browserRegionBlockedReason).toMatch(/No single honest CTA/i)
+    expect(JSON.stringify(ube3a)).toMatch(/parent.of.origin.*not demonstrated/i)
+    expect(JSON.stringify(ube3a)).toMatch(/A\/B-neutral wording/i)
+
+    const cyp2d6 = workflows.get('110')!
+    expect(cyp2d6.browserRegionStatus).toBe('provisional')
+    expect(cyp2d6.browserRegion).toEqual({ chrom: '22', start: 42118682, stop: 42150000 })
+    expect(JSON.stringify(cyp2d6)).toMatch(/star equivalence data-blocked/i)
+    expect(JSON.stringify(cyp2d6)).toMatch(/pharmacogenomic interpretation remains external/i)
+
+    const dmd = workflows.get('141')!
+    expect(dmd.browserRegionStatus).toBe('provisional')
+    expect(dmd.browserRegion).toEqual({ chrom: 'X', start: 33204343, stop: 33214343 })
+    expect(JSON.stringify(dmd)).toMatch(/do not report exonization/i)
+
+    const g6pc1 = workflows.get('4')!
+    expect(g6pc1.browserRegionStatus).toBe('provisional')
+    expect(JSON.stringify(g6pc1)).toMatch(/named reference participant only/i)
+    expect(JSON.stringify(g6pc1)).toMatch(/do not transfer it to the paper patient/i)
+    ;['98', '14'].forEach((ref) => {
+      expect(workflows.get(ref)!.browserRegion).toBeNull()
+      expect(literatureWorkflowBrowserPath(workflows.get(ref)!)).toBeNull()
+    })
+    expect(JSON.stringify(workflows.get('98'))).toMatch(/multi-chromosome|paired-region/i)
+    expect(JSON.stringify(workflows.get('14'))).toMatch(
+      /genome-wide\/unmapped with no browser CTA/i
+    )
+
+    const brca1 = workflows.get('106')!
+    expect(brca1.browserRegionStatus).toBe('provisional')
+    expect(brca1.browserRegion).toEqual({ chrom: '17', start: 43073282, stop: 43163674 })
+    expect(brca1.browserRegionNotice).toMatch(/does not prove an exact linked event/i)
+    expect(brca1.browserRegionNotice).toMatch(/founder comparison remains data-blocked/i)
+    expect(brca1.branches).toEqual(
+      expect.arrayContaining([
+        {
+          condition: 'The marker template/boundaries are unavailable',
+          action: 'Report exact architecture only; marker/founder comparison is data-blocked.',
+          stopRule: true,
+        },
+        {
+          condition: 'AC=0 with representation-complete event AN',
+          action:
+            'Report not observed in AN callable copies with a declared confidence method; do not infer pathogenicity.',
+          stopRule: false,
+        },
+      ])
+    )
+
+    batchThreeRefs.forEach((ref) => {
+      const workflow = workflows.get(ref)!
+      const source = JSON.stringify(workflow)
+      expect(source).toMatch(/data-blocked|data blocked/i)
+      expect(workflow.nonDiagnosticBoundary).toMatch(/cannot|does not/i)
+      expect(source).toMatch(/callable/i)
+      expect(source).toMatch(/candidate|exact/i)
+    })
+  })
+
   test('makes the capability matrix a labeled keyboard-focusable scroll region', () => {
     const workflow = literatureWorkflows.find((item) => item.ref === '88')!
     renderRoute(workflow.slug)
@@ -392,6 +582,12 @@ describe('LongReadLiteratureWorkflowPage', () => {
   })
 
   test.each(batchTwoRefs)('Batch 2 ref %s has a routable detailed record', (ref) => {
+    const workflow = literatureWorkflows.find((item) => item.ref === ref)!
+    renderRoute(workflow.slug)
+    expect(screen.getByRole('heading', { level: 1, name: workflow.paper.title })).not.toBeNull()
+  })
+
+  test.each(batchThreeRefs)('Batch 3 ref %s has a routable detailed record', (ref) => {
     const workflow = literatureWorkflows.find((item) => item.ref === ref)!
     renderRoute(workflow.slug)
     expect(screen.getByRole('heading', { level: 1, name: workflow.paper.title })).not.toBeNull()
