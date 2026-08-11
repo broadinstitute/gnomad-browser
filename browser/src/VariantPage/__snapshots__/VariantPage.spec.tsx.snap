@@ -1629,37 +1629,58 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -9040,37 +9061,58 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -16454,37 +16496,58 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -23868,37 +23931,58 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -31282,37 +31366,58 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -38696,37 +38801,58 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -45779,37 +45905,58 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -52160,37 +52307,58 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -59692,37 +59860,58 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -67224,37 +67413,58 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -74756,37 +74966,58 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -82288,37 +82519,58 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
+        <span
+          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        >
+          <h2
+            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
           >
-            <img
-              alt=""
+            <a
               aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
-              }
+              className="AnchorLink-sc-77ly3x-0 isLygD"
+              href="#age-distribution"
+              id="age-distribution"
+              onClick={[Function]}
             >
-              More information
-            </span>
-          </button>
-        </h2>
+              <img
+                alt=""
+                aria-hidden="true"
+                height={12}
+                src="test-file-stub"
+                width={12}
+              />
+            </a>
+            Age Distribution 
+            <button
+              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+              onClick={[Function]}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                src="test-file-stub"
+              />
+              <span
+                style={
+                  {
+                    "border": "0",
+                    "clip": "rect(0 0 0 0)",
+                    "height": "1px",
+                    "margin": "-1px",
+                    "overflow": "hidden",
+                    "padding": "0",
+                    "position": "absolute",
+                    "whiteSpace": "nowrap",
+                    "width": "1px",
+                  }
+                }
+              >
+                More information
+              </span>
+            </button>
+          </h2>
+        </span>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"

@@ -1491,37 +1491,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -9420,37 +9441,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -17259,37 +17301,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -25098,37 +25161,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -32937,37 +33021,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -40776,37 +40881,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -48615,37 +48741,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -56454,37 +56601,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -64293,37 +64461,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4_non_ukb has no unexpect
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -72132,37 +72321,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -79971,37 +80181,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -87810,37 +88041,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"
@@ -95649,37 +95901,58 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
-        <button
-          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-          onClick={[Function]}
-          type="button"
+      <span
+        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      >
+        <h2
+          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
         >
-          <img
-            alt=""
+          <a
             aria-hidden="true"
-            src="test-file-stub"
-          />
-          <span
-            style={
-              {
-                "border": "0",
-                "clip": "rect(0 0 0 0)",
-                "height": "1px",
-                "margin": "-1px",
-                "overflow": "hidden",
-                "padding": "0",
-                "position": "absolute",
-                "whiteSpace": "nowrap",
-                "width": "1px",
-              }
-            }
+            className="AnchorLink-sc-77ly3x-0 isLygD"
+            href="#age-distribution"
+            id="age-distribution"
+            onClick={[Function]}
           >
-            More information
-          </span>
-        </button>
-      </h2>
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution 
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
+      </span>
       <div>
         <div
           className="MitochondrialVariantAgeDistribution__LegendWrapper-sc-h2p9a2-0 kmBkbi"

@@ -28,6 +28,8 @@ import MitochondrialVariantGenotypeQualityMetrics from './MitochondrialVariantGe
 import MitochondrialVariantHaplogroupFrequenciesTable from './MitochondrialVariantHaplogroupFrequenciesTable'
 import MitochondrialVariantHeteroplasmyDistribution from './MitochondrialVariantHeteroplasmyDistribution'
 import MitochondrialVariantPopulationFrequenciesTable from './MitochondrialVariantPopulationFrequenciesTable'
+import { AnchoredSectionHeading } from '../AnchorLink'
+import useScrollToHash from '../useScrollToHash'
 import MitochondrialVariantReferenceList from './MitochondrialVariantReferenceList'
 import MitochondrialVariantSiteQualityMetrics from './MitochondrialVariantSiteQualityMetrics'
 import {
@@ -173,110 +175,114 @@ type MitochondrialVariantPageProps = {
   variant: MitochondrialVariant
 }
 
-const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPageProps) => (
-  <Page>
-    <DocumentTitle title={variant.variant_id} />
-    <GnomadPageHeading
-      selectedDataset={datasetId}
-      datasetOptions={{
-        includeShortVariants: true,
-        includeStructuralVariants: false,
-        includeExac: false,
-        includeGnomad2: false,
-        includeGnomad3: true,
-        includeGnomad3Subsets: false,
-      }}
-    >
-      {variantType(variant.variant_id)}: <VariantId>{variant.variant_id} (GRCh38)</VariantId>
-    </GnomadPageHeading>
-    <Wrapper>
-      <ResponsiveSection>
-        <MitochondrialVariantAttributeList variant={variant} />
-        {variant.ac_hom_mnv > 0 && (
-          <p>
-            <Badge level="warning">Warning</Badge> In{' '}
-            {variant.ac_hom_mnv === variant.ac_hom ? (
-              'all'
-            ) : (
-              <>
-                {variant.ac_hom_mnv} of {variant.ac_hom}
-              </>
-            )}{' '}
-            individuals where this variant is homoplasmic or near-homoplasmic (heteroplasmy level ≥
-            0.95), this variant occurs in phase with another variant, potentially altering the amino
-            acid sequence.
-          </p>
-        )}
-        {variant.flags && variant.flags.includes('common_low_heteroplasmy') && (
-          <p>
-            <Badge level="warning">Warning</Badge> Common low heteroplasmy: this variant is present
-            at an overall frequency of .001 across all samples with a heteroplasmy level &gt; 0 and
-            &lt; 0.50.
-          </p>
-        )}
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>External Resources</h2>
-        <MitochondrialVariantReferenceList variant={variant} />
-        <h2>Feedback</h2>
-        <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
-          Report an issue with this variant
-        </ExternalLink>
-      </ResponsiveSection>
-    </Wrapper>
-    <Section>
-      <h2>Genetic Ancestry Group Frequencies</h2>
-      <MitochondrialVariantPopulationFrequenciesTable variant={variant} />
-    </Section>
-    <Section>
-      <h2>
-        Haplogroup Frequencies <InfoButton topic="haplogroup-frequencies" />
-      </h2>
-      <TableWrapper>
-        <MitochondrialVariantHaplogroupFrequenciesTable variant={variant} />
-      </TableWrapper>
-    </Section>
-    <Wrapper>
-      <ResponsiveSection>
-        <h2>Heteroplasmy Distribution</h2>
-        <MitochondrialVariantHeteroplasmyDistribution variant={variant} />
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>
-          Age Distribution <InfoButton topic="age" />
-        </h2>
-        <MitochondrialVariantAgeDistribution variant={variant} />
-      </ResponsiveSection>
-    </Wrapper>
-    <Wrapper>
-      <ResponsiveSection>
-        <h2>Annotations</h2>
-        <MitochondrialVariantTranscriptConsequenceList variant={variant} />
-      </ResponsiveSection>
+const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPageProps) => {
+  useScrollToHash()
 
-      {variant.clinvar && (
+  return (
+    <Page>
+      <DocumentTitle title={variant.variant_id} />
+      <GnomadPageHeading
+        selectedDataset={datasetId}
+        datasetOptions={{
+          includeShortVariants: true,
+          includeStructuralVariants: false,
+          includeExac: false,
+          includeGnomad2: false,
+          includeGnomad3: true,
+          includeGnomad3Subsets: false,
+        }}
+      >
+        {variantType(variant.variant_id)}: <VariantId>{variant.variant_id} (GRCh38)</VariantId>
+      </GnomadPageHeading>
+      <Wrapper>
         <ResponsiveSection>
-          <h2>ClinVar</h2>
-          <VariantClinvarInfo clinvar={variant.clinvar} />
+          <MitochondrialVariantAttributeList variant={variant} />
+          {variant.ac_hom_mnv > 0 && (
+            <p>
+              <Badge level="warning">Warning</Badge> In{' '}
+              {variant.ac_hom_mnv === variant.ac_hom ? (
+                'all'
+              ) : (
+                <>
+                  {variant.ac_hom_mnv} of {variant.ac_hom}
+                </>
+              )}{' '}
+              individuals where this variant is homoplasmic or near-homoplasmic (heteroplasmy level
+              ≥ 0.95), this variant occurs in phase with another variant, potentially altering the
+              amino acid sequence.
+            </p>
+          )}
+          {variant.flags && variant.flags.includes('common_low_heteroplasmy') && (
+            <p>
+              <Badge level="warning">Warning</Badge> Common low heteroplasmy: this variant is
+              present at an overall frequency of .001 across all samples with a heteroplasmy level
+              &gt; 0 and &lt; 0.50.
+            </p>
+          )}
         </ResponsiveSection>
-      )}
-    </Wrapper>
-    <Wrapper>
-      <ResponsiveSection>
-        <h2>Genotype Quality Metrics</h2>
-        <MitochondrialVariantGenotypeQualityMetrics variant={variant} />
-      </ResponsiveSection>
-      <ResponsiveSection>
-        <h2>Site Quality Metrics</h2>
-        <MitochondrialVariantSiteQualityMetrics variant={variant} />
-      </ResponsiveSection>
-    </Wrapper>
-    <Section>
-      <h2>Read Data</h2>
-      <p>Read data is not yet available for mitochondrial variants.</p>
-    </Section>
-  </Page>
-)
+        <ResponsiveSection>
+          <h2>External Resources</h2>
+          <MitochondrialVariantReferenceList variant={variant} />
+          <h2>Feedback</h2>
+          <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
+            Report an issue with this variant
+          </ExternalLink>
+        </ResponsiveSection>
+      </Wrapper>
+      <Section>
+        <h2>Genetic Ancestry Group Frequencies</h2>
+        <MitochondrialVariantPopulationFrequenciesTable variant={variant} />
+      </Section>
+      <Section>
+        <h2>
+          Haplogroup Frequencies <InfoButton topic="haplogroup-frequencies" />
+        </h2>
+        <TableWrapper>
+          <MitochondrialVariantHaplogroupFrequenciesTable variant={variant} />
+        </TableWrapper>
+      </Section>
+      <Wrapper>
+        <ResponsiveSection>
+          <h2>Heteroplasmy Distribution</h2>
+          <MitochondrialVariantHeteroplasmyDistribution variant={variant} />
+        </ResponsiveSection>
+        <ResponsiveSection>
+          <AnchoredSectionHeading id="age-distribution">
+            Age Distribution <InfoButton topic="age" />
+          </AnchoredSectionHeading>
+          <MitochondrialVariantAgeDistribution variant={variant} />
+        </ResponsiveSection>
+      </Wrapper>
+      <Wrapper>
+        <ResponsiveSection>
+          <h2>Annotations</h2>
+          <MitochondrialVariantTranscriptConsequenceList variant={variant} />
+        </ResponsiveSection>
+
+        {variant.clinvar && (
+          <ResponsiveSection>
+            <h2>ClinVar</h2>
+            <VariantClinvarInfo clinvar={variant.clinvar} />
+          </ResponsiveSection>
+        )}
+      </Wrapper>
+      <Wrapper>
+        <ResponsiveSection>
+          <h2>Genotype Quality Metrics</h2>
+          <MitochondrialVariantGenotypeQualityMetrics variant={variant} />
+        </ResponsiveSection>
+        <ResponsiveSection>
+          <h2>Site Quality Metrics</h2>
+          <MitochondrialVariantSiteQualityMetrics variant={variant} />
+        </ResponsiveSection>
+      </Wrapper>
+      <Section>
+        <h2>Read Data</h2>
+        <p>Read data is not yet available for mitochondrial variants.</p>
+      </Section>
+    </Page>
+  )
+}
 
 const operationName = 'MitochondrialVariant'
 const variantQuery = `
