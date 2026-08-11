@@ -9,6 +9,7 @@ import TRDistributionPlot from '../Haplotypes/TRDistributionPlot'
 import { getTrLocusDistribution } from '../LongReadVariantPage/trLocusAggregation'
 import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import ExactTrAltMotifStructure from './ExactTrAltMotifStructure'
 
 export { selectGenotypeDistribution } from '../LongReadVariantPage/LongReadSTRDistributionSections'
 
@@ -18,6 +19,7 @@ type Props = {
   pos: number
   longReadDetails: LongReadDetails
   ref_allele: string
+  alt_allele: string
   lrCohort: LongReadCohort
 }
 
@@ -56,6 +58,7 @@ const LongReadVariantDetails = ({
   pos,
   longReadDetails,
   ref_allele,
+  alt_allele,
   lrCohort,
 }: Props) => {
   const {
@@ -145,6 +148,12 @@ const LongReadVariantDetails = ({
             }))}
             main_reference_region={main_reference_region}
           />
+        </Section>
+      )}
+
+      {isTandemRepeat && (
+        <Section>
+          <ExactTrAltMotifStructure refAllele={ref_allele} altAllele={alt_allele} motifs={motifs} />
         </Section>
       )}
 

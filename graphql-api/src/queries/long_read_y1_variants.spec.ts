@@ -8,6 +8,7 @@ jest.mock('../clickhouse', () => ({
 
 import {
   browserVariantId,
+  fetchY1VariantById,
   fetchY1VariantsByRegion,
   mapY1RowToGraphQL,
   sourceIdentityFromBrowserId,
@@ -26,6 +27,37 @@ describe('Y1 long-read browser identity', () => {
     expect(sourceIdentityFromBrowserId('chr22-20000208-C-T')).toEqual({
       sourceVariantId: 'chr22-20000208-C-T',
       altIndex: 1,
+    })
+  })
+
+  it('normalizes source-summary motifs for exact-ALT decomposition', () => {
+    const variant = mapY1RowToGraphQL({
+      source_variant_id: 'chr22-100-TRV-9', alt_index: 1, chrom: 'chr22',
+      position: 100, reference_end: 108, xpos: 2200000100,
+      ref_allele: 'ACAGCAG', alt: 'ACAGCAGCAG', allele_type: 'trv',
+      filters: [], ac: 2, an: 10, af: 0.2, allele_length: 3,
+      tr_motifs: ' CAG, CCG ',
+    }, 'hgsvc_hprc', [], 'run-1')
+
+    expect(variant.motifs).toEqual(['CAG', 'CCG'])
+  })
+
+  it('joins primary source-summary motifs when fetching one routed variant', async () => {
+    mockQuery.mockReset()
+    mockQuery.mockImplementationOnce(() => Promise.resolve({ json: async () => [] }))
+
+    await fetchY1VariantById(
+      'chr22-20460608-TRV-136~1', 'hgsvc_hprc', 'run-1', 'chr22'
+    )
+
+    expect(mockQuery).toHaveBeenCalledTimes(1)
+    const [request] = mockQuery.mock.calls[0] as any[]
+    expect(request.query).toContain('LEFT JOIN')
+    expect(request.query).toContain('lr_y1_summaries')
+    expect(request.query).toContain("JSONExtractString(source_info_json, 'MOTIFS')")
+    expect(request.query_params).toMatchObject({
+      runId: 'run-1', cohort: 'hgsvc_hprc', chrom: 'chr22',
+      sourceVariantId: 'chr22-20460608-TRV-136', altIndex: 1,
     })
   })
 

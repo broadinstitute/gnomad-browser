@@ -96,7 +96,8 @@ const renderDetails = (
       chrom="22"
       pos={22854926}
       longReadDetails={longReadDetails}
-      ref_allele="TCCA"
+      ref_allele="ATCCATCCA"
+      alt_allele="ATCCATCCATCCA"
       lrCohort={lrCohort}
     />
   )
@@ -105,6 +106,32 @@ describe('variant-page full-cohort TR distributions', () => {
   beforeEach(() => {
     clearExpandedTrDistributionCache()
     global.fetch = jest.fn() as typeof fetch
+  })
+
+  test('adds selected-ALT decomposition without replacing the allelic-series plot', () => {
+    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
+    fetchMock.mockReturnValue(new Promise(() => {}) as any)
+
+    renderDetails({
+      ...trDetails,
+      allelic_series: [
+        {
+          variant_id: variantId,
+          length: -2,
+          ac: 4,
+          an: 584,
+          af: 4 / 584,
+          populations: [{ id: 'afr', ac: 4, an: 100, af: 0.04 }],
+        },
+      ],
+    })
+
+    expect(screen.getByLabelText('Selected ALT motif structure grid')).not.toBeNull()
+    expect(screen.getByLabelText('TR ALT allele-length distribution')).not.toBeNull()
+    expect(screen.getByRole('heading', { level: 2, name: 'TR Allelic Series' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Full-cohort repeat-count distributions' })
+    ).not.toBeNull()
   })
 
   test('queries the exact routed variant and selected cohort, then retains controls and help', async () => {
@@ -161,7 +188,8 @@ describe('variant-page full-cohort TR distributions', () => {
         chrom="22"
         pos={22854926}
         longReadDetails={trDetails as any}
-        ref_allele="TCCA"
+        ref_allele="ATCCATCCA"
+        alt_allele="ATCCATCCATCCA"
         lrCohort="aou"
       />
     )

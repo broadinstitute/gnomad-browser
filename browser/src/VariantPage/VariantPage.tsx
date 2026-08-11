@@ -453,6 +453,7 @@ export const VariantPageContent = ({
           pos={variant.pos}
           longReadDetails={variant.long_read_details}
           ref_allele={variant.ref}
+          alt_allele={variant.alt}
           lrCohort={variant.lr_cohort || 'hgsvc_hprc'}
         />
       )}

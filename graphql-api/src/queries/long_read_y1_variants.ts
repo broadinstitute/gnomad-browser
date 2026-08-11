@@ -71,7 +71,13 @@ export const mapY1RowToGraphQL = (
     short_read_match_source: row.short_read_match_source || null,
     enveloping_tr_id: null,
     enveloped_ids: [],
-    motifs: [],
+    motifs:
+      typeof row.tr_motifs === 'string'
+        ? row.tr_motifs
+            .split(',')
+            .map((motif: string) => motif.trim())
+            .filter(Boolean)
+        : [],
     is_likely_tr: row.allele_type === 'trv',
     gnomad_str: null,
     freq: {
@@ -191,16 +197,36 @@ export const fetchY1VariantById = async (
   const { sourceVariantId, altIndex } = sourceIdentityFromBrowserId(variantId)
   const resultSet = await y1ClickhouseClient.query({
     query: `
-      SELECT position, reference_end, xpos, source_variant_id, alt_index,
-        ref_allele, alt, allele_type, filters, ac, an, af, allele_length, chrom,
-        rsids, cadd_phred, phylop, major_consequence, short_read_match_id,
-        short_read_match_type, short_read_match_source
-      FROM lr_y1_alleles
-      WHERE run_id = {runId:String}
-        AND release = 'y1' AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
-        AND chrom = {chrom:String}
-        AND source_variant_id = {sourceVariantId:String}
-        AND alt_index = {altIndex:UInt16}
+      SELECT a.position, a.reference_end, a.xpos, a.source_variant_id, a.alt_index,
+        a.ref_allele, a.alt, a.allele_type, a.filters, a.ac, a.an, a.af,
+        a.allele_length, a.chrom, a.rsids, a.cadd_phred, a.phylop,
+        a.major_consequence, a.short_read_match_id, a.short_read_match_type,
+        a.short_read_match_source, s.tr_motifs
+      FROM lr_y1_alleles AS a
+      LEFT JOIN (
+        SELECT run_id, release, cohort, reference_genome, chrom, position,
+          source_variant_id,
+          any(nullIf(JSONExtractString(source_info_json, 'MOTIFS'), '')) AS tr_motifs
+        FROM lr_y1_summaries
+        WHERE run_id = {runId:String}
+          AND release = 'y1' AND cohort = {cohort:String}
+          AND reference_genome = 'GRCh38' AND chrom = {chrom:String}
+          AND source_variant_id = {sourceVariantId:String}
+        GROUP BY run_id, release, cohort, reference_genome, chrom, position,
+          source_variant_id
+      ) AS s
+        ON a.run_id = s.run_id
+        AND a.release = s.release
+        AND a.cohort = s.cohort
+        AND a.reference_genome = s.reference_genome
+        AND a.chrom = s.chrom
+        AND a.position = s.position
+        AND a.source_variant_id = s.source_variant_id
+      WHERE a.run_id = {runId:String}
+        AND a.release = 'y1' AND a.cohort = {cohort:String}
+        AND a.reference_genome = 'GRCh38' AND a.chrom = {chrom:String}
+        AND a.source_variant_id = {sourceVariantId:String}
+        AND a.alt_index = {altIndex:UInt16}
       LIMIT 1
     `,
     query_params: { runId, cohort, chrom, sourceVariantId, altIndex },
