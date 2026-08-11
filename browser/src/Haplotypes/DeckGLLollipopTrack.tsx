@@ -6,6 +6,7 @@ import { RegionViewerContext } from '@gnomad/region-viewer'
 import { scaleLinear } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { getDiploidSampleLabelColor } from './diploidSampleLabelColor'
+import { formatDiploidSampleLabel, getCollapsedClusterLabelLayout } from './leftPanelLabels'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
 import { passesLongReadVariantTypeFilters } from '../LongReadVariantPage/longReadVariantTypes'
 import {
@@ -819,7 +820,7 @@ function DeckGLLollipopCanvas({
 
   // Left panel data arrays for DeckGL layers
   type LeftPanelCircle = { position: [number, number, number]; color: [number, number, number, number]; radius: number; tooltipText?: string }
-  type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number; tooltipText?: string }
+  type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number; textAnchor?: 'start' | 'middle' | 'end'; tooltipText?: string }
   type LeftPanelHitbox = { position: [number, number, number]; action: string; clusterId: string }
   type LeftPanelPopBar = { polygon: [number, number][]; color: [number, number, number, number] }
   type LeftPanelTreeLine = { sourcePosition: [number, number, number]; targetPosition: [number, number, number] }
@@ -845,9 +846,7 @@ function DeckGLLollipopCanvas({
         const popStats = populationStatsByRow[i]
 
         // Sample ID(s) above the population bar — centered, bold
-        const sampleLabel = group.samples.length <= 2
-          ? group.samples.map(s => s.sample_id).join(', ')
-          : `${group.samples[0].sample_id} +${group.samples.length - 1}`
+        const sampleLabel = formatDiploidSampleLabel(group.samples)
         sampleLabels.push({
           position: [35, y - 13, 0],
           text: sampleLabel,
@@ -964,8 +963,7 @@ function DeckGLLollipopCanvas({
           // Stacked population bar for cluster
           const popStats = populationStatsByRow[i]
           if (popStats && popStats.totalSamples > 0) {
-            const barX = 20
-            const barWidth = 80
+            const { barX, barWidth, countX, countTextAnchor } = getCollapsedClusterLabelLayout(leftPanelWidth)
             const barH = 10
             const barTop = y - barH / 2
             const sortedPops = Object.entries(popStats.counts).sort((a, b) => b[1] - a[1])
@@ -980,10 +978,11 @@ function DeckGLLollipopCanvas({
               accX += w
             }
             texts.push({
-              position: [barX + barWidth + 4, y, 0],
+              position: [countX, y, 0],
               text: String(popStats.totalSamples),
               color: [0, 0, 0, 255],
               size: 10,
+              textAnchor: countTextAnchor,
               tooltipText: `${popStats.totalSamples} samples, ${cluster.member_group_hashes.length} groups`,
             })
           } else {
@@ -1103,7 +1102,7 @@ function DeckGLLollipopCanvas({
     }
 
     return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
-  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, sampleMetadata])
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, sampleMetadata, leftPanelWidth])
 
   // Left panel DeckGL layers
   const leftPanelLayers = useMemo(() => {
@@ -1146,7 +1145,7 @@ function DeckGLLollipopCanvas({
         getText: (d: LeftPanelText) => d.text,
         getSize: (d: LeftPanelText) => d.size,
         getColor: (d: LeftPanelText) => d.color,
-        getTextAnchor: 'start',
+        getTextAnchor: (d: LeftPanelText) => d.textAnchor || 'start',
         getAlignmentBaseline: 'center',
         fontSettings: { sdf: true, smoothing: 0.15 },
         pickable: true,
