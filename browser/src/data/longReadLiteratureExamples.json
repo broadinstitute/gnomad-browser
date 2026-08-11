@@ -102,10 +102,10 @@
     "whyInTruthSet": "Lynch syndrome epimutation caught alongside SNV/SV/PRS in one run",
     "region": {
       "chrom": "3",
-      "start": 36987600,
-      "stop": 37056596,
+      "start": 36991000,
+      "stop": 36995350,
       "truncated": false,
-      "verified": false
+      "verified": true
     },
     "pdfUrl": "/papers/5.pdf"
   },
@@ -248,13 +248,7 @@
     "priorShortReadResult": null,
     "populationComparator": "N/A",
     "whyInTruthSet": "SAME duplication: asymptomatic vs affected, decided by breakpoint junction",
-    "region": {
-      "chrom": "X",
-      "start": 32168643,
-      "stop": 32268643,
-      "truncated": true,
-      "verified": false
-    },
+    "region": null,
     "pdfUrl": "/papers/19.pdf"
   },
   {
@@ -1310,10 +1304,10 @@
     "whyInTruthSet": "no interruptions found; novel AGG-flank variants in unaffected expansion carriers",
     "region": {
       "chrom": "18",
-      "start": 55393486,
-      "stop": 55493486,
-      "truncated": true,
-      "verified": false
+      "start": 55576116,
+      "stop": 55596201,
+      "truncated": false,
+      "verified": true
     },
     "pdfUrl": "/papers/91.pdf"
   },
@@ -1434,13 +1428,7 @@
     "priorShortReadResult": "single heterozygous variant only",
     "populationComparator": "Accelerating Medicines Partnership Parkinson's disease (AMP-PD) and United Kingdom (UK)-Biobank datasets",
     "whyInTruthSet": "compound het in MZ twins; 9 competing inversions found in 43,538 UKB genomes",
-    "region": {
-      "chrom": "6",
-      "start": 161987596,
-      "stop": 162087596,
-      "truncated": true,
-      "verified": false
-    },
+    "region": null,
     "pdfUrl": "/papers/104.pdf"
   },
   {

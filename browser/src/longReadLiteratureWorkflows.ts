@@ -60,6 +60,8 @@ export type LiteratureWorkflow = {
 type LiteratureExampleIdentity = {
   ref: string
   title: string
+  year: string | null
+  venue: string | null
   pmid: string | null
   doi: string | null
   pdfUrl: string | null
@@ -89,6 +91,8 @@ literatureWorkflows.forEach((workflow) => {
   }
   if (
     paper.title !== workflow.paper.title ||
+    paper.year !== workflow.paper.year ||
+    paper.venue !== workflow.paper.venue ||
     paper.pmid !== workflow.paper.pmid ||
     paper.doi !== workflow.paper.doi ||
     paper.pdfUrl !== workflow.paper.pdfUrl

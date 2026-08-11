@@ -257,7 +257,7 @@ const ExampleCardView = ({ ex, sectionCode }: { ex: LiteratureExample; sectionCo
       )}
       {ex.region && (
         <a href={regionUrl(ex.region, ex.variantId)} target="_blank" rel="noopener noreferrer">
-          View in browser
+          {ex.region.verified ? 'View in browser' : 'Open provisional locus overview'}
         </a>
       )}
       {ex.pdfUrl && (
