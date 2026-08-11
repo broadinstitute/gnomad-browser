@@ -20,7 +20,7 @@ import { SUPERPOPULATION_COLORS } from './colors'
 import { ALLELE_TYPE_COLORS, VARIANT_CATEGORY_COLORS, type VariantCategory } from '../LongReadVariantPage/variantUtils'
 import { COLOR_MODES, getVariantCssColor } from '../LongReadVariantPage/variantColorUtils'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
-import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle } from './DeckGLLollipopTrack'
+import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle, HAPLOTYPE_VIEWPORT_HEIGHT } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import { createMinimumAlleleFrequencyScale } from './minimumAlleleFrequency'
@@ -42,7 +42,31 @@ export const normalizeSelectableGroupingMode = (
 
 const Wrapper = styled.div`
   display: flex;
+  min-width: 0;
   margin-bottom: 1em;
+`
+
+const HaplotypeViewportShell = styled.div<{ $height: number }>`
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  min-width: 0;
+  height: ${(props) => props.$height}px;
+  background: #fff;
+`
+
+const HaplotypeViewportStatus = styled.div<{ $isError?: boolean }>`
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 24px;
+  background: ${(props) => props.$isError ? 'rgba(255, 248, 248, 0.94)' : 'rgba(255, 255, 255, 0.82)'};
+  color: ${(props) => props.$isError ? '#a11' : '#555'};
+  text-align: center;
+  pointer-events: none;
 `
 
 const PlotWrapper = styled.div`
@@ -113,19 +137,32 @@ const GroupingRadioGroup = styled.span`
 `
 
 const FieldsetRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, calc(60% - 4px)) minmax(0, calc(40% - 4px));
   gap: 8px;
+  align-items: stretch;
+
+  @media (max-width: 800px) {
+    grid-template-columns: minmax(0, 100%);
+  }
 `
 
 const Fieldset = styled.fieldset<{ $disabled?: boolean }>`
+  box-sizing: border-box;
+  min-width: 0;
+  min-block-size: 82px;
+  overflow-wrap: anywhere;
+  padding: 12px 16px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 12px 16px;
   margin: 0;
   background: transparent;
   opacity: ${(p) => (p.$disabled ? 0.5 : 1)};
   pointer-events: ${(p) => (p.$disabled ? 'none' : 'auto')};
+
+  @media (max-width: 800px) {
+    min-block-size: 108px;
+  }
 `
 
 const FieldsetTitle = styled.legend`
@@ -401,8 +438,8 @@ export const Legend = ({
       </ControlGroup>
 
       {/* Mode-specific controls and generally available data layers share a responsive row. */}
-      <FieldsetRow>
-        <Fieldset aria-label="Grouping subcontrols" style={{ flex: '1.2 1 240px' }}>
+      <FieldsetRow data-testid="lr-haplotype-mode-subcontrols">
+        <Fieldset aria-label="Grouping subcontrols">
           <FieldsetTitle>{isClusteredView ? 'Clustering' : 'Diploid sorting'}</FieldsetTitle>
           <ControlGroup>
             {isClusteredView ? (
@@ -469,7 +506,7 @@ export const Legend = ({
           </ControlGroup>
         </Fieldset>
 
-        <Fieldset style={{ flex: '0.8 1 240px' }}>
+        <Fieldset>
           <FieldsetTitle>Data Layers</FieldsetTitle>
           <ControlGroup>
             {isDiploidView && (
@@ -894,6 +931,10 @@ type TrackProps = {
 
 type HaplotypeTrackProps = {
   height?: number
+  viewportStatus?: {
+    kind: 'busy' | 'error' | 'empty'
+    message: string
+  } | null
   start: number
   stop: number
   haplotypeGroups: HaplotypeGroup[]
@@ -1363,12 +1404,18 @@ const ExpandInsertionsHelp = () => (
 // --- Info bar component ---
 
 const InfoBarWrapper = styled.div`
+  box-sizing: border-box;
+  min-block-size: 30px;
   padding: 5px 12px;
   background: #f8f9fa;
   border-top: 1px solid #e0e0e0;
   border-bottom: 1px solid #e0e0e0;
   font-size: 12px;
   color: #333;
+
+  @media (max-width: 600px) {
+    min-block-size: 96px;
+  }
 `
 
 export const HaplotypeInfoBar = ({
@@ -1454,7 +1501,7 @@ export const HaplotypeInfoBar = ({
   const isLoading = haplotypeLoading || workerComputing || methylationLoading
 
   return (
-    <InfoBarWrapper>
+    <InfoBarWrapper data-testid="lr-haplotype-info-slot">
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
         <span><strong>{totalSamples.toLocaleString()}</strong> {groupingMode === 'diploid' ? 'samples (diploid)' : 'haplotypes'}</span>
         <span style={{ color: '#999' }}>·</span>
@@ -2035,7 +2082,8 @@ const HaplotypeGroupTrack = ({
 // --- Main component ---
 
 const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(function HaplotypeTrack({
-  height = 500,
+  height = HAPLOTYPE_VIEWPORT_HEIGHT,
+  viewportStatus,
   haplotypeGroups,
   clusters,
   methylationData,
@@ -2252,6 +2300,18 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     return buildVariationGraph(displayGroups, start, stop)
   }, [plotType, displayGroups, start, stop])
 
+  const resolvedViewportStatus = viewportStatus ?? (
+    haplotypeLoading || workerComputing
+      ? {
+          kind: 'busy' as const,
+          message: loadingStatus || (haplotypeLoading ? 'Loading haplotypes…' : 'Computing clusters…'),
+        }
+      : displayGroups.length === 0
+        ? { kind: 'empty' as const, message: 'There is no haplotype data for this region.' }
+        : null
+  )
+  const viewportIsBusy = resolvedViewportStatus?.kind === 'busy'
+
   return (
     <Wrapper style={{ flexDirection: 'column' }}>
       {plotType === 'lollipop' && (
@@ -2260,8 +2320,14 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             <MethylationSummaryTrack methylationSummary={methylationSummary} />
           )}
 
+          <HaplotypeViewportShell
+            $height={height}
+            data-testid="lr-haplotype-viewport-shell"
+            aria-busy={viewportIsBusy}
+          >
           <DeckGLLollipopTrack
             ref={ref}
+            viewportHeight={height}
             displayGroups={displayGroups}
             haplotypeGroups={haplotypeGroups}
             clusters={filteredClusters}
@@ -2300,6 +2366,18 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             typeFilters={typeFilters}
             variantMatchesSearch={variantMatchesSearch}
           />
+          {resolvedViewportStatus && (
+            <HaplotypeViewportStatus
+              $isError={resolvedViewportStatus.kind === 'error'}
+              data-testid="lr-haplotype-viewport-status"
+              role={resolvedViewportStatus.kind === 'error' ? 'alert' : 'status'}
+              aria-live={resolvedViewportStatus.kind === 'error' ? 'assertive' : 'polite'}
+              aria-atomic="true"
+            >
+              <span>{resolvedViewportStatus.message}</span>
+            </HaplotypeViewportStatus>
+          )}
+          </HaplotypeViewportShell>
         </>
       )}
 

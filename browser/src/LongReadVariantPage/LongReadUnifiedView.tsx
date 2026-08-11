@@ -216,23 +216,50 @@ const fetchHaplotypeDataREST = async (
 // --- Styled components ---
 
 const TopBar = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, max-content) max-content minmax(180px, auto);
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 12px 0 8px;
+  gap: 8px 16px;
+  min-block-size: 52px;
+  padding: 8px 0;
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, auto) max-content;
+    min-block-size: 92px;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: minmax(0, auto);
+    align-items: start;
+    min-block-size: 154px;
+  }
 `
 
 const ViewModeControls = styled.div`
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
+  min-width: 0;
+`
+
+const ColorControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
 `
 
 const SearchInline = styled.div`
   position: relative;
-  flex: 0 1 320px;
-  min-width: 180px;
+  width: 100%;
+  min-width: 0;
+  max-width: 420px;
+
+  @media (max-width: 900px) {
+    grid-column: 1 / -1;
+    max-width: none;
+  }
 `
 
 const SearchStatus = styled.div`
@@ -255,6 +282,7 @@ const SearchStatus = styled.div`
 `
 
 const SearchInput = styled.input`
+  box-sizing: border-box;
   width: 100%;
   padding: 6px 10px 6px 30px;
   font-size: 13px;
@@ -1102,6 +1130,19 @@ const LongReadUnifiedView = ({
   // which crashes. Suppress the haplotype track until the data shape matches the mode.
   const dataIsDiploid = haplotypeGroups.groups.length > 0 && 'is_diplotype' in haplotypeGroups.groups[0]
   const dataMatchesMode = haplotypeGroups.groups.length === 0 || dataIsDiploid === isDiploidView
+  const trackHaplotypeGroups: HaplotypeGroups = dataMatchesMode ? haplotypeGroups : { groups: [] }
+  const haplotypeViewportStatus = haplotypeError
+    ? { kind: 'error' as const, message: `Unable to load Haplotype View. ${haplotypeError}` }
+    : !dataMatchesMode
+      ? { kind: 'busy' as const, message: loadingStatus || 'Computing haplotype groups…' }
+      : haplotypeLoading || workerComputing || !hasData
+        ? {
+            kind: 'busy' as const,
+            message: loadingStatus || (workerComputing ? 'Computing haplotype groups…' : 'Loading haplotypes…'),
+          }
+        : haplotypeGroups.groups.length === 0
+          ? { kind: 'empty' as const, message: 'There is no haplotype data for this region.' }
+          : null
 
   // Match HaplotypeTrack's genealogy eligibility so summary bands reserve tree space
   // only when the tree actually renders. In particular, a missing tree lets both
@@ -1757,11 +1798,6 @@ const LongReadUnifiedView = ({
           <strong>Prototype data unavailable outside chr22.</strong> This request was not routed to legacy primary data.
         </TrackPageSection>
       )}
-      {showHaplotypes && haplotypeError && (
-        <TrackPageSection as="p" role="alert">
-          <strong>Unable to load Haplotype View.</strong> {haplotypeError}
-        </TrackPageSection>
-      )}
       {showRegionWarning && (
         <div
           style={{
@@ -1798,128 +1834,9 @@ const LongReadUnifiedView = ({
         </div>
       )}
 
-      <AccordionRegionViewer mapper={accordionMapper} originalRegion={viewRegion}>
-
-      {/* Base layer — always rendered */}
-      {lod.showDensityTrack && <VariantDensityTrack variants={searchedViewportVariants} />}
-      <LRUniqueDensityTrack
-        variants={searchedViewportVariants}
-        typeFilters={typeFilters}
-        onTypeFiltersChange={setTypeFilters}
-      />
-      <LongReadVariantTrack variants={searchedViewportVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={viewRegion.start} regionStop={viewRegion.stop} />
-
-      {/* Haplotype layer — opt-in */}
-        {showHaplotypes && (
-          <>
-            {showRecombination && recombinationAvailable && (
-              <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
-            )}
-            {/* TODO: Re-enable when mQTL data source is production-ready */}
-            {false && showMqtl && (
-              <MQTLTrack
-                mqtlData={mqtlData}
-                loading={mqtlLoading}
-                minLogP={mqtlMinLogP}
-                onMinLogPChange={setMqtlMinLogP}
-              />
-            )}
-            {haplotypeGroups && !dataMatchesMode && (
-              <div
-                style={{
-                  height: 500,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#666',
-                }}
-              >
-                Computing…
-              </div>
-            )}
-            {haplotypeGroups && dataMatchesMode && (
-              <HaplotypeTrack
-                ref={trackRef}
-                haplotypeGroups={haplotypeGroups.groups as HaplotypeGroup[]}
-                clusters={haplotypeGroups.clusters}
-                methylationData={methylationData}
-                methylationSummary={methylationSummary}
-                showPerCopyMethylation={showPerCopyMethylation && joinedMethylationUsableForRegion}
-                perCopyMethylationRecords={perCopyMethylationRecords}
-                perCopyMethylationSampleStates={perCopyMethylationSampleStates}
-                sampleMetadata={sampleMetadata}
-                start={viewRegion.start}
-                stop={viewRegion.stop}
-                initialMinAf={threshold}
-                initialSortBy={sortBy}
-                onLoadAllSamples={handleLoadAllSamples}
-                methylationLoading={methylationLoading}
-                methylationSampleCount={methylationSampleCount}
-                methylationTotalSamples={methylationTotalSamples}
-                haplotypeLoading={haplotypeLoading}
-                workerComputing={workerComputing}
-                loadingStatus={loadingStatus}
-                showMqtl={false}
-                mqtlLoading={mqtlLoading}
-                mqtlData={mqtlData}
-                mqtlMinLogP={mqtlMinLogP}
-                initialColorMode={colorMode}
-                showGenealogy={showGenealogy}
-                hoveredVariantPosition={hoveredVariantPosition}
-                onVisibleGroupChange={handleVisibleGroupChange}
-                onVisibleDiploidSampleIdsChange={handleVisibleDiploidSampleIdsChange}
-                groupingMode={groupingMode}
-                clusterThreshold={clusterThreshold}
-                onClusterThresholdChange={handleClusterThresholdChange}
-                expandedClusterIds={expandedClusterIds}
-                toggleClusterExpansion={toggleClusterExpansion}
-              treeJson={haplotypeGroups.tree_json}
-              minAfFloor={autoDefaults.floor}
-              minAfCeiling={autoDefaults.ceiling}
-              distanceMetric={distanceMetric}
-              regionSize={regionSize}
-              showPhantomRegions={showPhantomRegions}
-              onVariantClick={handleVariantClickInTrack}
-              onClusterSelect={handleClusterSelect}
-              selectedClusterId={selectedClusterId}
-              highlightedVariantIds={highlightedVariantIds}
-              selectedVariantPos={selectedVariantPos}
-              showMethylation={showMethylation}
-              filterToOutliers={filterToOutliers}
-              isAutoTuned={isAutoTuned}
-              typeFilters={typeFilters}
-              variantMatchesSearch={searchIsActive ? variantMatchesSearch : undefined}
-              showOnlyMatchingHaplotypes={showOnlyMatchingHaplotypes}
-              ambiguousUnphasedRows={ambiguousUnphasedRows}
-            />
-          )}
-        </>
-      )}
-
-      {/* Axis — accordion when haplotypes active, standard otherwise */}
-      {showHaplotypes ? <AccordionPositionAxisTrack /> : <PositionAxisTrack />}
-
-      {/* The minimap changes only the shared graphical viewport. Loaded data,
-          grouping, and table rows stay stable until Set as region is used. */}
-      {onChangeZoomRegion && (
-        <TrackPageSection>
-          <ZoomOverview
-            overviewRegion={{ start, stop }}
-            currentRegion={zoomRegion || { start, stop }}
-            chrom={chrom}
-            genes={genes}
-            variants={displayVariants}
-            onChangeRegion={onChangeZoomRegion}
-            onSetRegion={onSetRegion}
-          />
-        </TrackPageSection>
-      )}
-
-      </AccordionRegionViewer>
-
-      {/* Top bar: view mode toggle + search */}
+      {/* Controls precede the visualization they govern and keep a stable document position. */}
       <TrackPageSection>
-        <TopBar>
+        <TopBar data-testid="lr-view-top-bar">
           <ViewModeControls>
             <LongReadViewHelpButton maxHaplotypeRegionSize={MAX_HAPLOTYPE_REGION_SIZE} />
             <LongReadViewControls
@@ -1930,7 +1847,7 @@ const LongReadUnifiedView = ({
               onChangeShowHaplotypes={setShowHaplotypes}
             />
           </ViewModeControls>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <ColorControls>
             <label style={{ fontSize: '12px' }}>Color:</label>
             <Select
               value={colorMode}
@@ -1940,9 +1857,10 @@ const LongReadUnifiedView = ({
                 <option key={cm.value} value={cm.value}>{cm.label}</option>
               ))}
             </Select>
-          </div>
+          </ColorControls>
           <SearchInline>
             <svg
+              aria-hidden="true"
               style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14 }}
               viewBox="0 0 24 24"
               fill="#888"
@@ -2017,6 +1935,111 @@ const LongReadUnifiedView = ({
           </div>
         )}
       </TrackPageSection>
+
+      <AccordionRegionViewer mapper={accordionMapper} originalRegion={viewRegion}>
+
+      {/* Base layer — always rendered */}
+      {lod.showDensityTrack && <VariantDensityTrack variants={searchedViewportVariants} />}
+      <LRUniqueDensityTrack
+        variants={searchedViewportVariants}
+        typeFilters={typeFilters}
+        onTypeFiltersChange={setTypeFilters}
+      />
+      <LongReadVariantTrack variants={searchedViewportVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={viewRegion.start} regionStop={viewRegion.stop} />
+
+      {/* Haplotype layer — opt-in */}
+        {showHaplotypes && (
+          <>
+            {showRecombination && recombinationAvailable && (
+              <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
+            )}
+            {/* TODO: Re-enable when mQTL data source is production-ready */}
+            {false && showMqtl && (
+              <MQTLTrack
+                mqtlData={mqtlData}
+                loading={mqtlLoading}
+                minLogP={mqtlMinLogP}
+                onMinLogPChange={setMqtlMinLogP}
+              />
+            )}
+            <HaplotypeTrack
+                ref={trackRef}
+                viewportStatus={haplotypeViewportStatus}
+                haplotypeGroups={trackHaplotypeGroups.groups as HaplotypeGroup[]}
+                clusters={trackHaplotypeGroups.clusters}
+                methylationData={methylationData}
+                methylationSummary={methylationSummary}
+                showPerCopyMethylation={showPerCopyMethylation && joinedMethylationUsableForRegion}
+                perCopyMethylationRecords={perCopyMethylationRecords}
+                perCopyMethylationSampleStates={perCopyMethylationSampleStates}
+                sampleMetadata={sampleMetadata}
+                start={viewRegion.start}
+                stop={viewRegion.stop}
+                initialMinAf={threshold}
+                initialSortBy={sortBy}
+                onLoadAllSamples={handleLoadAllSamples}
+                methylationLoading={methylationLoading}
+                methylationSampleCount={methylationSampleCount}
+                methylationTotalSamples={methylationTotalSamples}
+                haplotypeLoading={haplotypeLoading}
+                workerComputing={workerComputing}
+                loadingStatus={loadingStatus}
+                showMqtl={false}
+                mqtlLoading={mqtlLoading}
+                mqtlData={mqtlData}
+                mqtlMinLogP={mqtlMinLogP}
+                initialColorMode={colorMode}
+                showGenealogy={showGenealogy}
+                hoveredVariantPosition={hoveredVariantPosition}
+                onVisibleGroupChange={handleVisibleGroupChange}
+                onVisibleDiploidSampleIdsChange={handleVisibleDiploidSampleIdsChange}
+                groupingMode={groupingMode}
+                clusterThreshold={clusterThreshold}
+                onClusterThresholdChange={handleClusterThresholdChange}
+                expandedClusterIds={expandedClusterIds}
+                toggleClusterExpansion={toggleClusterExpansion}
+              treeJson={trackHaplotypeGroups.tree_json}
+              minAfFloor={autoDefaults.floor}
+              minAfCeiling={autoDefaults.ceiling}
+              distanceMetric={distanceMetric}
+              regionSize={regionSize}
+              showPhantomRegions={showPhantomRegions}
+              onVariantClick={handleVariantClickInTrack}
+              onClusterSelect={handleClusterSelect}
+              selectedClusterId={selectedClusterId}
+              highlightedVariantIds={highlightedVariantIds}
+              selectedVariantPos={selectedVariantPos}
+              showMethylation={showMethylation}
+              filterToOutliers={filterToOutliers}
+              isAutoTuned={isAutoTuned}
+              typeFilters={typeFilters}
+              variantMatchesSearch={searchIsActive ? variantMatchesSearch : undefined}
+              showOnlyMatchingHaplotypes={showOnlyMatchingHaplotypes}
+              ambiguousUnphasedRows={ambiguousUnphasedRows}
+            />
+        </>
+      )}
+
+      {/* Axis — accordion when haplotypes active, standard otherwise */}
+      {showHaplotypes ? <AccordionPositionAxisTrack /> : <PositionAxisTrack />}
+
+      {/* The minimap changes only the shared graphical viewport. Loaded data,
+          grouping, and table rows stay stable until Set as region is used. */}
+      {onChangeZoomRegion && (
+        <TrackPageSection>
+          <ZoomOverview
+            overviewRegion={{ start, stop }}
+            currentRegion={zoomRegion || { start, stop }}
+            chrom={chrom}
+            genes={genes}
+            variants={displayVariants}
+            onChangeRegion={onChangeZoomRegion}
+            onSetRegion={onSetRegion}
+          />
+        </TrackPageSection>
+      )}
+
+      </AccordionRegionViewer>
 
       {/* Controls panel — only visible in Haplotype View */}
       {showHaplotypes && (

@@ -60,7 +60,7 @@ const MQTL_TRACK_HEIGHT = 80
 const MQTL_PAD = 8
 const ROW_CENTER_Y = 12.5
 const INSERTION_TYPES = new Set(['ins', 'alu_ins', 'sva_ins', 'numt'])
-const SCROLL_CONTAINER_HEIGHT = 500
+export const HAPLOTYPE_VIEWPORT_HEIGHT = 500
 
 /** Accurate span measurement using end/pos when available, falling back to allele_length */
 const getVariantSpan = (v: { pos: number; end?: number | null; allele_length?: number | null }) =>
@@ -220,6 +220,7 @@ function computePopulationStats(
 
 type DeckGLLollipopTrackProps = {
   displayGroups: HaplotypeGroup[]
+  viewportHeight?: number
   variantMatchesSearch?: VariantMatchPredicate
   haplotypeGroups: HaplotypeGroup[]
   clusters?: HaplotypeCluster[]
@@ -264,6 +265,7 @@ export type DeckGLLollipopTrackHandle = {
 
 const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipopTrackProps>(function DeckGLLollipopTrack({
   displayGroups,
+  viewportHeight = HAPLOTYPE_VIEWPORT_HEIGHT,
   variantMatchesSearch,
   haplotypeGroups,
   clusters,
@@ -424,7 +426,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   const notifyVisibleDiploidSamples = useCallback(
     (scrollTop: number) => {
       if (!onVisibleDiploidSampleIdsChange) return
-      const viewportBottom = scrollTop + Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+      const viewportBottom = scrollTop + Math.min(viewportHeight, totalHeight || 1)
       const visibleSampleIds = new Set<string>()
       rowItemsRef.current.forEach((item, index) => {
         if (item.type !== 'diplotype') return
@@ -436,7 +438,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       })
       onVisibleDiploidSampleIdsChange([...visibleSampleIds].sort((a, b) => a.localeCompare(b)))
     },
-    [onVisibleDiploidSampleIdsChange, totalHeight]
+    [onVisibleDiploidSampleIdsChange, totalHeight, viewportHeight]
   )
 
   useEffect(() => {
@@ -614,7 +616,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     <div
       ref={scrollContainerRef}
       onScroll={handleScroll}
-      style={{ maxHeight: SCROLL_CONTAINER_HEIGHT, overflowY: 'auto', overflowX: 'hidden', scrollbarGutter: 'stable', position: 'relative' }}
+      style={{ height: viewportHeight, overflowY: 'auto', overflowX: 'hidden', scrollbarGutter: 'stable', position: 'relative' }}
     >
       {/* Spacer div — establishes native scrollable height */}
       <div style={{ height: totalHeight, position: 'relative' }}>
@@ -641,6 +643,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           scalePosition={adjustedScalePosition}
           width={centerWidth}
           totalHeight={totalHeight}
+          viewportHeight={viewportHeight}
           totalWidth={totalWidth}
           leftPanelWidth={leftPanelWidth}
           rightPanelWidth={rightPanelWidth}
@@ -724,6 +727,7 @@ type DeckGLCanvasProps = {
   scalePosition: (input: number) => number
   width: number
   totalHeight: number
+  viewportHeight: number
   totalWidth: number
   leftPanelWidth: number
   rightPanelWidth: number
@@ -787,6 +791,7 @@ function DeckGLLollipopCanvas({
   scalePosition,
   width,
   totalHeight,
+  viewportHeight: maximumViewportHeight,
   totalWidth,
   leftPanelWidth,
   rightPanelWidth,
@@ -821,7 +826,7 @@ function DeckGLLollipopCanvas({
   const canvasWidth = width
   const { mapper } = useContext(AccordionContext)
 
-  const viewportHeight = Math.min(SCROLL_CONTAINER_HEIGHT, totalHeight || 1)
+  const viewportHeight = Math.min(maximumViewportHeight, totalHeight || 1)
 
   // Visual-only filters. They do not affect UPGMA clustering or scientific denominators.
   const isVariantVisible = (variant: LRVariant): boolean =>
