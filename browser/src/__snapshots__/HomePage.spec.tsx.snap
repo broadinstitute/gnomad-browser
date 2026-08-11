@@ -389,17 +389,6 @@ exports[`Home Page has no unexpected changes 1`] = `
         Long-read literature workflows
       </a>
     </li>
-    <li
-      className="c10"
-    >
-      <a
-        className="c11"
-        href="/haplotype/tr-catalog"
-        onClick={[Function]}
-      >
-        Tandem-repeat haplotype catalog
-      </a>
-    </li>
   </ul>
   <p>
     Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see

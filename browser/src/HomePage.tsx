@@ -108,8 +108,8 @@ export default () => (
         </Link>
       </ListItem>
       <ListItem>
-        <Link preserveSelectedDataset={false} to="/haplotype/tr-catalog">
-          Tandem-repeat haplotype catalog
+        <Link preserveSelectedDataset={false} to="/reference-sequence-context">
+          Chromosome 22 reference sequence-context regions
         </Link>
       </ListItem>
     </List>
