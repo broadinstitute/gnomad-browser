@@ -22,11 +22,33 @@ const renderRoute = (slug: string) =>
   )
 
 const batchOneRefs = ['1', '10', '34', '72', '78', '88', '93', '140']
+const batchTwoRefs = ['3', '5', '19', '32', '44', '91', '104', '129']
 
 describe('LongReadLiteratureWorkflowPage', () => {
-  test('the 12 stable workflow records match their literature paper identities and contracts', () => {
+  test('the 20 stable workflow records match their literature paper identities and contracts', () => {
     expect(literatureWorkflows.map((workflow) => workflow.ref).sort()).toEqual(
-      ['1', '10', '25', '34', '40', '59', '72', '78', '88', '93', '111', '140'].sort()
+      [
+        '1',
+        '3',
+        '5',
+        '10',
+        '19',
+        '25',
+        '32',
+        '34',
+        '40',
+        '44',
+        '59',
+        '72',
+        '78',
+        '88',
+        '91',
+        '93',
+        '104',
+        '111',
+        '129',
+        '140',
+      ].sort()
     )
 
     const allowedStatuses = new Set([
@@ -43,6 +65,8 @@ describe('LongReadLiteratureWorkflowPage', () => {
       expect(paper).toBeDefined()
       expect(workflow.paper).toMatchObject({
         title: paper!.title,
+        year: paper!.year,
+        venue: paper!.venue,
         pmid: paper!.pmid,
         doi: paper!.doi,
         pdfUrl: paper!.pdfUrl,
@@ -60,8 +84,8 @@ describe('LongReadLiteratureWorkflowPage', () => {
       }
     })
 
-    expect(new Set(literatureWorkflows.map((workflow) => workflow.slug)).size).toBe(12)
-    expect(new Set(literatureWorkflows.map((workflow) => workflow.ref)).size).toBe(12)
+    expect(new Set(literatureWorkflows.map((workflow) => workflow.slug)).size).toBe(20)
+    expect(new Set(literatureWorkflows.map((workflow) => workflow.ref)).size).toBe(20)
   })
 
   test.each(literatureWorkflows)('routes $slug and preserves its safety boundary', (workflow) => {
@@ -214,6 +238,93 @@ describe('LongReadLiteratureWorkflowPage', () => {
     )
   })
 
+  test('preserves Batch 2 gated actions, corrected regions, and blocked no-CTA contracts', () => {
+    const workflows = new Map(literatureWorkflows.map((workflow) => [workflow.ref, workflow]))
+
+    expect(workflows.get('91')!.browserRegion).toEqual({
+      chrom: '18',
+      start: 55576116,
+      stop: 55596201,
+    })
+    expect(workflows.get('5')!.browserRegion).toEqual({
+      chrom: '3',
+      start: 36991000,
+      stop: 36995350,
+    })
+    ;['32', '129', '3'].forEach((ref) => {
+      const workflow = workflows.get(ref)!
+      expect(workflow.browserRegionStatus).toBe('provisional')
+      expect(workflow.browserRegionNotice).toMatch(/locus overview/i)
+      const rendered = renderRoute(workflow.slug)
+      expect(screen.queryByRole('link', { name: 'Try in browser' })).toBeNull()
+      expect(screen.getByRole('link', { name: 'Open provisional locus overview' })).not.toBeNull()
+      rendered.unmount()
+    })
+    ;['19', '104', '44'].forEach((ref) => {
+      const workflow = workflows.get(ref)!
+      expect(workflow.browserRegion).toBeNull()
+      expect(workflow.browserRegionBlockedReason).toMatch(/data-blocked|No safe CTA|No single/i)
+      const rendered = renderRoute(workflow.slug)
+      expect(screen.queryByRole('link', { name: /browser|locus overview/i })).toBeNull()
+      expect(screen.getByRole('status').textContent).toBe(workflow.browserRegionBlockedReason)
+      rendered.unmount()
+    })
+  })
+
+  test('retains every normalized SMARCB1 and PRKN decision branch', () => {
+    const smarcb1 = literatureWorkflows.find((workflow) => workflow.ref === '129')!
+    const prkn = literatureWorkflows.find((workflow) => workflow.ref === '104')!
+
+    expect(smarcb1.branches).toHaveLength(15)
+    expect(smarcb1.branches).toEqual(
+      expect.arrayContaining([
+        {
+          condition: 'Only low cohort AC/AF is available',
+          action: 'Do not infer within-person mosaicism; report cohort rarity only.',
+          stopRule: true,
+        },
+        {
+          condition: 'Event-level detection/representation or per-copy callability is incomplete',
+          action: 'Report data-blocked; do not report 0/584.',
+          stopRule: true,
+        },
+      ])
+    )
+    expect(prkn.branches).toHaveLength(10)
+    expect(prkn.branches).toEqual(
+      expect.arrayContaining([
+        {
+          condition:
+            'The exact inversion and deletion occur in one participant but trans phase is unproved',
+          action:
+            'Report co-occurrence with phase unresolved; do not call full paper-like compound heterozygosity.',
+          stopRule: true,
+        },
+        {
+          condition:
+            'Any required event, representation, callability, or phase denominator is missing',
+          action: 'Report that result data-blocked rather than zero.',
+          stopRule: true,
+        },
+      ])
+    )
+  })
+
+  test('retains Batch 2 population, linkage, mosaicism, and X-ploidy safety language', () => {
+    const source = (ref: string) =>
+      JSON.stringify(literatureWorkflows.find((workflow) => workflow.ref === ref))
+
+    expect(source('91')).toMatch(/representation\/callability blocked, never absent or zero/i)
+    expect(source('5')).toMatch(/same-molecule linkage is not demonstrated/i)
+    expect(source('5')).toMatch(/A\/B maternal\/paternal/i)
+    expect(source('129')).toMatch(/mosaicism unsupported/i)
+    expect(source('129')).toMatch(/low cohort AC\/AF/i)
+    expect(source('19')).toMatch(/XX participant contributes at most two callable copies/i)
+    expect(source('19')).toMatch(/XY participant at most one/i)
+    expect(source('104')).toMatch(/data-blocked rather than zero/i)
+    expect(source('44')).toMatch(/Population occurrence.*must (?:never |not )reclassify/i)
+  })
+
   test('makes the capability matrix a labeled keyboard-focusable scroll region', () => {
     const workflow = literatureWorkflows.find((item) => item.ref === '88')!
     renderRoute(workflow.slug)
@@ -258,6 +369,12 @@ describe('LongReadLiteratureWorkflowPage', () => {
   })
 
   test.each(batchOneRefs)('Batch 1 ref %s has a routable detailed record', (ref) => {
+    const workflow = literatureWorkflows.find((item) => item.ref === ref)!
+    renderRoute(workflow.slug)
+    expect(screen.getByRole('heading', { level: 1, name: workflow.paper.title })).not.toBeNull()
+  })
+
+  test.each(batchTwoRefs)('Batch 2 ref %s has a routable detailed record', (ref) => {
     const workflow = literatureWorkflows.find((item) => item.ref === ref)!
     renderRoute(workflow.slug)
     expect(screen.getByRole('heading', { level: 1, name: workflow.paper.title })).not.toBeNull()

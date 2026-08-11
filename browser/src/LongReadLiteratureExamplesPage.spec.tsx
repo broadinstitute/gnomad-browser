@@ -14,7 +14,7 @@ describe('LongReadLiteratureExamplesPage', () => {
     ).not.toBeNull()
     expect(screen.getByRole('button', { name: `All (${examples.length})` })).not.toBeNull()
 
-    const example = examples.find((item) => item.region && item.pdfUrl)
+    const example = examples.find((item) => item.region?.verified && item.pdfUrl)
     expect(example).toBeDefined()
 
     const card = screen.getByText(example!.title).parentElement!
@@ -30,11 +30,11 @@ describe('LongReadLiteratureExamplesPage', () => {
     expect(pdfLink?.getAttribute('href')).toBe(example!.pdfUrl)
   })
 
-  test('links all 12 curated papers, including every Batch 1 workflow', () => {
+  test('links all 20 curated papers, including both eight-paper batches', () => {
     render(<LongReadLiteratureExamplesPage />)
 
     const detailLinks = screen.getAllByRole('link', { name: 'Detailed workflow' })
-    expect(detailLinks).toHaveLength(12)
+    expect(detailLinks).toHaveLength(20)
     expect(detailLinks.map((link) => link.getAttribute('href')).sort()).toEqual(
       literatureWorkflows.map((workflow) => literatureWorkflowPath(workflow.slug)).sort()
     )
@@ -46,6 +46,14 @@ describe('LongReadLiteratureExamplesPage', () => {
     expect(
       detailLinks.filter((link) => batchOnePaths.includes(link.getAttribute('href')!))
     ).toHaveLength(8)
+
+    const batchTwoRefs = new Set(['3', '5', '19', '32', '44', '91', '104', '129'])
+    const batchTwoPaths = literatureWorkflows
+      .filter((workflow) => batchTwoRefs.has(workflow.ref))
+      .map((workflow) => literatureWorkflowPath(workflow.slug))
+    expect(
+      detailLinks.filter((link) => batchTwoPaths.includes(link.getAttribute('href')!))
+    ).toHaveLength(8)
   })
 
   test('marks the PALB2 locus provisional rather than verified', () => {
@@ -56,6 +64,45 @@ describe('LongReadLiteratureExamplesPage', () => {
     const card = screen.getByText(palb2.title).parentElement!
     expect(within(card).getByText('approximate region')).not.toBeNull()
     expect(within(card).queryByText('verified region')).toBeNull()
+  })
+
+  test('labels approximate index actions as locus overviews', () => {
+    render(<LongReadLiteratureExamplesPage />)
+
+    const pkd1 = examples.find((item) => item.ref === '3')!
+    const card = screen.getByText(pkd1.title).parentElement!
+    expect(
+      within(card).getByRole('link', { name: 'Open provisional locus overview' })
+    ).not.toBeNull()
+    expect(within(card).queryByRole('link', { name: 'View in browser' })).toBeNull()
+  })
+
+  test('corrects exact Batch 2 index windows and suppresses unsafe generic links', () => {
+    render(<LongReadLiteratureExamplesPage />)
+
+    const tcf4 = examples.find((item) => item.ref === '91')!
+    const mlh1 = examples.find((item) => item.ref === '5')!
+    expect(tcf4.region).toEqual({
+      chrom: '18',
+      start: 55576116,
+      stop: 55596201,
+      truncated: false,
+      verified: true,
+    })
+    expect(mlh1.region).toEqual({
+      chrom: '3',
+      start: 36991000,
+      stop: 36995350,
+      truncated: false,
+      verified: true,
+    })
+    ;['19', '104', '44'].forEach((ref) => {
+      const example = examples.find((item) => item.ref === ref)!
+      const card = screen.getByText(example.title).parentElement!
+      expect(example.region).toBeNull()
+      expect(within(card).queryByRole('link', { name: /browser|locus overview/i })).toBeNull()
+      expect(within(card).getByRole('link', { name: 'Detailed workflow' })).not.toBeNull()
+    })
   })
 
   test('does not offer a region link for the unmapped D4Z4 workflow', () => {
