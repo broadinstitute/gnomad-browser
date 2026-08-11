@@ -90,6 +90,30 @@ export default () => (
       </ListItem>
     </List>
 
+    <h2 style={{ fontSize: '1em' }}>Temporary long-read exploration links</h2>
+    <List style={{ marginBottom: '2em' }}>
+      <ListItem>
+        <Link preserveSelectedDataset={false} to="/long-read-examples">
+          Long-read example regions
+        </Link>
+      </ListItem>
+      <ListItem>
+        <Link preserveSelectedDataset={false} to="/long-read-examples-22">
+          Chromosome 22 long-read examples
+        </Link>
+      </ListItem>
+      <ListItem>
+        <Link preserveSelectedDataset={false} to="/long-read-literature-examples">
+          Long-read literature workflows
+        </Link>
+      </ListItem>
+      <ListItem>
+        <Link preserveSelectedDataset={false} to="/haplotype/tr-catalog">
+          Tandem-repeat haplotype catalog
+        </Link>
+      </ListItem>
+    </List>
+
     <p>
       Please note that the gnomAD v3 genomes are now part of gnomAD v4. For more information, see{' '}
       <Link to="/help/should-i-switch-to-the-latest-version-of-gnomad">

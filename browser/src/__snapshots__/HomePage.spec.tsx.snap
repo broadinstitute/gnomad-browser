@@ -178,6 +178,11 @@ exports[`Home Page has no unexpected changes 1`] = `
           gnomAD v4.1.1
         </option>
         <option
+          value="gnomad_r4_lr"
+        >
+          gnomAD v4.1.1 (long reads)
+        </option>
+        <option
           value="gnomad_r3"
         >
           gnomAD v3.1.2
@@ -331,6 +336,68 @@ exports[`Home Page has no unexpected changes 1`] = `
         onClick={[Function]}
       >
         Locate features not yet in gnomAD v4
+      </a>
+    </li>
+  </ul>
+  <h2
+    style={
+      {
+        "fontSize": "1em",
+      }
+    }
+  >
+    Temporary long-read exploration links
+  </h2>
+  <ul
+    className="c9"
+    style={
+      {
+        "marginBottom": "2em",
+      }
+    }
+  >
+    <li
+      className="c10"
+    >
+      <a
+        className="c11"
+        href="/long-read-examples"
+        onClick={[Function]}
+      >
+        Long-read example regions
+      </a>
+    </li>
+    <li
+      className="c10"
+    >
+      <a
+        className="c11"
+        href="/long-read-examples-22"
+        onClick={[Function]}
+      >
+        Chromosome 22 long-read examples
+      </a>
+    </li>
+    <li
+      className="c10"
+    >
+      <a
+        className="c11"
+        href="/long-read-literature-examples"
+        onClick={[Function]}
+      >
+        Long-read literature workflows
+      </a>
+    </li>
+    <li
+      className="c10"
+    >
+      <a
+        className="c11"
+        href="/haplotype/tr-catalog"
+        onClick={[Function]}
+      >
+        Tandem-repeat haplotype catalog
       </a>
     </li>
   </ul>
