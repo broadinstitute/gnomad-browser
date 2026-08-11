@@ -786,6 +786,76 @@ describe('LongReadUnifiedView haplotype request ownership', () => {
   })
 })
 
+describe('LongReadUnifiedView joined methylation cancellation ownership', () => {
+  test('reclaims a canceled visible-row claim when the row is revisited', async () => {
+    mockVisibleSampleIds = ['carrier-a']
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const first = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    expect(first.variables.sample_ids).toEqual(['carrier-a'])
+
+    act(() => mockHaplotypeTrackProps.at(-1).onVisibleDiploidSampleIdsChange(['carrier-b']))
+    await waitFor(() => expect(first.signal?.aborted).toBe(true))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const second = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    expect(second.variables.sample_ids).toEqual(['carrier-b'])
+
+    act(() => mockHaplotypeTrackProps.at(-1).onVisibleDiploidSampleIdsChange(['carrier-a']))
+    await waitFor(() => expect(second.signal?.aborted).toBe(true))
+    await waitFor(() => {
+      expect(requestsNamed('RegionJoinedPhasedMethylation')[2].variables.sample_ids).toEqual([
+        'carrier-a',
+      ])
+    })
+  })
+
+  test('reclaims a canceled visible-row claim before continuing Load All', async () => {
+    mockVisibleSampleIds = ['carrier-a']
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const canceled = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    expect(canceled.variables.sample_ids).toEqual(['carrier-a'])
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Load all methylation samples' }))
+    await waitFor(() => expect(canceled.signal?.aborted).toBe(true))
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const reclaimed = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    expect(reclaimed.variables.sample_ids).toEqual(['carrier-a'])
+
+    await resolveRequest(canceled, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(
+          ['carrier-a'],
+          ['carrier-a'],
+          [],
+          [joinedRecord('carrier-a', 99)]
+        ),
+      },
+    })
+    expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toEqual([])
+
+    await resolveRequest(reclaimed, {
+      data: {
+        joined_phased_methylation_region: joinedRegion(['carrier-a'], ['carrier-a']),
+      },
+    })
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(3))
+    expect(requestsNamed('RegionJoinedPhasedMethylation')[2].variables.sample_ids).toEqual([
+      'carrier-b',
+      'carrier-c',
+      'carrier-d',
+      'carrier-e',
+      'carrier-f',
+    ])
+  })
+})
+
 describe('LongReadUnifiedView methylation detail ownership', () => {
   test('paints both A/B copies for one-sided GT1 and GT2 carrier rows', async () => {
     const sampleIds = ['gt1-carrier', 'gt2-carrier']

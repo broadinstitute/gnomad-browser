@@ -1356,13 +1356,16 @@ const LongReadUnifiedView = ({
     [joinedMethylationDemand, joinedMethylationScope]
   )
   const loadAllJoinedMethylation = loadAllJoinedMethylationScope === joinedMethylationScope
+  // Display-roster churn is irrelevant until Load All is claimed and must not cancel
+  // an otherwise unchanged visible-row request.
+  const displayedSourceSampleIdsForLoadAll = loadAllJoinedMethylation
+    ? allDisplayedSourceSampleIds
+    : null
   const neededJoinedSampleIds = useMemo(() => {
     const needed = new Set(visibleJoinedSampleIds)
-    if (loadAllJoinedMethylation) {
-      allDisplayedSourceSampleIds.forEach((sampleId) => needed.add(sampleId))
-    }
+    displayedSourceSampleIdsForLoadAll?.forEach((sampleId) => needed.add(sampleId))
     return needed
-  }, [visibleJoinedSampleIds, loadAllJoinedMethylation, allDisplayedSourceSampleIds])
+  }, [visibleJoinedSampleIds, displayedSourceSampleIdsForLoadAll])
   const visibleMethylationProgress =
     joinedMethylationDemand.scope === joinedMethylationScope && joinedMethylationDemand.reported
       ? perCopyLoadingProgress(
@@ -1384,7 +1387,8 @@ const LongReadUnifiedView = ({
       sampleStates.forEach((state, sampleId) => {
         if (state.status === 'error') {
           // Remove the terminal state so the request effect can claim this sample
-          // exactly once; `loading` means an existing claim is already in flight.
+          // exactly once; the ownership map distinguishes active loading from a
+          // reclaimable loading state left by a canceled request.
           sampleStates.delete(sampleId)
           changed = true
         }
@@ -1515,7 +1519,7 @@ const LongReadUnifiedView = ({
     const isPending = (sampleId: string) => {
       const state = joinedMethylationViewState.sampleStates.get(sampleId)
       return (
-        state === undefined &&
+        (state === undefined || state.status === 'loading') &&
         !joinedMethylationInFlightRef.current.has(requestIdentity(sampleId))
       )
     }
@@ -1617,7 +1621,10 @@ const LongReadUnifiedView = ({
           return { ...previous, sampleStates, version: previous.version + 1 }
         })
       } finally {
-        releaseInFlight()
+        // Successful/error state updates advance `version`; their effect cleanup releases
+        // ownership before the next batch is selected. A canceled token may finish later,
+        // but can release only identities it still owns.
+        if (!gate.isCurrent(token)) releaseInFlight()
       }
     }
     fetchBatch()
