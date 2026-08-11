@@ -13,7 +13,10 @@ import {
 } from './leftPanelLabels'
 import { countVariantLociAcrossHaplotypeRows } from './haplotypeLocusCounts'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
-import { passesLongReadVariantTypeFilters } from '../LongReadVariantPage/longReadVariantTypes'
+import {
+  passesHaplotypeVariantTypeAndSnvLodFilters,
+  passesLongReadVariantTypeFilters,
+} from '../LongReadVariantPage/longReadVariantTypes'
 import {
   hslToRgba, hexToRgba, cssColorToRgba,
   getColorByHashRGBA, getColorByPositionRGBA, getColorByAfRGBA,
@@ -1345,6 +1348,10 @@ function DeckGLLollipopCanvas({
   const layers = useMemo(() => {
     console.time('[perf] DeckGL global layers')
     const lod = getLodVisibility(stop - start)
+    const isVariantVisibleAtLod = (variant: LRVariant): boolean =>
+      passesHaplotypeVariantTypeAndSnvLodFilters(
+        variant.allele_type || '', typeFilters, lod.showSnvs
+      ) && (!variantMatchesSearch || variantMatchesSearch(variant))
 
     // Global data arrays — populated across all rows, rendered as single layers
     const allBgRects: BackgroundRect[] = []
@@ -1507,9 +1514,8 @@ function DeckGLLollipopCanvas({
           const phantomCarriers = new Map<number, number>()
           for (const variant of variants) {
             const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-            if (!isVariantVisible(variant)) continue
+            if (!isVariantVisibleAtLod(variant)) continue
             const isLarge = getVariantSpan(variant) >= 50
-            if (cat === 'snv' && !lod.showSnvs) continue
             if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
             const baseColor = getVariantColor(
@@ -1703,9 +1709,8 @@ function DeckGLLollipopCanvas({
           const variant = cv.variant
           const alpha = clusterAfAlpha(cv.cluster_af)
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isVariantVisible(variant)) continue
+          if (!isVariantVisibleAtLod(variant)) continue
           const isLarge = getVariantSpan(variant) >= 50
-          if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
           const baseColor = getVariantColor(
@@ -1770,9 +1775,8 @@ function DeckGLLollipopCanvas({
         const groupPhantomCarriers = new Map<number, number>()
         for (const variant of group.variants.variants) {
           const cat = getVariantCategory(variant.allele_type || '', variant.allele_length)
-          if (!isVariantVisible(variant)) continue
+          if (!isVariantVisibleAtLod(variant)) continue
           const isLarge = getVariantSpan(variant) >= 50
-          if (cat === 'snv' && !lod.showSnvs) continue
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
           const color = getVariantColor(

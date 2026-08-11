@@ -96,3 +96,18 @@ export const selectedLongReadVariantType = (
   if (selected.length === LONG_READ_VARIANT_TYPES.length) return 'all'
   return selected.length === 1 ? selected[0] : 'custom'
 }
+
+/**
+ * Haplotype rows normally suppress individual SNV marks at density-level zoom.
+ * An explicit SNV-only selection must override that LOD suppression; otherwise
+ * the shared filter leaves only an empty haplotype canvas beneath SNV density.
+ */
+export const passesHaplotypeVariantTypeAndSnvLodFilters = (
+  alleleType: string,
+  filters: Partial<LongReadVariantTypeFilters> | undefined,
+  showSnvsAtCurrentLod: boolean
+): boolean => {
+  if (!passesLongReadVariantTypeFilters(alleleType, filters)) return false
+  if (getLongReadVariantType(alleleType) !== 'snv' || showSnvsAtCurrentLod) return true
+  return !!filters && selectedLongReadVariantType(filters) === 'snv'
+}

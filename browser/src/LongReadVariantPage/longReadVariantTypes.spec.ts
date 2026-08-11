@@ -4,6 +4,7 @@ import {
   filtersForLongReadVariantType,
   getLongReadVariantType,
   LONG_READ_VARIANT_TYPE_OPTIONS,
+  passesHaplotypeVariantTypeAndSnvLodFilters,
   passesLongReadVariantTypeFilters,
   selectedLongReadVariantType,
 } from './longReadVariantTypes'
@@ -82,6 +83,18 @@ describe('long-read variant type filters', () => {
     expect(passesLongReadVariantTypeFilters('SNP', filtersForLongReadVariantType('all'))).toBe(true)
     expect(passesLongReadVariantTypeFilters('SNP', filtersForLongReadVariantType('snv'))).toBe(true)
     expect(passesLongReadVariantTypeFilters('SNP', filtersForLongReadVariantType('del'))).toBe(false)
+  })
+
+  test('SNV selection retains SNP and snv haplotype marks past the normal SNV LOD', () => {
+    const alleleTypes = ['SNP', 'snv', 'DEL']
+    const visible = (selection: 'all' | 'snv') => alleleTypes.filter((alleleType) =>
+      passesHaplotypeVariantTypeAndSnvLodFilters(
+        alleleType, filtersForLongReadVariantType(selection), false
+      )
+    )
+
+    expect(visible('all')).toEqual(['DEL'])
+    expect(visible('snv')).toEqual(['SNP', 'snv'])
   })
 
   test('one shared selection filters summary and haplotype allele types identically', () => {
