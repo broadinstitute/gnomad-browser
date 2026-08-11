@@ -3,6 +3,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import LongReadLiteratureExamplesPage from './LongReadLiteratureExamplesPage'
 import examples from './data/longReadLiteratureExamples.json'
+import { literatureWorkflowPath, literatureWorkflows } from './longReadLiteratureWorkflows'
 
 describe('LongReadLiteratureExamplesPage', () => {
   test('renders literature links with LR browser context', () => {
@@ -27,6 +28,16 @@ describe('LongReadLiteratureExamplesPage', () => {
       }?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&show_haplotypes=true`
     )
     expect(pdfLink?.getAttribute('href')).toBe(example!.pdfUrl)
+  })
+
+  test('links only the four curated prototype papers to detailed workflows', () => {
+    render(<LongReadLiteratureExamplesPage />)
+
+    const detailLinks = screen.getAllByRole('link', { name: 'Detailed workflow' })
+    expect(detailLinks).toHaveLength(4)
+    expect(detailLinks.map((link) => link.getAttribute('href')).sort()).toEqual(
+      literatureWorkflows.map((workflow) => literatureWorkflowPath(workflow.slug)).sort()
+    )
   })
 
   test('filters cards by their primary archetype', () => {
