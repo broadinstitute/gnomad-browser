@@ -656,13 +656,7 @@
     "priorShortReadResult": null,
     "populationComparator": null,
     "whyInTruthSet": "22/22 PWS/AS correct, blinded, single assay replacing stepwise workflow",
-    "region": {
-      "chrom": "15",
-      "start": 25336390,
-      "stop": 25436390,
-      "truncated": true,
-      "verified": false
-    },
+    "region": null,
     "pdfUrl": "/papers/48.pdf"
   },
   {
@@ -1362,13 +1356,7 @@
     "priorShortReadResult": null,
     "populationComparator": "N/A",
     "whyInTruthSet": "only long reads found it; MINK1 expression halved",
-    "region": {
-      "chrom": "17",
-      "start": 4826868,
-      "stop": 4904533,
-      "truncated": false,
-      "verified": false
-    },
+    "region": null,
     "pdfUrl": "/papers/98.pdf"
   },
   {
@@ -1468,9 +1456,9 @@
     "whyInTruthSet": "unforeseen allelic heterogeneity; founder haplotypes via read+statistical phasing",
     "region": {
       "chrom": "17",
-      "start": 43057270,
-      "stop": 43157270,
-      "truncated": true,
+      "start": 43073282,
+      "stop": 43163674,
+      "truncated": false,
       "verified": false
     },
     "pdfUrl": "/papers/106.pdf"
@@ -1523,7 +1511,7 @@
     "region": {
       "chrom": "22",
       "start": 42118682,
-      "stop": 42138682,
+      "stop": 42150000,
       "truncated": false,
       "verified": false
     },
@@ -1838,9 +1826,9 @@
     "whyInTruthSet": "Becker MD; short-read whole-DMD sequencing FAILED",
     "region": {
       "chrom": "X",
-      "start": 32168643,
-      "stop": 32268643,
-      "truncated": true,
+      "start": 33204343,
+      "stop": 33214343,
+      "truncated": false,
       "verified": false
     },
     "pdfUrl": "/papers/141.pdf"

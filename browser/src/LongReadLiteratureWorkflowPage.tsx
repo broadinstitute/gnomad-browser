@@ -344,7 +344,11 @@ const WorkflowPage = ({ workflow }: { workflow: LiteratureWorkflow }) => {
       </ProvisionalBrowserAction>
     )
   } else {
-    browserAction = <PrimaryLink href={browserPath}>Try in browser</PrimaryLink>
+    browserAction = (
+      <PrimaryLink href={browserPath}>
+        {workflow.browserCohort === 'aou' ? 'Open AoU aggregate locus' : 'Try in browser'}
+      </PrimaryLink>
+    )
   }
 
   return (

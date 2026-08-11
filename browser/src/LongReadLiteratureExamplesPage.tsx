@@ -57,14 +57,24 @@ function primaryArchetypeCode(archetype: string | null): string {
   return ARCHETYPE_LABELS[code] ? code : 'R'
 }
 
-function regionUrl(region: Region, variantId?: string | null): string {
+function regionUrl(
+  region: Region,
+  variantId?: string | null,
+  cohort = LR_COHORT,
+  showHaplotypes = true
+): string {
   const params = new URLSearchParams({
     dataset: LR_DATASET,
-    lr_cohort: LR_COHORT,
-    show_haplotypes: 'true',
+    lr_cohort: cohort,
+    show_haplotypes: String(showHaplotypes),
   })
   if (variantId) params.set('variant_id', variantId)
   return `/region/${region.chrom}-${region.start}-${region.stop}?${params.toString()}`
+}
+
+function regionActionLabel(ex: LiteratureExample): string {
+  if (workflowByRef.get(ex.ref)?.browserCohort === 'aou') return 'Open AoU aggregate locus'
+  return ex.region?.verified ? 'View in browser' : 'Open provisional locus overview'
 }
 
 // Papers that share a resolved gene symbol almost always share (or overlap) a
@@ -256,8 +266,17 @@ const ExampleCardView = ({ ex, sectionCode }: { ex: LiteratureExample; sectionCo
         <a href={literatureWorkflowPath(workflowByRef.get(ex.ref)!.slug)}>Detailed workflow</a>
       )}
       {ex.region && (
-        <a href={regionUrl(ex.region, ex.variantId)} target="_blank" rel="noopener noreferrer">
-          {ex.region.verified ? 'View in browser' : 'Open provisional locus overview'}
+        <a
+          href={regionUrl(
+            ex.region,
+            ex.variantId,
+            workflowByRef.get(ex.ref)?.browserCohort,
+            workflowByRef.get(ex.ref)?.browserShowHaplotypes
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {regionActionLabel(ex)}
         </a>
       )}
       {ex.pdfUrl && (

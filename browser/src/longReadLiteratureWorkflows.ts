@@ -48,6 +48,8 @@ export type LiteratureWorkflow = {
   branches: Array<{ condition: string; action: string; stopRule: boolean }>
   story: { given: string; when: string; then: string }
   browserRegion: { chrom: string; start: number; stop: number } | null
+  browserCohort?: 'hgsvc_hprc' | 'aou'
+  browserShowHaplotypes?: boolean
   browserRegionStatus?: 'provisional'
   browserRegionNotice?: string
   browserRegionBlockedReason?: string
@@ -69,6 +71,7 @@ type LiteratureExampleIdentity = {
 
 export const literatureWorkflows = workflowData as LiteratureWorkflow[]
 
+const EXPECTED_CURATED_WORKFLOW_COUNT = 28
 const examples = examplesData as LiteratureExampleIdentity[]
 const seenSlugs = new Set<string>()
 const seenRefs = new Set<string>()
@@ -81,6 +84,12 @@ const capabilityStatuses = new Set<CapabilityStatus>([
   'inappropriate/unsafe',
 ])
 const evidenceClasses = new Set<WorkflowEvidenceClass>(['P', 'I', 'B'])
+
+if (literatureWorkflows.length !== EXPECTED_CURATED_WORKFLOW_COUNT) {
+  throw new Error(
+    `Expected ${EXPECTED_CURATED_WORKFLOW_COUNT} curated literature workflows, found ${literatureWorkflows.length}`
+  )
+}
 
 literatureWorkflows.forEach((workflow) => {
   const paper = examples.find((example) => example.ref === workflow.ref)
@@ -137,8 +146,8 @@ export const literatureWorkflowBrowserPath = (workflow: LiteratureWorkflow) => {
   const { chrom, start, stop } = workflow.browserRegion
   const params = new URLSearchParams({
     dataset: 'gnomad_r4_lr',
-    lr_cohort: 'hgsvc_hprc',
-    show_haplotypes: 'true',
+    lr_cohort: workflow.browserCohort || 'hgsvc_hprc',
+    show_haplotypes: String(workflow.browserShowHaplotypes ?? true),
   })
   return `/region/${chrom}-${start}-${stop}?${params.toString()}`
 }
