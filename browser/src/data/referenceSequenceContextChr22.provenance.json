@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "release": "GIAB/GA4GH v3.6",
+  "releaseDate": "2025-04",
+  "pilotStatus": "Pilot / experimental",
+  "referenceGenome": "GRCh38",
+  "referenceFasta": {
+    "assemblyAccession": "GCA_000001405.15",
+    "description": "GRCh38 no-alt analysis set",
+    "uncompressedMd5": "3a3347eae0893f96ecf495d1c39e2284"
+  },
+  "sourceCoordinateSystem": "0-based-half-open BED",
+  "browserCoordinateSystem": "1-based-inclusive",
+  "processingAlgorithm": "giab-reference-sequence-context-components-v1",
+  "processingDescription": "Verified compressed source SHA-256 and MD5; selected chr22; converted BED start0/end0 to 1-based-inclusive start0+1/end0; sorted by start0, end0, source order; merged overlapping or directly touching intervals without slop while preserving every source interval.",
+  "generatedAsset": "browser/src/data/referenceSequenceContextChr22.json",
+  "generatedAssetSha256": "c6969fb387a146ab15d7990897c372b0ddcc61ba78aacd3750a74c5e8ec508c9",
+  "counts": {
+    "chr22SourceIntervals": 17149,
+    "chr22SummedSourceBp": 21869699,
+    "connectedComponents": 9440,
+    "connectedComponentUnionBp": 10464193,
+    "defaultRegions": 1005
+  },
+  "sources": [
+    {
+      "sourceId": "low-mappability",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/Mappability/GRCh38_lowmappabilityall.bed.gz",
+      "relativePath": "Mappability/GRCh38_lowmappabilityall.bed.gz",
+      "md5": "8a78766bb99abf1d25a5b307d49a0324",
+      "sha256": "38707879ab51dcee3dd3331c082e2d9552a9f9d487d4de84f9ebae5b5c556d56",
+      "compressedBytes": 4466885,
+      "fileIntervals": 673815,
+      "chr22Intervals": 11654,
+      "chr22Bp": 7148877
+    },
+    {
+      "sourceId": "segmental-duplications",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/SegmentalDuplications/GRCh38_segdups.bed.gz",
+      "relativePath": "SegmentalDuplications/GRCh38_segdups.bed.gz",
+      "md5": "72ec3f7db18ef9318c64b1df271703fe",
+      "sha256": "09ac029a7d0d681a9f0ed6581a6bc10fc708a834bc3f91c46a9bef504f6055c5",
+      "compressedBytes": 65098,
+      "fileIntervals": 7432,
+      "chr22Intervals": 205,
+      "chr22Bp": 5997248
+    },
+    {
+      "sourceId": "long-tandem-repeats",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/LowComplexity/GRCh38_AllTandemRepeats_ge101bp_slop5.bed.gz",
+      "relativePath": "LowComplexity/GRCh38_AllTandemRepeats_ge101bp_slop5.bed.gz",
+      "md5": "faa006829476336457d219b115bd2e89",
+      "sha256": "572e11adda080ffe16a31e287f77e18bcfdfb2c8fb3f7915bbe5fa885b2e2324",
+      "compressedBytes": 1565202,
+      "fileIntervals": 222820,
+      "chr22Intervals": 5043,
+      "chr22Bp": 4008059
+    },
+    {
+      "sourceId": "satellites",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/LowComplexity/GRCh38_satellites_slop5.bed.gz",
+      "relativePath": "LowComplexity/GRCh38_satellites_slop5.bed.gz",
+      "md5": "63da9414e5edad77a2b29ae93a47ab20",
+      "sha256": "10207aa2dac0e1189ea553a374abbdcb4de25a81378d88dc4ba03aea8718b5a2",
+      "compressedBytes": 47277,
+      "fileIntervals": 6208,
+      "chr22Intervals": 175,
+      "chr22Bp": 2719051
+    },
+    {
+      "sourceId": "reference-gaps",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/OtherDifficult/GRCh38_gaps_slop15kb.bed.gz",
+      "relativePath": "OtherDifficult/GRCh38_gaps_slop15kb.bed.gz",
+      "md5": "194125f93992e1167d1b534fd23171c6",
+      "sha256": "b5fdbfc7e5b9cf4fa356f23841fd7b8a74fa239fd8cbc5b5c3463c9e7bdc0902",
+      "compressedBytes": 6976,
+      "fileIntervals": 878,
+      "chr22Intervals": 70,
+      "chr22Bp": 934195
+    },
+    {
+      "sourceId": "false-duplication-correct-copy",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/OtherDifficult/GRCh38_false_duplications_correct_copy.bed.gz",
+      "relativePath": "OtherDifficult/GRCh38_false_duplications_correct_copy.bed.gz",
+      "md5": "89e87651a0239b892170d7aad942f5fd",
+      "sha256": "44d07f373f6841a99fb85bd712e535e3e1364a033fd37cfd42e9e17988277717",
+      "compressedBytes": 201,
+      "fileIntervals": 12,
+      "chr22Intervals": 1,
+      "chr22Bp": 165432
+    },
+    {
+      "sourceId": "vdj-igl",
+      "url": "https://ftp-trace.ncbi.nlm.nih.gov/ReferenceSamples/giab/release/genome-stratifications/v3.6/GRCh38@all/OtherDifficult/GRCh38_VDJ.bed.gz",
+      "relativePath": "OtherDifficult/GRCh38_VDJ.bed.gz",
+      "md5": "bfe48ba5586f624972b8c243d21d97a0",
+      "sha256": "9ac770cc833acce78df6032ba01c63213f7d85c7afa7ba90801030ba95390b5b",
+      "compressedBytes": 162,
+      "fileIntervals": 8,
+      "chr22Intervals": 1,
+      "chr22Bp": 896837
+    }
+  ],
+  "citation": {
+    "text": "Dwarshuis N, Kalra D, McDaniel J, et al. The GIAB genomic stratifications resource for human reference genomes. bioRxiv 2023.10.27.563846.",
+    "doi": "10.1101/2023.10.27.563846"
+  },
+  "acknowledgement": "GIAB v3.6 stratifications were developed with the GA4GH Benchmarking Team, the Genome in a Bottle Consortium (GIAB), and the Telomere-to-Telomere Consortium. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the data.",
+  "sharing": "Publicly released data are freely available for reuse without embargo.",
+  "dataUsePolicy": "This data/work was created by employees of the National Institute of Standards and Technology (NIST), an agency of the Federal Government. Pursuant to title 17 United States Code Section 105, works of NIST employees are not subject to copyright protection in the United States. This data/work may be subject to foreign copyright.\n\nThe data/work is provided by NIST as a public service and is expressly provided AS IS. NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED OR STATUTORY, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST does not warrant or make any representations regarding the use of the data or the results thereof, including but not limited to the correctness, accuracy, reliability or usefulness of the data. NIST SHALL NOT BE LIABLE AND YOU HEREBY RELEASE NIST FROM LIABILITY FOR ANY INDIRECT, CONSEQUENTIAL, SPECIAL, OR INCIDENTAL DAMAGES (INCLUDING DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, AND THE LIKE), WHETHER ARISING IN TORT, CONTRACT, OR OTHERWISE, ARISING FROM OR RELATING TO THE DATA (OR THE USE OF OR INABILITY TO USE THIS DATA), EVEN IF NIST HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.\n\nTo the extent that NIST may hold copyright in countries other than the United States, you are hereby granted the non-exclusive irrevocable and unconditional right to print, publish, prepare derivative works and distribute the NIST data, in any medium, or authorize others to do so on your behalf, on a royalty-free basis throughout the world.\n\nYou may improve, modify, and create derivative works of the data or any portion of the data, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the data and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the data: Data citation recommendations are provided at https://www.nist.gov/open/license.\n\nPermission to use this data is contingent upon your acceptance of the terms of this agreement and upon your providing appropriate acknowledgments of NIST's creation of the data/work.",
+  "sourceManifestSha256": "04ce2072620ba66847be8b5151f2cdcf1aa88acab6656e332cf65ae592ee1420"
+}

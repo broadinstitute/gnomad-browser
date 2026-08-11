@@ -34,6 +34,7 @@ const LongReadExamplesPage = lazy(() => import('./LongReadExamplesPage'))
 const LongReadExamples22Page = lazy(() => import('./LongReadExamples22Page'))
 const LongReadLiteratureExamplesPage = lazy(() => import('./LongReadLiteratureExamplesPage'))
 const LongReadLiteratureWorkflowPage = lazy(() => import('./LongReadLiteratureWorkflowPage'))
+const ReferenceSequenceContextPage = lazy(() => import('./ReferenceSequenceContextPage'))
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
 
@@ -97,6 +98,11 @@ const Routes = () => {
         exact
         path="/long-read-literature-examples/paper/:slug"
         component={LongReadLiteratureWorkflowPage}
+      />
+      <Route
+        exact
+        path="/reference-sequence-context"
+        component={ReferenceSequenceContextPage}
       />
 
       <Route

@@ -107,6 +107,11 @@ export default () => (
           Long-read literature workflows
         </Link>
       </ListItem>
+      <ListItem>
+        <Link preserveSelectedDataset={false} to="/reference-sequence-context">
+          Chromosome 22 reference sequence-context regions
+        </Link>
+      </ListItem>
     </List>
 
     <p>
