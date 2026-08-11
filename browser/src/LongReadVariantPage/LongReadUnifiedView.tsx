@@ -50,7 +50,7 @@ import { allLongReadVariantTypesSelected } from './longReadVariantTypes'
 import { COLOR_MODES } from './variantColorUtils'
 import Variants from '../VariantList/Variants'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import { filterLongReadVariantsForViewport } from './longReadViewport'
 import { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
@@ -1675,24 +1675,35 @@ const LongReadUnifiedView = ({
     [standardizedVariants]
   )
 
-  // LOD visibility — determines what to show based on region size
-  const lod = useMemo(() => {
-    const regionSize = zoomRegion
-      ? zoomRegion.stop - zoomRegion.start
-      : stop - start
-    return getLodVisibility(regionSize)
-  }, [zoomRegion, start, stop])
-
-  // Client-side zoom filtering — does NOT trigger refetches
-  const zoomedVariants = useMemo(
-    () => filterVariantsInZoomRegion(displayVariants, zoomRegion),
-    [displayVariants, zoomRegion]
+  // The loaded region owns data, grouping, and table rows. The view region is
+  // a client-only graphical x-domain and never participates in fetch effects.
+  const viewRegion = useMemo(
+    () => zoomRegion || { start, stop },
+    [zoomRegion, start, stop]
   )
-  const searchedZoomedVariants = useMemo(
+
+  const lod = useMemo(
+    () => getLodVisibility(viewRegion.stop - viewRegion.start),
+    [viewRegion]
+  )
+
+  // Project only overlapping variants into graphical tracks. Keep the loaded
+  // array intact for the stable summary table and preserve spanning SV/TRs.
+  const viewportVariants = useMemo(
+    () => filterLongReadVariantsForViewport(displayVariants, viewRegion),
+    [displayVariants, viewRegion]
+  )
+  const searchedViewportVariants = useMemo(
     () => searchIsActive
-      ? zoomedVariants.filter((variant: LRVariant) => variantMatchesSearch(variant))
-      : zoomedVariants,
-    [zoomedVariants, searchIsActive, variantMatchesSearch]
+      ? viewportVariants.filter((variant: LRVariant) => variantMatchesSearch(variant))
+      : viewportVariants,
+    [viewportVariants, searchIsActive, variantMatchesSearch]
+  )
+  const searchedLoadedVariants = useMemo(
+    () => searchIsActive
+      ? displayVariants.filter((variant: LRVariant) => variantMatchesSearch(variant))
+      : displayVariants,
+    [displayVariants, searchIsActive, variantMatchesSearch]
   )
   const haplotypeSearchCounts = useMemo(
     () => hasLocalSearchTerms
@@ -1703,20 +1714,15 @@ const LongReadUnifiedView = ({
   const outOfRegionSearchTerm = parsedSearch.terms.find((term) => term.status === 'out_of_region')
   const malformedSearchTerms = parsedSearch.terms.filter((term) => term.status === 'malformed')
 
-  // Unfiltered zoom variants for accordion mapper (not AF-filtered)
-  const unfilteredZoomedVariants: LRVariant[] = useMemo(
-    () => filterVariantsInZoomRegion(standardizedVariants, zoomRegion),
-    [standardizedVariants, zoomRegion]
+  // Unfiltered viewport variants define optional accordion phantom loci.
+  const unfilteredViewportVariants: LRVariant[] = useMemo(
+    () => filterLongReadVariantsForViewport(standardizedVariants, viewRegion),
+    [standardizedVariants, viewRegion]
   )
 
-  // Accordion coordinate mapper — creates phantom gaps at insertion/TR loci
-  const accordionViewRegion = useMemo(
-    () => zoomRegion || { start, stop },
-    [zoomRegion, start, stop]
-  )
   const accordionMapper = useMemo(
-    () => new AccordionCoordinateMapper(accordionViewRegion, unfilteredZoomedVariants, showPhantomRegions),
-    [accordionViewRegion, unfilteredZoomedVariants, showPhantomRegions]
+    () => new AccordionCoordinateMapper(viewRegion, unfilteredViewportVariants, showPhantomRegions),
+    [viewRegion, unfilteredViewportVariants, showPhantomRegions]
   )
 
   // Map LR variants into the standard shape expected by Variants/VariantTable
@@ -1796,16 +1802,16 @@ const LongReadUnifiedView = ({
         </div>
       )}
 
-      <AccordionRegionViewer mapper={accordionMapper} originalRegion={accordionViewRegion}>
+      <AccordionRegionViewer mapper={accordionMapper} originalRegion={viewRegion}>
 
       {/* Base layer — always rendered */}
-      {lod.showDensityTrack && <VariantDensityTrack variants={searchedZoomedVariants} />}
+      {lod.showDensityTrack && <VariantDensityTrack variants={searchedViewportVariants} />}
       <LRUniqueDensityTrack
-        variants={searchedZoomedVariants}
+        variants={searchedViewportVariants}
         typeFilters={typeFilters}
         onTypeFiltersChange={setTypeFilters}
       />
-      <LongReadVariantTrack variants={searchedZoomedVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={start} regionStop={stop} />
+      <LongReadVariantTrack variants={searchedViewportVariants} lod={showHaplotypes ? lod : undefined} showGenealogyPanel={genealogyPanelVisible} isDiploidView={isDiploidView} hoveredVariantPosition={hoveredVariantPosition} onHoverVariantPosition={setHoveredVariantPosition} typeFilters={typeFilters} colorMode={colorMode} regionStart={viewRegion.start} regionStop={viewRegion.stop} />
 
       {/* Haplotype layer — opt-in */}
         {showHaplotypes && (
@@ -1846,8 +1852,8 @@ const LongReadUnifiedView = ({
                 perCopyMethylationRecords={perCopyMethylationRecords}
                 perCopyMethylationSampleStates={perCopyMethylationSampleStates}
                 sampleMetadata={sampleMetadata}
-                start={start}
-                stop={stop}
+                start={viewRegion.start}
+                stop={viewRegion.stop}
                 initialMinAf={threshold}
                 initialSortBy={sortBy}
                 onLoadAllSamples={handleLoadAllSamples}
@@ -1897,8 +1903,8 @@ const LongReadUnifiedView = ({
       {/* Axis — accordion when haplotypes active, standard otherwise */}
       {showHaplotypes ? <AccordionPositionAxisTrack /> : <PositionAxisTrack />}
 
-      {/* The LR parent viewer keeps the full loaded region as its coordinate frame,
-          so this overview owns client-side zoom and explicit region navigation. */}
+      {/* The minimap changes only the shared graphical viewport. Loaded data,
+          grouping, and table rows stay stable until Set as region is used. */}
       {onChangeZoomRegion && (
         <TrackPageSection>
           <ZoomOverview
@@ -1909,11 +1915,6 @@ const LongReadUnifiedView = ({
             variants={displayVariants}
             onChangeRegion={onChangeZoomRegion}
             onSetRegion={onSetRegion}
-            onNavigateRegion={
-              onSetRegion
-                ? (region) => onSetRegion({ start: region.start, stop: region.stop })
-                : undefined
-            }
           />
         </TrackPageSection>
       )}
@@ -1969,7 +1970,7 @@ const LongReadUnifiedView = ({
           <SearchStatus role={parsedSearch.status === 'invalid' || parsedSearch.status === 'limit_exceeded' ? 'alert' : 'status'}>
             {hasLocalSearchTerms && (
               <span>
-                {searchedZoomedVariants.length.toLocaleString()} matching variant{searchedZoomedVariants.length === 1 ? '' : 's'} in this region
+                {searchedLoadedVariants.length.toLocaleString()} matching variant{searchedLoadedVariants.length === 1 ? '' : 's'} in this loaded region
                 {parsedSearch.validTerms.length > 1 ? ` (${parsedSearch.validTerms.length} terms, OR)` : ''}.
               </span>
             )}
@@ -2092,7 +2093,7 @@ const LongReadUnifiedView = ({
               <HaplotypeVariantTable
                   ref={tableRef}
                   mode="haplotype"
-                  summaryVariants={zoomedVariants}
+                  summaryVariants={displayVariants}
                   haplotypeGroups={haplotypeGroups as { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }}
                   sampleMetadata={sampleMetadata}
                   ambiguousUnphasedRows={ambiguousUnphasedRows}
@@ -2113,7 +2114,7 @@ const LongReadUnifiedView = ({
             <HaplotypeVariantTable
               mode="summary"
               lrCohort={lrCohort}
-              summaryVariants={zoomedVariants}
+              summaryVariants={displayVariants}
               onHoverVariant={setHoveredVariantPosition}
               searchText={searchText}
               parsedSearch={parsedSearch}

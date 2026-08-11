@@ -1,8 +1,8 @@
 import React, { useContext, useMemo } from 'react'
 import { RegionViewerContext } from '@gnomad/region-viewer'
-import type { ScalePosition } from '@gnomad/region-viewer'
 import { AccordionCoordinateMapper } from './AccordionCoordinateMapper'
 import AccordionContext from './AccordionContext'
+import { createAccordionViewportScale } from './accordionViewportScale'
 
 type AccordionRegionViewerProps = {
   mapper: AccordionCoordinateMapper
@@ -28,46 +28,18 @@ const AccordionRegionViewer = ({
   const baseContext = useContext(RegionViewerContext)
 
   const overriddenContext = useMemo(() => {
-    if (!mapper.hasPhantomRegions) {
-      // No phantom regions — pass through unchanged
-      return baseContext
-    }
+    // Always provide an extrapolating view-domain scale. RegionViewer's default
+    // scale clamps loaded-region positions outside the client viewport to its
+    // edges, which creates false piles of offscreen lollipop marks at x=0/width.
+    // Accordion phantom space is incorporated into the same scale when enabled.
+    const customScale = createAccordionViewportScale(
+      mapper,
+      originalRegion,
+      baseContext.centerPanelWidth
+    )
 
-    // Build a wrapped scalePosition that maps genomic -> synthetic -> pixels.
-    // The base scalePosition maps the synthetic region [viewStart, viewStart + totalVisualLength]
-    // to pixels. We need it to map from the *synthetic* domain produced by the
-    // parent RegionViewer. But the parent RegionViewer was given the original
-    // genomic region, not the synthetic one.
-    //
-    // Since we can't change the parent RegionViewer's region, we need to
-    // compute the pixel mapping ourselves. The base scalePosition maps
-    // [originalRegion.start, originalRegion.stop] -> [0, centerPanelWidth].
-    // We need to map [originalRegion.start, originalRegion.start + totalVisualLength]
-    // -> [0, centerPanelWidth].
-    //
-    // Strategy: compute a scale factor. The original region spans
-    // (stop - start) in genomic coords. With accordion, the visual span is
-    // totalVisualLength. All positions get compressed by the ratio.
-    const genomicSpan = originalRegion.stop - originalRegion.start
-    const visualSpan = mapper.totalVisualLength
-    const compressionRatio = genomicSpan / visualSpan
-    const pxPerUnit = baseContext.centerPanelWidth / visualSpan
-
-    const customScale = ((pos: number): number => {
-      const syntheticPos = mapper.getSyntheticCoordinate(pos, 0)
-      const offset = syntheticPos - originalRegion.start
-      return offset * pxPerUnit
-    }) as ScalePosition
-
-    customScale.invert = (px: number): number => {
-      const offset = px / pxPerUnit
-      const syntheticPos = originalRegion.start + offset
-      return mapper.visualToGenomic(syntheticPos)
-    }
-
-    const isPositionDefined = (pos: number): boolean => {
-      return pos >= originalRegion.start && pos <= originalRegion.stop
-    }
+    const isPositionDefined = (pos: number): boolean =>
+      pos >= originalRegion.start && pos <= originalRegion.stop
 
     return {
       ...baseContext,

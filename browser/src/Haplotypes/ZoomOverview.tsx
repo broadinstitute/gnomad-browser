@@ -1,6 +1,7 @@
 import React, { useRef, useState, useCallback, useMemo, useEffect } from 'react'
 import styled from 'styled-components'
 import HaplotypeHelpButton from './HelpButton'
+import { zoomRegionWithinOverview } from './zoomRegion'
 
 const OverviewContainer = styled.div`
   position: relative;
@@ -14,6 +15,7 @@ const OverviewContainer = styled.div`
 const OverviewHeader = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
   margin-bottom: 0.25rem;
   font-size: 13px;
@@ -22,6 +24,7 @@ const OverviewHeader = styled.div`
 const ZoomInfo = styled.span`
   color: #333;
   flex: 1;
+  min-width: 180px;
 `
 
 const SetRegionButton = styled.button`
@@ -62,6 +65,7 @@ const ResetButton = styled.button`
 const ZoomButtonGroup = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.25rem;
   font-size: 11px;
   color: #616161;
@@ -88,6 +92,7 @@ const ZoomButton = styled.button`
 const TrackWrapper = styled.div`
   position: relative;
   user-select: none;
+  touch-action: none;
   overflow: hidden;
 `
 
@@ -198,7 +203,6 @@ interface ZoomOverviewProps {
   variants?: any[]
   onChangeRegion: (region: { start: number; stop: number } | null) => void
   onSetRegion?: (region: { start: number; stop: number }) => void
-  onNavigateRegion?: (region: { chrom: string; start: number; stop: number }) => void
 }
 
 export default function ZoomOverview({
@@ -209,7 +213,6 @@ export default function ZoomOverview({
   variants = [],
   onChangeRegion,
   onSetRegion,
-  onNavigateRegion,
 }: ZoomOverviewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(800)
@@ -231,23 +234,9 @@ export default function ZoomOverview({
 
   const handleZoom = useCallback(
     (factor: number) => {
-      const center = (currentRegion.start + currentRegion.stop) / 2
-      const newSize = (currentRegion.stop - currentRegion.start) / factor
-      let newStart = Math.round(center - newSize / 2)
-      let newStop = Math.round(center + newSize / 2)
-
-      if (newStart >= overviewRegion.start && newStop <= overviewRegion.stop) {
-        onChangeRegion({ start: newStart, stop: newStop })
-      } else if (onNavigateRegion) {
-        newStart = Math.max(1, newStart)
-        onNavigateRegion({ chrom, start: newStart, stop: newStop })
-      } else {
-        newStart = Math.max(overviewRegion.start, newStart)
-        newStop = Math.min(overviewRegion.stop, newStop)
-        onChangeRegion({ start: newStart, stop: newStop })
-      }
+      onChangeRegion(zoomRegionWithinOverview(currentRegion, overviewRegion, factor))
     },
-    [currentRegion, overviewRegion, chrom, onChangeRegion, onNavigateRegion]
+    [currentRegion, overviewRegion, onChangeRegion]
   )
 
   useEffect(() => {
@@ -282,8 +271,8 @@ export default function ZoomOverview({
   )
   const maxDensity = Math.max(1, ...densityBins)
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent, type: 'move' | 'resize-left' | 'resize-right') => {
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent, type: 'move' | 'resize-left' | 'resize-right') => {
       e.preventDefault()
       e.stopPropagation()
       dragMovedRef.current = false
@@ -300,9 +289,10 @@ export default function ZoomOverview({
     [currentRegion, scale]
   )
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
+  const handlePointerMove = useCallback(
+    (e: PointerEvent) => {
       if (!dragState) return
+      e.preventDefault()
       const deltaX = e.clientX - dragState.startX
 
       if (!dragMovedRef.current && Math.abs(deltaX) > 3) {
@@ -342,7 +332,7 @@ export default function ZoomOverview({
     [dragState, scale, overviewRegion.start, overviewRegion.stop]
   )
 
-  const handleMouseUp = useCallback(() => {
+  const handlePointerUp = useCallback(() => {
     if (dragState && tempRegion) {
       clickBlockerRef.current = dragMovedRef.current
       onChangeRegion(tempRegion)
@@ -357,14 +347,14 @@ export default function ZoomOverview({
 
   useEffect(() => {
     if (dragState) {
-      window.addEventListener('mousemove', handleMouseMove)
-      window.addEventListener('mouseup', handleMouseUp)
+      window.addEventListener('pointermove', handlePointerMove)
+      window.addEventListener('pointerup', handlePointerUp)
       return () => {
-        window.removeEventListener('mousemove', handleMouseMove)
-        window.removeEventListener('mouseup', handleMouseUp)
+        window.removeEventListener('pointermove', handlePointerMove)
+        window.removeEventListener('pointerup', handlePointerUp)
       }
     }
-  }, [dragState, handleMouseMove, handleMouseUp])
+  }, [dragState, handlePointerMove, handlePointerUp])
 
   const handleTrackClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -412,9 +402,9 @@ export default function ZoomOverview({
         <span style={{ fontWeight: 600, fontSize: 12, color: '#555', whiteSpace: 'nowrap' }}>Zoom Controls</span>
         <HaplotypeHelpButton title="Zoom Controls">
           <h4 style={{ margin: '0 0 8px' }}>Zooming in (no page reload)</h4>
-          <p>Use the +1.5x / +3x / +10x buttons or drag the edges of the highlight box on the minimap to zoom into a sub-region. This is instant &mdash; it filters the visible data client-side without fetching new data from the server. All tracks, haplotypes, and the variant table update to show only the zoomed region.</p>
-          <h4 style={{ margin: '16px 0 8px' }}>Zooming out (requires page reload)</h4>
-          <p>The &minus;1.5x / &minus;3x / &minus;10x buttons zoom out, but only up to the boundaries of the originally loaded region. To view a larger region than what was initially loaded, you need to navigate to a new region via the browser URL or gene/region search, which triggers a full page reload and new data fetch.</p>
+          <p>Use the +1.5x / +3x / +10x buttons or drag the edges of the highlight box on the minimap to zoom into a sub-region. This instantly changes the shared graphical coordinate scale without fetching new data from the server. All aligned tracks pan and zoom together; grouping and the variant table remain based on the full loaded region.</p>
+          <h4 style={{ margin: '16px 0 8px' }}>Zooming and panning within loaded data</h4>
+          <p>The &minus;1.5x / &minus;3x / &minus;10x buttons zoom out only to the boundaries of the loaded region. Drag the highlighted window or click the minimap to pan without a page reload. To view coordinates outside the loaded region, navigate to a new region explicitly.</p>
           <h4 style={{ margin: '16px 0 8px' }}>&ldquo;Set as region&rdquo;</h4>
           <p>When zoomed in, the <strong>Set as region</strong> button commits the current zoom window as the new page-level region. This triggers a full reload with the narrower coordinates, which is useful when you want to:</p>
           <ul style={{ margin: '8px 0 0 20px', lineHeight: 1.8 }}>
@@ -557,15 +547,15 @@ export default function ZoomOverview({
             width: `${Math.max(selectionWidth, 10)}px`,
             ...(isFullView ? { background: 'transparent', borderColor: 'transparent' } : {}),
           }}
-          onMouseDown={e => handleMouseDown(e, 'move')}
+          onPointerDown={e => handlePointerDown(e, 'move')}
         >
           <ResizeHandle
             $position="left"
-            onMouseDown={e => handleMouseDown(e, 'resize-left')}
+            onPointerDown={e => handlePointerDown(e, 'resize-left')}
           />
           <ResizeHandle
             $position="right"
-            onMouseDown={e => handleMouseDown(e, 'resize-right')}
+            onPointerDown={e => handlePointerDown(e, 'resize-right')}
           />
         </SelectionOverlay>
       </TrackWrapper>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import CoverageTrack from '../CoverageTrack'
 
@@ -26,9 +26,18 @@ type LRCoverageTrackProps = {
   start: number
   stop: number
   lrCohort?: 'hgsvc_hprc' | 'aou'
+  viewStart?: number
+  viewStop?: number
 }
 
-const LRCoverageTrack = ({ chrom, start, stop, lrCohort = 'hgsvc_hprc' }: LRCoverageTrackProps) => {
+const LRCoverageTrack = ({
+  chrom,
+  start,
+  stop,
+  lrCohort = 'hgsvc_hprc',
+  viewStart = start,
+  viewStop = stop,
+}: LRCoverageTrackProps) => {
   const [coverageData, setCoverageData] = useState<any[] | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -64,6 +73,13 @@ const LRCoverageTrack = ({ chrom, start, stop, lrCohort = 'hgsvc_hprc' }: LRCove
     return () => controller.abort()
   }, [chrom, start, stop, lrCohort])
 
+  const visibleCoverageData = useMemo(
+    () => (coverageData || []).filter(
+      (bucket) => bucket.pos >= viewStart && bucket.pos <= viewStop
+    ),
+    [coverageData, viewStart, viewStop]
+  )
+
   if (lrCohort === 'aou' || error) {
     return null
   }
@@ -83,7 +99,7 @@ const LRCoverageTrack = ({ chrom, start, stop, lrCohort = 'hgsvc_hprc' }: LRCove
       datasets={[
         {
           color: '#9c27b0',
-          buckets: coverageData,
+          buckets: visibleCoverageData,
           name: 'Long Read',
           opacity: 0.7,
         },

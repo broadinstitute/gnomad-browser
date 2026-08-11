@@ -261,12 +261,6 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
               search: queryString.stringify({ threshold, sortBy, colorMode }),
             })
           }}
-          onNavigateRegion={(newRegion) => {
-            history.push({
-              pathname: `/haplotype/region/${newRegion.chrom}-${newRegion.start}-${newRegion.stop}`,
-              search: queryString.stringify({ threshold, sortBy, colorMode }),
-            })
-          }}
         />
       </TrackPageSection>
       <RegionViewer
@@ -275,9 +269,15 @@ const HaplotypeRegionPage = ({ datasetId, region }: HaplotypeRegionPageProps) =>
         rightPanelWidth={isSmallScreen ? 0 : showGenealogy ? 250 : 80}
         width={regionViewerWidth}
       >
-        <LRCoverageTrack chrom={viewRegion.chrom} start={viewRegion.start} stop={viewRegion.stop} />
+        <LRCoverageTrack
+          chrom={chrom}
+          start={start}
+          stop={stop}
+          viewStart={viewRegion.start}
+          viewStop={viewRegion.stop}
+        />
 
-        <RecombinationRatePlot chrom={viewRegion.chrom} start={viewRegion.start} stop={viewRegion.stop} />
+        <RecombinationRatePlot chrom={chrom} start={start} stop={stop} />
         <GenesInRegionTrack genes={region.genes.filter((g: any) => g.stop >= viewRegion.start && g.start <= viewRegion.stop)} region={viewRegion} />
         {/* TODO: Re-enable when mQTL data source is production-ready */}
         {false && showMqtl && (

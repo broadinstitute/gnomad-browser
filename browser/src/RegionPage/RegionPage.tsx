@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -128,6 +128,10 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
   const { chrom, start, stop } = region
   const [zoomRegion, setZoomRegion] = useState<{ start: number; stop: number } | null>(null)
 
+  useEffect(() => {
+    setZoomRegion(null)
+  }, [chrom, start, stop])
+
   const { width: windowWidth } = useWindowSize()
   const isSmallScreen = windowWidth < 900
   const location = useLocation()
@@ -182,7 +186,16 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
   let coverageTrack = null
   if (isLongRead(datasetId)) {
     coverageTrack = lrCohort === 'hgsvc_hprc'
-      ? <LRCoverageTrack chrom={chrom} start={start} stop={stop} lrCohort={lrCohort} />
+      ? (
+          <LRCoverageTrack
+            chrom={chrom}
+            start={start}
+            stop={stop}
+            lrCohort={lrCohort}
+            viewStart={viewRegion.start}
+            viewStop={viewRegion.stop}
+          />
+        )
       : null
   } else if (region.chrom === 'M') {
     coverageTrack = <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
@@ -243,7 +256,7 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
       </TrackPageSection>
       <RegionViewer
         leftPanelWidth={115}
-        regions={[isLongRead(datasetId) ? region : viewRegion]}
+        regions={[viewRegion]}
         rightPanelWidth={regionViewerRightPanelWidth}
         width={regionViewerWidth}
       >
