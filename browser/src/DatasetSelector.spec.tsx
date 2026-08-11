@@ -14,7 +14,7 @@ const textContent = (node: renderer.ReactTestInstance): string =>
     .join('')
 
 describe('dataset URL sanitizer', () => {
-  test('preserves only sanitized variant search for compatible datasets', () => {
+  test('preserves only sanitized variant search for same-build compatible datasets', () => {
     const search = sanitizeDatasetSearch(
       '?dataset=gnomad_r4_lr&variant_id=%00chr22%3A100%20A%3ET%0A&lr_cohort=aou&show_haplotypes=true&show_tree=true&methylation_sample=HG001&show_methylation=true&filter=PASS&other=unsafe',
       'gnomad_r4'
@@ -27,9 +27,58 @@ describe('dataset URL sanitizer', () => {
     })
   })
 
+  test('clears assembly-scoped variant search across reference builds', () => {
+    const search = sanitizeDatasetSearch(
+      '?dataset=gnomad_r4&variant_id=22-100-A-T&other=unsafe',
+      'gnomad_r2_1'
+    )
+
+    expect(Object.fromEntries(new URLSearchParams(search).entries())).toEqual({
+      dataset: 'gnomad_r2_1',
+    })
+  })
+
+  test.each(['22-36286017-TRV-72', 'X-12345-DEL-100', '22-36286660-SNV', '22-100-A-T~1'])(
+    'clears LR-only identifier %s when moving to a short-read dataset',
+    (variantId) => {
+      const search = sanitizeDatasetSearch(
+        `?dataset=gnomad_r4_lr&variant_id=${encodeURIComponent(variantId)}&lr_cohort=aou`,
+        'gnomad_r4'
+      )
+
+      expect(Object.fromEntries(new URLSearchParams(search).entries())).toEqual({
+        dataset: 'gnomad_r4',
+      })
+    }
+  )
+
+  test('preserves a shared sequence-variant identifier when moving from LR to short reads', () => {
+    const search = sanitizeDatasetSearch(
+      '?dataset=gnomad_r4_lr&variant_id=22-100-A-T&lr_cohort=aou',
+      'gnomad_r4'
+    )
+
+    expect(Object.fromEntries(new URLSearchParams(search).entries())).toEqual({
+      dataset: 'gnomad_r4',
+      variant_id: '22-100-A-T',
+    })
+  })
+
+  test('preserves symbolic LR identifiers within the same LR dataset family', () => {
+    const search = sanitizeDatasetSearch(
+      '?dataset=gnomad_r4_lr&variant_id=22-36286017-TRV-72&lr_cohort=aou',
+      'gnomad_r4_lr'
+    )
+
+    expect(Object.fromEntries(new URLSearchParams(search).entries())).toEqual({
+      dataset: 'gnomad_r4_lr',
+      variant_id: '22-36286017-TRV-72',
+    })
+  })
+
   test('clears variant and LR-only state for an incompatible structural-variant dataset', () => {
     const search = sanitizeDatasetSearch(
-      '?variant_id=22-100-A-T&lr_cohort=hgsvc_hprc&show_haplotypes=true&show_tree=true&show_per_copy_methylation=true&methylation=true',
+      '?dataset=gnomad_r4_lr&variant_id=22-100-A-T&lr_cohort=hgsvc_hprc&show_haplotypes=true&show_tree=true&show_per_copy_methylation=true&methylation=true',
       'gnomad_sv_r4'
     )
 

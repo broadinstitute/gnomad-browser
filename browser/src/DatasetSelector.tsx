@@ -9,6 +9,7 @@ import sampleCounts from '@gnomad/dataset-metadata/sampleCounts'
 
 import {
   DatasetId,
+  allDatasetIds,
   labelForDataset,
   hasShortVariants,
   hasStructuralVariants,
@@ -18,6 +19,7 @@ import {
   isLongRead,
   isV2,
 } from '@gnomad/dataset-metadata/metadata'
+import { parseLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
 import { logButtonClick } from './analytics'
 import { variantSearchFromUrl } from './RegionPage/variantSearchParam'
 
@@ -457,6 +459,35 @@ type DatasetSelectorProps = {
   history: History
 }
 
+const datasetFromSearch = (search: string): DatasetId | null => {
+  try {
+    const datasetId = new URLSearchParams(search).get('dataset') as DatasetId | null
+    return datasetId && allDatasetIds.includes(datasetId) ? datasetId : null
+  } catch {
+    return null
+  }
+}
+
+// LR sequence-variant IDs share the short-read identifier family. Symbolic LR
+// IDs (SV/TR/SNV labels and provenance-qualified IDs) do not: a short-read
+// dataset cannot resolve them even though both datasets expose variant tables.
+const isLongReadOnlyVariantSearch = (variantSearch: string): boolean =>
+  variantSearch.split(',').some((value) => {
+    const identifier = parseLongReadVariantId(value.trim())
+    return Boolean(identifier?.alleleType || identifier?.provenance)
+  })
+
+const canRetainVariantSearch = (
+  sourceDatasetId: DatasetId | null,
+  targetDatasetId: DatasetId,
+  variantSearch: string
+): boolean =>
+  sourceDatasetId !== null &&
+  hasShortVariants(sourceDatasetId) &&
+  hasShortVariants(targetDatasetId) &&
+  referenceGenome(sourceDatasetId) === referenceGenome(targetDatasetId) &&
+  (isLongRead(targetDatasetId) || !isLongReadOnlyVariantSearch(variantSearch))
+
 // Dataset changes cross scientific data scopes. Preserve only state that has the
 // same meaning in both scopes; every LR/phasing/methylation flag and every
 // dataset-specific filter is intentionally dropped by this allowlist.
@@ -464,9 +495,12 @@ export const sanitizeDatasetSearch = (search: string, datasetId: DatasetId): str
   const sanitized = new URLSearchParams()
   sanitized.set('dataset', datasetId)
 
-  if (hasShortVariants(datasetId)) {
-    const variantSearch = variantSearchFromUrl(search)
-    if (variantSearch) sanitized.set('variant_id', variantSearch)
+  const variantSearch = variantSearchFromUrl(search)
+  if (
+    variantSearch &&
+    canRetainVariantSearch(datasetFromSearch(search), datasetId, variantSearch)
+  ) {
+    sanitized.set('variant_id', variantSearch)
   }
 
   return sanitized.toString()
