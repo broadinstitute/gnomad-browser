@@ -7,6 +7,7 @@ import { scaleLinear } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { getDiploidSampleLabelColor } from './diploidSampleLabelColor'
 import { formatDiploidSampleLabel, getCollapsedClusterLabelLayout } from './leftPanelLabels'
+import { countVariantLociAcrossHaplotypeRows } from './haplotypeLocusCounts'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
 import { passesLongReadVariantTypeFilters } from '../LongReadVariantPage/longReadVariantTypes'
 import {
@@ -1314,14 +1315,8 @@ function DeckGLLollipopCanvas({
 
   // Pre-aggregate locus counts for haplotype_count color mode
   const locusCounts = useMemo(() => {
-    const counts = new Map<string, number>()
-    if (colorMode !== 'haplotype_count') return counts
-    for (const group of haplotypeGroups) {
-      for (const v of group.variants.variants) {
-        counts.set(v.variant_id, (counts.get(v.variant_id) || 0) + 1)
-      }
-    }
-    return counts
+    if (colorMode !== 'haplotype_count') return new Map<string, number>()
+    return countVariantLociAcrossHaplotypeRows(haplotypeGroups)
   }, [colorMode, haplotypeGroups])
 
   // Consolidated global DeckGL layers — one layer per data type for performance at 500+ rows
