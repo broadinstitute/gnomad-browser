@@ -21,6 +21,18 @@ let mockJoinedCapability: any = null
 let mockJoinedCapabilityFailure: 'graphql' | 'network' | null = null
 let mockDeferJoinedCapability = false
 let mockDeferHaplotype = false
+const mockComputeHaplotypeViewCalls: any[][] = []
+
+jest.mock('../Haplotypes/haplotypeCompute', () => {
+  const actual: any = jest.requireActual('../Haplotypes/haplotypeCompute')
+  return {
+    ...actual,
+    computeHaplotypeView: (...args: any[]) => {
+      mockComputeHaplotypeViewCalls.push(args)
+      return actual.computeHaplotypeView(...args)
+    },
+  }
+})
 
 jest.mock('@gnomad/region-viewer', () => {
   // eslint-disable-next-line global-require
@@ -304,7 +316,11 @@ class MockWorker {
     }
   }
 
-  respond(message: any, data = workerDataOverride || workerData()) {
+  respond(
+    message: any,
+    data = workerDataOverride || workerData(),
+    representationIdentity = message.representationIdentity
+  ) {
     const type = message.type === 'INIT' ? 'READY' : 'UPDATED'
     this.onmessage?.({
       data: {
@@ -312,7 +328,7 @@ class MockWorker {
         data: JSON.parse(JSON.stringify(data)),
         requestGeneration: message.requestGeneration,
         computeGeneration: message.computeGeneration,
-        representationIdentity: message.representationIdentity,
+        representationIdentity,
       },
     } as MessageEvent)
   }
@@ -418,12 +434,14 @@ beforeEach(() => {
   workerDataOverride = null
   mockWorkerAutoRespond = true
   mockWorkers.length = 0
+  mockComputeHaplotypeViewCalls.length = 0
   Object.defineProperty(globalThis, 'Worker', {
     configurable: true,
     writable: true,
     value: MockWorker,
   })
   jest.spyOn(console, 'log').mockImplementation(() => {})
+  jest.spyOn(console, 'warn').mockImplementation(() => {})
   jest.spyOn(console, 'error').mockImplementation(() => {})
   jest.spyOn(console, 'time').mockImplementation(() => {})
   jest.spyOn(console, 'timeEnd').mockImplementation(() => {})
@@ -546,6 +564,116 @@ describe('LongReadUnifiedView haplotype request ownership', () => {
     expect(haplotypeRestCalls()).toHaveLength(1)
     expect(mockWorkers).toHaveLength(1)
     expect(mockWorkers[0].messages.filter((message) => message.type === 'INIT')).toHaveLength(1)
+  })
+
+  test('uses the live caller-requested similarity mode for INIT after a rapid pending-REST toggle', async () => {
+    mockDeferHaplotype = true
+    mockWorkerAutoRespond = false
+    renderView()
+    await waitFor(() => expect(requestsNamed('HaplotypeREST')).toHaveLength(1))
+    await waitFor(() => expect(mockWorkers).toHaveLength(1))
+
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('similarity'))
+    await resolveRequest(requestsNamed('HaplotypeREST')[0], {
+      variants: { variant_id: [] },
+      carrier_variant_indices: {},
+      carriers: [],
+      auto_defaults: {
+        floor: 0,
+        ceiling: 1,
+        defaultAf: 0,
+        defaultClusterThreshold: 0.01,
+        isClusteredView: false,
+      },
+    })
+
+    await waitFor(() => {
+      expect(mockWorkers[0].messages.filter((message) => message.type === 'INIT')).toHaveLength(1)
+    })
+    const init = mockWorkers[0].messages.find((message) => message.type === 'INIT')
+    expect(init).toMatchObject({ isClusteredView: true, isDiploidView: false })
+    expect(JSON.parse(init.representationIdentity)[1]).toBe(true)
+  })
+
+  test('uses caller-requested similarity mode in main-thread fallback after a pending-REST toggle', async () => {
+    mockDeferHaplotype = true
+    Object.defineProperty(globalThis, 'Worker', {
+      configurable: true,
+      writable: true,
+      value: function UnavailableWorker() { throw new Error('worker unavailable') },
+    })
+    renderView()
+    await waitFor(() => expect(requestsNamed('HaplotypeREST')).toHaveLength(1))
+
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('similarity'))
+    await resolveRequest(requestsNamed('HaplotypeREST')[0], {
+      variants: { variant_id: [] },
+      carrier_variant_indices: {},
+      carriers: [],
+      auto_defaults: {
+        floor: 0,
+        ceiling: 1,
+        defaultAf: 0,
+        defaultClusterThreshold: 0.01,
+        isClusteredView: false,
+      },
+    })
+
+    await waitFor(() => expect(mockComputeHaplotypeViewCalls).toHaveLength(1))
+    expect(mockComputeHaplotypeViewCalls[0][4]).toBe(true)
+    expect(mockComputeHaplotypeViewCalls[0][7]).toBe(false)
+    expect(mockWorkers).toHaveLength(0)
+    expect(mockHaplotypeTrackProps.at(-1).viewportStatus?.kind).toBe('empty')
+  })
+
+  test('falls back to retained main-thread raw data when the worker errors before REST resolves', async () => {
+    mockDeferHaplotype = true
+    mockWorkerAutoRespond = false
+    renderView()
+    await waitFor(() => expect(requestsNamed('HaplotypeREST')).toHaveLength(1))
+    await waitFor(() => expect(mockWorkers).toHaveLength(1))
+    const failedWorker = mockWorkers[0]
+
+    act(() => failedWorker.onerror?.())
+    await resolveRequest(requestsNamed('HaplotypeREST')[0], {
+      variants: { variant_id: [] },
+      carrier_variant_indices: {},
+      carriers: [],
+      auto_defaults: {
+        floor: 0,
+        ceiling: 1,
+        defaultAf: 0,
+        defaultClusterThreshold: 0.01,
+        isClusteredView: false,
+      },
+    })
+
+    await waitFor(() => expect(mockComputeHaplotypeViewCalls).toHaveLength(1))
+    expect(failedWorker.messages).toHaveLength(0)
+    expect(mockHaplotypeTrackProps.at(-1).viewportStatus?.kind).toBe('empty')
+
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('similarity'))
+    await waitFor(() => expect(mockComputeHaplotypeViewCalls).toHaveLength(2))
+    expect(haplotypeRestCalls()).toHaveLength(1)
+    expect(failedWorker.messages).toHaveLength(0)
+  })
+
+  test('rejects a worker response with current generations but the wrong representation identity', async () => {
+    mockWorkerAutoRespond = false
+    renderView()
+    await waitFor(() => expect(mockWorkers[0]?.messages.filter((message) => message.type === 'INIT')).toHaveLength(1))
+    const worker = mockWorkers[0]
+    const init = worker.messages.find((message) => message.type === 'INIT')
+
+    act(() => worker.respond(init, dataForSample('wrong-representation'), 'wrong-representation'))
+    expect(mockHaplotypeTrackProps.at(-1).haplotypeGroups).toEqual([])
+
+    act(() => worker.respond(init, dataForSample('current-representation')))
+    await waitFor(() => {
+      expect(mockHaplotypeTrackProps.at(-1).haplotypeGroups[0].samples[0].sample_id).toBe(
+        'current-representation'
+      )
+    })
   })
 
   test('drops stale region READY and grouping UPDATED responses', async () => {

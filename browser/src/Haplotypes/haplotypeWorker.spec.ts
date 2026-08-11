@@ -175,6 +175,59 @@ describe('haplotype worker VCF carrier identity', () => {
     expect(Object.isFrozen(normalizedUpdated.phase_set_sidecar.variant_ids_by_index)).toBe(true)
   })
 
+  test('INIT honors the caller-requested clustered representation over payload defaults', () => {
+    jest.resetModules()
+    const postMessage = jest.fn()
+    Object.defineProperty(globalThis, 'postMessage', {
+      value: postMessage,
+      configurable: true,
+      writable: true,
+    })
+
+    // eslint-disable-next-line global-require
+    require('./haplotypeWorker')
+    const onmessage = (globalThis as any).onmessage
+
+    onmessage({
+      data: {
+        type: 'INIT',
+        requestGeneration: 8,
+        computeGeneration: 13,
+        representationIdentity: 'similarity-after-pending-rest',
+        rawData: {
+          variants,
+          carrier_variant_indices: {
+            'sample-1:1': [0],
+            'sample-2:1': [1],
+          },
+          auto_defaults: {
+            floor: 0,
+            ceiling: 1,
+            defaultAf: 0,
+            defaultClusterThreshold: 0.01,
+            isClusteredView: false,
+          },
+        },
+        minAf: 0,
+        isClusteredView: true,
+        sortBy: 'similarity_score',
+        isDiploidView: false,
+        distanceMetric: 'auto',
+        regionSize: 1_000,
+      },
+    })
+
+    const ready = postMessage.mock.calls
+      .map(([message]) => message as any)
+      .find((message) => message.type === 'READY')
+    expect(ready).toMatchObject({
+      requestGeneration: 8,
+      computeGeneration: 13,
+      representationIdentity: 'similarity-after-pending-rest',
+    })
+    expect(ready.data.clusters).toBeDefined()
+  })
+
   test('reports malformed payload failures instead of leaving the last progress message stuck', () => {
     jest.resetModules()
     const postMessage = jest.fn()

@@ -56,6 +56,7 @@ type InitMessage = WorkerGeneration & {
   }
   sortBy?: string
   minAf?: number
+  isClusteredView?: boolean
   isDiploidView?: boolean
   distanceMetric?: DistanceMetric
   regionSize?: number
@@ -115,7 +116,12 @@ const handleMessage = (msg: WorkerMessage) => {
       // requested AF directly, including zero.
       const floorAf = autoDefaults?.floor ?? 0
       const clusterThreshold = autoDefaults?.defaultClusterThreshold ?? 0
-      const isClusteredView = autoDefaults?.isClusteredView ?? false
+      // INIT is part of the caller's representation request, not merely raw-payload
+      // initialization. A control change while REST is pending must therefore win
+      // over the payload's (potentially stale) suggested grouping mode.
+      const isClusteredView = !isDiploidView && (
+        msg.isClusteredView ?? autoDefaults?.isClusteredView ?? false
+      )
       const initialAf = minimumAlleleFrequencyOrDefault(
         msg.minAf,
         autoDefaults?.defaultAf ?? floorAf

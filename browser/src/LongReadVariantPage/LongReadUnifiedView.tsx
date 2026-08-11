@@ -997,7 +997,8 @@ const LongReadUnifiedView = ({
           active !== null &&
           active.scope === activeHaplotypeScopeRef.current &&
           e.data.requestGeneration === active.requestGeneration &&
-          e.data.computeGeneration === active.computeGeneration
+          e.data.computeGeneration === active.computeGeneration &&
+          e.data.representationIdentity === active.representationIdentity
         if (!responseIsCurrent) return
 
         const elapsed = workerStartTimes.has(e.data.computeGeneration)
@@ -1158,14 +1159,20 @@ const LongReadUnifiedView = ({
           current.isDiploidView,
           current.distanceMetric,
         ])
-        if (worker) {
+        // The worker captured when REST started may have failed and been terminated
+        // while the request was in flight. Only transfer the sole raw payload to it
+        // if it is still the live worker; otherwise retain the payload on the main
+        // thread and compute there without installing a dead-worker scope marker.
+        const liveWorker = worker !== null && workerRef.current === worker ? worker : null
+        if (liveWorker) {
           workerRawScopeRef.current = haplotypeScope
           workerRawRequestGenerationRef.current = requestGeneration
           setLoadingStatus(`Grouping ${variantCount.toLocaleString()} variants into haplotypes…`)
-          postWorkerCompute(worker, haplotypeScope, requestGeneration, initialRepresentationIdentity, {
+          postWorkerCompute(liveWorker, haplotypeScope, requestGeneration, initialRepresentationIdentity, {
             type: 'INIT',
             rawData: result,
             minAf: 0,
+            isClusteredView: current.isDiploidView ? false : current.isClusteredView,
             sortBy: current.sortBy,
             distanceMetric: current.distanceMetric,
             regionSize,
@@ -1186,11 +1193,13 @@ const LongReadUnifiedView = ({
           }
           const baseData = computeHaplotypeView(
             rehydrated, carrierIndices,
-            0, current.sortBy, current.isDiploidView ? false : defaults.isClusteredView,
+            0, current.sortBy, current.isDiploidView ? false : current.isClusteredView,
             defaults.defaultClusterThreshold, result.trv_alts, current.isDiploidView,
             current.distanceMetric, regionSize, carrierMetadata
           )
           if (activeHaplotypeScopeRef.current === haplotypeScope) {
+            setHaplotypeError(null)
+            setLoadingStatus('')
             setHaplotypeDataState({
               scope: haplotypeScope,
               representationIdentity: initialRepresentationIdentity,
