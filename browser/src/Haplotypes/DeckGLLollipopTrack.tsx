@@ -8,8 +8,10 @@ import { SUPERPOPULATION_COLORS } from './colors'
 import { getDiploidSampleLabelColor } from './diploidSampleLabelColor'
 import {
   formatDiploidSampleLabel,
+  formatExpandedMemberSampleTooltip,
   getCollapsedClusterLabelLayout,
-  getExpandedMemberLabelLayout,
+  getExpandedMemberBarLayout,
+  getStandaloneGroupLabelLayout,
 } from './leftPanelLabels'
 import { countVariantLociAcrossHaplotypeRows } from './haplotypeLocusCounts'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
@@ -835,13 +837,15 @@ function DeckGLLollipopCanvas({
   type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number; textAnchor?: 'start' | 'middle' | 'end'; tooltipText?: string }
   type LeftPanelHitbox = { position: [number, number, number]; action: string; clusterId: string }
   type LeftPanelPopBar = { polygon: [number, number][]; color: [number, number, number, number] }
+  type LeftPanelMemberHoverTarget = { polygon: [number, number][]; tooltipText: string }
   type LeftPanelTreeLine = { sourcePosition: [number, number, number]; targetPosition: [number, number, number] }
 
-  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, leftPanelSampleLabels } = useMemo(() => {
+  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelMemberHoverTargets, leftPanelTreeLines, leftPanelSampleLabels } = useMemo(() => {
     const circles: LeftPanelCircle[] = []
     const texts: LeftPanelText[] = []
     const hitboxes: LeftPanelHitbox[] = []
     const popBars: LeftPanelPopBar[] = []
+    const memberHoverTargets: LeftPanelMemberHoverTarget[] = []
     const treeLines: LeftPanelTreeLine[] = []
     const sampleLabels: LeftPanelText[] = []
     // Compute total cohort size for diplotype percentage display
@@ -1012,29 +1016,16 @@ function DeckGLLollipopCanvas({
         }
       } else {
         const group = item.group
-        const indent = item.isChild ? 24 : 0
+        const popStats = populationStatsByRow[i]
 
-        {
-          // Stacked population bar for group
-          const popStats = populationStatsByRow[i]
+        if (item.isChild) {
+          // Expanded similarity-cluster members keep only their population bar.
+          // A full-row hover target replaces the redundant sample/variant numbers.
+          const { barX, barWidth } = getExpandedMemberBarLayout(leftPanelWidth, 24)
+          const barH = 10
+          const barTop = y - barH / 2
+
           if (popStats && popStats.totalSamples > 0) {
-            const variantCount = group.variants?.variants?.length ?? 0
-            const {
-              barX,
-              barWidth,
-              sampleCountX,
-              sampleCountTextAnchor,
-              variantCircleX,
-              variantCountX,
-              variantCountTextAnchor,
-            } = getExpandedMemberLabelLayout(
-              leftPanelWidth,
-              indent,
-              popStats.totalSamples,
-              variantCount
-            )
-            const barH = 10
-            const barTop = y - barH / 2
             const sortedPops = Object.entries(popStats.counts).sort((a, b) => b[1] - a[1])
             let accX = barX
             for (const [pop, count] of sortedPops) {
@@ -1046,49 +1037,92 @@ function DeckGLLollipopCanvas({
               })
               accX += w
             }
-            texts.push({
-              position: [sampleCountX, y, 0],
-              text: String(popStats.totalSamples),
-              color: [0, 0, 0, 255],
-              size: 10,
-              textAnchor: sampleCountTextAnchor,
-              tooltipText: `Samples: ${popStats.totalSamples}`,
-            })
-            // Variant count after sample count
-            const variantColor = cssColorToRgba(variantColorScale(variantCount))
-            circles.push({ position: [variantCircleX, y, 0], color: variantColor, radius: 4, tooltipText: `Variants: ${variantCount}` })
-            texts.push({
-              position: [variantCountX, y, 0],
-              text: String(variantCount),
-              color: [0, 0, 0, 255],
-              size: 10,
-              textAnchor: variantCountTextAnchor,
-              tooltipText: `Variants: ${variantCount} variant sites above AF threshold`,
-            })
           } else {
-            // Fallback when no population metadata
-            const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
-            circles.push({ position: [5 + indent, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${group.samples.length}` })
-            texts.push({
-              position: [15 + indent, y, 0],
-              text: String(group.samples.length),
-              color: [0, 0, 0, 255],
-              size: 12,
-              tooltipText: `Samples: ${group.samples.length} haplotypes share this variant combination`,
-            })
-
-            // Variant count circle + text
-            const vc = group.variants?.variants?.length ?? 0
-            const variantColor = cssColorToRgba(variantColorScale(vc))
-            circles.push({ position: [50 + indent, y, 0], color: variantColor, radius: 5, tooltipText: `Variants: ${vc}` })
-            texts.push({
-              position: [60 + indent, y, 0],
-              text: String(vc),
-              color: [0, 0, 0, 255],
-              size: 12,
-              tooltipText: `Variants: ${vc} variant sites above AF threshold`,
+            popBars.push({
+              polygon: [[barX, barTop], [barX + barWidth, barTop], [barX + barWidth, barTop + barH], [barX, barTop + barH]],
+              color: cssColorToRgba(SUPERPOPULATION_COLORS['N/A']),
             })
           }
+
+          memberHoverTargets.push({
+            polygon: [
+              [barX, y - ROW_CENTER_Y],
+              [leftPanelWidth, y - ROW_CENTER_Y],
+              [leftPanelWidth, y + ROW_CENTER_Y],
+              [barX, y + ROW_CENTER_Y],
+            ],
+            tooltipText: formatExpandedMemberSampleTooltip(group.samples),
+          })
+        } else if (popStats && popStats.totalSamples > 0) {
+          // Standalone exact-match groups retain their existing numeric summaries.
+          const variantCount = group.variants?.variants?.length ?? 0
+          const {
+            barX,
+            barWidth,
+            sampleCountX,
+            sampleCountTextAnchor,
+            variantCircleX,
+            variantCountX,
+            variantCountTextAnchor,
+          } = getStandaloneGroupLabelLayout(
+            leftPanelWidth,
+            0,
+            popStats.totalSamples,
+            variantCount
+          )
+          const barH = 10
+          const barTop = y - barH / 2
+          const sortedPops = Object.entries(popStats.counts).sort((a, b) => b[1] - a[1])
+          let accX = barX
+          for (const [pop, count] of sortedPops) {
+            const w = (count / popStats.totalSamples) * barWidth
+            const color = cssColorToRgba(SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A'])
+            popBars.push({
+              polygon: [[accX, barTop], [accX + w, barTop], [accX + w, barTop + barH], [accX, barTop + barH]],
+              color,
+            })
+            accX += w
+          }
+          texts.push({
+            position: [sampleCountX, y, 0],
+            text: String(popStats.totalSamples),
+            color: [0, 0, 0, 255],
+            size: 10,
+            textAnchor: sampleCountTextAnchor,
+            tooltipText: `Samples: ${popStats.totalSamples}`,
+          })
+          const variantColor = cssColorToRgba(variantColorScale(variantCount))
+          circles.push({ position: [variantCircleX, y, 0], color: variantColor, radius: 4, tooltipText: `Variants: ${variantCount}` })
+          texts.push({
+            position: [variantCountX, y, 0],
+            text: String(variantCount),
+            color: [0, 0, 0, 255],
+            size: 10,
+            textAnchor: variantCountTextAnchor,
+            tooltipText: `Variants: ${variantCount} variant sites above AF threshold`,
+          })
+        } else {
+          // Fallback for standalone groups when no population metadata is available.
+          const sampleColor = cssColorToRgba(sampleColorScale(group.samples.length))
+          circles.push({ position: [5, y, 0], color: sampleColor, radius: 5, tooltipText: `Samples: ${group.samples.length}` })
+          texts.push({
+            position: [15, y, 0],
+            text: String(group.samples.length),
+            color: [0, 0, 0, 255],
+            size: 12,
+            tooltipText: `Samples: ${group.samples.length} haplotypes share this variant combination`,
+          })
+
+          const variantCount = group.variants?.variants?.length ?? 0
+          const variantColor = cssColorToRgba(variantColorScale(variantCount))
+          circles.push({ position: [50, y, 0], color: variantColor, radius: 5, tooltipText: `Variants: ${variantCount}` })
+          texts.push({
+            position: [60, y, 0],
+            text: String(variantCount),
+            color: [0, 0, 0, 255],
+            size: 12,
+            tooltipText: `Variants: ${variantCount} variant sites above AF threshold`,
+          })
         }
       }
     }
@@ -1127,7 +1161,7 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
+    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelMemberHoverTargets: memberHoverTargets, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
   }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, sampleMetadata, leftPanelWidth])
 
   // Left panel DeckGL layers
@@ -1155,6 +1189,17 @@ function DeckGLLollipopCanvas({
         getPolygon: (d: LeftPanelPopBar) => d.polygon,
         getFillColor: (d: LeftPanelPopBar) => d.color,
         pickable: false,
+      }))
+    }
+
+    if (leftPanelMemberHoverTargets.length > 0) {
+      lpLayers.push(new SolidPolygonLayer({
+        id: 'left-panel-member-hover-targets',
+        data: leftPanelMemberHoverTargets,
+        getPolygon: (d: LeftPanelMemberHoverTarget) => d.polygon,
+        getFillColor: [0, 0, 0, 0],
+        pickable: true,
+        onHover,
       }))
     }
 
@@ -1228,7 +1273,7 @@ function DeckGLLollipopCanvas({
     }
 
     return lpLayers
-  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelTreeLines, leftPanelSampleLabels, toggleClusterExpansion, onClusterSelect, onHover])
+  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelMemberHoverTargets, leftPanelTreeLines, leftPanelSampleLabels, toggleClusterExpansion, onClusterSelect, onHover])
 
   // Genealogy tree layout — pure data arrays for DeckGL
   const treeLayout = useMemo((): TreeLayout | null => {

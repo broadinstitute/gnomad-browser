@@ -1,9 +1,23 @@
-type SampleLabel = { sample_id: string }
+type SampleLabel = { sample_id?: string | null } | null | undefined
 
 export const formatDiploidSampleLabel = (samples: SampleLabel[]): string => {
   const firstSampleId = samples[0]?.sample_id
   if (!firstSampleId) return ''
   return samples.length === 1 ? firstSampleId : `${firstSampleId} +${samples.length - 1}`
+}
+
+export const formatExpandedMemberSampleTooltip = (samples: SampleLabel[]): string => {
+  const sampleIds = Array.from(
+    new Set(
+      samples
+        .map((sample) => sample?.sample_id?.trim())
+        .filter((sampleId): sampleId is string => Boolean(sampleId))
+    )
+  )
+
+  if (sampleIds.length === 0) return 'Sample ID unavailable'
+  if (sampleIds.length === 1) return `Sample ID: ${sampleIds[0]}`
+  return `Sample IDs: ${sampleIds.join(', ')}`
 }
 
 export const getCollapsedClusterLabelLayout = (leftPanelWidth: number) => {
@@ -15,7 +29,14 @@ export const getCollapsedClusterLabelLayout = (leftPanelWidth: number) => {
   return { barX, barWidth, countX, countTextAnchor: 'end' as const }
 }
 
-export const getExpandedMemberLabelLayout = (
+export const getExpandedMemberBarLayout = (leftPanelWidth: number, indent: number) => {
+  const barX = 5 + indent
+  const barWidth = Math.max(0, leftPanelWidth - 4 - barX)
+
+  return { barX, barWidth }
+}
+
+export const getStandaloneGroupLabelLayout = (
   leftPanelWidth: number,
   indent: number,
   sampleCount: number,
