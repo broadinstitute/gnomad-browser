@@ -2698,6 +2698,7 @@ function ThresholdDragOverlay({
   return (
     <div
       ref={rightPanelRef}
+      data-testid="lr-genealogy-panel"
       style={{
         position: 'absolute',
         top: 0,

@@ -216,7 +216,9 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
   let regionViewerRightPanelWidth = isSmallScreen ? 0 : 80
   if (isLongRead(datasetId)) {
     regionViewerRightPanelWidth = haplotypeScrollbarGutter
-    if (genealogyPanelVisible) regionViewerRightPanelWidth = isSmallScreen ? 180 : 250
+    // On narrow screens the haplotype track partitions its existing width for the
+    // optional tree. Changing RegionViewer's shared columns here reflows controls.
+    if (genealogyPanelVisible && !isSmallScreen) regionViewerRightPanelWidth = 250
   }
 
   const nccToRegion = (ncc: NonCodingConstraint) => {

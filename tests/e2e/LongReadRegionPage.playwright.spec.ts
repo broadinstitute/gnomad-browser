@@ -411,10 +411,10 @@ transitionViewports.forEach((viewport) => {
     })
 
     const requests = collectLrRequestCounts(page)
-    // Keep the optional genealogy panel out of this geometry contract. A populated
-    // default-tree transition currently reflows the mobile RegionViewer; that
-    // independently proven defect is recorded in the follow-up ticket.
-    await page.goto(`/region/${SUMMARY_REGION}?dataset=${LR_DATASET}&show_tree=false`)
+    // Exercise the default genealogy path: populated similarity groups make the
+    // optional tree visible without an explicit show_tree query parameter.
+    await page.goto(`/region/${SUMMARY_REGION}?dataset=${LR_DATASET}`)
+    expect(new URL(page.url()).searchParams.get('show_tree')).toBeNull()
     await expect(page.locator('#lr-view-mode')).toBeVisible({ timeout: 20_000 })
     await expect(page.getByText(/Showing .* variants/)).toBeVisible({ timeout: 30_000 })
 
@@ -522,8 +522,14 @@ transitionViewports.forEach((viewport) => {
     await page.waitForLoadState('networkidle').catch(() => {})
     expect(requests.haplotypeRest).toBe(1)
     expect(await workerMessageCount(page, 'INIT')).toBe(1)
-    expect(requests.graphQL.LongReadVariantsInRegion).toBe(1)
-    expect(requests.graphQL.RegionSampleMetadata).toBe(1)
+    expect(requests.graphQL).toEqual({
+      Region: 1,
+      LRCoverage: 1,
+      LongReadVariantsInRegion: 1,
+      RegionJoinedPhasedMethylationCapability: 1,
+      RegionSampleMetadata: 1,
+      ExpandedTrDistributions: 1,
+    })
     const requestsBeforeGrouping = JSON.stringify(requests)
 
     const transitionGrouping = async (
@@ -552,6 +558,17 @@ transitionViewports.forEach((viewport) => {
       await workerGateRelease(page)
       await expect(page.locator('#lr-variant-table-container').first()).toHaveCSS('opacity', '1')
       await expect(radio).toBeFocused()
+
+      const genealogyToggle = page.getByRole('checkbox', { name: 'Genealogy tree' })
+      const genealogyPanel = page.getByTestId('lr-genealogy-panel')
+      if (label === 'Similarity Clusters') {
+        await expect(genealogyToggle).toBeChecked()
+        await expect(genealogyPanel).toBeVisible()
+        await expectControlWithinViewport(page, genealogyPanel, 'genealogy panel')
+      } else {
+        await expect(genealogyToggle).toHaveCount(0)
+        await expect(genealogyPanel).toHaveCount(0)
+      }
 
       const readyGeometry = await captureLrGeometry(page, viewShell, true)
       const readySlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
