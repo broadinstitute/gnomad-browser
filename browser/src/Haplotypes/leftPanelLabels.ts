@@ -14,3 +14,30 @@ export const getCollapsedClusterLabelLayout = (leftPanelWidth: number) => {
 
   return { barX, barWidth, countX, countTextAnchor: 'end' as const }
 }
+
+export const getExpandedMemberLabelLayout = (
+  leftPanelWidth: number,
+  indent: number,
+  sampleCount: number,
+  variantCount: number
+) => {
+  const barX = 5 + indent
+  const countX = Math.max(barX, leftPanelWidth - 4)
+  const sampleCountWidth = Math.max(6, String(sampleCount).length * 6)
+  const variantCountWidth = Math.max(6, String(variantCount).length * 6)
+  const variantCircleX = countX - variantCountWidth - 6
+  const sampleCountX = variantCircleX - 6
+  const barWidth = Math.min(80, Math.max(0, sampleCountX - sampleCountWidth - 4 - barX))
+
+  return {
+    barX,
+    barWidth,
+    sampleCountX,
+    sampleCountWidth,
+    sampleCountTextAnchor: 'end' as const,
+    variantCircleX,
+    variantCountX: countX,
+    variantCountWidth,
+    variantCountTextAnchor: 'end' as const,
+  }
+}

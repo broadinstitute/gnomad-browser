@@ -6,7 +6,11 @@ import { RegionViewerContext } from '@gnomad/region-viewer'
 import { scaleLinear } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { getDiploidSampleLabelColor } from './diploidSampleLabelColor'
-import { formatDiploidSampleLabel, getCollapsedClusterLabelLayout } from './leftPanelLabels'
+import {
+  formatDiploidSampleLabel,
+  getCollapsedClusterLabelLayout,
+  getExpandedMemberLabelLayout,
+} from './leftPanelLabels'
 import { countVariantLociAcrossHaplotypeRows } from './haplotypeLocusCounts'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
 import { passesLongReadVariantTypeFilters } from '../LongReadVariantPage/longReadVariantTypes'
@@ -1011,8 +1015,21 @@ function DeckGLLollipopCanvas({
           // Stacked population bar for group
           const popStats = populationStatsByRow[i]
           if (popStats && popStats.totalSamples > 0) {
-            const barX = 5 + indent
-            const barWidth = 80
+            const variantCount = group.variants?.variants?.length ?? 0
+            const {
+              barX,
+              barWidth,
+              sampleCountX,
+              sampleCountTextAnchor,
+              variantCircleX,
+              variantCountX,
+              variantCountTextAnchor,
+            } = getExpandedMemberLabelLayout(
+              leftPanelWidth,
+              indent,
+              popStats.totalSamples,
+              variantCount
+            )
             const barH = 10
             const barTop = y - barH / 2
             const sortedPops = Object.entries(popStats.counts).sort((a, b) => b[1] - a[1])
@@ -1027,21 +1044,22 @@ function DeckGLLollipopCanvas({
               accX += w
             }
             texts.push({
-              position: [barX + barWidth + 4, y, 0],
+              position: [sampleCountX, y, 0],
               text: String(popStats.totalSamples),
               color: [0, 0, 0, 255],
               size: 10,
+              textAnchor: sampleCountTextAnchor,
               tooltipText: `Samples: ${popStats.totalSamples}`,
             })
             // Variant count after sample count
-            const variantCount = group.variants?.variants?.length ?? 0
             const variantColor = cssColorToRgba(variantColorScale(variantCount))
-            circles.push({ position: [barX + barWidth + 28, y, 0], color: variantColor, radius: 4, tooltipText: `Variants: ${variantCount}` })
+            circles.push({ position: [variantCircleX, y, 0], color: variantColor, radius: 4, tooltipText: `Variants: ${variantCount}` })
             texts.push({
-              position: [barX + barWidth + 36, y, 0],
+              position: [variantCountX, y, 0],
               text: String(variantCount),
               color: [0, 0, 0, 255],
               size: 10,
+              textAnchor: variantCountTextAnchor,
               tooltipText: `Variants: ${variantCount} variant sites above AF threshold`,
             })
           } else {
