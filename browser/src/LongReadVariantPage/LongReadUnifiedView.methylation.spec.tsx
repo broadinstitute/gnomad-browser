@@ -143,7 +143,12 @@ jest.mock('../Haplotypes', () => {
         : null
     )
   }
-  return { __esModule: true, default: HaplotypeTrack, Legend }
+  return {
+    __esModule: true,
+    default: HaplotypeTrack,
+    Legend,
+    normalizeSelectableGroupingMode: (mode: string) => mode === 'diplotype' ? 'diploid' : mode,
+  }
 })
 
 jest.mock('../RegionViewerCursor', () => () => null)
@@ -160,7 +165,32 @@ jest.mock('../Haplotypes/HaplotypeVariantTable', () => {
 })
 jest.mock('../Haplotypes/RecombinationRate', () => () => null)
 jest.mock('../Haplotypes/MQTLTrack', () => () => null)
-jest.mock('./LongReadViewControls', () => () => null)
+jest.mock('./LongReadViewControls', () => {
+  // eslint-disable-next-line global-require
+  const mockReact = require('react')
+  return ({ showHaplotypes, onChangeShowHaplotypes }: any) => mockReact.createElement(
+    'fieldset',
+    null,
+    mockReact.createElement('label', null,
+      mockReact.createElement('input', {
+        type: 'radio',
+        name: 'view-mode',
+        checked: !showHaplotypes,
+        onChange: () => onChangeShowHaplotypes(false),
+      }),
+      'Summary View'
+    ),
+    mockReact.createElement('label', null,
+      mockReact.createElement('input', {
+        type: 'radio',
+        name: 'view-mode',
+        checked: showHaplotypes,
+        onChange: () => onChangeShowHaplotypes(true),
+      }),
+      'Haplotype View'
+    )
+  )
+})
 jest.mock('./LongReadViewHelpButton', () => () => null)
 jest.mock('./LongReadVariantTrack', () => () => null)
 jest.mock('./VariantDensityTrack', () => () => null)
@@ -181,7 +211,7 @@ jest.mock('../Haplotypes/AccordionCoordinateMapper', () => ({
 
 // Jest mocks must be registered before importing the component under test.
 // eslint-disable-next-line import/first
-import LongReadUnifiedView from './LongReadUnifiedView'
+import LongReadUnifiedView, { haplotypeRequestScope } from './LongReadUnifiedView'
 import { perCopyMethylationForReadyRow } from './perCopyMethylation'
 
 type DeferredGraphQLRequest = {
@@ -253,22 +283,34 @@ const workerData = () => ({
 })
 
 let workerDataOverride: ReturnType<typeof workerData> | null = null
+let mockWorkerAutoRespond = true
+const mockWorkers: MockWorker[] = []
 
 class MockWorker {
   onmessage: ((event: MessageEvent) => void) | null = null
 
   onerror: (() => void) | null = null
 
+  messages: any[] = []
+
+  constructor() { mockWorkers.push(this) }
+
   postMessage(message: any) {
-    if (message.type === 'INIT') {
-      this.onmessage?.({
-        data: { type: 'READY', data: JSON.parse(JSON.stringify(workerDataOverride || workerData())) },
-      } as MessageEvent)
-    } else if (message.type === 'UPDATE_AF') {
-      this.onmessage?.({
-        data: { type: 'UPDATED', data: JSON.parse(JSON.stringify(workerDataOverride || workerData())) },
-      } as MessageEvent)
-    }
+    this.messages.push(message)
+    if (mockWorkerAutoRespond) this.respond(message)
+  }
+
+  respond(message: any, data = workerDataOverride || workerData()) {
+    const type = message.type === 'INIT' ? 'READY' : 'UPDATED'
+    this.onmessage?.({
+      data: {
+        type,
+        data: JSON.parse(JSON.stringify(data)),
+        requestGeneration: message.requestGeneration,
+        computeGeneration: message.computeGeneration,
+        representationIdentity: message.representationIdentity,
+      },
+    } as MessageEvent)
   }
 
   terminate() { this.onmessage = null }
@@ -369,6 +411,8 @@ beforeEach(() => {
     reason: 'No admitted joined route',
   }
   workerDataOverride = null
+  mockWorkerAutoRespond = true
+  mockWorkers.length = 0
   Object.defineProperty(globalThis, 'Worker', {
     configurable: true,
     writable: true,
@@ -448,6 +492,126 @@ beforeEach(() => {
 afterEach(() => {
   jest.restoreAllMocks()
   delete (globalThis as any).fetch
+})
+
+const haplotypeRestCalls = () => (globalThis.fetch as jest.Mock).mock.calls.filter(
+  ([input]: [unknown]) => String(input).startsWith('/api/lr/haplotype-groups')
+)
+
+const dataForSample = (sampleId: string) => {
+  const data = workerData()
+  data.groups[0].samples = [{
+    sample_id: sampleId,
+    strand_mapping: { strandA: 1, strandB: 2 },
+    phase_set_mapping: { phaseSetA: null, phaseSetB: null },
+  }]
+  return data
+}
+
+describe('LongReadUnifiedView haplotype request ownership', () => {
+  test('is lazy on Summary and reuses one REST payload and one INIT on same-scope re-entry', async () => {
+    renderView(undefined, '/')
+
+    expect(mockWorkers).toHaveLength(0)
+    expect(haplotypeRestCalls()).toHaveLength(0)
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Haplotype View' }))
+    await waitFor(() => expect(haplotypeRestCalls()).toHaveLength(1))
+    await waitFor(() => expect(mockWorkers).toHaveLength(1))
+    await waitFor(() => {
+      expect(mockWorkers[0].messages.filter((message) => message.type === 'INIT')).toHaveLength(1)
+    })
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Summary View' }))
+    fireEvent.click(screen.getByRole('radio', { name: 'Haplotype View' }))
+    await act(async () => { await Promise.resolve() })
+
+    expect(haplotypeRestCalls()).toHaveLength(1)
+    expect(mockWorkers).toHaveLength(1)
+    expect(mockWorkers[0].messages.filter((message) => message.type === 'INIT')).toHaveLength(1)
+  })
+
+  test('drops stale region READY and grouping UPDATED responses', async () => {
+    mockWorkerAutoRespond = false
+    const rendered = renderView()
+    await waitFor(() => expect(mockWorkers[0]?.messages.filter((message) => message.type === 'INIT')).toHaveLength(1))
+    const worker = mockWorkers[0]
+    const oldRegionInit = worker.messages.find((message) => message.type === 'INIT')
+
+    rendered.rerender(
+      <MemoryRouter initialEntries={['/?show_haplotypes=true']}>
+        <LongReadUnifiedView
+          datasetId={'gnomad_r4' as any}
+          gene={{ chrom: 'chr22', start: 300, stop: 400 }}
+          variants={[]}
+          lrCohort="hgsvc_hprc"
+        />
+      </MemoryRouter>
+    )
+    await waitFor(() => expect(mockWorkers).toHaveLength(2))
+    const currentWorker = mockWorkers[1]
+    await waitFor(() => {
+      expect(currentWorker.messages.filter((message) => message.type === 'INIT')).toHaveLength(1)
+    })
+    const currentRegionInit = currentWorker.messages.find((message) => message.type === 'INIT')
+
+    act(() => worker.respond(oldRegionInit, dataForSample('stale-region')))
+    expect(mockHaplotypeTrackProps.at(-1).haplotypeGroups).toEqual([])
+
+    act(() => currentWorker.respond(currentRegionInit, dataForSample('current-region')))
+    await waitFor(() => {
+      expect(mockHaplotypeTrackProps.at(-1).haplotypeGroups[0].samples[0].sample_id).toBe(
+        'current-region'
+      )
+    })
+
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('similarity'))
+    await waitFor(() => {
+      expect(currentWorker.messages.filter((message) => message.type === 'UPDATE_AF')).toHaveLength(1)
+    })
+    const staleGroupingUpdate = currentWorker.messages.find(
+      (message) => message.type === 'UPDATE_AF'
+    )
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('diploid'))
+    await act(async () => { await Promise.resolve() })
+    act(() => currentWorker.respond(staleGroupingUpdate, dataForSample('stale-grouping')))
+
+    expect(mockHaplotypeTrackProps.at(-1).haplotypeGroups[0].samples[0].sample_id).toBe(
+      'current-region'
+    )
+  })
+
+  test('scope identity changes for cohort, region, dataset, and source provenance', () => {
+    const base = {
+      datasetId: 'gnomad_r4' as any,
+      cohort: 'hgsvc_hprc' as const,
+      chrom: 'chr22',
+      start: 100,
+      stop: 200,
+      provenance: {
+        enabled: true,
+        sources: [{
+          modality: 'HAPLOTYPES',
+          source: 'Y1_ACCEPTED' as const,
+          run_id: 'run-1',
+          database: 'db-1',
+          available: true,
+          label: 'accepted',
+        }],
+      },
+    }
+    const identity = haplotypeRequestScope(base)
+    expect(haplotypeRequestScope({ ...base, cohort: 'aou' })).not.toBe(identity)
+    expect(haplotypeRequestScope({ ...base, start: 101 })).not.toBe(identity)
+    expect(haplotypeRequestScope({ ...base, datasetId: 'gnomad_r4_lr' as any })).not.toBe(identity)
+    expect(haplotypeRequestScope({
+      ...base,
+      provenance: {
+        ...base.provenance,
+        sources: [{ ...base.provenance.sources[0], run_id: 'run-2' }],
+      },
+    })).not.toBe(identity)
+  })
 })
 
 describe('LongReadUnifiedView methylation detail ownership', () => {

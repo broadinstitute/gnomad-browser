@@ -343,6 +343,59 @@ const fetchGraphQL = async (query: string, variables: any, signal?: AbortSignal)
 
 const MAX_HAPLOTYPE_REGION_SIZE = process.env.LR_Y1_ENABLED === 'true' ? 100_000 : 5_000_000
 
+/**
+ * Stable identity for the single retained haplotype payload. Source fields are
+ * explicit (rather than object serialization) so unrelated provenance UI changes
+ * do not invalidate a large payload.
+ */
+export const haplotypeRequestScope = ({
+  datasetId,
+  cohort,
+  chrom,
+  start,
+  stop,
+  provenance,
+}: {
+  datasetId: DatasetId
+  cohort: 'hgsvc_hprc' | 'aou'
+  chrom: string
+  start: number
+  stop: number
+  provenance: LongReadY1Provenance | null
+}) => {
+  const source = sourceForModality(provenance, 'HAPLOTYPES')
+  return JSON.stringify([
+    datasetId,
+    cohort,
+    chrom,
+    start,
+    stop,
+    source?.source ?? null,
+    source?.database ?? null,
+    source?.release ?? null,
+    source?.cohort ?? null,
+    source?.reference_genome ?? null,
+    source?.chromosome ?? null,
+    source?.scope ?? null,
+    source?.run_id ?? null,
+    source?.status ?? null,
+    source?.available ?? null,
+  ])
+}
+
+type HaplotypeDataState = {
+  scope: string
+  representationIdentity: string
+  data: ComputedHaplotypeData
+}
+
+type ActiveWorkerCompute = {
+  scope: string
+  requestGeneration: number
+  computeGeneration: number
+  representationIdentity: string
+}
+
 type MethylationViewState = {
   scope: string | null
   rowsByIdentity: Map<string, Methylation>
@@ -475,16 +528,35 @@ const LongReadUnifiedView = ({
     history.replace({ ...location, search: params.toString() })
   }, [history, location])
 
-  // Haplotype mode state — Web Worker computation with main-thread fallback
-  const [haplotypeData, setHaplotypeData] = useState<ComputedHaplotypeData | null>(null)
+  // Haplotype mode state. Memory is deliberately bounded to one raw scope (inside
+  // the worker, or one rehydrated fallback payload) and one computed representation.
+  const haplotypeScope = haplotypeRequestScope({
+    datasetId,
+    cohort: lrCohort,
+    chrom,
+    start,
+    stop,
+    provenance,
+  })
+  const activeHaplotypeScopeRef = useRef(haplotypeScope)
+  activeHaplotypeScopeRef.current = haplotypeScope
+  const [haplotypeDataState, setHaplotypeDataState] = useState<HaplotypeDataState | null>(null)
+  const haplotypeData = haplotypeDataState?.scope === haplotypeScope
+    ? haplotypeDataState.data
+    : null
   const [autoDefaults, setAutoDefaults] = useState<AutoDefaults>({ floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false })
   const workerRef = useRef<Worker | null>(null)
   const rawDataRef = useRef<{
+    scope: string
     variants: import('../Haplotypes/index').LRVariant[]
     carrierIndices: Record<string, number[]>
     carrierMetadata: CarrierMetadata
     trvAlts?: Record<string, Record<number, string>>
   } | null>(null)
+  const workerRawScopeRef = useRef<string | null>(null)
+  const requestGenerationRef = useRef(0)
+  const computeGenerationRef = useRef(0)
+  const activeWorkerComputeRef = useRef<ActiveWorkerCompute | null>(null)
   const [haplotypeLoading, setHaplotypeLoading] = useState(false)
   const [workerComputing, setWorkerComputing] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState('')
@@ -881,24 +953,67 @@ const LongReadUnifiedView = ({
     fetchMeta()
   }, [showHaplotypes, sampleMetadata.size, lrCohort, metadataAvailable])
 
-  // Initialize Web Worker (with main-thread fallback)
-  useEffect(() => {
+  // Derive booleans from groupingMode for worker/compute compatibility.
+  const isClusteredView = groupingMode === 'similarity'
+  const representationIdentity = JSON.stringify([
+    threshold,
+    isClusteredView,
+    deferredClusterThreshold,
+    sortBy,
+    isDiploidView,
+    distanceMetric,
+  ])
+  const computeParametersRef = useRef({
+    threshold,
+    isClusteredView,
+    deferredClusterThreshold,
+    sortBy,
+    isDiploidView,
+    distanceMetric,
+    representationIdentity,
+  })
+  computeParametersRef.current = {
+    threshold,
+    isClusteredView,
+    deferredClusterThreshold,
+    sortBy,
+    isDiploidView,
+    distanceMetric,
+    representationIdentity,
+  }
+
+  // The worker is intentionally lazy: Summary-only mounts allocate neither a Worker
+  // nor its raw-data state. Responses must match both epochs; untagged legacy replies
+  // are never accepted by this generation-aware caller.
+  const ensureHaplotypeWorker = useCallback(() => {
+    if (workerRef.current) return workerRef.current
     try {
       const w = createHaplotypeWorker()
-      let workerStartTime = 0
+      const workerStartTimes = new Map<number, number>()
       w.onmessage = (e: MessageEvent) => {
-        const elapsed = workerStartTime ? Date.now() - workerStartTime : 0
+        const active = activeWorkerComputeRef.current
+        const responseIsCurrent =
+          active !== null &&
+          active.scope === activeHaplotypeScopeRef.current &&
+          e.data.requestGeneration === active.requestGeneration &&
+          e.data.computeGeneration === active.computeGeneration
+        if (!responseIsCurrent) return
+
+        const elapsed = workerStartTimes.has(e.data.computeGeneration)
+          ? Date.now() - workerStartTimes.get(e.data.computeGeneration)!
+          : 0
         if (e.data.type === 'PROGRESS') {
           setLoadingStatus(e.data.status)
-        } else if (e.data.type === 'READY') {
-          console.log(`[perf] worker READY in ${elapsed}ms, groups=${e.data.data?.groups?.length || 0}`)
+        } else if (e.data.type === 'READY' || e.data.type === 'UPDATED') {
+          console.log(
+            `[perf] worker ${e.data.type} in ${elapsed}ms, groups=${e.data.data?.groups?.length || 0}`
+          )
           setLoadingStatus('')
-          setHaplotypeData(normalizeHaplotypeWorkerData(e.data.data))
-          setWorkerComputing(false)
-        } else if (e.data.type === 'UPDATED') {
-          console.log(`[perf] worker UPDATED in ${elapsed}ms, groups=${e.data.data?.groups?.length || 0}`)
-          setLoadingStatus('')
-          setHaplotypeData(normalizeHaplotypeWorkerData(e.data.data))
+          setHaplotypeDataState({
+            scope: active.scope,
+            representationIdentity: e.data.representationIdentity,
+            data: normalizeHaplotypeWorkerData(e.data.data),
+          })
           setWorkerComputing(false)
         } else if (e.data.type === 'ERROR') {
           console.error('[worker] haplotype computation failed:', e.data.error)
@@ -907,37 +1022,104 @@ const LongReadUnifiedView = ({
           setHaplotypeError('Haplotype computation failed. Reload the page to retry.')
         }
       }
-      // Expose start time setter for postMessage callers
       const origPostMessage = w.postMessage.bind(w)
       w.postMessage = (msg: any, ...args: any[]) => {
-        workerStartTime = Date.now()
+        if (msg.computeGeneration !== undefined) {
+          workerStartTimes.set(msg.computeGeneration, Date.now())
+        }
         return origPostMessage(msg, ...args)
       }
       w.onerror = () => {
         console.warn('[worker] haplotype worker failed')
         w.terminate()
-        workerRef.current = null
+        if (workerRef.current === w) workerRef.current = null
+        workerRawScopeRef.current = null
+        activeWorkerComputeRef.current = null
         setWorkerComputing(false)
         setLoadingStatus('')
         setHaplotypeError('Haplotype computation failed. Reload the page to retry.')
       }
       workerRef.current = w
       console.log('[worker] haplotype worker initialized')
+      return w
     } catch {
       console.warn('[worker] haplotype worker unavailable, using main thread')
+      return null
     }
-    return () => { workerRef.current?.terminate() }
   }, [])
 
-  // Fetch raw haplotype data once per region
-  const abortControllerRef = useRef<AbortController | null>(null)
-  useEffect(() => {
-    if (!showHaplotypes) return
+  const postWorkerCompute = useCallback((
+    worker: Worker,
+    scope: string,
+    requestGeneration: number,
+    requestedRepresentationIdentity: string,
+    message: Record<string, unknown>
+  ) => {
+    const computeGeneration = computeGenerationRef.current + 1
+    computeGenerationRef.current = computeGeneration
+    activeWorkerComputeRef.current = {
+      scope,
+      requestGeneration,
+      computeGeneration,
+      representationIdentity: requestedRepresentationIdentity,
+    }
+    setWorkerComputing(true)
+    worker.postMessage({
+      ...message,
+      requestGeneration,
+      computeGeneration,
+      representationIdentity: requestedRepresentationIdentity,
+    })
+  }, [])
 
-    if (abortControllerRef.current) abortControllerRef.current.abort()
+  const abortControllerRef = useRef<AbortController | null>(null)
+  const networkScopeRef = useRef<string | null>(null)
+  const workerRawRequestGenerationRef = useRef(0)
+
+  // Fetch at most one raw scope. Leaving Haplotype View retains that one scope;
+  // changing cohort/region/provenance aborts and evicts it before loading another.
+  useEffect(() => {
+    const residentScope = workerRawScopeRef.current || rawDataRef.current?.scope || null
+    if (residentScope !== null && residentScope !== haplotypeScope) {
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = null
+      networkScopeRef.current = null
+      // The worker owns the raw payload, so scope eviction must terminate it;
+      // clearing only the UI marker would leave the old large arrays resident.
+      workerRef.current?.terminate()
+      workerRef.current = null
+      workerRawScopeRef.current = null
+      rawDataRef.current = null
+      activeWorkerComputeRef.current = null
+      requestGenerationRef.current += 1
+      setWorkerComputing(false)
+      setHaplotypeLoading(false)
+      setLoadingStatus('')
+    } else if (networkScopeRef.current !== null && networkScopeRef.current !== haplotypeScope) {
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = null
+      networkScopeRef.current = null
+      activeWorkerComputeRef.current = null
+      requestGenerationRef.current += 1
+    }
+
+    if (!showHaplotypes) return
+    const worker = ensureHaplotypeWorker()
+
+    if (
+      haplotypeDataState?.scope === haplotypeScope ||
+      workerRawScopeRef.current === haplotypeScope ||
+      rawDataRef.current?.scope === haplotypeScope ||
+      networkScopeRef.current === haplotypeScope
+    ) {
+      return
+    }
+
+    const requestGeneration = requestGenerationRef.current + 1
+    requestGenerationRef.current = requestGeneration
     const controller = new AbortController()
     abortControllerRef.current = controller
-
+    networkScopeRef.current = haplotypeScope
     setHaplotypeLoading(true)
     setHaplotypeError(null)
     setLoadingStatus('Fetching variant data…')
@@ -945,7 +1127,13 @@ const LongReadUnifiedView = ({
 
     fetchHaplotypeDataREST(chrom, start, stop, lrCohort, controller.signal)
       .then((result) => {
-        if (controller.signal.aborted) return
+        if (
+          controller.signal.aborted ||
+          activeHaplotypeScopeRef.current !== haplotypeScope ||
+          requestGeneration !== requestGenerationRef.current
+        ) return
+        networkScopeRef.current = null
+        abortControllerRef.current = null
         const variantCount = result.variants?.variant_id?.length ?? 0
         const carrierCount = Object.keys(result.carrier_variant_indices || {}).length
         const fetchTime = Math.round(performance.now() - t0)
@@ -953,45 +1141,71 @@ const LongReadUnifiedView = ({
         setLoadingStatus(`Received ${variantCount.toLocaleString()} variants, ${carrierCount} samples`)
         setAmbiguousUnphasedRows(result._phase_summary?.ambiguous_unphased_rows || 0)
 
-        // Use server-computed auto_defaults
         const defaults = result.auto_defaults || { floor: 0, ceiling: 1, defaultAf: 0, defaultClusterThreshold: 0, isClusteredView: false }
         setAutoDefaults(defaults)
         setThreshold(0)
         setClusterThreshold(defaults.defaultClusterThreshold)
         setDeferredClusterThreshold(defaults.defaultClusterThreshold)
-        // Diploid is the default haplotype view; server-suggested clustering
-        // (defaults.isClusteredView) no longer overrides the initial mode — it's
-        // preserved in autoDefaults for when the user switches to Similarity Clusters.
-
         setHaplotypeLoading(false)
-        // Compute the initial view in the current grouping mode (diploid by default)
-        // so the first render's data shape matches the mode — no mismatch flash.
-        const initDiploid = groupingMode === 'diploid'
-        if (workerRef.current) {
-          setWorkerComputing(true)
+
+        const current = computeParametersRef.current
+        const initialRepresentationIdentity = JSON.stringify([
+          0,
+          current.isClusteredView,
+          defaults.defaultClusterThreshold,
+          current.sortBy,
+          current.isDiploidView,
+          current.distanceMetric,
+        ])
+        if (worker) {
+          workerRawScopeRef.current = haplotypeScope
+          workerRawRequestGenerationRef.current = requestGeneration
           setLoadingStatus(`Grouping ${variantCount.toLocaleString()} variants into haplotypes…`)
-          workerRef.current.postMessage({ type: 'INIT', rawData: result, minAf: 0, sortBy, distanceMetric, regionSize, isDiploidView: initDiploid })
+          postWorkerCompute(worker, haplotypeScope, requestGeneration, initialRepresentationIdentity, {
+            type: 'INIT',
+            rawData: result,
+            minAf: 0,
+            sortBy: current.sortBy,
+            distanceMetric: current.distanceMetric,
+            regionSize,
+            isDiploidView: current.isDiploidView,
+          })
         } else {
-          // Main-thread fallback: rehydrate SoA variants and compute directly
-          const variants: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
+          const rehydrated: import('../Haplotypes/index').LRVariant[] = result.variants?.variant_id
             ? rehydrateVariants(result.variants as any)
             : (result.variants as any) || []
           const carrierIndices = result.carrier_variant_indices || {}
           const carrierMetadata = carrierMetadataFromPayload(result.carriers)
           rawDataRef.current = {
-            variants, carrierIndices, carrierMetadata, trvAlts: result.trv_alts,
+            scope: haplotypeScope,
+            variants: rehydrated,
+            carrierIndices,
+            carrierMetadata,
+            trvAlts: result.trv_alts,
           }
           const baseData = computeHaplotypeView(
-            variants, carrierIndices,
-            0, sortBy, initDiploid ? false : defaults.isClusteredView, defaults.defaultClusterThreshold,
-            result.trv_alts, initDiploid, distanceMetric, regionSize, carrierMetadata
+            rehydrated, carrierIndices,
+            0, current.sortBy, current.isDiploidView ? false : defaults.isClusteredView,
+            defaults.defaultClusterThreshold, result.trv_alts, current.isDiploidView,
+            current.distanceMetric, regionSize, carrierMetadata
           )
-          setHaplotypeData(baseData)
-          setHaplotypeLoading(false)
+          if (activeHaplotypeScopeRef.current === haplotypeScope) {
+            setHaplotypeDataState({
+              scope: haplotypeScope,
+              representationIdentity: initialRepresentationIdentity,
+              data: baseData,
+            })
+          }
         }
       })
       .catch((error: any) => {
-        if (error?.name === 'AbortError') return
+        if (
+          error?.name === 'AbortError' ||
+          activeHaplotypeScopeRef.current !== haplotypeScope ||
+          requestGeneration !== requestGenerationRef.current
+        ) return
+        networkScopeRef.current = null
+        abortControllerRef.current = null
         console.error('Error fetching haplotype data:', error)
         setHaplotypeLoading(false)
         setWorkerComputing(false)
@@ -1000,38 +1214,76 @@ const LongReadUnifiedView = ({
           error instanceof Error ? error.message : 'Unable to load haplotype data.'
         )
       })
-  }, [showHaplotypes, chrom, start, stop, lrCohort])
+  }, [
+    showHaplotypes,
+    haplotypeScope,
+    haplotypeDataState?.scope,
+    chrom,
+    start,
+    stop,
+    lrCohort,
+    regionSize,
+    ensureHaplotypeWorker,
+    postWorkerCompute,
+  ])
 
-  // Derive booleans from groupingMode for worker/compute compatibility
-  const isClusteredView = groupingMode === 'similarity'
+  useEffect(() => () => {
+    requestGenerationRef.current += 1
+    abortControllerRef.current?.abort()
+    workerRef.current?.terminate()
+    workerRef.current = null
+    rawDataRef.current = null
+    workerRawScopeRef.current = null
+    activeWorkerComputeRef.current = null
+  }, [])
 
-  // Recompute when AF/sort/clustering/diploid changes
+  // Recompute only when the retained representation differs from the controls.
+  // This is what makes Summary → Haplotype re-entry reuse both raw and computed data.
   const hasData = haplotypeData !== null
   useEffect(() => {
     if (!hasData) return
-    if (workerRef.current) {
-      setWorkerComputing(true)
-      workerRef.current.postMessage({
-        type: 'UPDATE_AF',
-        minAf: threshold,
-        isClusteredView,
-        clusterThreshold: deferredClusterThreshold,
-        sortBy,
-        isDiploidView,
-        distanceMetric,
-      })
-    } else if (rawDataRef.current) {
-      const { variants, carrierIndices, carrierMetadata, trvAlts } = rawDataRef.current
+    if (haplotypeDataState?.representationIdentity === representationIdentity) {
+      const active = activeWorkerComputeRef.current
+      if (
+        active?.scope === haplotypeScope &&
+        active.representationIdentity !== representationIdentity
+      ) {
+        // Controls returned to the resident representation before an older compute
+        // replied. Retire its generation so that response cannot repaint stale data.
+        activeWorkerComputeRef.current = null
+        setWorkerComputing(false)
+        setLoadingStatus('')
+      }
+      return
+    }
+    if (workerRef.current && workerRawScopeRef.current === haplotypeScope) {
+      postWorkerCompute(
+        workerRef.current,
+        haplotypeScope,
+        workerRawRequestGenerationRef.current,
+        representationIdentity,
+        {
+          type: 'UPDATE_AF',
+          minAf: threshold,
+          isClusteredView,
+          clusterThreshold: deferredClusterThreshold,
+          sortBy,
+          isDiploidView,
+          distanceMetric,
+        }
+      )
+    } else if (rawDataRef.current?.scope === haplotypeScope) {
+      const { variants: rawVariants, carrierIndices, carrierMetadata, trvAlts } = rawDataRef.current
       let result: ComputedHaplotypeData
       if (isDiploidView) {
-        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true, 'auto', regionSize, carrierMetadata)
+        result = computeHaplotypeView(rawVariants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, true, 'auto', regionSize, carrierMetadata)
       } else if (isClusteredView) {
-        const baseData = computeHaplotypeView(variants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize, carrierMetadata)
+        const baseData = computeHaplotypeView(rawVariants, carrierIndices, autoDefaults.floor, sortBy, true, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize, carrierMetadata)
         result = threshold > autoDefaults.floor ? filterDisplayVariants(baseData, threshold) : baseData
       } else {
-        result = computeHaplotypeView(variants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize, carrierMetadata)
+        result = computeHaplotypeView(rawVariants, carrierIndices, threshold, sortBy, false, deferredClusterThreshold, trvAlts, false, distanceMetric, regionSize, carrierMetadata)
       }
-      setHaplotypeData(result)
+      setHaplotypeDataState({ scope: haplotypeScope, representationIdentity, data: result })
     }
   }, [
     threshold,
@@ -1041,6 +1293,12 @@ const LongReadUnifiedView = ({
     isDiploidView,
     distanceMetric,
     hasData,
+    haplotypeDataState?.representationIdentity,
+    haplotypeScope,
+    representationIdentity,
+    regionSize,
+    autoDefaults.floor,
+    postWorkerCompute,
   ])
 
   const unfilteredHaplotypeGroups: HaplotypeGroups = (haplotypeData as HaplotypeGroups | null) || {
