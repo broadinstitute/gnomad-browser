@@ -150,7 +150,7 @@ const FieldsetRow = styled.div`
 const Fieldset = styled.fieldset<{ $disabled?: boolean }>`
   box-sizing: border-box;
   min-width: 0;
-  min-block-size: 82px;
+  min-block-size: 100px;
   overflow-wrap: anywhere;
   padding: 12px 16px;
   border: 1px solid #e0e0e0;
