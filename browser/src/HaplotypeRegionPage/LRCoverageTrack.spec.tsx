@@ -3,7 +3,13 @@ import { render, screen, waitFor } from '@testing-library/react'
 
 import LRCoverageTrack from './LRCoverageTrack'
 
-jest.mock('../CoverageTrack', () => () => <div>coverage rendered</div>)
+jest.mock('../CoverageTrack', () => {
+  const CoverageTrackMock = ({ datasets, metric }: any) => (
+    <div data-metric={metric}>{datasets[0].name}</div>
+  )
+  ;(CoverageTrackMock as any).MetricOptions = { over_5: 'over_5', over_20: 'over_20' }
+  return CoverageTrackMock
+})
 
 const response = {
   data: {
@@ -17,22 +23,28 @@ describe('LRCoverageTrack cohort routing', () => {
     delete (global as any).fetch
   })
 
-  test('HGSVC -> AoU -> HGSVC clears coverage and never queries while AoU is selected', async () => {
+  test('HGSVC -> AoU -> HGSVC fetches and labels coverage for the selected cohort', async () => {
     const fetchMock = jest.fn().mockResolvedValue({ json: async () => response })
     ;(global as any).fetch = fetchMock
 
     const { rerender } = render(
       <LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="hgsvc_hprc" />
     )
-    await screen.findByText('coverage rendered')
+    expect(
+      (await screen.findByText('Long-read coverage — HGSVC/HPRC')).getAttribute('data-metric')
+    ).toBe('over_20')
     expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
 
     rerender(<LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="aou" />)
-    expect(screen.queryByText('coverage rendered')).toBeNull()
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1))
+    expect(
+      (await screen.findByText('Long-read coverage — All of Us')).getAttribute('data-metric')
+    ).toBe('over_5')
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
+    expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body)).variables.lrCohort).toBe('aou')
 
     rerender(<LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="hgsvc_hprc" />)
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
-    expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
+    await screen.findByText('Long-read coverage — HGSVC/HPRC')
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3))
+    expect(JSON.parse(String(fetchMock.mock.calls[2][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
   })
 })

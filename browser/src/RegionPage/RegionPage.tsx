@@ -246,18 +246,16 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
 
   let coverageTrack = null
   if (isLongRead(datasetId)) {
-    coverageTrack = lrCohort === 'hgsvc_hprc'
-      ? (
-          <LRCoverageTrack
-            chrom={chrom}
-            start={start}
-            stop={stop}
-            lrCohort={lrCohort}
-            viewStart={viewRegion.start}
-            viewStop={viewRegion.stop}
-          />
-        )
-      : null
+    coverageTrack = (
+      <LRCoverageTrack
+        chrom={chrom}
+        start={start}
+        stop={stop}
+        lrCohort={lrCohort}
+        viewStart={viewRegion.start}
+        viewStop={viewRegion.stop}
+      />
+    )
   } else if (region.chrom === 'M') {
     coverageTrack = <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
   } else {

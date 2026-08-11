@@ -31,40 +31,47 @@ describe('Y1 ancillary query routing', () => {
     mockRoute.mockReset()
   })
 
-  test('binds exact coverage run, cohort, chromosome, and bounded range', async () => {
-    mockRoute.mockReturnValue({
-      modality: 'coverage',
-      cohort: 'aou',
-      database: 'gnomad_lr_y1_cov_aou',
-      run_id: 'cov-aou',
-    })
-    mockQuery.mockImplementation(async () => ({ json: async () => [{ pos: 100, mean: 20 }] }))
-    await expect(fetchLRCoverageForRegion(null, '1', 100, 200, 'aou')).resolves.toEqual([
-      { pos: 100, mean: 20 },
-    ])
-    const call = mockQuery.mock.calls[0][0] as any
-    expect(call.query).toContain('FROM lr_y1_coverage')
-    expect(call.query).toContain('WHERE chrom = {chrom:String}')
-    expect(call.query).toContain('position BETWEEN {start:UInt32} AND {stop:UInt32}')
-    expect(call.query).toContain('ancillary_run_id = {runId:String}')
-    expect(call.query).toContain('ORDER BY position ASC')
-    expect(call.query_params).toEqual({
-      runId: 'cov-aou',
-      cohort: 'aou',
-      chrom: 'chr1',
-      start: 100,
-      stop: 200,
-    })
-    await expect(fetchLRCoverageForRegion(null, 'chr1', 0, 1_000_001, 'aou')).rejects.toThrow(
-      'range is too large'
-    )
-  })
+  test.each(['hgsvc_hprc', 'aou'] as const)(
+    'binds exact %s coverage run, cohort, chromosome, and bounded range',
+    async (cohort) => {
+      mockRoute.mockReturnValue({
+        modality: 'coverage',
+        cohort,
+        database: `gnomad_lr_y1_cov_${cohort}`,
+        run_id: `cov-${cohort}`,
+      })
+      mockQuery.mockImplementation(async () => ({ json: async () => [{ pos: 100, mean: 20 }] }))
+      await expect(fetchLRCoverageForRegion(null, '1', 100, 200, cohort)).resolves.toEqual([
+        { pos: 100, mean: 20 },
+      ])
+      const call = mockQuery.mock.calls[0][0] as any
+      expect(call.query).toContain('FROM lr_y1_coverage')
+      expect(call.query).toContain('WHERE chrom = {chrom:String}')
+      expect(call.query).toContain('position BETWEEN {start:UInt32} AND {stop:UInt32}')
+      expect(call.query).toContain('ancillary_run_id = {runId:String}')
+      expect(call.query).toContain('ORDER BY position ASC')
+      expect(call.query_params).toEqual({
+        runId: `cov-${cohort}`,
+        cohort,
+        chrom: 'chr1',
+        start: 100,
+        stop: 200,
+      })
+      await expect(fetchLRCoverageForRegion(null, 'chr1', 0, 1_000_001, cohort)).rejects.toThrow(
+        'range is too large'
+      )
+    }
+  )
 
-  test('returns no coverage without an admitted cohort route', async () => {
-    mockRoute.mockReturnValue(null)
-    await expect(fetchLRCoverageForRegion(null, 'chr1', 100, 200, 'aou')).resolves.toEqual([])
-    expect(mockQuery).not.toHaveBeenCalled()
-  })
+  test.each(['hgsvc_hprc', 'aou'] as const)(
+    'returns no %s coverage without an admitted cohort route and never falls back',
+    async (cohort) => {
+      mockRoute.mockReturnValue(null)
+      await expect(fetchLRCoverageForRegion(null, 'chr1', 100, 200, cohort)).resolves.toEqual([])
+      expect(mockRoute).toHaveBeenCalledWith(cohort, 'coverage')
+      expect(mockQuery).not.toHaveBeenCalled()
+    }
+  )
 
   test('uses canonical position for strict full-genome STR routes', async () => {
     mockRoute.mockReturnValue({

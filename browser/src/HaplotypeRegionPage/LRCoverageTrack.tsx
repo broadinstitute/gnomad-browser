@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
-import CoverageTrack from '../CoverageTrack'
+import CoverageTrack, { MetricOptions } from '../CoverageTrack'
 
 const LR_COVERAGE_QUERY = `
   query LRCoverage($chrom: String!, $start: Int!, $stop: Int!, $lrCohort: LongReadCohort!) {
@@ -44,7 +44,6 @@ const LRCoverageTrack = ({
   useEffect(() => {
     setCoverageData(null)
     setError(null)
-    if (lrCohort === 'aou') return undefined
 
     const controller = new AbortController()
     const fetchCoverage = async () => {
@@ -80,7 +79,7 @@ const LRCoverageTrack = ({
     [coverageData, viewStart, viewStop]
   )
 
-  if (lrCohort === 'aou' || error) {
+  if (error) {
     return null
   }
 
@@ -94,14 +93,18 @@ const LRCoverageTrack = ({
 
   return (
     <CoverageTrack
+      key={lrCohort}
       coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
-      filenameForExport={() => `${chrom}-${start}-${stop}_gnomad_long_read_coverage`}
+      metric={lrCohort === 'aou' ? MetricOptions.over_5 : MetricOptions.over_20}
+      filenameForExport={() =>
+        `${chrom}-${start}-${stop}_gnomad_long_read_coverage_${lrCohort}`
+      }
       metricControlId="lr-coverage-metric"
       datasets={[
         {
           color: '#9c27b0',
           buckets: visibleCoverageData,
-          name: 'Long-read coverage — HGSVC/HPRC',
+          name: `Long-read coverage — ${lrCohort === 'aou' ? 'All of Us' : 'HGSVC/HPRC'}`,
           opacity: 0.7,
         },
       ]}
