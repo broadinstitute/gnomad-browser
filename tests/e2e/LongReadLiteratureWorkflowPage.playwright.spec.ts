@@ -61,6 +61,22 @@ test.describe('Long-read literature workflow detail', () => {
         ).toHaveCount(0)
         await expect(page.getByRole('status')).toContainText(/data-blocked|No safe CTA|No single/i)
       }
+      if (slug === 'pkd1-pseudogene-origin') {
+        await expect(
+          page.getByRole('heading', {
+            level: 1,
+            name: 'Detecting PKD1 variants in polycystic kidney disease patients by single-molecule long-read sequencing',
+          })
+        ).toBeVisible()
+      }
+      if (
+        slug === 'smarcb1-mosaic-retrotransposon' ||
+        slug === 'prkn-complex-inversion-recurrence'
+      ) {
+        const renderedProse = await page.locator('body').innerText()
+        expect(renderedProse).not.toContain('.;')
+        expect(renderedProse).not.toMatch(/(^|[^.])\.\.([^.]|$)/)
+      }
     }
     /* eslint-enable no-await-in-loop, no-restricted-syntax */
   })

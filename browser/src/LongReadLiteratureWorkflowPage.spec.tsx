@@ -23,6 +23,8 @@ const renderRoute = (slug: string) =>
 
 const batchOneRefs = ['1', '10', '34', '72', '78', '88', '93', '140']
 const batchTwoRefs = ['3', '5', '19', '32', '44', '91', '104', '129']
+const authoritativePkd1Title =
+  'Detecting PKD1 variants in polycystic kidney disease patients by single-molecule long-read sequencing'
 
 describe('LongReadLiteratureWorkflowPage', () => {
   test('the 20 stable workflow records match their literature paper identities and contracts', () => {
@@ -86,6 +88,21 @@ describe('LongReadLiteratureWorkflowPage', () => {
 
     expect(new Set(literatureWorkflows.map((workflow) => workflow.slug)).size).toBe(20)
     expect(new Set(literatureWorkflows.map((workflow) => workflow.ref)).size).toBe(20)
+  })
+
+  test('pins ref 32 to the authoritative DOI/PDF paper title', () => {
+    expect(examples.find((paper) => paper.ref === '32')!.title).toBe(authoritativePkd1Title)
+    expect(literatureWorkflows.find((workflow) => workflow.ref === '32')!.paper.title).toBe(
+      authoritativePkd1Title
+    )
+  })
+
+  test('keeps normalized SMARCB1 and PRKN prose free of malformed separators', () => {
+    ;['129', '104'].forEach((ref) => {
+      const prose = JSON.stringify(literatureWorkflows.find((workflow) => workflow.ref === ref))
+      expect(prose).not.toContain('.;')
+      expect(prose).not.toContain('..')
+    })
   })
 
   test.each(literatureWorkflows)('routes $slug and preserves its safety boundary', (workflow) => {
