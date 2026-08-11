@@ -75,6 +75,12 @@ const PrimaryLink = styled.a`
   }
 `
 
+const BlockedBrowserNote = styled.p`
+  color: #792525;
+  font-weight: 700;
+  margin: 0;
+`
+
 const Boundary = styled.div`
   border-left: 5px solid #b35c00;
   background: #fff5e8;
@@ -293,15 +299,13 @@ const UnknownWorkflow = ({ slug }: { slug: string }) => (
     <p>
       There is no curated detailed workflow for <code>{slug}</code>.
     </p>
-    <p>
-      Only four prototype papers currently have detail pages. The other literature cards remain
-      available on the index.
-    </p>
+    <p>The requested paper does not have a curated detail page.</p>
     <a href={INDEX_PATH}>Back to long-read literature examples</a>
   </InfoPage>
 )
 
 const WorkflowPage = ({ workflow }: { workflow: LiteratureWorkflow }) => {
+  const browserPath = literatureWorkflowBrowserPath(workflow)
   const byClass = {
     P: workflow.evidence.filter((item) => item.class === 'P'),
     I: workflow.evidence.filter((item) => item.class === 'I'),
@@ -321,24 +325,36 @@ const WorkflowPage = ({ workflow }: { workflow: LiteratureWorkflow }) => {
           {workflow.paper.venue} ({workflow.paper.year}) · {workflow.locus}
         </Meta>
         <LinkRow aria-label="Paper and browser links">
-          <PrimaryLink href={literatureWorkflowBrowserPath(workflow)}>Try in browser</PrimaryLink>
-          <a href={workflow.paper.pdfUrl} target="_blank" rel="noopener noreferrer">
-            PDF
-          </a>
-          <a
-            href={`https://pubmed.ncbi.nlm.nih.gov/${workflow.paper.pmid}/`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            PubMed
-          </a>
-          <a
-            href={`https://doi.org/${workflow.paper.doi}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            DOI
-          </a>
+          {browserPath ? (
+            <PrimaryLink href={browserPath}>Try in browser</PrimaryLink>
+          ) : (
+            <BlockedBrowserNote role="status">
+              {workflow.browserRegionBlockedReason}
+            </BlockedBrowserNote>
+          )}
+          {workflow.paper.pdfUrl && (
+            <a href={workflow.paper.pdfUrl} target="_blank" rel="noopener noreferrer">
+              PDF
+            </a>
+          )}
+          {workflow.paper.pmid && (
+            <a
+              href={`https://pubmed.ncbi.nlm.nih.gov/${workflow.paper.pmid}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              PubMed
+            </a>
+          )}
+          {workflow.paper.doi && (
+            <a
+              href={`https://doi.org/${workflow.paper.doi}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              DOI
+            </a>
+          )}
         </LinkRow>
         <Boundary role="note" aria-label="Non-diagnostic boundary">
           <strong>Population-reference research only — not diagnostic</strong>

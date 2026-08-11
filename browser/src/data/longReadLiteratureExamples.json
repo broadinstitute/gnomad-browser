@@ -1112,10 +1112,10 @@
     "whyInTruthSet": "capillary electrophoresis UNDERSIZES vs nanopore -> mis-thresholding",
     "region": {
       "chrom": "13",
-      "start": 102006631,
-      "stop": 102106631,
-      "truncated": true,
-      "verified": false
+      "start": 102111564,
+      "stop": 102211564,
+      "truncated": false,
+      "verified": true
     },
     "pdfUrl": "/papers/78.pdf"
   },

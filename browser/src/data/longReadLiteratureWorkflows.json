@@ -519,4 +519,1732 @@
     ],
     "capabilityBasis": "Read-only checks of the deployed browser/API and source at commit 7e1675c19 on 2026-08-11. The Try in browser link is an overview, not a remapped event overlay."
   }
+,
+{
+  "schemaVersion": 1,
+  "recordId": "paper-78-fgf14",
+  "ref": "78",
+  "slug": "fgf14-gaa-sizing",
+  "paper": {
+    "title": "Optimized testing strategy for the diagnosis of GAA- FGF14 ataxia",
+    "year": "2023",
+    "venue": "medRxiv",
+    "pmid": null,
+    "doi": "10.1101/2023.02.02.23285206",
+    "pdfUrl": "/papers/78.pdf"
+  },
+  "archetypes": [
+    "A1 — Repeat expansions"
+  ],
+  "locus": "FGF14 · chr13:102,161,575–102,161,726 (GRCh38 target tract; source event chr13:102,161,564–102,161,844)",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Repeat-expansion researcher or laboratory scientist",
+    "context": "Research comparison after an externally performed FGF14 sizing and sequence assay"
+  },
+  "nonDiagnosticBoundary": "This workflow asks whether a comparable sequence-resolved reference allele is represented and with what callable denominator. It cannot diagnose an individual, classify an allele, transfer the paper's threshold or calibration, or infer pathogenicity or benignity from population occurrence or absence.",
+  "startingState": {
+    "trigger": "An external FGF14 result with an allele pair, assay-specific size estimate, and preferably bidirectional motif or sequence information.",
+    "inputs": [
+      "Original assay and laboratory: fLR-PCR/capillary electrophoresis, gel sizing, bidirectional RP-PCR, Sanger sequencing, nanopore sequencing, or another declared method",
+      "Raw allele-size estimate and any locally calibrated estimate, kept as separate values with control/calibration provenance",
+      "Both alleles, cyclic motif spelling, 5′ and 3′ interruption or polymorphism information, tissue, and uncertainty",
+      "Reference build and a documented mapping to GRCh38 chr13:102161575–102161726",
+      "A predeclared matching rule: exact ALT sequence, sequence-decomposed repeat count and interruption pattern, or length-only similarity",
+      "Browser release, cohort, source event, global and stratum AC/AN, and missingness/callability fields"
+    ],
+    "question": "Does this release contain an exact-sequence or explicitly weaker length/composition match to the externally characterized FGF14 allele, after keeping assay-specific sizing uncertainty separate?",
+    "stopRule": "Stop exact comparison if the build, assay basis, allele pair, or sequence/motif evidence is missing; do not convert an uncalibrated capillary estimate with the paper's cohort-specific regression or use the paper's clinical threshold in the browser."
+  },
+  "workflow": {
+    "before": [
+      "Record both alleles, original motif notation, assay, tissue, raw size, locally calibrated size, controls, sequence coverage, interruptions, and uncertainty without replacing the original measurement.",
+      "Normalize the locus to GRCh38 chr13:102161575–102161726 while retaining the source coordinates; bridge it to source event chr13-102161564-TRV-280 rather than treating the event's 281 bp reference span as the repeat tract.",
+      "Choose and label the matching rule before looking at population data: exact sequence is strongest; length-only similarity must remain a weaker result."
+    ],
+    "inside": [
+      "Open chr13:102111564–102211564 with HGSVC/HPRC and verify dataset, cohort, reference build, accepted Y1 source, run, and chromosome scope.",
+      "Select all ALT records sharing source_variant_id chr13-102161564-TRV-280; do not interpret its normalized alleles as independent loci.",
+      "Compare the external allele to exact ALT sequence and event-level base-pair difference only on the declared basis; never silently equate event length with GAA repeat count or apply the paper's fLR-PCR correction.",
+      "For any candidate match, retain global and ancestry/sex-stratum AC/AN and the exact allele ID; distinguish an exact sequence match from same-length but structurally unresolved alleles.",
+      "Inspect motif, interruption, purity, full-cohort repeat-count distribution, and chromosome-copy linkage availability. If fields are empty or unavailable, report the corresponding comparison as data-blocked rather than absent."
+    ],
+    "after": [
+      "Return one bounded outcome: exact-sequence represented, length-only represented, not observed in representation-complete callable data, or representation/data blocked.",
+      "Record the matching rule, external assay basis, raw and locally calibrated values, source event and allele ID, AC/AN by reported stratum, missingness, release/run, evidence date, and browser/API query state.",
+      "Hand the reference observation to the research or laboratory team for orthogonal sizing, segregation, phenotype review, and interpretation outside the browser."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "Build, assay basis, second allele, or motif/sequence evidence is missing",
+      "action": "Stop exact comparison and request the missing source result; do not reconstruct an allele from a positive RP-PCR or a single size number.",
+      "stopRule": true
+    },
+    {
+      "condition": "Only an uncalibrated fLR-PCR/capillary size is available",
+      "action": "Preserve it as assay-specific and uncertain; do not apply the paper's regression or threshold as a universal conversion.",
+      "stopRule": true
+    },
+    {
+      "condition": "An exact ALT sequence match is represented with explicit AC/AN",
+      "action": "Report the allele ID, matching rule, AC/AN, strata, and provenance as population-reference occurrence only.",
+      "stopRule": false
+    },
+    {
+      "condition": "Only event-level length is similar while motif, purity, or interruptions are unresolved",
+      "action": "Report length-only similarity and mark structural equivalence data-blocked; do not call the alleles comparable in sequence.",
+      "stopRule": false
+    },
+    {
+      "condition": "No candidate match is returned but sequence representation, distribution, or callability is incomplete",
+      "action": "Report unanswerable/data-blocked rather than zero or absent.",
+      "stopRule": true
+    },
+    {
+      "condition": "No candidate match is observed in representation-complete callable data",
+      "action": "Report not observed with the exact denominator and release; this is not evidence of pathogenicity.",
+      "stopRule": false
+    }
+  ],
+  "story": {
+    "given": "an externally characterized FGF14 allele pair, such as the paper's 266/417 example, with assay-labeled sizes, locally controlled calibration if used, bidirectional motif evidence, and sequence uncertainty",
+    "when": "the researcher opens the corrected GRCh38 window, selects every ALT from source event chr13-102161564-TRV-280, compares exact sequence before length-only similarity, and checks AC/AN, motif, distribution, and callability provenance",
+    "then": "the browser returns an exact-sequence represented, length-only represented, not observed in callable representation-complete data, or representation/data-blocked outcome with allele ID, global and stratum AC/AN, release/run, and limitations, supporting only whether a comparable state is represented in this reference release"
+  },
+  "browserRegion": {
+    "chrom": "13",
+    "start": 102111564,
+    "stop": 102211564
+  },
+  "capabilities": [
+    {
+      "step": "Open the corrected GRCh38 FGF14 window and resolve the source event",
+      "status": "supported-and-usable",
+      "evidence": "On 2026-08-11 the deployed region and exact-allele routes returned HTTP 200, and the live API resolved source event chr13-102161564-TRV-280 at chr13:102161564–102161844."
+    },
+    {
+      "step": "Inspect the complete event allelic series with global and stratum AC/AN",
+      "status": "supported-but-awkward",
+      "evidence": "The live API returned 139 ALT rows (indices 1–139), each with AN 584, per-stratum AC/AN, and exact ALT sequence; current source groups these as a TR Allelic Series, but the operation starts from one allele-specific page and event-level length differences."
+    },
+    {
+      "step": "Compare an external repeat count on a declared assay basis",
+      "status": "underdeveloped",
+      "evidence": "The API reports exact ALT and event-level base-pair difference (-121 to +1791 bp), not an assay-aware FGF14 tract repeat count; there is no field for fLR-PCR, gel, nanopore, controls, calibration, or sizing uncertainty."
+    },
+    {
+      "step": "Compare motif order, interruptions, and purity",
+      "status": "underdeveloped",
+      "evidence": "Exact ALT sequences are available, but all 139 event rows had empty motifs and null main_reference_region; no first-class decomposition or purity/interruption comparison is exposed."
+    },
+    {
+      "step": "Use full-cohort repeat-count and genotype distributions at this event",
+      "status": "data-blocked",
+      "evidence": "The exact live API query returned no allele-size groups, no genotype groups, and null max_repunits for chr13-102161564-TRV-280~139."
+    },
+    {
+      "step": "Follow a candidate allele onto a confirmed chromosome copy",
+      "status": "underdeveloped",
+      "evidence": "A haplotype route and current-source haplotype components exist, but the bounded live exact-position haplotype_groups query returned null; copy linkage for this event was not independently demonstrated."
+    },
+    {
+      "step": "Apply the paper's threshold or regression to classify an individual",
+      "status": "inappropriate/unsafe",
+      "evidence": "The paper's threshold and correction were assay- and cohort-specific, and the preprint itself says it should not guide clinical practice; population occurrence or absence cannot diagnose or classify an allele."
+    },
+    {
+      "step": "Reproduce and export the complete comparison",
+      "status": "underdeveloped",
+      "evidence": "The region URL preserves dataset/cohort/haplotype state and the API is reproducible, but no single export joins external assay/calibration, exact sequence matching, missingness, accepted Y1 run provenance, and all UI settings."
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "One FGF14 source event containing an exact sequence match, a same-length interrupted allele, a distinct long pure-repeat allele, and one uncallable chromosome copy, plus an external result with separate raw and locally calibrated assay values.",
+    "actions": "Open the corrected window, select the source event, compare exact sequence before length, inspect motif/purity/interruptions and global/stratum denominators, search the carrying copy, and export the result.",
+    "expected": "One event with distinct allele states; exact sequence and tract-level repeat decomposition; raw versus calibrated assay values kept separate; allele and callable/no-call counts; global and stratum AC/AN; accepted release/run; explicit exact, length-only, not observed, or data-blocked outcome; and an export that reproduces those values.",
+    "forbidden": "The result must not diagnose GAA-FGF14 ataxia, label an allele benign or pathogenic, apply the paper's 250-repeat threshold or calibration universally, equate event-level length with GAA count, or turn incomplete data into absence."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "The paper evaluated a three-step strategy using fLR-PCR, bidirectional 5′/3′ RP-PCR, then gel electrophoresis and/or Sanger sequencing, comparing 28 French Canadian participants (22 patients and six controls) with targeted nanopore data and validating in 53 French index patients.",
+      "citation": "PDF pp. 3–6; Fig. 1 legend, p. 17"
+    },
+    {
+      "class": "P",
+      "claim": "Uncorrected capillary fLR-PCR systematically undersized expanded alleles versus nanopore and gel (slopes 0.87 and 0.84; biases -8.54% and -10.91%) and produced four false-negative classifications among 28 comparison participants; alleles above 400 repeats exceeded capillary sizing range.",
+      "citation": "PDF pp. 3, 7; Fig. 3 legend, pp. 17–18"
+    },
+    {
+      "class": "P",
+      "claim": "Correction derived from four internally characterized alleles made fLR-PCR estimates comparable to nanopore and gel in this study, with slopes 0.98 and 0.94; this is paper-specific calibration evidence, not a transferable browser conversion.",
+      "citation": "PDF pp. 7–8; Fig. 3E–H legend, pp. 17–18"
+    },
+    {
+      "class": "P",
+      "claim": "The proposed assay stops after two alleles below the paper's threshold; a single capillary-detected allele triggers gel sizing because a second very large allele may be missed; flat or atypical RP-PCR profiles trigger sequence resolution.",
+      "citation": "PDF pp. 5–9; Fig. 1, p. 19"
+    },
+    {
+      "class": "P",
+      "claim": "Figure examples include 9/280, 9/510, 17/319, 43/370, 58/300, and compound 266/417 allele pairs; the larger 417 allele in the compound example was missed by fLR-PCR capillary detection.",
+      "citation": "PDF pp. 9, 17–18; Figs. 2D–E and 4A–B"
+    },
+    {
+      "class": "P",
+      "claim": "The compound 266/417 sample had distinct 5′ polymorphic structures, reported as (GAA)(GAAA)(GGA)(GAA)n and (GAA)(GAAA)(GAAA)(GAA)n; combined forward/reverse Sanger covered alleles up to about 500 repeats in this study.",
+      "citation": "PDF p. 9; Fig. 4C–D legend, p. 18"
+    },
+    {
+      "class": "P",
+      "claim": "Maternal transmission of a 467-repeat allele yielded 492- and 510-repeat alleles in two meiotic events in one family.",
+      "citation": "PDF pp. 10, 12; Fig. 4A legend, p. 18"
+    },
+    {
+      "class": "I",
+      "claim": "A population-browser replay must begin with an externally measured allele, preserve assay uncertainty, and ask about represented reference states rather than reenact the paper's diagnostic decision tree.",
+      "citation": "Analyst reconstruction from PDF pp. 5–11; requires workflow review"
+    },
+    {
+      "class": "I",
+      "claim": "Exact ALT sequence, length-only similarity, no observation in callable complete data, and data/representation blocked must be separate outcomes because same length does not establish the same interruption structure.",
+      "citation": "Analyst reconstruction; requires data-semantics and product review"
+    },
+    {
+      "class": "B",
+      "claim": "The corrected GRCh38 target interval chr13:102161575–102161726 is 152 bp of cyclic AAG/GAA repeat sequence and lies inside the 281 bp current source event chr13:102161564–102161844.",
+      "citation": "Ensembl GRCh38 sequence REST check and live API event check, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "The live HGSVC/HPRC API returned 139 alleles for source event chr13-102161564-TRV-280, exact ALT sequences, per-allele and per-stratum AC/AN, AN 584 for every row, empty motifs, and null main reference region.",
+      "citation": "Read-only GraphQL checks against gnomad-lr-api revision 00018-xoz, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Full-cohort repeat-count/genotype distributions were unavailable for the checked FGF14 allele, and the bounded exact-position haplotype-groups query returned null.",
+      "citation": "Read-only GraphQL checks, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "The deployed region and variant routes returned HTTP 200, but deployed literature index/detail routes returned HTTP 404; the four prototype workflow pages exist only in current source at commit 32604d94e, after deployed commit 667d8a46f.",
+      "citation": "Cloud Run/browser/source checks, 2026-08-11"
+    }
+  ],
+  "capabilityBasis": "Read-only checks on 2026-08-11 separated deployed behavior from source. Deployed Cloud Run browser revision gnomad-lr-browser-00012-suv and API revision gnomad-lr-api-00018-xoz serve the corrected region/event data from accepted HGSVC/HPRC Y1 chr13 run y1-full-prototype-hgsvc-hprc-chr13-20260728-r1. The four literature workflow records/pages are present in clean current source commit 32604d94e but absent from deployed commit 667d8a46f; route success alone is not a rendered-data assertion."
+},
+{
+  "schemaVersion": 1,
+  "recordId": "paper-140-d4z4-length-methylation",
+  "ref": "140",
+  "slug": "d4z4-length-methylation",
+  "paper": {
+    "title": "Simultaneous measurement of the size and methylation of chromosome 4qA-D4Z4 repeats in facioscapulohumeral muscular dystrophy by long-read sequencing",
+    "year": "2022",
+    "venue": "Journal of Translational Medicine",
+    "pmid": "36348371",
+    "doi": "10.1186/s12967-022-03743-7",
+    "pdfUrl": "/papers/140.pdf"
+  },
+  "archetypes": [
+    "A1 — Repeat expansions",
+    "A2 — Methylation and imprinting"
+  ],
+  "locus": "4qA-D4Z4, 4qB-D4Z4, and 10q-D4Z4 · custom-reference/homology mapping; no validated linear GRCh38 interval",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Repeat-expansion or epigenetics researcher",
+    "context": "Population-reference follow-up after an external assay has jointly measured D4Z4 array length and native-DNA methylation"
+  },
+  "nonDiagnosticBoundary": "This workflow can support only a technically qualified, locus- and length-conditioned population-reference observation once a validated D4Z4 data model exists. It cannot diagnose FSHD, classify an array, or infer pathogenicity, benignity, penetrance, or risk.",
+  "startingState": {
+    "trigger": "An externally resolved D4Z4 chromosome copy, or a research question about the reference distribution of D4Z4 repeat count and distal-array methylation.",
+    "inputs": [
+      "Original locus-assignment evidence, including proximal p13E-11 and distal 4qA-versus-10q discriminating anchors",
+      "Full-length molecule or phase-linked array record with D4Z4 repeat-unit count and orientation",
+      "Native-DNA methylation calls with CpG/read coverage and a stable molecule or chromosome-copy identifier",
+      "Tissue, extraction, enrichment, sequencing, caller, batch, and reference provenance",
+      "Explicit missing/no-output records for every roster sample and candidate chromosome copy"
+    ],
+    "question": "Among reference individuals not ascertained for FSHD, do confidently locus- and chromosome-copy-resolved D4Z4 arrays show comparable joint repeat-count and distal-array methylation states after conditioning on 4qA/4qB/10q identity, full-length coverage, missingness, tissue, and assay provenance?",
+    "stopRule": "Stop before region navigation if only custom-reference-relative coordinates are available; do not invent a GRCh38 interval. Stop before locus-specific comparison if 4qA, 4qB, and 10q assignment is absent or ambiguous. Stop before same-copy wording if repeat count and methylation lack a stable molecule/chromosome-copy join. Stop before an absence claim if full-array callability and no-output denominators are unavailable."
+  },
+  "workflow": {
+    "before": [
+      "Record original assay, sample/person identity, tissue, extraction, native-versus-bisulfite measurement, caller, batch, reference, locus anchors, full-length criterion, RU count, and uncertainty without translating custom coordinates.",
+      "Require proximal and distal anchor evidence to classify each full-length array as 4qA, 4qB, 10q, or unresolved; retain anchor-level QC and do not infer 4qB from non-4qA status.",
+      "Check for a validated, versioned D4Z4 locus model that maps custom array coordinates to GRCh38 while preserving 4qA/4qB/10q identity and homology ambiguity."
+    ],
+    "inside": [
+      "For each resolved full-length chromosome copy, show RU count, molecule/read support, array completeness, orientation from proximal to distal RU1, and structural exceptions such as the 1.3 kb proximal-RU deletion.",
+      "Display CpG methylation and coverage for each chromosome copy without assigning parental identity; preserve HAP1/HAP2-to-GT1/GT2 orientation receipt and explicit unavailable samples.",
+      "Join methylation to the same resolved array and present molecule traces or copy-level summaries by RU ordinal from proximal to distal, separating RU1 promoter from RU1 gene body and showing uncovered intervals.",
+      "Compare distal-array methylation only among callable arrays matched by locus (4qA, 4qB, or 10q), RU count band, tissue/assay, coverage, and technical batch; keep external paper cases separate from reference participants."
+    ],
+    "after": [
+      "Export a reviewable receipt containing custom and validated reference identities, locus anchors, array/RU structure, CpG and molecule coverage, tissue/assay/batch, all callable and missing denominators, orientation receipt, release/run identity, filters, and safety wording."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "Custom-reference/homology ambiguity prevents a safe GRCh38 interval.",
+      "action": "Return unmapped/data-blocked, suppress region navigation, and require a validated D4Z4 locus model; never guess a subtelomeric coordinate.",
+      "stopRule": true
+    },
+    {
+      "condition": "4qA, 4qB, and 10q cannot be distinguished.",
+      "action": "Label the array unresolved and exclude it from locus-conditioned summaries; obtain locus-specific orthogonal evidence.",
+      "stopRule": true
+    },
+    {
+      "condition": "Repeat count and methylation are not linked to the same array.",
+      "action": "Show methylation separately at its honest granularity and prohibit same-copy/same-array claims.",
+      "stopRule": true
+    },
+    {
+      "condition": "A long or highly methylated array has no full-length read.",
+      "action": "Mark unavailable/non-callable, retain the missingness reason, and exclude it from the callable denominator rather than assigning zero RUs or 0% methylation.",
+      "stopRule": true
+    },
+    {
+      "condition": "Tissue, assay, or batch provenance is absent.",
+      "action": "Label provenance unknown and stop tissue-sensitive or batch-adjusted comparisons.",
+      "stopRule": true
+    }
+  ],
+  "story": {
+    "given": "a research D4Z4 result with full-length molecule evidence, RU count, native CpG methylation, locus-discriminating anchors, tissue/assay provenance, and no validated linear GRCh38 placement",
+    "when": "the researcher asks whether a comparable joint state is represented and attempts to compare resolved 4qA, 4qB, and 10q chromosome copies while preserving full-length callability and missingness",
+    "then": "the detail page first reports that region navigation is data-blocked, does not create a GRCh38 link, and only after a validated locus model exists shows same-array RU count plus RU-resolved methylation with locus, coverage, tissue, provenance, callable denominators, and unavailable states; the result supports population-reference occurrence or an explicit unanswerable outcome only"
+  },
+  "browserRegion": null,
+  "browserRegionBlockedReason": "No safe linear GRCh38 region is available for this paper-derived workflow; custom-reference and paralog-aware homology mapping are data-blocked.",
+  "capabilities": [
+    {
+      "step": "Record original assay, sample/person identity, tissue, extraction, native-versus-bisulfite measurement, caller, batch, reference, locus anchors, full-length criterion, RU count, and uncertainty without translating custom coordinates.",
+      "status": "absent",
+      "evidence": "Current detail records are static and expose no upload/intake or event-aware custom-reference mapping receipt."
+    },
+    {
+      "step": "Require proximal and distal anchor evidence to classify each full-length array as 4qA, 4qB, 10q, or unresolved; retain anchor-level QC and do not infer 4qB from non-4qA status.",
+      "status": "data-blocked",
+      "evidence": "Current joined records have chromosome and HAP1/HAP2 but no D4Z4 locus label or anchor QC."
+    },
+    {
+      "step": "Check for a validated, versioned D4Z4 locus model that maps custom array coordinates to GRCh38 while preserving 4qA/4qB/10q identity and homology ambiguity.",
+      "status": "data-blocked",
+      "evidence": "The paper names no build or absolute coordinates. The current ref-140 manifest explicitly classifies mapping as unmapped/data-blocked."
+    },
+    {
+      "step": "For each resolved full-length chromosome copy, show RU count, molecule/read support, array completeness, orientation from proximal to distal RU1, and structural exceptions such as the 1.3 kb proximal-RU deletion.",
+      "status": "data-blocked",
+      "evidence": "No current D4Z4/RU model or resolved ref-140 browser event exists."
+    },
+    {
+      "step": "Display CpG methylation and coverage for each chromosome copy without assigning parental identity; preserve HAP1/HAP2-to-GT1/GT2 orientation receipt and explicit unavailable samples.",
+      "status": "supported-and-usable",
+      "evidence": "The live API returned AVAILABLE_CONFIRMED for chr4 and chr10 with 231 source-present samples and explicit limits. This generic capability does not resolve D4Z4 placement or array identity."
+    },
+    {
+      "step": "Join methylation to the same resolved array and present molecule traces or copy-level summaries by RU ordinal from proximal to distal, separating RU1 promoter from RU1 gene body and showing uncovered intervals.",
+      "status": "data-blocked",
+      "evidence": "Current joined rows lack molecule ID, RU ordinal, array length, and 4qA/4qB/10q labels."
+    },
+    {
+      "step": "Compare distal-array methylation only among callable arrays matched by locus (4qA, 4qB, or 10q), RU count band, tissue/assay, coverage, and technical batch; keep external paper cases separate from reference participants.",
+      "status": "data-blocked",
+      "evidence": "Locus/array linkage and tissue/assay fields are absent from current joined records; methylation source exists for only 231/292 roster samples."
+    },
+    {
+      "step": "Export a reviewable receipt containing custom and validated reference identities, locus anchors, array/RU structure, CpG and molecule coverage, tissue/assay/batch, all callable and missing denominators, orientation receipt, release/run identity, filters, and safety wording.",
+      "status": "absent",
+      "evidence": "Current workflow target records characterize export of multimodal CpGs, mapping receipts, tissue/caller provenance, and UI state as absent; current D4Z4-specific export is not implemented."
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "A custom-reference-only fixture with one confidently anchored 5-RU 4qA array and one 12-RU 10q array carrying different RU-resolved methylation profiles on full-length molecules; 4qB was not captured; a second sample has partial long-array reads and no accepted full-length count; tissue and assay provenance are present for the first sample and absent for the second.",
+    "actions": "Open paper 140's detail dossier without supplying a GRCh38 coordinate. Attempt region navigation, then inspect locus assignment, repeat count, RU orientation, RU1 promoter/gene body, CpG/read coverage, and missingness. Compare 4qA with 10q and request a 4qB stratum. Export the analysis state and evidence receipt.",
+    "expected": "The page says unmapped/data-blocked and emits no GRCh38 region link or chrom/start/stop. 4qA and 10q remain separate and show their anchor basis, 5 and 12 RUs, proximal-to-distal orientation, same-molecule methylation, and coverage. 4qB is unavailable, not zero or inferred. The partial long array has RU count and methylation comparison marked unavailable/non-callable, not zero. The second sample is excluded from tissue-conditioned comparison because provenance is absent. The export preserves custom-reference identity, anchors, array/molecule IDs, RU/CpG data, 231/292 source availability context, per-fixture callable/missing counts, receipts, and non-diagnostic wording.",
+    "forbidden": "No GRCh38 region may be guessed from the locus name. No sample-total or merely chromosome-phased methylation may be duplicated onto an unresolved D4Z4 array. 10q may not be labeled a normal 4q allele, and absent 4qB may not be imputed. Missing arrays or methylation may not be encoded as zero. The page may not diagnose FSHD1/FSHD2 or infer pathogenicity, benignity, protection, penetrance, risk, or causal ancestry."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "The study selected 14 clinically affected people represented by 15 biospecimens; Samples 1 and 6 are blood and fibroblasts from the same person, so samples are not independent people.",
+      "citation": "PDF pp. 5-6 and 11, Tables 1-2 and Declarations"
+    },
+    {
+      "class": "P",
+      "claim": "Samples 1-5 and 7-15 used peripheral-blood lymphocyte DNA; Sample 6 used cultured fibroblast DNA from Patient 1; no skeletal-muscle methylation was assayed.",
+      "citation": "PDF pp. 2 and 6, Table 2"
+    },
+    {
+      "class": "P",
+      "claim": "nCATS used native HMW DNA, four Cas9 guides, SQK-LSK109 libraries, MinION FLO-MIN106D sequencing for 20-21 hours, Guppy, Minimap2 custom references, and Nanopolish methylation calling.",
+      "citation": "PDF pp. 2-3, Methods"
+    },
+    {
+      "class": "P",
+      "claim": "The distal CR3/CR4 guides captured 4qA and 10q A-type sequence but not 4qB.",
+      "citation": "PDF p. 3, Results; Fig. 1A-B; p. 11, Limitations"
+    },
+    {
+      "class": "P",
+      "claim": "Locus assignment required common p13E-11 plus 4qA-specific XapI, non-BlnI, and polyadenylation-signal sequence versus 10q-specific non-XapI, BlnI, and non-polyadenylation sequence; Samples 8, 14, and 15 required inspection of a second-distal RU site when the distal site was difficult to identify.",
+      "citation": "PDF pp. 3-4, Fig. 1 and Additional file 1 Fig. S1 legend on p. 11"
+    },
+    {
+      "class": "P",
+      "claim": "The custom first-pass reference contained 10 D4Z4 RUs and flanks from 3,950 bp upstream of CR1 to 251 bp downstream of CR4; methylation realignment used locus-specific, observed-RU-count references from 327 bp downstream of CR2 to 1 bp upstream of CR3. The paper names no genome build or absolute chr4/chr10 coordinates.",
+      "citation": "PDF p. 3, Data analysis"
+    },
+    {
+      "class": "P",
+      "claim": "Full-length 4qA RU counts were S1=1, S2=2, S3=3, S4=4, S5=5, S6=1, S7=11, S8=13, S9=4, S10=5, S11=5, S12=5, S13=3, S14=3, and S15=3.",
+      "citation": "PDF pp. 3-4 and Fig. 1D; prior D4Z4 report cross-check"
+    },
+    {
+      "class": "P",
+      "claim": "Locus-assigned 10q arrays were observed for S1=13 RUs, S2=13, S3=10 and 12, S7=7 and 8, S8=12, S9=11, and S12=12; other samples lacked a reported full-length 10q array.",
+      "citation": "PDF p. 3 and Fig. 1D; Additional file Table S2 as transcribed in prior D4Z4 report"
+    },
+    {
+      "class": "P",
+      "claim": "Methylation was calculated for each RU on each individual full-length 4qA- or 10q-derived read; RU1 promoter and gene body were separated for Fig. 4, and the phenotype summary averaged RU3, RU2, and the RU1 promoter across all 4qA reads per FSHD1 sample.",
+      "citation": "PDF pp. 3, 6, and 8-10, Methods and Figs. 3-5"
+    },
+    {
+      "class": "P",
+      "claim": "Contracted 4qA reads were generally hypomethylated in FSHD1, whereas both 4qA and 10q reads were generally hypomethylated in the two suspected FSHD2 samples; FSHD1 10q reads tended to rise from lower proximal methylation toward distal values of at least 60%, with read- and RU-level exceptions.",
+      "citation": "PDF pp. 4, 6, 8, and 10, Figs. 3-4 and Discussion"
+    },
+    {
+      "class": "P",
+      "claim": "The distal methylation-versus-onset linear fit had R-squared 0.645 versus 0.401 for repeat count, but the selected uncontrolled series was small, two exact onset ages were unknown, and these are associations rather than validated prediction.",
+      "citation": "PDF pp. 6 and 10, Fig. 5"
+    },
+    {
+      "class": "P",
+      "claim": "Full-length 11-13-RU and 10q reads were sparse or absent, and the authors identified HMW-DNA degradation, full-length-read selection, difficulty beyond 13 RUs, and possibly lower Cas9 cleavage of highly methylated DNA as causes; missing long/high-methylation arrays can therefore be non-random.",
+      "citation": "PDF pp. 10-11, Limitations"
+    },
+    {
+      "class": "I",
+      "claim": "The browser evidence unit must be a locus-assigned chromosome copy or molecule carrying both RU count and methylation, not a sample-level join duplicated across two haplotypes.",
+      "citation": "Analyst reconstruction from the paper's single-molecule method and prior D4Z4 review; requires workflow review"
+    },
+    {
+      "class": "I",
+      "claim": "Because the paper provides custom-reference-relative coordinates and requires paralog-specific anchors, a linear GRCh38 browser region is data-blocked until a validated D4Z4 locus model supplies an auditable mapping.",
+      "citation": "Analyst reconstruction from PDF pp. 2-4 and current manifest; requires workflow review"
+    },
+    {
+      "class": "I",
+      "claim": "4qB and 10q must remain separate strata: 4qB was not captured, and 10q was used as a paralogous mimic rather than as a measurement of a normal 4q chromosome copy.",
+      "citation": "Analyst reconstruction from PDF pp. 3 and 10-11; requires workflow review"
+    },
+    {
+      "class": "B",
+      "claim": "The live GraphQL API reports AVAILABLE_CONFIRMED joined phased methylation on chr4 and chr10 for 231 source-present HGSVC/HPRC samples, with 100 kb, 25-sample, and 250,000-record limits and chromosome-wide HAP1-to-GT1/HAP2-to-GT2 mapping.",
+      "citation": "Read-only live API checks against gnomad-lr-api revision 00018-xoz on 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "The admitted orientation receipt accounts for 292 roster samples: 231 source-present, 60 with no methylation output, and 1 source-marked skip; unavailable samples are explicit rather than zero methylation.",
+      "citation": "graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json at browser source commit 32604d94e"
+    },
+    {
+      "class": "B",
+      "claim": "Current joined rows expose sample, GRCh38 CpG position, methylation, coverage, source HAP1/HAP2, VCF strand, chromosome-wide mapping scope, and null phase_set, but no D4Z4 RU ordinal, array length, molecule ID, 4qA/4qB/10q locus label, locus-anchor QC, tissue, assay, or caller fields.",
+      "citation": "graphql-api/src/graphql/types/haplotype.graphql and resolvers/joined-phased-methylation.ts at browser source commit 32604d94e"
+    },
+    {
+      "class": "B",
+      "claim": "The canonical source has exactly four workflow records (refs 25, 40, 59, 111), no ref-140 workflow record, and no first-class D4Z4/4qA/4qB implementation outside the literature index entry; the deployed browser returned 404 for the literature index and ref-140 detail route while its root and ordinary region route returned 200.",
+      "citation": "Read-only canonical source and Cloud Run checks on 2026-08-11 at browser commit 32604d94e / revision 00012-suv"
+    }
+  ],
+  "capabilityBasis": "Read-only paper, source, manifest, and HGSVC/HPRC API checks on 2026-08-11 at browser source commit 32604d94e. Generic joined phased methylation was available, but no validated D4Z4 placement, array identity, same-array linkage, or full-length callability model existed."
+},
+{
+  "schemaVersion": 1,
+  "recordId": "paper-34-gba1-gbap1",
+  "ref": "34",
+  "slug": "gba1-gbap1-copy-identity",
+  "paper": {
+    "title": "Accurate long-read sequencing identified GBA1 as major risk factor in the Luxembourgish Parkinson’s study",
+    "year": "2023",
+    "venue": "npj Parkinson s Disease",
+    "pmid": "37996455",
+    "doi": "10.1038/s41531-023-00595-w",
+    "pdfUrl": "/papers/34.pdf"
+  },
+  "archetypes": [
+    "A3 — Paralogs and pseudogenes"
+  ],
+  "locus": "GBA1/GBA1LP (GBAP1) · GBA1 chr1:155,234,452–155,244,699; GBA1LP chr1:155,213,821–155,227,574 (GRCh38, pinned browser annotation)",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Neurogenetics researcher or molecular laboratory scientist",
+    "context": "Research review of a GBA1 call or recombinant-like marker set at a locus where the pseudogene and complex structures can confound copy assignment"
+  },
+  "nonDiagnosticBoundary": "This population-reference workflow can ask whether a comparable copy-assigned sequence or structural state is represented. It cannot diagnose Parkinson’s or Gaucher disease, classify an allele, or transfer the paper’s Parkinson’s disease odds ratios to HGSVC/HPRC participants.",
+  "startingState": {
+    "trigger": "An externally normalized GBA1/GBAP1 variant set, conversion-like tract, hybrid, or duplication hypothesis with assay and phase evidence.",
+    "inputs": [
+      "Original HGVS/protein notation, transcript, reference build, strand, and normalization receipt; retain the paper’s GRCh37/NM_001005742 notation separately from GRCh38 browser coordinates",
+      "Assay type and blind spots, including primer coordinates, amplification specificity, coverage, allele dropout, size-selection limits, and whether GBAP1 was sequenced",
+      "Per-chromosome sequence or assembly path spanning unique flanks, all GBA-related copies, and the inter-copy interval",
+      "Pinned GBA1 and GBAP1/GBA1LP reference sequences plus a versioned panel of paralog-diagnostic markers",
+      "Copy number, order, orientation, breakpoint intervals, phased small variants, unresolved bases, and confidence"
+    ],
+    "question": "Can each observed variant or donor-like tract be assigned to a specific GBA1, GBAP1, hybrid, duplicated, or unresolved physical copy on one chromosome, and is a comparable callable structural haplotype represented in this release?",
+    "stopRule": "If evidence consists only of the paper’s GBA1-specific amplicon, a flat SNV list, or a generic DEL/INS/DUP overlap without unique-flank anchors and a diagnostic-marker path, stop before assigning GBAP1, conversion boundaries, hybrid identity, copy order, or duplication origin."
+  },
+  "workflow": {
+    "before": [
+      "Preserve the source assay result exactly, then normalize each small variant and breakpoint to GRCh38 while retaining original build/transcript notation and a mapping receipt; protein labels alone are not browser queries.",
+      "Pin locus annotation and reference sequences. The checked browser annotation is GBA1 ENSG00000177628.16 at chr1:155234452–155244699 and GBA1LP ENSG00000160766.15, gencode symbol GBAP1, at chr1:155213821–155227574; both are on the minus strand.",
+      "Build a chromosome-level evidence object from unique left/right flanks through every GBA-related segment. Record physical copy count, order, orientation, gaps, local assembly/read support, and a versioned set of GBA1-versus-GBAP1 diagnostic markers.",
+      "Predeclare matching levels: exact sequence-and-path match; same copy class with different tract boundary; marker-similar only; generic interval overlap; unresolved. Do not let generic overlap satisfy a copy-identity match."
+    ],
+    "inside": [
+      "Open chr1:155200000–155300000 with HGSVC/HPRC haplotypes and confirm GRCh38/Y1 provenance, the pinned gene models, cohort, run, and chromosome-wide source identity.",
+      "Select one sample strand at a time and require unique-flank anchors before interpreting the linear variant rows. Compare its sequence simultaneously against the pinned GBA1 and GBAP1 references rather than assigning origin from genomic overlap alone.",
+      "Lay out every physical segment in chromosome order and orientation. Label a canonical GBA1 or GBAP1 copy only when its flanks and diagnostic-marker majority agree; retain conflicting or uncovered segments as unresolved.",
+      "Call a conversion-like tract only on an anchored recipient copy when a contiguous run of donor-paralog diagnostic markers is bounded on both sides by recipient markers. Report the tract as an interval between the nearest informative markers, with marker count, conflicts, coverage, and uncertainty; do not convert it into an exact breakpoint.",
+      "Call a hybrid candidate only when one physical copy has a supported transition in backbone/paralog identity with a junction interval. Call a duplication only when the chromosome path contains an extra physical copy; assign that copy’s GBA1-like, GBAP1-like, hybrid, or unresolved origin independently and preserve copy order.",
+      "Assign small variants only after copy identity. A RecNciI-like marker pattern requires p.L483P, p.A495P, and p.V499V in cis on the same GBA1-assigned copy after build/transcript normalization. The three markers alone do not establish conversion boundaries, a reciprocal product, or a locus-spanning structural mechanism.",
+      "Group copies into structural classes only after representation reconciliation. For each class show exact-match count, callable chromosome-haplotype denominator, unresolved/no-call count, participants represented, sampling-group strata, release/run, matching rule, and query receipt."
+    ],
+    "after": [
+      "Export a machine-readable per-chromosome path: participant, sample strand, unique-flank anchors, ordered segments, copy labels, orientation, diagnostic markers, tract/junction intervals, linked variants, confidence, unresolved sequence, matching level, and provenance.",
+      "Use orthogonal locus-specific sequencing, breakpoint validation, or assembly review for candidate hybrids, duplications, and conversion tracts; use segregation, phenotype, and expert interpretation outside the population browser.",
+      "Report only observed, not observed in callable copies, representation mismatch, or data-blocked. Keep the paper’s 77/637 versus 34/675 and OR 2.6 (1.6–4.1) confined to its filtered clinical case-control cohort."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "Unique flanks and diagnostic markers support one canonical GBA1 and one canonical GBAP1 copy",
+      "action": "Assign small variants to the supported physical copy and report the two-copy chromosome path with callable-copy evidence.",
+      "stopRule": false
+    },
+    {
+      "condition": "An anchored recipient copy contains a bounded contiguous donor-like marker run",
+      "action": "Report a conversion-like tract with informative-marker bounds and uncertainty; keep the recipient copy identity explicit.",
+      "stopRule": false
+    },
+    {
+      "condition": "A physical copy changes paralog backbone across a supported junction",
+      "action": "Report a hybrid candidate and its ordered segment path; do not infer a reciprocal product unless independently observed.",
+      "stopRule": false
+    },
+    {
+      "condition": "An extra physical GBA-related copy is supported",
+      "action": "Report duplication and copy order, then assign each copy’s origin independently; use unresolved when marker or flank support is insufficient.",
+      "stopRule": false
+    },
+    {
+      "condition": "Only flat variant rows or generic approximately 20.6–61.8 kb events with sparse AN are available",
+      "action": "Report candidate overlap/representation blocked; do not name a conversion, hybrid, duplication origin, or RecNciI mechanism.",
+      "stopRule": true
+    },
+    {
+      "condition": "No comparable state is observed but structure-specific callability is incomplete",
+      "action": "Report data-blocked rather than zero or absent.",
+      "stopRule": true
+    },
+    {
+      "condition": "No comparable state is observed in representation-complete callable chromosome haplotypes",
+      "action": "Report a bounded reference non-observation with the callable denominator; do not infer pathogenicity or risk.",
+      "stopRule": false
+    }
+  ],
+  "story": {
+    "given": "a GRCh38-normalized RecNciI-like three-marker set or conversion/hybrid hypothesis plus one chromosome-spanning sequence path, assay provenance, and a pinned GBA1/GBAP1 diagnostic-marker panel",
+    "when": "the researcher opens chr1:155200000–155300000, selects the relevant sample strand, anchors unique flanks, orders every GBA-related segment, compares each segment simultaneously to GBA1 and GBAP1, bounds donor-like marker runs, and applies exact-versus-overlap matching with callable-copy accounting",
+    "then": "the browser returns GBA1, GBAP1, conversion-like, hybrid, duplicated, or unresolved copy assignments with ordered segments, linked variants, marker and breakpoint uncertainty, exact/callable/no-call counts, and release/run/query provenance, supporting only whether a comparable population-reference state is represented"
+  },
+  "browserRegion": {
+    "chrom": "1",
+    "start": 155200000,
+    "stop": 155300000
+  },
+  "capabilities": [
+    {
+      "step": "Navigate the complete bounded locus and verify pinned GBA1/GBAP1 annotation",
+      "status": "supported-and-usable",
+      "evidence": "The exact 100 kb route and REST request returned HTTP 200 on 2026-08-11. Live gene queries returned GBA1 chr1:155234452–155244699 and GBA1LP/GBAP1 chr1:155213821–155227574, both minus-strand GRCh38 models."
+    },
+    {
+      "step": "Inspect population variants and sample-strand haplotypes",
+      "status": "supported-but-awkward",
+      "evidence": "The live payload returned 1,586 variant rows and 584 sample-strand rows for 292 diploid participants, with variant-level AC/AN and phase sidecars; 7,473 carrier-variant associations were ambiguous unphased."
+    },
+    {
+      "step": "Search a normalized RecNciI-like marker set and test cis co-occurrence",
+      "status": "underdeveloped",
+      "evidence": "Position/ID/REF>ALT search and strand grouping exist, but paper protein labels require external build/transcript normalization and no first-class RecNciI allele object or diagnostic-marker receipt exists."
+    },
+    {
+      "step": "Assign a variant or tract to GBA1 versus GBAP1",
+      "status": "data-blocked",
+      "evidence": "The API/source variant model has linear position, alleles, type, length, frequencies, and sample strand, but no paralog-diagnostic marker panel, alternate-reference alignment, recipient/donor identity, or conversion-tract field."
+    },
+    {
+      "step": "Resolve hybrid copies, duplications, and copy order/origin",
+      "status": "absent",
+      "evidence": "No first-class ordered segment path, physical-copy identifier, copy number/order/orientation, junction linkage, hybrid class, or duplicated-copy origin exists in the current LRVariant/carrier contract."
+    },
+    {
+      "step": "Use generic structural calls as candidates",
+      "status": "supported-but-awkward",
+      "evidence": "The checked locus returned one approximately 20.6 kb deletion and approximately 20.6, 41.2, and 61.8 kb insertion/duplication-like rows, but each had AN=4 and none encoded a resolved GBA1/GBAP1 path."
+    },
+    {
+      "step": "Compute structure-specific occurrence with a callable denominator",
+      "status": "data-blocked",
+      "evidence": "Variant-level AN ranged from 3 to 584; 487/1,586 rows had AN below 584. GBA1 rows had AN 386–584 and GBA1LP rows 4–584. No structure-specific callable chromosome-haplotype or physical-copy denominator exists."
+    },
+    {
+      "step": "Transfer Parkinson’s disease odds ratios or classify reference participants",
+      "status": "inappropriate/unsafe",
+      "evidence": "The paper’s ORs come from a filtered, clinically ascertained case-control cohort; HGSVC/HPRC has different ascertainment and no matching PD phenotype contract."
+    },
+    {
+      "step": "Export a reproducible copy-identity result",
+      "status": "underdeveloped",
+      "evidence": "Current variant-oriented export cannot preserve ordered copies, origin evidence, conversion intervals, linked junctions, structure-specific no-calls, matching level, or complete browser state."
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "Five chromosome haplotypes: canonical GBA1+GBAP1; a GBA1-anchored copy with the three RecNciI-like markers and a bounded GBAP1-like tract; a supported GBA1/GBAP1 hybrid junction; an extra tandem copy whose origin is partly unresolved; and a generic overlapping 20.6 kb event with AN=4 but no segment path. Include one no-call marker interval and one sample in which the three markers are split across copies.",
+    "actions": "Normalize build/transcript notation; open the 100 kb locus; verify pinned gene models and Y1 provenance; select each sample strand; anchor unique flanks; order segments; compare against both paralogs; bound donor-like runs; classify exact versus overlap; inspect global/stratum callable counts; and export/reload the receipt.",
+    "expected": "Five distinct outcomes are retained. The RecNciI-like label appears only when all three normalized markers are cis on one GBA1-assigned copy; the tract has marker-bounded uncertainty; hybrid and duplication preserve junction/order and unresolved origin; split markers do not form RecNciI-like; the sparse generic event remains unresolved; every class shows matched/callable/no-call counts, participants, release/run/query and identical exported values.",
+    "forbidden": "The result must not diagnose PD or Gaucher disease, transfer OR 2.6 or severe-allele OR 11.4 to reference participants, infer conversion from three markers alone, infer a hybrid or duplicated-copy origin from generic overlap, equate variant AN with structure callability, treat 292 people as 584 fully callable copies without evidence, or use non-observation as pathogenic evidence."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "GBAP1 is stated to lie 16 kb downstream and share 96% coding-region homology; the assay targeted only GBA1, and RecNciI is defined by p.L483P, p.A495P, and p.V499V.",
+      "citation": "PDF p. 1, Introduction"
+    },
+    {
+      "class": "P",
+      "claim": "In 72 matched samples, targeted PacBio and WGS with Gauchian found six Sanger-confirmed carriers, while generic DRAGEN/GATK missed the RecNciI carrier.",
+      "citation": "PDF pp. 2–3, Fig. 2a"
+    },
+    {
+      "class": "P",
+      "claim": "Across 1,568 screened participants, PacBio found 135 Sanger-confirmed carriers; NeuroChip proposed 47 and only 36 validated, with a printed denominator inconsistency of 36/133 versus the 135-carrier total.",
+      "citation": "PDF pp. 2–3, Fig. 3"
+    },
+    {
+      "class": "P",
+      "claim": "Table 1 reports five RecNciI carriers and three p.A495P+p.V499V carriers, but it does not resolve conversion boundaries, GBAP1 copies, reciprocal products, or complete structural haplotypes.",
+      "citation": "PDF p. 4, Table 1; absence of a locus-structure panel across the paper"
+    },
+    {
+      "class": "P",
+      "claim": "The filtered case-control comparison was 67/637 versus 29/675 for the paper-defined pathogenic grouping, OR 2.6 (95% CI 1.6–4.1); these are not population-reference odds.",
+      "citation": "PDF p. 5, Table 2"
+    },
+    {
+      "class": "P",
+      "claim": "The single-amplicon approach was explicitly limited for SV detection by amplicon generation and size purification; no GBA1 CNV found is therefore not proof of absence.",
+      "citation": "PDF p. 6, Discussion"
+    },
+    {
+      "class": "P",
+      "claim": "The paper’s GBA1 amplicon is GRCh38 chr1:155232501–155241415, uses GBA1-specific primers that avoid GBAP1, requires greater than 30-fold coverage, and calls QUAL>30 with DeepVariant.",
+      "citation": "PDF pp. 9 and 11, Methods"
+    },
+    {
+      "class": "P",
+      "claim": "pbsv 2.9.0 was used for GBA1 CNV exploration with 59.46% cited SV sensitivity; GBA1 nomenclature was based on GRCh37 and NM_001005742 despite GRCh38 read mapping.",
+      "citation": "PDF p. 12, Methods"
+    },
+    {
+      "class": "I",
+      "claim": "Copy identity must be established from unique flanks, ordered physical segments, and a versioned paralog-diagnostic marker path before variants or conversion-like tracts are assigned; a marker cluster or generic CNV alone is insufficient.",
+      "citation": "Analyst reconstruction for workflow review; not a method performed by Pachchek et al."
+    },
+    {
+      "class": "I",
+      "claim": "A safe denominator separates callable chromosome haplotypes for structural classes from resolved physical GBA-related copies for per-copy marker frequencies and retains unresolved/no-call states.",
+      "citation": "Analyst reconstruction from locus representation requirements"
+    },
+    {
+      "class": "B",
+      "claim": "Pinned live GRCh38 annotation returned GBA1 ENSG00000177628.16 at chr1:155234452–155244699 and GBA1LP ENSG00000160766.15, gencode symbol GBAP1, at chr1:155213821–155227574; the current index’s 20 kb region excludes the pseudogene, while the proposed 100 kb region contains both.",
+      "citation": "Read-only live GraphQL gene queries and source/index check, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "The proposed route and REST endpoint returned HTTP 200 and 1,586 variants over 584 sample-strand rows. The payload identified accepted Y1 HGSVC/HPRC chr1 run y1-full-prototype-hgsvc-hprc-chr1-20260728-r1 in gnomad_lr_y1_scratch_demo_full_genome_20260803.",
+      "citation": "Read-only live browser/API check, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "The current LRVariant/carrier types expose linear alleles, AC/AN, sample_id, vcf_strand and phase_set, but no copy order, paralog origin, conversion tract, hybrid, duplicated-copy identity, or structural-callability field.",
+      "citation": "browser/src/Haplotypes/index.tsx and browser/src/Haplotypes/haplotypeCompute.ts at commit 32604d94e, checked 2026-08-11"
+    }
+  ],
+  "capabilityBasis": "Read-only paper extraction plus live route, GraphQL gene, REST haplotype, and source checks on 2026-08-11 at browser commit 32604d94e. Live variant rows demonstrate candidate representation only; they do not prove copy identity, conversion tracts, hybrid structure, duplication origin, or structure-specific callability."
+},
+{
+  "schemaVersion": 1,
+  "recordId": "paper-93-palb2",
+  "ref": "93",
+  "slug": "palb2-linked-duplication-breakpoints",
+  "paper": {
+    "title": "Characterizing PALB2 intragenic duplication breakpoints in a triple-negative breast cancer case using long-read sequencing",
+    "year": "2024",
+    "venue": "Frontiers in Oncology",
+    "pmid": "38487723",
+    "doi": "10.3389/fonc.2024.1355715",
+    "pdfUrl": "/papers/93.pdf"
+  },
+  "archetypes": [
+    "A8 — Complex structural variants"
+  ],
+  "locus": "PALB2 · chr16:23,623,022–23,637,892 (GRCh38 overview; candidate event 23,628,022_23,632,892 requires a junction/remap receipt)",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Hereditary-cancer structural-variation researcher or laboratory scientist",
+    "context": "Research follow-up after dosage testing reports a PALB2 exons 5–6 duplication but does not establish placement or orientation"
+  },
+  "nonDiagnosticBoundary": "This workflow asks whether a sequence-equivalent, linked tandem-duplication architecture is represented in a population reference. It cannot apply ACMG/AMP criteria, classify an individual's variant, establish transcript effect, infer cancer risk, or make a diagnosis.",
+  "startingState": {
+    "trigger": "An externally detected PALB2 exons 5–6 duplication with original build/notation and uncertainty about tandem placement, breakpoints, or orientation.",
+    "inputs": [
+      "Original GRCh37 paper event chr16:23639343_23644213dup and NM_024675.4:c.1684+1970_2586+1182dup, retaining the source coordinate convention",
+      "Breakpoint-spanning case sequence or an orthogonal breakpoint report; dosage-only NGS/MLPA is insufficient",
+      "Both source boundaries, duplicated-segment sequence/length, tandem orientation, copy-number state, assay, tissue, and uncertainty",
+      "Event-aware GRCh38 remap receipt containing source/target flanks, altered junction, tool/version, reference accessions, and sequence hashes",
+      "A declared match tier: exact architecture, breakpoint-compatible candidate, generic overlap, non-match, or representation/data blocked"
+    ],
+    "question": "Does the selected release contain the same linked head-to-tail PALB2 duplication architecture—not merely a DUP that overlaps PALB2 or exons 5–6—with an architecture-specific callable denominator?",
+    "stopRule": "If the case junction is unavailable, the GRCh37→GRCh38 remap is not event-validated, or both boundaries cannot be linked to one tandem event/copy, stop before making an exact-match or not-observed claim."
+  },
+  "workflow": {
+    "before": [
+      "Retain the paper's GRCh37 genomic and transcript notation, the paper's stated 4,870 bp length, and the endpoint-convention discrepancy; do not silently relabel the index's GRCh38 window as verified.",
+      "Remap the complete altered junction plus unique flanks to GRCh38. Treat chr16:23628022_23632892 as a candidate boundary pair: an independent 8,872 bp reference-context check reproduced a constant −11,321 bp shift, but the case junction was unavailable and the 26 nt microhomology permits equivalent breakpoint normalization.",
+      "Define exact equivalence before searching: both sequence-compatible boundaries linked on one chromosome copy, head-to-tail tandem orientation, equivalent duplicated segment/copy gain, and compatible junction sequence after microhomology normalization. Label one-end or interval-only hits as candidates."
+    ],
+    "inside": [
+      "Open the 14,870 bp PALB2 overview in HGSVC/HPRC mode and verify GRCh38, cohort, database, release, chromosome scope, run, and acceptance state before inspecting records.",
+      "Inspect duplication-family source events and search both remapped boundaries, duplicated length/sequence, and source identifiers. Current range search is overlap-based and multiple terms are OR, so it cannot by itself prove linkage.",
+      "For each candidate, compare exact boundary intervals, breakpoint/junction sequence, tandem versus inverted/interspersed orientation, duplicated segment, source-record identity, alt index, copy number, and same-copy linkage. Do not infer architecture from the affected gene or overlap symbol.",
+      "If HGSVC/HPRC has a resolved event, inspect carrying chromosome copies and require architecture-specific AC/AN plus no-call/not-assessed counts globally and by stratum. AoU is aggregate-only and must not be used for carrier or haplotype claims."
+    ],
+    "after": [
+      "Classify the outcome as exact linked architecture observed, breakpoint-compatible candidate, generic overlap, non-match, not observed in representation-complete callable copies, or data blocked.",
+      "Export paper coordinates/build, remap method and hashes, boundary convention, both junctions, sequence/orientation/linkage evidence, source IDs/alt indexes, match rule, AC/AN/missingness, cohort/release/database/run/acceptance state, query payload, timestamp, and browser state.",
+      "Hand the receipt to an independent laboratory/clinical review process for orthogonal breakpoint and transcript validation; keep all classification and patient-management decisions outside the browser."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "The GRCh37 event lacks a breakpoint-sequence/event-aware GRCh38 receipt",
+      "action": "Use the GRCh38 region only as a provisional overview; do not plot or search an exact event and do not trust the index verified badge.",
+      "stopRule": true
+    },
+    {
+      "condition": "Both sequence-compatible boundaries, the tandem junction/orientation, duplicated segment, and same-event/copy linkage match",
+      "action": "Report a sequence-resolved reference occurrence with architecture-specific callable AC/AN and provenance; this is not evidence for or against clinical classification.",
+      "stopRule": false
+    },
+    {
+      "condition": "A DUP overlaps PALB2 or exons 5–6, or only one boundary is compatible",
+      "action": "Report candidate generic overlap or partial breakpoint compatibility. Do not call it the paper architecture.",
+      "stopRule": true
+    },
+    {
+      "condition": "Coordinates/length are similar but tandem orientation, altered junction, or same-copy linkage is unavailable",
+      "action": "Report architecture unresolved/representation blocked; a dosage-equivalent event may be interspersed, inverted, or differently bounded.",
+      "stopRule": true
+    },
+    {
+      "condition": "No exact event is returned and architecture-specific callability is unavailable",
+      "action": "Report data blocked, not AC=0 and not absent. Per-record AN from unrelated small variants is not the denominator for this duplication.",
+      "stopRule": true
+    },
+    {
+      "condition": "No exact event is found in independently validated, representation-complete callable chromosome copies",
+      "action": "Report a bounded not-observed result with the denominator and uncertainty; never infer pathogenicity.",
+      "stopRule": false
+    }
+  ],
+  "story": {
+    "given": "a PALB2 exons 5–6 dosage call plus the original GRCh37 notation and a validated event-aware GRCh38 junction/remap receipt",
+    "when": "the researcher searches both remapped boundaries as one event, reconciles microhomology-normalized junction sequence, duplicated segment, head-to-tail orientation and copy gain, and reviews same-copy linkage with structure-specific callability",
+    "then": "the browser distinguishes an exact linked tandem architecture from a one-end candidate, generic interval overlap, non-match, not-observed callable result, or data-blocked result and returns AC/AN, missingness, match rule and full provenance, supporting only whether a comparable population-reference structure is represented"
+  },
+  "browserRegion": {
+    "chrom": "16",
+    "start": 23623022,
+    "stop": 23637892
+  },
+  "capabilities": [
+    {
+      "step": "Reach the bounded PALB2 locus and inspect accepted full-chromosome LR records",
+      "status": "supported-but-awkward",
+      "evidence": "The deployed LR Cloud Run API returned 246 HGSVC/HPRC records in the overview and full chr16 provenance; the public production region route returned HTTP 200, but its GraphQL schema did not expose LR records."
+    },
+    {
+      "step": "Remap the paper event safely from GRCh37 to GRCh38",
+      "status": "absent",
+      "evidence": "No browser remap receipt exists. Independent UCSC sequence retrieval found identical 8,872 bp hg19/hg38 reference contexts under a −11,321 bp shift, supporting candidate boundaries 23628022_23632892, but no altered case junction was available and 26 nt microhomology leaves normalization ambiguity."
+    },
+    {
+      "step": "Find candidate duplication records by interval, type, identifier, or sequence",
+      "status": "supported-but-awkward",
+      "evidence": "Source supports range/position/identifier/sequence search and duplication-family tracks, but range matching is generic overlap and multiple search terms are OR rather than a linked-junction predicate."
+    },
+    {
+      "step": "Group exact-interval duplication-family rows without merging overlaps",
+      "status": "underdeveloped",
+      "evidence": "Source-event aggregation is family-aware and exact-interval keyed, but source_variant_id is explicitly not guaranteed to be a shared event ID and the API lacks orientation, junction sequence, mate/linkage, and copy-number fields."
+    },
+    {
+      "step": "Establish the exact linked tandem-duplication architecture in current data",
+      "status": "data-blocked",
+      "evidence": "The checked HGSVC/HPRC overview contained 155 SNVs, 51 TRVs, 26 deletions and 14 insertions but no DUP-family row; the API cannot represent both linked boundaries, head-to-tail orientation, or the altered junction."
+    },
+    {
+      "step": "Use carriers and chromosome-copy context",
+      "status": "supported-but-awkward",
+      "evidence": "HGSVC/HPRC haplotypes are advertised as available and the source supports Diploid/haplotype filtering, but there is no target DUP record to inspect. AoU haplotypes are explicitly unavailable."
+    },
+    {
+      "step": "Use a safe denominator and provenance",
+      "status": "underdeveloped",
+      "evidence": "The API exposes per-record global/stratum AC/AN and run provenance, but HGSVC/HPRC AN varied from 394 to 584 in the overview and no architecture-specific callable/no-call denominator exists."
+    },
+    {
+      "step": "Export a linked-event analysis receipt",
+      "status": "underdeveloped",
+      "evidence": "Current CSV exports variant-level fields and carrier/group counts but omits AN, missingness, source/run provenance, remap receipt, both-junction linkage, orientation, and analysis state."
+    },
+    {
+      "step": "Use population occurrence to perform ACMG/AMP classification or infer cancer risk",
+      "status": "inappropriate/unsafe",
+      "evidence": "The paper's classification depended on case-specific transcript and breakpoint evidence; neither occurrence nor absence in this reference panel can reproduce that evidence or classify an individual."
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "Five GRCh38 fixtures: (1) the exact head-to-tail PALB2 duplication with both linked boundaries and microhomology-normalized junction sequence; (2) the same biological event left-shifted within the 26 nt microhomology; (3) a generic overlapping interspersed duplication; (4) a one-boundary-only call; and (5) callable and uncallable chromosome copies with no matching event.",
+    "actions": "Attempt the paper overlay without a remap receipt, add a validated receipt, search both boundaries and junction sequence, compare orientation/linkage/segment identity, inspect global and stratum denominators, switch to AoU, and export the receipt.",
+    "expected": "The unreceipted overlay fails closed; fixtures 1 and 2 reconcile as one exact biological architecture without double counting; fixtures 3 and 4 remain generic/partial candidates; fixture 5 separates not observed from not callable; HGSVC/HPRC shows callable chromosome-copy AC/AN and missingness, AoU disables carrier claims, and export reproduces the match tier and provenance.",
+    "forbidden": "The result must not trust the index badge as event validation, equate interval overlap with tandem architecture, assign AC=0 from unrelated records, call the paper or reference event benign/pathogenic, apply ACMG/AMP criteria, or diagnose a participant."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "Targeted NGS found a heterozygous PALB2 exons 5–6 duplication and MLPA on two independent blood samples confirmed dosage, but these methods could not establish whether a duplication was tandem or translocated elsewhere.",
+      "citation": "PDF pp. 2–3, Methods 2.2–2.3 and Results 3.1"
+    },
+    {
+      "class": "P",
+      "claim": "A 361 bp cDNA product spanning exons 5–6–5 was absent in the control and Sanger sequencing supported tandem transcript order; the paper reported p.(Asn863Glyfs*37).",
+      "citation": "PDF p. 3, Results 3.2; p. 4, Fig. 1B"
+    },
+    {
+      "class": "P",
+      "claim": "Targeted long-range PCR/ONT sequencing aligned to GRCh37 produced an average insertion estimate of 4,830 bp; genomic Sanger sequencing reported chr16:23639343_23644213dup and NM_024675.4:c.1684+1970_2586+1182dup as a 4,870 bp duplication.",
+      "citation": "PDF p. 3, Methods 2.5 and Results 3.3; p. 5, Fig. 2"
+    },
+    {
+      "class": "P",
+      "claim": "The two breakpoint regions contained a 26 nt stretch with 100% identity in intron-4 AluSq2 and intron-6 AluSz6; the Alu elements were 74% homologous overall and co-directional with PALB2 transcription, which the authors interpreted as a possible Alu-mediated mechanism.",
+      "citation": "PDF pp. 3–4, Results 3.3 and Discussion; Supplementary Fig. 2 described on p. 6"
+    },
+    {
+      "class": "P",
+      "claim": "The report concerns one ascertained 52-year-old case; inheritance was unresolved and the discussion proposed family testing. The paper's reclassification is a case-specific conclusion, not a population-browser result.",
+      "citation": "PDF pp. 1–4, Abstract, Patient, and Discussion"
+    },
+    {
+      "class": "I",
+      "claim": "Exact recurrence requires sequence-compatible boundaries, altered junction, tandem orientation, duplicated-segment identity/copy gain, and same-event/copy linkage; generic PALB2 overlap is only a candidate.",
+      "citation": "Analyst reconstruction from the paper's dosage-versus-architecture distinction; requires workflow review"
+    },
+    {
+      "class": "I",
+      "claim": "UCSC hg19 chr16:23637343–23646214 and hg38 chr16:23626022–23634893 reference contexts were byte-identical over 8,872 bp, independently reproducing a −11,321 bp shift and candidate GRCh38 event boundaries 23628022_23632892; exact event publication remains gated on the altered case junction and endpoint convention.",
+      "citation": "Read-only UCSC sequence-context reconciliation, 2026-08-11; sequence SHA-256 6f03365023dd7ebe4b5ef29c6615d2057cadb1fb6852c906c998031132376513"
+    },
+    {
+      "class": "B",
+      "claim": "The deployed LR API returned 246 HGSVC/HPRC records in chr16:23623022–23637892 (155 SNV, 51 TRV, 26 DEL, 14 INS; no DUP-family records), with per-record AN 394–584 and accepted-tasks run y1-full-prototype-hgsvc-hprc-chr16-20260728-r1.",
+      "citation": "Read-only deployed LR Cloud Run API check, 2026-08-11T01:54:42Z"
+    },
+    {
+      "class": "B",
+      "claim": "The same deployed API returned 983 AoU records in the overview and no DUP-family record; AoU haplotypes and sample metadata were unavailable, and aggregate per-record AN ranged from 708 to 2,054.",
+      "citation": "Read-only deployed LR Cloud Run API check, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Current source uses exact, family-aware source-event grouping and deliberately refuses overlap as event identity, while the search range predicate is overlap-based and comma/newline terms are OR; the GraphQL type lacks orientation, junction/mate linkage, and copy number.",
+      "citation": "gnomad-browser commit 32604d94ec8fc2aaaed7c07a03b3fa6e44796f9a: sourceEventAggregation.ts, longReadVariantSearch.ts, long-read-variant.graphql"
+    },
+    {
+      "class": "B",
+      "claim": "The public production region URL returned HTTP 200 but its GraphQL Region type did not expose long_read_variants, the requested detail-page URL returned 404, and current source contains only four implemented workflow records.",
+      "citation": "Read-only public route/API and source check, 2026-08-11"
+    }
+  ],
+  "capabilityBasis": "Read-only checks on 2026-08-11 of the deployed LR Cloud Run API, public gnomAD production routes/API, UCSC hg19/hg38 reference sequence, and gnomad-browser source at commit 32604d94ec8fc2aaaed7c07a03b3fa6e44796f9a. The displayed region is a provisional overview; neither a route response nor the index verified badge validates the paper event."
+},
+{
+  "schemaVersion": 1,
+  "recordId": "paper-72-rp1-line1",
+  "ref": "72",
+  "slug": "rp1-line1-insertion",
+  "paper": {
+    "title": "Characterisation of a LINE-1 Insertion in the RP1 Gene by Targeted Adaptive Nanopore Sequencing in a Family with Retinitis Pigmentosa",
+    "year": "2024",
+    "venue": "Human Mutation",
+    "pmid": "40225919",
+    "doi": "10.1155/2024/6580561",
+    "pdfUrl": "/papers/72.pdf"
+  },
+  "archetypes": [
+    "A4 — Mobile element insertions"
+  ],
+  "locus": "RP1 · chr8:54,620,955–54,630,834 (GRCh38); derived breakpoint chr8:54,625,988|54,625,989",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Inherited-retinal-disease researcher or laboratory scientist",
+    "context": "Research follow-up of an externally detected RP1 insertion whose complete structure may be unresolved"
+  },
+  "nonDiagnosticBoundary": "This workflow asks whether the same or a structurally different insertion is represented in a population reference and whether the site was callable. It does not diagnose an individual, classify pathogenicity or benignity, or transfer the paper family's segregation evidence to another person.",
+  "startingState": {
+    "trigger": "An externally detected RP1 exon-4 insertion or mobile-element signal, such as adjacent short-read insertion calls, soft-clipped reads, or a breakpoint assay, that requires population-reference comparison.",
+    "inputs": [
+      "Original build, transcript and notation, retaining NM_006269.2:c.2106_2107insL1 when applicable",
+      "Both breakpoint flanks and the best available inserted sequence, with sequence completeness and assay uncertainty",
+      "Insertion length, strand/orientation, mobile-element family/subfamily assignments, poly(A) tract and target-site duplication",
+      "Assay, sample or chromosome-copy phase, and the rules used to declare a callable or no-call copy"
+    ],
+    "question": "Does this release contain an exact insertion, a different insertion at the same breakpoint, only a fragmented representation, a callable non-observation, or a no-call at the RP1 site?",
+    "stopRule": "If build/transcript mapping is unresolved, or neither a defensible breakpoint nor enough inserted sequence exists to define a match, stop before claiming an exact or same-site match."
+  },
+  "workflow": {
+    "before": [
+      "Freeze the query signature before looking at population data: GRCh38 interbase breakpoint, both flanks, canonical inserted sequence orientation, length, LINE-1 segment structure, subfamily evidence, poly(A), TSD and uncertainty.",
+      "Normalize NM_006269.2:c.2106_2107 to GRCh38 while retaining the paper notation and the distinction between a VCF left anchor and an interbase breakpoint.",
+      "Predeclare mutually exclusive outcomes: exact complete-sequence match; same-site different sequence or structure; fragmented or ambiguously normalized representation; callable not observed; and no-call."
+    ],
+    "inside": [
+      "Open chr8:54,620,955–54,630,834 with HGSVC/HPRC selected and verify GRCh38, cohort, release, run and full-chromosome provenance.",
+      "Enumerate every insertion-like record at the exact breakpoint and nearby anchors, including generic INS and mobile-element subtypes; do not treat one display glyph or one maximum-AF ALT as the whole source event.",
+      "Group records only with a reviewable source-event receipt that preserves every ALT, anchor, breakpoint interval and sequence fragment; exact interval/family heuristics alone do not resolve shifted or fragmented representations.",
+      "For each event, compare both flanks, canonical full inserted sequence, length, orientation, LINE-1 family/subfamily segments, poly(A) and TSD. A shared site without identical complete sequence is a same-site different insertion, not an exact match.",
+      "Report ALT AC and AN by cohort and stratum together with explicit callable-reference and no-call chromosome-copy counts. If the site has no event-specific callable denominator, classify the result as no-call or data-blocked rather than absent."
+    ],
+    "after": [
+      "Export the match definition, event grouping, all constituent records, callable denominator, no-call count, release/run, source identity, URL state and unresolved fields.",
+      "Return only a population-reference occurrence category for research review; keep segregation, orthogonal breakpoint confirmation and any clinical interpretation outside the browser."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "Both breakpoints and the complete canonical inserted sequence, including orientation, poly(A) and TSD handling, match",
+      "action": "Report an exact represented insertion with event-level AC, callable AN, no-call count and provenance; this establishes population-reference occurrence only.",
+      "stopRule": false
+    },
+    {
+      "condition": "The breakpoint matches but complete sequence, length, orientation, subfamily composition, poly(A) or TSD differs",
+      "action": "Report same-site different insertion and preserve the differing fields; do not collapse it into an exact match.",
+      "stopRule": false
+    },
+    {
+      "condition": "Only adjacent, split, soft-clipped or otherwise fragmented records are available and their source-event relationship is not proven",
+      "action": "Report fragmented representation—event unresolved; do not sum AC across fragments or infer an exact insertion.",
+      "stopRule": true
+    },
+    {
+      "condition": "The chromosome copy or event is not callable under the predeclared assay rule",
+      "action": "Report no-call and exclude the copy from callable AN; never convert it to reference or absence.",
+      "stopRule": true
+    },
+    {
+      "condition": "No matching event is observed and representation-complete callable data provide an event-specific denominator",
+      "action": "Report callable not observed with the denominator and release scope, never proof of pathogenicity.",
+      "stopRule": false
+    }
+  ],
+  "story": {
+    "given": "an externally resolved RP1 NM_006269.2:c.2106_2107 LINE-1 insertion with the GRCh38 breakpoint, both flanks, a 5,571 bp consensus, mixed-orientation LINE-1 segments, a poly(A) tract and a 15 bp TSD",
+    "when": "the researcher opens the RP1 interval, verifies accepted chr8 provenance, gathers all exact and nearby insertion records into reviewable source events, compares complete sequence structure, and audits callable and no-call chromosome copies",
+    "then": "the browser returns exactly one of exact insertion, same-site different insertion, fragmented representation, callable not observed, or no-call with constituent records, AC/AN and provenance, supporting only whether and how a comparable state is represented in this release"
+  },
+  "browserRegion": {
+    "chrom": "8",
+    "start": 54620955,
+    "stop": 54630834
+  },
+  "capabilities": [
+    {
+      "step": "Navigate to the bounded GRCh38 RP1 interval and verify accepted chr8 provenance",
+      "status": "supported-and-usable",
+      "evidence": "The checked local route returned HTTP 200, and the live GraphQL API reported accepted HGSVC/HPRC and AoU full-chromosome chr8 sources."
+    },
+    {
+      "step": "Find insertion-like records at and around the paper breakpoint",
+      "status": "supported-but-awkward",
+      "evidence": "The live API returned 101 HGSVC/HPRC records including 5 INS and 244 AoU records including 9 INS in the display window, but no record within ±20 bp of the derived breakpoint."
+    },
+    {
+      "step": "Group every representation of one mobile-element source event",
+      "status": "underdeveloped",
+      "evidence": "Current client source groups most insertion records by exact interval and normalized family, not a source-event identifier; shifted fragments stay separate, and line_ins is displayed as INS but is not included in the insertion family used by source-event aggregation."
+    },
+    {
+      "step": "Compare exact LINE-1 sequence, orientation, subfamily segments, poly(A) and TSD",
+      "status": "data-blocked",
+      "evidence": "The checked GraphQL contract exposes ALT, length, allele_type, motifs and frequency, but no explicit mobile-element family/subfamily, orientation, poly(A), TSD or sequence-completeness fields; checked motifs were empty."
+    },
+    {
+      "step": "Distinguish callable non-observation from no-call",
+      "status": "data-blocked",
+      "evidence": "The API exposes per-ALT AC/AN only. With no record at the breakpoint it returns no event-specific AN or no-call count; nearby SNV AN values are not a substitute for insertion callability."
+    },
+    {
+      "step": "Interpret population occurrence as diagnosis or pathogenicity",
+      "status": "inappropriate/unsafe",
+      "evidence": "Population representation cannot transfer this family's ascertainment, segregation or paper interpretation to another individual."
+    },
+    {
+      "step": "Export a reproducible event-level match receipt",
+      "status": "underdeveloped",
+      "evidence": "The region URL preserves dataset, cohort and haplotype state, but the current record contract does not preserve the match rule, event grouping, structure fields, callable-reference count or no-call count."
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "At the derived RP1 breakpoint, provide one complete exact 5,571 bp paper-like LINE-1 ALT, one same-site ALT with a different sequence/orientation, one event split across shifted fragments, callable reference chromosome copies, explicit no-call copies, and a representation-complete site with no matching event.",
+    "actions": "Open the interval, verify provenance, expand all source-event constituents, compare both flanks and canonical inserted structures, inspect global and stratum denominators, classify every copy/event, and export the receipt.",
+    "expected": "The exact ALT alone is labeled exact; the second is same-site different sequence; shifted records remain one explicitly evidenced fragmented event or unresolved fragments; no-call copies are excluded from callable AN; callable non-observation is distinct from no-call; AC/AN/no-call and exported event constituents reconcile to displayed values.",
+    "forbidden": "The result must not merge records merely by overlap, call an incomplete fragment exact, turn no-call into reference/absence, sum fragment AC without a receipt, or diagnose/classify pathogenicity or benignity."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "Short-read reanalysis produced adjacent ambiguous RP1 exon-4 insertion calls; one fragment aligned to L1P1_orf2 in antisense orientation, while one breakpoint remained unresolved and triggered targeted adaptive nanopore sequencing.",
+      "citation": "PDF pp. 3–5, Fig. 2"
+    },
+    {
+      "class": "P",
+      "claim": "The nanopore consensus was 5,571 bp, had LINE-1 subfamily segments in both orientations, was 99.44% identical to GU477636.1 over the reported alignment, included an inverted 5′ 1,635 bp segment, a 3′ poly(A) tract and a 15 bp RP1-derived TSD.",
+      "citation": "PDF pp. 4–6, Fig. 3"
+    },
+    {
+      "class": "P",
+      "claim": "Breakpoint PCR products and Sanger sequence supported the insertion in three available affected relatives and not in the available unaffected relative or unrelated control; full insert-spanning nanopore support was two reads in III.2 and one in III.1.",
+      "citation": "PDF pp. 4–7, Figs. 3–4"
+    },
+    {
+      "class": "I",
+      "claim": "Paper notation and colored breakpoint sequence place the GRCh38 insertion after chr8:54,625,988 and before 54,625,989; this is a cross-resource derivation, not a genomic coordinate printed by the paper.",
+      "citation": "PDF pp. 5–7, Figs. 3C–4C; UCSC hg38 sequence API checked 2026-08-11"
+    },
+    {
+      "class": "I",
+      "claim": "A faithful population replay must distinguish exact sequence match, same-site different structure, unresolved fragments, callable non-observation and no-call before any occurrence statement.",
+      "citation": "Analyst reconstruction; requires workflow and data-semantics review"
+    },
+    {
+      "class": "B",
+      "claim": "The live API returned accepted full-chromosome chr8 provenance, 101 HGSVC/HPRC and 244 AoU records in the window, and no record within ±20 bp of the derived breakpoint.",
+      "citation": "Read-only live GraphQL check, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Current source exposes ALT-specific frequency and heuristic exact-locus grouping but no MEI structure contract or event-specific callable/no-call denominator when no ALT record exists.",
+      "citation": "Browser/API source at commit 32604d94ec8fc2aaaed7c07a03b3fa6e44796f9a; read-only review 2026-08-11"
+    }
+  ],
+  "capabilityBasis": "Read-only review of ref 72 PDF SHA-256 90c114adbe4b1bfe0f3f547825270f63ea56ff736a76cab1ec3ba74019822e31, live Cloud Run GraphQL responses, the checked browser route, UCSC hg38 sequence, and browser/API source commit 32604d94ec8fc2aaaed7c07a03b3fa6e44796f9a on 2026-08-11. No live record at the breakpoint is not an absence result because site-specific insertion callability and no-call counts are unavailable."
+},
+{
+  "schemaVersion": 1,
+  "recordId": "paper-1-gch1",
+  "ref": "1",
+  "slug": "gch1-delinvdel-breakpoints",
+  "paper": {
+    "title": "An Inversion Affecting the GCH1 Gene as a Novel Finding in Dopa‐Responsive Dystonia",
+    "year": "2024",
+    "venue": "Movement Disorders Clinical Practice",
+    "pmid": "38497520",
+    "doi": "10.1002/mdc3.14023",
+    "pdfUrl": "/papers/1.pdf"
+  },
+  "archetypes": [
+    "A6 — Inversions"
+  ],
+  "locus": "GCH1 linked delINVdel · chr14:54,876,536–60,356,401 (GRCh38 remap; paired 50 kb breakpoint windows required)",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Structural-variation researcher or molecular genetics laboratory scientist",
+    "context": "Research follow-up of an externally detected GCH1-region inversion candidate after conventional sequence testing was unrevealing"
+  },
+  "nonDiagnosticBoundary": "This workflow can distinguish a completely linked reference architecture from a candidate overlap only when remap, event linkage, and callability are complete. It cannot diagnose dopa-responsive dystonia or classify an event as pathogenic or benign.",
+  "startingState": {
+    "trigger": "An external short-read, long-read, or optical-mapping result suggesting an inversion near GCH1, with the question whether the same complete linked architecture occurs in the HGSVC/HPRC population reference.",
+    "inputs": [
+      "Original paper notation NC_000014.8:g.[55343254_55346605del;55346606_60822142inv;60822143_60823119del]",
+      "Paper genome build/accession NC_000014.8 (GRCh37)",
+      "Evidence type and uncertainty for each candidate junction",
+      "An independently checked GRCh37-to-GRCh38 endpoint-remap receipt",
+      "The exact match rule: ordered DEL-INV-DEL components, reciprocal inversion orientation, both deletion intervals, and one linked chromosome copy"
+    ],
+    "question": "Do both inversion junctions and the two flanking deletions form one represented delINVdel architecture in callable HGSVC/HPRC chromosome copies, rather than merely overlapping one breakpoint window or GCH1?",
+    "stopRule": "Stop if the original build, any endpoint remap, same-copy event linkage, or event-level callable denominator is missing."
+  },
+  "workflow": {
+    "before": [
+      "Record the original GRCh37 accession, all three ordered components, assay evidence, breakpoint uncertainty, and the distinction between the inversion component and the flanking deletions.",
+      "Remap every interval endpoint to GRCh38 and verify strand, order, component lengths, and flanking sequence context; retain an endpoint-level receipt."
+    ],
+    "inside": [
+      "Open the GCH1-side 50 kb window chr14:54851536-54901536 and the distal 50 kb window chr14:60330425-60380425 under one analysis state; confirm both use the same cohort, release, chromosome run, and build.",
+      "Search both breakpoint neighborhoods for INV, BND/CTX/CPX, and DEL representations, normalize candidate records, then require both reciprocal inversion junctions and both flanking deletions to share one structural-event/haplotype receipt.",
+      "Count complete linked architectures and chromosome copies callable for every required component; show cohort-wide and stratum AC/AN plus partial, unlinked, and no-call counts."
+    ],
+    "after": [
+      "Export the original and remapped event, paired windows, constituent source records, exact/overlap rule, event AC/AN/missingness, release/run, filters, and immutable query receipt for structural-variation review."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "Build/accession or one component is missing",
+      "action": "Stop before browser comparison and classify the request as insufficiently specified.",
+      "stopRule": true
+    },
+    {
+      "condition": "Any endpoint is unmapped, multiply mapped, changes order/strand unexpectedly, or fails sequence-context comparison",
+      "action": "Keep the workflow data-blocked and do not publish an exact event overlay.",
+      "stopRule": true
+    },
+    {
+      "condition": "All endpoint checks pass but junction sequence remains unavailable",
+      "action": "Use the remapped intervals as a candidate literature overlay while retaining an event-aware-junction validation caveat.",
+      "stopRule": false
+    },
+    {
+      "condition": "Only one window can be preserved or shared",
+      "action": "Continue only as candidate-overlap inspection; do not claim event-level review.",
+      "stopRule": true
+    },
+    {
+      "condition": "One nearby INV, BND, DEL, or long overlapping interval is found without complete linkage",
+      "action": "Report candidate overlap only and list the missing junctions/components.",
+      "stopRule": true
+    },
+    {
+      "condition": "All four junction boundaries and three ordered components are linked on one chromosome copy with matching orientation",
+      "action": "Proceed to event-level denominator calculation and report a comparable represented architecture.",
+      "stopRule": false
+    },
+    {
+      "condition": "The source/API cannot preserve mate/event or copy linkage",
+      "action": "Report data-blocked even if generic overlapping variants are present.",
+      "stopRule": true
+    },
+    {
+      "condition": "Event-level callability or linkage is incomplete",
+      "action": "Report denominator unavailable and outcome data-blocked.",
+      "stopRule": true
+    },
+    {
+      "condition": "AC=0 with representation-complete event AN",
+      "action": "Report not observed in AN callable copies and a conditional upper bound; do not infer pathogenicity.",
+      "stopRule": false
+    },
+    {
+      "condition": "The export omits either window, event linkage, denominator, or run identity",
+      "action": "Mark the handoff non-reproducible and do not use it for event-level interpretation.",
+      "stopRule": true
+    }
+  ],
+  "story": {
+    "given": "the paper's GRCh37 GCH1 delINVdel notation and an independently checked GRCh38 endpoint-remap receipt",
+    "when": "the researcher opens synchronized 50 kb GCH1-side and distal breakpoint windows, verifies one accepted chr14 run, and requests exact-versus-overlap reconciliation of both inversion junctions and both flanking deletions on one chromosome copy",
+    "then": "the browser returns resolved comparable architecture, candidate overlap only, not observed in representation-complete callable copies, or data-blocked, with constituent records, event AC/AN and missingness, provenance, and a reproducible linked-event receipt"
+  },
+  "browserRegion": {
+    "chrom": "14",
+    "start": 54851536,
+    "stop": 54901536
+  },
+  "capabilities": [
+    {
+      "step": "Record the original GRCh37 accession, all three ordered components, assay evidence, breakpoint uncertainty, and the distinction between the inversion component and the flanking deletions.",
+      "status": "underdeveloped",
+      "evidence": "The implemented paper card stores a region and verified flag, not full paper-event notation or component evidence. P1-P6"
+    },
+    {
+      "step": "Remap every interval endpoint to GRCh38 and verify strand, order, component lengths, and flanking sequence context; retain an endpoint-level receipt.",
+      "status": "absent",
+      "evidence": "No browser remap-receipt model or build-aware literature overlay exists. I3 and the endpoint table in the evidence markdown"
+    },
+    {
+      "step": "Open the GCH1-side 50 kb window chr14:54851536-54901536 and the distal 50 kb window chr14:60330425-60380425 under one analysis state; confirm both use the same cohort, release, chromosome run, and build.",
+      "status": "absent",
+      "evidence": "Each route works independently, but current workflow types have one browserRegion and no paired-region state. B1, B3, B4"
+    },
+    {
+      "step": "Search both breakpoint neighborhoods for INV, BND/CTX/CPX, and DEL representations, normalize candidate records, then require both reciprocal inversion junctions and both flanking deletions to share one structural-event/haplotype receipt.",
+      "status": "data-blocked",
+      "evidence": "No INV/BND/CTX/CPX or exact endpoint record was returned in either checked live window. Source/API schemas lack EVENT/MATEID/CHR2 linkage and current source-event grouping separates DEL and INV families. B2, B4, B5"
+    },
+    {
+      "step": "Count complete linked architectures and chromosome copies callable for every required component; show cohort-wide and stratum AC/AN plus partial, unlinked, and no-call counts.",
+      "status": "underdeveloped",
+      "evidence": "Record-level AC/AN and population AC/AN exist, but event-level linked callability does not. The checked windows contain records with AN values up to 584, but that is not a delINVdel AN. B2-B5"
+    },
+    {
+      "step": "Export the original and remapped event, paired windows, constituent source records, exact/overlap rule, event AC/AN/missingness, release/run, filters, and immutable query receipt for structural-variation review.",
+      "status": "absent",
+      "evidence": "Current compact workflow model and variant export have no paired-window or linked-event receipt. B4-B5"
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "Four pinned fixtures: (A) a complete DEL-INV-DEL on one chromosome copy with reciprocal junction and remap receipts; (B) one overlapping INV only; (C) complete callability with no matching event; (D) one or more uncallable/unlinkable components.",
+    "actions": "Attempt to load the GRCh37 event without a remap receipt, then with the valid receipt. Open and share both 50 kb windows under one HGSVC/HPRC analysis state. Run exact and overlap matching and inspect all constituents, orientations, and copy links. Inspect cohort-wide and stratum AC/AN, partial/unlinked calls, no-calls, and provenance. Export and reload the receipt.",
+    "expected": "The missing-remap attempt fails closed. Fixture A is labeled resolved comparable linked delINVdel and exports all three components, both junctions, one-copy linkage, AC/AN, missingness, and run identity. Fixture B is labeled candidate overlap only and identifies the missing deletions/linkage. Fixture C is labeled not observed in AN callable copies with an explicitly conditional upper bound. Fixture D is labeled data-blocked, never zero. Reloaded export reconstructs both windows and identical classifications/counts.",
+    "forbidden": "No fixture is labeled diagnostic, pathogenic, benign, causal, or protective. One INV/BND/DEL, one breakpoint window, or GCH1 overlap is never called the complete paper event. Record-level AN is never substituted for event-level AN. A chain lift without retained junction-validation status is never presented as event recurrence proof."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "Single-gene sequencing of GCH1 and TOR1A found no causative variant; MLPA was not performed; short-read WGS with ClinSV then detected a possible approximately 5 Mb inversion disrupting GCH1.",
+      "citation": "El-Wahsh et al. 2024 PDF p. 1 (journal p. 582)"
+    },
+    {
+      "class": "P",
+      "claim": "The exact GRCh37 complex-variant notation is NC_000014.8:g.[55343254_55346605del;55346606_60822142inv;60822143_60823119del].",
+      "citation": "El-Wahsh et al. 2024 PDF p. 1 and Fig. 1B on PDF p. 2"
+    },
+    {
+      "class": "P",
+      "claim": "Sanger confirmation failed because repetitive breakpoint sequence hindered primer design; targeted Oxford Nanopore ReadUntil reads confirmed both putative inversion breakpoints, and Bionano optical genome mapping provided orthogonal confirmation.",
+      "citation": "El-Wahsh et al. 2024 PDF pp. 1-2; Supplementary Fig. S3 description on PDF p. 4"
+    },
+    {
+      "class": "P",
+      "claim": "The paper classifies the event as Paired-Deletion Inversion (delINVdel); the GCH1-side breakpoint is in the intron between exons 1 and 2, displacing the promoter and first exon from the remainder of the negative-strand gene.",
+      "citation": "El-Wahsh et al. 2024 PDF p. 2, Fig. 1B legend"
+    },
+    {
+      "class": "P",
+      "claim": "The two inversion breakpoint regions are flanked by an approximately 3.4 kb deletion and an approximately 1.0 kb deletion; supplementary nanopore alignments are shown in separate 50 kb windows.",
+      "citation": "El-Wahsh et al. 2024 Supplementary Figs. S2-S3 descriptions, PDF p. 4"
+    },
+    {
+      "class": "P",
+      "claim": "No other clinically relevant variants were reported in GCH1, TH, SPR, or other known dystonia genes; Wilson-disease screening was negative. These are case-workup facts, not population-browser negative controls.",
+      "citation": "El-Wahsh et al. 2024 PDF p. 1"
+    },
+    {
+      "class": "I",
+      "claim": "The complete paper event is not copy-neutral: its inversion component is copy-neutral, while the linked architecture includes two copy-loss intervals of 3,352 bp and 977 bp.",
+      "citation": "Analyst calculation from P2; requires domain review"
+    },
+    {
+      "class": "I",
+      "claim": "A faithful population comparison requires paired windows plus a linked-event receipt; overlap with GCH1, one deletion, one INV span, or one BND is only a candidate overlap.",
+      "citation": "Analyst reconstruction from P2-P5 and current 100 kb/source-linkage constraints"
+    },
+    {
+      "class": "I",
+      "claim": "The independently reproduced GRCh38 coordinate projection is NC_000014.9:g.[54876536_54879887del;54879888_60355424inv;60355425_60356401del], preserving all three component lengths and order.",
+      "citation": "UCSC hg19ToHg38 chain endpoint mapping plus independent NCBI NC_000014.8/NC_000014.9 201 bp context checks, 2026-08-11; see evidence markdown"
+    },
+    {
+      "class": "B",
+      "claim": "The deployed browser returned HTTP 200 for each proposed 50 kb region route, but the GCH1 workflow-detail route returned 404; route success alone does not establish event data or linkage.",
+      "citation": "Read-only live route checks against gnomad-lr-browser-dpsnoyqx6q-ue.a.run.app, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "The live HGSVC/HPRC API returned 1,496 records in chr14:54851536-54901536 and 794 in chr14:60330425-60380425, but no INV, BND, CTX, or CPX record and no record exactly at any of the six mapped component endpoints.",
+      "citation": "Read-only GraphQL region queries, 2026-08-11; exact query fields and counts in evidence markdown"
+    },
+    {
+      "class": "B",
+      "claim": "The live chr14 primary and haplotype modalities were accepted full-chromosome Y1 data from run y1-full-prototype-hgsvc-hprc-chr14-20260728-r1 in database gnomad_lr_y1_scratch_demo_full_genome_20260803.",
+      "citation": "Read-only long_read_y1_provenance query, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Current source caps Y1 Haplotype View at 100,000 bp; the API exposes source_variant_id but no event/mate identifier, and source-event grouping explicitly keeps families separate and does not link DEL+INV+DEL across coordinates.",
+      "citation": "LongReadUnifiedView.tsx:313; long-read-variant.graphql:95-139; sourceEventAggregation.ts:42-65 at browser commit 32604d94ec8fc2aaaed7c07a03b3fa6e44796f9a"
+    },
+    {
+      "class": "B",
+      "claim": "The generation-pinned chr14 source VCF header declares allele_type, END, and SVTYPE but not EVENT, MATEID, or CHR2; the loader retains raw INFO JSON in summaries, while canonical alleles and GraphQL omit raw INFO and event linkage.",
+      "citation": "Source manifest generation 1785249162099850; read-only source-header check; parser.rs:297-400; lr_y1_summaries.sql; lr_y1_alleles.sql; long_read_y1_variants.ts:145-176, checked 2026-08-11"
+    }
+  ],
+  "capabilityBasis": "Read-only paper, source, route, and HGSVC/HPRC API checks on 2026-08-11 at browser source commit 32604d94e. Both breakpoint routes worked independently, but linked-event representation, paired-window state, and event-level callability were data-blocked."
+},
+{
+  "schemaVersion": 1,
+  "recordId": "paper-88-wrn",
+  "ref": "88",
+  "slug": "wrn-trans-deletion-haplotype",
+  "paper": {
+    "title": "Targeted long-read sequencing identifies missing pathogenic variants in unsolved Werner syndrome cases",
+    "year": "2022",
+    "venue": "Journal of Medical Genetics",
+    "pmid": "35534204",
+    "doi": "10.1136/jmedgenet-2022-108485",
+    "pdfUrl": "/papers/88.pdf"
+  },
+  "archetypes": [
+    "A5 — Phasing and compound heterozygosity"
+  ],
+  "locus": "WRN · chr8:31,135,822–31,474,535 (GRCh38 deletion; paired 60 kb breakpoint windows required)",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Rare-disease structural-variant researcher or clinical laboratory scientist",
+    "context": "Research comparison after an externally validated large WRN deletion has been found in a person; the browser is used only to ask whether an exact event and its chromosome-copy background are represented in the reference panel."
+  },
+  "nonDiagnosticBoundary": "This workflow can report only reference-release event occurrence and justified reference-copy context. It cannot establish a patient’s trans phase, functional effect, diagnosis, pathogenicity, or benignity.",
+  "startingState": {
+    "trigger": "An external assay reports the GRCh38 WRN event chr8:g.31135822_31474535delinsTCT, with patient-specific phase and functional evidence retained outside gnomAD.",
+    "inputs": [
+      "Exact GRCh38 HGVS-like deletion-junction notation chr8:g.31135822_31474535delinsTCT",
+      "Both breakpoint coordinates and inserted junction sequence TCT",
+      "External assay, sample, caller, validation, and phase provenance",
+      "Patient-level known WRN allele and phase evidence, if available",
+      "Paper and orthogonal junction PCR/Sanger report"
+    ],
+    "question": "Does this release contain the same linked GRCh38 deletion-junction event, and, if so, what variants are observed on that event-bearing reference chromosome copy within the two bounded breakpoint neighborhoods?",
+    "stopRule": "Stop exact-event comparison if the source build or both breakpoints are unknown. Stop linkage claims if two breakpoint-like records lack one source-event identity or an explicit mate/event relation. Stop chromosome-copy claims if sample identity, deterministic copy assignment, or the applicable phase set is absent. Stop absence claims if event-level callable chromosome copies cannot be counted; local depth alone is insufficient. Never use a reference participant to infer the patient's trans phase."
+  },
+  "workflow": {
+    "before": [
+      "Retain the external event as GRCh38 chr8:g.31135822_31474535delinsTCT and separately record the patient's known WRN allele, assay, sample, functional evidence, and patient-specific phase evidence.",
+      "Predeclare exact, partial, overlap, and representation-mismatch outcomes and require event AC/event-callable AN plus missingness before interpreting non-observation."
+    ],
+    "inside": [
+      "Open proximal chr8:31105822-31165822 and distal chr8:31444535-31504535 as one conceptual pair, with a not-to-scale connector and pinned HGSVC/HPRC provenance.",
+      "Search for one record with the exact anchor/end/junction or for explicitly mated records carrying one event identity; classify same-gene or same-length overlap separately.",
+      "For an exact event, record global and stratum AC/AN; separately inspect both breakpoint coverage tracks and count missing/not-callable chromosome copies.",
+      "If an exact event is carried, inspect variants assigned to that same reference participant and chromosome copy in each bounded window, requiring compatible continuous phase-set evidence before joining the backgrounds."
+    ],
+    "after": [
+      "Export the exact query, paired windows, event match status, AC/AN/missingness, both-end callability, reference copy/PS evidence, release/run, source identity, and all stop-rule outcomes.",
+      "Hand the bounded population-reference result back for patient-specific segregation, junction validation, RNA/protein work, phenotype review, and clinical interpretation outside the browser."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "Build, one breakpoint, or junction representation is missing",
+      "action": "Stop exact matching and request the source call/validation record.",
+      "stopRule": true
+    },
+    {
+      "condition": "Only a gene-level deletion or approximate size is known",
+      "action": "Allow overlap exploration only, visibly labeled non-equivalent.",
+      "stopRule": false
+    },
+    {
+      "condition": "Only local depth or nominal 584 chromosomes is available",
+      "action": "Report event absence as unanswerable, not AC=0/AN=584.",
+      "stopRule": true
+    },
+    {
+      "condition": "Either window or its provenance is unavailable",
+      "action": "Stop complete-event review and label the event data-blocked.",
+      "stopRule": true
+    },
+    {
+      "condition": "Exact single-record or explicitly linked representation exists",
+      "action": "Continue to event AC/AN and the event-bearing reference chromosome copy.",
+      "stopRule": false
+    },
+    {
+      "condition": "Two local records resemble the breakpoints but have no linkage",
+      "action": "Stop exact-event claim; report two candidates only.",
+      "stopRule": true
+    },
+    {
+      "condition": "No exact record is returned",
+      "action": "Continue only to callability/missingness review; do not manufacture AC=0.",
+      "stopRule": false
+    },
+    {
+      "condition": "Event row and validated event AN exist",
+      "action": "Report occurrence or non-occurrence against that event-callable denominator.",
+      "stopRule": false
+    },
+    {
+      "condition": "Only per-base coverage is available",
+      "action": "Report local sequencing coverage but stop event-level absence inference.",
+      "stopRule": true
+    },
+    {
+      "condition": "Exact event, same sample/copy, and compatible phase evidence span both windows",
+      "action": "Report only that reference participant's chromosome-copy context.",
+      "stopRule": false
+    }
+  ],
+  "story": {
+    "given": "an externally validated GRCh38 WRN deletion chr8:g.31135822_31474535delinsTCT and separately documented patient-specific phase/functional evidence",
+    "when": "a researcher opens both 60 kb breakpoint windows, requires one exact source event or explicit mate linkage, checks event-callable AC/AN and missingness, and inspects only deterministically assigned reference chromosome-copy context with compatible phase evidence",
+    "then": "the browser reports exact, partial, overlap-only, representation-mismatch, not-returned, or not-callable status with a reproducible paired-window receipt, while explicitly stating that reference participants cannot establish the patient's trans phase, functional effect, or classification"
+  },
+  "browserRegion": {
+    "chrom": "8",
+    "start": 31105822,
+    "stop": 31165822
+  },
+  "capabilities": [
+    {
+      "step": "Retain the external event as GRCh38 chr8:g.31135822_31474535delinsTCT and separately record the patient's known WRN allele, assay, sample, functional evidence, and patient-specific phase evidence.",
+      "status": "underdeveloped",
+      "evidence": "Current region URLs accept coordinates but do not carry external assay/phase evidence or a normalized linked-event query object. The paper's exact event is independently verified; browser input still requires analyst normalization."
+    },
+    {
+      "step": "Predeclare exact, partial, overlap, and representation-mismatch outcomes and require event AC/event-callable AN plus missingness before interpreting non-observation.",
+      "status": "absent",
+      "evidence": "The live API supplies per-record AC/AN and separate per-base coverage, but no event-callable denominator for an event with no row. Nearby AN varies from 1 to 584."
+    },
+    {
+      "step": "Open proximal chr8:31105822-31165822 and distal chr8:31444535-31504535 as one conceptual pair, with a not-to-scale connector and pinned HGSVC/HPRC provenance.",
+      "status": "supported-but-awkward",
+      "evidence": "Both candidate routes and API queries are usable independently. No current state object links or synchronizes the two windows; full-event Haplotype View is rejected above 100 kb."
+    },
+    {
+      "step": "Resolve the exact linked deletion event rather than two unlinked breakpoint candidates.",
+      "status": "data-blocked",
+      "evidence": "The checked live release returned no exact or spanning paper event, and GraphQL has no linked-event or mate field. A linked-event result is therefore data-blocked, not absent or AC=0."
+    },
+    {
+      "step": "For an exact event, record global and stratum AC/AN; separately inspect both breakpoint coverage tracks and count missing/not-callable chromosome copies.",
+      "status": "supported-but-awkward",
+      "evidence": "Global and population AC/AN are exposed for existing records, and coverage is available at both breakpoints. No cross-window event-callability/no-call count exists for a missing event."
+    },
+    {
+      "step": "If an exact event is carried, inspect variants assigned to that same reference participant and chromosome copy in each bounded window, requiring compatible continuous phase-set evidence before joining the backgrounds.",
+      "status": "underdeveloped",
+      "evidence": "Within-window HGSVC/HPRC chromosome-copy views exist for deterministically assigned calls. The exact event is absent, full-event view is too large, and almost all checked structured copies have null phase_set."
+    },
+    {
+      "step": "Export the exact query, paired windows, event match status, AC/AN/missingness, both-end callability, reference copy/PS evidence, release/run, source identity, and all stop-rule outcomes.",
+      "status": "underdeveloped",
+      "evidence": "Current CSV paths export variants but omit linked windows, event relation, phase-set/copy identity, and complete provenance/denominator state."
+    },
+    {
+      "step": "Hand the bounded population-reference result back for patient-specific segregation, junction validation, RNA/protein work, phenotype review, and clinical interpretation outside the browser.",
+      "status": "inappropriate/unsafe",
+      "evidence": "gnomAD contains reference participants, not PD1010's patient reads, family, phenotype, RNA, or protein evidence."
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "Synthetic GRCh38 HGSVC/HPRC fixture with (a) one exact chr8:31135822-31474535 delinsTCT event carried on sample REF001 copy A with a continuous PS across both windows, (b) one same-gene overlapping 300 kb deletion with different breakpoints, (c) one split two-breakpoint candidate lacking mate/event identity, (d) one ambiguous unphased carrier, and (e) explicit callable and no-call chromosome copies.",
+    "actions": "Open the proximal and distal 60 kb windows as one paired query. Apply the exact breakpoint/junction/event-identity rule. Inspect event AC/AN, per-population counts, both-end callability, and no-calls. Open REF001's event-bearing copy and inspect variants in both windows. Attempt to join the unlinked split candidate and ambiguous carrier. Export and reload the linked-event receipt.",
+    "expected": "The exact event is one linked object with both breakpoints and delinsTCT retained. The overlapping deletion is labeled overlap-only and the unlinked split candidate is not merged. AC/AN uses only validated event-callable chromosome copies; missing/no-call copies remain explicit. REF001 copy A is joined only because sample, copy, event, and continuous PS agree; A is not called maternal or paternal. The ambiguous carrier is excluded with a visible reason. The export round-trips windows, event identity, matching rule, counts, missingness, copy/PS, release/run, provenance, and stop rules.",
+    "forbidden": "Do not classify the exact or overlapping event as pathogenic or benign. Do not infer PD1010's trans phase from REF001. Do not turn no returned record into AC=0/AN=584 without event callability. Do not merge candidates by interval overlap or same-gene membership. Do not label VCF copy A/B as maternal/paternal without independent evidence."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "The study examined nine highly selected unresolved Werner syndrome participants from eight pedigrees, each with one previously identified heterozygous causal WRN allele; eight people had genomic targeted long-read sequencing and one affected sibling was resolved through the sequenced sibling/family workup.",
+      "citation": "PDF pp. 1-3, abstract, Methods, and Table 1"
+    },
+    {
+      "class": "P",
+      "claim": "ReadFish adaptive sampling on ONT GridION targeted approximately 3 Mb around WRN plus two controls, used R9.4.1 flow cells for 72 hours, aimed for and averaged about 20x, aligned reads to GRCh38 with minimap2, phased SNV/indel calls with Medaka, and called SVs with Sniffles, SVIM, and cuteSV.",
+      "citation": "PDF pp. 2-4, Targeted long-read sequencing and Data analysis"
+    },
+    {
+      "class": "P",
+      "claim": "For PD1010, the paper reports a heterozygous 338,715 bp/about 339 kb deletion beginning within WRN and including exons 25-35; junction PCR and Sanger sequencing confirmed GRCh38 chr8:g.31135822_31474535delinsTCT.",
+      "citation": "PDF p. 2 Table 1; p. 4 Fig. 1B caption; p. 5 Results"
+    },
+    {
+      "class": "P",
+      "claim": "Long-read computational phasing predicted PD1010's known c.561A>G allele and newly detected deletion were on different haplotypes. Junction PCR/Sanger confirmed the deletion but did not independently establish trans; direct parental segregation was reported only for the BIA family, not PD1010.",
+      "citation": "PDF pp. 4-5 and Table 1; prior WRN slide report, How in trans was established"
+    },
+    {
+      "class": "P",
+      "claim": "PD1010's LCL western blot showed no detectable WRN protein, and the known c.561A>G allele had prior evidence for cryptic splicing. The paper did not report a deletion-specific RNA assay; sample-level protein loss reflects the combined genotype and is not a population-browser observable.",
+      "citation": "PDF pp. 2 and 4-5; Table 1"
+    },
+    {
+      "class": "P",
+      "claim": "The paper warns that ONT R9.4.1 has a higher single-read error rate than PacBio HiFi, especially in homopolymers; intronic splice predictions need laboratory confirmation; and one biologically compelling case remained molecularly unresolved despite DNA and RNA long reads.",
+      "citation": "PDF pp. 5-6, Discussion"
+    },
+    {
+      "class": "P",
+      "claim": "The authors state all eight detected variants likely could also have been identified by focused short-read WGS analysis of WRN. The 8/9 result arose from an extremely ascertained, small, partly related cohort and is not an unselected diagnostic yield.",
+      "citation": "PDF pp. 1-2 and 6; prior WRN slide report, Limitations"
+    },
+    {
+      "class": "I",
+      "claim": "Two 60 kb windows centered 30 kb around the proximal and distal breakpoints are a bounded way to inspect both neighborhoods; their 278,713 bp intervening gap must be drawn as a not-to-scale linked break rather than as contiguous display space.",
+      "citation": "Analyst reconstruction from exact paper breakpoints and current 100 kb Haplotype View limit"
+    },
+    {
+      "class": "I",
+      "claim": "An exact match requires GRCh38 breakpoints 31,135,822 and 31,474,535, compatible delinsTCT junction representation, and one source event or explicit mate/event linkage. Same-gene overlap, one shared breakpoint, or similar length is not an exact match.",
+      "citation": "Analyst reconstruction from paper event and source representation semantics"
+    },
+    {
+      "class": "I",
+      "claim": "The denominator must be event-callable chromosome copies with adequate evidence at both junctions and valid event representation. Per-base coverage and the maximum diploid cohort size are context, not a substitute for event-level AN.",
+      "citation": "Analyst reconstruction from API frequency/coverage contracts"
+    },
+    {
+      "class": "B",
+      "claim": "On 2026-08-11 the candidate Cloud Run browser served 100% traffic from revision gnomad-lr-browser-00012-suv tagged fg-667d8a46-20260810t190445z. Current source was clean at 32604d94ec8f and therefore ahead of the deployed candidate; the public production GraphQL schema did not expose the LR fields.",
+      "citation": "Read-only gcloud service describe, git, and public/candidate API checks on 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Both candidate paired-window routes returned HTTP 200. Candidate GraphQL returned 1,265 proximal and 1,157 distal HGSVC/HPRC ALT records from database gnomad_lr_y1_scratch_demo_full_genome_20260803, chr8 run y1-full-prototype-hgsvc-hprc-chr8-20260728-r1, status accepted_tasks.",
+      "citation": "Read-only candidate browser/GraphQL checks on 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "No candidate API record in either checked window had position 31,135,822, end 31,474,535, or spanned the full paper interval. This is a not-returned observation, not AC=0: there is no event row from which to obtain an event-specific AN.",
+      "citation": "Read-only candidate GraphQL and REST checks on 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Nearby record AN ranged from 1 to 584 (64 distinct proximal AN values; 48 distal), confirming variant-specific denominators. Coverage at both exact breakpoints was above 10x in 100% of 292 participants; above 20x was 0.989726 proximally (289/292) and 1.0 distally (292/292), but the coverage API is participant-level depth, not SV event callability.",
+      "citation": "Read-only candidate GraphQL and lr_coverage checks on 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "The proximal and distal 60 kb REST queries independently represented all 292 samples, but a full-event request returned HTTP 400 REGION_TOO_LARGE. Only 1 of 580 proximal structured chromosome-copy rows and 0 of 584 distal rows had one non-null phase_set; 7,695 and 3,612 ambiguous unphased carrier rows, respectively, were excluded from assigned-copy views.",
+      "citation": "Read-only candidate /api/lr/haplotype-groups checks on 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Current source exposes source_variant_id and ALT-specific identity, groups deletion alleles locally by exact left anchor, limits Y1 Haplotype View to 100 kb, and labels vcf_strand as the original one-based GT position rather than a biological or parental haplotype. It has no linked-window or linked-event GraphQL type.",
+      "citation": "Source 32604d94ec8f: long_read_y1_variants.ts, sourceEventAggregation.ts, app.ts, and haplotype.graphql"
+    },
+    {
+      "class": "B",
+      "claim": "Current summary and haplotype CSV exports do not preserve a paired-window/event receipt. The haplotype CSV omits source_variant_id, ALT index, AN, copy/phase-set identity, release/run, query windows, and coverage/callability; the summary CSV likewise does not encode linked-event or paired-region state.",
+      "citation": "Source 32604d94ec8f: HaplotypeVariantTable.tsx and ExportVariantsButton.tsx"
+    }
+  ],
+  "capabilityBasis": "Read-only paper, candidate route, HGSVC/HPRC API, and source checks on 2026-08-11 at browser source commit 32604d94e. Both breakpoint windows were independently usable; exact-event linkage, paired-window state, phase continuity, and event-level callability remained data-blocked."
+},
+{
+  "schemaVersion": 1,
+  "recordId": "paper-10-slc16a2",
+  "ref": "10",
+  "slug": "slc16a2-regulatory-deletion",
+  "paper": {
+    "title": "Identification of a novel non-coding deletion in Allan-Herndon-Dudley syndrome by long-read HiFi genome sequencing",
+    "year": "2024",
+    "venue": "Research Square",
+    "pmid": null,
+    "doi": "10.21203/rs.3.rs-4168168/v1",
+    "pdfUrl": "/papers/10.pdf"
+  },
+  "archetypes": [
+    "A7 — Deep intronic and regulatory variants"
+  ],
+  "locus": "SLC16A2 intron 1 · chrX:74,455,691–74,468,566 display; paper deletion chrX:74,460,691–74,463,566 (GRCh38/hg38)",
+  "persona": {
+    "mode": "Clinical research",
+    "role": "Rare-disease structural-variation researcher or laboratory scientist",
+    "context": "Research follow-up after an externally validated noncoding SLC16A2 deletion"
+  },
+  "nonDiagnosticBoundary": "This workflow can establish whether the same sequence-resolved deletion is represented in callable population-reference X-chromosome copies and can display separately pinned regulatory annotations. Population occurrence or absence cannot validate expression consequence, pathogenicity, benignity, penetrance, or diagnosis.",
+  "startingState": {
+    "trigger": "An externally characterized GRCh38 SLC16A2 intron-1 deletion with Sanger-supported junction sequence.",
+    "inputs": [
+      "Original assembly and coordinate convention: paper hg38 deleted-base interval chrX:74,460,691–74,463,566, 2,876 bp",
+      "Breakpoint junction trace: AGACGGAGTCTGGCTCTGTCG|CCCAGGCTGGAGTGCAGTGGCA, manually transcribed from paper Fig. 2A",
+      "Orthogonal validation method, primers, amplicon identities, inheritance evidence, and uncertainty",
+      "Independently versioned JASPAR, GTEx eQTL, RegulomeDB, conservation, and transcript-annotation evidence",
+      "Cohort/release/run, X-ploidy model, event-callability rule, and callable/no-call chromosome-copy counts"
+    ],
+    "question": "Is the same deletion junction represented in callable reference X-chromosome copies, and which independently pinned regulatory annotations does that exact deleted interval overlap?",
+    "stopRule": "Stop before claiming recurrence if the build, deleted-base/VCF conversion, retained flanks, or junction sequence cannot be reconciled; stop before claiming absence if exact-event callability and X-ploidy denominators are unavailable. Unpinned regulatory evidence is unavailable, not negative."
+  },
+  "workflow": {
+    "before": [
+      "Retain the paper's hg38 one-based inclusive deleted-base interval and 2,876 bp length; pin the GRCh38 chrX accession before deriving any VCF representation.",
+      "Transcribe and independently review the Sanger junction plus left/right retained flanks. Record AluY1/AluY2 context so microhomology-equivalent VCF shifts are normalized to one event.",
+      "Define exact recurrence as the same retained-flank-to-retained-flank junction and deleted sequence, not generic overlap, similar length, or a shared left anchor.",
+      "Freeze annotation snapshots separately: assembly, release/version/date, track, stable feature ID, coordinates, alleles where applicable, tissue, effect direction/size, and source URL/checksum."
+    ],
+    "inside": [
+      "Open chrX:74,455,691–74,468,566 in the HGSVC/HPRC Y1 view and verify GRCh38, cohort, accepted primary source, database, release, chromosome scope, and run.",
+      "Search normalized deletion representations at both paper breakpoints and require a junction-sequence match across the Alu-mediated join. Inspect every ALT from the source event; do not promote an overlapping DEL or an interval-only match to exact recurrence.",
+      "For an exact match, report global and XX/XY-stratified AC/AN, callable chromosome copies, no-call copies, participants, and the ploidy rule. XX contributes at most two non-PAR X copies and XY at most one; observed VCF AN is not a substitute for event callability.",
+      "If no exact row is found, inspect spanning-read/junction and breakpoint-flank callability for every eligible copy. Base-depth coverage alone cannot certify a 2.876 kb deletion as callable.",
+      "Render JASPAR TF predictions, rs1263181 GTEx eQTL evidence, RegulomeDB score, and conservation in a separate evidence layer with their own provenance and prediction/association labels; do not join them causally to population occurrence."
+    ],
+    "after": [
+      "Export the paper interval, junction/flanks, normalization rule, exact/overlap outcome, AC/AN, callable/no-call X copies, sex/ploidy strata, release/run/database, query receipt, and pinned annotation receipts.",
+      "Hand population recurrence and regulatory annotations to external functional, segregation, transcript, and clinical review. Preserve the paper's negative blood RT-PCR and absence of direct functional validation."
+    ]
+  },
+  "branches": [
+    {
+      "condition": "The same junction and deleted sequence are observed in one or more callable reference X-chromosome copies",
+      "action": "Report exact population-reference occurrence with AC/AN, callable/no-call copies, XX/XY strata, and provenance; keep regulatory consequence unvalidated.",
+      "stopRule": false
+    },
+    {
+      "condition": "A deletion overlaps the interval or has similar length but its retained-flank junction differs or is unavailable",
+      "action": "Report candidate overlap/representation mismatch and stop the exact-recurrence branch.",
+      "stopRule": true
+    },
+    {
+      "condition": "No exact event is observed and representation-complete event callability plus X-ploidy denominators are available",
+      "action": "Report not observed in N callable chromosome copies, with no-call counts and a bounded upper reference-frequency statement; do not infer function or pathogenicity.",
+      "stopRule": false
+    },
+    {
+      "condition": "No exact event row is returned but event callability, junction search, or X-ploidy reconciliation is incomplete",
+      "action": "Report unavailable/data-blocked, not AC=0 and not absent.",
+      "stopRule": true
+    },
+    {
+      "condition": "Regulatory evidence lacks a pinned build/release/feature identity or sources disagree",
+      "action": "Mark the regulatory layer unavailable or conflicting independently of the population result; require external review.",
+      "stopRule": true
+    }
+  ],
+  "story": {
+    "given": "a Sanger-supported GRCh38 SLC16A2 intron-1 deletion of chrX:74,460,691–74,463,566 with the junction AGACGGAGTCTGGCTCTGTCG|CCCAGGCTGGAGTGCAGTGGCA",
+    "when": "the researcher reconciles microhomology-equivalent representations, searches both breakpoints and the exact junction, audits event-level callability with non-PAR X ploidy, and opens separately versioned TF/eQTL annotations",
+    "then": "the browser returns exact recurrence, candidate overlap, not observed in N callable X copies, or data-blocked, with AC/AN, no-call and provenance receipts, while regulatory predictions/associations remain separate evidence and no functional or clinical conclusion is made"
+  },
+  "browserRegion": {
+    "chrom": "X",
+    "start": 74455691,
+    "stop": 74468566
+  },
+  "capabilities": [
+    {
+      "step": "Navigate to the verified bounded GRCh38 region and query accepted primary variants",
+      "status": "supported-and-usable",
+      "evidence": "On 2026-08-11 the production region route returned HTTP 200 and the API returned 147 HGSVC/HPRC Y1 records with accepted chrX full-chromosome provenance."
+    },
+    {
+      "step": "Identify the exact paper deletion by both breakpoints and junction sequence",
+      "status": "data-blocked",
+      "evidence": "The live response had no record at the exact paper endpoints and exposes no deletion-junction sequence. Current undeployed source can locally match positions, ranges, IDs, REF/ALT, and 3–64 bp fragments only in ref/alt/motif fields; it cannot query a structural junction absent from those fields."
+    },
+    {
+      "step": "Group microhomology-equivalent deletion representations",
+      "status": "underdeveloped",
+      "evidence": "Current source groups deletions by exact left VCF/reference anchor and explicitly treats overlap as insufficient; it has no flank/junction canonicalization receipt for Alu-mediated shifts."
+    },
+    {
+      "step": "Use X-chromosome callable/ploidy denominators safely",
+      "status": "data-blocked",
+      "evidence": "The live locus contains row AN values from 276–438; XX AN reaches 292 while XY AN alternates mainly between 73 and 146. Coverage is available for all 2,876 paper bases, but is aggregate depth proportion rather than event-level callable/no-call X copies. No exact event row exists from which to obtain AN."
+    },
+    {
+      "step": "Inspect carrier haplotypes for an exact event",
+      "status": "data-blocked",
+      "evidence": "Production provenance marks HAPLOTYPES unavailable on chrX for this accepted run."
+    },
+    {
+      "step": "Inspect pinned TF, eQTL, RegulomeDB, and conservation evidence",
+      "status": "absent",
+      "evidence": "Neither the LR GraphQL record nor the region UI exposes JASPAR/RegulomeDB/variant-eQTL annotations or their versions. General GTEx gene-expression support is not rs1263181 eQTL evidence."
+    },
+    {
+      "step": "Distinguish not observed from not callable",
+      "status": "underdeveloped",
+      "evidence": "Accepted run and per-record AC/AN provenance are exposed, but the API has no exact-event negative query receipt or deletion-specific callable/no-call denominator. The safe current result is data-blocked."
+    },
+    {
+      "step": "Open a curated SLC16A2 detailed-workflow page",
+      "status": "absent",
+      "evidence": "Production returns HTTP 404 for the workflow index and this slug. Current source implements four prototype records (refs 40, 111, 59, 25), but ref 10 is not yet present."
+    }
+  ],
+  "acceptanceTest": {
+    "fixture": "GRCh38 chrX non-PAR fixtures containing: (A) the exact 2,876 bp deletion in a junction-confirmed XX copy; (B) a coordinate-shifted but junction-identical Alu representation; (C) an overlapping 3.3 kb deletion with a different junction; (D) callable XX and XY reference copies plus explicit no-call copies; and (E) pinned and unpinned JASPAR/GTEx/RegulomeDB snapshots.",
+    "actions": "Open the region, verify provenance, search paper endpoints and junction, normalize A/B, compare C, audit X-ploidy/event callability, toggle regulatory evidence, and export the receipt.",
+    "expected": "A and B collapse to one exact event; C remains candidate overlap; AC/AN equals callable non-PAR X copies with XX/XY and no-call counts shown; the no-event state is not observed only when D is complete; E displays build/release/feature/tissue/effect provenance and marks unpinned evidence unavailable; the export reproduces all identities and counts.",
+    "forbidden": "The result must not count participants as chromosome copies, treat aggregate depth as deletion callability, call an overlap exact, turn missing data into zero, use population occurrence/absence to validate regulatory effect, or label the deletion pathogenic, benign, causal, or diagnostic."
+  },
+  "evidence": [
+    {
+      "class": "P",
+      "claim": "The paper reports an hg38 hemizygous SLC16A2 intron-1 deletion at chrX:74,460,691–74,463,566; the inclusive span is 2,876 bp.",
+      "citation": "PDF pp. 3 and 7; Fig. 3 caption, p. 16"
+    },
+    {
+      "class": "P",
+      "claim": "Multiplex PCR in the family showed the deletion allele in both affected males and their carrier mother, while the father had only the wild-type allele; Sanger sequencing of the deleted-allele PCR product established the breakpoints.",
+      "citation": "PDF pp. 4–7; Fig. 1 caption, p. 14; Fig. 2 caption, p. 15"
+    },
+    {
+      "class": "P",
+      "claim": "Figure 2A displays the breakpoint trace AGACGGAGTCTGGCTCTGTCG|CCCAGGCTGGAGTGCAGTGGCA; AluY1 and AluY2 flank the event and the figure reports 266/304 bases (87.50%) similarity.",
+      "citation": "Manual transcription of PDF Fig. 2, p. 15; requires second-person sequence review before publication"
+    },
+    {
+      "class": "P",
+      "claim": "JASPAR 2022 predictions include STAT2, RORA, RORC, ZIC1::ZIC2, FOXD3 and zinc-finger binding sites; RORA/RORC sites overlap a 30-mammal conserved region.",
+      "citation": "PDF pp. 7–8, Table 1; Fig. 3 caption, p. 16"
+    },
+    {
+      "class": "P",
+      "claim": "The paper reports rs1263181 as a GTEx eQTL across 49 tissues, with skeletal-muscle NES +0.07 (P=2.9×10^-3), thyroid NES -0.08 (P=3.0×10^-4), and no significant effect in blood or skin; it also reports RegulomeDB category 1.",
+      "citation": "PDF pp. 7 and 10; Fig. 4 caption, p. 17"
+    },
+    {
+      "class": "P",
+      "claim": "Blood RT-PCR found no aberrant exon-1-to-exon-2 splicing, and the authors explicitly state that no functional study established a direct causal link; ACMG/ClinGen classification remained VUS.",
+      "citation": "PDF pp. 7 and 10"
+    },
+    {
+      "class": "P",
+      "claim": "The paper's population comparisons found no exact case in gnomAD SV v4.0, two larger overlapping female-carrier singleton deletions, no overlapping hemizygous deletion among 15,073 males, and no SLC16A2-overlapping deletion among 1,094 Korean genomes.",
+      "citation": "PDF p. 6"
+    },
+    {
+      "class": "I",
+      "claim": "A reproducible recurrence workflow must canonicalize the deleted-base interval to retained flanks and junction sequence because Alu microhomology can shift equivalent VCF coordinates; overlap or a shared anchor is insufficient.",
+      "citation": "Analyst reconstruction from paper Fig. 2 and current source-event contract; requires workflow review"
+    },
+    {
+      "class": "I",
+      "claim": "At this non-PAR X locus, the denominator must count callable chromosome copies under explicit ploidy (up to two per XX participant and one per XY participant) and must expose no-call copies; participant N and neighboring-variant AN are not substitutes.",
+      "citation": "Analyst reconstruction; requires data-semantics review"
+    },
+    {
+      "class": "B",
+      "claim": "The 2026-08-11 production API returned 147 records (87 SNV, 41 TRV, 12 DEL, 7 INS), zero records at the exact paper endpoints, accepted Y1 chrX primary provenance, and unavailable chrX haplotypes.",
+      "citation": "Read-only production browser/API check, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Live per-record X denominators vary substantially (all AN 276–438; XX AN 216–292; XY AN 60–146), while the 2,876-base coverage query returns aggregate depth proportions rather than event-callable chromosome-copy counts.",
+      "citation": "Read-only production API frequency and lr_coverage checks, 2026-08-11"
+    },
+    {
+      "class": "B",
+      "claim": "Production revisions gnomad-lr-api-00018-xoz and gnomad-lr-browser-00012-suv are receipt-bound to source 667d8a46; the current source checkout 32604d94 adds local search and four prototype workflow pages after that release, but has no ref-10 workflow or regulatory annotation layer.",
+      "citation": "Read-only Cloud Run, release-receipt, git, and source checks, 2026-08-11"
+    }
+  ],
+  "capabilityBasis": "Read-only checks on 2026-08-11 against production browser/API revisions gnomad-lr-browser-00012-suv and gnomad-lr-api-00018-xoz (release source 667d8a46f73f371177f0b62e7e2190682e0dcdd5), plus current source commit 32604d94ec8fc2aaaed7c07a03b3fa6e44796f9a. A route or region response does not establish exact recurrence, event callability, or regulatory consequence."
+}
 ]
