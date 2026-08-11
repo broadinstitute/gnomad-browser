@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
+import { literatureWorkflowPath, workflowByRef } from './longReadLiteratureWorkflows'
 
 import examplesData from './data/longReadLiteratureExamples.json'
 
@@ -140,6 +141,12 @@ const MetaRow = styled.div`
   font-size: 0.82em;
 `
 
+const badgeBackground = (tone?: 'verified' | 'approximate' | 'missing') => {
+  if (tone === 'verified') return '#2e8540'
+  if (tone === 'approximate') return '#997404'
+  return '#999'
+}
+
 const Badge = styled.span<{ tone?: 'verified' | 'approximate' | 'missing' }>`
   display: inline-block;
   border-radius: 3px;
@@ -147,8 +154,7 @@ const Badge = styled.span<{ tone?: 'verified' | 'approximate' | 'missing' }>`
   font-size: 0.75em;
   margin-right: 4px;
   color: #fff;
-  background: ${(props) =>
-    props.tone === 'verified' ? '#2e8540' : props.tone === 'approximate' ? '#997404' : '#999'};
+  background: ${(props) => badgeBackground(props.tone)};
 `
 
 const GeneRow = styled.div`
@@ -246,6 +252,9 @@ const ExampleCardView = ({ ex, sectionCode }: { ex: LiteratureExample; sectionCo
       )}
     </div>
     <LinkRow>
+      {workflowByRef.has(ex.ref) && (
+        <a href={literatureWorkflowPath(workflowByRef.get(ex.ref)!.slug)}>Detailed workflow</a>
+      )}
       {ex.region && (
         <a href={regionUrl(ex.region, ex.variantId)} target="_blank" rel="noopener noreferrer">
           View in browser
