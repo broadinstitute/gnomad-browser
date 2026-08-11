@@ -22,6 +22,7 @@ import { buildGenealogyTreeLayout } from './genealogyTreeLayout'
 import type { TreeBranch, TreeNodePoint, TreePieWedge, TreeClusterMarker, TreeLayout } from './genealogyTreeLayout'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant, Methylation } from './index'
 import type { DiplotypeGroup } from './haplotypeCompute'
+import { HaplotypeVariantTooltipContent } from './TrVariantTooltip'
 import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
@@ -2431,7 +2432,18 @@ function DeckGLLollipopCanvas({
         height={viewportHeight}
       />
       {hovered && hovered.object && (
-        <Tooltip x={hovered.x} y={hovered.y} object={hovered.object} viewportId={hovered.viewportId} />
+        <Tooltip
+          x={hovered.x}
+          y={hovered.y}
+          object={hovered.object}
+          viewportId={hovered.viewportId}
+          phantomExpanded={Boolean(
+            hovered.object.variant && mapper?.getPhantomLoci().some(
+              (locus) => locus.maxPhantomLength > 0 &&
+                Math.abs(locus.genomicPos - hovered.object.variant.pos) <= 2
+            )
+          )}
+        />
       )}
     </div>
   )
@@ -2443,11 +2455,13 @@ function Tooltip({
   y,
   object,
   viewportId,
+  phantomExpanded,
 }: {
   x: number
   y: number
   object: any
   viewportId: string
+  phantomExpanded: boolean
 }) {
   const tooltipStyle: React.CSSProperties = {
     position: 'absolute',
@@ -2516,34 +2530,10 @@ function Tooltip({
 
   return (
     <div style={tooltipStyle}>
-      <div>
-        <strong>Position:</strong> {variant.pos}
-      </div>
-      <div>
-        <strong>Ref:</strong>{' '}
-        {variant.ref.length > 10
-          ? variant.ref.substring(0, 10) + '...'
-          : variant.ref}
-      </div>
-      <div>
-        <strong>Alt:</strong>{' '}
-        {variant.alt.length > 10
-          ? variant.alt.substring(0, 10) + '...'
-          : variant.alt}
-      </div>
-      <div>
-        <strong>AF:</strong> {variant.freq.af.toFixed(4)}
-      </div>
-      {variant.rsid && (
-        <div>
-          <strong>RSID:</strong> {variant.rsid}
-        </div>
-      )}
-      {variant.allele_type && (
-        <div>
-          <strong>Type:</strong> {variant.allele_type}
-        </div>
-      )}
+      <HaplotypeVariantTooltipContent
+        variant={variant}
+        phantomExpanded={phantomExpanded}
+      />
     </div>
   )
 }

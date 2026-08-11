@@ -52,6 +52,21 @@ const MIN_SV_BAR_WIDTH = 3
 const SNV_DENSITY_HEIGHT = 40
 const TR_BLOCK_COLOR = VARIANT_CATEGORY_COLORS.tr
 
+export const getTrReferenceBarGeometry = (
+  start: number,
+  stop: number,
+  scalePosition: (position: number) => number
+) => {
+  let startX = scalePosition(start)
+  let stopX = scalePosition(stop)
+  if (stopX - startX < MIN_SV_BAR_WIDTH) {
+    const mid = (startX + stopX) / 2
+    startX = mid - MIN_SV_BAR_WIDTH / 2
+    stopX = mid + MIN_SV_BAR_WIDTH / 2
+  }
+  return { startX, blockWidth: stopX - startX }
+}
+
 /** Map variant AF to opacity: rare variants are fainter, common are bolder.
  *  Uses log scale: AF 0.1% → 0.25, AF 1% → 0.5, AF 10% → 0.75, AF 50%+ → 1.0 */
 const afToOpacity = (v: any): number => {
@@ -105,17 +120,19 @@ const formatSignedLength = (value: number | null) => {
   return `${value > 0 ? '+' : ''}${value} bp`
 }
 
-const TrLocusTooltip = ({ hovered }: { hovered: HoveredTrLocus }) => {
+export const TrLocusTooltip = ({ hovered }: { hovered: HoveredTrLocus }) => {
   const { locus } = hovered
   const distribution: TrDataPoint[] = getTrLocusDistribution(locus.alleles)
 
   return (
     <div style={{ position: 'fixed', left: hovered.x + 12, top: hovered.y + 12, background: 'white', border: '1px solid #ccc', borderRadius: 4, padding: '6px 8px', fontSize: 12, pointerEvents: 'none', zIndex: 10000, width: 260, boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}>
-      <div><strong>TR locus:</strong> {locus.chrom}:{locus.start}-{locus.stop}</div>
+      <div><strong>Reference locus:</strong> {locus.chrom}:{locus.start}-{locus.stop}</div>
+      <div><strong>Reference span:</strong> {(locus.stop - locus.start + 1).toLocaleString()} bp</div>
       <div><strong>ALT records:</strong> {locus.alleles.length}</div>
-      <div><strong>Length difference:</strong> {formatSignedLength(locus.minLengthDiff)} to {formatSignedLength(locus.maxLengthDiff)}</div>
+      <div><strong>ALT−REF length:</strong> {formatSignedLength(locus.minLengthDiff)} to {formatSignedLength(locus.maxLengthDiff)}</div>
       <div><strong>Maximum ALT AF:</strong> {locus.maxAf == null ? 'Unavailable' : locus.maxAf.toPrecision(4)}</div>
       {distribution.length > 0 && <TRDistributionPlot distribution={distribution} compact interactive={false} yAxisLabel="Allele count" />}
+      <div style={{ color: '#666', marginTop: 2 }}>The bar marks the reference locus. Added ALT bases have no GRCh38 coordinates.</div>
       {locus.alleles.length > 1 && <div style={{ color: '#666', marginTop: 2 }}>Click opens the maximum-AF ALT record.</div>}
     </div>
   )
@@ -424,10 +441,15 @@ const TrBand = ({ variants, scalePosition, width, onHoverLocus, hoveredPosition,
             pxPerUnit
           blockWidth = Math.max(phantomWidth, MIN_SV_BAR_WIDTH)
         } else {
-          // Without accordion, render TRs as thin bars at their position
-          // (reference region span is only meaningful with phantom expansion)
-          startX = scalePosition(v.pos)
-          blockWidth = MIN_SV_BAR_WIDTH
+          // Without synthetic inserted-sequence space, use the authoritative
+          // reference-locus span so summary and carrier rows share one geometry.
+          const referenceGeometry = getTrReferenceBarGeometry(
+            locus.start,
+            locus.stop,
+            scalePosition
+          )
+          startX = referenceGeometry.startX
+          blockWidth = referenceGeometry.blockWidth
         }
 
         const trHover = onHoverLocus ? {

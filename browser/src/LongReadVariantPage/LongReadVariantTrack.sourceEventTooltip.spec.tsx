@@ -1,8 +1,13 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 
-import { SourceEventTooltip } from './LongReadVariantTrack'
+import {
+  SourceEventTooltip,
+  TrLocusTooltip,
+  getTrReferenceBarGeometry,
+} from './LongReadVariantTrack'
 import { aggregateSourceEvents, type SourceEventRecord } from './sourceEventAggregation'
+import { aggregateTrLoci } from './trLocusAggregation'
 
 const allele = (overrides: Partial<SourceEventRecord> = {}): SourceEventRecord => ({
   variant_id: '1-100-event-alt',
@@ -17,6 +22,53 @@ const allele = (overrides: Partial<SourceEventRecord> = {}): SourceEventRecord =
   main_reference_region: null,
   freq: { all: { af: 0.01 } },
   ...overrides,
+})
+
+describe('TR reference-locus rendering', () => {
+  test('uses the reference span instead of a fixed-width summary mark', () => {
+    expect(getTrReferenceBarGeometry(424, 479, (position) => position - 400)).toEqual({
+      startX: 24,
+      blockWidth: 55,
+    })
+    expect(getTrReferenceBarGeometry(424, 424, (position) => position - 400)).toEqual({
+      startX: 22.5,
+      blockWidth: 3,
+    })
+  })
+
+  test('distinguishes reference span from signed ALT length differences', () => {
+    const locus = aggregateTrLoci([
+      {
+        variant_id: 'chr4-424-TRV-55~1',
+        source_variant_id: 'chr4-424-TRV-55',
+        chrom: '4',
+        pos: 424,
+        end: 479,
+        allele_length: -25,
+        main_reference_region: null,
+        freq: { all: { af: 0.2, ac: 2 } },
+      },
+      {
+        variant_id: 'chr4-424-TRV-55~2',
+        source_variant_id: 'chr4-424-TRV-55',
+        chrom: '4',
+        pos: 424,
+        end: 479,
+        allele_length: 3606,
+        main_reference_region: null,
+        freq: { all: { af: 0.01, ac: 1 } },
+      },
+    ])[0]
+
+    const { container } = render(
+      <TrLocusTooltip hovered={{ locus: locus as any, x: 0, y: 0 }} />
+    )
+
+    expect(container.textContent).toContain('Reference locus: 4:424-479')
+    expect(container.textContent).toContain('Reference span: 56 bp')
+    expect(container.textContent).toContain('ALT−REF length: -25 bp to +3606 bp')
+    expect(container.textContent).toContain('Added ALT bases have no GRCh38 coordinates')
+  })
 })
 
 describe('source event hover details', () => {
