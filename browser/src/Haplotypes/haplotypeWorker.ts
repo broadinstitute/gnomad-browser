@@ -36,7 +36,16 @@ let wasClusteredView = false
 
 // ---- Message types ----
 
-type InitMessage = {
+type WorkerGeneration = {
+  /** Scope/request epoch. Optional only for callers using the legacy protocol. */
+  requestGeneration?: number
+  /** Computation epoch within one request. Optional only for legacy callers. */
+  computeGeneration?: number
+  /** Exact UI representation requested by the caller. */
+  representationIdentity?: string
+}
+
+type InitMessage = WorkerGeneration & {
   type: 'INIT'
   rawData: {
     variants: SoAVariants
@@ -52,7 +61,7 @@ type InitMessage = {
   regionSize?: number
 }
 
-type UpdateAfMessage = {
+type UpdateAfMessage = WorkerGeneration & {
   type: 'UPDATE_AF'
   minAf: number
   isClusteredView: boolean
@@ -62,7 +71,7 @@ type UpdateAfMessage = {
   distanceMetric?: DistanceMetric
 }
 
-type UpdateThresholdMessage = {
+type UpdateThresholdMessage = WorkerGeneration & {
   type: 'UPDATE_THRESHOLD'
   clusterThreshold: number
 }
@@ -71,10 +80,22 @@ type WorkerMessage = InitMessage | UpdateAfMessage | UpdateThresholdMessage
 
 // ---- Handler ----
 
+const generationFields = (msg: WorkerGeneration) => ({
+  ...(msg.requestGeneration === undefined ? {} : { requestGeneration: msg.requestGeneration }),
+  ...(msg.computeGeneration === undefined ? {} : { computeGeneration: msg.computeGeneration }),
+  ...(msg.representationIdentity === undefined
+    ? {}
+    : { representationIdentity: msg.representationIdentity }),
+})
+
+const postProgress = (msg: WorkerGeneration, status: string) => {
+  self.postMessage({ type: 'PROGRESS', status, ...generationFields(msg) })
+}
+
 const handleMessage = (msg: WorkerMessage) => {
   switch (msg.type) {
     case 'INIT': {
-      self.postMessage({ type: 'PROGRESS', status: 'Unpacking variant data…' })
+      postProgress(msg, 'Unpacking variant data…')
       let t0 = Date.now()
       variants = rehydrateVariants(msg.rawData.variants)
       const tRehydrate = Date.now() - t0
@@ -88,7 +109,7 @@ const handleMessage = (msg: WorkerMessage) => {
       currentRegionSize = msg.regionSize
 
       const carrierCount = Object.keys(carrierVariantIndices).length
-      self.postMessage({ type: 'PROGRESS', status: `Grouping ${carrierCount} samples into haplotypes…` })
+      postProgress(msg, `Grouping ${carrierCount} samples into haplotypes…`)
 
       // Clustered views need a stable floor for their base tree; other modes use the
       // requested AF directly, including zero.
@@ -100,7 +121,7 @@ const handleMessage = (msg: WorkerMessage) => {
         autoDefaults?.defaultAf ?? floorAf
       )
 
-      const reportProgress = (status: string) => self.postMessage({ type: 'PROGRESS', status })
+      const reportProgress = (status: string) => postProgress(msg, status)
 
       t0 = Date.now()
       baseData = computeHaplotypeView(
@@ -116,7 +137,7 @@ const handleMessage = (msg: WorkerMessage) => {
       // Apply display filtering if the initial AF is above the clustering floor.
       let result = baseData
       if (isClusteredView && initialAf > floorAf) {
-        self.postMessage({ type: 'PROGRESS', status: `Filtering ${baseData.groups.length} groups…` })
+        postProgress(msg, `Filtering ${baseData.groups.length} groups…`)
         result = filterDisplayVariants(baseData, initialAf)
       }
 
@@ -126,6 +147,7 @@ const handleMessage = (msg: WorkerMessage) => {
         type: 'READY',
         data: result,
         autoDefaults,
+        ...generationFields(msg),
       })
       break
     }
@@ -170,14 +192,14 @@ const handleMessage = (msg: WorkerMessage) => {
         )
       }
 
-      self.postMessage({ type: 'UPDATED', data: result })
+      self.postMessage({ type: 'UPDATED', data: result, ...generationFields(msg) })
       break
     }
 
     case 'UPDATE_THRESHOLD': {
       // Re-cut existing tree with new threshold
       if (!baseData?.tree_json) {
-        self.postMessage({ type: 'UPDATED', data: baseData })
+        self.postMessage({ type: 'UPDATED', data: baseData, ...generationFields(msg) })
         break
       }
 
@@ -189,7 +211,7 @@ const handleMessage = (msg: WorkerMessage) => {
       )
       baseDataThreshold = msg.clusterThreshold
 
-      self.postMessage({ type: 'UPDATED', data: baseData })
+      self.postMessage({ type: 'UPDATED', data: baseData, ...generationFields(msg) })
       break
     }
   }
@@ -202,6 +224,7 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
     self.postMessage({
       type: 'ERROR',
       error: error instanceof Error ? error.message : String(error),
+      ...generationFields(e.data),
     })
   }
 }

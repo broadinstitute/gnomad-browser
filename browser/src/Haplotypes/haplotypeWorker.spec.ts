@@ -58,6 +58,9 @@ describe('haplotype worker VCF carrier identity', () => {
     onmessage({
       data: {
         type: 'INIT',
+        requestGeneration: 7,
+        computeGeneration: 11,
+        representationIdentity: 'diploid-v1',
         rawData: {
           variants,
           carrier_variant_indices: { 'sample-1:2': [0, 1] },
@@ -83,6 +86,11 @@ describe('haplotype worker VCF carrier identity', () => {
     const ready = postMessage.mock.calls
       .map(([message]) => message as any)
       .find((message) => message.type === 'READY')
+    expect(ready).toMatchObject({
+      requestGeneration: 7,
+      computeGeneration: 11,
+      representationIdentity: 'diploid-v1',
+    })
     expect(ready.data.groups[0].samples[0]).toMatchObject({
       sample_id: 'sample-1',
       vcf_strand: 2,
@@ -128,6 +136,9 @@ describe('haplotype worker VCF carrier identity', () => {
     onmessage({
       data: {
         type: 'UPDATE_AF',
+        requestGeneration: 7,
+        computeGeneration: 12,
+        representationIdentity: 'diploid-v2',
         minAf: 1,
         isClusteredView: false,
         clusterThreshold: 0,
@@ -141,6 +152,11 @@ describe('haplotype worker VCF carrier identity', () => {
       .filter((message) => message.type === 'UPDATED')
       .at(-1)
 
+    expect(updated).toMatchObject({
+      requestGeneration: 7,
+      computeGeneration: 12,
+      representationIdentity: 'diploid-v2',
+    })
     expect(updated.data.groups[0].samples[0].phase_set_mapping.phaseSetA).toBeNull()
     expect(updated.data.phase_set_sidecar).toEqual(ready.data.phase_set_sidecar)
 
