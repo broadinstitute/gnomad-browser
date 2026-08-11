@@ -1,0 +1,522 @@
+[
+  {
+    "schemaVersion": 1,
+    "recordId": "paper-40-rfc1",
+    "ref": "40",
+    "slug": "rfc1-repeat-haplotype",
+    "paper": {
+      "title": "Normal and pathogenic variation of RFC1 repeat expansions: implications for clinical diagnosis",
+      "year": "2023",
+      "venue": "Brain",
+      "pmid": "37450567",
+      "doi": "10.1093/brain/awad240",
+      "pdfUrl": "/papers/40.pdf"
+    },
+    "archetypes": ["A1 — Repeat expansions"],
+    "locus": "RFC1 · chr4:39,343,424–39,353,479 (GRCh38)",
+    "persona": {
+      "mode": "Clinical research",
+      "role": "Rare-disease repeat-expansion researcher or laboratory scientist",
+      "context": "Research interpretation after an adult-onset ataxia workup"
+    },
+    "nonDiagnosticBoundary": "This workflow uses a population reference to ask whether a comparable represented state occurs. It does not classify an individual's allele or make a diagnosis.",
+    "startingState": {
+      "trigger": "An externally characterized RFC1 repeat result with motif, approximate size, zygosity, and assay limitations.",
+      "inputs": [
+        "Compatible research phenotype and RFC1 locus",
+        "GRCh38 coordinates, or a documented mapping to GRCh38",
+        "RP-PCR, Southern blot, OGM, or targeted long-read result",
+        "Motif, approximate size, interruptions, second allele, tissue, and uncertainty"
+      ],
+      "question": "Does this release contain comparable size, sequence-configuration, and local-haplotype states with adequate callability?",
+      "stopRule": "If only a positive RP-PCR result is known and allele structure is missing, stop: the population browser cannot reconstruct it."
+    },
+    "workflow": {
+      "before": [
+        "Record assay, tissue, build, motif spelling, total repeat units, interruptions, second allele, and uncertainty.",
+        "Normalize to the browser locus while retaining the original notation; do not turn paper observations into a universal size threshold."
+      ],
+      "inside": [
+        "Open the RFC1 region with HGSVC/HPRC haplotypes and confirm GRCh38/Y1 provenance.",
+        "Inspect all alleles from one source event rather than treating normalized insertions as independent loci.",
+        "Compare length, exact sequence or motif decomposition, interruptions, global and stratum AC/AN, and carrier chromosome copies; treat the paper's 66 kb haplotype as a separate comparison."
+      ],
+      "after": [
+        "Record the matching rule, callable denominator, missingness, release, run, and browser state.",
+        "Hand allele-level evidence to the research team for segregation, orthogonal sizing, phenotype review, and interpretation outside the browser."
+      ]
+    },
+    "branches": [
+      {
+        "condition": "An equivalent represented state is observed",
+        "action": "Report the exact matching rule and AC/AN; this supports population occurrence only.",
+        "stopRule": false
+      },
+      {
+        "condition": "The state is not observed but motif, long-allele, or callability data are incomplete",
+        "action": "Report unanswerable/data-blocked rather than zero.",
+        "stopRule": true
+      },
+      {
+        "condition": "The state is not observed in representation-complete callable data",
+        "action": "Report an upper-bound reference observation, never proof of pathogenicity.",
+        "stopRule": false
+      }
+    ],
+    "story": {
+      "given": "a GRCh38 RFC1 allele characterized externally as an approximately 700-repeat AAAGG-containing expansion with an AAGGG allele on the other chromosome",
+      "when": "the researcher opens the RFC1 event, selects all ALT alleles from that event, inspects full-cohort length plus exact motif/interruption structure, and filters carrying haplotypes",
+      "then": "the browser returns exact or motif-similar reference observations with global and stratum callable AC/AN, release provenance, and an explicit not observed, not callable, or representation mismatch outcome, supporting only whether a comparable state is represented in this reference release"
+    },
+    "browserRegion": { "chrom": "4", "start": 39343424, "stop": 39353479 },
+    "capabilities": [
+      {
+        "step": "Navigate to a bounded GRCh38 locus",
+        "status": "supported-and-usable",
+        "evidence": "The checked region route returned HTTP 200; source limits Haplotype View to 100 kb."
+      },
+      {
+        "step": "See reference allele lengths and carrier haplotypes",
+        "status": "supported-but-awkward",
+        "evidence": "The API returned 487 variants; one event has fragmented normalized alleles and AN values from 2 to 582."
+      },
+      {
+        "step": "Compare complete motif and interruption structures",
+        "status": "data-blocked",
+        "evidence": "Checked event records had empty motif fields; the repeat-count plot is not a sequence-structure distribution."
+      },
+      {
+        "step": "Use denominator and provenance safely",
+        "status": "supported-but-awkward",
+        "evidence": "Global/population AC/AN and accepted provenance exist, but the CSV omits per-population AN and provenance."
+      },
+      {
+        "step": "Reproduce and share the analysis",
+        "status": "underdeveloped",
+        "evidence": "The URL retains region/cohort/haplotype/search state, but not every filter, grouping, threshold, or provenance field."
+      }
+    ],
+    "acceptanceTest": {
+      "fixture": "One source event with a common short AAAGG allele, a long interrupted AAAGG allele, and a no-call chromosome copy.",
+      "actions": "Open the event, inspect sequence decomposition and counts, search the long allele, and export the result.",
+      "expected": "One event with three states; exact decomposition; allele/sample counts; global and stratum AC/AN; no-call count; release/run; identical exported values; and the carrying chromosome copy filtered.",
+      "forbidden": "The result must not label either allele benign or pathogenic."
+    },
+    "evidence": [
+      {
+        "class": "P",
+        "claim": "The paper screened 893 adult-onset ataxia cases and 8,107 non-neurological controls using orthogonal repeat assays and selected targeted long reads.",
+        "citation": "PDF pp. 3–5"
+      },
+      {
+        "class": "P",
+        "claim": "Selected affected AAAGG alleles were at least 600 repeats, while selected controls averaged 238; the paper did not establish a universal cutoff.",
+        "citation": "PDF pp. 5–8, Fig. 2B"
+      },
+      {
+        "class": "I",
+        "claim": "A faithful replay starts with an externally characterized allele and asks about represented reference states rather than searching for affected individuals.",
+        "citation": "Analyst reconstruction; requires workflow review"
+      },
+      {
+        "class": "B",
+        "claim": "The live API returned 487 variants in the checked region and highly variable AN among records at one RFC1 event.",
+        "citation": "Read-only browser/API capability check, 2026-08-11"
+      }
+    ],
+    "capabilityBasis": "Read-only checks of the deployed browser/API and source at commit 7e1675c19 on 2026-08-11. Route success alone does not prove rendered data."
+  },
+  {
+    "schemaVersion": 1,
+    "recordId": "paper-111-notch2nlc",
+    "ref": "111",
+    "slug": "notch2nlc-repeat-methylation",
+    "paper": {
+      "title": "Father-to-offspring transmission of extremely long NOTCH2NLC repeat expansions with contractions: genetic and epigenetic profiling with long-read sequencing",
+      "year": "2021",
+      "venue": "Clinical Epigenetics",
+      "pmid": "34774111",
+      "doi": "10.1186/s13148-021-01192-5",
+      "pdfUrl": "/papers/111.pdf"
+    },
+    "archetypes": ["A2 — Methylation and imprinting", "A1 — Repeat expansions"],
+    "locus": "NOTCH2NLC · chr1:149,385,802–149,395,841 (GRCh38)",
+    "persona": {
+      "mode": "Research",
+      "role": "Neurogenetics or epigenetics researcher",
+      "context": "Researching why repeat length alone does not explain a family result"
+    },
+    "nonDiagnosticBoundary": "A joint repeat/methylation reference observation can prioritize validation and characterize diversity. It cannot establish protection, penetrance, disease risk, or diagnosis.",
+    "startingState": {
+      "trigger": "A targeted long-read result or paper allele with repeat size/structure and an allele-specific methylation hypothesis.",
+      "inputs": [
+        "Total GGC/GGA units and interruption pattern",
+        "Sample and tissue",
+        "Methylation assay/caller and coverage",
+        "Family phase and whether measurements are same-molecule or phase-linked",
+        "Reference build"
+      ],
+      "question": "Does a joint long-repeat and shifted-methylation state occur on one reference chromosome copy, and can that join be reproduced?",
+      "stopRule": "If only sample-total methylation or no confirmed phase link is available, stop before assigning methylation to an allele."
+    },
+    "workflow": {
+      "before": [
+        "Record repeat assay, exact units, tissue, methylation caller, family phase, build, and measurement-linkage semantics."
+      ],
+      "inside": [
+        "Open the NOTCH2NLC region and verify primary, haplotype, and methylation provenance.",
+        "Select the TR event and inspect full allele-length and exact sequence/motif states.",
+        "Use Diploid view and confirmed per-copy methylation to compare copy A and B across chr1:149390115–149391841; A/B is not maternal/paternal.",
+        "Preserve copy-level points, CpG coverage, confidence, missingness, and mapping/orientation receipt."
+      ],
+      "after": [
+        "Export copy rows, CpGs/coverage, repeat state, source identity/orientation receipt, URL settings, and caveats for collaborator review."
+      ]
+    },
+    "branches": [
+      {
+        "condition": "A same-copy joint state is supported",
+        "action": "Report a reference observation that requires orthogonal, locus-specific validation.",
+        "stopRule": false
+      },
+      {
+        "condition": "Only sample-total methylation or no phase linkage is available",
+        "action": "Do not attribute the profile to either allele.",
+        "stopRule": true
+      },
+      {
+        "condition": "No long allele is shown",
+        "action": "Do not claim absence unless caller range and no-call denominator are explicit.",
+        "stopRule": false
+      }
+    ],
+    "story": {
+      "given": "an externally resolved NOTCH2NLC GGC expansion and an allele-specific methylation hypothesis",
+      "when": "the researcher selects the NOTCH2NLC TR event, enters Diploid view, enables confirmed per-copy methylation, and compares repeat structure with CpGs across chr1:149390115–149391841 on copy A and copy B",
+      "then": "the browser either displays a same-copy joint state with coverage and mapping provenance or explicitly reports that the measurements cannot be joined, supporting only prioritization of a reference configuration for follow-up"
+    },
+    "browserRegion": { "chrom": "1", "start": 149385802, "stop": 149395841 },
+    "capabilities": [
+      {
+        "step": "Browse repeat and population length states",
+        "status": "underdeveloped",
+        "evidence": "The API returned 89 TRV alleles, but motif fields were empty and event reconciliation with the paper locus is required."
+      },
+      {
+        "step": "View sample-total methylation",
+        "status": "supported-and-usable",
+        "evidence": "The API returned 146 CpGs in the paper interval; source explicitly labels totals as non-allele-specific."
+      },
+      {
+        "step": "Join methylation to chromosome copies",
+        "status": "underdeveloped",
+        "evidence": "The API reports AVAILABLE_CONFIRMED and source renders A/B with an orientation receipt, but phase_set was null in checked records."
+      },
+      {
+        "step": "Compare exact repeat structure and methylation on one copy",
+        "status": "data-blocked",
+        "evidence": "No tested contract proves that exact TR sequence and CpGs are jointly linked at this locus; motifs were empty."
+      },
+      {
+        "step": "Interpret the state as protection or pathogenicity",
+        "status": "inappropriate/unsafe",
+        "evidence": "The paper includes four ascertained families, blood/LCL context, mosaicism, and no penetrance threshold."
+      },
+      {
+        "step": "Export a reproducible multimodal result",
+        "status": "absent",
+        "evidence": "Current CSV is variant-only and omits CpGs, mapping receipt, tissue/caller provenance, and UI settings."
+      }
+    ],
+    "acceptanceTest": {
+      "fixture": "Two chromosome copies with different GGC lengths and CpG profiles plus one unassigned read set; also a sample-total-only fixture.",
+      "actions": "Enable per-copy methylation, inspect copy mapping, export, swap the orientation receipt, and load the total-only fixture.",
+      "expected": "Each profile appears only under its confirmed copy; unassigned data remains separate; coverage and mapping/phase receipt are exported; a swapped receipt fails closed; total-only data disables same-copy wording.",
+      "forbidden": "The result must not call copy A/B maternal/paternal or infer protection, penetrance, pathogenicity, or diagnosis."
+    },
+    "evidence": [
+      {
+        "class": "P",
+        "claim": "Four ascertained trios were studied; affected-offspring median repeats were 93–162 and paternal medians were approximately 390–650.",
+        "citation": "PDF pp. 1–5, Fig. 1"
+      },
+      {
+        "class": "P",
+        "claim": "Fathers' long alleles showed a roughly 2.2 kb gain-of-methylation, while affected alleles were predominantly unmethylated, with epigenetic mosaicism.",
+        "citation": "PDF pp. 4, 6–7, Fig. 4"
+      },
+      {
+        "class": "I",
+        "claim": "The browser operation must join repeat and methylation states on the same chromosome copy; sample totals cannot answer the question.",
+        "citation": "Analyst reconstruction; requires workflow review"
+      },
+      {
+        "class": "B",
+        "claim": "The checked API exposed summary and joined methylation, AVAILABLE_CONFIRMED capability, a 100 kb limit, and a chromosome-wide orientation receipt.",
+        "citation": "Read-only browser/API capability check, 2026-08-11"
+      }
+    ],
+    "capabilityBasis": "Read-only checks of the deployed browser/API and source at commit 7e1675c19 on 2026-08-11. Joined modality availability does not by itself prove a locus-level same-molecule join."
+  },
+  {
+    "schemaVersion": 1,
+    "recordId": "paper-59-cyp21a2",
+    "ref": "59",
+    "slug": "cyp21a2-rccx-copy-structure",
+    "paper": {
+      "title": "High clinical utility of long-read sequencing for precise diagnosis of congenital adrenal hyperplasia in 322 probands",
+      "year": "2025",
+      "venue": "Human Genomics",
+      "pmid": "39810276",
+      "doi": "10.1186/s40246-024-00696-4",
+      "pdfUrl": "/papers/59.pdf"
+    },
+    "archetypes": ["A3 — Paralogs and pseudogenes"],
+    "locus": "CYP21A2/CYP21A1P (RCCX) · chr6:32,000,000–32,085,000 (GRCh38)",
+    "persona": {
+      "mode": "Clinical research",
+      "role": "Molecular genetics researcher or laboratory scientist",
+      "context": "Research review of discordance among phenotype, locus-specific sequencing, MLPA, and family data"
+    },
+    "nonDiagnosticBoundary": "The browser can ask whether a comparable copy-resolved population structure is represented. It cannot diagnose CAH or assign pathogenicity from population presence.",
+    "startingState": {
+      "trigger": "A copy-number/marker result such as a deletion chimera on one chromosome and duplicated marker-bearing CYP21-related copies on the other.",
+      "inputs": [
+        "MLPA dosage and locus-specific sequence calls",
+        "Pedigree and phase",
+        "Phenotype context for research handoff",
+        "Genome build and assay copy-specificity",
+        "Ordered RCCX modules, copy identities, markers, and uncertainty"
+      ],
+      "question": "Is a comparable ordered, copy-assigned RCCX configuration represented, and can each marker be assigned to functional gene, pseudogene, or chimera?",
+      "stopRule": "A generic DEL/DUP overlap is only a candidate structural call; stop before naming a chimera or duplicated haplotype."
+    },
+    "workflow": {
+      "before": [
+        "Decompose the result by chromosome into ordered RCCX modules, CYP21 copy identity, variants, phase, and uncertainty while retaining original notation."
+      ],
+      "inside": [
+        "Open the 85 kb region, verify genes/build, and remember GRCh38 is one haplotype rather than a universal module order.",
+        "Search exact markers and junction intervals; inspect summary CNVs with global/stratum AC/AN and callability.",
+        "Compare both chromosome copies in Diploid view, requiring copy labels, module order, conversion tract, breakpoint interval, and supporting records."
+      ],
+      "after": [
+        "Export a two-chromosome structural diagram and machine-readable module, junction, marker, denominator, and provenance receipt for review and orthogonal validation."
+      ]
+    },
+    "branches": [
+      {
+        "condition": "Only a generic DEL/DUP overlaps",
+        "action": "Report candidate overlap and do not infer a chimera or module structure.",
+        "stopRule": true
+      },
+      {
+        "condition": "A copy-resolved structure matches",
+        "action": "Report occurrence and callable denominator without transferring the paper's affected-cohort proportion or clinical effect.",
+        "stopRule": false
+      },
+      {
+        "condition": "A marker appears only in a pseudogene or extra copy",
+        "action": "Report its copy context; do not label it a disease allele.",
+        "stopRule": false
+      }
+    ],
+    "story": {
+      "given": "a P54-like research result with aggregate MLPA dosage and two sequence markers",
+      "when": "the researcher opens the RCCX locus, searches the markers and breakpoint interval, and compares both chromosome copies in Diploid view",
+      "then": "the browser distinguishes functional CYP21A2, CYP21A1P, and recombinant or duplicated copies, places each marker and junction with confidence, and reports callable-copy AC/AN, supporting only whether a comparable population structure is represented and whether locus-specific validation is warranted"
+    },
+    "browserRegion": { "chrom": "6", "start": 32000000, "stop": 32085000 },
+    "capabilities": [
+      {
+        "step": "Navigate, search variants, and compare phased carriers",
+        "status": "supported-but-awkward",
+        "evidence": "The API returned 1,686 records; source supports ID/position/REF>ALT search, Diploid view, carriers, and CSV."
+      },
+      {
+        "step": "See candidate large DEL/DUP calls",
+        "status": "supported-but-awkward",
+        "evidence": "Large generic events are visible, but they do not identify an RCCX configuration."
+      },
+      {
+        "step": "Make prevalence or frequency comparisons",
+        "status": "inappropriate/unsafe",
+        "evidence": "Some complex records show AF 0.5 with AN of only 2 or 6; structure-specific callable denominators are absent."
+      },
+      {
+        "step": "Assign modules, copy identity, chimera, and markers",
+        "status": "data-blocked",
+        "evidence": "No first-class module count/order, copy identity, conversion tract, or chimera subtype is present."
+      },
+      {
+        "step": "Reproduce P54 copy-number cancellation logic",
+        "status": "absent",
+        "evidence": "No upload or copy-specific dosage schematic joins opposite-chromosome structures."
+      },
+      {
+        "step": "Export a reviewable structural result",
+        "status": "underdeveloped",
+        "evidence": "Variant CSV omits modules, per-population AN, callability, provenance, and UI settings."
+      }
+    ],
+    "acceptanceTest": {
+      "fixture": "A reference bimodular haplotype, deletion chimera, and P54-like opposite chromosome with duplicated marker-bearing copies.",
+      "actions": "Open both chromosome copies, place markers and junctions, inspect uncertainty and denominators, then export.",
+      "expected": "Module order/copy identity, marker placement, uncertainty intervals, and callable chromosome-copy denominators are shown; generic calls say candidate structural call—chimera not resolved; export recreates the structure.",
+      "forbidden": "The result must not diagnose CAH, infer a chimera from generic overlap, or treat affected-cohort proportions as population frequency."
+    },
+    "evidence": [
+      {
+        "class": "P",
+        "claim": "The paper clinically ascertained 322 probands and 240 relatives and used 7.0–8.5 kb locus-specific PacBio CCS products.",
+        "citation": "PDF pp. 2–4"
+      },
+      {
+        "class": "P",
+        "claim": "P54 showed dosage cancellation between a deletion chimera and duplicated marker-bearing copies on the opposite chromosome.",
+        "citation": "PDF pp. 6–8, Fig. 3A and Table 3"
+      },
+      {
+        "class": "I",
+        "claim": "A population browser needs ordered modules and uncertainty; a generic 30 kb DEL/DUP is not equivalent to P54.",
+        "citation": "Analyst reconstruction; requires workflow review"
+      },
+      {
+        "class": "B",
+        "claim": "The checked API returned 1,686 records and large generic events with sparse, variable AN.",
+        "citation": "Read-only browser/API capability check, 2026-08-11"
+      }
+    ],
+    "capabilityBasis": "Read-only checks of the deployed browser/API and source at commit 7e1675c19 on 2026-08-11. Generic overlap is not evidence of a resolved RCCX architecture."
+  },
+  {
+    "schemaVersion": 1,
+    "recordId": "paper-25-clcnkb",
+    "ref": "25",
+    "slug": "clcnkb-deletion-architecture",
+    "paper": {
+      "title": "Long-read sequencing identifies a common transposition haplotype predisposing for CLCNKB deletions",
+      "year": "2023",
+      "venue": "Genome Medicine",
+      "pmid": "37612755",
+      "doi": "10.1186/s13073-023-01215-1",
+      "pdfUrl": "/papers/25.pdf"
+    },
+    "archetypes": ["A8 — Complex structural variants"],
+    "locus": "CLCNKA/CLCNKB · chr1:16,000,000–16,077,660 (GRCh38 overview; event remap required)",
+    "persona": {
+      "mode": "Clinical research",
+      "role": "Structural-variation researcher or laboratory scientist",
+      "context": "Research follow-up after a whole-gene CLCNKB deletion or apparently hemizygous small variant"
+    },
+    "nonDiagnosticBoundary": "This workflow separates a common reference background from a linked deletion architecture. Population occurrence cannot prove predisposition, benignity, pathogenicity, or diagnosis.",
+    "startingState": {
+      "trigger": "An MLPA/WES CNV or small CLCNKB variant plus paper hg19 junction intervals and family phase.",
+      "inputs": [
+        "Original hg19 paper coordinates",
+        "Classification as background junction, deletion junction, small variant, or hybrid-gene join",
+        "Validated event-aware remap to GRCh38 with sequence context",
+        "Family phase and assay limitations"
+      ],
+      "question": "Is the common transposition background or a comparable linked deletion architecture represented in reference haplotypes?",
+      "stopRule": "If event-aware remapping is ambiguous in paralogous sequence, do not place a precise GRCh38 overlay."
+    },
+    "workflow": {
+      "before": [
+        "Retain hg19 paper coordinates and classify every item as background, deletion, small variant, or hybrid join.",
+        "Obtain a validated event-aware GRCh38 remap with source/target sequence context; stop if ambiguous."
+      ],
+      "inside": [
+        "Open a ≤100 kb overview and inspect CLCNKA/B orientation and homologous blocks.",
+        "Search the common transposition and each linked deletion junction as one architecture; compare exact versus overlap matches, source records, copies, and AC/AN."
+      ],
+      "after": [
+        "Export paper build/coordinates, remap receipt, matching rule, linked junctions, carrier/callable denominators, release provenance, and browser state."
+      ]
+    },
+    "branches": [
+      {
+        "condition": "Only the common transposition is represented",
+        "action": "Report common reference background; do not call a CLCNKB deletion.",
+        "stopRule": false
+      },
+      {
+        "condition": "Only a generic approximately 23 kb DEL/DUP overlaps",
+        "action": "Report candidate overlap; do not assign paper architecture A–H.",
+        "stopRule": true
+      },
+      {
+        "condition": "A linked architecture is resolved",
+        "action": "Report reference occurrence/callability separately from the affected paper cohort; predisposition remains a hypothesis.",
+        "stopRule": false
+      }
+    ],
+    "story": {
+      "given": "an hg19 CLCNKB deletion architecture and a small variant suspected to be in trans",
+      "when": "the researcher supplies a validated GRCh38 remap, searches the common transposition and deletion junctions as linked events, and compares both chromosome copies",
+      "then": "the browser distinguishes common background only, candidate generic CNV, and resolved linked deletion architecture, with callable AC/AN and provenance, supporting only whether comparable reference structures are represented"
+    },
+    "browserRegion": { "chrom": "1", "start": 16000000, "stop": 16077660 },
+    "capabilities": [
+      {
+        "step": "Reach a bounded locus and inspect variants/haplotypes",
+        "status": "supported-but-awkward",
+        "evidence": "The API returned 2,439 records in the overview; the existing paper card's smaller region remains approximate."
+      },
+      {
+        "step": "See candidate large structural calls",
+        "status": "supported-but-awkward",
+        "evidence": "Twenty-six large/duplication candidates were returned, including approximately 22–23 kb generic calls with sparse AN."
+      },
+      {
+        "step": "Distinguish background from A–H architecture",
+        "status": "data-blocked",
+        "evidence": "There is no first-class transposition-background or linked-junction A–H annotation."
+      },
+      {
+        "step": "Map paper events safely across builds",
+        "status": "absent",
+        "evidence": "No event-aware literature remap and sequence-context receipt exists in the browser."
+      },
+      {
+        "step": "Estimate recurrence, founder effect, or predisposition",
+        "status": "inappropriate/unsafe",
+        "evidence": "Reference N and structure callability are insufficient; the paper itself does not establish prospective risk."
+      },
+      {
+        "step": "Export linked evidence",
+        "status": "underdeveloped",
+        "evidence": "Variant CSV cannot preserve linked junctions, remap provenance, callability, or full analysis state."
+      }
+    ],
+    "acceptanceTest": {
+      "fixture": "Common transposition only; paper allele F plus a small variant in trans; and a generic overlapping deletion with unresolved junctions.",
+      "actions": "Try an hg19 overlay without and then with a remap receipt, compare linked events and copies, and export.",
+      "expected": "Three distinct labels; an hg19 overlay without receipt is rejected; exact/overlap matching and global/stratum callable denominators are shown; linked identities export.",
+      "forbidden": "The result must not call any fixture pathogenic, infer A–H from generic overlap, or establish predisposition."
+    },
+    "evidence": [
+      {
+        "class": "P",
+        "claim": "The selected affected cohort contained 33 people from 30 families and 56 deletion alleles grouped into eight architectures A–H.",
+        "citation": "PDF pp. 2–11, Fig. 4"
+      },
+      {
+        "class": "P",
+        "claim": "Most exact paper coordinates are GRCh37/hg19 homologous breakpoint regions and must not be silently plotted as GRCh38.",
+        "citation": "Paper methods/results and supplementary coordinate context"
+      },
+      {
+        "class": "I",
+        "claim": "The workflow must separate common transposition background from whole-gene deletion architecture and compare linked junctions rather than one overlap symbol.",
+        "citation": "Analyst reconstruction; requires workflow review"
+      },
+      {
+        "class": "B",
+        "claim": "The checked API returned 2,439 variants and 26 large/duplication candidates, including generic approximately 22–23 kb records with sparse AN.",
+        "citation": "Read-only browser/API capability check, 2026-08-11"
+      }
+    ],
+    "capabilityBasis": "Read-only checks of the deployed browser/API and source at commit 7e1675c19 on 2026-08-11. The Try in browser link is an overview, not a remapped event overlay."
+  }
+]
