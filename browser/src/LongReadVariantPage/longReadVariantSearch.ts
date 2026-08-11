@@ -14,6 +14,7 @@ export type LongReadVariantSearchRegion = {
 
 export type LongReadVariantSearchTermKind =
   | 'position'
+  | 'position_prefix'
   | 'locus'
   | 'range'
   | 'allele_change'
@@ -23,10 +24,9 @@ export type LongReadVariantSearchTermKind =
   | 'sequence'
   | 'unknown'
 
-export type LongReadVariantSearchTermStatus = 'valid' | 'incomplete' | 'malformed' | 'out_of_region'
+export type LongReadVariantSearchTermStatus = 'valid' | 'malformed' | 'out_of_region'
 
 export type LongReadVariantSearchTermCode =
-  | 'incomplete_coordinate'
   | 'invalid_coordinate'
   | 'invalid_range'
   | 'invalid_allele_change'
@@ -134,16 +134,18 @@ const malformed = (
   message,
 })
 
-const incompletePosition = (raw: string, normalized: string): LongReadVariantSearchTerm => ({
+const positionPrefixTerm = (
+  raw: string,
+  normalized: string
+): LongReadVariantSearchTerm => ({
   raw,
   normalized,
-  kind: 'position',
-  status: 'incomplete',
-  code: 'incomplete_coordinate',
-  message: 'Continue typing a position or variant ID',
+  kind: 'position_prefix',
+  status: 'valid',
+  value: normalized,
 })
 
-const isPlausiblyIncompletePosition = (
+const isPositionPrefix = (
   value: string,
   region: LongReadVariantSearchRegion | undefined
 ) => {
@@ -313,8 +315,8 @@ const parseTerm = (
   }
 
   if (/^\d+$/.test(normalized)) {
-    if (isPlausiblyIncompletePosition(normalized, region)) {
-      return incompletePosition(raw, normalized)
+    if (isPositionPrefix(normalized, region)) {
+      return positionPrefixTerm(raw, normalized)
     }
     return coordinateTerm(raw, normalized, 'position', normalized, normalized, region)
   }
@@ -422,8 +424,7 @@ export const parseLongReadVariantSearch = (
   let status: LongReadVariantSearchResult['status']
   if (terms.length === 0) status = 'empty'
   else if (validTerms.length === terms.length) status = 'ready'
-  else if (validTerms.length > 0 || terms.some((term) => term.status === 'incomplete'))
-    status = 'partial'
+  else if (validTerms.length > 0) status = 'partial'
   else status = 'invalid'
 
   return { input, status, terms, validTerms, issues: [] }
@@ -479,6 +480,13 @@ export const matchesLongReadVariantSearchTerm = (
     case 'position':
     case 'locus':
       return sameChrom && samePosition
+    case 'position_prefix':
+      return (
+        sameChrom &&
+        variant.pos != null &&
+        term.value != null &&
+        String(Math.trunc(variant.pos)).startsWith(term.value)
+      )
     case 'range':
       return (
         sameChrom &&

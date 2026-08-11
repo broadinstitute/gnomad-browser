@@ -78,22 +78,27 @@ describe('long-read variant search', () => {
     expect(matchesLongReadVariantSearch(variants[0], search)).toBe(false)
   })
 
-  test('keeps a bare numeric prefix neutral until it is a plausible full position', () => {
+  test('progressively matches bare numeric position prefixes before exact coordinates', () => {
     const displayedRegion = { chrom: '4', start: 39343000, stop: 39344000 }
+    const loadedVariants = [
+      { variant_id: '4-39343617-A-G', chrom: '4', pos: 39343617 },
+      { variant_id: '4-39343999-C-T', chrom: '4', pos: 39343999 },
+      { variant_id: '4-49343617-G-A', chrom: '4', pos: 49343617 },
+    ]
 
-    const partial = parseLongReadVariantSearch('393', displayedRegion)
-    expect(partial).toMatchObject({
-      status: 'partial',
-      validTerms: [],
-      terms: [
-        {
-          status: 'incomplete',
-          code: 'incomplete_coordinate',
-          message: 'Continue typing a position or variant ID',
-        },
-      ],
+    const prefix = parseLongReadVariantSearch('393', displayedRegion)
+    expect(prefix).toMatchObject({
+      status: 'ready',
+      terms: [{ status: 'valid', kind: 'position_prefix', value: '393' }],
     })
-    expect(partial.terms[0]).not.toHaveProperty('start')
+    expect(filterLongReadVariantsBySearch(loadedVariants, prefix)).toEqual(
+      loadedVariants.slice(0, 2)
+    )
+
+    const narrowerPrefix = parseLongReadVariantSearch('3934361', displayedRegion)
+    expect(filterLongReadVariantsBySearch(loadedVariants, narrowerPrefix)).toEqual([
+      loadedVariants[0],
+    ])
 
     expect(parseLongReadVariantSearch('39343617', displayedRegion)).toMatchObject({
       status: 'ready',
