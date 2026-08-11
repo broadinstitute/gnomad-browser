@@ -1,6 +1,22 @@
 import { test, expect, type Page } from '@playwright/test'
 
-import { collectApiMetrics, reportApiMetrics, type ApiMetric } from './helpers/lrMetrics'
+import {
+  collectApiMetrics,
+  collectLrRequestCounts,
+  reportApiMetrics,
+  type ApiMetric,
+} from './helpers/lrMetrics'
+import {
+  captureLrGeometry,
+  documentToken,
+  expectControlWithinViewport,
+  expectNoHorizontalOverflow,
+  expectStableGeometry,
+  installWorkerReadyGate,
+  waitForHeldWorkerMessage,
+  workerGateHold,
+  workerGateRelease,
+} from './helpers/lrTransitionContracts'
 
 const LR_DATASET = 'gnomad_r4_lr'
 // AMY2A locus, 50 kb. Small, dense with SNVs/indels, no haplotype build needed.
@@ -70,6 +86,208 @@ test.describe('Long Read region page — Summary View', () => {
     const lrQuery = metrics.find((m) => m.operationName === 'LongReadVariantsInRegion')
     expect(lrQuery, 'LongReadVariantsInRegion query should have fired').toBeTruthy()
     expect(lrQuery?.status).toBe(200)
+  })
+})
+
+// Complete empty Struct-of-Arrays payload: valid RawPayload input for both the
+// REST parser and the real haplotype worker, while keeping computation deterministic.
+const HAPLOTYPE_RESPONSE = {
+  variants: {
+    variant_id: [],
+    chrom: [],
+    pos: [],
+    end: [],
+    ref: [],
+    alt: [],
+    allele_type: [],
+    allele_length: [],
+    freq_af: [],
+    freq_ac: [],
+    freq_an: [],
+    rsid: [],
+    cadd_phred: [],
+    phylop: [],
+    sv_consequences: [],
+    dbsnp_id: [],
+    tr_id: [],
+    tr_motifs: [],
+    gnomad_str: [],
+    allele_methylation: [],
+    motif_counts: [],
+    allele_purity: [],
+    short_read_match_id: [],
+    populations: [],
+  },
+  carrier_variant_indices: {},
+  carriers: [],
+  auto_defaults: {
+    floor: 0,
+    ceiling: 1,
+    defaultAf: 0,
+    defaultClusterThreshold: 0,
+    isClusteredView: false,
+  },
+}
+
+const transitionViewports = [
+  { name: 'desktop', width: 1440, height: 900 },
+  { name: 'mobile', width: 390, height: 844 },
+]
+
+transitionViewports.forEach((viewport) => {
+  test(`LR view transitions preserve geometry and requests on ${viewport.name}`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport)
+    await installWorkerReadyGate(page)
+
+    let releaseHaplotypeResponse!: () => void
+    const haplotypeResponseGate = new Promise<void>((resolve) => {
+      releaseHaplotypeResponse = resolve
+    })
+    await page.route('**/api/lr/haplotype-groups?**', async (route) => {
+      await haplotypeResponseGate
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(HAPLOTYPE_RESPONSE),
+      })
+    })
+
+    const requests = collectLrRequestCounts(page)
+    await page.goto(`/region/${SUMMARY_REGION}?dataset=${LR_DATASET}`)
+    await expect(page.locator('#lr-view-mode')).toBeVisible({ timeout: 20_000 })
+    await expect(page.getByText(/Showing .* variants/)).toBeVisible({ timeout: 30_000 })
+
+    // Summary has no haplotype viewport, but its persistent top-bar controls are
+    // the coordinate baseline for every phase after opting into Haplotype View.
+    const viewShell = page.getByTestId('lr-haplotype-viewport-shell')
+    const viewportStatus = page.getByTestId('lr-haplotype-viewport-status')
+    await expect(viewShell).toHaveCount(0)
+    const summaryGeometry = await captureLrGeometry(page)
+    await expectNoHorizontalOverflow(page)
+    const initialDocumentToken = await documentToken(page)
+    const initialNavigationCount = await page.evaluate(
+      () => performance.getEntriesByType('navigation').length
+    )
+    expect(requests.graphQL.LongReadVariantsInRegion).toBe(1)
+    expect(requests.haplotypeRest).toBe(0)
+
+    const haplotypeRadio = page.getByRole('radio', { name: 'Haplotype View' })
+    await haplotypeRadio.focus()
+    await haplotypeRadio.press('Space')
+    await expect(haplotypeRadio).toBeChecked()
+    await expect(haplotypeRadio).toBeFocused()
+    await expect.poll(() => requests.haplotypeRest).toBe(1)
+    expect(new URL(page.url()).searchParams.get('show_haplotypes')).toBe('true')
+    expect(await documentToken(page)).toBe(initialDocumentToken)
+    expect(await page.evaluate(() => performance.getEntriesByType('navigation').length)).toBe(
+      initialNavigationCount
+    )
+
+    await expect(viewShell).toBeVisible()
+    await expect(viewportStatus).toHaveText('Fetching variant data…')
+    await expect(viewShell).toHaveAttribute('aria-busy', 'true')
+    const restPendingGeometry = await captureLrGeometry(page, viewShell, true)
+    expectStableGeometry(summaryGeometry, restPendingGeometry, 'Summary → REST pending', [
+      'viewModeY',
+      'searchY',
+    ])
+    await expectNoHorizontalOverflow(page)
+
+    releaseHaplotypeResponse()
+    await waitForHeldWorkerMessage(page, 'READY')
+    await expect(viewportStatus).toHaveText(/Grouping 0 (?:variants|samples) into haplotypes…/)
+    await expect(haplotypeRadio).toBeFocused()
+    const workerPendingGeometry = await captureLrGeometry(page, viewShell, true)
+    expectStableGeometry(summaryGeometry, workerPendingGeometry, 'Summary → worker pending', [
+      'viewModeY',
+      'searchY',
+    ])
+    expectStableGeometry(
+      restPendingGeometry,
+      workerPendingGeometry,
+      'REST pending → worker pending',
+      ['groupingY']
+    )
+    await expectNoHorizontalOverflow(page)
+
+    await workerGateRelease(page)
+    await expect(page.locator('#lr-variant-table-container').first()).toHaveCSS('opacity', '1')
+    await expect(viewportStatus).toHaveText('There is no haplotype data for this region.')
+    await expect(viewShell).toHaveAttribute('aria-busy', 'false')
+    await expect(haplotypeRadio).toBeFocused()
+    const haplotypeReadyGeometry = await captureLrGeometry(page, viewShell, true)
+    expectStableGeometry(summaryGeometry, haplotypeReadyGeometry, 'Summary → Haplotype ready', [
+      'viewModeY',
+      'searchY',
+    ])
+    expectStableGeometry(restPendingGeometry, haplotypeReadyGeometry, 'Haplotype pending → ready', [
+      'groupingY',
+    ])
+    await expectNoHorizontalOverflow(page)
+
+    await page.waitForLoadState('networkidle').catch(() => {})
+    expect(requests.haplotypeRest).toBe(1)
+    expect(requests.graphQL.LongReadVariantsInRegion).toBe(1)
+    expect(requests.graphQL.RegionSampleMetadata).toBe(1)
+    const requestsBeforeGrouping = JSON.stringify(requests)
+
+    const transitionGrouping = async (
+      label: 'Diploid' | 'Similarity Clusters',
+      referenceGeometry: Awaited<ReturnType<typeof captureLrGeometry>>
+    ) => {
+      await workerGateHold(page)
+      const radio = page.getByRole('radio', { name: label })
+      await radio.focus()
+      await radio.press('Space')
+      await expect(radio).toBeChecked()
+      await expect(radio).toBeFocused()
+      await waitForHeldWorkerMessage(page, 'UPDATED')
+
+      const pendingGeometry = await captureLrGeometry(page, viewShell, true)
+      expectStableGeometry(referenceGeometry, pendingGeometry, `${label} worker pending`, [
+        'shellHeight',
+        'viewModeY',
+        'searchY',
+        'groupingY',
+      ])
+      await expectNoHorizontalOverflow(page)
+      await workerGateRelease(page)
+      await expect(page.locator('#lr-variant-table-container').first()).toHaveCSS('opacity', '1')
+      await expect(radio).toBeFocused()
+
+      const readyGeometry = await captureLrGeometry(page, viewShell, true)
+      expectStableGeometry(referenceGeometry, readyGeometry, `${label} ready`, [
+        'shellHeight',
+        'viewModeY',
+        'searchY',
+        'groupingY',
+      ])
+      await expectNoHorizontalOverflow(page)
+      return readyGeometry
+    }
+
+    const similarityGeometry = await transitionGrouping(
+      'Similarity Clusters',
+      haplotypeReadyGeometry
+    )
+    await transitionGrouping('Diploid', similarityGeometry)
+    expect(JSON.stringify(requests)).toBe(requestsBeforeGrouping)
+    expect(await documentToken(page)).toBe(initialDocumentToken)
+    expect(await page.evaluate(() => performance.getEntriesByType('navigation').length)).toBe(
+      initialNavigationCount
+    )
+
+    await expectNoHorizontalOverflow(page)
+    await expectControlWithinViewport(page, viewShell, 'long-read view shell')
+    await expectControlWithinViewport(page, page.locator('#lr-view-mode'), 'view mode control')
+    await expectControlWithinViewport(page, page.locator('#grouping-mode'), 'grouping control')
+    await expectControlWithinViewport(
+      page,
+      page.getByRole('textbox', { name: 'Filter long-read variants' }),
+      'variant search'
+    )
   })
 })
 

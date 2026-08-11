@@ -23,6 +23,41 @@ export type ApiMetric = {
   dbMs?: number
 }
 
+export type LrRequestCounts = {
+  haplotypeRest: number
+  graphQL: Record<string, number>
+}
+
+const graphQLOperationName = (body: { query?: string; operationName?: string }) =>
+  body.operationName || body.query?.match(/\b(?:query|mutation)\s+(\w+)/)?.[1] || 'anonymous'
+
+/** Collect exact LR REST and named GraphQL request counts from a page. */
+export function collectLrRequestCounts(page: Page): LrRequestCounts {
+  const counts: LrRequestCounts = { haplotypeRest: 0, graphQL: {} }
+
+  page.on('request', (request: Request) => {
+    const url = new URL(request.url())
+    if (url.pathname === '/api/lr/haplotype-groups') {
+      counts.haplotypeRest += 1
+      return
+    }
+    if (request.method() !== 'POST') return
+
+    let body: { query?: string; operationName?: string }
+    try {
+      body = request.postDataJSON()
+    } catch {
+      return
+    }
+    if (typeof body?.query !== 'string') return
+
+    const operationName = graphQLOperationName(body)
+    counts.graphQL[operationName] = (counts.graphQL[operationName] || 0) + 1
+  })
+
+  return counts
+}
+
 const parseServerTiming = (header: string | undefined, name: string): number | undefined => {
   if (!header) return undefined
   // e.g. 'db;dur=42.1;desc="Elasticsearch", total;dur=98.7'
@@ -74,7 +109,7 @@ export function collectApiMetrics(page: Page): ApiMetric[] {
     const dbMs = parseServerTiming(headers['server-timing'], 'db')
 
     metrics.push({
-      operationName: body.operationName ?? 'anonymous',
+      operationName: graphQLOperationName(body),
       status,
       startedAtMs: timing.startTime,
       startOffsetMs: 0, // normalized in reportApiMetrics
