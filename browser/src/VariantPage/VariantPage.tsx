@@ -48,6 +48,8 @@ import {
   FullLocalAncestryPopulationId,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
+import { AnchoredSectionHeading } from '../AnchorLink'
+import useScrollToHash from '../useScrollToHash'
 
 const Section = styled.section`
   width: 100%;
@@ -333,6 +335,8 @@ type VariantPageContentProps = {
 }
 
 export const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
+  useScrollToHash()
+
   return (
     <FlexWrapper>
       <ResponsiveSection>
@@ -429,9 +433,9 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         <ResponsiveSection>
           {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
             <React.Fragment>
-              <h2>
+              <AnchoredSectionHeading id="age-distribution">
                 Age Distribution <InfoButton topic="age" />
-              </h2>
+              </AnchoredSectionHeading>
               {isV3Subset(datasetId) && (
                 <p>
                   Age distribution is based on the full gnomAD dataset, not the selected subset.
