@@ -18,6 +18,9 @@ import HaplotypeTrack, {
   MethylationSummaryPoint,
   LRVariant,
   Legend,
+  normalizeSelectableGroupingMode,
+  type HaplotypeGroupingMode,
+  type SelectableHaplotypeGroupingMode,
 } from '../Haplotypes'
 import type { MethylationSampleAvailability } from '../Haplotypes/MethylationHelp'
 import {
@@ -412,7 +415,8 @@ const LongReadUnifiedView = ({
 
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('sample_id')
-  const [groupingMode, setGroupingMode] = useState<'similarity' | 'exact' | 'diploid'>('diploid')
+  const [groupingModeState, setGroupingMode] = useState<HaplotypeGroupingMode>('diploid')
+  const groupingMode = normalizeSelectableGroupingMode(groupingModeState)
   const [distanceMetric, setDistanceMetric] = useState<
     import('../Haplotypes/haplotypeCompute').DistanceMetric
   >(regionSize < 50_000 ? 'all' : 'sv_only')
@@ -708,7 +712,7 @@ const LongReadUnifiedView = ({
     handleClusterThresholdChange(value)
   }, [handleClusterThresholdChange])
 
-  const handleGroupingModeChange = useCallback((mode: 'similarity' | 'exact' | 'diploid') => {
+  const handleGroupingModeChange = useCallback((mode: SelectableHaplotypeGroupingMode) => {
     setGroupingMode(mode)
     if (mode === 'diploid' && !['sample_id', 'roh_fraction', 'compound_het'].includes(sortBy)) {
       setSortBy('sample_id')

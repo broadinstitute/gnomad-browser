@@ -32,6 +32,15 @@ import {
 
 export { COLOR_MODES }
 
+export type HaplotypeGroupingMode = 'similarity' | 'exact' | 'diploid'
+export type SelectableHaplotypeGroupingMode = Exclude<HaplotypeGroupingMode, 'exact'>
+
+// Exact grouping remains available to the computation layer for compatibility, but it is
+// no longer user-selectable. Map legacy or invalid UI state to the closest supported mode.
+export const normalizeSelectableGroupingMode = (
+  mode: HaplotypeGroupingMode | string | null | undefined
+): SelectableHaplotypeGroupingMode => (mode === 'diploid' ? 'diploid' : 'similarity')
+
 const Wrapper = styled.div`
   display: flex;
   margin-bottom: 1em;
@@ -188,8 +197,8 @@ export const Legend = ({
   colorModes = COLOR_MODES,
   showGenealogy = false,
   onShowGenealogyChange = () => { },
-  groupingMode = 'similarity' as 'similarity' | 'exact' | 'diploid',
-  onGroupingModeChange = (() => { }) as (mode: 'similarity' | 'exact' | 'diploid') => void,
+  groupingMode = 'similarity' as HaplotypeGroupingMode,
+  onGroupingModeChange = (() => { }) as (mode: SelectableHaplotypeGroupingMode) => void,
   clusterThreshold = 0,
   onClusterThresholdChange = () => { },
   clusterCount = 0,
@@ -240,8 +249,8 @@ export const Legend = ({
   colorModes?: { value: string; label: string }[]
   showGenealogy?: boolean
   onShowGenealogyChange?: (show: boolean) => void
-  groupingMode?: 'similarity' | 'exact' | 'diploid'
-  onGroupingModeChange?: (mode: 'similarity' | 'exact' | 'diploid') => void
+  groupingMode?: HaplotypeGroupingMode
+  onGroupingModeChange?: (mode: SelectableHaplotypeGroupingMode) => void
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
   clusterCount?: number
@@ -257,8 +266,9 @@ export const Legend = ({
   recombinationAvailable?: boolean
   recombinationLabel?: string
 }) => {
-  const isDiploidView = groupingMode === 'diploid'
-  const isClusteredView = groupingMode === 'similarity'
+  const selectableGroupingMode = normalizeSelectableGroupingMode(groupingMode)
+  const isDiploidView = selectableGroupingMode === 'diploid'
+  const isClusteredView = selectableGroupingMode === 'similarity'
   const perCopyMethylationReason = joinedMethylationUnavailableReason
     ?? joinedMethylationCapability?.reason
     ?? 'Per-copy methylation capability is loading'
@@ -329,17 +339,16 @@ export const Legend = ({
             {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}
           </span>
           <HaplotypeHelpButton title="Minimum Allele Frequency">
-            <MinAfHelp groupingMode={groupingMode} />
+            <MinAfHelp groupingMode={selectableGroupingMode} />
           </HaplotypeHelpButton>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           <label style={{ fontSize: '12px' }}>Grouping:</label>
           <Select
-            value={groupingMode}
-            onChange={(e: any) => onGroupingModeChange(e.target.value)}
+            value={selectableGroupingMode}
+            onChange={(e: any) => onGroupingModeChange(normalizeSelectableGroupingMode(e.target.value))}
           >
             <option value="similarity">Similarity Clusters</option>
-            <option value="exact">Exact Match</option>
             <option value="diploid">Diploid</option>
           </Select>
           <HaplotypeHelpButton title="Grouping Mode">
@@ -1236,12 +1245,6 @@ export const GroupingModeHelp = () => (
         finer-grained clusters. The Min AF slider only controls which variant dots are displayed
         &mdash; the tree and clusters remain stable. This is the recommended mode for exploring
         population-level haplotype structure.
-      </dd>
-      <dt style={{ fontWeight: 600, marginTop: 4 }}>Exact Match</dt>
-      <dd style={{ marginLeft: 0, marginBottom: 8 }}>
-        Strict identity-by-descent matching: haplotypes must share the exact same set of
-        variants above the Min AF threshold. The Min AF slider directly changes group
-        membership — raising it merges groups.
       </dd>
       <dt style={{ fontWeight: 600, marginTop: 4 }}>Diploid</dt>
       <dd style={{ marginLeft: 0, marginBottom: 8 }}>

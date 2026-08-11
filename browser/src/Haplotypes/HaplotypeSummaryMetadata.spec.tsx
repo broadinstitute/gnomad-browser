@@ -98,13 +98,34 @@ describe('haplotype summary metadata', () => {
       expect(text).toContain('difference at or above Min AF creates a separate group')
       expect(text).toContain('Unphased variants are excluded')
     }
+    expect(groupingText).not.toContain('Exact Match')
+  })
+
+  test('offers only supported grouping modes and normalizes legacy exact state', () => {
+    const onGroupingModeChange = jest.fn()
+    const component = renderer.create(
+      <Legend groupingMode="exact" onGroupingModeChange={onGroupingModeChange} />
+    )
+    const select = component.root.findAllByType('select').find(
+      (control) => control.props.value === 'similarity'
+    )!
+    const options = select.findAllByType('option')
+
+    expect(options.map((option) => [option.props.value, renderedText(option)])).toEqual([
+      ['similarity', 'Similarity Clusters'],
+      ['diploid', 'Diploid'],
+    ])
+    expect(select.props.value).toBe('similarity')
+    expect(renderedText(component.toJSON())).not.toContain('Exact Match')
+
+    act(() => select.props.onChange({ target: { value: 'exact' } }))
+    expect(onGroupingModeChange).toHaveBeenCalledWith('similarity')
   })
 
   test('shows controls only in applicable grouping modes', () => {
     const diploid = renderer.create(
       <Legend groupingMode="diploid" initialSortBy="sample_id" />
     )
-    const exact = renderer.create(<Legend groupingMode="exact" />)
     const similarity = renderer.create(<Legend groupingMode="similarity" />)
     const clusteringPanel = (component: ReactTestRenderer) => component.root.find(
       (node) => node.type === 'fieldset' && renderedText(node).includes('Clustering')
@@ -116,13 +137,10 @@ describe('haplotype summary metadata', () => {
     const similarityText = renderedText(similarity.toJSON())
 
     expect(clusteringPanel(diploid).props.hidden).toBe(true)
-    expect(clusteringPanel(exact).props.hidden).toBe(true)
     expect(clusteringPanel(similarity).props.hidden).toBe(false)
     expect(labeledControl(diploid, 'Min AF:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
-    expect(labeledControl(exact, 'Min AF:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
     expect(labeledControl(similarity, 'Min AF:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
     expect(labeledControl(diploid, 'Sort:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
-    expect(labeledControl(exact, 'Sort:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
     expect(labeledControl(similarity, 'Sort:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
     expect(similarityText).toContain('Resolution:')
     expect(similarityText).toContain('Cluster by:')
