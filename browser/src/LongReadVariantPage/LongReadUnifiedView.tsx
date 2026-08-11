@@ -498,7 +498,6 @@ const LongReadUnifiedView = ({
   const [loadAllJoinedMethylationScope, setLoadAllJoinedMethylationScope] = useState<string | null>(
     null
   )
-  const perCopyMethylationUserChoiceRef = useRef(false)
   const joinedMethylationScope = joinedMethylationRequestScope({
     cohort: lrCohort,
     chrom,
@@ -529,7 +528,6 @@ const LongReadUnifiedView = ({
     ? joinedMethylationViewState.sampleStates
     : new Map<string, PerCopyMethylationSampleState>()
   const handleShowPerCopyMethylationChange = useCallback((show: boolean) => {
-    perCopyMethylationUserChoiceRef.current = true
     setShowPerCopyMethylation(show)
   }, [])
   const availableMethylationIds = useMemo(
@@ -1149,12 +1147,6 @@ const LongReadUnifiedView = ({
       cancelled = true
     }
   }, [chrom, lrCohort, joinedMethylationCapabilityScope])
-
-  useEffect(() => {
-    if (joinedMethylationUsableForRegion && !perCopyMethylationUserChoiceRef.current) {
-      setShowPerCopyMethylation(true)
-    }
-  }, [joinedMethylationUsableForRegion])
 
   const handleVisibleDiploidSampleIdsChange = useCallback(
     (sampleIds: string[]) => {

@@ -863,7 +863,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
   })
 
-  test('defaults confirmed joined methylation on and progressively fetches only visible row samples', async () => {
+  test('defaults confirmed joined methylation off and fetches visible rows only after opt-in', async () => {
     const identity = {
       source_run_id: 'source-run',
       source_completion_receipt_sha256: 'source-receipt',
@@ -883,6 +883,11 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     )
 
     const control = await screen.findByLabelText('Per-copy methylation')
+    await waitFor(() => expect((control as HTMLInputElement).disabled).toBe(false))
+    expect((control as HTMLInputElement).checked).toBe(false)
+    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
+
+    fireEvent.click(control)
     await waitFor(() => expect((control as HTMLInputElement).checked).toBe(true))
     await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
     const request = requestsNamed('RegionJoinedPhasedMethylation')[0]
