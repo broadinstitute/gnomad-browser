@@ -305,10 +305,15 @@ transitionViewports.forEach((viewport) => {
 
     // Same scope keeps exactly one raw payload and its current computed
     // representation resident across Summary → Haplotype re-entry.
-    await page.getByRole('radio', { name: 'Summary View' }).click()
-    await expect(page.getByRole('radio', { name: 'Summary View' })).toBeChecked()
-    await page.getByRole('radio', { name: 'Haplotype View' }).click()
-    await expect(page.getByRole('radio', { name: 'Haplotype View' })).toBeChecked()
+    const summaryRadio = page.getByRole('radio', { name: 'Summary View' })
+    await summaryRadio.focus()
+    await summaryRadio.press('Space')
+    await expect(summaryRadio).toBeChecked()
+    await expect(summaryRadio).toBeFocused()
+    await haplotypeRadio.focus()
+    await haplotypeRadio.press('Space')
+    await expect(haplotypeRadio).toBeChecked()
+    await expect(haplotypeRadio).toBeFocused()
     await expect(page.locator('#lr-variant-table-container').first()).toHaveCSS('opacity', '1')
     expect(requests.haplotypeRest).toBe(1)
     expect(await workerMessageCount(page, 'INIT')).toBe(1)
