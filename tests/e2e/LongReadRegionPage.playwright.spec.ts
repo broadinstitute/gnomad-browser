@@ -134,6 +134,32 @@ const transitionViewports = [
   { name: 'mobile', width: 390, height: 844 },
 ]
 
+const captureSlotGeometry = async (page: Page, testIds: string[]) =>
+  Object.fromEntries(
+    await Promise.all(
+      testIds.map(async (testId) => {
+        const box = await page.getByTestId(testId).boundingBox()
+        expect(box, `${testId} should retain a layout box`).not.toBeNull()
+        return [testId, box!]
+      })
+    )
+  )
+
+const expectExactSlotGeometry = (
+  before: Record<string, { x: number; y: number; width: number; height: number }>,
+  after: Record<string, { x: number; y: number; width: number; height: number }>,
+  label: string
+) => {
+  Object.keys(before).forEach((slot) => {
+    ;(['x', 'y', 'width', 'height'] as const).forEach((dimension) => {
+      expect(
+        Math.abs(after[slot][dimension] - before[slot][dimension]),
+        `${label}: ${slot} ${dimension} changed from ${before[slot][dimension]} to ${after[slot][dimension]}`
+      ).toBeLessThanOrEqual(2)
+    })
+  })
+}
+
 transitionViewports.forEach((viewport) => {
   test(`LR view transitions preserve geometry and requests on ${viewport.name}`, async ({
     page,
@@ -288,6 +314,157 @@ transitionViewports.forEach((viewport) => {
       page.getByRole('textbox', { name: 'Filter long-read variants' }),
       'variant search'
     )
+  })
+
+  test(`cohort and dataset revalidation retain slots and exact request identity on ${viewport.name}`, async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(90_000)
+    await page.setViewportSize(viewport)
+    await installWorkerReadyGate(page)
+
+    let heldOperations = new Set<string>()
+    let releaseRequests = () => {}
+    const hold = (operations: string[]) => {
+      heldOperations = new Set(operations)
+      let release!: () => void
+      const gate = new Promise<void>((resolve) => {
+        release = resolve
+      })
+      releaseRequests = () => {
+        heldOperations.clear()
+        release()
+      }
+      return gate
+    }
+    let requestGate = Promise.resolve()
+
+    await page.route('**/api/', async (route) => {
+      let body: any
+      try {
+        body = route.request().postDataJSON()
+      } catch {
+        await route.continue()
+        return
+      }
+      const operationName =
+        body?.operationName || body?.query?.match(/\b(?:query|mutation)\s+(\w+)/)?.[1]
+      if (operationName && heldOperations.has(operationName)) await requestGate
+      await route.continue()
+    })
+
+    const requests = collectLrRequestCounts(page)
+    await page.goto(
+      `/region/${SUMMARY_REGION}?dataset=${LR_DATASET}&lr_cohort=hgsvc_hprc&variant_id=1-103610000-A-T&show_tree=true&methylation_sample=stale`
+    )
+    await expect(page.getByText(/Showing .* variants/)).toBeVisible({ timeout: 30_000 })
+    await expect(page.getByTestId('lr-coverage-slot')).toHaveAttribute('aria-busy', 'false', {
+      timeout: 20_000,
+    })
+
+    const documentId = await documentToken(page)
+    const navigationCount = await page.evaluate(
+      () => performance.getEntriesByType('navigation').length
+    )
+    const lrSlots = ['lr-control-slot', 'lr-plot-slot', 'lr-table-slot', 'lr-coverage-slot']
+    const beforeCohort = await captureSlotGeometry(page, lrSlots)
+    expect(requests.graphQL.Region).toBe(1)
+    expect(requests.graphQL.LongReadVariantsInRegion).toBe(1)
+    expect(requests.graphQL.LRCoverage).toBe(1)
+
+    requestGate = hold(['LongReadVariantsInRegion', 'LRCoverage'])
+    const cohortGroup = page.getByRole('group', { name: 'Long-read cohort:' })
+    const aou = cohortGroup.getByRole('radio', { name: 'All of Us' })
+    await aou.focus()
+    await aou.press('Space')
+
+    const cohortStatus = page
+      .getByRole('status')
+      .filter({ hasText: 'Updating long-read variants for All of Us…' })
+    await expect(cohortStatus).toBeVisible()
+    await expect(cohortStatus).toBeFocused()
+    await expect(page.getByTestId('lr-request-shell')).toHaveAttribute('aria-busy', 'true')
+    await expect(page.getByTestId('lr-coverage-slot')).toHaveAttribute('aria-busy', 'true')
+    await expect(page.getByRole('group', { name: 'Long-read cohort:' })).toHaveCount(0)
+    expect(new URL(page.url()).searchParams.get('lr_cohort')).toBe('aou')
+    expect(new URL(page.url()).searchParams.get('show_haplotypes')).toBeNull()
+    const pendingCohort = await captureSlotGeometry(page, lrSlots)
+    expectExactSlotGeometry(beforeCohort, pendingCohort, 'cohort pending')
+    expect(requests.graphQL.LongReadVariantsInRegion).toBe(2)
+    expect(requests.graphQL.LRCoverage).toBe(2)
+
+    releaseRequests()
+    await expect(page.getByTestId('lr-request-shell')).toHaveAttribute('aria-busy', 'false', {
+      timeout: 30_000,
+    })
+    await expect(page.getByTestId('lr-coverage-slot')).toHaveAttribute('aria-busy', 'false', {
+      timeout: 30_000,
+    })
+    await expect(cohortGroup.getByRole('radio', { name: 'All of Us' })).toBeFocused()
+    expect(requests.graphQL.LongReadVariantsInRegion).toBe(2)
+    expect(requests.graphQL.LRCoverage).toBe(2)
+
+    const beforeDataset = await captureSlotGeometry(page, [
+      'region-request-shell',
+      ...lrSlots,
+    ])
+    requestGate = hold(['Region'])
+    const shortReadLink = page
+      .locator('a[href*="dataset=gnomad_r4&"], a[href$="dataset=gnomad_r4"]')
+      .first()
+    await shortReadLink.evaluate((link: HTMLAnchorElement) => link.click())
+
+    const datasetStatus = page
+      .getByRole('status')
+      .filter({ hasText: 'Updating region for gnomAD v4.1.1…' })
+    await expect(datasetStatus).toBeVisible()
+    await expect(datasetStatus).toBeFocused()
+    await expect(page.getByTestId('region-request-shell')).toHaveAttribute('aria-busy', 'true')
+    await expect(page.getByRole('group', { name: 'Long-read cohort:' })).toHaveCount(0)
+    const pendingDataset = await captureSlotGeometry(page, [
+      'region-request-shell',
+      ...lrSlots,
+    ])
+    expectExactSlotGeometry(beforeDataset, pendingDataset, 'dataset pending')
+    expect(requests.graphQL.Region).toBe(2)
+    expect(requests.graphQL.VariantInRegion || 0).toBe(0)
+    expect(requests.graphQL.RegionCoverage || 0).toBe(0)
+
+    const datasetParams = new URL(page.url()).searchParams
+    expect(Object.fromEntries(datasetParams.entries())).toEqual({
+      dataset: 'gnomad_r4',
+      variant_id: '1-103610000-A-T',
+    })
+
+    releaseRequests()
+    await expect(page.getByTestId('region-request-shell')).toHaveAttribute('aria-busy', 'false', {
+      timeout: 30_000,
+    })
+    await expect.poll(() => requests.graphQL.VariantInRegion || 0).toBe(1)
+    await expect.poll(() => requests.graphQL.RegionCoverage || 0).toBe(1)
+    expect(requests.graphQL.Region).toBe(2)
+    expect(await documentToken(page)).toBe(documentId)
+    expect(await page.evaluate(() => performance.getEntriesByType('navigation').length)).toBe(
+      navigationCount
+    )
+
+    await testInfo.attach(`lr-revalidation-${viewport.name}.json`, {
+      body: JSON.stringify(
+        {
+          viewport,
+          geometry: {
+            beforeCohort,
+            pendingCohort,
+            beforeDataset,
+            pendingDataset,
+          },
+          requests,
+        },
+        null,
+        2
+      ),
+      contentType: 'application/json',
+    })
   })
 })
 

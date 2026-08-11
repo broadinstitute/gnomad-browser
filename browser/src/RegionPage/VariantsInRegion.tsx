@@ -6,6 +6,7 @@ import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
 import Query from '../Query'
+import RequestRevalidationFrame from '../RequestRevalidationFrame'
 import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import mergeLongReadVariants from '../VariantList/mergeLongReadVariants'
@@ -328,32 +329,45 @@ const ConnectedVariantsInRegion = ({
         }}
         loadingMessage="Loading variants"
         errorMessage="Unable to load variants"
+        retainPreviousData
         success={(data: any) => data.region}
       >
-        {({ data }: any) => (
-          <LongReadUnifiedView
-            key={lrCohort}
-            datasetId={datasetId}
-            gene={{
-              gene_id: '',
-              symbol: '',
-              chrom: region.chrom,
-              start: region.start,
-              stop: region.stop,
-            }}
-            variants={data.region.long_read_variants || []}
-            variantSearch={variantSearch}
-            lrCohort={lrCohort}
-            onChangeLrCohort={onChangeLrCohort}
-            provenance={data.long_read_y1_provenance}
-            clinvarReleaseDate={data.meta.clinvar_release_date}
-            genes={region.genes as any[]}
-            zoomRegion={zoomRegion || null}
-            onChangeZoomRegion={onChangeZoomRegion || (() => {})}
-            onSetRegion={onSetRegion || (() => {})}
-            onGenealogyPanelVisibilityChange={onGenealogyPanelVisibilityChange}
-          />
-        )}
+        {({ data, requestVariables, stale }: any) => {
+          const loadedLrCohort = requestVariables?.lrCohort || lrCohort
+          return (
+            <RequestRevalidationFrame
+              stale={stale}
+              testId="lr-request-shell"
+              message={`Updating long-read variants for ${
+                lrCohort === 'aou' ? 'All of Us' : 'HGSVC/HPRC'
+              }…`}
+              focusAfterUpdateSelector='[role="group"][aria-labelledby="lr-cohort-label"] input:checked'
+            >
+              <LongReadUnifiedView
+                key={loadedLrCohort}
+                datasetId={datasetId}
+                gene={{
+                  gene_id: '',
+                  symbol: '',
+                  chrom: region.chrom,
+                  start: region.start,
+                  stop: region.stop,
+                }}
+                variants={data.region.long_read_variants || []}
+                variantSearch={variantSearch}
+                lrCohort={loadedLrCohort}
+                onChangeLrCohort={onChangeLrCohort}
+                provenance={data.long_read_y1_provenance}
+                clinvarReleaseDate={data.meta.clinvar_release_date}
+                genes={region.genes as any[]}
+                zoomRegion={zoomRegion || null}
+                onChangeZoomRegion={onChangeZoomRegion || (() => {})}
+                onSetRegion={onSetRegion || (() => {})}
+                onGenealogyPanelVisibilityChange={onGenealogyPanelVisibilityChange}
+              />
+            </RequestRevalidationFrame>
+          )
+        }}
       </Query>
     )
   }

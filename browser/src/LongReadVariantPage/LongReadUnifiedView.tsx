@@ -1835,7 +1835,7 @@ const LongReadUnifiedView = ({
       )}
 
       {/* Controls precede the visualization they govern and keep a stable document position. */}
-      <TrackPageSection>
+      <TrackPageSection data-testid="lr-control-slot">
         <TopBar data-testid="lr-view-top-bar">
           <ViewModeControls>
             <LongReadViewHelpButton maxHaplotypeRegionSize={MAX_HAPLOTYPE_REGION_SIZE} />
@@ -1936,7 +1936,11 @@ const LongReadUnifiedView = ({
         )}
       </TrackPageSection>
 
-      <AccordionRegionViewer mapper={accordionMapper} originalRegion={viewRegion}>
+      <AccordionRegionViewer
+        testId="lr-plot-slot"
+        mapper={accordionMapper}
+        originalRegion={viewRegion}
+      >
 
       {/* Base layer — always rendered */}
       {lod.showDensityTrack && <VariantDensityTrack variants={searchedViewportVariants} />}
@@ -2098,7 +2102,7 @@ const LongReadUnifiedView = ({
       )}
 
       {/* Table with loading overlay during haplotype computation */}
-      <TrackPageSection>
+      <TrackPageSection data-testid="lr-table-slot">
         <div
           id="lr-variant-table-container"
           style={{

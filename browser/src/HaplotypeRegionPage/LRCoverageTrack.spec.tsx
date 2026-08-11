@@ -47,4 +47,35 @@ describe('LRCoverageTrack cohort routing', () => {
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3))
     expect(JSON.parse(String(fetchMock.mock.calls[2][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
   })
+
+  test('retains the coverage slot without announcing prior-cohort data while the next request is delayed', async () => {
+    let resolveAoU!: (value: any) => void
+    const delayedAoU = new Promise((resolve) => {
+      resolveAoU = resolve
+    })
+    const fetchMock = jest
+      .fn()
+      .mockResolvedValueOnce({ json: async () => response })
+      .mockImplementationOnce(() => delayedAoU)
+    ;(global as any).fetch = fetchMock
+
+    const { rerender } = render(
+      <LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="hgsvc_hprc" />
+    )
+    await screen.findByText('Long-read coverage — HGSVC/HPRC')
+    const slot = screen.getByTestId('lr-coverage-slot')
+
+    rerender(<LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="aou" />)
+
+    expect(slot.isConnected).toBe(true)
+    expect(slot.getAttribute('aria-busy')).toBe('true')
+    expect(screen.queryByText('Long-read coverage — HGSVC/HPRC')).toBeNull()
+    expect(screen.getByText('Long-read coverage — All of Us')).toBeTruthy()
+    expect(screen.getByRole('status').textContent).toBe(
+      'Updating long-read coverage for All of Us…'
+    )
+
+    resolveAoU({ json: async () => response })
+    await waitFor(() => expect(slot.getAttribute('aria-busy')).toBe('false'))
+  })
 })

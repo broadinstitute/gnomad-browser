@@ -5,11 +5,13 @@ import { Page, PageHeading } from '@gnomad/ui'
 
 import {
   DatasetId,
+  labelForDataset,
   referenceGenome,
   hasShortTandemRepeats,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from '../DocumentTitle'
 import Query from '../Query'
+import RequestRevalidationFrame from '../RequestRevalidationFrame'
 import RegionPage from './RegionPage'
 
 const operationName = 'Region'
@@ -73,6 +75,8 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
     <Query
       operationName={operationName}
       query={query}
+      requestKey={datasetId}
+      retainPreviousData
       variables={{
         chrom,
         start,
@@ -85,19 +89,30 @@ const RegionPageContainer = ({ datasetId, regionId }: Props) => {
       errorMessage="Unable to load region"
       success={(data: any) => data.region}
     >
-      {({ data }: any) => {
+      {({ data, requestKey: loadedDatasetId = datasetId, requestVariables, stale }: any) => {
+        const loadedChrom = requestVariables?.chrom || chrom
+        const loadedStart = requestVariables?.start || start
+        const loadedStop = requestVariables?.stop || stop
         return (
-          <RegionPage
-            datasetId={datasetId}
-            availableLrCohorts={data.meta?.long_read_cohorts || ['hgsvc_hprc']}
-            region={{
-              ...data.region,
-              reference_genome: referenceGenome(datasetId),
-              chrom: chrom === 'MT' ? 'M' : chrom,
-              start,
-              stop,
-            }}
-          />
+          <RequestRevalidationFrame
+            stale={stale}
+            testId="region-request-shell"
+            message={`Updating region for ${labelForDataset(datasetId)}…`}
+            focusAfterUpdateSelector={`a[href*="dataset=${datasetId}"]`}
+          >
+            <RegionPage
+              key={loadedDatasetId}
+              datasetId={loadedDatasetId}
+              availableLrCohorts={data.meta?.long_read_cohorts || ['hgsvc_hprc']}
+              region={{
+                ...data.region,
+                reference_genome: referenceGenome(loadedDatasetId),
+                chrom: loadedChrom === 'MT' ? 'M' : loadedChrom,
+                start: loadedStart,
+                stop: loadedStop,
+              }}
+            />
+          </RequestRevalidationFrame>
         )
       }}
     </Query>

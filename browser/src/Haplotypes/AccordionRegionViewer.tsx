@@ -8,6 +8,7 @@ type AccordionRegionViewerProps = {
   mapper: AccordionCoordinateMapper
   originalRegion: { start: number; stop: number }
   children: React.ReactNode
+  testId?: string
 }
 
 /**
@@ -24,8 +25,10 @@ const AccordionRegionViewer = ({
   mapper,
   originalRegion,
   children,
+  testId,
 }: AccordionRegionViewerProps) => {
   const baseContext = useContext(RegionViewerContext)
+  const accordionContext = useMemo(() => ({ mapper }), [mapper])
 
   const overriddenContext = useMemo(() => {
     // Always provide an extrapolating view-domain scale. RegionViewer's default
@@ -50,8 +53,14 @@ const AccordionRegionViewer = ({
 
   return (
     <RegionViewerContext.Provider value={overriddenContext}>
-      <AccordionContext.Provider value={{ mapper }}>
-        {children}
+      <AccordionContext.Provider value={accordionContext}>
+        {testId ? (
+          <div data-testid={testId} style={{ width: '100%' }}>
+            {children}
+          </div>
+        ) : (
+          children
+        )}
       </AccordionContext.Provider>
     </RegionViewerContext.Provider>
   )
