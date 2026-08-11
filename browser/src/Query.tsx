@@ -1,7 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useRef } from 'react'
 
 import Delayed from './Delayed'
 import StatusMessage from './StatusMessage'
+
+const TerminalRequestError = ({ children }: { children: React.ReactNode }) => {
+  const statusRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    statusRef.current?.focus()
+  }, [])
+
+  return (
+    <StatusMessage ref={statusRef} role="alert" tabIndex={-1}>
+      {children}
+    </StatusMessage>
+  )
+}
 
 const areVariablesEqual = (variables: any, otherVariables: any) => {
   const keys = Object.keys(variables)
@@ -219,6 +233,13 @@ const Query = ({
   url,
   variables,
 }: QueryProps) => {
+  const renderError = (message: React.ReactNode) =>
+    retainPreviousData ? (
+      <TerminalRequestError>{message}</TerminalRequestError>
+    ) : (
+      <StatusMessage>{message}</StatusMessage>
+    )
+
   return (
     <BaseQuery
       operationName={operationName}
@@ -248,16 +269,14 @@ const Query = ({
         }
 
         if (error) {
-          return <StatusMessage>{errorMessage}</StatusMessage>
+          return renderError(errorMessage)
         }
 
         if (!data || !success(data)) {
-          return (
-            <StatusMessage>
-              {graphQLErrors && graphQLErrors.length
-                ? Array.from(new Set(graphQLErrors.map((e: any) => e.message))).join(', ')
-                : errorMessage}
-            </StatusMessage>
+          return renderError(
+            graphQLErrors && graphQLErrors.length
+              ? Array.from(new Set(graphQLErrors.map((e: any) => e.message))).join(', ')
+              : errorMessage
           )
         }
 
