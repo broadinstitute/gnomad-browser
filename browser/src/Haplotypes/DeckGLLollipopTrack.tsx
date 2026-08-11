@@ -35,6 +35,7 @@ import { HaplotypeVariantTooltipContent } from './TrVariantTooltip'
 import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import { useStableScrollbarGutter } from './scrollbarGutter'
+import { SEARCHED_POSITION_GUIDE_STYLE } from './searchedPositionGuideStyle'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSearchFiltering'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
@@ -2451,8 +2452,8 @@ function DeckGLLollipopCanvas({
       data: [{ position: selectedVariantPos, yTop: 0, yBottom: totalHeight }],
       getSourcePosition: (d: any) => [scalePosition(d.position), d.yTop, 0],
       getTargetPosition: (d: any) => [scalePosition(d.position), d.yBottom, 0],
-      getColor: [37, 99, 235, 180],
-      getWidth: 2,
+      getColor: SEARCHED_POSITION_GUIDE_STYLE.color,
+      getWidth: SEARCHED_POSITION_GUIDE_STYLE.width,
       widthUnits: 'pixels' as const,
       pickable: false,
       updateTriggers: { getSourcePosition: [scalePosition], getTargetPosition: [scalePosition] },
