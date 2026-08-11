@@ -56,7 +56,7 @@ jest.mock('../Haplotypes', () => {
     mockHaplotypeTrackProps.push(props)
     mockReact.useEffect(() => {
       props.onVisibleDiploidSampleIdsChange?.(mockVisibleSampleIds)
-    }, [props.onVisibleDiploidSampleIdsChange])
+    }, [props.start, props.stop, props.showPerCopyMethylation])
     return mockReact.createElement(
       'div',
       { 'data-testid': 'haplotype-rows' },
@@ -298,7 +298,10 @@ class MockWorker {
 
   postMessage(message: any) {
     this.messages.push(message)
-    if (mockWorkerAutoRespond) this.respond(message)
+    if (mockWorkerAutoRespond) {
+      // Real workers always cross an asynchronous message boundary.
+      Promise.resolve().then(() => this.respond(message))
+    }
   }
 
   respond(message: any, data = workerDataOverride || workerData()) {

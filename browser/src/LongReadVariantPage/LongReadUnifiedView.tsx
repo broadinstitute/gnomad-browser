@@ -619,6 +619,7 @@ const LongReadUnifiedView = ({
   const [joinedMethylationViewState, setJoinedMethylationViewState] =
     useState<JoinedMethylationViewState>(emptyJoinedMethylationViewState(joinedMethylationScope))
   const joinedMethylationRequestGateRef = useRef(new MethylationRequestGate())
+  const joinedMethylationInFlightRef = useRef<Map<string, number>>(new Map())
   const joinedMethylationStateIsCurrent =
     joinedMethylationViewState.scope === joinedMethylationScope
   const perCopyMethylationRecords = useMemo(
@@ -1373,7 +1374,9 @@ const LongReadUnifiedView = ({
       const sampleStates = new Map(previous.sampleStates)
       sampleStates.forEach((state, sampleId) => {
         if (state.status === 'error') {
-          sampleStates.set(sampleId, { status: 'loading' })
+          // Remove the terminal state so the request effect can claim this sample
+          // exactly once; `loading` means an existing claim is already in flight.
+          sampleStates.delete(sampleId)
           changed = true
         }
       })
@@ -1483,6 +1486,7 @@ const LongReadUnifiedView = ({
     // Load All is one explicit user action for one uninterrupted scope lifetime. Clearing
     // the claim here prevents a recreated scope from silently resurrecting bulk demand.
     setLoadAllJoinedMethylationScope(null)
+    joinedMethylationInFlightRef.current.clear()
     setJoinedMethylationViewState(emptyJoinedMethylationViewState(joinedMethylationScope))
     return () => gate.invalidate()
   }, [joinedMethylationScope])
@@ -1498,9 +1502,13 @@ const LongReadUnifiedView = ({
     )
       return undefined
 
+    const requestIdentity = (sampleId: string) => `${joinedMethylationScope}\u0000${sampleId}`
     const isPending = (sampleId: string) => {
       const state = joinedMethylationViewState.sampleStates.get(sampleId)
-      return state === undefined || state.status === 'loading'
+      return (
+        state === undefined &&
+        !joinedMethylationInFlightRef.current.has(requestIdentity(sampleId))
+      )
     }
     const pendingVisible = [...visibleJoinedSampleIds].filter(isPending)
     const pendingAll = [...neededJoinedSampleIds].filter(
@@ -1514,6 +1522,17 @@ const LongReadUnifiedView = ({
 
     const gate = joinedMethylationRequestGateRef.current
     const token = gate.begin(joinedMethylationScope)
+    requestedSampleIds.forEach((sampleId) => {
+      joinedMethylationInFlightRef.current.set(requestIdentity(sampleId), token.id)
+    })
+    const releaseInFlight = () => {
+      requestedSampleIds.forEach((sampleId) => {
+        const identity = requestIdentity(sampleId)
+        if (joinedMethylationInFlightRef.current.get(identity) === token.id) {
+          joinedMethylationInFlightRef.current.delete(identity)
+        }
+      })
+    }
     setJoinedMethylationViewState((previous) => {
       if (previous.scope !== joinedMethylationScope) return previous
       const sampleStates = new Map(previous.sampleStates)
@@ -1588,10 +1607,15 @@ const LongReadUnifiedView = ({
           )
           return { ...previous, sampleStates, version: previous.version + 1 }
         })
+      } finally {
+        releaseInFlight()
       }
     }
     fetchBatch()
-    return () => gate.cancel(token)
+    return () => {
+      gate.cancel(token)
+      releaseInFlight()
+    }
   }, [
     showHaplotypes,
     showPerCopyMethylation,
