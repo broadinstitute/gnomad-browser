@@ -20,7 +20,7 @@ describe('minimum allele frequency', () => {
     expect(parseMinimumAlleleFrequency('-0.1')).toBe(0)
   })
 
-  test('reserves the start of the log-scale control for zero', () => {
+  test('keeps threshold scaling available for compatibility after UI control removal', () => {
     const scale = createMinimumAlleleFrequencyScale(0.002, 0.5)
 
     expect(scale.afToSlider(0)).toBe(0)

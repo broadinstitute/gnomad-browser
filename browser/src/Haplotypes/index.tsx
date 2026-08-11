@@ -153,13 +153,34 @@ const CATEGORY_ORDER: VariantCategory[] = ['snv', 'insertion', 'deletion', 'sv',
 const LegendStrip = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
+  min-width: 0;
+  max-width: 100%;
   font-size: 10px;
   color: #666;
-  white-space: nowrap;
-  flex-shrink: 0;
   border-left: 1px solid #e0e0e0;
   padding-left: 12px;
+
+  @media (max-width: 600px) {
+    flex-basis: 100%;
+    border-left: 0;
+    padding-left: 0;
+  }
+`
+
+const LegendRows = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+`
+
+const LegendRow = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
 `
 
 const visibleMethylationProgressText = (progress?: PerCopyLoadingProgress | null) => {
@@ -293,24 +314,31 @@ export const Legend = ({
   const methylationRetryAvailable =
     visibleMethylationProgress?.status === 'error' || allMethylationProgress?.status === 'error'
 
-  // Reserve the first slider position for zero, then retain the existing log scale.
-  const { afToSlider, sliderToAf } = createMinimumAlleleFrequencyScale(
-    minAfFloor,
-    minAfCeiling
+  // Keep the threshold state and compatibility callback synchronized even though the
+  // presentation control is intentionally absent.
+  const { afToSlider, sliderToAf } = useMemo(
+    () => createMinimumAlleleFrequencyScale(minAfFloor, minAfCeiling),
+    [minAfFloor, minAfCeiling]
   )
-
-  const [sliderValue, setSliderValue] = useState(() => afToSlider(initialMinAf))
+  const [_sliderValue, setSliderValue] = useState(() => afToSlider(initialMinAf))
+  const _threshold = sliderToAf(_sliderValue)
   const [sortMode, setSortMode] = useState(initialSortBy)
-  const threshold = sliderToAf(sliderValue)
 
-  // Sync slider when initialMinAf changes (e.g., auto-derived default on new data)
   const prevInitialMinAf = useRef(initialMinAf)
   useEffect(() => {
     if (initialMinAf !== prevInitialMinAf.current) {
       prevInitialMinAf.current = initialMinAf
       setSliderValue(afToSlider(initialMinAf))
     }
-  }, [initialMinAf])
+  }, [afToSlider, initialMinAf])
+
+  // Retain the commit path for compatibility without mounting a user-facing slider.
+  const _handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSliderValue(parseFloat(event.target.value))
+  }
+  const _handleThresholdCommit = () => {
+    onMinAfChange(sliderToAf(_sliderValue))
+  }
 
   // Sync sortMode when initialSortBy changes (e.g., toggling diploid view resets sort)
   const prevInitialSortBy = useRef(initialSortBy)
@@ -321,13 +349,6 @@ export const Legend = ({
     }
   }, [initialSortBy])
 
-  const handleThresholdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSliderValue(parseFloat(event.target.value))
-  }
-  const handleThresholdCommit = () => {
-    onMinAfChange(sliderToAf(sliderValue))
-  }
-
   const handleSortModeChange = (value: string) => {
     setSortMode(value)
     onSortModeChange(value)
@@ -335,29 +356,8 @@ export const Legend = ({
 
   return (
     <ControlsContainer>
-      {/* Top row: Min AF, Grouping, Sort */}
+      {/* Grouping stays primary; mode-specific controls occupy one stable area below. */}
       <ControlGroup>
-        <div hidden={isClusteredView} style={{ display: isClusteredView ? 'none' : 'flex', alignItems: 'center', gap: '4px' }}>
-          <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Min AF:</label>
-          <input
-            type='range'
-            id='threshold-slider'
-            min='0'
-            max='100'
-            step='1'
-            value={sliderValue}
-            onChange={handleThresholdChange}
-            onPointerUp={handleThresholdCommit}
-            onKeyUp={handleThresholdCommit}
-            style={{ width: '80px' }}
-          />
-          <span style={{ fontSize: '12px', minWidth: '40px' }}>
-            {threshold < 0.01 ? `${(threshold * 100).toFixed(1)}%` : `${(threshold * 100).toFixed(0)}%`}
-          </span>
-          <HaplotypeHelpButton title="Minimum Allele Frequency">
-            <MinAfHelp groupingMode={selectableGroupingMode} />
-          </HaplotypeHelpButton>
-        </div>
         <GroupingControl>
           <GroupingRadioGroup role="radiogroup" aria-label="Grouping">
             <span>Grouping:</span>
@@ -375,28 +375,10 @@ export const Legend = ({
             <GroupingModeHelp />
           </HaplotypeHelpButton>
         </GroupingControl>
-        <div hidden={!isDiploidView} style={{ display: isDiploidView ? 'flex' : 'none', alignItems: 'center', gap: '4px' }}>
-          <label style={{ fontSize: '12px' }}>Sort:</label>
-          <SegmentedControl
-            id='sort-mode'
-            options={isDiploidView
-              ? [
-                  { label: 'Sample', value: 'sample_id' },
-                  { label: 'ROH', value: 'roh_fraction' },
-                ]
-              : [
-                  { label: 'Similarity', value: 'similarity_score' },
-                  { label: 'Count', value: 'sample_count' },
-                ]
-            }
-            value={sortMode}
-            onChange={(value: any) => handleSortModeChange(value)}
-          />
-        </div>
         <LegendStrip>
           <span style={{ fontWeight: 600, fontSize: 11, color: '#444', alignSelf: 'flex-start', lineHeight: '28px' }}>Legend:</span>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+          <LegendRows>
+            <LegendRow>
               <span style={{ fontWeight: 600, color: '#555' }}>Variants:</span>
               {CATEGORY_ORDER.map((cat) => (
                 <span key={cat} style={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
@@ -404,8 +386,8 @@ export const Legend = ({
                   {CATEGORY_LABELS[cat]}
                 </span>
               ))}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            </LegendRow>
+            <LegendRow>
               <span style={{ fontWeight: 600, color: '#555' }}>Populations:</span>
               {Object.entries(SUPERPOPULATION_COLORS).map(([pop, color]) => (
                 <span key={pop} style={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
@@ -413,69 +395,85 @@ export const Legend = ({
                   {pop}
                 </span>
               ))}
-            </div>
-          </div>
+            </LegendRow>
+          </LegendRows>
         </LegendStrip>
       </ControlGroup>
 
-      {/* Fieldsets: Clustering + Data Layers side by side */}
+      {/* Mode-specific controls and generally available data layers share a responsive row. */}
       <FieldsetRow>
-        <Fieldset hidden={!isClusteredView} style={{ flex: '1.2 1 200px' }}>
-          <FieldsetTitle>Clustering</FieldsetTitle>
+        <Fieldset aria-label="Grouping subcontrols" style={{ flex: '1.2 1 240px' }}>
+          <FieldsetTitle>{isClusteredView ? 'Clustering' : 'Diploid sorting'}</FieldsetTitle>
           <ControlGroup>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Resolution:</label>
-              <input
-                type='range'
-                min='0'
-                max='1'
-                step='0.01'
-                value={clusterThreshold}
-                onChange={(e) => onClusterThresholdChange(parseFloat(e.target.value))}
-                style={{ width: '70px' }}
-              />
-              <span style={{ fontSize: '12px', minWidth: '28px' }}>{clusterThreshold.toFixed(2)}</span>
-              {clusterCount > 0 && (
-                <span style={{ fontSize: '11px', color: '#666' }}>
-                  ({clusterCount} cluster{clusterCount !== 1 ? 's' : ''})
-                </span>
-              )}
-            </div>
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <label>Cluster by:</label>
-              <select
-                value={distanceMetric}
-                onChange={(e) => onDistanceMetricChange(e.target.value as import('./haplotypeCompute').DistanceMetric)}
-                style={{ fontSize: '12px', padding: '1px 4px' }}
-              >
-                <option value="auto">Auto</option>
-                <option value="sv_only">SVs/TRs only</option>
-                <option value="snv_only">SNVs only</option>
-                <option value="all" disabled={regionSize > 500_000}>All variants</option>
-              </select>
-            </div>
-            {!isDiploidView && (
-              <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+            {isClusteredView ? (
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Resolution:</label>
                   <input
-                    type='checkbox'
-                    checked={showGenealogy}
-                    onChange={(e) => onShowGenealogyChange(e.target.checked)}
+                    type='range'
+                    min='0'
+                    max='1'
+                    step='0.01'
+                    value={clusterThreshold}
+                    onChange={(e) => onClusterThresholdChange(parseFloat(e.target.value))}
+                    style={{ width: '70px' }}
                   />
-                  Genealogy tree
-                </label>
-                <HaplotypeHelpButton title="Genealogy Tree">
-                  <GenealogyHelp />
-                </HaplotypeHelpButton>
+                  <span style={{ fontSize: '12px', minWidth: '28px' }}>{clusterThreshold.toFixed(2)}</span>
+                  {clusterCount > 0 && (
+                    <span style={{ fontSize: '11px', color: '#666' }}>
+                      ({clusterCount} cluster{clusterCount !== 1 ? 's' : ''})
+                    </span>
+                  )}
+                </div>
+                <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <label>Cluster by:</label>
+                  <select
+                    value={distanceMetric}
+                    onChange={(e) => onDistanceMetricChange(e.target.value as import('./haplotypeCompute').DistanceMetric)}
+                    style={{ fontSize: '12px', padding: '1px 4px' }}
+                  >
+                    <option value="auto">Auto</option>
+                    <option value="sv_only">SVs/TRs only</option>
+                    <option value="snv_only">SNVs only</option>
+                    <option value="all" disabled={regionSize > 500_000}>All variants</option>
+                  </select>
+                </div>
+                <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                    <input
+                      type='checkbox'
+                      checked={showGenealogy}
+                      onChange={(e) => onShowGenealogyChange(e.target.checked)}
+                    />
+                    Genealogy tree
+                  </label>
+                  <HaplotypeHelpButton title="Genealogy Tree">
+                    <GenealogyHelp />
+                  </HaplotypeHelpButton>
+                </div>
+              </>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <label style={{ fontSize: '12px' }}>Sort:</label>
+                <SegmentedControl
+                  id='sort-mode'
+                  options={[
+                    { label: 'Sample', value: 'sample_id' },
+                    { label: 'ROH', value: 'roh_fraction' },
+                  ]}
+                  value={sortMode}
+                  onChange={(value: any) => handleSortModeChange(value)}
+                />
               </div>
             )}
           </ControlGroup>
         </Fieldset>
 
-        <Fieldset style={{ flex: '0.6 1 150px' }}>
+        <Fieldset style={{ flex: '0.8 1 240px' }}>
           <FieldsetTitle>Data Layers</FieldsetTitle>
           <ControlGroup>
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
+            {isDiploidView && (
+              <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
               <label
                 title={perCopyMethylationReason}
                 style={{
@@ -556,7 +554,8 @@ export const Legend = ({
                   )}
                 </>
               )}
-            </div>
+              </div>
+            )}
             <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: recombinationAvailable ? 'pointer' : 'not-allowed' }}>
                 <input
@@ -988,7 +987,6 @@ const LollipopHelp = () => (
 
     <h4>Controls</h4>
     <ul>
-      <li><strong>Minimum variant AF</strong> — Filters variants by allele frequency. Raising this simplifies groups by ignoring rare variants.</li>
       <li><strong>Sort by</strong> — "Similarity" groups similar haplotypes together; "Count" sorts by sample count.</li>
       <li><strong>Filter to outliers</strong> — When methylation is enabled, shows only groups containing methylation outlier samples.</li>
     </ul>
@@ -1082,7 +1080,7 @@ const AlluvialHelp = () => (
     <ul>
       <li>Only the top 30 groups by sample count are shown to avoid visual clutter.</li>
       <li>X-coordinates use genomic position (proportional spacing), so dense variant clusters may appear cramped.</li>
-      <li>The AF threshold slider filters which variants define groups — raising it simplifies the view.</li>
+      <li>The underlying AF threshold filters which variants define groups.</li>
     </ul>
   </>
 )
@@ -1123,7 +1121,7 @@ const HeatmapHelp = () => (
     <ul>
       <li>Only the top 80 groups by sample count are shown.</li>
       <li>The region is divided into 100 bins, so individual variants may be merged within a bin.</li>
-      <li>The AF threshold slider filters which variants define groups.</li>
+      <li>The underlying AF threshold filters which variants define groups.</li>
     </ul>
   </>
 )
@@ -1173,8 +1171,8 @@ export const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'sim
       <>
         <p>
           In <strong>Similarity Clusters</strong> mode, the tree and clusters are computed once at the
-          lowest AF and remain stable. Moving this slider only shows/hides variant dots on each
-          row — it does not rebuild groups or the tree.
+          lowest AF and remain stable. The underlying threshold only shows/hides variant dots on
+          each row — it does not rebuild groups or the tree.
         </p>
         <p>
           Rare variants remain visible as small open circles so you can still spot them
@@ -1208,8 +1206,8 @@ export const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'sim
   return (
     <>
       <p>
-        In <strong>Exact Match</strong> mode, this slider controls which variants are used when
-        matching haplotypes. Variants below this frequency are ignored, directly causing groups
+        In <strong>Exact Match</strong> mode, the underlying threshold controls which variants are
+        used when matching haplotypes. Variants below this frequency are ignored, directly causing groups
         to merge. Raising the threshold consolidates samples into fewer, larger groups defined by
         common variants.
       </p>
@@ -1262,7 +1260,7 @@ export const GroupingModeHelp = () => (
         with each haplotype as its own cluster, then iteratively merges the two most similar
         clusters until a single tree is formed. The resolution slider controls where this tree
         is cut &mdash; lower values produce fewer, larger clusters; higher values produce more,
-        finer-grained clusters. The Min AF slider only controls which variant dots are displayed
+        finer-grained clusters. The underlying AF threshold controls which variant dots are displayed
         &mdash; the tree and clusters remain stable. This is the recommended mode for exploring
         population-level haplotype structure.
       </dd>
@@ -1324,8 +1322,8 @@ const AutoTunedHelp = () => (
       The threshold is then fine-tuned jointly with Min AF.
     </p>
     <p>
-      Both values can be adjusted freely. Once you manually change either slider,
-      this indicator disappears.
+      The allele-frequency threshold remains automatically managed. Adjusting cluster resolution
+      changes only the visible cluster cut.
     </p>
   </>
 )
@@ -1377,7 +1375,7 @@ export const HaplotypeInfoBar = ({
   displayGroups,
   start,
   stop,
-  threshold,
+  threshold: _threshold,
   groupingMode = 'similarity',
   clusterCount,
   clusterThreshold,
@@ -1435,10 +1433,6 @@ export const HaplotypeInfoBar = ({
     ? `${(regionSize / 1000).toFixed(regionSize >= 10000 ? 0 : 1)} kb`
     : `${regionSize.toLocaleString()} bp`
 
-  const thresholdLabel = threshold < 0.01
-    ? `${(threshold * 100).toFixed(1)}%`
-    : `${(threshold * 100).toFixed(0)}%`
-
   // Determine distance metric mode from selection and variant data
   const distanceMode = useMemo(() => {
     if (distanceMetric === 'all') return 'All variants'
@@ -1481,8 +1475,6 @@ export const HaplotypeInfoBar = ({
             <span style={{ color: '#888', fontSize: '11px' }}>Distance: {distanceMode}</span>
           </>
         )}
-        <span style={{ color: '#999' }}>·</span>
-        <span>Min AF: {thresholdLabel}</span>
         <span style={{ color: '#999' }}>·</span>
         <span style={{ textTransform: 'capitalize' }}>{plotType}</span>
         {plotType === 'bubble' && variationGraph && (

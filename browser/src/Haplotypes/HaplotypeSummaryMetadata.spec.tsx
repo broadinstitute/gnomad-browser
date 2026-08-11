@@ -68,6 +68,7 @@ describe('haplotype summary metadata', () => {
     )
 
     expect(text).toContain('Unphased: 1,234')
+    expect(text).not.toContain('Min AF')
     expect(text).not.toContain('unphased carrier rows are excluded')
     expect(text).not.toContain('biological strand')
   })
@@ -88,7 +89,7 @@ describe('haplotype summary metadata', () => {
       renderer.create(<MinAfHelp groupingMode="diploid" />).toJSON()
     )
 
-    for (const text of [groupingText, minAfText]) {
+    ;[groupingText, minAfText].forEach((text) => {
       expect(text).toContain('unordered pair of exact')
       expect(text).toContain('{v1, v2} + {v3}')
       expect(text).toContain('{v3} + {v1, v2}')
@@ -97,7 +98,7 @@ describe('haplotype summary metadata', () => {
       expect(text).toContain('small open background marker')
       expect(text).toContain('difference at or above Min AF creates a separate group')
       expect(text).toContain('Unphased variants are excluded')
-    }
+    })
     expect(groupingText).not.toContain('Exact Match')
   })
 
@@ -134,34 +135,49 @@ describe('haplotype summary metadata', () => {
     expect(onGroupingModeChange).toHaveBeenLastCalledWith('similarity')
   })
 
-  test('shows controls only in applicable grouping modes', () => {
+  test('uses one accessible mode-specific area and removes Min AF presentation', () => {
     const diploid = renderer.create(
-      <Legend groupingMode="diploid" initialSortBy="sample_id" />
+      <Legend groupingMode="diploid" initialSortBy="sample_id" initialMinAf={0.01} />
     )
-    const similarity = renderer.create(<Legend groupingMode="similarity" />)
-    const clusteringPanel = (component: ReactTestRenderer) => component.root.find(
-      (node) => node.type === 'fieldset' && renderedText(node).includes('Clustering')
+    const similarity = renderer.create(
+      <Legend
+        groupingMode="similarity"
+        initialMinAf={0.01}
+        joinedMethylationUnavailableReason="Unavailable outside Diploid view"
+      />
     )
-    const labeledControl = (component: ReactTestRenderer, label: string) => component.root.find(
-      (node) => node.type === 'label' && renderedText(node) === label
-    ).parent!
+    const subcontrols = (component: ReactTestRenderer) => component.root.find(
+      (node) => node.type === 'fieldset' && node.props['aria-label'] === 'Grouping subcontrols'
+    )
     const diploidText = renderedText(diploid.toJSON())
     const similarityText = renderedText(similarity.toJSON())
+    const diploidSubcontrolsText = renderedText(subcontrols(diploid))
+    const similaritySubcontrolsText = renderedText(subcontrols(similarity))
 
-    expect(clusteringPanel(diploid).props.hidden).toBe(true)
-    expect(clusteringPanel(similarity).props.hidden).toBe(false)
-    expect(labeledControl(diploid, 'Min AF:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
-    expect(labeledControl(similarity, 'Min AF:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
-    expect(labeledControl(diploid, 'Sort:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
-    expect(labeledControl(similarity, 'Sort:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
-    expect(similarityText).toContain('Resolution:')
-    expect(similarityText).toContain('Cluster by:')
-    expect(diploidText).toContain('Data Layers')
-    expect(diploidText).toContain('Sample')
-    expect(diploidText).toContain('ROH')
-    expect(diploidText).not.toContain('Display')
-    expect(diploidText).not.toContain('Plot:')
-    expect(diploidText).not.toContain('Comp. Het.')
+    expect(diploid.root.findAllByType('fieldset')[0]).toBe(subcontrols(diploid))
+    expect(similarity.root.findAllByType('fieldset')[0]).toBe(subcontrols(similarity))
+    expect(diploidSubcontrolsText).toContain('Diploid sorting')
+    expect(diploidSubcontrolsText).toContain('Sort:')
+    expect(diploidSubcontrolsText).toContain('Sample')
+    expect(diploidSubcontrolsText).toContain('ROH')
+    expect(diploidSubcontrolsText).not.toContain('Resolution:')
+    expect(diploidSubcontrolsText).not.toContain('Cluster by:')
+    expect(similaritySubcontrolsText).toContain('Clustering')
+    expect(similaritySubcontrolsText).toContain('Resolution:')
+    expect(similaritySubcontrolsText).toContain('Cluster by:')
+    expect(similaritySubcontrolsText).not.toContain('Sort:')
+    expect(diploidText).toContain('Per-copy methylation')
+    expect(similarityText).not.toContain('Per-copy methylation')
+    expect(similarityText).not.toContain('Unavailable outside Diploid view')
+    expect(diploidText).toContain('Recombination rate')
+    expect(similarityText).toContain('Recombination rate')
+
+    ;[diploid, similarity].forEach((component) => {
+      const text = renderedText(component.toJSON())
+      expect(text).not.toContain('Min AF:')
+      expect(component.root.findAll((node) => node.props.id === 'threshold-slider')).toHaveLength(0)
+      expect(component.root.findAll((node) => node.props['aria-label'] === 'Minimum Allele Frequency')).toHaveLength(0)
+    })
   })
 
   test('ignores a legacy alternate plot prop and renders lollipop', () => {
@@ -280,7 +296,11 @@ describe('haplotype summary metadata', () => {
     const legendText = renderedText(
       renderer
         .create(
-          <Legend methylationLabel={source} recombinationLabel="External reference (UCSC hg38)" />
+          <Legend
+            groupingMode="diploid"
+            methylationLabel={source}
+            recombinationLabel="External reference (UCSC hg38)"
+          />
         )
         .toJSON()
     )
