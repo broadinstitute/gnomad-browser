@@ -1703,6 +1703,7 @@ const LongReadUnifiedView = ({
       : null,
     [hasLocalSearchTerms, haplotypeGroups.groups, variantMatchesSearch]
   )
+  const incompleteSearchTerm = parsedSearch.terms.find((term) => term.status === 'incomplete')
   const outOfRegionSearchTerm = parsedSearch.terms.find((term) => term.status === 'out_of_region')
   const malformedSearchTerms = parsedSearch.terms.filter((term) => term.status === 'malformed')
 
@@ -1966,7 +1967,8 @@ const LongReadUnifiedView = ({
                 {parsedSearch.validTerms.length > 1 ? ` (${parsedSearch.validTerms.length} terms, OR)` : ''}.
               </span>
             )}
-            {!hasLocalSearchTerms && !outOfRegionSearchTerm && (
+            {incompleteSearchTerm && <span>{incompleteSearchTerm.message}.</span>}
+            {!hasLocalSearchTerms && !incompleteSearchTerm && !outOfRegionSearchTerm && (
               <span>{parsedSearch.issues[0]?.message || malformedSearchTerms[0]?.message || 'Enter a recognized variant search.'}</span>
             )}
             {malformedSearchTerms.length > 0 && hasLocalSearchTerms && (

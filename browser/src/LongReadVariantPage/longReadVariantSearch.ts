@@ -23,9 +23,10 @@ export type LongReadVariantSearchTermKind =
   | 'sequence'
   | 'unknown'
 
-export type LongReadVariantSearchTermStatus = 'valid' | 'malformed' | 'out_of_region'
+export type LongReadVariantSearchTermStatus = 'valid' | 'incomplete' | 'malformed' | 'out_of_region'
 
 export type LongReadVariantSearchTermCode =
+  | 'incomplete_coordinate'
   | 'invalid_coordinate'
   | 'invalid_range'
   | 'invalid_allele_change'
@@ -132,6 +133,27 @@ const malformed = (
   code,
   message,
 })
+
+const incompletePosition = (raw: string, normalized: string): LongReadVariantSearchTerm => ({
+  raw,
+  normalized,
+  kind: 'position',
+  status: 'incomplete',
+  code: 'incomplete_coordinate',
+  message: 'Continue typing a position or variant ID',
+})
+
+const isPlausiblyIncompletePosition = (
+  value: string,
+  region: LongReadVariantSearchRegion | undefined
+) => {
+  if (!region) return false
+  const regionCoordinateDigits = Math.min(
+    String(Math.trunc(region.start)).length,
+    String(Math.trunc(region.stop)).length
+  )
+  return value.length < regionCoordinateDigits
+}
 
 const withRegionStatus = (
   term: LongReadVariantSearchTerm,
@@ -291,6 +313,9 @@ const parseTerm = (
   }
 
   if (/^\d+$/.test(normalized)) {
+    if (isPlausiblyIncompletePosition(normalized, region)) {
+      return incompletePosition(raw, normalized)
+    }
     return coordinateTerm(raw, normalized, 'position', normalized, normalized, region)
   }
 
@@ -397,7 +422,8 @@ export const parseLongReadVariantSearch = (
   let status: LongReadVariantSearchResult['status']
   if (terms.length === 0) status = 'empty'
   else if (validTerms.length === terms.length) status = 'ready'
-  else if (validTerms.length > 0) status = 'partial'
+  else if (validTerms.length > 0 || terms.some((term) => term.status === 'incomplete'))
+    status = 'partial'
   else status = 'invalid'
 
   return { input, status, terms, validTerms, issues: [] }

@@ -78,6 +78,33 @@ describe('long-read variant search', () => {
     expect(matchesLongReadVariantSearch(variants[0], search)).toBe(false)
   })
 
+  test('keeps a bare numeric prefix neutral until it is a plausible full position', () => {
+    const displayedRegion = { chrom: '4', start: 39343000, stop: 39344000 }
+
+    const partial = parseLongReadVariantSearch('393', displayedRegion)
+    expect(partial).toMatchObject({
+      status: 'partial',
+      validTerms: [],
+      terms: [
+        {
+          status: 'incomplete',
+          code: 'incomplete_coordinate',
+          message: 'Continue typing a position or variant ID',
+        },
+      ],
+    })
+    expect(partial.terms[0]).not.toHaveProperty('start')
+
+    expect(parseLongReadVariantSearch('39343617', displayedRegion)).toMatchObject({
+      status: 'ready',
+      terms: [{ status: 'valid', kind: 'position', start: 39343617, end: 39343617 }],
+    })
+    expect(parseLongReadVariantSearch('49343617', displayedRegion)).toMatchObject({
+      status: 'invalid',
+      terms: [{ status: 'out_of_region', start: 49343617, end: 49343617 }],
+    })
+  })
+
   test('distinguishes exact positions from substring position matching', () => {
     const search = parseLongReadVariantSearch('23', { chrom: '22', start: 1, stop: 500 })
     expect(filterLongReadVariantsBySearch(variants, search)).toEqual([])
