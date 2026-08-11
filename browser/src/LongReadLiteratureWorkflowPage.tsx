@@ -81,6 +81,20 @@ const BlockedBrowserNote = styled.p`
   margin: 0;
 `
 
+const ProvisionalBrowserAction = styled.div`
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+`
+
+const ProvisionalBrowserNote = styled.p`
+  color: #792525;
+  font-weight: 700;
+  margin: 0;
+  max-width: 620px;
+`
+
 const Boundary = styled.div`
   border-left: 5px solid #b35c00;
   background: #fff5e8;
@@ -96,13 +110,16 @@ const Boundary = styled.div`
 
 const Content = styled.div`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.2rem;
   max-width: 1100px;
+  min-width: 0;
 `
 
 const Panel = styled.section`
   border: 1px solid #d8d8d8;
   border-radius: 6px;
+  min-width: 0;
   padding: 1rem 1.15rem;
 
   h2 {
@@ -200,6 +217,7 @@ const Story = styled.dl`
 `
 
 const MatrixWrap = styled.div`
+  max-width: 100%;
   overflow-x: auto;
 `
 
@@ -311,6 +329,23 @@ const WorkflowPage = ({ workflow }: { workflow: LiteratureWorkflow }) => {
     I: workflow.evidence.filter((item) => item.class === 'I'),
     B: workflow.evidence.filter((item) => item.class === 'B'),
   }
+  let browserAction: React.ReactNode
+  if (!browserPath) {
+    browserAction = (
+      <BlockedBrowserNote role="status">{workflow.browserRegionBlockedReason}</BlockedBrowserNote>
+    )
+  } else if (workflow.browserRegionStatus === 'provisional') {
+    browserAction = (
+      <ProvisionalBrowserAction>
+        <PrimaryLink href={browserPath}>Open provisional locus overview</PrimaryLink>
+        <ProvisionalBrowserNote role="status">
+          {workflow.browserRegionNotice}
+        </ProvisionalBrowserNote>
+      </ProvisionalBrowserAction>
+    )
+  } else {
+    browserAction = <PrimaryLink href={browserPath}>Try in browser</PrimaryLink>
+  }
 
   return (
     <InfoPage>
@@ -325,13 +360,7 @@ const WorkflowPage = ({ workflow }: { workflow: LiteratureWorkflow }) => {
           {workflow.paper.venue} ({workflow.paper.year}) · {workflow.locus}
         </Meta>
         <LinkRow aria-label="Paper and browser links">
-          {browserPath ? (
-            <PrimaryLink href={browserPath}>Try in browser</PrimaryLink>
-          ) : (
-            <BlockedBrowserNote role="status">
-              {workflow.browserRegionBlockedReason}
-            </BlockedBrowserNote>
-          )}
+          {browserAction}
           {workflow.paper.pdfUrl && (
             <a href={workflow.paper.pdfUrl} target="_blank" rel="noopener noreferrer">
               PDF
@@ -435,7 +464,11 @@ const WorkflowPage = ({ workflow }: { workflow: LiteratureWorkflow }) => {
 
         <Panel aria-labelledby="capability-heading">
           <h2 id="capability-heading">Step-level capability matrix</h2>
-          <MatrixWrap>
+          <MatrixWrap
+            aria-label="Scrollable capability matrix; scroll horizontally to see all columns"
+            role="region"
+            tabIndex={0}
+          >
             <Matrix>
               <thead>
                 <tr>

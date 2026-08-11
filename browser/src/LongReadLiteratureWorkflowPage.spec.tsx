@@ -76,11 +76,16 @@ describe('LongReadLiteratureWorkflowPage', () => {
 
     const browserPath = literatureWorkflowBrowserPath(workflow)
     if (browserPath) {
-      const tryLink = screen.getByRole('link', { name: 'Try in browser' })
-      expect(tryLink.getAttribute('href')).toBe(browserPath)
-      expect(tryLink.getAttribute('href')).toContain('dataset=gnomad_r4_lr')
-      expect(tryLink.getAttribute('href')).toContain('lr_cohort=hgsvc_hprc')
-      expect(tryLink.getAttribute('href')).toContain('show_haplotypes=true')
+      const browserLink = screen.getByRole('link', {
+        name:
+          workflow.browserRegionStatus === 'provisional'
+            ? 'Open provisional locus overview'
+            : 'Try in browser',
+      })
+      expect(browserLink.getAttribute('href')).toBe(browserPath)
+      expect(browserLink.getAttribute('href')).toContain('dataset=gnomad_r4_lr')
+      expect(browserLink.getAttribute('href')).toContain('lr_cohort=hgsvc_hprc')
+      expect(browserLink.getAttribute('href')).toContain('show_haplotypes=true')
     } else {
       expect(screen.queryByRole('link', { name: 'Try in browser' })).toBeNull()
       expect(screen.getByRole('status').textContent).toBe(workflow.browserRegionBlockedReason)
@@ -106,12 +111,116 @@ describe('LongReadLiteratureWorkflowPage', () => {
     expect(d4z4.browserRegion).toBeNull()
     expect(d4z4.browserRegionBlockedReason).toMatch(/No safe linear GRCh38 region/)
     expect(palb2.startingState.stopRule).toMatch(/remap/i)
+    expect(palb2.browserRegionStatus).toBe('provisional')
+    expect(palb2.browserRegionNotice).toMatch(/remap remains gated/i)
     expect(gch1.capabilities.some((item) => item.status === 'data-blocked')).toBe(true)
     expect(wrn.capabilities.some((item) => item.status === 'data-blocked')).toBe(true)
     expect(slc16a2.capabilities.some((item) => item.status === 'data-blocked')).toBe(true)
 
-    renderRoute(d4z4.slug)
+    const d4z4Page = renderRoute(d4z4.slug)
     expect(screen.queryByRole('link', { name: 'Try in browser' })).toBeNull()
+    d4z4Page.unmount()
+
+    renderRoute(palb2.slug)
+    expect(screen.queryByRole('link', { name: 'Try in browser' })).toBeNull()
+    expect(screen.getByRole('link', { name: 'Open provisional locus overview' })).not.toBeNull()
+    expect(screen.getByRole('status').textContent).toMatch(/not a verified event destination/i)
+  })
+
+  test('preserves D4Z4 and WRN safety-critical source branch contracts', () => {
+    const workflows = new Map(literatureWorkflows.map((workflow) => [workflow.ref, workflow]))
+    const d4z4 = workflows.get('140')!
+    const wrn = workflows.get('88')!
+
+    expect(d4z4.branches).toHaveLength(18)
+    expect(d4z4.branches).toEqual(
+      expect.arrayContaining([
+        {
+          condition: 'Only custom-reference-relative coordinates are available',
+          action:
+            'Retain them as custom coordinates and continue to locus-model validation, not region navigation.',
+          stopRule: false,
+        },
+        {
+          condition:
+            'Discriminating distal site is unreadable but a validated second-distal-RU rule is available',
+          action: 'Apply and display that rule with reduced confidence.',
+          stopRule: false,
+        },
+        {
+          condition: 'The assay did not capture 4qB',
+          action: 'Report 4qB unavailable; never impute a 4qB methylation baseline.',
+          stopRule: false,
+        },
+        {
+          condition: 'Only partial molecules cover the array',
+          action: 'Show partial coverage but mark RU count unavailable.',
+          stopRule: true,
+        },
+        {
+          condition: 'Joined capability is unavailable or receipt identity is stale',
+          action: 'Fail closed and do not display per-copy methylation.',
+          stopRule: true,
+        },
+        {
+          condition: 'A roster sample has no source output or is marked skip',
+          action: 'Show unavailable with its reason; never plot 0%.',
+          stopRule: false,
+        },
+        {
+          condition: 'Only sample-total methylation exists',
+          action: 'Keep one explicitly unphased sample-total track outside haplotype panels.',
+          stopRule: true,
+        },
+        {
+          condition: 'A stratum has sparse full-length callability',
+          action:
+            'Show the small denominator and refrain from absence or tail-distribution claims.',
+          stopRule: false,
+        },
+        {
+          condition: 'Required provenance or join fields are omitted',
+          action: 'Mark export incomplete and do not treat it as reproducible evidence.',
+          stopRule: true,
+        },
+      ])
+    )
+
+    expect(wrn.branches).toHaveLength(14)
+    expect(wrn.branches).toEqual(
+      expect.arrayContaining([
+        {
+          condition: 'PS is missing, discontinuous, or copy assignment is ambiguous',
+          action: 'Keep the two window backgrounds separate and stop cross-window phase claims.',
+          stopRule: true,
+        },
+        {
+          condition: 'A reference participant shows an opposite-copy WRN allele',
+          action: 'Do not transfer this phase to PD1010; patient phase remains external evidence.',
+          stopRule: true,
+        },
+        {
+          condition: 'Export omits event, denominator, phase, or provenance fields',
+          action:
+            'Treat it as a convenience table, not an evidentiary receipt; attach a manual structured addendum.',
+          stopRule: true,
+        },
+        {
+          condition: 'A user asks the browser to diagnose, classify, or prove patient trans phase',
+          action: 'Refuse that inference and identify the required external evidence.',
+          stopRule: true,
+        },
+      ])
+    )
+  })
+
+  test('makes the capability matrix a labeled keyboard-focusable scroll region', () => {
+    const workflow = literatureWorkflows.find((item) => item.ref === '88')!
+    renderRoute(workflow.slug)
+
+    const matrixRegion = screen.getByRole('region', { name: /scrollable capability matrix/i })
+    expect(matrixRegion.getAttribute('tabindex')).toBe('0')
+    expect(within(matrixRegion).getByRole('table')).not.toBeNull()
   })
 
   test('renders corrected FGF14 coordinates and does not invent missing PubMed links', () => {

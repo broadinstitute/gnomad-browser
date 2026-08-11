@@ -48,6 +48,16 @@ describe('LongReadLiteratureExamplesPage', () => {
     ).toHaveLength(8)
   })
 
+  test('marks the PALB2 locus provisional rather than verified', () => {
+    render(<LongReadLiteratureExamplesPage />)
+
+    const palb2 = examples.find((item) => item.ref === '93')!
+    expect(palb2.region?.verified).toBe(false)
+    const card = screen.getByText(palb2.title).parentElement!
+    expect(within(card).getByText('approximate region')).not.toBeNull()
+    expect(within(card).queryByText('verified region')).toBeNull()
+  })
+
   test('does not offer a region link for the unmapped D4Z4 workflow', () => {
     render(<LongReadLiteratureExamplesPage />)
 

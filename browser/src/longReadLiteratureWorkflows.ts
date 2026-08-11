@@ -48,6 +48,8 @@ export type LiteratureWorkflow = {
   branches: Array<{ condition: string; action: string; stopRule: boolean }>
   story: { given: string; when: string; then: string }
   browserRegion: { chrom: string; start: number; stop: number } | null
+  browserRegionStatus?: 'provisional'
+  browserRegionNotice?: string
   browserRegionBlockedReason?: string
   capabilities: Array<{ step: string; status: CapabilityStatus; evidence: string }>
   acceptanceTest: { fixture: string; actions: string; expected: string; forbidden: string }
@@ -104,6 +106,9 @@ literatureWorkflows.forEach((workflow) => {
   }
   if (!workflow.browserRegion && !workflow.browserRegionBlockedReason) {
     throw new Error(`Literature workflow ${workflow.slug} has no browser region or blocked reason`)
+  }
+  if (workflow.browserRegionStatus === 'provisional' && !workflow.browserRegionNotice) {
+    throw new Error(`Provisional literature workflow ${workflow.slug} has no navigation notice`)
   }
   seenSlugs.add(workflow.slug)
   seenRefs.add(workflow.ref)
