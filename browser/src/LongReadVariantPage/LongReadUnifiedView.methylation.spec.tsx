@@ -20,6 +20,7 @@ const mockLegendProps: any[] = []
 let mockJoinedCapability: any = null
 let mockJoinedCapabilityFailure: 'graphql' | 'network' | null = null
 let mockDeferJoinedCapability = false
+let mockDeferHaplotype = false
 
 jest.mock('@gnomad/region-viewer', () => {
   // eslint-disable-next-line global-require
@@ -399,6 +400,7 @@ beforeEach(() => {
   mockLegendProps.length = 0
   mockJoinedCapabilityFailure = null
   mockDeferJoinedCapability = false
+  mockDeferHaplotype = false
   mockJoinedCapability = {
     available: false,
     joinable_to_vcf: false,
@@ -425,7 +427,7 @@ beforeEach(() => {
 
   const fetchMock = jest.fn((input: any, init?: any) => {
     if (String(input).startsWith('/api/lr/haplotype-groups')) {
-      return Promise.resolve(responseWithJson({
+      const response = responseWithJson({
         variants: { variant_id: [] },
         carrier_variant_indices: {},
         carriers: [],
@@ -436,7 +438,19 @@ beforeEach(() => {
           defaultClusterThreshold: 0,
           isClusteredView: false,
         },
-      }) as any)
+      })
+      if (mockDeferHaplotype) {
+        return new Promise((resolve, reject) => {
+          mockGraphQLRequests.push({
+            name: 'HaplotypeREST',
+            variables: Object.fromEntries(new URL(String(input), 'http://test').searchParams),
+            signal: init?.signal,
+            resolve,
+            reject,
+          })
+        }) as any
+      }
+      return Promise.resolve(response as any)
     }
 
     const body = JSON.parse(init?.body || '{}')
@@ -579,6 +593,33 @@ describe('LongReadUnifiedView haplotype request ownership', () => {
     expect(mockHaplotypeTrackProps.at(-1).haplotypeGroups[0].samples[0].sample_id).toBe(
       'current-region'
     )
+  })
+
+  test('aborts an in-flight REST request when its scope changes', async () => {
+    mockDeferHaplotype = true
+    const rendered = renderView()
+    await waitFor(() => expect(requestsNamed('HaplotypeREST')).toHaveLength(1))
+    const staleRequest = requestsNamed('HaplotypeREST')[0]
+
+    rendered.rerender(
+      <MemoryRouter initialEntries={['/?show_haplotypes=true']}>
+        <LongReadUnifiedView
+          datasetId={'gnomad_r4' as any}
+          gene={{ chrom: 'chr22', start: 300, stop: 400 }}
+          variants={[]}
+          lrCohort="hgsvc_hprc"
+        />
+      </MemoryRouter>
+    )
+
+    await waitFor(() => expect(requestsNamed('HaplotypeREST')).toHaveLength(2))
+    expect(staleRequest.signal?.aborted).toBe(true)
+    await resolveRequest(staleRequest, {
+      variants: { variant_id: [] },
+      carrier_variant_indices: {},
+      carriers: [],
+    })
+    expect(mockWorkers.flatMap((worker) => worker.messages)).toHaveLength(0)
   })
 
   test('scope identity changes for cohort, region, dataset, and source provenance', () => {
