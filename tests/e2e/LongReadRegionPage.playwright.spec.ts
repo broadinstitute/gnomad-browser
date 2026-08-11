@@ -90,61 +90,214 @@ test.describe('Long Read region page — Summary View', () => {
   })
 })
 
-// Complete empty Struct-of-Arrays payload: valid RawPayload input for both the
-// REST parser and the real haplotype worker, while keeping computation deterministic.
-const HAPLOTYPE_RESPONSE = {
+// Complete non-empty Struct-of-Arrays payload: valid RawPayload input for both
+// the REST parser and the real haplotype worker. It deliberately includes a TR
+// with exact carrier alleles plus SNV/indel rows so every populated rendering
+// path remains deterministic without replacing the worker implementation.
+const POPULATED_HAPLOTYPE_RESPONSE = {
   variants: {
-    variant_id: [],
-    chrom: [],
-    pos: [],
-    end: [],
-    ref: [],
-    alt: [],
-    allele_type: [],
-    allele_length: [],
-    freq_af: [],
-    freq_ac: [],
-    freq_an: [],
-    rsid: [],
-    cadd_phred: [],
-    phylop: [],
-    sv_consequences: [],
-    dbsnp_id: [],
-    tr_id: [],
-    tr_motifs: [],
-    gnomad_str: [],
-    allele_methylation: [],
-    motif_counts: [],
-    allele_purity: [],
-    short_read_match_id: [],
-    populations: [],
+    variant_id: [
+      '1-103610000-TRV-AC-6',
+      '1-103610100-A-G',
+      '1-103610200-AC-A',
+    ],
+    chrom: ['1', '1', '1'],
+    pos: [103610000, 103610100, 103610200],
+    end: [103610004, null, 103610201],
+    ref: ['ACAC', 'A', 'AC'],
+    alt: ['ACACAC', 'G', 'A'],
+    allele_type: ['trv', 'snv', 'del'],
+    allele_length: [2, 0, -1],
+    freq_af: [0.5, 0.5, 0.5],
+    freq_ac: [2, 2, 2],
+    freq_an: [4, 4, 4],
+    rsid: ['', 'rsContract100', ''],
+    cadd_phred: [null, 12.5, null],
+    phylop: [null, 1.5, null],
+    sv_consequences: [null, null, null],
+    dbsnp_id: [null, 'rsContract100', null],
+    tr_id: ['contract-tr-1', null, null],
+    tr_motifs: ['AC', null, null],
+    gnomad_str: ['contract-str-1', null, null],
+    allele_methylation: [null, null, null],
+    motif_counts: [[3], null, null],
+    allele_purity: [1, null, null],
+    short_read_match_id: [null, '1-103610100-A-G', null],
+    populations: [
+      [{ id: 'NFE', af: 0.5 }],
+      [{ id: 'NFE', af: 0.5 }],
+      [{ id: 'AFR', af: 0.5 }],
+    ],
   },
-  carrier_variant_indices: {},
-  carriers: [],
+  carrier_variant_indices: {
+    'contract-alpha:1': [0, 1],
+    'contract-alpha:2': [2],
+    'contract-beta:1': [0, 2],
+    'contract-beta:2': [1],
+  },
+  carriers: [
+    {
+      sample_id: 'contract-alpha',
+      vcf_strand: 1,
+      phase_set: 'contract-ps-a1',
+      genotype_ploidy: 2,
+      variant_indices: [0, 1],
+    },
+    {
+      sample_id: 'contract-alpha',
+      vcf_strand: 2,
+      phase_set: 'contract-ps-a2',
+      genotype_ploidy: 2,
+      variant_indices: [2],
+    },
+    {
+      sample_id: 'contract-beta',
+      vcf_strand: 1,
+      phase_set: 'contract-ps-b1',
+      genotype_ploidy: 2,
+      variant_indices: [0, 2],
+    },
+    {
+      sample_id: 'contract-beta',
+      vcf_strand: 2,
+      phase_set: 'contract-ps-b2',
+      genotype_ploidy: 2,
+      variant_indices: [1],
+    },
+  ],
   auto_defaults: {
     floor: 0,
     ceiling: 1,
     defaultAf: 0,
-    defaultClusterThreshold: 0,
+    defaultClusterThreshold: 0.5,
     isClusteredView: false,
   },
 }
+
+const POPULATED_SUMMARY_VARIANTS = [
+  {
+    variant_id: '1-103610000-TRV-AC-6',
+    source_variant_id: '1-103610000-TRV',
+    alt_index: 1,
+    lr_cohort: 'hgsvc_hprc',
+    chrom: '1',
+    pos: 103610000,
+    end: 103610004,
+    length: 2,
+    ref: 'ACAC',
+    alt: 'ACACAC',
+    allele_type: 'trv',
+    filters: [],
+    motifs: ['AC'],
+    rsids: [],
+    main_reference_region: { chrom: '1', start: 103610000, stop: 103610004 },
+    sv_consequences: [],
+    major_consequence: null,
+    cadd_phred: null,
+    phylop: null,
+    freq: {
+      all: { ac: 2, an: 4, af: 0.5 },
+      populations: [{ id: 'nfe', ac: 2, an: 4, af: 0.5 }],
+    },
+    transcript_consequences: [],
+    short_read_match_id: null,
+    enveloping_tr_id: null,
+    enveloped_ids: [],
+    is_likely_tr: true,
+    gnomad_str: 'contract-str-1',
+  },
+  {
+    variant_id: '1-103610100-A-G',
+    source_variant_id: '1-103610100-A-G',
+    alt_index: 1,
+    lr_cohort: 'hgsvc_hprc',
+    chrom: '1',
+    pos: 103610100,
+    end: null,
+    length: 0,
+    ref: 'A',
+    alt: 'G',
+    allele_type: 'snv',
+    filters: [],
+    motifs: null,
+    rsids: ['rsContract100'],
+    main_reference_region: null,
+    sv_consequences: [],
+    major_consequence: null,
+    cadd_phred: 12.5,
+    phylop: 1.5,
+    freq: {
+      all: { ac: 2, an: 4, af: 0.5 },
+      populations: [{ id: 'nfe', ac: 2, an: 4, af: 0.5 }],
+    },
+    transcript_consequences: [],
+    short_read_match_id: '1-103610100-A-G',
+    enveloping_tr_id: null,
+    enveloped_ids: [],
+    is_likely_tr: false,
+    gnomad_str: null,
+  },
+  {
+    variant_id: '1-103610200-AC-A',
+    source_variant_id: '1-103610200-AC-A',
+    alt_index: 1,
+    lr_cohort: 'hgsvc_hprc',
+    chrom: '1',
+    pos: 103610200,
+    end: 103610201,
+    length: -1,
+    ref: 'AC',
+    alt: 'A',
+    allele_type: 'del',
+    filters: [],
+    motifs: null,
+    rsids: [],
+    main_reference_region: null,
+    sv_consequences: [],
+    major_consequence: null,
+    cadd_phred: null,
+    phylop: null,
+    freq: {
+      all: { ac: 2, an: 4, af: 0.5 },
+      populations: [{ id: 'afr', ac: 2, an: 4, af: 0.5 }],
+    },
+    transcript_consequences: [],
+    short_read_match_id: null,
+    enveloping_tr_id: null,
+    enveloped_ids: [],
+    is_likely_tr: false,
+    gnomad_str: null,
+  },
+]
+
+const populatedHaplotypeSlots = [
+  'lr-haplotype-mode-subcontrols',
+  'lr-haplotype-info-slot',
+]
 
 const transitionViewports = [
   { name: 'desktop', width: 1440, height: 900 },
   { name: 'mobile', width: 390, height: 844 },
 ]
 
-const captureSlotGeometry = async (page: Page, testIds: string[]) =>
-  Object.fromEntries(
-    await Promise.all(
+const captureSlotGeometry = async (page: Page, testIds: string[]) => {
+  const [entries, scrollY] = await Promise.all([
+    Promise.all(
       testIds.map(async (testId) => {
         const box = await page.getByTestId(testId).boundingBox()
         expect(box, `${testId} should retain a layout box`).not.toBeNull()
-        return [testId, box!]
+        return [testId, box!] as const
       })
-    )
+    ),
+    page.evaluate(() => window.scrollY),
+  ])
+
+  // As with captureLrGeometry, compare document-space coordinates so focusing
+  // and clicking controls cannot masquerade as layout displacement.
+  return Object.fromEntries(
+    entries.map(([testId, box]) => [testId, { ...box, y: box.y + scrollY }])
   )
+}
 
 const expectExactSlotGeometry = (
   before: Record<string, { x: number; y: number; width: number; height: number }>,
@@ -162,11 +315,87 @@ const expectExactSlotGeometry = (
 }
 
 transitionViewports.forEach((viewport) => {
-  test(`LR view transitions preserve geometry and requests on ${viewport.name}`, async ({
+  test(`populated TR LR transitions preserve geometry and requests on ${viewport.name}`, async ({
     page,
-  }) => {
+  }, testInfo) => {
+    test.setTimeout(90_000)
     await page.setViewportSize(viewport)
     await installWorkerReadyGate(page)
+
+    // Eliminate the live API from this contract: the summary payload, sample
+    // metadata, and expanded TR detail all match the held REST fixture below.
+    await page.route('**/api/', async (route) => {
+      let body: any
+      try {
+        body = route.request().postDataJSON()
+      } catch {
+        await route.continue()
+        return
+      }
+      const operationName =
+        body?.operationName || body?.query?.match(/\b(?:query|mutation)\s+(\w+)/)?.[1]
+      const responses: Record<string, unknown> = {
+        Region: {
+          data: {
+            meta: { long_read_cohorts: ['hgsvc_hprc'] },
+            region: { genes: [], non_coding_constraints: [], short_tandem_repeats: [] },
+          },
+        },
+        LongReadVariantsInRegion: {
+          data: {
+            meta: { clinvar_release_date: '2026-01-01' },
+            long_read_y1_provenance: null,
+            region: { long_read_variants: POPULATED_SUMMARY_VARIANTS },
+          },
+        },
+        RegionSampleMetadata: {
+          data: {
+            sample_metadata: [
+              { sample_id: 'contract-alpha', subpopulation: 'nfe', superpopulation: 'NFE' },
+              { sample_id: 'contract-beta', subpopulation: 'afr', superpopulation: 'AFR' },
+            ],
+          },
+        },
+        LRCoverage: { data: { lr_coverage: [] } },
+        RegionJoinedPhasedMethylationCapability: {
+          data: {
+            joined_phased_methylation_capability: {
+              available: false,
+              joinable_to_vcf: false,
+              status: 'unavailable',
+              source_sample_ids: [],
+              max_span_bp: 0,
+              max_samples: 0,
+              max_records: 0,
+              reason: 'Deterministic transition fixture has no methylation data',
+              identity: null,
+            },
+          },
+        },
+        ExpandedTrDistributions: {
+          data: {
+            long_read_variant: {
+              variant_id: '1-103610000-TRV-AC-6',
+              lr_cohort: 'hgsvc_hprc',
+              motifs: ['AC'],
+              allele_size_distribution: null,
+              max_repunits: null,
+              genotype_distribution: null,
+              main_reference_region: { chrom: '1', start: 103610000, stop: 103610004 },
+            },
+          },
+        },
+      }
+      if (!operationName || !responses[operationName]) {
+        await route.continue()
+        return
+      }
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(responses[operationName]),
+      })
+    })
 
     let releaseHaplotypeResponse!: () => void
     const haplotypeResponseGate = new Promise<void>((resolve) => {
@@ -177,12 +406,15 @@ transitionViewports.forEach((viewport) => {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify(HAPLOTYPE_RESPONSE),
+        body: JSON.stringify(POPULATED_HAPLOTYPE_RESPONSE),
       })
     })
 
     const requests = collectLrRequestCounts(page)
-    await page.goto(`/region/${SUMMARY_REGION}?dataset=${LR_DATASET}`)
+    // Keep the optional genealogy panel out of this geometry contract. A populated
+    // default-tree transition currently reflows the mobile RegionViewer; that
+    // independently proven defect is recorded in the follow-up ticket.
+    await page.goto(`/region/${SUMMARY_REGION}?dataset=${LR_DATASET}&show_tree=false`)
     await expect(page.locator('#lr-view-mode')).toBeVisible({ timeout: 20_000 })
     await expect(page.getByText(/Showing .* variants/)).toBeVisible({ timeout: 30_000 })
 
@@ -216,6 +448,7 @@ transitionViewports.forEach((viewport) => {
     await expect(viewportStatus).toHaveText('Fetching variant data…')
     await expect(viewShell).toHaveAttribute('aria-busy', 'true')
     const restPendingGeometry = await captureLrGeometry(page, viewShell, true)
+    const restPendingSlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
     expectStableGeometry(summaryGeometry, restPendingGeometry, 'Summary → REST pending', [
       'viewModeY',
       'searchY',
@@ -224,9 +457,10 @@ transitionViewports.forEach((viewport) => {
 
     releaseHaplotypeResponse()
     await waitForHeldWorkerMessage(page, 'READY')
-    await expect(viewportStatus).toHaveText(/Grouping 0 (?:variants|samples) into haplotypes…/)
+    await expect(viewportStatus).toHaveText('Grouping 4 samples into haplotypes…')
     await expect(haplotypeRadio).toBeFocused()
     const workerPendingGeometry = await captureLrGeometry(page, viewShell, true)
+    const workerPendingSlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
     expectStableGeometry(summaryGeometry, workerPendingGeometry, 'Summary → worker pending', [
       'viewModeY',
       'searchY',
@@ -237,14 +471,18 @@ transitionViewports.forEach((viewport) => {
       'REST pending → worker pending',
       ['groupingY']
     )
+    expectExactSlotGeometry(restPendingSlots, workerPendingSlots, 'REST pending → worker pending')
     await expectNoHorizontalOverflow(page)
 
     await workerGateRelease(page)
     await expect(page.locator('#lr-variant-table-container').first()).toHaveCSS('opacity', '1')
-    await expect(viewportStatus).toHaveText('There is no haplotype data for this region.')
+    await expect(viewportStatus).toHaveCount(0)
     await expect(viewShell).toHaveAttribute('aria-busy', 'false')
     await expect(haplotypeRadio).toBeFocused()
+    await expect(page.getByTestId('lr-haplotype-info-slot')).toContainText('2 samples (diploid)')
+    await expect(page.getByTestId('lr-haplotype-info-slot')).toContainText('3 variants')
     const haplotypeReadyGeometry = await captureLrGeometry(page, viewShell, true)
+    const haplotypeReadySlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
     expectStableGeometry(summaryGeometry, haplotypeReadyGeometry, 'Summary → Haplotype ready', [
       'viewModeY',
       'searchY',
@@ -252,6 +490,33 @@ transitionViewports.forEach((viewport) => {
     expectStableGeometry(restPendingGeometry, haplotypeReadyGeometry, 'Haplotype pending → ready', [
       'groupingY',
     ])
+    expectExactSlotGeometry(restPendingSlots, haplotypeReadySlots, 'REST pending → ready')
+    await expectNoHorizontalOverflow(page)
+
+    // Selecting and expanding the deterministic TR row installs the persistent
+    // selected-position guide in the populated DeckGL viewport. The selected
+    // row state is its observable trigger; geometry must remain fixed while the
+    // guide and TR-specific content are present.
+    const trRow = page.locator('tr[data-position="103610000"]')
+    await expect(trRow).toContainText('1-103610000-TRV-AC-6')
+    await expect(trRow).toContainText('TR')
+    await trRow.locator('td').nth(1).click()
+    await expect(page.getByText('TR Locus: 1:103610000')).toBeVisible()
+    const motifsLine = page.getByText('Motifs:').locator('..')
+    await expect(motifsLine).toBeVisible()
+    await expect(motifsLine).toContainText('AC')
+    const selectedGuideGeometry = await captureLrGeometry(page, viewShell, true)
+    const selectedGuideSlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
+    expectStableGeometry(
+      haplotypeReadyGeometry,
+      selectedGuideGeometry,
+      'Selected-position guide and expanded TR'
+    )
+    expectExactSlotGeometry(
+      haplotypeReadySlots,
+      selectedGuideSlots,
+      'selected-position guide and expanded TR'
+    )
     await expectNoHorizontalOverflow(page)
 
     await page.waitForLoadState('networkidle').catch(() => {})
@@ -263,7 +528,8 @@ transitionViewports.forEach((viewport) => {
 
     const transitionGrouping = async (
       label: 'Diploid' | 'Similarity Clusters',
-      referenceGeometry: Awaited<ReturnType<typeof captureLrGeometry>>
+      referenceGeometry: Awaited<ReturnType<typeof captureLrGeometry>>,
+      referenceSlots: Awaited<ReturnType<typeof captureSlotGeometry>>
     ) => {
       await workerGateHold(page)
       const radio = page.getByRole('radio', { name: label })
@@ -274,34 +540,41 @@ transitionViewports.forEach((viewport) => {
       await waitForHeldWorkerMessage(page, 'UPDATED')
 
       const pendingGeometry = await captureLrGeometry(page, viewShell, true)
+      const pendingSlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
       expectStableGeometry(referenceGeometry, pendingGeometry, `${label} worker pending`, [
         'shellHeight',
         'viewModeY',
         'searchY',
         'groupingY',
       ])
+      expectExactSlotGeometry(referenceSlots, pendingSlots, `${label} worker pending`)
       await expectNoHorizontalOverflow(page)
       await workerGateRelease(page)
       await expect(page.locator('#lr-variant-table-container').first()).toHaveCSS('opacity', '1')
       await expect(radio).toBeFocused()
 
       const readyGeometry = await captureLrGeometry(page, viewShell, true)
+      const readySlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
       expectStableGeometry(referenceGeometry, readyGeometry, `${label} ready`, [
         'shellHeight',
         'viewModeY',
         'searchY',
         'groupingY',
       ])
+      expectExactSlotGeometry(referenceSlots, readySlots, `${label} ready`)
       await expectNoHorizontalOverflow(page)
-      return readyGeometry
+      return { geometry: readyGeometry, slots: readySlots }
     }
 
-    const similarityGeometry = await transitionGrouping(
+    const similarity = await transitionGrouping(
       'Similarity Clusters',
-      haplotypeReadyGeometry
+      selectedGuideGeometry,
+      selectedGuideSlots
     )
-    await transitionGrouping('Diploid', similarityGeometry)
+    const diploid = await transitionGrouping('Diploid', similarity.geometry, similarity.slots)
     expect(JSON.stringify(requests)).toBe(requestsBeforeGrouping)
+    expect(requests.haplotypeRest).toBe(1)
+    expect(await workerMessageCount(page, 'INIT')).toBe(1)
 
     // Same scope keeps exactly one raw payload and its current computed
     // representation resident across Summary → Haplotype re-entry.
@@ -333,6 +606,31 @@ transitionViewports.forEach((viewport) => {
       page.getByRole('textbox', { name: 'Filter long-read variants' }),
       'variant search'
     )
+
+    await testInfo.attach(`populated-tr-transition-${viewport.name}.json`, {
+      body: JSON.stringify(
+        {
+          viewport,
+          geometry: {
+            restPendingGeometry,
+            restPendingSlots,
+            workerPendingGeometry,
+            workerPendingSlots,
+            haplotypeReadyGeometry,
+            haplotypeReadySlots,
+            selectedGuideGeometry,
+            selectedGuideSlots,
+            similarity,
+            diploid,
+          },
+          requests,
+          initMessages: await workerMessageCount(page, 'INIT'),
+        },
+        null,
+        2
+      ),
+      contentType: 'application/json',
+    })
   })
 
   test(`cohort and dataset revalidation retain slots and exact request identity on ${viewport.name}`, async ({
