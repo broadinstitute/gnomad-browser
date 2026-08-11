@@ -311,7 +311,7 @@ export const Legend = ({
     <ControlsContainer>
       {/* Top row: Min AF, Grouping, Sort */}
       <ControlGroup>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div hidden={isClusteredView} style={{ display: isClusteredView ? 'none' : 'flex', alignItems: 'center', gap: '4px' }}>
           <label style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Min AF:</label>
           <input
             type='range'
@@ -346,7 +346,7 @@ export const Legend = ({
             <GroupingModeHelp />
           </HaplotypeHelpButton>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <div hidden={!isDiploidView} style={{ display: isDiploidView ? 'flex' : 'none', alignItems: 'center', gap: '4px' }}>
           <label style={{ fontSize: '12px' }}>Sort:</label>
           <SegmentedControl
             id='sort-mode'
@@ -391,7 +391,7 @@ export const Legend = ({
 
       {/* Fieldsets: Clustering + Data Layers side by side */}
       <FieldsetRow>
-        <Fieldset $disabled={!isClusteredView} style={{ flex: '1.2 1 200px' }}>
+        <Fieldset hidden={!isClusteredView} style={{ flex: '1.2 1 200px' }}>
           <FieldsetTitle>Clustering</FieldsetTitle>
           <ControlGroup>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -1138,9 +1138,9 @@ const PaintingHelp = () => (
   </>
 )
 
-const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'similarity' | 'exact' | 'diploid' }) => (
-  <>
-    {groupingMode === 'similarity' ? (
+export const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'similarity' | 'exact' | 'diploid' }) => {
+  if (groupingMode === 'similarity') {
+    return (
       <>
         <p>
           In <strong>Similarity Clusters</strong> mode, the tree and clusters are computed once at the
@@ -1152,22 +1152,45 @@ const MinAfHelp = ({ groupingMode = 'similarity' }: { groupingMode?: 'similarity
           without them affecting the grouping.
         </p>
       </>
-    ) : (
+    )
+  }
+
+  if (groupingMode === 'diploid') {
+    return (
       <>
         <p>
-          In <strong>{groupingMode === 'diploid' ? 'Diploid' : 'Exact Match'}</strong> mode,
-          this slider controls which variants are used when matching haplotypes. Variants below
-          this frequency are ignored, directly causing groups to merge. Raising the threshold
-          consolidates samples into fewer, larger groups defined by common variants.
+          Each Diploid row is an unordered pair of exact chromosome-copy haplotype signatures
+          within this region. Two samples share a row when both copies contain the same sets of
+          variants at or above Min AF; the two copies may be swapped.
         </p>
         <p>
-          Rare variants aren't hidden completely — they remain visible as small open circles
-          on each group's track so you can still spot them without them breaking up the group.
+          For example, <code>{'{v1, v2} + {v3}'}</code> and <code>{'{v3} + {v1, v2}'}</code>
+          belong to the same diplotype group.
+        </p>
+        <p>
+          A difference below Min AF does not separate samples; it remains visible as a small open
+          background marker. A difference at or above Min AF creates a separate group. Unphased
+          variants are excluded from this matching.
         </p>
       </>
-    )}
-  </>
-)
+    )
+  }
+
+  return (
+    <>
+      <p>
+        In <strong>Exact Match</strong> mode, this slider controls which variants are used when
+        matching haplotypes. Variants below this frequency are ignored, directly causing groups
+        to merge. Raising the threshold consolidates samples into fewer, larger groups defined by
+        common variants.
+      </p>
+      <p>
+        Rare variants aren't hidden completely — they remain visible as small open circles on
+        each group's track so you can still spot them without them breaking up the group.
+      </p>
+    </>
+  )
+}
 
 const GenealogyHelp = () => (
   <>
@@ -1200,7 +1223,7 @@ const GenealogyHelp = () => (
   </>
 )
 
-const GroupingModeHelp = () => (
+export const GroupingModeHelp = () => (
   <>
     <dl style={{ margin: 0 }}>
       <dt style={{ fontWeight: 600, marginTop: 4 }}>Similarity Clusters (UPGMA)</dt>
@@ -1222,9 +1245,21 @@ const GroupingModeHelp = () => (
       </dd>
       <dt style={{ fontWeight: 600, marginTop: 4 }}>Diploid</dt>
       <dd style={{ marginLeft: 0, marginBottom: 8 }}>
-        Pairs both strands of each sample together, showing complete diploid structure.
-        Highlights runs of homozygosity (ROH) and compound heterozygosity. The Min AF slider
-        controls grouping, same as Exact Match mode.
+        <p style={{ margin: '0 0 8px' }}>
+          Pairs both phased chromosome copies from each sample. Each row is an unordered pair of
+          exact haplotype signatures within this region: two samples share a row when both copies
+          contain the same sets of variants at or above Min AF, even when the copy order is swapped.
+        </p>
+        <p style={{ margin: '0 0 8px' }}>
+          For example, <code>{'{v1, v2} + {v3}'}</code> and <code>{'{v3} + {v1, v2}'}</code>
+          belong to the same diplotype group.
+        </p>
+        <p style={{ margin: 0 }}>
+          A difference below Min AF remains a small open background marker and does not split the
+          group. A difference at or above Min AF creates a separate group. Unphased variants are
+          excluded from matching. This view also highlights runs of homozygosity (ROH) and
+          compound heterozygosity.
+        </p>
       </dd>
     </dl>
   </>

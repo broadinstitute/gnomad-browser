@@ -1,10 +1,12 @@
 import React from 'react'
-import renderer, { act } from 'react-test-renderer'
+import renderer, { act, type ReactTestRenderer } from 'react-test-renderer'
 import { describe, expect, jest, test } from '@jest/globals'
 import HaplotypeTrack, {
+  GroupingModeHelp,
   HaplotypeInfoBar,
   HaplotypeOmissionHelp,
   Legend,
+  MinAfHelp,
   RecombinationHelp,
   type HaplotypeGroup,
 } from './index'
@@ -80,21 +82,56 @@ describe('haplotype summary metadata', () => {
     expect(text).not.toContain('biological strand')
   })
 
-  test('only exposes lollipop controls and omits compound-het sorting', () => {
-    const diploidText = renderedText(
-      renderer.create(<Legend groupingMode="diploid" initialSortBy="sample_id" />).toJSON()
+  test('explains unordered exact diplotype grouping and the Min AF boundary', () => {
+    const groupingText = renderedText(renderer.create(<GroupingModeHelp />).toJSON())
+    const minAfText = renderedText(
+      renderer.create(<MinAfHelp groupingMode="diploid" />).toJSON()
     )
-    const haploidText = renderedText(renderer.create(<Legend />).toJSON())
 
-    expect(diploidText).toContain('Clustering')
+    for (const text of [groupingText, minAfText]) {
+      expect(text).toContain('unordered pair of exact')
+      expect(text).toContain('{v1, v2} + {v3}')
+      expect(text).toContain('{v3} + {v1, v2}')
+      expect(text).toContain('same diplotype group')
+      expect(text).toContain('difference below Min AF')
+      expect(text).toContain('small open background marker')
+      expect(text).toContain('difference at or above Min AF creates a separate group')
+      expect(text).toContain('Unphased variants are excluded')
+    }
+  })
+
+  test('shows controls only in applicable grouping modes', () => {
+    const diploid = renderer.create(
+      <Legend groupingMode="diploid" initialSortBy="sample_id" />
+    )
+    const exact = renderer.create(<Legend groupingMode="exact" />)
+    const similarity = renderer.create(<Legend groupingMode="similarity" />)
+    const clusteringPanel = (component: ReactTestRenderer) => component.root.find(
+      (node) => node.type === 'fieldset' && renderedText(node).includes('Clustering')
+    )
+    const labeledControl = (component: ReactTestRenderer, label: string) => component.root.find(
+      (node) => node.type === 'label' && renderedText(node) === label
+    ).parent!
+    const diploidText = renderedText(diploid.toJSON())
+    const similarityText = renderedText(similarity.toJSON())
+
+    expect(clusteringPanel(diploid).props.hidden).toBe(true)
+    expect(clusteringPanel(exact).props.hidden).toBe(true)
+    expect(clusteringPanel(similarity).props.hidden).toBe(false)
+    expect(labeledControl(diploid, 'Min AF:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
+    expect(labeledControl(exact, 'Min AF:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
+    expect(labeledControl(similarity, 'Min AF:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
+    expect(labeledControl(diploid, 'Sort:').props).toMatchObject({ hidden: false, style: { display: 'flex' } })
+    expect(labeledControl(exact, 'Sort:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
+    expect(labeledControl(similarity, 'Sort:').props).toMatchObject({ hidden: true, style: { display: 'none' } })
+    expect(similarityText).toContain('Resolution:')
+    expect(similarityText).toContain('Cluster by:')
     expect(diploidText).toContain('Data Layers')
     expect(diploidText).toContain('Sample')
     expect(diploidText).toContain('ROH')
     expect(diploidText).not.toContain('Display')
     expect(diploidText).not.toContain('Plot:')
     expect(diploidText).not.toContain('Comp. Het.')
-    expect(haploidText).toContain('Similarity')
-    expect(haploidText).toContain('Count')
   })
 
   test('ignores a legacy alternate plot prop and renders lollipop', () => {
