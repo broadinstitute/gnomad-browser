@@ -101,25 +101,37 @@ describe('haplotype summary metadata', () => {
     expect(groupingText).not.toContain('Exact Match')
   })
 
-  test('offers only supported grouping modes and normalizes legacy exact state', () => {
+  test('offers an accessible radio group with only supported modes and normalizes legacy state', () => {
     const onGroupingModeChange = jest.fn()
     const component = renderer.create(
       <Legend groupingMode="exact" onGroupingModeChange={onGroupingModeChange} />
     )
-    const select = component.root.findAllByType('select').find(
-      (control) => control.props.value === 'similarity'
-    )!
-    const options = select.findAllByType('option')
+    const groupingRadioGroup = component.root.find(
+      (node) => node.props.role === 'radiogroup' && node.props['aria-label'] === 'Grouping'
+    )
+    const radios = groupingRadioGroup.findAll(
+      (node) => node.type === 'input' && node.props.type === 'radio'
+    )
+    const labels = groupingRadioGroup.findAllByType('label')
+    const control = groupingRadioGroup.find(
+      (node) => node.props.id === 'grouping-mode' && Array.isArray(node.props.options)
+    )
 
-    expect(options.map((option) => [option.props.value, renderedText(option)])).toEqual([
-      ['similarity', 'Similarity Clusters'],
-      ['diploid', 'Diploid'],
+    expect(labels.map(renderedText)).toEqual(['Diploid', 'Similarity Clusters'])
+    expect(radios).toHaveLength(2)
+    expect(radios.map((radio) => radio.props.name)).toEqual([
+      'grouping-mode',
+      'grouping-mode',
     ])
-    expect(select.props.value).toBe('similarity')
+    expect(radios.map((radio) => radio.props.checked)).toEqual([false, true])
+    expect(control.props.value).toBe('similarity')
     expect(renderedText(component.toJSON())).not.toContain('Exact Match')
 
-    act(() => select.props.onChange({ target: { value: 'exact' } }))
-    expect(onGroupingModeChange).toHaveBeenCalledWith('similarity')
+    act(() => radios[0].props.onChange({ target: { value: '0' } }))
+    expect(onGroupingModeChange).toHaveBeenLastCalledWith('diploid')
+
+    act(() => control.props.onChange('exact'))
+    expect(onGroupingModeChange).toHaveBeenLastCalledWith('similarity')
   })
 
   test('shows controls only in applicable grouping modes', () => {

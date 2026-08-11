@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useMemo, forwardRef, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
-import { TooltipAnchor, Select } from '@gnomad/ui'
+import { TooltipAnchor, SegmentedControl } from '@gnomad/ui'
 import { scaleLinear } from 'd3-scale'
-import { SegmentedControl } from '@gnomad/ui'
 import { buildPangenomeGraph } from './pangenome-graph'
 import { buildVariationGraph } from './variation-graph'
 import AlluvialTrack from './AlluvialTrack'
@@ -94,6 +93,23 @@ const ControlGroup = styled.div`
   align-items: center;
   flex-wrap: wrap;
   gap: 16px;
+`
+
+const GroupingControl = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  font-size: 12px;
+`
+
+const GroupingRadioGroup = styled.span`
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 100%;
 `
 
 const FieldsetRow = styled.div`
@@ -342,19 +358,23 @@ export const Legend = ({
             <MinAfHelp groupingMode={selectableGroupingMode} />
           </HaplotypeHelpButton>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <label style={{ fontSize: '12px' }}>Grouping:</label>
-          <Select
-            value={selectableGroupingMode}
-            onChange={(e: any) => onGroupingModeChange(normalizeSelectableGroupingMode(e.target.value))}
-          >
-            <option value="similarity">Similarity Clusters</option>
-            <option value="diploid">Diploid</option>
-          </Select>
+        <GroupingControl>
+          <GroupingRadioGroup role="radiogroup" aria-label="Grouping">
+            <span>Grouping:</span>
+            <SegmentedControl
+              id="grouping-mode"
+              options={[
+                { label: 'Diploid', value: 'diploid' },
+                { label: 'Similarity Clusters', value: 'similarity' },
+              ]}
+              value={selectableGroupingMode}
+              onChange={(value: any) => onGroupingModeChange(normalizeSelectableGroupingMode(value))}
+            />
+          </GroupingRadioGroup>
           <HaplotypeHelpButton title="Grouping Mode">
             <GroupingModeHelp />
           </HaplotypeHelpButton>
-        </div>
+        </GroupingControl>
         <div hidden={!isDiploidView} style={{ display: isDiploidView ? 'flex' : 'none', alignItems: 'center', gap: '4px' }}>
           <label style={{ fontSize: '12px' }}>Sort:</label>
           <SegmentedControl
