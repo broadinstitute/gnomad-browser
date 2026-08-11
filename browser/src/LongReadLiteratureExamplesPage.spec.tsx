@@ -30,14 +30,31 @@ describe('LongReadLiteratureExamplesPage', () => {
     expect(pdfLink?.getAttribute('href')).toBe(example!.pdfUrl)
   })
 
-  test('links only the four curated prototype papers to detailed workflows', () => {
+  test('links all 12 curated papers, including every Batch 1 workflow', () => {
     render(<LongReadLiteratureExamplesPage />)
 
     const detailLinks = screen.getAllByRole('link', { name: 'Detailed workflow' })
-    expect(detailLinks).toHaveLength(4)
+    expect(detailLinks).toHaveLength(12)
     expect(detailLinks.map((link) => link.getAttribute('href')).sort()).toEqual(
       literatureWorkflows.map((workflow) => literatureWorkflowPath(workflow.slug)).sort()
     )
+
+    const batchOneRefs = new Set(['1', '10', '34', '72', '78', '88', '93', '140'])
+    const batchOnePaths = literatureWorkflows
+      .filter((workflow) => batchOneRefs.has(workflow.ref))
+      .map((workflow) => literatureWorkflowPath(workflow.slug))
+    expect(
+      detailLinks.filter((link) => batchOnePaths.includes(link.getAttribute('href')!))
+    ).toHaveLength(8)
+  })
+
+  test('does not offer a region link for the unmapped D4Z4 workflow', () => {
+    render(<LongReadLiteratureExamplesPage />)
+
+    const d4z4 = examples.find((item) => item.ref === '140')!
+    const card = screen.getByText(d4z4.title).parentElement!
+    expect(within(card).queryByRole('link', { name: 'View in browser' })).toBeNull()
+    expect(within(card).getByRole('link', { name: 'Detailed workflow' })).not.toBeNull()
   })
 
   test('filters cards by their primary archetype', () => {
