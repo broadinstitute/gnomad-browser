@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { referenceGenome, coverageDatasetId } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, referenceGenome, coverageDatasetId } from '@gnomad/dataset-metadata/metadata'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
+import StatusMessage from '../StatusMessage'
 
 const operationName = 'RegionCoverage'
 const coverageQuery = `
@@ -44,12 +45,21 @@ query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: D
 `
 
 type OwnProps = {
-  datasetId: string
+  datasetId: DatasetId
   chrom: string
   start: number
   stop: number
   includeExomeCoverage?: boolean
   includeGenomeCoverage?: boolean
+  viewStart?: number
+  viewStop?: number
+  metricControlId?: string
+  exomeLabel?: string
+  genomeLabel?: string
+  filenameForExport?: string
+  errorMessage?: string
+  unavailableMessage?: string
+  height?: number
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
@@ -63,7 +73,19 @@ const RegionCoverageTrack = ({
   stop,
   includeExomeCoverage,
   includeGenomeCoverage,
+  viewStart,
+  viewStop,
+  metricControlId,
+  exomeLabel,
+  genomeLabel,
+  filenameForExport,
+  errorMessage,
+  unavailableMessage,
+  height,
 }: Props) => {
+  const viewportStart = viewStart ?? start
+  const viewportStop = viewStop ?? stop
+
   return (
     <Query
       operationName={operationName}
@@ -79,32 +101,45 @@ const RegionCoverageTrack = ({
       }}
       loadingMessage="Loading coverage"
       loadingPlaceholderHeight={220}
-      errorMessage="Unable to load coverage"
-      success={(data: any) => {
-        if (!data.region || !data.region.coverage) {
-          return false
-        }
-        const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : true
-        const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : true
-        return exomeCoverage || genomeCoverage
-      }}
+      errorMessage={errorMessage}
+      success={(data: any) => Boolean(data.region && data.region.coverage)}
     >
       {({ data }: any) => {
-        const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : null
-        const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : null
+        const filterToViewport = (buckets: any) =>
+          Array.isArray(buckets)
+            ? buckets.filter(
+                (bucket: any) => bucket.pos >= viewportStart && bucket.pos <= viewportStop
+              )
+            : []
+        const exomeCoverage = includeExomeCoverage
+          ? filterToViewport(data.region.coverage.exome)
+          : []
+        const genomeCoverage = includeGenomeCoverage
+          ? filterToViewport(data.region.coverage.genome)
+          : []
+        if (exomeCoverage.length === 0 && genomeCoverage.length === 0) {
+          return <StatusMessage>{unavailableMessage}</StatusMessage>
+        }
 
+        const nonEmptyExomeCoverage = exomeCoverage.length > 0 ? exomeCoverage : null
+        const nonEmptyGenomeCoverage = genomeCoverage.length > 0 ? genomeCoverage : null
         const coverageConfig =
           datasetId === 'exac'
-            ? coverageConfigClassic(exomeCoverage, genomeCoverage)
-            : coverageConfigNew(exomeCoverage, genomeCoverage)
+            ? coverageConfigClassic(nonEmptyExomeCoverage, nonEmptyGenomeCoverage)
+            : coverageConfigNew(nonEmptyExomeCoverage, nonEmptyGenomeCoverage)
+        const labeledCoverageConfig = coverageConfig.map((config) => ({
+          ...config,
+          name: config.name === 'exome' ? exomeLabel : genomeLabel,
+        }))
 
         return (
           <CoverageTrack
             coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
-            filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
-            datasets={coverageConfig}
-            height={200}
+            filenameForExport={() => filenameForExport || `${chrom}-${start}-${stop}_coverage`}
+            datasets={labeledCoverageConfig}
+            height={height}
             datasetId={datasetId}
+            metricControlId={metricControlId}
           />
         )
       }}
@@ -115,6 +150,15 @@ const RegionCoverageTrack = ({
 RegionCoverageTrack.defaultProps = {
   includeExomeCoverage: true,
   includeGenomeCoverage: true,
+  viewStart: undefined,
+  viewStop: undefined,
+  metricControlId: 'coverage-metric',
+  exomeLabel: 'exome',
+  genomeLabel: 'genome',
+  filenameForExport: undefined,
+  errorMessage: 'Unable to load coverage',
+  unavailableMessage: 'Coverage is unavailable in this region.',
+  height: 200,
 }
 
 export default RegionCoverageTrack

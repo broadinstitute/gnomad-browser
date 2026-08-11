@@ -10,16 +10,19 @@ import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'
 
 const TopPanel = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
+  gap: 0.5em 1em;
   width: 100%;
+  min-width: 0;
 `
 
 const LegendWrapper = styled.ul`
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   padding: 0;
-  margin: 0 1em 0 0;
+  margin: 0 auto 0 0;
   list-style-type: none;
 `
 
@@ -104,6 +107,7 @@ type OwnCoverageTrackProps = {
   maxCoverage?: number
   datasetId: DatasetId
   metric?: MetricOptions
+  metricControlId?: string
 }
 
 type CoverageTrackState = { selectedMetric: MetricOptions }
@@ -115,6 +119,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     filenameForExport: () => 'coverage',
     height: 190,
     maxCoverage: 100,
+    metricControlId: 'coverage-metric',
   }
 
   plotElement: any
@@ -156,11 +161,17 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
     URL.revokeObjectURL(url)
   }
 
-  renderArea({ scaleCoverageMetric, scalePosition }: any) {
+  renderArea({ isPositionDefined, scaleCoverageMetric, scalePosition }: any) {
     const { datasets, height } = this.props
     const { selectedMetric } = this.state
 
     const pathGenerator = area()
+      .defined(
+        (bucket: any) =>
+          bucket[selectedMetric] !== undefined &&
+          bucket[selectedMetric] !== null &&
+          isPositionDefined(bucket.pos)
+      )
       .x((bucket) => scalePosition((bucket as any).pos))
       .y0(height)
       // @ts-expect-error TS(7015) FIXME: Element implicitly has an 'any' type because index... Remove this comment to see the full error message
@@ -236,7 +247,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   }
 
   render() {
-    const { coverageOverThresholds, datasets, height, maxCoverage } = this.props
+    const { coverageOverThresholds, datasets, height, maxCoverage, metricControlId } = this.props
     const { selectedMetric } = this.state
 
     const trackTitle =
@@ -251,10 +262,10 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
           <TopPanel>
             <Legend datasets={datasets} />
             {/* eslint-disable-next-line jsx-a11y/label-has-for */}
-            <label htmlFor="coverage-metric">
+            <label htmlFor={metricControlId}>
               Metric:{' '}
               <Select
-                id="coverage-metric"
+                id={metricControlId}
                 value={selectedMetric}
                 onChange={(e: any) => {
                   this.setState({ selectedMetric: e.target.value })

@@ -95,12 +95,13 @@ const LRCoverageTrack = ({
   return (
     <CoverageTrack
       coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
-      filenameForExport={() => `${chrom}-${start}-${stop}_lr_coverage`}
+      filenameForExport={() => `${chrom}-${start}-${stop}_gnomad_long_read_coverage`}
+      metricControlId="lr-coverage-metric"
       datasets={[
         {
           color: '#9c27b0',
           buckets: visibleCoverageData,
-          name: 'Long Read',
+          name: 'Long-read coverage — HGSVC/HPRC',
           opacity: 0.7,
         },
       ]}
