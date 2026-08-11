@@ -10,6 +10,7 @@ import { getVariantCssColor } from './variantColorUtils'
 import { passesLongReadVariantTypeFilters } from './longReadVariantTypes'
 import AccordionContext from '../Haplotypes/AccordionContext'
 import { getGenealogyPanelLayout } from '../Haplotypes/genealogyPanelLayout'
+import { useStableScrollbarGutter } from '../Haplotypes/scrollbarGutter'
 import TRDistributionPlot, { type TrDataPoint } from '../Haplotypes/TRDistributionPlot'
 import DeletionAllelicSeriesPlot from './DeletionAllelicSeriesPlot'
 import { aggregateTrLoci, getTrLocusDistribution, packTrLoci, type TrLocus } from './trLocusAggregation'
@@ -510,6 +511,7 @@ type LongReadVariantTrackProps = {
 }
 
 const LongReadVariantTrack = ({ variants, lod, showGenealogyPanel = false, isDiploidView = false, hoveredVariantPosition, onHoverVariantPosition, typeFilters, colorMode = 'sv_type', regionStart = 0, regionStop = 1 }: LongReadVariantTrackProps) => {
+  const scrollbarGutterWidth = useStableScrollbarGutter()
   // Summary bands and haplotype rows must share the genomic viewport itself,
   // not merely outer containers of equal width.
   const {
@@ -523,6 +525,7 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogyPanel = false, isDip
     centerPanelWidth: ctxCenterWidth,
     contextRightPanelWidth: ctxRightPanelWidth,
     showGenealogyPanel: showGenealogyPanel && !isDiploidView,
+    scrollbarGutterWidth,
   })
   const ctxScaleFactor = ctxCenterWidth > 0 ? adjCenterWidth / ctxCenterWidth : 1
   const adjScalePosition = ctxScaleFactor === 1

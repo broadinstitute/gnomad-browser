@@ -34,6 +34,22 @@ describe('getGenealogyPanelLayout', () => {
     })
   })
 
+  test('keeps genealogy content out from under the native scrollbar', () => {
+    expect(getGenealogyPanelLayout({
+      leftPanelWidth: 150,
+      centerPanelWidth: 770,
+      contextRightPanelWidth: 80,
+      showGenealogyPanel: true,
+      scrollbarGutterWidth: 15,
+    })).toEqual({
+      plotWidth: 655,
+      plotLeft: 150,
+      plotRight: 805,
+      rightPanelWidth: 180,
+      totalWidth: 985,
+    })
+  })
+
   test('uses a wider RegionViewer right panel without leaving unused space', () => {
     expect(getGenealogyPanelLayout({
       leftPanelWidth: 150,

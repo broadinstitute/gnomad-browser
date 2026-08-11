@@ -25,6 +25,7 @@ import type { DiplotypeGroup } from './haplotypeCompute'
 import { HaplotypeVariantTooltipContent } from './TrVariantTooltip'
 import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
+import { useStableScrollbarGutter } from './scrollbarGutter'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSearchFiltering'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
@@ -569,6 +570,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
 
   // Consume RegionViewerContext directly — bypass Track component
   const { scalePosition, centerPanelWidth: contextCenterWidth, leftPanelWidth: contextLeftPanelWidth, rightPanelWidth: contextRightPanelWidth } = useContext(RegionViewerContext)
+  const scrollbarGutterWidth = useStableScrollbarGutter()
 
   // The tree panel exists only when there is a tree to render. Otherwise the plot
   // absorbs RegionViewer's reserved right-panel width instead of leaving whitespace.
@@ -585,6 +587,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     centerPanelWidth: contextCenterWidth,
     contextRightPanelWidth,
     showGenealogyPanel: showRightPanel,
+    scrollbarGutterWidth,
   })
 
   // Rescale genomic positions to fit the (possibly narrower) center panel

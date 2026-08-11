@@ -6,6 +6,7 @@ type GenealogyPanelLayoutOptions = {
   contextRightPanelWidth: number
   showGenealogyPanel: boolean
   preferredGenealogyPanelWidth?: number
+  scrollbarGutterWidth?: number
 }
 
 /**
@@ -19,8 +20,14 @@ export const getGenealogyPanelLayout = ({
   contextRightPanelWidth,
   showGenealogyPanel,
   preferredGenealogyPanelWidth = GENEALOGY_PANEL_WIDTH,
+  scrollbarGutterWidth = 0,
 }: GenealogyPanelLayoutOptions) => {
-  const availableWidth = Math.max(0, centerPanelWidth + contextRightPanelWidth)
+  const outerAvailableWidth = Math.max(0, centerPanelWidth + contextRightPanelWidth)
+  // The genealogy canvas lives inside its own vertically scrolling container.
+  // Keep meaningful right-panel content out from under that native scrollbar.
+  const availableWidth = showGenealogyPanel
+    ? Math.max(0, outerAvailableWidth - scrollbarGutterWidth)
+    : outerAvailableWidth
   const rightPanelWidth = showGenealogyPanel
     ? Math.min(availableWidth, Math.max(preferredGenealogyPanelWidth, contextRightPanelWidth))
     : 0
