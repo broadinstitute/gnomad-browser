@@ -12,6 +12,29 @@ const areVariablesEqual = (variables: any, otherVariables: any) => {
   return keys.every((key) => variables[key] === otherVariables[key])
 }
 
+type RequestIdentity = {
+  operationName: string | null
+  query: string
+  requestKey: any
+  url: string
+  variables: any
+}
+
+const requestIdentity = ({ operationName, query, requestKey, url, variables }: BaseQueryProps) => ({
+  operationName,
+  query,
+  requestKey,
+  url,
+  variables,
+})
+
+const areRequestsEqual = (request: RequestIdentity, otherRequest: RequestIdentity) =>
+  request.operationName === otherRequest.operationName &&
+  request.query === otherRequest.query &&
+  request.requestKey === otherRequest.requestKey &&
+  request.url === otherRequest.url &&
+  areVariablesEqual(request.variables, otherRequest.variables)
+
 const cancelable = (promise: any) => {
   let isCanceled = false
   const wrapper = new Promise((resolve: any, reject: any) => {
@@ -42,6 +65,7 @@ type BaseQueryState = any
 type BaseQueryProps = {
   operationName: string | null
   query: string
+  requestKey?: any
   url: string
   variables?: any
   children: (state: BaseQueryState) => JSX.Element
@@ -58,11 +82,32 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
 
   mounted: any
 
-  state = {
-    data: null,
-    error: null,
-    graphQLErrors: null,
-    loading: true,
+  constructor(props: BaseQueryProps) {
+    super(props)
+    this.state = {
+      data: null,
+      dataRequest: null,
+      error: null,
+      graphQLErrors: null,
+      loading: true,
+      request: requestIdentity(props),
+    }
+  }
+
+  static getDerivedStateFromProps(props: BaseQueryProps, state: BaseQueryState) {
+    const nextRequest = requestIdentity(props)
+    if (!areRequestsEqual(nextRequest, state.request)) {
+      // componentDidUpdate starts the request after this render. Marking the new
+      // identity as loading here prevents children from rendering once with old
+      // data and new props (and starting duplicate child requests).
+      return {
+        error: null,
+        graphQLErrors: null,
+        loading: true,
+        request: nextRequest,
+      }
+    }
+    return null
   }
 
   componentDidMount() {
@@ -71,23 +116,25 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
   }
 
   componentDidUpdate(prevProps: BaseQueryProps) {
-    const { query, variables } = this.props
-    if (query !== prevProps.query || !areVariablesEqual(variables, prevProps.variables)) {
+    if (!areRequestsEqual(requestIdentity(this.props), requestIdentity(prevProps))) {
       this.loadData()
     }
   }
 
   componentWillUnmount() {
     this.mounted = false
+    if (this.currentRequest) this.currentRequest.cancel()
   }
 
   loadData() {
     const { operationName, query, url, variables } = this.props
+    const request = requestIdentity(this.props)
 
     this.setState({
       loading: true,
       error: null,
       graphQLErrors: null,
+      request,
     })
 
     if (this.currentRequest) {
@@ -114,6 +161,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
         }
         this.setState({
           data: response.data,
+          dataRequest: request,
           error: null,
           graphQLErrors: response.errors,
           loading: false,
@@ -125,6 +173,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
         }
         this.setState({
           data: null,
+          dataRequest: null,
           error,
           graphQLErrors: null,
           loading: false,
@@ -146,6 +195,8 @@ type OwnQueryProps = {
   loadingPlaceholderHeight?: number
   operationName: string | null
   query: string
+  requestKey?: any
+  retainPreviousData?: boolean
   success?: (...args: any[]) => any
   url: string
   variables?: any
@@ -162,13 +213,30 @@ const Query = ({
   loadingPlaceholderHeight,
   operationName,
   query,
+  requestKey,
+  retainPreviousData,
   success,
   url,
   variables,
 }: QueryProps) => {
   return (
-    <BaseQuery operationName={operationName} query={query} url={url} variables={variables}>
-      {({ data, error, graphQLErrors, loading }: any) => {
+    <BaseQuery
+      operationName={operationName}
+      query={query}
+      requestKey={requestKey}
+      url={url}
+      variables={variables}
+    >
+      {({ data, dataRequest, error, graphQLErrors, loading }: any) => {
+        if (loading && retainPreviousData && data && success(data)) {
+          return children({
+            data,
+            requestKey: dataRequest?.requestKey,
+            requestVariables: dataRequest?.variables,
+            stale: true,
+          })
+        }
+
         if (loading) {
           return (
             <div style={{ height: loadingPlaceholderHeight || 'auto' }}>
@@ -193,7 +261,12 @@ const Query = ({
           )
         }
 
-        return children({ data })
+        return children({
+          data,
+          requestKey: dataRequest?.requestKey,
+          requestVariables: dataRequest?.variables,
+          stale: false,
+        })
       }}
     </BaseQuery>
   )
@@ -207,6 +280,8 @@ Query.defaultProps = {
   url: '/api/',
   variables: {},
   operationName: null,
+  requestKey: undefined,
+  retainPreviousData: false,
 }
 
 export default Query

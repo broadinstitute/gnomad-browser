@@ -1,7 +1,6 @@
 // @ts-expect-error TS(2307) FIXME: Cannot find module '@fortawesome/fontawesome-free/... Remove this comment to see the full error message
 import CaretDown from '@fortawesome/fontawesome-free/svgs/solid/caret-down.svg'
 import { darken, transparentize } from 'polished'
-import queryString from 'query-string'
 import React, { Component } from 'react'
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 import styled from 'styled-components'
@@ -20,6 +19,7 @@ import {
   isV2,
 } from '@gnomad/dataset-metadata/metadata'
 import { logButtonClick } from './analytics'
+import { variantSearchFromUrl } from './RegionPage/variantSearchParam'
 
 const NavigationMenuWrapper = styled.ul`
   display: flex;
@@ -457,9 +457,27 @@ type DatasetSelectorProps = {
   history: History
 }
 
-const datasetLink: URLBuilder = (currentLocation: Location, datasetId: DatasetId): Location => ({
+// Dataset changes cross scientific data scopes. Preserve only state that has the
+// same meaning in both scopes; every LR/phasing/methylation flag and every
+// dataset-specific filter is intentionally dropped by this allowlist.
+export const sanitizeDatasetSearch = (search: string, datasetId: DatasetId): string => {
+  const sanitized = new URLSearchParams()
+  sanitized.set('dataset', datasetId)
+
+  if (hasShortVariants(datasetId)) {
+    const variantSearch = variantSearchFromUrl(search)
+    if (variantSearch) sanitized.set('variant_id', variantSearch)
+  }
+
+  return sanitized.toString()
+}
+
+export const datasetLink: URLBuilder = (
+  currentLocation: Location,
+  datasetId: DatasetId
+): Location => ({
   ...currentLocation,
-  search: queryString.stringify({ dataset: datasetId }),
+  search: sanitizeDatasetSearch(currentLocation.search, datasetId),
 })
 
 const UnwrappedDatasetSelector = (props: DatasetSelectorProps) => {
