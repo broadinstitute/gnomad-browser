@@ -14,6 +14,7 @@ type WorkerGateState = {
   holding: boolean
   observed: string[]
   delivered: string[]
+  posted: string[]
   held: { type: string; deliver: () => void }[]
   hold: () => void
   release: () => void
@@ -39,6 +40,7 @@ export async function installWorkerReadyGate(page: Page): Promise<void> {
       holding: true,
       observed: [],
       delivered: [],
+      posted: [],
       held: [],
       hold() {
         this.holding = true
@@ -56,6 +58,13 @@ export async function installWorkerReadyGate(page: Page): Promise<void> {
       const worker = Reflect.construct(NativeWorker, args) as Worker
       let listener: ((this: Worker, event: MessageEvent) => unknown) | null = null
       let wrappedListener: ((event: MessageEvent) => void) | null = null
+      const nativePostMessage = worker.postMessage.bind(worker)
+      worker.postMessage = ((message: unknown, optionsOrTransfer?: unknown) => {
+        gate.posted.push(String((message as { type?: string })?.type || 'UNKNOWN'))
+        return optionsOrTransfer === undefined
+          ? nativePostMessage(message)
+          : nativePostMessage(message, optionsOrTransfer as any)
+      }) as typeof worker.postMessage
 
       Object.defineProperty(worker, 'onmessage', {
         configurable: true,
@@ -115,6 +124,16 @@ export async function waitForHeldWorkerMessage(page: Page, type: 'READY' | 'UPDA
       )
     )
     .toBe(true)
+}
+
+export async function workerMessageCount(page: Page, type: string): Promise<number> {
+  return page.evaluate(
+    (messageType) =>
+      (window as WindowWithWorkerGate).__lrWorkerReadyGate?.posted.filter(
+        (postedType) => postedType === messageType
+      ).length || 0,
+    type
+  )
 }
 
 export async function documentToken(page: Page): Promise<string | undefined> {

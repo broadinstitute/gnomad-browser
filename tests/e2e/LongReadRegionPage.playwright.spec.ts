@@ -14,6 +14,7 @@ import {
   expectStableGeometry,
   installWorkerReadyGate,
   waitForHeldWorkerMessage,
+  workerMessageCount,
   workerGateHold,
   workerGateRelease,
 } from './helpers/lrTransitionContracts'
@@ -255,6 +256,7 @@ transitionViewports.forEach((viewport) => {
 
     await page.waitForLoadState('networkidle').catch(() => {})
     expect(requests.haplotypeRest).toBe(1)
+    expect(await workerMessageCount(page, 'INIT')).toBe(1)
     expect(requests.graphQL.LongReadVariantsInRegion).toBe(1)
     expect(requests.graphQL.RegionSampleMetadata).toBe(1)
     const requestsBeforeGrouping = JSON.stringify(requests)
@@ -300,6 +302,18 @@ transitionViewports.forEach((viewport) => {
     )
     await transitionGrouping('Diploid', similarityGeometry)
     expect(JSON.stringify(requests)).toBe(requestsBeforeGrouping)
+
+    // Same scope keeps exactly one raw payload and its current computed
+    // representation resident across Summary → Haplotype re-entry.
+    await page.getByRole('radio', { name: 'Summary View' }).click()
+    await expect(page.getByRole('radio', { name: 'Summary View' })).toBeChecked()
+    await page.getByRole('radio', { name: 'Haplotype View' }).click()
+    await expect(page.getByRole('radio', { name: 'Haplotype View' })).toBeChecked()
+    await expect(page.locator('#lr-variant-table-container').first()).toHaveCSS('opacity', '1')
+    expect(requests.haplotypeRest).toBe(1)
+    expect(await workerMessageCount(page, 'INIT')).toBe(1)
+    expect(JSON.stringify(requests)).toBe(requestsBeforeGrouping)
+
     expect(await documentToken(page)).toBe(initialDocumentToken)
     expect(await page.evaluate(() => performance.getEntriesByType('navigation').length)).toBe(
       initialNavigationCount
