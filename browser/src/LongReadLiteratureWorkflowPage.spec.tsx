@@ -30,6 +30,15 @@ describe('LongReadLiteratureWorkflowPage', () => {
       '59',
     ])
 
+    const allowedStatuses = new Set([
+      'supported-and-usable',
+      'supported-but-awkward',
+      'underdeveloped',
+      'absent',
+      'data-blocked',
+      'inappropriate/unsafe',
+    ])
+
     literatureWorkflows.forEach((workflow) => {
       const paper = examples.find((item) => item.ref === workflow.ref)
       expect(paper).toBeDefined()
@@ -39,6 +48,10 @@ describe('LongReadLiteratureWorkflowPage', () => {
         doi: paper!.doi,
         pdfUrl: paper!.pdfUrl,
       })
+      expect(new Set(workflow.evidence.map((item) => item.class))).toEqual(new Set(['P', 'I', 'B']))
+      expect(workflow.capabilities.every((item) => allowedStatuses.has(item.status))).toBe(true)
+      expect(workflow.nonDiagnosticBoundary).toMatch(/cannot|does not/)
+      expect(workflow.acceptanceTest.forbidden).not.toBe('')
     })
   })
 
