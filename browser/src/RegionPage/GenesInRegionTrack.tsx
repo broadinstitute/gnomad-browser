@@ -55,9 +55,10 @@ const TitlePanel = styled.div`
   justify-content: flex-start;
 `
 
-const StatusMessage = styled(BaseStatusMessage)`
+const EmptyGeneTrackSpacer = styled(BaseStatusMessage).attrs({ 'aria-hidden': true })`
   padding: 0;
   margin: 0 auto 1em;
+  visibility: hidden;
 `
 
 const isCodingGene = (gene: any) => gene.exons.some((exon: any) => exon.feature_type === 'CDS')
@@ -126,7 +127,7 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
         )
 
         if (visibleGenes.length === 0) {
-          return <StatusMessage>No genes found in this region</StatusMessage>
+          return <EmptyGeneTrackSpacer>&nbsp;</EmptyGeneTrackSpacer>
         }
 
         return (
@@ -150,7 +151,3 @@ const GenesInRegionTrack = ({ genes, region }: GenesInRegionTrackProps) => {
 }
 
 export default GenesInRegionTrack
-
-
-
-
