@@ -175,12 +175,6 @@ const renderTable = () =>
   )
 
 const expandRow = () => fireEvent.click(screen.getByText(sourceVariantId).closest('tr')!)
-const openFullCohortDistributions = () => {
-  const section = screen.getByLabelText('Full-cohort repeat-count distributions') as HTMLDetailsElement
-  section.open = true
-  fireEvent(section, new Event('toggle'))
-  return section
-}
 
 describe('expanded TR full-cohort distributions', () => {
   beforeEach(() => {
@@ -188,7 +182,7 @@ describe('expanded TR full-cohort distributions', () => {
     global.fetch = jest.fn() as typeof fetch
   })
 
-  test('keeps full-cohort context collapsed and scientifically summarized by default', () => {
+  test('opens full-cohort context and its scientific summary by default', () => {
     const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
     fetchMock.mockReturnValue(new Promise(() => {}) as any)
 
@@ -198,10 +192,14 @@ describe('expanded TR full-cohort distributions', () => {
 
     const section = screen.getByLabelText('Full-cohort repeat-count distributions') as HTMLDetailsElement
     expect(section.tagName).toBe('DETAILS')
-    expect(section.open).toBe(false)
+    expect(section.open).toBe(true)
     expect(section.textContent).toContain('Full-cohort repeat-count distributions')
     expect(section.textContent).toContain('aggregate called-allele repeat counts')
-    expect(fetchMock).not.toHaveBeenCalled()
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+
+    section.open = false
+    fireEvent(section, new Event('toggle'))
+    expect(section.open).toBe(false)
 
     fireEvent.click(screen.getByLabelText('About full-cohort repeat-count distributions'))
 
@@ -222,11 +220,8 @@ describe('expanded TR full-cohort distributions', () => {
     expandRow()
     const section = screen.getByLabelText('Full-cohort repeat-count distributions') as HTMLDetailsElement
     expect(section.tagName).toBe('DETAILS')
-    expect(section.open).toBe(false)
+    expect(section.open).toBe(true)
     expect(screen.queryByLabelText('full allele size distribution')).toBeNull()
-    expect(fetchMock).not.toHaveBeenCalled()
-
-    openFullCohortDistributions()
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(screen.getByRole('status').textContent).toContain(
       'Loading full cohort STR distributions'
@@ -281,7 +276,6 @@ describe('expanded TR full-cohort distributions', () => {
     expandRow()
     expect(screen.queryByLabelText('Full-cohort repeat-count distributions')).toBeNull()
     expandRow()
-    openFullCohortDistributions()
     await screen.findByLabelText('full allele size distribution')
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
@@ -299,7 +293,6 @@ describe('expanded TR full-cohort distributions', () => {
 
     renderTable()
     expandRow()
-    openFullCohortDistributions()
 
     expect(await screen.findByText(/Full-cohort STR distributions are unavailable/)).not.toBeNull()
     expect(screen.queryByText('Assigned-carrier length distribution')).toBeNull()
@@ -313,7 +306,6 @@ describe('expanded TR full-cohort distributions', () => {
 
     renderTable()
     expandRow()
-    openFullCohortDistributions()
 
     expect((await screen.findByRole('alert')).textContent).toContain(
       'Unable to load the full cohort STR distributions.'

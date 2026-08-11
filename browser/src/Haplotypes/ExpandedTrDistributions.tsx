@@ -301,11 +301,12 @@ const ExpandedTrDistributions = ({
   headingLevel?: 'h2' | 'h3'
 }) => {
   const Heading = headingLevel
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
 
   return (
     <DistributionSection
       aria-label="Full-cohort repeat-count distributions"
+      open={isOpen}
       onToggle={(event) => setIsOpen(event.currentTarget.open)}
     >
       <DistributionHeader>
