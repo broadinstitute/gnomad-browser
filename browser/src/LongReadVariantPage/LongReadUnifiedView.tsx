@@ -660,6 +660,12 @@ const LongReadUnifiedView = ({
   )
   const methylationSummary = methylationStateIsCurrent ? methylationViewState.summary : []
   const methylationOutliers = methylationStateIsCurrent ? methylationViewState.outliers : null
+  const methylationOutlierSampleIds = useMemo(
+    () => (methylationOutliers?.samples || [])
+      .filter((sample: any) => sample.outlier_count > 0)
+      .map((sample: any) => String(sample.sample_id)),
+    [methylationOutliers]
+  )
   const methylationLoading = methylationStateIsCurrent && methylationViewState.loading
   const methylationSampleCount = methylationStateIsCurrent ? methylationViewState.sampleCount : 0
   const methylationTotalSamples = methylationStateIsCurrent ? methylationViewState.totalSamples : 0
@@ -759,7 +765,7 @@ const LongReadUnifiedView = ({
   const [showPhantomRegions, setShowPhantomRegions] = useState(false)
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
-  const [filterToOutliers, setFilterToOutliers] = useState(true)
+  const [filterToOutliers, setFilterToOutliers] = useState(false)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
   const [searchText, setSearchText] = useVariantSearchText(variantSearch)
   const [showOnlyMatchingHaplotypes, setShowOnlyMatchingHaplotypes] = useState(false)
@@ -1425,9 +1431,9 @@ const LongReadUnifiedView = ({
     if (!showHaplotypes || !showGenealogy || isDiploidView || !dataMatchesMode) return false
     const groups = haplotypeGroups.groups as HaplotypeGroup[]
     if (!filterToOutliers || !showMethylation) return groups.length >= 2
-    const outlierSampleIds = new Set(methylationData.map(point => point.sample))
+    const outlierSampleIds = new Set(methylationOutlierSampleIds)
     return groups.filter(group => group.samples.some(sample => outlierSampleIds.has(sample.sample_id))).length >= 2
-  }, [showHaplotypes, showGenealogy, isDiploidView, dataMatchesMode, haplotypeGroups.groups, filterToOutliers, showMethylation, methylationData])
+  }, [showHaplotypes, showGenealogy, isDiploidView, dataMatchesMode, haplotypeGroups.groups, filterToOutliers, showMethylation, methylationOutlierSampleIds])
 
   useEffect(() => {
     onGenealogyPanelVisibilityChange?.(genealogyPanelVisible)
@@ -2271,6 +2277,7 @@ const LongReadUnifiedView = ({
                 clusters={trackHaplotypeGroups.clusters}
                 methylationData={methylationData}
                 methylationSummary={methylationSummary}
+                methylationOutlierSampleIds={methylationOutlierSampleIds}
                 showPerCopyMethylation={showPerCopyMethylation && joinedMethylationUsableForRegion}
                 perCopyMethylationRecords={perCopyMethylationRecords}
                 perCopyMethylationSampleStates={perCopyMethylationSampleStates}

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
@@ -20,7 +20,10 @@ const Container = styled.section`
   overflow: hidden;
 
   @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; animation: none !important; }
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
   }
 `
 
@@ -40,10 +43,80 @@ const Plot = styled.div`
 
 const AttributeList = styled.dl`
   margin: 0;
-  div { margin-bottom: 0.25em; }
-  dt { display: inline; font-weight: 600; }
-  dd { display: inline; margin-left: 0.5em; }
+  div {
+    margin-bottom: 0.25em;
+  }
+  dt {
+    display: inline;
+    font-weight: 600;
+  }
+  dd {
+    display: inline;
+    margin-left: 0.5em;
+  }
 `
+
+const finite = (value: number | null | undefined): value is number => Number.isFinite(value)
+
+const sortedSummary = (summary: readonly MethylationSummaryPoint[]) =>
+  [...summary].sort(
+    (a, b) =>
+      a.chrom.localeCompare(b.chrom) ||
+      (finite(a.pos1) ? a.pos1 : Number.POSITIVE_INFINITY) -
+        (finite(b.pos1) ? b.pos1 : Number.POSITIVE_INFINITY) ||
+      (finite(a.pos2) ? a.pos2 : Number.POSITIVE_INFINITY) -
+        (finite(b.pos2) ? b.pos2 : Number.POSITIVE_INFINITY)
+  )
+
+/** Coordinate-ordered mean runs. Missing means, malformed records, chromosomes, and >1 kb gaps split. */
+export const buildMethylationMeanRuns = (
+  summary: readonly MethylationSummaryPoint[]
+): MethylationSummaryPoint[][] => {
+  const runs: MethylationSummaryPoint[][] = []
+  let current: MethylationSummaryPoint[] = []
+  const flush = () => {
+    if (current.length > 0) runs.push(current)
+    current = []
+  }
+
+  sortedSummary(summary).forEach((site) => {
+    if (
+      !finite(site.pos1) ||
+      !finite(site.pos2) ||
+      site.pos2 < site.pos1 ||
+      !finite(site.mean_methylation)
+    ) {
+      flush()
+      return
+    }
+    const previous = current[current.length - 1]
+    if (previous && (site.chrom !== previous.chrom || site.pos1 - previous.pos1 > 1000)) {
+      flush()
+    }
+    current.push(site)
+  })
+  flush()
+  return runs
+}
+
+/** SD ribbons are stricter than mean runs: every missing SD starts a visible ribbon gap. */
+export const buildMethylationSdRuns = (
+  summary: readonly MethylationSummaryPoint[]
+): MethylationSummaryPoint[][] =>
+  buildMethylationMeanRuns(summary).flatMap((meanRun) => {
+    const sdRuns: MethylationSummaryPoint[][] = []
+    let current: MethylationSummaryPoint[] = []
+    const flush = () => {
+      if (current.length > 0) sdRuns.push(current)
+      current = []
+    }
+    meanRun.forEach((site) => {
+      if (!finite(site.std_methylation)) flush()
+      else current.push(site)
+    })
+    flush()
+    return sdRuns
+  })
 
 const persistedMode = (): MethylationViewMode => {
   try {
@@ -54,45 +127,174 @@ const persistedMode = (): MethylationViewMode => {
   }
 }
 
+const selectionKey = (selection: MethylationSelection) =>
+  selection.kind === 'group'
+    ? `group:${selection.group.key}`
+    : `site:${selection.site.chrom}:${selection.site.pos1}:${selection.site.pos2}`
+
 export const MethylationSummaryTrack = ({
   methylationSummary,
 }: {
   methylationSummary: MethylationSummaryPoint[]
 }) => {
   const height = 130
+  const containerRef = useRef<HTMLElement | null>(null)
   const [viewMode, setViewModeState] = useState<MethylationViewMode>(persistedMode)
   const [selection, setSelection] = useState<MethylationSelection | null>(null)
-  const groups = useMemo(() => buildMethylationVisualGroups(methylationSummary), [methylationSummary])
-  const sortedSites = useMemo(
-    () => [...methylationSummary].sort((a, b) => a.chrom.localeCompare(b.chrom) || a.pos1 - b.pos1),
+  const [selectedMarkKey, setSelectedMarkKey] = useState<string | null>(null)
+  const [activeMarkIndex, setActiveMarkIndex] = useState(0)
+  const groups = useMemo(
+    () => buildMethylationVisualGroups(methylationSummary),
     [methylationSummary]
   )
+  const sortedSites = useMemo(() => sortedSummary(methylationSummary), [methylationSummary])
+  const meanRuns = useMemo(() => buildMethylationMeanRuns(methylationSummary), [methylationSummary])
+  const sdRuns = useMemo(() => buildMethylationSdRuns(methylationSummary), [methylationSummary])
+  const scopeKey = useMemo(
+    () =>
+      sortedSites
+        .map(
+          (site) =>
+            `${site.chrom}:${site.pos1}:${site.pos2}:${site.mean_methylation}:${site.std_methylation}:${site.mean_coverage}:${site.num_samples}`
+        )
+        .join('|'),
+    [sortedSites]
+  )
+  const previousScopeKey = useRef(scopeKey)
+
+  useEffect(() => {
+    if (previousScopeKey.current !== scopeKey) {
+      previousScopeKey.current = scopeKey
+      setSelection(null)
+      setSelectedMarkKey(null)
+      setActiveMarkIndex(0)
+    }
+  }, [scopeKey])
+
+  const showSites = viewMode === 'sites' || viewMode === 'both'
+  const showGroups = viewMode === 'groups' || viewMode === 'both'
+  const marks = useMemo(() => {
+    const visible: Array<{ key: string; position: number; kind: 'site' | 'group' }> = []
+    if (showSites) {
+      sortedSites.forEach((site) => {
+        if (finite(site.pos1)) {
+          visible.push({
+            key: `site:${site.chrom}:${site.pos1}:${site.pos2}`,
+            position: site.pos1,
+            kind: 'site',
+          })
+        }
+      })
+    }
+    if (showGroups) {
+      groups.forEach((group) => {
+        visible.push({ key: `group:${group.key}`, position: group.start, kind: 'group' })
+      })
+    }
+    return visible.sort(
+      (a, b) =>
+        a.position - b.position || a.kind.localeCompare(b.kind) || a.key.localeCompare(b.key)
+    )
+  }, [groups, showGroups, showSites, sortedSites])
+  const markIndexByKey = useMemo(
+    () => new Map(marks.map((mark, index) => [mark.key, index])),
+    [marks]
+  )
+
+  useEffect(() => {
+    if (activeMarkIndex >= marks.length) setActiveMarkIndex(Math.max(0, marks.length - 1))
+  }, [activeMarkIndex, marks.length])
 
   const setViewMode = (mode: MethylationViewMode) => {
     setViewModeState(mode)
-    try { window.sessionStorage.setItem('gnomad-lr-methylation-view', mode) } catch (_) { /* storage is optional */ }
+    setActiveMarkIndex(0)
+    if (
+      selection &&
+      ((selection.kind === 'site' && mode === 'groups') ||
+        (selection.kind === 'group' && mode === 'sites'))
+    ) {
+      setSelection(null)
+      setSelectedMarkKey(null)
+    }
+    try {
+      window.sessionStorage.setItem('gnomad-lr-methylation-view', mode)
+    } catch (_) {
+      // Storage is optional.
+    }
   }
-  const showSites = viewMode === 'sites' || viewMode === 'both'
-  const showGroups = viewMode === 'groups' || viewMode === 'both'
+
+  const choose = (nextSelection: MethylationSelection) => {
+    setSelection(nextSelection)
+    setSelectedMarkKey(selectionKey(nextSelection))
+  }
+
+  const moveFocus = (event: React.KeyboardEvent<SVGGElement>, nextIndex: number) => {
+    const boundedIndex = Math.max(0, Math.min(marks.length - 1, nextIndex))
+    setActiveMarkIndex(boundedIndex)
+    const svg = event.currentTarget.ownerSVGElement
+    const next = svg?.querySelector<SVGGElement>(`[data-methylation-mark-index="${boundedIndex}"]`)
+    next?.focus()
+  }
+
+  const handleMarkKeyDown = (
+    event: React.KeyboardEvent<SVGGElement>,
+    index: number,
+    nextSelection: MethylationSelection
+  ) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      choose(nextSelection)
+    } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+      event.preventDefault()
+      moveFocus(event, index + 1)
+    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+      event.preventDefault()
+      moveFocus(event, index - 1)
+    } else if (event.key === 'Home') {
+      event.preventDefault()
+      moveFocus(event, 0)
+    } else if (event.key === 'End') {
+      event.preventDefault()
+      moveFocus(event, marks.length - 1)
+    }
+  }
+
+  const closeEvidence = () => {
+    const index = selectedMarkKey == null ? undefined : markIndexByKey.get(selectedMarkKey)
+    setSelection(null)
+    if (index === undefined) return
+    setActiveMarkIndex(index)
+    window.setTimeout(() => {
+      containerRef.current
+        ?.querySelector<SVGGElement>(`[data-methylation-mark-index="${index}"]`)
+        ?.focus()
+    }, 0)
+  }
 
   return (
-    <Container aria-label="Population methylation context">
+    <Container ref={containerRef} aria-label="Population methylation context">
       <MethylationViewControls value={viewMode} onChange={setViewMode} />
       <p style={{ margin: '0 12px 8px', fontSize: 11, color: '#555' }}>
-        {groups.length} browser-derived visual CpG group{groups.length === 1 ? '' : 's'} in this display.
-        Groups are recalculated for the displayed region and are not biological events.
+        {groups.length} browser-derived population-summary visual CpG group
+        {groups.length === 1 ? '' : 's'} in this display. This control affects only the population
+        summary; sample-total and Copy A/B tracks remain site-level. Group-level copy aggregation is
+        deferred.
       </p>
       <Track
         renderLeftPanel={() => (
           <Left>
             <svg width={200} height={height} aria-hidden="true">
               <g transform="translate(110, 5)">
-                <text x={-70} y={58} fontSize="9" textAnchor="middle" fill="#666">Population (%)</text>
+                <text x={-70} y={58} fontSize="9" textAnchor="middle" fill="#666">
+                  Population (%)
+                </text>
                 <line x1={0} y1={0} x2={0} y2={115} stroke="black" />
                 {[0, 50, 100].map((tick) => (
                   <g transform={`translate(0, ${115 - (tick / 100) * 115})`} key={tick}>
                     <line x1={-5} y1={0} x2={0} y2={0} stroke="black" />
-                    <text x={-10} y={3} fontSize="10" textAnchor="end">{tick}</text>
+                    <text x={-10} y={3} fontSize="10" textAnchor="end">
+                      {tick}
+                    </text>
                   </g>
                 ))}
               </g>
@@ -100,78 +302,138 @@ export const MethylationSummaryTrack = ({
           </Left>
         )}
       >
-        {({ scalePosition, width }: { scalePosition: (input: number) => number; width: number }) => {
+        {({
+          scalePosition,
+          width,
+        }: {
+          scalePosition: (input: number) => number
+          width: number
+        }) => {
           const y = scaleLinear().domain([0, 100]).range([120, 5])
-          const meanPolyline = sortedSites.map((site) => `${scalePosition(site.pos1)},${y(site.mean_methylation)}`).join(' ')
           return (
             <Plot>
               <svg
                 height={height}
                 width={width}
-                role="img"
-                tabIndex={0}
-                aria-label={`Population methylation context. ${groups.length} visual groups. ${selection ? 'An evidence object is selected.' : 'No evidence object selected.'}`}
+                role="group"
+                aria-label={`Population methylation context. ${groups.length} visual groups. Use arrow keys to move between visible marks and Enter or Space to select.`}
               >
                 <rect width={width} height={height} fill="#fafafa" />
-                {[0, 50, 100].map((tick) => <line key={tick} x1={0} y1={y(tick)} x2={width} y2={y(tick)} stroke="#e8e8e8" />)}
-                {showGroups && groups.map((group) => {
-                  const groupSupportLimited = group.limitedSupportSites > 0
-                  const x1 = scalePosition(group.start)
-                  const x2 = scalePosition(group.stop)
-                  return (
-                    <TooltipAnchor
-                      key={group.key}
-                      tooltipComponent={() => (
-                        <AttributeList>
-                          <div><dt>Visual CpG group:</dt><dd>{group.chrom}:{group.start.toLocaleString()}–{group.stop.toLocaleString()}</dd></div>
-                          <div><dt>CpGs:</dt><dd>{group.siteCount}</dd></div>
-                          <div><dt>Median population mean:</dt><dd>{group.medianPopulationMean.toFixed(1)}%</dd></div>
-                          <div><dt>Site-mean range:</dt><dd>{group.minimumSiteMean.toFixed(1)}%–{group.maximumSiteMean.toFixed(1)}%</dd></div>
-                          <div><dt>Median mean depth:</dt><dd>{group.medianMeanCoverage?.toFixed(1) ?? 'Unavailable'}×</dd></div>
-                          <div><dt>Observed sample totals:</dt><dd>median {group.medianObservedSamples}; minimum {group.minimumObservedSamples}</dd></div>
-                          <div><dt>Display method:</dt><dd>{group.method}; {group.configurationVersion}</dd></div>
-                        </AttributeList>
-                      )}
-                    >
-                      <g
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`Select visual CpG group ${group.start} to ${group.stop}`}
-                        onClick={() => setSelection({ kind: 'group', group })}
-                        onKeyDown={(event) => {
-                          if (event.key === 'Enter' || event.key === ' ') setSelection({ kind: 'group', group })
-                        }}
-                        style={{ cursor: 'pointer' }}
+                {[0, 50, 100].map((tick) => (
+                  <line key={tick} x1={0} y1={y(tick)} x2={width} y2={y(tick)} stroke="#e8e8e8" />
+                ))}
+                {showGroups &&
+                  groups.map((group) => {
+                    const groupSupportLimited = group.limitedSupportSites > 0
+                    const x1 = scalePosition(group.start)
+                    const x2 = scalePosition(group.stop)
+                    const key = `group:${group.key}`
+                    const markIndex = markIndexByKey.get(key) ?? -1
+                    return (
+                      <TooltipAnchor
+                        key={group.key}
+                        tooltipComponent={() => (
+                          <AttributeList>
+                            <div>
+                              <dt>Visual CpG group:</dt>
+                              <dd>
+                                {group.chrom}:{group.start.toLocaleString()}–
+                                {group.stop.toLocaleString()}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt>CpGs:</dt>
+                              <dd>{group.siteCount}</dd>
+                            </div>
+                            <div>
+                              <dt>Median population mean:</dt>
+                              <dd>{group.medianPopulationMean.toFixed(1)}%</dd>
+                            </div>
+                            <div>
+                              <dt>Site-mean range:</dt>
+                              <dd>
+                                {group.minimumSiteMean.toFixed(1)}%–
+                                {group.maximumSiteMean.toFixed(1)}%
+                              </dd>
+                            </div>
+                            <div>
+                              <dt>Median mean depth:</dt>
+                              <dd>{group.medianMeanCoverage?.toFixed(1) ?? 'Unavailable'}×</dd>
+                            </div>
+                            <div>
+                              <dt>Observed sample totals:</dt>
+                              <dd>
+                                median {group.medianObservedSamples}; minimum{' '}
+                                {group.minimumObservedSamples}
+                              </dd>
+                            </div>
+                            <div>
+                              <dt>Display method:</dt>
+                              <dd>
+                                {group.method}; {group.configurationVersion}
+                              </dd>
+                            </div>
+                          </AttributeList>
+                        )}
                       >
-                        <rect
-                          x={x1}
-                          y={y(group.maximumSiteMean)}
-                          width={Math.max(2, x2 - x1)}
-                          height={Math.max(2, y(group.minimumSiteMean) - y(group.maximumSiteMean))}
-                          fill="#7aa6c2"
-                          fillOpacity={viewMode === 'both' ? 0.16 : 0.28}
-                          stroke="#2a6f97"
-                          strokeDasharray={groupSupportLimited ? '4 3' : undefined}
-                        />
-                        <line x1={x1} x2={Math.max(x1 + 2, x2)} y1={y(group.medianPopulationMean)} y2={y(group.medianPopulationMean)} stroke="#2a6f97" strokeWidth={2} />
-                      </g>
-                    </TooltipAnchor>
-                  )
-                })}
+                        <g
+                          role="button"
+                          tabIndex={markIndex === activeMarkIndex ? 0 : -1}
+                          data-methylation-mark-index={markIndex}
+                          aria-label={`Select population-summary visual CpG group ${group.start} to ${group.stop}`}
+                          onFocus={() => setActiveMarkIndex(markIndex)}
+                          onClick={() => choose({ kind: 'group', group })}
+                          onKeyDown={(event) =>
+                            handleMarkKeyDown(event, markIndex, { kind: 'group', group })
+                          }
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <rect
+                            x={x1}
+                            y={y(group.maximumSiteMean)}
+                            width={Math.max(2, x2 - x1)}
+                            height={Math.max(
+                              2,
+                              y(group.minimumSiteMean) - y(group.maximumSiteMean)
+                            )}
+                            fill="#7aa6c2"
+                            fillOpacity={viewMode === 'both' ? 0.16 : 0.28}
+                            stroke="#2a6f97"
+                            strokeDasharray={groupSupportLimited ? '4 3' : undefined}
+                          />
+                          <line
+                            x1={x1}
+                            x2={Math.max(x1 + 2, x2)}
+                            y1={y(group.medianPopulationMean)}
+                            y2={y(group.medianPopulationMean)}
+                            stroke="#2a6f97"
+                            strokeWidth={2}
+                          />
+                        </g>
+                      </TooltipAnchor>
+                    )
+                  })}
                 {showSites && (
                   <>
-                    {groups.map((group) => {
-                      const upper = group.sites.map((site) => {
-                        const sd = site.std_methylation ?? 0
-                        return `${scalePosition(site.pos1)},${y(Math.min(100, site.mean_methylation + sd))}`
-                      })
-                      const lower = [...group.sites].reverse().map((site) => {
-                        const sd = site.std_methylation ?? 0
-                        return `${scalePosition(site.pos1)},${y(Math.max(0, site.mean_methylation - sd))}`
-                      })
+                    {sdRuns.map((run) => {
+                      if (run.length < 2) return null
+                      const upper = run.map(
+                        (site) =>
+                          `${scalePosition(site.pos1)},${y(
+                            Math.min(100, site.mean_methylation + site.std_methylation!)
+                          )}`
+                      )
+                      const lower = [...run]
+                        .reverse()
+                        .map(
+                          (site) =>
+                            `${scalePosition(site.pos1)},${y(
+                              Math.max(0, site.mean_methylation - site.std_methylation!)
+                            )}`
+                        )
                       return (
                         <polygon
-                          key={`variability-${group.key}`}
+                          key={`variability-${run[0].chrom}-${run[0].pos1}`}
                           points={[...upper, ...lower].join(' ')}
                           fill="#5b6fa8"
                           fillOpacity={0.1}
@@ -180,50 +442,166 @@ export const MethylationSummaryTrack = ({
                       )
                     })}
                     {sortedSites.map((site) => {
+                      if (!finite(site.mean_methylation) || !finite(site.std_methylation)) {
+                        return null
+                      }
                       const support = classifyPopulationSupport(site)
-                      const sd = site.std_methylation
                       const x = scalePosition(site.pos1)
-                      return sd == null ? null : (
+                      return (
                         <line
                           key={`sd-${site.chrom}-${site.pos1}`}
-                          x1={x} x2={x}
-                          y1={y(Math.min(100, site.mean_methylation + sd))}
-                          y2={y(Math.max(0, site.mean_methylation - sd))}
+                          x1={x}
+                          x2={x}
+                          y1={y(Math.min(100, site.mean_methylation + site.std_methylation))}
+                          y2={y(Math.max(0, site.mean_methylation - site.std_methylation))}
                           stroke="#5b6fa8"
                           strokeOpacity={support.state === 'adequate' ? 0.24 : 0.12}
                           strokeWidth={2}
                         />
                       )
                     })}
-                    <polyline points={meanPolyline} fill="none" stroke="#394b59" strokeWidth={1} strokeOpacity={0.7} />
+                    {meanRuns.map((run) => (
+                      <polyline
+                        key={`mean-${run[0].chrom}-${run[0].pos1}`}
+                        points={run
+                          .map((site) => `${scalePosition(site.pos1)},${y(site.mean_methylation)}`)
+                          .join(' ')}
+                        fill="none"
+                        stroke="#394b59"
+                        strokeWidth={1}
+                        strokeOpacity={0.7}
+                      />
+                    ))}
                     {sortedSites.map((site) => {
+                      if (!finite(site.pos1)) return null
                       const support = classifyPopulationSupport(site)
                       const x = scalePosition(site.pos1)
+                      const meanAvailable = finite(site.mean_methylation)
+                      const sdAvailable = finite(site.std_methylation)
+                      const markY = meanAvailable ? y(site.mean_methylation) : height / 2
+                      const key = `site:${site.chrom}:${site.pos1}:${site.pos2}`
+                      const markIndex = markIndexByKey.get(key) ?? -1
                       return (
                         <TooltipAnchor
                           key={`${site.chrom}-${site.pos1}-${site.pos2}`}
                           tooltipComponent={() => (
                             <AttributeList>
-                              <div><dt>Coordinate:</dt><dd>{site.chrom}:{site.pos1.toLocaleString()}</dd></div>
-                              <div><dt>Population mean:</dt><dd>{site.mean_methylation.toFixed(1)}%</dd></div>
-                              <div><dt>Population variability (site SD):</dt><dd>{site.std_methylation == null ? 'Unavailable' : `${site.std_methylation.toFixed(1)}%`}</dd></div>
-                              <div><dt>Range:</dt><dd>{site.min_methylation == null || site.max_methylation == null ? 'Unavailable' : `${site.min_methylation.toFixed(1)}%–${site.max_methylation.toFixed(1)}%`}</dd></div>
-                              <div><dt>Mean read depth:</dt><dd>{site.mean_coverage.toFixed(1)}×</dd></div>
-                              <div><dt>Observed sample totals:</dt><dd>{site.num_samples}</dd></div>
-                              <div><dt>Display support:</dt><dd><MethylationSupportBadge state={support.state} reasons={support.reasons} /></dd></div>
+                              <div>
+                                <dt>Coordinate:</dt>
+                                <dd>
+                                  {site.chrom}:{site.pos1.toLocaleString()}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>Population mean:</dt>
+                                <dd>
+                                  {meanAvailable
+                                    ? `${site.mean_methylation.toFixed(1)}%`
+                                    : 'Unavailable'}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>Population variability (site SD):</dt>
+                                <dd>
+                                  {sdAvailable
+                                    ? `${site.std_methylation!.toFixed(1)}%`
+                                    : 'Unavailable — ribbon is gapped'}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>Range:</dt>
+                                <dd>
+                                  {site.min_methylation == null || site.max_methylation == null
+                                    ? 'Unavailable'
+                                    : `${site.min_methylation.toFixed(
+                                        1
+                                      )}%–${site.max_methylation.toFixed(1)}%`}
+                                </dd>
+                              </div>
+                              <div>
+                                <dt>Mean read depth:</dt>
+                                <dd>{site.mean_coverage.toFixed(1)}×</dd>
+                              </div>
+                              <div>
+                                <dt>Observed sample totals:</dt>
+                                <dd>{site.num_samples}</dd>
+                              </div>
+                              <div>
+                                <dt>Display support:</dt>
+                                <dd>
+                                  <MethylationSupportBadge
+                                    state={support.state}
+                                    reasons={support.reasons}
+                                  />
+                                </dd>
+                              </div>
                             </AttributeList>
                           )}
                         >
-                          <circle
-                            cx={x}
-                            cy={y(site.mean_methylation)}
-                            r={support.state === 'adequate' ? 3 : 4}
-                            fill={support.state === 'adequate' ? '#394b59' : '#fff'}
-                            stroke={support.state === 'adequate' ? '#394b59' : '#8a4b08'}
-                            strokeWidth={support.state === 'adequate' ? 1 : 2}
-                            onClick={() => setSelection({ kind: 'site', site })}
+                          <g
+                            role="button"
+                            tabIndex={markIndex === activeMarkIndex ? 0 : -1}
+                            data-methylation-mark-index={markIndex}
+                            aria-label={`Select CpG site ${site.pos1}. Population mean ${
+                              meanAvailable
+                                ? `${site.mean_methylation.toFixed(1)} percent`
+                                : 'unavailable'
+                            }; site SD ${
+                              sdAvailable
+                                ? `${site.std_methylation!.toFixed(1)} percent`
+                                : 'unavailable'
+                            }.`}
+                            onFocus={() => setActiveMarkIndex(markIndex)}
+                            onClick={() => choose({ kind: 'site', site })}
+                            onKeyDown={(event) =>
+                              handleMarkKeyDown(event, markIndex, { kind: 'site', site })
+                            }
                             style={{ cursor: 'pointer' }}
-                          />
+                          >
+                            {!meanAvailable ? (
+                              <>
+                                <circle
+                                  cx={x}
+                                  cy={markY}
+                                  r={6}
+                                  fill="#fff"
+                                  stroke="#8a4b08"
+                                  strokeDasharray="2 2"
+                                />
+                                <text
+                                  x={x}
+                                  y={markY + 3}
+                                  textAnchor="middle"
+                                  fontSize={9}
+                                  fill="#8a4b08"
+                                  aria-hidden="true"
+                                >
+                                  ?
+                                </text>
+                              </>
+                            ) : (
+                              <>
+                                {!sdAvailable && (
+                                  <path
+                                    d={`M ${x - 4} ${markY - 4} L ${x + 4} ${markY + 4} M ${
+                                      x + 4
+                                    } ${markY - 4} L ${x - 4} ${markY + 4}`}
+                                    stroke="#8a4b08"
+                                    strokeWidth={1.5}
+                                    aria-hidden="true"
+                                  />
+                                )}
+                                <circle
+                                  cx={x}
+                                  cy={markY}
+                                  r={support.state === 'adequate' ? 3 : 4}
+                                  fill={support.state === 'adequate' ? '#394b59' : '#fff'}
+                                  stroke={support.state === 'adequate' ? '#394b59' : '#8a4b08'}
+                                  strokeWidth={support.state === 'adequate' ? 1 : 2}
+                                />
+                              </>
+                            )}
+                          </g>
                         </TooltipAnchor>
                       )
                     })}
@@ -234,7 +612,15 @@ export const MethylationSummaryTrack = ({
           )
         }}
       </Track>
-      {selection && <MethylationEvidenceCard selection={selection} viewMode={viewMode} onViewModeChange={setViewMode} />}
+      {selection && (
+        <MethylationEvidenceCard
+          key={selectionKey(selection)}
+          selection={selection}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          onClose={closeEvidence}
+        />
+      )}
     </Container>
   )
 }

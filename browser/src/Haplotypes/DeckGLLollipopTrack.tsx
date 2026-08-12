@@ -1698,6 +1698,7 @@ function DeckGLLollipopCanvas({
                 meanDepth: value.meanCoverage,
                 representedSites: 1,
                 totalSites: 1,
+                sampleCount: value.sampleCount,
               }) : null
               const copySupport = copy === 'A'
                 ? classifyCopySupport(evidence(point), evidence(counterpart))
@@ -2606,7 +2607,7 @@ function Tooltip({
         </div>
         {counterpart && (
           <div>
-            <strong>Other copy at this CpG:</strong> {counterpart.meanMethylation.toFixed(1)}% at {counterpart.meanCoverage.toFixed(1)}× mean depth
+            <strong>Other copy at this CpG:</strong> {counterpart.meanMethylation.toFixed(1)}% at {counterpart.meanCoverage.toFixed(1)}× mean depth from {counterpart.sampleCount} contributing sample{counterpart.sampleCount === 1 ? '' : 's'}
           </div>
         )}
         {copySupport && (

@@ -39,14 +39,17 @@ export const METHYLATION_DISPLAY_SUPPORT_CONFIG = {
   minimumCopyReadDepth: 5,
   minimumCopySiteCompleteness: 0.5,
   maximumBalancedCopyDepthRatio: 4,
+  maximumBalancedCopySampleRatio: 4,
 } as const
 
 /** Browser-only grouping settings; groups are recalculated for every displayed region. */
 export const METHYLATION_VISUAL_GROUP_CONFIG = {
-  version: 'visual-groups-v1',
-  method: 'deterministic-adjacent-change',
+  version: 'visual-groups-v2',
+  method: 'penalized-piecewise-constant',
+  fallbackMethod: 'bounded-fixed-bin-fallback',
   maximumGapBp: 1000,
   maximumSites: 200,
-  minimumSitesBeforeChange: 2,
-  changeThresholdPercentagePoints: 20,
+  penaltySquaredPercentagePoints: 400,
+  fallbackInputSites: 2000,
+  maximumOutputGroups: 200,
 } as const

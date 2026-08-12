@@ -11,6 +11,7 @@ import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import MethylationHelp, { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
 import MethylationSummaryTrack from './MethylationSummaryTrack'
+import { filterGroupsToRegionalDeviationSamples } from './methylationOutlierFilter'
 import type { MethylationSummaryPoint } from './methylationTypes'
 import type {
   JoinedPhasedMethylationCapability,
@@ -539,7 +540,7 @@ export const Legend = ({
                       checked={filterToOutliers}
                       onChange={(event) => onFilterToOutliersChange(event.target.checked)}
                     />
-                    Regional deviation ranking
+                    Filter haplotypes to API-ranked regional deviations
                   </label>
                 )}
               </div>
@@ -964,6 +965,7 @@ type HaplotypeTrackProps = {
   clusters?: HaplotypeCluster[]
   methylationData: Methylation[]
   methylationSummary?: MethylationSummaryPoint[]
+  methylationOutlierSampleIds?: readonly string[]
   showPerCopyMethylation?: boolean
   perCopyMethylationRecords?: JoinedPhasedMethylationRecord[]
   perCopyMethylationSampleStates?: ReadonlyMap<string, PerCopyMethylationSampleState>
@@ -1052,7 +1054,7 @@ const LollipopHelp = () => (
     <h4>Controls</h4>
     <ul>
       <li><strong>Sort by</strong> — "Similarity" groups similar haplotypes together; "Count" sorts by sample count.</li>
-      <li><strong>Regional deviation ranking</strong> — Preserves the existing site-SD rule. It is not depth-aware, diagnostic, or evidence that a low-ranked sample is normal.</li>
+      <li><strong>Filter haplotypes to API-ranked regional deviations</strong> — An opt-in filter using the immutable sample identities returned by the regional API. It is not recomputed from loaded detail rows, depth-aware, diagnostic, or evidence that an unlisted sample is normal.</li>
     </ul>
   </>
 )
@@ -2027,6 +2029,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   clusters,
   methylationData,
   methylationSummary = [],
+  methylationOutlierSampleIds = [],
   showPerCopyMethylation = false,
   perCopyMethylationRecords = [],
   perCopyMethylationSampleStates = new Map(),
@@ -2067,7 +2070,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   highlightedVariantIds,
   selectedVariantPos,
   showMethylation = false,
-  filterToOutliers = true,
+  filterToOutliers = false,
   isAutoTuned = true,
   typeFilters,
   variantMatchesSearch,
@@ -2101,18 +2104,25 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     )
   }
 
-  // When filtering to outliers, only show groups containing samples with methylation data
+  // The optional filter uses only immutable identities from the regional outlier response.
+  // Detail-row transport state must never change membership.
   const filteredGroups = useMemo(() => {
     const searchFilteredGroups = showOnlyMatchingHaplotypes && variantMatchesSearch
       ? filterHaplotypeGroupsToMatches(haplotypeGroups, variantMatchesSearch)
       : haplotypeGroups
-    const outlierSampleIds = filterToOutliers && showMethylation
-      ? new Set(methylationData.map(d => d.sample))
-      : null
-    return outlierSampleIds
-      ? searchFilteredGroups.filter(g => g.samples.some(s => outlierSampleIds.has(s.sample_id)))
-      : searchFilteredGroups
-  }, [haplotypeGroups, showOnlyMatchingHaplotypes, variantMatchesSearch, filterToOutliers, showMethylation, methylationData])
+    return filterGroupsToRegionalDeviationSamples(
+      searchFilteredGroups,
+      methylationOutlierSampleIds,
+      filterToOutliers && showMethylation
+    )
+  }, [
+    haplotypeGroups,
+    showOnlyMatchingHaplotypes,
+    variantMatchesSearch,
+    filterToOutliers,
+    showMethylation,
+    methylationOutlierSampleIds,
+  ])
 
   const filteredClusters = useMemo(() => {
     if (!showOnlyMatchingHaplotypes || !variantMatchesSearch || !clusters) return clusters
