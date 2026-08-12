@@ -207,6 +207,54 @@ const FieldsetTitle = styled.legend`
   padding: 0 4px;
 `
 
+const DataLayerControls = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  font-size: 12px;
+`
+
+const LayerControlRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  min-width: 0;
+`
+
+const LayerToggle = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+`
+
+const NestedLayerControls = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  padding-left: 12px;
+  border-left: 2px solid #e5e5e5;
+  margin-left: 5px;
+`
+
+const LoadingStatus = styled.span<{ $error?: boolean }>`
+  color: ${(props) => (props.$error ? '#9b1c1c' : '#666')};
+  font-size: 11px;
+  line-height: 1.3;
+
+  &::before {
+    content: '${(props) => (props.$error ? '!' : '✓')}';
+    margin-right: 4px;
+    color: ${(props) => (props.$error ? '#c62828' : '#397342')};
+    font-weight: 700;
+  }
+`
+
 // Compact shapes that render each variant category using its actual color
 const COMPACT_COLORED_SHAPES: Record<VariantCategory, React.ReactNode> = {
   snv: <circle cx={7} cy={7} r={3.5} fill={VARIANT_CATEGORY_COLORS.snv} stroke="#333" strokeWidth={0.4} />,
@@ -550,135 +598,140 @@ export const Legend = ({
 
         <Fieldset>
           <FieldsetTitle>Data Layers</FieldsetTitle>
-          <ControlGroup>
+          <DataLayerControls>
             {(isDiploidView || isClusteredView) && (
-              <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
-              <label
-                title={perCopyMethylationReason}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '3px',
-                  cursor: joinedMethylationUsableForRegion ? 'pointer' : 'not-allowed',
-                }}
-              >
-                <input
-                  type='checkbox'
-                  checked={showPerCopyMethylation && joinedMethylationUsableForRegion}
-                  disabled={!joinedMethylationUsableForRegion}
-                  onChange={(event) => onShowPerCopyMethylationChange(event.target.checked)}
-                />
-                Methylation
-              </label>
-              <HaplotypeHelpButton title="Methylation">
-                <PerCopyMethylationHelp
-                  capability={joinedMethylationCapability}
-                  unavailableReason={joinedMethylationUsableForRegion ? null : perCopyMethylationReason}
-                />
-              </HaplotypeHelpButton>
-              {!joinedMethylationUsableForRegion && perCopyMethylationReason && (
-                <span role='status' style={{ color: '#8a4b08', fontSize: '11px' }}>
-                  {perCopyMethylationReason}
-                </span>
-              )}
-              {showPerCopyMethylation && joinedMethylationUsableForRegion && methylationAvailable && (
-                <>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                    <input
-                      type='checkbox'
-                      checked={showMethylation}
-                      onChange={(event) => onShowMethylationChange(event.target.checked)}
-                    />
-                    Methylation context
-                  </label>
-                  <HaplotypeHelpButton title="Methylation context">
-                    <MethylationHelp availability={methylationAvailability} sourceLabel={methylationLabel} />
-                  </HaplotypeHelpButton>
-                  {showMethylation && (
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+              <>
+                <LayerControlRow>
+                  <LayerToggle>
+                    <label
+                      title={perCopyMethylationReason}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: '3px',
+                        cursor: joinedMethylationUsableForRegion ? 'pointer' : 'not-allowed',
+                      }}
+                    >
                       <input
                         type='checkbox'
-                        checked={filterToOutliers}
-                        onChange={(event) => onFilterToOutliersChange(event.target.checked)}
+                        checked={showPerCopyMethylation && joinedMethylationUsableForRegion}
+                        disabled={!joinedMethylationUsableForRegion}
+                        onChange={(event) => onShowPerCopyMethylationChange(event.target.checked)}
                       />
-                      Filter haplotypes to API-ranked regional deviations
+                      Methylation
                     </label>
-                  )}
-                </>
-              )}
-              {joinedMethylationUsableForRegion && (
-                <>
-                  {isDiploidView && (
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                      <input
-                        type='checkbox'
-                        checked={methylationSamplesOnly}
-                        onChange={(event) => onMethylationSamplesOnlyChange(event.target.checked)}
+                    <HaplotypeHelpButton title="Methylation">
+                      <PerCopyMethylationHelp
+                        capability={joinedMethylationCapability}
+                        unavailableReason={joinedMethylationUsableForRegion ? null : perCopyMethylationReason}
                       />
-                      Methylation samples only
-                    </label>
+                    </HaplotypeHelpButton>
+                  </LayerToggle>
+                  {showPerCopyMethylation && joinedMethylationUsableForRegion && methylationAvailable && (
+                    <LayerToggle>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                        <input
+                          type='checkbox'
+                          checked={showMethylation}
+                          onChange={(event) => onShowMethylationChange(event.target.checked)}
+                        />
+                        Methylation context
+                      </label>
+                      <HaplotypeHelpButton title="Methylation context">
+                        <MethylationHelp availability={methylationAvailability} sourceLabel={methylationLabel} />
+                      </HaplotypeHelpButton>
+                    </LayerToggle>
                   )}
-                  {showPerCopyMethylation && visibleMethylationProgressLabel && (
-                    <button
-                      type='button'
-                      disabled
-                      aria-live='polite'
-                      style={{
-                        padding: '2px 6px', fontSize: '11px',
-                        background: visibleMethylationProgress?.status === 'error' ? '#fff1f0' : '#f0f0f0',
-                        border: '1px solid #ccc', borderRadius: '3px',
-                      }}
-                    >
-                      {visibleMethylationProgressLabel}
-                    </button>
-                  )}
-                  {showPerCopyMethylation && onLoadAllPerCopyMethylation && (
-                    <button
-                      type='button'
-                      onClick={onLoadAllPerCopyMethylation}
-                      disabled={allMethylationProgress !== null && allMethylationProgress !== undefined}
-                      aria-live='polite'
-                      style={{
-                        padding: '2px 6px', fontSize: '11px',
-                        cursor: allMethylationProgress ? 'default' : 'pointer',
-                        background: allMethylationProgress?.status === 'error' ? '#fff1f0' : '#f0f0f0',
-                        border: '1px solid #ccc', borderRadius: '3px',
-                      }}
-                    >
-                      {allMethylationProgressLabel}
-                    </button>
-                  )}
-                  {showPerCopyMethylation && methylationRetryAvailable && onRetryPerCopyMethylation && (
-                    <button
-                      type='button'
-                      onClick={onRetryPerCopyMethylation}
-                      style={{
-                        padding: '2px 6px', fontSize: '11px', cursor: 'pointer',
-                        background: '#fff1f0', border: '1px solid #c62828', borderRadius: '3px',
-                      }}
-                    >
-                      Retry methylation
-                    </button>
-                  )}
-                </>
-              )}
-              </div>
+                </LayerControlRow>
+                {!joinedMethylationUsableForRegion && perCopyMethylationReason && (
+                  <span role='status' style={{ color: '#8a4b08', fontSize: '11px' }}>
+                    {perCopyMethylationReason}
+                  </span>
+                )}
+                {showPerCopyMethylation && joinedMethylationUsableForRegion && (
+                  <NestedLayerControls aria-label="Methylation options">
+                    <LayerControlRow>
+                      {isDiploidView && (
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                          <input
+                            type='checkbox'
+                            checked={methylationSamplesOnly}
+                            onChange={(event) => onMethylationSamplesOnlyChange(event.target.checked)}
+                          />
+                          Methylation samples only
+                        </label>
+                      )}
+                      {showMethylation && (
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                          <input
+                            type='checkbox'
+                            checked={filterToOutliers}
+                            onChange={(event) => onFilterToOutliersChange(event.target.checked)}
+                          />
+                          Filter haplotypes to API-ranked regional deviations
+                        </label>
+                      )}
+                    </LayerControlRow>
+                    <LayerControlRow>
+                      {visibleMethylationProgressLabel && (
+                        <LoadingStatus
+                          role='status'
+                          aria-live='polite'
+                          $error={visibleMethylationProgress?.status === 'error'}
+                        >
+                          {visibleMethylationProgressLabel}
+                        </LoadingStatus>
+                      )}
+                      {onLoadAllPerCopyMethylation && (
+                        <button
+                          type='button'
+                          onClick={onLoadAllPerCopyMethylation}
+                          disabled={allMethylationProgress !== null && allMethylationProgress !== undefined}
+                          aria-live='polite'
+                          style={{
+                            padding: '2px 6px', fontSize: '11px',
+                            cursor: allMethylationProgress ? 'default' : 'pointer',
+                            background: allMethylationProgress?.status === 'error' ? '#fff1f0' : '#fff',
+                            border: '1px solid #aaa', borderRadius: '3px',
+                          }}
+                        >
+                          {allMethylationProgressLabel}
+                        </button>
+                      )}
+                      {methylationRetryAvailable && onRetryPerCopyMethylation && (
+                        <button
+                          type='button'
+                          onClick={onRetryPerCopyMethylation}
+                          style={{
+                            padding: '2px 6px', fontSize: '11px', cursor: 'pointer',
+                            background: '#fff1f0', border: '1px solid #c62828', borderRadius: '3px',
+                          }}
+                        >
+                          Retry methylation
+                        </button>
+                      )}
+                    </LayerControlRow>
+                  </NestedLayerControls>
+                )}
+              </>
             )}
-            <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: recombinationAvailable ? 'pointer' : 'not-allowed' }}>
-                <input
-                  type='checkbox'
-                  checked={showRecombination && recombinationAvailable}
-                  disabled={!recombinationAvailable}
-                  onChange={(e) => onShowRecombinationChange(e.target.checked)}
-                />
-                Recombination rate
-              </label>
-              <HaplotypeHelpButton title="Recombination rate">
-                <RecombinationHelp
-                  sourceLabel={recombinationAvailable ? recombinationLabel : 'Unavailable for this cohort/release'}
-                />
-              </HaplotypeHelpButton>
-            </div>
-          </ControlGroup>
+            <LayerControlRow>
+              <LayerToggle>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: recombinationAvailable ? 'pointer' : 'not-allowed' }}>
+                  <input
+                    type='checkbox'
+                    checked={showRecombination && recombinationAvailable}
+                    disabled={!recombinationAvailable}
+                    onChange={(e) => onShowRecombinationChange(e.target.checked)}
+                  />
+                  Recombination rate
+                </label>
+                <HaplotypeHelpButton title="Recombination rate">
+                  <RecombinationHelp
+                    sourceLabel={recombinationAvailable ? recombinationLabel : 'Unavailable for this cohort/release'}
+                  />
+                </HaplotypeHelpButton>
+              </LayerToggle>
+            </LayerControlRow>
+          </DataLayerControls>
         </Fieldset>
       </FieldsetRow>
     </ControlsContainer>

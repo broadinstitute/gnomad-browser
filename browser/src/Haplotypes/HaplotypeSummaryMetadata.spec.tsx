@@ -288,6 +288,14 @@ describe('haplotype summary metadata', () => {
     let text = renderedText(component.toJSON())
     expect(text).toContain('Loading methylation 1/3 visible samples…')
     expect(text).toContain('Methylation samples only')
+    const loadingStatus = component.root.find(
+      (node) =>
+        node.type !== 'button' &&
+        node.props.role === 'status' &&
+        renderedText(node) === 'Loading methylation 1/3 visible samples…'
+    )
+    expect(loadingStatus.props['aria-live']).toBe('polite')
+    expect(component.root.findByProps({ 'aria-label': 'Methylation options' })).toBeDefined()
     expect(text).not.toContain('Methylation (sample total)')
     expect(text).not.toContain('Outliers only')
     expect(text).not.toContain('Load all sample totals')
