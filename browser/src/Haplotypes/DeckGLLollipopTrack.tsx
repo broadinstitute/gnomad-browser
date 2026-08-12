@@ -39,6 +39,7 @@ import { SEARCHED_POSITION_GUIDE_STYLE } from './searchedPositionGuideStyle'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSearchFiltering'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
+import { classifyCopySupport, type CopySupportClassification } from './methylationSupport'
 import {
   diploidPerCopyLayout,
   perCopyEmptyLabel,
@@ -103,6 +104,8 @@ type MethPoint = {
   y: number
   color: [number, number, number, number]
   perCopy?: PerCopyMethylationPoint
+  copySupport?: CopySupportClassification
+  counterpart?: PerCopyMethylationPoint
 }
 
 type MethStatusLabel = {
@@ -1687,12 +1690,25 @@ function DeckGLLollipopCanvas({
               color: status === 'error' ? [180, 50, 50, 210] : [105, 105, 105, 190],
             })
             if (points.length === 0) return
+            const otherPoints = copy === 'A' ? perCopy.B : perCopy.A
+            const otherByPosition = new Map(otherPoints.map((point) => [point.pos1, point]))
             points.forEach((point) => {
+              const counterpart = otherByPosition.get(point.pos1)
+              const evidence = (value: PerCopyMethylationPoint | undefined) => value ? ({
+                meanDepth: value.meanCoverage,
+                representedSites: 1,
+                totalSites: 1,
+              }) : null
+              const copySupport = copy === 'A'
+                ? classifyCopySupport(evidence(point), evidence(counterpart))
+                : classifyCopySupport(evidence(counterpart), evidence(point))
               allMethPoints.push({
                 position: point.pos1,
                 y: bandTop + perCopyYScale(point.meanMethylation),
                 color: copy === 'A' ? [42, 111, 151, 255] : [161, 85, 34, 255],
                 perCopy: point,
+                counterpart,
+                copySupport,
               })
             })
           }
@@ -2568,6 +2584,8 @@ function Tooltip({
 
   // Center panel: per-copy methylation or variant tooltips
   const perCopy = object.perCopy as PerCopyMethylationPoint | undefined
+  const counterpart = object.counterpart as PerCopyMethylationPoint | undefined
+  const copySupport = object.copySupport as CopySupportClassification | undefined
   if (perCopy) {
     return (
       <div style={tooltipStyle}>
@@ -2581,8 +2599,22 @@ function Tooltip({
           <strong>Mean methylation:</strong> {perCopy.meanMethylation.toFixed(1)}%
         </div>
         <div>
+          <strong>Mean read depth:</strong> {perCopy.meanCoverage.toFixed(1)}×
+        </div>
+        <div>
           <strong>Samples contributing at this CpG:</strong> {perCopy.sampleCount}
         </div>
+        {counterpart && (
+          <div>
+            <strong>Other copy at this CpG:</strong> {counterpart.meanMethylation.toFixed(1)}% at {counterpart.meanCoverage.toFixed(1)}× mean depth
+          </div>
+        )}
+        {copySupport && (
+          <div style={{ marginTop: 4, padding: '4px 6px', border: copySupport.state === 'balanced-enough' ? '1px solid #39754a' : '1px dashed #8a4b08' }}>
+            <strong>Copy A/B display support: {copySupport.state.replace(/-/g, ' ')}</strong>
+            {copySupport.reasons.map((reason) => <div key={reason}>{reason}</div>)}
+          </div>
+        )}
         <div>
           <strong>VCF GT strand(s):</strong> {perCopy.vcfStrands.join(', ')}
         </div>

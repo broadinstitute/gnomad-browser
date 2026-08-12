@@ -36,6 +36,11 @@ export const PerCopyMethylationHelp = ({
       averaged. HAP, GT, and canonical A/B labels have no maternal or paternal meaning, and the
       source track does not define a VCF phase set.
     </p>
+    <p>
+      Copy A/B read depth is evidence for each displayed percentage. Uneven or limited support does
+      not make an observation false, but it makes a visual difference less comparable and should be
+      interpreted cautiously. Balanced support does not prove a biological effect.
+    </p>
     {unavailableReason ? (
       <p>
         <strong>Status:</strong> {unavailableReason}
@@ -72,9 +77,21 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         </p>
       )}
       <p>
-        Dots show the mean of observed sample-total values at each CpG. Red indicates deviation from
-        the population sample-total mean. &quot;Outliers only&quot; filters to groups containing
-        samples with high regional variance; it does not establish haplotype-driven methylation.
+        <strong>CpG sites</strong> preserve individual observations. <strong>Visual CpG groups</strong>{' '}
+        are temporary browser-derived display aids for nearby sites; they are recalculated for the
+        displayed region and are not DMRs or stable biological events. Both mode places the groups
+        behind the site-level observations without another request.
+      </p>
+      <p>
+        Population summaries show the population mean, site standard deviation, mean read depth,
+        and observed sample totals. Hollow or hatched marks indicate display support cautions, not
+        significance cutoffs. Missing values remain unavailable and are never shown as zero.
+      </p>
+      <p>
+        <strong>Regional deviation ranking</strong> preserves the existing rule: a sample site is
+        counted when it differs from the population mean by more than 2 × that site&apos;s standard
+        deviation. The ranking is not depth-aware, diagnostic, or a METAFORA outlier call. Unusual
+        methylation does not establish functional effect, imprinting, pathogenicity, or diagnosis.
       </p>
       {availability !== undefined && (
         <section>

@@ -9,7 +9,9 @@ import AlluvialTrack from './AlluvialTrack'
 import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
-import { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
+import MethylationHelp, { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
+import MethylationSummaryTrack from './MethylationSummaryTrack'
+import type { MethylationSummaryPoint } from './methylationTypes'
 import type {
   JoinedPhasedMethylationCapability,
   JoinedPhasedMethylationRecord,
@@ -29,6 +31,7 @@ import {
   type VariantMatchPredicate,
 } from '../LongReadVariantPage/haplotypeSearchFiltering'
 
+export type { MethylationSummaryPoint } from './methylationTypes'
 export { COLOR_MODES }
 
 export type HaplotypeGroupingMode = 'similarity' | 'exact' | 'diploid'
@@ -253,6 +256,13 @@ export const Legend = ({
   initialMinAf = 0,
   initialSortBy = 'similarity_score',
   onSortModeChange = () => { },
+  showMethylation = false,
+  onShowMethylationChange = () => { },
+  methylationAvailable = false,
+  methylationLabel,
+  methylationAvailability,
+  filterToOutliers = false,
+  onFilterToOutliersChange = () => { },
   showPerCopyMethylation = false,
   onShowPerCopyMethylationChange = () => { },
   joinedMethylationCapability,
@@ -509,6 +519,31 @@ export const Legend = ({
         <Fieldset>
           <FieldsetTitle>Data Layers</FieldsetTitle>
           <ControlGroup>
+            {methylationAvailable && (
+              <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                  <input
+                    type='checkbox'
+                    checked={showMethylation}
+                    onChange={(event) => onShowMethylationChange(event.target.checked)}
+                  />
+                  Methylation context
+                </label>
+                <HaplotypeHelpButton title="Methylation context">
+                  <MethylationHelp availability={methylationAvailability} sourceLabel={methylationLabel} />
+                </HaplotypeHelpButton>
+                {showMethylation && (
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                    <input
+                      type='checkbox'
+                      checked={filterToOutliers}
+                      onChange={(event) => onFilterToOutliersChange(event.target.checked)}
+                    />
+                    Regional deviation ranking
+                  </label>
+                )}
+              </div>
+            )}
             {isDiploidView && (
               <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
               <label
@@ -719,18 +754,6 @@ export type Methylation = {
   ancillary_run_id?: string | null
   source_version?: string | null
   source_manifest_hash?: string | null
-}
-
-export type MethylationSummaryPoint = {
-  chrom: string
-  pos1: number
-  pos2: number
-  mean_methylation: number
-  mean_coverage: number
-  num_samples: number
-  std_methylation?: number
-  min_methylation?: number
-  max_methylation?: number
 }
 
 const HaplotypeGroupTooltip = ({ group, sampleMetadata }: { group: HaplotypeGroup; sampleMetadata?: SampleMetadataMap }) => {
@@ -1022,14 +1045,14 @@ const LollipopHelp = () => (
 
     <h4>Optional Overlays</h4>
     <ul>
-      <li><strong>Methylation</strong> — When enabled, each group shows per-CpG methylation levels as dots below the variant row. Deviation from the population mean is highlighted.</li>
+      <li><strong>Methylation context</strong> — When enabled, the population track can show individual CpG sites, temporary visual CpG groups, or both. Read depth and observed sample totals describe display support.</li>
       <li><strong>mQTLs</strong> — When computed, arc connections show variant-CpG associations. Arc height encodes statistical significance (-log₁₀ p). Red arcs = positive effect, blue = negative.</li>
     </ul>
 
     <h4>Controls</h4>
     <ul>
       <li><strong>Sort by</strong> — "Similarity" groups similar haplotypes together; "Count" sorts by sample count.</li>
-      <li><strong>Filter to outliers</strong> — When methylation is enabled, shows only groups containing methylation outlier samples.</li>
+      <li><strong>Regional deviation ranking</strong> — Preserves the existing site-SD rule. It is not depth-aware, diagnostic, or evidence that a low-ranked sample is normal.</li>
     </ul>
   </>
 )
@@ -1624,90 +1647,6 @@ export const HaplotypeInfoBar = ({
 }
 
 // --- Sub-track components ---
-
-const MethylationSummaryTrack = ({ methylationSummary }: { methylationSummary: MethylationSummaryPoint[] }) => {
-  const summaryTrackHeight = 120
-
-  return (
-    <Track
-      renderLeftPanel={() => {
-        const axisTop = 5
-        const axisHeight = summaryTrackHeight - 15
-        return (
-          <SidePanel>
-            <svg width={200} height={summaryTrackHeight}>
-              <g transform={`translate(110, ${axisTop})`}>
-                <text x={-70} y={axisHeight / 2 + 4} fontSize='9' textAnchor='middle' fill='#666'>
-                  Summary (%)
-                </text>
-                <line x1={0} y1={0} x2={0} y2={axisHeight} stroke='black' />
-                {[0, 50, 100].map((tick) => (
-                  <g transform={`translate(0, ${axisHeight - (tick / 100) * axisHeight})`} key={`summary-left-${tick}`}>
-                    <line x1={-5} y1={0} x2={0} y2={0} stroke='black' />
-                    <text x={-10} y={3} fontSize='10' textAnchor='end'>
-                      {tick}
-                    </text>
-                  </g>
-                ))}
-              </g>
-            </svg>
-          </SidePanel>
-        )
-      }}
-    >
-      {({ scalePosition, width }: { scalePosition: (input: number) => number, width: number }) => {
-        const summaryMethScale = scaleLinear().domain([0, 100]).range([summaryTrackHeight - 10, 5])
-        const HIGH_VARIANCE_THRESHOLD = 20
-        return (
-          <PlotWrapper>
-            <svg height={summaryTrackHeight} width={width}>
-              <g>
-                <rect x={0} y={0} width={width} height={summaryTrackHeight} fill='#fafafa' stroke='#e0e0e0' />
-                {[0, 50, 100].map(tick => (
-                  <g key={`summary-tick-${tick}`}>
-                    <line x1={0} y1={summaryMethScale(tick)} x2={width} y2={summaryMethScale(tick)} stroke='#eee' />
-                  </g>
-                ))}
-                {methylationSummary.map((d, i) => {
-                  const x = scalePosition(d.pos1)
-                  const stdVal = d.std_methylation
-                  const isOutlier = stdVal != null && stdVal > HIGH_VARIANCE_THRESHOLD
-                  const yMean = summaryMethScale(d.mean_methylation)
-                  const yHigh = stdVal == null ? yMean : summaryMethScale(Math.min(100, d.mean_methylation + stdVal))
-                  const yLow = stdVal == null ? yMean : summaryMethScale(Math.max(0, d.mean_methylation - stdVal))
-                  return (
-                    <g key={`summary-${i}`}>
-                      <line x1={x} y1={yHigh} x2={x} y2={yLow}
-                        stroke={isOutlier ? 'rgba(220, 38, 38, 0.4)' : 'rgba(100, 100, 200, 0.15)'}
-                        strokeWidth={isOutlier ? 2 : 1} />
-                      <TooltipAnchor
-                        tooltipComponent={() => (
-                          <RegionAttributeList>
-                            <div><dt>Position:</dt><dd>{d.pos1}</dd></div>
-                            <div><dt>Mean methylation:</dt><dd>{d.mean_methylation.toFixed(1)}%</dd></div>
-                            <div><dt>Std dev:</dt><dd>{stdVal == null ? 'Unavailable' : `${stdVal.toFixed(1)}%`}</dd></div>
-                            <div><dt>Range:</dt><dd>{d.min_methylation == null || d.max_methylation == null ? 'Unavailable' : `${d.min_methylation.toFixed(1)}% - ${d.max_methylation.toFixed(1)}%`}</dd></div>
-                            <div><dt>Mean coverage:</dt><dd>{d.mean_coverage.toFixed(0)}x</dd></div>
-                            <div><dt>Observed sample totals:</dt><dd>{d.num_samples}</dd></div>
-                            {isOutlier && <div><dt style={{ color: '#dc2626' }}>High variance site</dt><dd></dd></div>}
-                          </RegionAttributeList>
-                        )}
-                      >
-                        <circle cx={x} cy={yMean} r={isOutlier ? 4 : 2.5}
-                          fill={isOutlier ? '#dc2626' : '#4a5568'} />
-                      </TooltipAnchor>
-                    </g>
-                  )
-                })}
-                <line x1={0} y1={summaryTrackHeight} x2={width} y2={summaryTrackHeight} stroke='#ccc' />
-              </g>
-            </svg>
-          </PlotWrapper>
-        )
-      }}
-    </Track>
-  )
-}
 
 const HaplotypeGroupTrack = ({
   group,
