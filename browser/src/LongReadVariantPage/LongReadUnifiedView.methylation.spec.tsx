@@ -1419,6 +1419,33 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     expect(requestsNamed('RegionMethylation')).toHaveLength(0)
   })
 
+  test('fetches only population summary for similarity-cluster per-copy context', async () => {
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+    await waitFor(() => expect(mockLegendProps.length).toBeGreaterThan(0))
+    act(() => mockLegendProps.at(-1).onGroupingModeChange('similarity'))
+    await waitFor(() => expect(mockLegendProps.at(-1).groupingMode).toBe('similarity'))
+    await enablePerCopyMethylation()
+
+    await waitFor(() => expect(requestsNamed('RegionMethylationSummary')).toHaveLength(1))
+    expect(requestsNamed('RegionMethylationAvailability')).toHaveLength(0)
+    expect(requestsNamed('RegionMethylationOutliers')).toHaveLength(0)
+    expect(requestsNamed('RegionMethylation')).toHaveLength(0)
+
+    const summary = [{
+      chrom: 'chr22', pos1: 110, pos2: 111, mean_methylation: 45,
+      mean_coverage: 20, num_samples: 231, std_methylation: null,
+      min_methylation: 0, max_methylation: 100,
+    }]
+    await resolveRequest(requestsNamed('RegionMethylationSummary')[0], {
+      data: { methylation_summary: summary },
+    })
+    await waitFor(() => expect(mockHaplotypeTrackProps.at(-1).methylationSummary).toEqual(summary))
+    expect(mockHaplotypeTrackProps.at(-1).methylationData).toEqual([])
+    expect(requestsNamed('RegionMethylationOutliers')).toHaveLength(0)
+    expect(requestsNamed('RegionMethylation')).toHaveLength(0)
+  })
+
   test('filters diplotype samples from the capability roster and restores all groups', async () => {
     workerDataOverride = workerData()
     workerDataOverride.groups = [

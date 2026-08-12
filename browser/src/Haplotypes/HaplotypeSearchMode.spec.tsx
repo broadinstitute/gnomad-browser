@@ -12,6 +12,10 @@ jest.mock('./DeckGLLollipopTrack', () => {
     scientificClusters,
     showPerCopyMethylation,
     joinedMethylationSourceSampleIds,
+    methylationViewMode,
+    methylationVisualGroups,
+    populationMeanByPos,
+    summaryByPos,
   }: any, _ref: React.ForwardedRef<unknown>) => (
     <>
       <output aria-label="rendered haplotype rows">
@@ -25,6 +29,11 @@ jest.mock('./DeckGLLollipopTrack', () => {
       </output>
       <output aria-label="cluster methylation enabled">
         {String(showPerCopyMethylation)}:{joinedMethylationSourceSampleIds.join('+')}
+      </output>
+      <output aria-label="cluster methylation display contract">
+        {methylationViewMode}:{methylationVisualGroups.length}:
+        {[...populationMeanByPos.entries()].map(([pos, mean]) => `${pos}=${mean}`).join(',')}:
+        {[...summaryByPos.entries()].map(([pos, value]) => `${pos}=${value.mean}/${value.std}`).join(',')}
       </output>
     </>
   ))
@@ -69,6 +78,19 @@ const requiredProps = {
   methylationData: [],
 }
 
+const populationSummary = [
+  {
+    chrom: 'chr22', pos1: 100, pos2: 101, mean_methylation: 40,
+    mean_coverage: 20, num_samples: 231, std_methylation: null,
+  },
+  {
+    chrom: 'chr22', pos1: 110, pos2: 111, mean_methylation: 60,
+    mean_coverage: 20, num_samples: 231, std_methylation: 5,
+  },
+]
+
+beforeEach(() => window.sessionStorage.clear())
+
 describe('show only matching haplotypes mode', () => {
   test('retains all rows by default and restores them after the explicit mode is cleared', () => {
     const matchesSecond = (candidate: any) => candidate.variant_id === '22-200-A-T'
@@ -90,6 +112,35 @@ describe('show only matching haplotypes mode', () => {
       <HaplotypeTrack {...requiredProps} variantMatchesSearch={matchesSecond} />
     )
     expect(screen.getByLabelText('rendered haplotype rows').textContent).toBe('1,2')
+  })
+
+  test.each([
+    ['groups', 'CpG groups'],
+    ['both', 'Both'],
+  ] as const)('honors persisted %s cluster methylation without sample-total context', (mode, controlLabel) => {
+    window.sessionStorage.setItem('gnomad-lr-methylation-view', mode)
+    render(
+      <HaplotypeTrack
+        {...requiredProps}
+        clusters={[{
+          cluster_id: 'C1', member_group_hashes: ['1', '2'], sample_count: 2,
+          consensus_variants: [],
+        }]}
+        groupingMode="similarity"
+        showPerCopyMethylation
+        showMethylation={false}
+        joinedMethylationSourceSampleIds={['S1', 'S2']}
+        methylationSummary={populationSummary}
+      />
+    )
+
+    expect(screen.queryByLabelText('Population methylation context')).toBeNull()
+    expect(screen.getByLabelText('Cluster methylation view')).not.toBeNull()
+    expect((screen.getByRole('radio', { name: controlLabel }) as HTMLInputElement).checked).toBe(true)
+    expect(screen.getByText('Purple: cluster copies · gray: population mean')).not.toBeNull()
+    expect(screen.getByLabelText('cluster methylation display contract').textContent).toBe(
+      `${mode}:1:100=40,110=60:110=60/5`
+    )
   })
 
   test('filters clustered rows and their expanded member hashes to matching groups', () => {

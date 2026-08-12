@@ -11,6 +11,7 @@ import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
 import MethylationHelp, { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
 import MethylationSummaryTrack from './MethylationSummaryTrack'
+import MethylationViewControls from './MethylationViewControls'
 import { filterGroupsToRegionalDeviationSamples } from './methylationOutlierFilter'
 import { observationsByCanonicalCopy } from './methylationGroupAggregation'
 import { buildMethylationVisualGroups } from './methylationVisualGroups'
@@ -70,6 +71,23 @@ const HaplotypeViewportShell = styled.div<{ $height: number }>`
   min-width: 0;
   height: ${(props) => props.$height}px;
   background: #fff;
+`
+
+const ClusterMethylationControls = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  min-width: 0;
+  border: 1px solid #dfe3e6;
+  border-radius: 6px 6px 0 0;
+  background: #f8f9fa;
+  color: #555;
+  font-size: 11px;
+
+  > span {
+    padding-right: 8px;
+  }
 `
 
 const HaplotypeViewportStatus = styled.div<{ $isError?: boolean }>`
@@ -2228,16 +2246,31 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   const effectiveRegionSize = regionSize || (stop - start)
   const variantCircleRadius = effectiveRegionSize > 100000 ? 2 : 4
 
-  // Build lookup from position to summary stats for coloring dots by deviation
+  // Deviation coloring needs both a finite mean and SD. Population comparators do not.
   const summaryByPos = React.useMemo(() => {
     const map = new Map<number, { mean: number; std: number }>()
-    for (const s of methylationSummary) {
-      if (s.std_methylation != null) {
-        map.set(s.pos1, { mean: s.mean_methylation, std: s.std_methylation })
+    for (const summary of methylationSummary) {
+      if (
+        Number.isFinite(summary.pos1) &&
+        Number.isFinite(summary.mean_methylation) &&
+        summary.std_methylation != null &&
+        Number.isFinite(summary.std_methylation)
+      ) {
+        map.set(summary.pos1, { mean: summary.mean_methylation, std: summary.std_methylation })
       }
     }
     return map
   }, [methylationSummary])
+  const populationMeanByPos = React.useMemo(
+    () => new Map<number, number>(
+      methylationSummary.flatMap((summary) =>
+        Number.isFinite(summary.pos1) && Number.isFinite(summary.mean_methylation)
+          ? [[summary.pos1, summary.mean_methylation] as const]
+          : []
+      )
+    ),
+    [methylationSummary]
+  )
 
   const maxSamples = useMemo(
     () => (displayGroups || []).reduce((max, group) => Math.max(max, group.samples.length), 0),
@@ -2344,6 +2377,19 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
               }
             />
           )}
+          {showPerCopyMethylation && isClusteredView &&
+            (!showMethylation || methylationSummary.length === 0) && (
+              <ClusterMethylationControls>
+                <MethylationViewControls
+                  value={methylationViewMode}
+                  onChange={setMethylationViewMode}
+                  compact
+                  legend="Cluster methylation:"
+                  ariaLabel="Cluster methylation view"
+                />
+                <span>Purple: cluster copies · gray: population mean</span>
+              </ClusterMethylationControls>
+            )}
 
           <HaplotypeViewportShell
             $height={height}
@@ -2368,6 +2414,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             methylationViewMode={methylationViewMode}
             methylationVisualGroups={methylationVisualGroups}
             summaryByPos={summaryByPos}
+            populationMeanByPos={populationMeanByPos}
             variantCircleRadius={variantCircleRadius}
             sampleColorScale={sampleColorScale}
             variantColorScale={variantColorScale}

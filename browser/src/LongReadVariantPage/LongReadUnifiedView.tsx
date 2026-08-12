@@ -1701,39 +1701,50 @@ const LongReadUnifiedView = ({
     }
   }, [methylationScope])
 
-  // Fetch methylation summary + outliers when entering haplotype mode.
-  // Skip for large regions (>200kb) — methylation data is huge and blocks the main thread.
-  // Users can still enable methylation via the checkbox, which triggers the load-all-samples path.
+  // Similarity-cluster per-copy bands share population-derived boundaries and comparators
+  // with the optional sample-total context track. Per-copy-only display fetches the aggregate
+  // summary, but never opts into population outliers or sample-total detail rows.
+  const clusterPerCopyNeedsPopulationSummary =
+    groupingMode === 'similarity' &&
+    showPerCopyMethylation &&
+    joinedMethylationUsableForRegion
   useEffect(() => {
-    if (!showHaplotypes || !showMethylation || !methylationAvailable || regionSize > 200_000)
+    const needsSummary = showMethylation || clusterPerCopyNeedsPopulationSummary
+    if (!showHaplotypes || !needsSummary || !methylationAvailable || regionSize > 200_000)
       return undefined
 
     const gate = summaryMethylationRequestGateRef.current
     const token = gate.begin(methylationScope)
-    const fetchSummaryAndOutliers = async () => {
+    const fetchSummaryAndOptionalOutliers = async () => {
       try {
+        const summaryPromise = responseForCurrentMethylationRequest(gate, token, (signal) =>
+          fetchGraphQL(
+            METHYLATION_SUMMARY_QUERY,
+            { chrom, start, stop, lr_cohort: lrCohort },
+            signal
+          )
+        )
+        const outlierPromise = showMethylation
+          ? responseForCurrentMethylationRequest(gate, token, (signal) =>
+              fetchGraphQL(
+                METHYLATION_OUTLIERS_QUERY,
+                { chrom, start, stop, lr_cohort: lrCohort },
+                signal
+              )
+            )
+          : Promise.resolve(null)
         const [summaryResult, outlierResult] = await Promise.all([
-          responseForCurrentMethylationRequest(gate, token, (signal) =>
-            fetchGraphQL(
-              METHYLATION_SUMMARY_QUERY,
-              { chrom, start, stop, lr_cohort: lrCohort },
-              signal
-            )
-          ),
-          responseForCurrentMethylationRequest(gate, token, (signal) =>
-            fetchGraphQL(
-              METHYLATION_OUTLIERS_QUERY,
-              { chrom, start, stop, lr_cohort: lrCohort },
-              signal
-            )
-          ),
+          summaryPromise,
+          outlierPromise,
         ])
-        if (!gate.isCurrent(token) || !summaryResult || !outlierResult) return
+        if (!gate.isCurrent(token) || !summaryResult) return
         setMethylationViewState((previous) => ({
           ...previous,
           scope: methylationScope,
           summary: summaryResult.data?.methylation_summary || [],
-          outliers: outlierResult.data?.methylation_outliers || null,
+          ...(outlierResult
+            ? { outliers: outlierResult.data?.methylation_outliers || null }
+            : {}),
         }))
       } catch (error: any) {
         if (error?.name !== 'AbortError' && gate.isCurrent(token)) {
@@ -1741,11 +1752,12 @@ const LongReadUnifiedView = ({
         }
       }
     }
-    fetchSummaryAndOutliers()
+    fetchSummaryAndOptionalOutliers()
     return () => gate.cancel(token)
   }, [
     showHaplotypes,
     showMethylation,
+    clusterPerCopyNeedsPopulationSummary,
     chrom,
     start,
     stop,

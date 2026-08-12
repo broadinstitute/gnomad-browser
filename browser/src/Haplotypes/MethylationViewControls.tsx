@@ -2,14 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import type { MethylationViewMode } from './methylationTypes'
 
-const Control = styled.fieldset`
+const Control = styled.fieldset<{ $compact: boolean }>`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: ${(props) => (props.$compact ? '4px' : '6px')};
   min-width: 0;
   margin: 0;
-  padding: 8px 12px;
+  padding: ${(props) => (props.$compact ? '4px 8px' : '8px 12px')};
   border: 0;
   background: #f8f9fa;
 
@@ -26,8 +26,8 @@ const Control = styled.fieldset`
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    min-height: 44px;
-    padding: 6px 10px;
+    min-height: ${(props) => (props.$compact ? '32px' : '44px')};
+    padding: ${(props) => (props.$compact ? '3px 7px' : '6px 10px')};
     border: 1px solid #9aa0a6;
     border-radius: 4px;
     background: #fff;
@@ -67,12 +67,18 @@ const OPTIONS: Array<{ value: MethylationViewMode; label: string }> = [
 export const MethylationViewControls = ({
   value,
   onChange,
+  compact = false,
+  legend = 'Methylation view:',
+  ariaLabel = 'Methylation view',
 }: {
   value: MethylationViewMode
   onChange: (mode: MethylationViewMode) => void
+  compact?: boolean
+  legend?: string
+  ariaLabel?: string
 }) => (
-  <Control aria-label="Methylation view">
-    <legend>Methylation view:</legend>
+  <Control aria-label={ariaLabel} $compact={compact}>
+    <legend>{legend}</legend>
     {OPTIONS.map((option) => (
       <label key={option.value}>
         <input

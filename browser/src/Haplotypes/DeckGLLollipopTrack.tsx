@@ -303,6 +303,7 @@ type DeckGLLollipopTrackProps = {
   methylationViewMode: MethylationViewMode
   methylationVisualGroups: MethylationVisualGroup[]
   summaryByPos: Map<number, { mean: number; std: number }>
+  populationMeanByPos: Map<number, number>
   variantCircleRadius: number
   sampleColorScale: (n: number) => string
   variantColorScale: (n: number) => string
@@ -352,6 +353,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   methylationViewMode,
   methylationVisualGroups,
   summaryByPos,
+  populationMeanByPos,
   variantCircleRadius,
   sampleColorScale,
   variantColorScale,
@@ -738,6 +740,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           methylationViewMode={methylationViewMode}
           methylationVisualGroups={methylationVisualGroups}
           summaryByPos={summaryByPos}
+          populationMeanByPos={populationMeanByPos}
           variantCircleRadius={variantCircleRadius}
           mqtlData={mqtlData}
           showMqtl={showMqtl}
@@ -826,6 +829,7 @@ type DeckGLCanvasProps = {
   methylationViewMode: MethylationViewMode
   methylationVisualGroups: MethylationVisualGroup[]
   summaryByPos: Map<number, { mean: number; std: number }>
+  populationMeanByPos: Map<number, number>
   variantCircleRadius: number
   mqtlData: any[]
   showMqtl: boolean
@@ -894,6 +898,7 @@ function DeckGLLollipopCanvas({
   methylationViewMode,
   methylationVisualGroups,
   summaryByPos,
+  populationMeanByPos,
   variantCircleRadius,
   mqtlData,
   showMqtl,
@@ -1519,8 +1524,6 @@ function DeckGLLollipopCanvas({
     const result = new Map<string, ClusterMethylationSummary>()
     if (!showPerCopyMethylation || !isClusteredView) return result
     const originals = scientificClusters ?? clusters ?? []
-    const populationMeans = new Map<number, number>()
-    summaryByPos.forEach((value, position) => populationMeans.set(position, value.mean))
     rowItems.forEach((item) => {
       if (item.type !== 'cluster') return
       const scientificCluster = scientificClusterForDisplay(item.cluster, originals)
@@ -1536,7 +1539,7 @@ function DeckGLLollipopCanvas({
           recordsForClusterMembership(membership, clusterMethylationRecordIndex),
           perCopyMethylationSampleStates,
           methylationVisualGroups,
-          populationMeans
+          populationMeanByPos
         )
       )
     })
@@ -1550,9 +1553,9 @@ function DeckGLLollipopCanvas({
     methylationVisualGroups,
     perCopyMethylationSampleStates,
     rowItems,
+    populationMeanByPos,
     scientificClusters,
     showPerCopyMethylation,
-    summaryByPos,
   ])
 
   // Consolidated global DeckGL layers — one layer per data type for performance at 500+ rows
@@ -2067,10 +2070,10 @@ function DeckGLLollipopCanvas({
 
           // Repeat the cohort sample-total Population comparator in every aligned band.
           if (methylationViewMode !== 'groups') {
-            summaryByPos.forEach((population, position) => {
+            populationMeanByPos.forEach((populationMean, position) => {
               allClusterPopulationPoints.push({
                 position,
-                y: bandTop + methylationY(population.mean),
+                y: bandTop + methylationY(populationMean),
               })
             })
           }
@@ -2855,6 +2858,7 @@ function DeckGLLollipopCanvas({
     methylationViewMode,
     methylationVisualGroups,
     clusterMethylationById,
+    populationMeanByPos,
     summaryByPos,
     isClusteredView,
     totalHeight,
