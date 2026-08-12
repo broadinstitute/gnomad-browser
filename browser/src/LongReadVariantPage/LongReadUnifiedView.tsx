@@ -632,9 +632,6 @@ const LongReadUnifiedView = ({
   const perCopyMethylationSampleStates = joinedMethylationStateIsCurrent
     ? joinedMethylationViewState.sampleStates
     : new Map<string, PerCopyMethylationSampleState>()
-  const handleShowPerCopyMethylationChange = useCallback((show: boolean) => {
-    setShowPerCopyMethylation(show)
-  }, [])
   const availableMethylationIds = useMemo(
     () =>
       new Set(
@@ -765,6 +762,12 @@ const LongReadUnifiedView = ({
   const [showPhantomRegions, setShowPhantomRegions] = useState(false)
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
+  const effectiveShowMethylation =
+    showMethylation && showPerCopyMethylation && joinedMethylationUsableForRegion
+  const handleShowPerCopyMethylationChange = useCallback((show: boolean) => {
+    setShowPerCopyMethylation(show)
+    if (!show) setShowMethylation(false)
+  }, [])
   const [filterToOutliers, setFilterToOutliers] = useState(false)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
   const [searchText, setSearchText] = useVariantSearchText(variantSearch)
@@ -1430,10 +1433,10 @@ const LongReadUnifiedView = ({
   const genealogyPanelVisible = useMemo(() => {
     if (!showHaplotypes || !showGenealogy || isDiploidView || !dataMatchesMode) return false
     const groups = haplotypeGroups.groups as HaplotypeGroup[]
-    if (!filterToOutliers || !showMethylation) return groups.length >= 2
+    if (!filterToOutliers || !effectiveShowMethylation) return groups.length >= 2
     const outlierSampleIds = new Set(methylationOutlierSampleIds)
     return groups.filter(group => group.samples.some(sample => outlierSampleIds.has(sample.sample_id))).length >= 2
-  }, [showHaplotypes, showGenealogy, isDiploidView, dataMatchesMode, haplotypeGroups.groups, filterToOutliers, showMethylation, methylationOutlierSampleIds])
+  }, [showHaplotypes, showGenealogy, isDiploidView, dataMatchesMode, haplotypeGroups.groups, filterToOutliers, effectiveShowMethylation, methylationOutlierSampleIds])
 
   useEffect(() => {
     onGenealogyPanelVisibilityChange?.(genealogyPanelVisible)
@@ -1660,7 +1663,7 @@ const LongReadUnifiedView = ({
   // The canonical 292-sample roster is authoritative for which identities may be requested.
   useEffect(() => {
     setMethylationAvailability(null)
-    if (!showMethylation || !y1Mode || !methylationAvailable || lrCohort !== 'hgsvc_hprc')
+    if (!effectiveShowMethylation || !y1Mode || !methylationAvailable || lrCohort !== 'hgsvc_hprc')
       return undefined
     let cancelled = false
     fetchGraphQL(METHYLATION_AVAILABILITY_QUERY, { lr_cohort: lrCohort })
@@ -1672,7 +1675,7 @@ const LongReadUnifiedView = ({
     return () => {
       cancelled = true
     }
-  }, [showMethylation, y1Mode, methylationAvailable, lrCohort])
+  }, [effectiveShowMethylation, y1Mode, methylationAvailable, lrCohort])
 
   // A source/region/cohort change invalidates both methylation owners and resets
   // detail, summary, outliers, progress, and loading in one state update.
@@ -1709,7 +1712,7 @@ const LongReadUnifiedView = ({
     showPerCopyMethylation &&
     joinedMethylationUsableForRegion
   useEffect(() => {
-    const needsSummary = showMethylation || clusterPerCopyNeedsPopulationSummary
+    const needsSummary = effectiveShowMethylation || clusterPerCopyNeedsPopulationSummary
     if (!showHaplotypes || !needsSummary || !methylationAvailable || regionSize > 200_000)
       return undefined
 
@@ -1724,7 +1727,7 @@ const LongReadUnifiedView = ({
             signal
           )
         )
-        const outlierPromise = showMethylation
+        const outlierPromise = effectiveShowMethylation
           ? responseForCurrentMethylationRequest(gate, token, (signal) =>
               fetchGraphQL(
                 METHYLATION_OUTLIERS_QUERY,
@@ -1756,7 +1759,7 @@ const LongReadUnifiedView = ({
     return () => gate.cancel(token)
   }, [
     showHaplotypes,
-    showMethylation,
+    effectiveShowMethylation,
     clusterPerCopyNeedsPopulationSummary,
     chrom,
     start,
@@ -1772,7 +1775,7 @@ const LongReadUnifiedView = ({
   // summary/outlier completion cannot start a non-carrier detail operation.
   const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
-    if (!showHaplotypes || !showMethylation || !methylationAvailable || regionSize > 200_000)
+    if (!showHaplotypes || !effectiveShowMethylation || !methylationAvailable || regionSize > 200_000)
       return undefined
     if (methylationViewState.scope !== methylationScope) return undefined
     if (!methylationOutliers?.samples?.length) return undefined
@@ -1876,7 +1879,7 @@ const LongReadUnifiedView = ({
     }
   }, [
     showHaplotypes,
-    showMethylation,
+    effectiveShowMethylation,
     chrom,
     start,
     stop,
@@ -2333,7 +2336,7 @@ const LongReadUnifiedView = ({
               selectedClusterId={selectedClusterId}
               highlightedVariantIds={highlightedVariantIds}
               selectedVariantPos={selectedVariantPos}
-              showMethylation={showMethylation}
+              showMethylation={effectiveShowMethylation}
               filterToOutliers={filterToOutliers}
               isAutoTuned={isAutoTuned}
               typeFilters={typeFilters}
@@ -2375,7 +2378,7 @@ const LongReadUnifiedView = ({
             onColorModeChange={setColorMode}
             initialSortBy={sortBy}
             onSortModeChange={setSortBy}
-            showMethylation={showMethylation}
+            showMethylation={effectiveShowMethylation}
             onShowMethylationChange={setShowMethylation}
             methylationAvailable={methylationAvailable}
             methylationLabel={

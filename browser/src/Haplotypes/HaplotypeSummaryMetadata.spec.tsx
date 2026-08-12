@@ -166,9 +166,9 @@ describe('haplotype summary metadata', () => {
     expect(similaritySubcontrolsText).toContain('Resolution:')
     expect(similaritySubcontrolsText).toContain('Cluster by:')
     expect(similaritySubcontrolsText).not.toContain('Sort:')
-    expect(diploidText).toContain('Per-copy methylation')
-    expect(similarityText).not.toContain('Per-copy methylation')
-    expect(similarityText).not.toContain('Unavailable outside Diploid view')
+    expect(diploidText).toContain('Methylation')
+    expect(similarityText).toContain('Methylation')
+    expect(similarityText).toContain('Unavailable outside Diploid view')
     expect(diploidText).toContain('Recombination rate')
     expect(similarityText).toContain('Recombination rate')
 
@@ -226,9 +226,42 @@ describe('haplotype summary metadata', () => {
     expect(text).not.toContain('Methylation (sample total)')
     expect(text).not.toContain('Outliers only')
     expect(text).not.toContain('Load all sample totals')
-    expect(text).toContain('Per-copy methylation')
+    expect(text).toContain('Methylation')
     expect(disabledCheckboxes).toHaveLength(1)
     expect(disabledCheckboxes[0].parent?.props.title).toBe('AoU is summary-only')
+  })
+
+  test('reveals Methylation context only while the available Methylation layer is checked', () => {
+    const component = renderer.create(
+      <Legend
+        groupingMode="diploid"
+        methylationAvailable
+        joinedMethylationUsableForRegion
+      />
+    )
+
+    expect(renderedText(component.toJSON())).toContain('Methylation')
+    expect(renderedText(component.toJSON())).not.toContain('Methylation context')
+
+    act(() => component.update(
+      <Legend
+        groupingMode="diploid"
+        methylationAvailable
+        joinedMethylationUsableForRegion
+        showPerCopyMethylation
+      />
+    ))
+    expect(renderedText(component.toJSON())).toContain('Methylation context')
+
+    act(() => component.update(
+      <Legend
+        groupingMode="diploid"
+        methylationAvailable
+        joinedMethylationUsableForRegion
+        showMethylation
+      />
+    ))
+    expect(renderedText(component.toJSON())).not.toContain('Methylation context')
   })
 
   test('integrates the real Legend methylation loading, error, retry, and roster filter controls', () => {
@@ -308,7 +341,7 @@ describe('haplotype summary metadata', () => {
       renderer.create(<RecombinationHelp sourceLabel="External reference (UCSC hg38)" />).toJSON()
     )
 
-    expect(legendText).toContain('Per-copy methylation')
+    expect(legendText).toContain('Methylation')
     expect(legendText).toContain('Recombination rate')
     expect(legendText).not.toContain(source)
     expect(legendText).not.toContain('External reference')

@@ -106,13 +106,28 @@ jest.mock('../Haplotypes', () => {
         null,
         mockReact.createElement('input', {
           type: 'checkbox',
-          'aria-label': 'Per-copy methylation',
+          'aria-label': 'Methylation',
           checked: props.showPerCopyMethylation && props.joinedMethylationUsableForRegion,
           disabled: !props.joinedMethylationUsableForRegion,
           onChange: (event: any) => props.onShowPerCopyMethylationChange(event.target.checked),
         }),
-        'Per-copy methylation'
+        'Methylation'
       ),
+      props.showPerCopyMethylation &&
+      props.joinedMethylationUsableForRegion &&
+      props.methylationAvailable
+        ? mockReact.createElement(
+            'label',
+            null,
+            mockReact.createElement('input', {
+              type: 'checkbox',
+              'aria-label': 'Methylation context',
+              checked: props.showMethylation,
+              onChange: (event: any) => props.onShowMethylationChange(event.target.checked),
+            }),
+            'Methylation context'
+          )
+        : null,
       props.joinedMethylationUsableForRegion
         ? mockReact.createElement(
             'label',
@@ -407,7 +422,7 @@ const renderView = (
 )
 
 const enablePerCopyMethylation = async () => {
-  const control = await screen.findByLabelText('Per-copy methylation')
+  const control = await screen.findByLabelText('Methylation')
   await waitFor(() => expect((control as HTMLInputElement).disabled).toBe(false))
   if (!(control as HTMLInputElement).checked) fireEvent.click(control)
 }
@@ -1213,7 +1228,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     mockJoinedCapabilityFailure = failure
     renderView()
 
-    const control = await screen.findByLabelText('Per-copy methylation')
+    const control = await screen.findByLabelText('Methylation')
     expect(
       await screen.findByText(
         'Per-copy methylation API is unavailable; restart with the joined methylation route enabled.'
@@ -1255,7 +1270,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
   test('shows unavailable reasons and never fetches over-span or malformed capabilities', async () => {
     mockJoinedCapability = confirmedCapability({ max_span_bp: 50 })
     const overSpan = renderView()
-    const control = await screen.findByLabelText('Per-copy methylation')
+    const control = await screen.findByLabelText('Methylation')
     expect((control as HTMLInputElement).disabled).toBe(true)
     expect(await screen.findByText(/region spans 101 bp; maximum is 50 bp/)).not.toBeNull()
     expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
@@ -1263,7 +1278,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
 
     mockJoinedCapability = confirmedCapability({ identity: null })
     renderView()
-    const malformed = await screen.findByLabelText('Per-copy methylation')
+    const malformed = await screen.findByLabelText('Methylation')
     expect((malformed as HTMLInputElement).disabled).toBe(true)
     expect(await screen.findByText(/capability identity is not admitted/)).not.toBeNull()
     expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
@@ -1288,7 +1303,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
       '/?show_haplotypes=true&show_source_phased_methylation=true&source_phased_methylation_sample=NOT_REAL'
     )
 
-    const control = await screen.findByLabelText('Per-copy methylation')
+    const control = await screen.findByLabelText('Methylation')
     await waitFor(() => expect((control as HTMLInputElement).disabled).toBe(false))
     expect((control as HTMLInputElement).checked).toBe(false)
     expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
@@ -1365,7 +1380,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     }
     mockJoinedCapability = confirmedCapability({ identity })
     renderView()
-    const control = await screen.findByLabelText('Per-copy methylation')
+    const control = await screen.findByLabelText('Methylation')
     if (!(control as HTMLInputElement).checked) fireEvent.click(control)
     await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
     await resolveRequest(requestsNamed('RegionJoinedPhasedMethylation')[0], {
@@ -1400,7 +1415,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
       'aou'
     )
     await act(async () => { await Promise.resolve() })
-    expect(screen.queryByLabelText('Per-copy methylation')).toBeNull()
+    expect(screen.queryByLabelText('Methylation')).toBeNull()
     expect(mockLegendProps).toHaveLength(0)
     expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
     expect(requestsNamed('RegionSourcePhasedMethylation')).toHaveLength(0)
@@ -1417,6 +1432,32 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     expect(requestsNamed('RegionMethylationSummary')).toHaveLength(0)
     expect(requestsNamed('RegionMethylationOutliers')).toHaveLength(0)
     expect(requestsNamed('RegionMethylation')).toHaveLength(0)
+  })
+
+  test('hides context by default and removes its track when Methylation is turned off', async () => {
+    mockJoinedCapability = confirmedCapability()
+    renderView()
+
+    expect(screen.queryByLabelText('Methylation context')).toBeNull()
+    await enablePerCopyMethylation()
+
+    const context = await screen.findByLabelText('Methylation context')
+    expect((context as HTMLInputElement).checked).toBe(false)
+    expect(mockHaplotypeTrackProps.at(-1).showMethylation).toBe(false)
+
+    fireEvent.click(context)
+    await waitFor(() => expect(mockHaplotypeTrackProps.at(-1).showMethylation).toBe(true))
+
+    fireEvent.click(screen.getByLabelText('Methylation'))
+    await waitFor(() => {
+      expect(screen.queryByLabelText('Methylation context')).toBeNull()
+      expect(mockHaplotypeTrackProps.at(-1).showMethylation).toBe(false)
+      expect(mockLegendProps.at(-1).showMethylation).toBe(false)
+    })
+
+    fireEvent.click(screen.getByLabelText('Methylation'))
+    const restoredContext = await screen.findByLabelText('Methylation context')
+    expect((restoredContext as HTMLInputElement).checked).toBe(false)
   })
 
   test('fetches only population summary for similarity-cluster per-copy context', async () => {
@@ -1509,7 +1550,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     const staleBulk = requestsNamed('RegionJoinedPhasedMethylation')[1]
     expect(staleBulk.variables.sample_ids).toHaveLength(25)
 
-    const layer = screen.getByLabelText('Per-copy methylation')
+    const layer = screen.getByLabelText('Methylation')
     fireEvent.click(layer)
     await waitFor(() => expect(staleBulk.signal?.aborted).toBe(true))
     fireEvent.click(layer)

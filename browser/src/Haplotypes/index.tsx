@@ -551,31 +551,6 @@ export const Legend = ({
         <Fieldset>
           <FieldsetTitle>Data Layers</FieldsetTitle>
           <ControlGroup>
-            {methylationAvailable && (
-              <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                  <input
-                    type='checkbox'
-                    checked={showMethylation}
-                    onChange={(event) => onShowMethylationChange(event.target.checked)}
-                  />
-                  Methylation context
-                </label>
-                <HaplotypeHelpButton title="Methylation context">
-                  <MethylationHelp availability={methylationAvailability} sourceLabel={methylationLabel} />
-                </HaplotypeHelpButton>
-                {showMethylation && (
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                    <input
-                      type='checkbox'
-                      checked={filterToOutliers}
-                      onChange={(event) => onFilterToOutliersChange(event.target.checked)}
-                    />
-                    Filter haplotypes to API-ranked regional deviations
-                  </label>
-                )}
-              </div>
-            )}
             {(isDiploidView || isClusteredView) && (
               <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
               <label
@@ -591,9 +566,9 @@ export const Legend = ({
                   disabled={!joinedMethylationUsableForRegion}
                   onChange={(event) => onShowPerCopyMethylationChange(event.target.checked)}
                 />
-                Per-copy methylation
+                Methylation
               </label>
-              <HaplotypeHelpButton title="Per-copy methylation">
+              <HaplotypeHelpButton title="Methylation">
                 <PerCopyMethylationHelp
                   capability={joinedMethylationCapability}
                   unavailableReason={joinedMethylationUsableForRegion ? null : perCopyMethylationReason}
@@ -603,6 +578,31 @@ export const Legend = ({
                 <span role='status' style={{ color: '#8a4b08', fontSize: '11px' }}>
                   {perCopyMethylationReason}
                 </span>
+              )}
+              {showPerCopyMethylation && joinedMethylationUsableForRegion && methylationAvailable && (
+                <>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                    <input
+                      type='checkbox'
+                      checked={showMethylation}
+                      onChange={(event) => onShowMethylationChange(event.target.checked)}
+                    />
+                    Methylation context
+                  </label>
+                  <HaplotypeHelpButton title="Methylation context">
+                    <MethylationHelp availability={methylationAvailability} sourceLabel={methylationLabel} />
+                  </HaplotypeHelpButton>
+                  {showMethylation && (
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                      <input
+                        type='checkbox'
+                        checked={filterToOutliers}
+                        onChange={(event) => onFilterToOutliersChange(event.target.checked)}
+                      />
+                      Filter haplotypes to API-ranked regional deviations
+                    </label>
+                  )}
+                </>
               )}
               {joinedMethylationUsableForRegion && (
                 <>
