@@ -359,21 +359,13 @@ export const MethylationSummaryTrack = ({
   return (
     <Container ref={containerRef} aria-label="Population methylation context">
       <MethylationViewControls value={viewMode} onChange={setViewMode} />
-      <p style={{ margin: '0 12px 8px', fontSize: 11, color: '#555' }}>
-        {groups.length === 0 && groupOutputLimitExceeded ? (
-          <>
-            CpG group overlay unavailable: this fetched viewport cannot satisfy both the 200-CpG
-            object cap and the 200-group interaction cap. CpG sites remain available without a
-            partial or over-cap grouping claim.
-          </>
-        ) : (
-          <>
-            {groups.length} browser-derived visual CpG group{groups.length === 1 ? '' : 's'} in this
-            display. Population-summary boundaries are shared by loaded sample-total and Copy A/B
-            layers. Groups are temporary display aids, not biological events.
-          </>
-        )}
-      </p>
+      {groups.length === 0 && groupOutputLimitExceeded && (
+        <p style={{ margin: '0 12px 8px', fontSize: 11, color: '#555' }}>
+          CpG group overlay unavailable: this fetched viewport cannot satisfy both the 200-CpG
+          object cap and the 200-group interaction cap. CpG sites remain available without a partial
+          or over-cap grouping claim.
+        </p>
+      )}
       <Track
         renderLeftPanel={() => (
           <Left>
