@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { ExternalLink } from '@gnomad/ui'
 
 import type { JoinedPhasedMethylationCapability } from '../LongReadVariantPage/perCopyMethylation'
 import {
@@ -262,6 +263,9 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
           <li>
             <a href="#methylation-interpretation">Interpretation</a>
           </li>
+          <li>
+            <a href="#methylation-reference">Reference</a>
+          </li>
         </ul>
       </Contents>
 
@@ -497,6 +501,17 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
           not modeled here. A visual difference does not establish significance, causality, an mQTL,
           imprinting, pathogenicity, diagnosis, treatment relevance, or any clinical result. Do not
           use this display as a validated statistical, biological, or clinical assessment.
+        </p>
+      </MethodSection>
+
+      <MethodSection id="methylation-reference">
+        <h3>Reference</h3>
+        <p>
+          Tanner D Jensen, Rhina Kaur, Devon E Bonner, et al. “
+          <ExternalLink href="https://doi.org/10.64898/2026.06.09.26355279">
+            Population-scale detection of methylation outliers from long-read genome sequencing
+          </ExternalLink>
+          .” medRxiv preprint, posted June 11, 2026. Not peer reviewed.
         </p>
       </MethodSection>
 

@@ -127,6 +127,20 @@ describe('MethylationHelp', () => {
     expect(perCopyText).toContain('AVAILABLE_CONFIRMED')
   })
 
+  test('cites the METAFORA medRxiv preprint and its review status', () => {
+    const tree = renderer.create(<MethylationHelp />)
+    const text = renderedText(tree.toJSON())
+    const citationTitle =
+      'Population-scale detection of methylation outliers from long-read genome sequencing'
+    const citationLink = tree.root
+      .findAllByType('a')
+      .find((link) => link.props.href === 'https://doi.org/10.64898/2026.06.09.26355279')
+
+    expect(text).toContain(citationTitle)
+    expect(text).toContain('medRxiv preprint, posted June 11, 2026. Not peer reviewed')
+    expect(citationLink?.props.href).toBe('https://doi.org/10.64898/2026.06.09.26355279')
+  })
+
   test('shows source context in help when provided', () => {
     const text = renderedText(
       renderer.create(<MethylationHelp sourceLabel="Optional Y1 CpG ancillary data" />).toJSON()
