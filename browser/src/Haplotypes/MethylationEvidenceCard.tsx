@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { classifyPopulationSupport } from './methylationSupport'
+import { classifyCopySupport, classifyPopulationSupport } from './methylationSupport'
+import type { MethylationLayerGroupSummary } from './methylationGroupAggregation'
 import MethylationSupportBadge from './MethylationSupportBadge'
 import type { MethylationSummaryPoint, MethylationViewMode } from './methylationTypes'
 import type { MethylationVisualGroup } from './methylationVisualGroups'
@@ -78,11 +79,19 @@ export const MethylationEvidenceCard = ({
   viewMode,
   onViewModeChange,
   onClose,
+  sampleTotalGroup,
+  copyAGroup,
+  copyBGroup,
+  copyEvidenceAvailable = false,
 }: {
   selection: MethylationSelection
   viewMode: MethylationViewMode
   onViewModeChange: (mode: MethylationViewMode) => void
   onClose: () => void
+  sampleTotalGroup?: MethylationLayerGroupSummary | null
+  copyAGroup?: MethylationLayerGroupSummary | null
+  copyBGroup?: MethylationLayerGroupSummary | null
+  copyEvidenceAvailable?: boolean
 }) => {
   const [showSites, setShowSites] = useState(selection.kind === 'site')
   const sites = selection.kind === 'site' ? [selection.site] : selection.group.sites
@@ -95,6 +104,29 @@ export const MethylationEvidenceCard = ({
   const representative = selection.kind === 'site' ? selection.site : null
   const group = selection.kind === 'group' ? selection.group : null
   const support = representative ? classifyPopulationSupport(representative) : null
+  const showCopyEvidence = copyEvidenceAvailable || Boolean(copyAGroup) || Boolean(copyBGroup)
+  const copySupport =
+    group && showCopyEvidence
+      ? classifyCopySupport(
+          copyAGroup
+            ? {
+                medianDepth: copyAGroup.medianPerCpgCoverage,
+                representedSites: copyAGroup.representedSites,
+                totalSites: copyAGroup.group.siteCount,
+                sampleCount: copyAGroup.contributingSampleCount,
+              }
+            : null,
+          copyBGroup
+            ? {
+                medianDepth: copyBGroup.medianPerCpgCoverage,
+                representedSites: copyBGroup.representedSites,
+                totalSites: copyBGroup.group.siteCount,
+                sampleCount: copyBGroup.contributingSampleCount,
+              }
+            : null,
+          copyEvidenceAvailable
+        )
+      : null
 
   return (
     <Card aria-live="polite" aria-label="Methylation context evidence">
@@ -160,6 +192,45 @@ export const MethylationEvidenceCard = ({
             </dd>
           </>
         )}
+        {group && sampleTotalGroup && (
+          <>
+            <dt>Loaded sample-total group</dt>
+            <dd>
+              {percent(sampleTotalGroup.weightedMeanMethylation)} coverage-weighted mean; median
+              depth {depth(sampleTotalGroup.medianPerCpgCoverage)};{' '}
+              {sampleTotalGroup.representedSites}/{group.siteCount} CpGs represented;{' '}
+              {sampleTotalGroup.missingSites} missing
+            </dd>
+          </>
+        )}
+        {group && copySupport && (
+          <>
+            <dt>Loaded Copy A</dt>
+            <dd>
+              {copyAGroup
+                ? `${percent(
+                    copyAGroup.weightedMeanMethylation
+                  )} coverage-weighted mean; median depth ${depth(
+                    copyAGroup.medianPerCpgCoverage
+                  )}; ${copyAGroup.representedSites}/${group.siteCount} CpGs observed`
+                : 'Unavailable — not displayed as 0%'}
+            </dd>
+            <dt>Loaded Copy B</dt>
+            <dd>
+              {copyBGroup
+                ? `${percent(
+                    copyBGroup.weightedMeanMethylation
+                  )} coverage-weighted mean; median depth ${depth(
+                    copyBGroup.medianPerCpgCoverage
+                  )}; ${copyBGroup.representedSites}/${group.siteCount} CpGs observed`
+                : 'Unavailable — not displayed as 0%'}
+            </dd>
+            <dt>Copy A/B support</dt>
+            <dd>
+              <MethylationSupportBadge state={copySupport.state} reasons={copySupport.reasons} />
+            </dd>
+          </>
+        )}
         <dt>Source</dt>
         <dd>
           gnomAD-LR population summaries for the current cohort, run, and assembly; see Methylation
@@ -169,8 +240,8 @@ export const MethylationEvidenceCard = ({
       <p>
         Population variation or a Copy A/B difference does not establish functional effect,
         imprinting, pathogenicity, or diagnosis. Visual groups are display aids, not biological
-        events. Group selection summarizes only the population track; sample-total and Copy A/B
-        tracks remain site-level, and group-level copy aggregation is deferred.
+        events. Loaded sample-total and Copy A/B summaries use the same population boundaries; their
+        coverage-weighted percentages are browser display summaries, not event calls.
       </p>
       {group && (
         <button
@@ -189,7 +260,7 @@ export const MethylationEvidenceCard = ({
       {showSites && (
         <div className="table-scroll">
           <table>
-            <caption>Constituent CpG-site evidence</caption>
+            <caption>Constituent CpG-site evidence (population summary)</caption>
             <thead>
               <tr>
                 <th>Coordinate</th>
@@ -217,6 +288,61 @@ export const MethylationEvidenceCard = ({
               ))}
             </tbody>
           </table>
+          {group && sampleTotalGroup && sampleTotalGroup.sites.length > 0 && (
+            <table>
+              <caption>Loaded sample-total CpG marks in this visual group</caption>
+              <thead>
+                <tr>
+                  <th>Coordinate</th>
+                  <th>Weighted mean</th>
+                  <th>Mean depth</th>
+                  <th>Samples</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sampleTotalGroup.sites.map((site) => (
+                  <tr key={`total-${site.pos1}-${site.pos2}`} tabIndex={0}>
+                    <td>
+                      {group.chrom}:{site.pos1.toLocaleString()}
+                    </td>
+                    <td>{percent(site.weightedMeanMethylation)}</td>
+                    <td>{depth(site.meanCoverage)}</td>
+                    <td>{site.contributingSampleCount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {group &&
+            [copyAGroup, copyBGroup].map((copyGroup, index) => {
+              const copy = index === 0 ? 'A' : 'B'
+              if (!copyGroup || copyGroup.sites.length === 0) return null
+              return (
+                <table key={copy}>
+                  <caption>Loaded Copy {copy} CpG marks in this visual group</caption>
+                  <thead>
+                    <tr>
+                      <th>Coordinate</th>
+                      <th>Weighted mean</th>
+                      <th>Mean depth</th>
+                      <th>Samples</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {copyGroup.sites.map((site) => (
+                      <tr key={`${copy}-${site.pos1}-${site.pos2}`} tabIndex={0}>
+                        <td>
+                          {group.chrom}:{site.pos1.toLocaleString()}
+                        </td>
+                        <td>{percent(site.weightedMeanMethylation)}</td>
+                        <td>{depth(site.meanCoverage)}</td>
+                        <td>{site.contributingSampleCount}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )
+            })}
         </div>
       )}
     </Card>

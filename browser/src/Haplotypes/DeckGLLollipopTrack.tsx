@@ -41,6 +41,14 @@ import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSear
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import { classifyCopySupport, type CopySupportClassification } from './methylationSupport'
 import {
+  buildMethylationLayerDisplay,
+  observationsByCanonicalCopy,
+  type MethylationLayerGroupSummary,
+  type MethylationLayerSiteSummary,
+} from './methylationGroupAggregation'
+import type { MethylationViewMode } from './methylationTypes'
+import type { MethylationVisualGroup } from './methylationVisualGroups'
+import {
   diploidPerCopyLayout,
   perCopyEmptyLabel,
   perCopyMethylationForReadyRow,
@@ -104,8 +112,21 @@ type MethPoint = {
   y: number
   color: [number, number, number, number]
   perCopy?: PerCopyMethylationPoint
+  layerSite?: MethylationLayerSiteSummary
+  copy?: 'A' | 'B'
   copySupport?: CopySupportClassification
   counterpart?: PerCopyMethylationPoint
+}
+
+type MethGroupMark = {
+  start: number
+  stop: number
+  y: number
+  color: [number, number, number, number]
+  summary: MethylationLayerGroupSummary
+  copy?: 'A' | 'B'
+  copySupport?: CopySupportClassification
+  counterpart?: MethylationLayerGroupSummary
 }
 
 type MethStatusLabel = {
@@ -236,6 +257,8 @@ type DeckGLLollipopTrackProps = {
   showPerCopyMethylation: boolean
   perCopyMethylationRecords: JoinedPhasedMethylationRecord[]
   perCopyMethylationSampleStates: ReadonlyMap<string, PerCopyMethylationSampleState>
+  methylationViewMode: MethylationViewMode
+  methylationVisualGroups: MethylationVisualGroup[]
   summaryByPos: Map<number, { mean: number; std: number }>
   variantCircleRadius: number
   sampleColorScale: (n: number) => string
@@ -281,6 +304,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
       showPerCopyMethylation,
       perCopyMethylationRecords,
       perCopyMethylationSampleStates,
+  methylationViewMode,
+  methylationVisualGroups,
   summaryByPos,
   variantCircleRadius,
   sampleColorScale,
@@ -637,6 +662,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
             showPerCopyMethylation={showPerCopyMethylation}
             perCopyMethylationRecords={perCopyMethylationRecords}
             perCopyMethylationSampleStates={perCopyMethylationSampleStates}
+          methylationViewMode={methylationViewMode}
+          methylationVisualGroups={methylationVisualGroups}
           summaryByPos={summaryByPos}
           variantCircleRadius={variantCircleRadius}
           mqtlData={mqtlData}
@@ -721,6 +748,8 @@ type DeckGLCanvasProps = {
   showPerCopyMethylation: boolean
   perCopyMethylationRecords: JoinedPhasedMethylationRecord[]
   perCopyMethylationSampleStates: ReadonlyMap<string, PerCopyMethylationSampleState>
+  methylationViewMode: MethylationViewMode
+  methylationVisualGroups: MethylationVisualGroup[]
   summaryByPos: Map<number, { mean: number; std: number }>
   variantCircleRadius: number
   mqtlData: any[]
@@ -785,6 +814,8 @@ function DeckGLLollipopCanvas({
   showPerCopyMethylation,
   perCopyMethylationRecords,
   perCopyMethylationSampleStates,
+  methylationViewMode,
+  methylationVisualGroups,
   summaryByPos,
   variantCircleRadius,
   mqtlData,
@@ -1414,6 +1445,7 @@ function DeckGLLollipopCanvas({
     const allDeletionLines: StemLine[] = []
     const allSpanningRects: SpanningRect[] = []
     const allMethPoints: MethPoint[] = []
+    const allMethGroups: MethGroupMark[] = []
     const allMethStatusLabels: MethStatusLabel[] = []
     const allMqtlArcs: MqtlArc[] = []
     const allCenterLines: { groupStart: number; groupStop: number; y: number }[] = []
@@ -1663,7 +1695,7 @@ function DeckGLLollipopCanvas({
           )
           // A scientific row is atomic: do not aggregate any completed subset while
           // another represented sample is absent, loading, or failed.
-          const { points: perCopy } = perCopyMethylationForReadyRow(
+          const { readiness, points: perCopy } = perCopyMethylationForReadyRow(
             joinedForGroup,
             dg.samples,
             perCopyMethylationSampleStates
@@ -1671,6 +1703,33 @@ function DeckGLLollipopCanvas({
           const perCopyYScale = scaleLinear()
             .domain([0, 100])
             .range([PER_COPY_METHYLATION_BAND_HEIGHT - 4, 4])
+          const canonicalObservations =
+            readiness === 'ready'
+              ? observationsByCanonicalCopy(joinedForGroup, dg.samples)
+              : { A: [], B: [] }
+          const copyDisplays = {
+            A: buildMethylationLayerDisplay(
+              canonicalObservations.A,
+              methylationVisualGroups,
+              methylationViewMode,
+              'copy'
+            ),
+            B: buildMethylationLayerDisplay(
+              canonicalObservations.B,
+              methylationVisualGroups,
+              methylationViewMode,
+              'copy'
+            ),
+          }
+          const evidence = (value: MethylationLayerGroupSummary | undefined) =>
+            value
+              ? {
+                  medianDepth: value.medianPerCpgCoverage,
+                  representedSites: value.representedSites,
+                  totalSites: value.group.siteCount,
+                  sampleCount: value.contributingSampleCount,
+                }
+              : null
           const addCopyBand = (
             copy: 'A' | 'B',
             bandTop: number,
@@ -1690,24 +1749,57 @@ function DeckGLLollipopCanvas({
               color: status === 'error' ? [180, 50, 50, 210] : [105, 105, 105, 190],
             })
             if (points.length === 0) return
+            const color: [number, number, number, number] =
+              copy === 'A' ? [42, 111, 151, 255] : [161, 85, 34, 255]
+            const pointsByCoordinate = new Map(
+              points.map((point) => [`${point.pos1}:${point.pos2}`, point])
+            )
             const otherPoints = copy === 'A' ? perCopy.B : perCopy.A
             const otherByPosition = new Map(otherPoints.map((point) => [point.pos1, point]))
-            points.forEach((point) => {
+            copyDisplays[copy].sites.forEach((site) => {
+              const point = pointsByCoordinate.get(`${site.pos1}:${site.pos2}`)
+              if (!point) return
               const counterpart = otherByPosition.get(point.pos1)
-              const evidence = (value: PerCopyMethylationPoint | undefined) => value ? ({
-                meanDepth: value.meanCoverage,
-                representedSites: 1,
-                totalSites: 1,
-                sampleCount: value.sampleCount,
-              }) : null
-              const copySupport = copy === 'A'
-                ? classifyCopySupport(evidence(point), evidence(counterpart))
-                : classifyCopySupport(evidence(counterpart), evidence(point))
+              const siteEvidence = (value: PerCopyMethylationPoint | undefined) =>
+                value
+                  ? {
+                      medianDepth: value.meanCoverage,
+                      representedSites: 1,
+                      totalSites: 1,
+                      sampleCount: value.sampleCount,
+                    }
+                  : null
+              const copySupport =
+                copy === 'A'
+                  ? classifyCopySupport(siteEvidence(point), siteEvidence(counterpart))
+                  : classifyCopySupport(siteEvidence(counterpart), siteEvidence(point))
               allMethPoints.push({
-                position: point.pos1,
-                y: bandTop + perCopyYScale(point.meanMethylation),
-                color: copy === 'A' ? [42, 111, 151, 255] : [161, 85, 34, 255],
+                position: site.pos1,
+                y: bandTop + perCopyYScale(site.weightedMeanMethylation),
+                color,
+                layerSite: site,
+                copy,
                 perCopy: point,
+                counterpart,
+                copySupport,
+              })
+            })
+            const otherGroups = copy === 'A' ? copyDisplays.B.groups : copyDisplays.A.groups
+            copyDisplays[copy].groups.forEach((summary) => {
+              const counterpart = otherGroups.find(
+                (candidate) => candidate.group.key === summary.group.key
+              )
+              const copySupport =
+                copy === 'A'
+                  ? classifyCopySupport(evidence(summary), evidence(counterpart))
+                  : classifyCopySupport(evidence(counterpart), evidence(summary))
+              allMethGroups.push({
+                start: summary.group.start,
+                stop: summary.group.stop,
+                y: bandTop + perCopyYScale(summary.weightedMeanMethylation!),
+                color,
+                summary,
+                copy,
                 counterpart,
                 copySupport,
               })
@@ -1721,18 +1813,30 @@ function DeckGLLollipopCanvas({
         if (showMethylation) {
           const methSampleData = methylationData.filter((d) => groupSampleIds.has(d.sample))
           if (methSampleData.length > 0) {
-            const byPos = new Map<number, number[]>()
-            for (const d of methSampleData) {
-              const arr = byPos.get(d.pos1)
-              if (arr) arr.push(d.methylation)
-              else byPos.set(d.pos1, [d.methylation])
-            }
+            const display = buildMethylationLayerDisplay(
+              methSampleData,
+              methylationVisualGroups,
+              methylationViewMode
+            )
             const methBaseY = layout.afterCopies
             const methYScale = scaleLinear().domain([0, 100]).range([METH_TRACK_HEIGHT - 4, 4])
-            for (const [pos, values] of byPos) {
-              const mean = values.reduce((a, b) => a + b, 0) / values.length
-              allMethPoints.push({ position: pos, y: methBaseY + methYScale(mean), color: [74, 85, 104, 255] })
-            }
+            display.groups.forEach((summary) => {
+              allMethGroups.push({
+                start: summary.group.start,
+                stop: summary.group.stop,
+                y: methBaseY + methYScale(summary.weightedMeanMethylation!),
+                color: [74, 85, 104, 210],
+                summary,
+              })
+            })
+            display.sites.forEach((site) => {
+              allMethPoints.push({
+                position: site.pos1,
+                y: methBaseY + methYScale(site.weightedMeanMethylation),
+                color: [74, 85, 104, 255],
+                layerSite: site,
+              })
+            })
           }
         }
 
@@ -1881,18 +1985,30 @@ function DeckGLLollipopCanvas({
           const groupSampleIds = new Set(group.samples.map((s) => s.sample_id))
           const methSampleData = methylationData.filter((d) => groupSampleIds.has(d.sample))
           if (methSampleData.length > 0) {
-            const byPos = new Map<number, number[]>()
-            for (const d of methSampleData) {
-              const arr = byPos.get(d.pos1)
-              if (arr) arr.push(d.methylation)
-              else byPos.set(d.pos1, [d.methylation])
-            }
+            const display = buildMethylationLayerDisplay(
+              methSampleData,
+              methylationVisualGroups,
+              methylationViewMode
+            )
             const methYScale = scaleLinear().domain([0, 100]).range([METH_TRACK_HEIGHT - 4, 4])
             const methBaseY = rowY + VARIANT_ROW_HEIGHT
-            for (const [pos, values] of byPos) {
-              const mean = values.reduce((a, b) => a + b, 0) / values.length
-              allMethPoints.push({ position: pos, y: methBaseY + methYScale(mean), color: [74, 85, 104, 255] })
-            }
+            display.groups.forEach((summary) => {
+              allMethGroups.push({
+                start: summary.group.start,
+                stop: summary.group.stop,
+                y: methBaseY + methYScale(summary.weightedMeanMethylation!),
+                color: [74, 85, 104, 210],
+                summary,
+              })
+            })
+            display.sites.forEach((site) => {
+              allMethPoints.push({
+                position: site.pos1,
+                y: methBaseY + methYScale(site.weightedMeanMethylation),
+                color: [74, 85, 104, 255],
+                layerSite: site,
+              })
+            })
           }
         }
 
@@ -2395,7 +2511,43 @@ function DeckGLLollipopCanvas({
       }))
     }
 
-    // Render CpGs after all copy-relationship marks so dots remain visually on top;
+    // Group ribbons are drawn beneath raw sites in Both mode. Group mode emits no raw site
+    // marks, so every display layer follows the shared population-summary boundaries.
+    if (allMethGroups.length > 0) {
+      result.push(
+        new SolidPolygonLayer({
+          id: 'methylation-group-layer',
+          data: allMethGroups,
+          getPolygon: (d: MethGroupMark) => {
+            const x1 = scalePosition(d.start)
+            const x2 = Math.max(x1 + 2, scalePosition(d.stop))
+            return [
+              [x1, d.y - 3],
+              [x2, d.y - 3],
+              [x2, d.y + 3],
+              [x1, d.y + 3],
+            ]
+          },
+          getFillColor: (d: MethGroupMark) => [
+            d.color[0],
+            d.color[1],
+            d.color[2],
+            methylationViewMode === 'both' ? 75 : 150,
+          ],
+          getLineColor: (d: MethGroupMark) =>
+            d.summary.support.state === 'adequate' ? d.color : [138, 75, 8, 255],
+          getLineWidth: (d: MethGroupMark) =>
+            d.summary.support.state === 'adequate' ? 1 : 2,
+          lineWidthUnits: 'pixels' as const,
+          stroked: true,
+          pickable: true,
+          onHover,
+          updateTriggers: { getPolygon: [scalePosition] },
+        })
+      )
+    }
+
+    // Render CpGs after all copy-relationship and group marks so dots remain visually on top;
     // compound-het marks are non-pickable, making CpG hover deterministic at crossings.
     if (allMethPoints.length > 0) {
       result.push(
@@ -2429,6 +2581,8 @@ function DeckGLLollipopCanvas({
     showPerCopyMethylation,
     perCopyMethylationRecords,
     perCopyMethylationSampleStates,
+    methylationViewMode,
+    methylationVisualGroups,
     showMqtl,
     mqtlData,
     mqtlMinLogP,
@@ -2583,10 +2737,55 @@ function Tooltip({
     return <div style={tooltipStyle}><span>{object.tooltipText}</span></div>
   }
 
-  // Center panel: per-copy methylation or variant tooltips
+  // Center panel: methylation group/site or variant tooltips
+  const groupSummary = object.summary as MethylationLayerGroupSummary | undefined
+  const groupCounterpart = object.counterpart as MethylationLayerGroupSummary | undefined
+  const layerSite = object.layerSite as MethylationLayerSiteSummary | undefined
+  const copy = object.copy as 'A' | 'B' | undefined
   const perCopy = object.perCopy as PerCopyMethylationPoint | undefined
   const counterpart = object.counterpart as PerCopyMethylationPoint | undefined
   const copySupport = object.copySupport as CopySupportClassification | undefined
+  if (groupSummary) {
+    return (
+      <div style={tooltipStyle}>
+        <div>
+          <strong>{copy ? `Copy ${copy}` : 'Sample-total'} visual CpG group:</strong>{' '}
+          {groupSummary.group.start.toLocaleString()}–{groupSummary.group.stop.toLocaleString()}
+        </div>
+        <div>
+          <strong>Coverage-weighted methylation:</strong>{' '}
+          {groupSummary.weightedMeanMethylation?.toFixed(1) ?? 'Unavailable'}%
+        </div>
+        <div>
+          <strong>Median per-CpG depth:</strong>{' '}
+          {groupSummary.medianPerCpgCoverage?.toFixed(1) ?? 'Unavailable'}×
+        </div>
+        <div>
+          <strong>CpGs represented:</strong> {groupSummary.representedSites}/
+          {groupSummary.group.siteCount}; {groupSummary.missingSites} missing
+        </div>
+        <div>
+          <strong>Display support:</strong> {groupSummary.support.state.replace(/-/g, ' ')} —{' '}
+          {groupSummary.support.reasons.join(' ')}
+        </div>
+        {groupCounterpart && (
+          <div>
+            <strong>Other copy:</strong>{' '}
+            {groupCounterpart.weightedMeanMethylation?.toFixed(1) ?? 'Unavailable'}% at{' '}
+            {groupCounterpart.medianPerCpgCoverage?.toFixed(1) ?? 'Unavailable'}× median depth;{' '}
+            {groupCounterpart.representedSites}/{groupCounterpart.group.siteCount} CpGs represented
+          </div>
+        )}
+        {copySupport && (
+          <div style={{ marginTop: 4 }}>
+            <strong>Copy A/B display support: {copySupport.state.replace(/-/g, ' ')}</strong>{' '}
+            {copySupport.reasons.join(' ')}
+          </div>
+        )}
+        <div>Visual groups are browser display aids, not biological events.</div>
+      </div>
+    )
+  }
   if (perCopy) {
     return (
       <div style={tooltipStyle}>
@@ -2629,6 +2828,26 @@ function Tooltip({
           The receipt maps source HAP1 to VCF GT1 and HAP2 to VCF GT2; each sample&apos;s
           GT-to-canonical mapping then places GT1/GT2 on A/B. None of these labels means maternal or
           paternal.
+        </div>
+      </div>
+    )
+  }
+
+  if (layerSite) {
+    return (
+      <div style={tooltipStyle}>
+        <div>
+          <strong>Loaded sample-total CpG:</strong> {layerSite.pos1}-{layerSite.pos2}
+        </div>
+        <div>
+          <strong>Coverage-weighted methylation:</strong>{' '}
+          {layerSite.weightedMeanMethylation.toFixed(1)}%
+        </div>
+        <div>
+          <strong>Mean read depth:</strong> {layerSite.meanCoverage.toFixed(1)}×
+        </div>
+        <div>
+          <strong>Contributing samples:</strong> {layerSite.contributingSampleCount}
         </div>
       </div>
     )

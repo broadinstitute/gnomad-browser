@@ -12,9 +12,15 @@ import HaplotypeHelpButton from './HelpButton'
 import MethylationHelp, { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
 import MethylationSummaryTrack from './MethylationSummaryTrack'
 import { filterGroupsToRegionalDeviationSamples } from './methylationOutlierFilter'
-import type { MethylationSummaryPoint } from './methylationTypes'
-import type {
-  JoinedPhasedMethylationCapability,
+import {
+  observationsByCanonicalCopy,
+  summarizeMethylationLayerSites,
+} from './methylationGroupAggregation'
+import { buildMethylationVisualGroups } from './methylationVisualGroups'
+import type { MethylationSummaryPoint, MethylationViewMode } from './methylationTypes'
+import {
+  perCopyMethylationForReadyRow,
+  type JoinedPhasedMethylationCapability,
   JoinedPhasedMethylationRecord,
   PerCopyLoadingProgress,
   PerCopyMethylationSampleState,
@@ -31,6 +37,7 @@ import {
   filterHaplotypeGroupsToMatches,
   type VariantMatchPredicate,
 } from '../LongReadVariantPage/haplotypeSearchFiltering'
+import type { DiplotypeGroup, DiplotypeSample } from './haplotypeCompute'
 
 export type { MethylationSummaryPoint } from './methylationTypes'
 export { COLOR_MODES }
@@ -43,6 +50,15 @@ export type SelectableHaplotypeGroupingMode = Exclude<HaplotypeGroupingMode, 'ex
 export const normalizeSelectableGroupingMode = (
   mode: HaplotypeGroupingMode | string | null | undefined
 ): SelectableHaplotypeGroupingMode => (mode === 'diploid' ? 'diploid' : 'similarity')
+
+const persistedMethylationView = (): MethylationViewMode => {
+  try {
+    const value = window.sessionStorage.getItem('gnomad-lr-methylation-view')
+    return value === 'groups' || value === 'both' ? value : 'sites'
+  } catch (_) {
+    return 'sites'
+  }
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -1047,7 +1063,7 @@ const LollipopHelp = () => (
 
     <h4>Optional Overlays</h4>
     <ul>
-      <li><strong>Methylation context</strong> — When enabled, the population track can show individual CpG sites, temporary visual CpG groups, or both. Read depth and observed sample totals describe display support.</li>
+      <li><strong>Methylation context</strong> — When enabled, population, loaded sample-total, and valid Copy A/B layers can show individual CpG sites, temporary visual CpG groups, or both using shared boundaries. Read depth and represented CpGs describe display support.</li>
       <li><strong>mQTLs</strong> — When computed, arc connections show variant-CpG associations. Arc height encodes statistical significance (-log₁₀ p). Red arcs = positive effect, blue = negative.</li>
     </ul>
 
@@ -2079,6 +2095,21 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
+  const [methylationViewMode, setMethylationViewModeState] = useState<MethylationViewMode>(
+    persistedMethylationView
+  )
+  const methylationVisualGroups = useMemo(
+    () => buildMethylationVisualGroups(methylationSummary),
+    [methylationSummary]
+  )
+  const setMethylationViewMode = useCallback((mode: MethylationViewMode) => {
+    setMethylationViewModeState(mode)
+    try {
+      window.sessionStorage.setItem('gnomad-lr-methylation-view', mode)
+    } catch (_) {
+      // Session persistence is optional.
+    }
+  }, [])
   // Alternate renderer implementations remain dormant, but callers cannot select them.
   const plotType: string = 'lollipop'
 
@@ -2236,6 +2267,44 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
     .domain([0, Math.max(1, maxMeth)])
     .range([65, 35])
 
+  const selectedCopyEvidence = useMemo(() => {
+    if (!showPerCopyMethylation || !isDiploidView) {
+      return { readiness: 'loading' as const, points: { A: [], B: [] } }
+    }
+    const samplesById = new Map<string, DiplotypeSample>()
+    displayGroups.forEach((group) => {
+      if (!('is_diplotype' in group)) return
+      ;(group as unknown as DiplotypeGroup).samples.forEach((sample) => {
+        samplesById.set(sample.sample_id, sample)
+      })
+    })
+    const samples = [...samplesById.values()]
+    const sampleIds = new Set(samplesById.keys())
+    const records = perCopyMethylationRecords.filter((record) => sampleIds.has(record.sample))
+    const result = perCopyMethylationForReadyRow(
+      records,
+      samples,
+      perCopyMethylationSampleStates
+    )
+    if (result.readiness !== 'ready') return result
+    const observations = observationsByCanonicalCopy(records, samples)
+    const points = (copy: 'A' | 'B') =>
+      summarizeMethylationLayerSites(observations[copy]).map((site) => ({
+        pos1: site.pos1,
+        pos2: site.pos2,
+        meanMethylation: site.weightedMeanMethylation,
+        meanCoverage: site.meanCoverage,
+        sampleCount: site.contributingSampleCount,
+      }))
+    return { readiness: result.readiness, points: { A: points('A'), B: points('B') } }
+  }, [
+    displayGroups,
+    isDiploidView,
+    perCopyMethylationRecords,
+    perCopyMethylationSampleStates,
+    showPerCopyMethylation,
+  ])
+
   // Build pangenome graph for alluvial/heatmap views
   const pangenomeGraph = useMemo(() => {
     if (plotType !== 'alluvial' && plotType !== 'heatmap') return null
@@ -2266,7 +2335,17 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
       {plotType === 'lollipop' && (
         <>
           {showMethylation && methylationSummary.length > 0 && (
-            <MethylationSummaryTrack methylationSummary={methylationSummary} />
+            <MethylationSummaryTrack
+              methylationSummary={methylationSummary}
+              viewMode={methylationViewMode}
+              onViewModeChange={setMethylationViewMode}
+              visualGroups={methylationVisualGroups}
+              sampleTotalMethylation={methylationData}
+              copyMethylation={selectedCopyEvidence.points}
+              copyEvidenceAvailable={
+                showPerCopyMethylation && isDiploidView && selectedCopyEvidence.readiness === 'ready'
+              }
+            />
           )}
 
           <HaplotypeViewportShell
@@ -2288,6 +2367,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             showPerCopyMethylation={showPerCopyMethylation && isDiploidView}
             perCopyMethylationRecords={perCopyMethylationRecords}
             perCopyMethylationSampleStates={perCopyMethylationSampleStates}
+            methylationViewMode={methylationViewMode}
+            methylationVisualGroups={methylationVisualGroups}
             summaryByPos={summaryByPos}
             variantCircleRadius={variantCircleRadius}
             sampleColorScale={sampleColorScale}

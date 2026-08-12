@@ -10,8 +10,8 @@ const site = (mean_coverage: number, num_samples: number): MethylationSummaryPoi
   mean_coverage,
   num_samples,
 })
-const copy = (meanDepth: number, representedSites = 10, totalSites = 10, sampleCount = 20) => ({
-  meanDepth,
+const copy = (medianDepth: number, representedSites = 10, totalSites = 10, sampleCount = 20) => ({
+  medianDepth,
   representedSites,
   totalSites,
   sampleCount,

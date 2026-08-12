@@ -86,12 +86,13 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         </p>
       )}
       <p>
-        The <strong>population summary</strong> control can preserve individual CpG sites, show
+        The <strong>methylation view</strong> control can preserve individual CpG sites, show
         temporary browser-derived visual CpG groups, or show both without another request. Groups
-        are recalculated for the displayed region and are not DMRs or stable biological events. This
-        control does not group the lower sample-total or Copy A/B tracks; those remain site-level.
-        Group-level copy aggregation is deferred until it can preserve readiness and orientation
-        evidence.
+        are recalculated for the displayed region and are not DMRs or stable biological events. The
+        population-summary boundaries are also used for loaded sample-total and Copy A/B layers.
+        Lower-layer group percentages are coverage-weighted display summaries; their evidence shows
+        median per-CpG depth and represented or missing CpGs. Raw CpG marks remain in CpG sites,
+        Both, and the selected-group drill-down.
       </p>
       <p>
         Population summaries show the population mean, site standard deviation, mean read depth, and

@@ -7,7 +7,11 @@ import MethylationEvidenceCard, { type MethylationSelection } from './Methylatio
 import MethylationSupportBadge from './MethylationSupportBadge'
 import MethylationViewControls from './MethylationViewControls'
 import { classifyPopulationSupport } from './methylationSupport'
-import { buildMethylationVisualGroups } from './methylationVisualGroups'
+import { aggregateMethylationByVisualGroups } from './methylationGroupAggregation'
+import {
+  buildMethylationVisualGroups,
+  type MethylationVisualGroup,
+} from './methylationVisualGroups'
 import type { MethylationSummaryPoint, MethylationViewMode } from './methylationTypes'
 
 /* TooltipAnchor's API requires component factories at each data mark. */
@@ -132,20 +136,85 @@ const selectionKey = (selection: MethylationSelection) =>
     ? `group:${selection.group.key}`
     : `site:${selection.site.chrom}:${selection.site.pos1}:${selection.site.pos2}`
 
+type LowerLayerMethylation = {
+  pos1: number
+  pos2: number
+  methylation: number
+  coverage?: number | null
+  sample?: string
+  sampleCount?: number
+}
+
+type CopyLayerPoint = {
+  pos1: number
+  pos2: number
+  meanMethylation: number
+  meanCoverage: number
+  sampleCount: number
+}
+
 export const MethylationSummaryTrack = ({
   methylationSummary,
+  viewMode: controlledViewMode,
+  onViewModeChange,
+  visualGroups,
+  sampleTotalMethylation = [],
+  copyMethylation,
+  copyEvidenceAvailable = false,
 }: {
   methylationSummary: MethylationSummaryPoint[]
+  viewMode?: MethylationViewMode
+  onViewModeChange?: (mode: MethylationViewMode) => void
+  visualGroups?: MethylationVisualGroup[]
+  sampleTotalMethylation?: LowerLayerMethylation[]
+  copyMethylation?: { A: CopyLayerPoint[]; B: CopyLayerPoint[] }
+  copyEvidenceAvailable?: boolean
 }) => {
   const height = 130
   const containerRef = useRef<HTMLElement | null>(null)
-  const [viewMode, setViewModeState] = useState<MethylationViewMode>(persistedMode)
+  const [internalViewMode, setInternalViewMode] = useState<MethylationViewMode>(persistedMode)
+  const viewMode = controlledViewMode ?? internalViewMode
   const [selection, setSelection] = useState<MethylationSelection | null>(null)
   const [selectedMarkKey, setSelectedMarkKey] = useState<string | null>(null)
   const [activeMarkIndex, setActiveMarkIndex] = useState(0)
-  const groups = useMemo(
+  const computedGroups = useMemo(
     () => buildMethylationVisualGroups(methylationSummary),
     [methylationSummary]
+  )
+  const groups = visualGroups ?? computedGroups
+  const sampleTotalGroups = useMemo(
+    () => aggregateMethylationByVisualGroups(sampleTotalMethylation, groups, 'sample-total'),
+    [groups, sampleTotalMethylation]
+  )
+  const copyAGroups = useMemo(
+    () =>
+      aggregateMethylationByVisualGroups(
+        (copyMethylation?.A ?? []).map((point) => ({
+          pos1: point.pos1,
+          pos2: point.pos2,
+          methylation: point.meanMethylation,
+          coverage: point.meanCoverage,
+          sampleCount: point.sampleCount,
+        })),
+        groups,
+        'copy'
+      ),
+    [copyMethylation?.A, groups]
+  )
+  const copyBGroups = useMemo(
+    () =>
+      aggregateMethylationByVisualGroups(
+        (copyMethylation?.B ?? []).map((point) => ({
+          pos1: point.pos1,
+          pos2: point.pos2,
+          methylation: point.meanMethylation,
+          coverage: point.meanCoverage,
+          sampleCount: point.sampleCount,
+        })),
+        groups,
+        'copy'
+      ),
+    [copyMethylation?.B, groups]
   )
   const sortedSites = useMemo(() => sortedSummary(methylationSummary), [methylationSummary])
   const meanRuns = useMemo(() => buildMethylationMeanRuns(methylationSummary), [methylationSummary])
@@ -206,7 +275,8 @@ export const MethylationSummaryTrack = ({
   }, [activeMarkIndex, marks.length])
 
   const setViewMode = (mode: MethylationViewMode) => {
-    setViewModeState(mode)
+    if (controlledViewMode === undefined) setInternalViewMode(mode)
+    onViewModeChange?.(mode)
     setActiveMarkIndex(0)
     if (
       selection &&
@@ -275,10 +345,9 @@ export const MethylationSummaryTrack = ({
     <Container ref={containerRef} aria-label="Population methylation context">
       <MethylationViewControls value={viewMode} onChange={setViewMode} />
       <p style={{ margin: '0 12px 8px', fontSize: 11, color: '#555' }}>
-        {groups.length} browser-derived population-summary visual CpG group
-        {groups.length === 1 ? '' : 's'} in this display. This control affects only the population
-        summary; sample-total and Copy A/B tracks remain site-level. Group-level copy aggregation is
-        deferred.
+        {groups.length} browser-derived visual CpG group{groups.length === 1 ? '' : 's'} in this
+        display. Population-summary boundaries are shared by loaded sample-total and Copy A/B
+        layers. Groups are temporary display aids, not biological events.
       </p>
       <Track
         renderLeftPanel={() => (
@@ -619,6 +688,22 @@ export const MethylationSummaryTrack = ({
           viewMode={viewMode}
           onViewModeChange={setViewMode}
           onClose={closeEvidence}
+          sampleTotalGroup={
+            selection.kind === 'group'
+              ? sampleTotalGroups.find((summary) => summary.group.key === selection.group.key)
+              : null
+          }
+          copyAGroup={
+            selection.kind === 'group'
+              ? copyAGroups.find((summary) => summary.group.key === selection.group.key)
+              : null
+          }
+          copyBGroup={
+            selection.kind === 'group'
+              ? copyBGroups.find((summary) => summary.group.key === selection.group.key)
+              : null
+          }
+          copyEvidenceAvailable={copyEvidenceAvailable}
         />
       )}
     </Container>

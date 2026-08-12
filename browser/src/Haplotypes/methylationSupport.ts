@@ -58,7 +58,7 @@ export const classifyPopulationSupport = (
 }
 
 export type CopyEvidence = {
-  meanDepth: number | null
+  medianDepth: number | null
   representedSites: number
   totalSites: number
   sampleCount: number
@@ -102,23 +102,23 @@ export const classifyCopySupport = (
     copy.totalSites > 0 &&
     copy.representedSites / copy.totalSites >= cfg.minimumCopySiteCompleteness
   const depthOk = (copy: CopyEvidence) =>
-    finite(copy.meanDepth) && copy.meanDepth >= cfg.minimumCopyReadDepth
+    finite(copy.medianDepth) && copy.medianDepth >= cfg.minimumCopyReadDepth
   const aOk = complete(copyA) && depthOk(copyA)
   const bOk = complete(copyB) && depthOk(copyB)
   const reasons: string[] = [
-    `Copy A has ${copyA.meanDepth?.toFixed(1) ?? 'unavailable'}× mean depth, ${
+    `Copy A has ${copyA.medianDepth?.toFixed(1) ?? 'unavailable'}× median per-CpG depth, ${
       copyA.representedSites
     }/${copyA.totalSites} CpGs represented, and ${copyA.sampleCount} contributing sample${
       copyA.sampleCount === 1 ? '' : 's'
     }.`,
-    `Copy B has ${copyB.meanDepth?.toFixed(1) ?? 'unavailable'}× mean depth, ${
+    `Copy B has ${copyB.medianDepth?.toFixed(1) ?? 'unavailable'}× median per-CpG depth, ${
       copyB.representedSites
     }/${copyB.totalSites} CpGs represented, and ${copyB.sampleCount} contributing sample${
       copyB.sampleCount === 1 ? '' : 's'
     }.`,
   ]
-  const lowDepth = Math.min(copyA.meanDepth ?? 0, copyB.meanDepth ?? 0)
-  const highDepth = Math.max(copyA.meanDepth ?? 0, copyB.meanDepth ?? 0)
+  const lowDepth = Math.min(copyA.medianDepth ?? 0, copyB.medianDepth ?? 0)
+  const highDepth = Math.max(copyA.medianDepth ?? 0, copyB.medianDepth ?? 0)
   const depthRatio = lowDepth > 0 ? highDepth / lowDepth : null
   const lowSamples = Math.min(copyA.sampleCount, copyB.sampleCount)
   const highSamples = Math.max(copyA.sampleCount, copyB.sampleCount)
