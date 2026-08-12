@@ -5,9 +5,12 @@ import {
   clusterMethylationReadiness,
   clusterMethylationRowHeight,
   clusterVariantCenter,
+  expandedClusterChildMethylationBandTop,
+  expandedClusterChildRowHeight,
   indexJoinedMethylationByCopy,
   recordsForClusterMembership,
   resolveClusterMethylationMembership,
+  resolveExactGroupMethylationMembership,
   scientificClusterForDisplay,
   summarizeClusterMethylation,
 } from './clusterMethylation'
@@ -111,6 +114,52 @@ describe('cluster methylation membership and estimator', () => {
       { sampleId: 'same', vcfStrand: 2, phaseSet: null },
     ])
     expect(membership.requestSampleIds).toEqual(['other', 'same'])
+  })
+
+  it('renders one cached copy for an expanded exact-group child', () => {
+    const exactGroup = group(1, [sample('one', 2)])
+    const membership = resolveExactGroupMethylationMembership(exactGroup, ['one'])
+    const cached = record('one', 2, 100, 72, 11)
+    const index = indexJoinedMethylationByCopy([cached])
+    const result = summarizeClusterMethylation(
+      membership,
+      recordsForClusterMembership(membership, index),
+      terminalStates('one'),
+      [visualGroup([100])],
+      new Map([[100, 40]])
+    )
+
+    expect(membership.allCopies).toEqual([{ sampleId: 'one', vcfStrand: 2, phaseSet: null }])
+    expect(result.sites[0]).toMatchObject({
+      meanMethylation: 72,
+      measuredCopyCount: 1,
+      measuredIndividualCount: 1,
+      populationMean: 40,
+    })
+  })
+
+  it('keeps both homolog identities and equally weights multiple exact-group copies', () => {
+    const exactGroup = group(1, [sample('same', 1), sample('same', 2), sample('other', 1)])
+    const membership = resolveExactGroupMethylationMembership(exactGroup, ['same', 'other'])
+    const result = summarizeClusterMethylation(
+      membership,
+      [
+        record('same', 1, 100, 0, 1000),
+        record('same', 2, 100, 50, 1),
+        record('other', 1, 100, 100, 1),
+      ],
+      terminalStates('same', 'other'),
+      [visualGroup([100])],
+      new Map()
+    )
+
+    expect(membership.allCopies).toHaveLength(3)
+    expect(membership.requestSampleIds).toEqual(['other', 'same'])
+    expect(result.sites[0]).toMatchObject({
+      meanMethylation: 50,
+      measuredCopyCount: 3,
+      measuredIndividualCount: 2,
+    })
   })
 
   it('assigns two homologs of one individual to their exact separate clusters', () => {
@@ -240,10 +289,46 @@ describe('cluster methylation membership and estimator', () => {
     expect(result.sites[0]).toMatchObject({ meanMethylation: 75, measuredCopyCount: 1 })
   })
 
-  it('uses shared population boundaries and a median of site-level equal-copy means', () => {
-    const membership = resolveClusterMethylationMembership(
-      cluster(['1']),
-      [group(1, [sample('a', 1), sample('b', 2)])],
+  it('keeps expanded exact-group children atomic across loading, error, and unavailable states', () => {
+    const exactGroup = group(1, [sample('a', 1), sample('b', 2)])
+    const membership = resolveExactGroupMethylationMembership(exactGroup, ['a', 'b'])
+    const records = [record('a', 1, 100, 80, 10)]
+    const summarize = (states: Map<string, PerCopyMethylationSampleState>) =>
+      summarizeClusterMethylation(membership, records, states, [visualGroup([100])], new Map())
+
+    const loading = summarize(
+      new Map([
+        ['a', { status: 'complete', recordCount: 1 }],
+        ['b', { status: 'loading' }],
+      ])
+    )
+    expect(loading).toMatchObject({ readiness: 'loading', sites: [], groups: [] })
+
+    const error = summarize(
+      new Map([
+        ['a', { status: 'complete', recordCount: 1 }],
+        ['b', { status: 'error', code: 'FAILED', reason: 'failed' }],
+      ])
+    )
+    expect(error).toMatchObject({ readiness: 'error', sites: [], groups: [] })
+
+    const unavailable = summarize(
+      new Map([
+        ['a', { status: 'unavailable', reason: 'No source' }],
+        ['b', { status: 'unavailable', reason: 'No source' }],
+      ])
+    )
+    expect(unavailable).toMatchObject({
+      readiness: 'ready',
+      availableCopyCount: 0,
+      sites: [],
+      groups: [],
+    })
+  })
+
+  it('uses shared boundaries and Sites/Groups/Both modes for an expanded exact-group child', () => {
+    const membership = resolveExactGroupMethylationMembership(
+      group(1, [sample('a', 1), sample('b', 2)]),
       ['a', 'b']
     )
     const boundary = visualGroup([100, 110, 120])
@@ -276,12 +361,36 @@ describe('cluster methylation membership and estimator', () => {
     })
   })
 
-  it('adds one compact band without moving the variant/genealogy center', () => {
-    const rowTop = 100
+  it('adds aligned parent and expanded-child bands without moving variant/genealogy centers', () => {
+    const parentTop = 100
+    const childTop = parentTop + clusterMethylationRowHeight(true)
     expect(clusterMethylationRowHeight(false)).toBe(25)
     expect(clusterMethylationRowHeight(true)).toBe(25 + CLUSTER_METHYLATION_BAND_HEIGHT)
-    expect(clusterVariantCenter(rowTop)).toBe(112.5)
-    expect(clusterMethylationBandTop(rowTop)).toBe(125)
-    expect(rowTop + clusterMethylationRowHeight(true)).toBe(153)
+    expect(expandedClusterChildRowHeight(true)).toBe(clusterMethylationRowHeight(true))
+    expect(clusterVariantCenter(parentTop)).toBe(112.5)
+    expect(clusterMethylationBandTop(parentTop)).toBe(125)
+    expect(clusterVariantCenter(childTop)).toBe(165.5)
+    expect(expandedClusterChildMethylationBandTop(childTop)).toBe(178)
+    expect(childTop + expandedClusterChildRowHeight(true)).toBe(206)
+  })
+
+  it('summarizes expanded children from the parent cache without enlarging request demand', () => {
+    const first = group(1, [sample('a', 1)])
+    const second = group(2, [sample('b', 2)])
+    const parent = resolveClusterMethylationMembership(
+      cluster(['1', '2']),
+      [first, second],
+      ['a', 'b']
+    )
+    const child = resolveExactGroupMethylationMembership(first, ['a', 'b'])
+    const records = [record('a', 1, 100, 25, 8), record('b', 2, 100, 75, 8)]
+    const index = indexJoinedMethylationByCopy(records)
+
+    expect(parent.requestSampleIds).toEqual(['a', 'b'])
+    expect(child.requestSampleIds).toEqual(['a'])
+    expect(recordsForClusterMembership(child, index)).toEqual([records[0]])
+    expect(
+      child.requestSampleIds.every((sampleId) => parent.requestSampleIds.includes(sampleId))
+    ).toBe(true)
   })
 })

@@ -16,6 +16,12 @@ export const clusterMethylationBandTop = (rowTop: number) => rowTop + CLUSTER_VA
 
 export const clusterVariantCenter = (rowTop: number) => rowTop + CLUSTER_VARIANT_ROW_HEIGHT / 2
 
+// Expanded exact-group children use the same compact variant + evidence geometry as
+// their collapsed parent. Keeping these aliases explicit makes row-layout call sites
+// describe the scientific row they are positioning.
+export const expandedClusterChildRowHeight = clusterMethylationRowHeight
+export const expandedClusterChildMethylationBandTop = clusterMethylationBandTop
+
 export type ClusterHaplotypeCopy = {
   sampleId: string
   vcfStrand: 1 | 2
@@ -41,24 +47,16 @@ export const scientificClusterForDisplay = (
   originalClusters.find((cluster) => cluster.cluster_id === displayedCluster.cluster_id) ??
   displayedCluster
 
-/** Resolve the original UPGMA membership. Search/highlight display cuts are never denominators. */
-export const resolveClusterMethylationMembership = (
-  cluster: HaplotypeCluster,
+const resolveMethylationMembershipForGroups = (
   groups: readonly HaplotypeGroup[],
-  sourceSampleIds: readonly string[]
+  sourceSampleIds: readonly string[],
+  unresolvedGroupHashes: string[] = []
 ): ClusterMethylationMembership => {
-  const groupsByHash = new Map(groups.map((group) => [String(group.hash), group]))
   const sourceSamples = new Set(sourceSampleIds)
   const copiesByIdentity = new Map<string, ClusterHaplotypeCopy>()
-  const unresolvedGroupHashes: string[] = []
   let invalidIdentityCount = 0
 
-  Array.from(new Set(cluster.member_group_hashes.map(String))).forEach((hash) => {
-    const group = groupsByHash.get(hash)
-    if (!group) {
-      unresolvedGroupHashes.push(hash)
-      return
-    }
+  groups.forEach((group) => {
     group.samples.forEach((sample) => {
       if (
         typeof sample.sample_id !== 'string' ||
@@ -90,10 +88,39 @@ export const resolveClusterMethylationMembership = (
     allCopies,
     sourceEligibleCopies,
     requestSampleIds,
-    unresolvedGroupHashes: unresolvedGroupHashes.sort(),
+    unresolvedGroupHashes: [...unresolvedGroupHashes].sort(),
     invalidIdentityCount,
   }
 }
+
+/** Resolve the original UPGMA membership. Search/highlight display cuts are never denominators. */
+export const resolveClusterMethylationMembership = (
+  cluster: HaplotypeCluster,
+  groups: readonly HaplotypeGroup[],
+  sourceSampleIds: readonly string[]
+): ClusterMethylationMembership => {
+  const groupsByHash = new Map(groups.map((group) => [String(group.hash), group]))
+  const resolvedGroups: HaplotypeGroup[] = []
+  const unresolvedGroupHashes: string[] = []
+
+  Array.from(new Set(cluster.member_group_hashes.map(String))).forEach((hash) => {
+    const group = groupsByHash.get(hash)
+    if (group) resolvedGroups.push(group)
+    else unresolvedGroupHashes.push(hash)
+  })
+
+  return resolveMethylationMembershipForGroups(
+    resolvedGroups,
+    sourceSampleIds,
+    unresolvedGroupHashes
+  )
+}
+
+/** Resolve one expanded exact group by unique biological (sample, VCF strand) copies. */
+export const resolveExactGroupMethylationMembership = (
+  group: HaplotypeGroup,
+  sourceSampleIds: readonly string[]
+) => resolveMethylationMembershipForGroups([group], sourceSampleIds)
 
 export type ClusterMethylationReadiness = 'loading' | 'error' | 'ready'
 

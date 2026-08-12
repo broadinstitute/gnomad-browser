@@ -54,9 +54,12 @@ import {
   clusterMethylationDisplay,
   clusterMethylationRowHeight,
   clusterVariantCenter,
+  expandedClusterChildMethylationBandTop,
+  expandedClusterChildRowHeight,
   indexJoinedMethylationByCopy,
   recordsForClusterMembership,
   resolveClusterMethylationMembership,
+  resolveExactGroupMethylationMembership,
   scientificClusterForDisplay,
   summarizeClusterMethylation,
   type ClusterMethylationGroupSummary,
@@ -151,11 +154,14 @@ type MethStatusLabel = {
   color: [number, number, number, number]
 }
 
+type InlineMethylationScope = 'cluster' | 'exact group'
+
 type ClusterMethPoint = {
   position: number
   y: number
   color: [number, number, number, number]
   clusterSite: ClusterMethylationSiteSummary
+  methylationScope: InlineMethylationScope
 }
 
 type ClusterMethGroupMark = {
@@ -164,6 +170,7 @@ type ClusterMethGroupMark = {
   y: number
   color: [number, number, number, number]
   clusterGroup: ClusterMethylationGroupSummary
+  methylationScope: InlineMethylationScope
 }
 
 type ClusterPopulationPoint = {
@@ -485,7 +492,9 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
             (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
           )
         })()
-        let h = VARIANT_ROW_HEIGHT
+        let h = item.isChild
+          ? expandedClusterChildRowHeight(showPerCopyMethylation && isClusteredView)
+          : VARIANT_ROW_HEIGHT
         if (showMethylation) h += METH_TRACK_HEIGHT
         if (showGroupMqtl) h += MQTL_PAD + MQTL_TRACK_HEIGHT
         cumY += h
@@ -1557,6 +1566,37 @@ function DeckGLLollipopCanvas({
     scientificClusters,
     showPerCopyMethylation,
   ])
+  const exactGroupMethylationByHash = useMemo(() => {
+    const result = new Map<string, ClusterMethylationSummary>()
+    if (!showPerCopyMethylation || !isClusteredView) return result
+    rowItems.forEach((item) => {
+      if (item.type !== 'group' || !item.isChild) return
+      const membership = resolveExactGroupMethylationMembership(
+        item.group,
+        joinedMethylationSourceSampleIds
+      )
+      result.set(
+        String(item.group.hash),
+        summarizeClusterMethylation(
+          membership,
+          recordsForClusterMembership(membership, clusterMethylationRecordIndex),
+          perCopyMethylationSampleStates,
+          methylationVisualGroups,
+          populationMeanByPos
+        )
+      )
+    })
+    return result
+  }, [
+    clusterMethylationRecordIndex,
+    isClusteredView,
+    joinedMethylationSourceSampleIds,
+    methylationVisualGroups,
+    perCopyMethylationSampleStates,
+    populationMeanByPos,
+    rowItems,
+    showPerCopyMethylation,
+  ])
 
   // Consolidated global DeckGL layers — one layer per data type for performance at 500+ rows
   const layers = useMemo(() => {
@@ -1691,6 +1731,73 @@ function DeckGLLollipopCanvas({
             centerY,
           })
         }
+      }
+    }
+
+    const addInlineClusterMethylationBand = (
+      summary: ClusterMethylationSummary | undefined,
+      bandTop: number,
+      methylationScope: InlineMethylationScope
+    ) => {
+      const methylationY = scaleLinear()
+        .domain([0, 100])
+        .range([CLUSTER_METHYLATION_BAND_HEIGHT - 4, 4])
+      const display = summary
+        ? clusterMethylationDisplay(summary, methylationViewMode)
+        : { sites: [], groups: [] }
+
+      // Every parent and exact child uses the same comparator and visual-group boundaries.
+      if (methylationViewMode !== 'groups') {
+        populationMeanByPos.forEach((populationMean, position) => {
+          allClusterPopulationPoints.push({ position, y: bandTop + methylationY(populationMean) })
+        })
+      }
+      if (methylationViewMode !== 'sites') {
+        methylationVisualGroups.forEach((group) => {
+          allClusterPopulationGroups.push({
+            start: group.start,
+            stop: group.stop,
+            y: bandTop + methylationY(group.medianPopulationMean),
+          })
+        })
+      }
+
+      if (summary?.readiness === 'ready') {
+        display.groups.forEach((clusterGroup) => {
+          allClusterMethGroups.push({
+            start: clusterGroup.group.start,
+            stop: clusterGroup.group.stop,
+            y: bandTop + methylationY(clusterGroup.medianSiteMean),
+            color: [113, 61, 145, 220],
+            clusterGroup,
+            methylationScope,
+          })
+        })
+        display.sites.forEach((clusterSite) => {
+          allClusterMethPoints.push({
+            position: clusterSite.pos1,
+            y: bandTop + methylationY(clusterSite.meanMethylation),
+            color: [113, 61, 145, 255],
+            clusterSite,
+            methylationScope,
+          })
+        })
+      }
+
+      if (!summary || summary.readiness !== 'ready' || (summary.sites.length === 0 && summary.groups.length === 0)) {
+        let label = 'Methylation: loading'
+        if (summary?.readiness === 'error') label = 'Methylation: error'
+        else if (summary?.readiness === 'ready') {
+          label =
+            summary.sourceEligibleCopyCount === 0 || summary.availableCopyCount === 0
+              ? 'Methylation: unavailable'
+              : 'Methylation: no CpGs'
+        }
+        allMethStatusLabels.push({
+          position: [scalePosition(start) + 4, bandTop + CLUSTER_METHYLATION_BAND_HEIGHT / 2, 0],
+          text: label,
+          color: summary?.readiness === 'error' ? [180, 50, 50, 210] : [105, 105, 105, 190],
+        })
       }
     }
 
@@ -2059,73 +2166,11 @@ function DeckGLLollipopCanvas({
         addPhantomConnectors(rowY + ROW_CENTER_Y, clusterPhantomCarriers)
 
         if (showPerCopyMethylation && isClusteredView) {
-          const summary = clusterMethylationById.get(cluster.cluster_id)
-          const bandTop = clusterMethylationBandTop(rowY)
-          const methylationY = scaleLinear()
-            .domain([0, 100])
-            .range([CLUSTER_METHYLATION_BAND_HEIGHT - 4, 4])
-          const display = summary
-            ? clusterMethylationDisplay(summary, methylationViewMode)
-            : { sites: [], groups: [] }
-
-          // Repeat the cohort sample-total Population comparator in every aligned band.
-          if (methylationViewMode !== 'groups') {
-            populationMeanByPos.forEach((populationMean, position) => {
-              allClusterPopulationPoints.push({
-                position,
-                y: bandTop + methylationY(populationMean),
-              })
-            })
-          }
-          if (methylationViewMode !== 'sites') {
-            methylationVisualGroups.forEach((group) => {
-              allClusterPopulationGroups.push({
-                start: group.start,
-                stop: group.stop,
-                y: bandTop + methylationY(group.medianPopulationMean),
-              })
-            })
-          }
-
-          if (summary?.readiness === 'ready') {
-            display.groups.forEach((clusterGroup) => {
-              allClusterMethGroups.push({
-                start: clusterGroup.group.start,
-                stop: clusterGroup.group.stop,
-                y: bandTop + methylationY(clusterGroup.medianSiteMean),
-                color: [113, 61, 145, 220],
-                clusterGroup,
-              })
-            })
-            display.sites.forEach((clusterSite) => {
-              allClusterMethPoints.push({
-                position: clusterSite.pos1,
-                y: bandTop + methylationY(clusterSite.meanMethylation),
-                color: [113, 61, 145, 255],
-                clusterSite,
-              })
-            })
-          }
-
-          if (!summary || summary.readiness !== 'ready' || (summary.sites.length === 0 && summary.groups.length === 0)) {
-            let label = 'Methylation: loading'
-            if (summary?.readiness === 'error') label = 'Methylation: error'
-            else if (summary?.readiness === 'ready') {
-              label =
-                summary.sourceEligibleCopyCount === 0 || summary.availableCopyCount === 0
-                  ? 'Methylation: unavailable'
-                  : 'Methylation: no CpGs'
-            }
-            allMethStatusLabels.push({
-              position: [
-                scalePosition(start) + 4,
-                bandTop + CLUSTER_METHYLATION_BAND_HEIGHT / 2,
-                0,
-              ],
-              text: label,
-              color: summary?.readiness === 'error' ? [180, 50, 50, 210] : [105, 105, 105, 190],
-            })
-          }
+          addInlineClusterMethylationBand(
+            clusterMethylationById.get(cluster.cluster_id),
+            clusterMethylationBandTop(rowY),
+            'cluster'
+          )
         }
       } else {
         const group = item.group
@@ -2193,6 +2238,19 @@ function DeckGLLollipopCanvas({
         }
         addPhantomConnectors(rowY + ROW_CENTER_Y, groupPhantomCarriers)
 
+        if (item.isChild && showPerCopyMethylation && isClusteredView) {
+          addInlineClusterMethylationBand(
+            exactGroupMethylationByHash.get(String(group.hash)),
+            expandedClusterChildMethylationBandTop(rowY),
+            'exact group'
+          )
+        }
+
+        const afterInlineChildMethylation =
+          item.isChild && showPerCopyMethylation && isClusteredView
+            ? expandedClusterChildRowHeight(true)
+            : VARIANT_ROW_HEIGHT
+
         if (showMethylation) {
           const groupSampleIds = new Set(group.samples.map((s) => s.sample_id))
           const methSampleData = methylationData.filter((d) => groupSampleIds.has(d.sample))
@@ -2203,7 +2261,7 @@ function DeckGLLollipopCanvas({
               methylationViewMode
             )
             const methYScale = scaleLinear().domain([0, 100]).range([METH_TRACK_HEIGHT - 4, 4])
-            const methBaseY = rowY + VARIANT_ROW_HEIGHT
+            const methBaseY = rowY + afterInlineChildMethylation
             display.groups.forEach((summary) => {
               allMethGroups.push({
                 start: summary.group.start,
@@ -2230,7 +2288,7 @@ function DeckGLLollipopCanvas({
             (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= (mqtlMinLogP || 0)
           )
           if (groupMqtl.length > 0) {
-            const mqtlBaseY = rowY + VARIANT_ROW_HEIGHT + (showMethylation ? METH_TRACK_HEIGHT : 0) + MQTL_PAD + MQTL_TRACK_HEIGHT
+            const mqtlBaseY = rowY + afterInlineChildMethylation + (showMethylation ? METH_TRACK_HEIGHT : 0) + MQTL_PAD + MQTL_TRACK_HEIGHT
             const maxLogP = Math.max(2, ...groupMqtl.map((d: any) => -Math.log10(d.p_value)))
             const hScale = scaleLinear().domain([0, maxLogP]).range([0, MQTL_TRACK_HEIGHT - 4])
             for (const d of groupMqtl) {
@@ -2858,6 +2916,7 @@ function DeckGLLollipopCanvas({
     methylationViewMode,
     methylationVisualGroups,
     clusterMethylationById,
+    exactGroupMethylationByHash,
     populationMeanByPos,
     summaryByPos,
     isClusteredView,
@@ -3027,28 +3086,24 @@ function Tooltip({
   const copySupport = object.copySupport as CopySupportClassification | undefined
   const clusterSite = object.clusterSite as ClusterMethylationSiteSummary | undefined
   const clusterGroup = object.clusterGroup as ClusterMethylationGroupSummary | undefined
+  const methylationScope = object.methylationScope as InlineMethylationScope | undefined
   if (clusterGroup) {
     return (
       <div style={tooltipStyle}>
         <div>
-          <strong>Cluster-member haplotype-copy visual CpG group:</strong>{' '}
+          <strong>{methylationScope === 'exact group' ? 'Exact group' : 'Cluster'} CpG group:</strong>{' '}
           {clusterGroup.group.start.toLocaleString()}–{clusterGroup.group.stop.toLocaleString()}
         </div>
         <div>
-          <strong>Median site-level copy mean:</strong> {clusterGroup.medianSiteMean.toFixed(1)}%
+          <strong>Median equal-copy site mean:</strong> {clusterGroup.medianSiteMean.toFixed(1)}%
           {' '}({clusterGroup.minimumSiteMean.toFixed(1)}–{clusterGroup.maximumSiteMean.toFixed(1)}%)
         </div>
-        <div><strong>Population comparator:</strong> {clusterGroup.populationMean.toFixed(1)}%</div>
         <div>
-          <strong>CpGs represented:</strong> {clusterGroup.representedSites}/{clusterGroup.group.siteCount}
+          <strong>Evidence:</strong> {clusterGroup.representedSites}/{clusterGroup.group.siteCount} CpGs;
+          {' '}≥{clusterGroup.minimumMeasuredCopyCount}/{clusterGroup.availableCopyCount} available copies;
+          {' '}{clusterGroup.measuredIndividualCount} individuals; {clusterGroup.medianDepth.toFixed(1)}× median depth
         </div>
-        <div>
-          <strong>Copy evidence:</strong> at least {clusterGroup.minimumMeasuredCopyCount}/
-          {clusterGroup.availableCopyCount} available; {clusterGroup.sourceEligibleCopyCount} source-eligible;
-          {' '}{clusterGroup.allCopyCount} all cluster copies
-        </div>
-        <div><strong>Unique individuals represented:</strong> {clusterGroup.measuredIndividualCount}</div>
-        <div><strong>Median per-copy depth:</strong> {clusterGroup.medianDepth.toFixed(1)}×</div>
+        <div><strong>Population:</strong> {clusterGroup.populationMean.toFixed(1)}%</div>
       </div>
     )
   }
@@ -3056,7 +3111,7 @@ function Tooltip({
     return (
       <div style={tooltipStyle}>
         <div>
-          <strong>Cluster-member haplotype-copy CpG:</strong>{' '}
+          <strong>{methylationScope === 'exact group' ? 'Exact group' : 'Cluster'} CpG:</strong>{' '}
           {clusterSite.pos1.toLocaleString()}–{clusterSite.pos2.toLocaleString()}
         </div>
         <div>
@@ -3064,16 +3119,13 @@ function Tooltip({
           {' '}({clusterSite.minimumMethylation.toFixed(1)}–{clusterSite.maximumMethylation.toFixed(1)}%)
         </div>
         <div>
-          <strong>Population comparator:</strong>{' '}
-          {clusterSite.populationMean === null ? 'Unavailable' : `${clusterSite.populationMean.toFixed(1)}%`}
+          <strong>Evidence:</strong> {clusterSite.measuredCopyCount}/{clusterSite.availableCopyCount} available copies;
+          {' '}{clusterSite.measuredIndividualCount} individuals; {clusterSite.medianDepth.toFixed(1)}× median depth
         </div>
         <div>
-          <strong>Copy evidence:</strong> {clusterSite.measuredCopyCount}/
-          {clusterSite.availableCopyCount} available; {clusterSite.sourceEligibleCopyCount} source-eligible;
-          {' '}{clusterSite.allCopyCount} all cluster copies
+          <strong>Population:</strong>{' '}
+          {clusterSite.populationMean === null ? 'Unavailable' : `${clusterSite.populationMean.toFixed(1)}%`}
         </div>
-        <div><strong>Unique individuals measured:</strong> {clusterSite.measuredIndividualCount}</div>
-        <div><strong>Median per-copy depth:</strong> {clusterSite.medianDepth.toFixed(1)}×</div>
       </div>
     )
   }
