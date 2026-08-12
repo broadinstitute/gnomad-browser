@@ -1,7 +1,9 @@
 import React from 'react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import renderer from 'react-test-renderer'
-import { describe, expect, test } from '@jest/globals'
+import { describe, expect, jest, test } from '@jest/globals'
 
+import HaplotypeHelpButton from './HelpButton'
 import MethylationHelp, {
   PerCopyMethylationHelp,
   type MethylationSampleAvailability,
@@ -48,7 +50,45 @@ describe('MethylationHelp', () => {
     expect(text).toContain('No reason supplied')
   })
 
-  test('keeps sample totals separate and explains the confirmed per-copy mapping', () => {
+  test('states non-equivalence, estimators, grouping configuration, and view behavior', () => {
+    const text = renderedText(renderer.create(<MethylationHelp />).toJSON())
+
+    expect(text).toContain('METAFORA-inspired context — not METAFORA')
+    expect(text).toContain('it does not implement METAFORA')
+    expect(text).toContain('not stable segments, differentially methylated regions (DMRs), events')
+    expect(text).toContain('arithmetic mean of the observed sample-total methylation percentages')
+    expect(text).toContain('Every observed sample row has equal weight')
+    expect(text).toContain('no depth weighting')
+    expect(text).toContain('within-group squared errors (SSE) plus 400')
+    expect(text).toContain('more than 2,000 valid sites')
+    expect(text).toContain('at most 200 CpGs')
+    expect(text).toContain('no groups are returned')
+    expect(text).toContain('visual-groups-v3')
+    expect(text).toContain('CpG sites')
+    expect(text).toContain('CpG groups')
+    expect(text).toContain('Changing these modes does not issue a new data request')
+    expect(text).toContain('Coverage-weighted across the currently loaded')
+    expect(text).toContain('Equal weight for every measured haplotype copy')
+    expect(text).toContain('Median of constituent site-level equal-copy means')
+  })
+
+  test('documents exact support cautions and regional ranking semantics', () => {
+    const text = renderedText(renderer.create(<MethylationHelp />).toJSON())
+
+    expect(text).toContain('Mean read depth at least 10× and at least 20 observed sample totals')
+    expect(text).toContain('Median per-CpG depth at least 10× and at least 50%')
+    expect(text).toContain('median per-CpG depth at least 5×')
+    expect(text).toContain('no greater than 4:1')
+    expect(text).toContain('There is no absolute minimum number of contributing copy samples')
+    expect(text).toContain('not significance, confidence, power, p-values')
+    expect(text).toContain('|sample total − site mean| > 2 × site population SD')
+    expect(text).toContain('sorts samples by descending count, not fraction')
+    expect(text).toContain('focal sample is included in the site mean and population SD')
+    expect(text).toContain('denominators can vary with sample missingness')
+    expect(text).toContain('This legacy ranking is not METAFORA')
+  })
+
+  test('explains operator-approved mapping, readiness, and non-clinical limits', () => {
     const sampleTotalText = renderedText(renderer.create(<MethylationHelp />).toJSON())
     const perCopyText = renderedText(
       renderer
@@ -70,20 +110,20 @@ describe('MethylationHelp', () => {
         .toJSON()
     )
 
-    expect(sampleTotalText).toContain('Sample total:')
-    expect(sampleTotalText).toContain('not allele-specific')
-    expect(sampleTotalText).toContain('group output is capped at 200 objects')
-    expect(sampleTotalText).toContain('does not fetch padded flanks')
-    expect(sampleTotalText).toContain('does not claim edge-complete boundaries')
-    expect(perCopyText).toContain('Copy A is not necessarily VCF GT strand 1')
-    expect(perCopyText).toContain('source HAP1 maps to VCF GT strand 1')
-    expect(perCopyText).toContain('source HAP2 maps to VCF GT strand 2')
-    expect(perCopyText).toContain('maps GT1/GT2 to canonical copy A/B')
+    expect(sampleTotalText).toContain('hash-bound, operator-approved orientation')
+    expect(sampleTotalText).toContain('HAP1 → phased VCF GT strand 1')
+    expect(sampleTotalText).toContain('do not mean maternal/paternal')
+    expect(sampleTotalText).toContain('not scientific validation')
+    expect(sampleTotalText).toContain('missing values are never filled with 0%')
+    expect(sampleTotalText).toContain('no returned CpGs means')
+    expect(sampleTotalText).toContain('descriptive, research-facing context')
+    expect(sampleTotalText).toContain('Do not use this display as a validated statistical')
+
+    expect(perCopyText).toContain('Copy A is not necessarily GT strand 1')
     expect(perCopyText).toContain('original UPGMA cluster membership')
-    expect(perCopyText).toContain('Every unique haplotype copy receives equal weight')
-    expect(perCopyText).toContain('Missing and unavailable copies remain missing, never zero')
-    expect(perCopyText).toContain('does not establish significance, causality, an mQTL')
-    expect(perCopyText).toContain('no maternal or paternal meaning')
+    expect(perCopyText).toContain('(sample_id, vcf_strand)')
+    expect(perCopyText).toContain('Missing, unavailable, and complete requests with no CpGs')
+    expect(perCopyText).toContain('not independent scientific lineage validation')
     expect(perCopyText).toContain('AVAILABLE_CONFIRMED')
   })
 
@@ -101,5 +141,23 @@ describe('MethylationHelp', () => {
 
     expect(loading).toContain('Availability details are loading')
     expect(generic).not.toContain('Sample availability')
+  })
+
+  test('opens the established accessible modal and closes it from the close control', () => {
+    Object.defineProperty(window, 'scroll', { configurable: true, value: jest.fn() })
+    render(
+      <HaplotypeHelpButton title="Methylation context">
+        <MethylationHelp />
+      </HaplotypeHelpButton>
+    )
+
+    expect(screen.queryByRole('dialog', { name: 'Methylation context' })).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Methylation context' }))
+
+    expect(screen.getByRole('dialog', { name: 'Methylation context' })).not.toBeNull()
+    expect(screen.getByText('METAFORA-inspired context — not METAFORA')).not.toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+    expect(screen.queryByRole('dialog', { name: 'Methylation context' })).toBeNull()
   })
 })
