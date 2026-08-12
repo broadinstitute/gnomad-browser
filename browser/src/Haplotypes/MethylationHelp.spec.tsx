@@ -53,9 +53,10 @@ describe('MethylationHelp', () => {
   test('states non-equivalence, estimators, grouping configuration, and view behavior', () => {
     const text = renderedText(renderer.create(<MethylationHelp />).toJSON())
 
-    expect(text).toContain('METAFORA-inspired context — not METAFORA')
-    expect(text).toContain('it does not implement METAFORA')
-    expect(text).toContain('not stable segments, differentially methylated regions (DMRs), events')
+    expect(text).toContain('How to read this display')
+    expect(text).toContain('informed by METAFORA, but it does not run or reproduce METAFORA')
+    expect(text).toContain('not stable segments')
+    expect(text).toContain('differentially methylated regions (DMRs)')
     expect(text).toContain('arithmetic mean of the observed sample-total methylation percentages')
     expect(text).toContain('Every observed sample row has equal weight')
     expect(text).toContain('no depth weighting')
@@ -169,7 +170,7 @@ describe('MethylationHelp', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Methylation context' }))
 
     expect(screen.getByRole('dialog', { name: 'Methylation context' })).not.toBeNull()
-    expect(screen.getByText('METAFORA-inspired context — not METAFORA')).not.toBeNull()
+    expect(screen.getByText('How to read this display')).not.toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: 'Close' }))
     expect(screen.queryByRole('dialog', { name: 'Methylation context' })).toBeNull()

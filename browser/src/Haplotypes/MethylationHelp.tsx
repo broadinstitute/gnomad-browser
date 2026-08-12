@@ -54,6 +54,19 @@ const ImportantNotice = styled.section`
   }
 `
 
+const MethodIntroduction = styled.section`
+  margin-bottom: 16px;
+
+  h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+`
+
 const Contents = styled.nav`
   padding: 10px 14px;
   border: 1px solid #bbb;
@@ -223,15 +236,21 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
 
   return (
     <HelpContent>
-      <ImportantNotice aria-labelledby="methylation-method-status">
-        <h3 id="methylation-method-status">METAFORA-inspired context — not METAFORA</h3>
+      <MethodIntroduction aria-labelledby="methylation-method-introduction">
+        <h3 id="methylation-method-introduction">How to read this display</h3>
         <p>
-          This browser provides <strong>METAFORA-inspired descriptive methylation context</strong>;
-          it does not implement METAFORA. Visual CpG groups are temporary display objects, not
-          stable segments, differentially methylated regions (DMRs), events, or outlier calls.
-          Display cautions and regional rankings are also not statistical calls.
+          These tracks provide a descriptive view of observed CpG methylation in the current region.
+          They bring together Population sample-total summaries and loaded per-copy measurements so
+          that regional patterns, coverage, support, and missingness can be inspected directly.
         </p>
-      </ImportantNotice>
+        <p>
+          The display is{' '}
+          <strong>informed by METAFORA, but it does not run or reproduce METAFORA</strong>.
+          Browser-generated CpG groups are temporary viewport summaries—not stable segments,
+          differentially methylated regions (DMRs), biological events, or outlier calls. Support
+          labels and regional rankings are display and navigation aids, not statistical inference.
+        </p>
+      </MethodIntroduction>
 
       {sourceLabel && (
         <p>
