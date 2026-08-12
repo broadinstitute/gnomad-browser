@@ -71,8 +71,8 @@ export const MethylationViewControls = ({
   value: MethylationViewMode
   onChange: (mode: MethylationViewMode) => void
 }) => (
-  <Control aria-label="Population methylation summary view">
-    <legend>Population summary:</legend>
+  <Control aria-label="Methylation view">
+    <legend>Methylation view:</legend>
     {OPTIONS.map((option) => (
       <label key={option.value}>
         <input

@@ -49,8 +49,8 @@ export const PerCopyMethylationHelp = ({
         Under the admitted chromosome-wide receipt, source HAP1 maps to VCF GT strand 1 and source
         HAP2 maps to VCF GT strand 2. Each represented sample&apos;s
         <code> strand_mapping </code> then maps GT1/GT2 to canonical copy A/B before CpG values are
-        averaged. HAP, GT, and canonical A/B labels have no maternal or paternal meaning, and the
-        source track does not define a VCF phase set.
+        summarized with admitted read coverage. HAP, GT, and canonical A/B labels have no maternal
+        or paternal meaning, and the source track does not define a VCF phase set.
       </p>
       <p>
         Copy A/B read depth is evidence for each displayed percentage. Uneven or limited support
@@ -92,7 +92,14 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         population-summary boundaries are also used for loaded sample-total and Copy A/B layers.
         Lower-layer group percentages are coverage-weighted display summaries; their evidence shows
         median per-CpG depth and represented or missing CpGs. Raw CpG marks remain in CpG sites,
-        Both, and the selected-group drill-down.
+        Both, and the selected-group drill-down. Group objects contain at most 200 CpGs and group
+        output is capped at 200 objects; if both bounds cannot represent a fetched viewport, the
+        browser shows no partial group overlay and keeps the CpG-site view available.
+      </p>
+      <p>
+        The summary request covers the displayed viewport only. It does not fetch padded flanks, so
+        groups touching either query edge may continue outside the display; the browser does not
+        claim edge-complete boundaries or padded-and-clipped segmentation.
       </p>
       <p>
         Population summaries show the population mean, site standard deviation, mean read depth, and

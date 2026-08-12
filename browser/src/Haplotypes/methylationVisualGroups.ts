@@ -89,14 +89,6 @@ const summarize = (
 }
 
 const buildHardRuns = (input: readonly MethylationSummaryPoint[]): HardRun[] => {
-  const sorted = [...input].sort(
-    (a, b) =>
-      a.chrom.localeCompare(b.chrom) ||
-      (validNumber(a.pos1) ? a.pos1 : Number.POSITIVE_INFINITY) -
-        (validNumber(b.pos1) ? b.pos1 : Number.POSITIVE_INFINITY) ||
-      (validNumber(a.pos2) ? a.pos2 : Number.POSITIVE_INFINITY) -
-        (validNumber(b.pos2) ? b.pos2 : Number.POSITIVE_INFINITY)
-  )
   const runs: HardRun[] = []
   let current: MethylationSummaryPoint[] = []
   let currentReason: VisualGroupBoundaryReason = 'display-start'
@@ -107,7 +99,9 @@ const buildHardRuns = (input: readonly MethylationSummaryPoint[]): HardRun[] => 
     current = []
   }
 
-  sorted.forEach((site) => {
+  // The API contract is coordinate ordered. Do not sort malformed input into an apparently valid
+  // run: a reversal is an evidence boundary and therefore fails closed instead of being bridged.
+  input.forEach((site) => {
     if (!validSite(site)) {
       flush()
       pendingReason = 'invalid-or-missing-value'
@@ -123,6 +117,16 @@ const buildHardRuns = (input: readonly MethylationSummaryPoint[]): HardRun[] => 
     }
 
     const previous = current[current.length - 1]
+    const reversedWithinChromosome =
+      site.chrom === previous.chrom &&
+      (site.pos1 < previous.pos1 || (site.pos1 === previous.pos1 && site.pos2 < previous.pos2))
+    if (reversedWithinChromosome) {
+      flush()
+      currentReason = 'invalid-or-missing-value'
+      current = [site]
+      return
+    }
+
     let boundary: VisualGroupBoundaryReason | null = null
     if (site.chrom !== previous.chrom) boundary = 'chromosome-change'
     else if (site.pos1 - previous.pos1 > METHYLATION_VISUAL_GROUP_CONFIG.maximumGapBp) {
@@ -219,9 +223,13 @@ const fixedBinSegments = (runs: HardRun[]): SegmentedRun[] =>
   })
 
 /**
- * Browser-only segmentation. Valid records are copied and sorted. Hard gaps are never bridged;
- * ordinary displays use a penalized piecewise-constant objective, while large/noisy displays
- * use the documented bounded fixed-bin fallback.
+ * Browser-only segmentation. The incoming order is validated and retained. Hard gaps and invalid
+ * coordinate reversals are never bridged; ordinary displays use a penalized piecewise-constant
+ * objective, while large/noisy displays use the documented bounded fixed-bin fallback.
+ *
+ * If both the 200-CpG object cap and 200-object interaction cap cannot represent the input, this
+ * returns no groups. Callers keep the site view and explicitly label the group overlay unavailable;
+ * silently dropping sites or constructing an over-cap pseudo-group would make a stronger claim.
  */
 export const buildMethylationVisualGroups = (
   input: readonly MethylationSummaryPoint[]
@@ -238,6 +246,8 @@ export const buildMethylationVisualGroups = (
       segments = fixedBinSegments(runs)
     }
   }
+
+  if (segments.length > METHYLATION_VISUAL_GROUP_CONFIG.maximumOutputGroups) return []
 
   return segments.map((segment) => summarize(segment.sites, segment.boundaryReason, segment.method))
 }

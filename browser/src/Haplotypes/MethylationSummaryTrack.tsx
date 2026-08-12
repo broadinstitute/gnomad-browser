@@ -145,14 +145,6 @@ type LowerLayerMethylation = {
   sampleCount?: number
 }
 
-type CopyLayerPoint = {
-  pos1: number
-  pos2: number
-  meanMethylation: number
-  meanCoverage: number
-  sampleCount: number
-}
-
 export const MethylationSummaryTrack = ({
   methylationSummary,
   viewMode: controlledViewMode,
@@ -167,7 +159,7 @@ export const MethylationSummaryTrack = ({
   onViewModeChange?: (mode: MethylationViewMode) => void
   visualGroups?: MethylationVisualGroup[]
   sampleTotalMethylation?: LowerLayerMethylation[]
-  copyMethylation?: { A: CopyLayerPoint[]; B: CopyLayerPoint[] }
+  copyMethylation?: { A: LowerLayerMethylation[]; B: LowerLayerMethylation[] }
   copyEvidenceAvailable?: boolean
 }) => {
   const height = 130
@@ -182,38 +174,27 @@ export const MethylationSummaryTrack = ({
     [methylationSummary]
   )
   const groups = visualGroups ?? computedGroups
+  const validGroupingSiteCount = methylationSummary.filter(
+    (site) =>
+      finite(site.mean_methylation) &&
+      finite(site.pos1) &&
+      finite(site.pos2) &&
+      site.pos1 >= 0 &&
+      site.pos2 >= site.pos1
+  ).length
+  const groupOutputLimitExceeded = groups.length === 0 && validGroupingSiteCount > 0
   const sampleTotalGroups = useMemo(
     () => aggregateMethylationByVisualGroups(sampleTotalMethylation, groups, 'sample-total'),
     [groups, sampleTotalMethylation]
   )
+  // Keep admitted observations raw through the selected-card path. Reconstructing observations
+  // from one collapsed CpG mean would lose total coverage when CpGs have unequal sample counts.
   const copyAGroups = useMemo(
-    () =>
-      aggregateMethylationByVisualGroups(
-        (copyMethylation?.A ?? []).map((point) => ({
-          pos1: point.pos1,
-          pos2: point.pos2,
-          methylation: point.meanMethylation,
-          coverage: point.meanCoverage,
-          sampleCount: point.sampleCount,
-        })),
-        groups,
-        'copy'
-      ),
+    () => aggregateMethylationByVisualGroups(copyMethylation?.A ?? [], groups, 'copy'),
     [copyMethylation?.A, groups]
   )
   const copyBGroups = useMemo(
-    () =>
-      aggregateMethylationByVisualGroups(
-        (copyMethylation?.B ?? []).map((point) => ({
-          pos1: point.pos1,
-          pos2: point.pos2,
-          methylation: point.meanMethylation,
-          coverage: point.meanCoverage,
-          sampleCount: point.sampleCount,
-        })),
-        groups,
-        'copy'
-      ),
+    () => aggregateMethylationByVisualGroups(copyMethylation?.B ?? [], groups, 'copy'),
     [copyMethylation?.B, groups]
   )
   const sortedSites = useMemo(() => sortedSummary(methylationSummary), [methylationSummary])
@@ -274,9 +255,18 @@ export const MethylationSummaryTrack = ({
     if (activeMarkIndex >= marks.length) setActiveMarkIndex(Math.max(0, marks.length - 1))
   }, [activeMarkIndex, marks.length])
 
-  const setViewMode = (mode: MethylationViewMode) => {
+  const applyViewMode = (mode: MethylationViewMode) => {
     if (controlledViewMode === undefined) setInternalViewMode(mode)
     onViewModeChange?.(mode)
+    try {
+      window.sessionStorage.setItem('gnomad-lr-methylation-view', mode)
+    } catch (_) {
+      // Storage is optional.
+    }
+  }
+
+  const setViewMode = (mode: MethylationViewMode) => {
+    applyViewMode(mode)
     setActiveMarkIndex(0)
     if (
       selection &&
@@ -286,11 +276,36 @@ export const MethylationSummaryTrack = ({
       setSelection(null)
       setSelectedMarkKey(null)
     }
-    try {
-      window.sessionStorage.setItem('gnomad-lr-methylation-view', mode)
-    } catch (_) {
-      // Storage is optional.
+  }
+
+  const switchSelectedGroupToSites = () => {
+    if (selection?.kind !== 'group') {
+      setViewMode('sites')
+      return
     }
+    const constituent = [...selection.group.sites].sort(
+      (a, b) => a.chrom.localeCompare(b.chrom) || a.pos1 - b.pos1 || a.pos2 - b.pos2
+    )[0]
+    if (!constituent) {
+      setViewMode('sites')
+      return
+    }
+    const siteKey = `site:${constituent.chrom}:${constituent.pos1}:${constituent.pos2}`
+    const siteIndex = sortedSites.findIndex(
+      (site) =>
+        site.chrom === constituent.chrom &&
+        site.pos1 === constituent.pos1 &&
+        site.pos2 === constituent.pos2
+    )
+    applyViewMode('sites')
+    setSelection({ kind: 'site', site: constituent })
+    setSelectedMarkKey(siteKey)
+    setActiveMarkIndex(Math.max(0, siteIndex))
+    window.setTimeout(() => {
+      containerRef.current
+        ?.querySelector<SVGGElement>(`[data-methylation-mark-index="${Math.max(0, siteIndex)}"]`)
+        ?.focus()
+    }, 0)
   }
 
   const choose = (nextSelection: MethylationSelection) => {
@@ -345,9 +360,19 @@ export const MethylationSummaryTrack = ({
     <Container ref={containerRef} aria-label="Population methylation context">
       <MethylationViewControls value={viewMode} onChange={setViewMode} />
       <p style={{ margin: '0 12px 8px', fontSize: 11, color: '#555' }}>
-        {groups.length} browser-derived visual CpG group{groups.length === 1 ? '' : 's'} in this
-        display. Population-summary boundaries are shared by loaded sample-total and Copy A/B
-        layers. Groups are temporary display aids, not biological events.
+        {groups.length === 0 && groupOutputLimitExceeded ? (
+          <>
+            CpG group overlay unavailable: this fetched viewport cannot satisfy both the 200-CpG
+            object cap and the 200-group interaction cap. CpG sites remain available without a
+            partial or over-cap grouping claim.
+          </>
+        ) : (
+          <>
+            {groups.length} browser-derived visual CpG group{groups.length === 1 ? '' : 's'} in this
+            display. Population-summary boundaries are shared by loaded sample-total and Copy A/B
+            layers. Groups are temporary display aids, not biological events.
+          </>
+        )}
       </p>
       <Track
         renderLeftPanel={() => (
@@ -449,7 +474,8 @@ export const MethylationSummaryTrack = ({
                           role="button"
                           tabIndex={markIndex === activeMarkIndex ? 0 : -1}
                           data-methylation-mark-index={markIndex}
-                          aria-label={`Select population-summary visual CpG group ${group.start} to ${group.stop}`}
+                          data-methylation-mark-key={key}
+                          aria-label={`Select methylation visual CpG group ${group.start} to ${group.stop}`}
                           onFocus={() => setActiveMarkIndex(markIndex)}
                           onClick={() => choose({ kind: 'group', group })}
                           onKeyDown={(event) =>
@@ -611,6 +637,7 @@ export const MethylationSummaryTrack = ({
                             role="button"
                             tabIndex={markIndex === activeMarkIndex ? 0 : -1}
                             data-methylation-mark-index={markIndex}
+                            data-methylation-mark-key={key}
                             aria-label={`Select CpG site ${site.pos1}. Population mean ${
                               meanAvailable
                                 ? `${site.mean_methylation.toFixed(1)} percent`
@@ -687,6 +714,7 @@ export const MethylationSummaryTrack = ({
           selection={selection}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
+          onSwitchToSites={switchSelectedGroupToSites}
           onClose={closeEvidence}
           sampleTotalGroup={
             selection.kind === 'group'

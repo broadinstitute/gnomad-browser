@@ -41,6 +41,12 @@ const summary = (offset = 0): MethylationSummaryPoint[] => [
 const interactiveMarks = (tree: renderer.ReactTestRenderer) =>
   tree.root.findAll((node) => node.type === 'g' && node.props.role === 'button')
 
+const renderedText = (node: any): string => {
+  if (typeof node === 'string') return node
+  if (Array.isArray(node)) return node.map(renderedText).join('')
+  return node?.children ? renderedText(node.children) : ''
+}
+
 describe('MethylationSummaryTrack interaction', () => {
   test('uses bounded roving focus and supports arrow and keyboard selection', () => {
     window.sessionStorage.setItem('gnomad-lr-methylation-view', 'sites')
@@ -79,6 +85,37 @@ describe('MethylationSummaryTrack interaction', () => {
           node.type === 'section' && node.props['aria-label'] === 'Methylation context evidence'
       )
     ).toHaveLength(1)
+  })
+
+  test('uses raw copy observations for the selected group and preserves its first site on switch', () => {
+    window.sessionStorage.setItem('gnomad-lr-methylation-view', 'groups')
+    const copyA = [
+      { pos1: 100, pos2: 101, methylation: 100, coverage: 10, sample: 'high' },
+      ...Array.from({ length: 10 }, (_, index) => ({
+        pos1: 200,
+        pos2: 201,
+        methylation: 0,
+        coverage: 10,
+        sample: `low-${index}`,
+      })),
+    ]
+    const tree = renderer.create(
+      <MethylationSummaryTrack
+        methylationSummary={summary()}
+        copyMethylation={{ A: copyA, B: [] }}
+        copyEvidenceAvailable
+      />
+    )
+    act(() => interactiveMarks(tree)[0].props.onClick())
+    expect(renderedText(tree.toJSON())).toContain('Loaded Copy A9.1% coverage-weighted mean')
+
+    const switchButton = tree.root
+      .findAllByType('button')
+      .find((button) => renderedText(button.props.children).includes('Switch to CpG sites'))!
+    act(() => switchButton.props.onClick())
+    const text = renderedText(tree.toJSON())
+    expect(text).toContain('View objectCpG site')
+    expect(text).toContain('Regionchr22:100')
   })
 
   test('clears evidence selected in a prior summary scope', () => {

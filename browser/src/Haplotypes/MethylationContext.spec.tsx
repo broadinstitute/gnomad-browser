@@ -43,6 +43,8 @@ describe('Methylation context components', () => {
     const onChange = jest.fn()
     const tree = renderer.create(<MethylationViewControls value="sites" onChange={onChange} />)
     const radios = tree.root.findAllByType('input')
+    expect(tree.root.findByType('fieldset').props['aria-label']).toBe('Methylation view')
+    expect(renderedText(tree.root.findByType('legend').props.children)).toBe('Methylation view:')
     expect(radios.map((radio) => radio.props.value)).toEqual(['sites', 'groups', 'both'])
     expect(radios[0].props.checked).toBe(true)
     act(() => radios[2].props.onChange())

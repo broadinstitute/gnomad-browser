@@ -69,6 +69,7 @@ export type MethylationLayerSiteSummary = {
   pos1: number
   pos2: number
   weightedMeanMethylation: number
+  totalCoverage: number
   meanCoverage: number
   contributingSampleCount: number
   observationCount: number
@@ -143,6 +144,7 @@ export const summarizeMethylationLayerSites = (
       pos1: aggregate.pos1,
       pos2: aggregate.pos2,
       weightedMeanMethylation: aggregate.weightedMethylation / aggregate.coverage,
+      totalCoverage: aggregate.coverage,
       // A row may contain several samples. Report the mean per-observation depth at the CpG,
       // then take the median of those CpG means for a visual group.
       meanCoverage: aggregate.coverage / aggregate.observations,
@@ -216,15 +218,11 @@ export const aggregateMethylationByVisualGroups = (
       const site = siteByCoordinate.get(`${populationSite.pos1}:${populationSite.pos2}`)
       return site ? [site] : []
     })
-    const totalCoverage = represented.reduce(
-      (sum, site) => sum + site.meanCoverage * site.observationCount,
-      0
-    )
+    const totalCoverage = represented.reduce((sum, site) => sum + site.totalCoverage, 0)
     const weightedMeanMethylation =
       totalCoverage > 0
         ? represented.reduce(
-            (sum, site) =>
-              sum + site.weightedMeanMethylation * site.meanCoverage * site.observationCount,
+            (sum, site) => sum + site.weightedMeanMethylation * site.totalCoverage,
             0
           ) / totalCoverage
         : null

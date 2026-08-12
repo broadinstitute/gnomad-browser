@@ -76,6 +76,8 @@ describe('cross-layer methylation visual groups', () => {
     )
     const [summary] = aggregateMethylationByVisualGroups(mapped.A, visualGroups, 'copy')
     expect(summary.weightedMeanMethylation).toBe(1)
+    expect(summary.sites[0].weightedMeanMethylation).toBe(1)
+    expect(summary.sites[0].totalCoverage).toBe(100)
     expect(summary.contributingSampleCount).toBe(2)
   })
 
@@ -87,6 +89,22 @@ describe('cross-layer methylation visual groups', () => {
     expect(summary.missingSites).toBe(1)
     expect(summary.contributingSampleCount).toBe(1)
     expect(summary.support.state).toBe('adequate')
+  })
+
+  test('weights a copy group by raw total coverage when CpGs have unequal sample counts', () => {
+    const unequalSampleCounts: MethylationLayerObservation[] = [
+      { pos1: 100, pos2: 101, methylation: 100, coverage: 10, sample: 'high' },
+      ...Array.from({ length: 10 }, (_, index) => ({
+        pos1: 200,
+        pos2: 201,
+        methylation: 0,
+        coverage: 10,
+        sample: `low-${index}`,
+      })),
+    ]
+    const [summary] = aggregateMethylationByVisualGroups(unequalSampleCounts, visualGroups, 'copy')
+    expect(summary.weightedMeanMethylation).toBeCloseTo(9.0909, 4)
+    expect(summary.sites.map((site) => site.totalCoverage)).toEqual([10, 100])
   })
 
   test('keeps missing copy CpGs missing rather than adding zero-valued observations', () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { classifyCopySupport, classifyPopulationSupport } from './methylationSupport'
 import type { MethylationLayerGroupSummary } from './methylationGroupAggregation'
@@ -51,11 +51,6 @@ const Card = styled.section`
   td:first-child {
     text-align: left;
   }
-  tr:focus {
-    outline: 2px solid #2a6f97;
-    outline-offset: -2px;
-  }
-
   button {
     min-height: 44px;
     margin-right: 8px;
@@ -78,6 +73,7 @@ export const MethylationEvidenceCard = ({
   selection,
   viewMode,
   onViewModeChange,
+  onSwitchToSites,
   onClose,
   sampleTotalGroup,
   copyAGroup,
@@ -87,13 +83,16 @@ export const MethylationEvidenceCard = ({
   selection: MethylationSelection
   viewMode: MethylationViewMode
   onViewModeChange: (mode: MethylationViewMode) => void
+  onSwitchToSites?: () => void
   onClose: () => void
   sampleTotalGroup?: MethylationLayerGroupSummary | null
   copyAGroup?: MethylationLayerGroupSummary | null
   copyBGroup?: MethylationLayerGroupSummary | null
   copyEvidenceAvailable?: boolean
 }) => {
+  const cardRef = useRef<HTMLElement | null>(null)
   const [showSites, setShowSites] = useState(selection.kind === 'site')
+  useEffect(() => cardRef.current?.focus(), [])
   const sites = selection.kind === 'site' ? [selection.site] : selection.group.sites
   const region =
     selection.kind === 'site'
@@ -129,7 +128,7 @@ export const MethylationEvidenceCard = ({
       : null
 
   return (
-    <Card aria-live="polite" aria-label="Methylation context evidence">
+    <Card ref={cardRef} tabIndex={-1} aria-live="polite" aria-label="Methylation context evidence">
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
         <h3 style={{ margin: 0 }}>Methylation context</h3>
         <button type="button" onClick={onClose} aria-label="Close methylation evidence">
@@ -253,7 +252,7 @@ export const MethylationEvidenceCard = ({
         </button>
       )}
       {viewMode !== 'sites' && (
-        <button type="button" onClick={() => onViewModeChange('sites')}>
+        <button type="button" onClick={onSwitchToSites ?? (() => onViewModeChange('sites'))}>
           Switch to CpG sites
         </button>
       )}
@@ -273,7 +272,7 @@ export const MethylationEvidenceCard = ({
             </thead>
             <tbody>
               {sites.map((site) => (
-                <tr key={`${site.chrom}-${site.pos1}-${site.pos2}`} tabIndex={0}>
+                <tr key={`${site.chrom}-${site.pos1}-${site.pos2}`}>
                   <td>
                     {site.chrom}:{site.pos1.toLocaleString()}
                   </td>
@@ -296,17 +295,19 @@ export const MethylationEvidenceCard = ({
                   <th>Coordinate</th>
                   <th>Weighted mean</th>
                   <th>Mean depth</th>
+                  <th>Total coverage</th>
                   <th>Samples</th>
                 </tr>
               </thead>
               <tbody>
                 {sampleTotalGroup.sites.map((site) => (
-                  <tr key={`total-${site.pos1}-${site.pos2}`} tabIndex={0}>
+                  <tr key={`total-${site.pos1}-${site.pos2}`}>
                     <td>
                       {group.chrom}:{site.pos1.toLocaleString()}
                     </td>
                     <td>{percent(site.weightedMeanMethylation)}</td>
                     <td>{depth(site.meanCoverage)}</td>
+                    <td>{depth(site.totalCoverage)}</td>
                     <td>{site.contributingSampleCount}</td>
                   </tr>
                 ))}
@@ -325,17 +326,19 @@ export const MethylationEvidenceCard = ({
                       <th>Coordinate</th>
                       <th>Weighted mean</th>
                       <th>Mean depth</th>
+                      <th>Total coverage</th>
                       <th>Samples</th>
                     </tr>
                   </thead>
                   <tbody>
                     {copyGroup.sites.map((site) => (
-                      <tr key={`${copy}-${site.pos1}-${site.pos2}`} tabIndex={0}>
+                      <tr key={`${copy}-${site.pos1}-${site.pos2}`}>
                         <td>
                           {group.chrom}:{site.pos1.toLocaleString()}
                         </td>
                         <td>{percent(site.weightedMeanMethylation)}</td>
                         <td>{depth(site.meanCoverage)}</td>
+                        <td>{depth(site.totalCoverage)}</td>
                         <td>{site.contributingSampleCount}</td>
                       </tr>
                     ))}

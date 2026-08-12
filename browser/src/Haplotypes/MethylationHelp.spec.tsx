@@ -72,6 +72,9 @@ describe('MethylationHelp', () => {
 
     expect(sampleTotalText).toContain('Sample total:')
     expect(sampleTotalText).toContain('not allele-specific')
+    expect(sampleTotalText).toContain('group output is capped at 200 objects')
+    expect(sampleTotalText).toContain('does not fetch padded flanks')
+    expect(sampleTotalText).toContain('does not claim edge-complete boundaries')
     expect(perCopyText).toContain('Copy A is not necessarily VCF GT strand 1')
     expect(perCopyText).toContain('source HAP1 maps to VCF GT strand 1')
     expect(perCopyText).toContain('source HAP2 maps to VCF GT strand 2')

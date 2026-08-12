@@ -44,7 +44,7 @@ export const METHYLATION_DISPLAY_SUPPORT_CONFIG = {
 
 /** Browser-only grouping settings; groups are recalculated for every displayed region. */
 export const METHYLATION_VISUAL_GROUP_CONFIG = {
-  version: 'visual-groups-v2',
+  version: 'visual-groups-v3',
   method: 'penalized-piecewise-constant',
   fallbackMethod: 'bounded-fixed-bin-fallback',
   maximumGapBp: 1000,

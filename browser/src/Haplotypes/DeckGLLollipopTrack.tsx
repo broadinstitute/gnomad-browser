@@ -111,11 +111,12 @@ type MethPoint = {
   position: number // raw genomic position
   y: number
   color: [number, number, number, number]
-  perCopy?: PerCopyMethylationPoint
   layerSite?: MethylationLayerSiteSummary
   copy?: 'A' | 'B'
   copySupport?: CopySupportClassification
-  counterpart?: PerCopyMethylationPoint
+  counterpart?: MethylationLayerSiteSummary
+  perCopyMetadata?: PerCopyMethylationPoint
+  counterpartMetadata?: PerCopyMethylationPoint
 }
 
 type MethGroupMark = {
@@ -1755,32 +1756,41 @@ function DeckGLLollipopCanvas({
               points.map((point) => [`${point.pos1}:${point.pos2}`, point])
             )
             const otherPoints = copy === 'A' ? perCopy.B : perCopy.A
-            const otherByPosition = new Map(otherPoints.map((point) => [point.pos1, point]))
+            const otherByCoordinate = new Map(
+              otherPoints.map((point) => [`${point.pos1}:${point.pos2}`, point])
+            )
+            const otherSites = copy === 'A' ? copyDisplays.B.sites : copyDisplays.A.sites
+            const otherSitesByCoordinate = new Map(
+              otherSites.map((site) => [`${site.pos1}:${site.pos2}`, site])
+            )
             copyDisplays[copy].sites.forEach((site) => {
-              const point = pointsByCoordinate.get(`${site.pos1}:${site.pos2}`)
+              const coordinate = `${site.pos1}:${site.pos2}`
+              const point = pointsByCoordinate.get(coordinate)
               if (!point) return
-              const counterpart = otherByPosition.get(point.pos1)
-              const siteEvidence = (value: PerCopyMethylationPoint | undefined) =>
+              const counterpart = otherSitesByCoordinate.get(coordinate)
+              const counterpartMetadata = otherByCoordinate.get(coordinate)
+              const siteEvidence = (value: MethylationLayerSiteSummary | undefined) =>
                 value
                   ? {
                       medianDepth: value.meanCoverage,
                       representedSites: 1,
                       totalSites: 1,
-                      sampleCount: value.sampleCount,
+                      sampleCount: value.contributingSampleCount,
                     }
                   : null
               const copySupport =
                 copy === 'A'
-                  ? classifyCopySupport(siteEvidence(point), siteEvidence(counterpart))
-                  : classifyCopySupport(siteEvidence(counterpart), siteEvidence(point))
+                  ? classifyCopySupport(siteEvidence(site), siteEvidence(counterpart))
+                  : classifyCopySupport(siteEvidence(counterpart), siteEvidence(site))
               allMethPoints.push({
                 position: site.pos1,
                 y: bandTop + perCopyYScale(site.weightedMeanMethylation),
                 color,
                 layerSite: site,
                 copy,
-                perCopy: point,
+                perCopyMetadata: point,
                 counterpart,
+                counterpartMetadata,
                 copySupport,
               })
             })
@@ -2742,8 +2752,9 @@ function Tooltip({
   const groupCounterpart = object.counterpart as MethylationLayerGroupSummary | undefined
   const layerSite = object.layerSite as MethylationLayerSiteSummary | undefined
   const copy = object.copy as 'A' | 'B' | undefined
-  const perCopy = object.perCopy as PerCopyMethylationPoint | undefined
-  const counterpart = object.counterpart as PerCopyMethylationPoint | undefined
+  const siteCounterpart = object.counterpart as MethylationLayerSiteSummary | undefined
+  const perCopyMetadata = object.perCopyMetadata as PerCopyMethylationPoint | undefined
+  const counterpartMetadata = object.counterpartMetadata as PerCopyMethylationPoint | undefined
   const copySupport = object.copySupport as CopySupportClassification | undefined
   if (groupSummary) {
     return (
@@ -2786,58 +2797,12 @@ function Tooltip({
       </div>
     )
   }
-  if (perCopy) {
-    return (
-      <div style={tooltipStyle}>
-        <div>
-          <strong>Canonical copy:</strong> {perCopy.copy}
-        </div>
-        <div>
-          <strong>CpG:</strong> {perCopy.pos1}-{perCopy.pos2}
-        </div>
-        <div>
-          <strong>Mean methylation:</strong> {perCopy.meanMethylation.toFixed(1)}%
-        </div>
-        <div>
-          <strong>Mean read depth:</strong> {perCopy.meanCoverage.toFixed(1)}×
-        </div>
-        <div>
-          <strong>Samples contributing at this CpG:</strong> {perCopy.sampleCount}
-        </div>
-        {counterpart && (
-          <div>
-            <strong>Other copy at this CpG:</strong> {counterpart.meanMethylation.toFixed(1)}% at {counterpart.meanCoverage.toFixed(1)}× mean depth from {counterpart.sampleCount} contributing sample{counterpart.sampleCount === 1 ? '' : 's'}
-          </div>
-        )}
-        {copySupport && (
-          <div style={{ marginTop: 4, padding: '4px 6px', border: copySupport.state === 'balanced-enough' ? '1px solid #39754a' : '1px dashed #8a4b08' }}>
-            <strong>Copy A/B display support: {copySupport.state.replace(/-/g, ' ')}</strong>
-            {copySupport.reasons.map((reason) => <div key={reason}>{reason}</div>)}
-          </div>
-        )}
-        <div>
-          <strong>VCF GT strand(s):</strong> {perCopy.vcfStrands.join(', ')}
-        </div>
-        <div>
-          <strong>Source haplotype label(s):</strong> {perCopy.sourceHaplotypes.join(', ')}
-        </div>
-        <div>
-          <strong>Mapping:</strong> admitted chromosome-wide receipt; phase set null
-        </div>
-        <div style={{ marginTop: 4 }}>
-          The receipt maps source HAP1 to VCF GT1 and HAP2 to VCF GT2; each sample&apos;s
-          GT-to-canonical mapping then places GT1/GT2 on A/B. None of these labels means maternal or
-          paternal.
-        </div>
-      </div>
-    )
-  }
-
   if (layerSite) {
     return (
       <div style={tooltipStyle}>
         <div>
-          <strong>Loaded sample-total CpG:</strong> {layerSite.pos1}-{layerSite.pos2}
+          <strong>{copy ? `Canonical Copy ${copy}` : 'Loaded sample-total'} CpG:</strong>{' '}
+          {layerSite.pos1}-{layerSite.pos2}
         </div>
         <div>
           <strong>Coverage-weighted methylation:</strong>{' '}
@@ -2847,8 +2812,52 @@ function Tooltip({
           <strong>Mean read depth:</strong> {layerSite.meanCoverage.toFixed(1)}×
         </div>
         <div>
+          <strong>Total admitted coverage:</strong> {layerSite.totalCoverage.toFixed(1)}×
+        </div>
+        <div>
           <strong>Contributing samples:</strong> {layerSite.contributingSampleCount}
         </div>
+        {copy && siteCounterpart && (
+          <div>
+            <strong>Other copy at this CpG:</strong>{' '}
+            {siteCounterpart.weightedMeanMethylation.toFixed(1)}% coverage-weighted at{' '}
+            {siteCounterpart.meanCoverage.toFixed(1)}× mean depth from{' '}
+            {siteCounterpart.contributingSampleCount} contributing sample
+            {siteCounterpart.contributingSampleCount === 1 ? '' : 's'}
+          </div>
+        )}
+        {copySupport && (
+          <div style={{ marginTop: 4, padding: '4px 6px', border: copySupport.state === 'balanced-enough' ? '1px solid #39754a' : '1px dashed #8a4b08' }}>
+            <strong>Copy A/B display support: {copySupport.state.replace(/-/g, ' ')}</strong>
+            {copySupport.reasons.map((reason) => <div key={reason}>{reason}</div>)}
+          </div>
+        )}
+        {copy && perCopyMetadata && (
+          <>
+            <div>
+              <strong>VCF GT strand(s):</strong> {perCopyMetadata.vcfStrands.join(', ')}
+            </div>
+            <div>
+              <strong>Source haplotype label(s):</strong>{' '}
+              {perCopyMetadata.sourceHaplotypes.join(', ')}
+            </div>
+            {counterpartMetadata && (
+              <div>
+                <strong>Other-copy source labels:</strong>{' '}
+                {counterpartMetadata.sourceHaplotypes.join(', ')} / GT{' '}
+                {counterpartMetadata.vcfStrands.join(', ')}
+              </div>
+            )}
+            <div>
+              <strong>Mapping:</strong> admitted chromosome-wide receipt; phase set null
+            </div>
+            <div style={{ marginTop: 4 }}>
+              The receipt maps source HAP1 to VCF GT1 and HAP2 to VCF GT2; each sample&apos;s
+              GT-to-canonical mapping then places GT1/GT2 on A/B. None of these labels means maternal or
+              paternal.
+            </div>
+          </>
+        )}
       </div>
     )
   }

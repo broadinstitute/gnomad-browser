@@ -12,10 +12,7 @@ import HaplotypeHelpButton from './HelpButton'
 import MethylationHelp, { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
 import MethylationSummaryTrack from './MethylationSummaryTrack'
 import { filterGroupsToRegionalDeviationSamples } from './methylationOutlierFilter'
-import {
-  observationsByCanonicalCopy,
-  summarizeMethylationLayerSites,
-} from './methylationGroupAggregation'
+import { observationsByCanonicalCopy } from './methylationGroupAggregation'
 import { buildMethylationVisualGroups } from './methylationVisualGroups'
 import type { MethylationSummaryPoint, MethylationViewMode } from './methylationTypes'
 import {
@@ -2269,7 +2266,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 
   const selectedCopyEvidence = useMemo(() => {
     if (!showPerCopyMethylation || !isDiploidView) {
-      return { readiness: 'loading' as const, points: { A: [], B: [] } }
+      return { readiness: 'loading' as const, observations: { A: [], B: [] } }
     }
     const samplesById = new Map<string, DiplotypeSample>()
     displayGroups.forEach((group) => {
@@ -2286,17 +2283,13 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
       samples,
       perCopyMethylationSampleStates
     )
-    if (result.readiness !== 'ready') return result
-    const observations = observationsByCanonicalCopy(records, samples)
-    const points = (copy: 'A' | 'B') =>
-      summarizeMethylationLayerSites(observations[copy]).map((site) => ({
-        pos1: site.pos1,
-        pos2: site.pos2,
-        meanMethylation: site.weightedMeanMethylation,
-        meanCoverage: site.meanCoverage,
-        sampleCount: site.contributingSampleCount,
-      }))
-    return { readiness: result.readiness, points: { A: points('A'), B: points('B') } }
+    if (result.readiness !== 'ready') {
+      return { readiness: result.readiness, observations: { A: [], B: [] } }
+    }
+    return {
+      readiness: result.readiness,
+      observations: observationsByCanonicalCopy(records, samples),
+    }
   }, [
     displayGroups,
     isDiploidView,
@@ -2341,7 +2334,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
               onViewModeChange={setMethylationViewMode}
               visualGroups={methylationVisualGroups}
               sampleTotalMethylation={methylationData}
-              copyMethylation={selectedCopyEvidence.points}
+              copyMethylation={selectedCopyEvidence.observations}
               copyEvidenceAvailable={
                 showPerCopyMethylation && isDiploidView && selectedCopyEvidence.readiness === 'ready'
               }

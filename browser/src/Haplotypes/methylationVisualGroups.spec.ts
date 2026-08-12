@@ -20,14 +20,14 @@ const point = (
 })
 
 describe('buildMethylationVisualGroups', () => {
-  test('is deterministic and sorts input without mutating it', () => {
+  test('is deterministic and fails closed across reversed incoming coordinates', () => {
     const input = [point(300), point(100), point(200)]
     const before = [...input]
     expect(buildMethylationVisualGroups(input)).toEqual(buildMethylationVisualGroups(input))
     expect(input).toEqual(before)
-    expect(buildMethylationVisualGroups(input)[0].sites.map((site) => site.pos1)).toEqual([
-      100, 200, 300,
-    ])
+    const groups = buildMethylationVisualGroups(input)
+    expect(groups.map((group) => group.sites.map((site) => site.pos1))).toEqual([[300], [100, 200]])
+    expect(groups[1].boundaryReason).toBe('invalid-or-missing-value')
   })
 
   test('breaks on chromosome changes and gaps over, but not exactly, 1 kb', () => {
@@ -117,5 +117,12 @@ describe('buildMethylationVisualGroups', () => {
     expect(groups).toHaveLength(50)
     expect(groups.every((group) => group.siteCount === 200)).toBe(true)
     expect(groups.every((group) => group.method === 'bounded-fixed-bin-fallback')).toBe(true)
+  })
+
+  test('fails to a neutral no-group overlay when 50,000 sites exceed the output cap', () => {
+    const groups = buildMethylationVisualGroups(
+      Array.from({ length: 50_000 }, (_, index) => point(index * 2))
+    )
+    expect(groups).toHaveLength(0)
   })
 })
