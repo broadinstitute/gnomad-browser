@@ -254,7 +254,12 @@ describe('joined methylation request and layout contracts', () => {
       max_records: 250000,
       reason: 'confirmed',
     }
+    // The presentation gate is true for either Diploid or Similarity Clusters mode.
     expect(joinedMethylationUsabilityForRegion(capability, 100, true).usable).toBe(true)
+    expect(joinedMethylationUsabilityForRegion(capability, 100, false)).toEqual({
+      usable: false,
+      reason: 'Unavailable outside Diploid or Similarity Clusters view',
+    })
     expect(joinedMethylationUsabilityForRegion(capability, 101, true)).toEqual({
       usable: false,
       reason: 'Unavailable: region spans 101 bp; maximum is 100 bp',

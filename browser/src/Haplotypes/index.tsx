@@ -558,7 +558,7 @@ export const Legend = ({
                 )}
               </div>
             )}
-            {isDiploidView && (
+            {(isDiploidView || isClusteredView) && (
               <div style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '3px', flexWrap: 'wrap' }}>
               <label
                 title={perCopyMethylationReason}
@@ -588,14 +588,16 @@ export const Legend = ({
               )}
               {joinedMethylationUsableForRegion && (
                 <>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                    <input
-                      type='checkbox'
-                      checked={methylationSamplesOnly}
-                      onChange={(event) => onMethylationSamplesOnlyChange(event.target.checked)}
-                    />
-                    Methylation samples only
-                  </label>
+                  {isDiploidView && (
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                      <input
+                        type='checkbox'
+                        checked={methylationSamplesOnly}
+                        onChange={(event) => onMethylationSamplesOnlyChange(event.target.checked)}
+                      />
+                      Methylation samples only
+                    </label>
+                  )}
                   {showPerCopyMethylation && visibleMethylationProgressLabel && (
                     <button
                       type='button'
@@ -1001,6 +1003,7 @@ type HaplotypeTrackProps = {
   hoveredVariantPosition?: number | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
   onVisibleDiploidSampleIdsChange?: (sampleIds: string[]) => void
+  joinedMethylationSourceSampleIds?: string[]
   groupingMode?: 'similarity' | 'exact' | 'diploid'
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
@@ -1237,7 +1240,7 @@ const PaintingHelp = () => (
 
     <h4>Clustered View</h4>
     <p>
-      In clustered view, consensus variants (present in ≥50% of cluster samples) determine the painting,
+      In clustered view, consensus variants (present in ≥50% of cluster haplotype copies) determine the painting,
       with opacity proportional to their frequency in the cluster. This highlights the dominant structural
       architecture shared by cluster members.
     </p>
@@ -2066,6 +2069,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   hoveredVariantPosition,
   onVisibleGroupChange,
   onVisibleDiploidSampleIdsChange,
+  joinedMethylationSourceSampleIds = [],
   groupingMode = 'similarity',
   clusterThreshold = 0,
   onClusterThresholdChange,
@@ -2352,12 +2356,13 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             displayGroups={displayGroups}
             haplotypeGroups={haplotypeGroups}
             clusters={filteredClusters}
+            scientificClusters={clusters}
             start={start}
             stop={stop}
             colorMode={initialColorMode}
             showMethylation={showMethylation}
             methylationData={methylationData}
-            showPerCopyMethylation={showPerCopyMethylation && isDiploidView}
+            showPerCopyMethylation={showPerCopyMethylation && (isDiploidView || isClusteredView)}
             perCopyMethylationRecords={perCopyMethylationRecords}
             perCopyMethylationSampleStates={perCopyMethylationSampleStates}
             methylationViewMode={methylationViewMode}
@@ -2375,6 +2380,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             genealogyResult={genealogyResult}
             onVisibleGroupChange={onVisibleGroupChange}
             onVisibleDiploidSampleIdsChange={onVisibleDiploidSampleIdsChange}
+            joinedMethylationSourceSampleIds={joinedMethylationSourceSampleIds}
             isClusteredView={isClusteredView}
             expandedClusterIds={expandedClusterIds}
             toggleClusterExpansion={toggleClusterExpansion}

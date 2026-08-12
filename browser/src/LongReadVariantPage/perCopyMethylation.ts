@@ -157,9 +157,11 @@ export const inclusiveRegionSpanBp = (start: number, stop: number) => stop - sta
 export const joinedMethylationUsabilityForRegion = (
   capability: JoinedPhasedMethylationCapability | null | undefined,
   regionSpanBp: number,
-  isDiploidView: boolean
+  supportsJoinedMethylationView: boolean
 ): JoinedMethylationRegionUsability => {
-  if (!isDiploidView) return { usable: false, reason: 'Unavailable outside Diploid view' }
+  if (!supportsJoinedMethylationView) {
+    return { usable: false, reason: 'Unavailable outside Diploid or Similarity Clusters view' }
+  }
   if (!capability) return { usable: false, reason: 'Per-copy methylation capability is loading' }
   if (!joinedCapabilityConfirmed(capability)) {
     const claimsAvailability =

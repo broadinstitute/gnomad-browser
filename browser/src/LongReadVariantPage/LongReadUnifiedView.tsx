@@ -591,7 +591,7 @@ const LongReadUnifiedView = ({
       : joinedMethylationUsabilityForRegion(
           joinedMethylationCapability,
           inclusiveRegionSpanBp(start, stop),
-          isDiploidView
+          isDiploidView || groupingMode === 'similarity'
         )
   const joinedMethylationUsableForRegion = joinedMethylationUsability.usable
   const confirmedJoinedMethylationCapability = joinedMethylationUsability.usable
@@ -1510,7 +1510,9 @@ const LongReadUnifiedView = ({
     return () => gate.invalidate()
   }, [joinedMethylationScope])
 
-  // Fetch only samples represented by visible diploid rows, in deterministic batches.
+  // Fetch only samples represented by visible diploid or collapsed similarity-cluster rows,
+  // in deterministic batches. Raw joined records stay scoped to source/region/mode rather
+  // than a transient cluster ID or threshold cut.
   useEffect(() => {
     if (
       !showHaplotypes ||
@@ -2302,6 +2304,7 @@ const LongReadUnifiedView = ({
                 hoveredVariantPosition={hoveredVariantPosition}
                 onVisibleGroupChange={handleVisibleGroupChange}
                 onVisibleDiploidSampleIdsChange={handleVisibleDiploidSampleIdsChange}
+                joinedMethylationSourceSampleIds={sourceSampleIds}
                 groupingMode={groupingMode}
                 clusterThreshold={clusterThreshold}
                 onClusterThresholdChange={handleClusterThresholdChange}

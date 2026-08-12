@@ -6,13 +6,25 @@ import HaplotypeTrack from './index'
 jest.mock('./ChromosomePainterTrack', () => () => null)
 jest.mock('./DeckGLLollipopTrack', () => {
   const ReactModule = jest.requireActual('react') as typeof React
-  return ReactModule.forwardRef(({ displayGroups, clusters }: any) => (
+  return ReactModule.forwardRef(({
+    displayGroups,
+    clusters,
+    scientificClusters,
+    showPerCopyMethylation,
+    joinedMethylationSourceSampleIds,
+  }: any, _ref: React.ForwardedRef<unknown>) => (
     <>
       <output aria-label="rendered haplotype rows">
         {displayGroups.map((group: any) => group.hash).join(',')}
       </output>
       <output aria-label="rendered clusters">
         {(clusters || []).map((cluster: any) => `${cluster.cluster_id}:${cluster.member_group_hashes.join('+')}:${cluster.sample_count}`).join(',')}
+      </output>
+      <output aria-label="scientific cluster membership">
+        {(scientificClusters || []).map((cluster: any) => cluster.member_group_hashes.join('+')).join(',')}
+      </output>
+      <output aria-label="cluster methylation enabled">
+        {String(showPerCopyMethylation)}:{joinedMethylationSourceSampleIds.join('+')}
       </output>
     </>
   ))
@@ -94,9 +106,13 @@ describe('show only matching haplotypes mode', () => {
         groupingMode="similarity"
         variantMatchesSearch={matchesSecond}
         showOnlyMatchingHaplotypes
+        showPerCopyMethylation
+        joinedMethylationSourceSampleIds={['S1', 'S2']}
       />
     )
 
     expect(screen.getByLabelText('rendered clusters').textContent).toBe('C1:2:1')
+    expect(screen.getByLabelText('scientific cluster membership').textContent).toBe('1+2')
+    expect(screen.getByLabelText('cluster methylation enabled').textContent).toBe('true:S1+S2')
   })
 })

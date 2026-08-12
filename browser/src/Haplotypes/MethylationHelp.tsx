@@ -43,7 +43,8 @@ export const PerCopyMethylationHelp = ({
       <p>
         <strong>Per-copy methylation</strong> uses the confirmed chromosome-wide mapping for the
         pinned browser bundle to place each joined source observation beneath canonical chromosome
-        copy A or B in Diploid view. Copy A is not necessarily VCF GT strand 1.
+        copy A or B in Diploid view or its exact <code>(sample_id, vcf_strand)</code> haplotype copy
+        in Similarity Clusters view. Copy A is not necessarily VCF GT strand 1.
       </p>
       <p>
         Under the admitted chromosome-wide receipt, source HAP1 maps to VCF GT strand 1 and source
@@ -53,9 +54,30 @@ export const PerCopyMethylationHelp = ({
         or paternal meaning, and the source track does not define a VCF phase set.
       </p>
       <p>
-        Copy A/B read depth is evidence for each displayed percentage. Uneven or limited support
-        does not make an observation false, but it makes a visual difference less comparable and
-        should be interpreted cautiously. Balanced support does not prove a biological effect.
+        In Similarity Clusters view, each collapsed row uses the original UPGMA cluster membership,
+        even when search or display filters hide some members. Every unique haplotype copy receives
+        equal weight at a CpG; read depth supports confidence but does not weight an individual or
+        copy. A visual CpG group reports the median and range of its constituent site-level copy
+        means using the same population-derived boundaries as the Population track. The faint gray
+        mark is the cohort sample-total Population comparator, not a cluster member.
+      </p>
+      <p>
+        Cluster rows wait for every source-eligible member sample to finish loading or be explicitly
+        unavailable before painting a cluster mean. Missing and unavailable copies remain missing,
+        never zero. Tooltips report all cluster copies, source-eligible copies, measured copies,
+        unique individuals, and depth. The joined endpoint is limited to the admitted region span
+        shown in status, currently at most 100 kb.
+      </p>
+      <p>
+        Similarity clusters and visual CpG groups are display-time summaries, not stable biological
+        entities or DMRs. Methylation is assay-, tissue-, and context-dependent; an apparent cluster
+        difference does not establish significance, causality, an mQTL, imprinting, pathogenicity,
+        or diagnosis. HAP, GT, and A/B labels have no maternal or paternal meaning.
+      </p>
+      <p>
+        Copy read depth is evidence for each displayed percentage. Uneven or limited support makes
+        visual differences less comparable, while balanced support does not prove a biological
+        effect.
       </p>
       {status}
     </>
