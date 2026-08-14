@@ -21,16 +21,18 @@ jest.mock('./BubbleTrack', () => ({
 
 const flagName = '__EXPERIMENTAL_FEATURES_ENABLED__'
 const originalFlag = (globalThis as any)[flagName]
+const originalUrl = window.location.href
 
-const restoreFlag = () => {
+const restoreEnvironment = () => {
   if (originalFlag === undefined) {
     delete (globalThis as any)[flagName]
   } else {
     ;(globalThis as any)[flagName] = originalFlag
   }
+  window.history.replaceState(null, '', originalUrl)
 }
 
-afterEach(restoreFlag)
+afterEach(restoreEnvironment)
 
 const renderLegend = (props: Record<string, unknown> = {}) => render(
   <Legend
@@ -93,6 +95,20 @@ describe('experimental browser feature flag', () => {
 
     expect(screen.getByLabelText('lollipop renderer')).not.toBeNull()
     expect(screen.queryByLabelText('variation graph renderer')).toBeNull()
+  })
+
+  test('selectively renders only URL-named controls', () => {
+    delete (globalThis as any)[flagName]
+    window.history.replaceState(
+      null,
+      '',
+      '?experimental_features=expanded_variants,methylation_context'
+    )
+    renderLegend()
+
+    expect(screen.queryByLabelText('Plot:')).toBeNull()
+    expect(screen.getByLabelText('Expand INS/TRs')).not.toBeNull()
+    expect(screen.getByRole('checkbox', { name: 'Methylation context' })).not.toBeNull()
   })
 
   test('allows an alternate haplotype renderer when enabled', () => {

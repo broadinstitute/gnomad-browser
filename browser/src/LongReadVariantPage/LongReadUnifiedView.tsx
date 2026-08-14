@@ -72,7 +72,7 @@ import {
   sourceForModality,
 } from './LongReadProvenanceBanner'
 import { nullableLongReadFrequency } from './longReadFrequency'
-import { areExperimentalFeaturesEnabled } from '../experimentalFeatures'
+import { isExperimentalFeatureEnabled } from '../experimentalFeatures'
 import { parseHaplotypeResponse } from './haplotypeResponse'
 import {
   incompleteMethylationSampleIds,
@@ -499,9 +499,11 @@ const LongReadUnifiedView = ({
   >(regionSize < 50_000 ? 'all' : 'sv_only')
   const [colorMode, setColorMode] = useState('sv_type')
   const [plotType, setPlotType] = useState('lollipop')
-  const experimentalFeaturesEnabled = areExperimentalFeaturesEnabled()
+  const haplotypePlotEnabled = isExperimentalFeatureEnabled('haplotype_plot')
+  const expandedVariantsEnabled = isExperimentalFeatureEnabled('expanded_variants')
+  const methylationContextEnabled = isExperimentalFeatureEnabled('methylation_context')
   const isDiploidView = groupingMode === 'diploid'
-  const effectivePlotType = experimentalFeaturesEnabled && !isDiploidView
+  const effectivePlotType = haplotypePlotEnabled && !isDiploidView
     ? plotType
     : 'lollipop'
 
@@ -761,11 +763,11 @@ const LongReadUnifiedView = ({
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
   const [typeFilters, setTypeFilters] = useState<VariantTypeFilters>(allLongReadVariantTypesSelected)
   const [showPhantomRegions, setShowPhantomRegions] = useState(false)
-  const effectiveShowPhantomRegions = experimentalFeaturesEnabled && showPhantomRegions
+  const effectiveShowPhantomRegions = expandedVariantsEnabled && showPhantomRegions
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
   const effectiveShowMethylation =
-    experimentalFeaturesEnabled && showMethylation && showPerCopyMethylation &&
+    methylationContextEnabled && showMethylation && showPerCopyMethylation &&
     joinedMethylationUsableForRegion
   const handleShowPerCopyMethylationChange = useCallback((show: boolean) => {
     setShowPerCopyMethylation(show)

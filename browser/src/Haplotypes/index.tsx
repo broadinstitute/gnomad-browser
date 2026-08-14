@@ -36,7 +36,7 @@ import {
   type VariantMatchPredicate,
 } from '../LongReadVariantPage/haplotypeSearchFiltering'
 import type { DiplotypeGroup, DiplotypeSample } from './haplotypeCompute'
-import { areExperimentalFeaturesEnabled } from '../experimentalFeatures'
+import { isExperimentalFeatureEnabled } from '../experimentalFeatures'
 
 export type { MethylationSummaryPoint } from './methylationTypes'
 export { COLOR_MODES }
@@ -468,7 +468,9 @@ export const Legend = ({
   recombinationAvailable?: boolean
   recombinationLabel?: string
 }) => {
-  const experimentalFeaturesEnabled = areExperimentalFeaturesEnabled()
+  const haplotypePlotEnabled = isExperimentalFeatureEnabled('haplotype_plot')
+  const expandedVariantsEnabled = isExperimentalFeatureEnabled('expanded_variants')
+  const methylationContextEnabled = isExperimentalFeatureEnabled('methylation_context')
   const selectableGroupingMode = normalizeSelectableGroupingMode(groupingMode)
   const isDiploidView = selectableGroupingMode === 'diploid'
   const isClusteredView = selectableGroupingMode === 'similarity'
@@ -564,42 +566,46 @@ export const Legend = ({
             </LegendRow>
           </LegendRows>
         </LegendStrip>
-        {experimentalFeaturesEnabled && (
+        {(haplotypePlotEnabled || expandedVariantsEnabled) && (
           <ExperimentalDisplayControls aria-label="Experimental display controls">
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-              <label htmlFor="experimental-haplotype-plot">Plot:</label>
-              <Select
-                id="experimental-haplotype-plot"
-                value={plotType}
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                  onPlotTypeChange(event.target.value)}
-              >
-                {plotTypes.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                    disabled={isDiploidView && option.value !== 'lollipop'}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </Select>
-              <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
-            </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={showPhantomRegions}
-                  onChange={(event) => onShowPhantomRegionsChange(event.target.checked)}
-                />
-                Expand INS/TRs
-              </label>
-              <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
-              <HaplotypeHelpButton title="Expand Insertions & Tandem Repeats">
-                <ExpandInsertionsHelp />
-              </HaplotypeHelpButton>
-            </span>
+            {haplotypePlotEnabled && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                <label htmlFor="experimental-haplotype-plot">Plot:</label>
+                <Select
+                  id="experimental-haplotype-plot"
+                  value={plotType}
+                  onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                    onPlotTypeChange(event.target.value)}
+                >
+                  {plotTypes.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                      disabled={isDiploidView && option.value !== 'lollipop'}
+                    >
+                      {option.label}
+                    </option>
+                  ))}
+                </Select>
+                <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
+              </span>
+            )}
+            {expandedVariantsEnabled && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={showPhantomRegions}
+                    onChange={(event) => onShowPhantomRegionsChange(event.target.checked)}
+                  />
+                  Expand INS/TRs
+                </label>
+                <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
+                <HaplotypeHelpButton title="Expand Insertions & Tandem Repeats">
+                  <ExpandInsertionsHelp />
+                </HaplotypeHelpButton>
+              </span>
+            )}
           </ExperimentalDisplayControls>
         )}
       </ControlGroup>
@@ -702,7 +708,7 @@ export const Legend = ({
                       />
                     </HaplotypeHelpButton>
                   </LayerToggle>
-                  {experimentalFeaturesEnabled && showPerCopyMethylation &&
+                  {methylationContextEnabled && showPerCopyMethylation &&
                     joinedMethylationUsableForRegion && methylationAvailable && (
                     <LayerToggle>
                       <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
@@ -2248,7 +2254,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
-  const plotType = areExperimentalFeaturesEnabled() && !isDiploidView
+  const plotType = isExperimentalFeatureEnabled('haplotype_plot') && !isDiploidView
     ? requestedPlotType
     : 'lollipop'
   const [methylationViewMode, setMethylationViewModeState] = useState<MethylationViewMode>(
