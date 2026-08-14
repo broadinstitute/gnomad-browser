@@ -1,26 +1,31 @@
 steps:
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
+  entrypoint: bash
   args:
-    [
-      'run',
-      'services',
-      'update',
-      '${_SERVICE_NAME}',
-      '--project',
-      '$PROJECT_ID',
-      '--region',
-      '${_SERVICE_REGION}',
-      '--labels',
-      'git-sha=${_IMAGE_TAG}',
-      '--container',
-      'reads-api',
-      '--image',
-      'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-server:${_IMAGE_TAG}',
-      '--container',
-      'reads-server',
-      '--image',
-      'us-docker.pkg.dev/$PROJECT_ID/gnomad/gnomad-reads-api:${_IMAGE_TAG}',
-    ]
+    - -c
+    - |
+      set -euo pipefail
+
+      echo "Deploying Reads, image tag: ${_IMAGE_TAG}"
+
+      gcloud compute instance-groups managed all-instances-config update \
+        "${_MIG_NAME}" \
+        --zone="${_SERVICE_ZONE}" \
+        --metadata="image-tag=${_IMAGE_TAG}"
+
+      echo "Waiting for Reads MIG rollout to complete and become healthy..."
+
+      gcloud compute instance-groups managed wait-until \
+        "${_MIG_NAME}" \
+        --zone="${_SERVICE_ZONE}" \
+        --stable \
+        --timeout=1800
+
+      gcloud compute instance-groups managed list-instances \
+        "${_MIG_NAME}" \
+        --zone="${_SERVICE_ZONE}" \
+        --format="table(name,status,healthState,instanceTemplate,lastAttempt.errors)"
+
+      echo "MIG is stable. Deployment complete."
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
