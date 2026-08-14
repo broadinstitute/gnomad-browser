@@ -114,6 +114,7 @@ def main() -> None:
 
     browser_dockerfile = (ROOT / "deploy/dockerfiles/browser/browser.dockerfile").read_text()
     require("ARG LR_Y1_ENABLED=false" in browser_dockerfile, "browser LR_Y1_ENABLED build input is not explicit")
+    require("ARG EXPERIMENTAL_FEATURES_ENABLED=false" in browser_dockerfile, "browser experimental-feature build input is not explicit")
     require("browser/build.env" not in browser_dockerfile, "browser build still depends on ignored build.env")
     require("node:18.17-alpine@sha256:" in browser_dockerfile, "browser Node base is not digest pinned")
     require("nginx:stable-alpine@sha256:" in browser_dockerfile, "browser nginx base is not digest pinned")
@@ -125,9 +126,12 @@ def main() -> None:
     cloudbuild_value = json.loads(cloudbuild)
     require("${_IMAGE}:${_TAG}" in cloudbuild and ":latest" not in cloudbuild, "Cloud Build does not use only a unique supplied tag")
     require("LR_Y1_ENABLED=${_LR_Y1_ENABLED}" in cloudbuild, "Cloud Build omits browser Y1 input")
+    require("EXPERIMENTAL_FEATURES_ENABLED=${_EXPERIMENTAL_FEATURES_ENABLED}" in cloudbuild, "Cloud Build omits browser experimental-feature input")
+    require(cloudbuild_value.get("substitutions", {}).get("_EXPERIMENTAL_FEATURES_ENABLED") == "false", "Cloud Build experimental-feature input is not forced false")
     require("org.opencontainers.image.revision" in cloudbuild, "Cloud Build omits OCI source revision")
     require("org.gnomad.source-archive.sha256" in cloudbuild, "Cloud Build omits source archive identity")
     require("org.gnomad.lr.routing-manifest.sha256" in cloudbuild, "Cloud Build omits routing provenance")
+    require("org.gnomad.experimental-features.enabled=${_EXPERIMENTAL_FEATURES_ENABLED}" in cloudbuild, "Cloud Build omits experimental-feature provenance")
     for key in ("_SUBMISSION_INTENT", "_SOURCE_GENERATION", "_COMPONENT"):
         require(key in cloudbuild, f"Cloud Build omits durable submission metadata {key}")
     require(cloudbuild_value.get("options", {}).get("requestedVerifyOption") == "VERIFIED", "Cloud Build provenance verification is not requested")
@@ -147,6 +151,7 @@ def main() -> None:
     require("source_archive_sha256" in (SCRIPT_DIR / "release-evidence.py").read_text(), "build receipt omits source archive identity")
     require("build-fail" in build_script and "build-finish" in build_script, "build receipt has no durable lifecycle")
     require("--no-traffic" in stage_script and "--receipt" in stage_script, "staging script is not receipt-gated/no-traffic")
+    require("'EXPERIMENTAL_FEATURES_ENABLED':'false'" in stage_script, "staging does not explicitly disable browser experimental features")
     require("verify-build-provenance.py" in stage_script, "staging does not verify remote provenance")
     require("phase-journal.json" in stage_script and "rollback_component" in stage_script, "staging lacks journaled rollback")
     require("${#TAG} + ${#BROWSER_SERVICE} <= 46" in stage_script, "staging script does not enforce Cloud Run hostname length")

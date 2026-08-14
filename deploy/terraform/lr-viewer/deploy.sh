@@ -236,7 +236,7 @@ PY
     SUBSTITUTIONS_JSON="$(python3 - "$dockerfile" "$image" "$TAG" "$SOURCE_SHA" "$SOURCE_ARCHIVE_SHA256" "$CREATED" "$ROUTING_MANIFEST_SHA256" <<'PY'
 import json,sys
 keys=('_DOCKERFILE','_IMAGE','_TAG','_SOURCE_SHA','_SOURCE_ARCHIVE_SHA256','_CREATED','_ROUTING_MANIFEST_SHA256')
-print(json.dumps(dict(zip(keys,sys.argv[1:]))|{'_LR_Y1_ENABLED':'true'},separators=(',',':')))
+print(json.dumps(dict(zip(keys,sys.argv[1:]))|{'_LR_Y1_ENABLED':'true','_EXPERIMENTAL_FEATURES_ENABLED':'false'},separators=(',',':')))
 PY
 )"
     build_output="$(printf '%s\n' "$CLOUDBUILD_CONFIG_CONTENT" | python3 "$BUILD_SUBMIT_TOOL" submit \

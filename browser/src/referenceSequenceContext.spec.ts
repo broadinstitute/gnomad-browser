@@ -1,7 +1,6 @@
 import {
   EXPECTED_DEFAULT_COUNT,
   EXPECTED_REGION_COUNT,
-  MAX_LR_WINDOW_BP,
   assertContextAsset,
   contextLoadResult,
   defaultContextFilters,
@@ -81,15 +80,14 @@ describe('reference sequence-context data and filtering', () => {
     expect(evidence.end0 - evidence.start0).toBe(evidence.end0 - (evidence.start0 + 1) + 1)
   })
 
-  test('generates bounded long-read summary URLs for every row', () => {
+  test('generates full-component long-read summary URLs for every row', () => {
     asset.regions.forEach((region) => {
       const lrUrl = longReadSummaryUrl(region)
+      expect(lrUrl).toContain(`/region/22-${region.start}-${region.stop}?`)
       expect(lrUrl).toContain('dataset=gnomad_r4_lr')
       expect(lrUrl).toContain('lr_cohort=hgsvc_hprc')
       expect(lrUrl).not.toContain('show_haplotypes')
       expect(lrUrl).not.toContain('dataset=gnomad_r4&')
-      const window = region.lrWindow || region
-      expect(window.stop - window.start + 1).toBeLessThanOrEqual(MAX_LR_WINDOW_BP)
     })
   })
 

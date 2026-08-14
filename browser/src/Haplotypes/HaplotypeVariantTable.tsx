@@ -49,7 +49,7 @@ type DerivedVariant = LRVariant & {
   _trRawSequences?: Map<string, Record<string, number>> // deferred: raw seqs for lazy decomposition
   short_read_match_id?: string | null
   enveloped_ids?: string[] | null
-  cluster_distribution?: { cluster_id: string; af: number }[]
+  cluster_distribution?: ClusterDistributionEntry[]
   active_cluster_count?: number
   search_identifiers?: string[]
 }
@@ -340,6 +340,45 @@ const getHaplotypeVariantKey = (v: any): string =>
   isTrVariant(v)
     ? getHaplotypeTrLocusKey(v)
     : `variant:${v.variant_id || `${v.chrom}:${v.pos}:${v.ref}:${v.alt}`}`
+
+export type ClusterDistributionEntry = { cluster_id: string; af: number }
+
+/** Index consensus variants once, then materialize stable, dense cluster arrays
+ * only for keys that occur in at least one cluster consensus. */
+export const buildClusterDistributionByKey = (
+  clusters: HaplotypeCluster[] | undefined
+): Map<string, ClusterDistributionEntry[]> => {
+  const sparseAfByKey = new Map<string, Map<number, number>>()
+  if (!clusters || clusters.length === 0) return new Map()
+
+  clusters.forEach((cluster, clusterIndex) => {
+    for (const consensus of cluster.consensus_variants) {
+      const key = getHaplotypeVariantKey(consensus.variant)
+      let afByCluster = sparseAfByKey.get(key)
+      if (!afByCluster) {
+        afByCluster = new Map()
+        sparseAfByKey.set(key, afByCluster)
+      }
+      afByCluster.set(
+        clusterIndex,
+        Math.max(afByCluster.get(clusterIndex) ?? 0, consensus.cluster_af)
+      )
+    }
+  })
+
+  const distributions = new Map<string, ClusterDistributionEntry[]>()
+  for (const [key, afByCluster] of sparseAfByKey) {
+    distributions.set(key, clusters.map((cluster, clusterIndex) => ({
+      cluster_id: cluster.cluster_id,
+      af: afByCluster.get(clusterIndex) ?? 0,
+    })))
+  }
+  return distributions
+}
+
+export const getActiveClusterCount = (
+  distribution: ClusterDistributionEntry[] | undefined
+): number | undefined => distribution?.filter(({ af }) => af > 0).length
 
 const getTrLengthDiff = (v: any): number => {
   if (typeof v.alt === 'string' && typeof v.ref === 'string' && !/^<.*>$/.test(v.alt)) {
@@ -1002,29 +1041,9 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       }
     }
 
-    // Build cluster distribution lookup: variant map key → per-cluster AF
-    const clusters = haplotypeGroups.clusters
-    const clusterDistByKey = new Map<string, { cluster_id: string; af: number }[]>()
-    if (clusters && clusters.length > 0) {
-      // Build per-cluster AF lookups keyed by the same grouping key used for the variant map
-      const allKeys = new Set<string>()
-      for (const cluster of clusters) {
-        for (const cv of cluster.consensus_variants) {
-          allKeys.add(getHaplotypeVariantKey(cv.variant))
-        }
-      }
-      for (const k of allKeys) {
-        clusterDistByKey.set(k, clusters.map((c: HaplotypeCluster) => {
-          // For TRV, take max AF across all TRV alleles at that position
-          let af = 0
-          for (const cv of c.consensus_variants) {
-            const cvKey = getHaplotypeVariantKey(cv.variant)
-            if (cvKey === k) af = Math.max(af, cv.cluster_af)
-          }
-          return { cluster_id: c.cluster_id, af }
-        }))
-      }
-    }
+    // Build cluster distributions without rescanning each cluster's complete
+    // consensus list for every distinct row key.
+    const clusterDistByKey = buildClusterDistributionByKey(haplotypeGroups.clusters)
 
     // Phase 2: build DerivedVariant array
     const result: DerivedVariant[] = []
@@ -1126,7 +1145,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         short_read_match_id: v.short_read_match_id || null,
         enveloped_ids: v.enveloped_ids || null,
         cluster_distribution: clusterDistByKey.get(key),
-        active_cluster_count: clusterDistByKey.get(key)?.filter(c => c.af > 0).length,
+        active_cluster_count: getActiveClusterCount(clusterDistByKey.get(key)),
         search_identifiers: Array.from(searchIdentifiers),
       })
     }

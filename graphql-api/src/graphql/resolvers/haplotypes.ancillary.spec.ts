@@ -119,7 +119,7 @@ describe('ancillary cohort availability', () => {
     expect(() => sourcePhasedMethylationRecords([{ source_haplotype: 3 }])).toThrow('Unexpected source haplotype')
   })
 
-  test('source-phased scope admits only receipt samples, nonempty contigs, and bounded ranges', () => {
+  test('source-phased scope admits only receipt samples, nonempty contigs, and ordered ranges', () => {
     const route = {
       receipt: {
         contigs: [{ chrom: 'chr22' }],
@@ -130,7 +130,8 @@ describe('ancillary cohort availability', () => {
       chrom: 'chr22', start: 47040000, stop: 47050000, sample_id: 'HG00097',
     })
     expect(() => sourcePhasedEvaluationScope('chr21', 1, 2, 'HG00097', route)).toThrow('unavailable')
-    expect(() => sourcePhasedEvaluationScope('chr22', 1, 100002, 'HG00097', route)).toThrow('100 kb')
+    expect(() => sourcePhasedEvaluationScope('chr22', 1, 100002, 'HG00097', route)).not.toThrow()
+    expect(() => sourcePhasedEvaluationScope('chr22', 2, 1, 'HG00097', route)).toThrow('ordered')
     expect(() => sourcePhasedEvaluationScope('chr22', 1, 2, 'missing', route)).toThrow('sample')
   })
 

@@ -22,6 +22,8 @@ import {
   fetchJoinedPhasedMethylationForRegion,
   fetchLRCoverageForRegion,
   fetchMethylationForRegion,
+  fetchMethylationOutliersForRegion,
+  fetchMethylationSummaryForRegion,
   fetchSTRHistogram,
 } from './haplotype-queries'
 
@@ -32,7 +34,7 @@ describe('Y1 ancillary query routing', () => {
   })
 
   test.each(['hgsvc_hprc', 'aou'] as const)(
-    'binds exact %s coverage run, cohort, chromosome, and bounded range',
+    'binds exact %s coverage run, cohort, chromosome, and requested range',
     async (cohort) => {
       mockRoute.mockReturnValue({
         modality: 'coverage',
@@ -57,8 +59,15 @@ describe('Y1 ancillary query routing', () => {
         start: 100,
         stop: 200,
       })
-      await expect(fetchLRCoverageForRegion(null, 'chr1', 0, 1_000_001, cohort)).rejects.toThrow(
-        'range is too large'
+      await expect(fetchLRCoverageForRegion(null, 'chr1', 0, 1_000_001, cohort)).resolves.toEqual([
+        { pos: 100, mean: 20 },
+      ])
+      expect((mockQuery.mock.calls[1][0] as any).query_params).toMatchObject({
+        start: 0,
+        stop: 1_000_001,
+      })
+      await expect(fetchLRCoverageForRegion(null, 'chr1', 2, 1, cohort)).rejects.toThrow(
+        'ordered'
       )
     }
   )
@@ -121,7 +130,7 @@ describe('Y1 ancillary query routing', () => {
     mockQuery.mockImplementation(async () => ({
       json: async () => [{ chr: 'chr3', pos1: 100, pos2: 101, sample: 'sample-1' }],
     }))
-    await fetchMethylationForRegion(null, 'chr3', 100, 200, ['sample-1'], 'hgsvc_hprc')
+    await fetchMethylationForRegion(null, 'chr3', 100, 1_100_101, ['sample-1'], 'hgsvc_hprc')
     const call = mockQuery.mock.calls[0][0] as any
     expect(call.query).toContain('lr_methylation_cohort_availability')
     expect(call.query_params).toEqual({
@@ -129,9 +138,38 @@ describe('Y1 ancillary query routing', () => {
       cohort: 'hgsvc_hprc',
       chrom: 'chr3',
       start: 100,
-      stop: 200,
+      stop: 1_100_101,
       samples: ['sample-1'],
     })
+  })
+
+  test('queries methylation summary and outliers beyond 1 Mb while rejecting reversed ranges', async () => {
+    mockRoute.mockReturnValue({
+      modality: 'methylation',
+      cohort: 'hgsvc_hprc',
+      database: 'gnomad_lr_y1_methylation',
+      run_id: 'methylation-1',
+    })
+    mockQuery.mockImplementation(async () => ({ json: async () => [] }))
+
+    await expect(
+      fetchMethylationSummaryForRegion(null, 'chr3', 100, 1_100_101, 'hgsvc_hprc')
+    ).resolves.toEqual([])
+    await expect(
+      fetchMethylationOutliersForRegion(null, 'chr3', 100, 1_100_101, 'hgsvc_hprc')
+    ).resolves.toBeNull()
+    expect(mockQuery).toHaveBeenCalledTimes(2)
+    expect((mockQuery.mock.calls[0][0] as any).query_params).toMatchObject({
+      start: 100,
+      stop: 1_100_101,
+    })
+    expect((mockQuery.mock.calls[1][0] as any).query_params).toMatchObject({
+      start: 100,
+      stop: 1_100_101,
+    })
+    await expect(
+      fetchMethylationSummaryForRegion(null, 'chr3', 2, 1, 'hgsvc_hprc')
+    ).rejects.toThrow('ordered')
   })
 
   test('binds the joined batch query to the exact admitted route and overflow sentinel', async () => {

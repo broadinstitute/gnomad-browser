@@ -87,7 +87,7 @@ def main() -> None:
             "_SOURCE_ARCHIVE_SHA256": identity["source_archive_sha256"], "_CREATED": identity["created"],
             "_ROUTING_MANIFEST_SHA256": identity["routing_artifact_manifest_sha256"],
             "_SUBMISSION_INTENT": image["submission_intent"], "_SOURCE_GENERATION": str(recorded_source["generation"]),
-            "_COMPONENT": component,
+            "_COMPONENT": component, "_LR_Y1_ENABLED": "true", "_EXPERIMENTAL_FEATURES_ENABLED": "false",
         }
         for key, expected in expected_substitutions.items(): require(substitutions.get(key) == expected, f"{component} build {key} mismatch")
         require(build.get("options", {}).get("requestedVerifyOption") == "VERIFIED", f"{component} build did not request verified provenance")
@@ -97,6 +97,7 @@ def main() -> None:
             f"--label=org.opencontainers.image.revision={identity['source_sha']}",
             f"--label=org.gnomad.source-archive.sha256={identity['source_archive_sha256']}",
             f"--label=org.gnomad.lr.routing-manifest.sha256={identity['routing_artifact_manifest_sha256']}",
+            "--label=org.gnomad.experimental-features.enabled=false",
         }
         require(required_labels.issubset(build_args), f"{component} build steps do not carry required OCI identity labels")
         source = build.get("sourceProvenance", {}).get("resolvedStorageSource", {})

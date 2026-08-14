@@ -18,6 +18,8 @@ let mockVisibleSampleIds = mockCarrierSampleIds
 const mockHaplotypeTrackProps: any[] = []
 const mockLegendProps: any[] = []
 let mockJoinedCapability: any = null
+const experimentalFeaturesFlagName = '__EXPERIMENTAL_FEATURES_ENABLED__'
+const originalExperimentalFeaturesFlag = (globalThis as any)[experimentalFeaturesFlagName]
 let mockJoinedCapabilityFailure: 'graphql' | 'network' | null = null
 let mockDeferJoinedCapability = false
 let mockDeferHaplotype = false
@@ -276,7 +278,6 @@ const confirmedCapability = (overrides: Record<string, unknown> = {}) => ({
   joinable_to_vcf: true,
   status: 'AVAILABLE_CONFIRMED',
   identity: joinedIdentity,
-  max_span_bp: 100000,
   max_samples: 25,
   max_records: 250000,
   reason: 'Confirmed for the pinned bundle',
@@ -428,6 +429,7 @@ const enablePerCopyMethylation = async () => {
 }
 
 beforeEach(() => {
+  ;(globalThis as any)[experimentalFeaturesFlagName] = true
   mockVisibleSampleIds = mockCarrierSampleIds
   mockGraphQLRequests.length = 0
   mockHaplotypeTrackProps.length = 0
@@ -441,7 +443,6 @@ beforeEach(() => {
     status: 'UNAVAILABLE_NOT_CONFIGURED',
     identity: null,
     source_sample_ids: [],
-    max_span_bp: 100000,
     max_samples: 25,
     max_records: 250000,
     reason: 'No admitted joined route',
@@ -542,6 +543,11 @@ beforeEach(() => {
 afterEach(() => {
   jest.restoreAllMocks()
   delete (globalThis as any).fetch
+  if (originalExperimentalFeaturesFlag === undefined) {
+    delete (globalThis as any)[experimentalFeaturesFlagName]
+  } else {
+    ;(globalThis as any)[experimentalFeaturesFlagName] = originalExperimentalFeaturesFlag
+  }
 })
 
 const haplotypeRestCalls = () => (globalThis.fetch as jest.Mock).mock.calls.filter(
@@ -1267,15 +1273,19 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
     expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
   })
 
-  test('shows unavailable reasons and never fetches over-span or malformed capabilities', async () => {
-    mockJoinedCapability = confirmedCapability({ max_span_bp: 50 })
-    const overSpan = renderView()
-    const control = await screen.findByLabelText('Methylation')
-    expect((control as HTMLInputElement).disabled).toBe(true)
-    expect(await screen.findByText(/region spans 101 bp; maximum is 50 bp/)).not.toBeNull()
-    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(0)
-    overSpan.unmount()
+  test('keeps haplotype and per-copy methylation controls available beyond 100 kb', async () => {
+    mockJoinedCapability = confirmedCapability()
+    renderView({ chrom: 'chr22', start: 1, stop: 100_002 })
 
+    await enablePerCopyMethylation()
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    expect(requestsNamed('RegionJoinedPhasedMethylation')[0].variables).toMatchObject({
+      start: 1,
+      stop: 100_002,
+    })
+  })
+
+  test('shows unavailable reasons and never fetches malformed capabilities', async () => {
     mockJoinedCapability = confirmedCapability({ identity: null })
     renderView()
     const malformed = await screen.findByLabelText('Methylation')

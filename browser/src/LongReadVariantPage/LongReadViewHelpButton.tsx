@@ -4,11 +4,7 @@ import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 
 export const AOU_SUMMARY_ONLY_MESSAGE = 'All of Us is summary-only; Haplotype View is unavailable.'
 
-type Props = {
-  maxHaplotypeRegionSize: number
-}
-
-const LongReadViewHelpButton = ({ maxHaplotypeRegionSize }: Props) => (
+const LongReadViewHelpButton = () => (
   <HaplotypeHelpButton title="Long Read Data Views">
     <h4 style={{ margin: '0 0 8px' }}>Summary View</h4>
     <p>
@@ -77,10 +73,6 @@ const LongReadViewHelpButton = ({ maxHaplotypeRegionSize }: Props) => (
       the two views are cross-linked.
     </p>
 
-    <p style={{ marginTop: 12, color: '#666' }}>
-      Haplotype view is limited to regions under {(maxHaplotypeRegionSize / 1000).toFixed(0)} kb for
-      performance. Use the zoom controls to narrow the region if needed.
-    </p>
   </HaplotypeHelpButton>
 )
 

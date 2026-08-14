@@ -3,7 +3,7 @@ const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin')
-const { EnvironmentPlugin } = require('webpack')
+const { DefinePlugin, EnvironmentPlugin } = require('webpack')
 const tsConfig = require('../tsconfig.build.json')
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -119,6 +119,12 @@ const config = {
       REPORT_VARIANT_DATASET_PARAMETER: null,
       // Defensive UI default only. Provenance/capabilities returned by the API are authoritative.
       LR_Y1_ENABLED: false,
+    }),
+    new DefinePlugin({
+      // Use a browser-native compile-time constant instead of emitting a Node `process` lookup.
+      __EXPERIMENTAL_FEATURES_ENABLED__: JSON.stringify(
+        process.env.EXPERIMENTAL_FEATURES_ENABLED === 'true'
+      ),
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),

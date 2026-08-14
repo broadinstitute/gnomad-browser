@@ -242,30 +242,25 @@ describe('joined methylation request and layout contracts', () => {
     expect(inclusiveRegionSpanBp(1, 100_001)).toBe(100_001)
   })
 
-  test('fails region usability closed for over-span and malformed capabilities', () => {
+  test('admits regions over 100 kb while failing malformed resource capabilities closed', () => {
     const capability = {
       available: true as const,
       joinable_to_vcf: true as const,
       status: 'AVAILABLE_CONFIRMED' as const,
       identity,
       source_sample_ids: sourceSampleIds,
-      max_span_bp: 100,
       max_samples: 25,
       max_records: 250000,
       reason: 'confirmed',
     }
     // The presentation gate is true for either Diploid or Similarity Clusters mode.
-    expect(joinedMethylationUsabilityForRegion(capability, 100, true).usable).toBe(true)
-    expect(joinedMethylationUsabilityForRegion(capability, 100, false)).toEqual({
+    expect(joinedMethylationUsabilityForRegion(capability, 100_001, true).usable).toBe(true)
+    expect(joinedMethylationUsabilityForRegion(capability, 100_001, false)).toEqual({
       usable: false,
       reason: 'Unavailable outside Diploid or Similarity Clusters view',
     })
-    expect(joinedMethylationUsabilityForRegion(capability, 101, true)).toEqual({
-      usable: false,
-      reason: 'Unavailable: region spans 101 bp; maximum is 100 bp',
-    })
     expect(
-      joinedMethylationUsabilityForRegion({ ...capability, max_samples: 0 }, 100, true)
+      joinedMethylationUsabilityForRegion({ ...capability, max_samples: 0 }, 100_001, true)
     ).toEqual({ usable: false, reason: 'Unavailable: capability limits are malformed' })
     expect(
       joinedMethylationUsabilityForRegion({ ...capability, identity: null }, 100, true)

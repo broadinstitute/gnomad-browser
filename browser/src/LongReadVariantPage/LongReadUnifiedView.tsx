@@ -72,6 +72,7 @@ import {
   sourceForModality,
 } from './LongReadProvenanceBanner'
 import { nullableLongReadFrequency } from './longReadFrequency'
+import { areExperimentalFeaturesEnabled } from '../experimentalFeatures'
 import { parseHaplotypeResponse } from './haplotypeResponse'
 import {
   incompleteMethylationSampleIds,
@@ -115,7 +116,7 @@ const METHYLATION_AVAILABILITY_QUERY = `
 const JOINED_PHASED_METHYLATION_CAPABILITY_QUERY = `
   query RegionJoinedPhasedMethylationCapability($chrom: String!, $lr_cohort: LongReadCohort!) {
     joined_phased_methylation_capability(chrom: $chrom, lr_cohort: $lr_cohort) {
-      available joinable_to_vcf status source_sample_ids max_span_bp max_samples max_records reason
+      available joinable_to_vcf status source_sample_ids max_samples max_records reason
       identity {
         source_run_id source_completion_receipt_sha256 source_manifest_sha256
         browser_vcf_manifest_bundle_sha256 browser_vcf_manifest_sha256 browser_vcf_run_id
@@ -341,8 +342,6 @@ const fetchGraphQL = async (query: string, variables: any, signal?: AbortSignal)
 }
 
 
-const MAX_HAPLOTYPE_REGION_SIZE = process.env.LR_Y1_ENABLED === 'true' ? 100_000 : 5_000_000
-
 /**
  * Stable identity for the single retained haplotype payload. Source fields are
  * explicit (rather than object serialization) so unrelated provenance UI changes
@@ -461,7 +460,6 @@ const LongReadUnifiedView = ({
 }: LongReadUnifiedViewProps) => {
   const { chrom, start, stop } = gene
   const regionSize = stop - start
-  const regionTooLarge = regionSize > MAX_HAPLOTYPE_REGION_SIZE
 
   // Read show_haplotypes and show_tree from URL params
   const location = useLocation()
@@ -469,8 +467,6 @@ const LongReadUnifiedView = ({
   const searchParams = new URLSearchParams(location.search)
   const urlShowHaplotypes = searchParams.get('show_haplotypes') === 'true'
 
-  // If region is too large and URL requests haplotype, show warning and fall back
-  const [showRegionWarning, setShowRegionWarning] = useState(regionTooLarge && urlShowHaplotypes)
   const y1Mode = provenance?.enabled === true || process.env.LR_Y1_ENABLED === 'true'
   // Capabilities from the API are authoritative. The build flag only fails closed while
   // provenance is unavailable (for example during an API/frontend version transition).
@@ -492,7 +488,7 @@ const LongReadUnifiedView = ({
     provenance?.enabled === true &&
     provenance.sources.some((source) => source.modality === 'PRIMARY_VARIANTS' && !source.available)
   const haplotypesUnavailable = lrCohort === 'aou' || outOfScope || !haplotypesAvailable
-  const showHaplotypes = !regionTooLarge && !haplotypesUnavailable && urlShowHaplotypes
+  const showHaplotypes = !haplotypesUnavailable && urlShowHaplotypes
 
   const [threshold, setThreshold] = useState(0)
   const [sortBy, setSortBy] = useState('sample_id')
@@ -502,7 +498,12 @@ const LongReadUnifiedView = ({
     import('../Haplotypes/haplotypeCompute').DistanceMetric
   >(regionSize < 50_000 ? 'all' : 'sv_only')
   const [colorMode, setColorMode] = useState('sv_type')
+  const [plotType, setPlotType] = useState('lollipop')
+  const experimentalFeaturesEnabled = areExperimentalFeaturesEnabled()
   const isDiploidView = groupingMode === 'diploid'
+  const effectivePlotType = experimentalFeaturesEnabled && !isDiploidView
+    ? plotType
+    : 'lollipop'
 
   const setShowHaplotypes = useCallback(
     (show: boolean) => {
@@ -760,10 +761,12 @@ const LongReadUnifiedView = ({
   const [hoveredVariantPosition, setHoveredVariantPosition] = useState<number | null>(null)
   const [typeFilters, setTypeFilters] = useState<VariantTypeFilters>(allLongReadVariantTypesSelected)
   const [showPhantomRegions, setShowPhantomRegions] = useState(false)
+  const effectiveShowPhantomRegions = experimentalFeaturesEnabled && showPhantomRegions
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
   const effectiveShowMethylation =
-    showMethylation && showPerCopyMethylation && joinedMethylationUsableForRegion
+    experimentalFeaturesEnabled && showMethylation && showPerCopyMethylation &&
+    joinedMethylationUsableForRegion
   const handleShowPerCopyMethylationChange = useCallback((show: boolean) => {
     setShowPerCopyMethylation(show)
     if (!show) setShowMethylation(false)
@@ -1713,8 +1716,7 @@ const LongReadUnifiedView = ({
     joinedMethylationUsableForRegion
   useEffect(() => {
     const needsSummary = effectiveShowMethylation || clusterPerCopyNeedsPopulationSummary
-    if (!showHaplotypes || !needsSummary || !methylationAvailable || regionSize > 200_000)
-      return undefined
+    if (!showHaplotypes || !needsSummary || !methylationAvailable) return undefined
 
     const gate = summaryMethylationRequestGateRef.current
     const token = gate.begin(methylationScope)
@@ -1741,6 +1743,8 @@ const LongReadUnifiedView = ({
           outlierPromise,
         ])
         if (!gate.isCurrent(token) || !summaryResult) return
+        if (summaryResult.errors?.length) throw new Error(summaryResult.errors[0].message)
+        if (outlierResult?.errors?.length) throw new Error(outlierResult.errors[0].message)
         setMethylationViewState((previous) => ({
           ...previous,
           scope: methylationScope,
@@ -1767,7 +1771,6 @@ const LongReadUnifiedView = ({
     lrCohort,
     methylationAvailable,
     methylationScope,
-    regionSize,
   ])
 
   // Auto-fetch per-sample methylation for top outlier samples. Once load-all
@@ -1775,8 +1778,7 @@ const LongReadUnifiedView = ({
   // summary/outlier completion cannot start a non-carrier detail operation.
   const MAX_AUTO_FETCH_OUTLIERS = 10
   useEffect(() => {
-    if (!showHaplotypes || !effectiveShowMethylation || !methylationAvailable || regionSize > 200_000)
-      return undefined
+    if (!showHaplotypes || !effectiveShowMethylation || !methylationAvailable) return undefined
     if (methylationViewState.scope !== methylationScope) return undefined
     if (!methylationOutliers?.samples?.length) return undefined
 
@@ -1886,7 +1888,7 @@ const LongReadUnifiedView = ({
     methylationOutliers,
     methylationViewState.scope,
     lrCohort,
-    methylationAvailable, y1Mode, availableMethylationIds, methylationScope, regionSize,
+    methylationAvailable, y1Mode, availableMethylationIds, methylationScope,
     beginDetailOperation, cancelDetailOperation, detailOperationIsCurrent,
     finishDetailOperation, markDetailOperationSamplesInFlight,
     releaseDetailOperationSamples, updateMethylationForDetailOperation,
@@ -2079,8 +2081,12 @@ const LongReadUnifiedView = ({
   )
 
   const accordionMapper = useMemo(
-    () => new AccordionCoordinateMapper(viewRegion, unfilteredViewportVariants, showPhantomRegions),
-    [viewRegion, unfilteredViewportVariants, showPhantomRegions]
+    () => new AccordionCoordinateMapper(
+      viewRegion,
+      unfilteredViewportVariants,
+      effectiveShowPhantomRegions
+    ),
+    [viewRegion, unfilteredViewportVariants, effectiveShowPhantomRegions]
   )
 
   // Map LR variants into the standard shape expected by Variants/VariantTable
@@ -2119,52 +2125,16 @@ const LongReadUnifiedView = ({
           <strong>Prototype data unavailable outside chr22.</strong> This request was not routed to legacy primary data.
         </TrackPageSection>
       )}
-      {showRegionWarning && (
-        <div
-          style={{
-            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.4)', zIndex: 1000,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-          onClick={() => setShowRegionWarning(false)}
-        >
-          <div
-            style={{
-              background: 'white', borderRadius: 8, padding: '24px 32px',
-              maxWidth: 460, boxShadow: '0 4px 24px rgba(0,0,0,0.2)',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 style={{ margin: '0 0 12px' }}>Region too large for haplotype view</h3>
-            <p style={{ margin: '0 0 16px', color: '#555', fontSize: 14, lineHeight: 1.5 }}>
-              The haplotype view is limited to regions under {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb
-              for performance reasons. The current region is {(regionSize / 1000).toFixed(1)} kb.
-              Use the zoom controls to narrow the region, then click &ldquo;Set as region&rdquo; to
-              commit a smaller region.
-            </p>
-            <button
-              onClick={() => setShowRegionWarning(false)}
-              style={{
-                padding: '6px 20px', background: '#1976d2', color: 'white',
-                border: 'none', borderRadius: 4, fontSize: 13, cursor: 'pointer',
-              }}
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Controls precede the visualization they govern and keep a stable document position. */}
       <TrackPageSection data-testid="lr-control-slot">
         <TopBar data-testid="lr-view-top-bar">
           <ViewModeControls>
-            <LongReadViewHelpButton maxHaplotypeRegionSize={MAX_HAPLOTYPE_REGION_SIZE} />
+            <LongReadViewHelpButton />
             <LongReadViewControls
               cohort={lrCohort}
               onChangeCohort={onChangeLrCohort}
               showHaplotypes={showHaplotypes}
-              haplotypesDisabled={regionTooLarge || haplotypesUnavailable}
+              haplotypesDisabled={haplotypesUnavailable}
               onChangeShowHaplotypes={setShowHaplotypes}
             />
           </ViewModeControls>
@@ -2250,11 +2220,6 @@ const LongReadUnifiedView = ({
             <button type="button" onClick={() => setSearchText('')}>Clear search</button>
           </SearchStatus>
         )}
-        {regionTooLarge && (
-          <div style={{ textAlign: 'center', fontSize: 12, color: '#999', marginBottom: 8 }}>
-            Haplotype view disabled: region too large (&gt; {(MAX_HAPLOTYPE_REGION_SIZE / 1000).toFixed(0)} kb)
-          </div>
-        )}
       </TrackPageSection>
 
       <AccordionRegionViewer
@@ -2314,6 +2279,7 @@ const LongReadUnifiedView = ({
                 mqtlLoading={mqtlLoading}
                 mqtlData={mqtlData}
                 mqtlMinLogP={mqtlMinLogP}
+                plotType={effectivePlotType}
                 initialColorMode={colorMode}
                 showGenealogy={showGenealogy}
                 hoveredVariantPosition={hoveredVariantPosition}
@@ -2330,7 +2296,7 @@ const LongReadUnifiedView = ({
               minAfCeiling={autoDefaults.ceiling}
               distanceMetric={distanceMetric}
               regionSize={regionSize}
-              showPhantomRegions={showPhantomRegions}
+              showPhantomRegions={effectiveShowPhantomRegions}
               onVariantClick={handleVariantClickInTrack}
               onClusterSelect={handleClusterSelect}
               selectedClusterId={selectedClusterId}
@@ -2402,6 +2368,8 @@ const LongReadUnifiedView = ({
             methylationLoading={methylationLoading}
             methylationSampleCount={methylationSampleCount}
             methylationTotalSamples={methylationTotalSamples}
+            plotType={effectivePlotType}
+            onPlotTypeChange={setPlotType}
             showGenealogy={showGenealogy}
             onShowGenealogyChange={setShowGenealogyUrl}
             groupingMode={groupingMode}
@@ -2414,7 +2382,7 @@ const LongReadUnifiedView = ({
             distanceMetric={distanceMetric}
             onDistanceMetricChange={setDistanceMetric}
             regionSize={regionSize}
-            showPhantomRegions={showPhantomRegions}
+            showPhantomRegions={effectiveShowPhantomRegions}
             onShowPhantomRegionsChange={setShowPhantomRegions}
             showRecombination={showRecombination}
             onShowRecombinationChange={setShowRecombination}

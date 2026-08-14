@@ -24,7 +24,6 @@ export type JoinedPhasedMethylationCapability = {
     | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
   identity: JoinedPhasedMethylationIdentity | null
   source_sample_ids: string[]
-  max_span_bp: number
   max_samples: number
   max_records: number
   reason: string
@@ -176,10 +175,8 @@ export const joinedMethylationUsabilityForRegion = (
     }
   }
   if (
-    !Number.isInteger(capability.max_span_bp) ||
     !Number.isInteger(capability.max_samples) ||
     !Number.isInteger(capability.max_records) ||
-    capability.max_span_bp <= 0 ||
     capability.max_samples <= 0 ||
     capability.max_records <= 0
   ) {
@@ -187,12 +184,6 @@ export const joinedMethylationUsabilityForRegion = (
   }
   if (!Number.isFinite(regionSpanBp) || regionSpanBp < 0) {
     return { usable: false, reason: 'Unavailable: current region span is invalid' }
-  }
-  if (regionSpanBp > capability.max_span_bp) {
-    return {
-      usable: false,
-      reason: `Unavailable: region spans ${regionSpanBp.toLocaleString()} bp; maximum is ${capability.max_span_bp.toLocaleString()} bp`,
-    }
   }
   return { usable: true, capability, reason: null }
 }

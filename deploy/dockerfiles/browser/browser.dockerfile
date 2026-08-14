@@ -12,6 +12,7 @@ RUN wget -q -O /tmp/pnpm.tgz "$PNPM_TARBALL_URL" \
 
 # Browser feature switches are compile-time inputs, not Cloud Run runtime env.
 ARG LR_Y1_ENABLED=false
+ARG EXPERIMENTAL_FEATURES_ENABLED=false
 ARG REPORT_VARIANT_URL=
 ARG REPORT_VARIANT_VARIANT_ID_PARAMETER=
 ARG REPORT_VARIANT_DATASET_PARAMETER=

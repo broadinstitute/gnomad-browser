@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer, { act, type ReactTestRenderer } from 'react-test-renderer'
-import { describe, expect, jest, test } from '@jest/globals'
+import { afterEach, describe, expect, jest, test } from '@jest/globals'
 import HaplotypeTrack, {
   GroupingModeHelp,
   HaplotypeInfoBar,
@@ -21,6 +21,16 @@ jest.mock('./ChromosomePainterTrack', () => ({
   __esModule: true,
   default: () => null,
 }))
+
+const experimentalFeaturesFlagName = '__EXPERIMENTAL_FEATURES_ENABLED__'
+const originalExperimentalFeaturesFlag = (globalThis as any)[experimentalFeaturesFlagName]
+afterEach(() => {
+  if (originalExperimentalFeaturesFlag === undefined) {
+    delete (globalThis as any)[experimentalFeaturesFlagName]
+  } else {
+    ;(globalThis as any)[experimentalFeaturesFlagName] = originalExperimentalFeaturesFlag
+  }
+})
 
 const renderedText = (node: any): string => {
   if (typeof node === 'string') return node
@@ -209,7 +219,6 @@ describe('haplotype summary metadata', () => {
           status: 'UNAVAILABLE_AOU_SUMMARY_ONLY',
           identity: null,
           source_sample_ids: [],
-          max_span_bp: 100000,
           max_samples: 25,
           max_records: 250000,
           reason: 'AoU is summary-only',
@@ -231,7 +240,8 @@ describe('haplotype summary metadata', () => {
     expect(disabledCheckboxes[0].parent?.props.title).toBe('AoU is summary-only')
   })
 
-  test('reveals Methylation context only while the available Methylation layer is checked', () => {
+  test('reveals experimental Methylation context only while its available layer is checked', () => {
+    ;(globalThis as any)[experimentalFeaturesFlagName] = true
     const component = renderer.create(
       <Legend
         groupingMode="diploid"

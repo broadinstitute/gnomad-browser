@@ -3,17 +3,19 @@
     {
       "name": "bash:5.2.37@sha256:3bee76a96d86d5d2d5efc7c1c570e5a7c95db22348a26944e0e546fa174e3324",
       "entrypoint": "bash",
-      "args": ["-ceu", "[[ '${_TAG}' =~ ^fullgenome-[0-9a-f]{12}-[0-9]{8}t[0-9]{6}z$ ]]\n[[ '${_SOURCE_SHA}' =~ ^[0-9a-f]{40}$ ]]\n[[ '${_SOURCE_ARCHIVE_SHA256}' =~ ^[0-9a-f]{64}$ ]]\n[[ '${_CREATED}' =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]]\n[[ '${_ROUTING_MANIFEST_SHA256}' =~ ^[0-9a-f]{64}$ ]]\n[[ '${_SUBMISSION_INTENT}' =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]\n[[ '${_SOURCE_GENERATION}' =~ ^[0-9]+$ ]]\n[[ '${_COMPONENT}' =~ ^(api|browser)$ ]]\n[[ '${_LR_Y1_ENABLED}' == true ]]\n"]
+      "args": ["-ceu", "[[ '${_TAG}' =~ ^fullgenome-[0-9a-f]{12}-[0-9]{8}t[0-9]{6}z$ ]]\n[[ '${_SOURCE_SHA}' =~ ^[0-9a-f]{40}$ ]]\n[[ '${_SOURCE_ARCHIVE_SHA256}' =~ ^[0-9a-f]{64}$ ]]\n[[ '${_CREATED}' =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]]\n[[ '${_ROUTING_MANIFEST_SHA256}' =~ ^[0-9a-f]{64}$ ]]\n[[ '${_SUBMISSION_INTENT}' =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]\n[[ '${_SOURCE_GENERATION}' =~ ^[0-9]+$ ]]\n[[ '${_COMPONENT}' =~ ^(api|browser)$ ]]\n[[ '${_LR_Y1_ENABLED}' == true ]]\n[[ '${_EXPERIMENTAL_FEATURES_ENABLED}' == false ]]\n"]
     },
     {
       "name": "gcr.io/cloud-builders/docker@sha256:f8b08c609fdc392ee6827ff3e1725e4980f7d96bde9f76f4695086405c96c147",
       "args": [
         "build", "--platform=linux/amd64", "--build-arg=LR_Y1_ENABLED=${_LR_Y1_ENABLED}",
+        "--build-arg=EXPERIMENTAL_FEATURES_ENABLED=${_EXPERIMENTAL_FEATURES_ENABLED}",
         "--label=org.opencontainers.image.created=${_CREATED}",
         "--label=org.opencontainers.image.revision=${_SOURCE_SHA}",
         "--label=org.opencontainers.image.source=https://github.com/broadinstitute/gnomad-browser",
         "--label=org.gnomad.source-archive.sha256=${_SOURCE_ARCHIVE_SHA256}",
         "--label=org.gnomad.lr.routing-manifest.sha256=${_ROUTING_MANIFEST_SHA256}",
+        "--label=org.gnomad.experimental-features.enabled=${_EXPERIMENTAL_FEATURES_ENABLED}",
         "-f", "${_DOCKERFILE}", "-t", "${_IMAGE}:${_TAG}", "."
       ]
     }
@@ -32,6 +34,7 @@
     "_SUBMISSION_INTENT": "must-be-overridden",
     "_SOURCE_GENERATION": "must-be-overridden",
     "_COMPONENT": "must-be-overridden",
-    "_LR_Y1_ENABLED": "true"
+    "_LR_Y1_ENABLED": "true",
+    "_EXPERIMENTAL_FEATURES_ENABLED": "false"
   }
 }

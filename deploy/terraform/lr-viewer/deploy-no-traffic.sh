@@ -384,7 +384,7 @@ API_TAG_URL="$STAGED_URL"
 BROWSER_ENV="$EVIDENCE_DIR/browser-env.json"
 python3 - "$BROWSER_ENV" "$API_TAG_URL" <<'PY'
 import json,sys
-open(sys.argv[1],'w').write(json.dumps({'API_URL':sys.argv[2].rstrip('/')+'/api/'})+'\n')
+open(sys.argv[1],'w').write(json.dumps({'API_URL':sys.argv[2].rstrip('/')+'/api/','EXPERIMENTAL_FEATURES_ENABLED':'false'})+'\n')
 PY
 stage_component browser "$BROWSER_SERVICE" "$BROWSER_IMAGE" "$BROWSER_ENV"
 BROWSER_TAG_URL="$STAGED_URL"

@@ -101,7 +101,6 @@ describe('MethylationHelp', () => {
               status: 'AVAILABLE_CONFIRMED',
               identity: null,
               source_sample_ids: [],
-              max_span_bp: 100000,
               max_samples: 25,
               max_records: 250000,
               reason: 'Confirmed for the pinned browser bundle',

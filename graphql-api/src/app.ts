@@ -143,10 +143,6 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     if (!rawChrom || isNaN(start) || isNaN(stop) || start > stop) {
       return res.status(400).json({ code: 'INVALID_REGION', error: 'valid chrom, start, stop required' })
     }
-    if (isY1PilotEnabled && stop - start > 100_000) {
-      return res.status(400).json({ code: 'REGION_TOO_LARGE', error: 'Y1 Haplotype View is limited to 100 kb regions' })
-    }
-
     if (lrCohort !== 'hgsvc_hprc') {
       return res.status(400).json({ code: 'UNAVAILABLE', error: 'Haplotype View is available only for HGSVC/HPRC' })
     }

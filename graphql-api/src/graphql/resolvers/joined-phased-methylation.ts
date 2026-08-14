@@ -2,7 +2,6 @@ import { joinedPhasedMethylationRoute, y1PrimaryManifests } from '../../clickhou
 import {
   JOINED_PHASED_MAX_RECORDS,
   JOINED_PHASED_MAX_SAMPLES,
-  JOINED_PHASED_MAX_SPAN_BP,
   type JoinedBrowserEntry,
   type JoinedPhasedMethylationRoute,
 } from '../../joined_phased_methylation_config'
@@ -118,7 +117,6 @@ export const joinedPhasedCapability = async (
 ) => {
   const chrom = chromInput.startsWith('chr') ? chromInput : `chr${chromInput}`
   const common = {
-    max_span_bp: JOINED_PHASED_MAX_SPAN_BP,
     max_samples: JOINED_PHASED_MAX_SAMPLES,
     max_records: JOINED_PHASED_MAX_RECORDS,
   }
@@ -211,12 +209,11 @@ export const joinedRegionScope = (
     !Number.isSafeInteger(start) ||
     !Number.isSafeInteger(stop) ||
     start < 1 ||
-    stop < start ||
-    stop - start + 1 > JOINED_PHASED_MAX_SPAN_BP
+    stop < start
   )
     throw joinedMethylationError(
       'BAD_USER_INPUT',
-      'Joined methylation range must be one-based (start >= 1), ordered, and at most 100 kb'
+      'Joined methylation range must be one-based (start >= 1) and ordered'
     )
   if (
     !Array.isArray(sampleIds) ||

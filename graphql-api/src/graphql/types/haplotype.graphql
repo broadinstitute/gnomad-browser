@@ -176,7 +176,6 @@ type JoinedPhasedMethylationCapability {
   status: JoinedPhasedMethylationCapabilityStatus!
   identity: JoinedPhasedMethylationIdentity
   source_sample_ids: [String!]!
-  max_span_bp: Int!
   max_samples: Int!
   max_records: Int!
   reason: String!

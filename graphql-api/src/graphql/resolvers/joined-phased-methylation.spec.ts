@@ -269,7 +269,7 @@ describe('joined phased methylation projection contract', () => {
       joinedRegionScope(
         'chr22',
         1,
-        100_000,
+        100_001,
         ['HG00097'],
         JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
         route
@@ -278,13 +278,13 @@ describe('joined phased methylation projection contract', () => {
     expect(() =>
       joinedRegionScope(
         'chr22',
+        2,
         1,
-        100_001,
         ['HG00097'],
         JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
         route
       )
-    ).toThrow('100 kb')
+    ).toThrow('ordered')
     expect(() =>
       joinedRegionScope(
         'chr22',
@@ -332,6 +332,7 @@ describe('joined phased methylation projection contract', () => {
       status: 'AVAILABLE_CONFIRMED',
       source_sample_ids: expected,
     })
+    expect(available).not.toHaveProperty('max_span_bp')
     expect(available.source_sample_ids).toHaveLength(231)
     expect(available.source_sample_ids).not.toEqual(expect.arrayContaining(['HG00096', 'HG00272']))
   })

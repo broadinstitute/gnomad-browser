@@ -119,8 +119,8 @@ export const sourcePhasedEvaluationScope = (
 ) => {
   const normalizedChrom = chrom.startsWith('chr') ? chrom : `chr${chrom}`
   if (!route) throw new Error('Source-phased methylation route is unavailable')
-  if (start < 0 || stop < start || stop - start > 100_000) {
-    throw new Error('Source-phased methylation range must be ordered and at most 100 kb')
+  if (start < 0 || stop < start) {
+    throw new Error('Source-phased methylation range must be non-negative and ordered')
   }
   if (!route.receipt.contigs.some((contig) => contig.chrom === normalizedChrom)) {
     throw new Error(`Source-phased methylation is unavailable for ${normalizedChrom}`)

@@ -364,7 +364,6 @@ transitionViewports.forEach((viewport) => {
               joinable_to_vcf: false,
               status: 'unavailable',
               source_sample_ids: [],
-              max_span_bp: 0,
               max_samples: 0,
               max_records: 0,
               reason: 'Deterministic transition fixture has no methylation data',

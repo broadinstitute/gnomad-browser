@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, forwardRef, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
-import { TooltipAnchor, SegmentedControl } from '@gnomad/ui'
+import { TooltipAnchor, SegmentedControl, Select } from '@gnomad/ui'
 import { scaleLinear } from 'd3-scale'
 import { buildPangenomeGraph } from './pangenome-graph'
 import { buildVariationGraph } from './variation-graph'
@@ -36,12 +36,21 @@ import {
   type VariantMatchPredicate,
 } from '../LongReadVariantPage/haplotypeSearchFiltering'
 import type { DiplotypeGroup, DiplotypeSample } from './haplotypeCompute'
+import { areExperimentalFeaturesEnabled } from '../experimentalFeatures'
 
 export type { MethylationSummaryPoint } from './methylationTypes'
 export { COLOR_MODES }
 
 export type HaplotypeGroupingMode = 'similarity' | 'exact' | 'diploid'
 export type SelectableHaplotypeGroupingMode = Exclude<HaplotypeGroupingMode, 'exact'>
+
+export const PLOT_TYPES: { value: string; label: string }[] = [
+  { value: 'lollipop', label: 'Lollipop' },
+  { value: 'alluvial', label: 'Alluvial Flow' },
+  { value: 'heatmap', label: 'Binned Heatmap' },
+  { value: 'bubble', label: 'Variation Graph' },
+  { value: 'painting', label: 'Chromosome Painting' },
+]
 
 // Exact grouping remains available to the computation layer for compatibility, but it is
 // no longer user-selectable. Map legacy or invalid UI state to the closest supported mode.
@@ -232,6 +241,29 @@ const LayerToggle = styled.span`
   white-space: nowrap;
 `
 
+const ExperimentalDisplayControls = styled.div`
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-left: auto;
+  font-size: 12px;
+`
+
+const ExperimentalBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #c8b36a;
+  border-radius: 999px;
+  padding: 0 5px;
+  background: #fffbe8;
+  color: #6f5c14;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+`
+
 const NestedLayerControls = styled.div`
   display: flex;
   flex-direction: column;
@@ -358,6 +390,9 @@ export const Legend = ({
   onShowMqtlChange = () => { },
   mqtlLoading = false,
   mqtlData = [],
+  plotType = 'lollipop',
+  onPlotTypeChange = () => { },
+  plotTypes = PLOT_TYPES,
   colorModes = COLOR_MODES,
   showGenealogy = false,
   onShowGenealogyChange = () => { },
@@ -410,6 +445,9 @@ export const Legend = ({
   onShowMqtlChange?: (show: boolean) => void
   mqtlLoading?: boolean
   mqtlData?: any[]
+  plotType?: string
+  onPlotTypeChange?: (plotType: string) => void
+  plotTypes?: { value: string; label: string }[]
   colorModes?: { value: string; label: string }[]
   showGenealogy?: boolean
   onShowGenealogyChange?: (show: boolean) => void
@@ -430,6 +468,7 @@ export const Legend = ({
   recombinationAvailable?: boolean
   recombinationLabel?: string
 }) => {
+  const experimentalFeaturesEnabled = areExperimentalFeaturesEnabled()
   const selectableGroupingMode = normalizeSelectableGroupingMode(groupingMode)
   const isDiploidView = selectableGroupingMode === 'diploid'
   const isClusteredView = selectableGroupingMode === 'similarity'
@@ -525,6 +564,44 @@ export const Legend = ({
             </LegendRow>
           </LegendRows>
         </LegendStrip>
+        {experimentalFeaturesEnabled && (
+          <ExperimentalDisplayControls aria-label="Experimental display controls">
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+              <label htmlFor="experimental-haplotype-plot">Plot:</label>
+              <Select
+                id="experimental-haplotype-plot"
+                value={plotType}
+                onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+                  onPlotTypeChange(event.target.value)}
+              >
+                {plotTypes.map((option) => (
+                  <option
+                    key={option.value}
+                    value={option.value}
+                    disabled={isDiploidView && option.value !== 'lollipop'}
+                  >
+                    {option.label}
+                  </option>
+                ))}
+              </Select>
+              <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
+            </span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={showPhantomRegions}
+                  onChange={(event) => onShowPhantomRegionsChange(event.target.checked)}
+                />
+                Expand INS/TRs
+              </label>
+              <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
+              <HaplotypeHelpButton title="Expand Insertions & Tandem Repeats">
+                <ExpandInsertionsHelp />
+              </HaplotypeHelpButton>
+            </span>
+          </ExperimentalDisplayControls>
+        )}
       </ControlGroup>
 
       {/* Mode-specific controls and generally available data layers share a responsive row. */}
@@ -625,7 +702,8 @@ export const Legend = ({
                       />
                     </HaplotypeHelpButton>
                   </LayerToggle>
-                  {showPerCopyMethylation && joinedMethylationUsableForRegion && methylationAvailable && (
+                  {experimentalFeaturesEnabled && showPerCopyMethylation &&
+                    joinedMethylationUsableForRegion && methylationAvailable && (
                     <LayerToggle>
                       <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
                         <input
@@ -635,6 +713,7 @@ export const Legend = ({
                         />
                         Methylation context
                       </label>
+                      <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
                       <HaplotypeHelpButton title="Methylation context">
                         <MethylationHelp availability={methylationAvailability} sourceLabel={methylationLabel} />
                       </HaplotypeHelpButton>
@@ -1070,6 +1149,7 @@ type HaplotypeTrackProps = {
   mqtlLoading?: boolean
   mqtlData?: any[]
   mqtlMinLogP?: number
+  plotType?: string
   showGenealogy?: boolean
   hoveredVariantPosition?: number | null
   onVisibleGroupChange?: (group: HaplotypeGroup) => void
@@ -2136,6 +2216,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   mqtlLoading = false,
   mqtlData = [],
   mqtlMinLogP = 0,
+  plotType: requestedPlotType = 'lollipop',
   showGenealogy = false,
   hoveredVariantPosition,
   onVisibleGroupChange,
@@ -2167,6 +2248,9 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
+  const plotType = areExperimentalFeaturesEnabled() && !isDiploidView
+    ? requestedPlotType
+    : 'lollipop'
   const [methylationViewMode, setMethylationViewModeState] = useState<MethylationViewMode>(
     persistedMethylationView
   )
@@ -2182,9 +2266,6 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
       // Session persistence is optional.
     }
   }, [])
-  // Alternate renderer implementations remain dormant, but callers cannot select them.
-  const plotType: string = 'lollipop'
-
   if (!haplotypeGroups) {
     return (
       <Wrapper>

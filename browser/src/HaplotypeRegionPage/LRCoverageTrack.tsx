@@ -90,9 +90,12 @@ const LRCoverageTrack = ({
           signal: controller.signal,
         })
         const result = await response.json()
-        if (!controller.signal.aborted && result.data?.lr_coverage) {
-          setCoverageState({ scope, data: result.data.lr_coverage, error: null })
+        if (controller.signal.aborted) return
+        if (result.errors?.length) throw new Error(result.errors[0].message)
+        if (!Array.isArray(result.data?.lr_coverage)) {
+          throw new Error('Long-read coverage response was missing data')
         }
+        setCoverageState({ scope, data: result.data.lr_coverage, error: null })
       } catch (err: any) {
         if (err.name !== 'AbortError' && !controller.signal.aborted) {
           setCoverageState({ scope, data: null, error: 'Unable to load LR coverage' })

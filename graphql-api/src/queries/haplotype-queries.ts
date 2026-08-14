@@ -307,7 +307,7 @@ export const fetchLRCoverageForRegion = async (
   cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
   if (isY1PilotEnabled) {
-    if (stop < start || stop - start > 1_000_000) throw new Error('Y1 coverage range is too large')
+    if (stop < start) throw new Error('Y1 coverage range must be ordered')
     const normalizedChrom = chrom.startsWith('chr') ? chrom : `chr${chrom}`
     const route = getY1AncillaryRoute(cohort, 'coverage')
     if (!route) return []
@@ -393,8 +393,7 @@ export const fetchMethylationSummaryForRegion = async (
   cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
   if (isY1PilotEnabled) {
-    if (stop < start || stop - start > 1_000_000)
-      throw new Error('Y1 methylation range is too large')
+    if (stop < start) throw new Error('Y1 methylation range must be ordered')
     const route = getY1AncillaryRoute(cohort, 'methylation')
     if (!route) return []
     const resultSet = await getY1AncillaryClickhouseClient(route).query({
@@ -440,8 +439,8 @@ export const fetchMethylationOutliersForRegion = async (
   stop: number,
   cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
 ) => {
-  if (isY1PilotEnabled && (stop < start || stop - start > 1_000_000)) {
-    throw new Error('Y1 methylation range is too large')
+  if (isY1PilotEnabled && stop < start) {
+    throw new Error('Y1 methylation range must be ordered')
   }
   const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'methylation') : null
   if (isY1PilotEnabled && !route) return null
@@ -602,8 +601,8 @@ export const fetchMethylationForRegion = async (
 ) => {
   const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'methylation') : null
   if (isY1PilotEnabled && !route) return []
-  if (isY1PilotEnabled && (stop < start || stop - start > 1_000_000)) {
-    throw new Error('Y1 methylation range is too large')
+  if (isY1PilotEnabled && stop < start) {
+    throw new Error('Y1 methylation range must be ordered')
   }
   if (samples && samples.length > 500) throw new Error('Too many methylation samples requested')
   let query = ''

@@ -2,7 +2,6 @@ import contextAssetJson from './data/referenceSequenceContextChr22.json'
 import provenanceJson from './data/referenceSequenceContextChr22.provenance.json'
 
 export const PAGE_SIZE = 50
-export const MAX_LR_WINDOW_BP = 100_000
 export const EXPECTED_REGION_COUNT = 9_440
 export const EXPECTED_DEFAULT_COUNT = 1_005
 
@@ -125,7 +124,9 @@ export function assertContextAsset(value: unknown): asserts value is ContextAsse
       !Array.isArray(region.evidence) ||
       region.evidence.length === 0 ||
       (region.lrWindow !== undefined &&
-        region.lrWindow.stop - region.lrWindow.start + 1 > MAX_LR_WINDOW_BP)
+        (!isPositiveInteger(region.lrWindow.start) ||
+          !isPositiveInteger(region.lrWindow.stop) ||
+          region.lrWindow.start > region.lrWindow.stop))
     ) {
       throw new Error(`context asset region is invalid: ${region.id || 'unknown'}`)
     }
@@ -258,6 +259,5 @@ export function filterContextRegions(regions: ContextRegion[], filters: ContextF
 }
 
 export function longReadSummaryUrl(region: ContextRegion) {
-  const { start, stop } = region.lrWindow || region
-  return `/region/22-${start}-${stop}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
+  return `/region/22-${region.start}-${region.stop}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
 }

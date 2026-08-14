@@ -48,6 +48,36 @@ describe('LRCoverageTrack cohort routing', () => {
     expect(JSON.parse(String(fetchMock.mock.calls[2][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
   })
 
+  test('requests coverage for regions over 1 Mb without changing the requested bounds', async () => {
+    const fetchMock = jest.fn().mockResolvedValue({ json: async () => response })
+    ;(global as any).fetch = fetchMock
+
+    render(
+      <LRCoverageTrack chrom="22" start={1} stop={1_000_002} lrCohort="hgsvc_hprc" />
+    )
+    await screen.findByText('Long-read coverage — HGSVC/HPRC')
+
+    expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).variables).toEqual({
+      chrom: '22',
+      start: 1,
+      stop: 1_000_002,
+      lrCohort: 'hgsvc_hprc',
+    })
+  })
+
+  test('reports GraphQL retrieval errors instead of treating them as empty coverage', async () => {
+    const fetchMock = jest.fn().mockResolvedValue({
+      json: async () => ({ errors: [{ message: 'ClickHouse timeout' }], data: null }),
+    })
+    ;(global as any).fetch = fetchMock
+    jest.spyOn(console, 'error').mockImplementation(() => {})
+
+    render(<LRCoverageTrack chrom="22" start={1} stop={1_000_002} lrCohort="hgsvc_hprc" />)
+
+    expect((await screen.findByRole('status')).textContent).toBe('Unable to load LR coverage')
+    expect(screen.queryByText('No long-read coverage is available for this region.')).toBeNull()
+  })
+
   test('retains the coverage slot without announcing prior-cohort data while the next request is delayed', async () => {
     let resolveAoU!: (value: any) => void
     const delayedAoU = new Promise((resolve) => {

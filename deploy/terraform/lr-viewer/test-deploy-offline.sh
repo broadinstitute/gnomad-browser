@@ -64,6 +64,7 @@ if args[:2]==['builds','submit']:
     assert generation=='1' and 'cloudbuild.yaml' not in source_object
     config=json.dumps(body); assert '_SOURCE_ARCHIVE_SHA256' in config and 'gcr.io/cloud-builders/docker@sha256:' in config
     subs=body['substitutions']; comp=subs['_COMPONENT']; assert subs['_SOURCE_GENERATION']==generation and subs['_SUBMISSION_INTENT']
+    assert subs['_LR_Y1_ENABLED']=='true' and subs['_EXPERIMENTAL_FEATURES_ENABLED']=='false'
     assert 'lr-intent-'+subs['_SUBMISSION_INTENT'].replace('-','') in body['tags']
     if os.environ.get('FAIL_BUILD_COMPONENT')==comp: sys.exit(42)
     receipt=json.load(open(os.environ['ACTIVE_RECEIPT'])); expected=receipt['source_object']; assert (source_bucket,source_object,generation)==(expected['bucket'],expected['object'],expected['generation'])
@@ -93,11 +94,13 @@ if args[:2]==['builds','describe']:
       '_IMAGE':image,'_TAG':receipt['tag'],'_SOURCE_SHA':receipt['source_sha'],'_CREATED':receipt['created'],
       '_SOURCE_ARCHIVE_SHA256':receipt['source_archive_sha256'],
       '_ROUTING_MANIFEST_SHA256':receipt['routing_artifact_manifest_sha256'],
-      '_SUBMISSION_INTENT':item['submission_intent'],'_SOURCE_GENERATION':str(receipt['source_object']['generation']),'_COMPONENT':comp},
+      '_SUBMISSION_INTENT':item['submission_intent'],'_SOURCE_GENERATION':str(receipt['source_object']['generation']),'_COMPONENT':comp,
+      '_LR_Y1_ENABLED':'true','_EXPERIMENTAL_FEATURES_ENABLED':'false'},
       'options':{'requestedVerifyOption':'VERIFIED'},
       'steps':[{'args':['--label=org.opencontainers.image.created='+receipt['created'],'--label=org.opencontainers.image.revision='+receipt['source_sha'],
         '--label=org.gnomad.source-archive.sha256='+receipt['source_archive_sha256'],
-        '--label=org.gnomad.lr.routing-manifest.sha256='+receipt['routing_artifact_manifest_sha256']]}],
+        '--label=org.gnomad.lr.routing-manifest.sha256='+receipt['routing_artifact_manifest_sha256'],
+        '--label=org.gnomad.experimental-features.enabled=false']}],
       'sourceProvenance':{'resolvedStorageSource':{k:receipt['source_object'][k] for k in ('bucket','object','generation')}},
       'results':{'images':[{'name':image+':'+receipt['tag'],'digest':digest}]}}); sys.exit(0)
 if args[:3]==['storage','objects','describe']:
