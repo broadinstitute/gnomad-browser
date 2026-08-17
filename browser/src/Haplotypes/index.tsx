@@ -351,6 +351,21 @@ const visibleMethylationProgressText = (progress?: PerCopyLoadingProgress | null
   return null
 }
 
+export const representedSamplesIncludeUnknownBroadAncestry = (
+  representedSampleIds: readonly string[],
+  sampleMetadata: SampleMetadataMap,
+  sampleMetadataLoaded: boolean
+): boolean =>
+  sampleMetadataLoaded &&
+  representedSampleIds.some((sampleId) => {
+    const superpopulation = sampleMetadata.get(sampleId)?.superpopulation
+    return (
+      !superpopulation ||
+      superpopulation === 'N/A' ||
+      !Object.prototype.hasOwnProperty.call(SUPERPOPULATION_COLORS, superpopulation)
+    )
+  })
+
 const allMethylationProgressText = (progress?: PerCopyLoadingProgress | null) => {
   if (progress?.status === 'error') {
     return `Methylation loading error (${progress.errorCodes.join(', ')})`
@@ -377,6 +392,9 @@ export const Legend = ({
   methylationAvailable = false,
   methylationLabel,
   methylationAvailability,
+  representedSampleIds = [],
+  sampleMetadata = new Map(),
+  sampleMetadataLoaded = false,
   filterToOutliers = false,
   onFilterToOutliersChange = () => { },
   showPerCopyMethylation = false,
@@ -428,6 +446,9 @@ export const Legend = ({
   methylationAvailable?: boolean
   methylationLabel?: string
   methylationAvailability?: MethylationSampleAvailability[] | null
+  representedSampleIds?: readonly string[]
+  sampleMetadata?: SampleMetadataMap
+  sampleMetadataLoaded?: boolean
   showPerCopyMethylation?: boolean
   onShowPerCopyMethylationChange?: (show: boolean) => void
   joinedMethylationCapability?: JoinedPhasedMethylationCapability | null
@@ -485,6 +506,13 @@ export const Legend = ({
   const allMethylationProgressLabel = allMethylationProgressText(allMethylationProgress)
   const methylationRetryAvailable =
     visibleMethylationProgress?.status === 'error' || allMethylationProgress?.status === 'error'
+  const ancestryGroupLegendIds = representedSamplesIncludeUnknownBroadAncestry(
+    representedSampleIds,
+    sampleMetadata,
+    sampleMetadataLoaded
+  )
+    ? LONG_READ_ANCESTRY_GROUP_LEGEND_IDS
+    : LONG_READ_ANCESTRY_GROUP_LEGEND_IDS.filter((groupId) => groupId !== 'N/A')
 
   // Keep the threshold state and compatibility callback synchronized even though the
   // presentation control is intentionally absent.
@@ -561,10 +589,10 @@ export const Legend = ({
             </LegendRow>
             <LegendRow>
               <span style={{ fontWeight: 600, color: '#555' }}>Genetic ancestry groups:</span>
-              {LONG_READ_ANCESTRY_GROUP_LEGEND_IDS.map((groupId) => (
+              {ancestryGroupLegendIds.map((groupId) => (
                 <span key={groupId} style={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
                   <svg width={8} height={8}><rect width={8} height={8} fill={SUPERPOPULATION_COLORS[groupId]} rx={1} /></svg>
-                  {groupId}
+                  {groupId === 'N/A' ? 'Unknown/unavailable' : groupId}
                 </span>
               ))}
             </LegendRow>

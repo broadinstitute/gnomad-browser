@@ -8,6 +8,7 @@ import HaplotypeTrack, {
   Legend,
   MinAfHelp,
   RecombinationHelp,
+  representedSamplesIncludeUnknownBroadAncestry,
   type HaplotypeGroup,
 } from './index'
 
@@ -51,6 +52,79 @@ const group: HaplotypeGroup = {
 }
 
 describe('haplotype summary metadata', () => {
+  test('hides the broad ancestry fallback when all represented samples have recognized broad metadata', () => {
+    const sampleMetadata = new Map([
+      ['sample-1', { subpopulation: 'N/A', superpopulation: 'AFR' }],
+      ['sample-2', { subpopulation: 'CEU', superpopulation: 'EUR' }],
+    ])
+    const representedSampleIds = ['sample-1', 'sample-2']
+
+    expect(
+      representedSamplesIncludeUnknownBroadAncestry(representedSampleIds, sampleMetadata, true)
+    ).toBe(false)
+    const text = renderedText(
+      renderer
+        .create(
+          <Legend
+            representedSampleIds={representedSampleIds}
+            sampleMetadata={sampleMetadata}
+            sampleMetadataLoaded
+          />
+        )
+        .toJSON()
+    )
+    expect(text).not.toContain('Unknown/unavailable')
+  })
+
+  test('keeps the broad ancestry fallback hidden while metadata is loading', () => {
+    expect(representedSamplesIncludeUnknownBroadAncestry(['sample-1'], new Map(), false)).toBe(false)
+  })
+
+  test('shows represented missing or unrecognized broad metadata as Unknown/unavailable', () => {
+    const sampleMetadata = new Map([
+      ['sample-missing', { subpopulation: 'N/A', superpopulation: '' }],
+      ['sample-unrecognized', { subpopulation: 'N/A', superpopulation: 'UNRECOGNIZED' }],
+    ])
+    const representedSampleIds = ['sample-missing', 'sample-unrecognized']
+
+    expect(
+      representedSamplesIncludeUnknownBroadAncestry(representedSampleIds, sampleMetadata, true)
+    ).toBe(true)
+    const text = renderedText(
+      renderer
+        .create(
+          <Legend
+            representedSampleIds={representedSampleIds}
+            sampleMetadata={sampleMetadata}
+            sampleMetadataLoaded
+          />
+        )
+        .toJSON()
+    )
+    expect(text).toContain('Unknown/unavailable')
+    expect(text).not.toContain('N/A')
+  })
+
+  test('does not infer broad unknown ancestry from an N/A fine subpopulation', () => {
+    const sampleMetadata = new Map([['sample-1', { subpopulation: 'N/A', superpopulation: 'SAS' }]])
+
+    expect(representedSamplesIncludeUnknownBroadAncestry(['sample-1'], sampleMetadata, true)).toBe(
+      false
+    )
+    const text = renderedText(
+      renderer
+        .create(
+          <Legend
+            representedSampleIds={['sample-1']}
+            sampleMetadata={sampleMetadata}
+            sampleMetadataLoaded
+          />
+        )
+        .toJSON()
+    )
+    expect(text).not.toContain('Unknown/unavailable')
+  })
+
   test('shows the compact unphased count inline', () => {
     const text = renderedText(
       renderer

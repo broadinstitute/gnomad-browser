@@ -566,6 +566,8 @@ const LongReadUnifiedView = ({
   const [haplotypeError, setHaplotypeError] = useState<string | null>(null)
   const [ambiguousUnphasedRows, setAmbiguousUnphasedRows] = useState(0)
   const [sampleMetadata, setSampleMetadata] = useState<SampleMetadataMap>(new Map())
+  const [sampleMetadataScope, setSampleMetadataScope] = useState<string | null>(null)
+  const sampleMetadataLoaded = sampleMetadataScope === lrCohort
 
   const [methylationViewState, setMethylationViewState] = useState<MethylationViewState>(
     emptyMethylationViewState
@@ -948,8 +950,7 @@ const LongReadUnifiedView = ({
 
   // Fetch sample metadata once when entering haplotype mode
   useEffect(() => {
-    if (!showHaplotypes || !metadataAvailable) return
-    if (sampleMetadata.size > 0) return
+    if (!showHaplotypes || !metadataAvailable || sampleMetadataLoaded) return
 
     const fetchMeta = async () => {
       try {
@@ -957,16 +958,20 @@ const LongReadUnifiedView = ({
         if (result.data?.sample_metadata) {
           const map: SampleMetadataMap = new Map()
           for (const s of result.data.sample_metadata) {
-            map.set(s.sample_id, { subpopulation: s.subpopulation, superpopulation: s.superpopulation })
+            map.set(s.sample_id, {
+              subpopulation: s.subpopulation,
+              superpopulation: s.superpopulation,
+            })
           }
           setSampleMetadata(map)
+          setSampleMetadataScope(lrCohort)
         }
       } catch (error) {
         console.error('Error fetching sample metadata:', error)
       }
     }
     fetchMeta()
-  }, [showHaplotypes, sampleMetadata.size, lrCohort, metadataAvailable])
+  }, [showHaplotypes, sampleMetadataLoaded, lrCohort, metadataAvailable])
 
   // Derive booleans from groupingMode for worker/compute compatibility.
   const isClusteredView = groupingMode === 'similarity'
@@ -1419,6 +1424,17 @@ const LongReadUnifiedView = ({
   const dataIsDiploid = haplotypeGroups.groups.length > 0 && 'is_diplotype' in haplotypeGroups.groups[0]
   const dataMatchesMode = haplotypeGroups.groups.length === 0 || dataIsDiploid === isDiploidView
   const trackHaplotypeGroups: HaplotypeGroups = dataMatchesMode ? haplotypeGroups : { groups: [] }
+  const representedSampleIds = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          trackHaplotypeGroups.groups.flatMap((group) =>
+            group.samples.map((sample) => sample.sample_id)
+          )
+        )
+      ),
+    [trackHaplotypeGroups.groups]
+  )
   const haplotypeViewportStatus = haplotypeError
     ? { kind: 'error' as const, message: `Unable to load Haplotype View. ${haplotypeError}` }
     : !dataMatchesMode
@@ -2353,6 +2369,9 @@ const LongReadUnifiedView = ({
               sourceForModality(provenance, 'METHYLATION')?.label || 'Legacy — not Y1'
             }
             methylationAvailability={y1Mode ? methylationAvailability : undefined}
+            representedSampleIds={representedSampleIds}
+            sampleMetadata={sampleMetadata}
+            sampleMetadataLoaded={sampleMetadataLoaded}
             showPerCopyMethylation={showPerCopyMethylation}
             onShowPerCopyMethylationChange={handleShowPerCopyMethylationChange}
             joinedMethylationCapability={joinedMethylationCapability}
