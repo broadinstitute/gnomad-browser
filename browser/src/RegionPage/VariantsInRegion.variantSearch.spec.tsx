@@ -28,7 +28,7 @@ const region = {
   chrom: '22',
   start: 100,
   stop: 200,
-  genes: [],
+  genes: [{ gene_id: 'ENSG1', symbol: 'BRCA1', start: 120, stop: 180, transcripts: [] }],
 }
 
 const LocationProbe = () => {
@@ -54,6 +54,7 @@ describe('long-read region variant_id integration', () => {
 
     expect(screen.getByTestId('long-read-view')).not.toBeNull()
     expect(mockUnifiedViewProps.at(-1).variantSearch).toBe('22-100-A>T')
+    expect(mockUnifiedViewProps.at(-1).genes).toBe(region.genes)
     expect(screen.getByTestId('location').textContent).toBe(search)
   })
 })

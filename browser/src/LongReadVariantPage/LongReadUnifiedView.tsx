@@ -251,7 +251,7 @@ const ColorControls = styled.div`
   min-width: 0;
 `
 
-const SearchInline = styled.div`
+const SearchInline = styled.form`
   position: relative;
   width: 100%;
   min-width: 0;
@@ -302,6 +302,26 @@ type ZoomGene = {
   stop: number
   exons?: { feature_type: string; start: number; stop: number }[]
 }
+
+type GeneSearchNotice =
+  | { status: 'found'; symbol: string; region: { start: number; stop: number }; matchCount: number }
+  | { status: 'not_found'; query: string }
+
+const genesMatchingSymbol = (genes: ZoomGene[], query: string) => {
+  const normalizedQuery = query.trim().toLowerCase()
+  if (!normalizedQuery) return []
+  return genes.filter(
+    (candidate) => candidate.symbol?.trim().toLowerCase() === normalizedQuery
+  )
+}
+
+const looksLikeGeneSymbol = (query: string) =>
+  /^[a-z][a-z0-9.-]*$/i.test(query.trim()) && !/^rs\d+$/i.test(query.trim())
+
+const geneRegion = (genes: ZoomGene[]) => ({
+  start: Math.min(...genes.map((candidate) => candidate.start)),
+  stop: Math.max(...genes.map((candidate) => candidate.stop)),
+})
 
 type LongReadUnifiedViewProps = {
   datasetId: DatasetId
@@ -778,12 +798,15 @@ const LongReadUnifiedView = ({
   const [filterToOutliers, setFilterToOutliers] = useState(false)
   const [isAutoTuned, setIsAutoTuned] = useState(true)
   const [searchText, setSearchText] = useVariantSearchText(variantSearch)
+  const [geneSearchNotice, setGeneSearchNotice] = useState<GeneSearchNotice | null>(null)
   const [showOnlyMatchingHaplotypes, setShowOnlyMatchingHaplotypes] = useState(false)
+  const variantSearchText = geneSearchNotice ? '' : searchText
   const parsedSearch = useMemo(
-    () => parseLongReadVariantSearch(searchText, { chrom, start, stop }),
-    [searchText, chrom, start, stop]
+    () => parseLongReadVariantSearch(variantSearchText, { chrom, start, stop }),
+    [variantSearchText, chrom, start, stop]
   )
   const searchIsActive = parsedSearch.status !== 'empty'
+  const searchStatusIsActive = searchIsActive || geneSearchNotice !== null
   const hasLocalSearchTerms = parsedSearch.validTerms.length > 0
   const variantMatchesSearch = useCallback<VariantMatchPredicate>(
     (variant) => matchesLongReadVariantSearch(variant, parsedSearch),
@@ -793,11 +816,16 @@ const LongReadUnifiedView = ({
   // Keep committed search state shareable while avoiding one history entry per keypress.
   useEffect(() => {
     const timeout = setTimeout(() => {
-      const nextSearch = withVariantSearchParam(location.search, searchText)
+      const nextSearch = withVariantSearchParam(location.search, variantSearchText)
       if (nextSearch !== location.search) history.replace({ ...location, search: nextSearch })
     }, 250)
     return () => clearTimeout(timeout)
-  }, [history, location, searchText])
+  }, [history, location, variantSearchText])
+
+  // A direct URL search is variant-search state; it supersedes any prior local gene notice.
+  useEffect(() => {
+    if (variantSearch) setGeneSearchNotice(null)
+  }, [variantSearch])
 
   useEffect(() => {
     if (!hasLocalSearchTerms) setShowOnlyMatchingHaplotypes(false)
@@ -2091,6 +2119,47 @@ const LongReadUnifiedView = ({
   )
   const outOfRegionSearchTerm = parsedSearch.terms.find((term) => term.status === 'out_of_region')
   const malformedSearchTerms = parsedSearch.terms.filter((term) => term.status === 'malformed')
+  const loadedGeneSymbols = useMemo(
+    () => Array.from(new Map(
+      genes
+        .filter((candidate) => candidate.symbol?.trim())
+        .map((candidate) => [candidate.symbol!.trim().toLowerCase(), candidate.symbol!.trim()])
+    ).values()).sort((left, right) => left.localeCompare(right)),
+    [genes]
+  )
+
+  const clearLocalSearch = useCallback(() => {
+    setGeneSearchNotice(null)
+    setSearchText('')
+  }, [setSearchText])
+
+  const submitLocalSearch = useCallback((event: React.FormEvent) => {
+    event.preventDefault()
+    const query = searchText.trim()
+    if (!query) return
+
+    const matchingGenes = genesMatchingSymbol(genes, query)
+    if (matchingGenes.length > 0) {
+      const region = geneRegion(matchingGenes)
+      const changeRegion = onChangeZoomRegion || onSetRegion
+      if (changeRegion) changeRegion(region)
+      setGeneSearchNotice({
+        status: 'found',
+        symbol: matchingGenes[0].symbol!.trim(),
+        region,
+        matchCount: matchingGenes.length,
+      })
+      setSearchText('')
+      return
+    }
+
+    // Preserve recognized variant searches. A submitted symbol-like token with no
+    // loaded variant match is instead treated as a local gene lookup, never a variant filter.
+    if (looksLikeGeneSymbol(query) && searchedLoadedVariants.length === 0) {
+      setGeneSearchNotice({ status: 'not_found', query })
+      setSearchText('')
+    }
+  }, [genes, onChangeZoomRegion, onSetRegion, searchText, searchedLoadedVariants, setSearchText])
 
   // Unfiltered viewport variants define optional accordion phantom loci.
   const unfilteredViewportVariants: LRVariant[] = useMemo(
@@ -2167,7 +2236,7 @@ const LongReadUnifiedView = ({
               ))}
             </Select>
           </ColorControls>
-          <SearchInline>
+          <SearchInline onSubmit={submitLocalSearch}>
             <svg
               aria-hidden="true"
               style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14 }}
@@ -2178,32 +2247,52 @@ const LongReadUnifiedView = ({
             </svg>
             <SearchInput
               type="text"
-              aria-label="Filter long-read variants"
-              placeholder="Position, rsID, REF>ALT, variant/SV/TR ID…"
+              aria-label="Search long-read region by gene or variant"
+              placeholder="Gene, position, rsID, REF>ALT, variant/SV/TR ID…"
               value={searchText}
+              list={loadedGeneSymbols.length > 0 ? 'lr-loaded-gene-symbols' : undefined}
+              title="Enter an exact gene symbol from this loaded region to zoom to that gene"
               maxLength={512}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(event) => {
+                setGeneSearchNotice(null)
+                setSearchText(event.target.value)
+              }}
               onKeyDown={(event) => {
-                if (event.key === 'Escape') setSearchText('')
+                if (event.key === 'Escape') clearLocalSearch()
               }}
             />
+            {loadedGeneSymbols.length > 0 && (
+              <datalist id="lr-loaded-gene-symbols">
+                {loadedGeneSymbols.map((symbol) => <option key={symbol} value={symbol} />)}
+              </datalist>
+            )}
           </SearchInline>
         </TopBar>
-        {searchIsActive && (
-          <SearchStatus role={parsedSearch.status === 'invalid' || parsedSearch.status === 'limit_exceeded' ? 'alert' : 'status'}>
-            {hasLocalSearchTerms && (
+        {searchStatusIsActive && (
+          <SearchStatus role={geneSearchNotice?.status === 'not_found' || parsedSearch.status === 'invalid' || parsedSearch.status === 'limit_exceeded' ? 'alert' : 'status'}>
+            {geneSearchNotice?.status === 'found' && (
+              <span>
+                Zoomed to {geneSearchNotice.symbol}{geneSearchNotice.matchCount > 1 ? ` (${geneSearchNotice.matchCount} entries)` : ''}: {geneSearchNotice.region.start.toLocaleString()}-{geneSearchNotice.region.stop.toLocaleString()}.
+              </span>
+            )}
+            {geneSearchNotice?.status === 'not_found' && (
+              <span>
+                No gene named {geneSearchNotice.query} is loaded in this region. Use the global gene search at the top of the page to find genes outside this region.
+              </span>
+            )}
+            {!geneSearchNotice && hasLocalSearchTerms && (
               <span>
                 {searchedLoadedVariants.length.toLocaleString()} matching variant{searchedLoadedVariants.length === 1 ? '' : 's'} in this loaded region
                 {parsedSearch.validTerms.length > 1 ? ` (${parsedSearch.validTerms.length} terms, OR)` : ''}.
               </span>
             )}
-            {!hasLocalSearchTerms && !outOfRegionSearchTerm && (
+            {!geneSearchNotice && !hasLocalSearchTerms && !outOfRegionSearchTerm && (
               <span>{parsedSearch.issues[0]?.message || malformedSearchTerms[0]?.message || 'Enter a recognized variant search.'}</span>
             )}
-            {malformedSearchTerms.length > 0 && hasLocalSearchTerms && (
+            {!geneSearchNotice && malformedSearchTerms.length > 0 && hasLocalSearchTerms && (
               <span>{malformedSearchTerms.length} unrecognized term{malformedSearchTerms.length === 1 ? '' : 's'} ignored.</span>
             )}
-            {outOfRegionSearchTerm && outOfRegionSearchTerm.start != null && outOfRegionSearchTerm.end != null && (
+            {!geneSearchNotice && outOfRegionSearchTerm && outOfRegionSearchTerm.start != null && outOfRegionSearchTerm.end != null && (
               <>
                 <span>{outOfRegionSearchTerm.message}.</span>
                 <button
@@ -2235,7 +2324,7 @@ const LongReadUnifiedView = ({
                 {haplotypeSearchCounts.matchingChromosomeCopies}/{haplotypeSearchCounts.totalChromosomeCopies} chromosome copies)
               </label>
             )}
-            <button type="button" onClick={() => setSearchText('')}>Clear search</button>
+            <button type="button" onClick={clearLocalSearch}>Clear search</button>
           </SearchStatus>
         )}
       </TrackPageSection>
@@ -2439,7 +2528,7 @@ const LongReadUnifiedView = ({
                   isClusteredView={isClusteredView}
                   selectedClusterId={selectedClusterId}
                   onClearClusterFilter={handleClearClusterFilter}
-                  searchText={searchText}
+                  searchText={variantSearchText}
                   parsedSearch={parsedSearch}
                   typeFilters={typeFilters}
                   onTypeFiltersChange={setTypeFilters}
@@ -2451,7 +2540,7 @@ const LongReadUnifiedView = ({
               lrCohort={lrCohort}
               summaryVariants={displayVariants}
               onHoverVariant={setHoveredVariantPosition}
-              searchText={searchText}
+              searchText={variantSearchText}
               parsedSearch={parsedSearch}
               typeFilters={typeFilters}
               onTypeFiltersChange={setTypeFilters}

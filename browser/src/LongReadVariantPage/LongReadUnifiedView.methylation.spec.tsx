@@ -16,6 +16,7 @@ const mockSourceSampleIds = [
 ].sort((left, right) => left.localeCompare(right))
 let mockVisibleSampleIds = mockCarrierSampleIds
 const mockHaplotypeTrackProps: any[] = []
+const mockVariantTableProps: any[] = []
 const mockLegendProps: any[] = []
 let mockJoinedCapability: any = null
 const experimentalFeaturesFlagName = '__EXPERIMENTAL_FEATURES_ENABLED__'
@@ -190,7 +191,10 @@ jest.mock('../Haplotypes/HaplotypeVariantTable', () => {
   const mockReact = require('react')
   return {
     __esModule: true,
-    default: mockReact.forwardRef(() => null),
+    default: mockReact.forwardRef((props: any) => {
+      mockVariantTableProps.push(props)
+      return null
+    }),
   }
 })
 jest.mock('../Haplotypes/RecombinationRate', () => () => null)
@@ -410,7 +414,8 @@ const rejectRequest = async (request: DeferredGraphQLRequest, error: Error) => {
 const renderView = (
   gene = { chrom: 'chr22', start: 100, stop: 200 },
   initialEntry = '/?show_haplotypes=true',
-  lrCohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc'
+  lrCohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc',
+  otherProps: Record<string, unknown> = {}
 ) => render(
   <MemoryRouter initialEntries={[initialEntry]}>
       <LongReadUnifiedView
@@ -418,6 +423,7 @@ const renderView = (
         gene={gene}
         variants={[]}
         lrCohort={lrCohort}
+        {...otherProps}
       />
   </MemoryRouter>
 )
@@ -433,6 +439,7 @@ beforeEach(() => {
   mockVisibleSampleIds = mockCarrierSampleIds
   mockGraphQLRequests.length = 0
   mockHaplotypeTrackProps.length = 0
+  mockVariantTableProps.length = 0
   mockLegendProps.length = 0
   mockJoinedCapabilityFailure = null
   mockDeferJoinedCapability = false
@@ -1738,5 +1745,81 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
         totalCount: 27,
       })
     })
+  })
+})
+
+describe('LongReadUnifiedView local gene search', () => {
+  test('suggests loaded genes and zooms case-insensitively to one gene on a gene page', () => {
+    const onChangeZoomRegion = jest.fn()
+    renderView(undefined, '/', 'hgsvc_hprc', {
+      genes: [{ gene_id: 'ENSG1', symbol: 'BRCA1', start: 120, stop: 180 }],
+      onChangeZoomRegion,
+    })
+
+    const input = screen.getByLabelText('Search long-read region by gene or variant')
+    expect(input.getAttribute('placeholder')).toContain('Gene')
+    expect(input.getAttribute('list')).toBe('lr-loaded-gene-symbols')
+    expect(document.querySelector('option[value="BRCA1"]')).not.toBeNull()
+
+    fireEvent.change(input, { target: { value: 'brca1' } })
+    fireEvent.submit(input.closest('form')!)
+
+    expect(onChangeZoomRegion).toHaveBeenCalledWith({ start: 120, stop: 180 })
+    expect((input as HTMLInputElement).value).toBe('')
+    expect(screen.getByText(/Zoomed to BRCA1: 120-180/)).not.toBeNull()
+  })
+
+  test('zooms to the union and reports duplicate loaded symbols on a region page', () => {
+    const onChangeZoomRegion = jest.fn()
+    renderView(undefined, '/', 'hgsvc_hprc', {
+      genes: [
+        { gene_id: 'ENSG1', symbol: 'DUP', start: 110, stop: 140 },
+        { gene_id: 'ENSG2', symbol: 'dup', start: 160, stop: 190 },
+      ],
+      onChangeZoomRegion,
+    })
+
+    const input = screen.getByLabelText('Search long-read region by gene or variant')
+    fireEvent.change(input, { target: { value: 'DuP' } })
+    fireEvent.submit(input.closest('form')!)
+
+    expect(onChangeZoomRegion).toHaveBeenCalledWith({ start: 110, stop: 190 })
+    expect(screen.getByText(/Zoomed to DUP \(2 entries\): 110-190/)).not.toBeNull()
+  })
+
+  test('keeps variants visible and points an unknown local gene query to global search', () => {
+    const onChangeZoomRegion = jest.fn()
+    renderView(undefined, '/', 'hgsvc_hprc', {
+      genes: [{ gene_id: 'ENSG1', symbol: 'BRCA1', start: 120, stop: 180 }],
+      onChangeZoomRegion,
+    })
+
+    const input = screen.getByLabelText('Search long-read region by gene or variant')
+    fireEvent.change(input, { target: { value: 'TP53' } })
+    fireEvent.submit(input.closest('form')!)
+
+    expect(onChangeZoomRegion).not.toHaveBeenCalled()
+    expect(screen.getByRole('alert').textContent).toContain('No gene named TP53 is loaded')
+    expect(screen.getByRole('alert').textContent).toContain('global gene search')
+    expect(mockVariantTableProps.at(-1).parsedSearch.status).toBe('empty')
+    expect((input as HTMLInputElement).value).toBe('')
+  })
+
+  test('preserves an existing exact variant search when Enter is pressed', () => {
+    const onChangeZoomRegion = jest.fn()
+    renderView(undefined, '/', 'hgsvc_hprc', {
+      genes: [{ gene_id: 'ENSG1', symbol: 'BRCA1', start: 120, stop: 180 }],
+      variants: [{ variant_id: 'sv-test', chrom: 'chr22', pos: 150, end: 160, length: 10 }],
+      onChangeZoomRegion,
+    })
+
+    const input = screen.getByLabelText('Search long-read region by gene or variant')
+    fireEvent.change(input, { target: { value: 'sv-test' } })
+    expect(screen.getByText(/1 matching variant in this loaded region/)).not.toBeNull()
+    fireEvent.submit(input.closest('form')!)
+
+    expect(onChangeZoomRegion).not.toHaveBeenCalled()
+    expect((input as HTMLInputElement).value).toBe('sv-test')
+    expect(mockVariantTableProps.at(-1).parsedSearch.status).toBe('ready')
   })
 })
