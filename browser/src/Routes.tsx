@@ -8,6 +8,7 @@ import { Page, PageHeading } from '@gnomad/ui'
 import DocumentTitle from './DocumentTitle'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { parseLongReadCohort } from './LongReadVariantPage/longReadCohort'
+import { getSearchDatasetForSelectedDataset } from './search'
 
 // Content pages
 const AcOfOnePage = lazy(() => import('./AcOfOnePage'))
@@ -283,7 +284,13 @@ const Routes = () => {
         path="/awesome"
         render={({ location }: any) => {
           const params = queryString.parse(location.search)
-          return <SearchRedirectPage query={params.query} />
+          return (
+            <SearchRedirectPage
+              query={params.query}
+              datasetId={getSearchDatasetForSelectedDataset(params.dataset)}
+              lrCohort={parseLongReadCohort(params.lr_cohort)}
+            />
+          )
         }}
       />
 

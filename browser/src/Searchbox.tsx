@@ -5,8 +5,9 @@ import styled from 'styled-components'
 
 import { Searchbox, Select } from '@gnomad/ui'
 
-import { fetchSearchResults } from './search'
+import { fetchSearchResults, getSearchDatasetForSelectedDataset } from './search'
 import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
+import { parseLongReadCohort } from './LongReadVariantPage/longReadCohort'
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,33 +28,6 @@ const Wrapper = styled.div`
   }
 `
 
-const getDefaultSearchDataset = (selectedDataset: any) => {
-  if (selectedDataset) {
-    if (selectedDataset.startsWith('gnomad_r4')) {
-      return 'gnomad_r4'
-    }
-    if (selectedDataset.startsWith('gnomad_r3')) {
-      return 'gnomad_r3'
-    }
-    if (selectedDataset.startsWith('gnomad_r2')) {
-      return 'gnomad_r2_1'
-    }
-    if (selectedDataset.startsWith('gnomad_sv_r2')) {
-      return 'gnomad_sv_r2_1'
-    }
-    if (selectedDataset === 'exac') {
-      return 'exac'
-    }
-    if (selectedDataset === 'gnomad_sv_r4') {
-      return 'gnomad_sv_r4'
-    }
-    if (selectedDataset === 'gnomad_cnv_r4') {
-      return 'gnomad_cnv_r4'
-    }
-  }
-  return 'gnomad_r4'
-}
-
 export default withRouter((props: any) => {
   const {
     history,
@@ -65,15 +39,17 @@ export default withRouter((props: any) => {
   } = props
 
   const currentParams = queryString.parse(location.search)
-  const defaultSearchDataset = getDefaultSearchDataset(currentParams.dataset)
+  const defaultSearchDataset = getSearchDatasetForSelectedDataset(currentParams.dataset)
   const [searchDataset, setSearchDataset] = useState<DatasetId>(defaultSearchDataset)
+  const [lrCohort, setLrCohort] = useState(parseLongReadCohort(currentParams.lr_cohort))
 
   // Update search dataset when active dataset changes.
   // Cannot rely on props for this because the top bar does not re-render.
   useEffect(() => {
     return history.listen((newLocation: any) => {
       const newParams = queryString.parse(newLocation.search)
-      setSearchDataset(getDefaultSearchDataset(newParams.dataset))
+      setSearchDataset(getSearchDatasetForSelectedDataset(newParams.dataset))
+      setLrCohort(parseLongReadCohort(newParams.lr_cohort))
     })
   })
 
@@ -102,12 +78,16 @@ export default withRouter((props: any) => {
       >
         <optgroup label="GRCh38">
           {grch38Datasets.map((datasetId) => (
-            <option value={datasetId}>{labelForDataset(datasetId)}</option>
+            <option key={datasetId} value={datasetId}>
+              {labelForDataset(datasetId)}
+            </option>
           ))}
         </optgroup>
         <optgroup label="GRCh37">
           {grch37Datasets.map((datasetId) => (
-            <option value={datasetId}>{labelForDataset(datasetId)}</option>
+            <option key={datasetId} value={datasetId}>
+              {labelForDataset(datasetId)}
+            </option>
           ))}
         </optgroup>
       </Select>
@@ -118,7 +98,7 @@ export default withRouter((props: any) => {
           {...rest}
           ref={innerSearchbox}
           width="100%"
-          fetchSearchResults={(query) => fetchSearchResults(searchDataset, query)}
+          fetchSearchResults={(query) => fetchSearchResults(searchDataset, query, { lrCohort })}
           placeholder={placeholder}
           onSelect={(url) => {
             history.push(url)

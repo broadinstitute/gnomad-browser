@@ -6,17 +6,24 @@ import { PageHeading } from '@gnomad/ui'
 import Delayed from './Delayed'
 import InfoPage from './InfoPage'
 import StatusMessage from './StatusMessage'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { fetchSearchResults } from './search'
 import useRequest from './useRequest'
+import type { LongReadCohort } from './LongReadVariantPage/longReadCohort'
 
-const defaultSearchDataset = 'gnomad_r4'
+const defaultSearchDataset: DatasetId = 'gnomad_r4'
 
 type SearchRedirectProps = {
   query: string
+  datasetId: DatasetId
+  lrCohort?: LongReadCohort
 }
 
-const SearchRedirect = ({ query }: SearchRedirectProps) => {
-  const search = useCallback(() => fetchSearchResults(defaultSearchDataset, query), [query])
+const SearchRedirect = ({ query, datasetId, lrCohort }: SearchRedirectProps) => {
+  const search = useCallback(
+    () => fetchSearchResults(datasetId, query, { lrCohort }),
+    [datasetId, lrCohort, query]
+  )
   const { isLoading, response: searchResults, error } = useRequest(search)
 
   if (isLoading) {
@@ -48,14 +55,20 @@ const SearchRedirect = ({ query }: SearchRedirectProps) => {
 
 type SearchRedirectPageProps = {
   query: string
+  datasetId?: DatasetId
+  lrCohort?: LongReadCohort
 }
 
-const SearchRedirectPage = ({ query }: SearchRedirectPageProps) => {
+const SearchRedirectPage = ({
+  query,
+  datasetId = defaultSearchDataset,
+  lrCohort,
+}: SearchRedirectPageProps) => {
   return (
     <InfoPage>
       <PageHeading>Search</PageHeading>
 
-      <SearchRedirect query={query} />
+      <SearchRedirect query={query} datasetId={datasetId} lrCohort={lrCohort} />
     </InfoPage>
   )
 }

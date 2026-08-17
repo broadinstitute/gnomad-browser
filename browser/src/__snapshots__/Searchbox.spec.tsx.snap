@@ -18,6 +18,11 @@ exports[`Searchbox has no unexpected changes when no dataset specified 1`] = `
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -105,6 +110,11 @@ exports[`Searchbox with selected dataset exac has no unexpected changes 1`] = `
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -196,6 +206,11 @@ exports[`Searchbox with selected dataset gnomad_cnv_r4 has no unexpected changes
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -283,6 +298,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1 has no unexpected changes 1
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -374,6 +394,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_controls has no unexpected 
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -461,6 +486,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_cancer has no unexpecte
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -552,6 +582,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_neuro has no unexpected
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -639,6 +674,11 @@ exports[`Searchbox with selected dataset gnomad_r2_1_non_topmed has no unexpecte
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -730,6 +770,11 @@ exports[`Searchbox with selected dataset gnomad_r3 has no unexpected changes 1`]
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -817,6 +862,11 @@ exports[`Searchbox with selected dataset gnomad_r3_controls_and_biobanks has no 
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -908,6 +958,11 @@ exports[`Searchbox with selected dataset gnomad_r3_non_cancer has no unexpected 
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -995,6 +1050,11 @@ exports[`Searchbox with selected dataset gnomad_r3_non_neuro has no unexpected c
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -1086,6 +1146,11 @@ exports[`Searchbox with selected dataset gnomad_r3_non_topmed has no unexpected 
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -1173,6 +1238,11 @@ exports[`Searchbox with selected dataset gnomad_r3_non_v2 has no unexpected chan
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -1264,6 +1334,11 @@ exports[`Searchbox with selected dataset gnomad_r4 has no unexpected changes 1`]
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -1342,7 +1417,7 @@ exports[`Searchbox with selected dataset gnomad_r4_lr has no unexpected changes 
   <select
     className="Select-sc-1lkyg9e-0 iPbHsk"
     onChange={[Function]}
-    value="gnomad_r4"
+    value="gnomad_r4_lr"
   >
     <optgroup
       label="GRCh38"
@@ -1351,6 +1426,11 @@ exports[`Searchbox with selected dataset gnomad_r4_lr has no unexpected changes 
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -1442,6 +1522,11 @@ exports[`Searchbox with selected dataset gnomad_r4_non_ukb has no unexpected cha
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -1529,6 +1614,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1 has no unexpected change
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"
@@ -1620,6 +1710,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_controls has no unexpect
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -1709,6 +1804,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r2_1_non_neuro has no unexpec
         gnomAD v4.1.1
       </option>
       <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
+      </option>
+      <option
         value="gnomad_r3"
       >
         gnomAD v3.1.2
@@ -1796,6 +1896,11 @@ exports[`Searchbox with selected dataset gnomad_sv_r4 has no unexpected changes 
         value="gnomad_r4"
       >
         gnomAD v4.1.1
+      </option>
+      <option
+        value="gnomad_r4_lr"
+      >
+        gnomAD v4.1.1 (long reads)
       </option>
       <option
         value="gnomad_r3"

@@ -53,6 +53,61 @@ describe('fetchSearchResults', () => {
     ])
   })
 
+  it('preserves the LR dataset and cohort for compatible gene results', async () => {
+    expect(
+      await fetchSearchResults('gnomad_r4_lr', 'ENSG00000133424', { lrCohort: 'aou' })
+    ).toEqual([
+      {
+        label: 'ENSG00000133424',
+        value: '/gene/ENSG00000133424?dataset=gnomad_r4_lr&lr_cohort=aou',
+      },
+    ])
+  })
+
+  it('preserves the LR dataset and cohort for compatible region results', async () => {
+    expect(
+      await fetchSearchResults('gnomad_r4_lr', '22:23000000-23100000', {
+        lrCohort: 'hgsvc_hprc',
+      })
+    ).toEqual([
+      {
+        label: '22-23000000-23100000',
+        value: '/region/22-23000000-23100000?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc',
+      },
+    ])
+  })
+
+  it('preserves the LR dataset and cohort for compatible variant results', async () => {
+    expect(
+      await fetchSearchResults('gnomad_r4_lr', '22-23283947-A-G', { lrCohort: 'aou' })
+    ).toEqual([
+      {
+        label: '22-23283947-A-G',
+        value: '/variant/22-23283947-A-G?dataset=gnomad_r4_lr&lr_cohort=aou',
+      },
+    ])
+  })
+
+  it('falls back to r4 short reads for transcript pages that do not support LR', async () => {
+    expect(
+      await fetchSearchResults('gnomad_r4_lr', 'ENST00000302118', { lrCohort: 'aou' })
+    ).toEqual([
+      {
+        label: 'ENST00000302118',
+        value: '/transcript/ENST00000302118?dataset=gnomad_r4',
+      },
+    ])
+  })
+
+  it('does not add an LR cohort to ordinary short-read results', async () => {
+    expect(await fetchSearchResults('gnomad_r4', 'ENSG00000133424', { lrCohort: 'aou' })).toEqual([
+      {
+        label: 'ENSG00000133424',
+        value: '/gene/ENSG00000133424?dataset=gnomad_r4',
+      },
+    ])
+  })
+
   it('should return a region page link for region IDs', async () => {
     expect(await fetchSearchResults('gnomad_r3', '1:55039447-55064852')).toEqual([
       {
@@ -92,6 +147,27 @@ describe('fetchSearchResults', () => {
       {
         label: 'PCSK9',
         value: '/gene/ENSG00000169174?dataset=gnomad_r3',
+      },
+    ])
+  })
+
+  it('preserves LR scope for gene symbol results', async () => {
+    // @ts-expect-error TS(2339) FIXME: Property 'mockReturnValue' does not exist on type ... Remove this comment to see the full error message
+    global.fetch.mockReturnValue(
+      Promise.resolve({
+        json: () =>
+          Promise.resolve({
+            data: {
+              gene_search: [{ ensembl_id: 'ENSG00000133424', symbol: 'LARGE1' }],
+            },
+          }),
+      })
+    )
+
+    expect(await fetchSearchResults('gnomad_r4_lr', 'LARGE1', { lrCohort: 'aou' })).toEqual([
+      {
+        label: 'LARGE1',
+        value: '/gene/ENSG00000133424?dataset=gnomad_r4_lr&lr_cohort=aou',
       },
     ])
   })

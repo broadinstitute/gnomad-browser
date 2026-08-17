@@ -13,6 +13,66 @@ import {
 } from '@gnomad/dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
 
+export type SearchOptions = {
+  lrCohort?: 'hgsvc_hprc' | 'aou'
+}
+
+type SearchResultKind = 'gene' | 'region' | 'variant' | 'transcript' | 'variant-cooccurrence'
+
+const longReadCompatibleResultKinds = new Set<SearchResultKind>(['gene', 'region', 'variant'])
+
+export const getSearchDatasetForSelectedDataset = (selectedDataset: unknown): DatasetId => {
+  if (typeof selectedDataset === 'string') {
+    // Long reads are a distinct r4 dataset, so this exact match must precede the r4 family.
+    if (selectedDataset === 'gnomad_r4_lr') {
+      return 'gnomad_r4_lr'
+    }
+    if (selectedDataset.startsWith('gnomad_r4')) {
+      return 'gnomad_r4'
+    }
+    if (selectedDataset.startsWith('gnomad_r3')) {
+      return 'gnomad_r3'
+    }
+    if (selectedDataset.startsWith('gnomad_r2')) {
+      return 'gnomad_r2_1'
+    }
+    if (selectedDataset.startsWith('gnomad_sv_r2')) {
+      return 'gnomad_sv_r2_1'
+    }
+    if (selectedDataset === 'exac') {
+      return 'exac'
+    }
+    if (selectedDataset === 'gnomad_sv_r4') {
+      return 'gnomad_sv_r4'
+    }
+    if (selectedDataset === 'gnomad_cnv_r4') {
+      return 'gnomad_cnv_r4'
+    }
+  }
+  return 'gnomad_r4'
+}
+
+const searchResultUrl = (
+  pathname: string,
+  datasetId: DatasetId,
+  resultKind: SearchResultKind,
+  options: SearchOptions,
+  additionalParams: [string, string][] = []
+) => {
+  // Gene, region, and variant pages support the LR dataset. Other result pages (currently
+  // transcript and variant co-occurrence) fall back to the matching r4 short-read dataset.
+  const resultDataset =
+    datasetId === 'gnomad_r4_lr' && !longReadCompatibleResultKinds.has(resultKind)
+      ? 'gnomad_r4'
+      : datasetId
+  const params = new URLSearchParams({ dataset: resultDataset })
+  if (resultDataset === 'gnomad_r4_lr' && options.lrCohort) {
+    params.set('lr_cohort', options.lrCohort)
+  }
+  additionalParams.forEach(([key, value]) => params.append(key, value))
+  return `${pathname}?${params.toString()}`
+}
+
 const fetchGeneSymbolSearchResults = (query: string, referenceGenome: ReferenceGenome) => {
   return fetch('/api/', {
     body: JSON.stringify({
@@ -37,7 +97,8 @@ const parseGeneSearchResults = (
   response: GeneSearchResult,
   query: string,
   datasetId: DatasetId,
-  startingGeneSymbolCounts: Record<string, number> = {}
+  startingGeneSymbolCounts: Record<string, number> = {},
+  options: SearchOptions = {}
 ): [SearchResultItem[], Record<string, number>] => {
   const genes = response.data.gene_search
   const geneSymbolCounts = { ...startingGeneSymbolCounts }
@@ -68,7 +129,7 @@ const parseGeneSearchResults = (
       label:
         geneSymbolCounts[gene.symbol] > 1 ? `${gene.symbol} (${gene.ensembl_id})` : gene.symbol,
 
-      value: `/gene/${gene.ensembl_id}?dataset=${datasetId}`,
+      value: searchResultUrl(`/gene/${gene.ensembl_id}`, datasetId, 'gene', options),
     }))
 
   return [formattedGenes, geneSymbolCounts]
@@ -78,7 +139,8 @@ type SearchResultItem = { label: string; value: string }
 
 export const fetchSearchResults = (
   datasetId: DatasetId,
-  query: string
+  query: string,
+  options: SearchOptions = {}
 ): Promise<SearchResultItem[]> => {
   if (datasetId.startsWith('gnomad_sv')) {
     // ==============================================================================================
@@ -90,7 +152,7 @@ export const fetchSearchResults = (
       return Promise.resolve([
         {
           label: structuralVariantId,
-          value: `/variant/${structuralVariantId}?dataset=${datasetId}`,
+          value: searchResultUrl(`/variant/${structuralVariantId}`, datasetId, 'variant', options),
         },
       ])
     }
@@ -104,7 +166,7 @@ export const fetchSearchResults = (
       return Promise.resolve([
         {
           label: variantId,
-          value: `/variant/${variantId}?dataset=${datasetId}`,
+          value: searchResultUrl(`/variant/${variantId}`, datasetId, 'variant', options),
         },
       ])
     }
@@ -114,7 +176,7 @@ export const fetchSearchResults = (
       return Promise.resolve([
         {
           label: rsId,
-          value: `/variant/${rsId}?dataset=${datasetId}`,
+          value: searchResultUrl(`/variant/${rsId}`, datasetId, 'variant', options),
         },
       ])
     }
@@ -130,11 +192,13 @@ export const fetchSearchResults = (
           }
           return response
         })
-        .then((response) => parseGeneSearchResults(response, query, datasetId, { [caid]: 1 }))
+        .then((response) =>
+          parseGeneSearchResults(response, query, datasetId, { [caid]: 1 }, options)
+        )
         .then(([geneSearchResults, geneSymbolCounts]) => {
           const variantItem = {
             label: geneSymbolCounts[caid] > 1 ? `${caid} (variant)` : caid,
-            value: `/variant/${caid}?dataset=${datasetId}`,
+            value: searchResultUrl(`/variant/${caid}`, datasetId, 'variant', options),
           }
 
           return [variantItem, ...geneSearchResults]
@@ -146,7 +210,7 @@ export const fetchSearchResults = (
       return Promise.resolve([
         {
           label: clinvarVariationId,
-          value: `/variant/${clinvarVariationId}?dataset=${datasetId}`,
+          value: searchResultUrl(`/variant/${clinvarVariationId}`, datasetId, 'variant', options),
         },
       ])
     }
@@ -162,7 +226,7 @@ export const fetchSearchResults = (
     const results = [
       {
         label: regionId,
-        value: `/region/${regionId}?dataset=${datasetId}`,
+        value: searchResultUrl(`/region/${regionId}`, datasetId, 'region', options),
       },
     ]
 
@@ -172,7 +236,7 @@ export const fetchSearchResults = (
       const windowRegionId = `${chrom}-${Math.max(1, start - 20)}-${stop + 20}`
       results.unshift({
         label: windowRegionId,
-        value: `/region/${windowRegionId}?dataset=${datasetId}`,
+        value: searchResultUrl(`/region/${windowRegionId}`, datasetId, 'region', options),
       })
     }
 
@@ -190,7 +254,7 @@ export const fetchSearchResults = (
     return Promise.resolve([
       {
         label: geneId,
-        value: `/gene/${geneId}?dataset=${datasetId}`,
+        value: searchResultUrl(`/gene/${geneId}`, datasetId, 'gene', options),
       },
     ])
   }
@@ -204,7 +268,7 @@ export const fetchSearchResults = (
     return Promise.resolve([
       {
         label: transcriptId,
-        value: `/transcript/${transcriptId}?dataset=${datasetId}`,
+        value: searchResultUrl(`/transcript/${transcriptId}`, datasetId, 'transcript', options),
       },
     ])
   }
@@ -222,7 +286,7 @@ export const fetchSearchResults = (
         return response
       })
       .then((response) => {
-        const [geneSearchResults] = parseGeneSearchResults(response, query, datasetId)
+        const [geneSearchResults] = parseGeneSearchResults(response, query, datasetId, {}, options)
         return geneSearchResults
       })
   }
@@ -238,7 +302,16 @@ export const fetchSearchResults = (
       return Promise.resolve([
         {
           label: `${variantOneId} and ${variantTwoId} co-occurrence`,
-          value: `/variant-cooccurrence?dataset=${datasetId}&variant=${variantOneId}&variant=${variantTwoId}`,
+          value: searchResultUrl(
+            '/variant-cooccurrence',
+            datasetId,
+            'variant-cooccurrence',
+            options,
+            [
+              ['variant', variantOneId],
+              ['variant', variantTwoId],
+            ]
+          ),
         },
       ])
     }

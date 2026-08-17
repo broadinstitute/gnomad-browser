@@ -1,7 +1,7 @@
 import React from 'react'
 import { describe, test, expect } from '@jest/globals'
 import { forAllDatasets } from '../../tests/__helpers__/datasets'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Router } from 'react-router-dom'
 import renderer from 'react-test-renderer'
 import { createBrowserHistory } from 'history'
 
@@ -16,6 +16,26 @@ describe('Searchbox', () => {
       </BrowserRouter>
     )
     expect(tree).toMatchSnapshot()
+  })
+
+  test('preserves LR selector state, cohort, and URL when a gene result is selected', async () => {
+    const history = createBrowserHistory()
+    history.push('/gene/ENSG00000133424?dataset=gnomad_r4_lr&lr_cohort=aou')
+    const tree = renderer.create(
+      <Router history={history}>
+        <Searchbox />
+      </Router>
+    )
+
+    expect(tree.root.findByType('select').props.value).toBe('gnomad_r4_lr')
+    const interactiveSearchbox = tree.root.find(
+      (node) => node.props.fetchSearchResults && node.props.onSelect
+    )
+    const [result] = await interactiveSearchbox.props.fetchSearchResults('ENSG00000133424')
+    expect(result.value).toBe('/gene/ENSG00000133424?dataset=gnomad_r4_lr&lr_cohort=aou')
+
+    renderer.act(() => interactiveSearchbox.props.onSelect(result.value))
+    expect(`${history.location.pathname}${history.location.search}`).toBe(result.value)
   })
 
   forAllDatasets('with selected dataset %s', (datasetId) => {
