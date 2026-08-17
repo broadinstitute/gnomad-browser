@@ -4,10 +4,19 @@ import { render, screen, waitFor } from '@testing-library/react'
 import LRCoverageTrack from './LRCoverageTrack'
 
 jest.mock('../CoverageTrack', () => {
-  const CoverageTrackMock = ({ datasets, metric }: any) => (
-    <div data-metric={metric}>{datasets[0].name}</div>
+  const CoverageTrackMock = ({ coverageOverThresholds, datasets, metric }: any) => (
+    <div
+      data-coverage-over-thresholds={coverageOverThresholds.join(',')}
+      data-metric={metric}
+    >
+      {datasets[0].name}
+    </div>
   )
-  ;(CoverageTrackMock as any).MetricOptions = { over_5: 'over_5', over_20: 'over_20' }
+  ;(CoverageTrackMock as any).MetricOptions = {
+    median: 'median',
+    over_5: 'over_5',
+    over_20: 'over_20',
+  }
   return CoverageTrackMock
 })
 
@@ -23,7 +32,26 @@ describe('LRCoverageTrack cohort routing', () => {
     delete (global as any).fetch
   })
 
-  test('HGSVC -> AoU -> HGSVC fetches and labels coverage for the selected cohort', async () => {
+  test.each([
+    ['hgsvc_hprc', 'Long-read coverage — HGSVC/HPRC'],
+    ['aou', 'Long-read coverage — All of Us'],
+  ] as const)(
+    '%s coverage defaults to median while retaining threshold metric options',
+    async (lrCohort, label) => {
+      const fetchMock = jest.fn().mockResolvedValue({ json: async () => response })
+      ;(global as any).fetch = fetchMock
+
+      render(<LRCoverageTrack chrom="22" start={1} stop={100} lrCohort={lrCohort} />)
+
+      const coverageTrack = await screen.findByText(label)
+      expect(coverageTrack.getAttribute('data-metric')).toBe('median')
+      expect(coverageTrack.getAttribute('data-coverage-over-thresholds')).toBe(
+        '1,5,10,15,20,25,30,50,100'
+      )
+    }
+  )
+
+  test('HGSVC -> AoU -> HGSVC switching keeps median selected and routes each request', async () => {
     const fetchMock = jest.fn().mockResolvedValue({ json: async () => response })
     ;(global as any).fetch = fetchMock
 
@@ -32,18 +60,20 @@ describe('LRCoverageTrack cohort routing', () => {
     )
     expect(
       (await screen.findByText('Long-read coverage — HGSVC/HPRC')).getAttribute('data-metric')
-    ).toBe('over_20')
+    ).toBe('median')
     expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
 
     rerender(<LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="aou" />)
     expect(
       (await screen.findByText('Long-read coverage — All of Us')).getAttribute('data-metric')
-    ).toBe('over_5')
+    ).toBe('median')
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
     expect(JSON.parse(String(fetchMock.mock.calls[1][1]?.body)).variables.lrCohort).toBe('aou')
 
     rerender(<LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="hgsvc_hprc" />)
-    await screen.findByText('Long-read coverage — HGSVC/HPRC')
+    expect(
+      (await screen.findByText('Long-read coverage — HGSVC/HPRC')).getAttribute('data-metric')
+    ).toBe('median')
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3))
     expect(JSON.parse(String(fetchMock.mock.calls[2][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
   })

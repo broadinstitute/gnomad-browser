@@ -134,7 +134,7 @@ const LRCoverageTrack = ({
       <CoverageTrack
         key={lrCohort}
         coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
-        metric={lrCohort === 'aou' ? MetricOptions.over_5 : MetricOptions.over_20}
+        metric={MetricOptions.median}
         filenameForExport={() =>
           `${chrom}-${start}-${stop}_gnomad_long_read_coverage_${lrCohort}`
         }
