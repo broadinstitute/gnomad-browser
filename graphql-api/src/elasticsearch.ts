@@ -1,9 +1,11 @@
 import elasticsearch from '@elastic/elasticsearch'
 import Bottleneck from 'bottleneck'
+import { GoogleAuth } from 'google-auth-library'
 import config from './config'
 
 import { UserVisibleError } from './errors'
 import { currentEsTiming } from './esTiming'
+import { coalesceRequestHeaders, createCloudRunAuthTransport } from './elasticsearchCloudRunAuth'
 import logger from './logger'
 
 const isCloudRunProxy = config.ELASTICSEARCH_URL?.includes('run.app')
@@ -28,26 +30,22 @@ if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
   }
 }
 
+if (isCloudRunProxy) {
+  const auth = new GoogleAuth()
+  let idClient: Awaited<ReturnType<typeof auth.getIdTokenClient>> | undefined
+  const getRequestHeaders = coalesceRequestHeaders(async () => {
+    // Do not cache failed client initialization; a later ES request should retry it.
+    idClient ||= await auth.getIdTokenClient(config.ELASTICSEARCH_URL)
+    return idClient.getRequestHeaders()
+  })
+
+  // Ask IdTokenClient for headers on every ES request. It caches valid tokens and
+  // refreshes near expiry; the transport only adds the resulting token to that request.
+  elasticsearchConfig.Transport = createCloudRunAuthTransport(getRequestHeaders)
+}
+
 export const createUnlimitedElasticClient = () => new elasticsearch.Client(elasticsearchConfig)
 const elastic = createUnlimitedElasticClient()
-
-// For Cloud Run ES proxy: fetch an identity token at startup and inject it into the
-// transport's global headers. The token (~1h lifetime) stays fresh because
-// min_instance_count=0 means instances cold-start frequently.
-if (isCloudRunProxy) {
-  const { GoogleAuth } = require('google-auth-library')
-  const auth = new GoogleAuth()
-  auth.getIdTokenClient(config.ELASTICSEARCH_URL).then((idClient: any) =>
-    idClient.getRequestHeaders()
-  ).then((headers: Record<string, string>) => {
-    // Patch the transport's headers — these get merged into every request (Transport.js:130)
-    const transport = (elastic as any).transport
-    transport.headers.authorization = headers['Authorization']
-    logger.info('Injected identity token for ES proxy')
-  }).catch((err: any) => {
-    logger.error(`Failed to fetch identity token for ES proxy: ${err}`)
-  })
-}
 
 const esLimiter = new Bottleneck({
   maxConcurrent: config.MAX_CONCURRENT_ELASTICSEARCH_REQUESTS,
