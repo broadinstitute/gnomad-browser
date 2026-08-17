@@ -514,9 +514,10 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
       <MethodSection id="methylation-interpretation">
         <h3>Interpretation limits</h3>
         <p>
-          These tracks are descriptive, research-facing context. Methylation depends on assay,
-          tissue, coverage, cohort composition, ancestry and other biological or technical factors
-          not modeled here. A visual difference does not establish significance, causality, an mQTL,
+          These tracks are descriptive, research-facing context. Methylation is influenced by
+          environmental factors and also depends on assay, tissue, coverage, cohort composition,
+          ancestry, and other biological or technical factors not modeled here. A visual difference
+          does not establish significance, causality, an mQTL,
           imprinting, pathogenicity, diagnosis, treatment relevance, or any clinical result. Do not
           use this display as a validated statistical, biological, or clinical assessment.
         </p>

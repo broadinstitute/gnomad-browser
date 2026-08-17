@@ -136,6 +136,12 @@ describe('MethylationHelp', () => {
     expect(text).not.toContain('Population site')
   })
 
+  test('warns that methylation is influenced by environmental factors', () => {
+    const text = renderedText(renderer.create(<MethylationHelp />).toJSON())
+
+    expect(text).toContain('Methylation is influenced by environmental factors')
+  })
+
   test('cites the METAFORA medRxiv preprint and its review status', () => {
     const tree = renderer.create(<MethylationHelp />)
     const text = renderedText(tree.toJSON())
