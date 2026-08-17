@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import { TooltipAnchor } from '@gnomad/ui'
 
-import { DatasetId, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { DatasetId, isLongRead, referenceGenome } from '@gnomad/dataset-metadata/metadata'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 
 export const TitleWrapper = styled.span`
   display: inline-flex;
@@ -55,7 +56,8 @@ type Props = {
 }
 
 const VariantPageTitle = ({ datasetId, variantId }: Props) => {
-  const [chrom, pos, ref, alt] = variantId.split('-')
+  const displayVariantId = isLongRead(datasetId) ? formatLongReadVariantId(variantId) : variantId
+  const [chrom, pos, ref, alt] = displayVariantId.split('-')
 
   let variantDescription = 'Variant'
   if (ref.length === 1 && alt.length === 1) {
@@ -83,7 +85,7 @@ const VariantPageTitle = ({ datasetId, variantId }: Props) => {
 
       <Separator style={{ width: '1ch' }}>:</Separator>
       {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-      <TooltipAnchor tooltip={variantId}>
+      <TooltipAnchor tooltip={displayVariantId}>
         <VariantIdWrapper>
           <span>
             {chrom}-{pos}

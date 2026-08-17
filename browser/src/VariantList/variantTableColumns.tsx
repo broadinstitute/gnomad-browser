@@ -18,6 +18,7 @@ import VariantFlag from './VariantFlag'
 import { Variant } from '../VariantPage/VariantPage'
 import { DatasetId, isLongRead } from '@gnomad/dataset-metadata/metadata'
 import { longReadVariantUrl } from '../LongReadVariantPage/longReadCohort'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 
 const categoryColors = {
   lof: '#DD2C00',
@@ -397,7 +398,11 @@ const variantTableColumns: VariantTableColumn[] = [
           }
           preserveSelectedDataset={!row.lr_cohort}
         >
-          <Highlighter autoEscape searchWords={highlightWords} textToHighlight={row.variant_id} />
+          <Highlighter
+            autoEscape
+            searchWords={highlightWords}
+            textToHighlight={row.lr_cohort ? formatLongReadVariantId(row.variant_id) : row.variant_id}
+          />
         </Link>
         {row.long_read_details?.is_likely_tr && (
           <span style={{ marginLeft: '0.5ch' }}>

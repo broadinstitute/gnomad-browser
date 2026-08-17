@@ -12,6 +12,7 @@ import type {
   LRVariant,
 } from './index'
 import { cssColorToRgba, getColorByHashRGBA } from '../LongReadVariantPage/variantColorUtils'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 
 // --- Constants ---
@@ -729,7 +730,7 @@ function PaintingTooltip({ x, y, segment }: { x: number; y: number; segment: Pai
       }}
     >
       <div>
-        <strong>SV Block:</strong> {v.variant_id}
+        <strong>SV Block:</strong> {formatLongReadVariantId(v.variant_id)}
       </div>
       <div>
         <strong>Position:</strong> {v.pos.toLocaleString()}

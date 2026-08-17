@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import {
   SourceEventTooltip,
   TrLocusTooltip,
+  VariantTooltip,
   getTrReferenceBarGeometry,
 } from './LongReadVariantTrack'
 import { aggregateSourceEvents, type SourceEventRecord } from './sourceEventAggregation'
@@ -68,6 +69,35 @@ describe('TR reference-locus rendering', () => {
     expect(container.textContent).toContain('Reference span: 56 bp')
     expect(container.textContent).toContain('ALT−REF length: -25 bp to +3606 bp')
     expect(container.textContent).toContain('Added ALT bases have no GRCh38 coordinates')
+  })
+})
+
+describe('summary variant hover details', () => {
+  test('normalizes the displayed ID without changing the hovered record', () => {
+    const variant = {
+      variant_id: 'chr22-100-A-T',
+      chrom: 'chr22',
+      pos: 100,
+      end: 100,
+      ref: 'A',
+      alt: 'T',
+      allele_length: 0,
+      allele_type: 'SNV',
+      major_consequence: null,
+      motifs: null,
+      main_reference_region: null,
+      filters: [],
+      sv_consequences: [],
+      freq: { all: { af: 0.1 } },
+    }
+
+    const { container } = render(
+      <VariantTooltip hovered={{ variant, x: 0, y: 0 } as any} />
+    )
+
+    expect(container.textContent).toContain('Variant ID: 22-100-A-T')
+    expect(container.textContent).not.toContain('chr22-100-A-T')
+    expect(variant.variant_id).toBe('chr22-100-A-T')
   })
 })
 

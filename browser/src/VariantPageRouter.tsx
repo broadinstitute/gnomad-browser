@@ -11,6 +11,7 @@ import {
   labelForDataset,
   hasStructuralVariants,
   hasCopyNumberVariants,
+  isLongRead,
 } from '@gnomad/dataset-metadata/metadata'
 import DocumentTitle from './DocumentTitle'
 import Link from './Link'
@@ -18,6 +19,7 @@ import useRequest from './useRequest'
 import StatusMessage from './StatusMessage'
 import { fetchVariantSearchResults } from './search'
 import type { LongReadCohort } from './LongReadVariantPage/longReadCohort'
+import { formatLongReadVariantId } from './LongReadVariantPage/formatLongReadVariantId'
 
 const MitochondrialVariantPage = lazy(
   () => import('./MitochondrialVariantPage/MitochondrialVariantPage')
@@ -68,7 +70,7 @@ const VariantSearch = ({ datasetId, query }: VariantSearchProps) => {
                 search: queryString.stringify({ dataset: datasetId }),
               }}
             >
-              {variantId}
+              {isLongRead(datasetId) ? formatLongReadVariantId(variantId) : variantId}
             </Link>
           </ListItem>
         ))}

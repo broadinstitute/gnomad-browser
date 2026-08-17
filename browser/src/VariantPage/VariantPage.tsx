@@ -52,6 +52,7 @@ import {
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
 import type { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 
 export const Section = styled.section`
   width: 100%;
@@ -950,9 +951,10 @@ export const checkGeneLink = (transcript_consequences: TranscriptConsequence[] |
 
 const VariantPage = ({ datasetId, variantId, lrCohort }: VariantPageProps) => {
   const gene = { ensembleId: '' }
+  const displayVariantId = isLongRead(datasetId) ? formatLongReadVariantId(variantId) : variantId
   return (
     <Page>
-      <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
+      <DocumentTitle title={`${displayVariantId} | ${labelForDataset(datasetId)}`} />
       <BaseQuery
         key={`${datasetId}:${lrCohort || 'auto'}`}
         operationName={operationName}

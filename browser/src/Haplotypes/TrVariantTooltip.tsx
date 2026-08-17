@@ -1,6 +1,9 @@
 import React from 'react'
 
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
+
 export type TrTooltipVariant = {
+  variant_id?: string
   chrom: string
   pos: number
   end?: number | null
@@ -26,6 +29,11 @@ export const HaplotypeVariantTooltipContent = ({
 
   return (
     <>
+      {variant.variant_id && (
+        <div>
+          <strong>Variant ID:</strong> {formatLongReadVariantId(variant.variant_id)}
+        </div>
+      )}
       <div>
         <strong>Position:</strong> {variant.pos}
       </div>

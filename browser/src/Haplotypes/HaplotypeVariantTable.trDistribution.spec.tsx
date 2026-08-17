@@ -107,13 +107,14 @@ describe('summary variant columns', () => {
       <HaplotypeVariantTable mode="summary" lrCohort="aou" summaryVariants={[parent, enveloped]} />
     )
 
-    expect(screen.getByRole('link', { name: parent.source_variant_id }).getAttribute('href')).toBe(
+    expect(screen.getByRole('link', { name: '22-100-TRV-9' }).getAttribute('href')).toBe(
       `/variant/${parent.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
     )
-    fireEvent.click(screen.getByText(parent.source_variant_id).closest('tr')!)
-    expect(screen.getByRole('link', { name: enveloped.variant_id }).getAttribute('href')).toBe(
+    fireEvent.click(screen.getByText('22-100-TRV-9').closest('tr')!)
+    expect(screen.getByRole('link', { name: '22-101-INS~2' }).getAttribute('href')).toBe(
       `/variant/${enveloped.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
     )
+    expect(screen.queryByText(/^chr22-/)).toBeNull()
   })
 
   test('both-cohort rows preserve each row cohort in navigation', () => {
@@ -129,10 +130,10 @@ describe('summary variant columns', () => {
       <HaplotypeVariantTable mode="summary" lrCohort="hgsvc_hprc" summaryVariants={[hgsvc, aou]} />
     )
 
-    expect(screen.getByRole('link', { name: hgsvc.source_variant_id }).getAttribute('href')).toBe(
+    expect(screen.getByRole('link', { name: '22-100-TRV-9' }).getAttribute('href')).toBe(
       `/variant/${hgsvc.variant_id}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
-    expect(screen.getByRole('link', { name: aou.source_variant_id }).getAttribute('href')).toBe(
+    expect(screen.getByRole('link', { name: '22-200-TRV-10' }).getAttribute('href')).toBe(
       `/variant/${aou.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
     )
   })
@@ -195,8 +196,8 @@ describe('summary TR expanded row', () => {
     const variants = [first, { ...first }, summaryTr(2, 5, 6, 3)]
     render(<HaplotypeVariantTable mode="summary" summaryVariants={variants} />)
 
-    expect(screen.getAllByText('chr22-100-TRV-9')).toHaveLength(1)
-    fireEvent.click(screen.getByText('chr22-100-TRV-9').closest('tr')!)
+    expect(screen.getAllByText('22-100-TRV-9')).toHaveLength(1)
+    fireEvent.click(screen.getByText('22-100-TRV-9').closest('tr')!)
 
     expect(screen.queryByText('Assigned-carrier length distribution')).toBeNull()
     expect(screen.queryByLabelText('TR allele length distribution')).toBeNull()
@@ -231,8 +232,8 @@ describe('haplotype TR locus aggregation', () => {
       />
     )
 
-    expect(screen.getAllByText('chr22-22854926-TRV-105TR-2..1bp')).toHaveLength(1)
-    fireEvent.click(screen.getByText('chr22-22854926-TRV-105TR-2..1bp').closest('tr')!)
+    expect(screen.getAllByText('22-22854926-TRV-105TR-2..1bp')).toHaveLength(1)
+    fireEvent.click(screen.getByText('22-22854926-TRV-105TR-2..1bp').closest('tr')!)
 
     expect(screen.getByText('Allele length range: -2 to 1bp')).not.toBeNull()
     expect(screen.getByText('Distinct allele lengths: 4')).not.toBeNull()
@@ -285,7 +286,7 @@ describe('haplotype TR locus aggregation', () => {
         ambiguousUnphasedRows={85}
       />
     )
-    fireEvent.click(screen.getByText('chr22-22854926-TRV-105TR-2..1bp').closest('tr')!)
+    fireEvent.click(screen.getByText('22-22854926-TRV-105TR-2..1bp').closest('tr')!)
 
     const grid = screen.getByLabelText('Deterministically haplotype-assigned motif structures')
     expect(grid).not.toBeNull()

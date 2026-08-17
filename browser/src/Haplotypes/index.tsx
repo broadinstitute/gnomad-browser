@@ -30,6 +30,7 @@ import {
   LONG_READ_ANCESTRY_GROUP_LEGEND_IDS,
   longReadAncestryGroupDisplayId,
 } from '../LongReadVariantPage/longReadAncestryGroups'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle, HAPLOTYPE_VIEWPORT_HEIGHT } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
@@ -2191,7 +2192,7 @@ const HaplotypeGroupTrack = ({
                             key={`grp-mqtl-${i}`}
                             tooltipComponent={() => (
                               <RegionAttributeList>
-                                <div><dt>Variant:</dt><dd>{d.variant_id}</dd></div>
+                                <div><dt>Variant:</dt><dd>{formatLongReadVariantId(d.variant_id)}</dd></div>
                                 <div><dt>CpG:</dt><dd>{d.cpg_pos.toLocaleString()}</dd></div>
                                 <div><dt>p-value:</dt><dd>{d.p_value.toExponential(2)}</dd></div>
                                 <div><dt>Effect:</dt><dd>{d.effect_size > 0 ? '+' : ''}{d.effect_size.toFixed(1)}%</dd></div>

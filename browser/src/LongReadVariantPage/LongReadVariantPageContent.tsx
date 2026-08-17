@@ -6,6 +6,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 import { LongReadVariant } from './LongReadVariantPage'
 import { longReadVariantUrl } from './longReadCohort'
+import { formatLongReadVariantId } from './formatLongReadVariantId'
 import TableWrapper from '../TableWrapper'
 import sampleCounts from '@gnomad/dataset-metadata/datasets/gnomad-v4-lr/sampleCounts'
 import { variantFeedbackUrl } from '../variantFeedback'
@@ -130,7 +131,7 @@ const LongReadVariantPageContent = ({ datasetId, variant }: Props) => {
                   to={longReadVariantUrl(id, variant.lr_cohort || 'hgsvc_hprc')}
                   preserveSelectedDataset={false}
                 >
-                  {id}
+                  {formatLongReadVariantId(id)}
                 </Link>
               </li>
             ))}
@@ -184,7 +185,7 @@ const LongReadVariantAttributeTable = ({ variant }: { variant: LongReadVariant }
                 to={longReadVariantUrl(variant.enveloping_tr_id, variant.lr_cohort || 'hgsvc_hprc')}
                 preserveSelectedDataset={false}
               >
-                {variant.enveloping_tr_id}
+                {formatLongReadVariantId(variant.enveloping_tr_id)}
               </Link>
             </td>
           </tr>

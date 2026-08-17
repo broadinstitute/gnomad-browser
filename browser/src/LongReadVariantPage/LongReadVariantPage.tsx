@@ -17,6 +17,7 @@ import { TitleWrapper, Separator, VariantIdWrapper } from '../VariantPage/Varian
 import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import LongReadVariantPageContent from './LongReadVariantPageContent'
 import type { LongReadCohort } from './longReadCohort'
+import { formatLongReadVariantId } from './formatLongReadVariantId'
 
 const ALLELE_TYPE_LABELS: Record<string, string> = {
   snv: 'SNV',
@@ -38,6 +39,7 @@ const VariantPageTitle = ({
   datasetId: DatasetId
 }) => {
   const variantDescription = ALLELE_TYPE_LABELS[variantType] || variantType
+  const displayVariantId = formatLongReadVariantId(variantId)
   return (
     <TitleWrapper>
       {variantDescription === 'SNV' ? (
@@ -51,8 +53,8 @@ const VariantPageTitle = ({
 
       <Separator style={{ width: '1ch' }}>:</Separator>
       {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-      <TooltipAnchor tooltip={variantId}>
-        <VariantIdWrapper>{variantId} </VariantIdWrapper>
+      <TooltipAnchor tooltip={displayVariantId}>
+        <VariantIdWrapper>{displayVariantId} </VariantIdWrapper>
       </TooltipAnchor>
       <Separator> </Separator>
       <span>({referenceGenome(datasetId)})</span>
@@ -123,6 +125,7 @@ const LongReadVariantPage = ({
   lrCohort?: LongReadCohort
 }) => {
   const operationName = 'LongReadVariant'
+  const displayVariantId = formatLongReadVariantId(variantId)
   let geneId: string | null = null
   let variantAlleleType: string = 'Variant'
   const variantQuery = `
@@ -213,7 +216,7 @@ const LongReadVariantPage = ({
   return (
     <>
       <Page>
-        <DocumentTitle title={`${variantId} | ${labelForDataset(datasetId)}`} />
+        <DocumentTitle title={`${displayVariantId} | ${labelForDataset(datasetId)}`} />
         <BaseQuery
           key={datasetId}
           operationName={operationName}

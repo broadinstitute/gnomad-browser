@@ -9,6 +9,7 @@ import TRDistributionPlot from '../Haplotypes/TRDistributionPlot'
 import { getTrLocusDistribution } from '../LongReadVariantPage/trLocusAggregation'
 import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 import ExactTrAltMotifStructure from './ExactTrAltMotifStructure'
 
 export { selectGenotypeDistribution } from '../LongReadVariantPage/LongReadSTRDistributionSections'
@@ -185,7 +186,7 @@ const LongReadVariantDetails = ({
               to={longReadVariantUrl(enveloping_tr_id, lrCohort)}
               preserveSelectedDataset={false}
             >
-              View parent TR: {enveloping_tr_id}
+              View parent TR: {formatLongReadVariantId(enveloping_tr_id)}
             </Link>
           </p>
         </Section>
@@ -202,7 +203,7 @@ const LongReadVariantDetails = ({
             {enveloped_ids.map((id) => (
               <li key={id}>
                 <Link to={longReadVariantUrl(id, lrCohort)} preserveSelectedDataset={false}>
-                  {id}
+                  {formatLongReadVariantId(id)}
                 </Link>
               </li>
             ))}

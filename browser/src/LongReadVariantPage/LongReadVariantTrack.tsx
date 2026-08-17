@@ -16,6 +16,7 @@ import DeletionAllelicSeriesPlot from './DeletionAllelicSeriesPlot'
 import { aggregateTrLoci, getTrLocusDistribution, packTrLoci, type TrLocus } from './trLocusAggregation'
 import { aggregateSourceEvents, getDeletionAlleleFrequencyPoints, getInsertionLengthDistribution, packSourceEvents, type SourceEvent } from './sourceEventAggregation'
 import { longReadVariantUrl, type LongReadCohort } from './longReadCohort'
+import { formatLongReadVariantId } from './formatLongReadVariantId'
 
 // --- Types ---
 
@@ -186,7 +187,7 @@ export const SourceEventTooltip = ({ hovered }: { hovered: HoveredSourceEvent })
   )
 }
 
-const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
+export const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
   const v = hovered.variant
   const truncate = (s: string | null | undefined, len: number) =>
     s && s.length > len ? s.substring(0, len) + '...' : s || ''
@@ -214,7 +215,7 @@ const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
       {(v as any).freq && (
         <div><strong>AF:</strong> {((v as any).freq?.all?.af ?? (v as any).freq?.af)?.toFixed(4)}</div>
       )}
-      {v.variant_id && <div><strong>RSID:</strong> {v.variant_id}</div>}
+      {v.variant_id && <div><strong>Variant ID:</strong> {formatLongReadVariantId(v.variant_id)}</div>}
       {v.allele_type && <div><strong>Type:</strong> {v.allele_type}</div>}
     </div>
   )

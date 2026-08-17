@@ -27,6 +27,7 @@ import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadV
 import { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import ExpandedTrDistributions from './ExpandedTrDistributions'
 import {
@@ -494,7 +495,7 @@ const TableRow = React.memo(function TableRow({
             preserveSelectedDataset={false}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
-            {v.source_variant_id || v.variant_id}
+            {formatLongReadVariantId(v.source_variant_id || v.variant_id)}
           </Link>
         </td>
         <td>
@@ -678,11 +679,11 @@ const TableRow = React.memo(function TableRow({
                       {v.enveloped_ids.map((id: string) => {
                         const envVar = variantDict.get(id)
                         if (!envVar) {
-                          return <li key={id} style={{ marginBottom: 4 }}>{id} (data not loaded)</li>
+                          return <li key={id} style={{ marginBottom: 4 }}>{formatLongReadVariantId(id)} (data not loaded)</li>
                         }
                         return (
                           <li key={id} style={{ marginBottom: 4 }}>
-                            <Link to={longReadVariantUrl(id, v.lr_cohort || lrCohort)} preserveSelectedDataset={false}>{id}</Link>
+                            <Link to={longReadVariantUrl(id, v.lr_cohort || lrCohort)} preserveSelectedDataset={false}>{formatLongReadVariantId(id)}</Link>
                             {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac == null ? 'Unavailable' : envVar.freq.all.ac})
                           </li>
                         )

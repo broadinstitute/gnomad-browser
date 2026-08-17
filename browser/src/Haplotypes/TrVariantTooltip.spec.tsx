@@ -23,6 +23,8 @@ describe('haplotype TR tooltip semantics', () => {
       <HaplotypeVariantTooltipContent variant={trVariant} />
     )
 
+    expect(container.textContent).toContain('Variant ID: 4-39348424-TRV-55~49')
+    expect(container.textContent).not.toContain('chr4-39348424-TRV-55~49')
     expect(container.textContent).toContain('Reference locus: 4:39348424-39348479')
     expect(container.textContent).toContain('Reference allele: 56 bp')
     expect(container.textContent).toContain('Carrier ALT allele: 273 bp')

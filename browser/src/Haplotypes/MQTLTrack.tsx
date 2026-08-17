@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor } from '@gnomad/ui'
 import { scaleLinear } from 'd3-scale'
+import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
 
 const PlotWrapper = styled.div`
   display: flex;
@@ -236,7 +237,7 @@ const MQTLTrack = ({ mqtlData, loading, minLogP, onMinLogPChange }: MQTLTrackPro
                         <dl style={{ margin: 0 }}>
                           <div>
                             <dt style={{ display: 'inline', fontWeight: 'bold' }}>Variant:</dt>
-                            <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{d.variant_id}</dd>
+                            <dd style={{ display: 'inline', marginLeft: '0.5em' }}>{formatLongReadVariantId(d.variant_id)}</dd>
                           </div>
                           <div>
                             <dt style={{ display: 'inline', fontWeight: 'bold' }}>CpG pos:</dt>
