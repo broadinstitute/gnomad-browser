@@ -4,9 +4,10 @@ import { render, screen, waitFor } from '@testing-library/react'
 import LRCoverageTrack from './LRCoverageTrack'
 
 jest.mock('../CoverageTrack', () => {
-  const CoverageTrackMock = ({ coverageOverThresholds, datasets, metric }: any) => (
+  const CoverageTrackMock = ({ coverageOverThresholds, datasets, maxCoverage, metric }: any) => (
     <div
       data-coverage-over-thresholds={coverageOverThresholds.join(',')}
+      data-max-coverage={maxCoverage}
       data-metric={metric}
     >
       {datasets[0].name}
@@ -33,11 +34,11 @@ describe('LRCoverageTrack cohort routing', () => {
   })
 
   test.each([
-    ['hgsvc_hprc', 'Long-read coverage — HGSVC/HPRC'],
-    ['aou', 'Long-read coverage — All of Us'],
+    ['hgsvc_hprc', 'Long-read coverage — HGSVC/HPRC', '100'],
+    ['aou', 'Long-read coverage — All of Us', '20'],
   ] as const)(
-    '%s coverage defaults to median while retaining threshold metric options',
-    async (lrCohort, label) => {
+    '%s coverage defaults to median with its cohort depth scale and threshold metric options',
+    async (lrCohort, label, maxCoverage) => {
       const fetchMock = jest.fn().mockResolvedValue({ json: async () => response })
       ;(global as any).fetch = fetchMock
 
@@ -45,6 +46,7 @@ describe('LRCoverageTrack cohort routing', () => {
 
       const coverageTrack = await screen.findByText(label)
       expect(coverageTrack.getAttribute('data-metric')).toBe('median')
+      expect(coverageTrack.getAttribute('data-max-coverage')).toBe(maxCoverage)
       expect(coverageTrack.getAttribute('data-coverage-over-thresholds')).toBe(
         '1,5,10,15,20,25,30,50,100'
       )

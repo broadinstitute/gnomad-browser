@@ -90,6 +90,11 @@ export enum MetricOptions {
   over_100 = 'over_100',
 }
 
+export const coverageMetricDomain = (selectedMetric: MetricOptions, maxCoverage: number) =>
+  selectedMetric === MetricOptions.mean || selectedMetric === MetricOptions.median
+    ? [0, maxCoverage]
+    : [0, 1]
+
 type OwnCoverageTrackProps = {
   datasets: {
     buckets: {
@@ -294,9 +299,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
       >
         {({ isPositionDefined, regions, scalePosition, width }: any) => {
           const scaleCoverageMetric = scaleLinear()
-            .domain(
-              selectedMetric === 'mean' || selectedMetric === 'median' ? [0, maxCoverage] : [0, 1]
-            )
+            .domain(coverageMetricDomain(selectedMetric, maxCoverage))
             .range([height, 7])
 
           const axisWidth = 60

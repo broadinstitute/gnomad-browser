@@ -42,6 +42,14 @@ const CoverageStatus = styled.div`
 const coverageScope = (chrom: string, start: number, stop: number, lrCohort: string) =>
   `${lrCohort}:${chrom}:${start}-${stop}`
 
+// AoU's admitted full-genome data have median depth near 8× and at or below 20× through
+// the 99th percentile on representative chr1, chr7, chr16, chr22, and chrX queries.
+// Fixed cohort scales keep the axis stable while retaining the established HGSVC/HPRC range.
+const MAX_DEPTH_BY_COHORT = {
+  aou: 20,
+  hgsvc_hprc: 100,
+} as const
+
 type CoverageState = {
   scope: string | null
   data: any[] | null
@@ -135,6 +143,7 @@ const LRCoverageTrack = ({
         key={lrCohort}
         coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
         metric={MetricOptions.median}
+        maxCoverage={MAX_DEPTH_BY_COHORT[lrCohort]}
         filenameForExport={() =>
           `${chrom}-${start}-${stop}_gnomad_long_read_coverage_${lrCohort}`
         }
