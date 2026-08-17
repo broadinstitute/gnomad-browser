@@ -13,7 +13,7 @@ import { Table } from '../VariantPage/VariantOccurrenceTable'
 import InfoButton from '../help/InfoButton'
 import { PopulationsTable } from '../VariantPage/PopulationsTable'
 import VariantTranscriptConsequences from '../VariantPage/VariantTranscriptConsequences'
-import { addPopulationNames, nestPopulations } from '../VariantPage/GnomadPopulationsTable'
+import { nestPopulations } from '../VariantPage/GnomadPopulationsTable'
 import Link from '../Link'
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   AlleleSizeDistributionCohort,
@@ -35,6 +35,10 @@ import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandem
 import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
 import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
+import {
+  addLongReadAncestryGroupNames,
+  longReadAncestryGroupDisplayName,
+} from './longReadAncestryGroups'
 
 type Props = {
   datasetId: DatasetId
@@ -252,7 +256,7 @@ const LongReadVariantPopulationFrequencies = ({ variant }: { variant: LongReadVa
   return (
     <TableWrapper>
       <PopulationsTable
-        populations={nestPopulations(addPopulationNames(variant.freq.populations))}
+        populations={nestPopulations(addLongReadAncestryGroupNames(variant.freq.populations))}
       />
     </TableWrapper>
   )
@@ -361,6 +365,7 @@ const LongReadAlleleSizeDistributionSection = ({ variant }: { variant: LongReadV
           selectedSex={selectedSex}
           setSelectedPopulation={setSelectedPopulation}
           setSelectedSex={setSelectedSex}
+          ancestryGroupName={longReadAncestryGroupDisplayName}
         />
         <ShortTandemRepeatColorBySelect
           id={`${variant.variant_id}-color-by`}

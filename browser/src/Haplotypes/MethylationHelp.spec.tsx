@@ -82,9 +82,9 @@ describe('MethylationHelp', () => {
     expect(text).toContain('no greater than 4:1')
     expect(text).toContain('There is no absolute minimum number of contributing copy samples')
     expect(text).toContain('not significance, confidence, power, p-values')
-    expect(text).toContain('|sample total − site mean| > 2 × site population SD')
+    expect(text).toContain('|sample total − site mean| > 2 × site cohort SD')
     expect(text).toContain('sorts samples by descending count, not fraction')
-    expect(text).toContain('focal sample is included in the site mean and population SD')
+    expect(text).toContain('focal sample is included in the site mean and cohort SD')
     expect(text).toContain('denominators can vary with sample missingness')
     expect(text).toContain('This legacy ranking is not METAFORA')
   })
@@ -125,6 +125,15 @@ describe('MethylationHelp', () => {
     expect(perCopyText).toContain('Missing, unavailable, and complete requests with no CpGs')
     expect(perCopyText).toContain('not independent scientific lineage validation')
     expect(perCopyText).toContain('AVAILABLE_CONFIRMED')
+  })
+
+  test('uses cohort terminology while retaining the cited publication title', () => {
+    const text = renderedText(renderer.create(<MethylationHelp />).toJSON())
+
+    expect(text).toContain('Cohort estimator and composition')
+    expect(text).toContain('cohort sample-total summaries')
+    expect(text).not.toContain('Population estimator')
+    expect(text).not.toContain('Population site')
   })
 
   test('cites the METAFORA medRxiv preprint and its review status', () => {

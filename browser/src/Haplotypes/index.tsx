@@ -26,6 +26,10 @@ import {
 import { SUPERPOPULATION_COLORS } from './colors'
 import { ALLELE_TYPE_COLORS, VARIANT_CATEGORY_COLORS, type VariantCategory } from '../LongReadVariantPage/variantUtils'
 import { COLOR_MODES, getVariantCssColor } from '../LongReadVariantPage/variantColorUtils'
+import {
+  LONG_READ_ANCESTRY_GROUP_LEGEND_IDS,
+  longReadAncestryGroupDisplayId,
+} from '../LongReadVariantPage/longReadAncestryGroups'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
 import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle, HAPLOTYPE_VIEWPORT_HEIGHT } from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
@@ -556,11 +560,11 @@ export const Legend = ({
               ))}
             </LegendRow>
             <LegendRow>
-              <span style={{ fontWeight: 600, color: '#555' }}>Populations:</span>
-              {Object.entries(SUPERPOPULATION_COLORS).map(([pop, color]) => (
-                <span key={pop} style={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
-                  <svg width={8} height={8}><rect width={8} height={8} fill={color} rx={1} /></svg>
-                  {pop}
+              <span style={{ fontWeight: 600, color: '#555' }}>Genetic ancestry groups:</span>
+              {LONG_READ_ANCESTRY_GROUP_LEGEND_IDS.map((groupId) => (
+                <span key={groupId} style={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
+                  <svg width={8} height={8}><rect width={8} height={8} fill={SUPERPOPULATION_COLORS[groupId]} rx={1} /></svg>
+                  {groupId}
                 </span>
               ))}
             </LegendRow>
@@ -968,7 +972,7 @@ const HaplotypeGroupTooltip = ({ group, sampleMetadata }: { group: HaplotypeGrou
       </div>
       {subpopBreakdown && (
         <div style={{ marginTop: '4px' }}>
-          <dt style={{ display: 'block', marginBottom: '2px' }}>Population breakdown:</dt>
+          <dt style={{ display: 'block', marginBottom: '2px' }}>Genetic ancestry group breakdown:</dt>
           <dd style={{ marginLeft: 0 }}>
             {subpopBreakdown.map(({ sub, sup, count }) => (
               <div key={sub} style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '1px' }}>
@@ -976,7 +980,7 @@ const HaplotypeGroupTooltip = ({ group, sampleMetadata }: { group: HaplotypeGrou
                   display: 'inline-block', width: 8, height: 8, borderRadius: 2,
                   background: SUPERPOPULATION_COLORS[sup] || SUPERPOPULATION_COLORS['N/A'],
                 }} />
-                <span style={{ fontSize: '11px' }}>{sub} ({sup}): {count}</span>
+                <span style={{ fontSize: '11px' }}>{longReadAncestryGroupDisplayId(sub)} ({longReadAncestryGroupDisplayId(sup)}): {count}</span>
               </div>
             ))}
           </dd>
@@ -1017,10 +1021,12 @@ const getDominantPop = (composition: Record<string, number>): string => {
   return maxPop
 }
 
-/** Population AF mini bar chart for variant tooltip */
+/** Genetic ancestry group AF mini bar chart for variant tooltip. */
 const PopulationAfBars = ({ variant }: { variant: LRVariant }) => {
   const pops = (variant.populations || []).map((p) => ({
-    key: p.id.toUpperCase() === 'NFE' ? 'EUR' : p.id.toUpperCase(),
+    key: p.id,
+    colorKey: p.id.toUpperCase() === 'NFE' ? 'EUR' : p.id.toUpperCase(),
+    displayId: longReadAncestryGroupDisplayId(p.id),
     value: p.af,
   }))
 
@@ -1032,7 +1038,7 @@ const PopulationAfBars = ({ variant }: { variant: LRVariant }) => {
 
   return (
     <div style={{ marginTop: '4px' }}>
-      <dt style={{ fontWeight: 'bold', marginBottom: '2px' }}>Population AFs:</dt>
+      <dt style={{ fontWeight: 'bold', marginBottom: '2px' }}>Genetic ancestry group AFs:</dt>
       {isHighlyDifferentiated && (
         <span style={{
           display: 'inline-block',
@@ -1046,9 +1052,9 @@ const PopulationAfBars = ({ variant }: { variant: LRVariant }) => {
       )}
       {pops.map((p) => (
         <div key={p.key} style={{ display: 'flex', alignItems: 'center', marginBottom: '1px' }}>
-          <span style={{ width: '28px', fontSize: '9px', fontWeight: 'bold', color: SUPERPOPULATION_COLORS[p.key] }}>{p.key}</span>
+          <span style={{ width: '28px', fontSize: '9px', fontWeight: 'bold', color: SUPERPOPULATION_COLORS[p.colorKey] }}>{p.displayId}</span>
           <div style={{ width: '80px', height: '8px', background: '#eee', marginRight: '4px' }}>
-            <div style={{ width: `${(p.value / maxAf) * 100}%`, height: '100%', background: SUPERPOPULATION_COLORS[p.key] }} />
+            <div style={{ width: `${(p.value / maxAf) * 100}%`, height: '100%', background: SUPERPOPULATION_COLORS[p.colorKey] }} />
           </div>
           <span style={{ fontSize: '9px' }}>{p.value.toFixed(4)}</span>
         </div>
@@ -1220,7 +1226,7 @@ const LollipopHelp = () => (
 
     <h4>Optional Overlays</h4>
     <ul>
-      <li><strong>Methylation context</strong> — When enabled, population, loaded sample-total, and valid Copy A/B layers can show individual CpG sites, temporary visual CpG groups, or both using shared boundaries. Read depth and represented CpGs describe display support.</li>
+      <li><strong>Methylation context</strong> — When enabled, cohort, loaded sample-total, and valid Copy A/B layers can show individual CpG sites, temporary visual CpG groups, or both using shared boundaries. Read depth and represented CpGs describe display support.</li>
       <li><strong>mQTLs</strong> — When computed, arc connections show variant-CpG associations. Arc height encodes statistical significance (-log₁₀ p). Red arcs = positive effect, blue = negative.</li>
     </ul>
 
@@ -1476,9 +1482,9 @@ const GenealogyHelp = () => (
       </ul>
     </p>
     <p>
-      <strong>Ancestry pies:</strong> Each compact tree node shows the superpopulation
-      composition of the samples represented below it, using the standard gnomAD population
-      colors. Leaf pies count samples in that haplotype group; internal pies combine descendant
+      <strong>Ancestry pies:</strong> Each compact tree node shows the genetic ancestry group
+      composition of the samples represented below it, using the standard gnomAD genetic ancestry
+      group colors. Leaf pies count samples in that haplotype group; internal pies combine descendant
       sample counts (so larger groups have proportionally more weight). Gray indicates unknown
       or unavailable metadata. Hover a node for counts and percentages.
     </p>
@@ -1501,7 +1507,7 @@ export const GroupingModeHelp = () => (
         is cut &mdash; lower values produce fewer, larger clusters; higher values produce more,
         finer-grained clusters. The underlying AF threshold controls which variant dots are displayed
         &mdash; the tree and clusters remain stable. This is the recommended mode for exploring
-        population-level haplotype structure.
+        haplotype structure across genetic ancestry groups.
       </dd>
       <dt style={{ fontWeight: 600, marginTop: 4 }}>Diploid</dt>
       <dd style={{ marginLeft: 0, marginBottom: 8 }}>
@@ -2527,7 +2533,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
                   legend="Cluster methylation:"
                   ariaLabel="Cluster methylation view"
                 />
-                <span>Purple: cluster copies · gray: population mean</span>
+                <span>Purple: cluster copies · gray: cohort mean</span>
               </ClusterMethylationControls>
             )}
 

@@ -7,6 +7,7 @@ import ControlSection from '../VariantPage/ControlSection'
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   AlleleSizeDistributionCohort,
   ColorBy,
+  PopulationDisplayConfig,
   ScaleType,
 } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import ShortTandemRepeatGenotypeDistributionPlot from '../ShortTandemRepeatPage/ShortTandemRepeatGenotypeDistributionPlot'
@@ -22,6 +23,7 @@ import {
 import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
 import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
+import { longReadAncestryGroupDisplayName } from './longReadAncestryGroups'
 
 export type GenotypeDistributionCohort = {
   ancestry_group: string
@@ -37,10 +39,22 @@ export type GenotypeDistributionCohort = {
 
 type HeadingLevel = 'h2' | 'h3' | 'h4'
 
-const colorByFn: ColorByFn<AlleleSizeDistributionCohort> = (cohort, colorBy) => {
+export const longReadAlleleSizeColorBy: ColorByFn<AlleleSizeDistributionCohort> = (
+  cohort,
+  colorBy
+) => {
   if (colorBy === 'sex') return cohort.sex
   if (colorBy === 'population') return cohort.ancestry_group
   return null
+}
+
+// Raw ancestry IDs remain the plot's data/filter keys. This adapter only adds
+// LR-specific labels and colors so both legacy `oth` and current `rmi` display
+// as Remaining individuals without changing shared short-read semantics.
+export const longReadPopulationDisplayConfig: PopulationDisplayConfig = {
+  additionalLegendKeys: ['rmi'],
+  labels: { oth: 'Remaining individuals', rmi: 'Remaining individuals' },
+  colors: { oth: '#ABB8B9', rmi: '#ABB8B9' },
 }
 
 export const LongReadAlleleSizeDistributionSection = ({
@@ -86,7 +100,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           maxRepeats={maxRepunits}
           alleleSizeDistribution={consolidateAlleleSizeDistributions(
             alleleSizeDistribution,
-            colorByFn,
+            longReadAlleleSizeColorBy,
             selectedPopulation,
             selectedSex,
             selectedColorBy,
@@ -97,6 +111,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           repeatUnitLength={null}
           repeatUnit={repeatUnit}
           scaleType={selectedScaleType}
+          populationDisplayConfig={longReadPopulationDisplayConfig}
         />
       </div>
       <ControlSection
@@ -119,6 +134,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           selectedSex={selectedSex}
           setSelectedPopulation={setSelectedPopulation}
           setSelectedSex={setSelectedSex}
+          ancestryGroupName={longReadAncestryGroupDisplayName}
         />
         <ShortTandemRepeatColorBySelect
           id={`${variantId}-color-by`}
@@ -227,6 +243,7 @@ export const LongReadGenotypeDistributionSection = ({
           selectedSex={selectedSex}
           setSelectedPopulation={setSelectedPopulation}
           setSelectedSex={setSelectedSex}
+          ancestryGroupName={longReadAncestryGroupDisplayName}
         />
       </ControlSection>
     </>

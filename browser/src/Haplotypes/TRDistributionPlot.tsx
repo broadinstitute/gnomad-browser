@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react'
 
+import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import { SUPERPOPULATION_COLORS } from './colors'
 
 export type TrDataPoint = { length_diff: number; pop: string; count: number }
 
-export const POP_ORDER = ['AFR', 'AMR', 'ASJ', 'EAS', 'EUR', 'SAS', 'N/A']
+export const POP_ORDER = ['AFR', 'AMR', 'ASJ', 'EAS', 'EUR', 'SAS', 'RMI', 'OTH', 'N/A']
 
 const PLOT_MARGIN = { top: 8, right: 8, bottom: 20, left: 32 }
 
@@ -209,7 +210,7 @@ const TRDistributionPlot = ({
                 .filter(([, count]) => count > 0)
                 .map(([pop, count]) => (
                   <div key={pop}>
-                    {pop}: {count}
+                    {longReadAncestryGroupDisplayId(pop)}: {count}
                   </div>
                 ))}
               <div style={{ marginTop: 2, color: '#666' }}>Total: {datum.total}</div>

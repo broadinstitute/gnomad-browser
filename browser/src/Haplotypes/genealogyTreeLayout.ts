@@ -1,4 +1,5 @@
 import { scaleLinear } from 'd3-scale'
+import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import { SUPERPOPULATION_COLORS } from './colors'
 import type { TreeNode } from './genealogy-math'
 import type { HaplotypeGroup, HaplotypeCluster } from './index'
@@ -81,7 +82,7 @@ function hexToRgba(hex: string, alpha = 255): [number, number, number, number] {
   return [128, 128, 128, alpha]
 }
 
-const SUPERPOPULATION_ORDER = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS', 'ASJ', 'OTH', 'N/A']
+const SUPERPOPULATION_ORDER = ['AFR', 'AMR', 'EAS', 'EUR', 'SAS', 'ASJ', 'RMI', 'OTH', 'N/A']
 
 function normalizeSuperpopulation(population: string | null | undefined): string {
   return population && SUPERPOPULATION_COLORS[population] ? population : 'N/A'
@@ -116,7 +117,7 @@ function ancestryTooltip(counts: Record<string, number>): string {
   const total = Object.values(counts).reduce((sum, count) => sum + count, 0)
   const details = ancestrySlicesFromCounts(counts)
     .filter(slice => slice.count > 0)
-    .map(slice => `${slice.population === 'N/A' ? 'Unknown/unavailable' : slice.population}: ${slice.count} (${(slice.fraction * 100).toFixed(1)}%)`)
+    .map(slice => `${slice.population === 'N/A' ? 'Unknown/unavailable' : longReadAncestryGroupDisplayId(slice.population)}: ${slice.count} (${(slice.fraction * 100).toFixed(1)}%)`)
     .join('; ')
   return total > 0
     ? `Ancestry of ${total} represented sample${total === 1 ? '' : 's'} — ${details}`

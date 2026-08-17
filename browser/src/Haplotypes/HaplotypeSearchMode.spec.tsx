@@ -134,10 +134,10 @@ describe('show only matching haplotypes mode', () => {
       />
     )
 
-    expect(screen.queryByLabelText('Population methylation context')).toBeNull()
+    expect(screen.queryByLabelText('Cohort methylation context')).toBeNull()
     expect(screen.getByLabelText('Cluster methylation view')).not.toBeNull()
     expect((screen.getByRole('radio', { name: controlLabel }) as HTMLInputElement).checked).toBe(true)
-    expect(screen.getByText('Purple: cluster copies · gray: population mean')).not.toBeNull()
+    expect(screen.getByText('Purple: cluster copies · gray: cohort mean')).not.toBeNull()
     expect(screen.getByLabelText('cluster methylation display contract').textContent).toBe(
       `${mode}:1:100=40,110=60:110=60/5`
     )

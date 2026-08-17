@@ -20,7 +20,7 @@ const LongReadViewHelpButton = () => (
       Shows phased haplotype data from 292 long-read sequenced samples. Where Summary View treats
       each variant independently, Haplotype View reveals how variants are physically linked on the
       same chromosome &mdash; which variants co-occur, which are mutually exclusive, and how
-      haplotype diversity is structured across populations.
+      haplotype diversity is structured across genetic ancestry groups.
     </p>
 
     <h4 style={{ margin: '16px 0 8px', fontSize: '13px', color: '#555' }}>Cohort availability</h4>
@@ -67,12 +67,11 @@ const LongReadViewHelpButton = () => (
     </h4>
     <p>
       Summary View answers &ldquo;what variants are here and how common are they?&rdquo; Haplotype
-      View answers &ldquo;how do these variants travel together, and which population-specific
-      haplotype structures exist?&rdquo; Clicking a variant in the table scrolls the haplotype track
-      to that position, and clicking a haplotype cluster filters the table to its variants &mdash;
-      the two views are cross-linked.
+      View answers &ldquo;how do these variants travel together, and how do observed haplotype
+      structures vary across genetic ancestry groups?&rdquo; Clicking a variant in the table scrolls
+      the haplotype track to that position, and clicking a haplotype cluster filters the table to
+      its variants &mdash; the two views are cross-linked.
     </p>
-
   </HaplotypeHelpButton>
 )
 

@@ -70,6 +70,8 @@ const POPULATION_LABELS: Record<string, string> = {
   asj: 'ASJ',
   eas: 'EAS',
   nfe: 'EUR',
+  oth: 'RMI',
+  rmi: 'RMI',
   sas: 'SAS',
 }
 

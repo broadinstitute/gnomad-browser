@@ -75,8 +75,8 @@ export const AlleleStructureHelp = ({
       </li>
       <li>
         <strong>Assigned copies</strong> — deterministically haplotype-assigned ALT copies with this
-        exact structure, with a population-colored bar. Percentages use only the exact assigned
-        copies displayed in this grid.
+        exact structure, with a bar colored by genetic ancestry group. Percentages use only the
+        exact assigned copies displayed in this grid.
       </li>
     </ul>
 

@@ -36,6 +36,7 @@ import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import { useStableScrollbarGutter } from './scrollbarGutter'
 import { SEARCHED_POSITION_GUIDE_STYLE } from './searchedPositionGuideStyle'
+import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSearchFiltering'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
@@ -1012,6 +1013,7 @@ function DeckGLLollipopCanvas({
               group.samples
                 .map(s => sampleMetadata.get(s.sample_id)?.subpopulation)
                 .filter((sp): sp is string => !!sp && sp !== 'N/A')
+                .map(longReadAncestryGroupDisplayId)
             )
           )
           if (subpops.length > 0) {
@@ -1023,7 +1025,7 @@ function DeckGLLollipopCanvas({
               text: subpopLabel,
               color: [110, 110, 110, 255],
               size: 9,
-              tooltipText: `Subpopulation: ${subpops.join(', ')}`,
+              tooltipText: `Genetic ancestry subgroup: ${subpops.join(', ')}`,
             })
           }
         }
@@ -3103,7 +3105,7 @@ function Tooltip({
           {' '}≥{clusterGroup.minimumMeasuredCopyCount}/{clusterGroup.availableCopyCount} available copies;
           {' '}{clusterGroup.measuredIndividualCount} individuals; {clusterGroup.medianDepth.toFixed(1)}× median depth
         </div>
-        <div><strong>Population:</strong> {clusterGroup.populationMean.toFixed(1)}%</div>
+        <div><strong>Cohort:</strong> {clusterGroup.populationMean.toFixed(1)}%</div>
       </div>
     )
   }
@@ -3123,7 +3125,7 @@ function Tooltip({
           {' '}{clusterSite.measuredIndividualCount} individuals; {clusterSite.medianDepth.toFixed(1)}× median depth
         </div>
         <div>
-          <strong>Population:</strong>{' '}
+          <strong>Cohort:</strong>{' '}
           {clusterSite.populationMean === null ? 'Unavailable' : `${clusterSite.populationMean.toFixed(1)}%`}
         </div>
       </div>

@@ -15,7 +15,7 @@ const examples = [
       {
         title: 'ATXN10 repeat locus',
         description:
-          'Repeat expansion archetype: inspect population repeat alleles and their surrounding haplotypes. The loaded callset includes the ATXN10 TRV at chr22:45,729,580.',
+          'Repeat expansion archetype: inspect repeat alleles across genetic ancestry groups and their surrounding haplotypes. The loaded callset includes the ATXN10 TRV at chr22:45,729,580.',
         evidence: '60 kb · 954 sites · 344 TR alleles',
         region: '22-45700000-45760000',
       },
@@ -106,7 +106,7 @@ const examples = [
       {
         title: 'Repeat and large-SV hotspot at 38.1 Mb',
         description:
-          'A mixed window for examining whether long repeat alleles and large structural calls co-segregate on a limited set of population haplotypes.',
+          'A mixed window for examining whether long repeat alleles and large structural calls co-segregate on haplotypes observed across a limited set of genetic ancestry groups.',
         evidence: '100 kb · 2,102 sites · 1,422 TR alleles · 570 alleles ≥1 kb',
         region: '22-38100000-38200000',
       },
@@ -190,8 +190,8 @@ const LongReadExamples22Page = () => (
       ClickHouse queries of variants and the separate methylation prototype.
     </p>
     <p>
-      These are exploratory population-reference views, not pathogenic examples. Recurrence can
-      provide context for a patient finding, but this page does not establish disease association or
+      These are exploratory reference-cohort views, not pathogenic examples. Recurrence can provide
+      context for a patient finding, but this page does not establish disease association or
       clinical thresholds. Methylation is context-dependent, and the prototype signals below need
       biological validation before interpretation.
     </p>

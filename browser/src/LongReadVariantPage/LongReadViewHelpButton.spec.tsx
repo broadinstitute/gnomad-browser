@@ -14,6 +14,11 @@ describe('LongReadViewHelpButton', () => {
     const dialog = screen.getByRole('dialog', { name: 'Long Read Data Views' })
     expect(dialog).not.toBeNull()
     expect(dialog.textContent).not.toMatch(/limited to regions under/i)
+    expect(dialog.textContent).toContain(
+      'observed haplotype structures vary across genetic ancestry groups'
+    )
+    expect(dialog.textContent).not.toContain('specific to genetic ancestry groups')
+    expect(dialog.textContent).not.toMatch(/\bpopulations?\b/i)
     expect(screen.getByText(AOU_SUMMARY_ONLY_MESSAGE)).not.toBeNull()
   })
 })

@@ -20,7 +20,7 @@ export const classifyPopulationSupport = (
   if (!finite(point.mean_methylation)) {
     return {
       state: 'missing',
-      reasons: ['Population mean is unavailable; it is not displayed as zero.'],
+      reasons: ['Cohort mean is unavailable; it is not displayed as zero.'],
     }
   }
 

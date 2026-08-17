@@ -140,7 +140,7 @@ export const MethylationEvidenceCard = ({
         <dd>{region}</dd>
         <dt>View object</dt>
         <dd>{group ? `visual CpG group · ${group.siteCount} CpGs` : 'CpG site'}</dd>
-        <dt>Population mean</dt>
+        <dt>Cohort mean</dt>
         <dd>
           {group
             ? `median ${percent(group.medianPopulationMean)}`
@@ -232,14 +232,14 @@ export const MethylationEvidenceCard = ({
         )}
         <dt>Source</dt>
         <dd>
-          gnomAD-LR population summaries for the current cohort, run, and assembly; see Methylation
+          gnomAD-LR cohort summaries for the current cohort, run, and assembly; see Methylation
           context help for methods and provenance.
         </dd>
       </dl>
       <p>
-        Population variation or a Copy A/B difference does not establish functional effect,
-        imprinting, pathogenicity, or diagnosis. Visual groups are display aids, not biological
-        events. Loaded sample-total and Copy A/B summaries use the same population boundaries; their
+        Cohort variation or a Copy A/B difference does not establish functional effect, imprinting,
+        pathogenicity, or diagnosis. Visual groups are display aids, not biological events. Loaded
+        sample-total and Copy A/B summaries use the same cohort-derived boundaries; their
         coverage-weighted percentages are browser display summaries, not event calls.
       </p>
       {group && (
@@ -259,7 +259,7 @@ export const MethylationEvidenceCard = ({
       {showSites && (
         <div className="table-scroll">
           <table>
-            <caption>Constituent CpG-site evidence (population summary)</caption>
+            <caption>Constituent CpG-site evidence (cohort summary)</caption>
             <thead>
               <tr>
                 <th>Coordinate</th>

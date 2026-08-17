@@ -54,10 +54,9 @@ describe('TR locus aggregation', () => {
   })
 
   test('does not merge the same source ID across cohort scopes', () => {
-    expect(aggregateTrLoci([
-      allele({ lr_cohort: 'hgsvc_hprc' }),
-      allele({ lr_cohort: 'aou' }),
-    ])).toHaveLength(2)
+    expect(
+      aggregateTrLoci([allele({ lr_cohort: 'hgsvc_hprc' }), allele({ lr_cohort: 'aou' })])
+    ).toHaveLength(2)
   })
 
   test('uses exact coordinates as the documented fallback identity', () => {
@@ -93,7 +92,10 @@ describe('TR locus aggregation', () => {
         allele_length: -3,
         freq: {
           all: { af: 0.1, ac: 10 },
-          populations: [{ id: 'afr', ac: 4 }, { id: 'nfe', ac: 6 }],
+          populations: [
+            { id: 'afr', ac: 4 },
+            { id: 'nfe', ac: 6 },
+          ],
         },
       }),
       allele({
@@ -101,7 +103,10 @@ describe('TR locus aggregation', () => {
         allele_length: 5,
         freq: {
           all: { af: 0.2, ac: 8 },
-          populations: [{ id: 'afr', ac: 3 }, { id: 'nfe', ac: 5 }],
+          populations: [
+            { id: 'afr', ac: 3 },
+            { id: 'nfe', ac: 5 },
+          ],
         },
       }),
     ]
@@ -114,22 +119,63 @@ describe('TR locus aggregation', () => {
     ])
   })
 
+  test('maps raw rmi counts to RMI alongside other ancestry groups', () => {
+    expect(
+      getTrLocusDistribution([
+        allele({
+          allele_length: 3,
+          freq: {
+            all: { af: 0.1, ac: 9 },
+            populations: [
+              { id: 'afr', ac: 4 },
+              { id: 'rmi', ac: 5 },
+            ],
+          },
+        }),
+      ])
+    ).toEqual([
+      { length_diff: 3, pop: 'AFR', count: 4 },
+      { length_diff: 3, pop: 'RMI', count: 5 },
+    ])
+  })
+
+  test.each(['oth', 'rmi'])(
+    'maps RMI-only raw %s to RMI instead of falling back to cohort N/A',
+    (rawId) => {
+      expect(
+        getTrLocusDistribution([
+          allele({
+            allele_length: -4,
+            freq: {
+              all: { af: 0.1, ac: 7 },
+              populations: [{ id: rawId, ac: 7 }],
+            },
+          }),
+        ])
+      ).toEqual([{ length_diff: -4, pop: 'RMI', count: 7 }])
+    }
+  )
+
   test('uses cohort AC only when population ACs are unavailable', () => {
-    expect(getTrLocusDistribution([
-      allele({ allele_length: 2, freq: { all: { af: 0.1, ac: 7 }, populations: [] } }),
-    ])).toEqual([{ length_diff: 2, pop: 'N/A', count: 7 }])
+    expect(
+      getTrLocusDistribution([
+        allele({ allele_length: 2, freq: { all: { af: 0.1, ac: 7 }, populations: [] } }),
+      ])
+    ).toEqual([{ length_diff: 2, pop: 'N/A', count: 7 }])
   })
 
   test('does not fabricate bins from missing lengths or counts', () => {
-    expect(getTrLocusDistribution([
-      allele({ allele_length: null, freq: { all: { af: 0.1, ac: 7 } } }),
-      allele({ variant_id: 'missing-count', allele_length: 4, freq: { all: { af: 0.1 } } }),
-      allele({
-        variant_id: 'missing-pop-count',
-        allele_length: 8,
-        freq: { all: { af: 0.1 }, populations: [{ id: 'afr', ac: null }] },
-      }),
-    ])).toEqual([])
+    expect(
+      getTrLocusDistribution([
+        allele({ allele_length: null, freq: { all: { af: 0.1, ac: 7 } } }),
+        allele({ variant_id: 'missing-count', allele_length: 4, freq: { all: { af: 0.1 } } }),
+        allele({
+          variant_id: 'missing-pop-count',
+          allele_length: 8,
+          freq: { all: { af: 0.1 }, populations: [{ id: 'afr', ac: null }] },
+        }),
+      ])
+    ).toEqual([])
   })
 
   test('leaves unavailable lengths and frequencies unavailable', () => {

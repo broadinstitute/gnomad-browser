@@ -33,7 +33,9 @@ export const SUPERPOPULATION_COLORS: Record<string, string> = {
   EUR: '#6AA6CE',
   SAS: '#FE9A10',
   ASJ: '#FF7E4F',
+  // OTH is retained as a raw-data lookup alias; LR displays both OTH and RMI as RMI.
   OTH: '#ABB8B9',
+  RMI: '#ABB8B9',
   'N/A': '#9E9E9E',
 }
 

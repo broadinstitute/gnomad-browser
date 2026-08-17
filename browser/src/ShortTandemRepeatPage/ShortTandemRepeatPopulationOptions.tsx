@@ -31,6 +31,7 @@ type Props = {
   selectedSex: Sex | null
   setSelectedPopulation: Dispatch<SetStateAction<PopulationId | null>>
   setSelectedSex: Dispatch<SetStateAction<Sex | null>>
+  ancestryGroupName?: (id: PopulationId) => string
 }
 
 const ShortTandemRepeatPopulationOptions = ({
@@ -40,9 +41,10 @@ const ShortTandemRepeatPopulationOptions = ({
   selectedSex,
   setSelectedPopulation,
   setSelectedSex,
+  ancestryGroupName = (group) => GNOMAD_POPULATION_NAMES[group],
 }: Props) => {
-  const populationsSortedByName = populations.sort((group1, group2) =>
-    GNOMAD_POPULATION_NAMES[group1].localeCompare(GNOMAD_POPULATION_NAMES[group2])
+  const populationsSortedByName = [...populations].sort((group1, group2) =>
+    ancestryGroupName(group1).localeCompare(ancestryGroupName(group2))
   )
 
   return (
@@ -59,7 +61,7 @@ const ShortTandemRepeatPopulationOptions = ({
           <option value="">Global</option>
           {populationsSortedByName.map((population) => (
             <option key={population} value={population}>
-              {GNOMAD_POPULATION_NAMES[population]}
+              {ancestryGroupName(population)}
             </option>
           ))}
         </Select>

@@ -117,9 +117,6 @@ const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
 
 const legendLabel = (colorBy: ColorBy, key: string) => fixedLegendLabels[colorBy]?.[key] || key
 
-const legendLabels = (colorBy: ColorBy, keys: string[]) =>
-  keys.map((key) => legendLabel(colorBy, key))
-
 const colorForValue = (colorBy: ColorBy | null, value: string) =>
   (colorBy && colorMap[colorBy]?.[value]) || defaultColor
 const tickFormat = (n: number) => {
@@ -142,6 +139,12 @@ const labelProps = {
 
 type Range = { start: number; stop: number; label: string }
 
+export type PopulationDisplayConfig = {
+  additionalLegendKeys?: string[]
+  labels?: Record<string, string>
+  colors?: Record<string, string>
+}
+
 type Props = {
   maxRepeats: number
   alleleSizeDistribution: AlleleSizeDistributionItem[]
@@ -150,6 +153,7 @@ type Props = {
   repeatUnit?: string
   scaleType: ScaleType
   ranges?: Range[]
+  populationDisplayConfig?: PopulationDisplayConfig
   size: { width: number }
 }
 
@@ -169,14 +173,44 @@ const legendKeys: Record<ColorBy, string[]> = {
   ),
 }
 
-const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | null }) => {
+const displayKeys = (
+  colorBy: ColorBy,
+  populationDisplayConfig?: PopulationDisplayConfig
+): string[] =>
+  colorBy === 'population'
+    ? [...legendKeys.population, ...(populationDisplayConfig?.additionalLegendKeys || [])]
+    : legendKeys[colorBy]
+
+const displayLabel = (
+  colorBy: ColorBy,
+  key: string,
+  populationDisplayConfig?: PopulationDisplayConfig
+) =>
+  (colorBy === 'population' && populationDisplayConfig?.labels?.[key]) || legendLabel(colorBy, key)
+
+const displayColor = (
+  colorBy: ColorBy,
+  key: string,
+  populationDisplayConfig?: PopulationDisplayConfig
+) =>
+  (colorBy === 'population' && populationDisplayConfig?.colors?.[key]) ||
+  colorMap[colorBy][key] ||
+  defaultColor
+
+const LegendFromColorBy = ({
+  colorBy,
+  populationDisplayConfig,
+}: {
+  colorBy: ColorBy | null
+  populationDisplayConfig?: PopulationDisplayConfig
+}) => {
   if (colorBy === null) {
     return null
   }
 
-  const keys = legendKeys[colorBy]
-  const labels = legendLabels(colorBy, [...keys])
-  const colors = keys.map((key) => colorMap[colorBy][key])
+  const keys = displayKeys(colorBy, populationDisplayConfig)
+  const labels = keys.map((key) => displayLabel(colorBy, key, populationDisplayConfig))
+  const colors = keys.map((key) => displayColor(colorBy, key, populationDisplayConfig))
   const scale = scaleOrdinal().domain(labels).range(colors)
   return (
     <LegendOrdinal
@@ -188,12 +222,19 @@ const LegendFromColorBy = ({ colorBy }: { colorBy: ColorBy | null }) => {
   )
 }
 
-const tooltipContent = (data: Bin, colorBy: ColorBy | null, key: ColorByValue | ''): string => {
+const tooltipContent = (
+  data: Bin,
+  colorBy: ColorBy | null,
+  key: ColorByValue | '',
+  populationDisplayConfig?: PopulationDisplayConfig
+): string => {
   const repeatText = data.label === '1' ? '1 repeat' : `${data.label} repeats`
   const alleles = data[key] || 0
   const alleleText = alleles === 1 ? '1 allele' : `${alleles} alleles`
   const colorByText =
-    colorBy === null ? '' : `, ${colorByLabels[colorBy]} is ${legendLabel(colorBy, key)}`
+    colorBy === null
+      ? ''
+      : `, ${colorByLabels[colorBy]} is ${displayLabel(colorBy, key, populationDisplayConfig)}`
   return `${repeatText}${colorByText}: ${alleleText}`
 }
 
@@ -207,6 +248,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     size: { width },
     scaleType = 'linear',
     ranges = [],
+    populationDisplayConfig,
   }: Props) => {
     const height = 300
 
@@ -254,10 +296,10 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       const presentKeys: Record<string, boolean> = data
         .flatMap((bin) => Object.keys(bin))
         .reduce((acc, key) => ({ ...acc, [key]: true }), {})
-      const allKeys = colorBy ? legendKeys[colorBy] : ['']
+      const allKeys = colorBy ? displayKeys(colorBy, populationDisplayConfig) : ['']
       const keysInLegendOrder = allKeys.filter((key) => presentKeys[key])
       return keysInLegendOrder
-    }, [data, colorBy])
+    }, [data, colorBy, populationDisplayConfig])
     // maps binIndex and colorByValue to a y and y start
 
     const xScale = scaleBand<number>()
@@ -304,7 +346,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
     return (
       <GraphWrapper>
-        <LegendFromColorBy colorBy={colorBy} />
+        <LegendFromColorBy colorBy={colorBy} populationDisplayConfig={populationDisplayConfig} />
         <svg height={binSize === 1 ? height - 20 : height} width={width}>
           <AxisBottom
             label={repeatUnit ? `Repeats of ${repeatUnit}` : 'Repeats'}
@@ -381,7 +423,11 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
               xScale={xScale}
               yScale={yScale}
               stroke="black"
-              color={(key) => colorForValue(colorBy, key.toString())}
+              color={(key) =>
+                colorBy
+                  ? displayColor(colorBy, key.toString(), populationDisplayConfig)
+                  : colorForValue(null, key.toString())
+              }
               x={(bin) => bin.index}
               y0={(point) => point[0] || 0}
               y1={(point) => point[1] || 0}
@@ -392,7 +438,8 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
                     const tooltip = tooltipContent(
                       bar.bar.data,
                       colorBy,
-                      bar.key as ColorByValue | ''
+                      bar.key as ColorByValue | '',
+                      populationDisplayConfig
                     )
                     return (
                       <React.Fragment key={`bar-stack-${bar.x}-${bar.y}`}>

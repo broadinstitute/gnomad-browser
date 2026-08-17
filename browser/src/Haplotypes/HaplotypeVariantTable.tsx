@@ -27,6 +27,7 @@ import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadV
 import { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import ExpandedTrDistributions from './ExpandedTrDistributions'
 import {
   matchesLongReadVariantSearch,
@@ -653,7 +654,7 @@ const TableRow = React.memo(function TableRow({
                             background: SUPERPOPULATION_COLORS[pop] || '#999',
                           }}
                         />
-                        {pop}
+                        {longReadAncestryGroupDisplayId(pop)}
                       </span>
                     ))}
                   </div>

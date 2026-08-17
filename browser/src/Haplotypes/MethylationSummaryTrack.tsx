@@ -357,7 +357,7 @@ export const MethylationSummaryTrack = ({
   }
 
   return (
-    <Container ref={containerRef} aria-label="Population methylation context">
+    <Container ref={containerRef} aria-label="Cohort methylation context">
       <MethylationViewControls value={viewMode} onChange={setViewMode} />
       {groups.length === 0 && groupOutputLimitExceeded && (
         <p style={{ margin: '0 12px 8px', fontSize: 11, color: '#555' }}>
@@ -372,7 +372,7 @@ export const MethylationSummaryTrack = ({
             <svg width={200} height={height} aria-hidden="true">
               <g transform="translate(110, 5)">
                 <text x={-70} y={58} fontSize="9" textAnchor="middle" fill="#666">
-                  Population (%)
+                  Cohort (%)
                 </text>
                 <line x1={0} y1={0} x2={0} y2={115} stroke="black" />
                 {[0, 50, 100].map((tick) => (
@@ -402,7 +402,7 @@ export const MethylationSummaryTrack = ({
                 height={height}
                 width={width}
                 role="group"
-                aria-label={`Population methylation context. ${groups.length} visual groups. Use arrow keys to move between visible marks and Enter or Space to select.`}
+                aria-label={`Cohort methylation context. ${groups.length} visual groups. Use arrow keys to move between visible marks and Enter or Space to select.`}
               >
                 <rect width={width} height={height} fill="#fafafa" />
                 {[0, 50, 100].map((tick) => (
@@ -432,7 +432,7 @@ export const MethylationSummaryTrack = ({
                               <dd>{group.siteCount}</dd>
                             </div>
                             <div>
-                              <dt>Median population mean:</dt>
+                              <dt>Median cohort mean:</dt>
                               <dd>{group.medianPopulationMean.toFixed(1)}%</dd>
                             </div>
                             <div>
@@ -580,7 +580,7 @@ export const MethylationSummaryTrack = ({
                                 </dd>
                               </div>
                               <div>
-                                <dt>Population mean:</dt>
+                                <dt>Cohort mean:</dt>
                                 <dd>
                                   {meanAvailable
                                     ? `${site.mean_methylation.toFixed(1)}%`
@@ -588,7 +588,7 @@ export const MethylationSummaryTrack = ({
                                 </dd>
                               </div>
                               <div>
-                                <dt>Population variability (site SD):</dt>
+                                <dt>Cohort variability (site SD):</dt>
                                 <dd>
                                   {sdAvailable
                                     ? `${site.std_methylation!.toFixed(1)}%`
@@ -630,7 +630,7 @@ export const MethylationSummaryTrack = ({
                             tabIndex={markIndex === activeMarkIndex ? 0 : -1}
                             data-methylation-mark-index={markIndex}
                             data-methylation-mark-key={key}
-                            aria-label={`Select CpG site ${site.pos1}. Population mean ${
+                            aria-label={`Select CpG site ${site.pos1}. Cohort mean ${
                               meanAvailable
                                 ? `${site.mean_methylation.toFixed(1)} percent`
                                 : 'unavailable'

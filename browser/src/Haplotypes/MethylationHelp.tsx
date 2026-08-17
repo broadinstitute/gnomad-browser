@@ -201,8 +201,8 @@ export const PerCopyMethylationHelp = ({
         when search or display filters hide members. Every unique{' '}
         <code>(sample_id, vcf_strand)</code> haplotype copy receives equal weight at a CpG; depth is
         reported as evidence but does not weight a copy. A visual group reports the median and range
-        of constituent site-level equal-copy means using the Population-derived boundaries. The gray
-        mark is the cohort sample-total Population comparator, not a cluster member.
+        of constituent site-level equal-copy means using the cohort-derived boundaries. The gray
+        mark is the cohort sample-total comparator, not a cluster member.
       </p>
       <p>
         Cluster rows wait until every source-eligible member sample is complete or explicitly
@@ -240,8 +240,8 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         <h3 id="methylation-method-introduction">How to read this display</h3>
         <p>
           These tracks provide a descriptive view of observed CpG methylation in the current region.
-          They bring together Population sample-total summaries and loaded per-copy measurements so
-          that regional patterns, coverage, support, and missingness can be inspected directly.
+          They bring together cohort sample-total summaries and loaded per-copy measurements so that
+          regional patterns, coverage, support, and missingness can be inspected directly.
         </p>
         <p>
           The display is{' '}
@@ -262,7 +262,7 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         <strong>On this page</strong>
         <ul>
           <li>
-            <a href="#methylation-population">Population estimator</a>
+            <a href="#methylation-population">Cohort estimator</a>
           </li>
           <li>
             <a href="#methylation-groups">Visual grouping and view modes</a>
@@ -289,18 +289,18 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
       </Contents>
 
       <MethodSection id="methylation-population">
-        <h3>Population estimator and composition</h3>
+        <h3>Cohort estimator and composition</h3>
         <p>
-          At each CpG, Population is the arithmetic mean of the observed sample-total methylation
-          percentages. Every observed sample row has equal weight: read depth does not weight the
-          Population percentage. The number of observed samples can vary by CpG because missing rows
-          remain absent rather than becoming zero.
+          At each CpG, the cohort value is the arithmetic mean of the observed sample-total
+          methylation percentages. Every observed sample row has equal weight: read depth does not
+          weight the cohort percentage. The number of observed samples can vary by CpG because
+          missing rows remain absent rather than becoming zero.
         </p>
         <p>
           This is an unstratified all-observed-sample comparator for the displayed assay cohort. It
           has no depth weighting, depth cap, Laplace correction, covariate or batch adjustment,
           ancestry stratification, tissue-specific model, or leave-one-out calculation. The focal
-          sample, when present, contributes to its site mean and population SD.
+          sample, when present, contributes to its site mean and cohort SD.
         </p>
       </MethodSection>
 
@@ -309,9 +309,9 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         <Disclosure open>
           <summary>How visual groups are constructed</summary>
           <p>
-            The browser uses ordered Population site means from the exact requested viewport. It
-            creates hard boundaries at chromosome changes, returned records with malformed or
-            missing coordinates/means, coordinate reversals, and adjacent CpG gaps greater than{' '}
+            The browser uses ordered cohort site means from the exact requested viewport. It creates
+            hard boundaries at chromosome changes, returned records with malformed or missing
+            coordinates/means, coordinate reversals, and adjacent CpG gaps greater than{' '}
             {grouping.maximumGapBp.toLocaleString()} bp. It does not fetch padded flanks, so
             query-edge groups are not claimed to be complete.
           </p>
@@ -347,7 +347,7 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
             <tbody>
               <tr>
                 <th scope="row">CpG sites</th>
-                <td>Raw Population and lower-layer per-CpG marks; no group overlay.</td>
+                <td>Raw cohort and lower-layer per-CpG marks; no group overlay.</td>
               </tr>
               <tr>
                 <th scope="row">CpG groups</th>
@@ -380,11 +380,11 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Population</th>
+                <th scope="row">Cohort</th>
                 <td>
                   Arithmetic mean of observed sample-total percentages; equal sample-row weight.
                 </td>
-                <td>Median of constituent Population site means.</td>
+                <td>Median of constituent cohort site means.</td>
               </tr>
               <tr>
                 <th scope="row">Loaded sample totals</th>
@@ -429,7 +429,7 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Population site</th>
+                <th scope="row">Cohort site</th>
                 <td>
                   Mean read depth at least {support.minimumMeanReadDepth}× and at least{' '}
                   {support.minimumObservedSamples} observed sample totals.
@@ -439,9 +439,9 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
                 <th scope="row">Loaded sample-total group</th>
                 <td>
                   Median per-CpG depth at least {support.minimumMeanReadDepth}× and at least{' '}
-                  {support.minimumCopySiteCompleteness * 100}% of group CpGs represented. The
-                  Population {support.minimumObservedSamples}-sample check is not applied to this
-                  selected-row layer.
+                  {support.minimumCopySiteCompleteness * 100}% of group CpGs represented. The Cohort{' '}
+                  {support.minimumObservedSamples}-sample check is not applied to this selected-row
+                  layer.
                 </td>
               </tr>
               <tr>
@@ -471,11 +471,10 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         <h3>API-ranked regional deviations</h3>
         <p>
           For each sample, the API counts observed CpGs satisfying{' '}
-          <code>|sample total − site mean| &gt; 2 × site population SD</code> and sorts samples by
-          descending count, not fraction. The focal sample is included in the site mean and
-          population SD (denominator N, not uncertainty of the mean). Each sample&apos;s denominator
-          is its own number of observed joined CpGs, so denominators can vary with sample
-          missingness.
+          <code>|sample total − site mean| &gt; 2 × site cohort SD</code> and sorts samples by
+          descending count, not fraction. The focal sample is included in the site mean and cohort
+          SD (denominator N, not uncertainty of the mean). Each sample&apos;s denominator is its own
+          number of observed joined CpGs, so denominators can vary with sample missingness.
         </p>
         <p>
           Coverage does not enter the inequality. There is no depth, covariate, ancestry, segment,
@@ -501,8 +500,8 @@ const MethylationHelp = ({ availability, sourceLabel }: Props) => {
         <Disclosure>
           <summary>What loading, missing, and unavailable mean</summary>
           <p>
-            Population, sample-total, and copy rows preserve absence: missing values are never
-            filled with 0%. For a per-copy row, every requested source-eligible sample must reach a
+            Cohort, sample-total, and copy rows preserve absence: missing values are never filled
+            with 0%. For a per-copy row, every requested source-eligible sample must reach a
             terminal state before the summary is painted: complete or explicitly unavailable. A
             loading sample suppresses the row and an error remains an error. A complete request with
             no returned CpGs means “no CpGs,” which is distinct from unavailable source, loading, or
