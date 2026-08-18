@@ -72,6 +72,8 @@ export type SoAVariants = {
   freq_ac: number[]
   freq_an: number[]
   rsid: string[]
+  /** Optional while cached pre-field REST responses remain readable. */
+  major_consequence?: (string | null)[]
   cadd_phred: (number | null)[]
   phylop: (number | null)[]
   sv_consequences: (string[] | null)[]
@@ -106,6 +108,7 @@ export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
       },
       populations: soa.populations[i],
       rsid: soa.rsid[i],
+      major_consequence: soa.major_consequence?.[i] ?? null,
       cadd_phred: soa.cadd_phred[i],
       phylop: soa.phylop[i],
       sv_consequences: soa.sv_consequences[i],

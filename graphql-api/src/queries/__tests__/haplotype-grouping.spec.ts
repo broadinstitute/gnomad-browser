@@ -132,6 +132,37 @@ describe('Haplotype Grouping Algorithm', () => {
     expect(result.soa_variants.short_read_match_id).toEqual(['22-100-A-G', null])
   })
 
+  it('packs aligned consequences for annotated variants while preserving an unannotated TR', () => {
+    const variant = (
+      variantId: string, position: number, ref: string, alt: string,
+      alleleType: string, alleleLength: number, majorConsequence: string | null
+    ) => ({
+      variant_id: variantId, position,
+      reference_end: position + Math.max(0, -alleleLength),
+      ref, alt, rsid: '', info_AF: 0.1, info_AC: 1, info_AN: 10,
+      allele_type: alleleType, allele_length: alleleLength,
+      major_consequence: majorConsequence, carriers: [],
+    })
+
+    const result = buildVariantsAndCarrierMap([
+      variant('chr22-100-A-G~1', 100, 'A', 'G', 'snv', 0, 'missense_variant'),
+      variant('chr22-200-DEL-1~2', 200, 'AT', 'A', 'del', -1, 'frameshift_variant'),
+      variant('chr22-300-DUP-100~3', 300, 'N', '<DUP>', 'dup', 100, 'transcript_ablation'),
+      variant('chr22-400-TRV-2~4', 400, 'A', 'AAA', 'trv', 2, null),
+    ], 'chr22')
+
+    expect(result.soa_variants.variant_id).toEqual([
+      'chr22-100-A-G~1', 'chr22-200-DEL-1~2',
+      'chr22-300-DUP-100~3', 'chr22-400-TRV-2~4',
+    ])
+    expect(result.soa_variants.major_consequence).toEqual([
+      'missense_variant', 'frameshift_variant', 'transcript_ablation', null,
+    ])
+    expect(result.soa_variants.major_consequence).toHaveLength(
+      result.soa_variants.variant_id.length
+    )
+  })
+
   it('retains VCF strand and phase set in the assignment assembly path', () => {
     const variant = (position: number, af: number, carriers: any[]) => ({
       position, ref: 'A', alt: position === 100 ? 'G' : 'T', rsid: '',

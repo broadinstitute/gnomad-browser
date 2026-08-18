@@ -84,6 +84,40 @@ describe('rehydrateVariants', () => {
       null, null, null,
     ])
   })
+
+  test('rehydrates aligned consequences and treats a missing legacy array as null', () => {
+    const payload: SoAVariants = {
+      variant_id: ['snv~1', 'indel~2', 'sv~3', 'tr~4'],
+      chrom: ['22', '22', '22', '22'],
+      pos: [100, 101, 102, 103], end: [null, 102, 202, 110],
+      ref: ['A', 'AT', 'N', 'A'], alt: ['G', 'A', '<DUP>', 'AAA'],
+      allele_type: ['snv', 'del', 'dup', 'trv'], allele_length: [0, -1, 100, 2],
+      freq_af: [0.1, 0.2, 0.3, 0.4], freq_ac: [1, 2, 3, 4], freq_an: [10, 10, 10, 10],
+      rsid: ['', '', '', ''],
+      major_consequence: [
+        'missense_variant', 'frameshift_variant', 'transcript_ablation', null,
+      ],
+      cadd_phred: [25, 30, null, null], phylop: [7, 8, null, null],
+      sv_consequences: [null, null, ['DUP_LOF'], null],
+      dbsnp_id: [null, null, null, null], tr_id: [null, null, null, 'TRV-2'],
+      tr_motifs: [null, null, null, 'A'], gnomad_str: [null, null, null, 'A/AAA'],
+      allele_methylation: [null, null, null, 0.5],
+      motif_counts: [null, null, null, [1, 3]], allele_purity: [null, null, null, 0.95],
+      short_read_match_id: ['22-100-A-G', null, null, null], populations: [[], [], [], []],
+    }
+
+    const variants = rehydrateVariants(payload)
+    expect(variants.map((variant) => variant.variant_id)).toEqual(payload.variant_id)
+    expect(variants.map((variant) => variant.major_consequence)).toEqual([
+      'missense_variant', 'frameshift_variant', 'transcript_ablation', null,
+    ])
+
+    const legacyPayload = { ...payload }
+    delete legacyPayload.major_consequence
+    expect(rehydrateVariants(legacyPayload).map((variant) => variant.major_consequence)).toEqual([
+      null, null, null, null,
+    ])
+  })
 })
 
 const haplotypeVariant = (id: string, pos: number, af: number) => ({

@@ -661,6 +661,7 @@ export type SoAVariants = {
   freq_ac: number[]
   freq_an: number[]
   rsid: string[]
+  major_consequence: (string | null)[]
   cadd_phred: (number | null)[]
   phylop: (number | null)[]
   sv_consequences: (string[] | null)[]
@@ -690,6 +691,7 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
     freq_ac: new Array(n),
     freq_an: new Array(n),
     rsid: new Array(n),
+    major_consequence: new Array(n),
     cadd_phred: new Array(n),
     phylop: new Array(n),
     sv_consequences: new Array(n),
@@ -717,6 +719,7 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
     soa.freq_ac[i] = v.freq.ac
     soa.freq_an[i] = v.freq.an
     soa.rsid[i] = v.rsid
+    soa.major_consequence[i] = v.major_consequence
     soa.cadd_phred[i] = v.cadd_phred
     soa.phylop[i] = v.phylop
     soa.sv_consequences[i] = v.sv_consequences
