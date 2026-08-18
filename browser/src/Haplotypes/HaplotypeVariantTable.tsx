@@ -198,7 +198,7 @@ const SvCsqBadge = styled.span`
 `
 
 const formatTrLengthRange = (min: number | null | undefined, max: number | null | undefined) =>
-  min == null || max == null ? '—' : `${min}..${max}bp`
+  min == null || max == null ? '—' : `${min}..${max} bp`
 
 const renderPredictor = (value: number | null | undefined, warnThreshold: number, dangerThreshold: number) => {
   if (value == null) return <span style={{ color: '#ccc' }}>—</span>
@@ -437,6 +437,7 @@ type TableRowProps = {
   isExpanded: boolean
   mode: 'summary' | 'haplotype'
   showGroupAf: boolean
+  showGroupCount: boolean
   totalGroups: number
   totalClusters: number
   totalSamples: number
@@ -456,6 +457,7 @@ const TableRow = React.memo(function TableRow({
   isExpanded,
   mode,
   showGroupAf,
+  showGroupCount,
   totalGroups,
   totalClusters,
   totalSamples,
@@ -468,7 +470,7 @@ const TableRow = React.memo(function TableRow({
   onRowClick,
   toggleExpand,
 }: TableRowProps) {
-  const COL_COUNT = showGroupAf ? 12 : 11
+  const COL_COUNT = (showGroupAf ? 12 : 11) - (mode === 'haplotype' && !showGroupCount ? 1 : 0)
   return (
     <React.Fragment key={`${v.pos}-${v.variant_id}-${i}`}>
       <tr
@@ -511,12 +513,10 @@ const TableRow = React.memo(function TableRow({
         <td className="numeric"><span title={v.freq.af == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.af, 4)}</span></td>
         {mode === 'summary' && <td className="numeric"><span title={v.freq.ac == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.ac)}</span></td>}
         {mode === 'summary' && <td className="numeric"><span title={v.freq.an == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.an)}</span></td>}
-        {mode === 'haplotype' && (
+        {mode === 'haplotype' && showGroupCount && (
           <td className="numeric">
-            {isClusteredView && v.cluster_distribution ? (
-              <>
-                {v.active_cluster_count} / {totalClusters}
-              </>
+            {isClusteredView ? (
+              <>{v.active_cluster_count ?? 0} / {totalClusters}</>
             ) : (
               <>{v.group_count} / {totalGroups}</>
             )}
@@ -1162,6 +1162,11 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
   const totalGroups = haplotypeGroups.groups.length
   const totalClusters = haplotypeGroups.clusters?.length ?? 0
+  const isDiploidView =
+    mode === 'haplotype' &&
+    haplotypeGroups.groups.length > 0 &&
+    'is_diplotype' in haplotypeGroups.groups[0]
+  const showGroupCount = mode === 'haplotype' && !isDiploidView
   const totalSamples = useMemo(() => {
     const ids = new Set<string>()
     for (const g of haplotypeGroups.groups) {
@@ -1273,6 +1278,12 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   }))
 
   const exportCSV = () => {
+    const countHeaders = mode === 'haplotype'
+      ? [
+          ...(showGroupCount ? [isClusteredView ? 'clusters' : 'groups'] : []),
+          'carriers',
+        ]
+      : []
     const headers = [
       'variant_id',
       'chrom',
@@ -1283,8 +1294,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       'sv_type',
       'length',
       'lr_af',
-      'groups',
-      'carriers',
+      ...countHeaders,
       'sr_match',
       'rsid',
       'af_afr',
@@ -1311,8 +1321,18 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         getVariantCategory(v.allele_type, v.allele_length),
         v.allele_length,
         v.freq.af,
-        `${v.group_count}/${totalGroups}`,
-        `${v.carrier_count}/${totalSamples}`,
+        ...(mode === 'haplotype'
+          ? [
+              ...(showGroupCount
+                ? [
+                    isClusteredView
+                      ? `${v.active_cluster_count ?? 0}/${totalClusters}`
+                      : `${v.group_count}/${totalGroups}`,
+                  ]
+                : []),
+              `${v.carrier_count}/${totalSamples}`,
+            ]
+          : []),
         '',
         v.rsid,
         getPopAf(v, 'afr'),
@@ -1395,13 +1415,35 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
               <th onClick={() => handleSort('allele_type')}>Type{sortIndicator('allele_type')}</th>
               <th className="numeric" onClick={() => handleSort('allele_length')}>
                 Length{sortIndicator('allele_length')}
+                <HaplotypeHelpButton title="About Length">
+                  <p style={{ marginTop: 0 }}>
+                    For ordinary SNVs, indels, and structural variants, Length is the signed or
+                    represented allele length used by this table.
+                  </p>
+                  <p style={{ marginBottom: 0 }}>
+                    For tandem repeats (TRs), Length is the observed minimum-to-maximum signed
+                    allele length difference relative to the reference allele at the locus. For
+                    example, <strong>-13..0 bp</strong> means observed alleles range from 13 bp
+                    shorter than the reference to the reference length. Negative means shorter,
+                    zero means reference length, and positive means longer. This is ALT minus REF
+                    length, not the reference locus or base span.
+                  </p>
+                </HaplotypeHelpButton>
               </th>
               <th className="numeric" onClick={() => handleSort('freq.af')}>LR AF{sortIndicator('freq.af')}</th>
               {mode === 'summary' && <th className="numeric" onClick={() => handleSort('freq.ac')}>AC{sortIndicator('freq.ac')}</th>}
               {mode === 'summary' && <th className="numeric" onClick={() => handleSort('freq.an')}>AN{sortIndicator('freq.an')}</th>}
-              {mode === 'haplotype' && (
+              {showGroupCount && (
                 <th className="numeric" onClick={() => handleSort(isClusteredView ? 'active_cluster_count' : 'group_count')}>
-                  {isClusteredView ? 'Clusters' : 'Haplotypes'}{sortIndicator(isClusteredView ? 'active_cluster_count' : 'group_count')}
+                  {isClusteredView ? 'Clusters' : 'Groups'}{sortIndicator(isClusteredView ? 'active_cluster_count' : 'group_count')}
+                  <HaplotypeHelpButton title={`About ${isClusteredView ? 'Clusters' : 'Groups'} and Carriers`}>
+                    <p style={{ margin: 0 }}>
+                      <strong>Groups</strong> counts displayed haplotype patterns containing the
+                      variant; <strong>Clusters</strong> counts active clusters containing it.
+                      {' '}<strong>Carriers</strong> counts unique individuals containing the variant.
+                      The Groups/Clusters count is not an allele-copy or haplotype denominator.
+                    </p>
+                  </HaplotypeHelpButton>
                 </th>
               )}
               {mode === 'haplotype' && (
@@ -1465,6 +1507,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         isExpanded={isExpanded}
                         mode={mode}
                         showGroupAf={!(mode === 'summary' && lrCohort === 'aou')}
+                        showGroupCount={showGroupCount}
                         totalGroups={totalGroups}
                         totalClusters={totalClusters}
                         totalSamples={totalSamples}

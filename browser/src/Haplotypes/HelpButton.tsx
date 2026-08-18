@@ -16,6 +16,8 @@ const ModalZIndexFix = createGlobalStyle`
   }
 `
 
+const ModalEventBoundary = styled.span``
+
 const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
   align-items: center;
@@ -31,8 +33,12 @@ const Button = styled.button.attrs({ type: 'button' })`
     height: 14px;
     border-radius: 7px;
   }
-  &:hover img { opacity: 0.7; }
-  &:focus img { box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5); }
+  &:hover img {
+    opacity: 0.7;
+  }
+  &:focus img {
+    box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
+  }
 `
 
 type Props = {
@@ -44,19 +50,23 @@ const HaplotypeHelpButton = ({ title, children }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>
-      <Button aria-label={title} onClick={() => setIsOpen(true)}>
+      <Button
+        aria-label={title}
+        onClick={(event) => {
+          event.stopPropagation()
+          setIsOpen(true)
+        }}
+      >
         <img src={QuestionMarkIcon} alt="" aria-hidden="true" />
       </Button>
       {isOpen && (
-        <>
+        <ModalEventBoundary onClick={(event) => event.stopPropagation()}>
           <ModalZIndexFix />
           {/* @ts-ignore */}
           <Modal title={title} size="large" onRequestClose={() => setIsOpen(false)}>
-            <div style={{ fontSize: '14px', lineHeight: '1.6' }}>
-              {children}
-            </div>
+            <div style={{ fontSize: '14px', lineHeight: '1.6' }}>{children}</div>
           </Modal>
-        </>
+        </ModalEventBoundary>
       )}
     </>
   )
