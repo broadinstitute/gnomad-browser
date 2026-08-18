@@ -1,0 +1,55 @@
+import { parseTrLocusId } from '../../../../dataset-metadata/longReadTrLocusId'
+import { UserVisibleError } from '../../errors'
+import { fetchLongReadTrLocus, MAX_TR_LOCUS_PAGE_SIZE } from '../../queries/long_read_tr_loci'
+import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
+import {
+  exactShortTandemRepeatCatalogMatches,
+  fetchAllShortTandemRepeats,
+} from '../../queries/short-tandem-repeat-queries'
+
+const resolveLongReadTandemRepeatLocus = async (_obj: any, args: any, ctx: any) => {
+  const locus = parseTrLocusId(args.id)
+  if (!locus) throw new UserVisibleError('Invalid tandem-repeat locus ID')
+  if (!Number.isInteger(args.first) || args.first < 1 || args.first > MAX_TR_LOCUS_PAGE_SIZE) {
+    throw new UserVisibleError(`first must be between 1 and ${MAX_TR_LOCUS_PAGE_SIZE}`)
+  }
+  const source = await getY1SourceSnapshot(args.lr_cohort, locus.components[0].chrom)
+  if (!source) return null
+
+  try {
+    const result = await fetchLongReadTrLocus({
+      id: locus.canonicalId,
+      cohort: args.lr_cohort,
+      first: args.first,
+      after: args.after,
+      selectedAllele: args.allele,
+      source,
+    })
+    if (!result) return null
+    try {
+      const catalog = await fetchAllShortTandemRepeats(ctx.esClient, 'gnomad_r4')
+      return {
+        ...result,
+        short_read_matches: exactShortTandemRepeatCatalogMatches(catalog, locus.components),
+      }
+    } catch {
+      // Cross-catalog context is optional and exact-only. An unavailable catalog
+      // must never weaken locus identity or turn overlap into annotation.
+      return result
+    }
+  } catch (error) {
+    if (error instanceof Error && error.message === 'TR_LOCUS_INVARIANT') {
+      throw new UserVisibleError('Tandem-repeat locus source records violate identity invariants')
+    }
+    if (error instanceof Error && error.message === 'INVALID_TR_LOCUS_CURSOR') {
+      throw new UserVisibleError('Invalid tandem-repeat allele cursor')
+    }
+    throw error
+  }
+}
+
+export default {
+  Query: {
+    long_read_tandem_repeat_locus: resolveLongReadTandemRepeatLocus,
+  },
+}

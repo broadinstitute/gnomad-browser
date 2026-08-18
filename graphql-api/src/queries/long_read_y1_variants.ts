@@ -1,3 +1,4 @@
+import { parseTrLocusId } from '../../../dataset-metadata/longReadTrLocusId'
 import { y1ClickhouseClient } from '../clickhouse'
 import { resolveY1ReferenceEnd } from './long_read_y1_interval'
 
@@ -79,6 +80,9 @@ export const mapY1RowToGraphQL = (
             .map((motif: string) => motif.trim())
             .filter(Boolean)
         : [],
+    tr_locus_id: parseTrLocusId(row.tr_locus_id || '')?.canonicalId || null,
+    tr_locus_components: parseTrLocusId(row.tr_locus_id || '')?.components || [],
+    tr_structure: row.tr_structure || null,
     is_likely_tr: row.allele_type === 'trv',
     gnomad_str: null,
     freq: {
@@ -152,7 +156,7 @@ export const fetchY1VariantsByRegions = async (
     queryParams[`stop${index}`] = region.stop
   })
 
-  const [alleleResult, populationFrequencies] = await Promise.all([
+  const [alleleResult, populationFrequencies, summaryResult] = await Promise.all([
     y1ClickhouseClient.query({
       query: `
         SELECT chrom, position, reference_end, xpos, source_variant_id, alt_index,
@@ -171,12 +175,29 @@ export const fetchY1VariantsByRegions = async (
       format: 'JSONEachRow',
     }),
     fetchPopulationFrequencies(runId, chrom, rangeConditions, queryParams, cohort),
+    y1ClickhouseClient.query({
+      query: `
+        SELECT source_variant_id,
+          any(nullIf(JSONExtractString(source_info_json, 'TRID'), '')) AS tr_locus_id,
+          any(nullIf(JSONExtractString(source_info_json, 'MOTIFS'), '')) AS tr_motifs,
+          any(nullIf(JSONExtractString(source_info_json, 'STRUC'), '')) AS tr_structure
+        FROM lr_y1_summaries
+        WHERE run_id = {runId:String}
+          AND release = 'y1' AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
+          AND chrom = {chrom:String} AND allele_type = 'trv' AND (${rangeConditions})
+        GROUP BY source_variant_id
+      `,
+      query_params: queryParams,
+      format: 'JSONEachRow',
+    }),
   ])
 
+  const summaryRows = (await summaryResult.json()) as any[]
+  const summaries = new Map(summaryRows.map((row) => [row.source_variant_id, row]))
   const rows = (await alleleResult.json()) as any[]
   return rows.map((row) =>
     mapY1RowToGraphQL(
-      row,
+      { ...row, ...(summaries.get(row.source_variant_id) || {}) },
       cohort,
       populationFrequencies.get(frequencyKey(row.source_variant_id, Number(row.alt_index))) || [],
       runId
@@ -203,7 +224,7 @@ export const fetchY1VariantById = async (
         a.ref_allele, a.alt, a.allele_type, a.filters, a.ac, a.an, a.af,
         a.allele_length, a.chrom, a.rsids, a.cadd_phred, a.phylop,
         a.major_consequence, a.short_read_match_id, a.short_read_match_type,
-        a.short_read_match_source, s.tr_motifs,
+        a.short_read_match_source, s.tr_motifs, s.tr_locus_id, s.tr_structure,
         source_alt_counts.alt_count AS alt_count
       FROM lr_y1_alleles AS a
       INNER JOIN (
@@ -219,7 +240,9 @@ export const fetchY1VariantById = async (
       LEFT JOIN (
         SELECT run_id, release, cohort, reference_genome, chrom, position,
           source_variant_id,
-          any(nullIf(JSONExtractString(source_info_json, 'MOTIFS'), '')) AS tr_motifs
+          any(nullIf(JSONExtractString(source_info_json, 'MOTIFS'), '')) AS tr_motifs,
+          any(nullIf(JSONExtractString(source_info_json, 'TRID'), '')) AS tr_locus_id,
+          any(nullIf(JSONExtractString(source_info_json, 'STRUC'), '')) AS tr_structure
         FROM lr_y1_summaries
         WHERE run_id = {runId:String}
           AND release = 'y1' AND cohort = {cohort:String}

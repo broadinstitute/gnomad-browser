@@ -136,6 +136,9 @@ type LongReadVariantDetails {
   end: Int
   length: Int
   motifs: [String!]
+  tr_locus_id: String
+  tr_locus_components: [LongReadTrLocusComponent!]
+  tr_structure: String
   is_likely_tr: Boolean
   enveloping_tr_id: String
   enveloped_ids: [String!]

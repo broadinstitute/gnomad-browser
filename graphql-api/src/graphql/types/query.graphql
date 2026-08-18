@@ -50,5 +50,13 @@ type Query {
     lr_cohort: LongReadCohort
   ): LongReadVariant
 
+  long_read_tandem_repeat_locus(
+    id: String!
+    lr_cohort: LongReadCohort!
+    first: Int = 50
+    after: String
+    allele: String
+  ): LongReadTandemRepeatLocus @cost(value: 2)
+
   meta: BrowserMetadata!
 }

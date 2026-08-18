@@ -1,0 +1,70 @@
+type LongReadTrLocusComponent {
+  chrom: String!
+  start0: Int!
+  end0: Int!
+  motif: String!
+}
+
+type LongReadTrSourceRecord {
+  record_index: Int!
+  source_variant_id: String!
+  position: Int!
+  alt_count: Int!
+  ref: String!
+  non_reference_ac: Int!
+  an: Int!
+  non_reference_af: Float!
+  source: String
+  region: String
+}
+
+type LongReadTrAllele {
+  variant_id: String!
+  source_variant_id: String!
+  alt_index: Int!
+  alt_count: Int!
+  ref: String!
+  alt: String!
+  length: Int
+  repeat_count: Float
+  repeat_count_source: String
+  motif_purity: Float
+  freq: LongReadVariantFrequencies!
+}
+
+type LongReadTrPageInfo {
+  has_next_page: Boolean!
+  end_cursor: String
+}
+
+type LongReadTrAlleleConnection {
+  nodes: [LongReadTrAllele!]!
+  page_info: LongReadTrPageInfo!
+}
+
+type LongReadTrCatalogMatch {
+  id: String!
+  gene_symbol: String
+  reference_repeat_unit: String!
+  stripy_id: String
+  strchive_id: String
+}
+
+type LongReadTandemRepeatLocus {
+  id: String!
+  source_trid: String!
+  reference_genome: ReferenceGenomeId!
+  chrom: String!
+  components: [LongReadTrLocusComponent!]!
+  motifs: [String!]!
+  structure: String
+  lr_cohort: LongReadCohort!
+  source_release: String!
+  source_run_id: String!
+  source_records: [LongReadTrSourceRecord!]!
+  total_alleles: Int!
+  unique_carrier_count: Int
+  selected_allele_valid: Boolean
+  short_read_matches: [LongReadTrCatalogMatch!]!
+  alleles: LongReadTrAlleleConnection!
+}

@@ -17,8 +17,47 @@ const SUMMARY_FIELDS = [
   'value.strchive_id',
   'value.main_reference_region',
   'value.reference_region',
+  'value.reference_regions',
   'value.reference_repeat_unit',
 ]
+
+export const exactShortTandemRepeatCatalogMatches = (
+  tandemRepeats: any[],
+  components: { chrom: string; start0: number; end0: number; motif: string }[]
+) => {
+  const matchesByComponent = new Map<number, any[]>()
+  tandemRepeats.forEach((repeat) => {
+    const regions = [
+      repeat.main_reference_region,
+      repeat.reference_region,
+      ...(Array.isArray(repeat.reference_regions) ? repeat.reference_regions : []),
+    ].filter(Boolean)
+    components.forEach((component, index) => {
+      const exact = regions.some(
+        (region: any) =>
+          String(region.chrom).replace(/^chr/i, '').toUpperCase() === component.chrom &&
+          Number(region.start) === component.start0 &&
+          Number(region.stop) === component.end0
+      )
+      if (exact && String(repeat.reference_repeat_unit || '').toUpperCase() === component.motif) {
+        const matches = matchesByComponent.get(index) || []
+        if (!matches.some((match) => match.id === repeat.id)) matches.push(repeat)
+        matchesByComponent.set(index, matches)
+      }
+    })
+  })
+
+  // Ambiguous catalog identity fails closed for that component.
+  return Array.from(matchesByComponent.values())
+    .filter((matches) => matches.length === 1)
+    .map(([repeat]) => ({
+      id: repeat.id,
+      gene_symbol: repeat.gene?.symbol || null,
+      reference_repeat_unit: repeat.reference_repeat_unit,
+      stripy_id: repeat.stripy_id || null,
+      strchive_id: repeat.strchive_id || null,
+    }))
+}
 
 export const fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message

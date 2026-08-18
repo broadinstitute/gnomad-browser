@@ -133,6 +133,9 @@ type LongReadVariant {
   gnomad_str: String
   is_likely_tr: Boolean
   motifs: [String!]
+  tr_locus_id: String
+  tr_locus_components: [LongReadTrLocusComponent!]
+  tr_structure: String
   allele_size_distribution: [LongReadAlleleSizeDistribution!]
   genotype_distribution: [LongReadGenotypeDistribution!]
   max_repunits: Int

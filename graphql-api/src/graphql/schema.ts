@@ -26,6 +26,7 @@ import variantFieldResolvers from './resolvers/variant-fields'
 import variantCooccurrenceResolvers from './resolvers/variant-cooccurrence'
 import cnvCoverageResolvers from './resolvers/cnv-coverage'
 import longReadVariantResolvers from './resolvers/long_read_variants'
+import longReadTandemRepeatResolvers from './resolvers/long_read_tandem_repeats'
 import haplotypeResolvers from './resolvers/haplotypes'
 
 const typeDefs = mergeTypeDefs([
@@ -45,6 +46,7 @@ const resolvers = mergeResolvers([
   geneFieldResolvers,
   liftoverResolvers,
   longReadVariantResolvers,
+  longReadTandemRepeatResolvers,
   mitochondrialCoverageResolvers,
   mitochondrialVariantResolvers,
   multiNucleotideVariantResolves,
