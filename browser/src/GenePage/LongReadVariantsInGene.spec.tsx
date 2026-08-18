@@ -13,7 +13,12 @@ jest.mock('../Query', () => (props: any) => {
     data: {
       meta: { clinvar_release_date: '2026-01-01' },
       long_read_y1_provenance: { enabled: true, sources: [] },
-      gene: { long_read_variants: [{ variant_id: '22-150-A-T' }] },
+      region: {
+        long_read_variants: [
+          { variant_id: '22-130-A-T', major_consequence: 'intron_variant' },
+          { variant_id: '22-170-G-C', major_consequence: 'non_coding_transcript_variant' },
+        ],
+      },
     },
     requestVariables: props.variables,
     stale: false,
@@ -40,7 +45,7 @@ describe('LongReadVariantsInGene', () => {
     unifiedViewProps.length = 0
   })
 
-  test('matches region-page cohort, provenance, search, and request behavior', () => {
+  test('loads the full gene span through the region API with parity behavior', () => {
     const gene = geneFactory.build({
       gene_id: 'ENSG1',
       chrom: '22',
@@ -75,21 +80,29 @@ describe('LongReadVariantsInGene', () => {
       variables: {
         datasetId: 'gnomad_r4_lr',
         lrCohort: 'aou',
-        geneId: 'ENSG1',
         chrom: '22',
+        start: 100,
+        stop: 200,
         referenceGenome: 'GRCh38',
       },
     })
     expect(queryProps[0].query).toContain(
+      'region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome)'
+    )
+    expect(queryProps[0].query).toContain(
       'long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort)'
     )
+    expect(queryProps[0].query).not.toContain('gene(gene_id:')
     expect(queryProps[0].query).not.toMatch(/\n\s+variants\(dataset:/)
 
     expect(unifiedViewProps).toHaveLength(1)
     expect(unifiedViewProps[0]).toMatchObject({
       datasetId: 'gnomad_r4_lr',
       gene,
-      variants: [{ variant_id: '22-150-A-T' }],
+      variants: [
+        { variant_id: '22-130-A-T', major_consequence: 'intron_variant' },
+        { variant_id: '22-170-G-C', major_consequence: 'non_coding_transcript_variant' },
+      ],
       variantSearch: '22-150-A>T',
       lrCohort: 'aou',
       onChangeLrCohort,

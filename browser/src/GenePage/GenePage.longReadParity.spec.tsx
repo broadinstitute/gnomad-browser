@@ -9,6 +9,7 @@ import geneFactory from '../__factories__/Gene'
 const lrCoverageProps: any[] = []
 const shortReadCoverageProps: any[] = []
 const longReadVariantProps: any[] = []
+const regularVariantProps: any[] = []
 
 jest.mock('../Query', () => () => null)
 jest.mock('../HaplotypeRegionPage/LRCoverageTrack', () => (props: any) => {
@@ -27,7 +28,10 @@ jest.mock('./LongReadVariantsInGene', () => (props: any) => {
     </button>
   )
 })
-jest.mock('./VariantsInGene', () => () => <div data-testid="regular-variants" />)
+jest.mock('./VariantsInGene', () => (props: any) => {
+  regularVariantProps.push(props)
+  return <div data-testid="regular-variants" />
+})
 
 // Jest mocks must be registered before importing the component under test.
 // eslint-disable-next-line import/first
@@ -45,13 +49,16 @@ const renderGenePage = ({
   search?: string
 } = {}) => {
   const history = createMemoryHistory({ initialEntries: [`/gene/ENSG1${search}`] })
-  const gene = geneFactory.build({
-    gene_id: 'ENSG1',
-    chrom,
-    start: 100,
-    stop: 200,
-    reference_genome: referenceGenome,
-  })
+  const gene = {
+    ...geneFactory.build({
+      gene_id: 'ENSG1',
+      chrom,
+      start: 100,
+      stop: 200,
+      reference_genome: referenceGenome,
+    }),
+    exons: [{ feature_type: 'CDS' as const, start: 120, stop: 180 }],
+  }
 
   render(
     <Router history={history}>
@@ -72,15 +79,18 @@ describe('long-read gene page parity', () => {
     lrCoverageProps.length = 0
     shortReadCoverageProps.length = 0
     longReadVariantProps.length = 0
+    regularVariantProps.length = 0
   })
 
   test('renders opted-in short-read context for the gene and current viewport', () => {
     renderGenePage()
 
     expect(
-      (screen.getByRole('checkbox', {
-        name: 'Show short-read coverage context',
-      }) as HTMLInputElement).checked
+      (
+        screen.getByRole('checkbox', {
+          name: 'Show short-read coverage context',
+        }) as HTMLInputElement
+      ).checked
     ).toBe(true)
     expect(screen.getByTestId('sr-coverage')).not.toBeNull()
     expect(shortReadCoverageProps.at(-1)).toMatchObject({
@@ -125,21 +135,24 @@ describe('long-read gene page parity', () => {
   test.each(['X', 'Y', 'M'])('guards chromosome %s on LR gene pages', (chrom) => {
     renderGenePage({ chrom })
 
-    expect(
-      screen.queryByRole('checkbox', { name: 'Show short-read coverage context' })
-    ).toBeNull()
+    expect(screen.queryByRole('checkbox', { name: 'Show short-read coverage context' })).toBeNull()
     expect(screen.queryByTestId('sr-coverage')).toBeNull()
   })
 
-  test('does not expose the context control on a non-LR gene page', () => {
+  test('keeps the established coding-only defaults on a short-read gene page', () => {
     renderGenePage({
       datasetId: 'gnomad_r4',
       search: '?dataset=gnomad_r4&show_short_read_coverage=true',
     })
 
-    expect(
-      screen.queryByRole('checkbox', { name: 'Show short-read coverage context' })
-    ).toBeNull()
+    expect(screen.queryByRole('checkbox', { name: 'Show short-read coverage context' })).toBeNull()
     expect(screen.queryByTestId('sr-coverage')).toBeNull()
+    expect(longReadVariantProps).toHaveLength(0)
+    expect(regularVariantProps).toHaveLength(1)
+    expect(regularVariantProps[0]).toMatchObject({
+      datasetId: 'gnomad_r4',
+      includeNonCodingTranscripts: false,
+      includeUTRs: false,
+    })
   })
 })

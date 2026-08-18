@@ -9,8 +9,11 @@ import RequestRevalidationFrame from '../RequestRevalidationFrame'
 import { variantSearchFromUrl } from '../RegionPage/variantSearchParam'
 import type { Gene } from './GenePage'
 
+// LR gene pages intentionally use the Region resolver. Gene.long_read_variants
+// retains the historical exon/CDS-shaped query used by mixed short-read views,
+// while an LR page must load the gene's complete genomic interval.
 const query = `
-  query LongReadVariantsInGene($datasetId: DatasetId!, $lrCohort: LongReadCohort!, $geneId: String!, $chrom: String!, $referenceGenome: ReferenceGenomeId!) {
+  query LongReadVariantsInGene($datasetId: DatasetId!, $lrCohort: LongReadCohort!, $chrom: String!, $start: Int!, $stop: Int!, $referenceGenome: ReferenceGenomeId!) {
     meta { clinvar_release_date }
     long_read_y1_provenance(lr_cohort: $lrCohort, chrom: $chrom) {
       enabled scope_label
@@ -18,7 +21,7 @@ const query = `
         modality source database release cohort reference_genome chromosome scope run_id status available label
       }
     }
-    gene(gene_id: $geneId, reference_genome: $referenceGenome) {
+    region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
       long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort) {
         variant_id source_variant_id alt_index lr_cohort chrom pos end length ref alt allele_type filters motifs rsids
         main_reference_region { chrom start stop }
@@ -66,14 +69,15 @@ const LongReadVariantsInGene = ({
       variables={{
         datasetId,
         lrCohort,
-        geneId: gene.gene_id,
         chrom: gene.chrom,
+        start: gene.start,
+        stop: gene.stop,
         referenceGenome: referenceGenome(datasetId),
       }}
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
       retainPreviousData
-      success={(data: any) => data.gene}
+      success={(data: any) => data.region}
     >
       {({ data, requestVariables, stale }: any) => {
         const loadedLrCohort = requestVariables?.lrCohort || lrCohort
@@ -90,7 +94,7 @@ const LongReadVariantsInGene = ({
               key={loadedLrCohort}
               datasetId={datasetId}
               gene={gene}
-              variants={data.gene.long_read_variants || []}
+              variants={data.region.long_read_variants || []}
               variantSearch={variantSearch}
               lrCohort={loadedLrCohort}
               onChangeLrCohort={onChangeLrCohort}
