@@ -15,6 +15,14 @@ import {
   getStandaloneGroupLabelLayout,
 } from './leftPanelLabels'
 import { countVariantLociAcrossHaplotypeRows } from './haplotypeLocusCounts'
+import {
+  DIPLOID_SAMPLE_HOVER_HALF_HEIGHT,
+  DIPLOID_SAMPLE_LABEL_CENTER_OFFSET,
+  DIPLOID_SAMPLE_LABEL_FONT_SIZE,
+  HAPLOTYPE_ROW_CENTER_Y,
+  scrollTopForHaplotypeRow,
+  stackHaplotypeRows,
+} from './haplotypeVerticalLayout'
 import { getVariantCategory, getLodVisibility, ALLELE_TYPE_COLORS } from '../LongReadVariantPage/variantUtils'
 import {
   passesHaplotypeVariantTypeAndSnvLodFilters,
@@ -88,7 +96,7 @@ const VARIANT_ROW_HEIGHT = 25
 const METH_TRACK_HEIGHT = 40
 const MQTL_TRACK_HEIGHT = 80
 const MQTL_PAD = 8
-const ROW_CENTER_Y = 12.5
+const ROW_CENTER_Y = HAPLOTYPE_ROW_CENTER_Y
 const INSERTION_TYPES = new Set(['ins', 'alu_ins', 'sva_ins', 'numt'])
 export const HAPLOTYPE_VIEWPORT_HEIGHT = 500
 
@@ -466,43 +474,44 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
     })
   }, [rowItems, sampleMetadata, groupByHash])
 
-  // Compute row Y offsets and total height
+  // Compute row Y offsets and total height. The content-owned top inset keeps
+  // first-row labels and hit targets inside DeckGL's clipped viewport instead
+  // of relying on whitespace between the summary and haplotype tracks.
   const { rowOffsets, totalHeight } = useMemo(() => {
-    const offsets: number[] = []
-    let cumY = 0
-    for (const item of rowItems) {
-      offsets.push(cumY)
+    const rowHeights = rowItems.map((item) => {
       if (item.type === 'cluster') {
-        cumY += clusterMethylationRowHeight(showPerCopyMethylation && isClusteredView)
-      } else if (item.type === 'diplotype') {
-        let h = diploidPerCopyLayout(0, showPerCopyMethylation).rowHeight
-        if (showMethylation) h += METH_TRACK_HEIGHT
+        return clusterMethylationRowHeight(showPerCopyMethylation && isClusteredView)
+      }
+      if (item.type === 'diplotype') {
+        let height = diploidPerCopyLayout(0, showPerCopyMethylation).rowHeight
+        if (showMethylation) height += METH_TRACK_HEIGHT
         if (showMqtl && mqtlData.length > 0) {
           const allVars = [...item.group.haplotypeA.variants, ...item.group.haplotypeB.variants]
           const groupVarPositions = new Set(allVars.map((v) => v.pos))
           const hasGroupMqtl = mqtlData.some(
             (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
           )
-          if (hasGroupMqtl) h += MQTL_PAD + MQTL_TRACK_HEIGHT
+          if (hasGroupMqtl) height += MQTL_PAD + MQTL_TRACK_HEIGHT
         }
-        cumY += h
-      } else {
-        const group = item.group
-        const showGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
-          const groupVarPositions = new Set(group.variants.variants.map((v) => v.pos))
-          return mqtlData.some(
-            (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
-          )
-        })()
-        let h = item.isChild
-          ? expandedClusterChildRowHeight(showPerCopyMethylation && isClusteredView)
-          : VARIANT_ROW_HEIGHT
-        if (showMethylation) h += METH_TRACK_HEIGHT
-        if (showGroupMqtl) h += MQTL_PAD + MQTL_TRACK_HEIGHT
-        cumY += h
+        return height
       }
-    }
-    return { rowOffsets: offsets, totalHeight: cumY }
+
+      const group = item.group
+      const showGroupMqtl = showMqtl && mqtlData.length > 0 && (() => {
+        const groupVarPositions = new Set(group.variants.variants.map((v) => v.pos))
+        return mqtlData.some(
+          (d: any) => groupVarPositions.has(d.variant_pos) && -Math.log10(d.p_value) >= mqtlMinLogP
+        )
+      })()
+      let height = item.isChild
+        ? expandedClusterChildRowHeight(showPerCopyMethylation && isClusteredView)
+        : VARIANT_ROW_HEIGHT
+      if (showMethylation) height += METH_TRACK_HEIGHT
+      if (showGroupMqtl) height += MQTL_PAD + MQTL_TRACK_HEIGHT
+      return height
+    })
+
+    return stackHaplotypeRows(rowHeights)
   }, [
     rowItems,
     showMethylation,
@@ -629,14 +638,14 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           const group = item.group
           if (group.variants.variants.some((v) => v.pos >= pos) ||
               group.below_threshold.variants.some((v) => v.pos >= pos)) {
-            scrollContainerRef.current.scrollTop = rowOffsets[i]
+            scrollContainerRef.current.scrollTop = scrollTopForHaplotypeRow(rowOffsets[i])
             return
           }
         } else if (item.type === 'diplotype') {
           const dg = item.group
           if (dg.haplotypeA.variants.some((v) => v.pos >= pos) ||
               dg.haplotypeB.variants.some((v) => v.pos >= pos)) {
-            scrollContainerRef.current.scrollTop = rowOffsets[i]
+            scrollContainerRef.current.scrollTop = scrollTopForHaplotypeRow(rowOffsets[i])
             return
           }
         }
@@ -1003,14 +1012,19 @@ function DeckGLLollipopCanvas({
         const sampleLabel = formatDiploidSampleLabel(group.samples)
         const ancestryTooltip = formatSampleAncestryTooltip(group.samples, sampleMetadata)
         sampleLabels.push({
-          position: [35, y - 13, 0],
+          position: [35, y - DIPLOID_SAMPLE_LABEL_CENTER_OFFSET, 0],
           text: sampleLabel,
           color: getDiploidSampleLabelColor(group.samples, sampleMetadata),
-          size: 11,
+          size: DIPLOID_SAMPLE_LABEL_FONT_SIZE,
           tooltipText: ancestryTooltip,
         })
         sampleHoverTargets.push({
-          polygon: [[3, y - 21], [67, y - 21], [67, y + 21], [3, y + 21]],
+          polygon: [
+            [3, y - DIPLOID_SAMPLE_HOVER_HALF_HEIGHT],
+            [67, y - DIPLOID_SAMPLE_HOVER_HALF_HEIGHT],
+            [67, y + DIPLOID_SAMPLE_HOVER_HALF_HEIGHT],
+            [3, y + DIPLOID_SAMPLE_HOVER_HALF_HEIGHT],
+          ],
           tooltipText: ancestryTooltip,
         })
 
@@ -3021,7 +3035,11 @@ function DeckGLLollipopCanvas({
   }
 
   return (
-    <div style={{ position: 'sticky', top: 0, left: 0, width: totalWidth, height: viewportHeight }}>
+    <div
+      data-testid="lr-haplotype-canvas"
+      data-first-row-offset={rowOffsets[0] ?? ''}
+      style={{ position: 'sticky', top: 0, left: 0, width: totalWidth, height: viewportHeight }}
+    >
       <DeckGL
         ref={deckRef}
         views={views}

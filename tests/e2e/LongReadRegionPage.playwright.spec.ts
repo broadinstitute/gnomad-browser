@@ -299,6 +299,29 @@ const captureSlotGeometry = async (page: Page, testIds: string[]) => {
   )
 }
 
+const expectTrHaplotypeSeparation = async (page: Page) => {
+  const summaryTracks = page.getByTestId('lr-summary-variant-tracks')
+  const haplotypeShell = page.getByTestId('lr-haplotype-viewport-shell')
+  const haplotypeCanvas = page.getByTestId('lr-haplotype-canvas')
+  const [summaryBox, shellBox] = await Promise.all([
+    summaryTracks.boundingBox(),
+    haplotypeShell.boundingBox(),
+  ])
+
+  expect(summaryBox, 'summary variant tracks should retain a layout box').not.toBeNull()
+  expect(shellBox, 'haplotype shell should retain a layout box').not.toBeNull()
+  const summaryBottom = summaryBox!.y + summaryBox!.height
+  expect(
+    shellBox!.y,
+    'haplotype viewport must begin at or below the final TR summary row'
+  ).toBeGreaterThanOrEqual(summaryBottom - 1)
+  expect(
+    shellBox!.y - summaryBottom,
+    'TR/haplotype separation should come from content bounds, not page whitespace'
+  ).toBeLessThanOrEqual(2)
+  await expect(haplotypeCanvas).toHaveAttribute('data-first-row-offset', '10')
+}
+
 const expectExactSlotGeometry = (
   before: Record<string, { x: number; y: number; width: number; height: number }>,
   after: Record<string, { x: number; y: number; width: number; height: number }>,
@@ -490,6 +513,7 @@ transitionViewports.forEach((viewport) => {
       'groupingY',
     ])
     expectExactSlotGeometry(restPendingSlots, haplotypeReadySlots, 'REST pending → ready')
+    await expectTrHaplotypeSeparation(page)
     await expectNoHorizontalOverflow(page)
 
     // Selecting and expanding the deterministic TR row installs the persistent
@@ -516,6 +540,7 @@ transitionViewports.forEach((viewport) => {
       selectedGuideSlots,
       'selected-position guide and expanded TR'
     )
+    await expectTrHaplotypeSeparation(page)
     await expectNoHorizontalOverflow(page)
 
     await page.waitForLoadState('networkidle').catch(() => {})
@@ -578,6 +603,7 @@ transitionViewports.forEach((viewport) => {
         'groupingY',
       ])
       expectExactSlotGeometry(referenceSlots, readySlots, `${label} ready`)
+      await expectTrHaplotypeSeparation(page)
       await expectNoHorizontalOverflow(page)
       return { geometry: readyGeometry, slots: readySlots }
     }

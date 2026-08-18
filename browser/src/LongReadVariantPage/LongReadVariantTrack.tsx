@@ -631,7 +631,10 @@ const LongReadVariantTrack = ({ variants, lod, showGenealogyPanel = false, isDip
   const showTrBand = trVariants.length > 0
 
   return (
-    <div style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}>
+    <div
+      data-testid="lr-summary-variant-tracks"
+      style={{ overflow: 'hidden', clipPath: 'inset(0)', position: 'relative' }}
+    >
       {showSnvBand && snvVariants.length > 0 && (
         <Track renderLeftPanel={() => <SidePanel>SNVs ({snvVariants.length})</SidePanel>}>
           {() => lod && !lod.showSnvs ? (
