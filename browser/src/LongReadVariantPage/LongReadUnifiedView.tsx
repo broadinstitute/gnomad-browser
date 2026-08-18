@@ -61,6 +61,7 @@ import { useVariantSearchText, withVariantSearchParam } from '../RegionPage/vari
 import {
   matchesLongReadVariantSearch,
   parseLongReadVariantSearch,
+  type LongReadVariantSearchResult,
 } from './longReadVariantSearch'
 import {
   countMatchingHaplotypes,
@@ -318,10 +319,37 @@ const genesMatchingSymbol = (genes: ZoomGene[], query: string) => {
 const looksLikeGeneSymbol = (query: string) =>
   /^[a-z][a-z0-9.-]*$/i.test(query.trim()) && !/^rs\d+$/i.test(query.trim())
 
-const geneRegion = (genes: ZoomGene[]) => ({
-  start: Math.min(...genes.map((candidate) => candidate.start)),
-  stop: Math.max(...genes.map((candidate) => candidate.stop)),
+const geneRegion = (
+  genes: ZoomGene[],
+  loadedRegion: { start: number; stop: number }
+) => ({
+  // Region queries include genes that only partially overlap the loaded interval.
+  // Keep client-side zoom and local-search ranges inside the data we actually loaded.
+  start: Math.max(loadedRegion.start, Math.min(...genes.map((candidate) => candidate.start))),
+  stop: Math.min(loadedRegion.stop, Math.max(...genes.map((candidate) => candidate.stop))),
 })
+
+const geneOverlapSearch = (
+  genes: ZoomGene[],
+  query: string,
+  chrom: string,
+  loadedRegion: { start: number; stop: number }
+): LongReadVariantSearchResult => {
+  const normalized = query.trim().toLowerCase()
+  const terms: LongReadVariantSearchResult['terms'] = genes.map((candidate) => {
+    const region = geneRegion([candidate], loadedRegion)
+    return {
+      raw: query,
+      normalized,
+      kind: 'range',
+      status: 'valid',
+      chrom,
+      start: region.start,
+      end: region.stop,
+    }
+  })
+  return { input: query, status: 'ready', terms, validTerms: terms, issues: [] }
+}
 
 type LongReadUnifiedViewProps = {
   datasetId: DatasetId
@@ -801,9 +829,15 @@ const LongReadUnifiedView = ({
   const [geneSearchNotice, setGeneSearchNotice] = useState<GeneSearchNotice | null>(null)
   const [showOnlyMatchingHaplotypes, setShowOnlyMatchingHaplotypes] = useState(false)
   const variantSearchText = geneSearchNotice ? '' : searchText
+  const matchingSearchGenes = useMemo(
+    () => genesMatchingSymbol(genes, variantSearchText),
+    [genes, variantSearchText]
+  )
   const parsedSearch = useMemo(
-    () => parseLongReadVariantSearch(variantSearchText, { chrom, start, stop }),
-    [variantSearchText, chrom, start, stop]
+    () => matchingSearchGenes.length > 0
+      ? geneOverlapSearch(matchingSearchGenes, variantSearchText, chrom, { start, stop })
+      : parseLongReadVariantSearch(variantSearchText, { chrom, start, stop }),
+    [matchingSearchGenes, variantSearchText, chrom, start, stop]
   )
   const searchIsActive = parsedSearch.status !== 'empty'
   const searchStatusIsActive = searchIsActive || geneSearchNotice !== null
@@ -2140,7 +2174,7 @@ const LongReadUnifiedView = ({
 
     const matchingGenes = genesMatchingSymbol(genes, query)
     if (matchingGenes.length > 0) {
-      const region = geneRegion(matchingGenes)
+      const region = geneRegion(matchingGenes, { start, stop })
       const changeRegion = onChangeZoomRegion || onSetRegion
       if (changeRegion) changeRegion(region)
       setGeneSearchNotice({
@@ -2159,7 +2193,7 @@ const LongReadUnifiedView = ({
       setGeneSearchNotice({ status: 'not_found', query })
       setSearchText('')
     }
-  }, [genes, onChangeZoomRegion, onSetRegion, searchText, searchedLoadedVariants, setSearchText])
+  }, [genes, onChangeZoomRegion, onSetRegion, searchText, searchedLoadedVariants, setSearchText, start, stop])
 
   // Unfiltered viewport variants define optional accordion phantom loci.
   const unfilteredViewportVariants: LRVariant[] = useMemo(
@@ -2282,8 +2316,9 @@ const LongReadUnifiedView = ({
             )}
             {!geneSearchNotice && hasLocalSearchTerms && (
               <span>
-                {searchedLoadedVariants.length.toLocaleString()} matching variant{searchedLoadedVariants.length === 1 ? '' : 's'} in this loaded region
-                {parsedSearch.validTerms.length > 1 ? ` (${parsedSearch.validTerms.length} terms, OR)` : ''}.
+                {matchingSearchGenes.length > 0
+                  ? `${searchedLoadedVariants.length.toLocaleString()} variant${searchedLoadedVariants.length === 1 ? '' : 's'} overlapping ${matchingSearchGenes[0].symbol!.trim()} in this loaded region${matchingSearchGenes.length > 1 ? ` (${matchingSearchGenes.length} gene entries)` : ''}.`
+                  : `${searchedLoadedVariants.length.toLocaleString()} matching variant${searchedLoadedVariants.length === 1 ? '' : 's'} in this loaded region${parsedSearch.validTerms.length > 1 ? ` (${parsedSearch.validTerms.length} terms, OR)` : ''}.`}
               </span>
             )}
             {!geneSearchNotice && !hasLocalSearchTerms && !outOfRegionSearchTerm && (

@@ -1749,24 +1749,56 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
 })
 
 describe('LongReadUnifiedView local gene search', () => {
-  test('suggests loaded genes and zooms case-insensitively to one gene on a gene page', () => {
+  test('suggests an ordinary loaded gene and zooms case-insensitively on a gene page', () => {
     const onChangeZoomRegion = jest.fn()
-    renderView(undefined, '/', 'hgsvc_hprc', {
-      genes: [{ gene_id: 'ENSG1', symbol: 'BRCA1', start: 120, stop: 180 }],
+    renderView({ chrom: 'chr19', start: 100, stop: 200 }, '/', 'hgsvc_hprc', {
+      genes: [{ gene_id: 'ENSG1', symbol: 'LDLR', start: 120, stop: 180 }],
       onChangeZoomRegion,
     })
 
     const input = screen.getByLabelText('Search long-read region by gene or variant')
     expect(input.getAttribute('placeholder')).toContain('Gene')
     expect(input.getAttribute('list')).toBe('lr-loaded-gene-symbols')
-    expect(document.querySelector('option[value="BRCA1"]')).not.toBeNull()
+    expect(document.querySelector('option[value="LDLR"]')).not.toBeNull()
 
-    fireEvent.change(input, { target: { value: 'brca1' } })
+    fireEvent.change(input, { target: { value: 'ldlr' } })
     fireEvent.submit(input.closest('form')!)
 
     expect(onChangeZoomRegion).toHaveBeenCalledWith({ start: 120, stop: 180 })
     expect((input as HTMLInputElement).value).toBe('')
-    expect(screen.getByText(/Zoomed to BRCA1: 120-180/)).not.toBeNull()
+    expect(screen.getByText(/Zoomed to LDLR: 120-180/)).not.toBeNull()
+  })
+
+  test('finds unannotated variants overlapping visible MICA and keeps an edge-gene zoom loaded', () => {
+    const onChangeZoomRegion = jest.fn()
+    renderView(
+      { chrom: 'chr6', start: 31_400_000, stop: 31_450_000 },
+      '/?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&show_haplotypes=true',
+      'hgsvc_hprc',
+      {
+        genes: [{ gene_id: 'ENSG_MICA', symbol: 'MICA', start: 31_372_000, stop: 31_404_000 }],
+        variants: [
+          { variant_id: 'spans-loaded-edge', chrom: 'chr6', pos: 31_399_900, end: 31_400_100, length: 200 },
+          { variant_id: 'inside-mica', chrom: 'chr6', pos: 31_402_000, end: 31_402_010, length: 10 },
+          { variant_id: 'after-mica', chrom: 'chr6', pos: 31_420_000, end: 31_420_010, length: 10 },
+        ],
+        onChangeZoomRegion,
+      }
+    )
+
+    const input = screen.getByLabelText('Search long-read region by gene or variant')
+    fireEvent.change(input, { target: { value: ' mica ' } })
+
+    expect(screen.getByText(/2 variants overlapping MICA in this loaded region/)).not.toBeNull()
+    expect(mockVariantTableProps.at(-1).parsedSearch).toMatchObject({
+      status: 'ready',
+      terms: [{ kind: 'range', chrom: 'chr6', start: 31_400_000, end: 31_404_000 }],
+    })
+
+    fireEvent.submit(input.closest('form')!)
+
+    expect(onChangeZoomRegion).toHaveBeenCalledWith({ start: 31_400_000, stop: 31_404_000 })
+    expect(screen.getByText(/Zoomed to MICA: 31,400,000-31,404,000/)).not.toBeNull()
   })
 
   test('zooms to the union and reports duplicate loaded symbols on a region page', () => {
