@@ -27,6 +27,9 @@ const operationName = 'Gene'
 
 const query = `
 query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
+  meta {
+    long_read_cohorts
+  }
   gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
     reference_genome
     gene_id
@@ -296,7 +299,14 @@ const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
 
         const rolledUpCounts = rollUpVariantCooccurrenceCounts(data.gene)
         const gene: Gene = { ...data.gene, ...rolledUpCounts }
-        return <GenePage datasetId={datasetId} gene={gene} geneId={data.gene.gene_id} />
+        return (
+          <GenePage
+            datasetId={datasetId}
+            gene={gene}
+            geneId={data.gene.gene_id}
+            availableLrCohorts={data.meta?.long_read_cohorts || ['hgsvc_hprc']}
+          />
+        )
       }}
     </BaseQuery>
   )

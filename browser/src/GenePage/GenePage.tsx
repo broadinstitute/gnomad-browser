@@ -49,12 +49,18 @@ import { useWindowSize } from '../windowSize'
 
 import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
 import { useStableScrollbarGutter } from '../Haplotypes/scrollbarGutter'
+import { parseLongReadCohort, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import ShortReadCoverageContextControl, {
+  useShortReadCoverageContext,
+} from '../RegionPage/ShortReadCoverageContextControl'
+import ShortReadCoverageContextTrack from '../RegionPage/ShortReadCoverageContextTrack'
 import GeneCoverageTrack from './GeneCoverageTrack'
 import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
 import GeneTranscriptsTrack from './GeneTranscriptsTrack'
 import MitochondrialGeneCoverageTrack from './MitochondrialGeneCoverageTrack'
 import MitochondrialVariantsInGene from './MitochondrialVariantsInGene'
+import LongReadVariantsInGene from './LongReadVariantsInGene'
 import { getPreferredTranscript } from './preferredTranscript'
 import StructuralVariantsInGene from './StructuralVariantsInGene'
 import TissueExpressionTrack, { TranscriptWithTissueExpression } from './TissueExpressionTrack'
@@ -317,9 +323,10 @@ type Props = {
   datasetId: DatasetId
   gene: Gene
   geneId: string
+  availableLrCohorts?: LongReadCohort[]
 }
 
-const GenePage = ({ datasetId, gene, geneId }: Props) => {
+const GenePage = ({ datasetId, gene, geneId, availableLrCohorts = ['hgsvc_hprc'] }: Props) => {
   const haplotypeScrollbarGutter = useStableScrollbarGutter()
   const hasCDS = gene.exons.some((exon) => exon.feature_type === 'CDS')
 
@@ -333,6 +340,27 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
   const location = useLocation()
   const history = useHistory()
   const [genealogyPanelVisible, setGenealogyPanelVisible] = useState(false)
+  const requestedLrCohort = parseLongReadCohort(
+    new URLSearchParams(location.search).get('lr_cohort')
+  )
+  const defaultLrCohort = availableLrCohorts.length === 1 ? availableLrCohorts[0] : 'hgsvc_hprc'
+  const [lrCohort, setLrCohort] = useState<LongReadCohort>(requestedLrCohort || defaultLrCohort)
+  const {
+    eligible: shortReadCoverageEligible,
+    show: showShortReadCoverage,
+    setShow: changeShortReadCoverageVisibility,
+  } = useShortReadCoverageContext(datasetId, gene)
+
+  const changeLrCohort = useCallback(
+    (cohort: LongReadCohort) => {
+      setLrCohort(cohort)
+      const params = new URLSearchParams(location.search)
+      params.set('lr_cohort', cohort)
+      if (cohort === 'aou') params.delete('show_haplotypes')
+      history.replace({ ...location, search: params.toString() })
+    },
+    [history, location]
+  )
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
@@ -370,16 +398,96 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
   const [zoomRegion, setZoomRegion] = useState<{ start: number; stop: number } | null>(null)
 
-  const handleSetRegion = useCallback((newRegion: { start: number; stop: number }) => {
-    const regionId = `${gene.chrom}-${newRegion.start}-${newRegion.stop}`
-    const currentParams = new URLSearchParams(location.search)
-    history.push({
-      pathname: `/region/${regionId}`,
-      search: currentParams.toString(),
-    })
-  }, [gene.chrom, history, location.search])
+  const handleSetRegion = useCallback(
+    (newRegion: { start: number; stop: number }) => {
+      const regionId = `${gene.chrom}-${newRegion.start}-${newRegion.stop}`
+      const currentParams = new URLSearchParams(location.search)
+      history.push({
+        pathname: `/region/${regionId}`,
+        search: currentParams.toString(),
+      })
+    },
+    [gene.chrom, history, location.search]
+  )
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
+
+  let coverageTrack
+  if (isLongRead(datasetId)) {
+    coverageTrack = (
+      <LRCoverageTrack
+        chrom={gene.chrom}
+        start={gene.start}
+        stop={gene.stop}
+        lrCohort={lrCohort}
+        viewStart={zoomRegion?.start ?? gene.start}
+        viewStop={zoomRegion?.stop ?? gene.stop}
+      />
+    )
+  } else if (!hasExons(datasetId)) {
+    coverageTrack = (
+      <RegionCoverageTrack
+        chrom={gene.chrom}
+        datasetId={datasetId}
+        includeExomeCoverage={false}
+        start={gene.start}
+        stop={gene.stop}
+      />
+    )
+  } else if (gene.chrom === 'M') {
+    coverageTrack = <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
+  } else {
+    coverageTrack = (
+      <GeneCoverageTrack
+        datasetId={datasetId}
+        geneId={geneId}
+        includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
+        includeGenomeCoverage={genesHaveGenomeCoverage(datasetId)}
+      />
+    )
+  }
+
+  let variantsTrack
+  if (hasStructuralVariants(datasetId)) {
+    variantsTrack = (
+      <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+    )
+  } else if (hasCopyNumberVariants(datasetId)) {
+    variantsTrack = (
+      <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+    )
+  } else if (gene.chrom === 'M') {
+    variantsTrack = (
+      <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+    )
+  } else if (isLongRead(datasetId)) {
+    variantsTrack = (
+      <LongReadVariantsInGene
+        datasetId={datasetId}
+        gene={gene}
+        zoomRegion={zoomRegion}
+        onChangeZoomRegion={setZoomRegion}
+        onSetRegion={handleSetRegion}
+        lrCohort={lrCohort}
+        onChangeLrCohort={changeLrCohort}
+        onGenealogyPanelVisibilityChange={setGenealogyPanelVisible}
+      />
+    )
+  } else {
+    variantsTrack = (
+      <VariantsInGene
+        datasetId={datasetId}
+        gene={gene}
+        includeNonCodingTranscripts={includeNonCodingTranscripts}
+        includeUTRs={includeUTRs}
+        zoomRegion={zoomRegion}
+        onChangeZoomRegion={setZoomRegion}
+        onSetRegion={handleSetRegion}
+        onGenealogyPanelVisibilityChange={setGenealogyPanelVisible}
+        hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
+      />
+    )
+  }
 
   return (
     <TrackPage>
@@ -450,6 +558,13 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
             )}
           </ConstraintOrCooccurrenceColumn>
         </GeneInfoColumnWrapper>
+        {isLongRead(datasetId) && (
+          <ShortReadCoverageContextControl
+            eligible={shortReadCoverageEligible}
+            show={showShortReadCoverage}
+            onChange={changeShortReadCoverageVisibility}
+          />
+        )}
       </TrackPageSection>
       <RegionViewer
         contextType="gene"
@@ -471,25 +586,15 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         zoomRegion={zoomRegion}
         onChangeZoomRegion={setZoomRegion}
       >
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {isLongRead(datasetId) ? (
-          <LRCoverageTrack chrom={gene.chrom} start={gene.start} stop={gene.stop} />
-        ) : !hasExons(datasetId) ? (
-          <RegionCoverageTrack
+        {coverageTrack}
+
+        {showShortReadCoverage && (
+          <ShortReadCoverageContextTrack
             chrom={gene.chrom}
-            datasetId={datasetId}
-            includeExomeCoverage={false}
             start={gene.start}
             stop={gene.stop}
-          />
-        ) : gene.chrom === 'M' ? (
-          <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
-        ) : (
-          <GeneCoverageTrack
-            datasetId={datasetId}
-            geneId={geneId}
-            includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
-            includeGenomeCoverage={genesHaveGenomeCoverage(datasetId)}
+            viewStart={zoomRegion?.start ?? gene.start}
+            viewStop={zoomRegion?.stop ?? gene.stop}
           />
         )}
 
@@ -643,27 +748,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
           />
         )}
 
-        {/* eslint-disable-next-line no-nested-ternary */}
-        {hasStructuralVariants(datasetId) ? (
-          <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : // eslint-disable-next-line no-nested-ternary
-        hasCopyNumberVariants(datasetId) ? (
-          <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : gene.chrom === 'M' ? (
-          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : (
-          <VariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            includeNonCodingTranscripts={includeNonCodingTranscripts}
-            includeUTRs={includeUTRs}
-            zoomRegion={zoomRegion}
-            onChangeZoomRegion={setZoomRegion}
-            onSetRegion={handleSetRegion}
-            onGenealogyPanelVisibilityChange={setGenealogyPanelVisible}
-            hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
-          />
-        )}
+        {variantsTrack}
       </RegionViewer>
     </TrackPage>
   )

@@ -23,7 +23,6 @@ import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
 import LRCoverageTrack from '../HaplotypeRegionPage/LRCoverageTrack'
-import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import { useStableScrollbarGutter } from '../Haplotypes/scrollbarGutter'
 import EditRegion from './EditRegion'
 import GenesInRegionTrack from './GenesInRegionTrack'
@@ -32,14 +31,10 @@ import MitochondrialVariantsInRegion from './MitochondrialVariantsInRegion'
 import RegionControls from './RegionControls'
 import RegionCoverageTrack from './RegionCoverageTrack'
 import RegionInfo from './RegionInfo'
-import ShortReadCoverageContextTrack, {
-  SHORT_READ_COVERAGE_CAVEAT,
-} from './ShortReadCoverageContextTrack'
-import {
-  isShortReadCoverageContextEligible,
-  shouldShowShortReadCoverageContext,
-  updateShortReadCoverageSearch,
-} from './shortReadCoverageContext'
+import ShortReadCoverageContextControl, {
+  useShortReadCoverageContext,
+} from './ShortReadCoverageContextControl'
+import ShortReadCoverageContextTrack from './ShortReadCoverageContextTrack'
 import RegularVariantsInRegion from './VariantsInRegion'
 import { parseLongReadCohort, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import StructuralVariantsInRegion from './StructuralVariantsInRegion'
@@ -66,42 +61,6 @@ const RegionControlsWrapper = styled.div`
   @media (min-width: 1201px) {
     margin-top: 1em;
   }
-`
-
-const CoverageContextControl = styled.div`
-  max-width: 580px;
-  margin: 0.75em 0;
-
-  @media (min-width: 1201px) {
-    max-width: 520px;
-    margin-left: 1.5em;
-  }
-`
-
-const CoverageContextLabelRow = styled.div`
-  display: flex;
-  align-items: center;
-`
-
-const CoverageContextLabel = styled.label`
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  font-weight: 600;
-  cursor: pointer;
-
-  input {
-    width: 20px;
-    height: 20px;
-    margin: 0 0.6em 0 0;
-    flex: 0 0 auto;
-  }
-`
-
-const CoverageContextUnavailable = styled.div`
-  max-width: 520px;
-  margin: 1em 0 1em 1.5em;
-  font-size: 0.875rem;
 `
 
 type NonCodingConstraint = {
@@ -140,7 +99,16 @@ type VariantsInRegionRendererProps = {
   onGenealogyPanelVisibilityChange: (visible: boolean) => void
 }
 
-const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, onSetRegion, lrCohort, onChangeLrCohort, onGenealogyPanelVisibilityChange }: VariantsInRegionRendererProps) => {
+const variantsInRegion = ({
+  datasetId,
+  region,
+  zoomRegion,
+  onChangeZoomRegion,
+  onSetRegion,
+  lrCohort,
+  onChangeLrCohort,
+  onGenealogyPanelVisibilityChange,
+}: VariantsInRegionRendererProps) => {
   if (isSVs(datasetId)) {
     return <StructuralVariantsInRegion datasetId={datasetId} region={region} zoomRegion={region} />
   }
@@ -169,7 +137,11 @@ const variantsInRegion = ({ datasetId, region, zoomRegion, onChangeZoomRegion, o
   )
 }
 
-const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: RegionPageProps) => {
+const RegionPage = ({
+  datasetId,
+  region,
+  availableLrCohorts = ['hgsvc_hprc'],
+}: RegionPageProps) => {
   const { chrom, start, stop } = region
   const [zoomRegion, setZoomRegion] = useState<{ start: number; stop: number } | null>(null)
 
@@ -183,33 +155,27 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
   const history = useHistory()
   const haplotypeScrollbarGutter = useStableScrollbarGutter()
   const [genealogyPanelVisible, setGenealogyPanelVisible] = useState(false)
-  const requestedLrCohort = parseLongReadCohort(new URLSearchParams(location.search).get('lr_cohort'))
+  const requestedLrCohort = parseLongReadCohort(
+    new URLSearchParams(location.search).get('lr_cohort')
+  )
   const defaultLrCohort = availableLrCohorts.length === 1 ? availableLrCohorts[0] : 'hgsvc_hprc'
   const [lrCohort, setLrCohort] = useState<LongReadCohort>(requestedLrCohort || defaultLrCohort)
-  const shortReadCoverageEligible = isShortReadCoverageContextEligible(datasetId, region)
-  const showShortReadCoverage = shouldShowShortReadCoverageContext(
-    location.search,
-    datasetId,
-    region
-  )
+  const {
+    eligible: shortReadCoverageEligible,
+    show: showShortReadCoverage,
+    setShow: changeShortReadCoverageVisibility,
+  } = useShortReadCoverageContext(datasetId, region)
 
-  const changeShortReadCoverageVisibility = useCallback(
-    (show: boolean) => {
-      history.replace({
-        ...location,
-        search: updateShortReadCoverageSearch(location.search, show),
-      })
+  const changeLrCohort = useCallback(
+    (cohort: LongReadCohort) => {
+      setLrCohort(cohort)
+      const params = new URLSearchParams(location.search)
+      params.set('lr_cohort', cohort)
+      if (cohort === 'aou') params.delete('show_haplotypes')
+      history.replace({ ...location, search: params.toString() })
     },
     [history, location]
   )
-
-  const changeLrCohort = useCallback((cohort: LongReadCohort) => {
-    setLrCohort(cohort)
-    const params = new URLSearchParams(location.search)
-    params.set('lr_cohort', cohort)
-    if (cohort === 'aou') params.delete('show_haplotypes')
-    history.replace({ ...location, search: params.toString() })
-  }, [history, location])
 
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
@@ -231,14 +197,17 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
   }
 
   // "Set as region" navigates to a new URL, triggering full remount + refetch
-  const handleSetRegion = useCallback((newRegion: { start: number; stop: number }) => {
-    const regionId = `${chrom}-${newRegion.start}-${newRegion.stop}`
-    const currentParams = new URLSearchParams(location.search)
-    history.push({
-      pathname: `/region/${regionId}`,
-      search: currentParams.toString(),
-    })
-  }, [chrom, history, location.search])
+  const handleSetRegion = useCallback(
+    (newRegion: { start: number; stop: number }) => {
+      const regionId = `${chrom}-${newRegion.start}-${newRegion.stop}`
+      const currentParams = new URLSearchParams(location.search)
+      history.push({
+        pathname: `/region/${regionId}`,
+        search: currentParams.toString(),
+      })
+    },
+    [chrom, history, location.search]
+  )
 
   // viewRegion drives RegionViewer's coordinate scaling (client-side only).
   // Data queries always use the full `region` — no refetch on zoom.
@@ -259,7 +228,9 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
       />
     )
   } else if (region.chrom === 'M') {
-    coverageTrack = <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
+    coverageTrack = (
+      <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
+    )
   } else {
     coverageTrack = (
       <RegionCoverageTrack
@@ -313,34 +284,12 @@ const RegionPage = ({ datasetId, region, availableLrCohorts = ['hgsvc_hprc'] }: 
               <RegionControls region={region} />
             </RegionControlsWrapper>
           )}
-          {shortReadCoverageEligible && (
-            <CoverageContextControl>
-              <CoverageContextLabelRow>
-                <CoverageContextLabel>
-                  <input
-                    type="checkbox"
-                    checked={showShortReadCoverage}
-                    onChange={(event) =>
-                      changeShortReadCoverageVisibility(event.currentTarget.checked)
-                    }
-                  />
-                  Show short-read coverage context
-                </CoverageContextLabel>
-                <HaplotypeHelpButton title="About short-read coverage context">
-                  <p>
-                    This option adds separate gnomAD v4.0 exome and gnomAD v3.0.1 genome short-read
-                    coverage below long-read coverage. Each track keeps its own metric and scale.
-                  </p>
-                  <p>{SHORT_READ_COVERAGE_CAVEAT}</p>
-                </HaplotypeHelpButton>
-              </CoverageContextLabelRow>
-            </CoverageContextControl>
-          )}
-          {isLongRead(datasetId) && !shortReadCoverageEligible && (
-            <CoverageContextUnavailable>
-              Short-read coverage context is available only for GRCh38 autosomes 1–22; it is not
-              available for X, Y, or mitochondrial LR regions.
-            </CoverageContextUnavailable>
+          {isLongRead(datasetId) && (
+            <ShortReadCoverageContextControl
+              eligible={shortReadCoverageEligible}
+              show={showShortReadCoverage}
+              onChange={changeShortReadCoverageVisibility}
+            />
           )}
         </RegionInfoColumnWrapper>
       </TrackPageSection>
