@@ -128,7 +128,7 @@ describe('Y1 long-read browser identity', () => {
       'discovered-aou-run'
     )
 
-    expect(mockQuery).toHaveBeenCalledTimes(2)
+    expect(mockQuery).toHaveBeenCalledTimes(3)
     for (const [call] of mockQuery.mock.calls as any[]) {
       expect(call.query).not.toContain('lr_y1_carriers')
       expect(call.query_params).toMatchObject({

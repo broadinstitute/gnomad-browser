@@ -26,17 +26,32 @@ const optionalNumber = (value: unknown) => {
   return Number.isFinite(number) ? number : null
 }
 
+const requiredRowString = (row: any, field: string) => {
+  const value = row[field]
+  if (typeof value !== 'string' || value.length === 0) {
+    throw new Error(`Malformed Y1 long-read variant row: missing required ${field}`)
+  }
+  return value
+}
+
 export const mapY1RowToGraphQL = (
   row: any,
   cohort: LongReadCohort,
   populations: any[],
   runId: string
 ) => {
+  const sourceVariantId = requiredRowString(row, 'source_variant_id')
+  const chrom = requiredRowString(row, 'chrom')
+  const ref = requiredRowString(row, 'ref_allele')
+  const alt = requiredRowString(row, 'alt')
   const altIndex = Number(row.alt_index)
+  if (!Number.isInteger(altIndex) || altIndex < 1) {
+    throw new Error('Malformed Y1 long-read variant row: missing required alt_index')
+  }
   return {
     // The browser identity is ALT-specific; source_variant_id remains byte-exact.
-    variant_id: browserVariantId(row.source_variant_id, Number(row.alt_index)),
-    source_variant_id: row.source_variant_id,
+    variant_id: browserVariantId(sourceVariantId, altIndex),
+    source_variant_id: sourceVariantId,
     alt_index: altIndex,
     alt_count: optionalNumber(row.alt_count),
     lr_cohort: cohort,
@@ -44,7 +59,7 @@ export const mapY1RowToGraphQL = (
     source_release: 'y1',
     source_run_id: runId,
     reference_genome: 'GRCh38',
-    chrom: row.chrom.replace(/^chr/, ''),
+    chrom: chrom.replace(/^chr/, ''),
     pos: Number(row.position),
     end: resolveY1ReferenceEnd({
       position: row.position,
@@ -56,8 +71,8 @@ export const mapY1RowToGraphQL = (
     // allele contract. Preserve a genuine zero, but never turn a missing value
     // into the scientifically meaningful zero-length bin.
     length: optionalNumber(row.allele_length),
-    ref: row.ref_allele,
-    alt: row.alt,
+    ref,
+    alt,
     xpos: Number(row.xpos),
     rsids: Array.isArray(row.rsids) ? row.rsids : [],
     allele_type: row.allele_type || 'unknown',
@@ -220,12 +235,18 @@ export const fetchY1VariantById = async (
   const { sourceVariantId, altIndex } = sourceIdentityFromBrowserId(variantId)
   const resultSet = await y1ClickhouseClient.query({
     query: `
-      SELECT a.position, a.reference_end, a.xpos, a.source_variant_id, a.alt_index,
-        a.ref_allele, a.alt, a.allele_type, a.filters, a.ac, a.an, a.af,
-        a.allele_length, a.chrom, a.rsids, a.cadd_phred, a.phylop,
-        a.major_consequence, a.short_read_match_id, a.short_read_match_type,
-        a.short_read_match_source, s.tr_motifs, s.tr_locus_id, s.tr_structure,
-        source_alt_counts.alt_count AS alt_count
+      SELECT a.position AS position, a.reference_end AS reference_end, a.xpos AS xpos,
+        a.source_variant_id AS source_variant_id, a.alt_index AS alt_index,
+        a.ref_allele AS ref_allele, a.alt AS alt, a.allele_type AS allele_type,
+        a.filters AS filters, a.ac AS ac, a.an AS an, a.af AS af,
+        a.allele_length AS allele_length, a.chrom AS chrom, a.rsids AS rsids,
+        a.cadd_phred AS cadd_phred, a.phylop AS phylop,
+        a.major_consequence AS major_consequence,
+        a.short_read_match_id AS short_read_match_id,
+        a.short_read_match_type AS short_read_match_type,
+        a.short_read_match_source AS short_read_match_source,
+        s.tr_motifs AS tr_motifs, s.tr_locus_id AS tr_locus_id,
+        s.tr_structure AS tr_structure, source_alt_counts.alt_count AS alt_count
       FROM lr_y1_alleles AS a
       INNER JOIN (
         SELECT source_variant_id, count() AS alt_count
