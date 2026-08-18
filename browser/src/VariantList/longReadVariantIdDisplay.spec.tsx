@@ -7,33 +7,54 @@ import variantTableColumns from './variantTableColumns'
 jest.mock('../Link', () => ({ children, to }: any) => <a href={to}>{children}</a>)
 
 describe('merged long-read variant ID display', () => {
-  test('keeps a LR-only row ID canonical while normalizing its displayed link text', () => {
-    const rawId = 'chr22-20077152-DEL-7~2'
-    const [row] = mergeLongReadVariants<{ variant_id: string }>(
-      [],
-      [
-        {
-          variant_id: rawId,
-          lr_cohort: 'aou',
-          chrom: 'chr22',
-          pos: 20077152,
-          end: 20077159,
-          length: -7,
-          ref: 'ACGTACGT',
-          alt: 'A',
-          allele_type: 'del',
-          freq: { all: { ac: 2, an: 100, af: 0.02 }, populations: [] },
-        },
-      ]
+  test('normalizes LR-only TR row labels on a short-read table without changing IDs or links', () => {
+    const shortReadIds = ['1-55039879-A-ACTGCTG', '1-55039879-ACTG-A']
+    const rawLongReadIds = [
+      'chr1-55039879-TRV-27~1',
+      'chr1-55039879-TRV-27~2',
+      'chr1-55039879-TRV-27~3',
+    ]
+    const rows = mergeLongReadVariants(
+      shortReadIds.map((variantId) => ({ variant_id: variantId })),
+      rawLongReadIds.map((variantId) => ({
+        variant_id: variantId,
+        lr_cohort: 'aou' as const,
+        chrom: 'chr1',
+        pos: 55039879,
+        end: 55039906,
+        length: 27,
+        ref: 'A',
+        alt: '<TR>',
+        allele_type: 'trv',
+        freq: { all: { ac: 2, an: 100, af: 0.02 }, populations: [] },
+      }))
     )
 
-    expect(row.variant_id).toBe(rawId)
+    expect(rows.map((row) => row.variant_id)).toEqual([...shortReadIds, ...rawLongReadIds])
 
     const idColumn = variantTableColumns.find((column) => column.key === 'variant_id')!
-    render(<>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>)
+    render(
+      <>
+        {rows.map((row) => (
+          <React.Fragment key={row.variant_id}>
+            {idColumn.render(row, 'variant_id', { highlightWords: [] })}
+          </React.Fragment>
+        ))}
+      </>
+    )
 
-    const link = screen.getByRole('link', { name: '22-20077152-DEL-7~2' })
-    expect(link.getAttribute('href')).toBe(`/variant/${rawId}?dataset=gnomad_r4_lr&lr_cohort=aou`)
-    expect(screen.queryByText(rawId)).toBeNull()
+    shortReadIds.forEach((variantId) => {
+      expect(screen.getByRole('link', { name: variantId }).getAttribute('href')).toBe(
+        `/variant/${variantId}`
+      )
+    })
+
+    rawLongReadIds.forEach((rawId) => {
+      const displayId = rawId.replace(/^chr/, '')
+      expect(screen.getByRole('link', { name: displayId }).getAttribute('href')).toBe(
+        `/variant/${rawId}?dataset=gnomad_r4_lr&lr_cohort=aou`
+      )
+      expect(screen.queryByText(rawId)).toBeNull()
+    })
   })
 })
