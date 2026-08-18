@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { Table } from './VariantOccurrenceTable'
 
 import Link from '../Link'
@@ -73,6 +74,7 @@ const LongReadVariantDetails = ({
     length,
     main_reference_region,
     motifs,
+    tr_locus_id,
     short_read_match_id,
     short_read_match_source,
     short_read_match_type,
@@ -124,6 +126,19 @@ const LongReadVariantDetails = ({
                 <td>
                   ALT {longReadDetails.alt_index}
                   {longReadDetails.alt_count != null ? ` of ${longReadDetails.alt_count}` : ''}
+                </td>
+              </tr>
+            )}
+            {tr_locus_id && (
+              <tr>
+                <th scope="row">Parent tandem-repeat locus</th>
+                <td>
+                  <Link
+                    to={trLocusUrl(tr_locus_id, lrCohort, variantId)}
+                    preserveSelectedDataset={false}
+                  >
+                    View locus with ALT {longReadDetails.alt_index || 1} selected
+                  </Link>
                 </td>
               </tr>
             )}

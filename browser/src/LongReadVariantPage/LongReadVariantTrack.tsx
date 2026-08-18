@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import styled from 'styled-components'
 
 import { Track, RegionViewerContext } from '@gnomad/region-viewer'
+import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
 import Link from '../Link'
 import { getAlleleTypeColor, getVariantCategory, VARIANT_CATEGORY_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
@@ -24,6 +25,7 @@ type LRVariant = {
   variant_id: string
   lr_cohort?: LongReadCohort
   source_variant_id?: string | null
+  tr_locus_id?: string | null
   alt_index?: number | null
   alt_count?: number | null
   chrom?: string
@@ -139,7 +141,7 @@ export const TrLocusTooltip = ({ hovered }: { hovered: HoveredTrLocus }) => {
       <div><strong>Maximum ALT AF:</strong> {locus.maxAf == null ? 'Unavailable' : locus.maxAf.toPrecision(4)}</div>
       {distribution.length > 0 && <TRDistributionPlot distribution={distribution} compact interactive={false} yAxisLabel="Allele count" />}
       <div style={{ color: '#666', marginTop: 2 }}>The bar marks the reference locus. Added ALT bases have no GRCh38 coordinates.</div>
-      {locus.alleles.length > 1 && <div style={{ color: '#666', marginTop: 2 }}>Click opens the maximum-AF ALT record.</div>}
+      <div style={{ color: '#666', marginTop: 2 }}>Click opens the canonical tandem-repeat locus page.</div>
     </div>
   )
 }
@@ -467,7 +469,15 @@ const TrBand = ({ variants, scalePosition, width, onHoverLocus, hoveredPosition,
         const opacityVariant = locus.maxAf == null ? v : { ...v, freq: { all: { af: locus.maxAf } } }
 
         return (
-          <Link key={locus.key} to={longReadVariantUrl(v.variant_id, v.lr_cohort || 'hgsvc_hprc')} preserveSelectedDataset={false}>
+          <Link
+            key={locus.key}
+            to={
+              v.tr_locus_id
+                ? trLocusUrl(v.tr_locus_id, v.lr_cohort || 'hgsvc_hprc')
+                : longReadVariantUrl(v.variant_id, v.lr_cohort || 'hgsvc_hprc')
+            }
+            preserveSelectedDataset={false}
+          >
             <rect
               x={startX}
               y={rowY}

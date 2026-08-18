@@ -1,68 +1,28 @@
 import React from 'react'
-import { beforeEach, describe, expect, jest, test } from '@jest/globals'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import HaplotypeVariantTable from './HaplotypeVariantTable'
-import { clearExpandedTrDistributionCache } from './ExpandedTrDistributions'
 
-jest.mock('../Link', () => ({ children, to, onClick }: any) => (
-  <a href={to} onClick={onClick}>
+jest.mock('../Link', () => ({ children, to, onClick, title }: any) => (
+  <a href={to} onClick={onClick} title={title}>
     {children}
   </a>
 ))
 
-jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot', () => ({
-  __esModule: true,
-  default: ({ alleleSizeDistribution, repeatUnit }: any) => (
-    <div
-      aria-label="full allele size distribution"
-      data-repeats={alleleSizeDistribution
-        .map((item: any) => item.repunit_count)
-        .sort((a: number, b: number) => a - b)
-        .join(',')}
-      data-total={alleleSizeDistribution.reduce(
-        (sum: number, item: any) => sum + item.frequency,
-        0
-      )}
-      data-colors={alleleSizeDistribution
-        .map((item: any) => item.colorByValue)
-        .filter(Boolean)
-        .sort()
-        .join(',')}
-      data-repeat-unit={repeatUnit || ''}
-    />
-  ),
-}))
-
-jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatGenotypeDistributionPlot', () => ({
-  __esModule: true,
-  default: ({ genotypeDistribution, axisLabels }: any) => (
-    <div
-      aria-label="full genotype distribution"
-      data-genotypes={genotypeDistribution
-        .map((item: any) => `${item.short_allele_repunit_count}/${item.long_allele_repunit_count}`)
-        .sort()
-        .join(',')}
-      data-total={genotypeDistribution.reduce((sum: number, item: any) => sum + item.frequency, 0)}
-      data-axis-labels={axisLabels.join(',')}
-    />
-  ),
-}))
-
-const variantId = 'chr4-39279700-TRV-21~4'
-const sourceVariantId = 'chr4-39279700-TRV-21'
-
-const haplotypeVariant = {
-  variant_id: variantId,
+const locusId = '4-39348424-39348479-AAAAG'
+const sourceVariantId = 'chr4-39348424-TRV-55'
+const variant = {
+  variant_id: `${sourceVariantId}~7`,
   source_variant_id: sourceVariantId,
+  tr_id: locusId,
   chrom: 'chr4',
-  pos: 39279700,
-  end: 39279721,
-  ref: 'TTTTTTTTTTTTTTTTTTTTT',
-  alt: 'TTTTTTTTTTTTTTTTTTT',
+  pos: 39348424,
+  end: 39348479,
+  ref: 'A',
+  alt: 'AAAAAG',
   allele_type: 'trv',
-  allele_length: -2,
-  freq: { af: 0.1, ac: 1, an: 584 },
+  allele_length: -5,
+  freq: { af: 0.231959, ac: 135, an: 582 },
   populations: [],
   rsid: '',
 }
@@ -71,99 +31,21 @@ const haplotypeGroups = {
   groups: [
     {
       hash: 1,
-      start: 39279700,
-      stop: 39279721,
+      start: 39348424,
+      stop: 39348479,
       samples: [
         {
           sample_id: 'sample-1',
           vcf_strand: 1,
           phase_set: null,
-          variant_sets: [{ readable_id: '', variants: [haplotypeVariant] }],
+          variant_sets: [{ readable_id: '', variants: [variant] }],
         },
       ],
-      variants: { readable_id: '', variants: [haplotypeVariant] },
+      variants: { readable_id: '', variants: [variant] },
       below_threshold: { readable_id: '', variants: [] },
     },
   ],
 }
-
-const fullDistribution = {
-  variant_id: variantId,
-  lr_cohort: 'hgsvc_hprc',
-  // Exercise the component's repeat-unit fallback when motifs are absent.
-  motifs: [],
-  max_repunits: 24,
-  main_reference_region: { chrom: 'chr4', start: 39279700, stop: 39279721 },
-  allele_size_distribution: [
-    {
-      ancestry_group: 'afr',
-      sex: 'XX',
-      repunit: 'T',
-      distribution: [
-        { repunit_count: 13, frequency: 2 },
-        { repunit_count: 19, frequency: 20 },
-        { repunit_count: 21, frequency: 5 },
-      ],
-    },
-    {
-      ancestry_group: 'nfe',
-      sex: 'XY',
-      repunit: 'T',
-      distribution: [
-        { repunit_count: 14, frequency: 2 },
-        { repunit_count: 18, frequency: 27 },
-        { repunit_count: 19, frequency: 408 },
-        { repunit_count: 20, frequency: 84 },
-        { repunit_count: 21, frequency: 36 },
-      ],
-    },
-    {
-      ancestry_group: 'afr',
-      sex: 'unknown',
-      repunit: 'T',
-      distribution: [{ repunit_count: 22, frequency: 7 }],
-    },
-  ],
-  genotype_distribution: [
-    {
-      ancestry_group: 'afr',
-      sex: 'XX',
-      short_allele_repunit: 'T',
-      long_allele_repunit: 'T',
-      distribution: [
-        { short_allele_repunit_count: 13, long_allele_repunit_count: 19, frequency: 2 },
-        { short_allele_repunit_count: 19, long_allele_repunit_count: 21, frequency: 17 },
-      ],
-    },
-    {
-      ancestry_group: 'nfe',
-      sex: 'XY',
-      short_allele_repunit: 'T',
-      long_allele_repunit: 'T',
-      distribution: [
-        { short_allele_repunit_count: 14, long_allele_repunit_count: 20, frequency: 1 },
-        { short_allele_repunit_count: 21, long_allele_repunit_count: 21, frequency: 5 },
-      ],
-    },
-    {
-      ancestry_group: 'afr',
-      sex: 'unknown',
-      short_allele_repunit: 'T',
-      long_allele_repunit: 'T',
-      distribution: [
-        { short_allele_repunit_count: 20, long_allele_repunit_count: 22, frequency: 4 },
-      ],
-    },
-  ],
-}
-
-const responseWithVariant = (variant: any) => ({
-  ok: true,
-  status: 200,
-  json: jest.fn<() => Promise<any>>().mockResolvedValue({
-    data: { long_read_variant: variant },
-  }),
-})
 
 const renderTable = () =>
   render(
@@ -171,165 +53,30 @@ const renderTable = () =>
       mode="haplotype"
       lrCohort="hgsvc_hprc"
       haplotypeGroups={haplotypeGroups as any}
+      totalGroups={1}
     />
   )
 
-const expandRow = () =>
-  fireEvent.click(screen.getByText(sourceVariantId.replace(/^chr/, '')).closest('tr')!)
-
-describe('expanded TR full-cohort distributions', () => {
-  beforeEach(() => {
-    clearExpandedTrDistributionCache()
-    global.fetch = jest.fn() as typeof fetch
-  })
-
-  test('opens full-cohort context and its scientific summary by default', () => {
-    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
-    fetchMock.mockReturnValue(new Promise(() => {}) as any)
-
+describe('TR locus rows use the dedicated fixed-height experience', () => {
+  test('uses the authoritative locus as the primary link', () => {
     renderTable()
-    expect(fetchMock).not.toHaveBeenCalled()
-    expandRow()
-
-    const section = screen.getByLabelText(
-      'Full-cohort repeat-count distributions'
-    ) as HTMLDetailsElement
-    expect(section.tagName).toBe('DETAILS')
-    expect(section.open).toBe(true)
-    expect(section.textContent).toContain('Full-cohort repeat-count distributions')
-    expect(section.textContent).toContain('aggregate called-allele repeat counts')
-    expect(fetchMock).toHaveBeenCalledTimes(1)
-
-    section.open = false
-    fireEvent(section, new Event('toggle'))
-    expect(section.open).toBe(false)
-
-    fireEvent.click(screen.getByLabelText('About full-cohort repeat-count distributions'))
-
-    expect(screen.getByText(/aggregate repeat counts for all called HGSVC\/HPRC/)).not.toBeNull()
-    expect(screen.getByText(/not sequence-structure distributions/)).not.toBeNull()
-    expect(
-      screen.getByText(/do not encode motif order, interruptions, or exact ALT sequences/)
-    ).not.toBeNull()
-  })
-
-  test('keeps the sticky header opaque and above an expanded TR distribution', async () => {
-    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
-    fetchMock.mockResolvedValue(responseWithVariant(fullDistribution) as any)
-
-    renderTable()
-    expandRow()
-
-    expect(await screen.findByLabelText('full allele size distribution')).not.toBeNull()
-    const header = screen.getByRole('columnheader', { name: 'Variant ID' })
-    const headerStyle = window.getComputedStyle(header)
-    expect(headerStyle.position).toBe('sticky')
-    expect(['rgb(245, 245, 245)', 'rgb(234, 234, 234)']).toContain(headerStyle.backgroundColor)
-    expect(Number(headerStyle.zIndex)).toBeGreaterThan(0)
-  })
-
-  test('fetches structured long_read_variant data on parent-row expansion, renders full data and caches re-expansion', async () => {
-    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
-    fetchMock.mockResolvedValue(responseWithVariant(fullDistribution) as any)
-
-    renderTable()
-    expect(fetchMock).not.toHaveBeenCalled()
-
-    expandRow()
-    const section = screen.getByLabelText(
-      'Full-cohort repeat-count distributions'
-    ) as HTMLDetailsElement
-    expect(section.tagName).toBe('DETAILS')
-    expect(section.open).toBe(true)
-    expect(screen.queryByLabelText('full allele size distribution')).toBeNull()
-    expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(screen.getByRole('status').textContent).toContain(
-      'Loading full cohort STR distributions'
+    expect(screen.getByRole('link').getAttribute('href')).toBe(
+      `/tandem-repeat/${locusId}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
-
-    const allelePlot = await screen.findByLabelText('full allele size distribution')
-    const genotypePlot = screen.getByLabelText('full genotype distribution')
-    expect(allelePlot.getAttribute('data-repeats')).toBe('13,14,18,19,20,21,22')
-    expect(allelePlot.getAttribute('data-total')).toBe('591')
-    expect(allelePlot.getAttribute('data-repeat-unit')).toBe('T')
-    expect(allelePlot.parentElement?.style.height).toBe('300px')
-    expect(genotypePlot.parentElement?.style.aspectRatio).toBe('1 / 1')
-    expect(genotypePlot.parentElement?.style.maxWidth).toBe('320px')
-    expect(genotypePlot.parentElement?.style.maxHeight).toBe('320px')
-    expect(genotypePlot.getAttribute('data-genotypes')).toBe('13/19,14/20,19/21,20/22,21/21')
-    expect(genotypePlot.getAttribute('data-total')).toBe('29')
-    expect(genotypePlot.getAttribute('data-axis-labels')).toBe('longer T allele,shorter T allele')
-    expect(screen.getByText(/Repeat motif: T/)).not.toBeNull()
-
-    expect(fetchMock).toHaveBeenCalledTimes(1)
-    const request = fetchMock.mock.calls[0][1] as RequestInit
-    const body = JSON.parse(request.body as string)
-    expect(body.query).toContain('long_read_variant')
-    expect(body.query).toContain('allele_size_distribution')
-    expect(body.query).toContain('genotype_distribution')
-    expect(body.variables).toEqual({ variantId, lrCohort: 'hgsvc_hprc' })
-
-    const colorByControl = screen.getByLabelText(/Color by/)
-    fireEvent.change(colorByControl, { target: { value: 'sex' } })
-    expect(allelePlot.getAttribute('data-colors')).toBe('XX,XX,XX,XY,XY,XY,XY,XY,unknown')
-
-    const sexControls = screen.getAllByLabelText(/Sex:/)
-    expect(
-      Array.from((sexControls[0] as HTMLSelectElement).options).map((option) => option.text)
-    ).toContain('Unknown')
-    fireEvent.change(sexControls[0], { target: { value: 'unknown' } })
-    expect(allelePlot.getAttribute('data-repeats')).toBe('22')
-    expect(allelePlot.getAttribute('data-total')).toBe('7')
-    expect(allelePlot.getAttribute('data-colors')).toBe('unknown')
-    fireEvent.change(sexControls[1], { target: { value: 'unknown' } })
-    expect(genotypePlot.getAttribute('data-genotypes')).toBe('20/22')
-    expect(genotypePlot.getAttribute('data-total')).toBe('4')
-
-    const ancestryControls = screen.getAllByLabelText(/Genetic ancestry group/)
-    fireEvent.change(sexControls[0], { target: { value: '' } })
-    fireEvent.change(ancestryControls[0], { target: { value: 'afr' } })
-    expect(allelePlot.getAttribute('data-repeats')).toBe('13,19,21,22')
-    fireEvent.change(sexControls[1], { target: { value: '' } })
-    fireEvent.change(ancestryControls[1], { target: { value: 'nfe' } })
-    expect(genotypePlot.getAttribute('data-genotypes')).toBe('14/20,21/21')
-
-    expandRow()
-    expect(screen.queryByLabelText('Full-cohort repeat-count distributions')).toBeNull()
-    expandRow()
-    await screen.findByLabelText('full allele size distribution')
-    expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
-  test('shows the unavailable state without the hidden assigned-carrier plot', async () => {
-    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
-    fetchMock.mockResolvedValue(
-      responseWithVariant({
-        ...fullDistribution,
-        allele_size_distribution: null,
-        max_repunits: null,
-        genotype_distribution: null,
-      }) as any
-    )
-
-    renderTable()
-    expandRow()
-
-    expect(await screen.findByText(/Full-cohort STR distributions are unavailable/)).not.toBeNull()
-    expect(screen.queryByText('Assigned-carrier length distribution')).toBeNull()
-    expect(screen.queryByLabelText('About the assigned-carrier length distribution')).toBeNull()
-    expect(screen.queryByLabelText('TR allele length distribution')).toBeNull()
+  test('never adds an inline expanded child row', () => {
+    const { container } = renderTable()
+    const rowsBefore = container.querySelectorAll('tbody tr').length
+    fireEvent.click(screen.getByRole('link').closest('tr')!)
+    expect(container.querySelectorAll('tbody tr')).toHaveLength(rowsBefore)
+    expect(screen.queryByText('Assigned motif structures')).toBeNull()
+    expect(screen.queryByText('TR Allele Size Distribution')).toBeNull()
   })
 
-  test('reports a lazy-load error without removing haplotype context', async () => {
-    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
-    fetchMock.mockRejectedValue(new Error('network unavailable'))
-
-    renderTable()
-    expandRow()
-
-    expect((await screen.findByRole('alert')).textContent).toContain(
-      'Unable to load the full cohort STR distributions.'
-    )
-    expect(screen.queryByText('Assigned-carrier length distribution')).toBeNull()
+  test('keeps all rendered cells nowrap for one-line rows', () => {
+    const { container } = renderTable()
+    expect(container.textContent).toContain('4-39348424-TRV-55')
+    expect(getComputedStyle(container.querySelector('tbody td')!).whiteSpace).toBe('nowrap')
   })
 })

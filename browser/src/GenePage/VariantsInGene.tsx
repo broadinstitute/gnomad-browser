@@ -295,6 +295,8 @@ const longReadVariantFields = `
 		allele_type
 		filters
 		motifs
+		tr_locus_id
+		tr_structure
 		main_reference_region {
 			chrom
 			start

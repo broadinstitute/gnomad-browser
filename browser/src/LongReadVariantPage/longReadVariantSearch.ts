@@ -85,6 +85,7 @@ export type LongReadSearchableVariant = {
   motifs?: string[] | null
   motif?: string | null
   tr_id?: string | null
+  tr_locus_id?: string | null
   tr_ids?: string[] | null
   tandem_repeat_id?: string | null
   tandem_repeat_ids?: string[] | null
@@ -450,6 +451,7 @@ const identifierValues = (variant: LongReadSearchableVariant) => [
   ...stringValues(variant.allele_type),
   ...stringValues(variant.gnomad_str),
   ...stringValues(variant.tr_id),
+  ...stringValues(variant.tr_locus_id),
   ...stringValues(variant.tr_ids),
   ...stringValues(variant.tandem_repeat_id),
   ...stringValues(variant.tandem_repeat_ids),

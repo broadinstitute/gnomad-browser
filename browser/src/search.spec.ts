@@ -88,6 +88,29 @@ describe('fetchSearchResults', () => {
     ])
   })
 
+  it('recognizes canonical TR locus IDs before long-read allele IDs', async () => {
+    const locusId = '4-39348424-39348479-AAAAG'
+    expect(await fetchSearchResults('gnomad_r4_lr', locusId, { lrCohort: 'aou' })).toEqual([
+      {
+        label: `Tandem-repeat locus ${locusId}`,
+        value: `/tandem-repeat/${locusId}?dataset=gnomad_r4_lr&lr_cohort=aou`,
+      },
+    ])
+  })
+
+  it('canonicalizes source-style compound TRID search aliases without losing order', async () => {
+    const sourceId = '4-1-10-CAG,4-8-12-CAA,4-12-15-CAG'
+    const canonicalId = '4-1-10-CAG+4-8-12-CAA+4-12-15-CAG'
+    expect(
+      await fetchSearchResults('gnomad_r4_lr', sourceId, { lrCohort: 'hgsvc_hprc' })
+    ).toEqual([
+      {
+        label: `Tandem-repeat locus ${canonicalId}`,
+        value: `/tandem-repeat/${canonicalId}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`,
+      },
+    ])
+  })
+
   it('hides an LR transport suffix in suggestions while preserving the canonical URL', async () => {
     expect(
       await fetchSearchResults('gnomad_r4_lr', 'chr22-20077152-DEL-7~2', {

@@ -1,6 +1,7 @@
 export type TrAlleleRecord = {
   variant_id: string
   source_variant_id?: string | null
+  tr_locus_id?: string | null
   alt_index?: number | null
   lr_cohort?: string | null
   chrom?: string
@@ -50,6 +51,7 @@ const coordinates = (variant: TrAlleleRecord) => {
  */
 export const getTrLocusKey = (variant: TrAlleleRecord): string => {
   const scope = variant.lr_cohort ? `cohort:${variant.lr_cohort}:` : ''
+  if (variant.tr_locus_id) return `${scope}locus:${variant.tr_locus_id}`
   if (variant.source_variant_id) return `${scope}source:${variant.source_variant_id}`
   const locus = coordinates(variant)
   return `${scope}coordinates:${locus.chrom}:${locus.start}:${locus.stop}`

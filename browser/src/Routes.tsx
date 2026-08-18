@@ -3,6 +3,7 @@ import queryString from 'query-string'
 import { Redirect, Route, Switch } from 'react-router-dom'
 
 import { isRegionId, normalizeRegionId } from '@gnomad/identifiers'
+import { parseTrLocusId } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { Page, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from './DocumentTitle'
@@ -38,6 +39,9 @@ const LongReadLiteratureWorkflowPage = lazy(() => import('./LongReadLiteratureWo
 const ReferenceSequenceContextPage = lazy(() => import('./ReferenceSequenceContextPage'))
 const TranscriptPageContainer = lazy(() => import('./TranscriptPage/TranscriptPageContainer'))
 const VariantPageRouter = lazy(() => import('./VariantPageRouter'))
+const LongReadTandemRepeatPageContainer = lazy(
+  () => import('./LongReadTandemRepeatPage/LongReadTandemRepeatPageContainer')
+)
 
 const ShortTandemRepeatPageContainer = lazy(
   () => import('./ShortTandemRepeatPage/ShortTandemRepeatPageContainer')
@@ -100,11 +104,7 @@ const Routes = () => {
         path="/long-read-literature-examples/paper/:slug"
         component={LongReadLiteratureWorkflowPage}
       />
-      <Route
-        exact
-        path="/reference-sequence-context"
-        component={ReferenceSequenceContextPage}
-      />
+      <Route exact path="/reference-sequence-context" component={ReferenceSequenceContextPage} />
 
       <Route
         exact
@@ -155,6 +155,40 @@ const Routes = () => {
             <TranscriptPageContainer
               datasetId={datasetId}
               transcriptId={match.params.transcriptId}
+            />
+          )
+        }}
+      />
+
+      <Route
+        exact
+        path="/tandem-repeat/:locusId"
+        render={({ location, match }: any) => {
+          const locus = parseTrLocusId(match.params.locusId)
+          if (!locus) {
+            return (
+              <Page>
+                <DocumentTitle title="Invalid tandem-repeat locus" />
+                <PageHeading>Invalid tandem-repeat locus</PageHeading>
+              </Page>
+            )
+          }
+          const queryParams = queryString.parse(location.search)
+          const datasetId = (queryParams.dataset || 'gnomad_r4_lr') as DatasetId
+          const lrCohort = parseLongReadCohort(queryParams.lr_cohort) || 'hgsvc_hprc'
+          const selectedAllele =
+            typeof queryParams.allele === 'string' ? queryParams.allele : undefined
+          if (locus.canonicalId !== match.params.locusId) {
+            return (
+              <Redirect to={{ ...location, pathname: `/tandem-repeat/${locus.canonicalId}` }} />
+            )
+          }
+          return (
+            <LongReadTandemRepeatPageContainer
+              datasetId={datasetId}
+              locusId={locus.canonicalId}
+              lrCohort={lrCohort}
+              selectedAllele={selectedAllele}
             />
           )
         }}

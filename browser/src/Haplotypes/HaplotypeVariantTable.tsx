@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import { Badge } from '@gnomad/ui'
+import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
 import { SUPERPOPULATION_COLORS } from './colors'
@@ -42,6 +43,8 @@ import {
 
 type DerivedVariant = LRVariant & {
   source_variant_id?: string
+  tr_locus_id?: string | null
+  tr_id?: string | null
   lr_cohort?: 'hgsvc_hprc' | 'aou'
   group_count: number
   carrier_count: number
@@ -164,13 +167,6 @@ const MatchBadge = styled.span<{ $level: 'exact' | 'truvari' | 'none' }>`
   color: white;
   background: ${(p) =>
     p.$level === 'exact' ? '#43A047' : p.$level === 'truvari' ? '#FFA000' : '#9E9E9E'};
-`
-
-const ExpandToggle = styled.span`
-  cursor: pointer;
-  user-select: none;
-  margin-right: 4px;
-  font-size: 10px;
 `
 
 const TrExpandedRow = styled.tr`
@@ -452,7 +448,6 @@ type TableRowProps = {
   lrCohort: LongReadCohort
   onHoverVariant?: (position: number | null) => void
   onRowClick?: (pos: number) => void
-  toggleExpand: (id: string) => void
 }
 
 const TableRow = React.memo(function TableRow({
@@ -472,7 +467,6 @@ const TableRow = React.memo(function TableRow({
   lrCohort,
   onHoverVariant,
   onRowClick,
-  toggleExpand,
 }: TableRowProps) {
   const COL_COUNT = (showGroupAf ? 12 : 11) - (mode === 'haplotype' && !showGroupCount ? 1 : 0)
   return (
@@ -489,14 +483,11 @@ const TableRow = React.memo(function TableRow({
           transition: 'background 0.3s ease',
         }}
         onClick={() => {
-          if (v.is_tr) toggleExpand(v.variant_id)
+          // Dedicated locus/detail pages keep every summary row fixed-height.
           onRowClick?.(v.pos)
         }}
       >
         <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
-          {v.is_tr && (
-            <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
-          )}
           {(() => {
             // TR rows are locus aggregates in phases 1–2, not one exact ALT.
             // Keep their source/locus label until the separate locus-page phase;
@@ -508,7 +499,11 @@ const TableRow = React.memo(function TableRow({
             return (
               <>
                 <Link
-                  to={longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)}
+                  to={
+                    v.is_tr && (v.tr_locus_id || v.tr_id)
+                      ? trLocusUrl(v.tr_locus_id || v.tr_id!, v.lr_cohort || lrCohort)
+                      : longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)
+                  }
                   preserveSelectedDataset={false}
                   onClick={(e: React.MouseEvent) => e.stopPropagation()}
                   title={identity.accessibleLabel}
@@ -798,18 +793,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     synonymous: true,
     other: true,
   })
-  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
   const [highlightedPosition, setHighlightedPosition] = useState<number | null>(null)
   const highlightTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const toggleExpand = useCallback((id: string) => {
-    setExpandedRows((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
-    })
-  }, [])
 
   const tableScrollRef = useRef<HTMLDivElement>(null)
   const sortedRef = useRef<DerivedVariant[]>([])
@@ -821,15 +806,6 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   // Track visible row window — only triggers re-render when rows actually need
   // to change (scroll moves past half the buffer), NOT on every scroll pixel.
   const [visibleWindow, setVisibleWindow] = useState({ startRow: 0, endRow: Math.ceil(500 / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS })
-
-  // Reset visible window when folding all TR rows — prevents stale spacers
-  // from creating whitespace when virtualization re-enables.
-  useEffect(() => {
-    if (expandedRows.size === 0 && tableScrollRef.current) {
-      tableScrollRef.current.scrollTop = 0
-      setVisibleWindow({ startRow: 0, endRow: Math.ceil(500 / ROW_HEIGHT) + 2 * VISIBLE_BUFFER_ROWS })
-    }
-  }, [expandedRows.size])
 
   const handleTableScroll = useCallback(() => {
     if (!tableScrollRef.current) return
@@ -1427,18 +1403,6 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           </span>
         )}
         <ExportButton onClick={exportCSV}>Export CSV</ExportButton>
-        {sorted.some((v) => v.is_tr) && (
-          <>
-            <ExportButton
-              onClick={() =>
-                setExpandedRows(new Set(sorted.filter((v) => v.is_tr).map((v) => v.variant_id)))
-              }
-            >
-              Expand all TR
-            </ExportButton>
-            <ExportButton onClick={() => setExpandedRows(new Set())}>Fold all TR</ExportButton>
-          </>
-        )}
         <CountLabel>
           Showing {sorted.length} of {variants.length} variants
         </CountLabel>
@@ -1515,7 +1479,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
               // (e.g. filtered to TR-only). Virtualization with variable-height expanded
               // rows causes spacer drift since off-screen rows can't be measured.
               const VIRTUALIZE_THRESHOLD = 200
-              const shouldVirtualize = sorted.length >= VIRTUALIZE_THRESHOLD && expandedRows.size === 0
+              const shouldVirtualize = sorted.length >= VIRTUALIZE_THRESHOLD
 
               let startRow = 0
               let endRow = sorted.length
@@ -1535,7 +1499,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                   {topPad > 0 && <tr style={{ height: topPad }} />}
                   {sorted.slice(startRow, endRow).map((v, sliceIdx) => {
                     const i = startRow + sliceIdx
-                    const isExpanded = v.is_tr && expandedRows.has(v.variant_id)
+                    const isExpanded = false
                     return (
                       <TableRow
                         key={`${v.pos}-${v.variant_id}-${i}`}
@@ -1555,7 +1519,6 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         lrCohort={lrCohort}
                         onHoverVariant={onHoverVariant}
                         onRowClick={onRowClick}
-                        toggleExpand={toggleExpand}
                       />
                     )
                   })}

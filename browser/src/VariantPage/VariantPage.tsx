@@ -333,6 +333,9 @@ export type LongReadDetails = {
   end: number | null
   length: number | null
   motifs: string[] | null
+  tr_locus_id: string | null
+  tr_locus_components: { chrom: string; start0: number; end0: number; motif: string }[] | null
+  tr_structure: string | null
   is_likely_tr: boolean | null
   enveloping_tr_id: string | null
   enveloped_ids: string[] | null
@@ -797,6 +800,9 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $lrCohort: L
       end
       length
       motifs
+      tr_locus_id
+      tr_locus_components { chrom start0 end0 motif }
+      tr_structure
       is_likely_tr
       enveloping_tr_id
       enveloped_ids

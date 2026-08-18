@@ -13,15 +13,27 @@ import {
 } from '@gnomad/dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
 import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
+import { parseTrLocusId } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { formatLongReadVariantId } from './LongReadVariantPage/formatLongReadVariantId'
 
 export type SearchOptions = {
   lrCohort?: 'hgsvc_hprc' | 'aou'
 }
 
-type SearchResultKind = 'gene' | 'region' | 'variant' | 'transcript' | 'variant-cooccurrence'
+type SearchResultKind =
+  | 'gene'
+  | 'region'
+  | 'variant'
+  | 'tandem-repeat'
+  | 'transcript'
+  | 'variant-cooccurrence'
 
-const longReadCompatibleResultKinds = new Set<SearchResultKind>(['gene', 'region', 'variant'])
+const longReadCompatibleResultKinds = new Set<SearchResultKind>([
+  'gene',
+  'region',
+  'variant',
+  'tandem-repeat',
+])
 
 export const getSearchDatasetForSelectedDataset = (selectedDataset: unknown): DatasetId => {
   if (typeof selectedDataset === 'string') {
@@ -162,6 +174,21 @@ export const fetchSearchResults = (
     // ==============================================================================================
     // Variants
     // ==============================================================================================
+
+    const trLocus = datasetId === 'gnomad_r4_lr' ? parseTrLocusId(query) : null
+    if (trLocus) {
+      return Promise.resolve([
+        {
+          label: `Tandem-repeat locus ${trLocus.canonicalId}`,
+          value: searchResultUrl(
+            `/tandem-repeat/${trLocus.canonicalId}`,
+            datasetId,
+            'tandem-repeat',
+            options
+          ),
+        },
+      ])
+    }
 
     if (datasetId === 'gnomad_r4_lr' && isLongReadVariantId(query)) {
       return Promise.resolve([
