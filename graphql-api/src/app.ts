@@ -1,4 +1,3 @@
-import compression from 'compression'
 import cors from 'cors'
 import { randomUUID } from 'crypto'
 import express from 'express'
@@ -13,7 +12,6 @@ import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
 
 const app = express()
-app.use(compression())
 app.use(cors())
 app.use(express.json())
 
