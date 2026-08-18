@@ -17,7 +17,8 @@ import { TitleWrapper, Separator, VariantIdWrapper } from '../VariantPage/Varian
 import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import LongReadVariantPageContent from './LongReadVariantPageContent'
 import type { LongReadCohort } from './longReadCohort'
-import { formatLongReadVariantId } from './formatLongReadVariantId'
+import VariantNotFound from '../VariantPage/VariantNotFound'
+import { formatLongReadAlleleDisplay, formatLongReadVariantId } from './formatLongReadVariantId'
 
 const ALLELE_TYPE_LABELS: Record<string, string> = {
   snv: 'SNV',
@@ -33,13 +34,21 @@ const VariantPageTitle = ({
   variantId,
   variantType,
   datasetId,
+  variant,
 }: {
   variantId: string
   variantType: string
   datasetId: DatasetId
+  variant?: LongReadVariant | null
 }) => {
   const variantDescription = ALLELE_TYPE_LABELS[variantType] || variantType
-  const displayVariantId = formatLongReadVariantId(variantId)
+  const display = variant
+    ? formatLongReadAlleleDisplay(variant)
+    : {
+        label: formatLongReadVariantId(variantId),
+        accessibleLabel: `Canonical long-read ID: ${variantId}`,
+      }
+  const displayVariantId = display.label
   return (
     <TitleWrapper>
       {variantDescription === 'SNV' ? (
@@ -53,7 +62,7 @@ const VariantPageTitle = ({
 
       <Separator style={{ width: '1ch' }}>:</Separator>
       {/* @ts-expect-error TS(2322) FIXME: Type '{ children: Element; tooltip: string; }' is ... Remove this comment to see the full error message */}
-      <TooltipAnchor tooltip={displayVariantId}>
+      <TooltipAnchor tooltip={display.accessibleLabel}>
         <VariantIdWrapper>{displayVariantId} </VariantIdWrapper>
       </TooltipAnchor>
       <Separator> </Separator>
@@ -64,6 +73,9 @@ const VariantPageTitle = ({
 
 export type LongReadVariant = {
   variant_id: string
+  source_variant_id?: string | null
+  alt_index?: number | null
+  alt_count?: number | null
   lr_cohort?: LongReadCohort | null
   chrom: string
   pos: number
@@ -127,11 +139,14 @@ const LongReadVariantPage = ({
   const operationName = 'LongReadVariant'
   const displayVariantId = formatLongReadVariantId(variantId)
   let geneId: string | null = null
-  let variantAlleleType: string = 'Variant'
+  let variantAlleleType = 'Variant'
   const variantQuery = `
 	query ${operationName}($variantId: String!, $lrCohort: LongReadCohort) {
 	  long_read_variant(variantId: $variantId, lr_cohort: $lrCohort) {
 	    variant_id
+	    source_variant_id
+	    alt_index
+	    alt_count
 	    lr_cohort
 	    chrom
 	    pos
@@ -228,6 +243,7 @@ const LongReadVariantPage = ({
         >
           {({ data, error, graphQLErrors, loading }: any) => {
             let pageContent = null
+            let loadedVariant: LongReadVariant | null = null
             if (loading) {
               pageContent = (
                 <Delayed>
@@ -260,6 +276,7 @@ const LongReadVariantPage = ({
               }
             } else {
               const variant = data.long_read_variant
+              loadedVariant = variant
 
               // In this branch, a variant was successfully loaded. Check the symbol
               //   and ensemble ID to create a 'Gene page' button with the correct link
@@ -291,11 +308,24 @@ const LongReadVariantPage = ({
                       {navigator.clipboard && navigator.clipboard.writeText && (
                         <Button
                           onClick={() => {
-                            navigator.clipboard.writeText(variantId)
+                            navigator.clipboard.writeText(loadedVariant?.variant_id || variantId)
                           }}
                           style={{ margin: '0 0 0 1em' }}
                         >
-                          Copy variant ID
+                          Copy canonical ID
+                        </Button>
+                      )}
+
+                      {loadedVariant && navigator.clipboard && navigator.clipboard.writeText && (
+                        <Button
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              formatLongReadAlleleDisplay(loadedVariant!).label
+                            )
+                          }}
+                          style={{ margin: '0 0 0 0.5em' }}
+                        >
+                          Copy display label
                         </Button>
                       )}
 
@@ -316,6 +346,7 @@ const LongReadVariantPage = ({
                     variantId={variantId}
                     datasetId={datasetId}
                     variantType={variantAlleleType}
+                    variant={loadedVariant}
                   />
                 </GnomadPageHeading>
                 {pageContent}

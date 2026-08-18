@@ -127,6 +127,11 @@ type LongReadAllelicSeriesAllele {
 }
 
 type LongReadVariantDetails {
+  # Reproducibility identity. UI labels may differ, but routes and queries use
+  # variant_id = source_variant_id~alt_index for accepted Y1 records.
+  source_variant_id: String
+  alt_index: Int
+  alt_count: Int
   allele_type: String
   end: Int
   length: Int

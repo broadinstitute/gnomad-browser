@@ -6,7 +6,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 import { LongReadVariant } from './LongReadVariantPage'
 import { longReadVariantUrl } from './longReadCohort'
-import { formatLongReadVariantId } from './formatLongReadVariantId'
+import { formatLongReadAlleleDisplay, formatLongReadVariantId } from './formatLongReadVariantId'
 import TableWrapper from '../TableWrapper'
 import sampleCounts from '@gnomad/dataset-metadata/datasets/gnomad-v4-lr/sampleCounts'
 import { variantFeedbackUrl } from '../variantFeedback'
@@ -145,10 +145,38 @@ const LongReadVariantPageContent = ({ datasetId, variant }: Props) => {
 const LongReadVariantAttributeTable = ({ variant }: { variant: LongReadVariant }) => {
   const alleleTypeLabel = ALLELE_TYPE_LABELS[variant.allele_type] || variant.allele_type
   const hasSpan = variant.end != null && variant.length != null
+  const identity = formatLongReadAlleleDisplay(variant)
 
   return (
     <Table>
       <tbody>
+        <tr>
+          <th scope="row">Display allele ID</th>
+          <td>{identity.label}</td>
+        </tr>
+        <tr>
+          <th scope="row">Canonical browser ID</th>
+          <td>
+            <code>{variant.variant_id}</code>
+          </td>
+        </tr>
+        {variant.source_variant_id && (
+          <tr>
+            <th scope="row">Source VCF record ID</th>
+            <td>
+              <code>{variant.source_variant_id}</code>
+            </td>
+          </tr>
+        )}
+        {variant.alt_index != null && (
+          <tr>
+            <th scope="row">Source ALT allele</th>
+            <td>
+              ALT {variant.alt_index}
+              {variant.alt_count != null ? ` of ${variant.alt_count}` : ''}
+            </td>
+          </tr>
+        )}
         <tr>
           <th scope="row">Allele Type</th>
           <td>{alleleTypeLabel}</td>

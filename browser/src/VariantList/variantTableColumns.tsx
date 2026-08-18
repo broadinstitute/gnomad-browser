@@ -18,7 +18,7 @@ import VariantFlag from './VariantFlag'
 import { Variant } from '../VariantPage/VariantPage'
 import { DatasetId, isLongRead } from '@gnomad/dataset-metadata/metadata'
 import { longReadVariantUrl } from '../LongReadVariantPage/longReadCohort'
-import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
+import { formatLongReadAlleleDisplay } from '../LongReadVariantPage/formatLongReadVariantId'
 
 const categoryColors = {
   lof: '#DD2C00',
@@ -386,31 +386,78 @@ const variantTableColumns: VariantTableColumn[] = [
     minWidth: 150,
     grow: 1,
     compareFunction: makeNumericCompareFunction('pos'),
-    getSearchTerms: (variant: any) => [variant.variant_id].concat(variant.rsids || []),
-    render: (row: any, _: any, { highlightWords }: any) => (
-      <Cell>
-        <Link
-          target="_blank"
-          to={
-            row.lr_cohort
-              ? longReadVariantUrl(row.variant_id, row.lr_cohort)
-              : `/variant/${row.variant_id}`
-          }
-          preserveSelectedDataset={!row.lr_cohort}
-        >
-          <Highlighter
-            autoEscape
-            searchWords={highlightWords}
-            textToHighlight={row.lr_cohort ? formatLongReadVariantId(row.variant_id) : row.variant_id}
-          />
-        </Link>
-        {row.long_read_details?.is_likely_tr && (
-          <span style={{ marginLeft: '0.5ch' }}>
-            <Badge level="info">TR</Badge>
-          </span>
-        )}
-      </Cell>
-    ),
+    getSearchTerms: (variant: any) =>
+      [
+        variant.variant_id,
+        ...(variant.rsids || []),
+        ...(variant.long_read_alleles || []).flatMap((allele: any) => [
+          allele.variant_id,
+          allele.source_variant_id,
+          formatLongReadAlleleDisplay(allele).label,
+        ]),
+      ].filter(Boolean),
+    render: (row: any, _: any, { highlightWords }: any) => {
+      const lrIdentity = row.lr_cohort
+        ? formatLongReadAlleleDisplay({
+            ...row,
+            ...row.long_read_details,
+            allele_type: row.long_read_details?.allele_type,
+          })
+        : null
+      return (
+        <Cell>
+          <Link
+            target="_blank"
+            to={
+              row.lr_cohort
+                ? longReadVariantUrl(row.variant_id, row.lr_cohort)
+                : `/variant/${row.variant_id}`
+            }
+            preserveSelectedDataset={!row.lr_cohort}
+            title={lrIdentity?.accessibleLabel}
+            aria-label={lrIdentity?.accessibleLabel}
+          >
+            <Highlighter
+              autoEscape
+              searchWords={highlightWords}
+              textToHighlight={lrIdentity?.compactLabel || row.variant_id}
+            />
+          </Link>
+          {lrIdentity?.alleleLabel && (
+            <span style={{ marginLeft: '0.5ch', whiteSpace: 'nowrap' }} title={lrIdentity.label}>
+              <Badge level="info">{lrIdentity.alleleLabel.replace('Allele ', 'ALT ')}</Badge>
+            </span>
+          )}
+          {!row.lr_cohort &&
+            row.long_read_alleles?.map((allele: any) => {
+              const identity = formatLongReadAlleleDisplay(allele)
+              return (
+                <span key={allele.variant_id} style={{ marginLeft: '0.5ch', whiteSpace: 'nowrap' }}>
+                  <Link
+                    target="_blank"
+                    to={longReadVariantUrl(allele.variant_id, allele.lr_cohort || 'hgsvc_hprc')}
+                    preserveSelectedDataset={false}
+                    title={identity.accessibleLabel}
+                    aria-label={identity.accessibleLabel}
+                  >
+                    <Badge level="info">
+                      LR
+                      {identity.alleleLabel
+                        ? ` ${identity.alleleLabel.replace('Allele ', 'ALT ')}`
+                        : ''}
+                    </Badge>
+                  </Link>
+                </span>
+              )
+            })}
+          {row.long_read_details?.is_likely_tr && (
+            <span style={{ marginLeft: '0.5ch' }}>
+              <Badge level="info">TR</Badge>
+            </span>
+          )}
+        </Cell>
+      )
+    },
   },
   {
     key: 'short_read_match_id',

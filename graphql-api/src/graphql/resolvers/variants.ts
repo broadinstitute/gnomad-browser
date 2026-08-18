@@ -117,6 +117,9 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
         },
 
         long_read_details: {
+          source_variant_id: lrVariant.source_variant_id,
+          alt_index: lrVariant.alt_index,
+          alt_count: lrVariant.alt_count,
           allele_type: lrVariant.allele_type,
           end: lrVariant.end,
           length: lrVariant.length,

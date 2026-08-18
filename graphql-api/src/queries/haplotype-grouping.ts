@@ -60,6 +60,9 @@ type GroupedRow = {
 
 export type LRVariant = {
   variant_id: string
+  source_variant_id: string | null
+  alt_index: number | null
+  alt_count: number | null
   chrom: string
   pos: number
   end: number | null
@@ -111,6 +114,11 @@ function buildVariant(
   allelePurity: number | null,
   shortReadMatchId: string | null, majorConsequence: string | null,
   referenceEnd?: number | null,
+  identity?: {
+    sourceVariantId: string | null
+    altIndex: number | null
+    altCount: number | null
+  },
 ): LRVariant {
   const populations: Array<{ id: string; af: number }> = []
   if (afAfr != null) populations.push({ id: 'afr', af: afAfr })
@@ -139,6 +147,9 @@ function buildVariant(
 
   return {
     variant_id: `${chrom.replace(/^chr/, '')}-${pos}-${ref}-${alt}`,
+    source_variant_id: identity?.sourceVariantId ?? null,
+    alt_index: identity?.altIndex ?? null,
+    alt_count: identity?.altCount ?? null,
     chrom,
     pos,
     end,
@@ -650,6 +661,9 @@ export const createHaplotypeGroups = (
 
 export type SoAVariants = {
   variant_id: string[]
+  source_variant_id: (string | null)[]
+  alt_index: (number | null)[]
+  alt_count: (number | null)[]
   chrom: string[]
   pos: number[]
   end: (number | null)[]
@@ -680,6 +694,9 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
   const n = variants.length
   const soa: SoAVariants = {
     variant_id: new Array(n),
+    source_variant_id: new Array(n),
+    alt_index: new Array(n),
+    alt_count: new Array(n),
     chrom: new Array(n),
     pos: new Array(n),
     end: new Array(n),
@@ -708,6 +725,9 @@ function packVariantsToSoA(variants: LRVariant[]): SoAVariants {
   for (let i = 0; i < n; i++) {
     const v = variants[i]
     soa.variant_id[i] = v.variant_id
+    soa.source_variant_id[i] = v.source_variant_id
+    soa.alt_index[i] = v.alt_index
+    soa.alt_count[i] = v.alt_count
     soa.chrom[i] = v.chrom
     soa.pos[i] = v.pos
     soa.end[i] = v.end
@@ -783,6 +803,11 @@ export const buildVariantsAndCarrierMap = (
       toNum(row.allele_purity),
       toStr(row.short_read_match_id), toStr(row.major_consequence),
       toNum(row.reference_end),
+      {
+        sourceVariantId: toStr(row.source_variant_id),
+        altIndex: toNum(row.alt_index),
+        altCount: toNum(row.alt_count),
+      },
     )
     if (row.variant_id) variant.variant_id = row.variant_id
     variants.push(variant)

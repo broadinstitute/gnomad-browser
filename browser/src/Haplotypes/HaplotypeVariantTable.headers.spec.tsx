@@ -19,7 +19,7 @@ const variant = (variantId: string, pos: number, alleleLength = 0) => ({
   pos,
   end: null,
   ref: 'A',
-  alt: alleleLength < 0 ? '' : `A${'T'.repeat(alleleLength)}`,
+  alt: variantId.split('-')[3] || (alleleLength < 0 ? '' : `A${'T'.repeat(alleleLength)}`),
   allele_type: alleleLength === 0 ? 'snv' : 'ins',
   allele_length: alleleLength,
   freq: { af: 0.1, ac: 1, an: 6 },
@@ -142,8 +142,14 @@ describe('variant-table count columns', () => {
     expect(rowIds(container)).toEqual(['22-200-A-G', '22-100-A-T'])
   })
 
-  test('omits the redundant count from Diploid rows and CSV without misaligning Carriers', () => {
-    const item = variant('22-100-A-T', 100)
+  test('omits the redundant count from Diploid rows and preserves display/machine identity in CSV', () => {
+    const item = {
+      ...variant('source-record~2', 100),
+      source_variant_id: 'source-record',
+      alt_index: 2,
+      alt_count: 3,
+      alt: 'T',
+    }
     const { container } = render(
       <HaplotypeVariantTable
         mode="haplotype"
@@ -185,6 +191,11 @@ describe('variant-table count columns', () => {
     expect(header).not.toContain('clusters')
     expect(row).toHaveLength(header.length)
     expect(row[header.indexOf('carriers')]).toBe('1/1')
+    expect(row[header.indexOf('variant_id')]).toBe('source-record~2')
+    expect(row[header.indexOf('display_id')]).toBe('22-100-A-T — Allele 2 of 3')
+    expect(row[header.indexOf('source_variant_id')]).toBe('source-record')
+    expect(row[header.indexOf('alt_index')]).toBe('2')
+    expect(row[header.indexOf('alt_count')]).toBe('3')
 
     clickSpy.mockRestore()
     blobSpy.mockRestore()

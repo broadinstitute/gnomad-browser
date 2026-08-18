@@ -32,7 +32,7 @@ describe('Y1 long-read browser identity', () => {
 
   it('normalizes source-summary motifs for exact-ALT decomposition', () => {
     const variant = mapY1RowToGraphQL({
-      source_variant_id: 'chr22-100-TRV-9', alt_index: 1, chrom: 'chr22',
+      source_variant_id: 'chr22-100-TRV-9', alt_index: 1, alt_count: 4, chrom: 'chr22',
       position: 100, reference_end: 108, xpos: 2200000100,
       ref_allele: 'ACAGCAG', alt: 'ACAGCAGCAG', allele_type: 'trv',
       filters: [], ac: 2, an: 10, af: 0.2, allele_length: 3,
@@ -40,6 +40,7 @@ describe('Y1 long-read browser identity', () => {
     }, 'hgsvc_hprc', [], 'run-1')
 
     expect(variant.motifs).toEqual(['CAG', 'CCG'])
+    expect(variant.alt_count).toBe(4)
   })
 
   it('joins primary source-summary motifs when fetching one routed variant', async () => {
@@ -77,7 +78,7 @@ describe('Y1 long-read browser identity', () => {
 
   it('preserves structured VCF strand and per-variant phase-set identity in REST carriers', () => {
     const row = (position: number, carriers: any[]) => ({
-      source_variant_id: `chr22-${position}-A-G`, alt_index: 1,
+      source_variant_id: `chr22-${position}-A-G`, alt_index: 1, alt_count: 2,
       position, reference_end: position, ref: 'A', alt: 'G', rsid: '',
       info_AF: 0.2, info_AC: 2, info_AN: 10, allele_type: 'snv', allele_length: 0,
       carriers,
@@ -87,6 +88,12 @@ describe('Y1 long-read browser identity', () => {
       row(200, [['sample:with-colon', 1, null, 2], ['sample:with-colon', 2, 'ps-b', 2]]),
     ], 'chr22')
 
+    expect(payload.soa_variants.source_variant_id).toEqual([
+      'chr22-100-A-G',
+      'chr22-200-A-G',
+    ])
+    expect(payload.soa_variants.alt_index).toEqual([1, 1])
+    expect(payload.soa_variants.alt_count).toEqual([2, 2])
     expect(payload.carrier_variant_indices).toEqual({
       'sample:with-colon:1': [0, 1],
       'sample:with-colon:2': [0, 1],
@@ -166,6 +173,7 @@ describe('Y1 long-read browser identity', () => {
     const common = {
       source_variant_id: sourceVariantId,
       alt_index: altIndex,
+      alt_count: 3,
       position,
       reference_end: referenceEnd,
       ref_allele: ref,
@@ -200,5 +208,10 @@ describe('Y1 long-read browser identity', () => {
     })
     expect(haplotype.end).toBe(expectedEnd)
     expect(haplotype.allele_length).toBe(alleleLength)
+    expect(haplotype).toMatchObject({
+      source_variant_id: sourceVariantId,
+      alt_index: altIndex,
+      alt_count: 3,
+    })
   })
 })

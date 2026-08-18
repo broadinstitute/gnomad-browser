@@ -1,7 +1,13 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { DatasetId, labelForDataset, referenceGenome, isLongRead, associatedLongReadDataset } from '@gnomad/dataset-metadata/metadata'
+import {
+  DatasetId,
+  labelForDataset,
+  referenceGenome,
+  isLongRead,
+  associatedLongReadDataset,
+} from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
 import LongReadUnifiedView from '../LongReadVariantPage/LongReadUnifiedView'
@@ -180,10 +186,14 @@ const longReadVariantFields = `
       variant_id
       lr_cohort
       source_variant_id
+      alt_index
+      alt_count
       chrom
       pos
       end
       length
+      ref
+      alt
       allele_type
       filters
       motifs
@@ -309,7 +319,7 @@ const ConnectedVariantsInRegion = ({
             }
             region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
               long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort) {
-                variant_id source_variant_id alt_index lr_cohort chrom pos end length ref alt allele_type filters motifs rsids
+                variant_id source_variant_id alt_index alt_count lr_cohort chrom pos end length ref alt allele_type filters motifs rsids
                 main_reference_region { chrom start stop }
                 sv_consequences major_consequence cadd_phred phylop
                 freq { all { ac an af homozygote_ref_count homozygote_alt_count heterozygote_count } populations { id ac an af } }
@@ -392,7 +402,10 @@ const ConnectedVariantsInRegion = ({
       success={(data: any) => data.region && data.region.variants}
     >
       {({ data }: any) => {
-        let variants = annotateVariantsWithClinvar(data.region.variants, data.region.clinvar_variants)
+        let variants = annotateVariantsWithClinvar(
+          data.region.variants,
+          data.region.clinvar_variants
+        )
 
         if (hasLongRead && data.region.long_read_variants) {
           variants = mergeLongReadVariants(variants, data.region.long_read_variants)

@@ -11,6 +11,7 @@ import {
 import { DatasetId, isV2, isV4, hasJointFrequencyData } from '@gnomad/dataset-metadata/metadata'
 
 import { logButtonClick } from '../analytics'
+import { formatLongReadAlleleDisplay } from '../LongReadVariantPage/formatLongReadVariantId'
 
 type ColumnGetter = (variant: VariantTableVariant) => string
 
@@ -240,8 +241,66 @@ const exportVariantsToCsv = (
       getValue: (variant: VariantTableVariant) => variant.variant_id,
     },
     {
+      label: 'Long-read canonical ID',
+      getValue: (variant: VariantTableVariant) => {
+        if (!variant.long_read) return ''
+        const alleles =
+          variant.long_read_alleles ||
+          (variant.long_read_details ? [variant.long_read_details] : [])
+        if (alleles.length > 0) return alleles.map((allele) => allele.variant_id).join(';')
+        const source = variant.source_variant_id
+        const index = variant.alt_index
+        return source && index != null ? `${source}~${index}` : variant.variant_id
+      },
+    },
+    {
+      label: 'Long-read display allele ID',
+      getValue: (variant: VariantTableVariant) => {
+        if (!variant.long_read) return ''
+        const alleles =
+          variant.long_read_alleles ||
+          (variant.long_read_details ? [variant.long_read_details] : [])
+        return (alleles.length > 0 ? alleles : [variant])
+          .map((allele) => formatLongReadAlleleDisplay(allele).label)
+          .join(';')
+      },
+    },
+    {
+      label: 'Long-read source VCF record ID',
+      getValue: (variant: VariantTableVariant) =>
+        (
+          variant.long_read_alleles ||
+          (variant.long_read_details ? [variant.long_read_details] : [])
+        )
+          .map((allele) => allele.source_variant_id || '')
+          .filter(Boolean)
+          .join(';') ||
+        variant.source_variant_id ||
+        '',
+    },
+    {
+      label: 'Long-read source ALT index',
+      getValue: (variant: VariantTableVariant) =>
+        (
+          variant.long_read_alleles ||
+          (variant.long_read_details ? [variant.long_read_details] : [])
+        )
+          .map((allele) => allele.alt_index ?? '')
+          .join(';') || String(variant.alt_index ?? ''),
+    },
+    {
+      label: 'Long-read source ALT count',
+      getValue: (variant: VariantTableVariant) =>
+        (
+          variant.long_read_alleles ||
+          (variant.long_read_details ? [variant.long_read_details] : [])
+        )
+          .map((allele) => allele.alt_count ?? '')
+          .join(';') || String(variant.alt_count ?? ''),
+    },
+    {
       label: 'Chromosome',
-      getValue: (variant: VariantTableVariant) => variant.variant_id.split('-')[0],
+      getValue: (variant: VariantTableVariant) => variant.chrom || variant.variant_id.split('-')[0],
     },
     {
       label: 'Position',
@@ -253,11 +312,11 @@ const exportVariantsToCsv = (
     },
     {
       label: 'Reference',
-      getValue: (variant: VariantTableVariant) => variant.variant_id.split('-')[2],
+      getValue: (variant: VariantTableVariant) => variant.ref ?? variant.variant_id.split('-')[2],
     },
     {
       label: 'Alternate',
-      getValue: (variant: VariantTableVariant) => variant.variant_id.split('-')[3],
+      getValue: (variant: VariantTableVariant) => variant.alt ?? variant.variant_id.split('-')[3],
     },
     {
       label: 'Source',
@@ -425,6 +484,36 @@ export type VariantTableVariant = {
   transcript_id: string
   transcript_version: string
   variant_id: string
+  source_variant_id?: string | null
+  alt_index?: number | null
+  alt_count?: number | null
+  chrom?: string
+  ref?: string
+  alt?: string
+  long_read_details?: {
+    variant_id?: string
+    source_variant_id?: string | null
+    alt_index?: number | null
+    alt_count?: number | null
+    allele_type?: string | null
+    length?: number | null
+    chrom?: string | null
+    pos?: number | null
+    ref?: string | null
+    alt?: string | null
+  } | null
+  long_read_alleles?: Array<{
+    variant_id: string
+    source_variant_id?: string | null
+    alt_index?: number | null
+    alt_count?: number | null
+    allele_type?: string | null
+    length?: number | null
+    chrom?: string | null
+    pos?: number | null
+    ref?: string | null
+    alt?: string | null
+  }>
   exome: {
     filters: string[]
   } | null

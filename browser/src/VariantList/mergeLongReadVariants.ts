@@ -27,6 +27,17 @@ export type LongReadSequencingTypeData = {
 }
 
 export type LongReadVariantDetails = {
+  variant_id?: string
+  lr_cohort?: 'hgsvc_hprc' | 'aou' | null
+  source_variant_id?: string | null
+  alt_index?: number | null
+  alt_count?: number | null
+  chrom?: string | null
+  pos?: number | null
+  end?: number | null
+  length?: number | null
+  ref?: string | null
+  alt?: string | null
   allele_type?: string | null
   motifs?: string[] | null
   is_likely_tr?: boolean | null
@@ -46,6 +57,9 @@ export type LongReadVariantDetails = {
 // Raw LR variant shape from the GraphQL long_read_variants query
 type RawLongReadVariant = {
   variant_id: string
+  source_variant_id?: string | null
+  alt_index?: number | null
+  alt_count?: number | null
   lr_cohort?: 'hgsvc_hprc' | 'aou' | null
   pos: number
   end?: number | null
@@ -125,6 +139,17 @@ function buildLongReadData(lr: RawLongReadVariant): LongReadSequencingTypeData {
 
 function buildLongReadDetails(lr: RawLongReadVariant): LongReadVariantDetails {
   return {
+    variant_id: lr.variant_id,
+    lr_cohort: lr.lr_cohort,
+    source_variant_id: lr.source_variant_id,
+    alt_index: lr.alt_index,
+    alt_count: lr.alt_count,
+    chrom: lr.chrom,
+    pos: lr.pos,
+    end: lr.end,
+    length: lr.length,
+    ref: lr.ref,
+    alt: lr.alt,
     allele_type: lr.allele_type,
     motifs: lr.motifs,
     is_likely_tr: lr.is_likely_tr ?? lr.allele_type === 'trv',
@@ -189,6 +214,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
 ): (T & {
   long_read?: LongReadSequencingTypeData | null
   long_read_details?: LongReadVariantDetails | null
+  long_read_alleles?: LongReadVariantDetails[]
 })[] => {
   if (!lrVariants || lrVariants.length === 0) {
     return srVariants
@@ -200,6 +226,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
     T & {
       long_read?: LongReadSequencingTypeData | null
       long_read_details?: LongReadVariantDetails | null
+      long_read_alleles?: LongReadVariantDetails[]
     }
   >()
   const result = srVariants.map((v) => {
@@ -210,7 +237,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
 
   const lrOnlyVariants: any[] = []
 
-  for (const lr of lrVariants) {
+  lrVariants.forEach((lr) => {
     const longRead = buildLongReadData(lr)
     const longReadDetails = buildLongReadDetails(lr)
 
@@ -218,9 +245,14 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
     if (matchId && srMap.has(matchId)) {
       // Attach LR data to the matched SR variant
       const srVariant = srMap.get(matchId)!
-      srVariant.long_read = longRead
-      srVariant.long_read_details = longReadDetails
-      ;(srVariant as any).lr_cohort = lr.lr_cohort || 'hgsvc_hprc'
+      // Keep the standard row's primary ID/link owned by the short-read
+      // allele. Preserve every exact LR match separately; never construct an
+      // LR route from the SR variant_id or silently overwrite another ALT.
+      srVariant.long_read_alleles = [...(srVariant.long_read_alleles || []), longReadDetails]
+      if (!srVariant.long_read_details) {
+        srVariant.long_read = longRead
+        srVariant.long_read_details = longReadDetails
+      }
     } else {
       // Synthesize a new variant row for LR-only data
       const chrom = lr.chrom || chromFromVariantId(lr.variant_id)
@@ -228,6 +260,9 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
 
       lrOnlyVariants.push({
         variant_id: lr.variant_id,
+        source_variant_id: lr.source_variant_id,
+        alt_index: lr.alt_index,
+        alt_count: lr.alt_count,
         lr_cohort: lr.lr_cohort || 'hgsvc_hprc',
         reference_genome: lr.reference_genome || 'GRCh38',
         chrom,
@@ -257,7 +292,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
         long_read_details: longReadDetails,
       })
     }
-  }
+  })
 
   return [...result, ...lrOnlyVariants]
 }

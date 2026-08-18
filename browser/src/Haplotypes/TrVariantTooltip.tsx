@@ -1,9 +1,12 @@
 import React from 'react'
 
-import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
+import { formatLongReadAlleleDisplay } from '../LongReadVariantPage/formatLongReadVariantId'
 
 export type TrTooltipVariant = {
   variant_id?: string
+  source_variant_id?: string | null
+  alt_index?: number | null
+  alt_count?: number | null
   chrom: string
   pos: number
   end?: number | null
@@ -25,13 +28,14 @@ export const HaplotypeVariantTooltipContent = ({
   phantomExpanded?: boolean
 }) => {
   const isTr = (variant.allele_type || '').toLowerCase() === 'trv'
+  const identity = formatLongReadAlleleDisplay(variant)
   const referenceSpan = variant.end == null ? variant.ref.length : variant.end - variant.pos + 1
 
   return (
     <>
       {variant.variant_id && (
         <div>
-          <strong>Variant ID:</strong> {formatLongReadVariantId(variant.variant_id)}
+          <strong>Allele:</strong> {identity.label}
         </div>
       )}
       <div>
@@ -52,9 +56,15 @@ export const HaplotypeVariantTooltipContent = ({
       </div>
       {isTr && (
         <>
-          <div><strong>Reference allele:</strong> {referenceSpan.toLocaleString()} bp</div>
-          <div><strong>Carrier ALT allele:</strong> {variant.alt.length.toLocaleString()} bp</div>
-          <div><strong>ALT−REF length:</strong> {formatSignedBp(variant.allele_length)}</div>
+          <div>
+            <strong>Reference allele:</strong> {referenceSpan.toLocaleString()} bp
+          </div>
+          <div>
+            <strong>Carrier ALT allele:</strong> {variant.alt.length.toLocaleString()} bp
+          </div>
+          <div>
+            <strong>ALT−REF length:</strong> {formatSignedBp(variant.allele_length)}
+          </div>
           <div style={{ color: '#666', marginTop: 2 }}>
             {phantomExpanded
               ? 'The synthetic bar shows the absolute length difference, subject to display caps; added bases have no GRCh38 coordinates.'

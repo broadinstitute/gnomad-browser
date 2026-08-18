@@ -12,6 +12,8 @@ import {
   referenceGenome as getReferenceGenome,
 } from '@gnomad/dataset-metadata/metadata'
 import { isStructuralVariantId } from './identifiers'
+import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
+import { formatLongReadVariantId } from './LongReadVariantPage/formatLongReadVariantId'
 
 export type SearchOptions = {
   lrCohort?: 'hgsvc_hprc' | 'aou'
@@ -160,6 +162,15 @@ export const fetchSearchResults = (
     // ==============================================================================================
     // Variants
     // ==============================================================================================
+
+    if (datasetId === 'gnomad_r4_lr' && isLongReadVariantId(query)) {
+      return Promise.resolve([
+        {
+          label: formatLongReadVariantId(query),
+          value: searchResultUrl(`/variant/${query}`, datasetId, 'variant', options),
+        },
+      ])
+    }
 
     if (isVariantId(query)) {
       const variantId = normalizeVariantId(query)

@@ -98,6 +98,9 @@ type LongReadVariant {
   variant_id: String!
   source_variant_id: String
   alt_index: Int
+  # Total ALT alleles in the complete source VCF record. This is derived on
+  # the server, never from the subset of alleles visible in a browser window.
+  alt_count: Int
   lr_cohort: LongReadCohort
   data_source: LongReadDataSource
   source_release: String

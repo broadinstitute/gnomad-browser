@@ -52,7 +52,10 @@ import {
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
 import type { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
-import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
+import {
+  formatLongReadAlleleDisplay,
+  formatLongReadVariantId,
+} from '../LongReadVariantPage/formatLongReadVariantId'
 
 export const Section = styled.section`
   width: 100%;
@@ -323,6 +326,9 @@ export type LongReadSequencingType = {
 }
 
 export type LongReadDetails = {
+  source_variant_id?: string | null
+  alt_index?: number | null
+  alt_count?: number | null
   allele_type: string | null
   end: number | null
   length: number | null
@@ -388,14 +394,9 @@ export type Variant = {
 type VariantPageContentProps = {
   datasetId: DatasetId
   variant: Variant
-  requestedVariantId?: string
 }
 
-export const VariantPageContent = ({
-  datasetId,
-  variant,
-  requestedVariantId = variant.variant_id,
-}: VariantPageContentProps) => {
+export const VariantPageContent = ({ datasetId, variant }: VariantPageContentProps) => {
   const isLrOnly = !variant.exome && !variant.genome && Boolean(variant.long_read)
 
   return (
@@ -449,7 +450,7 @@ export const VariantPageContent = ({
 
       {variant.long_read_details && (
         <LongReadVariantDetails
-          variantId={requestedVariantId}
+          variantId={variant.variant_id}
           chrom={variant.chrom}
           pos={variant.pos}
           longReadDetails={variant.long_read_details}
@@ -789,6 +790,9 @@ query ${operationName}($variantId: String!, $datasetId: DatasetId!, $lrCohort: L
       }
     }
     long_read_details {
+      source_variant_id
+      alt_index
+      alt_count
       allele_type
       end
       length
@@ -1019,13 +1023,7 @@ const VariantPage = ({ datasetId, variantId, lrCohort }: VariantPageProps) => {
               gene.ensembleId = geneData.ensembleId
             }
 
-            pageContent = (
-              <VariantPageContent
-                datasetId={datasetId}
-                variant={variant}
-                requestedVariantId={variantId}
-              />
-            )
+            pageContent = <VariantPageContent datasetId={datasetId} variant={variant} />
           }
 
           const datasetLinkWithLiftover: URLBuilder = (currentLocation, toDatasetId) => {
@@ -1056,6 +1054,24 @@ const VariantPage = ({ datasetId, variantId, lrCohort }: VariantPageProps) => {
 
           return (
             <React.Fragment>
+              {isLongRead(datasetId) && data?.variant && (
+                <DocumentTitle
+                  title={`${
+                    formatLongReadAlleleDisplay({
+                      variant_id: data.variant.variant_id,
+                      chrom: data.variant.chrom,
+                      pos: data.variant.pos,
+                      ref: data.variant.ref,
+                      alt: data.variant.alt,
+                      length: data.variant.long_read_details?.length,
+                      allele_type: data.variant.long_read_details?.allele_type,
+                      source_variant_id: data.variant.long_read_details?.source_variant_id,
+                      alt_index: data.variant.long_read_details?.alt_index,
+                      alt_count: data.variant.long_read_details?.alt_count,
+                    }).label
+                  } | ${labelForDataset(datasetId)}`}
+                />
+              )}
               <GnomadPageHeading
                 datasetOptions={{
                   // Include ExAC for GRCh37 datasets
@@ -1075,11 +1091,11 @@ const VariantPage = ({ datasetId, variantId, lrCohort }: VariantPageProps) => {
                     {navigator.clipboard && navigator.clipboard.writeText && (
                       <Button
                         onClick={() => {
-                          navigator.clipboard.writeText(variantId)
+                          navigator.clipboard.writeText(data?.variant?.variant_id || variantId)
                         }}
                         style={{ margin: '0 0 0 1em' }}
                       >
-                        Copy variant ID
+                        {isLongRead(datasetId) ? 'Copy canonical ID' : 'Copy variant ID'}
                       </Button>
                     )}
 
@@ -1096,7 +1112,26 @@ const VariantPage = ({ datasetId, variantId, lrCohort }: VariantPageProps) => {
                   </>
                 }
               >
-                <VariantPageTitle variantId={variantId} datasetId={datasetId} />
+                <VariantPageTitle
+                  variantId={variantId}
+                  datasetId={datasetId}
+                  longReadAllele={
+                    data?.variant?.long_read_details
+                      ? {
+                          variant_id: data.variant.variant_id,
+                          chrom: data.variant.chrom,
+                          pos: data.variant.pos,
+                          ref: data.variant.ref,
+                          alt: data.variant.alt,
+                          length: data.variant.long_read_details.length,
+                          allele_type: data.variant.long_read_details.allele_type,
+                          source_variant_id: data.variant.long_read_details.source_variant_id,
+                          alt_index: data.variant.long_read_details.alt_index,
+                          alt_count: data.variant.long_read_details.alt_count,
+                        }
+                      : null
+                  }
+                />
               </GnomadPageHeading>
               {pageContent}
             </React.Fragment>

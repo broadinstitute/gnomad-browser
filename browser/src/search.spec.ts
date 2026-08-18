@@ -88,6 +88,19 @@ describe('fetchSearchResults', () => {
     ])
   })
 
+  it('hides an LR transport suffix in suggestions while preserving the canonical URL', async () => {
+    expect(
+      await fetchSearchResults('gnomad_r4_lr', 'chr22-20077152-DEL-7~2', {
+        lrCohort: 'aou',
+      })
+    ).toEqual([
+      {
+        label: '22-20077152-DEL-7 (Allele 2)',
+        value: '/variant/chr22-20077152-DEL-7~2?dataset=gnomad_r4_lr&lr_cohort=aou',
+      },
+    ])
+  })
+
   it('falls back to r4 short reads for transcript pages that do not support LR', async () => {
     expect(
       await fetchSearchResults('gnomad_r4_lr', 'ENST00000302118', { lrCohort: 'aou' })

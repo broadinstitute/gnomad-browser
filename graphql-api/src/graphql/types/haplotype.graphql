@@ -11,6 +11,9 @@ type LRVariantFreq {
 
 type LRVariant {
   variant_id: String!
+  source_variant_id: String
+  alt_index: Int
+  alt_count: Int
   chrom: String!
   pos: Int!
   end: Int

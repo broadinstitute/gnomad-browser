@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
+import { Badge } from '@gnomad/ui'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
 import { SUPERPOPULATION_COLORS } from './colors'
@@ -27,7 +28,10 @@ import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadV
 import { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
 import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
-import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
+import {
+  formatLongReadAlleleDisplay,
+  formatLongReadVariantId,
+} from '../LongReadVariantPage/formatLongReadVariantId'
 import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import ExpandedTrDistributions from './ExpandedTrDistributions'
 import {
@@ -493,13 +497,34 @@ const TableRow = React.memo(function TableRow({
           {v.is_tr && (
             <ExpandToggle>{isExpanded ? '▼' : '▶'}</ExpandToggle>
           )}
-          <Link
-            to={longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)}
-            preserveSelectedDataset={false}
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            {formatLongReadVariantId(v.source_variant_id || v.variant_id)}
-          </Link>
+          {(() => {
+            // TR rows are locus aggregates in phases 1–2, not one exact ALT.
+            // Keep their source/locus label until the separate locus-page phase;
+            // ordinary allele rows use the exact biological display formatter.
+            const identity = formatLongReadAlleleDisplay(v)
+            const label = v.is_tr
+              ? formatLongReadVariantId(v.source_variant_id || v.variant_id)
+              : identity.compactLabel
+            return (
+              <>
+                <Link
+                  to={longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)}
+                  preserveSelectedDataset={false}
+                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                  title={identity.accessibleLabel}
+                >
+                  {label}
+                </Link>
+                {!v.is_tr && identity.alleleLabel && (
+                  <span style={{ marginLeft: 4 }} title={identity.label}>
+                    <Badge level="info">
+                      {identity.alleleLabel.replace('Allele ', 'ALT ')}
+                    </Badge>
+                  </span>
+                )}
+              </>
+            )
+          })()}
         </td>
         <td>
           <TypeDot $color={getAlleleTypeColor(v.allele_type)} />
@@ -892,6 +917,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       return [{
         variant_id: v.variant_id,
         source_variant_id: v.source_variant_id,
+        alt_index: v.alt_index,
+        alt_count: v.alt_count,
         lr_cohort: v.lr_cohort,
         chrom: v.chrom,
         pos: v.pos,
@@ -1107,6 +1134,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         // LRVariant base fields
         variant_id: variantId,
         source_variant_id: v.source_variant_id || (isTrv ? sourceIdFromAltId(v.variant_id) : undefined),
+        alt_index: v.alt_index,
+        alt_count: v.alt_count,
         chrom: v.chrom,
         pos: v.pos,
         end: v.end ?? null,
@@ -1286,6 +1315,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       : []
     const headers = [
       'variant_id',
+      'display_id',
+      'source_variant_id',
+      'alt_index',
+      'alt_count',
       'chrom',
       'position',
       'ref',
@@ -1313,6 +1346,10 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     const rows = sorted.map((v) =>
       [
         v.variant_id,
+        escapeField(formatLongReadAlleleDisplay(v).label),
+        v.source_variant_id ?? '',
+        v.alt_index ?? '',
+        v.alt_count ?? '',
         v.chrom,
         v.pos,
         escapeField(v.ref),

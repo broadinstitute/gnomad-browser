@@ -4,7 +4,11 @@ import styled from 'styled-components'
 import { TooltipAnchor } from '@gnomad/ui'
 
 import { DatasetId, isLongRead, referenceGenome } from '@gnomad/dataset-metadata/metadata'
-import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
+import {
+  formatLongReadAlleleDisplay,
+  formatLongReadVariantId,
+  type LongReadAlleleIdentity,
+} from '../LongReadVariantPage/formatLongReadVariantId'
 
 export const TitleWrapper = styled.span`
   display: inline-flex;
@@ -53,10 +57,43 @@ const TitleAlleles = styled.span`
 type Props = {
   datasetId: DatasetId
   variantId: string
+  longReadAllele?: LongReadAlleleIdentity | null
 }
 
-const VariantPageTitle = ({ datasetId, variantId }: Props) => {
-  const displayVariantId = isLongRead(datasetId) ? formatLongReadVariantId(variantId) : variantId
+const VariantPageTitle = ({ datasetId, variantId, longReadAllele }: Props) => {
+  if (isLongRead(datasetId)) {
+    const display = longReadAllele
+      ? formatLongReadAlleleDisplay(longReadAllele)
+      : {
+          label: formatLongReadVariantId(variantId),
+          accessibleLabel: `Canonical long-read ID: ${variantId}`,
+        }
+    const alleleType = longReadAllele?.allele_type?.toLowerCase()
+    const labels: Record<string, string> = {
+      snv: 'SNV',
+      ins: 'Insertion',
+      del: 'Deletion',
+      dup: 'Duplication',
+      inv: 'Inversion',
+      trv: 'Tandem-repeat allele',
+    }
+    return (
+      <TitleWrapper>
+        <span>{labels[alleleType || ''] || 'Long-read allele'}</span>
+        <Separator style={{ width: '1ch' }}>:</Separator>
+        {/* @ts-expect-error legacy TooltipAnchor typing */}
+        <TooltipAnchor tooltip={display.accessibleLabel}>
+          <VariantIdWrapper>
+            <TitleAlleles>{display.label}</TitleAlleles>
+          </VariantIdWrapper>
+        </TooltipAnchor>
+        <Separator> </Separator>
+        <span>({referenceGenome(datasetId)})</span>
+      </TitleWrapper>
+    )
+  }
+
+  const displayVariantId = variantId
   const [chrom, pos, ref, alt] = displayVariantId.split('-')
 
   let variantDescription = 'Variant'

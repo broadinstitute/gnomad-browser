@@ -284,10 +284,14 @@ const longReadVariantFields = `
 		variant_id
 		lr_cohort
 		source_variant_id
+		alt_index
+		alt_count
 		chrom
 		pos
 		end
 		length
+		ref
+		alt
 		allele_type
 		filters
 		motifs

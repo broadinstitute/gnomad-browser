@@ -111,7 +111,7 @@ describe('summary variant columns', () => {
       `/variant/${parent.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
     )
     fireEvent.click(screen.getByText('22-100-TRV-9').closest('tr')!)
-    expect(screen.getByRole('link', { name: '22-101-INS~2' }).getAttribute('href')).toBe(
+    expect(screen.getByRole('link', { name: '22-101-INS (Allele 2)' }).getAttribute('href')).toBe(
       `/variant/${enveloped.variant_id}?dataset=gnomad_r4_lr&lr_cohort=aou`
     )
     expect(screen.queryByText(/^chr22-/)).toBeNull()

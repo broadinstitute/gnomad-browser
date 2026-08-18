@@ -39,7 +39,10 @@ const diplotypeGroup = (hash: number, sampleIds: string[]): DiplotypeGroup => ({
 describe('rehydrateVariants', () => {
   test('preserves realistic REST allele_type values for shared display normalization', () => {
     const payload: SoAVariants = {
-      variant_id: ['snp', 'snv', 'del'],
+      variant_id: ['source-a~1', 'source-a~2', 'source-b~1'],
+      source_variant_id: ['source-a', 'source-a', 'source-b'],
+      alt_index: [1, 2, 1],
+      alt_count: [2, 2, 1],
       chrom: ['22', '22', '22'],
       pos: [100, 101, 102],
       end: [null, null, 152],
@@ -76,13 +79,26 @@ describe('rehydrateVariants', () => {
     expect(variants.filter((variant) => passesLongReadVariantTypeFilters(variant.allele_type, all)))
       .toHaveLength(3)
     expect(variants.filter((variant) => passesLongReadVariantTypeFilters(variant.allele_type, snv))
-      .map((variant) => variant.variant_id)).toEqual(['snp', 'snv'])
+      .map((variant) => variant.variant_id)).toEqual(['source-a~1', 'source-a~2'])
+    expect(variants.map(({ source_variant_id, alt_index, alt_count }) => ({
+      source_variant_id, alt_index, alt_count,
+    }))).toEqual([
+      { source_variant_id: 'source-a', alt_index: 1, alt_count: 2 },
+      { source_variant_id: 'source-a', alt_index: 2, alt_count: 2 },
+      { source_variant_id: 'source-b', alt_index: 1, alt_count: 1 },
+    ])
 
     const legacyPayload = { ...payload }
     delete legacyPayload.short_read_match_id
+    delete legacyPayload.source_variant_id
+    delete legacyPayload.alt_index
+    delete legacyPayload.alt_count
     expect(rehydrateVariants(legacyPayload).map((variant) => variant.short_read_match_id)).toEqual([
       null, null, null,
     ])
+    expect(rehydrateVariants(legacyPayload).map((variant) => [
+      variant.source_variant_id, variant.alt_index, variant.alt_count,
+    ])).toEqual([[null, null, null], [null, null, null], [null, null, null]])
   })
 
   test('rehydrates aligned consequences and treats a missing legacy array as null', () => {

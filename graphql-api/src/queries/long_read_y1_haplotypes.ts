@@ -36,6 +36,7 @@ export const fetchY1HaplotypeRows = async (
           a.reference_end AS reference_end,
           a.source_variant_id AS source_variant_id,
           a.alt_index AS alt_index,
+          a.alt_count AS alt_count,
           a.ref_allele AS ref,
           a.alt AS alt,
           browser_variant_id,
@@ -69,7 +70,9 @@ export const fetchY1HaplotypeRows = async (
             toUInt16(length(c.gt_alleles))
           )) AS carriers
         FROM (
-          SELECT *, concat(source_variant_id, '~', toString(alt_index)) AS browser_variant_id
+          SELECT *,
+            concat(source_variant_id, '~', toString(alt_index)) AS browser_variant_id,
+            count() OVER (PARTITION BY source_variant_id) AS alt_count
           FROM lr_y1_alleles
           WHERE run_id = {runId:String}
             AND release = 'y1' AND cohort = 'hgsvc_hprc' AND reference_genome = 'GRCh38'
@@ -130,7 +133,7 @@ export const fetchY1HaplotypeRows = async (
           AND c.position BETWEEN {start:UInt32} AND {stop:UInt32}
           AND (${deterministicCarrier})
         GROUP BY a.position, a.reference_end, a.source_variant_id, a.alt_index,
-          a.ref_allele, a.alt, browser_variant_id, a.rsids,
+          a.alt_count, a.ref_allele, a.alt, browser_variant_id, a.rsids,
           a.af, a.ac, a.an, a.allele_type, a.allele_length,
           f.info_AF_afr, f.info_AF_amr, f.info_AF_eas, f.info_AF_nfe, f.info_AF_sas,
           a.cadd_phred, a.phylop, a.short_read_match_id, a.major_consequence

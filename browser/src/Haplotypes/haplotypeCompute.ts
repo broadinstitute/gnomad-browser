@@ -61,6 +61,10 @@ export type TreeNode = {
 
 export type SoAVariants = {
   variant_id: string[]
+  /** Optional while cached pre-identity REST responses remain readable. */
+  source_variant_id?: (string | null)[]
+  alt_index?: (number | null)[]
+  alt_count?: (number | null)[]
   chrom: string[]
   pos: number[]
   end: (number | null)[]
@@ -94,6 +98,9 @@ export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
   for (let i = 0; i < n; i++) {
     variants[i] = {
       variant_id: soa.variant_id[i],
+      source_variant_id: soa.source_variant_id?.[i] ?? null,
+      alt_index: soa.alt_index?.[i] ?? null,
+      alt_count: soa.alt_count?.[i] ?? null,
       chrom: soa.chrom[i],
       pos: soa.pos[i],
       end: soa.end[i],

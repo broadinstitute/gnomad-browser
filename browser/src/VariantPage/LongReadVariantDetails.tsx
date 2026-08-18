@@ -9,7 +9,10 @@ import TRDistributionPlot from '../Haplotypes/TRDistributionPlot'
 import { getTrLocusDistribution } from '../LongReadVariantPage/trLocusAggregation'
 import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
-import { formatLongReadVariantId } from '../LongReadVariantPage/formatLongReadVariantId'
+import {
+  formatLongReadAlleleDisplay,
+  formatLongReadVariantId,
+} from '../LongReadVariantPage/formatLongReadVariantId'
 import ExactTrAltMotifStructure from './ExactTrAltMotifStructure'
 
 export { selectGenotypeDistribution } from '../LongReadVariantPage/LongReadSTRDistributionSections'
@@ -78,6 +81,18 @@ const LongReadVariantDetails = ({
 
   const repeatUnits = motifs && motifs.length > 0 ? motifs : [ref_allele]
   const isTandemRepeat = longReadDetails.allele_type?.toLowerCase() === 'trv'
+  const identity = formatLongReadAlleleDisplay({
+    variant_id: variantId,
+    source_variant_id: longReadDetails.source_variant_id,
+    alt_index: longReadDetails.alt_index,
+    alt_count: longReadDetails.alt_count,
+    chrom,
+    pos,
+    ref: ref_allele,
+    alt: alt_allele,
+    allele_type: longReadDetails.allele_type,
+    length,
+  })
 
   return (
     <>
@@ -85,6 +100,33 @@ const LongReadVariantDetails = ({
         <h2>Long-Read Variant Details</h2>
         <Table>
           <tbody>
+            <tr>
+              <th scope="row">Display allele ID</th>
+              <td>{identity.label}</td>
+            </tr>
+            <tr>
+              <th scope="row">Canonical browser ID</th>
+              <td>
+                <code>{variantId}</code>
+              </td>
+            </tr>
+            {longReadDetails.source_variant_id && (
+              <tr>
+                <th scope="row">Source VCF record ID</th>
+                <td>
+                  <code>{longReadDetails.source_variant_id}</code>
+                </td>
+              </tr>
+            )}
+            {longReadDetails.alt_index != null && (
+              <tr>
+                <th scope="row">Source ALT allele</th>
+                <td>
+                  ALT {longReadDetails.alt_index}
+                  {longReadDetails.alt_count != null ? ` of ${longReadDetails.alt_count}` : ''}
+                </td>
+              </tr>
+            )}
             <tr>
               <th scope="row">Allele type</th>
               <td>{formatAlleleType(longReadDetails.allele_type)}</td>

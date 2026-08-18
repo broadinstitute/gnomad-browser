@@ -37,6 +37,7 @@ export const mapY1RowToGraphQL = (
     variant_id: browserVariantId(row.source_variant_id, Number(row.alt_index)),
     source_variant_id: row.source_variant_id,
     alt_index: altIndex,
+    alt_count: optionalNumber(row.alt_count),
     lr_cohort: cohort,
     data_source: 'Y1_ACCEPTED',
     source_release: 'y1',
@@ -157,7 +158,8 @@ export const fetchY1VariantsByRegions = async (
         SELECT chrom, position, reference_end, xpos, source_variant_id, alt_index,
           ref_allele, alt, allele_type, filters, ac, an, af, allele_length,
           rsids, cadd_phred, phylop, major_consequence, short_read_match_id,
-          short_read_match_type, short_read_match_source
+          short_read_match_type, short_read_match_source,
+          count() OVER (PARTITION BY source_variant_id) AS alt_count
         FROM lr_y1_alleles
         WHERE run_id = {runId:String}
           AND release = 'y1' AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
@@ -201,8 +203,19 @@ export const fetchY1VariantById = async (
         a.ref_allele, a.alt, a.allele_type, a.filters, a.ac, a.an, a.af,
         a.allele_length, a.chrom, a.rsids, a.cadd_phred, a.phylop,
         a.major_consequence, a.short_read_match_id, a.short_read_match_type,
-        a.short_read_match_source, s.tr_motifs
+        a.short_read_match_source, s.tr_motifs,
+        source_alt_counts.alt_count AS alt_count
       FROM lr_y1_alleles AS a
+      INNER JOIN (
+        SELECT source_variant_id, count() AS alt_count
+        FROM lr_y1_alleles
+        WHERE run_id = {runId:String}
+          AND release = 'y1' AND cohort = {cohort:String}
+          AND reference_genome = 'GRCh38' AND chrom = {chrom:String}
+          AND source_variant_id = {sourceVariantId:String}
+        GROUP BY source_variant_id
+      ) AS source_alt_counts
+        ON a.source_variant_id = source_alt_counts.source_variant_id
       LEFT JOIN (
         SELECT run_id, release, cohort, reference_genome, chrom, position,
           source_variant_id,
