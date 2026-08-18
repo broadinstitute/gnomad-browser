@@ -17,13 +17,22 @@ err()  { printf '%b[lr-dev]%b %s\n' "$RED" "$NC" "$*" >&2; }
 die()  { err "$*"; exit 1; }
 
 USE_GCP_CH=false
+USE_LEGACY_GCP_CH=false
 USE_Y1=false
 Y1_PORT=""
 Y1_VM=""
 while (($#)); do
     case "$1" in
         --gcp-clickhouse)
+            # The ordinary GCP development path mirrors the checked full-genome
+            # presentation release. Legacy access requires an explicit flag.
             USE_GCP_CH=true
+            USE_Y1=true
+            shift
+            ;;
+        --legacy-clickhouse)
+            USE_GCP_CH=true
+            USE_LEGACY_GCP_CH=true
             shift
             ;;
         --y1-clickhouse-port)
@@ -44,18 +53,18 @@ while (($#)); do
             ;;
         --help|-h)
             cat <<'EOF'
-Usage: ./start_lr_dev.sh [--gcp-clickhouse] [--y1-clickhouse-port PORT] [--y1-clickhouse-vm INSTANCE]
+Usage: ./start_lr_dev.sh [--gcp-clickhouse | --legacy-clickhouse] [--y1-clickhouse-port PORT] [--y1-clickhouse-vm INSTANCE]
 
-  --y1-clickhouse-port PORT  Use the Y1 ClickHouse server on 127.0.0.1:PORT.
+  --gcp-clickhouse           Mirror the current full-genome presentation release:
+                             tunnel to its ClickHouse VM and load the checked routing map.
+  --legacy-clickhouse        Explicitly tunnel to the retired gnomad-lr-data-vm instead.
+  --y1-clickhouse-port PORT  Override the local Y1 tunnel/listener port.
   --y1-clickhouse-vm INSTANCE
-                             With --gcp-clickhouse, tunnel to this Y1 GCP instance.
-  --gcp-clickhouse           Open the GCP ClickHouse tunnels. This selects the
-                             connection only; it does not select a data/provenance mode.
+                             Override the GCP Y1 ClickHouse instance.
 
-Y1 always reads the disposable database gnomad_lr_y1_scratch_v5_current.
-Advanced users may explicitly set LR_Y1_CLICKHOUSE_URL. The generic CLICKHOUSE_URL
-and database environment variables never select the Y1 source. Run IDs are
-discovered from lr_y1_load_runs at startup.
+Without --gcp-clickhouse, Y1 defaults to the disposable database
+`gnomad_lr_y1_scratch_v5_current`. Advanced users may explicitly set the LR_Y1_*
+environment variables. Command-line VM and port selections always win.
 Set LR_DEV_DRY_RUN=1 to print configuration without starting services.
 EOF
             exit 0
@@ -67,14 +76,49 @@ done
 GCP_PROJECT="${GCP_PROJECT:-gnomadev}"
 GCP_ZONE="${GCP_ZONE:-us-east1-c}"
 LEGACY_GCP_CH_VM="${LEGACY_GCP_CH_VM:-gnomad-lr-data-vm}"
-Y1_GCP_CH_VM="${Y1_VM:-${LR_Y1_GCP_CH_VM:-gnomad-lr-y1-clickhouse}}"
+Y1_GCP_CH_VM="${Y1_VM:-${LR_Y1_GCP_CH_VM:-gnomad-lr-y1-full-genome-clickhouse}}"
 GCP_CH_LOCAL_PORT="${GCP_CH_PORT:-8125}"
 Y1_GCP_CH_LOCAL_PORT="${Y1_PORT:-8126}"
+FULL_GENOME_ENV_FILE="$ROOT_DIR/deploy/terraform/lr-viewer/full-genome-api-env.json"
+
+json_env_value() {
+    python3 - "$FULL_GENOME_ENV_FILE" "$1" <<'PY'
+import json
+import pathlib
+import sys
+
+data = json.loads(pathlib.Path(sys.argv[1]).read_text())
+value = data.get(sys.argv[2])
+if not isinstance(value, str) or not value:
+    raise SystemExit(f"missing string {sys.argv[2]} in {sys.argv[1]}")
+print(value)
+PY
+}
+
+localize_graphql_paths() {
+    local replacement="$ROOT_DIR/graphql-api"
+    printf '%s' "${1//\/app\/graphql-api/$replacement}"
+}
+
+# The checked release environment is the source of truth for the ordinary GCP
+# launcher. Explicit operator environment values still override these defaults.
+if [[ "$USE_GCP_CH" == true && "$USE_LEGACY_GCP_CH" != true ]]; then
+    [[ -f "$FULL_GENOME_ENV_FILE" ]] || die "Missing full-genome environment: $FULL_GENOME_ENV_FILE"
+    LR_Y1_CLICKHOUSE_DATABASE="${LR_Y1_CLICKHOUSE_DATABASE:-$(json_env_value LR_Y1_CLICKHOUSE_DATABASE)}"
+    LR_Y1_RUN_MAP="${LR_Y1_RUN_MAP:-$(json_env_value LR_Y1_RUN_MAP)}"
+    LR_Y1_PRIMARY_MANIFEST_PATH="${LR_Y1_PRIMARY_MANIFEST_PATH:-$(localize_graphql_paths "$(json_env_value LR_Y1_PRIMARY_MANIFEST_PATH)")}"
+    LR_Y1_ANCILLARY_ROUTES="${LR_Y1_ANCILLARY_ROUTES:-$(localize_graphql_paths "$(json_env_value LR_Y1_ANCILLARY_ROUTES)")}"
+    LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE="${LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE:-$(localize_graphql_paths "$(json_env_value LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE)")}"
+    LR_Y1_JOINED_PHASED_METHYLATION_ROUTE="${LR_Y1_JOINED_PHASED_METHYLATION_ROUTE:-$(localize_graphql_paths "$(json_env_value LR_Y1_JOINED_PHASED_METHYLATION_ROUTE)")}"
+fi
+
 Y1_DATABASE="${LR_Y1_CLICKHOUSE_DATABASE:-gnomad_lr_y1_scratch_v5_current}"
 if [[ -n "$Y1_PORT" ]]; then
     # The command-line port is an explicit launcher selection and always wins
     # over inherited environment.
     Y1_CH_URL="http://127.0.0.1:${Y1_PORT}"
+elif [[ "$USE_GCP_CH" == true && "$USE_LEGACY_GCP_CH" != true ]]; then
+    Y1_CH_URL="http://127.0.0.1:${Y1_GCP_CH_LOCAL_PORT}"
 else
     Y1_CH_URL="${LR_Y1_CLICKHOUSE_URL:-}"
 fi
@@ -82,8 +126,8 @@ fi
 if [[ -n "$Y1_VM" && "$USE_GCP_CH" != true ]]; then
     die "--y1-clickhouse-vm requires --gcp-clickhouse"
 fi
-if [[ "$USE_GCP_CH" == true && "$GCP_CH_LOCAL_PORT" == "$Y1_GCP_CH_LOCAL_PORT" ]]; then
-    die "Legacy and Y1 tunnel ports must be distinct"
+if [[ "$USE_LEGACY_GCP_CH" == true && ( -n "$Y1_PORT" || -n "$Y1_VM" ) ]]; then
+    die "--legacy-clickhouse cannot be combined with Y1 VM or port overrides"
 fi
 if [[ -n "${LR_Y1_CLICKHOUSE_URL:-}" ]]; then USE_Y1=true; fi
 if [[ "${LR_Y1_ENABLED:-false}" == true ]]; then USE_Y1=true; fi
@@ -95,7 +139,11 @@ if [[ "${LR_DEV_DRY_RUN:-0}" == 1 ]]; then
     log "Dry run: configuration is statically valid."
     printf 'mode=%s\n' "$([[ "$USE_Y1" == true ]] && echo y1 || echo legacy)"
     if [[ "$USE_GCP_CH" == true ]]; then
-        printf 'CLICKHOUSE_URL=http://127.0.0.1:%s\n' "$GCP_CH_LOCAL_PORT"
+        if [[ "$USE_LEGACY_GCP_CH" == true ]]; then
+            printf 'CLICKHOUSE_URL=http://127.0.0.1:%s\n' "$GCP_CH_LOCAL_PORT"
+        else
+            printf 'CLICKHOUSE_URL=%s\n' "$Y1_CH_URL"
+        fi
     fi
     if [[ "$USE_Y1" == true ]]; then
         printf 'LR_Y1_ENABLED=true\n'
@@ -251,11 +299,13 @@ fi
 
 # 2. ClickHouse endpoints
 if [[ "$USE_GCP_CH" == true ]]; then
-    start_tunnel "legacy" "$LEGACY_GCP_CH_VM" "$GCP_CH_LOCAL_PORT"
-    if [[ "$USE_Y1" == true ]]; then
-        start_tunnel "Y1" "$Y1_GCP_CH_VM" "$Y1_GCP_CH_LOCAL_PORT" "$Y1_DATABASE"
+    if [[ "$USE_LEGACY_GCP_CH" == true ]]; then
+        start_tunnel "legacy" "$LEGACY_GCP_CH_VM" "$GCP_CH_LOCAL_PORT"
+        CH_URL="http://127.0.0.1:${GCP_CH_LOCAL_PORT}"
+    else
+        start_tunnel "full-genome Y1" "$Y1_GCP_CH_VM" "$Y1_GCP_CH_LOCAL_PORT" "$Y1_DATABASE"
+        CH_URL="$Y1_CH_URL"
     fi
-    CH_URL="http://127.0.0.1:${GCP_CH_LOCAL_PORT}"
 else
     CH_URL="http://127.0.0.1:8123"
     if curl -fsS "$CH_URL/ping" >/dev/null 2>&1; then
@@ -323,6 +373,12 @@ if [[ "$USE_Y1" == true ]]; then
     fi
     if [[ -n "${LR_Y1_ANCILLARY_ROUTES:-}" ]]; then
         API_ENV+=(LR_Y1_ANCILLARY_ROUTES="$LR_Y1_ANCILLARY_ROUTES")
+    fi
+    if [[ -n "${LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE:-}" ]]; then
+        API_ENV+=(LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE="$LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE")
+    fi
+    if [[ -n "${LR_Y1_JOINED_PHASED_METHYLATION_ROUTE:-}" ]]; then
+        API_ENV+=(LR_Y1_JOINED_PHASED_METHYLATION_ROUTE="$LR_Y1_JOINED_PHASED_METHYLATION_ROUTE")
     fi
 fi
 # $1 is expanded by the child bash.

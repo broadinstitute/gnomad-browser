@@ -26,9 +26,23 @@ gcp_only_output="$(
       LR_DEV_DRY_RUN=1 CLICKHOUSE_URL=http://generic-legacy.example:8123 \
       "$ROOT_DIR/start_lr_dev.sh" --gcp-clickhouse
 )"
-grep -q '^mode=legacy$' <<<"$gcp_only_output"
-if grep -q '^LR_Y1_ENABLED=' <<<"$gcp_only_output"; then
-    echo "--gcp-clickhouse incorrectly selected Y1 provenance mode" >&2
+grep -q '^mode=y1$' <<<"$gcp_only_output"
+grep -q '^CLICKHOUSE_URL=http://127.0.0.1:8126$' <<<"$gcp_only_output"
+grep -q '^LR_Y1_ENABLED=true$' <<<"$gcp_only_output"
+grep -q '^LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:8126$' <<<"$gcp_only_output"
+grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_scratch_demo_full_genome_20260803$' <<<"$gcp_only_output"
+grep -q '^LR_Y1_GCP_CH_VM=gnomad-lr-y1-full-genome-clickhouse$' <<<"$gcp_only_output"
+grep -q "^LR_Y1_PRIMARY_MANIFEST_PATH=$ROOT_DIR/graphql-api/config/y1-presentation-primary-manifests.json$" <<<"$gcp_only_output"
+if grep -q '/app/graphql-api' <<<"$gcp_only_output"; then
+    echo "container-only paths leaked into local full-genome configuration" >&2
+    exit 1
+fi
+
+legacy_output="$(LR_DEV_DRY_RUN=1 "$ROOT_DIR/start_lr_dev.sh" --legacy-clickhouse)"
+grep -q '^mode=legacy$' <<<"$legacy_output"
+grep -q '^CLICKHOUSE_URL=http://127.0.0.1:8125$' <<<"$legacy_output"
+if grep -q '^LR_Y1_ENABLED=' <<<"$legacy_output"; then
+    echo "--legacy-clickhouse incorrectly selected Y1 provenance mode" >&2
     exit 1
 fi
 

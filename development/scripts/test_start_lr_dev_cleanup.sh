@@ -121,7 +121,7 @@ kill -0 "$PREEXISTING_PID" 2>/dev/null || {
     exit 1
 }
 
-for name in tunnel-8125 tunnel-8126 es api browser; do
+for name in tunnel-8126 es api browser; do
     pid="$(cat "$STATE_DIR/$name-child.pid")"
     if ps -o stat= -p "$pid" 2>/dev/null | grep -qv '^Z'; then
         echo "$name descendant $pid survived cleanup" >&2
@@ -129,7 +129,7 @@ for name in tunnel-8125 tunnel-8126 es api browser; do
     fi
 done
 
-for name in tunnel-8125 tunnel-8126 es; do
+for name in tunnel-8126 es; do
     port="$(cat "$STATE_DIR/$name-listener.port")"
     if python3 - "$port" <<'PY'
 import socket
