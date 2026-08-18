@@ -6,6 +6,7 @@ import { RegionViewerContext } from '@gnomad/region-viewer'
 import { scaleLinear } from 'd3-scale'
 import { SUPERPOPULATION_COLORS } from './colors'
 import { getDiploidSampleLabelColor } from './diploidSampleLabelColor'
+import { formatSampleAncestryTooltip } from './sampleAncestryTooltip'
 import {
   formatDiploidSampleLabel,
   formatExpandedMemberSampleTooltip,
@@ -971,14 +972,16 @@ function DeckGLLollipopCanvas({
   type LeftPanelText = { position: [number, number, number]; text: string; color: [number, number, number, number]; size: number; textAnchor?: 'start' | 'middle' | 'end'; tooltipText?: string }
   type LeftPanelHitbox = { position: [number, number, number]; action: string; clusterId: string }
   type LeftPanelPopBar = { polygon: [number, number][]; color: [number, number, number, number] }
+  type LeftPanelSampleHoverTarget = { polygon: [number, number][]; tooltipText: string }
   type LeftPanelMemberHoverTarget = { polygon: [number, number][]; tooltipText: string }
   type LeftPanelTreeLine = { sourcePosition: [number, number, number]; targetPosition: [number, number, number] }
 
-  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelMemberHoverTargets, leftPanelTreeLines, leftPanelSampleLabels } = useMemo(() => {
+  const { leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelSampleHoverTargets, leftPanelMemberHoverTargets, leftPanelTreeLines, leftPanelSampleLabels } = useMemo(() => {
     const circles: LeftPanelCircle[] = []
     const texts: LeftPanelText[] = []
     const hitboxes: LeftPanelHitbox[] = []
     const popBars: LeftPanelPopBar[] = []
+    const sampleHoverTargets: LeftPanelSampleHoverTarget[] = []
     const memberHoverTargets: LeftPanelMemberHoverTarget[] = []
     const treeLines: LeftPanelTreeLine[] = []
     const sampleLabels: LeftPanelText[] = []
@@ -995,13 +998,20 @@ function DeckGLLollipopCanvas({
         const group = item.group
         const popStats = populationStatsByRow[i]
 
-        // Sample ID(s) above the population bar — centered, bold
+        // Sample ID(s) above the population bar — centered, bold. A transparent
+        // row target makes both the label and ancestry bar reliably hoverable.
         const sampleLabel = formatDiploidSampleLabel(group.samples)
+        const ancestryTooltip = formatSampleAncestryTooltip(group.samples, sampleMetadata)
         sampleLabels.push({
           position: [35, y - 13, 0],
           text: sampleLabel,
           color: getDiploidSampleLabelColor(group.samples, sampleMetadata),
           size: 11,
+          tooltipText: ancestryTooltip,
+        })
+        sampleHoverTargets.push({
+          polygon: [[3, y - 21], [67, y - 21], [67, y + 21], [3, y + 21]],
+          tooltipText: ancestryTooltip,
         })
 
         // Subpopulation code(s) beneath the sample ID / pop bar (diploid mode).
@@ -1025,7 +1035,7 @@ function DeckGLLollipopCanvas({
               text: subpopLabel,
               color: [110, 110, 110, 255],
               size: 9,
-              tooltipText: `Genetic ancestry subgroup: ${subpops.join(', ')}`,
+              tooltipText: ancestryTooltip,
             })
           }
         }
@@ -1296,7 +1306,7 @@ function DeckGLLollipopCanvas({
       }
     }
 
-    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelMemberHoverTargets: memberHoverTargets, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
+    return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelSampleHoverTargets: sampleHoverTargets, leftPanelMemberHoverTargets: memberHoverTargets, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
   }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, sampleMetadata, leftPanelWidth])
 
   // Left panel DeckGL layers
@@ -1324,6 +1334,17 @@ function DeckGLLollipopCanvas({
         getPolygon: (d: LeftPanelPopBar) => d.polygon,
         getFillColor: (d: LeftPanelPopBar) => d.color,
         pickable: false,
+      }))
+    }
+
+    if (leftPanelSampleHoverTargets.length > 0) {
+      lpLayers.push(new SolidPolygonLayer({
+        id: 'left-panel-sample-hover-targets',
+        data: leftPanelSampleHoverTargets,
+        getPolygon: (d: LeftPanelSampleHoverTarget) => d.polygon,
+        getFillColor: [0, 0, 0, 0],
+        pickable: true,
+        onHover,
       }))
     }
 
@@ -1371,7 +1392,8 @@ function DeckGLLollipopCanvas({
         getAlignmentBaseline: 'center',
         fontWeight: 700,
         fontSettings: { sdf: true, smoothing: 0.15 },
-        pickable: false,
+        pickable: true,
+        onHover,
       }))
     }
 
@@ -1408,7 +1430,7 @@ function DeckGLLollipopCanvas({
     }
 
     return lpLayers
-  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelMemberHoverTargets, leftPanelTreeLines, leftPanelSampleLabels, toggleClusterExpansion, onClusterSelect, onHover])
+  }, [leftPanelCircles, leftPanelTexts, leftPanelHitboxes, leftPanelPopBars, leftPanelSampleHoverTargets, leftPanelMemberHoverTargets, leftPanelTreeLines, leftPanelSampleLabels, toggleClusterExpansion, onClusterSelect, onHover])
 
   // Genealogy tree layout — pure data arrays for DeckGL
   const treeLayout = useMemo((): TreeLayout | null => {
@@ -3062,6 +3084,7 @@ function Tooltip({
     pointerEvents: 'none',
     zIndex: 100,
     maxWidth: 300,
+    whiteSpace: 'pre-line',
     boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
   }
 
