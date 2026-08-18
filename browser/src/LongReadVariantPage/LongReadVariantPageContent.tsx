@@ -6,7 +6,11 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 
 import { LongReadVariant } from './LongReadVariantPage'
 import { longReadVariantUrl } from './longReadCohort'
-import { formatLongReadAlleleDisplay, formatLongReadVariantId } from './formatLongReadVariantId'
+import {
+  formatLongReadAlleleDisplay,
+  formatLongReadAlleleTypeLabel,
+  formatLongReadVariantId,
+} from './formatLongReadVariantId'
 import TableWrapper from '../TableWrapper'
 import sampleCounts from '@gnomad/dataset-metadata/datasets/gnomad-v4-lr/sampleCounts'
 import { variantFeedbackUrl } from '../variantFeedback'
@@ -44,16 +48,6 @@ import {
 type Props = {
   datasetId: DatasetId
   variant: LongReadVariant
-}
-
-const ALLELE_TYPE_LABELS: Record<string, string> = {
-  snv: 'SNV',
-  ins: 'Insertion',
-  del: 'Deletion',
-  trv: 'Tandem Repeat',
-  alu_ins: 'Alu Insertion',
-  line1_ins: 'LINE-1 Insertion',
-  sva_ins: 'SVA Insertion',
 }
 
 const LongReadVariantPageContent = ({ datasetId, variant }: Props) => {
@@ -143,7 +137,8 @@ const LongReadVariantPageContent = ({ datasetId, variant }: Props) => {
 }
 
 const LongReadVariantAttributeTable = ({ variant }: { variant: LongReadVariant }) => {
-  const alleleTypeLabel = ALLELE_TYPE_LABELS[variant.allele_type] || variant.allele_type
+  const rawAlleleTypeLabel = formatLongReadAlleleTypeLabel(variant.allele_type)
+  const alleleTypeLabel = rawAlleleTypeLabel.charAt(0).toUpperCase() + rawAlleleTypeLabel.slice(1)
   const hasSpan = variant.end != null && variant.length != null
   const identity = formatLongReadAlleleDisplay(variant)
 

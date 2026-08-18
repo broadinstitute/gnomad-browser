@@ -6,6 +6,7 @@ import { TooltipAnchor } from '@gnomad/ui'
 import { DatasetId, isLongRead, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import {
   formatLongReadAlleleDisplay,
+  formatLongReadAlleleTypeLabel,
   formatLongReadVariantId,
   type LongReadAlleleIdentity,
 } from '../LongReadVariantPage/formatLongReadVariantId'
@@ -68,18 +69,12 @@ const VariantPageTitle = ({ datasetId, variantId, longReadAllele }: Props) => {
           label: formatLongReadVariantId(variantId),
           accessibleLabel: `Canonical long-read ID: ${variantId}`,
         }
-    const alleleType = longReadAllele?.allele_type?.toLowerCase()
-    const labels: Record<string, string> = {
-      snv: 'SNV',
-      ins: 'Insertion',
-      del: 'Deletion',
-      dup: 'Duplication',
-      inv: 'Inversion',
-      trv: 'Tandem-repeat allele',
-    }
+    const alleleTypeLabel = longReadAllele?.allele_type
+      ? formatLongReadAlleleTypeLabel(longReadAllele.allele_type)
+      : 'long-read allele'
     return (
       <TitleWrapper>
-        <span>{labels[alleleType || ''] || 'Long-read allele'}</span>
+        <span>{alleleTypeLabel.charAt(0).toUpperCase() + alleleTypeLabel.slice(1)}</span>
         <Separator style={{ width: '1ch' }}>:</Separator>
         {/* @ts-expect-error legacy TooltipAnchor typing */}
         <TooltipAnchor tooltip={display.accessibleLabel}>

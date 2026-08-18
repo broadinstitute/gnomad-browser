@@ -18,17 +18,11 @@ import { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTand
 import LongReadVariantPageContent from './LongReadVariantPageContent'
 import type { LongReadCohort } from './longReadCohort'
 import VariantNotFound from '../VariantPage/VariantNotFound'
-import { formatLongReadAlleleDisplay, formatLongReadVariantId } from './formatLongReadVariantId'
-
-const ALLELE_TYPE_LABELS: Record<string, string> = {
-  snv: 'SNV',
-  ins: 'Insertion',
-  del: 'Deletion',
-  trv: 'Tandem Repeat',
-  alu_ins: 'Alu Insertion',
-  line1_ins: 'LINE-1 Insertion',
-  sva_ins: 'SVA Insertion',
-}
+import {
+  formatLongReadAlleleDisplay,
+  formatLongReadAlleleTypeLabel,
+  formatLongReadVariantId,
+} from './formatLongReadVariantId'
 
 const VariantPageTitle = ({
   variantId,
@@ -41,7 +35,8 @@ const VariantPageTitle = ({
   datasetId: DatasetId
   variant?: LongReadVariant | null
 }) => {
-  const variantDescription = ALLELE_TYPE_LABELS[variantType] || variantType
+  const alleleTypeLabel = formatLongReadAlleleTypeLabel(variantType)
+  const variantDescription = alleleTypeLabel.charAt(0).toUpperCase() + alleleTypeLabel.slice(1)
   const display = variant
     ? formatLongReadAlleleDisplay(variant)
     : {

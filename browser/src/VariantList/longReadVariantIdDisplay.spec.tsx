@@ -7,6 +7,42 @@ import variantTableColumns from './variantTableColumns'
 jest.mock('../Link', () => ({ children, to }: any) => <a href={to}>{children}</a>)
 
 describe('merged long-read variant ID display', () => {
+  test('shows the reported tandem duplication compactly without changing its canonical link', () => {
+    const canonicalId = 'chr22-50715763-DUP_TANDEM-49~1'
+    const alt = 'CGCTGTGGGGCTGCATGGGGTGGGGAGGAACGGGGCTGGGGTATGGCTGG'
+    const row: any = mergeLongReadVariants(
+      [],
+      [
+        {
+          variant_id: canonicalId,
+          source_variant_id: 'chr22-50715763-DUP_TANDEM-49',
+          alt_index: 1,
+          alt_count: 1,
+          lr_cohort: 'hgsvc_hprc' as const,
+          chrom: 'chr22',
+          pos: 50715763,
+          end: 50715812,
+          length: 49,
+          ref: 'C',
+          alt,
+          allele_type: 'dup_tandem',
+          freq: { all: { ac: 1, an: 10, af: 0.1 }, populations: [] },
+        },
+      ]
+    )[0]
+    const idColumn = variantTableColumns.find((column) => column.key === 'variant_id')!
+    const { container } = render(<>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>)
+
+    const link = screen.getByRole('link', {
+      name: '22:50715763 tandem duplication +49 bp',
+    })
+    expect(link.getAttribute('href')).toBe(
+      `/variant/${canonicalId}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
+    )
+    expect(container.textContent).not.toContain(alt)
+    expect(row.variant_id).toBe(canonicalId)
+  })
+
   test('normalizes LR-only TR row labels on a short-read table without changing IDs or links', () => {
     const shortReadIds = ['1-55039879-A-ACTGCTG', '1-55039879-ACTG-A']
     const rawLongReadIds = [

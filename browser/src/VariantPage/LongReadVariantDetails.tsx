@@ -12,6 +12,7 @@ import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRep
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   formatLongReadAlleleDisplay,
+  formatLongReadAlleleTypeLabel,
   formatLongReadVariantId,
 } from '../LongReadVariantPage/formatLongReadVariantId'
 import ExactTrAltMotifStructure from './ExactTrAltMotifStructure'
@@ -47,14 +48,8 @@ export const getAllelicSeriesDistribution = (alleles: AllelicSeriesAllele[]) =>
 
 const formatAlleleType = (alleleType: string | null) => {
   if (!alleleType) return '—'
-  const labels: Record<string, string> = {
-    del: 'Deletion',
-    dup: 'Duplication',
-    ins: 'Insertion',
-    snv: 'Single-nucleotide variant',
-    trv: 'Tandem-repeat variant',
-  }
-  return labels[alleleType.toLowerCase()] || alleleType.toUpperCase()
+  const label = formatLongReadAlleleTypeLabel(alleleType)
+  return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
 const LongReadVariantDetails = ({

@@ -39,6 +39,28 @@ describe('long-read variant page title', () => {
     expect(container.textContent).not.toContain('Insertion')
   })
 
+  test('uses the centralized tandem-duplication type and event labels', () => {
+    const alt = 'CGCTGTGGGGCTGCATGGGGTGGGGAGGAACGGGGCTGGGGTATGGCTGG'
+    const { container } = render(
+      <VariantPageTitle
+        datasetId="gnomad_r4_lr"
+        variantId="chr22-50715763-DUP_TANDEM-49~1"
+        longReadAllele={{
+          variant_id: 'chr22-50715763-DUP_TANDEM-49~1',
+          chrom: 'chr22',
+          pos: 50715763,
+          ref: 'C',
+          alt,
+          allele_type: 'dup_tandem',
+          allele_length: 49,
+        }}
+      />
+    )
+
+    expect(container.textContent).toContain('Tandem duplication:22:50715763 tandem duplication')
+    expect(container.textContent).not.toContain(`22-50715763-C-${alt}`)
+  })
+
   test('does not normalize short-read dataset titles', () => {
     const rawId = 'chr22-100-A-T'
     const { container } = render(<VariantPageTitle datasetId="gnomad_r4" variantId={rawId} />)

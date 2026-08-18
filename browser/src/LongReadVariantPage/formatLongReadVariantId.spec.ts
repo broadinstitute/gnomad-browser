@@ -56,18 +56,72 @@ describe('formatLongReadAlleleDisplay', () => {
     ).toBe('1-100-G-T — Allele 2 of 2')
   })
 
-  test('uses conventional IDs for ordinary short indels', () => {
+  test('uses conventional IDs for ordinary short indels through the 50-base boundary', () => {
+    const alt = `A${'C'.repeat(49)}`
+    expect(alt).toHaveLength(50)
     expect(
       formatLongReadAlleleDisplay({
         variant_id: 'source~1',
         chrom: 'chr1',
         pos: 55039879,
         ref: 'A',
-        alt: 'AACTGCTG',
+        alt,
         allele_type: 'ins',
       }).primaryLabel
-    ).toBe('1-55039879-A-AACTGCTG')
+    ).toBe(`1-55039879-A-${alt}`)
   })
+
+  test('formats the reported literal +49 bp tandem duplication as a compact event', () => {
+    const alt = 'CGCTGTGGGGCTGCATGGGGTGGGGAGGAACGGGGCTGGGGTATGGCTGG'
+    const display = formatLongReadAlleleDisplay({
+      variant_id: 'chr22-50715763-DUP_TANDEM-49~1',
+      source_variant_id: 'chr22-50715763-DUP_TANDEM-49',
+      alt_index: 1,
+      alt_count: 1,
+      chrom: 'chr22',
+      pos: 50715763,
+      ref: 'C',
+      alt,
+      allele_type: 'dup_tandem',
+      allele_length: 49,
+    })
+
+    expect(alt).toHaveLength(50)
+    expect(display.compactLabel).toBe('22:50715763 tandem duplication +49 bp')
+    expect(display.primaryLabel).toMatch(
+      /^22:50715763 tandem duplication \(\+49 bp; ALT CGCTGTGG…ATGGCTGG#[0-9a-f]{8}\)$/
+    )
+    expect(display.compactLabel).not.toContain(alt)
+    expect(display.accessibleLabel).toContain(`Exact ALT sequence: ${alt}`)
+    expect(display.accessibleLabel).toMatch(/ALT sequence digest: [0-9a-f]{8}/)
+    expect(display.accessibleLabel).toContain('Source ALT 1 of 1')
+    expect(display.canonicalId).toBe('chr22-50715763-DUP_TANDEM-49~1')
+  })
+
+  test.each([
+    ['dup', 'duplication'],
+    ['complex_dup', 'complex duplication'],
+    ['inv', 'inversion'],
+    ['alu_ins', 'Alu insertion'],
+    ['bnd', 'breakend'],
+    ['ctx', 'translocation'],
+    ['cpx', 'complex variant'],
+  ])(
+    'keeps literal structural/event type %s compact below the sequence threshold',
+    (type, label) => {
+      const display = formatLongReadAlleleDisplay({
+        variant_id: `source-${type}~1`,
+        chrom: 'chr5',
+        pos: 500,
+        ref: 'A',
+        alt: 'AC',
+        allele_type: type,
+        allele_length: 1,
+      })
+      expect(display.compactLabel).toBe(`5:500 ${label} +1 bp`)
+      expect(display.primaryLabel).not.toBe('5-500-A-AC')
+    }
+  )
 
   test('gives long insertions concise sequence-bearing collision-safe labels', () => {
     const makeLabel = (alt: string) =>
@@ -82,8 +136,8 @@ describe('formatLongReadAlleleDisplay', () => {
       }).primaryLabel
     const first = makeLabel(`ACGTACGT${'A'.repeat(50)}TTTTTTTA`)
     const second = makeLabel(`ACGTACGT${'C'.repeat(50)}TTTTTTTA`)
-    expect(first).toMatch(/^2:200 insertion \(\+60 bp; ALT ACGTACGT…TTTTTTTA#[0-9a-f]{8}\)$/)
-    expect(second).toMatch(/^2:200 insertion \(\+60 bp; ALT ACGTACGT…TTTTTTTA#[0-9a-f]{8}\)$/)
+    expect(first).toMatch(/^2:200 insertion \(\+65 bp; ALT ACGTACGT…TTTTTTTA#[0-9a-f]{8}\)$/)
+    expect(second).toMatch(/^2:200 insertion \(\+65 bp; ALT ACGTACGT…TTTTTTTA#[0-9a-f]{8}\)$/)
     expect(first).not.toBe(second)
     expect(
       formatLongReadAlleleDisplay({
@@ -95,7 +149,50 @@ describe('formatLongReadAlleleDisplay', () => {
         allele_type: 'ins',
         allele_length: 60,
       }).compactLabel
-    ).toBe('2:200 insertion +60 bp')
+    ).toBe('2:200 insertion +65 bp')
+    expect(
+      formatLongReadAlleleDisplay({
+        variant_id: 'source-A~1',
+        chrom: 'chr2',
+        pos: 200,
+        ref: 'A',
+        alt: `ACGTACGT${'A'.repeat(50)}TTTTTTTA`,
+        allele_type: 'ins',
+        allele_length: 60,
+      }).accessibleLabel
+    ).toContain('Source length +60 bp disagrees with literal ALT−REF +65 bp')
+  })
+
+  test('uses source event length when literal structural ALT length disagrees', () => {
+    expect(
+      formatLongReadAlleleDisplay({
+        variant_id: 'structural-dup~1',
+        chrom: '2',
+        pos: 250,
+        ref: 'A',
+        alt: 'AC',
+        allele_type: 'dup',
+        allele_length: 123,
+      }).compactLabel
+    ).toBe('2:250 duplication +123 bp')
+  })
+
+  test('keeps same-length structural alleles collision-safe outside compact tables', () => {
+    const display = (alt: string) =>
+      formatLongReadAlleleDisplay({
+        variant_id: `dup-${alt}~1`,
+        chrom: '2',
+        pos: 260,
+        ref: 'A',
+        alt,
+        allele_type: 'dup_tandem',
+        allele_length: 20,
+      })
+    const first = display(`ACGTACGT${'A'.repeat(20)}TTTTTTTA`)
+    const second = display(`ACGTACGT${'C'.repeat(20)}TTTTTTTA`)
+    expect(first.compactLabel).toBe(second.compactLabel)
+    expect(first.primaryLabel).not.toBe(second.primaryLabel)
+    expect(first.accessibleLabel).not.toBe(second.accessibleLabel)
   })
 
   test('describes symbolic SV alleles without interpreting the source ID', () => {
@@ -127,7 +224,7 @@ describe('formatLongReadAlleleDisplay', () => {
         allele_type: 'trv',
         length: 4,
       }).label
-    ).toBe('4-400-AC-ACACAC — Allele 3 of 4')
+    ).toBe('4:400 tandem-repeat allele (+4 bp; ALT ACACAC) — Allele 3 of 4')
   })
 
   test('preserves canonical identity separately from every visual label', () => {

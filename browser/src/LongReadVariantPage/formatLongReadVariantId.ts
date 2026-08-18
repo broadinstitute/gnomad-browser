@@ -1,3 +1,5 @@
+import { normalizeLongReadAlleleType } from './variantUtils'
+
 export type LongReadAlleleIdentity = {
   variant_id?: string | null
   source_variant_id?: string | null
@@ -29,6 +31,11 @@ export type LongReadAlleleDisplay = {
 const SHORT_ALLELE_MAX_BASES = 50
 const ABBREVIATED_SEQUENCE_BASES = 8
 
+// Only these source types use REF/ALT as their intended short-form identity.
+// Event/SV types stay compact even when the source happens to provide a short,
+// literal ALT sequence.
+const CONVENTIONAL_SEQUENCE_ALLELE_TYPES = new Set(['snv', 'ins', 'insertion', 'del', 'deletion'])
+
 const withoutChr = (value: string) => value.replace(/^chr/i, '')
 
 const parseAltSpecificId = (variantId: string) => {
@@ -58,14 +65,20 @@ const abbreviatedSequence = (sequence: string) => {
   )}#${stableSequenceDigest(sequence)}`
 }
 
-const alleleTypeLabel = (alleleType: string | null | undefined) => {
-  const normalized = (alleleType || 'variant').toLowerCase()
+export const formatLongReadAlleleTypeLabel = (alleleType: string | null | undefined): string => {
+  const normalized = normalizeLongReadAlleleType(alleleType || 'variant')
   const labels: Record<string, string> = {
     snv: 'SNV',
     ins: 'insertion',
+    insertion: 'insertion',
     del: 'deletion',
+    deletion: 'deletion',
     dup: 'duplication',
+    duplication: 'duplication',
+    dup_tandem: 'tandem duplication',
+    dup_interspersed: 'interspersed duplication',
     inv: 'inversion',
+    inversion: 'inversion',
     trv: 'tandem-repeat allele',
     alu_ins: 'Alu insertion',
     line1_ins: 'LINE-1 insertion',
@@ -75,18 +88,43 @@ const alleleTypeLabel = (alleleType: string | null | undefined) => {
     bnd: 'breakend',
     ctx: 'translocation',
     cpx: 'complex variant',
+    complex: 'complex variant',
     complex_dup: 'complex duplication',
+    inv_dup: 'inverted duplication',
   }
   return labels[normalized] || normalized.replace(/_/g, ' ')
 }
 
-const signedLength = (allele: LongReadAlleleIdentity) => {
-  const supplied = allele.allele_length ?? allele.length
-  if (typeof supplied === 'number' && Number.isFinite(supplied)) return supplied
-  if (allele.ref && allele.alt && isLiteralSequence(allele.ref) && isLiteralSequence(allele.alt)) {
-    return allele.alt.length - allele.ref.length
+const isConventionalSequenceType = (alleleType: string | null | undefined) =>
+  CONVENTIONAL_SEQUENCE_ALLELE_TYPES.has(normalizeLongReadAlleleType(alleleType || 'variant'))
+
+type SignedLengthResolution = {
+  value: number | null
+  disagreement: { supplied: number; literal: number } | null
+}
+
+const resolveSignedLength = (allele: LongReadAlleleIdentity): SignedLengthResolution => {
+  const rawSupplied = allele.allele_length ?? allele.length
+  const supplied =
+    typeof rawSupplied === 'number' && Number.isFinite(rawSupplied) ? rawSupplied : null
+  const literal =
+    allele.ref && allele.alt && isLiteralSequence(allele.ref) && isLiteralSequence(allele.alt)
+      ? allele.alt.length - allele.ref.length
+      : null
+
+  // For ordinary sequence variants, the displayed alleles are authoritative.
+  // Retain disagreement as provenance rather than silently trusting stale or
+  // differently-defined source length metadata.
+  if (isConventionalSequenceType(allele.allele_type) && literal != null) {
+    return {
+      value: literal,
+      disagreement: supplied != null && supplied !== literal ? { supplied, literal } : null,
+    }
   }
-  return null
+
+  // Structural/event records use their source-defined signed event length.
+  // A literal ALT can encode an event without ALT−REF being its SV length.
+  return { value: supplied, disagreement: null }
 }
 
 const formatSignedLength = (length: number | null) => {
@@ -120,7 +158,9 @@ export const formatLongReadAlleleDisplay = (
   const chrom = allele.chrom ? withoutChr(String(allele.chrom)) : null
   const ref = allele.ref || null
   const alt = allele.alt || null
+  const lengthResolution = resolveSignedLength(allele)
   const canUseConventionalId =
+    isConventionalSequenceType(allele.allele_type) &&
     chrom != null &&
     allele.pos != null &&
     ref != null &&
@@ -137,9 +177,9 @@ export const formatLongReadAlleleDisplay = (
     let altDescription = 'ALT unavailable'
     if (alt && /^<[^>]+>$/.test(alt)) altDescription = `ALT ${alt}`
     else if (alt) altDescription = `ALT ${abbreviatedSequence(alt)}`
-    primaryLabel = `${chrom}:${allele.pos} ${alleleTypeLabel(
+    primaryLabel = `${chrom}:${allele.pos} ${formatLongReadAlleleTypeLabel(
       allele.allele_type
-    )} (${formatSignedLength(signedLength(allele))}; ${altDescription})`
+    )} (${formatSignedLength(lengthResolution.value)}; ${altDescription})`
   } else {
     primaryLabel = withoutChr(sourceId || canonicalId || 'Long-read allele')
   }
@@ -156,12 +196,31 @@ export const formatLongReadAlleleDisplay = (
   }
   let compactLabel = primaryLabel
   if (!canUseConventionalId && chrom != null && allele.pos != null) {
-    compactLabel = `${chrom}:${allele.pos} ${alleleTypeLabel(
+    compactLabel = `${chrom}:${allele.pos} ${formatLongReadAlleleTypeLabel(
       allele.allele_type
-    )} ${formatSignedLength(signedLength(allele))}`
+    )} ${formatSignedLength(lengthResolution.value)}`
   }
   const label = alleleLabel ? `${primaryLabel} — ${alleleLabel}` : primaryLabel
-  const accessibleLabel = canonicalId ? `${label}. Canonical long-read ID: ${canonicalId}` : label
+  const accessibleDetails = [label]
+  if (ref && isLiteralSequence(ref)) accessibleDetails.push(`Exact REF sequence: ${ref}`)
+  if (alt && isLiteralSequence(alt)) {
+    accessibleDetails.push(`Exact ALT sequence: ${alt}`)
+    accessibleDetails.push(`ALT sequence digest: ${stableSequenceDigest(alt)}`)
+  }
+  if (altIndex != null) {
+    accessibleDetails.push(`Source ALT ${altIndex}${altCount != null ? ` of ${altCount}` : ''}`)
+  }
+  if (lengthResolution.disagreement) {
+    accessibleDetails.push(
+      `Source length ${formatSignedLength(
+        lengthResolution.disagreement.supplied
+      )} disagrees with literal ALT−REF ${formatSignedLength(
+        lengthResolution.disagreement.literal
+      )}; literal ALT−REF is displayed`
+    )
+  }
+  if (canonicalId) accessibleDetails.push(`Canonical long-read ID: ${canonicalId}`)
+  const accessibleLabel = accessibleDetails.join('. ')
 
   return { primaryLabel, compactLabel, alleleLabel, label, accessibleLabel, canonicalId }
 }
