@@ -118,15 +118,16 @@ const StyledTable = styled.table`
   }
 
   th {
-    background: #f5f5f5;
+    background-color: #f5f5f5;
     font-weight: 600;
     font-size: 12px;
     cursor: pointer;
     user-select: none;
     position: sticky;
     top: 0;
+    z-index: 1;
     &:hover {
-      background: #eaeaea;
+      background-color: #eaeaea;
     }
   }
 

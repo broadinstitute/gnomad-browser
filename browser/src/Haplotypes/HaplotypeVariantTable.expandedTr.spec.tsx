@@ -174,7 +174,8 @@ const renderTable = () =>
     />
   )
 
-const expandRow = () => fireEvent.click(screen.getByText(sourceVariantId).closest('tr')!)
+const expandRow = () =>
+  fireEvent.click(screen.getByText(sourceVariantId.replace(/^chr/, '')).closest('tr')!)
 
 describe('expanded TR full-cohort distributions', () => {
   beforeEach(() => {
@@ -190,7 +191,9 @@ describe('expanded TR full-cohort distributions', () => {
     expect(fetchMock).not.toHaveBeenCalled()
     expandRow()
 
-    const section = screen.getByLabelText('Full-cohort repeat-count distributions') as HTMLDetailsElement
+    const section = screen.getByLabelText(
+      'Full-cohort repeat-count distributions'
+    ) as HTMLDetailsElement
     expect(section.tagName).toBe('DETAILS')
     expect(section.open).toBe(true)
     expect(section.textContent).toContain('Full-cohort repeat-count distributions')
@@ -210,6 +213,21 @@ describe('expanded TR full-cohort distributions', () => {
     ).not.toBeNull()
   })
 
+  test('keeps the sticky header opaque and above an expanded TR distribution', async () => {
+    const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
+    fetchMock.mockResolvedValue(responseWithVariant(fullDistribution) as any)
+
+    renderTable()
+    expandRow()
+
+    expect(await screen.findByLabelText('full allele size distribution')).not.toBeNull()
+    const header = screen.getByRole('columnheader', { name: 'Variant ID' })
+    const headerStyle = window.getComputedStyle(header)
+    expect(headerStyle.position).toBe('sticky')
+    expect(['rgb(245, 245, 245)', 'rgb(234, 234, 234)']).toContain(headerStyle.backgroundColor)
+    expect(Number(headerStyle.zIndex)).toBeGreaterThan(0)
+  })
+
   test('fetches structured long_read_variant data on parent-row expansion, renders full data and caches re-expansion', async () => {
     const fetchMock = global.fetch as jest.MockedFunction<typeof fetch>
     fetchMock.mockResolvedValue(responseWithVariant(fullDistribution) as any)
@@ -218,7 +236,9 @@ describe('expanded TR full-cohort distributions', () => {
     expect(fetchMock).not.toHaveBeenCalled()
 
     expandRow()
-    const section = screen.getByLabelText('Full-cohort repeat-count distributions') as HTMLDetailsElement
+    const section = screen.getByLabelText(
+      'Full-cohort repeat-count distributions'
+    ) as HTMLDetailsElement
     expect(section.tagName).toBe('DETAILS')
     expect(section.open).toBe(true)
     expect(screen.queryByLabelText('full allele size distribution')).toBeNull()
