@@ -140,7 +140,7 @@ const fetchLongReadTrLocusUncached = async ({
   // application code so a malformed source value can never become identity.
   const summaryRows = await queryRows(
     `
-      SELECT position, source_variant_id, ref_allele, alts, ac, an, af,
+      SELECT task_id, attempt_id, position, source_variant_id, ref_allele, alts, ac, an, af,
         allele_lengths, source_info_json
       FROM lr_y1_summaries
       WHERE run_id = {runId:String} AND release = 'y1'
@@ -261,6 +261,10 @@ const fetchLongReadTrLocusUncached = async ({
     return {
       record_index: recordIndex + 1,
       source_variant_id: row.source_variant_id,
+      // Internal immutable identity used by the locus-scoped ancillary join.
+      // These remain absent from the legacy public source-record shape.
+      task_id: row.task_id,
+      attempt_id: row.attempt_id,
       position: Number(row.position),
       alt_count: altCount,
       ref: row.ref_allele,
@@ -320,6 +324,8 @@ const fetchLongReadTrLocusUncached = async ({
     lr_cohort: cohort,
     source_release: source.release,
     source_run_id: source.run_id,
+    // Kept internal for exact ancillary cache/query identity.
+    primary_database: source.database,
     source_records: sourceRecords,
     total_alleles: summaries.reduce((sum, summary) => sum + summary.alt_count, 0),
     unique_carrier_count: source.carriers_available

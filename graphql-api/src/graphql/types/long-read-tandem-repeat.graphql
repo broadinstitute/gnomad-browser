@@ -50,6 +50,57 @@ type LongReadTrCatalogMatch {
   strchive_id: String
 }
 
+enum LongReadTrPlotStatus {
+  AVAILABLE_EXACT
+  UNAVAILABLE_ANCILLARY
+  UNAVAILABLE_COMPOUND_LOCUS
+  UNAVAILABLE_MULTIPLE_SOURCE_RECORDS
+  UNAVAILABLE_NO_EXACT_MAPPING
+}
+
+enum LongReadTrHistogramUnit {
+  MOTIF_REPEAT_COUNT
+}
+
+type LongReadTrHistogramIdentity {
+  ancillary_run_id: String!
+  primary_database: String!
+  primary_run_id: String!
+  primary_task_id: String!
+  primary_attempt_id: String!
+  source_variant_id: String!
+  component: LongReadTrLocusComponent!
+}
+
+type LongReadTrPlotCallability {
+  called_alleles: Int!
+  called_diploid_genotypes: Int
+  no_call_rate: Float
+  no_call_rate_status: String!
+}
+
+type LongReadTrPlotStratumCallability {
+  ancestry_group: String!
+  sex: String!
+  called_alleles: Int
+  called_diploid_genotypes: Int
+  no_call_rate: Float
+  no_call_rate_status: String!
+}
+
+type LongReadTrRepeatCountPlots {
+  status: LongReadTrPlotStatus!
+  reason_code: String
+  identity: LongReadTrHistogramIdentity
+  unit: LongReadTrHistogramUnit
+  repeat_unit: String
+  overall: LongReadTrPlotCallability
+  callability: [LongReadTrPlotStratumCallability!]!
+  allele_size_distribution: [ShortTandemRepeatAlleleSizeDistributionCohort!]!
+  genotype_distribution: [ShortTandemRepeatGenotypeDistributionCohort!]!
+  max_repunits: Float
+}
+
 type LongReadTandemRepeatLocus {
   id: String!
   source_trid: String!
@@ -66,5 +117,6 @@ type LongReadTandemRepeatLocus {
   unique_carrier_count: Int
   selected_allele_valid: Boolean
   short_read_matches: [LongReadTrCatalogMatch!]!
+  repeat_count_plots: LongReadTrRepeatCountPlots!
   alleles: LongReadTrAlleleConnection!
 }

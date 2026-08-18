@@ -100,7 +100,7 @@ const locus = {
         ancestry_group: 'afr' as const,
         sex: 'XX' as const,
         repunit: 'AAAAG',
-        distribution: [{ repunit_count: 10, frequency: 582 }],
+        distribution: [{ repunit_count: 10, frequency: 582, colorByValue: null }],
       },
     ],
     genotype_distribution: [
@@ -219,7 +219,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
             ancestry_group: 'afr' as const,
             sex: 'XX' as const,
             repunit: 'AAAAG',
-            distribution: [{ repunit_count: 10, frequency: 2046 }],
+            distribution: [{ repunit_count: 10, frequency: 2046, colorByValue: null }],
           },
         ],
         genotype_distribution: [

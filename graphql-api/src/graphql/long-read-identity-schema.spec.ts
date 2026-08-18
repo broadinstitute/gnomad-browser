@@ -19,6 +19,24 @@ const longReadTrLocusQuery = `
       id source_trid chrom source_run_id total_alleles selected_allele_valid
       components { chrom start0 end0 motif }
       source_records { source_variant_id alt_count non_reference_ac an non_reference_af }
+      repeat_count_plots {
+        status reason_code unit repeat_unit max_repunits
+        identity {
+          ancillary_run_id primary_database primary_run_id primary_task_id primary_attempt_id
+          source_variant_id component { chrom start0 end0 motif }
+        }
+        overall { called_alleles called_diploid_genotypes no_call_rate no_call_rate_status }
+        callability {
+          ancestry_group sex called_alleles called_diploid_genotypes no_call_rate no_call_rate_status
+        }
+        allele_size_distribution {
+          ancestry_group sex repunit distribution { repunit_count frequency }
+        }
+        genotype_distribution {
+          ancestry_group sex short_allele_repunit long_allele_repunit
+          distribution { short_allele_repunit_count long_allele_repunit_count frequency }
+        }
+      }
       alleles {
         nodes { variant_id source_variant_id alt_index alt_count repeat_count length freq { all { ac an af } } }
         page_info { has_next_page end_cursor }

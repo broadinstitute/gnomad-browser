@@ -1,11 +1,13 @@
 import { parseTrLocusId } from '../../../../dataset-metadata/longReadTrLocusId'
 import { UserVisibleError } from '../../errors'
+import { fetchLongReadTrRepeatCountPlots } from '../../queries/long_read_tr_histograms'
 import { fetchLongReadTrLocus, MAX_TR_LOCUS_PAGE_SIZE } from '../../queries/long_read_tr_loci'
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
 import {
   exactShortTandemRepeatCatalogMatches,
   fetchAllShortTandemRepeats,
 } from '../../queries/short-tandem-repeat-queries'
+import { getY1AncillaryRoute } from './ancillary-availability'
 
 const resolveLongReadTandemRepeatLocus = async (_obj: any, args: any, ctx: any) => {
   const locus = parseTrLocusId(args.id)
@@ -51,5 +53,9 @@ const resolveLongReadTandemRepeatLocus = async (_obj: any, args: any, ctx: any) 
 export default {
   Query: {
     long_read_tandem_repeat_locus: resolveLongReadTandemRepeatLocus,
+  },
+  LongReadTandemRepeatLocus: {
+    repeat_count_plots: (locus: any) =>
+      fetchLongReadTrRepeatCountPlots(locus, getY1AncillaryRoute(locus.lr_cohort, 'str_histogram')),
   },
 }
