@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { PositionAxisTrack } from '@gnomad/region-viewer'
-import { Select } from '@gnomad/ui'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Cursor from '../RegionViewerCursor'
@@ -45,12 +44,12 @@ import MQTLTrack from '../Haplotypes/MQTLTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import LongReadViewControls from './LongReadViewControls'
 import LongReadViewHelpButton from './LongReadViewHelpButton'
+import LongReadVariantColorControl from './LongReadVariantColorControl'
 import LongReadVariantTrack from './LongReadVariantTrack'
 import VariantDensityTrack from './VariantDensityTrack'
 import LRUniqueDensityTrack from './LRUniqueDensityTrack'
 import { getLodVisibility } from './variantUtils'
 import { allLongReadVariantTypesSelected } from './longReadVariantTypes'
-import { COLOR_MODES } from './variantColorUtils'
 import Variants from '../VariantList/Variants'
 import ZoomOverview from '../Haplotypes/ZoomOverview'
 import { filterLongReadVariantsForViewport } from './longReadViewport'
@@ -240,13 +239,6 @@ const TopBar = styled.div`
 const ViewModeControls = styled.div`
   display: inline-flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
-`
-
-const ColorControls = styled.div`
-  display: flex;
   align-items: center;
   gap: 4px;
   min-width: 0;
@@ -2259,17 +2251,7 @@ const LongReadUnifiedView = ({
               onChangeShowHaplotypes={setShowHaplotypes}
             />
           </ViewModeControls>
-          <ColorControls>
-            <label style={{ fontSize: '12px' }}>Color:</label>
-            <Select
-              value={colorMode}
-              onChange={(e: any) => setColorMode(e.target.value)}
-            >
-              {COLOR_MODES.map((cm) => (
-                <option key={cm.value} value={cm.value}>{cm.label}</option>
-              ))}
-            </Select>
-          </ColorControls>
+          <LongReadVariantColorControl value={colorMode} onChange={setColorMode} />
           <SearchInline onSubmit={submitLocalSearch}>
             <svg
               aria-hidden="true"
