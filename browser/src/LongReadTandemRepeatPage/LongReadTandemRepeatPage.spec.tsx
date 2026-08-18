@@ -9,6 +9,31 @@ jest.mock('../Link', () => ({ children, to, ...props }: any) => (
     {children}
   </a>
 ))
+jest.mock('../LongReadVariantPage/LongReadSTRDistributionSections', () => ({
+  LongReadAlleleSizeDistributionSection: ({ heading, calledCountDistributions }: any) => (
+    <div>
+      <h2>{heading}</h2>
+      <p>
+        {calledCountDistributions.alleleSizeDistribution
+          .flatMap((cohort: any) => cohort.distribution)
+          .reduce((sum: number, bin: any) => sum + bin.frequency, 0)}{' '}
+        called alleles
+      </p>
+    </div>
+  ),
+  LongReadGenotypeDistributionSection: ({ heading, calledCountDistributions }: any) => (
+    <div>
+      <h2>{heading}</h2>
+      <p>
+        {calledCountDistributions.genotypeDistribution
+          .flatMap((cohort: any) => cohort.distribution)
+          .reduce((sum: number, bin: any) => sum + bin.frequency, 0)}{' '}
+        complete two-allele genotypes
+      </p>
+    </div>
+  ),
+}))
+
 jest.mock('@gnomad/ui', () => ({
   Button: ({ children, ...props }: any) => (
     <button type="button" {...props}>
@@ -50,6 +75,51 @@ const locus = {
       region: null,
     },
   ],
+  repeat_count_plots: {
+    status: 'AVAILABLE_EXACT' as const,
+    reason_code: null,
+    identity: {
+      ancillary_run_id: 'str-run-hgsvc',
+      primary_database: 'primary-db',
+      primary_run_id: 'run-hgsvc',
+      primary_task_id: 'task-1',
+      primary_attempt_id: 'attempt-1',
+      source_variant_id: sourceVariantId,
+      component: { chrom: '4', start0: 39348424, end0: 39348479, motif: 'AAAAG' },
+    },
+    unit: 'MOTIF_REPEAT_COUNT',
+    repeat_unit: 'AAAAG',
+    overall: {
+      called_alleles: 582,
+      called_diploid_genotypes: 291,
+      no_call_rate: null,
+      no_call_rate_status: 'UNAVAILABLE_NOT_IN_ADMITTED_HISTOGRAM_CONTRACT',
+    },
+    allele_size_distribution: [
+      {
+        ancestry_group: 'afr' as const,
+        sex: 'XX' as const,
+        repunit: 'AAAAG',
+        distribution: [{ repunit_count: 10, frequency: 582 }],
+      },
+    ],
+    genotype_distribution: [
+      {
+        ancestry_group: 'afr',
+        sex: 'XX' as const,
+        short_allele_repunit: 'AAAAG',
+        long_allele_repunit: 'AAAAG',
+        distribution: [
+          {
+            short_allele_repunit_count: 10,
+            long_allele_repunit_count: 10,
+            frequency: 291,
+          },
+        ],
+      },
+    ],
+    max_repunits: 168,
+  },
   short_read_matches: [],
   alleles: {
     nodes: [
@@ -107,6 +177,117 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByRole('link', { name: 'Open exact' }).getAttribute('href')).toBe(
       `/variant/${exactAllele}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
+  })
+
+  test('makes exact called-count plots primary above provenance and supporting alleles', () => {
+    renderPage()
+    expect(screen.getByRole('heading', { name: 'Allele repeat-count distribution' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Diploid genotype distribution' })).not.toBeNull()
+    expect(screen.getByText('582 called alleles')).not.toBeNull()
+    expect(screen.getByText('291 complete two-allele genotypes')).not.toBeNull()
+
+    const plotHeading = screen.getByRole('heading', { name: 'Allele repeat-count distribution' })
+    const provenanceHeading = screen.getByRole('heading', { name: 'Locus identity and provenance' })
+    const alleleHeading = screen.getByRole('heading', { name: 'ALT alleles' })
+    expect(plotHeading.compareDocumentPosition(provenanceHeading)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+    expect(plotHeading.compareDocumentPosition(alleleHeading)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+  })
+
+  test('renders the verified All of Us called denominators independently', () => {
+    const aou = {
+      ...locus,
+      lr_cohort: 'aou' as const,
+      source_run_id: 'run-aou',
+      repeat_count_plots: {
+        ...locus.repeat_count_plots,
+        identity: {
+          ...locus.repeat_count_plots.identity,
+          ancillary_run_id: 'str-run-aou',
+          primary_run_id: 'run-aou',
+        },
+        overall: {
+          ...locus.repeat_count_plots.overall,
+          called_alleles: 2046,
+          called_diploid_genotypes: 1023,
+        },
+        allele_size_distribution: [
+          {
+            ancestry_group: 'afr' as const,
+            sex: 'XX' as const,
+            repunit: 'AAAAG',
+            distribution: [{ repunit_count: 10, frequency: 2046 }],
+          },
+        ],
+        genotype_distribution: [
+          {
+            ancestry_group: 'afr',
+            sex: 'XX' as const,
+            short_allele_repunit: 'AAAAG',
+            long_allele_repunit: 'AAAAG',
+            distribution: [
+              {
+                short_allele_repunit_count: 10,
+                long_allele_repunit_count: 10,
+                frequency: 1023,
+              },
+            ],
+          },
+        ],
+      },
+    }
+    render(
+      <ThemeProvider
+        theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+      >
+        <LongReadTandemRepeatPage
+          datasetId="gnomad_r4_lr"
+          locus={aou}
+          onCohortChange={jest.fn()}
+          onNextPage={jest.fn()}
+        />
+      </ThemeProvider>
+    )
+    expect(screen.getByText('2046 called alleles')).not.toBeNull()
+    expect(screen.getByText('1023 complete two-allele genotypes')).not.toBeNull()
+  })
+
+  test('fails compound loci closed instead of presenting component plots', () => {
+    const compound = {
+      ...locus,
+      id: '1-121606499-121606508-AG+1-121606517-121606536-A',
+      components: [
+        { chrom: '1', start0: 121606499, end0: 121606508, motif: 'AG' },
+        { chrom: '1', start0: 121606517, end0: 121606536, motif: 'A' },
+      ],
+      repeat_count_plots: {
+        ...locus.repeat_count_plots,
+        status: 'UNAVAILABLE_COMPOUND_LOCUS' as const,
+        identity: null,
+        allele_size_distribution: [],
+        genotype_distribution: [],
+        max_repunits: null,
+      },
+    }
+    render(
+      <ThemeProvider
+        theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+      >
+        <LongReadTandemRepeatPage
+          datasetId="gnomad_r4_lr"
+          locus={compound}
+          onCohortChange={jest.fn()}
+          onNextPage={jest.fn()}
+        />
+      </ThemeProvider>
+    )
+    expect(
+      screen.getByText(/multiple repeat components and no admitted single whole-locus/)
+    ).not.toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Allele repeat-count distribution' })).toBeNull()
   })
 
   test('opens sequence detail in a modal, never a child table row', () => {

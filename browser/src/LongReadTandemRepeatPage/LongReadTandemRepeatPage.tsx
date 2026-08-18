@@ -10,6 +10,12 @@ import {
 
 import Link from '../Link'
 import TableWrapper from '../TableWrapper'
+import type { AlleleSizeDistributionCohort } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
+import {
+  LongReadAlleleSizeDistributionSection,
+  LongReadGenotypeDistributionSection,
+  type GenotypeDistributionCohort,
+} from '../LongReadVariantPage/LongReadSTRDistributionSections'
 import { LongReadCohort, longReadVariantUrl } from '../LongReadVariantPage/longReadCohort'
 
 const Section = styled.section`
@@ -18,6 +24,26 @@ const Section = styled.section`
 
 const Identity = styled.code`
   overflow-wrap: anywhere;
+`
+
+const PrimaryPlots = styled.section`
+  margin: 1.5em 0 2.5em;
+  padding: 1.25em;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fafafa;
+`
+
+const PlotGrid = styled.div`
+  display: grid;
+  /* stylelint-disable unit-whitelist */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 430px), 1fr));
+  /* stylelint-enable unit-whitelist */
+  gap: 2em;
+
+  > div {
+    min-width: 0;
+  }
 `
 
 const OneLineTable = styled.table`
@@ -64,6 +90,38 @@ type Allele = {
   freq: { all: Frequency; populations: Frequency[] }
 }
 
+type RepeatCountPlots = {
+  status:
+    | 'AVAILABLE_EXACT'
+    | 'UNAVAILABLE_ANCILLARY'
+    | 'UNAVAILABLE_COMPOUND_LOCUS'
+    | 'UNAVAILABLE_MULTIPLE_SOURCE_RECORDS'
+    | 'UNAVAILABLE_NO_EXACT_MAPPING'
+    | 'UNAVAILABLE_INVALID_HISTOGRAM'
+    | 'UNAVAILABLE_PAYLOAD_TOO_LARGE'
+  reason_code: string | null
+  identity: {
+    ancillary_run_id: string
+    primary_database: string
+    primary_run_id: string
+    primary_task_id: string
+    primary_attempt_id: string
+    source_variant_id: string
+    component: TrLocusComponent
+  } | null
+  unit: string | null
+  repeat_unit: string | null
+  overall: {
+    called_alleles: number
+    called_diploid_genotypes: number | null
+    no_call_rate: number | null
+    no_call_rate_status: string
+  } | null
+  allele_size_distribution: AlleleSizeDistributionCohort[]
+  genotype_distribution: GenotypeDistributionCohort[]
+  max_repunits: number | null
+}
+
 type Locus = {
   id: string
   source_trid: string
@@ -87,6 +145,7 @@ type Locus = {
     source: string | null
     region: string | null
   }[]
+  repeat_count_plots: RepeatCountPlots
   short_read_matches: {
     id: string
     gene_symbol: string | null
@@ -103,6 +162,93 @@ type Locus = {
 const ucscUrl = (component: TrLocusComponent) => {
   const region = trComponentDisplayRegion(component)
   return `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&position=chr${region.chrom}%3A${region.start1}-${region.end1}`
+}
+
+const unavailablePlotMessage = (plots: RepeatCountPlots) => {
+  if (plots.status === 'UNAVAILABLE_COMPOUND_LOCUS') {
+    return 'Repeat-count plots unavailable: this source locus has multiple repeat components and no admitted single whole-locus repeat-count definition.'
+  }
+  if (plots.status === 'UNAVAILABLE_MULTIPLE_SOURCE_RECORDS') {
+    return 'Repeat-count plots unavailable: this locus resolves to multiple primary source records, so no single exact histogram can be assigned.'
+  }
+  if (plots.status === 'UNAVAILABLE_ANCILLARY') {
+    return 'Repeat-count plots unavailable: no admitted histogram source is configured for this cohort.'
+  }
+  if (plots.status === 'UNAVAILABLE_PAYLOAD_TOO_LARGE') {
+    return 'Repeat-count plots unavailable: the exact admitted histogram exceeds the bounded response size.'
+  }
+  if (plots.status === 'UNAVAILABLE_INVALID_HISTOGRAM') {
+    return 'Repeat-count plots unavailable: the exact admitted histogram did not pass integrity validation.'
+  }
+  return 'Repeat-count plots unavailable: no exact admitted histogram matches this complete source locus identity.'
+}
+
+const LocusRepeatCountPlots = ({ locus }: { locus: Locus }) => {
+  const plots = locus.repeat_count_plots
+  if (plots.status !== 'AVAILABLE_EXACT') {
+    return (
+      <PrimaryPlots aria-label="Repeat-count plot availability">
+        <h2>Repeat-count plots</h2>
+        <p role="status">{unavailablePlotMessage(plots)}</p>
+      </PrimaryPlots>
+    )
+  }
+
+  const hasAlleles = plots.allele_size_distribution.length > 0 && plots.max_repunits != null
+  const hasGenotypes = plots.genotype_distribution.length > 0
+  const calledCountDistributions = {
+    alleleSizeDistribution: plots.allele_size_distribution,
+    genotypeDistribution: plots.genotype_distribution,
+  }
+  const plotIdentity = `${locus.lr_cohort}-${locus.id}-${
+    plots.identity?.ancillary_run_id || 'exact'
+  }`
+
+  return (
+    <PrimaryPlots aria-label="Exact repeat-count plots" key={plotIdentity}>
+      <p>
+        Exact <strong>{plots.repeat_unit}</strong> motif-repeat counts for this complete source
+        locus. These counts do not describe exact sequences, interruption structures, or clinical
+        significance.
+      </p>
+      {plots.identity && (
+        <p>
+          <strong>Histogram provenance:</strong> admitted ancillary run{' '}
+          <Identity>{plots.identity.ancillary_run_id}</Identity>, joined to exact primary record{' '}
+          <Identity>{plots.identity.source_variant_id}</Identity> in run{' '}
+          <Identity>{plots.identity.primary_run_id}</Identity>.
+        </p>
+      )}
+      <PlotGrid>
+        {hasAlleles && (
+          <div>
+            <LongReadAlleleSizeDistributionSection
+              variantId={`${plotIdentity}-alleles`}
+              alleleSizeDistribution={plots.allele_size_distribution}
+              maxRepunits={plots.max_repunits!}
+              repeatUnit={plots.repeat_unit || undefined}
+              heading="Allele repeat-count distribution"
+              calledCountDistributions={calledCountDistributions}
+            />
+          </div>
+        )}
+        {hasGenotypes && (
+          <div>
+            <LongReadGenotypeDistributionSection
+              variantId={`${plotIdentity}-genotypes`}
+              genotypeDistribution={plots.genotype_distribution}
+              repeatUnit={plots.repeat_unit || undefined}
+              heading="Diploid genotype distribution"
+              calledCountDistributions={calledCountDistributions}
+            />
+          </div>
+        )}
+      </PlotGrid>
+      {!hasGenotypes && (
+        <p>Diploid genotype distribution unavailable for this admitted histogram.</p>
+      )}
+    </PrimaryPlots>
+  )
 }
 
 const LongReadTandemRepeatPage = ({
@@ -137,6 +283,22 @@ const LongReadTandemRepeatPage = ({
         </p>
       )}
 
+      <p>
+        <label htmlFor="lr-tr-cohort">Cohort: </label>
+        <Select
+          id="lr-tr-cohort"
+          value={locus.lr_cohort}
+          onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+            onCohortChange(event.target.value as LongReadCohort)
+          }
+        >
+          <option value="hgsvc_hprc">HGSVC / HPRC</option>
+          <option value="aou">All of Us</option>
+        </Select>
+      </p>
+
+      <LocusRepeatCountPlots locus={locus} />
+
       <Section>
         <h2>Locus identity and provenance</h2>
         <p>
@@ -152,19 +314,6 @@ const LongReadTandemRepeatPage = ({
           <strong>Display envelope (one-based, inclusive):</strong> chr{envelope.chrom}:
           {envelope.start1.toLocaleString()}–{envelope.end1.toLocaleString()}. The envelope is a
           convenience, not identity.
-        </p>
-        <p>
-          <label htmlFor="lr-tr-cohort">Cohort: </label>
-          <Select
-            id="lr-tr-cohort"
-            value={locus.lr_cohort}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-              onCohortChange(event.target.value as LongReadCohort)
-            }
-          >
-            <option value="hgsvc_hprc">HGSVC / HPRC</option>
-            <option value="aou">All of Us</option>
-          </Select>
         </p>
         <p>
           Source release <strong>{locus.source_release}</strong>; accepted run{' '}

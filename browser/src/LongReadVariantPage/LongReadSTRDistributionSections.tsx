@@ -39,6 +39,58 @@ export type GenotypeDistributionCohort = {
 
 type HeadingLevel = 'h2' | 'h3' | 'h4'
 
+type CalledCountDistributions = {
+  alleleSizeDistribution: AlleleSizeDistributionCohort[]
+  genotypeDistribution: GenotypeDistributionCohort[]
+}
+
+export const selectedCalledCounts = (
+  distributions: CalledCountDistributions,
+  selectedPopulation: PopulationId | null,
+  selectedSex: Sex | null
+) => {
+  const inSelectedStratum = (cohort: { ancestry_group: string; sex: Sex }) =>
+    (selectedPopulation === null || cohort.ancestry_group === selectedPopulation) &&
+    (selectedSex === null || cohort.sex === selectedSex)
+
+  return {
+    calledAlleles: distributions.alleleSizeDistribution
+      .filter(inSelectedStratum)
+      .flatMap((cohort) => cohort.distribution)
+      .reduce((sum, bin) => sum + bin.frequency, 0),
+    calledDiploidGenotypes: distributions.genotypeDistribution
+      .filter(inSelectedStratum)
+      .flatMap((cohort) => cohort.distribution)
+      .reduce((sum, bin) => sum + bin.frequency, 0),
+  }
+}
+
+const CalledDenominators = ({
+  alleleSizeDistribution,
+  genotypeDistribution,
+  selectedPopulation,
+  selectedSex,
+}: CalledCountDistributions & {
+  selectedPopulation: PopulationId | null
+  selectedSex: Sex | null
+}) => {
+  const counts = selectedCalledCounts(
+    { alleleSizeDistribution, genotypeDistribution },
+    selectedPopulation,
+    selectedSex
+  )
+  return (
+    <p aria-live="polite">
+      <strong>
+        {counts.calledAlleles.toLocaleString()} called alleles;{' '}
+        {counts.calledDiploidGenotypes.toLocaleString()} complete two-allele genotypes.
+      </strong>{' '}
+      Counts include called observations only. No-call denominator unavailable for this admitted
+      histogram.
+    </p>
+  )
+}
+
 export const longReadAlleleSizeColorBy: ColorByFn<AlleleSizeDistributionCohort> = (
   cohort,
   colorBy
@@ -63,14 +115,18 @@ export const LongReadAlleleSizeDistributionSection = ({
   maxRepunits,
   repeatUnit,
   headingLevel = 'h2',
+  heading = 'Allele Size Distribution',
   compact = false,
+  calledCountDistributions,
 }: {
   variantId: string
   alleleSizeDistribution: AlleleSizeDistributionCohort[]
   maxRepunits: number
   repeatUnit?: string
   headingLevel?: HeadingLevel
+  heading?: string
   compact?: boolean
+  calledCountDistributions?: CalledCountDistributions
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -90,7 +146,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   return (
     <>
       <Heading>
-        Allele Size Distribution <InfoButton topic="str-allele-size-distribution" />
+        {heading} <InfoButton topic="str-allele-size-distribution" />
       </Heading>
       {/* The responsive plot wrapper uses height: 100%. Give it an explicit
           containing height so its SVG participates in document flow instead
@@ -150,6 +206,13 @@ export const LongReadAlleleSizeDistributionSection = ({
           selectedColorBy={selectedColorBy}
         />
       </ControlSection>
+      {calledCountDistributions && (
+        <CalledDenominators
+          {...calledCountDistributions}
+          selectedPopulation={selectedPopulation}
+          selectedSex={selectedSex}
+        />
+      )}
     </>
   )
 }
@@ -172,13 +235,17 @@ export const LongReadGenotypeDistributionSection = ({
   genotypeDistribution,
   repeatUnit,
   headingLevel = 'h2',
+  heading = 'Genotype Distribution',
   compact = false,
+  calledCountDistributions,
 }: {
   variantId: string
   genotypeDistribution: GenotypeDistributionCohort[]
   repeatUnit?: string
   headingLevel?: HeadingLevel
+  heading?: string
   compact?: boolean
+  calledCountDistributions?: CalledCountDistributions
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -198,7 +265,7 @@ export const LongReadGenotypeDistributionSection = ({
   return (
     <>
       <Heading>
-        Genotype Distribution <InfoButton topic="str-genotype-distribution" />
+        {heading} <InfoButton topic="str-genotype-distribution" />
       </Heading>
       <div
         style={{
@@ -246,6 +313,13 @@ export const LongReadGenotypeDistributionSection = ({
           ancestryGroupName={longReadAncestryGroupDisplayName}
         />
       </ControlSection>
+      {calledCountDistributions && (
+        <CalledDenominators
+          {...calledCountDistributions}
+          selectedPopulation={selectedPopulation}
+          selectedSex={selectedSex}
+        />
+      )}
     </>
   )
 }

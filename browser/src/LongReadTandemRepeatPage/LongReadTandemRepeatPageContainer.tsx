@@ -31,6 +31,28 @@ query ${operationName}(
     source_records {
       record_index source_variant_id position alt_count ref non_reference_ac an non_reference_af source region
     }
+    repeat_count_plots {
+      status reason_code unit repeat_unit max_repunits
+      identity {
+        ancillary_run_id primary_database primary_run_id primary_task_id primary_attempt_id
+        source_variant_id
+        component { chrom start0 end0 motif }
+      }
+      overall {
+        called_alleles called_diploid_genotypes no_call_rate no_call_rate_status
+      }
+      callability {
+        ancestry_group sex called_alleles called_diploid_genotypes no_call_rate no_call_rate_status
+      }
+      allele_size_distribution {
+        ancestry_group sex repunit
+        distribution { repunit_count frequency }
+      }
+      genotype_distribution {
+        ancestry_group sex short_allele_repunit long_allele_repunit
+        distribution { short_allele_repunit_count long_allele_repunit_count frequency }
+      }
+    }
     short_read_matches { id gene_symbol reference_repeat_unit stripy_id strchive_id }
     alleles {
       nodes {
@@ -102,7 +124,7 @@ const LongReadTandemRepeatPageContainer = ({
       <Query
         operationName={operationName}
         query={query}
-        requestKey={`${lrCohort}:${after || 'first'}:${selectedAllele || ''}`}
+        requestKey={`${lrCohort}:${parsed.canonicalId}:${after || 'first'}:${selectedAllele || ''}`}
         variables={{
           id: parsed.canonicalId,
           lrCohort,
