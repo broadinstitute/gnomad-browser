@@ -10,7 +10,8 @@ import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import LongReadTandemRepeatPage from './LongReadTandemRepeatPage'
 
 const operationName = 'LongReadTandemRepeatLocus'
-const query = `
+export const LONG_READ_TR_ALLELES_PER_PAGE = 50
+export const longReadTandemRepeatLocusQuery = `
 query ${operationName}(
   $id: String!
   $lrCohort: LongReadCohort!
@@ -25,40 +26,14 @@ query ${operationName}(
     after: $after
     allele: $allele
   ) {
-    id source_trid reference_genome chrom motifs structure lr_cohort source_release source_run_id
-    total_alleles unique_carrier_count selected_allele_valid
+    id motifs lr_cohort source_release source_run_id total_alleles selected_allele_valid
     components { chrom start0 end0 motif }
-    source_records {
-      record_index source_variant_id position alt_count ref non_reference_ac an non_reference_af source region
-    }
-    repeat_count_plots {
-      status reason_code unit repeat_unit max_repunits
-      identity {
-        ancillary_run_id primary_database primary_run_id primary_task_id primary_attempt_id
-        source_variant_id
-        component { chrom start0 end0 motif }
-      }
-      overall {
-        called_alleles called_diploid_genotypes no_call_rate no_call_rate_status
-      }
-      callability {
-        ancestry_group sex called_alleles called_diploid_genotypes no_call_rate no_call_rate_status
-      }
-      allele_size_distribution {
-        ancestry_group sex repunit
-        distribution { repunit_count frequency }
-      }
-      genotype_distribution {
-        ancestry_group sex short_allele_repunit long_allele_repunit
-        distribution { short_allele_repunit_count long_allele_repunit_count frequency }
-      }
-    }
-    short_read_matches { id gene_symbol reference_repeat_unit stripy_id strchive_id }
+    source_records { source_variant_id }
+    short_read_matches { id gene_symbol }
     alleles {
       nodes {
-        variant_id source_variant_id alt_index alt_count ref alt length repeat_count
-        repeat_count_source motif_purity
-        freq { all { ac an af } populations { id ac an af } }
+        variant_id alt_index length repeat_count repeat_count_source
+        freq { all { ac an af } }
       }
       page_info { has_next_page end_cursor }
     }
@@ -114,21 +89,14 @@ const LongReadTandemRepeatPageContainer = ({
           parsed.components[0].start0 + 1
         ).toLocaleString()}`}
       />
-      <PageHeading>
-        Tandem-repeat locus {parsed.components[0].chrom}:
-        {(parsed.components[0].start0 + 1).toLocaleString()}
-        {parsed.components.length > 1
-          ? ` (+${parsed.components.length - 1} linked repeat components)`
-          : ''}
-      </PageHeading>
       <Query
         operationName={operationName}
-        query={query}
+        query={longReadTandemRepeatLocusQuery}
         requestKey={`${lrCohort}:${parsed.canonicalId}:${after || 'first'}:${selectedAllele || ''}`}
         variables={{
           id: parsed.canonicalId,
           lrCohort,
-          first: 50,
+          first: LONG_READ_TR_ALLELES_PER_PAGE,
           after,
           allele: after ? null : selectedAllele || null,
         }}

@@ -26,7 +26,7 @@ const followExactHref = async (
   locusId: string,
   altIndex: number
 ) => {
-  const exactLink = locusPage.getByRole('link', { name: 'Open exact' }).nth(altIndex - 1)
+  const exactLink = locusPage.getByRole('link', { name: 'View allele' }).nth(altIndex - 1)
   const href = await exactLink.getAttribute('href')
   expect(href).toMatch(
     new RegExp(`^/variant/chr1-[^?]+~${altIndex}\\?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc$`)
@@ -71,9 +71,7 @@ const followExactHref = async (
 }
 
 test.describe('Long-read tandem-repeat locus exact navigation', () => {
-  test('ordinary and compound locus Open exact hrefs resolve ALT 1 and ALT 2', async ({
-    browser,
-  }) => {
+  test('ordinary and compound locus allele links resolve ALT 1 and ALT 2', async ({ browser }) => {
     test.setTimeout(120_000)
     const context = await browser.newContext()
     const locusPage = await context.newPage()
