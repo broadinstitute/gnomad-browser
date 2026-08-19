@@ -146,6 +146,7 @@ export type PopulationDisplayConfig = {
 }
 
 type Props = {
+  minRepeats?: number
   maxRepeats: number
   alleleSizeDistribution: AlleleSizeDistributionItem[]
   colorBy: ColorBy | null
@@ -240,6 +241,7 @@ const tooltipContent = (
 
 const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
   ({
+    minRepeats = 0,
     maxRepeats,
     alleleSizeDistribution,
     colorBy,
@@ -262,12 +264,17 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     const plotWidth = width - (margin.left + margin.right)
     const plotHeight = height - (margin.top + margin.bottom)
 
-    const binSize = Math.max(1, Math.ceil(maxRepeats / (plotWidth / 10)))
-    const nBins = Math.floor(maxRepeats / binSize) + 1
+    const domainMin = Math.max(0, Math.floor(minRepeats))
+    const domainMax = Math.max(domainMin, Math.ceil(maxRepeats))
+    const domainSize = domainMax - domainMin + 1
+    const binSize = Math.max(1, Math.ceil(domainSize / (plotWidth / 10)))
+    const nBins = Math.ceil(domainSize / binSize)
 
-    const binLabels: string[] = [...Array(nBins).keys()].map((binIndex) =>
-      binSize === 1 ? `${binIndex}` : `${binIndex * binSize} - ${binIndex * binSize + binSize - 1}`
-    )
+    const binLabels: string[] = [...Array(nBins).keys()].map((binIndex) => {
+      const start = domainMin + binIndex * binSize
+      const stop = Math.min(domainMax, start + binSize - 1)
+      return binSize === 1 ? `${start}` : `${start} - ${stop}`
+    })
 
     const emptyBins: Bin[] = Array.from(Array(nBins)).map((_, binIndex) => ({
       label: binLabels[binIndex],
@@ -277,8 +284,9 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
 
     const data: Bin[] = useMemo(() => {
       const binsByColorByValue = alleleSizeDistribution.reduce((acc, item) => {
-        const binIndex = Math.floor(item.repunit_count / binSize)
-        const oldBin: Bin = acc[binIndex]
+        const binIndex = Math.floor((item.repunit_count - domainMin) / binSize)
+        const oldBin: Bin | undefined = acc[binIndex]
+        if (!oldBin) return acc
         const frequencyKey = item.colorByValue || ''
         const oldFrequency = oldBin[frequencyKey] || 0
         const newFrequency = oldFrequency + item.frequency
@@ -290,7 +298,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
         return { ...acc, [binIndex]: newBin }
       }, emptyBins)
       return Object.values(binsByColorByValue)
-    }, [alleleSizeDistribution, binSize, emptyBins])
+    }, [alleleSizeDistribution, binSize, domainMin, emptyBins])
 
     const keys = useMemo(() => {
       const presentKeys: Record<string, boolean> = data
@@ -334,12 +342,13 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     let readLengthX
     if (repeatUnitLength !== null) {
       const readLengthInRepeats = 150 / repeatUnitLength
-      if (readLengthInRepeats <= maxRepeats) {
-        const readLengthBinIndex = Math.floor(readLengthInRepeats / binSize)
+      if (domainMin <= readLengthInRepeats && readLengthInRepeats <= domainMax) {
+        const readLengthBinIndex = Math.floor((readLengthInRepeats - domainMin) / binSize)
         // Read length line should be drawn at the center of the range for its value.
         readLengthX =
           (xScale(readLengthBinIndex) || 0) +
-          ((readLengthInRepeats - readLengthBinIndex * binSize) / binSize) * xBandwidth +
+          ((readLengthInRepeats - domainMin - readLengthBinIndex * binSize) / binSize) *
+            xBandwidth +
           xBandwidth / binSize / 2
       }
     }
@@ -462,18 +471,19 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
           <g transform={`translate(${margin.left}, 0)`}>
             {ranges
               .filter((range) => range.start !== range.stop)
-              .filter((range) => range.start <= maxRepeats)
+              .filter((range) => range.stop >= domainMin && range.start <= domainMax)
               .map((range, rangeIndex) => {
-                const startBinIndex = Math.floor(range.start / binSize)
+                const visibleStart = Math.max(range.start, domainMin)
+                const startBinIndex = Math.floor((visibleStart - domainMin) / binSize)
                 const startX =
                   (xScale(startBinIndex) || 0) +
-                  ((range.start - startBinIndex * binSize) / binSize) * xBandwidth
+                  ((visibleStart - domainMin - startBinIndex * binSize) / binSize) * xBandwidth
                 let stopX
-                if (range.stop <= maxRepeats) {
-                  const stopBinIndex = Math.floor(range.stop / binSize)
+                if (range.stop <= domainMax) {
+                  const stopBinIndex = Math.floor((range.stop - domainMin) / binSize)
                   stopX =
                     (xScale(stopBinIndex) || 0) +
-                    ((range.stop - stopBinIndex * binSize) / binSize) * xBandwidth
+                    ((range.stop - domainMin - stopBinIndex * binSize) / binSize) * xBandwidth
                 } else {
                   stopX = plotWidth
                 }
@@ -489,7 +499,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
                 }
                 return (
                   <React.Fragment key={range.label}>
-                    {range.start !== 0 &&
+                    {range.start > domainMin &&
                       (rangeIndex === 0 || range.start > ranges[rangeIndex - 1].stop + 1) && (
                         <line
                           x1={startX}

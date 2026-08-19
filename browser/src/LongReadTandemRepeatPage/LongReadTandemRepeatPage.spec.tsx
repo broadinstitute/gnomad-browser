@@ -2,7 +2,10 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 
-import LongReadTandemRepeatPage from './LongReadTandemRepeatPage'
+import LongReadTandemRepeatPage, {
+  referenceCopySummary,
+  referenceRepeatCount,
+} from './LongReadTandemRepeatPage'
 
 jest.mock('../Link', () => ({ children, to, ...props }: any) => (
   <a href={to} {...props}>
@@ -68,6 +71,7 @@ const locus = {
       record_index: 1,
       source_variant_id: sourceVariantId,
       alt_count: 200,
+      ref: 'CAAAAGAAAAGAAAAGAAAAGAAAAGAAAAGAAAAGAAAAGAAAAGAAAAGAAAAGAAAAG',
       non_reference_ac: 500,
       an: 582,
       non_reference_af: 0.86,
@@ -171,9 +175,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('renders a selected exact allele as one fixed row with old URL compatibility', () => {
     const { container } = renderPage()
     const rows = container.querySelectorAll('[data-testid="lr-tr-allele-table"] tbody tr')
-    expect(rows).toHaveLength(1)
-    expect(rows[0].getAttribute('aria-selected')).toBe('true')
-    expect(getComputedStyle(rows[0].querySelector('td')!).whiteSpace).toBe('nowrap')
+    expect(rows).toHaveLength(2)
+    expect(rows[0].textContent).toContain('Reference')
+    expect(rows[1].getAttribute('aria-selected')).toBe('true')
+    expect(getComputedStyle(rows[1].querySelector('td')!).whiteSpace).toBe('nowrap')
     expect(screen.getByRole('link', { name: 'Open exact' }).getAttribute('href')).toBe(
       `/variant/${exactAllele}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
@@ -187,14 +192,100 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByText('291 complete two-allele genotypes')).not.toBeNull()
 
     const plotHeading = screen.getByRole('heading', { name: 'Allele repeat-count distribution' })
-    const provenanceHeading = screen.getByRole('heading', { name: 'Locus identity and provenance' })
-    const alleleHeading = screen.getByRole('heading', { name: 'ALT alleles' })
-    expect(plotHeading.compareDocumentPosition(provenanceHeading)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING
-    )
+    const alleleHeading = screen.getByRole('heading', { name: 'Observed alleles' })
     expect(plotHeading.compareDocumentPosition(alleleHeading)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
+  })
+
+  test('explains reference copies, alternate copies, and carrier semantics', () => {
+    const tLocus = {
+      ...locus,
+      id: '1-143278475-143278486-T',
+      source_trid: '1-143278475-143278486-T',
+      chrom: '1',
+      motifs: ['T'],
+      total_alleles: 3,
+      unique_carrier_count: 183,
+      components: [{ chrom: '1', start0: 143278475, end0: 143278486, motif: 'T' }],
+      source_records: [
+        {
+          ...locus.source_records[0],
+          alt_count: 3,
+          ref: 'ATTTTTTTTTTT',
+          non_reference_ac: 215,
+          an: 584,
+          non_reference_af: 215 / 584,
+        },
+      ],
+      repeat_count_plots: {
+        ...locus.repeat_count_plots,
+        repeat_unit: 'T',
+        overall: {
+          ...locus.repeat_count_plots.overall,
+          called_alleles: 584,
+          called_diploid_genotypes: 292,
+        },
+      },
+    }
+    render(
+      <ThemeProvider
+        theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+      >
+        <LongReadTandemRepeatPage
+          datasetId="gnomad_r4_lr"
+          locus={tLocus}
+          onCohortChange={jest.fn()}
+          onNextPage={jest.fn()}
+        />
+      </ThemeProvider>
+    )
+
+    expect(screen.getByText(/11 T repeats/)).not.toBeNull()
+    expect(screen.getByText(/584 called chromosome copies/)).not.toBeNull()
+    expect(screen.getByText(/292 individuals with complete diploid genotypes/)).not.toBeNull()
+    expect(screen.getByText(/369 reference and 215 non-reference copies/)).not.toBeNull()
+    expect(screen.getByText(/3 observed non-reference allele types/)).not.toBeNull()
+    expect(screen.getByText(/183 unique carriers/)).not.toBeNull()
+    expect(screen.getByText(/Carrier count is a count of people/)).not.toBeNull()
+    const referenceCells = screen.getByTestId('lr-tr-reference-row').children
+    expect(referenceCells[0].textContent).toContain('Reference')
+    expect(referenceCells[1].textContent).toBe('11')
+    expect(referenceCells[4].textContent).toBe('369')
+    expect(referenceCells[5].textContent).toBe('584')
+    expect(screen.getByText('all called chromosome copies')).not.toBeNull()
+  })
+
+  test('uses unavailable instead of combining mismatched or multiple source records', () => {
+    expect(referenceRepeatCount({ components: locus.components })).toBe(11)
+    expect(referenceRepeatCount({ components: [...locus.components, ...locus.components] })).toBe(
+      null
+    )
+    expect(
+      referenceCopySummary({
+        source_records: [...locus.source_records, { ...locus.source_records[0], record_index: 2 }],
+        repeat_count_plots: locus.repeat_count_plots,
+      })
+    ).toBeNull()
+    expect(
+      referenceCopySummary({
+        source_records: locus.source_records,
+        repeat_count_plots: {
+          ...locus.repeat_count_plots,
+          overall: { ...locus.repeat_count_plots.overall, called_alleles: 999 },
+        },
+      })
+    ).toBeNull()
+  })
+
+  test('demotes raw identities and explains source sequence anchors', () => {
+    renderPage()
+    const technicalSummary = screen.getByText('Technical details and provenance')
+    expect(technicalSummary.closest('details')?.hasAttribute('open')).toBe(false)
+    expect(screen.getByText('primary-db').closest('details')).toBe(
+      technicalSummary.closest('details')
+    )
+    expect(screen.getByText(/shared anchor base required by variant notation/)).not.toBeNull()
   })
 
   test('renders the verified All of Us called denominators independently', () => {
@@ -202,6 +293,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       ...locus,
       lr_cohort: 'aou' as const,
       source_run_id: 'run-aou',
+      source_records: [{ ...locus.source_records[0], an: 2046, non_reference_ac: 1500 }],
       repeat_count_plots: {
         ...locus.repeat_count_plots,
         identity: {
@@ -295,7 +387,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Details for ALT 7' }))
     expect(screen.getByRole('dialog', { name: 'ALT 7 details' })).not.toBeNull()
     expect(container.querySelectorAll('[data-testid="lr-tr-allele-table"] tbody tr')).toHaveLength(
-      1
+      2
     )
     expect(screen.getByText(/not a clinical classification/)).not.toBeNull()
   })

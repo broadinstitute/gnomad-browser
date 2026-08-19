@@ -26,12 +26,46 @@ const Identity = styled.code`
   overflow-wrap: anywhere;
 `
 
+const SummaryCard = styled.section`
+  padding: 1em 1.25em;
+  border-left: 5px solid #428bca;
+  margin: 1.5em 0;
+  border-radius: 4px;
+  background: #f3f8fc;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+`
+
 const PrimaryPlots = styled.section`
-  margin: 1.5em 0 2.5em;
   padding: 1.25em;
   border: 1px solid #ddd;
+  margin: 1.5em 0 2.5em;
   border-radius: 4px;
   background: #fafafa;
+`
+
+const ReferenceRow = styled.tr`
+  background: #eef5e8;
+  font-weight: 600;
+`
+
+const TechnicalDetails = styled.details`
+  padding: 1em 1.25em;
+  border: 1px solid #ddd;
+  margin: 2em 0;
+  border-radius: 4px;
+
+  > summary {
+    cursor: pointer;
+    font-size: 1.15em;
+    font-weight: 700;
+  }
 `
 
 const PlotGrid = styled.div`
@@ -52,10 +86,10 @@ const OneLineTable = styled.table`
 
   th,
   td {
+    overflow: hidden;
     max-width: 260px;
     height: 36px;
     padding: 0 0.6em;
-    overflow: hidden;
     border-bottom: 1px solid #ddd;
     text-align: left;
     text-overflow: ellipsis;
@@ -139,6 +173,7 @@ type Locus = {
     record_index: number
     source_variant_id: string
     alt_count: number
+    ref: string
     non_reference_ac: number
     an: number
     non_reference_af: number
@@ -156,6 +191,42 @@ type Locus = {
   alleles: {
     nodes: Allele[]
     page_info: { has_next_page: boolean; end_cursor: string | null }
+  }
+}
+
+export const referenceRepeatCount = (locus: Pick<Locus, 'components'>) => {
+  if (locus.components.length !== 1) return null
+  const component = locus.components[0]
+  const span = component.end0 - component.start0
+  if (!component.motif || span <= 0 || span % component.motif.length !== 0) return null
+  return span / component.motif.length
+}
+
+export const referenceCopySummary = (
+  locus: Pick<Locus, 'source_records' | 'repeat_count_plots'>
+) => {
+  if (locus.source_records.length !== 1) return null
+  const record = locus.source_records[0]
+  if (
+    !Number.isInteger(record.an) ||
+    !Number.isInteger(record.non_reference_ac) ||
+    record.an < 0 ||
+    record.non_reference_ac < 0 ||
+    record.non_reference_ac > record.an
+  ) {
+    return null
+  }
+  if (
+    locus.repeat_count_plots.status === 'AVAILABLE_EXACT' &&
+    (locus.repeat_count_plots.identity?.source_variant_id !== record.source_variant_id ||
+      locus.repeat_count_plots.overall?.called_alleles !== record.an)
+  ) {
+    return null
+  }
+  return {
+    calledCopies: record.an,
+    nonReferenceCopies: record.non_reference_ac,
+    referenceCopies: record.an - record.non_reference_ac,
   }
 }
 
@@ -203,22 +274,27 @@ const LocusRepeatCountPlots = ({ locus }: { locus: Locus }) => {
   const plotIdentity = `${locus.lr_cohort}-${locus.id}-${
     plots.identity?.ancillary_run_id || 'exact'
   }`
+  const repeats = referenceRepeatCount(locus)
+  const copies = referenceCopySummary(locus)
 
   return (
     <PrimaryPlots aria-label="Exact repeat-count plots" key={plotIdentity}>
       <p>
-        Exact <strong>{plots.repeat_unit}</strong> motif-repeat counts for this complete source
-        locus. These counts do not describe exact sequences, interruption structures, or clinical
-        significance.
+        These distributions include <strong>all called chromosome copies</strong>: the reference
+        allele and observed alternate alleles. Each bar is a count of{' '}
+        <strong>{plots.repeat_unit}</strong> motif repeats, not a count of exact sequences.
+        {repeats != null && copies && (
+          <>
+            {' '}
+            The reference allele has {repeats.toLocaleString()} repeats and contributes{' '}
+            {copies.referenceCopies.toLocaleString()} copies to that bar.
+          </>
+        )}
       </p>
-      {plots.identity && (
-        <p>
-          <strong>Histogram provenance:</strong> admitted ancillary run{' '}
-          <Identity>{plots.identity.ancillary_run_id}</Identity>, joined to exact primary record{' '}
-          <Identity>{plots.identity.source_variant_id}</Identity> in run{' '}
-          <Identity>{plots.identity.primary_run_id}</Identity>.
-        </p>
-      )}
+      <p>
+        Alternate sequences can have the same repeat count, and repeat counts do not show sequence
+        interruptions or clinical significance.
+      </p>
       <PlotGrid>
         {hasAlleles && (
           <div>
@@ -229,6 +305,7 @@ const LocusRepeatCountPlots = ({ locus }: { locus: Locus }) => {
               repeatUnit={plots.repeat_unit || undefined}
               heading="Allele repeat-count distribution"
               calledCountDistributions={calledCountDistributions}
+              focusObservedDomain
             />
           </div>
         )}
@@ -240,6 +317,8 @@ const LocusRepeatCountPlots = ({ locus }: { locus: Locus }) => {
               repeatUnit={plots.repeat_unit || undefined}
               heading="Diploid genotype distribution"
               calledCountDistributions={calledCountDistributions}
+              focusObservedDomain
+              explainGenotypes
             />
           </div>
         )}
@@ -274,6 +353,13 @@ const LongReadTandemRepeatPage = ({
     canonicalId: locus.id,
     sourceTrid: locus.source_trid,
   })
+  const referenceRepeats = referenceRepeatCount(locus)
+  const copySummary = referenceCopySummary(locus)
+  const calledIndividuals =
+    locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
+      ? locus.repeat_count_plots.overall?.called_diploid_genotypes ?? null
+      : null
+  const motifLabel = locus.motifs.join(', ') || 'unavailable motif'
 
   return (
     <>
@@ -297,50 +383,76 @@ const LongReadTandemRepeatPage = ({
         </Select>
       </p>
 
+      <SummaryCard aria-labelledby="lr-tr-summary-heading">
+        <h2 id="lr-tr-summary-heading">What this page shows</h2>
+        <p>
+          This <strong>{motifLabel}-repeat locus</strong> spans chr{envelope.chrom}:
+          {envelope.start1.toLocaleString()}–{envelope.end1.toLocaleString()} (one-based,
+          inclusive). The reference genome has{' '}
+          <strong>
+            {referenceRepeats == null
+              ? 'an unavailable repeat count'
+              : `${referenceRepeats.toLocaleString()} ${motifLabel} repeats`}
+          </strong>
+          .
+        </p>
+        <p>
+          {copySummary ? (
+            <>
+              <strong>{copySummary.calledCopies.toLocaleString()} called chromosome copies</strong>
+              {calledIndividuals == null ? (
+                '; the number of individuals with two called alleles is unavailable'
+              ) : (
+                <>
+                  {' '}
+                  from{' '}
+                  <strong>
+                    {calledIndividuals.toLocaleString()} individuals with complete diploid genotypes
+                  </strong>{' '}
+                  (two called alleles each)
+                </>
+              )}
+              : {copySummary.referenceCopies.toLocaleString()} reference and{' '}
+              {copySummary.nonReferenceCopies.toLocaleString()} non-reference copies across{' '}
+              {locus.total_alleles.toLocaleString()} observed non-reference allele
+              {locus.total_alleles === 1 ? ' type' : ' types'}.
+            </>
+          ) : (
+            <>
+              Called chromosome-copy counts, the reference/non-reference split, and complete diploid
+              genotype count are <strong>unavailable</strong> because the exact source cardinality
+              and called-copy totals do not support one reconciled value. The locus has{' '}
+              {locus.total_alleles.toLocaleString()} observed non-reference allele{' '}
+              {locus.total_alleles === 1 ? 'type' : 'types'}.
+            </>
+          )}
+        </p>
+        <p>
+          {locus.unique_carrier_count == null ? (
+            <>
+              The number of unique carriers is <strong>unavailable</strong>.
+            </>
+          ) : (
+            <>
+              <strong>{locus.unique_carrier_count.toLocaleString()} unique carriers</strong> means
+              that many individuals have at least one non-reference allele. Carrier count is a count
+              of people; non-reference chromosome-copy count (source AC) counts alleles, so one
+              carrier can contribute two copies.
+            </>
+          )}
+        </p>
+      </SummaryCard>
+
       <LocusRepeatCountPlots locus={locus} />
 
       <Section>
-        <h2>Locus identity and provenance</h2>
-        <p>
-          <strong>0-based, half-open locus ID:</strong> <Identity>{locus.id}</Identity>{' '}
-          <Button
-            onClick={() => navigator.clipboard?.writeText(locus.id)}
-            aria-label="Copy full locus ID"
-          >
-            Copy
-          </Button>
-        </p>
-        <p>
-          <strong>Display envelope (one-based, inclusive):</strong> chr{envelope.chrom}:
-          {envelope.start1.toLocaleString()}–{envelope.end1.toLocaleString()}. The envelope is a
-          convenience, not identity.
-        </p>
-        <p>
-          Source release <strong>{locus.source_release}</strong>; accepted run{' '}
-          <Identity>{locus.source_run_id}</Identity>. {locus.source_records.length} source record
-          {locus.source_records.length === 1 ? '' : 's'}; {locus.total_alleles.toLocaleString()} ALT
-          alleles. Unique carriers:{' '}
-          {locus.unique_carrier_count == null
-            ? 'Unavailable'
-            : locus.unique_carrier_count.toLocaleString()}
-          .
-        </p>
-        {locus.structure && (
-          <p>
-            <strong>Source motif structure:</strong> {locus.structure}
-          </p>
-        )}
-      </Section>
-
-      <Section>
-        <h2>Exact repeat components</h2>
+        <h2>Repeat {locus.components.length === 1 ? 'region' : 'regions'}</h2>
         <TableWrapper>
           <OneLineTable>
             <thead>
               <tr>
                 <th>Component</th>
-                <th>0-based, half-open</th>
-                <th>One-based, inclusive</th>
+                <th>Genomic span (one-based, inclusive)</th>
                 <th>Motif</th>
                 <th>Region</th>
               </tr>
@@ -359,10 +471,6 @@ const LongReadTandemRepeatPage = ({
                 return (
                   <tr key={`${componentIdentity}-occurrence-${occurrence}`}>
                     <td>{index + 1}</td>
-                    <td>
-                      {component.chrom}:{component.start0.toLocaleString()}–
-                      {component.end0.toLocaleString()}
-                    </td>
                     <td>
                       chr{display.chrom}:{display.start1.toLocaleString()}–
                       {display.end1.toLocaleString()}
@@ -438,40 +546,121 @@ const LongReadTandemRepeatPage = ({
         </Section>
       )}
 
-      <Section>
-        <h2>Source records</h2>
+      <TechnicalDetails>
+        <summary>Technical details and provenance</summary>
+        <p>
+          These identifiers and coordinate conventions support exact reproduction but are not needed
+          to interpret the biological counts above.
+        </p>
+        <p>
+          <strong>Canonical route ID (0-based, half-open):</strong> <Identity>{locus.id}</Identity>{' '}
+          <Button
+            onClick={() => navigator.clipboard?.writeText(locus.id)}
+            aria-label="Copy full locus ID"
+          >
+            Copy
+          </Button>
+        </p>
+        <p>
+          <strong>Source:</strong> release {locus.source_release}; accepted run{' '}
+          <Identity>{locus.source_run_id}</Identity>{' '}
+          <Button
+            onClick={() => navigator.clipboard?.writeText(locus.source_run_id)}
+            aria-label="Copy source run ID"
+          >
+            Copy run ID
+          </Button>
+        </p>
+        {locus.structure && (
+          <p>
+            <strong>Raw source STRUC:</strong> <Identity>{locus.structure}</Identity>
+          </p>
+        )}
+        <p>
+          <strong>Repeat components (0-based, half-open):</strong>{' '}
+          {locus.components.map((component) => (
+            <Identity
+              key={`${component.chrom}-${component.start0}-${component.end0}-${component.motif}`}
+            >
+              {component.chrom}:{component.start0}–{component.end0} ({component.motif}){' '}
+            </Identity>
+          ))}
+        </p>
+        {locus.repeat_count_plots.identity && (
+          <p>
+            <strong>Histogram join:</strong> ancillary run{' '}
+            <Identity>{locus.repeat_count_plots.identity.ancillary_run_id}</Identity>; primary
+            database <Identity>{locus.repeat_count_plots.identity.primary_database}</Identity>, run{' '}
+            <Identity>{locus.repeat_count_plots.identity.primary_run_id}</Identity>, task{' '}
+            <Identity>{locus.repeat_count_plots.identity.primary_task_id}</Identity>, attempt{' '}
+            <Identity>{locus.repeat_count_plots.identity.primary_attempt_id}</Identity>.
+          </p>
+        )}
         {locus.source_records.map((record) => (
           <p key={record.source_variant_id}>
-            <strong>Record {record.record_index}:</strong>{' '}
-            <Identity>{record.source_variant_id}</Identity> · {record.alt_count} ALTs · AC{' '}
+            <strong>Source record {record.record_index}:</strong>{' '}
+            <Identity>{record.source_variant_id}</Identity>{' '}
+            <Button
+              onClick={() => navigator.clipboard?.writeText(record.source_variant_id)}
+              aria-label={`Copy source record ${record.record_index} ID`}
+            >
+              Copy ID
+            </Button>{' '}
+            · {record.alt_count} source ALTs · non-reference AC{' '}
             {record.non_reference_ac.toLocaleString()} · AN {record.an.toLocaleString()} · AF{' '}
-            {record.non_reference_af.toPrecision(4)}
+            {record.non_reference_af.toPrecision(4)} · source REF (including the shared anchor){' '}
+            <Identity>{record.ref}</Identity>
           </p>
         ))}
-      </Section>
+      </TechnicalDetails>
 
       <Section>
-        <h2>ALT alleles</h2>
+        <h2>Observed alleles</h2>
         <p>
-          Locus, source record, and ALT allele are distinct identities. Source motif count is shown
-          only from aligned source metadata or an exact one-component sequence derivation.
+          The reference row reconciles the reference-repeat bar with the alternate rows. Source REF
+          and ALT strings may begin with a shared anchor base required by variant notation; repeat
+          counts exclude that anchor. Alternate repeat counts are shown only when exact aligned
+          metadata or a one-component sequence derivation supports them.
         </p>
+        {!copySummary && (
+          <p role="status">
+            Reference copy count unavailable: this locus does not have one reconciled source record
+            and called-copy total.
+          </p>
+        )}
         <TableWrapper>
           <OneLineTable data-testid="lr-tr-allele-table">
             <thead>
               <tr>
                 <th>Allele</th>
                 <th>Repeat count</th>
-                <th>Δ length</th>
+                <th>Δ vs reference</th>
                 <th>Sequence / motif structure</th>
-                <th>AC</th>
-                <th>AN</th>
-                <th>AF</th>
+                <th>Chromosome copies</th>
+                <th>Called copies</th>
+                <th>Frequency</th>
                 <th>Genetic ancestry groups</th>
                 <th>Exact allele</th>
               </tr>
             </thead>
             <tbody>
+              {copySummary && (
+                <ReferenceRow data-testid="lr-tr-reference-row">
+                  <th scope="row">Reference</th>
+                  <td>{referenceRepeats == null ? '—' : referenceRepeats.toLocaleString()}</td>
+                  <td>0 bp</td>
+                  <td title={locus.source_records[0].ref}>Reference {motifLabel} repeat</td>
+                  <td>{copySummary.referenceCopies.toLocaleString()}</td>
+                  <td>{copySummary.calledCopies.toLocaleString()}</td>
+                  <td>
+                    {copySummary.calledCopies === 0
+                      ? '—'
+                      : (copySummary.referenceCopies / copySummary.calledCopies).toPrecision(4)}
+                  </td>
+                  <td>—</td>
+                  <td>Reference genome</td>
+                </ReferenceRow>
+              )}
               {locus.alleles.nodes.map((allele) => {
                 const selected = allele.variant_id === selectedAllele
                 const ancestry = allele.freq.populations
@@ -566,6 +755,10 @@ const LongReadTandemRepeatPage = ({
           </p>
           <p>
             <strong>ALT:</strong> <Identity>{detail.alt}</Identity>
+          </p>
+          <p>
+            The source REF and ALT strings include their shared leading anchor base when required by
+            variant notation. The repeat count excludes that anchor.
           </p>
           <p>
             Motifs: {locus.motifs.join(', ') || 'Unavailable'}; source purity:{' '}

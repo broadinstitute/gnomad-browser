@@ -44,6 +44,26 @@ type CalledCountDistributions = {
   genotypeDistribution: GenotypeDistributionCohort[]
 }
 
+export const observedRepeatDomain = (values: number[]): [number, number] => {
+  const observed = values.filter((value) => Number.isFinite(value) && value >= 0)
+  if (observed.length === 0) return [0, 0]
+  const minObserved = Math.floor(Math.min(...observed))
+  const maxObserved = Math.ceil(Math.max(...observed))
+  return [Math.max(0, minObserved - 1), maxObserved + 1]
+}
+
+export const genotypeCountExtent = (
+  distribution: GenotypeDistributionCohort['distribution']
+): [number, number] => {
+  const counts = new Map<string, number>()
+  distribution.forEach((item) => {
+    const key = `${item.short_allele_repunit_count}/${item.long_allele_repunit_count}`
+    counts.set(key, (counts.get(key) || 0) + item.frequency)
+  })
+  const nonzero = [...counts.values()].filter((count) => count > 0)
+  return nonzero.length === 0 ? [0, 0] : [Math.min(...nonzero), Math.max(...nonzero)]
+}
+
 export const selectedCalledCounts = (
   distributions: CalledCountDistributions,
   selectedPopulation: PopulationId | null,
@@ -70,9 +90,11 @@ const CalledDenominators = ({
   genotypeDistribution,
   selectedPopulation,
   selectedSex,
+  kind,
 }: CalledCountDistributions & {
   selectedPopulation: PopulationId | null
   selectedSex: Sex | null
+  kind: 'alleles' | 'genotypes'
 }) => {
   const counts = selectedCalledCounts(
     { alleleSizeDistribution, genotypeDistribution },
@@ -82,8 +104,9 @@ const CalledDenominators = ({
   return (
     <p aria-live="polite">
       <strong>
-        {counts.calledAlleles.toLocaleString()} called alleles;{' '}
-        {counts.calledDiploidGenotypes.toLocaleString()} complete two-allele genotypes.
+        {kind === 'alleles'
+          ? `${counts.calledAlleles.toLocaleString()} called chromosome copies in this view.`
+          : `${counts.calledDiploidGenotypes.toLocaleString()} individuals with complete diploid genotypes in this view.`}
       </strong>{' '}
       Counts include called observations only. No-call denominator unavailable for this admitted
       histogram.
@@ -118,6 +141,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   heading = 'Allele Size Distribution',
   compact = false,
   calledCountDistributions,
+  focusObservedDomain = false,
 }: {
   variantId: string
   alleleSizeDistribution: AlleleSizeDistributionCohort[]
@@ -127,6 +151,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   heading?: string
   compact?: boolean
   calledCountDistributions?: CalledCountDistributions
+  focusObservedDomain?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -142,6 +167,12 @@ export const LongReadAlleleSizeDistributionSection = ({
   }
 
   const populations = allPopulations(alleleSizeDistribution)
+  const observedDomain = observedRepeatDomain(
+    alleleSizeDistribution.flatMap((cohort) =>
+      cohort.distribution.map((item) => item.repunit_count)
+    )
+  )
+  const [minRepeats, plotMaxRepeats] = focusObservedDomain ? observedDomain : [0, maxRepunits]
 
   return (
     <>
@@ -153,7 +184,8 @@ export const LongReadAlleleSizeDistributionSection = ({
           of overlapping the controls and the next expanded-row section. */}
       <div style={{ height: 300 }}>
         <ShortTandemRepeatAlleleSizeDistributionPlot
-          maxRepeats={maxRepunits}
+          minRepeats={minRepeats}
+          maxRepeats={plotMaxRepeats}
           alleleSizeDistribution={consolidateAlleleSizeDistributions(
             alleleSizeDistribution,
             longReadAlleleSizeColorBy,
@@ -211,6 +243,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           {...calledCountDistributions}
           selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
+          kind="alleles"
         />
       )}
     </>
@@ -238,6 +271,8 @@ export const LongReadGenotypeDistributionSection = ({
   heading = 'Genotype Distribution',
   compact = false,
   calledCountDistributions,
+  focusObservedDomain = false,
+  explainGenotypes = false,
 }: {
   variantId: string
   genotypeDistribution: GenotypeDistributionCohort[]
@@ -246,6 +281,8 @@ export const LongReadGenotypeDistributionSection = ({
   heading?: string
   compact?: boolean
   calledCountDistributions?: CalledCountDistributions
+  focusObservedDomain?: boolean
+  explainGenotypes?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -258,6 +295,9 @@ export const LongReadGenotypeDistributionSection = ({
   const allItems = genotypeDistribution.flatMap((cohort) => cohort.distribution)
   const maxLongAllele = Math.max(0, ...allItems.map((item) => item.long_allele_repunit_count))
   const maxShortAllele = Math.max(0, ...allItems.map((item) => item.short_allele_repunit_count))
+  const longDomain = observedRepeatDomain(allItems.map((item) => item.long_allele_repunit_count))
+  const shortDomain = observedRepeatDomain(allItems.map((item) => item.short_allele_repunit_count))
+  const [minimumCount, maximumCount] = genotypeCountExtent(selectedDistribution)
   const populations = [
     ...new Set(genotypeDistribution.map((cohort) => cohort.ancestry_group as PopulationId)),
   ].sort()
@@ -267,6 +307,13 @@ export const LongReadGenotypeDistributionSection = ({
       <Heading>
         {heading} <InfoButton topic="str-genotype-distribution" />
       </Heading>
+      {explainGenotypes && (
+        <p>
+          Each square is a shorter/longer allele pair. Its count is the number of individuals with
+          that diploid genotype; darker squares represent more individuals. Hover a square for its
+          exact repeat pair and count.
+        </p>
+      )}
       <div
         style={{
           width: '100%',
@@ -281,7 +328,10 @@ export const LongReadGenotypeDistributionSection = ({
               ? [`longer ${repeatUnit} allele`, `shorter ${repeatUnit} allele`]
               : ['longer allele', 'shorter allele']
           }
-          maxRepeats={[maxLongAllele, maxShortAllele]}
+          minRepeats={focusObservedDomain ? [longDomain[0], shortDomain[0]] : [0, 0]}
+          maxRepeats={
+            focusObservedDomain ? [longDomain[1], shortDomain[1]] : [maxLongAllele, maxShortAllele]
+          }
           genotypeDistribution={selectedDistribution}
           xRanges={[]}
           yRanges={[]}
@@ -290,6 +340,15 @@ export const LongReadGenotypeDistributionSection = ({
           selectedSex={selectedSex}
         />
       </div>
+      {explainGenotypes && maximumCount > 0 && (
+        <p
+          aria-label={`Genotype count legend: ${minimumCount.toLocaleString()} to ${maximumCount.toLocaleString()} individuals`}
+        >
+          <strong>Count intensity:</strong> lighter = {minimumCount.toLocaleString()}, darker ={' '}
+          {maximumCount.toLocaleString()} individual{maximumCount === 1 ? '' : 's'} in the selected
+          view.
+        </p>
+      )}
       <ControlSection
         style={
           compact
@@ -318,6 +377,7 @@ export const LongReadGenotypeDistributionSection = ({
           {...calledCountDistributions}
           selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
+          kind="genotypes"
         />
       )}
     </>

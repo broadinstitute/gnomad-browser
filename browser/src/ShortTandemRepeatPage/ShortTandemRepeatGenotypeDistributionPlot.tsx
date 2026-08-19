@@ -27,6 +27,7 @@ type PlotRange = { start: number; stop: number; label: string }
 
 type Props = {
   axisLabels: string[]
+  minRepeats?: [number, number]
   maxRepeats: [number, number]
   genotypeDistribution: GenotypeDistributionItem[]
   xRanges: PlotRange[]
@@ -49,6 +50,7 @@ export type Bin = {
 const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
   ({
     axisLabels,
+    minRepeats = [0, 0],
     maxRepeats,
     genotypeDistribution,
     size: { width },
@@ -68,33 +70,31 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     const plotWidth = width - (margin.left + margin.right)
     const plotHeight = height - (margin.top + margin.bottom)
 
-    const xBinSize = Math.max(1, Math.ceil(maxRepeats[0] / (plotWidth / 10)))
-    const xNumBins = Math.floor(maxRepeats[0] / xBinSize) + 1
+    const xDomainMin = Math.max(0, Math.floor(minRepeats[0]))
+    const xDomainMax = Math.max(xDomainMin, Math.ceil(maxRepeats[0]))
+    const xDomainSize = xDomainMax - xDomainMin + 1
+    const xBinSize = Math.max(1, Math.ceil(xDomainSize / (plotWidth / 10)))
+    const xNumBins = Math.ceil(xDomainSize / xBinSize)
 
-    const yBinSize = Math.max(1, Math.ceil(maxRepeats[1] / (plotHeight / 10)))
-    const yNumBins = Math.floor(maxRepeats[1] / yBinSize) + 1
+    const yDomainMin = Math.max(0, Math.floor(minRepeats[1]))
+    const yDomainMax = Math.max(yDomainMin, Math.ceil(maxRepeats[1]))
+    const yDomainSize = yDomainMax - yDomainMin + 1
+    const yBinSize = Math.max(1, Math.ceil(yDomainSize / (plotHeight / 10)))
+    const yNumBins = Math.ceil(yDomainSize / yBinSize)
 
     const data = Array.from(Array(xNumBins * yNumBins).keys()).map((n) => {
       const xBinIndex = Math.floor(n / yNumBins)
       const yBinIndex = n % yNumBins
 
-      const xRange =
-        xBinSize === 1
-          ? [xBinIndex, xBinIndex]
-          : [xBinIndex * xBinSize, xBinIndex * xBinSize + xBinSize - 1]
-      const yRange =
-        yBinSize === 1
-          ? [yBinIndex, yBinIndex]
-          : [yBinIndex * yBinSize, yBinIndex * yBinSize + yBinSize - 1]
+      const xStart = xDomainMin + xBinIndex * xBinSize
+      const xStop = Math.min(xDomainMax, xStart + xBinSize - 1)
+      const yStart = yDomainMin + yBinIndex * yBinSize
+      const yStop = Math.min(yDomainMax, yStart + yBinSize - 1)
+      const xRange = [xStart, xStop]
+      const yRange = [yStart, yStop]
 
-      const xLabel =
-        xBinSize === 1
-          ? `${xBinIndex}`
-          : `${xBinIndex * xBinSize} - ${xBinIndex * xBinSize + xBinSize - 1}`
-      const yLabel =
-        yBinSize === 1
-          ? `${yBinIndex}`
-          : `${yBinIndex * yBinSize} - ${yBinIndex * yBinSize + yBinSize - 1}`
+      const xLabel = xBinSize === 1 ? `${xStart}` : `${xStart} - ${xStop}`
+      const yLabel = yBinSize === 1 ? `${yStart}` : `${yStart} - ${yStop}`
 
       const result: Bin = {
         label: `${xLabel} repeats in ${axisLabels[0]} / ${yLabel} repeats in ${axisLabels[1]}`,
@@ -109,9 +109,10 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
     genotypeDistribution.forEach(
       ({ short_allele_repunit_count, long_allele_repunit_count, frequency }) => {
-        const xBinIndex = Math.floor(long_allele_repunit_count / xBinSize)
-        const yBinIndex = Math.floor(short_allele_repunit_count / yBinSize)
-        data[xBinIndex * yNumBins + yBinIndex].count += frequency
+        const xBinIndex = Math.floor((long_allele_repunit_count - xDomainMin) / xBinSize)
+        const yBinIndex = Math.floor((short_allele_repunit_count - yDomainMin) / yBinSize)
+        const bin = data[xBinIndex * yNumBins + yBinIndex]
+        if (bin) bin.count += frequency
       }
     )
 
@@ -133,23 +134,25 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
         return ''
       }
 
+      const start = xDomainMin + binIndex * xBinSize
       if (xBinSize === 1) {
-        return `${binIndex}`
+        return `${start}`
       }
 
-      return `${binIndex * xBinSize} - ${binIndex * xBinSize + xBinSize - 1}`
+      return `${start} - ${Math.min(xDomainMax, start + xBinSize - 1)}`
     }
 
     const yTickFormat = (binIndex: number) => {
+      const start = yDomainMin + binIndex * yBinSize
       if (yBinSize === 1) {
-        return `${binIndex}`
+        return `${start}`
       }
 
-      return `${binIndex * yBinSize} - ${binIndex * yBinSize + yBinSize - 1}`
+      return `${start} - ${Math.min(yDomainMax, start + yBinSize - 1)}`
     }
 
     const opacityScale = scaleLog()
-      .domain([1, max(genotypeDistribution, (d) => d.frequency) || 2])
+      .domain([1, Math.max(2, max(data, (d) => d.count) || 2)])
       .range([0.1, 1])
 
     return (
@@ -245,19 +248,20 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
           <g transform={`translate(${margin.left}, 0)`}>
             {xRanges
               .filter((range) => range.start !== range.stop)
-              .filter((range) => range.start <= maxRepeats[0])
+              .filter((range) => range.stop >= xDomainMin && range.start <= xDomainMax)
               .map((range, rangeIndex, ranges) => {
-                const startBinIndex = Math.floor(range.start / xBinSize)
+                const visibleStart = Math.max(range.start, xDomainMin)
+                const startBinIndex = Math.floor((visibleStart - xDomainMin) / xBinSize)
                 const startX =
                   (xScale(startBinIndex) || 0) +
-                  ((range.start - startBinIndex * xBinSize) / xBinSize) * xBandwidth
+                  ((visibleStart - xDomainMin - startBinIndex * xBinSize) / xBinSize) * xBandwidth
 
                 let stopX
-                if (range.stop <= maxRepeats[0]) {
-                  const stopBinIndex = Math.floor(range.stop / xBinSize)
+                if (range.stop <= xDomainMax) {
+                  const stopBinIndex = Math.floor((range.stop - xDomainMin) / xBinSize)
                   stopX =
                     (xScale(stopBinIndex) || 0) +
-                    ((range.stop - stopBinIndex * xBinSize) / xBinSize) * xBandwidth
+                    ((range.stop - xDomainMin - stopBinIndex * xBinSize) / xBinSize) * xBandwidth
                 } else {
                   stopX = plotWidth
                 }
@@ -275,7 +279,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
                 return (
                   <React.Fragment key={range.label}>
-                    {range.start !== 0 &&
+                    {range.start > xDomainMin &&
                       (rangeIndex === 0 || range.start > ranges[rangeIndex - 1].stop + 1) && (
                         <line
                           x1={startX}
@@ -332,26 +336,29 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
           <g transform={`translate(${margin.left}, ${margin.top})`}>
             {yRanges
               .filter((range) => range.start !== range.stop)
-              .filter((range) => range.start <= maxRepeats[1])
+              .filter((range) => range.stop >= yDomainMin && range.start <= yDomainMax)
               .map((range, rangeIndex, ranges) => {
-                const startBinIndex = Math.floor(range.start / yBinSize)
+                const visibleStart = Math.max(range.start, yDomainMin)
+                const startBinIndex = Math.floor((visibleStart - yDomainMin) / yBinSize)
                 const startY =
                   (yScale(startBinIndex) || 0) +
-                  (1 - (range.start - startBinIndex * yBinSize) / yBinSize) * yBandwidth
+                  (1 - (visibleStart - yDomainMin - startBinIndex * yBinSize) / yBinSize) *
+                    yBandwidth
 
                 let stopY
-                if (range.stop <= maxRepeats[1]) {
-                  const stopBinIndex = Math.floor(range.stop / yBinSize)
+                if (range.stop <= yDomainMax) {
+                  const stopBinIndex = Math.floor((range.stop - yDomainMin) / yBinSize)
                   stopY =
                     (yScale(stopBinIndex) || 0) +
-                    (1 - (range.stop - stopBinIndex * yBinSize) / yBinSize) * yBandwidth
+                    (1 - (range.stop - yDomainMin - stopBinIndex * yBinSize) / yBinSize) *
+                      yBandwidth
                 } else {
                   stopY = 0
                 }
 
                 return (
                   <React.Fragment key={range.label}>
-                    {range.start !== 0 &&
+                    {range.start > yDomainMin &&
                       (rangeIndex === 0 || range.start > ranges[rangeIndex - 1].stop + 1) && (
                         <line
                           x1={0}
