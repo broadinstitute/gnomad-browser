@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components'
 
 import LongReadTandemRepeatPage from './LongReadTandemRepeatPage'
 import {
-  LONG_READ_TR_ALLELES_PER_PAGE,
+  LONG_READ_TR_ALLELE_INDEX_LIMIT,
   longReadTandemRepeatLocusQuery,
 } from './LongReadTandemRepeatPageContainer'
 
@@ -32,6 +32,16 @@ jest.mock('@gnomad/ui', () => ({
 
 const sourceVariantId = 'chr4-39348424-TRV-55'
 const exactAllele = `${sourceVariantId}~7`
+
+const makeAllele = (altIndex: number) => ({
+  variant_id: `${sourceVariantId}~${altIndex}`,
+  alt_index: altIndex,
+  length: altIndex - 12,
+  repeat_count: altIndex + 3,
+  repeat_count_source: 'source_mc_allele',
+  freq: { all: { ac: altIndex, an: 1000, af: altIndex / 1000 } },
+})
+
 const locus = {
   id: '4-39348424-39348479-AAAAG',
   motifs: ['AAAAG'],
@@ -54,20 +64,29 @@ const locus = {
         freq: { all: { ac: 135, an: 582, af: 0.231959 } },
       },
     ],
-    page_info: { has_next_page: true, end_cursor: 'cursor' },
+    page_info: { has_next_page: false },
   },
 }
+
+const locusWithAlleles = (count: number, cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc') => ({
+  ...locus,
+  lr_cohort: cohort,
+  source_run_id: `run-${cohort}`,
+  total_alleles: count,
+  alleles: {
+    nodes: Array.from({ length: count }, (_, index) => makeAllele(index + 1)),
+    page_info: { has_next_page: false },
+  },
+})
 
 const renderPage = ({
   displayedLocus = locus,
   selectedAllele = exactAllele,
   onCohortChange = jest.fn(),
-  onNextPage = jest.fn(),
 }: {
   displayedLocus?: any
   selectedAllele?: string
   onCohortChange?: jest.Mock
-  onNextPage?: jest.Mock
 } = {}) => {
   const rendered = render(
     <ThemeProvider
@@ -78,12 +97,34 @@ const renderPage = ({
         locus={displayedLocus}
         selectedAllele={selectedAllele}
         onCohortChange={onCohortChange}
-        onNextPage={onNextPage}
       />
     </ThemeProvider>
   )
-  return { ...rendered, onCohortChange, onNextPage }
+  return { ...rendered, onCohortChange }
 }
+
+const originalScrollIntoView = HTMLElement.prototype.scrollIntoView
+const scrollIntoView = jest.fn()
+
+beforeAll(() => {
+  Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    configurable: true,
+    value: scrollIntoView,
+  })
+})
+
+afterAll(() => {
+  if (originalScrollIntoView) {
+    Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+      configurable: true,
+      value: originalScrollIntoView,
+    })
+  } else {
+    delete (HTMLElement.prototype as any).scrollIntoView
+  }
+})
+
+beforeEach(() => scrollIntoView.mockClear())
 
 describe('long-read tandem-repeat allele index', () => {
   test('puts a compact human locus summary immediately before the allele table', () => {
@@ -100,15 +141,22 @@ describe('long-read tandem-repeat allele index', () => {
     )
   })
 
-  test('is a fixed-height, single-line ALT-only index with exact detail links', () => {
+  test('is a bounded, keyboard-scrollable, single-line ALT-only table with a sticky header', () => {
     const { container } = renderPage()
+    const viewport = screen.getByRole('region', { name: 'Scrollable alternate allele index' })
     const rows = container.querySelectorAll('[data-testid="lr-tr-allele-table"] tbody tr')
+    const firstHeader = screen.getAllByRole('columnheader')[0]
+
     expect(rows).toHaveLength(1)
     expect(rows[0].textContent).not.toContain('Reference')
     expect(rows[0].textContent).toContain('ALT 7')
     expect(rows[0].getAttribute('aria-selected')).toBe('true')
+    expect(viewport.getAttribute('tabindex')).toBe('0')
     expect(getComputedStyle(rows[0].querySelector('td')!).whiteSpace).toBe('nowrap')
-    expect(getComputedStyle(screen.getByTestId('lr-tr-allele-table-viewport')).height).toBe('430px')
+    expect(getComputedStyle(viewport).height).toBe('430px')
+    expect(getComputedStyle(viewport).overflow).toBe('auto')
+    expect(getComputedStyle(firstHeader).position).toBe('sticky')
+    expect(getComputedStyle(firstHeader).backgroundColor).toBe('rgb(255, 255, 255)')
     expect(screen.getByRole('link', { name: 'View allele' }).getAttribute('href')).toBe(
       `/variant/${exactAllele}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
@@ -132,14 +180,62 @@ describe('long-read tandem-repeat allele index', () => {
     expect(screen.getByText('0.2320')).not.toBeNull()
   })
 
-  test('retains cohort switching, pagination, and invalid deep-link feedback', () => {
+  test.each([
+    ['HTT HGSVC/HPRC', 72, 'hgsvc_hprc'],
+    ['HTT All of Us', 497, 'aou'],
+  ] as const)('renders all %s rows without pagination controls', (_label, count, cohort) => {
+    const { container } = renderPage({
+      displayedLocus: locusWithAlleles(count, cohort),
+      selectedAllele: `${sourceVariantId}~${count}`,
+    })
+    expect(container.querySelectorAll('tbody tr')).toHaveLength(count)
+    expect(screen.getAllByRole('link', { name: 'View allele' })).toHaveLength(count)
+    expect(screen.queryByRole('button', { name: /next|previous/i })).toBeNull()
+  })
+
+  test('renders the current 584-ALT maximum in the fixed-height viewport', () => {
+    const { container } = renderPage({
+      displayedLocus: locusWithAlleles(584),
+      selectedAllele: undefined,
+    })
+    expect(container.querySelectorAll('tbody tr')).toHaveLength(584)
+    expect(screen.getByTitle(`${sourceVariantId}~584`).textContent).toContain('ALT 584')
+    expect(getComputedStyle(screen.getByTestId('lr-tr-allele-table-viewport')).height).toBe('430px')
+  })
+
+  test('scrolls, focuses, and highlights a deep-linked exact allele near the end', () => {
+    const selectedAllele = `${sourceVariantId}~580`
+    renderPage({ displayedLocus: locusWithAlleles(584), selectedAllele })
+    const row = screen.getByTitle(selectedAllele)
+    expect(row.getAttribute('aria-selected')).toBe('true')
+    expect(row).toBe(document.activeElement)
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'center' })
+  })
+
+  test('retains cohort switching and removes visible pagination mechanics', () => {
     const onCohortChange = jest.fn()
-    const onNextPage = jest.fn()
-    renderPage({ onCohortChange, onNextPage })
+    renderPage({ onCohortChange })
     fireEvent.change(screen.getByLabelText('Cohort'), { target: { value: 'aou' } })
     expect(onCohortChange).toHaveBeenCalledWith('aou')
-    fireEvent.click(screen.getByRole('button', { name: 'Next 50 alleles' }))
-    expect(onNextPage).toHaveBeenCalledWith('cursor')
+    expect(screen.queryByRole('button', { name: /next|previous|page/i })).toBeNull()
+  })
+
+  test('fails visibly closed when a future locus exceeds the hard row cap', () => {
+    renderPage({
+      displayedLocus: {
+        ...locusWithAlleles(LONG_READ_TR_ALLELE_INDEX_LIMIT),
+        total_alleles: LONG_READ_TR_ALLELE_INDEX_LIMIT + 1,
+        alleles: {
+          ...locusWithAlleles(LONG_READ_TR_ALLELE_INDEX_LIMIT).alleles,
+          page_info: { has_next_page: false },
+        },
+      },
+      selectedAllele: undefined,
+    })
+    expect(screen.getByRole('alert').textContent).toContain(
+      'Showing a bounded set of 600 alternate alleles'
+    )
+    expect(screen.queryByRole('button', { name: /next|previous/i })).toBeNull()
   })
 
   test('summarizes compound identity without placing the route ID in the title', () => {
@@ -173,8 +269,6 @@ describe('long-read tandem-repeat allele index', () => {
     expect(details.hasAttribute('open')).toBe(false)
     expect(details.textContent).toContain(locus.id)
     expect(details.textContent).toContain('run-hgsvc')
-    expect(details.textContent).not.toContain('coordinate conventions')
-    expect(details.textContent).not.toContain('shared anchor')
   })
 
   test('shows at most one compact established-resource link', () => {
@@ -192,10 +286,12 @@ describe('long-read tandem-repeat allele index', () => {
     expect(links[0].getAttribute('href')).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
   })
 
-  test('uses a bounded index-only GraphQL request', () => {
-    expect(LONG_READ_TR_ALLELES_PER_PAGE).toBe(50)
+  test('uses one bounded, compact, index-only GraphQL request', () => {
+    expect(LONG_READ_TR_ALLELE_INDEX_LIMIT).toBe(600)
     expect(longReadTandemRepeatLocusQuery).toContain('$first: Int!')
     expect(longReadTandemRepeatLocusQuery).toContain('first: $first')
+    expect(longReadTandemRepeatLocusQuery).not.toContain('$after')
+    expect(longReadTandemRepeatLocusQuery).not.toContain('end_cursor')
     expect(longReadTandemRepeatLocusQuery).not.toContain('repeat_count_plots')
     expect(longReadTandemRepeatLocusQuery).not.toContain('allele_size_distribution')
     expect(longReadTandemRepeatLocusQuery).not.toContain('genotype_distribution')

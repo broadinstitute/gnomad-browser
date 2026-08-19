@@ -53,11 +53,15 @@ const OneLineTable = styled.table`
     white-space: nowrap;
   }
 
-  th {
+  thead th {
     position: sticky;
     z-index: 1;
     top: 0;
     background: #fff;
+  }
+
+  tbody tr:hover {
+    background: #f0f7ff;
   }
 
   th:first-child,
@@ -75,10 +79,6 @@ const OneLineTable = styled.table`
     outline: 2px solid #428bca;
     outline-offset: -2px;
   }
-`
-
-const Pagination = styled.p`
-  margin: 0.75em 0;
 `
 
 const KnownLocusLink = styled.p`
@@ -122,7 +122,7 @@ type Locus = {
   short_read_matches: { id: string; gene_symbol: string | null }[]
   alleles: {
     nodes: Allele[]
-    page_info: { has_next_page: boolean; end_cursor: string | null }
+    page_info: { has_next_page: boolean }
   }
 }
 
@@ -131,16 +131,19 @@ const LongReadTandemRepeatPage = ({
   locus,
   selectedAllele,
   onCohortChange,
-  onNextPage,
 }: {
   datasetId: DatasetId
   locus: Locus | null
   selectedAllele?: string
   onCohortChange: (cohort: LongReadCohort) => void
-  onNextPage: (cursor: string) => void
 }) => {
   const selectedRow = useRef<HTMLTableRowElement>(null)
-  useEffect(() => selectedRow.current?.focus(), [locus?.id, locus?.lr_cohort, selectedAllele])
+  useEffect(() => {
+    const row = selectedRow.current
+    if (!row) return
+    row.focus()
+    row.scrollIntoView?.({ block: 'center' })
+  }, [locus?.id, locus?.lr_cohort, selectedAllele])
 
   if (!locus) return <p role="alert">No exact tandem-repeat locus was found in this cohort.</p>
 
@@ -159,7 +162,7 @@ const LongReadTandemRepeatPage = ({
     <>
       {selectedAllele && locus.selected_allele_valid === false && (
         <p role="alert">
-          The requested exact allele does not belong to this locus. Showing the first allele page.
+          The requested exact allele does not belong to this locus. Showing the allele index.
         </p>
       )}
 
@@ -190,7 +193,12 @@ const LongReadTandemRepeatPage = ({
         </HeaderSummary>
       </Header>
 
-      <AlleleTableViewport data-testid="lr-tr-allele-table-viewport">
+      <AlleleTableViewport
+        data-testid="lr-tr-allele-table-viewport"
+        role="region"
+        aria-label="Scrollable alternate allele index"
+        tabIndex={0}
+      >
         <OneLineTable data-testid="lr-tr-allele-table" aria-label="Alternate allele index">
           <thead>
             <tr>
@@ -241,12 +249,12 @@ const LongReadTandemRepeatPage = ({
         </OneLineTable>
       </AlleleTableViewport>
 
-      {locus.alleles.page_info.has_next_page && locus.alleles.page_info.end_cursor && (
-        <Pagination>
-          <Button onClick={() => onNextPage(locus.alleles.page_info.end_cursor!)}>
-            Next 50 alleles
-          </Button>
-        </Pagination>
+      {(locus.alleles.page_info.has_next_page ||
+        locus.total_alleles > locus.alleles.nodes.length) && (
+        <p role="alert">
+          This locus exceeds the safe table limit. Showing a bounded set of{' '}
+          {locus.alleles.nodes.length.toLocaleString()} alternate alleles.
+        </p>
       )}
 
       {knownLocus && (

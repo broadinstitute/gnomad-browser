@@ -4,7 +4,9 @@ import { withCache } from '../cache'
 import type { Y1SourceSnapshot } from './long_read_y1_provenance'
 import { browserVariantId, LongReadCohort } from './long_read_y1_variants'
 
-export const MAX_TR_LOCUS_PAGE_SIZE = 100
+// Bounded above the largest current source record (584 ALTs) so the compact
+// locus index fits in one request without permitting an unbounded response.
+export const MAX_TR_LOCUS_PAGE_SIZE = 600
 export const DEFAULT_TR_LOCUS_PAGE_SIZE = 50
 
 type Cursor = { version: 1; sourceVariantId: string; altIndex: number }

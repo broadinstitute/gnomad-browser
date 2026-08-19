@@ -12,6 +12,7 @@ import {
   decodeTrAlleleCursor,
   encodeTrAlleleCursor,
   fetchLongReadTrLocus,
+  MAX_TR_LOCUS_PAGE_SIZE,
 } from './long_read_tr_loci'
 
 const locusId = '4-39348424-39348479-AAAAG'
@@ -131,8 +132,9 @@ describe('long-read TR locus query contract', () => {
   )
 
   test('rejects page sizes over the hard bound before querying', async () => {
+    expect(MAX_TR_LOCUS_PAGE_SIZE).toBe(600)
     await expect(
-      fetchLongReadTrLocus({ id: locusId, cohort: 'aou', first: 101, source: source('aou') })
+      fetchLongReadTrLocus({ id: locusId, cohort: 'aou', first: 601, source: source('aou') })
     ).rejects.toThrow('INVALID_TR_LOCUS_PAGE_SIZE')
     expect(mockQuery).not.toHaveBeenCalled()
   })

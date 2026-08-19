@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { parseTrLocusId } from '@gnomad/dataset-metadata/longReadTrLocusId'
@@ -10,20 +10,18 @@ import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import LongReadTandemRepeatPage from './LongReadTandemRepeatPage'
 
 const operationName = 'LongReadTandemRepeatLocus'
-export const LONG_READ_TR_ALLELES_PER_PAGE = 50
+export const LONG_READ_TR_ALLELE_INDEX_LIMIT = 600
 export const longReadTandemRepeatLocusQuery = `
 query ${operationName}(
   $id: String!
   $lrCohort: LongReadCohort!
   $first: Int!
-  $after: String
   $allele: String
 ) {
   long_read_tandem_repeat_locus(
     id: $id
     lr_cohort: $lrCohort
     first: $first
-    after: $after
     allele: $allele
   ) {
     id motifs lr_cohort source_release source_run_id total_alleles selected_allele_valid
@@ -35,7 +33,7 @@ query ${operationName}(
         variant_id alt_index length repeat_count repeat_count_source
         freq { all { ac an af } }
       }
-      page_info { has_next_page end_cursor }
+      page_info { has_next_page }
     }
   }
 }
@@ -57,7 +55,6 @@ const LongReadTandemRepeatPageContainer = ({
   const parsed = parseTrLocusId(locusId)
   const history = useHistory()
   const location = useLocation()
-  const [after, setAfter] = useState<string | null>(null)
 
   if (!parsed) {
     return (
@@ -78,7 +75,6 @@ const LongReadTandemRepeatPageContainer = ({
     params.set('dataset', 'gnomad_r4_lr')
     params.set('lr_cohort', cohort)
     params.delete('allele')
-    setAfter(null)
     history.push(`${location.pathname}?${params}`)
   }
 
@@ -92,13 +88,12 @@ const LongReadTandemRepeatPageContainer = ({
       <Query
         operationName={operationName}
         query={longReadTandemRepeatLocusQuery}
-        requestKey={`${lrCohort}:${parsed.canonicalId}:${after || 'first'}:${selectedAllele || ''}`}
+        requestKey={`${lrCohort}:${parsed.canonicalId}:${selectedAllele || ''}`}
         variables={{
           id: parsed.canonicalId,
           lrCohort,
-          first: LONG_READ_TR_ALLELES_PER_PAGE,
-          after,
-          allele: after ? null : selectedAllele || null,
+          first: LONG_READ_TR_ALLELE_INDEX_LIMIT,
+          allele: selectedAllele || null,
         }}
         loadingMessage="Loading tandem-repeat locus"
         errorMessage="Unable to load tandem-repeat locus"
@@ -110,7 +105,6 @@ const LongReadTandemRepeatPageContainer = ({
             locus={data.long_read_tandem_repeat_locus}
             selectedAllele={selectedAllele}
             onCohortChange={changeCohort}
-            onNextPage={(cursor) => setAfter(cursor)}
           />
         )}
       </Query>
