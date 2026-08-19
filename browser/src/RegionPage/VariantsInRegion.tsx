@@ -197,6 +197,8 @@ const longReadVariantFields = `
       allele_type
       filters
       motifs
+      gnomad_str
+      is_likely_tr
       tr_locus_id
       tr_structure
       main_reference_region {

@@ -65,19 +65,20 @@ export const createPopulationColumns = (datasetId: DatasetId) => {
 
 export const getJointFilters: ColumnGetter = (variant: VariantTableVariant) => {
   const v4Variant = variant as V4VariantTableVariant
+  if (!v4Variant.joint) return 'NA'
   return v4Variant.joint.filters.length === 0 ? 'PASS' : v4Variant.joint.filters.join(',')
 }
 
 export const getJointFAFGroup: ColumnGetter = (variant: VariantTableVariant) => {
   const v4Variant = variant as V4VariantTableVariant
-  return v4Variant.joint.fafmax.faf95_max_gen_anc !== null
+  return v4Variant.joint?.fafmax.faf95_max_gen_anc != null
     ? v4Variant.joint.fafmax.faf95_max_gen_anc
     : ''
 }
 
 export const getJointFAFFreq: ColumnGetter = (variant: VariantTableVariant) => {
   const v4Variant = variant as V4VariantTableVariant
-  return v4Variant.joint.fafmax.faf95_max !== null
+  return v4Variant.joint?.fafmax.faf95_max != null
     ? JSON.stringify(v4Variant.joint.fafmax.faf95_max)
     : ''
 }
@@ -133,9 +134,7 @@ export const getGenomeFAFFreq = (variant: VariantTableVariant) => {
 
 const getPredictorValue = (variant: VariantTableVariant, id: string) => {
   const v4Variant = variant as V4VariantTableVariant
-  return v4Variant.in_silico_predictors.filter((predictor) => predictor.id === id).length > 0
-    ? v4Variant.in_silico_predictors.filter((predictor) => predictor.id === id)[0].value
-    : ''
+  return v4Variant.in_silico_predictors?.find((predictor) => predictor.id === id)?.value || ''
 }
 
 export const getCadd: ColumnGetter = (variant: VariantTableVariant) =>
@@ -230,7 +229,7 @@ export const createVersionSpecificColumns = (datasetId: DatasetId): Column[] => 
   return []
 }
 
-const exportVariantsToCsv = (
+export const exportVariantsToCsv = (
   variants: VariantTableVariant[],
   datasetId: DatasetId,
   baseFileName: string
@@ -297,6 +296,19 @@ const exportVariantsToCsv = (
         )
           .map((allele) => allele.alt_count ?? '')
           .join(';') || String(variant.alt_count ?? ''),
+    },
+    {
+      label: 'Long-read TR locus ID',
+      getValue: (variant: VariantTableVariant) => variant.long_read_tr_locus_id || '',
+    },
+    {
+      label: 'Long-read TR locus source record ID',
+      getValue: (variant: VariantTableVariant) => variant.long_read_tr_source_variant_id || '',
+    },
+    {
+      label: 'Long-read TR locus loaded ALT count',
+      getValue: (variant: VariantTableVariant) =>
+        variant.long_read_tr_alt_count == null ? '' : String(variant.long_read_tr_alt_count),
     },
     {
       label: 'Chromosome',
@@ -399,23 +411,28 @@ const exportVariantsToCsv = (
     },
     {
       label: 'Allele Count',
-      getValue: (variant: VariantTableVariant) => JSON.stringify(variant.ac),
+      getValue: (variant: VariantTableVariant) =>
+        variant.ac == null ? 'NA' : JSON.stringify(variant.ac),
     },
     {
       label: 'Allele Number',
-      getValue: (variant: VariantTableVariant) => JSON.stringify(variant.an),
+      getValue: (variant: VariantTableVariant) =>
+        variant.an == null ? 'NA' : JSON.stringify(variant.an),
     },
     {
       label: 'Allele Frequency',
-      getValue: (variant: VariantTableVariant) => JSON.stringify(variant.af),
+      getValue: (variant: VariantTableVariant) =>
+        variant.af == null ? 'NA' : JSON.stringify(variant.af),
     },
     {
       label: 'Homozygote Count',
-      getValue: (variant: VariantTableVariant) => JSON.stringify(variant.ac_hom),
+      getValue: (variant: VariantTableVariant) =>
+        variant.ac_hom == null ? 'NA' : JSON.stringify(variant.ac_hom),
     },
     {
       label: 'Hemizygote Count',
-      getValue: (variant: VariantTableVariant) => JSON.stringify(variant.ac_hemi),
+      getValue: (variant: VariantTableVariant) =>
+        variant.ac_hemi == null ? 'NA' : JSON.stringify(variant.ac_hemi),
     },
   ]
 
@@ -487,6 +504,9 @@ export type VariantTableVariant = {
   source_variant_id?: string | null
   alt_index?: number | null
   alt_count?: number | null
+  long_read_tr_locus_id?: string | null
+  long_read_tr_source_variant_id?: string | null
+  long_read_tr_alt_count?: number | null
   chrom?: string
   ref?: string
   alt?: string
@@ -548,16 +568,18 @@ type V4VariantTableVariant = VariantTableVariant & {
   joint: {
     filters: string[]
     fafmax: Fafmax
-  }
+  } | null
   exome: {
     filters: string[]
     fafmax: Fafmax
   } | null
-  in_silico_predictors: {
-    id: string
-    value: string
-    flags: string[]
-  }[]
+  in_silico_predictors:
+    | {
+        id: string
+        value: string
+        flags: string[]
+      }[]
+    | null
 }
 
 type Props = {

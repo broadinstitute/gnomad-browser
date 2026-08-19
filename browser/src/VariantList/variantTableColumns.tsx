@@ -19,6 +19,7 @@ import { Variant } from '../VariantPage/VariantPage'
 import { DatasetId, isLongRead } from '@gnomad/dataset-metadata/metadata'
 import { longReadVariantUrl } from '../LongReadVariantPage/longReadCohort'
 import { formatLongReadAlleleDisplay } from '../LongReadVariantPage/formatLongReadVariantId'
+import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
 const categoryColors = {
   lof: '#DD2C00',
@@ -157,14 +158,26 @@ const variantTableColumns: VariantTableColumn[] = [
     grow: 0,
     minWidth: 140,
     compareFunction: makeStringCompareFunction('consequence'),
-    getSearchTerms: (variant: any) => [getLabelForConsequenceTerm(variant.consequence)],
+    getSearchTerms: (variant: any) => [
+      variant.is_long_read_tr_locus
+        ? 'Unavailable for tandem-repeat locus'
+        : getLabelForConsequenceTerm(variant.consequence),
+    ],
     render: (row: any, key: any, { highlightWords }: any) => (
-      <Cell>
+      <Cell
+        title={
+          row.is_long_read_tr_locus
+            ? 'Allele-level VEP consequence is unavailable for this locus summary.'
+            : undefined
+        }
+      >
         <VariantCategoryMarker color={getConsequenceColor(row[key])} />
         <Highlighter
           autoEscape
           searchWords={highlightWords}
-          textToHighlight={getConsequenceName(row[key])}
+          textToHighlight={
+            row.is_long_read_tr_locus ? 'Unavailable for locus' : getConsequenceName(row[key])
+          }
         />
       </Cell>
     ),
@@ -226,10 +239,25 @@ const variantTableColumns: VariantTableColumn[] = [
     grow: 1,
     minWidth: 160,
     compareFunction: makeStringCompareFunction('hgvs'),
-    getSearchTerms: (variant: any) => [variant.hgvs],
+    getSearchTerms: (variant: any) => [
+      variant.hgvs,
+      variant.is_long_read_tr_locus ? 'Unavailable for tandem-repeat locus' : null,
+    ],
     render: (variant: any, _: any, { highlightWords }: any) => (
-      <Cell>
-        <Highlighter autoEscape searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
+      <Cell
+        title={
+          variant.is_long_read_tr_locus
+            ? 'Allele-level HGVS consequence is unavailable for this locus summary.'
+            : undefined
+        }
+      >
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={
+            variant.is_long_read_tr_locus ? 'Unavailable for locus' : variant.hgvs || ''
+          }
+        />
       </Cell>
     ),
   },
@@ -389,6 +417,9 @@ const variantTableColumns: VariantTableColumn[] = [
     getSearchTerms: (variant: any) =>
       [
         variant.variant_id,
+        variant.long_read_tr_locus_id,
+        variant.long_read_tr_source_variant_id,
+        variant.long_read_tr_label,
         ...(variant.rsids || []),
         ...(variant.long_read_alleles || []).flatMap((allele: any) => [
           allele.variant_id,
@@ -397,6 +428,29 @@ const variantTableColumns: VariantTableColumn[] = [
         ]),
       ].filter(Boolean),
     render: (row: any, _: any, { highlightWords }: any) => {
+      if (row.is_long_read_tr_locus) {
+        return (
+          <Cell title={row.long_read_tr_tooltip}>
+            <Link
+              target="_blank"
+              to={trLocusUrl(row.long_read_tr_locus_id, row.lr_cohort)}
+              preserveSelectedDataset={false}
+              title={row.long_read_tr_tooltip}
+              aria-label={row.long_read_tr_tooltip}
+            >
+              <Highlighter
+                autoEscape
+                searchWords={highlightWords}
+                textToHighlight={row.long_read_tr_label}
+              />
+            </Link>
+            <span style={{ marginLeft: '0.5ch', whiteSpace: 'nowrap' }}>
+              <Badge level="info">TR</Badge>
+            </span>
+          </Cell>
+        )
+      }
+
       const lrIdentity = row.lr_cohort
         ? formatLongReadAlleleDisplay({
             ...row,
@@ -519,9 +573,24 @@ export const getColumnsForContext = (context: any, datasetId: DatasetId) => {
 
     // @ts-expect-error TS(2339) Property 'hgvs' does not exist on type '{}'.
     columns.hgvs.render = (variant: any, _: any, { highlightWords }: any) => (
-      <Cell>
-        <Highlighter autoEscape searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
-        {primaryTranscriptId && variant.transcript_id !== primaryTranscriptId && ' †'}
+      <Cell
+        title={
+          variant.is_long_read_tr_locus
+            ? 'Allele-level HGVS consequence is unavailable for this locus summary.'
+            : undefined
+        }
+      >
+        <Highlighter
+          autoEscape
+          searchWords={highlightWords}
+          textToHighlight={
+            variant.is_long_read_tr_locus ? 'Unavailable for locus' : variant.hgvs || ''
+          }
+        />
+        {!variant.is_long_read_tr_locus &&
+          primaryTranscriptId &&
+          variant.transcript_id !== primaryTranscriptId &&
+          ' †'}
       </Cell>
     )
   }

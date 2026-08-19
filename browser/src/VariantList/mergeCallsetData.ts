@@ -118,12 +118,12 @@ type VariantWithLongRead = Variant & {
 }
 
 type MergedVariant = VariantWithLongRead & {
-  ac: number
-  an: number
-  af: number
-  allele_freq: number
-  ac_hemi: number
-  ac_hom: number
+  ac: number | null
+  an: number | null
+  af: number | null
+  allele_freq: number | null
+  ac_hemi: number | null
+  ac_hom: number | null
   filters: Filter[]
   populations: Population[]
 }
@@ -220,8 +220,10 @@ export const mergeCallsetData = ({
         an: long_read.an,
         af: long_read.af,
         allele_freq: long_read.af,
-        ac_hemi: 0,
-        ac_hom: long_read.homozygote_alt_count || 0,
+        // A multiallelic TR locus summary has no meaningful per-ALT
+        // homozygote/hemizygote count. Do not present a fabricated zero.
+        ac_hemi: (variant as any).is_long_read_tr_locus ? null : 0,
+        ac_hom: (variant as any).is_long_read_tr_locus ? null : long_read.homozygote_alt_count || 0,
         filters: (long_read.filters || []) as Filter[],
         populations: [],
       }

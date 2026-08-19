@@ -295,6 +295,8 @@ const longReadVariantFields = `
 		allele_type
 		filters
 		motifs
+		gnomad_str
+		is_likely_tr
 		tr_locus_id
 		tr_structure
 		main_reference_region {
@@ -458,7 +460,9 @@ const ConnectedVariantsInGene = ({
 
         // Merge LR variants into the SR array as third callset
         if (hasLongRead && data.gene.long_read_variants) {
-          variants = mergeLongReadVariants(variants, data.gene.long_read_variants)
+          variants = mergeLongReadVariants(variants, data.gene.long_read_variants, {
+            geneSymbol: gene.symbol,
+          })
         }
 
         return (
