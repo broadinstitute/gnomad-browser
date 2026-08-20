@@ -81,6 +81,7 @@ type TableColumnSelectionModalProps = {
   context: any
   defaultColumns: string[]
   selectedColumns: string[]
+  fixedColumnKey?: string
   onCancel: (...args: any[]) => any
   onSave: (...args: any[]) => any
 }
@@ -90,14 +91,17 @@ const TableColumnSelectionModal = ({
   context,
   defaultColumns,
   selectedColumns,
+  fixedColumnKey = 'variant_id',
   onCancel,
   onSave,
 }: TableColumnSelectionModalProps) => {
   const contextType = getContextType(context)
+  const fixedColumnHeading =
+    availableColumns.find((column) => column.key === fixedColumnKey)?.heading || 'Variant ID'
 
   const [columnPreferences, setColumnPreferences] = useState(
     availableColumns
-      .filter((column) => column.key !== 'variant_id')
+      .filter((column) => column.key !== fixedColumnKey)
       .map((column) => {
         const selectionIndex = selectedColumns.indexOf(column.key)
         return {
@@ -159,7 +163,7 @@ const TableColumnSelectionModal = ({
     >
       <p>
         Select columns to include in the variant table. Drag and drop or use the up/down buttons to
-        reorder columns. The first column in the table will always be the variant ID.
+        reorder columns. The first column in the table will always be {fixedColumnHeading}.
       </p>
 
       <DragDropContext onDragEnd={onDragEnd}>
@@ -259,7 +263,7 @@ const TableColumnSelectionModal = ({
         onClick={() =>
           setColumnPreferences(
             availableColumns
-              .filter((column) => column.key !== 'variant_id')
+              .filter((column) => column.key !== fixedColumnKey)
               .map((column) => {
                 const selectionIndex = defaultColumns.indexOf(column.key)
                 return {

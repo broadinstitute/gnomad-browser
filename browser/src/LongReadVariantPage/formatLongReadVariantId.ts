@@ -28,7 +28,7 @@ export type LongReadAlleleDisplay = {
   canonicalId: string
 }
 
-const SHORT_ALLELE_MAX_BASES = 50
+const SHORT_ALLELE_MAX_BASES = 30
 const ABBREVIATED_SEQUENCE_BASES = 8
 
 // Only these source types use REF/ALT as their intended short-form identity.

@@ -56,19 +56,35 @@ describe('formatLongReadAlleleDisplay', () => {
     ).toBe('1-100-G-T — Allele 2 of 2')
   })
 
-  test('uses conventional IDs for ordinary short indels through the 50-base boundary', () => {
-    const alt = `A${'C'.repeat(49)}`
-    expect(alt).toHaveLength(50)
+  test('uses conventional IDs through 30 bases and keeps longer alleles out of compact labels', () => {
+    const thirtyBaseAlt = `A${'C'.repeat(29)}`
+    expect(thirtyBaseAlt).toHaveLength(30)
     expect(
       formatLongReadAlleleDisplay({
         variant_id: 'source~1',
         chrom: 'chr1',
         pos: 55039879,
         ref: 'A',
-        alt,
+        alt: thirtyBaseAlt,
         allele_type: 'ins',
       }).primaryLabel
-    ).toBe(`1-55039879-A-${alt}`)
+    ).toBe(`1-55039879-A-${thirtyBaseAlt}`)
+
+    const thirtyOneBaseRef = `G${'T'.repeat(30)}`
+    const thirtyOneBaseAlt = `A${'C'.repeat(30)}`
+    const display = formatLongReadAlleleDisplay({
+      variant_id: 'source~2',
+      chrom: 'chr1',
+      pos: 55039880,
+      ref: thirtyOneBaseRef,
+      alt: thirtyOneBaseAlt,
+      allele_type: 'snv',
+    })
+    expect(display.compactLabel).toBe('1:55039880 SNV 0 bp')
+    expect(display.compactLabel).not.toContain(thirtyOneBaseRef)
+    expect(display.compactLabel).not.toContain(thirtyOneBaseAlt)
+    expect(display.accessibleLabel).toContain(`Exact REF sequence: ${thirtyOneBaseRef}`)
+    expect(display.accessibleLabel).toContain(`Exact ALT sequence: ${thirtyOneBaseAlt}`)
   })
 
   test('formats the reported literal +49 bp tandem duplication as a compact event', () => {

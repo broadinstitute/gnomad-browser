@@ -100,7 +100,7 @@ describe('variant_id region URL parameter', () => {
       'not-a-real-variant'
     )
     expect(screen.getByText('Showing 0 of 1 variants')).not.toBeNull()
-    expect(screen.getByRole('columnheader', { name: /Variant ID/ })).not.toBeNull()
+    expect(screen.getByRole('columnheader', { name: /^Variant/ })).not.toBeNull()
   })
 
   test('applies the same search when delayed variant data arrives', () => {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
-import { Badge } from '@gnomad/ui'
+import { Badge, Button } from '@gnomad/ui'
 import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
@@ -40,6 +40,9 @@ import {
   parseLongReadVariantSearch,
   type LongReadVariantSearchResult,
 } from '../LongReadVariantPage/longReadVariantSearch'
+import { showNotification } from '../Notifications'
+import userPreferences from '../userPreferences'
+import VariantTableConfigurationModal from '../VariantList/VariantTableConfigurationModal'
 
 type DerivedVariant = LRVariant & {
   source_variant_id?: string
@@ -68,6 +71,90 @@ type SortKey = keyof DerivedVariant | 'freq.af' | 'freq.ac' | 'freq.an'
 type SortConfig = {
   key: SortKey
   direction: 'asc' | 'desc'
+}
+
+type LongReadVariantTableColumnKey =
+  | 'source_variant_id'
+  | 'allele_type'
+  | 'allele_length'
+  | 'lr_af'
+  | 'ac'
+  | 'an'
+  | 'group_count'
+  | 'carrier_count'
+  | 'group_af'
+  | 'short_read_match_id'
+  | 'cadd_phred'
+  | 'phylop'
+  | 'major_consequence'
+  | 'rsid'
+
+export const DEFAULT_LONG_READ_VARIANT_TABLE_COLUMNS: LongReadVariantTableColumnKey[] = [
+  'allele_type',
+  'allele_length',
+  'lr_af',
+  'ac',
+  'an',
+  'group_count',
+  'carrier_count',
+  'group_af',
+  'short_read_match_id',
+  'cadd_phred',
+  'phylop',
+  'major_consequence',
+  'rsid',
+]
+
+export const LONG_READ_VARIANT_TABLE_COLUMNS = [
+  { key: 'variant_id', heading: 'Variant', description: 'Human-readable chromosome, position, and allele or event identity' },
+  { key: 'source_variant_id', heading: 'Variant ID', description: 'Exact ID from the source VCF record' },
+  { key: 'allele_type', heading: 'Type', description: 'Long-read allele type' },
+  { key: 'allele_length', heading: 'Length', description: 'Signed or represented allele length' },
+  { key: 'lr_af', heading: 'LR AF', description: 'Long-read allele frequency' },
+  { key: 'ac', heading: 'AC', description: 'Long-read allele count (summary view)' },
+  { key: 'an', heading: 'AN', description: 'Long-read allele number (summary view)' },
+  { key: 'group_count', heading: 'Groups / Clusters', description: 'Displayed haplotype groups or active clusters containing the variant' },
+  { key: 'carrier_count', heading: 'Carriers', description: 'Unique individuals containing the variant' },
+  { key: 'group_af', heading: 'Grp AF', description: 'Long-read allele frequency by genetic ancestry group' },
+  { key: 'short_read_match_id', heading: 'SR Match', description: 'Matching gnomAD v4 short-read variant' },
+  { key: 'cadd_phred', heading: 'CADD', description: 'CADD PHRED score' },
+  { key: 'phylop', heading: 'phyloP', description: 'phyloP conservation score' },
+  { key: 'major_consequence', heading: 'Consequence', description: 'Most severe VEP consequence' },
+  { key: 'rsid', heading: 'rsID', description: 'dbSNP rsID' },
+] as const
+
+const LONG_READ_VARIANT_TABLE_PREFERENCE = 'longReadVariantTableColumns'
+const VALID_LONG_READ_VARIANT_TABLE_COLUMNS = new Set(
+  LONG_READ_VARIANT_TABLE_COLUMNS
+    .map((column) => column.key)
+    .filter((key): key is LongReadVariantTableColumnKey => key !== 'variant_id')
+)
+
+const getInitialLongReadVariantTableColumns = (): LongReadVariantTableColumnKey[] => {
+  try {
+    const saved = userPreferences.getPreference(LONG_READ_VARIANT_TABLE_PREFERENCE)
+    if (Array.isArray(saved)) {
+      return saved.filter((key): key is LongReadVariantTableColumnKey =>
+        VALID_LONG_READ_VARIANT_TABLE_COLUMNS.has(key)
+      )
+    }
+  } catch (_error) {
+    // Fall through to the stable product defaults when preferences are unavailable.
+  }
+  return DEFAULT_LONG_READ_VARIANT_TABLE_COLUMNS
+}
+
+const columnIsApplicable = (
+  key: LongReadVariantTableColumnKey,
+  mode: 'summary' | 'haplotype',
+  showGroupAf: boolean,
+  showGroupCount: boolean
+) => {
+  if (key === 'ac' || key === 'an') return mode === 'summary'
+  if (key === 'group_count') return mode === 'haplotype' && showGroupCount
+  if (key === 'carrier_count') return mode === 'haplotype'
+  if (key === 'group_af') return showGroupAf
+  return true
 }
 
 const getSortValue = (v: DerivedVariant, key: SortKey): any => {
@@ -446,6 +533,7 @@ type TableRowProps = {
   highlightedPosition: number | null
   variantDict: Map<string, any>
   lrCohort: LongReadCohort
+  selectedColumns: LongReadVariantTableColumnKey[]
   onHoverVariant?: (position: number | null) => void
   onRowClick?: (pos: number) => void
 }
@@ -465,10 +553,14 @@ const TableRow = React.memo(function TableRow({
   highlightedPosition,
   variantDict,
   lrCohort,
+  selectedColumns,
   onHoverVariant,
   onRowClick,
 }: TableRowProps) {
-  const COL_COUNT = (showGroupAf ? 12 : 11) - (mode === 'haplotype' && !showGroupCount ? 1 : 0)
+  const visibleColumns = selectedColumns.filter((key) =>
+    columnIsApplicable(key, mode, showGroupAf, showGroupCount)
+  )
+  const COL_COUNT = 1 + visibleColumns.length
   return (
     <React.Fragment key={`${v.pos}-${v.variant_id}-${i}`}>
       <tr
@@ -521,73 +613,40 @@ const TableRow = React.memo(function TableRow({
             )
           })()}
         </td>
-        <td>
-          <TypeDot $color={getAlleleTypeColor(v.allele_type)} />
-          {v.is_tr ? 'TR' : v.allele_type}
-        </td>
-        <td className="numeric">
-          {v.is_tr
-            ? formatTrLengthRange(v.min_length_diff, v.max_length_diff)
-            : v.allele_length}
-        </td>
-        <td className="numeric"><span title={v.freq.af == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.af, 4)}</span></td>
-        {mode === 'summary' && <td className="numeric"><span title={v.freq.ac == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.ac)}</span></td>}
-        {mode === 'summary' && <td className="numeric"><span title={v.freq.an == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.an)}</span></td>}
-        {mode === 'haplotype' && showGroupCount && (
-          <td className="numeric">
-            {isClusteredView ? (
-              <>{v.active_cluster_count ?? 0} / {totalClusters}</>
-            ) : (
-              <>{v.group_count} / {totalGroups}</>
-            )}
-          </td>
-        )}
-        {mode === 'haplotype' && (
-          <td className="numeric">
-            {v.carrier_count} / {totalSamples}
-          </td>
-        )}
-        {showGroupAf && (
-          <td>
-            <PopAfBar variant={v} />
-          </td>
-        )}
-        <td>
-          {v.short_read_match_id ? (
-            <Link
-              to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`}
-              preserveSelectedDataset={false}
-              title={v.short_read_match_id}
-            >
-              {v.short_read_match_id.length > 20
-                ? `${v.short_read_match_id.slice(0, 20)}…`
-                : v.short_read_match_id}
-            </Link>
-          ) : <span style={{ color: '#ccc' }}>—</span>}
-        </td>
-        <td className="numeric">{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
-        <td className="numeric">{renderPredictor(v.phylop, 7.367, 9.741)}</td>
-        <td>
-          {v.major_consequence
-            ? getLabelForConsequenceTerm(v.major_consequence)
-            : <span style={{ color: '#ccc' }}>—</span>}
-        </td>
-        <td>
-          {v.rsid && v.rsid.startsWith('rs') ? (
-            <a
-              href={`https://www.ncbi.nlm.nih.gov/snp/${v.rsid}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: '#428bca', textDecoration: 'none' }}
-            >
-              {v.rsid}
-            </a>
-          ) : v.dbsnp_id ? (
-            <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbsnp_id}</span>
-          ) : (
-            <span style={{ color: '#ccc' }}>—</span>
-          )}
-        </td>
+        {visibleColumns.map((columnKey) => {
+          switch (columnKey) {
+            case 'source_variant_id':
+              return <td key={columnKey} style={{ fontFamily: 'monospace', fontSize: '12px' }} title={v.source_variant_id || 'Source VCF ID unavailable'}>{v.source_variant_id || <span style={{ color: '#666' }}>Unavailable</span>}</td>
+            case 'allele_type':
+              return <td key={columnKey}><TypeDot $color={getAlleleTypeColor(v.allele_type)} />{v.is_tr ? 'TR' : v.allele_type}</td>
+            case 'allele_length':
+              return <td key={columnKey} className="numeric">{v.is_tr ? formatTrLengthRange(v.min_length_diff, v.max_length_diff) : v.allele_length}</td>
+            case 'lr_af':
+              return <td key={columnKey} className="numeric"><span title={v.freq.af == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.af, 4)}</span></td>
+            case 'ac':
+              return <td key={columnKey} className="numeric"><span title={v.freq.ac == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.ac)}</span></td>
+            case 'an':
+              return <td key={columnKey} className="numeric"><span title={v.freq.an == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.an)}</span></td>
+            case 'group_count':
+              return <td key={columnKey} className="numeric">{isClusteredView ? <>{v.active_cluster_count ?? 0} / {totalClusters}</> : <>{v.group_count} / {totalGroups}</>}</td>
+            case 'carrier_count':
+              return <td key={columnKey} className="numeric">{v.carrier_count} / {totalSamples}</td>
+            case 'group_af':
+              return <td key={columnKey}><PopAfBar variant={v} /></td>
+            case 'short_read_match_id':
+              return <td key={columnKey}>{v.short_read_match_id ? <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false} title={v.short_read_match_id}>{v.short_read_match_id.length > 20 ? `${v.short_read_match_id.slice(0, 20)}…` : v.short_read_match_id}</Link> : <span style={{ color: '#ccc' }}>—</span>}</td>
+            case 'cadd_phred':
+              return <td key={columnKey} className="numeric">{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
+            case 'phylop':
+              return <td key={columnKey} className="numeric">{renderPredictor(v.phylop, 7.367, 9.741)}</td>
+            case 'major_consequence':
+              return <td key={columnKey}>{v.major_consequence ? getLabelForConsequenceTerm(v.major_consequence) : <span style={{ color: '#ccc' }}>—</span>}</td>
+            case 'rsid':
+              return <td key={columnKey}>{v.rsid && v.rsid.startsWith('rs') ? <a href={`https://www.ncbi.nlm.nih.gov/snp/${v.rsid}`} target="_blank" rel="noopener noreferrer" style={{ color: '#428bca', textDecoration: 'none' }}>{v.rsid}</a> : v.dbsnp_id ? <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbsnp_id}</span> : <span style={{ color: '#ccc' }}>—</span>}</td>
+            default:
+              return null
+          }
+        })}
       </tr>
       {isExpanded && (
         <TrExpandedRow>
@@ -778,6 +837,8 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
   onTypeFiltersChange,
 }, ref) {
   const [sort, setSort] = useState<SortConfig>({ key: 'pos', direction: 'asc' })
+  const [selectedColumns, setSelectedColumns] = useState<LongReadVariantTableColumnKey[]>(getInitialLongReadVariantTableColumns)
+  const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
   const searchText = searchTextProp
   const parsedSearch = useMemo(
     () => parsedSearchProp || parseLongReadVariantSearch(searchText),
@@ -1403,6 +1464,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           </span>
         )}
         <ExportButton onClick={exportCSV}>Export CSV</ExportButton>
+        <Button onClick={() => setShowTableConfigurationModal(true)}>Configure table</Button>
         <CountLabel>
           Showing {sorted.length} of {variants.length} variants
         </CountLabel>
@@ -1412,65 +1474,52 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         <StyledTable>
           <thead>
             <tr>
-              <th onClick={() => handleSort('variant_id')}>Variant ID{sortIndicator('variant_id')}</th>
-              <th onClick={() => handleSort('allele_type')}>Type{sortIndicator('allele_type')}</th>
-              <th className="numeric" onClick={() => handleSort('allele_length')}>
-                Length{sortIndicator('allele_length')}
-                <HaplotypeHelpButton title="About Length">
-                  <p style={{ marginTop: 0 }}>
-                    For ordinary SNVs, indels, and structural variants, Length is the signed or
-                    represented allele length used by this table.
-                  </p>
-                  <p style={{ marginBottom: 0 }}>
-                    For tandem repeats (TRs), Length is the observed minimum-to-maximum signed
-                    allele length difference relative to the reference allele at the locus. For
-                    example, <strong>-13..0 bp</strong> means observed alleles range from 13 bp
-                    shorter than the reference to the reference length. Negative means shorter,
-                    zero means reference length, and positive means longer. This is ALT minus REF
-                    length, not the reference locus or base span.
-                  </p>
-                </HaplotypeHelpButton>
-              </th>
-              <th className="numeric" onClick={() => handleSort('freq.af')}>LR AF{sortIndicator('freq.af')}</th>
-              {mode === 'summary' && <th className="numeric" onClick={() => handleSort('freq.ac')}>AC{sortIndicator('freq.ac')}</th>}
-              {mode === 'summary' && <th className="numeric" onClick={() => handleSort('freq.an')}>AN{sortIndicator('freq.an')}</th>}
-              {showGroupCount && (
-                <th className="numeric" onClick={() => handleSort(isClusteredView ? 'active_cluster_count' : 'group_count')}>
-                  {isClusteredView ? 'Clusters' : 'Groups'}{sortIndicator(isClusteredView ? 'active_cluster_count' : 'group_count')}
-                  <HaplotypeHelpButton title={`About ${isClusteredView ? 'Clusters' : 'Groups'} and Carriers`}>
-                    <p style={{ margin: 0 }}>
-                      <strong>Groups</strong> counts displayed haplotype patterns containing the
-                      variant; <strong>Clusters</strong> counts active clusters containing it.
-                      {' '}<strong>Carriers</strong> counts unique individuals containing the variant.
-                      The Groups/Clusters count is not an allele-copy or haplotype denominator.
-                    </p>
-                  </HaplotypeHelpButton>
-                </th>
-              )}
-              {mode === 'haplotype' && (
-                <th className="numeric" onClick={() => handleSort('carrier_count')}>
-                  Carriers{sortIndicator('carrier_count')}
-                </th>
-              )}
-              {!(mode === 'summary' && lrCohort === 'aou') && <th>Grp AF</th>}
-              {mode === 'summary' && (
-                <th onClick={() => handleSort('short_read_match_id')}>
-                  SR Match ID{sortIndicator('short_read_match_id')}
-                </th>
-              )}
-              {mode === 'haplotype' && (
-                <th>
-                  SR Match
-                </th>
-              )}
-              <th className="numeric" onClick={() => handleSort('cadd_phred')} style={{ width: 60 }}>
-                CADD{sortIndicator('cadd_phred')}
-              </th>
-              <th className="numeric" onClick={() => handleSort('phylop')} style={{ width: 60 }}>
-                phyloP{sortIndicator('phylop')}
-              </th>
-              <th onClick={() => handleSort('major_consequence')}>Consequence{sortIndicator('major_consequence')}</th>
-              <th onClick={() => handleSort('rsid')}>rsID{sortIndicator('rsid')}</th>
+              <th onClick={() => handleSort('variant_id')}>Variant{sortIndicator('variant_id')}</th>
+              {selectedColumns
+                .filter((key) => columnIsApplicable(key, mode, !(mode === 'summary' && lrCohort === 'aou'), showGroupCount))
+                .map((columnKey) => {
+                  switch (columnKey) {
+                    case 'source_variant_id':
+                      return <th key={columnKey} onClick={() => handleSort('source_variant_id')}>Variant ID{sortIndicator('source_variant_id')}</th>
+                    case 'allele_type':
+                      return <th key={columnKey} onClick={() => handleSort('allele_type')}>Type{sortIndicator('allele_type')}</th>
+                    case 'allele_length':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort('allele_length')}>
+                        Length{sortIndicator('allele_length')}
+                        <HaplotypeHelpButton title="About Length">
+                          <p style={{ marginTop: 0 }}>For ordinary SNVs, indels, and structural variants, Length is the signed or represented allele length used by this table.</p>
+                          <p style={{ marginBottom: 0 }}>For tandem repeats (TRs), Length is the observed minimum-to-maximum signed allele length difference relative to the reference allele at the locus. For example, <strong>-13..0 bp</strong> means observed alleles range from 13 bp shorter than the reference to the reference length. Negative means shorter, zero means reference length, and positive means longer. This is ALT minus REF length, not the reference locus or base span.</p>
+                        </HaplotypeHelpButton>
+                      </th>
+                    case 'lr_af':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort('freq.af')}>LR AF{sortIndicator('freq.af')}</th>
+                    case 'ac':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort('freq.ac')}>AC{sortIndicator('freq.ac')}</th>
+                    case 'an':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort('freq.an')}>AN{sortIndicator('freq.an')}</th>
+                    case 'group_count':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort(isClusteredView ? 'active_cluster_count' : 'group_count')}>
+                        {isClusteredView ? 'Clusters' : 'Groups'}{sortIndicator(isClusteredView ? 'active_cluster_count' : 'group_count')}
+                        <HaplotypeHelpButton title={`About ${isClusteredView ? 'Clusters' : 'Groups'} and Carriers`}><p style={{ margin: 0 }}><strong>Groups</strong> counts displayed haplotype patterns containing the variant; <strong>Clusters</strong> counts active clusters containing it. <strong>Carriers</strong> counts unique individuals containing the variant. The Groups/Clusters count is not an allele-copy or haplotype denominator.</p></HaplotypeHelpButton>
+                      </th>
+                    case 'carrier_count':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort('carrier_count')}>Carriers{sortIndicator('carrier_count')}</th>
+                    case 'group_af':
+                      return <th key={columnKey}>Grp AF</th>
+                    case 'short_read_match_id':
+                      return mode === 'summary' ? <th key={columnKey} onClick={() => handleSort('short_read_match_id')}>SR Match ID{sortIndicator('short_read_match_id')}</th> : <th key={columnKey}>SR Match</th>
+                    case 'cadd_phred':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort('cadd_phred')} style={{ width: 60 }}>CADD{sortIndicator('cadd_phred')}</th>
+                    case 'phylop':
+                      return <th key={columnKey} className="numeric" onClick={() => handleSort('phylop')} style={{ width: 60 }}>phyloP{sortIndicator('phylop')}</th>
+                    case 'major_consequence':
+                      return <th key={columnKey} onClick={() => handleSort('major_consequence')}>Consequence{sortIndicator('major_consequence')}</th>
+                    case 'rsid':
+                      return <th key={columnKey} onClick={() => handleSort('rsid')}>rsID{sortIndicator('rsid')}</th>
+                    default:
+                      return null
+                  }
+                })}
             </tr>
           </thead>
           <tbody>
@@ -1517,6 +1566,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                         highlightedPosition={highlightedPosition}
                         variantDict={variantDict}
                         lrCohort={lrCohort}
+                        selectedColumns={selectedColumns}
                         onHoverVariant={onHoverVariant}
                         onRowClick={onRowClick}
                       />
@@ -1529,6 +1579,26 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           </tbody>
         </StyledTable>
       </div>
+
+      {showTableConfigurationModal && (
+        <VariantTableConfigurationModal
+          availableColumns={[...LONG_READ_VARIANT_TABLE_COLUMNS]}
+          context={{}}
+          defaultColumns={DEFAULT_LONG_READ_VARIANT_TABLE_COLUMNS}
+          selectedColumns={selectedColumns}
+          onCancel={() => setShowTableConfigurationModal(false)}
+          onSave={(newSelectedColumns: string[]) => {
+            const validColumns = newSelectedColumns.filter((key): key is LongReadVariantTableColumnKey =>
+              VALID_LONG_READ_VARIANT_TABLE_COLUMNS.has(key as LongReadVariantTableColumnKey)
+            )
+            setSelectedColumns(validColumns)
+            setShowTableConfigurationModal(false)
+            userPreferences.savePreference(LONG_READ_VARIANT_TABLE_PREFERENCE, validColumns).then(null, (error: Error) => {
+              showNotification({ title: 'Error', message: error.message, status: 'error' })
+            })
+          }}
+        />
+      )}
     </TableContainer>
   )
 })
