@@ -27,17 +27,8 @@ const getGcpTraceId = (request: any) => {
   }
 
   // Fall back to Google's legacy trace context header.
-  const cloudTrace = request.get('X-Cloud-Trace-Context')
-
-  if (cloudTrace) {
-    const match = cloudTrace.match(/^([\da-f]{32})(?:\/|$)/i)
-
-    if (match) {
-      return match[1]
-    }
-  }
-
-  return null
+  const match = request.get('X-Cloud-Trace-Context')?.match(/^([\da-f]{32})(?:\/|$)/i)
+  return match?.[1]
 }
 
 const app = express()
