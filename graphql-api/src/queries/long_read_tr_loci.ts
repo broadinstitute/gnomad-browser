@@ -11,6 +11,9 @@ export const DEFAULT_TR_LOCUS_PAGE_SIZE = 50
 export const MAX_TR_LOCUS_FREQUENCY_ROWS = 20_000
 export const MAX_TR_LOCUS_GENOTYPE_GROUPS = 5_000
 export const MAX_TR_LOCUS_AGGREGATE_BYTES = 1024 * 1024
+// Selected REF/ALT detail has an independent response bound. Sequence is all-or-nothing:
+// an over-bound allele keeps its validated compact index node but never returns a prefix.
+export const MAX_TR_SELECTED_ALLELE_DETAIL_BYTES = 1024 * 1024
 
 const REFERENCE_ALLELE_ID = 'REFERENCE'
 const WHOLE_RECORD_UNIT = 'WHOLE_RECORD_DELTA_BP'
@@ -100,6 +103,9 @@ const unavailable = (reason_code: string) => ({
 
 const responseWithinBound = (value: unknown) =>
   Buffer.byteLength(JSON.stringify(value), 'utf8') <= MAX_TR_LOCUS_AGGREGATE_BYTES
+
+const selectedDetailWithinBound = (value: unknown) =>
+  Buffer.byteLength(JSON.stringify(value), 'utf8') <= MAX_TR_SELECTED_ALLELE_DETAIL_BYTES
 
 const compactAlleleKey = (sourceVariantId: string, altIndex: number) =>
   `${sourceVariantId}\u0000${altIndex}`
@@ -732,7 +738,10 @@ const fetchLongReadTrLocusUncached = async ({
   const finalAllele = alleles[alleles.length - 1]
 
   let selectedAlleleDetail = null
-  if (selectedAllele && selectedAlleleValid && !completenessReason) {
+  let selectedAlleleUnavailableReason: string | null = null
+  if (selectedAllele && selectedAlleleValid && completenessReason) {
+    selectedAlleleUnavailableReason = completenessReason
+  } else if (selectedAllele && selectedAlleleValid) {
     const match = /^(.*)~([1-9][0-9]*)$/.exec(selectedAllele)!
     const selectedRows = await queryRows(
       `
@@ -763,7 +772,7 @@ const fetchLongReadTrLocusUncached = async ({
     const alignedMc = mc && mc.length === summary.alt_count + 1 ? finiteNumber(mc[altIndex]) : null
     const alignedPurity =
       ap && ap.length === summary.alt_count + 1 ? finiteNumber(ap[altIndex]) : null
-    selectedAlleleDetail = {
+    const candidateDetail = {
       variant_id: browserVariantId(row.source_variant_id, altIndex),
       source_variant_id: row.source_variant_id,
       alt_index: altIndex,
@@ -797,6 +806,13 @@ const fetchLongReadTrLocusUncached = async ({
       short_read_match_source: row.short_read_match_source || null,
       source_release: source.release,
       source_run_id: source.run_id,
+    }
+    if (selectedDetailWithinBound(candidateDetail)) {
+      selectedAlleleDetail = candidateDetail
+    } else {
+      // Never include sequence content in an error or log message. The compact selected
+      // node remains on its validated page, so identity and safe frequency metadata survive.
+      selectedAlleleUnavailableReason = 'SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED'
     }
   }
 
@@ -856,6 +872,7 @@ const fetchLongReadTrLocusUncached = async ({
     sequences_available: !completenessReason,
     sequences_unavailable_reason: completenessReason,
     selected_allele_valid: selectedAllele ? Boolean(selectedAlleleValid) : null,
+    selected_allele_unavailable_reason: selectedAlleleUnavailableReason,
     selected_allele: selectedAlleleDetail,
     whole_record_allele_landscape: wholeRecordAlleleLandscape,
     whole_record_genotype_landscape: wholeRecordGenotypeLandscape,
@@ -881,7 +898,7 @@ const fetchLongReadTrLocusUncached = async ({
 export const fetchLongReadTrLocus = withCache(
   fetchLongReadTrLocusUncached,
   ({ id, cohort, first = DEFAULT_TR_LOCUS_PAGE_SIZE, after, selectedAllele, source }) =>
-    `lr_tr_locus:v2:${cohort}:${source.database}:${source.run_id}:${
+    `lr_tr_locus:v3:${cohort}:${source.database}:${source.run_id}:${
       source.metadata_run_id || 'no-metadata'
     }:${source.chrom}:${id}:${first}:${after || 'first'}:${selectedAllele || 'none'}`,
   { expiration: 300 }

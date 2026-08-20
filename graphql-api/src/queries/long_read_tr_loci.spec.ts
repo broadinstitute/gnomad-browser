@@ -15,6 +15,7 @@ import {
   encodeTrAlleleCursor,
   fetchLongReadTrLocus,
   MAX_TR_LOCUS_PAGE_SIZE,
+  MAX_TR_SELECTED_ALLELE_DETAIL_BYTES,
 } from './long_read_tr_loci'
 
 const httLocusId =
@@ -191,6 +192,7 @@ describe('long-read TR locus query contract', () => {
       called_sample_count: 292,
       unique_carrier_count: 291,
       selected_allele_valid: true,
+      selected_allele_unavailable_reason: null,
       component_measurement_available: false,
       region: { chrom: '4', start0: 3074876, end0: 3075040, size: 164 },
     })
@@ -244,6 +246,67 @@ describe('long-read TR locus query contract', () => {
     expect(aggregateJson).not.toContain('sample_id')
   })
 
+  test('keeps valid compact metadata but withholds over-bound selected sequence detail', async () => {
+    const overBoundAlt = 'G'.repeat(MAX_TR_SELECTED_ALLELE_DETAIL_BYTES)
+    mockQuery
+      .mockImplementationOnce(() => result([summary(1, 2)]))
+      .mockImplementationOnce(() =>
+        result([
+          {
+            source_variant_id: sourceVariantId,
+            alt_index: 1,
+            allele_length: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES - 1,
+            ac: 1,
+            an: 2,
+            af: 0.5,
+          },
+        ])
+      )
+      .mockImplementationOnce(() => result([]))
+      .mockImplementationOnce(() =>
+        result([
+          {
+            ...selectedAlt72,
+            alt_index: 1,
+            ref_allele: 'C',
+            alt: overBoundAlt,
+            allele_length: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES - 1,
+            ac: 1,
+            an: 2,
+            af: 0.5,
+          },
+        ])
+      )
+
+    const locus = await fetchLongReadTrLocus({
+      id: httLocusId,
+      cohort: 'aou',
+      first: 50,
+      selectedAllele: `${sourceVariantId}~1`,
+      source: source('aou', { carriers: false }),
+    })
+
+    expect(locus).toMatchObject({
+      selected_allele_valid: true,
+      selected_allele: null,
+      selected_allele_unavailable_reason: 'SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED',
+      alleles: {
+        nodes: [
+          expect.objectContaining({
+            variant_id: `${sourceVariantId}~1`,
+            source_variant_id: sourceVariantId,
+            alt_index: 1,
+            length: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES - 1,
+            freq: { all: { ac: 1, an: 2, af: 0.5 }, populations: [] },
+          }),
+        ],
+      },
+    })
+    expect(JSON.stringify(locus)).not.toContain('G'.repeat(100))
+    const selectedRequest = mockQuery.mock.calls[3][0] as any
+    expect(JSON.stringify(selectedRequest.query_params)).not.toContain(overBoundAlt)
+  })
+
   test('keeps all 497 AoU exact IDs reachable but makes carrier-only genotype data explicit', async () => {
     mockQuery
       .mockImplementationOnce(() => result([summary(497, 1000)]))
@@ -291,6 +354,7 @@ describe('long-read TR locus query contract', () => {
       exact_alt_count_complete: false,
       selected_allele_valid: true,
       selected_allele: null,
+      selected_allele_unavailable_reason: 'ALT_COUNT_EXCEEDS_600',
       exact_alt_count_unavailable_reason: 'ALT_COUNT_EXCEEDS_600',
       delta_min: null,
       delta_max: null,

@@ -17,6 +17,7 @@ const longReadTrLocusQuery = `
       allele: $allele
     ) {
       id source_trid chrom source_run_id total_alleles selected_allele_valid
+      selected_allele_unavailable_reason
       exact_alt_count exact_alt_count_complete exact_alt_count_unavailable_reason
       delta_min delta_max delta_unavailable_reason called_allele_count called_sample_count
       sequences_available sequences_unavailable_reason

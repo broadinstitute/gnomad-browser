@@ -242,6 +242,8 @@ type LongReadTandemRepeatLocus {
   sequences_available: Boolean!
   sequences_unavailable_reason: String
   selected_allele_valid: Boolean
+  # Detail is all-or-nothing under its independent byte bound; compact index metadata remains.
+  selected_allele_unavailable_reason: String
   selected_allele: LongReadTrSelectedAllele
   whole_record_allele_landscape: LongReadTrWholeRecordAlleleLandscape!
   whole_record_genotype_landscape: LongReadTrWholeRecordGenotypeLandscape!

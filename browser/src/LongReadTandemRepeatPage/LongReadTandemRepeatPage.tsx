@@ -141,8 +141,11 @@ const LongReadTandemRepeatPage = ({
       : `${signed(locus.delta_min)} to ${signed(locus.delta_max)} bp`
   const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
   let selectedDetailAvailability = 'Select an exact ALT'
-  if (selectedAllele)
-    selectedDetailAvailability = locus.selected_allele ? 'Available' : 'Unavailable'
+  if (selectedAllele) {
+    selectedDetailAvailability = locus.selected_allele
+      ? 'Available'
+      : `Unavailable — ${unavailableReason(locus.selected_allele_unavailable_reason)}`
+  }
 
   return (
     <>

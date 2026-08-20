@@ -139,6 +139,7 @@ export type LongReadTrLocus = {
   sequences_available: boolean
   sequences_unavailable_reason: string | null
   selected_allele_valid: boolean | null
+  selected_allele_unavailable_reason: string | null
   selected_allele: LongReadTrSelectedAllele | null
   component_measurement_available: boolean
   component_measurement_unavailable_reason: string | null

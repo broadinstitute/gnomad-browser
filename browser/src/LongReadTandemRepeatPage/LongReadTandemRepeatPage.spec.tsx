@@ -124,6 +124,7 @@ const makeLocus = (count = 72) => {
     sequences_available: true,
     sequences_unavailable_reason: null,
     selected_allele_valid: true,
+    selected_allele_unavailable_reason: null,
     selected_allele: {
       ...alleles[1],
       ref: 'ACAGCAG',
@@ -424,14 +425,19 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('keeps a belonging selection when its bounded detail is unavailable', () => {
     const onInvalidSelection = jest.fn()
     renderPage({
-      locus: { ...makeLocus(), selected_allele_valid: true, selected_allele: null },
+      locus: {
+        ...makeLocus(),
+        selected_allele_valid: true,
+        selected_allele_unavailable_reason: 'SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED',
+        selected_allele: null,
+      },
       selectedAllele: exactId,
       onInvalidSelection,
     })
     expect(screen.queryByText(/does not belong to this locus or cohort/)).toBeNull()
     expect(onInvalidSelection).not.toHaveBeenCalled()
     expect(screen.getByText('Selected exact sequence/detail').nextElementSibling?.textContent).toBe(
-      'Unavailable'
+      'Unavailable — selected allele detail byte bound exceeded'
     )
   })
 
@@ -539,6 +545,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('first: $first')
     expect(longReadTandemRepeatLocusQuery).toContain('whole_record_allele_landscape')
     expect(longReadTandemRepeatLocusQuery).toContain('whole_record_genotype_landscape')
+    expect(longReadTandemRepeatLocusQuery).toContain('selected_allele_unavailable_reason')
     expect(longReadTandemRepeatLocusQuery).toContain('selected_allele {')
     expect(longReadTandemRepeatLocusQuery).toContain('ref alt length')
     expect(longReadTandemRepeatLocusQuery).toContain('source_records {')
