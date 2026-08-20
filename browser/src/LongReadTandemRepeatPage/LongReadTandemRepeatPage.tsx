@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { Button, PageHeading, Select } from '@gnomad/ui'
+import { PageHeading, Select } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import {
   TrLocusComponent,
@@ -85,20 +85,6 @@ const KnownLocusLink = styled.p`
   margin: 1.25em 0;
 `
 
-const TechnicalDetails = styled.details`
-  margin: 1.5em 0;
-  color: #555;
-  font-size: 0.9em;
-
-  > summary {
-    cursor: pointer;
-  }
-`
-
-const Identity = styled.code`
-  overflow-wrap: anywhere;
-`
-
 type Frequency = { ac: number; an: number; af: number }
 type Allele = {
   variant_id: string
@@ -153,9 +139,6 @@ const LongReadTandemRepeatPage = ({
     sourceTrid: locus.id,
   })
   const motifSummary = locus.motifs.join(' + ') || 'Motif unavailable'
-  const componentSummary = `${locus.components.length.toLocaleString()} linked component${
-    locus.components.length === 1 ? '' : 's'
-  }`
   const knownLocus = locus.short_read_matches[0]
 
   return (
@@ -173,8 +156,6 @@ const LongReadTandemRepeatPage = ({
         </PageHeading>
         <HeaderSummary aria-label="Locus summary">
           <strong>{motifSummary}</strong>
-          <span aria-hidden="true">·</span>
-          <span>{componentSummary}</span>
           <span aria-hidden="true">·</span>
           <span>{locus.total_alleles.toLocaleString()} alternate alleles</span>
           <span aria-hidden="true">·</span>
@@ -264,39 +245,6 @@ const LongReadTandemRepeatPage = ({
           </Link>
         </KnownLocusLink>
       )}
-
-      <TechnicalDetails data-testid="lr-tr-technical-details">
-        <summary>Technical details</summary>
-        <div>
-          Route ID: <Identity>{locus.id}</Identity>{' '}
-          <Button
-            onClick={() => navigator.clipboard?.writeText(locus.id)}
-            aria-label="Copy full locus ID"
-          >
-            Copy
-          </Button>
-        </div>
-        <div>
-          Source: {locus.source_release} · run <Identity>{locus.source_run_id}</Identity>{' '}
-          <Button
-            onClick={() => navigator.clipboard?.writeText(locus.source_run_id)}
-            aria-label="Copy source run ID"
-          >
-            Copy
-          </Button>
-        </div>
-        {locus.source_records.map((record) => (
-          <div key={record.source_variant_id}>
-            Source record: <Identity>{record.source_variant_id}</Identity>{' '}
-            <Button
-              onClick={() => navigator.clipboard?.writeText(record.source_variant_id)}
-              aria-label={`Copy source record ${record.source_variant_id}`}
-            >
-              Copy
-            </Button>
-          </div>
-        ))}
-      </TechnicalDetails>
     </>
   )
 }

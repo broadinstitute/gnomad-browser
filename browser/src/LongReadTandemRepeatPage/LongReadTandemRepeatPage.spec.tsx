@@ -133,7 +133,7 @@ describe('long-read tandem-repeat allele index', () => {
       name: 'Tandem repeat at chr4:39,348,425–39,348,479',
     })
     expect(screen.getByText('AAAAG')).not.toBeNull()
-    expect(screen.getByText('1 linked component')).not.toBeNull()
+    expect(screen.queryByText(/linked component/)).toBeNull()
     expect(screen.getByText('200 alternate alleles')).not.toBeNull()
     expect((screen.getByLabelText('Cohort') as HTMLSelectElement).value).toBe('hgsvc_hprc')
     expect(heading.closest('header')!.nextElementSibling).toBe(
@@ -254,10 +254,10 @@ describe('long-read tandem-repeat allele index', () => {
     })
     expect(heading.textContent).not.toContain(compound.id)
     expect(screen.getByText('AG + A')).not.toBeNull()
-    expect(screen.getByText('2 linked components')).not.toBeNull()
+    expect(screen.queryByText(/linked components/)).toBeNull()
   })
 
-  test('removes dashboard content and leaves terse technical IDs collapsed', () => {
+  test('removes dashboard and technical provenance content', () => {
     renderPage()
     expect(screen.queryByText('What this page shows')).toBeNull()
     expect(screen.queryByText(/Repeat-count plots/)).toBeNull()
@@ -265,10 +265,9 @@ describe('long-read tandem-repeat allele index', () => {
     expect(screen.queryByText(/Known-locus context/)).toBeNull()
     expect(screen.queryByTestId('lr-tr-reference-row')).toBeNull()
     expect(screen.queryByRole('dialog')).toBeNull()
-    const details = screen.getByTestId('lr-tr-technical-details')
-    expect(details.hasAttribute('open')).toBe(false)
-    expect(details.textContent).toContain(locus.id)
-    expect(details.textContent).toContain('run-hgsvc')
+    expect(screen.queryByText('Technical details')).toBeNull()
+    expect(screen.queryByText(/Route ID:/)).toBeNull()
+    expect(screen.queryByText(/Source record:/)).toBeNull()
   })
 
   test('shows at most one compact established-resource link', () => {
