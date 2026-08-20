@@ -3,7 +3,11 @@
 // guard the undeclared identifier and fail closed until the server is restarted.
 declare const __EXPERIMENTAL_FEATURES_ENABLED__: boolean
 
-export type ExperimentalFeature = 'haplotype_plot' | 'expanded_variants' | 'methylation_context'
+export type ExperimentalFeature =
+  | 'haplotype_plot'
+  | 'expanded_variants'
+  | 'methylation_context'
+  | 'compound_het_annotations'
 
 const currentLocationSearch = () => (typeof window === 'undefined' ? '' : window.location.search)
 

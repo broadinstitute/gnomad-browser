@@ -542,6 +542,7 @@ const LongReadUnifiedView = ({
   const haplotypePlotEnabled = isExperimentalFeatureEnabled('haplotype_plot')
   const expandedVariantsEnabled = isExperimentalFeatureEnabled('expanded_variants')
   const methylationContextEnabled = isExperimentalFeatureEnabled('methylation_context')
+  const compoundHetAnnotationsEnabled = isExperimentalFeatureEnabled('compound_het_annotations')
   const isDiploidView = groupingMode === 'diploid'
   const effectivePlotType = haplotypePlotEnabled && !isDiploidView
     ? plotType
@@ -806,6 +807,9 @@ const LongReadUnifiedView = ({
   const [typeFilters, setTypeFilters] = useState<VariantTypeFilters>(allLongReadVariantTypesSelected)
   const [showPhantomRegions, setShowPhantomRegions] = useState(false)
   const effectiveShowPhantomRegions = expandedVariantsEnabled && showPhantomRegions
+  const [showCompoundHetAnnotations, setShowCompoundHetAnnotations] = useState(false)
+  const effectiveShowCompoundHetAnnotations =
+    compoundHetAnnotationsEnabled && showCompoundHetAnnotations
   const [showRecombination, setShowRecombination] = useState(false)
   const [showMethylation, setShowMethylation] = useState(false)
   const effectiveShowMethylation =
@@ -2421,6 +2425,7 @@ const LongReadUnifiedView = ({
               distanceMetric={distanceMetric}
               regionSize={regionSize}
               showPhantomRegions={effectiveShowPhantomRegions}
+              showCompoundHetAnnotations={effectiveShowCompoundHetAnnotations}
               onVariantClick={handleVariantClickInTrack}
               onClusterSelect={handleClusterSelect}
               selectedClusterId={selectedClusterId}
@@ -2511,6 +2516,8 @@ const LongReadUnifiedView = ({
             regionSize={regionSize}
             showPhantomRegions={effectiveShowPhantomRegions}
             onShowPhantomRegionsChange={setShowPhantomRegions}
+            showCompoundHetAnnotations={effectiveShowCompoundHetAnnotations}
+            onShowCompoundHetAnnotationsChange={setShowCompoundHetAnnotations}
             showRecombination={showRecombination}
             onShowRecombinationChange={setShowRecombination}
             recombinationAvailable={recombinationAvailable}

@@ -431,6 +431,8 @@ export const Legend = ({
   regionSize = 0,
   showPhantomRegions = false,
   onShowPhantomRegionsChange = () => { },
+  showCompoundHetAnnotations = false,
+  onShowCompoundHetAnnotationsChange = () => { },
   showRecombination = false,
   onShowRecombinationChange = () => { },
   recombinationAvailable = true,
@@ -489,6 +491,8 @@ export const Legend = ({
   regionSize?: number
   showPhantomRegions?: boolean
   onShowPhantomRegionsChange?: (show: boolean) => void
+  showCompoundHetAnnotations?: boolean
+  onShowCompoundHetAnnotationsChange?: (show: boolean) => void
   showRecombination?: boolean
   onShowRecombinationChange?: (show: boolean) => void
   recombinationAvailable?: boolean
@@ -497,6 +501,7 @@ export const Legend = ({
   const haplotypePlotEnabled = isExperimentalFeatureEnabled('haplotype_plot')
   const expandedVariantsEnabled = isExperimentalFeatureEnabled('expanded_variants')
   const methylationContextEnabled = isExperimentalFeatureEnabled('methylation_context')
+  const compoundHetAnnotationsEnabled = isExperimentalFeatureEnabled('compound_het_annotations')
   const selectableGroupingMode = normalizeSelectableGroupingMode(groupingMode)
   const isDiploidView = selectableGroupingMode === 'diploid'
   const isClusteredView = selectableGroupingMode === 'similarity'
@@ -696,18 +701,34 @@ export const Legend = ({
                 </div>
               </>
             ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <label style={{ fontSize: '12px' }}>Sort:</label>
-                <SegmentedControl
-                  id='sort-mode'
-                  options={[
-                    { label: 'Sample', value: 'sample_id' },
-                    { label: 'ROH', value: 'roh_fraction' },
-                  ]}
-                  value={sortMode}
-                  onChange={(value: any) => handleSortModeChange(value)}
-                />
-              </div>
+              <>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <label style={{ fontSize: '12px' }}>Sort:</label>
+                  <SegmentedControl
+                    id='sort-mode'
+                    options={[
+                      { label: 'Sample', value: 'sample_id' },
+                      { label: 'ROH', value: 'roh_fraction' },
+                    ]}
+                    value={sortMode}
+                    onChange={(value: any) => handleSortModeChange(value)}
+                  />
+                </div>
+                {compoundHetAnnotationsEnabled && (
+                  <LayerToggle>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '3px', cursor: 'pointer' }}>
+                      <input
+                        type='checkbox'
+                        checked={showCompoundHetAnnotations}
+                        onChange={(event) =>
+                          onShowCompoundHetAnnotationsChange(event.target.checked)}
+                      />
+                      Compound heterozygosity annotations
+                    </label>
+                    <ExperimentalBadge title="Experimental feature">Experimental</ExperimentalBadge>
+                  </LayerToggle>
+                )}
+              </>
             )}
           </ControlGroup>
         </Fieldset>
@@ -1210,6 +1231,7 @@ type HaplotypeTrackProps = {
   distanceMetric?: import('./haplotypeCompute').DistanceMetric
   regionSize?: number
   showPhantomRegions?: boolean
+  showCompoundHetAnnotations?: boolean
   onVariantClick?: (pos: number) => void
   onClusterSelect?: (clusterId: string) => void
   selectedClusterId?: string | null
@@ -2277,6 +2299,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   distanceMetric = 'auto' as import('./haplotypeCompute').DistanceMetric,
   regionSize = 0,
   showPhantomRegions = false,
+  showCompoundHetAnnotations = false,
   onVariantClick,
   onClusterSelect,
   selectedClusterId,
@@ -2295,6 +2318,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   const plotType = isExperimentalFeatureEnabled('haplotype_plot') && !isDiploidView
     ? requestedPlotType
     : 'lollipop'
+  const effectiveShowCompoundHetAnnotations =
+    isExperimentalFeatureEnabled('compound_het_annotations') && showCompoundHetAnnotations
   const [methylationViewMode, setMethylationViewModeState] = useState<MethylationViewMode>(
     persistedMethylationView
   )
@@ -2612,6 +2637,7 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             clusterThreshold={clusterThreshold}
             onClusterThresholdChange={onClusterThresholdChange}
             isDiploidView={isDiploidView}
+            showCompoundHetAnnotations={effectiveShowCompoundHetAnnotations}
             onVariantClick={onVariantClick}
             onClusterSelect={onClusterSelect}
             selectedClusterId={selectedClusterId}

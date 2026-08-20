@@ -6,9 +6,14 @@ import { areExperimentalFeaturesEnabled } from '../experimentalFeatures'
 
 jest.mock('./DeckGLLollipopTrack', () => ({
   __esModule: true,
-  default: jest.requireActual<typeof import('react')>('react').forwardRef(() => (
-    <div aria-label="lollipop renderer" />
-  )),
+  default: jest.requireActual<typeof import('react')>('react').forwardRef(
+    (props: { showCompoundHetAnnotations?: boolean }, _ref: React.ForwardedRef<unknown>) => (
+      <div
+        aria-label="lollipop renderer"
+        data-show-compound-het-annotations={String(props.showCompoundHetAnnotations)}
+      />
+    )
+  ),
 }))
 jest.mock('./ChromosomePainterTrack', () => ({
   __esModule: true,
@@ -78,6 +83,9 @@ describe('experimental browser feature flag', () => {
     expect(screen.queryByRole('checkbox', { name: 'Methylation context' })).toBeNull()
     expect(screen.queryByLabelText('Plot:')).toBeNull()
     expect(screen.queryByLabelText('Expand INS/TRs')).toBeNull()
+    expect(
+      screen.queryByRole('checkbox', { name: 'Compound heterozygosity annotations' })
+    ).toBeNull()
     expect(screen.queryByText('Experimental')).toBeNull()
   })
 
@@ -90,10 +98,15 @@ describe('experimental browser feature flag', () => {
         haplotypeGroups={[haplotypeGroup]}
         methylationData={[]}
         plotType="bubble"
+        showCompoundHetAnnotations
       />
     )
 
-    expect(screen.getByLabelText('lollipop renderer')).not.toBeNull()
+    expect(
+      screen.getByLabelText('lollipop renderer').getAttribute(
+        'data-show-compound-het-annotations'
+      )
+    ).toBe('false')
     expect(screen.queryByLabelText('variation graph renderer')).toBeNull()
   })
 
@@ -102,13 +115,35 @@ describe('experimental browser feature flag', () => {
     window.history.replaceState(
       null,
       '',
-      '?experimental_features=expanded_variants,methylation_context'
+      '?experimental_features=expanded_variants,methylation_context,compound_het_annotations'
     )
     renderLegend()
 
     expect(screen.queryByLabelText('Plot:')).toBeNull()
     expect(screen.getByLabelText('Expand INS/TRs')).not.toBeNull()
     expect(screen.getByRole('checkbox', { name: 'Methylation context' })).not.toBeNull()
+    expect(
+      screen.getByRole('checkbox', { name: 'Compound heterozygosity annotations' })
+    ).not.toBeNull()
+  })
+
+  test('forwards compound-het annotations to the renderer only when enabled', () => {
+    ;(globalThis as any)[flagName] = true
+    render(
+      <HaplotypeTrack
+        start={100}
+        stop={200}
+        haplotypeGroups={[haplotypeGroup]}
+        methylationData={[]}
+        showCompoundHetAnnotations
+      />
+    )
+
+    expect(
+      screen.getByLabelText('lollipop renderer').getAttribute(
+        'data-show-compound-het-annotations'
+      )
+    ).toBe('true')
   })
 
   test('allows an alternate haplotype renderer when enabled', () => {
@@ -125,6 +160,21 @@ describe('experimental browser feature flag', () => {
 
     expect(screen.getByLabelText('variation graph renderer')).not.toBeNull()
     expect(screen.queryByLabelText('lollipop renderer')).toBeNull()
+  })
+
+  test('shows the default-off compound-het checkbox in Diploid controls when enabled', () => {
+    ;(globalThis as any)[flagName] = true
+    const onShowCompoundHetAnnotationsChange = jest.fn()
+    renderLegend({ onShowCompoundHetAnnotationsChange })
+
+    const checkbox = screen.getByRole('checkbox', {
+      name: 'Compound heterozygosity annotations',
+    })
+    expect((checkbox as HTMLInputElement).checked).toBe(false)
+
+    fireEvent.click(checkbox)
+
+    expect(onShowCompoundHetAnnotationsChange).toHaveBeenCalledWith(true)
   })
 
   test('shows marked experimental controls and forwards their changes when enabled', () => {

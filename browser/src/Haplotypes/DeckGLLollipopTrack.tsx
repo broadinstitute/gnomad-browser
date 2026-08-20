@@ -340,6 +340,7 @@ type DeckGLLollipopTrackProps = {
   clusterThreshold?: number
   onClusterThresholdChange?: (threshold: number) => void
   isDiploidView?: boolean
+  showCompoundHetAnnotations?: boolean
   onVariantClick?: (pos: number) => void
   onClusterSelect?: (clusterId: string) => void
   selectedClusterId?: string | null
@@ -390,6 +391,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   clusterThreshold = 0,
   onClusterThresholdChange,
   isDiploidView = false,
+  showCompoundHetAnnotations = false,
   onVariantClick,
   onClusterSelect,
   selectedClusterId,
@@ -797,6 +799,7 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           isClusteredView={isClusteredView}
           populationStatsByRow={populationStatsByRow}
           isDiploidView={isDiploidView}
+          showCompoundHetAnnotations={showCompoundHetAnnotations}
           onVariantClick={onVariantClick}
           onClusterSelect={onClusterSelect}
           selectedClusterId={selectedClusterId}
@@ -886,6 +889,7 @@ type DeckGLCanvasProps = {
   isClusteredView: boolean
   populationStatsByRow: (PopulationStats | null)[]
   isDiploidView: boolean
+  showCompoundHetAnnotations: boolean
   onVariantClick?: (pos: number) => void
   onClusterSelect?: (clusterId: string) => void
   selectedClusterId?: string | null
@@ -955,6 +959,7 @@ function DeckGLLollipopCanvas({
   isClusteredView,
   populationStatsByRow,
   isDiploidView,
+  showCompoundHetAnnotations,
   onVariantClick,
   onClusterSelect,
   selectedClusterId,
@@ -1080,7 +1085,7 @@ function DeckGLLollipopCanvas({
           })
           // Clinical badges after frequency
           let badgeX = barX + barWidth + 50
-          if (group.is_compound_het) {
+          if (showCompoundHetAnnotations && group.is_compound_het) {
             texts.push({ position: [badgeX, y, 0], text: '[CH]', color: [220, 38, 38, 255], size: 8 })
             badgeX += 22
           }
@@ -1100,7 +1105,7 @@ function DeckGLLollipopCanvas({
             tooltipText: `${group.samples.length} samples (${pct}% of cohort)`,
           })
           let badgeX = 68
-          if (group.is_compound_het) {
+          if (showCompoundHetAnnotations && group.is_compound_het) {
             texts.push({ position: [badgeX, y, 0], text: '[CH]', color: [220, 38, 38, 255], size: 9 })
             badgeX += 24
           }
@@ -1321,7 +1326,7 @@ function DeckGLLollipopCanvas({
     }
 
     return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelSampleHoverTargets: sampleHoverTargets, leftPanelMemberHoverTargets: memberHoverTargets, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
-  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, sampleMetadata, leftPanelWidth])
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, showCompoundHetAnnotations, sampleMetadata, leftPanelWidth])
 
   // Left panel DeckGL layers
   const leftPanelLayers = useMemo(() => {
@@ -1954,7 +1959,11 @@ function DeckGLLollipopCanvas({
         pushBelowThreshold(dg.below_thresholdB.variants, yBottom)
 
         // Compound het arcs
-        if (dg.is_compound_het && dg.compound_het_pairs.length > 0) {
+        if (
+          showCompoundHetAnnotations &&
+          dg.is_compound_het &&
+          dg.compound_het_pairs.length > 0
+        ) {
           for (const pair of dg.compound_het_pairs) {
             allChArcs.push({ x1: pair.variantA.pos, y1: yTop, x2: pair.variantB.pos, y2: yBottom })
           }
@@ -2968,6 +2977,7 @@ function DeckGLLollipopCanvas({
     populationStatsByRow,
     expandedClusterIds,
     isDiploidView,
+    showCompoundHetAnnotations,
     mapper,
     onVariantClick,
     highlightedVariantIds,
