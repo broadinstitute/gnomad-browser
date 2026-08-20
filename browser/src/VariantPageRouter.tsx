@@ -1,9 +1,13 @@
 import queryString from 'query-string'
 import React, { useCallback, lazy } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useLocation } from 'react-router-dom'
 
 import { isVariantId, normalizeVariantId, isRsId } from '@gnomad/identifiers'
-import { isLongReadVariantId } from '@gnomad/dataset-metadata/longReadVariantId'
+import {
+  isLongReadVariantId,
+  parseLongReadVariantId,
+} from '@gnomad/dataset-metadata/longReadVariantId'
+import { parseTrLocusId } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { Badge, List, ListItem, Page, PageHeading } from '@gnomad/ui'
 
 import {
@@ -20,6 +24,7 @@ import StatusMessage from './StatusMessage'
 import { fetchVariantSearchResults } from './search'
 import type { LongReadCohort } from './LongReadVariantPage/longReadCohort'
 import { formatLongReadVariantId } from './LongReadVariantPage/formatLongReadVariantId'
+import { BaseQuery } from './Query'
 
 const MitochondrialVariantPage = lazy(
   () => import('./MitochondrialVariantPage/MitochondrialVariantPage')
@@ -103,6 +108,67 @@ const VariantSearchPage = ({ datasetId, query }: VariantSearchPageProps) => {
   )
 }
 
+export const isLegacyExactLongReadTrAllele = (datasetId: DatasetId, variantId: string) => {
+  const parsed = parseLongReadVariantId(variantId)
+  return isLongRead(datasetId) && parsed?.alleleType === 'trv' && (parsed.provenance || 0) > 0
+}
+
+export const legacyTrRedirectSearch = (
+  search: string,
+  variantId: string,
+  lrCohort?: LongReadCohort
+) => {
+  const params = queryString.parse(search)
+  params.allele = variantId
+  if (lrCohort) params.lr_cohort = lrCohort
+  else delete params.lr_cohort
+  return queryString.stringify(params)
+}
+
+const LegacyLongReadTrRedirect = ({
+  variantId,
+  lrCohort,
+}: {
+  variantId: string
+  lrCohort?: LongReadCohort
+}) => {
+  const location = useLocation()
+  return (
+    <BaseQuery
+      operationName="LegacyLongReadTrRedirect"
+      query={`query LegacyLongReadTrRedirect($variantId: String!, $lrCohort: LongReadCohort) {
+        long_read_variant(variantId: $variantId, lr_cohort: $lrCohort) {
+          allele_type
+          tr_locus_id
+        }
+      }`}
+      variables={{ variantId, lrCohort }}
+    >
+      {({ data, error, loading }: any) => {
+        if (loading) return <StatusMessage>Resolving tandem-repeat locus</StatusMessage>
+        const variant = data?.long_read_variant
+        const locus = parseTrLocusId(variant?.tr_locus_id || '')
+        if (error || variant?.allele_type?.toLowerCase() !== 'trv' || !locus) {
+          return (
+            <StatusMessage role="alert">
+              Unable to resolve this exact tandem-repeat allele to a canonical locus.
+            </StatusMessage>
+          )
+        }
+        // Redirect uses history.replace by default, so Back does not revisit the legacy URL.
+        return (
+          <Redirect
+            to={{
+              pathname: `/tandem-repeat/${locus.canonicalId}`,
+              search: legacyTrRedirectSearch(location.search, variantId, lrCohort),
+            }}
+          />
+        )
+      }}
+    </BaseQuery>
+  )
+}
+
 type VariantPageRouterProps = {
   datasetId: DatasetId
   variantId: string
@@ -110,6 +176,10 @@ type VariantPageRouterProps = {
 }
 
 const VariantPageRouter = ({ datasetId, variantId, lrCohort }: VariantPageRouterProps) => {
+  if (isLegacyExactLongReadTrAllele(datasetId, variantId)) {
+    return <LegacyLongReadTrRedirect variantId={variantId} lrCohort={lrCohort} />
+  }
+
   if (hasStructuralVariants(datasetId)) {
     return <StructuralVariantPage datasetId={datasetId} variantId={variantId} />
   }

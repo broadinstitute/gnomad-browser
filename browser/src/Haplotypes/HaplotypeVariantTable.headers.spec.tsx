@@ -243,8 +243,12 @@ describe('variant-table Length documentation', () => {
       ...variant(`chr22-300-TRV-10~${altIndex}`, 300, length),
       source_variant_id: 'chr22-300-TRV-10',
       alt_index: altIndex,
+      alt_count: 2,
+      tr_locus_id: '22-299-309-A',
       allele_type: 'trv',
       length,
+      ref: 'A'.repeat(14),
+      alt: 'A'.repeat(14 + length),
       motifs: ['A'],
       rsids: [],
       freq: {

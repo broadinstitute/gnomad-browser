@@ -5,7 +5,6 @@ import { Table } from './VariantOccurrenceTable'
 
 import Link from '../Link'
 import { LongReadDetails, Section } from './VariantPage'
-import ExpandedTrDistributions from '../Haplotypes/ExpandedTrDistributions'
 import TRDistributionPlot from '../Haplotypes/TRDistributionPlot'
 import { getTrLocusDistribution } from '../LongReadVariantPage/trLocusAggregation'
 import ShortTandemRepeatAttributes from '../ShortTandemRepeatPage/ShortTandemRepeatAttributes'
@@ -223,10 +222,6 @@ const LongReadVariantDetails = ({
             ariaLabel="TR ALT allele-length distribution"
           />
         </Section>
-      )}
-
-      {isTandemRepeat && (
-        <ExpandedTrDistributions variantId={variantId} lrCohort={lrCohort} headingLevel="h2" />
       )}
 
       {enveloping_tr_id && (

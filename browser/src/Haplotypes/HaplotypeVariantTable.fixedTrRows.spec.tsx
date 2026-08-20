@@ -14,12 +14,15 @@ const sourceVariantId = 'chr4-39348424-TRV-55'
 const variant = {
   variant_id: `${sourceVariantId}~7`,
   source_variant_id: sourceVariantId,
+  alt_index: 1,
+  alt_count: 1,
   tr_id: locusId,
+  tr_locus_id: locusId,
   chrom: 'chr4',
   pos: 39348424,
   end: 39348479,
-  ref: 'A',
-  alt: 'AAAAAG',
+  ref: 'AAAAAA',
+  alt: 'A',
   allele_type: 'trv',
   allele_length: -5,
   freq: { af: 0.231959, ac: 135, an: 582 },
@@ -74,9 +77,28 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
     expect(screen.queryByText('TR Allele Size Distribution')).toBeNull()
   })
 
+  test('blanks forbidden exact-allele columns while retaining safe carrier and group unions', () => {
+    const { container } = renderTable()
+    const headings = Array.from(container.querySelectorAll('thead th')).map(
+      (header) => header.textContent?.replace(/[▲▼]/g, '').trim()
+    )
+    const cells = Array.from(container.querySelectorAll('tbody tr:first-child td'))
+    const value = (heading: string) => cells[headings.indexOf(heading)]?.textContent
+
+    expect(value('Type')).toBe('TR')
+    expect(value('Length')).toBe('-5 bp')
+    ;['LR AF', 'Grp AF', 'SR Match', 'CADD', 'phyloP', 'Consequence', 'rsID'].forEach(
+      (heading) => expect(value(heading)).toBe('—')
+    )
+    expect(value('Groups')).toBe('1 / 1')
+    expect(value('Carriers')).toBe('1 / 1')
+  })
+
   test('keeps all rendered cells nowrap for one-line rows', () => {
     const { container } = renderTable()
-    expect(container.textContent).toContain('4-39348424-TRV-55')
+    expect(container.textContent).toContain('4:39,348,425–39,348,479 · AAAAG')
+    expect(container.textContent).toContain('-5 bp')
+    expect(container.textContent).not.toContain(sourceVariantId)
     expect(getComputedStyle(container.querySelector('tbody td')!).whiteSpace).toBe('nowrap')
   })
 })

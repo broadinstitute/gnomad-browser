@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import { Badge, Button } from '@gnomad/ui'
-import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
+import {
+  parseTrLocusId,
+  trLocusDisplayEnvelope,
+  trLocusUrl,
+} from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
 import { SUPERPOPULATION_COLORS } from './colors'
@@ -15,26 +19,14 @@ import {
 } from '../LongReadVariantPage/longReadVariantTypes'
 import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant } from './index'
-import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import Link from '../Link'
-import { decomposeSequence, refineDecompositions } from './trvizDecomposition'
-import type { SequenceToken, DecomposeAlgorithm } from './trvizDecomposition'
-import {
-  AlleleStructureGrid,
-  AlleleStructureHelp,
-  type AlleleStructure,
-} from './TrAlleleStructure'
-import { repeatSequenceWithoutSharedAnchor } from './trAlleleStructureData'
 import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
-import { POP_ORDER, type TrDataPoint } from './TRDistributionPlot'
-import { aggregateTrLoci, getTrLocusDistribution, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
+import { aggregateTrLoci, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   formatLongReadAlleleDisplay,
   formatLongReadVariantId,
 } from '../LongReadVariantPage/formatLongReadVariantId'
-import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
-import ExpandedTrDistributions from './ExpandedTrDistributions'
 import {
   matchesLongReadVariantSearch,
   parseLongReadVariantSearch,
@@ -52,13 +44,9 @@ type DerivedVariant = LRVariant & {
   group_count: number
   carrier_count: number
   is_tr: boolean
-  tr_distribution?: TrDataPoint[]
   min_length_diff?: number | null
   max_length_diff?: number | null
-  tr_allele_structures?: AlleleStructure[]
-  tr_flank_prefix?: string
-  tr_flank_suffix?: string
-  _trRawSequences?: Map<string, Record<string, number>> // deferred: raw seqs for lazy decomposition
+  delta_unavailable_reason?: string | null
   short_read_match_id?: string | null
   enveloped_ids?: string[] | null
   cluster_distribution?: ClusterDistributionEntry[]
@@ -245,23 +233,6 @@ const TypeDot = styled.span<{ $color: string }>`
   vertical-align: middle;
 `
 
-const MatchBadge = styled.span<{ $level: 'exact' | 'truvari' | 'none' }>`
-  display: inline-block;
-  padding: 1px 6px;
-  border-radius: 3px;
-  font-size: 11px;
-  font-weight: 600;
-  color: white;
-  background: ${(p) =>
-    p.$level === 'exact' ? '#43A047' : p.$level === 'truvari' ? '#FFA000' : '#9E9E9E'};
-`
-
-const TrExpandedRow = styled.tr`
-  &:hover {
-    background: #fafafa !important;
-  }
-`
-
 const PredictorDot = styled.span<{ $color: string }>`
   display: inline-block;
   width: 8px;
@@ -272,20 +243,11 @@ const PredictorDot = styled.span<{ $color: string }>`
   vertical-align: middle;
 `
 
-const SvCsqBadge = styled.span`
-  display: inline-block;
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 10px;
-  font-weight: 600;
-  background: #e8e8e8;
-  color: #333;
-  margin-right: 3px;
-  white-space: nowrap;
-`
-
-const formatTrLengthRange = (min: number | null | undefined, max: number | null | undefined) =>
-  min == null || max == null ? '—' : `${min}..${max} bp`
+const formatTrLengthRange = (min: number | null | undefined, max: number | null | undefined) => {
+  if (min == null || max == null) return '—'
+  const signed = (value: number) => (value > 0 ? `+${value}` : String(value))
+  return min === max ? `${signed(min)} bp` : `${signed(min)}..${signed(max)} bp`
+}
 
 const renderPredictor = (value: number | null | undefined, warnThreshold: number, dangerThreshold: number) => {
   if (value == null) return <span style={{ color: '#ccc' }}>—</span>
@@ -296,15 +258,6 @@ const renderPredictor = (value: number | null | undefined, warnThreshold: number
       {value.toFixed(1)}
     </span>
   )
-}
-
-const parseSvConsequence = (csq: string): { type: string; gene: string | null } => {
-  const cleaned = csq.replace(/^PREDICTED_/, '')
-  const colonIdx = cleaned.indexOf(':')
-  if (colonIdx >= 0) {
-    return { type: cleaned.slice(0, colonIdx), gene: cleaned.slice(colonIdx + 1) }
-  }
-  return { type: cleaned, gene: null }
 }
 
 // --- Mini group AF bar ---
@@ -344,67 +297,6 @@ const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
   )
 }
 
-// --- Lazy TR decomposition (deferred until row expansion) ---
-
-const trDecomposeCache = new Map<string, { structures: AlleleStructure[]; flankPrefix: string; flankSuffix: string }>()
-
-function lazyDecomposeTr(v: DerivedVariant): { structures: AlleleStructure[]; flankPrefix: string; flankSuffix: string } | null {
-  if (!v._trRawSequences || v._trRawSequences.size === 0 || !v.tr_motifs) return null
-
-  const cacheKey = v.variant_id
-  const cached = trDecomposeCache.get(cacheKey)
-  if (cached) return cached
-
-  console.time(`[perf] TR decompose (lazy) pos=${v.pos} (${v._trRawSequences.size} alleles)`)
-  const motifs = (v.tr_motifs as string).split(',').map((m: string) => m.trim()).filter(Boolean)
-  if (motifs.length === 0) return null
-
-  const refSeq = v.ref as string
-  const refRepeat = repeatSequenceWithoutSharedAnchor(refSeq, refSeq)
-  const refResult = decomposeSequence(refRepeat, motifs)
-
-  let flankPrefix = ''
-  let flankSuffix = ''
-  if (refResult.tokens.length > 0 && refResult.tokens[0].type === 'interruption') {
-    flankPrefix = refResult.tokens[0].sequence.slice(-5)
-  }
-  if (refResult.tokens.length > 0 && refResult.tokens[refResult.tokens.length - 1].type === 'interruption') {
-    flankSuffix = refResult.tokens[refResult.tokens.length - 1].sequence.slice(0, 5)
-  }
-
-  const interim: Array<{ seq: string; popCounts: Record<string, number>; tokens: SequenceToken[]; algorithm: DecomposeAlgorithm }> = []
-  for (const [seq, popCounts] of v._trRawSequences) {
-    const repeatSeq = repeatSequenceWithoutSharedAnchor(refSeq, seq)
-    const { tokens, algorithm } = decomposeSequence(repeatSeq, motifs)
-    interim.push({ seq, popCounts, tokens, algorithm })
-  }
-
-  const allTokenLists = interim.map((item) => item.tokens)
-  const refined = refineDecompositions(allTokenLists)
-
-  const structures = interim.map((item, i) => {
-    const tokens = refined[i]
-    const totalMotifUnits = tokens.filter((t) => t.type === 'motif').length
-    const interruptions = tokens.filter((t) => t.type === 'interruption')
-    return {
-      sequence: item.seq,
-      tokens,
-      algorithm: item.algorithm,
-      totalMotifUnits,
-      interruptionCount: interruptions.length,
-      interruptionBases: interruptions.reduce((s, t) => s + t.sequence.length, 0),
-      popCounts: item.popCounts,
-      totalCarriers: Object.values(item.popCounts).reduce((s, c) => s + c, 0),
-    }
-  })
-  structures.sort((a, b) => b.totalCarriers - a.totalCarriers)
-  console.timeEnd(`[perf] TR decompose (lazy) pos=${v.pos} (${v._trRawSequences.size} alleles)`)
-
-  const result = { structures, flankPrefix, flankSuffix }
-  trDecomposeCache.set(cacheKey, result)
-  return result
-}
-
 // --- Helper ---
 
 const isTrVariant = (v: { allele_type?: string }): boolean =>
@@ -415,15 +307,29 @@ const sourceIdFromAltId = (variantId: string | undefined): string | undefined =>
   return match?.[1]
 }
 
-/** A source record is the authoritative TR locus identity. Legacy payloads do
- * not carry it, so only then fall back to an exact normalized reference span. */
+/** Canonical TRID plus cohort is the table-row identity. Source records stay
+ * provenance beneath that row; legacy payloads fall back without merging overlaps. */
 const getHaplotypeTrLocusKey = (v: any): string => {
   const scope = v.lr_cohort ? `cohort:${v.lr_cohort}:` : ''
+  const locus = parseTrLocusId(v.tr_locus_id || v.tr_id || '')
+  if (locus) return `${scope}locus:${locus.canonicalId}`
   const sourceId = v.source_variant_id || sourceIdFromAltId(v.variant_id)
   if (sourceId) return `${scope}source:${sourceId}`
   const chrom = String(v.chrom || '').replace(/^chr/i, '')
   const end = v.end ?? (v.pos + Math.max(v.ref?.length || 1, 1) - 1)
   return `${scope}coordinates:${chrom}:${v.pos}:${end}`
+}
+
+const getTrLocusId = (v: any): string | null =>
+  parseTrLocusId(v.tr_locus_id || v.tr_id || '')?.canonicalId || null
+
+const getTrLocusDisplayLabel = (v: DerivedVariant): string => {
+  const locus = parseTrLocusId(v.tr_locus_id || v.tr_id || '')
+  if (!locus) return formatLongReadVariantId(v.source_variant_id || v.variant_id)
+  const envelope = trLocusDisplayEnvelope(locus)
+  return `${envelope.chrom}:${envelope.start1.toLocaleString()}–${envelope.end1.toLocaleString()} · ${locus.components
+    .map((component) => component.motif)
+    .join(' + ')}`
 }
 
 const getHaplotypeVariantKey = (v: any): string =>
@@ -470,23 +376,77 @@ export const getActiveClusterCount = (
   distribution: ClusterDistributionEntry[] | undefined
 ): number | undefined => distribution?.filter(({ af }) => af > 0).length
 
-const getTrLengthDiff = (v: any): number => {
-  if (typeof v.alt === 'string' && typeof v.ref === 'string' && !/^<.*>$/.test(v.alt)) {
-    return v.alt.length - v.ref.length
+type CompleteTrBounds = {
+  min: number | null
+  max: number | null
+  unavailableReason: string | null
+}
+
+const getCompleteTrBounds = (alleles: any[]): CompleteTrBounds => {
+  const bySource = new Map<string, any[]>()
+  const missingSource = alleles.some(
+    (allele) => !(allele.source_variant_id || sourceIdFromAltId(allele.variant_id))
+  )
+  if (missingSource) {
+    return { min: null, max: null, unavailableReason: 'Source ALT identity is incomplete.' }
   }
-  return Number.isFinite(v.allele_length) ? v.allele_length : 0
-}
+  alleles.forEach((allele) => {
+    const source = allele.source_variant_id || sourceIdFromAltId(allele.variant_id)
+    bySource.set(source, [...(bySource.get(source) || []), allele])
+  })
 
-const getMatchLevel = (matchType: string | null): 'exact' | 'truvari' | 'none' => {
-  if (!matchType) return 'none'
-  const upper = matchType.toUpperCase()
-  if (upper === 'EXACT') return 'exact'
-  if (upper.startsWith('TRUVARI')) return 'truvari'
-  return 'none'
-}
+  const hasIncompleteSource = Array.from(bySource.values()).some((sourceAlleles) => {
+    const counts = new Set(sourceAlleles.map((allele) => allele.alt_count))
+    const count = counts.size === 1 ? sourceAlleles[0].alt_count : null
+    const indices = sourceAlleles.map((allele) => allele.alt_index)
+    return (
+      !Number.isSafeInteger(count) ||
+      count < 1 ||
+      sourceAlleles.length !== count ||
+      new Set(indices).size !== count ||
+      indices.some((index) => !Number.isSafeInteger(index) || index < 1 || index > count)
+    )
+  })
+  if (hasIncompleteSource) {
+    return {
+      min: null,
+      max: null,
+      unavailableReason: 'Complete unique ALT indices are unavailable for every source record.',
+    }
+  }
 
-const truncateAllele = (allele: string, max = 8) =>
-  allele.length > max ? allele.slice(0, max) + '…' : allele
+  const deltas = alleles.map((allele) => {
+    const sequenceDelta =
+      typeof allele.alt === 'string' &&
+      typeof allele.ref === 'string' &&
+      !/^<.*>$/.test(allele.alt)
+        ? allele.alt.length - allele.ref.length
+        : null
+    const declaredDelta = allele.allele_length ?? allele.length
+    if (
+      (!Number.isFinite(declaredDelta) && !Number.isFinite(sequenceDelta)) ||
+      (Number.isFinite(declaredDelta) && sequenceDelta !== null && declaredDelta !== sequenceDelta)
+    ) {
+      return null
+    }
+    return Number.isFinite(declaredDelta) ? declaredDelta : sequenceDelta
+  })
+  if (deltas.some((delta) => delta === null)) {
+    return {
+      min: null,
+      max: null,
+      unavailableReason: 'A complete finite whole-record ALT minus REF delta is unavailable.',
+    }
+  }
+  if (!deltas.length) {
+    return { min: null, max: null, unavailableReason: 'No exact ALT records are available.' }
+  }
+  return {
+    min: Math.min(...(deltas as number[])),
+    max: Math.max(...(deltas as number[])),
+    unavailableReason: null,
+  }
+}
 
 /** Build a display-friendly variant ID.
  *  - Short variants (ref/alt both ≤20bp): chrom-pos-ref-alt (standard gnomAD format)
@@ -520,38 +480,34 @@ const buildVariantId = (v: {
 
 type TableRowProps = {
   v: DerivedVariant
-  i: number
-  isExpanded: boolean
   mode: 'summary' | 'haplotype'
   showGroupAf: boolean
   showGroupCount: boolean
   totalGroups: number
   totalClusters: number
   totalSamples: number
-  ambiguousUnphasedRows: number
   isClusteredView: boolean
   highlightedPosition: number | null
-  variantDict: Map<string, any>
   lrCohort: LongReadCohort
   selectedColumns: LongReadVariantTableColumnKey[]
   onHoverVariant?: (position: number | null) => void
   onRowClick?: (pos: number) => void
 }
 
+const Dash = ({ title }: { title: string }) => (
+  <span style={{ color: '#777' }} title={title}>—</span>
+)
+
 const TableRow = React.memo(function TableRow({
   v,
-  i,
-  isExpanded,
   mode,
   showGroupAf,
   showGroupCount,
   totalGroups,
   totalClusters,
   totalSamples,
-  ambiguousUnphasedRows,
   isClusteredView,
   highlightedPosition,
-  variantDict,
   lrCohort,
   selectedColumns,
   onHoverVariant,
@@ -560,222 +516,94 @@ const TableRow = React.memo(function TableRow({
   const visibleColumns = selectedColumns.filter((key) =>
     columnIsApplicable(key, mode, showGroupAf, showGroupCount)
   )
-  const COL_COUNT = 1 + visibleColumns.length
-  return (
-    <React.Fragment key={`${v.pos}-${v.variant_id}-${i}`}>
-      <tr
-        data-position={v.pos}
-        onMouseEnter={() => onHoverVariant?.(v.pos)}
-        onMouseLeave={() => onHoverVariant?.(null)}
-        style={{
-          cursor: 'pointer',
-          background: highlightedPosition === v.pos
-            ? '#fff3cd'
-            : isExpanded ? '#fff8e1' : undefined,
-          transition: 'background 0.3s ease',
-        }}
-        onClick={() => {
-          // Dedicated locus/detail pages keep every summary row fixed-height.
-          onRowClick?.(v.pos)
-        }}
-      >
-        <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
-          {(() => {
-            // TR rows are locus aggregates in phases 1–2, not one exact ALT.
-            // Keep their source/locus label until the separate locus-page phase;
-            // ordinary allele rows use the exact biological display formatter.
-            const identity = formatLongReadAlleleDisplay(v)
-            const label = v.is_tr
-              ? formatLongReadVariantId(v.source_variant_id || v.variant_id)
-              : identity.compactLabel
-            return (
-              <>
-                <Link
-                  to={
-                    v.is_tr && (v.tr_locus_id || v.tr_id)
-                      ? trLocusUrl(v.tr_locus_id || v.tr_id!, v.lr_cohort || lrCohort)
-                      : longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)
-                  }
-                  preserveSelectedDataset={false}
-                  onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                  title={identity.accessibleLabel}
-                >
-                  {label}
-                </Link>
-                {!v.is_tr && identity.alleleLabel && (
-                  <span style={{ marginLeft: 4 }} title={identity.label}>
-                    <Badge level="info">
-                      {identity.alleleLabel.replace('Allele ', 'ALT ')}
-                    </Badge>
-                  </span>
-                )}
-              </>
-            )
-          })()}
-        </td>
-        {visibleColumns.map((columnKey) => {
-          switch (columnKey) {
-            case 'source_variant_id':
-              return <td key={columnKey} style={{ fontFamily: 'monospace', fontSize: '12px' }} title={v.source_variant_id || 'Source VCF ID unavailable'}>{v.source_variant_id || <span style={{ color: '#666' }}>Unavailable</span>}</td>
-            case 'allele_type':
-              return <td key={columnKey}><TypeDot $color={getAlleleTypeColor(v.allele_type)} />{v.is_tr ? 'TR' : v.allele_type}</td>
-            case 'allele_length':
-              return <td key={columnKey} className="numeric">{v.is_tr ? formatTrLengthRange(v.min_length_diff, v.max_length_diff) : v.allele_length}</td>
-            case 'lr_af':
-              return <td key={columnKey} className="numeric"><span title={v.freq.af == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.af, 4)}</span></td>
-            case 'ac':
-              return <td key={columnKey} className="numeric"><span title={v.freq.ac == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.ac)}</span></td>
-            case 'an':
-              return <td key={columnKey} className="numeric"><span title={v.freq.an == null ? 'Unavailable' : undefined}>{formatLongReadFrequency(v.freq.an)}</span></td>
-            case 'group_count':
-              return <td key={columnKey} className="numeric">{isClusteredView ? <>{v.active_cluster_count ?? 0} / {totalClusters}</> : <>{v.group_count} / {totalGroups}</>}</td>
-            case 'carrier_count':
-              return <td key={columnKey} className="numeric">{v.carrier_count} / {totalSamples}</td>
-            case 'group_af':
-              return <td key={columnKey}><PopAfBar variant={v} /></td>
-            case 'short_read_match_id':
-              return <td key={columnKey}>{v.short_read_match_id ? <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false} title={v.short_read_match_id}>{v.short_read_match_id.length > 20 ? `${v.short_read_match_id.slice(0, 20)}…` : v.short_read_match_id}</Link> : <span style={{ color: '#ccc' }}>—</span>}</td>
-            case 'cadd_phred':
-              return <td key={columnKey} className="numeric">{renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
-            case 'phylop':
-              return <td key={columnKey} className="numeric">{renderPredictor(v.phylop, 7.367, 9.741)}</td>
-            case 'major_consequence':
-              return <td key={columnKey}>{v.major_consequence ? getLabelForConsequenceTerm(v.major_consequence) : <span style={{ color: '#ccc' }}>—</span>}</td>
-            case 'rsid':
-              return <td key={columnKey}>{v.rsid && v.rsid.startsWith('rs') ? <a href={`https://www.ncbi.nlm.nih.gov/snp/${v.rsid}`} target="_blank" rel="noopener noreferrer" style={{ color: '#428bca', textDecoration: 'none' }}>{v.rsid}</a> : v.dbsnp_id ? <span style={{ color: '#666', fontFamily: 'monospace', fontSize: 11 }}>{v.dbsnp_id}</span> : <span style={{ color: '#ccc' }}>—</span>}</td>
-            default:
-              return null
-          }
-        })}
-      </tr>
-      {isExpanded && (
-        <TrExpandedRow>
-          <td colSpan={COL_COUNT} style={{ padding: '8px 16px', background: '#fffde7' }}>
-            {/* Primary sequence-level view: exact assigned ALT copies only. */}
-            {mode === 'haplotype' && v.tr_motifs && (v.tr_allele_structures || v._trRawSequences) && (() => {
-              const decomposed = v.tr_allele_structures
-                ? { structures: v.tr_allele_structures, flankPrefix: v.tr_flank_prefix || '', flankSuffix: v.tr_flank_suffix || '' }
-                : lazyDecomposeTr(v)
-              if (!decomposed || decomposed.structures.length === 0) return null
-              return (
-                <section
-                  aria-label="Deterministically haplotype-assigned motif structures"
-                  style={{
-                    marginBottom: 14,
-                    padding: '10px 12px',
-                    border: '1px solid #e0d8bd',
-                    borderRadius: 4,
-                    background: '#fff',
-                    whiteSpace: 'normal',
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <h3 style={{ margin: 0 }}>Assigned motif structures</h3>
-                    <HaplotypeHelpButton title="About assigned motif structures">
-                      <AlleleStructureHelp ambiguousUnphasedRows={ambiguousUnphasedRows} />
-                    </HaplotypeHelpButton>
-                  </div>
-                  {ambiguousUnphasedRows > 0 && (
-                    <div style={{ margin: '4px 0 0', fontSize: 12, color: '#8a4b08' }}>
-                      Ambiguous unphased carrier rows excluded: {ambiguousUnphasedRows.toLocaleString()}
-                    </div>
-                  )}
-                  <AlleleStructureGrid
-                    structures={decomposed.structures}
-                    motifs={v.tr_motifs!.split(',').map((m: string) => m.trim())}
-                    flankPrefix={decomposed.flankPrefix}
-                    flankSuffix={decomposed.flankSuffix}
-                  />
-                </section>
-              )
-            })()}
-            <ExpandedTrDistributions
-              variantId={v.variant_id}
-              lrCohort={v.lr_cohort || lrCohort}
-            />
-            <div style={{ fontSize: 11, color: '#555' }}>
-                <div style={{ fontWeight: 600, marginBottom: 4 }}>
-                  TR Locus: {v.chrom}:{v.pos}
-                  {v.tr_id && <span style={{ fontWeight: 400, marginLeft: 8, color: '#888' }}>({v.tr_id})</span>}
-                </div>
-                {v.tr_distribution && (
-                  <>
-                    <div>Allele length range: {v.min_length_diff} to {v.max_length_diff}bp</div>
-                    <div>Distinct allele lengths: {new Set(v.tr_distribution.map((d) => d.length_diff)).size}</div>
-                  </>
-                )}
-                <div>Total carriers: {v.carrier_count}</div>
-                {v.tr_motifs && (
-                  <div style={{ marginTop: 4, marginBottom: 2 }}>
-                    <span style={{ fontWeight: 600 }}>Motifs: </span>
-                    <span style={{
-                      fontFamily: 'monospace',
-                      fontSize: 12,
-                      background: '#f0e6d2',
-                      padding: '1px 6px',
-                      borderRadius: 3,
-                      border: '1px solid #e0cdb5',
-                      letterSpacing: '0.5px',
-                    }}>{v.tr_motifs}</span>
-                  </div>
-                )}
-                {v.gnomad_str && <div>TRGT ID: <span style={{ fontFamily: 'monospace' }}>{v.gnomad_str}</span></div>}
-                {v.motif_counts && v.motif_counts.length > 0 && <div>Motif counts: <span style={{ fontFamily: 'monospace' }}>{v.motif_counts.join(', ')}</span></div>}
-                {v.allele_purity != null && <div>Allele purity: {v.allele_purity.toFixed(3)}</div>}
-                {v.tr_distribution && (
-                  <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {POP_ORDER.filter((p) => v.tr_distribution!.some((d) => d.pop === p)).map((pop) => (
-                      <span key={pop} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            width: 8,
-                            height: 8,
-                            borderRadius: 2,
-                            background: SUPERPOPULATION_COLORS[pop] || '#999',
-                          }}
-                        />
-                        {longReadAncestryGroupDisplayId(pop)}
-                      </span>
-                    ))}
-                  </div>
-                )}
+  const identity = formatLongReadAlleleDisplay(v)
+  const unavailable = 'Exact-allele data is unavailable for a tandem-repeat locus row.'
+  const locusId = getTrLocusId(v)
 
-                {/* Overlapping variant calls (enveloped variants) */}
-                {v.enveloped_ids && v.enveloped_ids.length > 0 && (
-                  <div style={{ marginTop: 12 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginBottom: 4 }}>
-                      <h4 style={{ margin: 0, fontSize: 12 }}>
-                        Overlapping variant calls ({v.enveloped_ids.length})
-                      </h4>
-                      <HaplotypeHelpButton title="About overlapping variant calls">
-                        <p style={{ margin: 0 }}>
-                          These variants were independently called within this repeat region and may
-                          be artifacts of repeat-length variation.
-                        </p>
-                      </HaplotypeHelpButton>
-                    </div>
-                    <ul style={{ fontSize: 11, margin: 0, paddingLeft: 16 }}>
-                      {v.enveloped_ids.map((id: string) => {
-                        const envVar = variantDict.get(id)
-                        if (!envVar) {
-                          return <li key={id} style={{ marginBottom: 4 }}>{formatLongReadVariantId(id)} (data not loaded)</li>
-                        }
-                        return (
-                          <li key={id} style={{ marginBottom: 4 }}>
-                            <Link to={longReadVariantUrl(id, v.lr_cohort || lrCohort)} preserveSelectedDataset={false}>{formatLongReadVariantId(id)}</Link>
-                            {' '}({envVar.allele_type}, AC={envVar.freq?.all?.ac == null ? 'Unavailable' : envVar.freq.all.ac})
-                          </li>
-                        )
-                      })}
-                    </ul>
-                  </div>
+  return (
+    <tr
+      data-position={v.pos}
+      onMouseEnter={() => onHoverVariant?.(v.pos)}
+      onMouseLeave={() => onHoverVariant?.(null)}
+      style={{
+        cursor: 'pointer',
+        background: highlightedPosition === v.pos ? '#fff3cd' : undefined,
+        transition: 'background 0.3s ease',
+      }}
+      onClick={() => onRowClick?.(v.pos)}
+    >
+      <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
+        <Link
+          to={
+            v.is_tr && locusId
+              ? trLocusUrl(locusId, v.lr_cohort || lrCohort)
+              : longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)
+          }
+          preserveSelectedDataset={false}
+          onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          title={v.is_tr ? `Canonical tandem-repeat locus ${locusId}` : identity.accessibleLabel}
+        >
+          {v.is_tr ? getTrLocusDisplayLabel(v) : identity.compactLabel}
+        </Link>
+        {!v.is_tr && identity.alleleLabel && (
+          <span style={{ marginLeft: 4 }} title={identity.label}>
+            <Badge level="info">{identity.alleleLabel.replace('Allele ', 'ALT ')}</Badge>
+          </span>
+        )}
+      </td>
+      {visibleColumns.map((columnKey) => {
+        switch (columnKey) {
+          case 'source_variant_id':
+            return (
+              <td
+                key={columnKey}
+                style={{ fontFamily: 'monospace', fontSize: '12px' }}
+                title={
+                  v.is_tr
+                    ? 'Source records are listed on the locus page; no representative record is promoted.'
+                    : v.source_variant_id || 'Source VCF ID unavailable'
+                }
+              >
+                {v.is_tr ? (
+                  <Dash title="Source records are listed on the locus page; no representative record is promoted." />
+                ) : v.source_variant_id ? (
+                  v.source_variant_id
+                ) : (
+                  <span style={{ color: '#666' }}>Unavailable</span>
                 )}
-            </div>
-          </td>
-        </TrExpandedRow>
-      )}
-    </React.Fragment>
+              </td>
+            )
+          case 'allele_type':
+            return <td key={columnKey}><TypeDot $color={getAlleleTypeColor(v.allele_type)} />{v.is_tr ? 'TR' : v.allele_type}</td>
+          case 'allele_length':
+            return <td key={columnKey} className="numeric"><span title={v.delta_unavailable_reason || 'Complete observed whole-record ALT minus REF range'}>{v.is_tr ? formatTrLengthRange(v.min_length_diff, v.max_length_diff) : v.allele_length}</span></td>
+          case 'lr_af':
+            return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : formatLongReadFrequency(v.freq.af, 4)}</td>
+          case 'ac':
+            return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : formatLongReadFrequency(v.freq.ac)}</td>
+          case 'an':
+            return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : formatLongReadFrequency(v.freq.an)}</td>
+          case 'group_count':
+            return <td key={columnKey} className="numeric">{isClusteredView ? <>{v.active_cluster_count ?? 0} / {totalClusters}</> : <>{v.group_count} / {totalGroups}</>}</td>
+          case 'carrier_count':
+            return <td key={columnKey} className="numeric">{v.carrier_count == null ? <Dash title="Complete carrier membership is unavailable." /> : <>{v.carrier_count} / {totalSamples}</>}</td>
+          case 'group_af':
+            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : <PopAfBar variant={v} />}</td>
+          case 'short_read_match_id':
+            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : v.short_read_match_id ? <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false}>{v.short_read_match_id}</Link> : <Dash title="No short-read match" />}</td>
+          case 'cadd_phred':
+            return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
+          case 'phylop':
+            return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : renderPredictor(v.phylop, 7.367, 9.741)}</td>
+          case 'major_consequence':
+            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : v.major_consequence ? getLabelForConsequenceTerm(v.major_consequence) : <Dash title="Consequence unavailable" />}</td>
+          case 'rsid':
+            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : v.rsid?.startsWith('rs') ? <a href={`https://www.ncbi.nlm.nih.gov/snp/${v.rsid}`} target="_blank" rel="noopener noreferrer">{v.rsid}</a> : v.dbsnp_id || <Dash title="rsID unavailable" />}</td>
+          default:
+            return null
+        }
+      })}
+    </tr>
   )
 })
 
@@ -788,7 +616,7 @@ type HaplotypeVariantTableProps = {
   lrCohort?: 'hgsvc_hprc' | 'aou'
   summaryVariants?: any[]
   haplotypeGroups?: { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] }
-  sampleMetadata?: SampleMetadataMap
+  sampleMetadata?: unknown
   totalGroups?: number
   ambiguousUnphasedRows?: number
   onHoverVariant?: (position: number | null) => void
@@ -814,15 +642,11 @@ export type HaplotypeVariantTableHandle = {
 // derivation to recompute on every scroll tick.
 const EMPTY_VARIANTS: any[] = []
 const EMPTY_HAPLOTYPE_GROUPS: { groups: HaplotypeGroup[]; clusters?: HaplotypeCluster[] } = { groups: [] }
-const EMPTY_SAMPLE_METADATA = new Map() as SampleMetadataMap
-
 const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeVariantTableProps>(function HaplotypeVariantTable({
   mode = 'haplotype',
   lrCohort = 'hgsvc_hprc',
   summaryVariants = EMPTY_VARIANTS,
   haplotypeGroups = EMPTY_HAPLOTYPE_GROUPS,
-  sampleMetadata = EMPTY_SAMPLE_METADATA,
-  ambiguousUnphasedRows = 0,
   onHoverVariant,
   onVisibleVariantChange,
   onFilteredVariantsChange,
@@ -912,11 +736,6 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     },
   }), [])
 
-  // O(1) lookup for resolving enveloped variant IDs to full objects
-  const variantDict = useMemo(() => {
-    return new Map(summaryVariants.map((v: any) => [v.variant_id, v]))
-  }, [summaryVariants])
-
   // Derive variant list for summary mode (cheap, depends on zoom-filtered variants)
   const summaryDerivedVariants = useMemo(() => {
     if (mode !== 'summary') return []
@@ -938,78 +757,70 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
       const v = locus?.representative || input
       const alleles = locus?.alleles || [v]
-      const trDistribution = locus ? getTrLocusDistribution(alleles) : []
+      const bounds = isTr ? getCompleteTrBounds(alleles) : null
+      const locusId = isTr ? getTrLocusId(v) : null
       const SUPERPOPS = new Set(['afr', 'amr', 'eas', 'nfe', 'sas'])
-      const populations = (v.freq?.populations || [])
-        .filter((p: any) => SUPERPOPS.has(p.id) && p.af != null)
-        .map((p: any) => ({ id: p.id, af: p.af, ac: p.ac ?? null }))
-      const aggregateAc = locus
-        ? alleles.reduce((sum, allele) => sum + (Number.isFinite(allele.freq?.all?.ac) ? allele.freq.all.ac : 0), 0)
-        : v.freq?.all?.ac
-      const aggregateAn = locus
-        ? Math.max(0, ...alleles.map((allele) => Number.isFinite(allele.freq?.all?.an) ? allele.freq.all.an : 0))
-        : v.freq?.all?.an
-      const aggregateAf = locus && aggregateAn > 0 ? aggregateAc / aggregateAn : v.freq?.all?.af
+      const populations = isTr
+        ? []
+        : (v.freq?.populations || [])
+            .filter((p: any) => SUPERPOPS.has(p.id) && p.af != null)
+            .map((p: any) => ({ id: p.id, af: p.af, ac: p.ac ?? null }))
 
       return [{
-        variant_id: v.variant_id,
-        source_variant_id: v.source_variant_id,
-        alt_index: v.alt_index,
-        alt_count: v.alt_count,
+        variant_id: isTr && locusId ? `lr-tr-locus:${v.lr_cohort || lrCohort}:${locusId}` : v.variant_id,
+        source_variant_id: isTr ? null : v.source_variant_id,
+        alt_index: isTr ? null : v.alt_index,
+        alt_count: isTr ? null : v.alt_count,
         lr_cohort: v.lr_cohort,
         chrom: v.chrom,
         pos: v.pos,
         end: v.end || null,
-        ref: v.ref,
-        alt: v.alt,
+        ref: isTr ? '' : v.ref,
+        alt: isTr ? '' : v.alt,
         allele_type: v.allele_type,
-        allele_length: v.allele_length ?? v.length ?? null,
-        freq: nullableLongReadFrequency({ af: aggregateAf, ac: aggregateAc, an: aggregateAn }),
+        allele_length: isTr ? (bounds?.max ?? 0) : v.allele_length ?? v.length ?? 0,
+        freq: isTr
+          ? nullableLongReadFrequency({ af: null, ac: null, an: null })
+          : nullableLongReadFrequency(v.freq?.all || {}),
         populations,
-        rsid: (v.rsids || [])[0] || '',
-        major_consequence: v.major_consequence || null,
-        cadd_phred: v.cadd_phred ?? null,
-        phylop: v.phylop ?? null,
-        sv_consequences: v.sv_consequences || null,
+        rsid: isTr ? '' : (v.rsids || [])[0] || '',
+        major_consequence: isTr ? null : v.major_consequence || null,
+        cadd_phred: isTr ? null : v.cadd_phred ?? null,
+        phylop: isTr ? null : v.phylop ?? null,
+        sv_consequences: isTr ? null : v.sv_consequences || null,
         dbsnp_id: null,
-        tr_id: null,
-        tr_motifs: v.motifs?.join(',') || null,
+        tr_id: locusId,
+        tr_locus_id: locusId,
+        tr_motifs: isTr ? parseTrLocusId(locusId || '')?.components.map((component) => component.motif).join(',') || null : null,
         gnomad_str: null,
         allele_methylation: null,
         motif_counts: null,
         allele_purity: null,
         group_count: 0,
-        carrier_count: aggregateAc ?? null,
-        short_read_match_id: v.short_read_match_id || null,
+        carrier_count: isTr ? null : v.freq?.all?.ac ?? null,
+        short_read_match_id: isTr ? null : v.short_read_match_id || null,
         is_tr: isTr,
-        tr_distribution: trDistribution.length > 0 ? trDistribution : undefined,
-        min_length_diff: locus?.minLengthDiff ?? null,
-        max_length_diff: locus?.maxLengthDiff ?? null,
-        enveloped_ids: Array.from(new Set(alleles.flatMap((allele) => allele.enveloped_ids || []))),
+        min_length_diff: bounds?.min ?? null,
+        max_length_diff: bounds?.max ?? null,
+        delta_unavailable_reason: bounds?.unavailableReason ?? null,
+        enveloped_ids: null,
         search_identifiers: Array.from(new Set(alleles.flatMap((allele) => [
+          locusId,
           allele.variant_id,
           allele.source_variant_id,
-          allele.short_read_match_id,
           allele.gnomad_str,
           ...(allele.rsids || []),
         ].filter(Boolean)))),
       } as DerivedVariant]
     })
-  }, [mode, summaryVariants])
+  }, [mode, summaryVariants, lrCohort])
 
   // Derive unique variant list for haplotype mode, grouping TRVs by position.
   // This is expensive (~8s for large regions) and must NOT depend on summaryVariants
-  // (which changes on zoom). Only haplotypeGroups/sampleMetadata should trigger recomputation.
+  // (which changes on zoom). Only haplotypeGroups should trigger recomputation.
   const haplotypeDerivedVariants = useMemo(() => {
     if (mode !== 'haplotype') return []
     console.time('[perf] HaplotypeVariantTable derive variants')
-
-    // Count unique samples for TR AF calculation
-    const allSampleIds = new Set<string>()
-    for (const g of haplotypeGroups.groups) {
-      for (const s of g.samples) allSampleIds.add(s.sample_id)
-    }
-    const sampleCount = allSampleIds.size
 
     // Phase 1: collect all variant occurrences with carrier info
     const map = new Map<
@@ -1018,9 +829,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         variant: any
         groupCount: number
         carrierIds: Set<string>
-        // Unique carrier/haplotype allele occurrences. The key includes sample
-        // identity (and diplotype side where available), never the group row.
-        trCarrierAlleles?: Map<string, { lengthDiff: number; pop: string; alt: string }>
+        exactAlleles: Map<string, any>
         searchIdentifiers: Set<string>
       }
     >()
@@ -1033,12 +842,13 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           variant: v,
           groupCount: 0,
           carrierIds: new Set(),
+          exactAlleles: new Map(),
           searchIdentifiers: new Set(),
-          ...(isTrVariant(v) ? { trCarrierAlleles: new Map() } : {}),
         }
         map.set(key, entry)
       }
       ;[
+        getTrLocusId(v),
         v.variant_id,
         v.source_variant_id,
         v.short_read_match_id,
@@ -1047,23 +857,19 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         ...(v.rsids || []),
         v.rsid,
       ].filter(Boolean).forEach((identifier) => entry!.searchIdentifiers.add(String(identifier)))
+      if (isTrVariant(v)) {
+        const source = v.source_variant_id || sourceIdFromAltId(v.variant_id)
+        const exactKey = source && Number.isSafeInteger(v.alt_index)
+          ? `${source}~${v.alt_index}`
+          : v.variant_id
+        if (exactKey && !entry.exactAlleles.has(exactKey)) entry.exactAlleles.set(exactKey, v)
+      }
       return { key, entry }
     }
 
-    const recordCarrier = (v: any, sampleId: string, haplotypeSlot = '') => {
+    const recordCarrier = (v: any, sampleId: string) => {
       const { entry } = ensureEntry(v)
       entry.carrierIds.add(sampleId)
-      if (!isTrVariant(v) || !entry.trCarrierAlleles) return
-      const pop = sampleMetadata.get(sampleId)?.superpopulation || 'N/A'
-      // ALT record IDs/indexes can be repeated for the same observed sequence.
-      // Per carrier/haplotype, sequence + signed length is the allele occurrence.
-      const sourceAlt = `${getTrLengthDiff(v)}:${v.alt || ''}`
-      const occurrenceKey = `${sampleId}:${haplotypeSlot}:${sourceAlt}`
-      if (!entry.trCarrierAlleles.has(occurrenceKey)) {
-        entry.trCarrierAlleles.set(occurrenceKey, {
-          lengthDiff: getTrLengthDiff(v), pop, alt: v.alt,
-        })
-      }
     }
 
     for (const group of haplotypeGroups.groups) {
@@ -1091,17 +897,17 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         for (const sample of dg.samples) {
           // Canonical group variants define the diplotype signature; optional
           // sample sets retain each carrier's exact TR ALT from the sidecar.
-          ;(sample.haplotypeA?.variants || dg.haplotypeA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
-          ;(sample.haplotypeB?.variants || dg.haplotypeB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
-          ;(sample.below_thresholdA?.variants || dg.below_thresholdA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'A'))
-          ;(sample.below_thresholdB?.variants || dg.below_thresholdB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id, 'B'))
+          ;(sample.haplotypeA?.variants || dg.haplotypeA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id))
+          ;(sample.haplotypeB?.variants || dg.haplotypeB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id))
+          ;(sample.below_thresholdA?.variants || dg.below_thresholdA?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id))
+          ;(sample.below_thresholdB?.variants || dg.below_thresholdB?.variants || []).forEach((v: any) => recordCarrier(v, sample.sample_id))
         }
       } else {
         // Above-threshold sample variant_sets contain the carrier-specific TR
         // ALT substituted by inflateGroups; group.variants only has a representative ALT.
         for (const sample of group.samples) {
           const sampleVariants = sample.variant_sets?.flatMap((set: any) => set.variants || []) || group.variants.variants
-          sampleVariants.forEach((v: any) => recordCarrier(v, sample.sample_id, String(sample.vcf_strand)))
+          sampleVariants.forEach((v: any) => recordCarrier(v, sample.sample_id))
         }
         // Below-threshold non-diploid rows are group representatives and do not
         // retain per-carrier ALT bytes. Do not present them as exact structures.
@@ -1114,87 +920,43 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
 
     // Phase 2: build DerivedVariant array
     const result: DerivedVariant[] = []
-    for (const [key, { variant: v, groupCount, carrierIds, trCarrierAlleles, searchIdentifiers }] of map) {
+    for (const [key, { variant: v, groupCount, carrierIds, exactAlleles, searchIdentifiers }] of map) {
       const isTrv = isTrVariant(v)
-
-      // Build TR distribution from accumulated carrier data
-      let trDistribution: TrDataPoint[] | undefined
-      let minLengthDiff: number | undefined
-      let maxLengthDiff: number | undefined
-
-      if (isTrv && trCarrierAlleles && trCarrierAlleles.size > 0) {
-        const distMap = new Map<string, number>() // "lengthDiff:pop" -> count
-        for (const { lengthDiff, pop } of trCarrierAlleles.values()) {
-          const dkey = `${lengthDiff}:${pop}`
-          distMap.set(dkey, (distMap.get(dkey) || 0) + 1)
-        }
-        trDistribution = []
-        const allLengths: number[] = []
-        for (const [dkey, count] of distMap) {
-          const [ld, pop] = dkey.split(':')
-          const lengthDiff = parseInt(ld, 10)
-          trDistribution.push({ length_diff: lengthDiff, pop, count })
-          allLengths.push(lengthDiff)
-        }
-        if (allLengths.length > 0) {
-          minLengthDiff = Math.min(...allLengths)
-          maxLengthDiff = Math.max(...allLengths)
-        }
-      }
-
-      // Store unique raw TR sequences for lazy decomposition (deferred to row expansion).
-      const rawSeqs = isTrv && trCarrierAlleles
-        ? Array.from(trCarrierAlleles.values()).reduce((sequences, allele) => {
-            if (!allele.alt || allele.alt.length > 10000) return sequences
-            let popCounts = sequences.get(allele.alt)
-            if (!popCounts) {
-              popCounts = {}
-              sequences.set(allele.alt, popCounts)
-            }
-            popCounts[allele.pop] = (popCounts[allele.pop] || 0) + 1
-            return sequences
-          }, new Map<string, Record<string, number>>())
-        : undefined
-
-      // Preserve the canonical browser ID supplied by the Y1 haplotype query,
-      // including provenance/ALT identity (for example, `chr22-…~2`). Falling
-      // back to a synthesized locus ID can silently navigate to the wrong allele.
-      const variantId = v.variant_id || (isTrv
-        ? `${v.chrom.replace(/^chr/i, '')}-${v.pos}-TRV`
-        : buildVariantId(v))
-
-      const af = isTrv
-        ? carrierIds.size / Math.max(1, sampleCount)
-        : v.freq.af
+      const locusId = isTrv ? getTrLocusId(v) : null
+      const bounds = isTrv ? getCompleteTrBounds(Array.from(exactAlleles.values())) : null
+      const variantId = isTrv && locusId
+        ? `lr-tr-locus:${v.lr_cohort || lrCohort}:${locusId}`
+        : v.variant_id || buildVariantId(v)
 
       result.push({
         // LRVariant base fields
         variant_id: variantId,
-        source_variant_id: v.source_variant_id || (isTrv ? sourceIdFromAltId(v.variant_id) : undefined),
-        alt_index: v.alt_index,
-        alt_count: v.alt_count,
+        source_variant_id:
+          isTrv && locusId
+            ? null
+            : v.source_variant_id || (isTrv ? sourceIdFromAltId(v.variant_id) : undefined),
+        alt_index: isTrv ? null : v.alt_index,
+        alt_count: isTrv ? null : v.alt_count,
+        lr_cohort: v.lr_cohort,
         chrom: v.chrom,
         pos: v.pos,
         end: v.end ?? null,
-        ref: v.ref,
-        alt: isTrv ? `TR(${minLengthDiff ?? 0}..${maxLengthDiff ?? 0}bp)` : v.alt,
+        ref: isTrv ? '' : v.ref,
+        alt: isTrv ? '' : v.alt,
         allele_type: isTrv ? 'trv' : v.allele_type || 'snv',
-        allele_length: isTrv
-          ? (maxLengthDiff ?? 0) - (minLengthDiff ?? 0)
-          : v.allele_length || 0,
-        freq: {
-          af,
-          ac: carrierIds.size,
-          an: sampleCount * 2,
-        },
-        populations: v.populations || [],
-        rsid: v.rsid || '',
-        major_consequence: v.major_consequence ?? null,
-        cadd_phred: v.cadd_phred ?? null,
-        phylop: v.phylop ?? null,
-        sv_consequences: v.sv_consequences ?? null,
-        dbsnp_id: v.dbsnp_id ?? null,
-        tr_id: v.tr_id ?? null,
+        allele_length: isTrv ? (bounds?.max ?? 0) : v.allele_length || 0,
+        freq: isTrv
+          ? nullableLongReadFrequency({ af: null, ac: null, an: null })
+          : v.freq,
+        populations: isTrv ? [] : v.populations || [],
+        rsid: isTrv ? '' : v.rsid || '',
+        major_consequence: isTrv ? null : v.major_consequence ?? null,
+        cadd_phred: isTrv ? null : v.cadd_phred ?? null,
+        phylop: isTrv ? null : v.phylop ?? null,
+        sv_consequences: isTrv ? null : v.sv_consequences ?? null,
+        dbsnp_id: isTrv ? null : v.dbsnp_id ?? null,
+        tr_id: locusId,
+        tr_locus_id: locusId,
         tr_motifs: v.tr_motifs ?? null,
         gnomad_str: v.gnomad_str ?? null,
         allele_methylation: v.allele_methylation ?? null,
@@ -1204,15 +966,11 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         group_count: groupCount,
         carrier_count: carrierIds.size,
         is_tr: isTrv,
-        tr_distribution: trDistribution,
-        min_length_diff: minLengthDiff,
-        max_length_diff: maxLengthDiff,
-        tr_allele_structures: undefined,
-        tr_flank_prefix: undefined,
-        tr_flank_suffix: undefined,
-        _trRawSequences: rawSeqs,
-        short_read_match_id: v.short_read_match_id || null,
-        enveloped_ids: v.enveloped_ids || null,
+        min_length_diff: bounds?.min ?? null,
+        max_length_diff: bounds?.max ?? null,
+        delta_unavailable_reason: bounds?.unavailableReason ?? null,
+        short_read_match_id: isTrv ? null : v.short_read_match_id || null,
+        enveloped_ids: isTrv ? null : v.enveloped_ids || null,
         cluster_distribution: clusterDistByKey.get(key),
         active_cluster_count: getActiveClusterCount(clusterDistByKey.get(key)),
         search_identifiers: Array.from(searchIdentifiers),
@@ -1222,7 +980,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     console.log(`[perf] HaplotypeVariantTable: ${result.length} derived variants (${result.filter(v => v.is_tr).length} TR)`)
     console.timeEnd('[perf] HaplotypeVariantTable derive variants')
     return result
-  }, [mode, haplotypeGroups, sampleMetadata])
+  }, [mode, haplotypeGroups, lrCohort])
 
   const variants = mode === 'summary' ? summaryDerivedVariants : haplotypeDerivedVariants
 
@@ -1380,21 +1138,22 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     const escapeField = (s: string) => (s.includes(',') ? `"${s}"` : s)
     const getPopAf = (v: DerivedVariant, popId: string) =>
       v.populations?.find((p) => p.id === popId)?.af ?? ''
-    const rows = sorted.map((v) =>
-      [
-        v.variant_id,
-        escapeField(formatLongReadAlleleDisplay(v).label),
-        v.source_variant_id ?? '',
-        v.alt_index ?? '',
-        v.alt_count ?? '',
+    const rows = sorted.map((v) => {
+      const locusId = v.is_tr ? getTrLocusId(v) : null
+      return [
+        locusId || v.variant_id,
+        escapeField(v.is_tr ? getTrLocusDisplayLabel(v) : formatLongReadAlleleDisplay(v).label),
+        v.is_tr ? '' : v.source_variant_id ?? '',
+        v.is_tr ? '' : v.alt_index ?? '',
+        v.is_tr ? '' : v.alt_count ?? '',
         v.chrom,
         v.pos,
-        escapeField(v.ref),
-        escapeField(v.alt),
-        v.allele_type,
-        getVariantCategory(v.allele_type, v.allele_length),
-        v.allele_length,
-        v.freq.af,
+        v.is_tr ? '' : escapeField(v.ref),
+        v.is_tr ? '' : escapeField(v.alt),
+        v.is_tr ? 'TR' : v.allele_type,
+        v.is_tr ? 'TR' : getVariantCategory(v.allele_type, v.allele_length),
+        v.is_tr ? formatTrLengthRange(v.min_length_diff, v.max_length_diff) : v.allele_length,
+        v.is_tr ? '' : v.freq.af,
         ...(mode === 'haplotype'
           ? [
               ...(showGroupCount
@@ -1404,22 +1163,22 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                       : `${v.group_count}/${totalGroups}`,
                   ]
                 : []),
-              `${v.carrier_count}/${totalSamples}`,
+              v.carrier_count == null ? '' : `${v.carrier_count}/${totalSamples}`,
             ]
           : []),
         '',
-        v.rsid,
-        getPopAf(v, 'afr'),
-        getPopAf(v, 'amr'),
-        getPopAf(v, 'eas'),
-        getPopAf(v, 'nfe'),
-        getPopAf(v, 'sas'),
-        v.cadd_phred ?? '',
-        v.phylop ?? '',
-        v.sv_consequences ? escapeField(v.sv_consequences.join(';')) : '',
-        v.dbsnp_id ?? '',
+        v.is_tr ? '' : v.rsid,
+        v.is_tr ? '' : getPopAf(v, 'afr'),
+        v.is_tr ? '' : getPopAf(v, 'amr'),
+        v.is_tr ? '' : getPopAf(v, 'eas'),
+        v.is_tr ? '' : getPopAf(v, 'nfe'),
+        v.is_tr ? '' : getPopAf(v, 'sas'),
+        v.is_tr ? '' : v.cadd_phred ?? '',
+        v.is_tr ? '' : v.phylop ?? '',
+        v.is_tr || !v.sv_consequences ? '' : escapeField(v.sv_consequences.join(';')),
+        v.is_tr ? '' : v.dbsnp_id ?? '',
       ].join(',')
-    )
+    })
     const csv = [headers.join(','), ...rows].join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
@@ -1548,23 +1307,18 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                   {topPad > 0 && <tr style={{ height: topPad }} />}
                   {sorted.slice(startRow, endRow).map((v, sliceIdx) => {
                     const i = startRow + sliceIdx
-                    const isExpanded = false
                     return (
                       <TableRow
                         key={`${v.pos}-${v.variant_id}-${i}`}
                         v={v}
-                        i={i}
-                        isExpanded={isExpanded}
                         mode={mode}
                         showGroupAf={!(mode === 'summary' && lrCohort === 'aou')}
                         showGroupCount={showGroupCount}
                         totalGroups={totalGroups}
                         totalClusters={totalClusters}
                         totalSamples={totalSamples}
-                        ambiguousUnphasedRows={ambiguousUnphasedRows}
                         isClusteredView={isClusteredView}
                         highlightedPosition={highlightedPosition}
-                        variantDict={variantDict}
                         lrCohort={lrCohort}
                         selectedColumns={selectedColumns}
                         onHoverVariant={onHoverVariant}

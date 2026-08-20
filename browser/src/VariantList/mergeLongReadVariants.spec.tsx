@@ -25,6 +25,7 @@ const trAllele = (overrides: Partial<RawLongReadVariant> = {}): RawLongReadVaria
   chrom: '4',
   pos: 3074876,
   end: 3075040,
+  length: 3,
   ref: 'CAG',
   alt: 'CAGCAG',
   allele_type: 'trv',
@@ -40,12 +41,14 @@ const idColumn = variantTableColumns.find((column) => column.key === 'variant_id
 describe('exact LR tandem-repeat loci in standard variant tables', () => {
   test("collapses HTT's 72 HGSVC/HPRC ALTs into one honest locus row and canonical link", () => {
     const alleles = Array.from({ length: 72 }, (_, index) => {
-      const ac = index === 0 ? 485 : 1
+      const delta = index === 71 ? 48 : -24 + index
       return trAllele({
         variant_id: `${httSource}~${index + 1}`,
         alt_index: index + 1,
         alt_count: 72,
-        freq: { all: { ac, an: 584, af: ac / 584 }, populations: [] },
+        length: delta,
+        ref: 'A'.repeat(30),
+        alt: 'A'.repeat(30 + delta),
       })
     })
 
@@ -54,35 +57,48 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     expect(rows[0]).toMatchObject({
       is_long_read_tr_locus: true,
       long_read_tr_locus_id: httLocus,
-      long_read_tr_source_variant_id: httSource,
+      long_read_tr_source_variant_id: null,
+      long_read_tr_source_variant_ids: [httSource],
       long_read_tr_alt_count: 72,
-      long_read_tr_label: 'HTT tandem-repeat locus',
+      long_read_tr_label: '4:3,074,877–3,075,040 · CAG + CAA + CCG + CCT + GCC + CCG · HTT',
+      long_read_tr_delta_min: -24,
+      long_read_tr_delta_max: 48,
+      long_read_tr_delta_label: '-24..+48 bp',
       long_read_tr_aggregation_valid: true,
       consequence: null,
       hgvs: null,
     })
     expect(rows[0].long_read_alleles).toHaveLength(72)
-    expect(rows[0].long_read).toMatchObject({ ac: 556, an: 584, af: 556 / 584 })
+    expect(rows[0].long_read).toMatchObject({ ac: null, an: null, af: null, populations: [] })
     expect(rows[0].long_read.homozygote_alt_count).toBeUndefined()
 
     const { container } = render(
       <>{idColumn.render(rows[0], 'variant_id', { highlightWords: [] })}</>
     )
-    const link = screen.getByRole('link', { name: /HTT tandem-repeat locus; 72 exact ALT alleles/ })
+    const link = screen.getByRole('link', { name: /4:3,074,877–3,075,040.*72 exact ALT alleles/ })
     expect(link.getAttribute('href')).toBe(
       `/tandem-repeat/${httLocus}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
     expect(container.querySelectorAll('a')).toHaveLength(1)
     expect(container.querySelector('div, br')).toBeNull()
-    expect(container.textContent).toBe('HTT tandem-repeat locusTR')
+    expect(container.textContent).toBe(
+      '4:3,074,877–3,075,040 · CAG + CAA + CCG + CCT + GCC + CCG · HTTΔbp -24..+48 bpTR'
+    )
 
     const geneColumns: any = getColumnsForContext(
       { gene_id: 'ENSG00000197386', mane_select_transcript: { ensembl_id: 'ENST00000355072' } },
       'gnomad_r4'
     )
     const hgvs = render(<>{geneColumns.hgvs.render(rows[0], 'hgvs', { highlightWords: [] })}</>)
-    expect(hgvs.container.textContent).toBe('Unavailable for locus')
+    expect(hgvs.container.textContent).toBe('—')
     expect(hgvs.container.textContent).not.toContain('†')
+
+    ;['ac', 'an', 'af', 'consequence', 'rsid'].forEach((key) => {
+      const column = variantTableColumns.find((candidate) => candidate.key === key)!
+      const rendered = render(<>{column.render(rows[0], key, { highlightWords: [] })}</>)
+      expect(rendered.container.textContent).toBe('—')
+      rendered.unmount()
+    })
   })
 
   test('uses a canonical one-component locus link and coordinate/motif fallback label', () => {
@@ -99,7 +115,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
         }),
       ]
     )[0]
-    expect(row.long_read_tr_label).toBe('4:3,208,720–3,208,734 A tandem-repeat locus')
+    expect(row.long_read_tr_label).toBe('4:3,208,720–3,208,734 · A')
 
     render(<>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>)
     expect(screen.getByRole('link').getAttribute('href')).toBe(
@@ -132,6 +148,40 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     ])
   })
 
+  test('groups multiple source records with the same canonical TRID into one locus row', () => {
+    const rows: any[] = mergeLongReadVariants(
+      [],
+      [
+        trAllele(),
+        trAllele({
+          variant_id: 'chr4-3074877-TRV-164~1',
+          source_variant_id: 'chr4-3074877-TRV-164',
+        }),
+      ],
+      { geneSymbol: 'HTT' }
+    )
+    expect(rows).toHaveLength(1)
+    expect(rows[0].long_read_tr_source_variant_ids).toEqual([
+      httSource,
+      'chr4-3074877-TRV-164',
+    ])
+    expect(rows[0].long_read_tr_source_alt_count).toBe(2)
+  })
+
+  test('fails delta bounds closed for a missing or duplicate ALT index', () => {
+    const row: any = mergeLongReadVariants(
+      [],
+      [
+        trAllele({ alt_index: 1, alt_count: 3 }),
+        trAllele({ variant_id: `${httSource}~duplicate`, alt_index: 1, alt_count: 3 }),
+      ]
+    )[0]
+    expect(row.long_read_tr_delta_label).toBe('—')
+    expect(row.long_read_tr_delta_min).toBeNull()
+    expect(row.long_read_tr_delta_unavailable_reason).toMatch(/Complete unique ALT indices/)
+    expect(row.long_read_tr_aggregation_valid).toBe(false)
+  })
+
   test('keeps cohort ownership in the exact grouping identity', () => {
     const rows: any[] = mergeLongReadVariants(
       [],
@@ -141,7 +191,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     expect(rows.map((row) => row.lr_cohort)).toEqual(['hgsvc_hprc', 'aou'])
   })
 
-  test('fails AC/AN/AF closed for inconsistent denominators', () => {
+  test('keeps forbidden locus AC/AN/AF blank regardless of exact-allele denominators', () => {
     const row: any = mergeLongReadVariants(
       [],
       [
@@ -155,7 +205,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       ]
     )[0]
     expect(row.long_read).toMatchObject({ ac: null, an: null, af: null })
-    expect(row.long_read_tr_aggregation_valid).toBe(false)
+    expect(row.long_read_tr_aggregation_valid).toBe(true)
 
     const merged: any = mergeCallsetData({ datasetId: 'gnomad_r4', variants: [row] })[0]
     expect(merged).toMatchObject({ ac: null, an: null, af: null, ac_hom: null, ac_hemi: null })
@@ -181,6 +231,21 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     expect(rows.every((row) => !row.is_long_read_tr_locus)).toBe(true)
   })
 
+  test('does not attach an exact TR ALT to a short-read row or promote its match', () => {
+    const sr: any = { variant_id: '4-3074877-A-G' }
+    const rows: any[] = mergeLongReadVariants(
+      [sr],
+      [trAllele({ short_read_match_id: sr.variant_id })]
+    )
+    expect(rows).toHaveLength(2)
+    expect(rows[0]).toEqual(sr)
+    expect(rows[1]).toMatchObject({
+      is_long_read_tr_locus: true,
+      long_read_tr_locus_id: httLocus,
+    })
+    expect(rows[1]).not.toHaveProperty('short_read_match_id')
+  })
+
   test('search retains locus, source, label, and every exact child allele identity', () => {
     const row: any = mergeLongReadVariants(
       [],
@@ -192,7 +257,12 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     )[0]
     const terms = idColumn.getSearchTerms!(row)
     expect(terms).toEqual(
-      expect.arrayContaining([httLocus, httSource, 'HTT tandem-repeat locus', `${httSource}~2`])
+      expect.arrayContaining([
+        httLocus,
+        httSource,
+        '4:3,074,877–3,075,040 · CAG + CAA + CCG + CCT + GCC + CCG · HTT',
+        `${httSource}~2`,
+      ])
     )
   })
 
@@ -226,7 +296,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       expect(csv).toContain('Long-read TR locus loaded ALT count')
       expect(csv).toContain(httLocus)
       expect(csv).toContain(`${httSource}~1;${httSource}~2`)
-      expect(csv).toContain(`,${httSource},2,`)
+      expect(csv).toContain('Long-read TR locus source record ID')
     } finally {
       click.mockRestore()
       global.Blob = originalBlob

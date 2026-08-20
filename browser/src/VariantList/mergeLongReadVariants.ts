@@ -184,7 +184,6 @@ export type LongReadMergeOptions = {
 type TrLocusGroup = {
   locus: TrLocusId
   cohort: 'hgsvc_hprc' | 'aou'
-  sourceVariantId: string
   variants: RawLongReadVariant[]
 }
 
@@ -193,54 +192,80 @@ const exactTrGroupIdentity = (lr: RawLongReadVariant) => {
   const locus = parseTrLocusId(lr.tr_locus_id || '')
   if (!isTr || !locus || !lr.source_variant_id || !lr.lr_cohort) return null
   return {
-    key: JSON.stringify([lr.lr_cohort, locus.canonicalId, lr.source_variant_id]),
+    // A source record is provenance beneath a locus, not the row identity.
+    key: JSON.stringify([lr.lr_cohort, locus.canonicalId]),
     locus,
     cohort: lr.lr_cohort,
-    sourceVariantId: lr.source_variant_id,
   }
 }
 
-const aggregateTrFrequency = (variants: RawLongReadVariant[]) => {
-  const declaredCounts = new Set(variants.map((variant) => variant.alt_count))
-  const declaredCount = declaredCounts.size === 1 ? variants[0].alt_count : null
-  const altIndices = variants.map((variant) => variant.alt_index)
-  const completeExactAltSet =
-    Number.isSafeInteger(declaredCount) &&
-    declaredCount === variants.length &&
-    new Set(altIndices).size === variants.length &&
-    altIndices.every(
-      (index) => Number.isSafeInteger(index) && index! >= 1 && index! <= declaredCount!
-    )
+type TrDeltaBounds = {
+  min: number | null
+  max: number | null
+  unavailableReason: string | null
+}
 
-  const frequencies = variants.map((variant) => variant.freq?.all)
-  const ans = frequencies.map((frequency) => frequency?.an)
-  const invariantAn = new Set(ans).size === 1 ? ans[0] : null
-  const validAlleles = frequencies.every((frequency) => {
-    if (
-      !frequency ||
-      !Number.isFinite(frequency.ac) ||
-      !Number.isFinite(frequency.an) ||
-      !Number.isFinite(frequency.af) ||
-      frequency.ac < 0 ||
-      frequency.an <= 0
-    ) {
-      return false
-    }
-    return Math.abs(frequency.af - frequency.ac / frequency.an) <= 1e-6
+const exactWholeRecordDelta = (variant: RawLongReadVariant): number | null => {
+  const declared = variant.length
+  const sequenceDelta =
+    typeof variant.ref === 'string' &&
+    typeof variant.alt === 'string' &&
+    !/^<.*>$/.test(variant.alt)
+      ? variant.alt.length - variant.ref.length
+      : null
+  if (Number.isFinite(declared) && sequenceDelta !== null && declared !== sequenceDelta) return null
+  if (Number.isFinite(declared)) return declared!
+  return Number.isFinite(sequenceDelta) ? sequenceDelta : null
+}
+
+/** Delta bounds are a scientific aggregate, so every source record must expose
+ * exactly one complete 1..ALT_COUNT index set and every whole-record delta. */
+const completeTrDeltaBounds = (variants: RawLongReadVariant[]): TrDeltaBounds => {
+  const bySource = new Map<string, RawLongReadVariant[]>()
+  variants.forEach((variant) => {
+    const source = variant.source_variant_id!
+    bySource.set(source, [...(bySource.get(source) || []), variant])
   })
-  const ac = validAlleles ? frequencies.reduce((sum, frequency) => sum + frequency!.ac, 0) : null
 
-  if (
-    !completeExactAltSet ||
-    !validAlleles ||
-    !Number.isFinite(invariantAn) ||
-    invariantAn! <= 0 ||
-    ac === null ||
-    ac > invariantAn!
-  ) {
-    return { ac: null, an: null, af: null }
+  const sourceSets = Array.from(bySource.values())
+  const hasIncompleteSource = sourceSets.some((sourceVariants) => {
+    const declaredCounts = new Set(sourceVariants.map((variant) => variant.alt_count))
+    const declaredCount = declaredCounts.size === 1 ? sourceVariants[0].alt_count : null
+    const altIndices = sourceVariants.map((variant) => variant.alt_index)
+    return (
+      !Number.isSafeInteger(declaredCount) ||
+      declaredCount! < 1 ||
+      sourceVariants.length !== declaredCount ||
+      new Set(altIndices).size !== declaredCount ||
+      altIndices.some(
+        (index) => !Number.isSafeInteger(index) || index! < 1 || index! > declaredCount!
+      )
+    )
+  })
+  if (hasIncompleteSource) {
+    return {
+      min: null,
+      max: null,
+      unavailableReason: 'Complete unique ALT indices are unavailable for every source record.',
+    }
   }
-  return { ac, an: invariantAn!, af: ac / invariantAn! }
+
+  const deltas = variants.map(exactWholeRecordDelta)
+  if (deltas.some((delta) => delta === null)) {
+    return {
+      min: null,
+      max: null,
+      unavailableReason: 'A complete finite whole-record ALT minus REF delta is unavailable.',
+    }
+  }
+  if (!deltas.length) {
+    return { min: null, max: null, unavailableReason: 'No exact ALT records are available.' }
+  }
+  return {
+    min: Math.min(...(deltas as number[])),
+    max: Math.max(...(deltas as number[])),
+    unavailableReason: null,
+  }
 }
 
 const exactSharedLabel = (values: Array<string | null | undefined>) => {
@@ -249,15 +274,22 @@ const exactSharedLabel = (values: Array<string | null | undefined>) => {
 }
 
 const trLocusLabel = (group: TrLocusGroup, options: LongReadMergeOptions): string => {
-  const catalogLabel = exactSharedLabel(group.variants.map((variant) => variant.gnomad_str))
-  const label = catalogLabel || options.geneSymbol?.trim()
-  if (label) return `${label} tandem-repeat locus`
-
   const envelope = trLocusDisplayEnvelope(group.locus)
-  const motifs = group.locus.components.map((component) => component.motif).join('+')
-  return `${
-    envelope.chrom
-  }:${envelope.start1.toLocaleString()}–${envelope.end1.toLocaleString()} ${motifs} tandem-repeat locus`
+  const motifs = group.locus.components.map((component) => component.motif).join(' + ')
+  const context =
+    exactSharedLabel(group.variants.map((variant) => variant.gnomad_str)) ||
+    options.geneSymbol?.trim()
+  return `${envelope.chrom}:${envelope.start1.toLocaleString()}–${envelope.end1.toLocaleString()} · ${motifs}${
+    context ? ` · ${context}` : ''
+  }`
+}
+
+const formatSignedDelta = (value: number) => (value > 0 ? `+${value}` : String(value))
+
+const trDeltaLabel = (bounds: TrDeltaBounds) => {
+  if (bounds.min === null || bounds.max === null) return '—'
+  if (bounds.min === bounds.max) return `${formatSignedDelta(bounds.min)} bp`
+  return `${formatSignedDelta(bounds.min)}..${formatSignedDelta(bounds.max)} bp`
 }
 
 // Build a transcript_consequence-like object from LR transcript_consequences
@@ -332,6 +364,14 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
   const trGroups = new Map<string, TrLocusGroup>()
 
   lrVariants.forEach((lr) => {
+    const identity = exactTrGroupIdentity(lr)
+    if (identity) {
+      const group = trGroups.get(identity.key) || { ...identity, variants: [] }
+      group.variants.push(lr)
+      trGroups.set(identity.key, group)
+      return
+    }
+
     const matchId = lr.short_read_match_id
     if (matchId && srMap.has(matchId)) {
       const longRead = buildLongReadData(lr)
@@ -345,23 +385,12 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
         srVariant.long_read = longRead
         srVariant.long_read_details = longReadDetails
       }
-      return
-    }
-
-    const identity = exactTrGroupIdentity(lr)
-    if (identity) {
-      const group = trGroups.get(identity.key) || { ...identity, variants: [] }
-      group.variants.push(lr)
-      trGroups.set(identity.key, group)
     }
   })
 
   const emittedTrGroups = new Set<string>()
   const lrOnlyVariants: any[] = []
   lrVariants.forEach((lr) => {
-    const matchId = lr.short_read_match_id
-    if (matchId && srMap.has(matchId)) return
-
     const identity = exactTrGroupIdentity(lr)
     if (identity) {
       if (emittedTrGroups.has(identity.key)) return
@@ -369,30 +398,37 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
       const group = trGroups.get(identity.key)!
       const first = group.variants[0]
       const longReadAlleles = group.variants.map(buildLongReadDetails)
-      const frequency = aggregateTrFrequency(group.variants)
       const filters = Array.from(
         new Set(group.variants.flatMap((variant) => variant.filters || []))
       )
       const label = trLocusLabel(group, options)
       const loadedAltCount = group.variants.length
-      const sourceAltCount = exactSharedLabel(
-        group.variants.map((variant) =>
-          Number.isSafeInteger(variant.alt_count) ? String(variant.alt_count) : null
-        )
-      )
+      const sourceVariantIds = Array.from(
+        new Set(group.variants.map((variant) => variant.source_variant_id!))
+      ).sort()
+      const sourceAltCount = sourceVariantIds.reduce((sum, sourceId) => {
+        const declared = group.variants.find(
+          (variant) => variant.source_variant_id === sourceId
+        )?.alt_count
+        return sum + (Number.isSafeInteger(declared) ? declared! : 0)
+      }, 0)
+      const deltaBounds = completeTrDeltaBounds(group.variants)
+      const deltaLabel = trDeltaLabel(deltaBounds)
+      const envelope = trLocusDisplayEnvelope(group.locus)
 
       lrOnlyVariants.push({
-        variant_id: `lr-tr-locus:${group.cohort}:${group.locus.canonicalId}:${group.sourceVariantId}`,
-        source_variant_id: group.sourceVariantId,
+        variant_id: `lr-tr-locus:${group.cohort}:${group.locus.canonicalId}`,
+        source_variant_id: null,
         alt_index: null,
-        alt_count: loadedAltCount,
+        alt_count: null,
         lr_cohort: group.cohort,
         reference_genome: first.reference_genome || 'GRCh38',
-        chrom: first.chrom || group.locus.components[0].chrom,
-        pos: first.pos,
+        chrom: group.locus.components[0].chrom,
+        pos: envelope.start1,
         ref: '',
         alt: '',
-        rsids: Array.from(new Set(group.variants.flatMap((variant) => variant.rsids || []))),
+        // Exact-allele annotations are deliberately not promoted to a locus row.
+        rsids: [],
         flags: filters,
         consequence: null,
         hgvs: null,
@@ -412,15 +448,22 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
         lof_curation: null,
         clinvar: null,
         long_read: {
-          ...frequency,
+          ac: null,
+          an: null,
+          af: null,
           filters,
           populations: [],
         },
         long_read_details: {
           ...buildLongReadDetails(first),
           variant_id: undefined,
+          source_variant_id: null,
           alt_index: null,
-          alt_count: loadedAltCount,
+          alt_count: null,
+          chrom: group.locus.components[0].chrom,
+          pos: envelope.start1,
+          end: envelope.end1,
+          length: null,
           ref: null,
           alt: null,
           is_likely_tr: true,
@@ -429,17 +472,29 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
         long_read_alleles: longReadAlleles,
         is_long_read_tr_locus: true,
         long_read_tr_locus_id: group.locus.canonicalId,
-        long_read_tr_source_variant_id: group.sourceVariantId,
+        long_read_tr_source_variant_id: null,
+        long_read_tr_source_variant_ids: sourceVariantIds,
         long_read_tr_alt_count: loadedAltCount,
-        long_read_tr_source_alt_count: sourceAltCount ? Number(sourceAltCount) : null,
+        long_read_tr_source_alt_count: sourceAltCount || null,
         long_read_tr_label: label,
-        long_read_tr_tooltip: `${label}; ${loadedAltCount} exact ALT allele${
-          loadedAltCount === 1 ? '' : 's'
-        } loaded from source record ${group.sourceVariantId}; locus ID ${group.locus.canonicalId}`,
-        long_read_tr_aggregation_valid: frequency.an !== null,
+        long_read_tr_delta_min: deltaBounds.min,
+        long_read_tr_delta_max: deltaBounds.max,
+        long_read_tr_delta_label: deltaLabel,
+        long_read_tr_delta_unavailable_reason: deltaBounds.unavailableReason,
+        long_read_tr_tooltip: `${label}; observed whole-record delta ${deltaLabel}; ${
+          loadedAltCount
+        } exact ALT allele${loadedAltCount === 1 ? '' : 's'} across ${
+          sourceVariantIds.length
+        } source record${sourceVariantIds.length === 1 ? '' : 's'}; locus ID ${
+          group.locus.canonicalId
+        }`,
+        long_read_tr_aggregation_valid: deltaBounds.unavailableReason === null,
       })
       return
     }
+
+    const matchId = lr.short_read_match_id
+    if (matchId && srMap.has(matchId)) return
 
     // Synthesize an ordinary row for non-TR LR-only data or for a TR allele
     // without an exact authoritative locus/source identity.

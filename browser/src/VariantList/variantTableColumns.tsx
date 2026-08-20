@@ -83,7 +83,8 @@ const variantTableColumns: VariantTableColumn[] = [
     grow: 0,
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('ac'),
-    render: renderAlleleCountCell,
+    render: (row: any, key: string) =>
+      row.is_long_read_tr_locus ? <NumericCell title="Exact-allele count is unavailable for a locus summary.">—</NumericCell> : renderAlleleCountCell(row, key),
   },
 
   {
@@ -93,7 +94,8 @@ const variantTableColumns: VariantTableColumn[] = [
     grow: 0,
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('an'),
-    render: renderAlleleCountCell,
+    render: (row: any, key: string) =>
+      row.is_long_read_tr_locus ? <NumericCell title="Exact-allele number is unavailable for a locus summary.">—</NumericCell> : renderAlleleCountCell(row, key),
   },
 
   {
@@ -103,7 +105,8 @@ const variantTableColumns: VariantTableColumn[] = [
     grow: 0,
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('af'),
-    render: renderAlleleFrequencyCell,
+    render: (row: any, key: string) =>
+      row.is_long_read_tr_locus ? <NumericCell title="Exact-allele frequency is unavailable for a locus summary.">—</NumericCell> : renderAlleleFrequencyCell(row, key),
   },
 
   {
@@ -163,24 +166,19 @@ const variantTableColumns: VariantTableColumn[] = [
         ? 'Unavailable for tandem-repeat locus'
         : getLabelForConsequenceTerm(variant.consequence),
     ],
-    render: (row: any, key: any, { highlightWords }: any) => (
-      <Cell
-        title={
-          row.is_long_read_tr_locus
-            ? 'Allele-level VEP consequence is unavailable for this locus summary.'
-            : undefined
-        }
-      >
-        <VariantCategoryMarker color={getConsequenceColor(row[key])} />
-        <Highlighter
-          autoEscape
-          searchWords={highlightWords}
-          textToHighlight={
-            row.is_long_read_tr_locus ? 'Unavailable for locus' : getConsequenceName(row[key])
-          }
-        />
-      </Cell>
-    ),
+    render: (row: any, key: any, { highlightWords }: any) =>
+      row.is_long_read_tr_locus ? (
+        <Cell title="Allele-level VEP consequence is unavailable for this locus summary.">—</Cell>
+      ) : (
+        <Cell>
+          <VariantCategoryMarker color={getConsequenceColor(row[key])} />
+          <Highlighter
+            autoEscape
+            searchWords={highlightWords}
+            textToHighlight={getConsequenceName(row[key])}
+          />
+        </Cell>
+      ),
   },
 
   {
@@ -210,7 +208,11 @@ const variantTableColumns: VariantTableColumn[] = [
     minWidth: 100,
     render: (row: any) => (
       <Cell>
-        <Link to={`/gene/${row.gene_id}`}>{row.gene_symbol || row.gene_id}</Link>
+        {row.is_long_read_tr_locus ? (
+          <span title="Allele-level gene annotation is unavailable for this locus summary.">—</span>
+        ) : (
+          <Link to={`/gene/${row.gene_id}`}>{row.gene_symbol || row.gene_id}</Link>
+        )}
       </Cell>
     ),
     shouldShowInContext: (_context: any, contextType: any) => contextType === 'region',
@@ -254,9 +256,7 @@ const variantTableColumns: VariantTableColumn[] = [
         <Highlighter
           autoEscape
           searchWords={highlightWords}
-          textToHighlight={
-            variant.is_long_read_tr_locus ? 'Unavailable for locus' : variant.hgvs || ''
-          }
+          textToHighlight={variant.is_long_read_tr_locus ? '—' : variant.hgvs || ''}
         />
       </Cell>
     ),
@@ -273,11 +273,11 @@ const variantTableColumns: VariantTableColumn[] = [
     compareFunction: makeStringCompareFunction('hgvsc'),
     getSearchTerms: (variant: any) => [variant.hgvsc],
     render: (variant: any, _: any, { highlightWords }: any) => (
-      <Cell>
+      <Cell title={variant.is_long_read_tr_locus ? 'Allele-level HGVSc is unavailable for this locus summary.' : undefined}>
         <Highlighter
           autoEscape
           searchWords={highlightWords}
-          textToHighlight={variant.hgvsc || ''}
+          textToHighlight={variant.is_long_read_tr_locus ? '—' : variant.hgvsc || ''}
         />
       </Cell>
     ),
@@ -294,11 +294,11 @@ const variantTableColumns: VariantTableColumn[] = [
     compareFunction: makeStringCompareFunction('hgvsp'),
     getSearchTerms: (variant: any) => [variant.hgvsp],
     render: (variant: any, _: any, { highlightWords }: any) => (
-      <Cell>
+      <Cell title={variant.is_long_read_tr_locus ? 'Allele-level HGVSp is unavailable for this locus summary.' : undefined}>
         <Highlighter
           autoEscape
           searchWords={highlightWords}
-          textToHighlight={variant.hgvsp || ''}
+          textToHighlight={variant.is_long_read_tr_locus ? '—' : variant.hgvsp || ''}
         />
       </Cell>
     ),
@@ -362,11 +362,11 @@ const variantTableColumns: VariantTableColumn[] = [
     ),
     getSearchTerms: (variant: any) => variant.rsids || [],
     render: (variant: any, _: any, { highlightWords }: any) => (
-      <Cell>
+      <Cell title={variant.is_long_read_tr_locus ? 'Exact-allele rsIDs are unavailable for this locus summary.' : undefined}>
         <Highlighter
           autoEscape
           searchWords={highlightWords}
-          textToHighlight={(variant.rsids || []).join(', ')}
+          textToHighlight={variant.is_long_read_tr_locus ? '—' : (variant.rsids || []).join(', ')}
         />
       </Cell>
     ),
@@ -398,9 +398,13 @@ const variantTableColumns: VariantTableColumn[] = [
     minWidth: 160,
     render: (row: any) => (
       <Cell>
-        <Link to={`/transcript/${row.transcript_id}`}>
-          {row.transcript_id}.{row.transcript_version}
-        </Link>
+        {row.is_long_read_tr_locus ? (
+          <span title="Allele-level transcript annotation is unavailable for this locus summary.">—</span>
+        ) : (
+          <Link to={`/transcript/${row.transcript_id}`}>
+            {row.transcript_id}.{row.transcript_version}
+          </Link>
+        )}
       </Cell>
     ),
     shouldShowInContext: (_context: any, contextType: any) => contextType !== 'transcript',
@@ -444,6 +448,12 @@ const variantTableColumns: VariantTableColumn[] = [
                 textToHighlight={row.long_read_tr_label}
               />
             </Link>
+            <span
+              style={{ marginLeft: '0.75ch', whiteSpace: 'nowrap' }}
+              title={row.long_read_tr_delta_unavailable_reason || 'Complete observed whole-record ALT minus REF range'}
+            >
+              Δbp {row.long_read_tr_delta_label}
+            </span>
             <span style={{ marginLeft: '0.5ch', whiteSpace: 'nowrap' }}>
               <Badge level="info">TR</Badge>
             </span>
@@ -523,13 +533,17 @@ const variantTableColumns: VariantTableColumn[] = [
     getSearchTerms: (variant: any) => [variant.short_read_match_id],
     render: (row: any, _key: any, _options: any) => (
       <Cell>
-        <Link
-          target="_blank"
-          to={`/variant/${row.short_read_match_id}?dataset=gnomad_r4`}
-          preserveSelectedDataset={false}
-        >
-          {row.short_read_match_id}
-        </Link>
+        {row.is_long_read_tr_locus ? (
+          <span title="Exact-allele short-read matches are unavailable for this locus summary.">—</span>
+        ) : (
+          <Link
+            target="_blank"
+            to={`/variant/${row.short_read_match_id}?dataset=gnomad_r4`}
+            preserveSelectedDataset={false}
+          >
+            {row.short_read_match_id}
+          </Link>
+        )}
       </Cell>
     ),
     shouldShowInContext: (_context, contextType) => contextType === 'gene-lr',
@@ -583,9 +597,7 @@ export const getColumnsForContext = (context: any, datasetId: DatasetId) => {
         <Highlighter
           autoEscape
           searchWords={highlightWords}
-          textToHighlight={
-            variant.is_long_read_tr_locus ? 'Unavailable for locus' : variant.hgvs || ''
-          }
+          textToHighlight={variant.is_long_read_tr_locus ? '—' : variant.hgvs || ''}
         />
         {!variant.is_long_read_tr_locus &&
           primaryTranscriptId &&
