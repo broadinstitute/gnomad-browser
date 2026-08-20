@@ -153,7 +153,7 @@ describe('long-read tandem-repeat allele index', () => {
     expect(rows[0].getAttribute('aria-selected')).toBe('true')
     expect(viewport.getAttribute('tabindex')).toBe('0')
     expect(getComputedStyle(rows[0].querySelector('td')!).whiteSpace).toBe('nowrap')
-    expect(getComputedStyle(viewport).height).toBe('430px')
+    expect(getComputedStyle(viewport).height).toBe('80vh')
     expect(getComputedStyle(viewport).overflow).toBe('auto')
     expect(getComputedStyle(firstHeader).position).toBe('sticky')
     expect(getComputedStyle(firstHeader).backgroundColor).toBe('rgb(255, 255, 255)')
@@ -200,7 +200,7 @@ describe('long-read tandem-repeat allele index', () => {
     })
     expect(container.querySelectorAll('tbody tr')).toHaveLength(584)
     expect(screen.getByTitle(`${sourceVariantId}~584`).textContent).toContain('ALT 584')
-    expect(getComputedStyle(screen.getByTestId('lr-tr-allele-table-viewport')).height).toBe('430px')
+    expect(getComputedStyle(screen.getByTestId('lr-tr-allele-table-viewport')).height).toBe('80vh')
   })
 
   test('scrolls, focuses, and highlights a deep-linked exact allele near the end', () => {

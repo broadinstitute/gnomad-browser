@@ -31,7 +31,7 @@ const HeaderSummary = styled.div`
 
 const AlleleTableViewport = styled.div`
   overflow: auto;
-  height: 430px;
+  height: 80vh;
   border: 1px solid #ddd;
   border-radius: 3px;
 `
