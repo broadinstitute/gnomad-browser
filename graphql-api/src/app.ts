@@ -11,12 +11,17 @@ import { requestStore } from './request-context'
 import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
 
-// Extract the trace ID from W3C or GCP trace context.
+// Extract the original trace ID from the request for Node's logs.
+// NGINX independently extracts the same ID for its own logs, so both logs
+// can be correlated to the original request. Prefer W3C Trace Context and
+// fall back to Google's legacy X-Cloud-Trace-Context header.
 const getGcpTraceId = (request: any) => {
   // Prefer W3C Trace Context.
   const traceParent = request.get('traceparent')
 
   if (traceParent) {
+    // Matches: <2 hex>-<32 hex>-<16 hex>-<2 hex>.
+    // Capture group 1 (inside parentheses) is the 32-character trace ID.
     const match = traceParent.match(
       /^[\da-f]{2}-([\da-f]{32})-[\da-f]{16}-[\da-f]{2}$/i
     )
@@ -27,6 +32,8 @@ const getGcpTraceId = (request: any) => {
   }
 
   // Fall back to Google's legacy trace context header.
+  // Matches: <32 hex> followed by "/" or the end of the string.
+  // Capture group 1 (inside parentheses) is the 32-character trace ID.
   const match = request.get('X-Cloud-Trace-Context')?.match(/^([\da-f]{32})(?:\/|$)/i)
   return match?.[1]
 }
