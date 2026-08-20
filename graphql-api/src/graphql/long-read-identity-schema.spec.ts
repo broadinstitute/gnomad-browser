@@ -17,8 +17,36 @@ const longReadTrLocusQuery = `
       allele: $allele
     ) {
       id source_trid chrom source_run_id total_alleles selected_allele_valid
+      exact_alt_count exact_alt_count_complete exact_alt_count_unavailable_reason
+      delta_min delta_max delta_unavailable_reason called_allele_count called_sample_count
+      sequences_available sequences_unavailable_reason
+      component_measurement_available component_measurement_unavailable_reason
+      region { chrom start0 end0 size }
       components { chrom start0 end0 motif }
-      source_records { source_variant_id alt_count non_reference_ac an non_reference_af }
+      source_records {
+        source_variant_id task_id attempt_id alt_count non_reference_ac an non_reference_af
+      }
+      whole_record_allele_landscape {
+        status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
+        exact_alt_count stratified_available stratified_unavailable_reason ancestry_groups sexes
+        bins { delta called_alleles exact_alt_count allele_ids stacks { ancestry_group sex called_alleles } }
+        purity_points { allele_id delta motif_purity called_alleles }
+        purity_available purity_unavailable_reason
+      }
+      whole_record_genotype_landscape {
+        status reason_code unit reference_allele_id called_samples called_alleles ancestry_groups sexes
+        cells {
+          shorter_delta longer_delta people
+          pairs {
+            shorter_allele_id longer_allele_id ancestry_group sex people phased_people unphased_people
+          }
+        }
+      }
+      selected_allele {
+        variant_id source_variant_id alt_index alt_count ref alt length motif_purity motif_purity_source
+        decomposition_status decomposition_reason rsids filters major_consequence cadd_phred phylop
+        source_release source_run_id freq { all { ac an af } populations { id ac an af } }
+      }
       repeat_count_plots {
         status reason_code unit repeat_unit max_repunits
         identity {

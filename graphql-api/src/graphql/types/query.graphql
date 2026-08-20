@@ -56,7 +56,7 @@ type Query {
     first: Int = 50
     after: String
     allele: String
-  ): LongReadTandemRepeatLocus @cost(value: 2)
+  ): LongReadTandemRepeatLocus @cost(value: 10)
 
   meta: BrowserMetadata!
 }

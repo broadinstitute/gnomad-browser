@@ -5,12 +5,21 @@ type LongReadTrLocusComponent {
   motif: String!
 }
 
+type LongReadTrLocusRegion {
+  chrom: String!
+  start0: Int!
+  end0: Int!
+  size: Int!
+}
+
 type LongReadTrSourceRecord {
   record_index: Int!
   source_variant_id: String!
+  task_id: String
+  attempt_id: String
   position: Int!
   alt_count: Int!
-  ref: String!
+  ref: String
   non_reference_ac: Int!
   an: Int!
   non_reference_af: Float!
@@ -18,7 +27,23 @@ type LongReadTrSourceRecord {
   region: String
 }
 
+# Compact exact-ALT index node. Full REF/ALT sequence is intentionally only
+# returned by LongReadTandemRepeatLocus.selected_allele.
 type LongReadTrAllele {
+  variant_id: String!
+  source_variant_id: String!
+  alt_index: Int!
+  alt_count: Int!
+  ref: String
+  alt: String
+  length: Int
+  repeat_count: Float
+  repeat_count_source: String
+  motif_purity: Float
+  freq: LongReadVariantFrequencies!
+}
+
+type LongReadTrSelectedAllele {
   variant_id: String!
   source_variant_id: String!
   alt_index: Int!
@@ -29,7 +54,20 @@ type LongReadTrAllele {
   repeat_count: Float
   repeat_count_source: String
   motif_purity: Float
+  motif_purity_source: String
+  decomposition_status: String!
+  decomposition_reason: String!
   freq: LongReadVariantFrequencies!
+  rsids: [String!]!
+  filters: [String!]!
+  major_consequence: String
+  cadd_phred: Float
+  phylop: Float
+  short_read_match_id: String
+  short_read_match_type: String
+  short_read_match_source: String
+  source_release: String!
+  source_run_id: String!
 }
 
 type LongReadTrPageInfo {
@@ -101,11 +139,89 @@ type LongReadTrRepeatCountPlots {
   max_repunits: Float
 }
 
+enum LongReadTrDataStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum LongReadTrWholeRecordUnit {
+  WHOLE_RECORD_DELTA_BP
+}
+
+type LongReadTrAlleleStack {
+  ancestry_group: String
+  sex: String
+  called_alleles: Int!
+}
+
+type LongReadTrAlleleBin {
+  delta: Int!
+  called_alleles: Int!
+  exact_alt_count: Int!
+  allele_ids: [String!]!
+  stacks: [LongReadTrAlleleStack!]!
+}
+
+type LongReadTrPurityPoint {
+  allele_id: String!
+  delta: Int!
+  motif_purity: Float!
+  called_alleles: Int!
+}
+
+type LongReadTrWholeRecordAlleleLandscape {
+  status: LongReadTrDataStatus!
+  reason_code: String
+  unit: LongReadTrWholeRecordUnit!
+  called_alleles: Int
+  non_reference_called_alleles: Int
+  reference_called_alleles: Int
+  exact_alt_count: Int
+  stratified_available: Boolean
+  stratified_unavailable_reason: String
+  ancestry_groups: [String!]
+  sexes: [String!]
+  bins: [LongReadTrAlleleBin!]
+  purity_points: [LongReadTrPurityPoint!]
+  purity_available: Boolean
+  purity_unavailable_reason: String
+}
+
+type LongReadTrGenotypePair {
+  shorter_allele_id: String!
+  longer_allele_id: String!
+  ancestry_group: String!
+  sex: String!
+  people: Int!
+  phased_people: Int!
+  unphased_people: Int!
+}
+
+type LongReadTrGenotypeCell {
+  shorter_delta: Int!
+  longer_delta: Int!
+  people: Int!
+  pairs: [LongReadTrGenotypePair!]!
+}
+
+type LongReadTrWholeRecordGenotypeLandscape {
+  status: LongReadTrDataStatus!
+  reason_code: String
+  unit: LongReadTrWholeRecordUnit!
+  reference_allele_id: String
+  called_samples: Int
+  called_alleles: Int
+  ancestry_groups: [String!]
+  sexes: [String!]
+  cells: [LongReadTrGenotypeCell!]
+}
+
 type LongReadTandemRepeatLocus {
   id: String!
   source_trid: String!
   reference_genome: ReferenceGenomeId!
   chrom: String!
+  region: LongReadTrLocusRegion!
   components: [LongReadTrLocusComponent!]!
   motifs: [String!]!
   structure: String
@@ -114,8 +230,23 @@ type LongReadTandemRepeatLocus {
   source_run_id: String!
   source_records: [LongReadTrSourceRecord!]!
   total_alleles: Int!
+  exact_alt_count: Int!
+  exact_alt_count_complete: Boolean!
+  exact_alt_count_unavailable_reason: String
+  delta_min: Int
+  delta_max: Int
+  delta_unavailable_reason: String
+  called_allele_count: Int
+  called_sample_count: Int
   unique_carrier_count: Int
+  sequences_available: Boolean!
+  sequences_unavailable_reason: String
   selected_allele_valid: Boolean
+  selected_allele: LongReadTrSelectedAllele
+  whole_record_allele_landscape: LongReadTrWholeRecordAlleleLandscape!
+  whole_record_genotype_landscape: LongReadTrWholeRecordGenotypeLandscape!
+  component_measurement_available: Boolean!
+  component_measurement_unavailable_reason: String
   short_read_matches: [LongReadTrCatalogMatch!]!
   repeat_count_plots: LongReadTrRepeatCountPlots!
   alleles: LongReadTrAlleleConnection!
