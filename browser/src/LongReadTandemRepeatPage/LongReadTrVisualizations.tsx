@@ -365,7 +365,7 @@ const PurityScatter = ({
   return (
     <>
       <div
-        role="img"
+        role="group"
         aria-label={`${points.length} exact alleles plotted by whole-record length difference and source purity`}
         style={{
           position: 'relative',
@@ -674,6 +674,10 @@ const HeatGrid = styled.div<{ columns: number }>`
   min-width: ${(props) => Math.max(300, props.columns * 34)}px;
 `
 
+const HeatRow = styled.div`
+  display: contents;
+`
+
 const HeatCellButton = styled.button<{ intensity: number; selected: boolean }>`
   aspect-ratio: 1 / 1;
   border: ${(props) => (props.selected ? '3px solid #e9781c' : '1px solid #fff')};
@@ -764,32 +768,34 @@ export const WholeRecordGenotypeLandscape = ({
         <PlotCard>
           <div style={{ overflowX: 'auto' }} role="grid" aria-label="Whole-record genotype heatmap">
             <HeatGrid columns={Math.max(1, values.length)}>
-              {values.flatMap((shorter) =>
-                values.map((longer) => {
-                  const cell = byCoordinate.get(`${shorter}/${longer}`)
-                  if (!cell) return <span key={`${shorter}/${longer}`} aria-hidden="true" />
-                  const key = keyFor(cell)
-                  return (
-                    <HeatCellButton
-                      key={key}
-                      type="button"
-                      role="gridcell"
-                      intensity={Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)}
-                      selected={key === keyFor(selectedCell)}
-                      aria-selected={key === keyFor(selectedCell)}
-                      aria-label={`${signed(longer)} bp longer, ${signed(shorter)} bp shorter: ${
-                        cell.selectedPeople
-                      } people`}
-                      title={`${signed(longer)} bp × ${signed(shorter)} bp: ${
-                        cell.selectedPeople
-                      } people`}
-                      onClick={() => setSelectedKey(key)}
-                    >
-                      {cell.selectedPeople}
-                    </HeatCellButton>
-                  )
-                })
-              )}
+              {values.map((shorter) => (
+                <HeatRow key={shorter} role="row">
+                  {values.map((longer) => {
+                    const cell = byCoordinate.get(`${shorter}/${longer}`)
+                    if (!cell) return <span key={`${shorter}/${longer}`} aria-hidden="true" />
+                    const key = keyFor(cell)
+                    return (
+                      <HeatCellButton
+                        key={key}
+                        type="button"
+                        role="gridcell"
+                        intensity={Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)}
+                        selected={key === keyFor(selectedCell)}
+                        aria-selected={key === keyFor(selectedCell)}
+                        aria-label={`${signed(longer)} bp longer, ${signed(shorter)} bp shorter: ${
+                          cell.selectedPeople
+                        } people`}
+                        title={`${signed(longer)} bp × ${signed(shorter)} bp: ${
+                          cell.selectedPeople
+                        } people`}
+                        onClick={() => setSelectedKey(key)}
+                      >
+                        {cell.selectedPeople}
+                      </HeatCellButton>
+                    )
+                  })}
+                </HeatRow>
+              ))}
             </HeatGrid>
           </div>
           <p>
@@ -907,6 +913,7 @@ const ExactAlleleIndexRow = ({
       selected={allele.variant_id === data.selectedAllele}
       role="row"
       aria-selected={allele.variant_id === data.selectedAllele}
+      aria-rowindex={index + 2}
       title={allele.variant_id}
     >
       <span role="cell">
@@ -946,7 +953,7 @@ export const ExactAlleleIndex = ({
         aria-rowcount={alleles.length + 1}
         style={{ overflowX: 'auto', border: '1px solid #ddd' }}
       >
-        <IndexHeader role="row">
+        <IndexHeader role="row" aria-rowindex={1}>
           <span role="columnheader">Allele</span>
           <span role="columnheader">Δ length</span>
           <span role="columnheader">Purity</span>

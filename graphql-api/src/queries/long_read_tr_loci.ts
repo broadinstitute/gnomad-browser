@@ -190,25 +190,60 @@ export const buildWholeRecordAlleleLandscape = ({
   const stackCounts = new Map<string, number>()
   const ancestryGroups = new Set<string>()
   const sexes = new Set<string>()
+  const alleleByKey = new Map(
+    alleles.map((allele) => [compactAlleleKey(allele.source_variant_id, allele.alt_index), allele])
+  )
+  const seenFrequencyRows = new Set<string>()
+  const stratumAn = new Map<string, number>()
+  const stratumAc = new Map<string, number>()
+  let malformedStratifiedFrequencies = false
   if (!frequencyRowsTruncated) {
     for (const row of frequencyRows) {
       const parsedDivision = parseDivision(row.division)
       const altIndex = integer(row.alt_index)
       const ac = integer(row.ac)
-      const key = compactAlleleKey(String(row.source_variant_id || ''), altIndex || 0)
-      const allele = alleles.find(
-        (candidate) => compactAlleleKey(candidate.source_variant_id, candidate.alt_index) === key
-      )
-      if (parsedDivision && allele && ac != null && ac >= 0) {
-        if (parsedDivision.ancestry_group) ancestryGroups.add(parsedDivision.ancestry_group)
-        if (parsedDivision.sex) sexes.add(parsedDivision.sex)
-        const stackKey = [
-          allele.allele_length,
-          parsedDivision.ancestry_group || '',
-          parsedDivision.sex || '',
-        ].join('\u0000')
-        stackCounts.set(stackKey, (stackCounts.get(stackKey) || 0) + ac)
+      const an = integer(row.an)
+      const af = finiteNumber(row.af)
+      const alleleKey = compactAlleleKey(String(row.source_variant_id || ''), altIndex || 0)
+      const allele = alleleByKey.get(alleleKey)
+      const division = String(row.division || '')
+      const frequencyKey = `${alleleKey}\u0000${division}`
+      if (
+        !parsedDivision ||
+        !allele ||
+        ac == null ||
+        ac < 0 ||
+        an == null ||
+        an < 0 ||
+        ac > an ||
+        af == null ||
+        af < 0 ||
+        af > 1 ||
+        seenFrequencyRows.has(frequencyKey) ||
+        (stratumAn.has(division) && stratumAn.get(division) !== an)
+      ) {
+        malformedStratifiedFrequencies = true
+        break
       }
+      seenFrequencyRows.add(frequencyKey)
+      stratumAn.set(division, an)
+      stratumAc.set(division, (stratumAc.get(division) || 0) + ac)
+      if (parsedDivision.ancestry_group) ancestryGroups.add(parsedDivision.ancestry_group)
+      if (parsedDivision.sex) sexes.add(parsedDivision.sex)
+      const stackKey = [
+        allele.allele_length,
+        parsedDivision.ancestry_group || '',
+        parsedDivision.sex || '',
+      ].join('\u0000')
+      stackCounts.set(stackKey, (stackCounts.get(stackKey) || 0) + ac)
+    }
+    if ([...stratumAc].some(([division, ac]) => ac > (stratumAn.get(division) ?? -1))) {
+      malformedStratifiedFrequencies = true
+    }
+    if (malformedStratifiedFrequencies) {
+      stackCounts.clear()
+      ancestryGroups.clear()
+      sexes.clear()
     }
   }
 
@@ -255,9 +290,12 @@ export const buildWholeRecordAlleleLandscape = ({
         ]
   })
 
-  const stratifiedAvailable = !frequencyRowsTruncated && frequencyRows.length > 0
+  const stratifiedAvailable =
+    !frequencyRowsTruncated && !malformedStratifiedFrequencies && frequencyRows.length > 0
   let stratifiedUnavailableReason = null
   if (frequencyRowsTruncated) stratifiedUnavailableReason = 'FREQUENCY_ROW_BOUND_EXCEEDED'
+  else if (malformedStratifiedFrequencies)
+    stratifiedUnavailableReason = 'MALFORMED_STRATIFIED_FREQUENCIES'
   else if (!stratifiedAvailable) stratifiedUnavailableReason = 'NO_STRATIFIED_FREQUENCIES'
   const response = {
     status: 'AVAILABLE',
@@ -454,24 +492,32 @@ const fetchLongReadTrLocusUncached = async ({
 
   const summaryRows = await queryRows(
     `
-      SELECT task_id, attempt_id, position, source_variant_id, ref_allele, alts, ac, an, af,
-        allele_lengths, source_info_json
+      SELECT task_id, attempt_id, position, source_variant_id, length(alts) AS alt_count,
+        ac, an, af, source_info_json
       FROM lr_y1_summaries
       WHERE run_id = {runId:String} AND release = 'y1'
         AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
         AND chrom = {chrom:String} AND allele_type = 'trv'
         AND JSONExtractString(source_info_json, 'TRID') = {sourceTrid:String}
       ORDER BY position, source_variant_id
+      LIMIT {limit:UInt16}
     `,
-    { runId: source.run_id, cohort, chrom: source.chrom, sourceTrid: locus.sourceTrid }
+    {
+      runId: source.run_id,
+      cohort,
+      chrom: source.chrom,
+      sourceTrid: locus.sourceTrid,
+      limit: MAX_TR_LOCUS_PAGE_SIZE + 1,
+    }
   )
   if (!summaryRows.length) return null
+  if (summaryRows.length > MAX_TR_LOCUS_PAGE_SIZE) throw new Error('TR_LOCUS_INVARIANT')
 
   const summaries = summaryRows.map((row) => {
     const info = sourceInfo(row)
     const parsed = parseTrLocusId(String(info.TRID || ''))
     if (!parsed || !exactComponentsEqual(parsed, locus)) throw new Error('TR_LOCUS_INVARIANT')
-    const altCount = Array.isArray(row.alts) ? row.alts.length : 0
+    const altCount = integer(row.alt_count) || 0
     if (!altCount) throw new Error('TR_LOCUS_INVARIANT')
     return { row, info, parsed, alt_count: altCount, source_variant_id: row.source_variant_id }
   })
@@ -655,8 +701,8 @@ const fetchLongReadTrLocusUncached = async ({
   let selectedAlleleValid: boolean | null = null
   if (!after && selectedAllele) {
     const selected = cursorForSelectedAllelePage(selectedAllele, sourceRecords, first)
-    cursor = selected.cursor
-    selectedAlleleValid = selected.valid && !completenessReason
+    if (!completenessReason) cursor = selected.cursor
+    selectedAlleleValid = selected.valid
   }
   const pageStart = pageStartForCursor(cursor, completeAlleles)
   const pageRows = completeAlleles.slice(pageStart, pageStart + first)
@@ -686,7 +732,7 @@ const fetchLongReadTrLocusUncached = async ({
   const finalAllele = alleles[alleles.length - 1]
 
   let selectedAlleleDetail = null
-  if (selectedAllele && selectedAlleleValid) {
+  if (selectedAllele && selectedAlleleValid && !completenessReason) {
     const match = /^(.*)~([1-9][0-9]*)$/.exec(selectedAllele)!
     const selectedRows = await queryRows(
       `

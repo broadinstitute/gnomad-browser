@@ -371,6 +371,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(detail).getByText(/do not assign tokens to source-coordinate components/)
     ).not.toBeNull()
     expect(within(detail).getByLabelText('Selected ALT motif structure grid')).not.toBeNull()
+    expect(
+      screen.getByRole('group', {
+        name: /exact alleles plotted by whole-record length difference and source purity/,
+      })
+    ).not.toBeNull()
   })
 
   test('distinguishes reference identity from a zero-delta exact ALT in genotype pair detail', () => {
@@ -383,9 +388,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
       )
     ).not.toBeNull()
     expect(screen.getAllByRole('link', { name: 'ALT 1' }).length).toBeGreaterThan(0)
-    expect(
-      screen.getByRole('gridcell', { name: '0 bp longer, 0 bp shorter: 20 people' })
-    ).not.toBeNull()
+    const zeroDeltaCell = screen.getByRole('gridcell', {
+      name: '0 bp longer, 0 bp shorter: 20 people',
+    })
+    expect(zeroDeltaCell).not.toBeNull()
+    expect(zeroDeltaCell.closest('[role="row"]')).not.toBeNull()
   })
 
   test.each([72, 497])('keeps all %s exact IDs reachable in a virtualized index', (count) => {
@@ -393,7 +400,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByTestId('virtual-exact-index').getAttribute('data-item-count')).toBe(
       String(count)
     )
-    expect(screen.getByTitle(`${sourceVariantId}~${count}`)).not.toBeNull()
+    const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
+    expect(finalRow).not.toBeNull()
+    expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
     expect(
       screen
         .getByRole('table', { name: 'Exact alternate allele index' })
@@ -410,6 +419,20 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     expect(screen.getByRole('alert').textContent).toContain('removed from the URL')
     await waitFor(() => expect(onInvalidSelection).toHaveBeenCalledTimes(1))
+  })
+
+  test('keeps a belonging selection when its bounded detail is unavailable', () => {
+    const onInvalidSelection = jest.fn()
+    renderPage({
+      locus: { ...makeLocus(), selected_allele_valid: true, selected_allele: null },
+      selectedAllele: exactId,
+      onInvalidSelection,
+    })
+    expect(screen.queryByText(/does not belong to this locus or cohort/)).toBeNull()
+    expect(onInvalidSelection).not.toHaveBeenCalled()
+    expect(screen.getByText('Selected exact sequence/detail').nextElementSibling?.textContent).toBe(
+      'Unavailable'
+    )
   })
 
   test('cohort selection delegates push/clear semantics to the container', () => {

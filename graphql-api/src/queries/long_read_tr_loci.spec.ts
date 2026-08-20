@@ -78,12 +78,10 @@ const summary = (altCount: number, an: number) => {
     attempt_id: 'attempt-1',
     position: 3074876,
     source_variant_id: sourceVariantId,
-    ref_allele: 'C'.repeat(164),
-    alts: new Array(altCount).fill('C'),
+    alt_count: altCount,
     ac,
     an,
     af: ac.map((value) => value / an),
-    allele_lengths: new Array(altCount).fill(0),
     source_info_json: JSON.stringify({
       TRID: httSourceTrid,
       MOTIFS: 'CAA,CCG,CCT,CAG,GCC',
@@ -177,6 +175,11 @@ describe('long-read TR locus query contract', () => {
       source: source('hgsvc_hprc', { carriers: true, metadata: true }),
     })
 
+    const summaryRequest = mockQuery.mock.calls[0][0] as any
+    expect(summaryRequest.query).toContain('length(alts) AS alt_count')
+    expect(summaryRequest.query).not.toContain('ref_allele')
+    expect(summaryRequest.query).toContain('LIMIT {limit:UInt16}')
+    expect(summaryRequest.query_params.limit).toBe(MAX_TR_LOCUS_PAGE_SIZE + 1)
     expect(locus).toMatchObject({
       id: httLocusId,
       source_trid: httSourceTrid,
@@ -279,12 +282,15 @@ describe('long-read TR locus query contract', () => {
       id: httLocusId,
       cohort: 'aou',
       first: 600,
+      selectedAllele: `${sourceVariantId}~601`,
       source: source('aou', { carriers: false }),
     })
 
     expect(locus).toMatchObject({
       exact_alt_count: 601,
       exact_alt_count_complete: false,
+      selected_allele_valid: true,
+      selected_allele: null,
       exact_alt_count_unavailable_reason: 'ALT_COUNT_EXCEEDS_600',
       delta_min: null,
       delta_max: null,
@@ -399,6 +405,35 @@ describe('whole-record aggregate integrity', () => {
         }),
       ],
       purity_points: [expect.objectContaining({ allele_id: `${sourceVariantId}~1` })],
+    })
+  })
+
+  test('fails stratified controls closed when stratum counts do not reconcile', () => {
+    const alleles = [
+      { ...compact[0], ac: 1 },
+      { ...compact[0], alt_index: 2, ac: 1 },
+    ]
+    const frequencyRows = alleles.map((allele) => ({
+      source_variant_id: allele.source_variant_id,
+      alt_index: allele.alt_index,
+      division: 'afr_XX',
+      ac: 2,
+      an: 2,
+      af: 1,
+    }))
+    const landscape: any = buildWholeRecordAlleleLandscape({
+      alleles,
+      frequencyRows,
+      sourceRecordCount: 1,
+      purityByAllele: new Map(),
+    })
+    expect(landscape).toMatchObject({
+      status: 'AVAILABLE',
+      stratified_available: false,
+      stratified_unavailable_reason: 'MALFORMED_STRATIFIED_FREQUENCIES',
+      ancestry_groups: [],
+      sexes: [],
+      bins: [expect.objectContaining({ stacks: [] })],
     })
   })
 })

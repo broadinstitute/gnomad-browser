@@ -1284,8 +1284,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           <tbody>
             {(() => {
               // Skip virtualization when the row count is small enough to render all
-              // (e.g. filtered to TR-only). Virtualization with variable-height expanded
-              // rows causes spacer drift since off-screen rows can't be measured.
+              // (for example, after filtering to fixed-height TR locus rows).
               const VIRTUALIZE_THRESHOLD = 200
               const shouldVirtualize = sorted.length >= VIRTUALIZE_THRESHOLD
 

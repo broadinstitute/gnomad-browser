@@ -96,11 +96,10 @@ test.describe('Long Read region page — Summary View', () => {
 // path remains deterministic without replacing the worker implementation.
 const POPULATED_HAPLOTYPE_RESPONSE = {
   variants: {
-    variant_id: [
-      '1-103610000-TRV-AC-6',
-      '1-103610100-A-G',
-      '1-103610200-AC-A',
-    ],
+    variant_id: ['1-103610000-TRV~1', '1-103610100-A-G', '1-103610200-AC-A'],
+    source_variant_id: ['1-103610000-TRV', '1-103610100-A-G', '1-103610200-AC-A'],
+    alt_index: [1, 1, 1],
+    alt_count: [1, 1, 1],
     chrom: ['1', '1', '1'],
     pos: [103610000, 103610100, 103610200],
     end: [103610004, null, 103610201],
@@ -116,18 +115,14 @@ const POPULATED_HAPLOTYPE_RESPONSE = {
     phylop: [null, 1.5, null],
     sv_consequences: [null, null, null],
     dbsnp_id: [null, 'rsContract100', null],
-    tr_id: ['contract-tr-1', null, null],
+    tr_id: ['1-103609999-103610004-AC', null, null],
     tr_motifs: ['AC', null, null],
     gnomad_str: ['contract-str-1', null, null],
     allele_methylation: [null, null, null],
     motif_counts: [[3], null, null],
     allele_purity: [1, null, null],
     short_read_match_id: [null, '1-103610100-A-G', null],
-    populations: [
-      [{ id: 'NFE', af: 0.5 }],
-      [{ id: 'NFE', af: 0.5 }],
-      [{ id: 'AFR', af: 0.5 }],
-    ],
+    populations: [[{ id: 'NFE', af: 0.5 }], [{ id: 'NFE', af: 0.5 }], [{ id: 'AFR', af: 0.5 }]],
   },
   carrier_variant_indices: {
     'contract-alpha:1': [0, 1],
@@ -176,9 +171,10 @@ const POPULATED_HAPLOTYPE_RESPONSE = {
 
 const POPULATED_SUMMARY_VARIANTS = [
   {
-    variant_id: '1-103610000-TRV-AC-6',
+    variant_id: '1-103610000-TRV~1',
     source_variant_id: '1-103610000-TRV',
     alt_index: 1,
+    alt_count: 1,
     lr_cohort: 'hgsvc_hprc',
     chrom: '1',
     pos: 103610000,
@@ -189,6 +185,7 @@ const POPULATED_SUMMARY_VARIANTS = [
     allele_type: 'trv',
     filters: [],
     motifs: ['AC'],
+    tr_locus_id: '1-103609999-103610004-AC',
     rsids: [],
     main_reference_region: { chrom: '1', start: 103610000, stop: 103610004 },
     sv_consequences: [],
@@ -270,10 +267,7 @@ const POPULATED_SUMMARY_VARIANTS = [
   },
 ]
 
-const populatedHaplotypeSlots = [
-  'lr-haplotype-mode-subcontrols',
-  'lr-haplotype-info-slot',
-]
+const populatedHaplotypeSlots = ['lr-haplotype-mode-subcontrols', 'lr-haplotype-info-slot']
 
 const transitionViewports = [
   { name: 'desktop', width: 1440, height: 900 },
@@ -345,8 +339,8 @@ transitionViewports.forEach((viewport) => {
     await page.setViewportSize(viewport)
     await installWorkerReadyGate(page)
 
-    // Eliminate the live API from this contract: the summary payload, sample
-    // metadata, and expanded TR detail all match the held REST fixture below.
+    // Eliminate the live API from this contract: the summary payload and sample
+    // metadata match the held REST fixture below.
     await page.route('**/api/', async (route) => {
       let body: any
       try {
@@ -391,19 +385,6 @@ transitionViewports.forEach((viewport) => {
               max_records: 0,
               reason: 'Deterministic transition fixture has no methylation data',
               identity: null,
-            },
-          },
-        },
-        ExpandedTrDistributions: {
-          data: {
-            long_read_variant: {
-              variant_id: '1-103610000-TRV-AC-6',
-              lr_cohort: 'hgsvc_hprc',
-              motifs: ['AC'],
-              allele_size_distribution: null,
-              max_repunits: null,
-              genotype_distribution: null,
-              main_reference_region: { chrom: '1', start: 103610000, stop: 103610004 },
             },
           },
         },
@@ -516,30 +497,22 @@ transitionViewports.forEach((viewport) => {
     await expectTrHaplotypeSeparation(page)
     await expectNoHorizontalOverflow(page)
 
-    // Selecting and expanding the deterministic TR row installs the persistent
-    // selected-position guide in the populated DeckGL viewport. The selected
-    // row state is its observable trigger; geometry must remain fixed while the
-    // guide and TR-specific content are present.
+    // Selecting the deterministic fixed-height TR locus row installs the persistent
+    // selected-position guide without adding a foldout or changing table geometry.
     const trRow = page.locator('tr[data-position="103610000"]')
-    await expect(trRow).toContainText('1-103610000-TRV-AC-6')
+    await expect(trRow).toContainText('1:103,610,000–103,610,004 · AC')
     await expect(trRow).toContainText('TR')
+    const locusLink = trRow.getByRole('link', { name: /1:103,610,000–103,610,004 · AC/ })
+    await expect(locusLink).toHaveAttribute(
+      'href',
+      '/tandem-repeat/1-103609999-103610004-AC?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc'
+    )
     await trRow.locator('td').nth(1).click()
-    await expect(page.getByText('TR Locus: 1:103610000')).toBeVisible()
-    const motifsLine = page.getByText('Motifs:').locator('..')
-    await expect(motifsLine).toBeVisible()
-    await expect(motifsLine).toContainText('AC')
+    await expect(page.getByText('TR Locus: 1:103610000')).toHaveCount(0)
     const selectedGuideGeometry = await captureLrGeometry(page, viewShell, true)
     const selectedGuideSlots = await captureSlotGeometry(page, populatedHaplotypeSlots)
-    expectStableGeometry(
-      haplotypeReadyGeometry,
-      selectedGuideGeometry,
-      'Selected-position guide and expanded TR'
-    )
-    expectExactSlotGeometry(
-      haplotypeReadySlots,
-      selectedGuideSlots,
-      'selected-position guide and expanded TR'
-    )
+    expectStableGeometry(haplotypeReadyGeometry, selectedGuideGeometry, 'Selected-position guide')
+    expectExactSlotGeometry(haplotypeReadySlots, selectedGuideSlots, 'selected-position guide')
     await expectTrHaplotypeSeparation(page)
     await expectNoHorizontalOverflow(page)
 
@@ -552,7 +525,6 @@ transitionViewports.forEach((viewport) => {
       LongReadVariantsInRegion: 1,
       RegionJoinedPhasedMethylationCapability: 1,
       RegionSampleMetadata: 1,
-      ExpandedTrDistributions: 1,
     })
     const requestsBeforeGrouping = JSON.stringify(requests)
 
@@ -763,10 +735,7 @@ transitionViewports.forEach((viewport) => {
     expect(requests.graphQL.LongReadVariantsInRegion).toBe(2)
     expect(requests.graphQL.LRCoverage).toBe(2)
 
-    const beforeDataset = await captureSlotGeometry(page, [
-      'region-request-shell',
-      ...lrSlots,
-    ])
+    const beforeDataset = await captureSlotGeometry(page, ['region-request-shell', ...lrSlots])
     requestGate = hold(['Region'])
     const shortReadLink = page
       .locator('a[href*="dataset=gnomad_r4&"], a[href$="dataset=gnomad_r4"]')
@@ -780,10 +749,7 @@ transitionViewports.forEach((viewport) => {
     await expect(datasetStatus).toBeFocused()
     await expect(page.getByTestId('region-request-shell')).toHaveAttribute('aria-busy', 'true')
     await expect(page.getByRole('group', { name: 'Long-read cohort:' })).toHaveCount(0)
-    const pendingDataset = await captureSlotGeometry(page, [
-      'region-request-shell',
-      ...lrSlots,
-    ])
+    const pendingDataset = await captureSlotGeometry(page, ['region-request-shell', ...lrSlots])
     expectExactSlotGeometry(beforeDataset, pendingDataset, 'dataset pending')
     expect(requests.graphQL.Region).toBe(2)
     expect(requests.graphQL.VariantInRegion || 0).toBe(0)
