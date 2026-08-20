@@ -1,7 +1,7 @@
 import React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
-import { parseTrLocusId } from '@gnomad/dataset-metadata/longReadTrLocusId'
+import { parseTrLocusId, trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { Page, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
@@ -24,20 +24,84 @@ query ${operationName}(
     first: $first
     allele: $allele
   ) {
-    id motifs lr_cohort source_release source_run_id total_alleles selected_allele_valid
+    id source_trid reference_genome chrom motifs structure lr_cohort source_release source_run_id
+    total_alleles exact_alt_count exact_alt_count_complete exact_alt_count_unavailable_reason
+    delta_min delta_max delta_unavailable_reason called_allele_count called_sample_count
+    unique_carrier_count sequences_available sequences_unavailable_reason selected_allele_valid
+    component_measurement_available component_measurement_unavailable_reason
+    region { chrom start0 end0 size }
     components { chrom start0 end0 motif }
-    source_records { source_variant_id }
-    short_read_matches { id gene_symbol }
+    source_records {
+      record_index source_variant_id task_id attempt_id position alt_count
+      non_reference_ac an non_reference_af source region
+    }
+    short_read_matches { id gene_symbol reference_repeat_unit stripy_id strchive_id }
+    whole_record_allele_landscape {
+      status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
+      exact_alt_count stratified_available stratified_unavailable_reason ancestry_groups sexes
+      bins {
+        delta called_alleles exact_alt_count allele_ids
+        stacks { ancestry_group sex called_alleles }
+      }
+      purity_points { allele_id delta motif_purity called_alleles }
+      purity_available purity_unavailable_reason
+    }
+    whole_record_genotype_landscape {
+      status reason_code unit reference_allele_id called_samples called_alleles ancestry_groups sexes
+      cells {
+        shorter_delta longer_delta people
+        pairs {
+          shorter_allele_id longer_allele_id ancestry_group sex people phased_people unphased_people
+        }
+      }
+    }
+    selected_allele {
+      variant_id source_variant_id alt_index alt_count ref alt length repeat_count repeat_count_source
+      motif_purity motif_purity_source decomposition_status decomposition_reason
+      rsids filters major_consequence cadd_phred phylop
+      short_read_match_id short_read_match_type short_read_match_source
+      source_release source_run_id
+      freq { all { ac an af } populations { id ac an af } }
+    }
+    repeat_count_plots {
+      status reason_code unit repeat_unit max_repunits
+      allele_size_distribution {
+        ancestry_group sex repunit distribution { repunit_count frequency }
+      }
+      genotype_distribution {
+        ancestry_group sex short_allele_repunit long_allele_repunit
+        distribution { short_allele_repunit_count long_allele_repunit_count frequency }
+      }
+    }
     alleles {
       nodes {
-        variant_id alt_index length repeat_count repeat_count_source
-        freq { all { ac an af } }
+        variant_id source_variant_id alt_index alt_count length repeat_count repeat_count_source
+        motif_purity freq { all { ac an af } populations { id ac an af } }
       }
       page_info { has_next_page }
     }
   }
 }
 `
+
+export const searchWithSelectedAllele = (search: string, alleleId: string) => {
+  const params = new URLSearchParams(search)
+  params.set('allele', alleleId)
+  return params
+}
+
+export const searchForCohort = (search: string, cohort: LongReadCohort) => {
+  const params = new URLSearchParams(search)
+  params.set('lr_cohort', cohort)
+  params.delete('allele')
+  return params
+}
+
+export const searchWithoutSelectedAllele = (search: string) => {
+  const params = new URLSearchParams(search)
+  params.delete('allele')
+  return params
+}
 
 type Props = {
   datasetId: DatasetId
@@ -66,24 +130,25 @@ const LongReadTandemRepeatPageContainer = ({
     )
   }
 
-  if (parsed.canonicalId !== locusId) {
-    return null
-  }
+  if (parsed.canonicalId !== locusId) return null
 
-  const changeCohort = (cohort: LongReadCohort) => {
-    const params = new URLSearchParams(location.search)
-    params.set('dataset', 'gnomad_r4_lr')
-    params.set('lr_cohort', cohort)
-    params.delete('allele')
-    history.push(`${location.pathname}?${params}`)
-  }
+  const envelope = trLocusDisplayEnvelope(parsed)
+  const locationWithParams = (params: URLSearchParams) =>
+    `${location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
+  const hrefForAllele = (alleleId: string) =>
+    locationWithParams(searchWithSelectedAllele(location.search, alleleId))
+  const selectAllele = (alleleId: string) => history.push(hrefForAllele(alleleId))
+  const changeCohort = (cohort: LongReadCohort) =>
+    history.push(locationWithParams(searchForCohort(location.search, cohort)))
+  const removeInvalidSelection = () =>
+    history.replace(locationWithParams(searchWithoutSelectedAllele(location.search)))
 
   return (
     <Page>
       <DocumentTitle
-        title={`Tandem-repeat locus ${parsed.components[0].chrom}:${(
-          parsed.components[0].start0 + 1
-        ).toLocaleString()}`}
+        title={`Tandem repeat at chr${
+          envelope.chrom
+        }:${envelope.start1.toLocaleString()}–${envelope.end1.toLocaleString()} (GRCh38)`}
       />
       <Query
         operationName={operationName}
@@ -105,6 +170,8 @@ const LongReadTandemRepeatPageContainer = ({
             locus={data.long_read_tandem_repeat_locus}
             selectedAllele={selectedAllele}
             onCohortChange={changeCohort}
+            onInvalidSelection={removeInvalidSelection}
+            navigation={{ hrefForAllele, onSelectAllele: selectAllele }}
           />
         )}
       </Query>

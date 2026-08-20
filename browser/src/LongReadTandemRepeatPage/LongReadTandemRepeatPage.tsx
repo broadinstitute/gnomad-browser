@@ -1,168 +1,172 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { PageHeading, Select } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
-import {
-  TrLocusComponent,
-  trLocusDisplayEnvelope,
-} from '@gnomad/dataset-metadata/longReadTrLocusId'
+import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
+import AttributeList, { AttributeListItem } from '../AttributeList'
 import Link from '../Link'
-import { LongReadCohort, longReadVariantUrl } from '../LongReadVariantPage/longReadCohort'
+import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
+import {
+  LongReadAlleleSizeDistributionSection,
+  LongReadGenotypeDistributionSection,
+} from '../LongReadVariantPage/LongReadSTRDistributionSections'
+import {
+  ExactAlleleIndex,
+  LongReadTrComponentTrack,
+  Panel,
+  SelectedExactAlleleDetail,
+  WholeRecordAlleleLandscape,
+  WholeRecordGenotypeLandscape,
+  signed,
+  unavailableReason,
+} from './LongReadTrVisualizations'
+import { AlleleNavigation, LongReadTrLocus } from './types'
 
 const Header = styled.header`
-  margin-bottom: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2em;
+  margin-bottom: 1.25em;
 
   h1 {
     margin-bottom: 0.25em;
   }
+
+  @media (max-width: 700px) {
+    display: block;
+  }
 `
 
-const HeaderSummary = styled.div`
+const Eyebrow = styled.div`
+  color: #0f4f81;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+`
+
+const CohortControl = styled.label`
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5em;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 0.25em;
+  font-weight: bold;
+`
 
-  label {
-    margin-left: 0.5em;
+const SourceAttributes = styled.div`
+  margin-top: 1em;
+`
+
+const AvailabilityList = styled.dl`
+  margin: 0;
+
+  dt,
+  dd {
+    display: inline;
+    line-height: 1.9;
+  }
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin-left: 0.5ch;
+  }
+
+  dd::after {
+    display: block;
+    content: '';
   }
 `
 
-const AlleleTableViewport = styled.div`
-  overflow: auto;
-  height: 80vh;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-`
-
-const OneLineTable = styled.table`
-  width: 100%;
-  min-width: 650px;
-  border-collapse: collapse;
-  table-layout: fixed;
-
-  th,
-  td {
-    overflow: hidden;
-    height: 36px;
-    padding: 0 0.6em;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  thead th {
-    position: sticky;
-    z-index: 1;
-    top: 0;
-    background: #fff;
-  }
-
-  tbody tr:hover {
-    background: #f0f7ff;
-  }
-
-  th:first-child,
-  td:first-child {
-    width: 16%;
-  }
-
-  th:last-child,
-  td:last-child {
-    width: 18%;
-  }
-
-  tr[aria-selected='true'] {
-    background: #fff3cd;
-    outline: 2px solid #428bca;
-    outline-offset: -2px;
-  }
-`
-
-const KnownLocusLink = styled.p`
-  margin: 1.25em 0;
-`
-
-type Frequency = { ac: number; an: number; af: number }
-type Allele = {
-  variant_id: string
-  alt_index: number
-  length: number | null
-  repeat_count: number | null
-  repeat_count_source: string | null
-  freq: { all: Frequency }
-}
-
-type Locus = {
-  id: string
-  motifs: string[]
-  lr_cohort: LongReadCohort
-  source_release: string
-  source_run_id: string
-  total_alleles: number
-  selected_allele_valid: boolean | null
-  components: TrLocusComponent[]
-  source_records: { source_variant_id: string }[]
-  short_read_matches: { id: string; gene_symbol: string | null }[]
-  alleles: {
-    nodes: Allele[]
-    page_info: { has_next_page: boolean }
-  }
-}
+const cohortName = (cohort: LongReadCohort) =>
+  cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
 
 const LongReadTandemRepeatPage = ({
   datasetId: _datasetId,
   locus,
   selectedAllele,
   onCohortChange,
+  onInvalidSelection,
+  navigation,
 }: {
   datasetId: DatasetId
-  locus: Locus | null
+  locus: LongReadTrLocus | null
   selectedAllele?: string
   onCohortChange: (cohort: LongReadCohort) => void
+  onInvalidSelection: () => void
+  navigation: AlleleNavigation
 }) => {
-  const selectedRow = useRef<HTMLTableRowElement>(null)
+  const detail = useRef<HTMLElement>(null)
+  const invalidHandled = useRef<string | null>(null)
+
   useEffect(() => {
-    const row = selectedRow.current
-    if (!row) return
-    row.focus()
-    row.scrollIntoView?.({ block: 'center' })
-  }, [locus?.id, locus?.lr_cohort, selectedAllele])
+    if (
+      selectedAllele &&
+      locus?.selected_allele_valid === false &&
+      invalidHandled.current !== selectedAllele
+    ) {
+      invalidHandled.current = selectedAllele
+      onInvalidSelection()
+    }
+  }, [locus?.selected_allele_valid, onInvalidSelection, selectedAllele])
+
+  useEffect(() => {
+    if (!selectedAllele || !locus?.selected_allele || !detail.current) return
+    detail.current.focus()
+    detail.current.scrollIntoView?.({ block: 'start' })
+  }, [locus?.id, locus?.lr_cohort, locus?.selected_allele, selectedAllele])
+
+  const alleleById = useMemo(
+    () => new Map((locus?.alleles.nodes || []).map((allele) => [allele.variant_id, allele])),
+    [locus?.alleles.nodes]
+  )
 
   if (!locus) return <p role="alert">No exact tandem-repeat locus was found in this cohort.</p>
 
   const envelope = trLocusDisplayEnvelope({
     components: locus.components,
     canonicalId: locus.id,
-    sourceTrid: locus.id,
+    sourceTrid: locus.source_trid,
   })
-  const motifSummary = locus.motifs.join(' + ') || 'Motif unavailable'
+  const orderedMotifs = locus.components.map((component) => component.motif)
+  const vocabulary = [...new Set(orderedMotifs)]
   const knownLocus = locus.short_read_matches[0]
+  const deltaRange =
+    locus.delta_min == null || locus.delta_max == null
+      ? `Unavailable: ${unavailableReason(locus.delta_unavailable_reason)}`
+      : `${signed(locus.delta_min)} to ${signed(locus.delta_max)} bp`
+  const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
+  let selectedDetailAvailability = 'Select an exact ALT'
+  if (selectedAllele)
+    selectedDetailAvailability = locus.selected_allele ? 'Available' : 'Unavailable'
 
   return (
     <>
       {selectedAllele && locus.selected_allele_valid === false && (
         <p role="alert">
-          The requested exact allele does not belong to this locus. Showing the allele index.
+          The requested exact allele does not belong to this locus or cohort. It has been removed
+          from the URL; the locus and other query settings are unchanged.
         </p>
       )}
 
       <Header>
-        <PageHeading>
-          Tandem repeat at chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
-          {envelope.end1.toLocaleString()}
-        </PageHeading>
-        <HeaderSummary aria-label="Locus summary">
-          <strong>{motifSummary}</strong>
-          <span aria-hidden="true">·</span>
-          <span>{locus.total_alleles.toLocaleString()} alternate alleles</span>
-          <span aria-hidden="true">·</span>
-          <label htmlFor="lr-tr-cohort">Cohort</label>
+        <div>
+          <Eyebrow>Long-read tandem repeat</Eyebrow>
+          <PageHeading>
+            Tandem repeat at chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
+            {envelope.end1.toLocaleString()}
+          </PageHeading>
+          <p>GRCh38 · ordered motifs {orderedMotifs.join(' + ') || 'unavailable'}</p>
+        </div>
+        <CohortControl htmlFor="lr-tr-cohort">
+          Long-read cohort
           <Select
             id="lr-tr-cohort"
-            aria-label="Cohort"
+            aria-label="Long-read cohort"
             value={locus.lr_cohort}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
               onCohortChange(event.target.value as LongReadCohort)
@@ -171,80 +175,221 @@ const LongReadTandemRepeatPage = ({
             <option value="hgsvc_hprc">HGSVC / HPRC</option>
             <option value="aou">All of Us</option>
           </Select>
-        </HeaderSummary>
+        </CohortControl>
       </Header>
 
-      <AlleleTableViewport
-        data-testid="lr-tr-allele-table-viewport"
-        role="region"
-        aria-label="Scrollable alternate allele index"
-        tabIndex={0}
-      >
-        <OneLineTable data-testid="lr-tr-allele-table" aria-label="Alternate allele index">
-          <thead>
-            <tr>
-              <th>Allele</th>
-              <th>Repeat count</th>
-              <th>Δ length</th>
-              <th>AC</th>
-              <th>AN</th>
-              <th>AF</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {locus.alleles.nodes.map((allele) => {
-              const selected = allele.variant_id === selectedAllele
-              return (
-                <tr
-                  key={allele.variant_id}
-                  aria-selected={selected}
-                  ref={selected ? selectedRow : undefined}
-                  tabIndex={selected ? -1 : undefined}
-                  title={allele.variant_id}
-                >
-                  <th scope="row">ALT {allele.alt_index}</th>
-                  <td title={allele.repeat_count_source || 'Repeat count unavailable'}>
-                    {allele.repeat_count == null ? '—' : allele.repeat_count.toLocaleString()}
-                  </td>
-                  <td>
-                    {allele.length == null
-                      ? '—'
-                      : `${allele.length >= 0 ? '+' : ''}${allele.length.toLocaleString()} bp`}
-                  </td>
-                  <td>{allele.freq.all.ac.toLocaleString()}</td>
-                  <td>{allele.freq.all.an.toLocaleString()}</td>
-                  <td>{allele.freq.all.af.toPrecision(4)}</td>
-                  <td>
-                    <Link
-                      to={longReadVariantUrl(allele.variant_id, locus.lr_cohort)}
-                      preserveSelectedDataset={false}
-                    >
-                      View allele
-                    </Link>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </OneLineTable>
-      </AlleleTableViewport>
+      <SourceAttributes>
+        <AttributeList>
+          <AttributeListItem label="Genome build">GRCh38 / hg38</AttributeListItem>
+          <AttributeListItem label="Region">
+            chr{envelope.chrom}:{envelope.start1.toLocaleString()}–{envelope.end1.toLocaleString()}
+          </AttributeListItem>
+          <AttributeListItem label="Region size">
+            {locus.region.size.toLocaleString()} BP
+          </AttributeListItem>
+          <AttributeListItem label="Motif vocabulary">
+            {vocabulary.join(', ') || 'Unavailable'}
+          </AttributeListItem>
+          <AttributeListItem label="Ordered source motifs">
+            {orderedMotifs.join(' + ') || 'Unavailable'}
+          </AttributeListItem>
+          <AttributeListItem label="Cohort">
+            {cohortName(locus.lr_cohort)}
+            {locus.called_sample_count != null &&
+              ` — ${locus.called_sample_count.toLocaleString()} individuals`}
+            {locus.called_allele_count != null &&
+              `; ${locus.called_allele_count.toLocaleString()} called allele copies`}
+          </AttributeListItem>
+          <AttributeListItem label="Observed alleles">
+            {locus.exact_alt_count_complete
+              ? `${locus.exact_alt_count.toLocaleString()} exact ALT sequences; whole-record Δ length ${deltaRange}`
+              : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
+          </AttributeListItem>
+          <AttributeListItem label="Source TRID">
+            <code>{locus.source_trid}</code>
+          </AttributeListItem>
+          <AttributeListItem label="Source records">
+            {locus.source_records.map((record, index) => (
+              <React.Fragment key={record.source_variant_id}>
+                {index > 0 && ', '}
+                <code>{record.source_variant_id}</code> (record {record.record_index};{' '}
+                {record.alt_count.toLocaleString()} ALTs)
+              </React.Fragment>
+            ))}
+          </AttributeListItem>
+          <AttributeListItem label="Data release / source run">
+            {locus.source_release} / <code>{locus.source_run_id}</code>
+          </AttributeListItem>
+          {knownLocus && (
+            <AttributeListItem label="Separate short-read context">
+              <Link to={`/short-tandem-repeat/${knownLocus.id}?dataset=gnomad_r4`}>
+                View {knownLocus.gene_symbol || knownLocus.id} short-read tandem-repeat details
+              </Link>
+            </AttributeListItem>
+          )}
+        </AttributeList>
+      </SourceAttributes>
+
+      <LongReadTrComponentTrack locus={locus} />
+
+      <Panel aria-labelledby="lr-tr-measurement-heading">
+        <h2 id="lr-tr-measurement-heading">Measurement availability</h2>
+        <p>
+          <strong>Whole-record ALT − REF length (bp):</strong>{' '}
+          {locus.whole_record_allele_landscape.status === 'AVAILABLE'
+            ? 'Available'
+            : `Unavailable — ${unavailableReason(locus.whole_record_allele_landscape.reason_code)}`}
+        </p>
+        <p>
+          <strong>Source component copy counts:</strong>{' '}
+          {locus.component_measurement_available
+            ? 'Eligible only through the strict admitted one-component repeat-count data below.'
+            : `Unavailable — ${
+                locus.component_measurement_unavailable_reason ||
+                'whole-record sequence cannot be assigned to source components'
+              }.`}
+        </p>
+      </Panel>
+
+      <WholeRecordAlleleLandscape
+        landscape={locus.whole_record_allele_landscape}
+        alleles={locus.alleles.nodes}
+        selectedAllele={selectedAllele}
+        navigation={navigation}
+      />
+
+      {repeatPlotsAvailable && (
+        <Panel aria-labelledby="lr-tr-simple-measurement-heading">
+          <h2 id="lr-tr-simple-measurement-heading">Admitted simple-locus repeat counts</h2>
+          <p>
+            These plots are available only because every plotted allele/genotype passed the strict
+            one-component exact-mapping checks. Their units are motif repeats, not whole-record bp.
+          </p>
+          <LongReadAlleleSizeDistributionSection
+            variantId={locus.id}
+            alleleSizeDistribution={locus.repeat_count_plots.allele_size_distribution}
+            maxRepunits={locus.repeat_count_plots.max_repunits || 0}
+            repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
+            heading="Allele repeat-count distribution"
+          />
+          <LongReadGenotypeDistributionSection
+            variantId={locus.id}
+            genotypeDistribution={locus.repeat_count_plots.genotype_distribution}
+            repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
+            heading="Genotype repeat-count distribution"
+          />
+        </Panel>
+      )}
+
+      <WholeRecordGenotypeLandscape
+        landscape={locus.whole_record_genotype_landscape}
+        navigation={navigation}
+      />
+
+      <ExactAlleleIndex
+        alleles={locus.alleles.nodes}
+        selectedAllele={selectedAllele}
+        navigation={navigation}
+      />
+
+      {locus.selected_allele && (
+        <SelectedExactAlleleDetail
+          ref={detail}
+          allele={{
+            ...locus.selected_allele,
+            repeat_count:
+              locus.selected_allele.repeat_count ||
+              alleleById.get(locus.selected_allele.variant_id)?.repeat_count ||
+              null,
+            repeat_count_source:
+              locus.selected_allele.repeat_count_source ||
+              alleleById.get(locus.selected_allele.variant_id)?.repeat_count_source ||
+              null,
+            motif_purity:
+              locus.selected_allele.motif_purity ??
+              alleleById.get(locus.selected_allele.variant_id)?.motif_purity ??
+              null,
+          }}
+          motifs={locus.motifs}
+        />
+      )}
 
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (
         <p role="alert">
-          This locus exceeds the safe table limit. Showing a bounded set of{' '}
-          {locus.alleles.nodes.length.toLocaleString()} alternate alleles.
+          This locus exceeds the safe exact-ALT limit. Scientific landscapes are unavailable rather
+          than silently truncated. The response contains{' '}
+          {locus.alleles.nodes.length.toLocaleString()} of {locus.total_alleles.toLocaleString()}{' '}
+          alternate alleles.
         </p>
       )}
 
-      {knownLocus && (
-        <KnownLocusLink>
-          <Link to={`/short-tandem-repeat/${knownLocus.id}?dataset=gnomad_r4`}>
-            View {knownLocus.gene_symbol || knownLocus.id} tandem-repeat details
-          </Link>
-        </KnownLocusLink>
-      )}
+      <Panel aria-labelledby="lr-tr-availability-heading">
+        <h2 id="lr-tr-availability-heading">Data availability</h2>
+        <AvailabilityList>
+          <div>
+            <dt>Exact ALT index</dt>
+            <dd>
+              {locus.exact_alt_count_complete
+                ? `Available (${locus.exact_alt_count.toLocaleString()})`
+                : `Unavailable — ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
+            </dd>
+          </div>
+          <div>
+            <dt>Exact ALT sequences</dt>
+            <dd>
+              {locus.sequences_available
+                ? 'Available on exact selection'
+                : `Unavailable — ${unavailableReason(locus.sequences_unavailable_reason)}`}
+            </dd>
+          </div>
+          <div>
+            <dt>Selected exact sequence/detail</dt>
+            <dd>{selectedDetailAvailability}</dd>
+          </div>
+          <div>
+            <dt>Whole-record allele landscape</dt>
+            <dd>
+              {locus.whole_record_allele_landscape.status === 'AVAILABLE'
+                ? 'Available'
+                : `Unavailable — ${unavailableReason(
+                    locus.whole_record_allele_landscape.reason_code
+                  )}`}
+            </dd>
+          </div>
+          <div>
+            <dt>Source allele purity</dt>
+            <dd>
+              {locus.whole_record_allele_landscape.purity_available
+                ? 'Available where source AP_allele aligns'
+                : `Unavailable — ${unavailableReason(
+                    locus.whole_record_allele_landscape.purity_unavailable_reason
+                  )}`}
+            </dd>
+          </div>
+          <div>
+            <dt>Whole-record genotype landscape</dt>
+            <dd>
+              {locus.whole_record_genotype_landscape.status === 'AVAILABLE'
+                ? 'Available'
+                : `Unavailable — ${unavailableReason(
+                    locus.whole_record_genotype_landscape.reason_code
+                  )}`}
+            </dd>
+          </div>
+          <div>
+            <dt>Component/repeat-count plots</dt>
+            <dd>
+              {repeatPlotsAvailable
+                ? 'Available for this admitted simple locus'
+                : `Unavailable — ${
+                    locus.component_measurement_unavailable_reason ||
+                    unavailableReason(locus.repeat_count_plots.reason_code)
+                  }`}
+            </dd>
+          </div>
+        </AvailabilityList>
+      </Panel>
     </>
   )
 }

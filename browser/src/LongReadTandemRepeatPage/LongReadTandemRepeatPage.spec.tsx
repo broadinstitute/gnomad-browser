@@ -1,12 +1,18 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
+import { Router } from 'react-router-dom'
+import { createMemoryHistory } from 'history'
 
 import LongReadTandemRepeatPage from './LongReadTandemRepeatPage'
-import {
+import LongReadTandemRepeatPageContainer, {
   LONG_READ_TR_ALLELE_INDEX_LIMIT,
   longReadTandemRepeatLocusQuery,
+  searchForCohort,
+  searchWithSelectedAllele,
+  searchWithoutSelectedAllele,
 } from './LongReadTandemRepeatPageContainer'
+import { componentLanes } from './LongReadTrVisualizations'
 
 jest.mock(
   '../Link',
@@ -19,6 +25,30 @@ jest.mock(
       )
 )
 
+jest.mock('../VariantPage/ExactTrAltMotifStructure', () => ({ altAllele }: any) => (
+  <div aria-label="Selected ALT motif structure grid">
+    DP structure for {altAllele.length} bases
+  </div>
+))
+
+jest.mock('../DocumentTitle', () => () => null)
+jest.mock(
+  '../Query',
+  () =>
+    ({ children }: any) =>
+      children({ data: { long_read_tandem_repeat_locus: (global as any).__TR_QUERY_DATA__ } })
+)
+
+jest.mock('react-window', () => ({
+  FixedSizeList: ({ children: Row, itemCount, itemData }: any) => (
+    <div data-testid="virtual-exact-index" data-item-count={itemCount}>
+      {Array.from({ length: itemCount }, (_, index) => (
+        <Row key={index} index={index} style={{ height: 36 }} data={itemData} />
+      ))}
+    </div>
+  ),
+}))
+
 jest.mock('@gnomad/ui', () => ({
   Button: ({ children, ...props }: any) => (
     <button type="button" {...props}>
@@ -28,274 +58,468 @@ jest.mock('@gnomad/ui', () => ({
   Page: ({ children }: any) => <main>{children}</main>,
   PageHeading: ({ children }: any) => <h1>{children}</h1>,
   Select: ({ children, ...props }: any) => <select {...props}>{children}</select>,
+  TooltipAnchor: ({ children }: any) => children,
+  TooltipHint: ({ children }: any) => children,
 }))
 
-const sourceVariantId = 'chr4-39348424-TRV-55'
-const exactAllele = `${sourceVariantId}~7`
+const sourceVariantId = 'chr4-3074876-TRV-164'
+const exactId = `${sourceVariantId}~2`
+const components = [
+  { chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' },
+  { chrom: '4', start0: 3074927, end0: 3074936, motif: 'CAA' },
+  { chrom: '4', start0: 3074936, end0: 3074960, motif: 'CCG' },
+  { chrom: '4', start0: 3074960, end0: 3074984, motif: 'CCT' },
+  { chrom: '4', start0: 3074984, end0: 3075008, motif: 'GCC' },
+  { chrom: '4', start0: 3075008, end0: 3075040, motif: 'CCG' },
+]
+
+const alleleLength = (altIndex: number) => {
+  if (altIndex === 1) return 0
+  if (altIndex === 2) return -6
+  return ((altIndex % 25) - 12) * 3
+}
 
 const makeAllele = (altIndex: number) => ({
   variant_id: `${sourceVariantId}~${altIndex}`,
+  source_variant_id: sourceVariantId,
   alt_index: altIndex,
-  length: altIndex - 12,
-  repeat_count: altIndex + 3,
-  repeat_count_source: 'source_mc_allele',
-  freq: { all: { ac: altIndex, an: 1000, af: altIndex / 1000 } },
+  alt_count: 72,
+  length: alleleLength(altIndex),
+  repeat_count: null,
+  repeat_count_source: null,
+  motif_purity: altIndex === 3 ? null : 0.95 + (altIndex % 10) / 1000,
+  freq: {
+    all: { ac: altIndex === 2 ? 120 : 1, an: 584, af: altIndex === 2 ? 120 / 584 : 1 / 584 },
+    populations: [],
+  },
 })
 
-const locus = {
-  id: '4-39348424-39348479-AAAAG',
-  motifs: ['AAAAG'],
-  lr_cohort: 'hgsvc_hprc' as const,
-  source_release: 'y1',
-  source_run_id: 'run-hgsvc',
-  total_alleles: 200,
-  selected_allele_valid: true,
-  components: [{ chrom: '4', start0: 39348424, end0: 39348479, motif: 'AAAAG' }],
-  source_records: [{ source_variant_id: sourceVariantId }],
-  short_read_matches: [] as { id: string; gene_symbol: string | null }[],
-  alleles: {
-    nodes: [
+const makeLocus = (count = 72) => {
+  const alleles = Array.from({ length: count }, (_, index) => ({
+    ...makeAllele(index + 1),
+    alt_count: count,
+  }))
+  return {
+    id: '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074936-3074960-CCG+4-3074960-3074984-CCT+4-3074984-3075008-GCC+4-3075008-3075040-CCG',
+    source_trid:
+      '4-3074876-3074933-CAG,4-3074927-3074936-CAA,4-3074936-3074960-CCG,4-3074960-3074984-CCT,4-3074984-3075008-GCC,4-3075008-3075040-CCG',
+    reference_genome: 'GRCh38',
+    chrom: '4',
+    region: { chrom: '4', start0: 3074876, end0: 3075040, size: 164 },
+    motifs: ['CAG', 'CAA', 'CCG', 'CCT', 'GCC'],
+    structure: '(CAG)n',
+    lr_cohort: 'hgsvc_hprc' as const,
+    source_release: 'y1',
+    source_run_id: 'run-hgsvc',
+    total_alleles: count,
+    exact_alt_count: count,
+    exact_alt_count_complete: true,
+    exact_alt_count_unavailable_reason: null,
+    delta_min: -24,
+    delta_max: 48,
+    delta_unavailable_reason: null,
+    called_allele_count: 584,
+    called_sample_count: 292,
+    unique_carrier_count: 278,
+    sequences_available: true,
+    sequences_unavailable_reason: null,
+    selected_allele_valid: true,
+    selected_allele: {
+      ...alleles[1],
+      ref: 'ACAGCAG',
+      alt: 'ACAGCAA',
+      motif_purity_source: 'source_ap_allele',
+      decomposition_status: 'UNAVAILABLE_COMPOUND_LOCUS',
+      decomposition_reason:
+        'Observed sequence tokens cannot be assigned to coordinate-defined source components',
+      rsids: ['rs-test'],
+      filters: [],
+      major_consequence: 'intron_variant',
+      cadd_phred: 3.2,
+      phylop: null,
+      short_read_match_id: null,
+      short_read_match_type: null,
+      short_read_match_source: null,
+      source_release: 'y1',
+      source_run_id: 'run-hgsvc',
+    },
+    component_measurement_available: false,
+    component_measurement_unavailable_reason:
+      'Compound loci lack an admitted mapping from whole-record sequence to source components',
+    components,
+    source_records: [
       {
-        variant_id: exactAllele,
-        alt_index: 7,
-        length: -5,
-        repeat_count: 10,
-        repeat_count_source: 'source_mc_allele',
-        freq: { all: { ac: 135, an: 582, af: 0.231959 } },
+        record_index: 1,
+        source_variant_id: sourceVariantId,
+        task_id: 'task',
+        attempt_id: 'attempt',
+        position: 3074877,
+        alt_count: count,
+        ref: 'ACAGCAG',
+        non_reference_ac: 556,
+        an: 584,
+        non_reference_af: 556 / 584,
+        source: 'HGSVC',
+        region: 'HTT',
       },
     ],
-    page_info: { has_next_page: false },
-  },
+    short_read_matches: [{ id: 'HTT', gene_symbol: 'HTT' }],
+    whole_record_allele_landscape: {
+      status: 'AVAILABLE' as const,
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP' as const,
+      called_alleles: 584,
+      non_reference_called_alleles: 556,
+      reference_called_alleles: 28,
+      exact_alt_count: count,
+      stratified_available: true,
+      stratified_unavailable_reason: null,
+      ancestry_groups: ['afr', 'nfe'],
+      sexes: ['XX', 'XY'],
+      bins: [
+        {
+          delta: -6,
+          called_alleles: 134,
+          exact_alt_count: 2,
+          allele_ids: [`${sourceVariantId}~2`, `${sourceVariantId}~3`],
+          stacks: [{ ancestry_group: 'afr', sex: null, called_alleles: 30 }],
+        },
+        {
+          delta: 0,
+          called_alleles: 40,
+          exact_alt_count: 1,
+          allele_ids: [`${sourceVariantId}~1`],
+          stacks: [{ ancestry_group: 'afr', sex: null, called_alleles: 10 }],
+        },
+        {
+          delta: 48,
+          called_alleles: 5,
+          exact_alt_count: 1,
+          allele_ids: [`${sourceVariantId}~4`],
+          stacks: [],
+        },
+      ],
+      purity_points: [
+        { allele_id: `${sourceVariantId}~1`, delta: 0, motif_purity: 0.951, called_alleles: 40 },
+        { allele_id: exactId, delta: -6, motif_purity: 0.952, called_alleles: 120 },
+      ],
+      purity_available: true,
+      purity_unavailable_reason: null,
+    },
+    whole_record_genotype_landscape: {
+      status: 'AVAILABLE' as const,
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP' as const,
+      reference_allele_id: '__REFERENCE__',
+      called_samples: 292,
+      called_alleles: 584,
+      ancestry_groups: ['afr', 'nfe'],
+      sexes: ['XX', 'XY'],
+      cells: [
+        {
+          shorter_delta: 0,
+          longer_delta: 0,
+          people: 20,
+          pairs: [
+            {
+              shorter_allele_id: '__REFERENCE__',
+              longer_allele_id: `${sourceVariantId}~1`,
+              ancestry_group: 'afr',
+              sex: 'XX',
+              people: 8,
+              phased_people: 5,
+              unphased_people: 3,
+            },
+            {
+              shorter_allele_id: `${sourceVariantId}~1`,
+              longer_allele_id: `${sourceVariantId}~1`,
+              ancestry_group: 'nfe',
+              sex: 'XY',
+              people: 12,
+              phased_people: 10,
+              unphased_people: 2,
+            },
+          ],
+        },
+        {
+          shorter_delta: -6,
+          longer_delta: 0,
+          people: 272,
+          pairs: [
+            {
+              shorter_allele_id: exactId,
+              longer_allele_id: '__REFERENCE__',
+              ancestry_group: 'afr',
+              sex: 'XX',
+              people: 272,
+              phased_people: 200,
+              unphased_people: 72,
+            },
+          ],
+        },
+      ],
+    },
+    repeat_count_plots: {
+      status: 'UNAVAILABLE_COMPOUND_LOCUS',
+      reason_code: 'COMPOUND_LOCUS',
+      repeat_unit: null,
+      max_repunits: null,
+      allele_size_distribution: [],
+      genotype_distribution: [],
+    },
+    alleles: { nodes: alleles, page_info: { has_next_page: false } },
+  }
 }
 
-const locusWithAlleles = (count: number, cohort: 'hgsvc_hprc' | 'aou' = 'hgsvc_hprc') => ({
-  ...locus,
-  lr_cohort: cohort,
-  source_run_id: `run-${cohort}`,
-  total_alleles: count,
-  alleles: {
-    nodes: Array.from({ length: count }, (_, index) => makeAllele(index + 1)),
-    page_info: { has_next_page: false },
-  },
-})
+const navigation = {
+  hrefForAllele: (id: string) => `/tandem-repeat/locus?dataset=gnomad_r4_lr&keep=1&allele=${id}`,
+  onSelectAllele: jest.fn(),
+}
 
 const renderPage = ({
-  displayedLocus = locus,
-  selectedAllele = exactAllele,
+  locus = makeLocus(),
+  selectedAllele = exactId,
   onCohortChange = jest.fn(),
-}: {
-  displayedLocus?: any
-  selectedAllele?: string
-  onCohortChange?: jest.Mock
-} = {}) => {
-  const rendered = render(
+  onInvalidSelection = jest.fn(),
+}: any = {}) =>
+  render(
     <ThemeProvider
       theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
     >
       <LongReadTandemRepeatPage
         datasetId="gnomad_r4_lr"
-        locus={displayedLocus}
+        locus={locus}
         selectedAllele={selectedAllele}
         onCohortChange={onCohortChange}
+        onInvalidSelection={onInvalidSelection}
+        navigation={navigation}
       />
     </ThemeProvider>
   )
-  return { ...rendered, onCohortChange }
-}
 
 const originalScrollIntoView = HTMLElement.prototype.scrollIntoView
 const scrollIntoView = jest.fn()
-
-beforeAll(() => {
+beforeAll(() =>
   Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
     configurable: true,
     value: scrollIntoView,
   })
-})
-
+)
 afterAll(() => {
-  if (originalScrollIntoView) {
+  if (originalScrollIntoView)
     Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
       configurable: true,
       value: originalScrollIntoView,
     })
-  } else {
-    delete (HTMLElement.prototype as any).scrollIntoView
-  }
+})
+beforeEach(() => {
+  navigation.onSelectAllele.mockClear()
+  scrollIntoView.mockClear()
 })
 
-beforeEach(() => scrollIntoView.mockClear())
-
-describe('long-read tandem-repeat allele index', () => {
-  test('puts a compact human locus summary immediately before the allele table', () => {
+describe('canonical long-read tandem-repeat locus page', () => {
+  test('renders grounded source attributes and ordered overlapping components', () => {
     renderPage()
-    const heading = screen.getByRole('heading', {
-      name: 'Tandem repeat at chr4:39,348,425–39,348,479',
-    })
-    expect(screen.getByText('AAAAG')).not.toBeNull()
-    expect(screen.queryByText(/linked component/)).toBeNull()
-    expect(screen.getByText('200 alternate alleles')).not.toBeNull()
-    expect((screen.getByLabelText('Cohort') as HTMLSelectElement).value).toBe('hgsvc_hprc')
-    expect(heading.closest('header')!.nextElementSibling).toBe(
-      screen.getByTestId('lr-tr-allele-table-viewport')
-    )
+    expect(
+      screen.getByRole('heading', { name: 'Tandem repeat at chr4:3,074,877–3,075,040' })
+    ).not.toBeNull()
+    expect(screen.getByText('GRCh38 / hg38')).not.toBeNull()
+    expect(
+      screen.getByText(/72 exact ALT sequences; whole-record Δ length −24 to \+48 bp/)
+    ).not.toBeNull()
+    expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
+    expect(
+      screen.getByRole('img', { name: '6 ordered source repeat components in 2 coordinate lanes' })
+    ).not.toBeNull()
+    expect(
+      screen.getByText(
+        (_text, element) =>
+          Boolean(element?.textContent?.includes('CCG — chr4:3,075,009–3,075,040')),
+        { selector: 'li' }
+      )
+    ).not.toBeNull()
+    expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
 
-  test('is a bounded, keyboard-scrollable, single-line ALT-only table with a sticky header', () => {
-    const { container } = renderPage()
-    const viewport = screen.getByRole('region', { name: 'Scrollable alternate allele index' })
-    const rows = container.querySelectorAll('[data-testid="lr-tr-allele-table"] tbody tr')
-    const firstHeader = screen.getAllByRole('columnheader')[0]
-
-    expect(rows).toHaveLength(1)
-    expect(rows[0].textContent).not.toContain('Reference')
-    expect(rows[0].textContent).toContain('ALT 7')
-    expect(rows[0].getAttribute('aria-selected')).toBe('true')
-    expect(viewport.getAttribute('tabindex')).toBe('0')
-    expect(getComputedStyle(rows[0].querySelector('td')!).whiteSpace).toBe('nowrap')
-    expect(getComputedStyle(viewport).height).toBe('80vh')
-    expect(getComputedStyle(viewport).overflow).toBe('auto')
-    expect(getComputedStyle(firstHeader).position).toBe('sticky')
-    expect(getComputedStyle(firstHeader).backgroundColor).toBe('rgb(255, 255, 255)')
-    expect(screen.getByRole('link', { name: 'View allele' }).getAttribute('href')).toBe(
-      `/variant/${exactAllele}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
-    )
-  })
-
-  test('keeps only index columns and defensible compact values', () => {
+  test('states compound measurement limits and signed whole-record semantics', () => {
     renderPage()
-    expect(screen.getAllByRole('columnheader').map((header) => header.textContent)).toEqual([
-      'Allele',
-      'Repeat count',
-      'Δ length',
-      'AC',
-      'AN',
-      'AF',
-      'Details',
-    ])
-    expect(screen.getByText('10').getAttribute('title')).toBe('source_mc_allele')
-    expect(screen.getByText('-5 bp')).not.toBeNull()
-    expect(screen.getByText('135')).not.toBeNull()
-    expect(screen.getByText('582')).not.toBeNull()
-    expect(screen.getByText('0.2320')).not.toBeNull()
+    expect(screen.getAllByText(/Compound loci lack an admitted mapping/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/not a component repeat count/).length).toBeGreaterThan(0)
+    expect(
+      screen.getByRole('button', { name: /−6 bp, 134 called allele copies.*2 exact ALTs/ })
+    ).not.toBeNull()
+    expect(screen.getByRole('button', { name: /\+48 bp, 5 called allele copies/ })).not.toBeNull()
   })
 
-  test.each([
-    ['HTT HGSVC/HPRC', 72, 'hgsvc_hprc'],
-    ['HTT All of Us', 497, 'aou'],
-  ] as const)('renders all %s rows without pagination controls', (_label, count, cohort) => {
-    const { container } = renderPage({
-      displayedLocus: locusWithAlleles(count, cohort),
-      selectedAllele: `${sourceVariantId}~${count}`,
+  test('bin selection keeps all same-length exact IDs and exact selection pushes through the adapter', () => {
+    renderPage()
+    const table = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
+    expect(within(table).getByRole('link', { name: 'ALT 2' })).not.toBeNull()
+    expect(within(table).getByRole('link', { name: 'ALT 3' })).not.toBeNull()
+    fireEvent.click(within(table).getByRole('link', { name: 'ALT 3' }))
+    expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
+  })
+
+  test('links purity and exact detail and preserves source decomposition caveat', () => {
+    renderPage()
+    const detail = screen.getByTestId('lr-tr-selected-detail')
+    expect(detail).toBe(document.activeElement)
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
+    expect(within(detail).getByText(exactId)).not.toBeNull()
+    expect(within(detail).getByText(/source_ap_allele/)).not.toBeNull()
+    expect(
+      within(detail).getByText(/do not assign tokens to source-coordinate components/)
+    ).not.toBeNull()
+    expect(within(detail).getByLabelText('Selected ALT motif structure grid')).not.toBeNull()
+  })
+
+  test('distinguishes reference identity from a zero-delta exact ALT in genotype pair detail', () => {
+    renderPage()
+    expect(
+      screen.getByText(
+        (_text, element) =>
+          Boolean(element?.textContent?.includes('Reference (Δ 0) is an explicit identity')),
+        { selector: 'p' }
+      )
+    ).not.toBeNull()
+    expect(screen.getAllByRole('link', { name: 'ALT 1' }).length).toBeGreaterThan(0)
+    expect(
+      screen.getByRole('gridcell', { name: '0 bp longer, 0 bp shorter: 20 people' })
+    ).not.toBeNull()
+  })
+
+  test.each([72, 497])('keeps all %s exact IDs reachable in a virtualized index', (count) => {
+    renderPage({ locus: makeLocus(count), selectedAllele: undefined })
+    expect(screen.getByTestId('virtual-exact-index').getAttribute('data-item-count')).toBe(
+      String(count)
+    )
+    expect(screen.getByTitle(`${sourceVariantId}~${count}`)).not.toBeNull()
+    expect(
+      screen
+        .getByRole('table', { name: 'Exact alternate allele index' })
+        .getAttribute('aria-rowcount')
+    ).toBe(String(count + 1))
+  })
+
+  test('reports invalid selection once and delegates URL cleanup', async () => {
+    const onInvalidSelection = jest.fn()
+    renderPage({
+      locus: { ...makeLocus(), selected_allele_valid: false, selected_allele: null },
+      selectedAllele: 'other~9',
+      onInvalidSelection,
     })
-    expect(container.querySelectorAll('tbody tr')).toHaveLength(count)
-    expect(screen.getAllByRole('link', { name: 'View allele' })).toHaveLength(count)
-    expect(screen.queryByRole('button', { name: /next|previous/i })).toBeNull()
+    expect(screen.getByRole('alert').textContent).toContain('removed from the URL')
+    await waitFor(() => expect(onInvalidSelection).toHaveBeenCalledTimes(1))
   })
 
-  test('renders the current 584-ALT maximum in the fixed-height viewport', () => {
-    const { container } = renderPage({
-      displayedLocus: locusWithAlleles(584),
-      selectedAllele: undefined,
-    })
-    expect(container.querySelectorAll('tbody tr')).toHaveLength(584)
-    expect(screen.getByTitle(`${sourceVariantId}~584`).textContent).toContain('ALT 584')
-    expect(getComputedStyle(screen.getByTestId('lr-tr-allele-table-viewport')).height).toBe('80vh')
-  })
-
-  test('scrolls, focuses, and highlights a deep-linked exact allele near the end', () => {
-    const selectedAllele = `${sourceVariantId}~580`
-    renderPage({ displayedLocus: locusWithAlleles(584), selectedAllele })
-    const row = screen.getByTitle(selectedAllele)
-    expect(row.getAttribute('aria-selected')).toBe('true')
-    expect(row).toBe(document.activeElement)
-    expect(scrollIntoView).toHaveBeenCalledWith({ block: 'center' })
-  })
-
-  test('retains cohort switching and removes visible pagination mechanics', () => {
+  test('cohort selection delegates push/clear semantics to the container', () => {
     const onCohortChange = jest.fn()
     renderPage({ onCohortChange })
-    fireEvent.change(screen.getByLabelText('Cohort'), { target: { value: 'aou' } })
+    fireEvent.change(screen.getByLabelText('Long-read cohort'), { target: { value: 'aou' } })
     expect(onCohortChange).toHaveBeenCalledWith('aou')
-    expect(screen.queryByRole('button', { name: /next|previous|page/i })).toBeNull()
   })
 
-  test('fails visibly closed when a future locus exceeds the hard row cap', () => {
-    renderPage({
-      displayedLocus: {
-        ...locusWithAlleles(LONG_READ_TR_ALLELE_INDEX_LIMIT),
-        total_alleles: LONG_READ_TR_ALLELE_INDEX_LIMIT + 1,
-        alleles: {
-          ...locusWithAlleles(LONG_READ_TR_ALLELE_INDEX_LIMIT).alleles,
-          page_info: { has_next_page: false },
-        },
-      },
-      selectedAllele: undefined,
+  test('renders API-driven unavailable states without an empty plot', () => {
+    const locus = makeLocus()
+    locus.whole_record_allele_landscape = {
+      ...locus.whole_record_allele_landscape,
+      status: 'UNAVAILABLE',
+      reason_code: 'BOUND_EXCEEDED',
+      bins: null,
+      purity_points: null,
+    } as any
+    locus.whole_record_genotype_landscape = {
+      ...locus.whole_record_genotype_landscape,
+      status: 'UNAVAILABLE',
+      reason_code: 'NO_METADATA',
+      cells: null,
+    } as any
+    renderPage({ locus })
+    expect(
+      screen.getByText(/Whole-record allele landscape unavailable: bound exceeded/)
+    ).not.toBeNull()
+    expect(screen.getByText(/Genotype landscape unavailable: no metadata/)).not.toBeNull()
+  })
+
+  test('container pushes exact selection while preserving unrelated parameters', () => {
+    const displayedLocus = makeLocus()
+    displayedLocus.selected_allele = null as any
+    displayedLocus.selected_allele_valid = null as any
+    ;(global as any).__TR_QUERY_DATA__ = displayedLocus
+    const history = createMemoryHistory({
+      initialEntries: [`/tandem-repeat/${displayedLocus.id}?dataset=gnomad_r4_lr&keep=1`],
     })
-    expect(screen.getByRole('alert').textContent).toContain(
-      'Showing a bounded set of 600 alternate alleles'
+    render(
+      <Router history={history}>
+        <ThemeProvider
+          theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+        >
+          <LongReadTandemRepeatPageContainer
+            datasetId="gnomad_r4_lr"
+            locusId={displayedLocus.id}
+            lrCohort="hgsvc_hprc"
+          />
+        </ThemeProvider>
+      </Router>
     )
-    expect(screen.queryByRole('button', { name: /next|previous/i })).toBeNull()
+    fireEvent.click(screen.getAllByRole('link', { name: 'ALT 2' })[0])
+    expect(history.action).toBe('PUSH')
+    expect(new URLSearchParams(history.location.search).get('allele')).toBe(exactId)
+    expect(new URLSearchParams(history.location.search).get('keep')).toBe('1')
   })
 
-  test('summarizes compound identity without placing the route ID in the title', () => {
-    const compound = {
-      ...locus,
-      id: '1-121606499-121606508-AG+1-121606517-121606536-A',
-      motifs: ['AG', 'A'],
-      components: [
-        { chrom: '1', start0: 121606499, end0: 121606508, motif: 'AG' },
-        { chrom: '1', start0: 121606517, end0: 121606536, motif: 'A' },
+  test('container replaces only an invalid allele parameter', async () => {
+    const displayedLocus = makeLocus()
+    displayedLocus.selected_allele = null as any
+    displayedLocus.selected_allele_valid = false
+    ;(global as any).__TR_QUERY_DATA__ = displayedLocus
+    const history = createMemoryHistory({
+      initialEntries: [
+        `/tandem-repeat/${displayedLocus.id}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&keep=1&allele=bad~9`,
       ],
-    }
-    renderPage({ displayedLocus: compound })
-    const heading = screen.getByRole('heading', {
-      name: 'Tandem repeat at chr1:121,606,500–121,606,536',
     })
-    expect(heading.textContent).not.toContain(compound.id)
-    expect(screen.getByText('AG + A')).not.toBeNull()
-    expect(screen.queryByText(/linked components/)).toBeNull()
+    render(
+      <Router history={history}>
+        <ThemeProvider
+          theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+        >
+          <LongReadTandemRepeatPageContainer
+            datasetId="gnomad_r4_lr"
+            locusId={displayedLocus.id}
+            lrCohort="hgsvc_hprc"
+            selectedAllele="bad~9"
+          />
+        </ThemeProvider>
+      </Router>
+    )
+    await waitFor(() => expect(history.action).toBe('REPLACE'))
+    expect(new URLSearchParams(history.location.search).has('allele')).toBe(false)
+    expect(new URLSearchParams(history.location.search).get('keep')).toBe('1')
+    expect(new URLSearchParams(history.location.search).get('lr_cohort')).toBe('hgsvc_hprc')
   })
 
-  test('removes dashboard and technical provenance content', () => {
-    renderPage()
-    expect(screen.queryByText('What this page shows')).toBeNull()
-    expect(screen.queryByText(/Repeat-count plots/)).toBeNull()
-    expect(screen.queryByText(/Called chromosome/)).toBeNull()
-    expect(screen.queryByText(/Known-locus context/)).toBeNull()
-    expect(screen.queryByTestId('lr-tr-reference-row')).toBeNull()
-    expect(screen.queryByRole('dialog')).toBeNull()
-    expect(screen.queryByText('Technical details')).toBeNull()
-    expect(screen.queryByText(/Route ID:/)).toBeNull()
-    expect(screen.queryByText(/Source record:/)).toBeNull()
+  test('preserves unrelated URL state across exact selection, cohort changes, and invalid cleanup', () => {
+    const initial = '?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&keep=1&allele=old~1'
+    expect(searchWithSelectedAllele(initial, exactId).toString()).toBe(
+      'dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&keep=1&allele=chr4-3074876-TRV-164%7E2'
+    )
+    expect(searchForCohort(initial, 'aou').toString()).toBe(
+      'dataset=gnomad_r4_lr&lr_cohort=aou&keep=1'
+    )
+    expect(searchWithoutSelectedAllele(initial).toString()).toBe(
+      'dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc&keep=1'
+    )
   })
 
-  test('shows at most one compact established-resource link', () => {
-    renderPage({
-      displayedLocus: {
-        ...locus,
-        short_read_matches: [
-          { id: 'HTT', gene_symbol: 'HTT' },
-          { id: 'HTT-secondary', gene_symbol: 'HTT' },
-        ],
-      },
-    })
-    const links = screen.getAllByRole('link', { name: 'View HTT tandem-repeat details' })
-    expect(links).toHaveLength(1)
-    expect(links[0].getAttribute('href')).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
-  })
-
-  test('uses one bounded, compact, index-only GraphQL request', () => {
+  test('queries bounded aggregate, index, selected detail, and provenance contracts', () => {
     expect(LONG_READ_TR_ALLELE_INDEX_LIMIT).toBe(600)
-    expect(longReadTandemRepeatLocusQuery).toContain('$first: Int!')
     expect(longReadTandemRepeatLocusQuery).toContain('first: $first')
+    expect(longReadTandemRepeatLocusQuery).toContain('whole_record_allele_landscape')
+    expect(longReadTandemRepeatLocusQuery).toContain('whole_record_genotype_landscape')
+    expect(longReadTandemRepeatLocusQuery).toContain('selected_allele {')
+    expect(longReadTandemRepeatLocusQuery).toContain('ref alt length')
+    expect(longReadTandemRepeatLocusQuery).toContain('source_records {')
+    expect(longReadTandemRepeatLocusQuery).toContain('repeat_count_plots')
     expect(longReadTandemRepeatLocusQuery).not.toContain('$after')
-    expect(longReadTandemRepeatLocusQuery).not.toContain('end_cursor')
-    expect(longReadTandemRepeatLocusQuery).not.toContain('repeat_count_plots')
-    expect(longReadTandemRepeatLocusQuery).not.toContain('allele_size_distribution')
-    expect(longReadTandemRepeatLocusQuery).not.toContain('genotype_distribution')
-    expect(longReadTandemRepeatLocusQuery).not.toContain('populations')
-    expect(longReadTandemRepeatLocusQuery).not.toMatch(/\balt\b/)
-    expect(longReadTandemRepeatLocusQuery).not.toMatch(/\bref\b/)
   })
 })
