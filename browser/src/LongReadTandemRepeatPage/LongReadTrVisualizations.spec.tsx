@@ -6,6 +6,7 @@ import {
   histogramHeightPercent,
   LongReadTrComponentTrack,
   motifColor,
+  purityDomain,
   WholeRecordAlleleLandscape,
   WholeRecordGenotypeLandscape,
 } from './LongReadTrVisualizations'
@@ -118,7 +119,7 @@ describe('long-read TR visualization fidelity', () => {
     )
   })
 
-  test('synchronizes the selected bin to exact-allele prop changes and histogram clicks', async () => {
+  test('keeps sparse bars compact and synchronizes the selected bin without hiding exact choices', async () => {
     const rendered = render(
       <WholeRecordAlleleLandscape
         landscape={alleleLandscape}
@@ -127,7 +128,15 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    expect(screen.getByRole('table', { name: 'Exact alleles at −6 bp' })).not.toBeNull()
+    expect(screen.getByRole('list', { name: 'Exact alleles at −6 bp' })).not.toBeNull()
+
+    const histogram = screen.getByLabelText('Whole-record delta histogram')
+    expect(histogram.parentElement?.parentElement?.getAttribute('data-bin-count')).toBe('3')
+    expect(
+      screen
+        .getByRole('button', { name: /−6 bp, 100 called allele copies/ })
+        .getAttribute('data-bar-width')
+    ).toBe('48')
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -138,12 +147,16 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     await waitFor(() =>
-      expect(screen.getByRole('table', { name: 'Exact alleles at +12 bp' })).not.toBeNull()
+      expect(screen.getByRole('list', { name: 'Exact alleles at +12 bp' })).not.toBeNull()
     )
 
     fireEvent.click(screen.getByRole('button', { name: /0 bp, 25 called allele copies/ }))
+    expect(navigation.onSelectAllele).not.toHaveBeenCalled()
+    const exactAlleles = screen.getByRole('list', { name: 'Exact alleles at 0 bp' })
+    const exactLink = within(exactAlleles).getByRole('link', { name: /Select ALT 2/ })
+    expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
+    fireEvent.click(exactLink)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
-    expect(screen.getByRole('table', { name: 'Exact alleles at 0 bp' })).not.toBeNull()
 
     const tallest = screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
     const shortest = screen.getByRole('button', { name: /\+12 bp, 5 called allele copies/ })
@@ -151,6 +164,79 @@ describe('long-read TR visualization fidelity', () => {
       Number(shortest.getAttribute('data-height-percent'))
     )
     expect(screen.getByText(/numbers above bars are exact ALTs/)).not.toBeNull()
+  })
+
+  test('lists every same-length exact ALT as a keyboard-operable selection link', () => {
+    const sameLengthAllele = makeAllele(4, -6, 7)
+    const landscape = {
+      ...alleleLandscape,
+      exact_alt_count: 4,
+      bins: [
+        {
+          ...(alleleLandscape.bins || [])[0],
+          called_alleles: 107,
+          exact_alt_count: 2,
+          allele_ids: [alleles[0].variant_id, sameLengthAllele.variant_id],
+        },
+        ...(alleleLandscape.bins || []).slice(1),
+      ],
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={landscape}
+        alleles={[...alleles, sameLengthAllele]}
+        selectedAllele={alleles[0].variant_id}
+        navigation={navigation}
+      />
+    )
+
+    const picker = screen.getByRole('list', { name: 'Exact alleles at −6 bp' })
+    const links = within(picker).getAllByRole('link')
+    expect(links).toHaveLength(2)
+    expect(links.map((link) => link.textContent)).toEqual(['ALT 1 · AC 100', 'ALT 4 · AC 7'])
+    expect(links[0].getAttribute('aria-current')).toBe('true')
+    fireEvent.keyDown(links[1], { key: 'Enter' })
+    fireEvent.click(links[1])
+    expect(navigation.onSelectAllele).toHaveBeenCalledWith(sameLengthAllele.variant_id)
+  })
+
+  test('pads and uniquely formats constant-purity axes and makes every point selectable', () => {
+    expect(purityDomain([1, 1, 1])).toEqual([0.99, 1])
+    const landscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      purity_available: true,
+      purity_unavailable_reason: null,
+      purity_points: alleles.map((allele) => ({
+        allele_id: allele.variant_id,
+        delta: allele.length as number,
+        motif_purity: 1,
+        called_alleles: allele.freq.all.ac,
+      })),
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={landscape}
+        alleles={alleles}
+        selectedAllele={alleles[0].variant_id}
+        navigation={navigation}
+      />
+    )
+
+    const scatter = screen.getByRole('group', { name: /3 exact alleles plotted/ })
+    expect(scatter.getAttribute('data-purity-domain')).toBe('0.990000:1.000000')
+    const tickLabels = within(scatter)
+      .getAllByTestId('purity-axis-tick')
+      .map((tick) => tick.textContent)
+    expect(new Set(tickLabels).size).toBe(3)
+    expect(tickLabels).toEqual(['0.9900', '0.9950', '1.0000'])
+
+    const point = within(scatter).getByRole('link', {
+      name: /Select ALT 3, \+12 bp, purity 1.0000/,
+    })
+    expect(point.getAttribute('href')).toBe(`?allele=${alleles[2].variant_id}`)
+    expect(point.getAttribute('style')).toContain('bottom: 94%')
+    fireEvent.click(point)
+    expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[2].variant_id)
   })
 
   test('aggregates stratum rows into reconciled unique exact pairs', () => {

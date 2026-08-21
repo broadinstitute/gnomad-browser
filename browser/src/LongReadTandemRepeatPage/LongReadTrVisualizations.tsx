@@ -62,15 +62,27 @@ const SelectionLink = ({
   alleleId,
   children,
   navigation,
+  selected = false,
+  ...linkProps
 }: {
   alleleId: string
   children: React.ReactNode
   navigation: AlleleNavigation
+  selected?: boolean
+  className?: string
+  style?: React.CSSProperties
+  title?: string
+  'aria-label'?: string
 }) => (
   <Link
+    {...linkProps}
     to={navigation.hrefForAllele(alleleId)}
     preserveSelectedDataset={false}
+    aria-current={selected ? 'true' : undefined}
     onClick={(event: React.MouseEvent) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return
+      }
       event.preventDefault()
       navigation.onSelectAllele(alleleId)
     }}
@@ -244,9 +256,9 @@ const HistogramChart = styled.div`
   margin: 1.8em 0 3.2em;
 `
 
-const HistogramYScale = styled.div`
+const HistogramYScale = styled.div<{ $height: number }>`
   position: relative;
-  height: 240px;
+  height: ${(props) => props.$height}px;
   border-right: 1px solid #89939a;
 `
 
@@ -256,11 +268,12 @@ const HistogramScroller = styled.div`
   min-width: 0;
 `
 
-const Histogram = styled.div`
+const Histogram = styled.div<{ $height: number; $gap: number }>`
   display: flex;
+  justify-content: center;
   align-items: flex-end;
-  gap: 3px;
-  height: 240px;
+  gap: ${(props) => props.$gap}px;
+  height: ${(props) => props.$height}px;
   border-bottom: 1px solid #89939a;
 `
 
@@ -285,10 +298,16 @@ const AxisTitle = styled.span`
   text-align: center;
 `
 
-const BarButton = styled.button<{ $height: number; $selected: boolean; $hasValue: boolean }>`
+const BarButton = styled.button<{
+  $height: number
+  $selected: boolean
+  $hasValue: boolean
+  $width: number
+}>`
   position: relative;
-  flex: 1 1 14px;
+  flex: 0 0 ${(props) => props.$width}px;
   min-width: 12px;
+  max-width: 48px;
   height: ${(props) => props.$height}%;
   min-height: ${(props) => (props.$hasValue ? '3px' : '1px')};
   padding: 0;
@@ -343,6 +362,50 @@ const BarSegments = styled.span`
   span {
     display: block;
     width: 100%;
+  }
+`
+
+const SelectedBin = styled.div`
+  padding-top: 0.85em;
+  border-top: 1px solid #d8dee2;
+  margin-top: 1.25em;
+`
+
+const ExactAlleleChips = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45em;
+  padding: 0;
+  margin: 0.55em 0 0;
+  list-style: none;
+`
+
+const ExactAlleleChip = styled(SelectionLink)`
+  display: inline-block;
+  padding: 0.25em 0.55em;
+  border: 1px solid #397daf;
+  border-radius: 3px;
+  background: #fff;
+  color: #174f78;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+  text-decoration: none;
+
+  &[aria-current='true'] {
+    border-color: #a65310;
+    background: #fff3e8;
+    box-shadow: inset 0 0 0 1px #a65310;
+    color: #713706;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #111;
+    outline-offset: 2px;
   }
 `
 
@@ -416,61 +479,95 @@ const alleleLabel = (alleleId: string) => {
   return match ? `ALT ${match[1]}` : alleleId
 }
 
-const LengthBinAlleleTable = ({
+const LengthBinAllelePicker = ({
   bin,
   alleles,
   selectedAllele,
+  calledAllelesInView,
   navigation,
 }: {
   bin: AlleleBin
   alleles: Map<string, LongReadTrAllele>
   selectedAllele?: string
+  calledAllelesInView: number
   navigation: AlleleNavigation
 }) => (
-  <div aria-live="polite">
-    <h3>
-      {signed(bin.delta)} bp contains {bin.allele_ids.length.toLocaleString()} exact ALT
-      {bin.allele_ids.length === 1 ? '' : 's'}
-    </h3>
-    <p>
-      The global bin contains {bin.called_alleles.toLocaleString()} called non-reference allele
-      copies. Equal length does not imply equal sequence.
-    </p>
-    <ScrollTable>
-      <table aria-label={`Exact alleles at ${signed(bin.delta)} bp`}>
-        <thead>
-          <tr>
-            <th scope="col">Exact allele</th>
-            <th scope="col">Δ length</th>
-            <th scope="col">Source purity</th>
-            <th scope="col">AC</th>
-            <th scope="col">AN</th>
-            <th scope="col">AF</th>
-          </tr>
-        </thead>
-        <tbody>
-          {bin.allele_ids.map((id) => {
-            const allele = alleles.get(id)
-            return (
-              <tr key={id} aria-selected={id === selectedAllele}>
-                <th scope="row">
-                  <SelectionLink alleleId={id} navigation={navigation}>
-                    {alleleLabel(id)}
-                  </SelectionLink>
-                </th>
-                <td>{signed(bin.delta)} bp</td>
-                <td>{allele?.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)}</td>
-                <td>{allele ? allele.freq.all.ac.toLocaleString() : '—'}</td>
-                <td>{allele ? allele.freq.all.an.toLocaleString() : '—'}</td>
-                <td>{allele ? allele.freq.all.af.toPrecision(4) : '—'}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </ScrollTable>
-  </div>
+  <SelectedBin aria-live="polite">
+    <strong>
+      {signed(bin.delta)} bp · {calledAllelesInView.toLocaleString()} copies in view ·{' '}
+      {bin.allele_ids.length.toLocaleString()} exact ALT{bin.allele_ids.length === 1 ? '' : 's'}
+    </strong>
+    <ExactAlleleChips aria-label={`Exact alleles at ${signed(bin.delta)} bp`}>
+      {bin.allele_ids.map((id) => {
+        const allele = alleles.get(id)
+        return (
+          <li key={id}>
+            <ExactAlleleChip
+              alleleId={id}
+              navigation={navigation}
+              selected={id === selectedAllele}
+              title={`${id}${allele ? ` · AC ${allele.freq.all.ac.toLocaleString()}` : ''}`}
+              aria-label={`Select ${alleleLabel(id)}${
+                allele ? `, ${allele.freq.all.ac.toLocaleString()} called copies` : ''
+              }`}
+            >
+              {alleleLabel(id)} · AC {allele ? allele.freq.all.ac.toLocaleString() : '—'}
+            </ExactAlleleChip>
+          </li>
+        )
+      })}
+    </ExactAlleleChips>
+  </SelectedBin>
 )
+
+const PurityPointLink = styled(SelectionLink)`
+  position: absolute;
+  display: block;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #7953aa;
+  box-shadow: 0 0 0 1px #5f3d91;
+  cursor: pointer;
+
+  &[aria-current='true'] {
+    z-index: 2;
+    border: 3px solid #111;
+    background: #e9781c;
+    box-shadow: 0 0 0 2px #fff;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #111;
+    outline-offset: 3px;
+    z-index: 3;
+  }
+`
+
+export const purityDomain = (values: number[]): [number, number] => {
+  const minimum = Math.min(...values)
+  const maximum = Math.max(...values)
+  if (minimum !== maximum) {
+    const padding = (maximum - minimum) * 0.08
+    return [Math.max(0, minimum - padding), Math.min(1, maximum + padding)]
+  }
+
+  const padding = Math.max(0.01, Math.abs(minimum) * 0.01)
+  let domainMinimum = Math.max(0, minimum - padding)
+  let domainMaximum = Math.min(1, maximum + padding)
+  if (domainMinimum === domainMaximum) {
+    if (domainMinimum === 0) domainMaximum = Math.min(1, domainMinimum + 0.02)
+    else domainMinimum = Math.max(0, domainMaximum - 0.02)
+  }
+  return [domainMinimum, domainMaximum]
+}
+
+const purityDecimals = (domainMinimum: number, domainMaximum: number) => {
+  const span = domainMaximum - domainMinimum
+  if (span <= 0.02) return 4
+  if (span <= 0.2) return 3
+  return 2
+}
 
 const PurityScatter = ({
   points,
@@ -484,30 +581,82 @@ const PurityScatter = ({
   if (!points.length) return <p>Source allele purity is unavailable.</p>
   const minDelta = Math.min(...points.map((point) => point.delta))
   const maxDelta = Math.max(...points.map((point) => point.delta))
-  const minPurity = Math.min(...points.map((point) => point.motif_purity))
-  const maxPurity = Math.max(...points.map((point) => point.motif_purity))
+  const [domainMinimum, domainMaximum] = purityDomain(points.map((point) => point.motif_purity))
+  const domainSpan = domainMaximum - domainMinimum
+  const decimals = purityDecimals(domainMinimum, domainMaximum)
+  const purityTicks = [domainMinimum, domainMinimum + domainSpan / 2, domainMaximum]
+  let scatterHeight = 270
+  if (points.length <= 5) scatterHeight = 190
+  else if (points.length <= 25) scatterHeight = 230
+  const overlapCounts = points.reduce((counts, point) => {
+    const key = `${point.delta}\u0000${point.motif_purity}`
+    counts.set(key, (counts.get(key) || 0) + 1)
+    return counts
+  }, new Map<string, number>())
+  const overlapIndexes = new Map<string, number>()
+  const coincidentPoints = [...overlapCounts.values()].some((count) => count > 1)
+
   return (
     <>
       <div
         role="group"
         aria-label={`${points.length} exact alleles plotted by whole-record length difference and source purity`}
+        data-purity-domain={`${domainMinimum.toFixed(6)}:${domainMaximum.toFixed(6)}`}
         style={{
           position: 'relative',
-          height: 250,
-          margin: '1em 1.5em 2.5em',
+          height: scatterHeight,
+          margin: '1em 1.5em 2.5em 2.8em',
           borderLeft: '1px solid #89939a',
           borderBottom: '1px solid #89939a',
         }}
       >
-        {points.map((point) => {
-          const left = ((point.delta - minDelta) / Math.max(1, maxDelta - minDelta)) * 100
-          const bottom =
-            ((point.motif_purity - minPurity) / Math.max(0.000001, maxPurity - minPurity)) * 100
-          const selected = point.allele_id === selectedAllele
+        {purityTicks.map((tick) => {
+          const bottom = 6 + ((tick - domainMinimum) / domainSpan) * 88
           return (
-            <button
+            <React.Fragment key={tick}>
+              <span
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  bottom: `${bottom}%`,
+                  left: 0,
+                  borderTop: '1px solid #e2e6e8',
+                }}
+              />
+              <span
+                data-testid="purity-axis-tick"
+                style={{
+                  position: 'absolute',
+                  right: 'calc(100% + 6px)',
+                  bottom: `${bottom}%`,
+                  transform: 'translateY(50%)',
+                  color: '#566168',
+                  fontSize: 10,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {tick.toFixed(decimals)}
+              </span>
+            </React.Fragment>
+          )
+        })}
+        {points.map((point) => {
+          const left =
+            minDelta === maxDelta ? 50 : 6 + ((point.delta - minDelta) / (maxDelta - minDelta)) * 88
+          const bottom = 6 + ((point.motif_purity - domainMinimum) / domainSpan) * 88
+          const size = Math.min(26, 14 + Math.sqrt(point.called_alleles))
+          const overlapKey = `${point.delta}\u0000${point.motif_purity}`
+          const overlapIndex = overlapIndexes.get(overlapKey) || 0
+          overlapIndexes.set(overlapKey, overlapIndex + 1)
+          const overlapCount = overlapCounts.get(overlapKey) || 1
+          const overlapOffset = (overlapIndex - (overlapCount - 1) / 2) * 10
+          return (
+            <PurityPointLink
               key={point.allele_id}
-              type="button"
+              alleleId={point.allele_id}
+              navigation={navigation}
+              selected={point.allele_id === selectedAllele}
               title={`${alleleLabel(point.allele_id)}: ${signed(
                 point.delta
               )} bp, purity ${point.motif_purity.toFixed(4)}, AC ${point.called_alleles}`}
@@ -516,31 +665,58 @@ const PurityScatter = ({
               )} bp, purity ${point.motif_purity.toFixed(4)}, ${
                 point.called_alleles
               } called copies`}
-              aria-pressed={selected}
-              onClick={() => navigation.onSelectAllele(point.allele_id)}
               style={{
-                position: 'absolute',
                 left: `${left}%`,
                 bottom: `${bottom}%`,
-                width: Math.min(24, 7 + Math.sqrt(point.called_alleles) * 2),
-                height: Math.min(24, 7 + Math.sqrt(point.called_alleles) * 2),
-                padding: 0,
-                transform: 'translate(-50%, 50%)',
-                border: selected ? '3px solid #111' : '1px solid #fff',
-                borderRadius: '50%',
-                background: selected ? '#e9781c' : '#7953aa',
-                cursor: 'pointer',
+                width: size,
+                height: size,
+                transform: `translate(calc(-50% + ${overlapOffset}px), 50%)`,
               }}
-            />
+            >
+              <span aria-hidden="true" />
+            </PurityPointLink>
           )
         })}
-        <span style={{ position: 'absolute', left: 0, bottom: -28 }}>{signed(minDelta)} bp</span>
-        <span style={{ position: 'absolute', right: 0, bottom: -28 }}>{signed(maxDelta)} bp</span>
-        <span style={{ position: 'absolute', left: -45, bottom: 0 }}>{minPurity.toFixed(3)}</span>
-        <span style={{ position: 'absolute', left: -45, top: 0 }}>{maxPurity.toFixed(3)}</span>
+        {minDelta === maxDelta ? (
+          <span
+            style={{
+              position: 'absolute',
+              left: '50%',
+              bottom: -28,
+              transform: 'translateX(-50%)',
+            }}
+          >
+            {signed(minDelta)} bp
+          </span>
+        ) : (
+          <>
+            <span style={{ position: 'absolute', left: '6%', bottom: -28 }}>
+              {signed(minDelta)} bp
+            </span>
+            <span style={{ position: 'absolute', right: '6%', bottom: -28 }}>
+              {signed(maxDelta)} bp
+            </span>
+          </>
+        )}
+        <span
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: -42,
+            transform: 'translate(-50%, -50%) rotate(-90deg)',
+            color: '#566168',
+            fontSize: 10,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Source purity
+        </span>
       </div>
+      {coincidentPoints && (
+        <div style={{ color: '#566168', fontSize: 11 }}>Coincident points offset.</div>
+      )}
       <details>
-        <summary>Accessible purity-point table ({points.length.toLocaleString()})</summary>
+        <summary>Exact purity data ({points.length.toLocaleString()})</summary>
         <ScrollTable>
           <table>
             <thead>
@@ -555,7 +731,11 @@ const PurityScatter = ({
               {points.map((point) => (
                 <tr key={point.allele_id} aria-selected={point.allele_id === selectedAllele}>
                   <th scope="row">
-                    <SelectionLink alleleId={point.allele_id} navigation={navigation}>
+                    <SelectionLink
+                      alleleId={point.allele_id}
+                      navigation={navigation}
+                      selected={point.allele_id === selectedAllele}
+                    >
                       {alleleLabel(point.allele_id)}
                     </SelectionLink>
                   </th>
@@ -660,6 +840,12 @@ export const WholeRecordAlleleLandscape = ({
   })
   const clippedAt = scaleCap(selectedScaleType)
   const totalInView = counts.reduce((sum, count) => sum + count, 0)
+  let histogramLayout = { barWidth: 14, gap: 2, height: 260 }
+  if (bins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
+  else if (bins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
+  else if (bins.length <= 40) histogramLayout = { barWidth: 20, gap: 3, height: 240 }
+  const histogramContentWidth =
+    bins.length * histogramLayout.barWidth + Math.max(0, bins.length - 1) * histogramLayout.gap
 
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
@@ -732,8 +918,8 @@ export const WholeRecordAlleleLandscape = ({
       <PlotGrid>
         <PlotCard>
           <h3>Whole-record length difference</h3>
-          <HistogramChart>
-            <HistogramYScale aria-hidden="true">
+          <HistogramChart data-bin-count={bins.length} data-bar-width={histogramLayout.barWidth}>
+            <HistogramYScale aria-hidden="true" $height={histogramLayout.height}>
               <AxisTitle>Called allele copies</AxisTitle>
               {yTicks.map((tick) => (
                 <AxisTick
@@ -749,7 +935,9 @@ export const WholeRecordAlleleLandscape = ({
             <HistogramScroller>
               <Histogram
                 aria-label="Whole-record delta histogram"
-                style={{ minWidth: Math.max(320, bins.length * 18) }}
+                $height={histogramLayout.height}
+                $gap={histogramLayout.gap}
+                style={{ minWidth: '100%', width: histogramContentWidth }}
               >
                 {bins.map((bin, index) => {
                   const count = counts[index]
@@ -760,7 +948,9 @@ export const WholeRecordAlleleLandscape = ({
                       type="button"
                       $height={height}
                       $hasValue={count > 0}
+                      $width={histogramLayout.barWidth}
                       data-height-percent={height.toFixed(3)}
+                      data-bar-width={histogramLayout.barWidth}
                       $selected={bin.delta === selectedBin?.delta}
                       aria-pressed={bin.delta === selectedBin?.delta}
                       aria-label={`${signed(
@@ -771,15 +961,7 @@ export const WholeRecordAlleleLandscape = ({
                       title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
                         bin.exact_alt_count
                       } exact ALTs`}
-                      onClick={() => {
-                        setSelectedDelta(bin.delta)
-                        if (
-                          bin.allele_ids[0] &&
-                          (!selectedAllele || !bin.allele_ids.includes(selectedAllele))
-                        ) {
-                          navigation.onSelectAllele(bin.allele_ids[0])
-                        }
-                      }}
+                      onClick={() => setSelectedDelta(bin.delta)}
                     >
                       {selectedColorBy && count > 0 && (
                         <BarSegments aria-hidden="true">
@@ -808,6 +990,15 @@ export const WholeRecordAlleleLandscape = ({
           <div style={{ color: '#566168', fontSize: 11, textAlign: 'center' }}>
             Whole-record ALT − REF length (bp) · numbers above bars are exact ALTs
           </div>
+          {selectedBin && (
+            <LengthBinAllelePicker
+              bin={selectedBin}
+              alleles={alleleById}
+              selectedAllele={selectedAllele}
+              calledAllelesInView={counts[bins.indexOf(selectedBin)] || 0}
+              navigation={navigation}
+            />
+          )}
         </PlotCard>
         <PlotCard>
           <h3>Length and source allele purity</h3>
@@ -824,14 +1015,6 @@ export const WholeRecordAlleleLandscape = ({
           )}
         </PlotCard>
       </PlotGrid>
-      {selectedBin && (
-        <LengthBinAlleleTable
-          bin={selectedBin}
-          alleles={alleleById}
-          selectedAllele={selectedAllele}
-          navigation={navigation}
-        />
-      )}
     </Panel>
   )
 }
