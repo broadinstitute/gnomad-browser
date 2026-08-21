@@ -17,25 +17,24 @@ import { loadWhitelist } from './whitelist'
 // fall back to Google's legacy X-Cloud-Trace-Context header.
 const getGcpTraceId = (request: any) => {
   // Prefer W3C Trace Context.
-  const traceParent = request.get('traceparent')
+  // Matches: 00-<32 hex>-<16 hex>-<2 hex>.
+  // Capture group 1 (inside parentheses) is the 32-character trace ID.
+  const traceParentMatch = request
+    .get('traceparent')
+    ?.match(/^00-([\da-f]{32})-[\da-f]{16}-[\da-f]{2}$/i)
 
-  if (traceParent) {
-    // Matches: <2 hex>-<32 hex>-<16 hex>-<2 hex>.
-    // Capture group 1 (inside parentheses) is the 32-character trace ID.
-    const match = traceParent.match(
-      /^[\da-f]{2}-([\da-f]{32})-[\da-f]{16}-[\da-f]{2}$/i
-    )
-
-    if (match) {
-      return match[1]
-    }
+  if (traceParentMatch) {
+    return traceParentMatch[1]
   }
 
   // Fall back to Google's legacy trace context header.
-  // Matches: <32 hex> followed by "/" or the end of the string.
+  // Matches: <32 hex>, followed by "/" and legacy span ID and options.
   // Capture group 1 (inside parentheses) is the 32-character trace ID.
-  const match = request.get('X-Cloud-Trace-Context')?.match(/^([\da-f]{32})(?:\/|$)/i)
-  return match?.[1]
+  const cloudTraceMatch = request
+    .get('X-Cloud-Trace-Context')
+    ?.match(/^([\da-f]{32})(?:\/|$)/i)
+
+  return cloudTraceMatch?.[1]
 }
 
 const app = express()
