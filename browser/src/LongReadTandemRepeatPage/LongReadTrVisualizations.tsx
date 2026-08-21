@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
@@ -34,11 +34,11 @@ const Panel = styled.section`
 
 const PlotGrid = styled.div`
   display: grid;
-  grid-template-columns: minmax(440px, 1.6fr) minmax(300px, 1fr);
+  grid-template-columns: minmax(440px, calc(61.5% - 0.625em)) minmax(300px, calc(38.5% - 0.625em));
   gap: 1.25em;
 
   @media (max-width: 900px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
   }
 `
 
@@ -79,7 +79,29 @@ const SelectionLink = ({
   </Link>
 )
 
-const motifColors = ['#1769aa', '#e9781c', '#268553', '#7953aa', '#d53d3d', '#5f6b72']
+const knownMotifColors: Record<string, string> = {
+  CAG: '#d53d3d',
+  CAA: '#2f83bd',
+  CCG: '#e9781c',
+  CCT: '#268553',
+  GCC: '#7953aa',
+}
+const fallbackMotifColors = ['#1769aa', '#5f6b72', '#8b5a2b', '#7a6f21', '#4b7082']
+
+export const motifColor = (motif: string) => {
+  if (knownMotifColors[motif]) return knownMotifColors[motif]
+  const hash = Array.from(motif).reduce((value, character) => value + character.charCodeAt(0), 0)
+  return fallbackMotifColors[hash % fallbackMotifColors.length]
+}
+
+const MotifLegend = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1em;
+  margin-top: 0.6em;
+  color: #4f5960;
+  font-size: 12px;
+`
 
 export const componentLanes = (components: LongReadTrLocus['components']) => {
   const laneEnds: number[] = []
@@ -104,10 +126,6 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
   return (
     <Panel aria-labelledby="lr-tr-components-heading">
       <h2 id="lr-tr-components-heading">Source-defined repeat components</h2>
-      <p>
-        Components come directly from source TRID coordinates. Overlaps use separate lanes; repeated
-        motifs remain distinct by source order and coordinates.
-      </p>
       <div style={{ overflowX: 'auto' }}>
         <svg
           viewBox={`0 0 ${width} ${85 + laneCount * 54}`}
@@ -123,13 +141,14 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
             stroke="#778188"
           />
           {components.map((component, index) => {
-            const componentWidth = Math.max(28, x(component.end0) - x(component.start0))
+            const componentWidth = Math.max(2, x(component.end0) - x(component.start0))
             const y = 12 + lanes[index] * 54
             const label = `Component ${index + 1}, ${component.motif}, chr${component.chrom}:${(
               component.start0 + 1
             ).toLocaleString()}–${component.end0.toLocaleString()}, ${
               component.end0 - component.start0
             } bp`
+            const compactLabel = componentWidth < 44
             return (
               // Source component order is identity-bearing, including exact duplicate components.
               // eslint-disable-next-line react/no-array-index-key
@@ -140,7 +159,7 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
                   width={componentWidth}
                   height={28}
                   rx={3}
-                  fill={motifColors[index % motifColors.length]}
+                  fill={motifColor(component.motif)}
                 >
                   <title>{label}</title>
                 </rect>
@@ -152,17 +171,19 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
                   fontWeight="bold"
                   textAnchor="middle"
                 >
-                  {index + 1}. {component.motif}
+                  {compactLabel ? index + 1 : component.motif}
                 </text>
-                <text
-                  x={x(component.start0) + componentWidth / 2}
-                  y={y + 43}
-                  fill="#4f5960"
-                  fontSize={10}
-                  textAnchor="middle"
-                >
-                  {component.end0 - component.start0} bp
-                </text>
+                {!compactLabel && (
+                  <text
+                    x={x(component.start0) + componentWidth / 2}
+                    y={y + 43}
+                    fill="#4f5960"
+                    fontSize={10}
+                    textAnchor="middle"
+                  >
+                    {component.end0 - component.start0} bp
+                  </text>
+                )}
               </g>
             )
           })}
@@ -180,54 +201,136 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
           </text>
         </svg>
       </div>
-      <ol aria-label="Ordered source component details">
-        {components.map((component, index) => (
-          // Source component order is identity-bearing, including exact duplicate components.
-          // eslint-disable-next-line react/no-array-index-key
-          <li key={`${component.start0}-${component.end0}-${index}`}>
-            <strong>{component.motif}</strong> — chr{component.chrom}:
-            {(component.start0 + 1).toLocaleString()}–{component.end0.toLocaleString()} (
-            {component.end0 - component.start0} bp; lane {lanes[index] + 1})
-          </li>
+      <MotifLegend aria-label="Repeat motif color legend">
+        {[...new Set(components.map((component) => component.motif))].map((motif) => (
+          <span key={motif}>
+            <span
+              aria-hidden="true"
+              style={{
+                display: 'inline-block',
+                width: 10,
+                height: 10,
+                marginRight: 4,
+                borderRadius: 2,
+                background: motifColor(motif),
+              }}
+            />
+            {motif}
+          </span>
         ))}
-      </ol>
+      </MotifLegend>
+      <details>
+        <summary>Source component coordinates ({components.length})</summary>
+        <ol aria-label="Ordered source component details">
+          {components.map((component, index) => (
+            // Source component order is identity-bearing, including exact duplicate components.
+            // eslint-disable-next-line react/no-array-index-key
+            <li key={`${component.start0}-${component.end0}-${index}`}>
+              <strong>{component.motif}</strong> — chr{component.chrom}:
+              {(component.start0 + 1).toLocaleString()}–{component.end0.toLocaleString()} (
+              {component.end0 - component.start0} bp; lane {lanes[index] + 1})
+            </li>
+          ))}
+        </ol>
+      </details>
     </Panel>
   )
 }
+
+const HistogramChart = styled.div`
+  display: grid;
+  grid-template-columns: 48px calc(100% - 56px);
+  gap: 8px;
+  margin: 1.8em 0 3.2em;
+`
+
+const HistogramYScale = styled.div`
+  position: relative;
+  height: 240px;
+  border-right: 1px solid #89939a;
+`
+
+const HistogramScroller = styled.div`
+  overflow-x: auto;
+  overflow-y: visible;
+  min-width: 0;
+`
 
 const Histogram = styled.div`
   display: flex;
   align-items: flex-end;
   gap: 3px;
-  min-height: 270px;
-  padding: 1em 0 2.5em;
+  height: 240px;
   border-bottom: 1px solid #89939a;
 `
 
-const BarButton = styled.button<{ height: number; selected: boolean }>`
+const AxisTick = styled.span`
+  position: absolute;
+  right: 5px;
+  transform: translateY(50%);
+  color: #566168;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+`
+
+const AxisTitle = styled.span`
+  position: absolute;
+  top: 50%;
+  left: -23px;
+  width: 170px;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  color: #566168;
+  font-size: 10px;
+  text-align: center;
+`
+
+const BarButton = styled.button<{ $height: number; $selected: boolean; $hasValue: boolean }>`
   position: relative;
   flex: 1 1 14px;
   min-width: 12px;
-  height: ${(props) => Math.max(4, props.height)}%;
+  height: ${(props) => props.$height}%;
+  min-height: ${(props) => (props.$hasValue ? '3px' : '1px')};
   padding: 0;
-  border: ${(props) => (props.selected ? '3px solid #222' : '1px solid #397daf')};
+  border: ${(props) => {
+    if (props.$selected) return '3px solid #222'
+    return props.$hasValue ? '1px solid #397daf' : '0'
+  }};
+  border-bottom: ${(props) => {
+    if (props.$selected) return '3px solid #222'
+    return props.$hasValue ? '1px solid #397daf' : '1px solid #89939a'
+  }};
   border-radius: 2px 2px 0 0;
-  background: ${(props) => (props.selected ? '#e9781c' : '#74a9cf')};
+  background: ${(props) => {
+    if (!props.$hasValue) return 'transparent'
+    return props.$selected ? '#e9781c' : '#74a9cf'
+  }};
   cursor: pointer;
 
   &:focus-visible {
     outline: 3px solid #111;
     outline-offset: 2px;
   }
+`
 
-  > span:last-child {
-    position: absolute;
-    bottom: -2.4em;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
-    white-space: nowrap;
-  }
+const BarExactCount = styled.span`
+  position: absolute;
+  top: -1.5em;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #525d64;
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+`
+
+const BarDelta = styled.span`
+  position: absolute;
+  bottom: -2.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  white-space: nowrap;
 `
 
 const BarSegments = styled.span`
@@ -277,14 +380,35 @@ const binCount = (bin: AlleleBin, ancestry: PopulationId | null, sex: Sex | null
     .reduce((sum, stack) => sum + stack.called_alleles, 0)
 }
 
+const scaleCap = (scale: ScaleType) =>
+  ((
+    {
+      'linear-truncated-50': 50,
+      'linear-truncated-200': 200,
+      'linear-truncated-1000': 1000,
+    } as Record<string, number>
+  )[scale])
+
 const scaleValue = (count: number, scale: ScaleType) => {
   if (scale === 'log') return Math.log10(count + 1)
-  const cap = {
-    'linear-truncated-50': 50,
-    'linear-truncated-200': 200,
-    'linear-truncated-1000': 1000,
-  }[scale as string]
-  return Math.min(count, cap || count)
+  return Math.min(count, scaleCap(scale) || count)
+}
+
+export const histogramHeightPercent = (count: number, maxCount: number, scale: ScaleType) => {
+  const domainMax = scale === 'log' ? scaleValue(maxCount, scale) : scaleCap(scale) || maxCount
+  if (count <= 0 || domainMax <= 0) return 0
+  return (scaleValue(count, scale) / domainMax) * 100
+}
+
+const histogramTicks = (maxCount: number, scale: ScaleType) => {
+  if (scale === 'log') {
+    const ticks = [0]
+    for (let value = 1; value <= maxCount; value *= 10) ticks.push(value)
+    if (maxCount > 0 && ticks[ticks.length - 1] !== maxCount) ticks.push(maxCount)
+    return ticks
+  }
+  const domainMax = scaleCap(scale) || Math.max(1, maxCount)
+  return [...new Set([0, 0.25, 0.5, 0.75, 1].map((part) => Math.round(domainMax * part)))]
 }
 
 const alleleLabel = (alleleId: string) => {
@@ -464,12 +588,29 @@ export const WholeRecordAlleleLandscape = ({
   const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | null>(null)
   const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
   const bins = landscape.bins || []
-  const [selectedDelta, setSelectedDelta] = useState<number | null>(bins[0]?.delta ?? null)
-  const selectedBin = bins.find((bin) => bin.delta === selectedDelta) || bins[0]
   const alleleById = useMemo(
     () => new Map(alleles.map((allele) => [allele.variant_id, allele])),
     [alleles]
   )
+  const selectedAlleleDelta = selectedAllele ? alleleById.get(selectedAllele)?.length ?? null : null
+  const [selectedDelta, setSelectedDelta] = useState<number | null>(
+    selectedAlleleDelta ?? bins[0]?.delta ?? null
+  )
+  const binDeltas = bins.map((bin) => bin.delta).join(',')
+
+  useEffect(() => {
+    if (selectedAlleleDelta != null && bins.some((bin) => bin.delta === selectedAlleleDelta)) {
+      setSelectedDelta(selectedAlleleDelta)
+      return
+    }
+    setSelectedDelta((current) =>
+      bins.some((bin) => bin.delta === current) ? current : bins[0]?.delta ?? null
+    )
+    // binDeltas intentionally represents query reloads without depending on the unstable bins array.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [binDeltas, selectedAllele, selectedAlleleDelta])
+
+  const selectedBin = bins.find((bin) => bin.delta === selectedDelta) || bins[0]
 
   if (landscape.status !== 'AVAILABLE') {
     return (
@@ -487,7 +628,8 @@ export const WholeRecordAlleleLandscape = ({
     rawSetSelectedColorBy(colorBy)
   }
   const counts = bins.map((bin) => binCount(bin, selectedPopulation, selectedSex))
-  const transformedMax = Math.max(1, ...counts.map((count) => scaleValue(count, selectedScaleType)))
+  const maxCount = Math.max(0, ...counts)
+  const yTicks = histogramTicks(maxCount, selectedScaleType)
   let colorCategories: string[] = []
   if (selectedColorBy === 'sex') colorCategories = landscape.sexes || []
   if (selectedColorBy === 'population') colorCategories = landscape.ancestry_groups || []
@@ -516,13 +658,7 @@ export const WholeRecordAlleleLandscape = ({
       ?.freq.populations.find((item) => item.id === selectedDivision)
     return frequency && frequency.ac > 0 ? [{ ...point, called_alleles: frequency.ac }] : []
   })
-  const clippedAt = (
-    {
-      'linear-truncated-50': 50,
-      'linear-truncated-200': 200,
-      'linear-truncated-1000': 1000,
-    } as Record<string, number>
-  )[selectedScaleType]
+  const clippedAt = scaleCap(selectedScaleType)
   const totalInView = counts.reduce((sum, count) => sum + count, 0)
 
   return (
@@ -596,49 +732,82 @@ export const WholeRecordAlleleLandscape = ({
       <PlotGrid>
         <PlotCard>
           <h3>Whole-record length difference</h3>
-          <Histogram aria-label="Whole-record delta histogram">
-            {bins.map((bin, index) => {
-              const count = counts[index]
-              return (
-                <BarButton
-                  key={bin.delta}
-                  type="button"
-                  height={(scaleValue(count, selectedScaleType) / transformedMax) * 100}
-                  selected={bin.delta === selectedBin?.delta}
-                  aria-pressed={bin.delta === selectedBin?.delta}
-                  aria-label={`${signed(
-                    bin.delta
-                  )} bp, ${count} called allele copies in this view, ${
-                    bin.exact_alt_count
-                  } exact ALTs globally`}
-                  title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
-                    bin.exact_alt_count
-                  } exact ALTs`}
-                  onClick={() => setSelectedDelta(bin.delta)}
+          <HistogramChart>
+            <HistogramYScale aria-hidden="true">
+              <AxisTitle>Called allele copies</AxisTitle>
+              {yTicks.map((tick) => (
+                <AxisTick
+                  key={tick}
+                  style={{
+                    bottom: `${histogramHeightPercent(tick, maxCount, selectedScaleType)}%`,
+                  }}
                 >
-                  {selectedColorBy && count > 0 && (
-                    <BarSegments aria-hidden="true">
-                      {segmentsForBin(bin).map((segment) => (
-                        <span
-                          key={segment.category}
-                          style={{
-                            flexGrow: segment.count,
-                            background: segment.color,
-                            display: segment.count ? 'block' : 'none',
-                          }}
-                        />
-                      ))}
-                    </BarSegments>
-                  )}
-                  <span>{signed(bin.delta)}</span>
-                </BarButton>
-              )
-            })}
-          </Histogram>
-          <p>
-            Bar height is called allele copies; selecting a bar lists every exact global contributor
-            at that length.
-          </p>
+                  {tick.toLocaleString()}
+                </AxisTick>
+              ))}
+            </HistogramYScale>
+            <HistogramScroller>
+              <Histogram
+                aria-label="Whole-record delta histogram"
+                style={{ minWidth: Math.max(320, bins.length * 18) }}
+              >
+                {bins.map((bin, index) => {
+                  const count = counts[index]
+                  const height = histogramHeightPercent(count, maxCount, selectedScaleType)
+                  return (
+                    <BarButton
+                      key={bin.delta}
+                      type="button"
+                      $height={height}
+                      $hasValue={count > 0}
+                      data-height-percent={height.toFixed(3)}
+                      $selected={bin.delta === selectedBin?.delta}
+                      aria-pressed={bin.delta === selectedBin?.delta}
+                      aria-label={`${signed(
+                        bin.delta
+                      )} bp, ${count} called allele copies in this view, ${
+                        bin.exact_alt_count
+                      } exact ALTs globally`}
+                      title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
+                        bin.exact_alt_count
+                      } exact ALTs`}
+                      onClick={() => {
+                        setSelectedDelta(bin.delta)
+                        if (
+                          bin.allele_ids[0] &&
+                          (!selectedAllele || !bin.allele_ids.includes(selectedAllele))
+                        ) {
+                          navigation.onSelectAllele(bin.allele_ids[0])
+                        }
+                      }}
+                    >
+                      {selectedColorBy && count > 0 && (
+                        <BarSegments aria-hidden="true">
+                          {segmentsForBin(bin).map((segment) => (
+                            <span
+                              key={segment.category}
+                              style={{
+                                flexGrow: segment.count,
+                                background: segment.color,
+                                display: segment.count ? 'block' : 'none',
+                              }}
+                            />
+                          ))}
+                        </BarSegments>
+                      )}
+                      <BarExactCount title={`${bin.exact_alt_count} exact ALTs`}>
+                        {bin.exact_alt_count}
+                      </BarExactCount>
+                      <BarDelta>{signed(bin.delta)}</BarDelta>
+                    </BarButton>
+                  )
+                })}
+              </Histogram>
+            </HistogramScroller>
+          </HistogramChart>
+          <div style={{ color: '#566168', fontSize: 11, textAlign: 'center' }}>
+            Whole-record ALT − REF length (bp) · numbers above bars are exact ALTs
+          </div>
         </PlotCard>
         <PlotCard>
           <h3>Length and source allele purity</h3>
@@ -667,34 +836,71 @@ export const WholeRecordAlleleLandscape = ({
   )
 }
 
-const HeatGrid = styled.div<{ columns: number }>`
-  display: grid;
-  grid-template-columns: repeat(${(props) => props.columns}, minmax(30px, 1fr));
-  gap: 2px;
-  min-width: ${(props) => Math.max(300, props.columns * 34)}px;
+const HeatmapFigure = styled.figure`
+  margin: 0;
 `
 
-const HeatRow = styled.div`
-  display: contents;
-`
+const HeatmapSvg = styled.svg`
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 300px;
 
-const HeatCellButton = styled.button<{ intensity: number; selected: boolean }>`
-  aspect-ratio: 1 / 1;
-  border: ${(props) => (props.selected ? '3px solid #e9781c' : '1px solid #fff')};
-  background: rgba(23, 105, 170, ${(props) => 0.15 + 0.85 * props.intensity});
-  color: ${(props) => (props.intensity > 0.55 ? '#fff' : '#111')};
-  cursor: pointer;
-
-  &:focus-visible {
-    outline: 3px solid #111;
-    outline-offset: 1px;
+  [role='gridcell']:focus-visible {
+    outline: none;
+    stroke: #111;
+    stroke-width: 4px;
   }
+`
+
+const IntensityKey = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0.5em;
+  color: #566168;
+  font-size: 11px;
 `
 
 const filteredPairs = (pairs: GenotypePair[], population: PopulationId | null, sex: Sex | null) =>
   pairs.filter(
     (pair) => (!population || pair.ancestry_group === population) && (!sex || pair.sex === sex)
   )
+
+type ExactGenotypePair = Pick<
+  GenotypePair,
+  'shorter_allele_id' | 'longer_allele_id' | 'people' | 'phased_people' | 'unphased_people'
+>
+
+export const aggregateGenotypePairs = (pairs: GenotypePair[]): ExactGenotypePair[] => {
+  const aggregated = new Map<string, ExactGenotypePair>()
+  pairs.forEach((pair) => {
+    const alleleIds = [pair.shorter_allele_id, pair.longer_allele_id].sort()
+    const key = alleleIds.join('\u0000')
+    const existing = aggregated.get(key)
+    if (existing) {
+      existing.people += pair.people
+      existing.phased_people += pair.phased_people
+      existing.unphased_people += pair.unphased_people
+    } else {
+      aggregated.set(key, {
+        shorter_allele_id: alleleIds[0],
+        longer_allele_id: alleleIds[1],
+        people: pair.people,
+        phased_people: pair.phased_people,
+        unphased_people: pair.unphased_people,
+      })
+    }
+  })
+  return [...aggregated.values()].sort(
+    (left, right) =>
+      right.people - left.people ||
+      `${left.shorter_allele_id}/${left.longer_allele_id}`.localeCompare(
+        `${right.shorter_allele_id}/${right.longer_allele_id}`
+      )
+  )
+}
 
 const pairName = (id: string, referenceId: string | null) =>
   id === referenceId ? 'Reference (Δ 0)' : alleleLabel(id)
@@ -721,10 +927,13 @@ export const WholeRecordGenotypeLandscape = ({
     )
   }
 
-  const cells = (landscape.cells || [])
+  const sourceCells = landscape.cells || []
+  const cells = sourceCells
     .map((cell) => ({
       ...cell,
-      selectedPairs: filteredPairs(cell.pairs, selectedPopulation, selectedSex),
+      selectedPairs: aggregateGenotypePairs(
+        filteredPairs(cell.pairs, selectedPopulation, selectedSex)
+      ),
     }))
     .map((cell) => ({
       ...cell,
@@ -732,7 +941,7 @@ export const WholeRecordGenotypeLandscape = ({
     }))
     .filter((cell) => cell.selectedPeople > 0)
   const values = [
-    ...new Set(cells.flatMap((cell) => [cell.shorter_delta, cell.longer_delta])),
+    ...new Set([0, ...sourceCells.flatMap((cell) => [cell.shorter_delta, cell.longer_delta])]),
   ].sort((a, b) => a - b)
   const maxPeople = Math.max(1, ...cells.map((cell) => cell.selectedPeople))
   const keyFor = (cell: GenotypeCell) => `${cell.shorter_delta}/${cell.longer_delta}`
@@ -741,6 +950,30 @@ export const WholeRecordGenotypeLandscape = ({
     cells.slice().sort((a, b) => b.selectedPeople - a.selectedPeople)[0]
   const totalPeople = cells.reduce((sum, cell) => sum + cell.selectedPeople, 0)
   const byCoordinate = new Map(cells.map((cell) => [keyFor(cell), cell]))
+  const heatmapWidth = 720
+  const heatmapHeight = 650
+  const heatmapLeft = 78
+  const heatmapTop = 18
+  const heatmapBottom = 86
+  const heatmapRight = 18
+  const plotSize = Math.min(
+    heatmapWidth - heatmapLeft - heatmapRight,
+    heatmapHeight - heatmapTop - heatmapBottom
+  )
+  const band = plotSize / Math.max(1, values.length)
+  const valueIndex = new Map(values.map((value, index) => [value, index]))
+  const xFor = (value: number) => heatmapLeft + (valueIndex.get(value) || 0) * band
+  const yFor = (value: number) =>
+    heatmapTop + (values.length - 1 - (valueIndex.get(value) || 0)) * band
+  const axisStep = Math.max(1, Math.ceil(values.length / 12))
+  const axisValues = values.filter(
+    (value, index) =>
+      index % axisStep === 0 ||
+      index === values.length - 1 ||
+      value === 0 ||
+      value === selectedCell?.shorter_delta ||
+      value === selectedCell?.longer_delta
+  )
 
   return (
     <Panel aria-labelledby="lr-tr-genotype-heading">
@@ -766,42 +999,168 @@ export const WholeRecordGenotypeLandscape = ({
       </p>
       <PlotGrid>
         <PlotCard>
-          <div style={{ overflowX: 'auto' }} role="grid" aria-label="Whole-record genotype heatmap">
-            <HeatGrid columns={Math.max(1, values.length)}>
-              {values.map((shorter) => (
-                <HeatRow key={shorter} role="row">
+          <HeatmapFigure>
+            <HeatmapSvg
+              viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
+              role="grid"
+              aria-label="Whole-record genotype heatmap"
+            >
+              <title>
+                Whole-record genotype distribution by longer and shorter allele length difference
+              </title>
+              {valueIndex.has(0) && (
+                <>
+                  <line
+                    x1={xFor(0)}
+                    y1={heatmapTop}
+                    x2={xFor(0)}
+                    y2={heatmapTop + plotSize}
+                    stroke="#89939a"
+                    strokeDasharray="4 4"
+                  />
+                  <line
+                    x1={heatmapLeft}
+                    y1={yFor(0) + band}
+                    x2={heatmapLeft + plotSize}
+                    y2={yFor(0) + band}
+                    stroke="#89939a"
+                    strokeDasharray="4 4"
+                  />
+                </>
+              )}
+              {[...values].reverse().map((shorter) => (
+                <g key={shorter} role="row" aria-label={`${signed(shorter)} bp shorter allele row`}>
                   {values.map((longer) => {
                     const cell = byCoordinate.get(`${shorter}/${longer}`)
-                    if (!cell) return <span key={`${shorter}/${longer}`} aria-hidden="true" />
-                    const key = keyFor(cell)
+                    const key = `${shorter}/${longer}`
+                    const selected = Boolean(cell && selectedCell && key === keyFor(selectedCell))
+                    const intensity = cell
+                      ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
+                      : 0
                     return (
-                      <HeatCellButton
-                        key={key}
-                        type="button"
-                        role="gridcell"
-                        intensity={Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)}
-                        selected={key === keyFor(selectedCell)}
-                        aria-selected={key === keyFor(selectedCell)}
-                        aria-label={`${signed(longer)} bp longer, ${signed(shorter)} bp shorter: ${
-                          cell.selectedPeople
-                        } people`}
-                        title={`${signed(longer)} bp × ${signed(shorter)} bp: ${
-                          cell.selectedPeople
-                        } people`}
-                        onClick={() => setSelectedKey(key)}
-                      >
-                        {cell.selectedPeople}
-                      </HeatCellButton>
+                      <React.Fragment key={key}>
+                        <rect
+                          role="gridcell"
+                          tabIndex={cell ? 0 : undefined}
+                          aria-disabled={!cell || undefined}
+                          aria-selected={selected}
+                          aria-label={`${signed(longer)} bp longer, ${signed(
+                            shorter
+                          )} bp shorter: ${cell?.selectedPeople || 0} people`}
+                          x={xFor(longer) + 1}
+                          y={yFor(shorter) + 1}
+                          width={Math.max(1, band - 2)}
+                          height={Math.max(1, band - 2)}
+                          rx={Math.min(2, band / 8)}
+                          fill={cell ? '#1769aa' : '#f5f7f8'}
+                          fillOpacity={cell ? 0.15 + 0.85 * intensity : 1}
+                          stroke={selected ? '#e9781c' : '#fff'}
+                          strokeWidth={selected ? 4 : 1}
+                          cursor={cell ? 'pointer' : 'default'}
+                          onClick={() => cell && setSelectedKey(key)}
+                          onKeyDown={(event) => {
+                            if (cell && (event.key === 'Enter' || event.key === ' ')) {
+                              event.preventDefault()
+                              setSelectedKey(key)
+                            }
+                          }}
+                        >
+                          <title>
+                            {signed(longer)} bp × {signed(shorter)} bp: {cell?.selectedPeople || 0}{' '}
+                            people
+                          </title>
+                        </rect>
+                        {cell && band >= 24 && (
+                          <text
+                            x={xFor(longer) + band / 2}
+                            y={yFor(shorter) + band / 2 + 4}
+                            fill={intensity > 0.55 ? '#fff' : '#111'}
+                            fontSize={Math.min(11, band * 0.34)}
+                            textAnchor="middle"
+                            pointerEvents="none"
+                            aria-hidden="true"
+                          >
+                            {cell.selectedPeople}
+                          </text>
+                        )}
+                      </React.Fragment>
                     )
                   })}
-                </HeatRow>
+                </g>
               ))}
-            </HeatGrid>
-          </div>
-          <p>
-            Columns: longer allele Δ bp; rows: shorter allele Δ bp. Lighter cells contain fewer
-            people.
-          </p>
+              {axisValues.map((value) => (
+                <React.Fragment key={value}>
+                  <text
+                    x={xFor(value) + band / 2}
+                    y={heatmapTop + plotSize + 15}
+                    fill="#566168"
+                    fontSize={10}
+                    textAnchor="end"
+                    transform={`rotate(-48 ${xFor(value) + band / 2} ${
+                      heatmapTop + plotSize + 15
+                    })`}
+                  >
+                    {signed(value)}
+                  </text>
+                  <text
+                    x={heatmapLeft - 7}
+                    y={yFor(value) + band / 2 + 3}
+                    fill="#566168"
+                    fontSize={10}
+                    textAnchor="end"
+                  >
+                    {signed(value)}
+                  </text>
+                </React.Fragment>
+              ))}
+              <line
+                x1={heatmapLeft}
+                y1={heatmapTop + plotSize}
+                x2={heatmapLeft + plotSize}
+                y2={heatmapTop + plotSize}
+                stroke="#89939a"
+              />
+              <line
+                x1={heatmapLeft}
+                y1={heatmapTop}
+                x2={heatmapLeft}
+                y2={heatmapTop + plotSize}
+                stroke="#89939a"
+              />
+              <text
+                x={heatmapLeft + plotSize / 2}
+                y={heatmapHeight - 8}
+                fill="#566168"
+                fontSize={11}
+                textAnchor="middle"
+              >
+                Longer allele ALT − REF length (bp)
+              </text>
+              <text
+                x={15}
+                y={heatmapTop + plotSize / 2}
+                fill="#566168"
+                fontSize={11}
+                textAnchor="middle"
+                transform={`rotate(-90 15 ${heatmapTop + plotSize / 2})`}
+              >
+                Shorter allele ALT − REF length (bp)
+              </text>
+            </HeatmapSvg>
+            <IntensityKey aria-label="Logarithmic people intensity legend">
+              <span>Fewer people</span>
+              <span
+                aria-hidden="true"
+                style={{
+                  width: 110,
+                  height: 10,
+                  border: '1px solid #bfc8ce',
+                  background: 'linear-gradient(90deg, rgba(23,105,170,.15), #1769aa)',
+                }}
+              />
+              <span>More people (log intensity)</span>
+            </IntensityKey>
+          </HeatmapFigure>
         </PlotCard>
         <PlotCard aria-live="polite">
           {selectedCell ? (
@@ -811,7 +1170,8 @@ export const WholeRecordGenotypeLandscape = ({
               </h3>
               <p>
                 <strong>{selectedCell.selectedPeople.toLocaleString()} people</strong> across{' '}
-                {selectedCell.selectedPairs.length.toLocaleString()} exact allele pairs.
+                {selectedCell.selectedPairs.length.toLocaleString()} unique exact allele{' '}
+                {selectedCell.selectedPairs.length === 1 ? 'pair' : 'pairs'}.
               </p>
               <ScrollTable>
                 <table>
@@ -825,9 +1185,7 @@ export const WholeRecordGenotypeLandscape = ({
                   </thead>
                   <tbody>
                     {selectedCell.selectedPairs.map((pair) => (
-                      <tr
-                        key={`${pair.shorter_allele_id}/${pair.longer_allele_id}/${pair.ancestry_group}/${pair.sex}/${pair.people}/${pair.phased_people}/${pair.unphased_people}`}
-                      >
+                      <tr key={`${pair.shorter_allele_id}/${pair.longer_allele_id}`}>
                         <td>
                           {pair.shorter_allele_id === landscape.reference_allele_id ? (
                             pairName(pair.shorter_allele_id, landscape.reference_allele_id)
@@ -868,10 +1226,10 @@ export const WholeRecordGenotypeLandscape = ({
 
 const IndexHeader = styled.div`
   display: grid;
-  grid-template-columns: minmax(130px, 1.6fr) repeat(5, minmax(80px, 1fr));
+  grid-template-columns: minmax(130px, 24%) repeat(5, minmax(80px, 15%));
+  align-items: center;
   min-width: 650px;
   height: 36px;
-  align-items: center;
   padding: 0 0.6em;
   border-bottom: 1px solid #bbb;
   background: #f7f9fa;
@@ -880,10 +1238,10 @@ const IndexHeader = styled.div`
 
 const IndexRow = styled.div<{ selected: boolean }>`
   display: grid;
-  grid-template-columns: minmax(130px, 1.6fr) repeat(5, minmax(80px, 1fr));
+  grid-template-columns: minmax(130px, 24%) repeat(5, minmax(80px, 15%));
+  align-items: center;
   min-width: 650px;
   height: 36px;
-  align-items: center;
   padding: 0 0.6em;
   border-bottom: 1px solid #ddd;
   background: ${(props) => (props.selected ? '#fff3e8' : '#fff')};
@@ -978,8 +1336,8 @@ export const ExactAlleleIndex = ({
 }
 
 const Sequence = styled.pre`
-  max-height: 220px;
   overflow: auto;
+  max-height: 220px;
   padding: 0.9em;
   border: 1px solid #d8dee2;
   border-radius: 3px;
