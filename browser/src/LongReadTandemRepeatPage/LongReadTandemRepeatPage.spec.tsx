@@ -14,16 +14,17 @@ import LongReadTandemRepeatPageContainer, {
 } from './LongReadTandemRepeatPageContainer'
 import { componentLanes } from './LongReadTrVisualizations'
 
-jest.mock(
-  '../Link',
-  () =>
-    ({ children, to, preserveSelectedDataset: _preserve, ...props }: any) =>
-      (
-        <a href={to} {...props}>
-          {children}
-        </a>
-      )
-)
+jest.mock('../Link', () => ({ children, to, preserveSelectedDataset = true, ...props }: any) => {
+  const href =
+    preserveSelectedDataset && String(to).startsWith('/short-tandem-repeat/')
+      ? `${to}?dataset=gnomad_r4_lr`
+      : to
+  return (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  )
+})
 
 jest.mock('../VariantPage/ExactTrAltMotifStructure', () => ({ altAllele }: any) => (
   <div aria-label="Selected ALT motif structure grid">
@@ -346,10 +347,35 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage()
     expect(screen.getAllByText(/Compound loci lack an admitted mapping/).length).toBeGreaterThan(0)
     expect(screen.getAllByText(/not a component repeat count/).length).toBeGreaterThan(0)
+    expect(screen.queryByRole('heading', { name: 'Measurement availability' })).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(
       screen.getByRole('button', { name: /−6 bp, 134 called allele copies.*2 exact ALTs/ })
     ).not.toBeNull()
     expect(screen.getByRole('button', { name: /\+48 bp, 5 called allele copies/ })).not.toBeNull()
+  })
+
+  test('keeps selected detail with the allele landscape and makes the full index secondary', () => {
+    renderPage()
+    const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
+    const genotypeHeading = screen.getByRole('heading', {
+      name: 'Whole-record genotype distribution',
+    })
+    const indexHeading = screen.getByRole('heading', { name: 'Full exact ALT index (72)' })
+
+    expect(selectedDetail.compareDocumentPosition(genotypeHeading)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+    expect(genotypeHeading.compareDocumentPosition(indexHeading)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+  })
+
+  test('links to the explicit short-read dataset without preserving the long-read dataset', () => {
+    renderPage()
+    expect(screen.getByRole('link', { name: 'HTT short-read details' }).getAttribute('href')).toBe(
+      '/short-tandem-repeat/HTT?dataset=gnomad_r4'
+    )
   })
 
   test('bin selection keeps all same-length exact IDs and exact selection pushes through the adapter', () => {
@@ -436,9 +462,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     expect(screen.queryByText(/does not belong to this locus or cohort/)).toBeNull()
     expect(onInvalidSelection).not.toHaveBeenCalled()
-    expect(screen.getByText('Selected exact sequence/detail').nextElementSibling?.textContent).toBe(
-      'Unavailable — selected allele detail byte bound exceeded'
-    )
+    expect(
+      screen.getByText(
+        (_text, element) =>
+          element?.tagName === 'LI' &&
+          element.textContent ===
+            'Selected exact sequence/detail: selected allele detail byte bound exceeded'
+      )
+    ).not.toBeNull()
   })
 
   test('cohort selection delegates push/clear semantics to the container', () => {
@@ -446,6 +477,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ onCohortChange })
     fireEvent.change(screen.getByLabelText('Long-read cohort'), { target: { value: 'aou' } })
     expect(onCohortChange).toHaveBeenCalledWith('aou')
+  })
+
+  test('keeps source provenance compact and accessible', () => {
+    renderPage()
+    const provenance = screen.getByText('Source provenance').closest('details')
+    expect(provenance).not.toBeNull()
+    expect(provenance?.hasAttribute('open')).toBe(false)
+    expect(
+      within(provenance as HTMLElement).getByText('run-hgsvc', { selector: 'code' })
+    ).not.toBeNull()
   })
 
   test('renders API-driven unavailable states without an empty plot', () => {
