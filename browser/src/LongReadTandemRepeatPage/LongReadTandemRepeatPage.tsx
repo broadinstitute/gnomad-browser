@@ -49,8 +49,8 @@ const Eyebrow = styled.div`
 
 const CohortControl = styled.label`
   display: flex;
-  flex-direction: column;
   flex-shrink: 0;
+  flex-direction: column;
   gap: 0.25em;
   font-weight: bold;
 `
@@ -74,13 +74,13 @@ const ProvenanceDetails = styled.details`
 
 const SimpleLocusPlotGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, calc(50% - 0.625em)));
   align-items: start;
   gap: 1.25em;
   margin-top: 1.25em;
 
   @media (max-width: 900px) {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 100%);
   }
 `
 
@@ -263,34 +263,34 @@ const LongReadTandemRepeatPage = ({
         alleles={locus.alleles.nodes}
         selectedAllele={selectedAllele}
         navigation={navigation}
+        selectedAlleleDetail={
+          locus.selected_allele ? (
+            <SelectedExactAlleleDetail
+              ref={detail}
+              allele={{
+                ...locus.selected_allele,
+                repeat_count:
+                  locus.selected_allele.repeat_count ||
+                  alleleById.get(locus.selected_allele.variant_id)?.repeat_count ||
+                  null,
+                repeat_count_source:
+                  locus.selected_allele.repeat_count_source ||
+                  alleleById.get(locus.selected_allele.variant_id)?.repeat_count_source ||
+                  null,
+                motif_purity:
+                  locus.selected_allele.motif_purity ??
+                  alleleById.get(locus.selected_allele.variant_id)?.motif_purity ??
+                  null,
+              }}
+              motifs={locus.motifs}
+            />
+          ) : undefined
+        }
       />
-
-      {locus.selected_allele && (
-        <SelectedExactAlleleDetail
-          ref={detail}
-          allele={{
-            ...locus.selected_allele,
-            repeat_count:
-              locus.selected_allele.repeat_count ||
-              alleleById.get(locus.selected_allele.variant_id)?.repeat_count ||
-              null,
-            repeat_count_source:
-              locus.selected_allele.repeat_count_source ||
-              alleleById.get(locus.selected_allele.variant_id)?.repeat_count_source ||
-              null,
-            motif_purity:
-              locus.selected_allele.motif_purity ??
-              alleleById.get(locus.selected_allele.variant_id)?.motif_purity ??
-              null,
-          }}
-          motifs={locus.motifs}
-        />
-      )}
 
       {repeatPlotsAvailable && (
         <Panel aria-labelledby="lr-tr-simple-measurement-heading">
-          <h2 id="lr-tr-simple-measurement-heading">Admitted simple-locus repeat counts</h2>
-          <p>Motif-repeat units; limited to strict one-component exact mappings.</p>
+          <h2 id="lr-tr-simple-measurement-heading">Simple-locus repeat counts</h2>
           <SimpleLocusPlotGrid data-testid="lr-tr-repeat-count-grid">
             <SimpleLocusPlotCard>
               <LongReadAlleleSizeDistributionSection
@@ -319,10 +319,12 @@ const LongReadTandemRepeatPage = ({
         </Panel>
       )}
 
-      <WholeRecordGenotypeLandscape
-        landscape={locus.whole_record_genotype_landscape}
-        navigation={navigation}
-      />
+      {!repeatPlotsAvailable && (
+        <WholeRecordGenotypeLandscape
+          landscape={locus.whole_record_genotype_landscape}
+          navigation={navigation}
+        />
+      )}
 
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (

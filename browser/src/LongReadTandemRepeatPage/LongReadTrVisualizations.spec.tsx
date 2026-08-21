@@ -128,9 +128,10 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    expect(screen.getByRole('list', { name: 'Exact alleles at −6 bp' })).not.toBeNull()
+    expect(screen.getByRole('table', { name: 'Exact alleles at −6 bp' })).not.toBeNull()
 
     const histogram = screen.getByLabelText('Whole-record delta histogram')
+    expect(window.getComputedStyle(histogram).paddingTop).toBe('18px')
     expect(histogram.parentElement?.parentElement?.getAttribute('data-bin-count')).toBe('3')
     expect(
       screen
@@ -147,13 +148,13 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     await waitFor(() =>
-      expect(screen.getByRole('list', { name: 'Exact alleles at +12 bp' })).not.toBeNull()
+      expect(screen.getByRole('table', { name: 'Exact alleles at +12 bp' })).not.toBeNull()
     )
 
     fireEvent.click(screen.getByRole('button', { name: /0 bp, 25 called allele copies/ }))
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
-    const exactAlleles = screen.getByRole('list', { name: 'Exact alleles at 0 bp' })
-    const exactLink = within(exactAlleles).getByRole('link', { name: /Select ALT 2/ })
+    const exactAlleles = screen.getByRole('table', { name: 'Exact alleles at 0 bp' })
+    const exactLink = within(exactAlleles).getByRole('link', { name: 'Select ALT 2' })
     expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
     fireEvent.click(exactLink)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
@@ -190,11 +191,14 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const picker = screen.getByRole('list', { name: 'Exact alleles at −6 bp' })
+    const picker = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
     const links = within(picker).getAllByRole('link')
     expect(links).toHaveLength(2)
-    expect(links.map((link) => link.textContent)).toEqual(['ALT 1 · AC 100', 'ALT 4 · AC 7'])
+    expect(within(picker).getByText(`${sourceId}~1`)).not.toBeNull()
+    expect(within(picker).getByText(`${sourceId}~4`)).not.toBeNull()
+    expect(links.map((link) => link.textContent)).toEqual(['Selected', 'Select'])
     expect(links[0].getAttribute('aria-current')).toBe('true')
+    expect(links[0].closest('tr')?.getAttribute('aria-selected')).toBe('true')
     fireEvent.keyDown(links[1], { key: 'Enter' })
     fireEvent.click(links[1])
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(sameLengthAllele.variant_id)

@@ -414,20 +414,31 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ])
     expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
-    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(0,1fr))')
-    expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,1fr)', {
+    expect(screen.queryByRole('heading', { name: 'Whole-record genotype distribution' })).toBeNull()
+    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(0,calc(50% - 0.625em)))')
+    expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
       media: '(max-width:900px)',
     })
   })
 
-  test('keeps selected detail with the allele landscape and makes the full index secondary', () => {
+  test('groups selected-bin rows and exact detail before compound genotype data', () => {
     renderPage()
     const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
+    const selectedBinTable = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
+    const selectedBin = screen
+      .getByRole('heading', { name: '−6 bp contains 2 exact ALTs' })
+      .closest('section')
     const genotypeHeading = screen.getByRole('heading', {
       name: 'Whole-record genotype distribution',
     })
     const indexHeading = screen.getByRole('heading', { name: 'Full exact ALT index (72)' })
 
+    expect(selectedBin).not.toBeNull()
+    expect(selectedBin?.contains(selectedBinTable)).toBe(true)
+    expect(selectedBin?.contains(selectedDetail)).toBe(true)
+    expect(selectedBinTable.compareDocumentPosition(selectedDetail)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
     expect(selectedDetail.compareDocumentPosition(genotypeHeading)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
@@ -443,12 +454,18 @@ describe('canonical long-read tandem-repeat locus page', () => {
     )
   })
 
-  test('bin selection keeps all same-length exact IDs and exact selection pushes through the adapter', () => {
+  test('bin table keeps same-length identities, frequencies, selection state, and URL controls', () => {
     renderPage()
     const table = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
-    expect(within(table).getByRole('link', { name: 'ALT 2' })).not.toBeNull()
-    expect(within(table).getByRole('link', { name: 'ALT 3' })).not.toBeNull()
-    fireEvent.click(within(table).getByRole('link', { name: 'ALT 3' }))
+    const selectedControl = within(table).getByRole('link', { name: 'Select ALT 2' })
+    const otherControl = within(table).getByRole('link', { name: 'Select ALT 3' })
+
+    expect(within(table).getByText(`${sourceVariantId}~2`)).not.toBeNull()
+    expect(within(table).getByText(`${sourceVariantId}~3`)).not.toBeNull()
+    expect(within(table).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
+    expect(selectedControl.closest('tr')?.getAttribute('aria-selected')).toBe('true')
+    expect(otherControl.closest('tr')?.getAttribute('aria-selected')).toBe('false')
+    fireEvent.click(otherControl)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
   })
 
@@ -459,9 +476,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
     expect(within(detail).getByText(exactId)).not.toBeNull()
     expect(within(detail).getByText(/source_ap_allele/)).not.toBeNull()
-    expect(
-      within(detail).getByText(/do not assign tokens to source-coordinate components/)
-    ).not.toBeNull()
+    expect(within(detail).getByText(/not source-coordinate components/)).not.toBeNull()
     expect(within(detail).getByLabelText('Selected ALT motif structure grid')).not.toBeNull()
     expect(
       screen.getByRole('group', {
@@ -487,20 +502,29 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(zeroDeltaCell.closest('[role="row"]')).not.toBeNull()
   })
 
-  test.each([72, 497])('keeps all %s exact IDs reachable in a virtualized index', (count) => {
-    renderPage({ locus: makeLocus(count), selectedAllele: undefined })
-    expect(screen.getByTestId('virtual-exact-index').getAttribute('data-item-count')).toBe(
-      String(count)
-    )
-    const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
-    expect(finalRow).not.toBeNull()
-    expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
-    expect(
-      screen
-        .getByRole('table', { name: 'Exact alternate allele index' })
-        .getAttribute('aria-rowcount')
-    ).toBe(String(count + 1))
-  })
+  test.each([72, 497])(
+    'keeps the %s-row virtualized exact index collapsed but fully reachable',
+    (count) => {
+      renderPage({ locus: makeLocus(count), selectedAllele: undefined })
+      const heading = screen.getByRole('heading', { name: `Full exact ALT index (${count})` })
+      const details = heading.closest('details')
+      expect(details).not.toBeNull()
+      expect(details?.hasAttribute('open')).toBe(false)
+
+      fireEvent.click(details?.querySelector('summary') as HTMLElement)
+      expect(details?.hasAttribute('open')).toBe(true)
+      expect(screen.getByTestId('virtual-exact-index').getAttribute('data-item-count')).toBe(
+        String(count)
+      )
+      const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
+      expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
+      expect(
+        screen
+          .getByRole('table', { name: 'Exact alternate allele index' })
+          .getAttribute('aria-rowcount')
+      ).toBe(String(count + 1))
+    }
+  )
 
   test('reports invalid selection once and delegates URL cleanup', async () => {
     const onInvalidSelection = jest.fn()

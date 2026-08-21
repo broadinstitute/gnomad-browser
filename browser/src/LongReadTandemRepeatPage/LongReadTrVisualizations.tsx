@@ -272,8 +272,10 @@ const Histogram = styled.div<{ $height: number; $gap: number }>`
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  box-sizing: border-box;
   gap: ${(props) => props.$gap}px;
   height: ${(props) => props.$height}px;
+  padding-top: 18px;
   border-bottom: 1px solid #89939a;
 `
 
@@ -365,42 +367,53 @@ const BarSegments = styled.span`
   }
 `
 
-const SelectedBin = styled.div`
-  padding-top: 0.85em;
-  border-top: 1px solid #d8dee2;
+const SelectedBin = styled.section`
+  padding: 1em;
+  border: 2px solid #b7d5e9;
+  border-radius: 5px;
   margin-top: 1.25em;
+  background: #f7fbfe;
 `
 
-const ExactAlleleChips = styled.ul`
+const SelectedBinHeader = styled.header`
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45em;
-  padding: 0;
-  margin: 0.55em 0 0;
-  list-style: none;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1em;
+  margin-bottom: 0.65em;
+
+  h3 {
+    margin: 0;
+  }
 `
 
-const ExactAlleleChip = styled(SelectionLink)`
-  display: inline-block;
+const SelectedBinBadge = styled.span`
+  flex: 0 0 auto;
   padding: 0.25em 0.55em;
-  border: 1px solid #397daf;
+  border-radius: 3px;
+  background: #fff0ca;
+  color: #6e4900;
+  font-size: 12px;
+  font-weight: bold;
+`
+
+const SelectAlleleControl = styled(SelectionLink)`
+  display: inline-block;
+  padding: 0.3em 0.7em;
+  border: 1px solid #9aa8b2;
   border-radius: 3px;
   background: #fff;
-  color: #174f78;
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.35;
+  color: #111;
   text-decoration: none;
 
   &[aria-current='true'] {
     border-color: #a65310;
     background: #fff3e8;
     box-shadow: inset 0 0 0 1px #a65310;
-    color: #713706;
   }
 
   &:hover {
-    text-decoration: underline;
+    border-color: #397daf;
   }
 
   &:focus-visible {
@@ -484,41 +497,89 @@ const LengthBinAllelePicker = ({
   alleles,
   selectedAllele,
   calledAllelesInView,
+  selectedDivision,
   navigation,
+  selectedAlleleDetail,
 }: {
   bin: AlleleBin
   alleles: Map<string, LongReadTrAllele>
   selectedAllele?: string
   calledAllelesInView: number
+  selectedDivision?: string | null
   navigation: AlleleNavigation
-}) => (
-  <SelectedBin aria-live="polite">
-    <strong>
-      {signed(bin.delta)} bp · {calledAllelesInView.toLocaleString()} copies in view ·{' '}
-      {bin.allele_ids.length.toLocaleString()} exact ALT{bin.allele_ids.length === 1 ? '' : 's'}
-    </strong>
-    <ExactAlleleChips aria-label={`Exact alleles at ${signed(bin.delta)} bp`}>
-      {bin.allele_ids.map((id) => {
-        const allele = alleles.get(id)
-        return (
-          <li key={id}>
-            <ExactAlleleChip
-              alleleId={id}
-              navigation={navigation}
-              selected={id === selectedAllele}
-              title={`${id}${allele ? ` · AC ${allele.freq.all.ac.toLocaleString()}` : ''}`}
-              aria-label={`Select ${alleleLabel(id)}${
-                allele ? `, ${allele.freq.all.ac.toLocaleString()} called copies` : ''
-              }`}
-            >
-              {alleleLabel(id)} · AC {allele ? allele.freq.all.ac.toLocaleString() : '—'}
-            </ExactAlleleChip>
-          </li>
-        )
-      })}
-    </ExactAlleleChips>
-  </SelectedBin>
-)
+  selectedAlleleDetail?: React.ReactNode
+}) => {
+  const rows = bin.allele_ids
+    .map((id) => ({ id, allele: alleles.get(id) }))
+    .map((row) => ({
+      ...row,
+      frequency: selectedDivision
+        ? row.allele?.freq.populations.find((frequency) => frequency.id === selectedDivision)
+        : row.allele?.freq.all,
+    }))
+    .sort(
+      (left, right) =>
+        (right.frequency?.ac || 0) - (left.frequency?.ac || 0) ||
+        (left.allele?.alt_index || 0) - (right.allele?.alt_index || 0)
+    )
+  const selectedIsInBin = bin.allele_ids.includes(selectedAllele || '')
+
+  return (
+    <SelectedBin aria-labelledby="lr-tr-selected-bin-heading">
+      <SelectedBinHeader aria-live="polite">
+        <h3 id="lr-tr-selected-bin-heading">
+          {signed(bin.delta)} bp contains {bin.allele_ids.length.toLocaleString()} exact ALT
+          {bin.allele_ids.length === 1 ? '' : 's'}
+        </h3>
+        <SelectedBinBadge>Selected length bin</SelectedBinBadge>
+      </SelectedBinHeader>
+      <div style={{ color: '#566168', marginBottom: '0.65em' }}>
+        {calledAllelesInView.toLocaleString()} called allele copies in this view
+      </div>
+      <ScrollTable>
+        <table aria-label={`Exact alleles at ${signed(bin.delta)} bp`}>
+          <thead>
+            <tr>
+              <th scope="col">Exact ALT</th>
+              <th scope="col">Exact identity</th>
+              <th scope="col">Purity</th>
+              <th scope="col">AC</th>
+              <th scope="col">AF</th>
+              <th scope="col">Select</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(({ id, allele, frequency }) => {
+              const selected = id === selectedAllele
+              return (
+                <tr key={id} aria-selected={selected}>
+                  <th scope="row">{alleleLabel(id)}</th>
+                  <td>
+                    <code>{id}</code>
+                  </td>
+                  <td>{allele?.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)}</td>
+                  <td>{frequency ? frequency.ac.toLocaleString() : '—'}</td>
+                  <td>{frequency ? frequency.af.toPrecision(4) : '—'}</td>
+                  <td>
+                    <SelectAlleleControl
+                      alleleId={id}
+                      navigation={navigation}
+                      selected={selected}
+                      aria-label={`Select ${alleleLabel(id)}`}
+                    >
+                      {selected ? 'Selected' : 'Select'}
+                    </SelectAlleleControl>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </ScrollTable>
+      {selectedIsInBin && selectedAlleleDetail}
+    </SelectedBin>
+  )
+}
 
 const PurityPointLink = styled(SelectionLink)`
   position: absolute;
@@ -757,11 +818,13 @@ export const WholeRecordAlleleLandscape = ({
   alleles,
   selectedAllele,
   navigation,
+  selectedAlleleDetail,
 }: {
   landscape: WholeRecordAlleleLandscapeData
   alleles: LongReadTrAllele[]
   selectedAllele?: string
   navigation: AlleleNavigation
+  selectedAlleleDetail?: React.ReactNode
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -850,10 +913,7 @@ export const WholeRecordAlleleLandscape = ({
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
       <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
-      <p>
-        Whole-record difference is complete ALT length minus REF length in base pairs. It is not a
-        component repeat count, expansion size, or clinical classification.
-      </p>
+      <p>Whole-record ALT − REF length (bp); not a component repeat count.</p>
       <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '8px 16px' }}>
         {landscape.stratified_available && (
           <>
@@ -935,6 +995,7 @@ export const WholeRecordAlleleLandscape = ({
             <HistogramScroller>
               <Histogram
                 aria-label="Whole-record delta histogram"
+                data-testid="whole-record-delta-histogram"
                 $height={histogramLayout.height}
                 $gap={histogramLayout.gap}
                 style={{ minWidth: '100%', width: histogramContentWidth }}
@@ -990,15 +1051,6 @@ export const WholeRecordAlleleLandscape = ({
           <div style={{ color: '#566168', fontSize: 11, textAlign: 'center' }}>
             Whole-record ALT − REF length (bp) · numbers above bars are exact ALTs
           </div>
-          {selectedBin && (
-            <LengthBinAllelePicker
-              bin={selectedBin}
-              alleles={alleleById}
-              selectedAllele={selectedAllele}
-              calledAllelesInView={counts[bins.indexOf(selectedBin)] || 0}
-              navigation={navigation}
-            />
-          )}
         </PlotCard>
         <PlotCard>
           <h3>Length and source allele purity</h3>
@@ -1015,6 +1067,17 @@ export const WholeRecordAlleleLandscape = ({
           )}
         </PlotCard>
       </PlotGrid>
+      {selectedBin && (
+        <LengthBinAllelePicker
+          bin={selectedBin}
+          alleles={alleleById}
+          selectedAllele={selectedAllele}
+          calledAllelesInView={counts[bins.indexOf(selectedBin)] || 0}
+          selectedDivision={selectedDivision}
+          navigation={navigation}
+          selectedAlleleDetail={selectedAlleleDetail}
+        />
+      )}
     </Panel>
   )
 }
@@ -1407,6 +1470,19 @@ export const WholeRecordGenotypeLandscape = ({
   )
 }
 
+const IndexDetails = styled.details`
+  margin-top: 2.4em;
+
+  summary {
+    cursor: pointer;
+  }
+
+  h2 {
+    display: inline;
+    font-size: 20px;
+  }
+`
+
 const IndexHeader = styled.div`
   display: grid;
   grid-template-columns: minmax(130px, 24%) repeat(5, minmax(80px, 15%));
@@ -1482,17 +1558,15 @@ export const ExactAlleleIndex = ({
 }) => {
   const itemData = { alleles, selectedAllele, navigation }
   return (
-    <Panel aria-labelledby="lr-tr-index-heading">
-      <h2 id="lr-tr-index-heading">Full exact ALT index ({alleles.length.toLocaleString()})</h2>
-      <p>
-        Every exact sequence identity in this bounded locus response remains independently
-        selectable.
-      </p>
+    <IndexDetails>
+      <summary>
+        <h2 id="lr-tr-index-heading">Full exact ALT index ({alleles.length.toLocaleString()})</h2>
+      </summary>
       <div
         role="table"
         aria-label="Exact alternate allele index"
         aria-rowcount={alleles.length + 1}
-        style={{ overflowX: 'auto', border: '1px solid #ddd' }}
+        style={{ overflowX: 'auto', border: '1px solid #ddd', marginTop: '0.8em' }}
       >
         <IndexHeader role="row" aria-rowindex={1}>
           <span role="columnheader">Allele</span>
@@ -1514,7 +1588,7 @@ export const ExactAlleleIndex = ({
           {ExactAlleleIndexRow}
         </FixedSizeList>
       </div>
-    </Panel>
+    </IndexDetails>
   )
 }
 
@@ -1529,6 +1603,29 @@ const Sequence = styled.pre`
   word-break: break-all;
 `
 
+const SelectedDetail = styled.article`
+  padding: 1em;
+  border: 1px solid #d8dee2;
+  border-radius: 4px;
+  margin-top: 1em;
+  background: #fffdf9;
+`
+
+const SelectedDetailGrid = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, calc(64% - 0.6em)) minmax(280px, calc(36% - 0.6em));
+  align-items: start;
+  gap: 1.2em;
+
+  h4 {
+    margin-top: 0;
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 100%);
+  }
+`
+
 export const SelectedExactAlleleDetail = React.forwardRef<
   HTMLElement,
   {
@@ -1536,86 +1633,103 @@ export const SelectedExactAlleleDetail = React.forwardRef<
     motifs: string[]
   }
 >(({ allele, motifs }, ref) => (
-  <Panel
+  <SelectedDetail
     ref={ref}
     tabIndex={-1}
     aria-labelledby="lr-tr-selected-detail-heading"
     data-testid="lr-tr-selected-detail"
   >
-    <h2 id="lr-tr-selected-detail-heading">
-      Selected exact allele: {alleleLabel(allele.variant_id)}
-    </h2>
-    <p>
-      <code>{allele.variant_id}</code> is immutable, cohort/source-scoped exact identity.
-    </p>
-    <ScrollTable>
-      <table>
-        <tbody>
-          <tr>
-            <th scope="row">Source record / ordinal</th>
-            <td>
-              <code>{allele.source_variant_id}</code> / ALT {allele.alt_index} of {allele.alt_count}
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Whole-record Δ length</th>
-            <td>{allele.length == null ? '—' : `${signed(allele.length)} bp`}</td>
-          </tr>
-          <tr>
-            <th scope="row">Exact frequency</th>
-            <td>
-              {allele.freq.all.ac.toLocaleString()} / {allele.freq.all.an.toLocaleString()} (
-              {(allele.freq.all.af * 100).toPrecision(4)}%)
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Source purity</th>
-            <td>
-              {allele.motif_purity == null
-                ? '—'
-                : `${allele.motif_purity.toFixed(6)} (${
-                    allele.motif_purity_source || 'source unavailable'
-                  })`}
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Repeat count</th>
-            <td>
-              {allele.repeat_count == null
-                ? '—'
-                : `${allele.repeat_count.toLocaleString()} (${
-                    allele.repeat_count_source || 'source unavailable'
-                  })`}
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Filters</th>
-            <td>{allele.filters.length ? allele.filters.join(', ') : 'PASS'}</td>
-          </tr>
-          <tr>
-            <th scope="row">rsID</th>
-            <td>{allele.rsids.length ? allele.rsids.join(', ') : '—'}</td>
-          </tr>
-          <tr>
-            <th scope="row">Major consequence</th>
-            <td>{allele.major_consequence || '—'}</td>
-          </tr>
-          <tr>
-            <th scope="row">CADD / phyloP</th>
-            <td>
-              {allele.cadd_phred == null ? '—' : allele.cadd_phred} /{' '}
-              {allele.phylop == null ? '—' : allele.phylop}
-            </td>
-          </tr>
-          <tr>
-            <th scope="row">Release / run</th>
-            <td>
-              {allele.source_release} / <code>{allele.source_run_id}</code>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </ScrollTable>
+    <h3 id="lr-tr-selected-detail-heading">{alleleLabel(allele.variant_id)} exact detail</h3>
+    <SelectedDetailGrid>
+      <div>
+        <h4>Exact ALT sequence ({allele.alt.length.toLocaleString()} bp)</h4>
+        <Sequence>{allele.alt}</Sequence>
+        <ExactTrAltMotifStructure refAllele={allele.ref} altAllele={allele.alt} motifs={motifs} />
+        <p>
+          <strong>Source decomposition:</strong> {allele.decomposition_reason}. Browser DP tokens
+          are sequence motifs, not source-coordinate components.
+        </p>
+        <details>
+          <summary>REF sequence ({allele.ref.length.toLocaleString()} bp)</summary>
+          <Sequence>{allele.ref}</Sequence>
+        </details>
+      </div>
+      <ScrollTable>
+        <table>
+          <tbody>
+            <tr>
+              <th scope="row">Exact identity</th>
+              <td>
+                <code>{allele.variant_id}</code>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Source record / ordinal</th>
+              <td>
+                <code>{allele.source_variant_id}</code> / ALT {allele.alt_index} of{' '}
+                {allele.alt_count}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Whole-record Δ length</th>
+              <td>{allele.length == null ? '—' : `${signed(allele.length)} bp`}</td>
+            </tr>
+            <tr>
+              <th scope="row">Exact frequency</th>
+              <td>
+                {allele.freq.all.ac.toLocaleString()} / {allele.freq.all.an.toLocaleString()} (
+                {(allele.freq.all.af * 100).toPrecision(4)}%)
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Source purity</th>
+              <td>
+                {allele.motif_purity == null
+                  ? '—'
+                  : `${allele.motif_purity.toFixed(6)} (${
+                      allele.motif_purity_source || 'source unavailable'
+                    })`}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Repeat count</th>
+              <td>
+                {allele.repeat_count == null
+                  ? '—'
+                  : `${allele.repeat_count.toLocaleString()} (${
+                      allele.repeat_count_source || 'source unavailable'
+                    })`}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Filters</th>
+              <td>{allele.filters.length ? allele.filters.join(', ') : 'PASS'}</td>
+            </tr>
+            <tr>
+              <th scope="row">rsID</th>
+              <td>{allele.rsids.length ? allele.rsids.join(', ') : '—'}</td>
+            </tr>
+            <tr>
+              <th scope="row">Major consequence</th>
+              <td>{allele.major_consequence || '—'}</td>
+            </tr>
+            <tr>
+              <th scope="row">CADD / phyloP</th>
+              <td>
+                {allele.cadd_phred == null ? '—' : allele.cadd_phred} /{' '}
+                {allele.phylop == null ? '—' : allele.phylop}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">Release / run</th>
+              <td>
+                {allele.source_release} / <code>{allele.source_run_id}</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ScrollTable>
+    </SelectedDetailGrid>
     {allele.freq.populations.length > 0 && (
       <details>
         <summary>Exact stratified frequencies ({allele.freq.populations.length})</summary>
@@ -1643,16 +1757,7 @@ export const SelectedExactAlleleDetail = React.forwardRef<
         </ScrollTable>
       </details>
     )}
-    <h3>REF sequence ({allele.ref.length.toLocaleString()} bp)</h3>
-    <Sequence>{allele.ref}</Sequence>
-    <h3>ALT sequence ({allele.alt.length.toLocaleString()} bp)</h3>
-    <Sequence>{allele.alt}</Sequence>
-    <p>
-      <strong>Source decomposition:</strong> {allele.decomposition_reason}. Browser DP tokens below
-      describe sequence motifs; they do not assign tokens to source-coordinate components.
-    </p>
-    <ExactTrAltMotifStructure refAllele={allele.ref} altAllele={allele.alt} motifs={motifs} />
-  </Panel>
+  </SelectedDetail>
 ))
 
 SelectedExactAlleleDetail.displayName = 'SelectedExactAlleleDetail'

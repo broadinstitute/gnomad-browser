@@ -24,9 +24,12 @@ const openLocus = async (page: Page, locusId: string) => {
 }
 
 const selectExactAllele = async (page: Page, locusId: string, altIndex: number) => {
-  const index = page.locator('section').filter({
+  const index = page.locator('details').filter({
     has: page.getByRole('heading', { name: /^Full exact ALT index/ }),
   })
+  if (!(await index.evaluate((element) => (element as HTMLDetailsElement).open))) {
+    await index.locator('summary').click()
+  }
   const exactLink = index.getByRole('link', { name: `ALT ${altIndex}`, exact: true }).first()
   const href = await exactLink.getAttribute('href')
   const selectedUrl = new URL(href!, 'http://localhost')
@@ -46,10 +49,12 @@ const selectExactAllele = async (page: Page, locusId: string, altIndex: number) 
   expect(selected.alt_index).toBe(altIndex)
   expect(selected.ref).toBeTruthy()
   expect(selected.alt).toBeTruthy()
+  await expect(page.getByRole('heading', { name: `ALT ${altIndex} exact detail` })).toBeVisible()
+  const selectedDetail = page.getByTestId('lr-tr-selected-detail')
+  await expect(selectedDetail).toBeFocused()
   await expect(
-    page.getByRole('heading', { name: `Selected exact allele: ALT ${altIndex}` })
+    selectedDetail.locator('xpath=..').getByRole('table', { name: /^Exact alleles at/ })
   ).toBeVisible()
-  await expect(page.getByTestId('lr-tr-selected-detail')).toBeFocused()
 
   return selected.variant_id as string
 }
@@ -63,7 +68,7 @@ const expectHistorySelection = async (
   if (direction === 'back') await page.goBack()
   else await page.goForward()
   await responsePromise
-  await expect(page).toHaveURL(new RegExp(`allele=${encodeURIComponent(alleleId)}`))
+  await expect.poll(() => new URL(page.url()).searchParams.get('allele')).toBe(alleleId)
 }
 
 const verifyLegacyRedirect = async (page: Page, locusId: string, alleleId: string) => {
@@ -75,15 +80,24 @@ const verifyLegacyRedirect = async (page: Page, locusId: string, alleleId: strin
   await page.goto(`/variant/${alleleId}?${DATASET_QUERY}&keep=1`)
   expect((await redirectResponse).status()).toBe(200)
   expect((await locusResponse).status()).toBe(200)
-  await expect(page).toHaveURL((url) => {
-    return (
-      decodeURIComponent(url.pathname) === `/tandem-repeat/${locusId}` &&
-      url.searchParams.get('dataset') === 'gnomad_r4_lr' &&
-      url.searchParams.get('lr_cohort') === 'hgsvc_hprc' &&
-      url.searchParams.get('keep') === '1' &&
-      url.searchParams.get('allele') === alleleId
-    )
-  })
+  await expect
+    .poll(() => {
+      const url = new URL(page.url())
+      return {
+        pathname: decodeURIComponent(url.pathname),
+        dataset: url.searchParams.get('dataset'),
+        cohort: url.searchParams.get('lr_cohort'),
+        keep: url.searchParams.get('keep'),
+        allele: url.searchParams.get('allele'),
+      }
+    })
+    .toEqual({
+      pathname: `/tandem-repeat/${locusId}`,
+      dataset: 'gnomad_r4_lr',
+      cohort: 'hgsvc_hprc',
+      keep: '1',
+      allele: alleleId,
+    })
   await page.goBack()
   await expect(page).toHaveURL(/\/about$/)
 }
