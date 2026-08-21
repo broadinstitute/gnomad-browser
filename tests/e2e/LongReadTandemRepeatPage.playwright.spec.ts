@@ -1,9 +1,10 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Page, type TestInfo } from '@playwright/test'
 
-const DATASET_QUERY = 'dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc'
 const COMPOUND_LOCUS =
   '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
-const ORDINARY_LOCUS = '1-16712-16744-GTG'
+type Cohort = 'hgsvc_hprc' | 'aou'
+
+const datasetQuery = (cohort: Cohort) => `dataset=gnomad_r4_lr&lr_cohort=${cohort}`
 
 const isGraphqlOperation = (response: any, operation: string) => {
   const request = response.request()
@@ -13,14 +14,23 @@ const isGraphqlOperation = (response: any, operation: string) => {
 const waitForLocusResponse = (page: Page) =>
   page.waitForResponse((response) => isGraphqlOperation(response, 'LongReadTandemRepeatLocus'))
 
-const openLocus = async (page: Page, locusId: string, exactAlleleCount: number) => {
-  const responsePromise = waitForLocusResponse(page)
-  await page.goto(`/tandem-repeat/${locusId}?${DATASET_QUERY}`)
-  const indexHeading = page.getByRole('heading', {
-    name: `Full exact ALT index (${exactAlleleCount})`,
+const exactIndexForCount = (page: Page, exactAlleleCount: number) => {
+  const heading = page.getByRole('heading', {
+    name: `All exact ALTs (${exactAlleleCount})`,
   })
-  await expect(indexHeading).toBeVisible({ timeout: 30_000 })
-  const index = page.locator('section').filter({ has: indexHeading })
+  return { heading, index: heading.locator('xpath=..') }
+}
+
+const openLocus = async (
+  page: Page,
+  locusId: string,
+  exactAlleleCount: number,
+  cohort: Cohort = 'hgsvc_hprc'
+) => {
+  const responsePromise = waitForLocusResponse(page)
+  await page.goto(`/tandem-repeat/${locusId}?${datasetQuery(cohort)}`)
+  const { heading, index } = exactIndexForCount(page, exactAlleleCount)
+  await expect(heading).toBeVisible({ timeout: 30_000 })
   await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toBeVisible()
   await expect(index.locator('details')).toHaveCount(0)
   await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toHaveAttribute(
@@ -30,18 +40,33 @@ const openLocus = async (page: Page, locusId: string, exactAlleleCount: number) 
   const response = await responsePromise
   expect(response.status()).toBe(200)
   expect((await response.json()).errors).toBeUndefined()
+
+  return index
 }
 
-const selectExactAllele = async (page: Page, locusId: string, altIndex: number) => {
-  const index = page.locator('section').filter({
-    has: page.getByRole('heading', { name: /^Full exact ALT index/ }),
-  })
+const selectExactAllele = async (
+  page: Page,
+  locusId: string,
+  altIndex: number,
+  exactAlleleCount: number,
+  cohort: Cohort = 'hgsvc_hprc'
+) => {
+  const { index } = exactIndexForCount(page, exactAlleleCount)
+  const indexScroller = index.locator('.lr-tr-exact-index-scroll')
+  const requestedScrollTop = altIndex > 10 ? (altIndex - 1) * 36 : 0
+  const indexScrollTop = await indexScroller.evaluate((element, top) => {
+    element.scrollTo({ top })
+    return element.scrollTop
+  }, requestedScrollTop)
+  if (requestedScrollTop > 0) expect(indexScrollTop).toBeGreaterThan(0)
+
   const exactLink = index.getByRole('link', { name: `ALT ${altIndex}`, exact: true }).first()
+  await expect(exactLink).toBeVisible()
   const href = await exactLink.getAttribute('href')
   const selectedUrl = new URL(href!, 'http://localhost')
   expect(decodeURIComponent(selectedUrl.pathname)).toBe(`/tandem-repeat/${locusId}`)
   expect(selectedUrl.searchParams.get('dataset')).toBe('gnomad_r4_lr')
-  expect(selectedUrl.searchParams.get('lr_cohort')).toBe('hgsvc_hprc')
+  expect(selectedUrl.searchParams.get('lr_cohort')).toBe(cohort)
   expect(selectedUrl.searchParams.get('allele')).toMatch(new RegExp(`~${altIndex}$`))
 
   const documentMarker = await page.evaluate(() => {
@@ -49,15 +74,11 @@ const selectExactAllele = async (page: Page, locusId: string, altIndex: number) 
     ;(window as any).__lrTrDocumentMarker = marker
     return marker
   })
-  const indexScroller = index.locator('.lr-tr-exact-index-scroll')
-  const indexScrollTop = await indexScroller.evaluate((element) => {
-    element.scrollTo({ top: 72 })
-    return element.scrollTop
-  })
-  expect(indexScrollTop).toBeGreaterThan(0)
 
   const responsePromise = waitForLocusResponse(page)
   await exactLink.click()
+  const clickedScrollTop = await indexScroller.evaluate((element) => element.scrollTop)
+  if (requestedScrollTop > 0) expect(clickedScrollTop).toBeGreaterThan(0)
   await expect(page.getByRole('heading', { name: /^Allelic landscape$/ })).toBeVisible()
   await expect(index).toBeVisible()
   expect(await page.evaluate(() => (window as any).__lrTrDocumentMarker)).toBe(documentMarker)
@@ -71,15 +92,31 @@ const selectExactAllele = async (page: Page, locusId: string, altIndex: number) 
   expect(selected.ref).toBeTruthy()
   expect(selected.alt).toBeTruthy()
   await expect(page.getByRole('heading', { name: `ALT ${altIndex} exact detail` })).toBeVisible()
-  expect(await indexScroller.evaluate((element) => element.scrollTop)).toBe(indexScrollTop)
+  const selectedScrollTop = await indexScroller.evaluate((element) => element.scrollTop)
+  expect(Math.abs(selectedScrollTop - clickedScrollTop)).toBeLessThanOrEqual(1)
   expect(await page.evaluate(() => (window as any).__lrTrDocumentMarker)).toBe(documentMarker)
   const selectedDetail = page.getByTestId('lr-tr-selected-detail')
   await expect(selectedDetail).toBeFocused()
   await expect(
-    selectedDetail.locator('xpath=..').getByRole('table', { name: /^Exact alleles at/ })
+    page.getByRole('heading', {
+      name: new RegExp(`^[0-9,]+ of ${exactAlleleCount.toLocaleString()} exact ALTs at`),
+    })
   ).toBeVisible()
 
   return selected.variant_id as string
+}
+
+const attachAlleleBrowserScreenshot = async (page: Page, testInfo: TestInfo, name: string) => {
+  const screenshotPath = process.env.TR_SCREENSHOT_DIR
+    ? `${process.env.TR_SCREENSHOT_DIR}/${name}`
+    : undefined
+  await testInfo.attach(name, {
+    body: await page.getByTestId('lr-tr-exact-allele-browser').screenshot({
+      animations: 'disabled',
+      path: screenshotPath,
+    }),
+    contentType: 'image/png',
+  })
 }
 
 const expectHistorySelection = async (
@@ -100,7 +137,7 @@ const verifyLegacyRedirect = async (page: Page, locusId: string, alleleId: strin
     isGraphqlOperation(response, 'LegacyLongReadTrRedirect')
   )
   const locusResponse = waitForLocusResponse(page)
-  await page.goto(`/variant/${alleleId}?${DATASET_QUERY}&keep=1`)
+  await page.goto(`/variant/${alleleId}?${datasetQuery('hgsvc_hprc')}&keep=1`)
   expect((await redirectResponse).status()).toBe(200)
   expect((await locusResponse).status()).toBe(200)
   await expect
@@ -126,7 +163,7 @@ const verifyLegacyRedirect = async (page: Page, locusId: string, alleleId: strin
 }
 
 test.describe('Long-read tandem-repeat locus exact navigation', () => {
-  test('canonical selection, history, and legacy redirects work for ordinary and compound loci', async ({
+  test('canonical selection, history, and legacy redirects stay in place for HTT', async ({
     page,
   }) => {
     test.setTimeout(120_000)
@@ -134,18 +171,51 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     page.on('pageerror', (error) => runtimeErrors.push(error))
 
     await openLocus(page, COMPOUND_LOCUS, 72)
-    const compoundAlt1 = await selectExactAllele(page, COMPOUND_LOCUS, 1)
-    const compoundAlt2 = await selectExactAllele(page, COMPOUND_LOCUS, 2)
+    const compoundAlt1 = await selectExactAllele(page, COMPOUND_LOCUS, 1, 72)
+    const compoundAlt2 = await selectExactAllele(page, COMPOUND_LOCUS, 2, 72)
     expect(compoundAlt1).toBe('chr4-3074876-TRV-164~1')
     expect(compoundAlt2).toBe('chr4-3074876-TRV-164~2')
     await expectHistorySelection(page, 'back', compoundAlt1)
     await expectHistorySelection(page, 'forward', compoundAlt2)
     await verifyLegacyRedirect(page, COMPOUND_LOCUS, compoundAlt2)
 
-    await openLocus(page, ORDINARY_LOCUS, 497)
-    await selectExactAllele(page, ORDINARY_LOCUS, 1)
-    await selectExactAllele(page, ORDINARY_LOCUS, 2)
-
     expect(runtimeErrors).toEqual([])
+  })
+
+  test('HTT keeps all 72 HGSVC and 497 AoU ALTs reachable beside in-place detail', async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(120_000)
+
+    const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
+    const emptyDetail = page.getByText('Select an exact ALT to view its sequence and details.')
+    const wideIndexBox = await httIndex.boundingBox()
+    const wideDetailBox = await emptyDetail.boundingBox()
+    expect(wideIndexBox).not.toBeNull()
+    expect(wideDetailBox).not.toBeNull()
+    expect(wideIndexBox!.x).toBeLessThan(wideDetailBox!.x)
+    await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-all-exact-alts-wide.png')
+
+    const httAlt72 = await selectExactAllele(page, COMPOUND_LOCUS, 72, 72)
+    expect(httAlt72).toMatch(/~72$/)
+    await expect(page.getByText(/ALT 72 of 72/)).toBeVisible()
+    await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-wide.png')
+
+    await page.setViewportSize({ width: 760, height: 900 })
+    const narrowIndexBox = await httIndex
+      .getByRole('table', { name: 'Exact alternate allele index' })
+      .boundingBox()
+    const narrowDetailBox = await page.getByTestId('lr-tr-selected-detail').boundingBox()
+    expect(narrowIndexBox).not.toBeNull()
+    expect(narrowDetailBox).not.toBeNull()
+    expect(narrowDetailBox!.y).toBeGreaterThan(narrowIndexBox!.y + narrowIndexBox!.height - 2)
+    await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-narrow.png')
+
+    await page.setViewportSize({ width: 1280, height: 720 })
+    await openLocus(page, COMPOUND_LOCUS, 497, 'aou')
+    const aouAlt497 = await selectExactAllele(page, COMPOUND_LOCUS, 497, 497, 'aou')
+    expect(aouAlt497).toMatch(/~497$/)
+    await expect(page.getByText(/ALT 497 of 497/)).toBeVisible()
+    await attachAlleleBrowserScreenshot(page, testInfo, 'htt-497-aou-selected-detail-wide.png')
   })
 })

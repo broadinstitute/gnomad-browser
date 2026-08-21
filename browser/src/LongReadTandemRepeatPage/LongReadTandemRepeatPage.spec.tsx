@@ -427,30 +427,34 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
   })
 
-  test('groups selected-bin rows and exact detail before compound genotype data', () => {
+  test('puts the complete index and selected detail first in a responsive allele browser', () => {
     renderPage()
+    const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')
+    const browser = screen.getByTestId('lr-tr-exact-allele-browser')
+    const index = screen.getByRole('table', { name: 'Exact alternate allele index' })
     const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
-    const selectedBinTable = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
     const selectedBin = screen
-      .getByRole('heading', { name: '−6 bp contains 2 exact ALTs' })
+      .getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })
       .closest('section')
     const genotypeHeading = screen.getByRole('heading', {
       name: 'Whole-record genotype distribution',
     })
-    const indexHeading = screen.getByRole('heading', { name: 'Full exact ALT index (72)' })
 
-    expect(selectedBin).not.toBeNull()
-    expect(selectedBin?.contains(selectedBinTable)).toBe(true)
-    expect(selectedBin?.contains(selectedDetail)).toBe(true)
-    expect(selectedBinTable.compareDocumentPosition(selectedDetail)).toBe(
+    expect(landscape?.contains(browser)).toBe(true)
+    expect(browser.contains(index)).toBe(true)
+    expect(browser.contains(selectedDetail)).toBe(true)
+    expect(index.compareDocumentPosition(selectedDetail)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(selectedBin?.contains(selectedDetail)).toBe(false)
+    expect(selectedDetail.compareDocumentPosition(selectedBin as HTMLElement)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
-    expect(selectedDetail.compareDocumentPosition(genotypeHeading)).toBe(
+    expect(selectedBin?.compareDocumentPosition(genotypeHeading)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
-    expect(genotypeHeading.compareDocumentPosition(indexHeading)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING
-    )
+    expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(390px,42%) minmax(0,58%)')
+    expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
+      media: '(max-width:900px)',
+    })
   })
 
   test('links to the explicit short-read dataset without preserving the long-read dataset', () => {
@@ -460,8 +464,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
     )
   })
 
-  test('bin table keeps same-length identities, frequencies, selection state, and URL controls', () => {
+  test('bin subset is explicitly bounded and keeps identities, frequencies, and URL controls', () => {
     renderPage()
+    expect(screen.getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })).not.toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: /0 bp, 40 called allele copies/ }))
+    expect(screen.getByRole('heading', { name: '1 of 72 exact ALTs at 0 bp' })).not.toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: /−6 bp, 134 called allele copies/ }))
     const table = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
     const selectedControl = within(table).getByRole('link', { name: 'Select ALT 2' })
     const otherControl = within(table).getByRole('link', { name: 'Select ALT 3' })
@@ -508,19 +516,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(zeroDeltaCell.closest('[role="row"]')).not.toBeNull()
   })
 
-  test.each([72, 497])('shows the complete %s-row virtualized exact index by default', (count) => {
+  test.each([72, 497])('shows all %s exact ALTs in the primary virtualized browser', (count) => {
     renderPage({ locus: makeLocus(count), selectedAllele: undefined })
-    const heading = screen.getByRole('heading', { name: `Full exact ALT index (${count})` })
+    const heading = screen.getByRole('heading', { name: `All exact ALTs (${count})` })
     const section = heading.closest('section')
     expect(section).not.toBeNull()
     expect(heading.closest('details')).toBeNull()
-    expect(within(section as HTMLElement).getByTestId('virtual-exact-index')).toHaveAttribute(
-      'data-item-count',
-      String(count)
-    )
-    expect(within(section as HTMLElement).getByTestId('virtual-exact-index')).toHaveClass(
-      'lr-tr-exact-index-scroll'
-    )
+    const virtualIndex = within(section as HTMLElement).getByTestId('virtual-exact-index')
+    expect(virtualIndex.getAttribute('data-item-count')).toBe(String(count))
+    expect(virtualIndex.classList.contains('lr-tr-exact-index-scroll')).toBe(true)
     const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
     expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
     expect(
@@ -642,7 +646,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
     expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
     expect(screen.getByRole('heading', { name: 'ALT 2 exact detail' })).not.toBeNull()
-    expect(screen.getByRole('heading', { name: 'Full exact ALT index (72)' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).not.toBeNull()
     ;(global as any).__TR_QUERY_STATE__ = {
       data: { long_read_tandem_repeat_locus: freshLocus },
       requestVariables: { allele: nextAlleleId },

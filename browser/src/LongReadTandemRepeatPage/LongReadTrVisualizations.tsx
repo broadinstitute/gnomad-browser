@@ -496,18 +496,18 @@ const LengthBinAllelePicker = ({
   bin,
   alleles,
   selectedAllele,
+  totalExactAlts,
   calledAllelesInView,
   selectedDivision,
   navigation,
-  selectedAlleleDetail,
 }: {
   bin: AlleleBin
   alleles: Map<string, LongReadTrAllele>
   selectedAllele?: string
+  totalExactAlts: number
   calledAllelesInView: number
   selectedDivision?: string | null
   navigation: AlleleNavigation
-  selectedAlleleDetail?: React.ReactNode
 }) => {
   const rows = bin.allele_ids
     .map((id) => ({ id, allele: alleles.get(id) }))
@@ -522,14 +522,12 @@ const LengthBinAllelePicker = ({
         (right.frequency?.ac || 0) - (left.frequency?.ac || 0) ||
         (left.allele?.alt_index || 0) - (right.allele?.alt_index || 0)
     )
-  const selectedIsInBin = bin.allele_ids.includes(selectedAllele || '')
-
   return (
     <SelectedBin aria-labelledby="lr-tr-selected-bin-heading">
       <SelectedBinHeader aria-live="polite">
         <h3 id="lr-tr-selected-bin-heading">
-          {signed(bin.delta)} bp contains {bin.allele_ids.length.toLocaleString()} exact ALT
-          {bin.allele_ids.length === 1 ? '' : 's'}
+          {bin.allele_ids.length.toLocaleString()} of {totalExactAlts.toLocaleString()} exact ALTs
+          at {signed(bin.delta)} bp
         </h3>
         <SelectedBinBadge>Selected length bin</SelectedBinBadge>
       </SelectedBinHeader>
@@ -576,7 +574,6 @@ const LengthBinAllelePicker = ({
           </tbody>
         </table>
       </ScrollTable>
-      {selectedIsInBin && selectedAlleleDetail}
     </SelectedBin>
   )
 }
@@ -859,6 +856,12 @@ export const WholeRecordAlleleLandscape = ({
     return (
       <Panel aria-labelledby="lr-tr-allele-landscape-heading">
         <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
+        <ExactAlleleIndex
+          alleles={alleles}
+          selectedAllele={selectedAllele}
+          navigation={navigation}
+          selectedAlleleDetail={selectedAlleleDetail}
+        />
         <p role="status">
           Whole-record allele landscape unavailable: {unavailableReason(landscape.reason_code)}.
         </p>
@@ -913,6 +916,12 @@ export const WholeRecordAlleleLandscape = ({
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
       <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
+      <ExactAlleleIndex
+        alleles={alleles}
+        selectedAllele={selectedAllele}
+        navigation={navigation}
+        selectedAlleleDetail={selectedAlleleDetail}
+      />
       <p>Whole-record ALT − REF length (bp); not a component repeat count.</p>
       <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '8px 16px' }}>
         {landscape.stratified_available && (
@@ -1072,10 +1081,10 @@ export const WholeRecordAlleleLandscape = ({
           bin={selectedBin}
           alleles={alleleById}
           selectedAllele={selectedAllele}
+          totalExactAlts={landscape.exact_alt_count || alleles.length}
           calledAllelesInView={counts[bins.indexOf(selectedBin)] || 0}
           selectedDivision={selectedDivision}
           navigation={navigation}
-          selectedAlleleDetail={selectedAlleleDetail}
         />
       )}
     </Panel>
@@ -1471,14 +1480,48 @@ export const WholeRecordGenotypeLandscape = ({
 }
 
 const IndexSection = styled.section`
-  margin-top: 2.4em;
+  margin: 1.25em 0;
 `
+
+const AlleleBrowserGrid = styled.div`
+  display: grid;
+  grid-template-columns: minmax(390px, 42%) minmax(0, 58%);
+  align-items: start;
+  gap: 1em;
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 100%);
+  }
+`
+
+const IndexPane = styled.div`
+  overflow-x: auto;
+  min-width: 0;
+  border: 1px solid #d8dee2;
+  border-radius: 4px;
+`
+
+const SelectedAllelePane = styled.div`
+  min-width: 0;
+`
+
+const EmptySelectedAllele = styled.p`
+  min-height: 120px;
+  padding: 1em;
+  border: 1px solid #d8dee2;
+  border-radius: 4px;
+  margin: 0;
+  background: #fbfcfd;
+  color: #566168;
+`
+
+const indexColumns = 'minmax(72px, 1.3fr) 68px 64px 54px 68px'
 
 const IndexHeader = styled.div`
   display: grid;
-  grid-template-columns: minmax(130px, 24%) repeat(5, minmax(80px, 15%));
+  grid-template-columns: ${indexColumns};
   align-items: center;
-  min-width: 650px;
+  min-width: 390px;
   height: 36px;
   padding: 0 0.6em;
   border-bottom: 1px solid #bbb;
@@ -1488,9 +1531,9 @@ const IndexHeader = styled.div`
 
 const IndexRow = styled.div<{ selected: boolean }>`
   display: grid;
-  grid-template-columns: minmax(130px, 24%) repeat(5, minmax(80px, 15%));
+  grid-template-columns: ${indexColumns};
   align-items: center;
-  min-width: 650px;
+  min-width: 390px;
   height: 36px;
   padding: 0 0.6em;
   border-bottom: 1px solid #ddd;
@@ -1525,14 +1568,17 @@ const ExactAlleleIndexRow = ({
       title={allele.variant_id}
     >
       <span role="cell">
-        <SelectionLink alleleId={allele.variant_id} navigation={data.navigation}>
+        <SelectionLink
+          alleleId={allele.variant_id}
+          navigation={data.navigation}
+          selected={allele.variant_id === data.selectedAllele}
+        >
           {alleleLabel(allele.variant_id)}
         </SelectionLink>
       </span>
       <span role="cell">{allele.length == null ? '—' : `${signed(allele.length)} bp`}</span>
       <span role="cell">{allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)}</span>
       <span role="cell">{allele.freq.all.ac.toLocaleString()}</span>
-      <span role="cell">{allele.freq.all.an.toLocaleString()}</span>
       <span role="cell">{allele.freq.all.af.toPrecision(4)}</span>
     </IndexRow>
   )
@@ -1542,42 +1588,53 @@ export const ExactAlleleIndex = ({
   alleles,
   selectedAllele,
   navigation,
+  selectedAlleleDetail,
 }: {
   alleles: LongReadTrAllele[]
   selectedAllele?: string
   navigation: AlleleNavigation
+  selectedAlleleDetail?: React.ReactNode
 }) => {
   const itemData = { alleles, selectedAllele, navigation }
   return (
     <IndexSection aria-labelledby="lr-tr-index-heading">
-      <h2 id="lr-tr-index-heading">Full exact ALT index ({alleles.length.toLocaleString()})</h2>
-      <div
-        role="table"
-        aria-label="Exact alternate allele index"
-        aria-rowcount={alleles.length + 1}
-        style={{ overflowX: 'auto', border: '1px solid #ddd', marginTop: '0.8em' }}
-      >
-        <IndexHeader role="row" aria-rowindex={1}>
-          <span role="columnheader">Allele</span>
-          <span role="columnheader">Δ length</span>
-          <span role="columnheader">Purity</span>
-          <span role="columnheader">AC</span>
-          <span role="columnheader">AN</span>
-          <span role="columnheader">AF</span>
-        </IndexHeader>
-        <FixedSizeList
-          className="lr-tr-exact-index-scroll"
-          height={Math.min(420, Math.max(72, alleles.length * 36))}
-          itemCount={alleles.length}
-          itemData={itemData}
-          itemKey={(index: number) => alleles[index].variant_id}
-          itemSize={36}
-          overscanCount={10}
-          width="100%"
+      <h3 id="lr-tr-index-heading">All exact ALTs ({alleles.length.toLocaleString()})</h3>
+      <AlleleBrowserGrid data-testid="lr-tr-exact-allele-browser">
+        <IndexPane
+          role="table"
+          aria-label="Exact alternate allele index"
+          aria-rowcount={alleles.length + 1}
         >
-          {ExactAlleleIndexRow}
-        </FixedSizeList>
-      </div>
+          <IndexHeader role="row" aria-rowindex={1}>
+            <span role="columnheader">Allele</span>
+            <span role="columnheader">Δ length</span>
+            <span role="columnheader">Purity</span>
+            <span role="columnheader">AC</span>
+            <span role="columnheader">AF</span>
+          </IndexHeader>
+          <FixedSizeList
+            className="lr-tr-exact-index-scroll"
+            height={Math.min(360, Math.max(72, alleles.length * 36))}
+            itemCount={alleles.length}
+            itemData={itemData}
+            itemKey={(index: number) => alleles[index].variant_id}
+            itemSize={36}
+            overscanCount={10}
+            width="100%"
+          >
+            {ExactAlleleIndexRow}
+          </FixedSizeList>
+        </IndexPane>
+        <SelectedAllelePane aria-live="polite">
+          {selectedAlleleDetail || (
+            <EmptySelectedAllele>
+              {selectedAllele
+                ? 'Selected exact detail is unavailable.'
+                : 'Select an exact ALT to view its sequence and details.'}
+            </EmptySelectedAllele>
+          )}
+        </SelectedAllelePane>
+      </AlleleBrowserGrid>
     </IndexSection>
   )
 }
@@ -1597,22 +1654,18 @@ const SelectedDetail = styled.article`
   padding: 1em;
   border: 1px solid #d8dee2;
   border-radius: 4px;
-  margin-top: 1em;
+  margin: 0;
   background: #fffdf9;
 `
 
 const SelectedDetailGrid = styled.div`
   display: grid;
-  grid-template-columns: minmax(0, calc(64% - 0.6em)) minmax(280px, calc(36% - 0.6em));
+  grid-template-columns: minmax(0, 100%);
   align-items: start;
   gap: 1.2em;
 
   h4 {
     margin-top: 0;
-  }
-
-  @media (max-width: 900px) {
-    grid-template-columns: minmax(0, 100%);
   }
 `
 

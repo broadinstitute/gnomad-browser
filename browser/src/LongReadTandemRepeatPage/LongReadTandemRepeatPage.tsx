@@ -12,7 +12,6 @@ import {
   LongReadGenotypeDistributionSection,
 } from '../LongReadVariantPage/LongReadSTRDistributionSections'
 import {
-  ExactAlleleIndex,
   LongReadTrComponentTrack,
   Panel,
   SelectedExactAlleleDetail,
@@ -119,7 +118,7 @@ const LongReadTandemRepeatPage = ({
   onInvalidSelection: () => void
   navigation: AlleleNavigation
 }) => {
-  const detail = useRef<HTMLElement>(null)
+  const detail = useRef<HTMLElement | null>(null)
   const invalidHandled = useRef<string | null>(null)
   const focusDetail = useCallback((node: HTMLElement | null) => {
     detail.current = node
@@ -351,12 +350,6 @@ const LongReadTandemRepeatPage = ({
           </UnavailableList>
         </Panel>
       )}
-
-      <ExactAlleleIndex
-        alleles={locus.alleles.nodes}
-        selectedAllele={selectedAllele}
-        navigation={navigation}
-      />
 
       <ProvenanceDetails>
         <summary>Source provenance</summary>
