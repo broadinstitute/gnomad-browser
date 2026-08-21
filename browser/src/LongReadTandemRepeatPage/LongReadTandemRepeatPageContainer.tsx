@@ -163,18 +163,24 @@ const LongReadTandemRepeatPageContainer = ({
         }}
         loadingMessage="Loading tandem-repeat locus"
         errorMessage="Unable to load tandem-repeat locus"
+        retainPreviousData
         success={(data: any) => data.long_read_tandem_repeat_locus}
       >
-        {({ data }: any) => (
-          <LongReadTandemRepeatPage
-            datasetId={datasetId}
-            locus={data.long_read_tandem_repeat_locus}
-            selectedAllele={selectedAllele}
-            onCohortChange={changeCohort}
-            onInvalidSelection={removeInvalidSelection}
-            navigation={{ hrefForAllele, onSelectAllele: selectAllele }}
-          />
-        )}
+        {({ data, requestVariables, stale }: any) => {
+          const displayedSelectedAllele = stale
+            ? requestVariables?.allele || undefined
+            : selectedAllele
+          return (
+            <LongReadTandemRepeatPage
+              datasetId={datasetId}
+              locus={data.long_read_tandem_repeat_locus}
+              selectedAllele={displayedSelectedAllele}
+              onCohortChange={changeCohort}
+              onInvalidSelection={removeInvalidSelection}
+              navigation={{ hrefForAllele, onSelectAllele: selectAllele }}
+            />
+          )
+        }}
       </Query>
     </Page>
   )

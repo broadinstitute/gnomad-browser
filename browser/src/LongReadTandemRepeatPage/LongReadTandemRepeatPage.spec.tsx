@@ -40,16 +40,20 @@ jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatGenotypeDistributionPlot', () => () => (
   <div data-testid="genotype-repeat-count-plot" />
 ))
-jest.mock(
-  '../Query',
-  () =>
-    ({ children }: any) =>
-      children({ data: { long_read_tandem_repeat_locus: (global as any).__TR_QUERY_DATA__ } })
-)
+jest.mock('../Query', () => ({ children, variables, ...props }: any) => {
+  ;(global as any).__TR_QUERY_PROPS__ = props
+  return children(
+    (global as any).__TR_QUERY_STATE__ || {
+      data: { long_read_tandem_repeat_locus: (global as any).__TR_QUERY_DATA__ },
+      requestVariables: variables,
+      stale: false,
+    }
+  )
+})
 
 jest.mock('react-window', () => ({
-  FixedSizeList: ({ children: Row, itemCount, itemData }: any) => (
-    <div data-testid="virtual-exact-index" data-item-count={itemCount}>
+  FixedSizeList: ({ children: Row, className, itemCount, itemData }: any) => (
+    <div className={className} data-testid="virtual-exact-index" data-item-count={itemCount}>
       {Array.from({ length: itemCount }, (_, index) => (
         <Row key={index} index={index} style={{ height: 36 }} data={itemData} />
       ))}
@@ -364,6 +368,8 @@ afterAll(() => {
 beforeEach(() => {
   navigation.onSelectAllele.mockClear()
   scrollIntoView.mockClear()
+  delete (global as any).__TR_QUERY_STATE__
+  delete (global as any).__TR_QUERY_PROPS__
 })
 
 describe('canonical long-read tandem-repeat locus page', () => {
@@ -465,7 +471,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(table).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
     expect(selectedControl.closest('tr')?.getAttribute('aria-selected')).toBe('true')
     expect(otherControl.closest('tr')?.getAttribute('aria-selected')).toBe('false')
-    fireEvent.click(otherControl)
+    expect(fireEvent.click(otherControl)).toBe(false)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
   })
 
@@ -502,29 +508,27 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(zeroDeltaCell.closest('[role="row"]')).not.toBeNull()
   })
 
-  test.each([72, 497])(
-    'keeps the %s-row virtualized exact index collapsed but fully reachable',
-    (count) => {
-      renderPage({ locus: makeLocus(count), selectedAllele: undefined })
-      const heading = screen.getByRole('heading', { name: `Full exact ALT index (${count})` })
-      const details = heading.closest('details')
-      expect(details).not.toBeNull()
-      expect(details?.hasAttribute('open')).toBe(false)
-
-      fireEvent.click(details?.querySelector('summary') as HTMLElement)
-      expect(details?.hasAttribute('open')).toBe(true)
-      expect(screen.getByTestId('virtual-exact-index').getAttribute('data-item-count')).toBe(
-        String(count)
-      )
-      const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
-      expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
-      expect(
-        screen
-          .getByRole('table', { name: 'Exact alternate allele index' })
-          .getAttribute('aria-rowcount')
-      ).toBe(String(count + 1))
-    }
-  )
+  test.each([72, 497])('shows the complete %s-row virtualized exact index by default', (count) => {
+    renderPage({ locus: makeLocus(count), selectedAllele: undefined })
+    const heading = screen.getByRole('heading', { name: `Full exact ALT index (${count})` })
+    const section = heading.closest('section')
+    expect(section).not.toBeNull()
+    expect(heading.closest('details')).toBeNull()
+    expect(within(section as HTMLElement).getByTestId('virtual-exact-index')).toHaveAttribute(
+      'data-item-count',
+      String(count)
+    )
+    expect(within(section as HTMLElement).getByTestId('virtual-exact-index')).toHaveClass(
+      'lr-tr-exact-index-scroll'
+    )
+    const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
+    expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
+    expect(
+      screen
+        .getByRole('table', { name: 'Exact alternate allele index' })
+        .getAttribute('aria-rowcount')
+    ).toBe(String(count + 1))
+  })
 
   test('reports invalid selection once and delegates URL cleanup', async () => {
     const onInvalidSelection = jest.fn()
@@ -598,6 +602,56 @@ describe('canonical long-read tandem-repeat locus page', () => {
       screen.getByText(/Whole-record allele landscape unavailable: bound exceeded/)
     ).not.toBeNull()
     expect(screen.getByText(/Genotype landscape unavailable: no metadata/)).not.toBeNull()
+  })
+
+  test('container retains the displayed locus and selection until new exact detail arrives', () => {
+    const staleLocus = makeLocus()
+    const nextAlleleId = `${sourceVariantId}~1`
+    const freshLocus = makeLocus()
+    freshLocus.selected_allele = {
+      ...freshLocus.selected_allele,
+      ...freshLocus.alleles.nodes[0],
+      ref: 'ACAGCAG',
+      alt: 'ACAGCAG',
+    }
+    const history = createMemoryHistory({
+      initialEntries: [
+        `/tandem-repeat/${staleLocus.id}?dataset=gnomad_r4_lr&allele=${nextAlleleId}`,
+      ],
+    })
+    ;(global as any).__TR_QUERY_STATE__ = {
+      data: { long_read_tandem_repeat_locus: staleLocus },
+      requestVariables: { allele: exactId },
+      stale: true,
+    }
+    const page = (
+      <Router history={history}>
+        <ThemeProvider
+          theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+        >
+          <LongReadTandemRepeatPageContainer
+            datasetId="gnomad_r4_lr"
+            locusId={staleLocus.id}
+            lrCohort="hgsvc_hprc"
+            selectedAllele={nextAlleleId}
+          />
+        </ThemeProvider>
+      </Router>
+    )
+    const rendered = render(page)
+
+    expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
+    expect(screen.getByRole('heading', { name: 'ALT 2 exact detail' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Full exact ALT index (72)' })).not.toBeNull()
+    ;(global as any).__TR_QUERY_STATE__ = {
+      data: { long_read_tandem_repeat_locus: freshLocus },
+      requestVariables: { allele: nextAlleleId },
+      stale: false,
+    }
+    rendered.rerender(React.cloneElement(page))
+
+    expect(screen.getByRole('heading', { name: 'ALT 1 exact detail' })).not.toBeNull()
+    expect(screen.getByTestId('lr-tr-selected-detail')).toBe(document.activeElement)
   })
 
   test('container pushes exact selection while preserving unrelated parameters', () => {

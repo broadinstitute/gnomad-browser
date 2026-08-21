@@ -12,24 +12,29 @@ const isGraphqlOperation = (response: any, operation: string) => {
 const waitForLocusResponse = (page: Page) =>
   page.waitForResponse((response) => isGraphqlOperation(response, 'LongReadTandemRepeatLocus'))
 
-const openLocus = async (page: Page, locusId: string) => {
+const openLocus = async (page: Page, locusId: string, exactAlleleCount: number) => {
   const responsePromise = waitForLocusResponse(page)
   await page.goto(`/tandem-repeat/${locusId}?${DATASET_QUERY}`)
-  await expect(page.getByRole('heading', { name: /^Full exact ALT index/ })).toBeVisible({
-    timeout: 30_000,
+  const indexHeading = page.getByRole('heading', {
+    name: `Full exact ALT index (${exactAlleleCount})`,
   })
+  await expect(indexHeading).toBeVisible({ timeout: 30_000 })
+  const index = page.locator('section').filter({ has: indexHeading })
+  await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toBeVisible()
+  await expect(index.locator('details')).toHaveCount(0)
+  await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toHaveAttribute(
+    'aria-rowcount',
+    String(exactAlleleCount + 1)
+  )
   const response = await responsePromise
   expect(response.status()).toBe(200)
   expect((await response.json()).errors).toBeUndefined()
 }
 
 const selectExactAllele = async (page: Page, locusId: string, altIndex: number) => {
-  const index = page.locator('details').filter({
+  const index = page.locator('section').filter({
     has: page.getByRole('heading', { name: /^Full exact ALT index/ }),
   })
-  if (!(await index.evaluate((element) => (element as HTMLDetailsElement).open))) {
-    await index.locator('summary').click()
-  }
   const exactLink = index.getByRole('link', { name: `ALT ${altIndex}`, exact: true }).first()
   const href = await exactLink.getAttribute('href')
   const selectedUrl = new URL(href!, 'http://localhost')
@@ -38,8 +43,23 @@ const selectExactAllele = async (page: Page, locusId: string, altIndex: number) 
   expect(selectedUrl.searchParams.get('lr_cohort')).toBe('hgsvc_hprc')
   expect(selectedUrl.searchParams.get('allele')).toMatch(new RegExp(`~${altIndex}$`))
 
+  const documentMarker = await page.evaluate(() => {
+    const marker = `lr-tr-${Date.now()}-${Math.random()}`
+    ;(window as any).__lrTrDocumentMarker = marker
+    return marker
+  })
+  const indexScroller = index.locator('.lr-tr-exact-index-scroll')
+  const indexScrollTop = await indexScroller.evaluate((element) => {
+    element.scrollTo({ top: 72 })
+    return element.scrollTop
+  })
+  expect(indexScrollTop).toBeGreaterThan(0)
+
   const responsePromise = waitForLocusResponse(page)
   await exactLink.click()
+  await expect(page.getByRole('heading', { name: /^Allelic landscape$/ })).toBeVisible()
+  await expect(index).toBeVisible()
+  expect(await page.evaluate(() => (window as any).__lrTrDocumentMarker)).toBe(documentMarker)
   const response = await responsePromise
   const responseBody = await response.json()
   const selected = responseBody.data.long_read_tandem_repeat_locus.selected_allele
@@ -50,6 +70,8 @@ const selectExactAllele = async (page: Page, locusId: string, altIndex: number) 
   expect(selected.ref).toBeTruthy()
   expect(selected.alt).toBeTruthy()
   await expect(page.getByRole('heading', { name: `ALT ${altIndex} exact detail` })).toBeVisible()
+  expect(await indexScroller.evaluate((element) => element.scrollTop)).toBe(indexScrollTop)
+  expect(await page.evaluate(() => (window as any).__lrTrDocumentMarker)).toBe(documentMarker)
   const selectedDetail = page.getByTestId('lr-tr-selected-detail')
   await expect(selectedDetail).toBeFocused()
   await expect(
@@ -110,7 +132,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const runtimeErrors: Error[] = []
     page.on('pageerror', (error) => runtimeErrors.push(error))
 
-    await openLocus(page, COMPOUND_LOCUS)
+    await openLocus(page, COMPOUND_LOCUS, 72)
     const compoundAlt1 = await selectExactAllele(page, COMPOUND_LOCUS, 1)
     const compoundAlt2 = await selectExactAllele(page, COMPOUND_LOCUS, 2)
     expect(compoundAlt1).toBe('chr1-121606499-TRV-37~1')
@@ -119,7 +141,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expectHistorySelection(page, 'forward', compoundAlt2)
     await verifyLegacyRedirect(page, COMPOUND_LOCUS, compoundAlt2)
 
-    await openLocus(page, ORDINARY_LOCUS)
+    await openLocus(page, ORDINARY_LOCUS, 497)
     await selectExactAllele(page, ORDINARY_LOCUS, 1)
     await selectExactAllele(page, ORDINARY_LOCUS, 2)
 

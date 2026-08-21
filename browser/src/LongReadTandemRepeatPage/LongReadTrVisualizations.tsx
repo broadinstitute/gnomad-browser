@@ -1470,17 +1470,8 @@ export const WholeRecordGenotypeLandscape = ({
   )
 }
 
-const IndexDetails = styled.details`
+const IndexSection = styled.section`
   margin-top: 2.4em;
-
-  summary {
-    cursor: pointer;
-  }
-
-  h2 {
-    display: inline;
-    font-size: 20px;
-  }
 `
 
 const IndexHeader = styled.div`
@@ -1558,10 +1549,8 @@ export const ExactAlleleIndex = ({
 }) => {
   const itemData = { alleles, selectedAllele, navigation }
   return (
-    <IndexDetails>
-      <summary>
-        <h2 id="lr-tr-index-heading">Full exact ALT index ({alleles.length.toLocaleString()})</h2>
-      </summary>
+    <IndexSection aria-labelledby="lr-tr-index-heading">
+      <h2 id="lr-tr-index-heading">Full exact ALT index ({alleles.length.toLocaleString()})</h2>
       <div
         role="table"
         aria-label="Exact alternate allele index"
@@ -1577,6 +1566,7 @@ export const ExactAlleleIndex = ({
           <span role="columnheader">AF</span>
         </IndexHeader>
         <FixedSizeList
+          className="lr-tr-exact-index-scroll"
           height={Math.min(420, Math.max(72, alleles.length * 36))}
           itemCount={alleles.length}
           itemData={itemData}
@@ -1588,7 +1578,7 @@ export const ExactAlleleIndex = ({
           {ExactAlleleIndexRow}
         </FixedSizeList>
       </div>
-    </IndexDetails>
+    </IndexSection>
   )
 }
 

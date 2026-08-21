@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { PageHeading, Select } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
@@ -121,6 +121,11 @@ const LongReadTandemRepeatPage = ({
 }) => {
   const detail = useRef<HTMLElement>(null)
   const invalidHandled = useRef<string | null>(null)
+  const focusDetail = useCallback((node: HTMLElement | null) => {
+    detail.current = node
+    node?.focus()
+    node?.scrollIntoView?.({ block: 'start' })
+  }, [])
 
   useEffect(() => {
     if (
@@ -135,9 +140,8 @@ const LongReadTandemRepeatPage = ({
 
   useEffect(() => {
     if (!selectedAllele || !locus?.selected_allele || !detail.current) return
-    detail.current.focus()
-    detail.current.scrollIntoView?.({ block: 'start' })
-  }, [locus?.id, locus?.lr_cohort, locus?.selected_allele, selectedAllele])
+    focusDetail(detail.current)
+  }, [focusDetail, locus?.id, locus?.lr_cohort, locus?.selected_allele, selectedAllele])
 
   const alleleById = useMemo(
     () => new Map((locus?.alleles.nodes || []).map((allele) => [allele.variant_id, allele])),
@@ -266,7 +270,7 @@ const LongReadTandemRepeatPage = ({
         selectedAlleleDetail={
           locus.selected_allele ? (
             <SelectedExactAlleleDetail
-              ref={detail}
+              ref={focusDetail}
               allele={{
                 ...locus.selected_allele,
                 repeat_count:
