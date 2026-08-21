@@ -1,4 +1,5 @@
 import React from 'react'
+import 'jest-styled-components'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 import { Router } from 'react-router-dom'
@@ -33,6 +34,12 @@ jest.mock('../VariantPage/ExactTrAltMotifStructure', () => ({ altAllele }: any) 
 ))
 
 jest.mock('../DocumentTitle', () => () => null)
+jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot', () => () => (
+  <div data-testid="allele-repeat-count-plot" />
+))
+jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatGenotypeDistributionPlot', () => () => (
+  <div data-testid="genotype-repeat-count-plot" />
+))
 jest.mock(
   '../Query',
   () =>
@@ -273,6 +280,46 @@ const makeLocus = (count = 72) => {
   }
 }
 
+const makeSimpleLocus = () => ({
+  ...makeLocus(),
+  component_measurement_available: true,
+  component_measurement_unavailable_reason: null,
+  components: [{ chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' }],
+  motifs: ['CAG'],
+  repeat_count_plots: {
+    status: 'AVAILABLE_EXACT',
+    reason_code: null,
+    repeat_unit: 'CAG',
+    max_repunits: 13,
+    allele_size_distribution: [
+      {
+        ancestry_group: 'afr',
+        sex: 'XX' as const,
+        repunit: 'CAG',
+        distribution: [
+          { repunit_count: 10, frequency: 18, colorByValue: null },
+          { repunit_count: 11, frequency: 36, colorByValue: null },
+        ],
+      },
+    ],
+    genotype_distribution: [
+      {
+        ancestry_group: 'afr',
+        sex: 'XX' as const,
+        short_allele_repunit: 'CAG',
+        long_allele_repunit: 'CAG',
+        distribution: [
+          {
+            short_allele_repunit_count: 10,
+            long_allele_repunit_count: 11,
+            frequency: 9,
+          },
+        ],
+      },
+    ],
+  },
+})
+
 const navigation = {
   hrefForAllele: (id: string) => `/tandem-repeat/locus?dataset=gnomad_r4_lr&keep=1&allele=${id}`,
   onSelectAllele: jest.fn(),
@@ -353,6 +400,24 @@ describe('canonical long-read tandem-repeat locus page', () => {
       screen.getByRole('button', { name: /−6 bp, 134 called allele copies.*2 exact ALTs/ })
     ).not.toBeNull()
     expect(screen.getByRole('button', { name: /\+48 bp, 5 called allele copies/ })).not.toBeNull()
+  })
+
+  test('lays out admitted simple-locus repeat-count plots compactly and responsively', () => {
+    renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
+
+    const grid = screen.getByTestId('lr-tr-repeat-count-grid')
+    const headings = within(grid).getAllByRole('heading', { level: 3 })
+
+    expect(headings.map((heading) => heading.textContent)).toEqual([
+      expect.stringContaining('Allele repeat-count distribution'),
+      expect.stringContaining('Genotype repeat-count distribution'),
+    ])
+    expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
+    expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
+    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(0,1fr))')
+    expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,1fr)', {
+      media: '(max-width:900px)',
+    })
   })
 
   test('keeps selected detail with the allele landscape and makes the full index secondary', () => {

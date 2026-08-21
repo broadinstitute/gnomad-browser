@@ -72,6 +72,35 @@ const ProvenanceDetails = styled.details`
   }
 `
 
+const SimpleLocusPlotGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 1.25em;
+  margin-top: 1.25em;
+
+  @media (max-width: 900px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+`
+
+const SimpleLocusPlotCard = styled.div`
+  min-width: 0;
+  padding: 1em;
+  border: 1px solid #d8dee2;
+  border-radius: 4px;
+  background: #fbfcfd;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  > div:first-of-type {
+    margin-right: auto;
+    margin-left: auto;
+  }
+`
+
 const cohortName = (cohort: LongReadCohort) =>
   cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
 
@@ -262,19 +291,31 @@ const LongReadTandemRepeatPage = ({
         <Panel aria-labelledby="lr-tr-simple-measurement-heading">
           <h2 id="lr-tr-simple-measurement-heading">Admitted simple-locus repeat counts</h2>
           <p>Motif-repeat units; limited to strict one-component exact mappings.</p>
-          <LongReadAlleleSizeDistributionSection
-            variantId={locus.id}
-            alleleSizeDistribution={locus.repeat_count_plots.allele_size_distribution}
-            maxRepunits={locus.repeat_count_plots.max_repunits || 0}
-            repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
-            heading="Allele repeat-count distribution"
-          />
-          <LongReadGenotypeDistributionSection
-            variantId={locus.id}
-            genotypeDistribution={locus.repeat_count_plots.genotype_distribution}
-            repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
-            heading="Genotype repeat-count distribution"
-          />
+          <SimpleLocusPlotGrid data-testid="lr-tr-repeat-count-grid">
+            <SimpleLocusPlotCard>
+              <LongReadAlleleSizeDistributionSection
+                variantId={locus.id}
+                alleleSizeDistribution={locus.repeat_count_plots.allele_size_distribution}
+                maxRepunits={locus.repeat_count_plots.max_repunits || 0}
+                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
+                headingLevel="h3"
+                heading="Allele repeat-count distribution"
+                compact
+                focusObservedDomain
+              />
+            </SimpleLocusPlotCard>
+            <SimpleLocusPlotCard>
+              <LongReadGenotypeDistributionSection
+                variantId={locus.id}
+                genotypeDistribution={locus.repeat_count_plots.genotype_distribution}
+                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
+                headingLevel="h3"
+                heading="Genotype repeat-count distribution"
+                compact
+                focusObservedDomain
+              />
+            </SimpleLocusPlotCard>
+          </SimpleLocusPlotGrid>
         </Panel>
       )}
 
