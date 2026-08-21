@@ -1,7 +1,8 @@
 import { expect, test, type Page } from '@playwright/test'
 
 const DATASET_QUERY = 'dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc'
-const COMPOUND_LOCUS = '1-121606499-121606508-AG+1-121606517-121606536-A'
+const COMPOUND_LOCUS =
+  '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
 const ORDINARY_LOCUS = '1-16712-16744-GTG'
 
 const isGraphqlOperation = (response: any, operation: string) => {
@@ -135,8 +136,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await openLocus(page, COMPOUND_LOCUS, 72)
     const compoundAlt1 = await selectExactAllele(page, COMPOUND_LOCUS, 1)
     const compoundAlt2 = await selectExactAllele(page, COMPOUND_LOCUS, 2)
-    expect(compoundAlt1).toBe('chr1-121606499-TRV-37~1')
-    expect(compoundAlt2).toBe('chr1-121606499-TRV-37~2')
+    expect(compoundAlt1).toBe('chr4-3074876-TRV-164~1')
+    expect(compoundAlt2).toBe('chr4-3074876-TRV-164~2')
     await expectHistorySelection(page, 'back', compoundAlt1)
     await expectHistorySelection(page, 'forward', compoundAlt2)
     await verifyLegacyRedirect(page, COMPOUND_LOCUS, compoundAlt2)
