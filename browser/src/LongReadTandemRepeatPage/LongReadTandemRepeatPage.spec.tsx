@@ -351,23 +351,28 @@ const renderPage = ({
   )
 
 const originalScrollIntoView = HTMLElement.prototype.scrollIntoView
+const originalWindowScrollTo = window.scrollTo
 const scrollIntoView = jest.fn()
-beforeAll(() =>
+const windowScrollTo = jest.fn()
+beforeAll(() => {
   Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
     configurable: true,
     value: scrollIntoView,
   })
-)
+  Object.defineProperty(window, 'scrollTo', { configurable: true, value: windowScrollTo })
+})
 afterAll(() => {
   if (originalScrollIntoView)
     Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
       configurable: true,
       value: originalScrollIntoView,
     })
+  Object.defineProperty(window, 'scrollTo', { configurable: true, value: originalWindowScrollTo })
 })
 beforeEach(() => {
   navigation.onSelectAllele.mockClear()
   scrollIntoView.mockClear()
+  windowScrollTo.mockClear()
   delete (global as any).__TR_QUERY_STATE__
   delete (global as any).__TR_QUERY_PROPS__
 })
@@ -645,8 +650,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const rendered = render(page)
 
     expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
+    expect((global as any).__TR_QUERY_PROPS__.requestKey).toBe(`hgsvc_hprc:${staleLocus.id}`)
     expect(screen.getByRole('heading', { name: 'ALT 2 exact detail' })).not.toBeNull()
     expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).not.toBeNull()
+    expect(screen.getAllByRole('link', { name: 'ALT 1' })[0].getAttribute('aria-current')).toBe(
+      'true'
+    )
     ;(global as any).__TR_QUERY_STATE__ = {
       data: { long_read_tandem_repeat_locus: freshLocus },
       requestVariables: { allele: nextAlleleId },
@@ -655,7 +664,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     rendered.rerender(React.cloneElement(page))
 
     expect(screen.getByRole('heading', { name: 'ALT 1 exact detail' })).not.toBeNull()
-    expect(screen.getByTestId('lr-tr-selected-detail')).toBe(document.activeElement)
+    expect(screen.getByTestId('lr-tr-selected-detail')).not.toBe(document.activeElement)
+    expect(scrollIntoView).not.toHaveBeenCalled()
   })
 
   test('container pushes exact selection while preserving unrelated parameters', () => {

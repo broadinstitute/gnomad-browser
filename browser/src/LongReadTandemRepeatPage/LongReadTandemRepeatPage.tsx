@@ -120,10 +120,9 @@ const LongReadTandemRepeatPage = ({
 }) => {
   const detail = useRef<HTMLElement | null>(null)
   const invalidHandled = useRef<string | null>(null)
-  const focusDetail = useCallback((node: HTMLElement | null) => {
+  const revealInitialSelection = useRef(Boolean(selectedAllele))
+  const setDetail = useCallback((node: HTMLElement | null) => {
     detail.current = node
-    node?.focus()
-    node?.scrollIntoView?.({ block: 'start' })
   }, [])
 
   useEffect(() => {
@@ -138,9 +137,19 @@ const LongReadTandemRepeatPage = ({
   }, [locus?.selected_allele_valid, onInvalidSelection, selectedAllele])
 
   useEffect(() => {
-    if (!selectedAllele || !locus?.selected_allele || !detail.current) return
-    focusDetail(detail.current)
-  }, [focusDetail, locus?.id, locus?.lr_cohort, locus?.selected_allele, selectedAllele])
+    if (
+      !revealInitialSelection.current ||
+      !selectedAllele ||
+      locus?.selected_allele_valid == null
+    ) {
+      return
+    }
+
+    revealInitialSelection.current = false
+    if (locus.selected_allele?.variant_id !== selectedAllele || !detail.current) return
+    detail.current.focus()
+    detail.current.scrollIntoView?.({ block: 'start' })
+  }, [locus?.selected_allele, locus?.selected_allele_valid, selectedAllele])
 
   const alleleById = useMemo(
     () => new Map((locus?.alleles.nodes || []).map((allele) => [allele.variant_id, allele])),
@@ -269,7 +278,7 @@ const LongReadTandemRepeatPage = ({
         selectedAlleleDetail={
           locus.selected_allele ? (
             <SelectedExactAlleleDetail
-              ref={focusDetail}
+              ref={setDetail}
               allele={{
                 ...locus.selected_allele,
                 repeat_count:

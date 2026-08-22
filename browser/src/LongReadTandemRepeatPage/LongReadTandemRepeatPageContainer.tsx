@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useLayoutEffect, useRef } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { parseTrLocusId, trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
@@ -120,6 +120,21 @@ const LongReadTandemRepeatPageContainer = ({
   const parsed = parseTrLocusId(locusId)
   const history = useHistory()
   const location = useLocation()
+  const selectionScroll = useRef<{
+    x: number
+    y: number
+    list: { element: HTMLElement; top: number } | null
+  } | null>(null)
+  const restoreSelectionScroll = useCallback(() => {
+    if (selectionScroll.current) {
+      window.scrollTo(selectionScroll.current.x, selectionScroll.current.y)
+      if (selectionScroll.current.list) {
+        selectionScroll.current.list.element.scrollTop = selectionScroll.current.list.top
+      }
+    }
+  }, [])
+
+  useLayoutEffect(restoreSelectionScroll, [location.key, restoreSelectionScroll])
 
   if (!parsed) {
     return (
@@ -138,9 +153,34 @@ const LongReadTandemRepeatPageContainer = ({
     `${location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
   const hrefForAllele = (alleleId: string) =>
     locationWithParams(searchWithSelectedAllele(location.search, alleleId))
-  const selectAllele = (alleleId: string) => history.push(hrefForAllele(alleleId))
-  const changeCohort = (cohort: LongReadCohort) =>
+  const selectAllele = (alleleId: string) => {
+    const list = document.querySelector<HTMLElement>('.lr-tr-exact-index-scroll')
+    const activationScrollTop = Number(list?.dataset.activationScrollTop)
+    const activationWindowX = Number(list?.dataset.activationWindowX)
+    const activationWindowY = Number(list?.dataset.activationWindowY)
+    if (list) {
+      delete list.dataset.activationScrollTop
+      delete list.dataset.activationWindowX
+      delete list.dataset.activationWindowY
+    }
+    selectionScroll.current = {
+      x: Number.isFinite(activationWindowX) ? activationWindowX : window.scrollX,
+      y: Number.isFinite(activationWindowY) ? activationWindowY : window.scrollY,
+      list: list
+        ? {
+            element: list,
+            top: Number.isFinite(activationScrollTop) ? activationScrollTop : list.scrollTop,
+          }
+        : null,
+    }
+    history.push(hrefForAllele(alleleId))
+    restoreSelectionScroll()
+    window.requestAnimationFrame?.(restoreSelectionScroll)
+  }
+  const changeCohort = (cohort: LongReadCohort) => {
+    selectionScroll.current = null
     history.push(locationWithParams(searchForCohort(location.search, cohort)))
+  }
   const removeInvalidSelection = () =>
     history.replace(locationWithParams(searchWithoutSelectedAllele(location.search)))
 
@@ -154,7 +194,7 @@ const LongReadTandemRepeatPageContainer = ({
       <Query
         operationName={operationName}
         query={longReadTandemRepeatLocusQuery}
-        requestKey={`${lrCohort}:${parsed.canonicalId}:${selectedAllele || ''}`}
+        requestKey={`${lrCohort}:${parsed.canonicalId}`}
         variables={{
           id: parsed.canonicalId,
           lrCohort,
@@ -166,15 +206,12 @@ const LongReadTandemRepeatPageContainer = ({
         retainPreviousData
         success={(data: any) => data.long_read_tandem_repeat_locus}
       >
-        {({ data, requestVariables, stale }: any) => {
-          const displayedSelectedAllele = stale
-            ? requestVariables?.allele || undefined
-            : selectedAllele
+        {({ data }: any) => {
           return (
             <LongReadTandemRepeatPage
               datasetId={datasetId}
               locus={data.long_read_tandem_repeat_locus}
-              selectedAllele={displayedSelectedAllele}
+              selectedAllele={selectedAllele}
               onCohortChange={changeCohort}
               onInvalidSelection={removeInvalidSelection}
               navigation={{ hrefForAllele, onSelectAllele: selectAllele }}

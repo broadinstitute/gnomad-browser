@@ -79,6 +79,19 @@ const SelectionLink = ({
     to={navigation.hrefForAllele(alleleId)}
     preserveSelectedDataset={false}
     aria-current={selected ? 'true' : undefined}
+    onMouseDown={(event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return
+      }
+      event.preventDefault()
+      const list = event.currentTarget.closest<HTMLElement>('.lr-tr-exact-index-scroll')
+      if (list) {
+        list.dataset.activationScrollTop = String(list.scrollTop)
+        list.dataset.activationWindowX = String(window.scrollX)
+        list.dataset.activationWindowY = String(window.scrollY)
+      }
+      event.currentTarget.focus({ preventScroll: true })
+    }}
     onClick={(event: React.MouseEvent) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
         return
