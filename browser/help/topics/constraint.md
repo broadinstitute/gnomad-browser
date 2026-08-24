@@ -60,13 +60,13 @@ Although `oe` and `LOEUF` are continuous values, we understand that it can be us
 
 | LOEUF score | LOEUF percentile | Number of genes |
 | :---------- | ---------------: | --------------: |
-| < 0.15        |               ≤ 1 |             177 |
-| < 0.27        |               ≤ 5 |             861 |
-| < 0.36        |               ≤ 10 |           1,711 |
-| < 0.45        |               ≤ 15 |           2,578 |
-| < 0.60        |               ≤ 25 |           3,433 |
-| < 0.91        |               ≤ 50 |           8,552 |
-| < 1.19        |               ≤ 75 |          12,815 |
+| < 0.15      |              ≤ 1 |             177 |
+| < 0.27      |              ≤ 5 |             861 |
+| < 0.36      |             ≤ 10 |           1,711 |
+| < 0.45      |             ≤ 15 |           2,578 |
+| < 0.60      |             ≤ 25 |           3,433 |
+| < 0.91      |             ≤ 50 |           8,552 |
+| < 1.19      |             ≤ 75 |          12,815 |
 
 This table shows the LOEUF score that corresponds to a LOEUF percentile derived from 17,063 MANE Select transcripts. For the interpretation of Mendelian disease cases, we suggest using a `LOEUF` score < 0.45 (corresponding to a LOEUF percentile of 15, indicating that genes with LOEUF scores at this threshold or below are among the most highly pLoF constrained 15% of genes.) as a threshold if needed. Again, ideally `oe` and `LOEUF` should be used as a continuous values rather than a cutoff.
 
@@ -87,3 +87,13 @@ For more information, see [Samocha _et al._ Nature Genetics 2014](https://www.na
 #### <a id="loeuf-vs-pli"></a>What is the difference between the oe/LOEUF and pLI score?
 
 It is very important to note that `oe` (and thereby `LOEUF`) score is very different from that of `pLI`; in particular low `oe` values are indicative of strong intolerance, whereas high `pLI` scores indicate intolerance. In addition, while `pLI` incorporated the uncertainty around low counts (i.e a gene with low expected count, due to small size or low coverage, could not have a high `pLI`), `oe` does not. Therefore, the `oe` metric comes with a 90% CI. It is important to consider the confidence interval when using `oe`. The change from `pLI` to `oe` was motivated mainly by its easier interpretation and its continuity across the spectrum of selection. As an example, let’s take a gene with a `pLI` of 0.8: this means that this gene cannot be categorized as a highly likely haploinsufficient gene based on our data. However, it is unclear whether this value was obtained because of small sample or gene size or because there were too many loss-of-function (LoF) variants observed in the gene. In addition, if the cause was the latter, `pLI` doesn’t tell much about the overall selection against loss-of-function in this gene. On the other hand, a gene with an LoF `oe` of 0.4 can clearly be interpreted as a gene where only 40% of the expected loss-of-function variants were observed and therefore is likely under selection against LoF variants. In addition, the 90% CI allows us to clearly distinguish cases where there is a lot of uncertainty about the constraint for that gene due to sample size. Since `pLI` > 0.9 is widely used in research and clinical interpretation of Mendelian cases, we suggest using the upper bound of the `oe` confidence interval (which we term the "loss-of-function observed/expected upper bound fraction" or "`LOEUF`") < 0.45 if a hard threshold is needed.
+
+#### Why might a decile computed from the LOEUF percentile thresholds differ from the decile column in the constraint files?
+
+The rank-based bin columns in the constraint metrics files (e.g., `lof.oe_ci.upper_bin_decile`) and the LOEUF percentile thresholds TSV answer different questions, and small differences between them are expected.
+
+The bin columns are computed by ranking all transcripts with defined constraint values (18,256 in v4.1.2). The threshold file is computed over a different transcript set (MANE Select transcripts only, excluding constraint-flagged genes [17,063 in v4.1.2]), so that the cutoffs can be applied to any gene rather than only the ranked set. In addition, the thresholds are derived from approximate quantiles, and rank-based binning splits tied LOEUF values across bins where fixed thresholds cannot.
+
+In practice, applying the v4.1.2 thresholds to v4.1.2 LOEUF values assigns 885 of 18,256 genes (4.8%) a different decile than the bin column. All differences are exactly ±1 decile, and none occur in decile 0 or 9.
+
+Use the bin columns when you want a transcript's decile within the released constraint metrics. Use the percentile thresholds when you need to place a gene or transcript that is not in the ranked set.
