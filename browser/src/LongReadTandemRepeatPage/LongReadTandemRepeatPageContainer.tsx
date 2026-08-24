@@ -1,5 +1,6 @@
 import React, { useCallback, useLayoutEffect, useRef } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
+import styled from 'styled-components'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { parseTrLocusId, trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { Page, PageHeading } from '@gnomad/ui'
@@ -11,6 +12,11 @@ import LongReadTandemRepeatPage from './LongReadTandemRepeatPage'
 
 const operationName = 'LongReadTandemRepeatLocus'
 export const LONG_READ_TR_ALLELE_INDEX_LIMIT = 600
+
+const LongReadTrPage = styled(Page)`
+  max-width: 1440px;
+`
+
 export const longReadTandemRepeatLocusQuery = `
 query ${operationName}(
   $id: String!
@@ -76,8 +82,8 @@ query ${operationName}(
     }
     alleles {
       nodes {
-        variant_id source_variant_id alt_index alt_count length repeat_count repeat_count_source
-        motif_purity freq { all { ac an af } populations { id ac an af } }
+        variant_id source_variant_id alt_index alt_count ref alt length repeat_count
+        repeat_count_source motif_purity freq { all { ac an af } populations { id ac an af } }
       }
       page_info { has_next_page }
     }
@@ -138,11 +144,11 @@ const LongReadTandemRepeatPageContainer = ({
 
   if (!parsed) {
     return (
-      <Page>
+      <LongReadTrPage>
         <DocumentTitle title="Invalid tandem-repeat locus" />
         <PageHeading>Invalid tandem-repeat locus</PageHeading>
         <p>The locus ID must contain exact 0-based, half-open component coordinates and motifs.</p>
-      </Page>
+      </LongReadTrPage>
     )
   }
 
@@ -185,7 +191,7 @@ const LongReadTandemRepeatPageContainer = ({
     history.replace(locationWithParams(searchWithoutSelectedAllele(location.search)))
 
   return (
-    <Page>
+    <LongReadTrPage>
       <DocumentTitle
         title={`Tandem repeat at chr${
           envelope.chrom
@@ -219,7 +225,7 @@ const LongReadTandemRepeatPageContainer = ({
           )
         }}
       </Query>
-    </Page>
+    </LongReadTrPage>
   )
 }
 

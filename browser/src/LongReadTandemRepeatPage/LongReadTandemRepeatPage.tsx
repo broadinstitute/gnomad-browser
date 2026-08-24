@@ -273,6 +273,7 @@ const LongReadTandemRepeatPage = ({
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}
         alleles={locus.alleles.nodes}
+        motifs={locus.motifs}
         selectedAllele={selectedAllele}
         navigation={navigation}
         selectedAlleleDetail={

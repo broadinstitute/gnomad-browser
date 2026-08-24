@@ -59,6 +59,8 @@ const compactAlleles = (altCount: number, an: number) =>
     return {
       source_variant_id: sourceVariantId,
       alt_index: offset + 1,
+      ref_allele: 'ACAGCAG',
+      alt: `A${'CAG'.repeat(offset + 1)}`,
       allele_length: alleleLength,
       ac,
       an,
@@ -235,14 +237,13 @@ describe('long-read TR locus query contract', () => {
       source_run_id: 'run-hgsvc_hprc',
     })
     expect(locus.alleles.nodes).toHaveLength(72)
-    expect(locus.alleles.nodes[0]).not.toHaveProperty('alt')
-    expect(locus.alleles.nodes[0]).not.toHaveProperty('ref')
+    expect(locus.alleles.nodes[0]).toMatchObject({ ref: 'ACAGCAG', alt: 'ACAG' })
     const aggregateJson = JSON.stringify({
       index: locus.alleles,
       alleles: locus.whole_record_allele_landscape,
       genotypes: locus.whole_record_genotype_landscape,
     })
-    expect(aggregateJson).not.toContain('C'.repeat(40))
+    expect(aggregateJson).toContain('ACAG')
     expect(aggregateJson).not.toContain('sample_id')
   })
 
@@ -296,6 +297,8 @@ describe('long-read TR locus query contract', () => {
             variant_id: `${sourceVariantId}~1`,
             source_variant_id: sourceVariantId,
             alt_index: 1,
+            ref: null,
+            alt: null,
             length: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES - 1,
             freq: { all: { ac: 1, an: 2, af: 0.5 }, populations: [] },
           }),

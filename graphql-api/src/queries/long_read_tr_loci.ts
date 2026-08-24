@@ -22,6 +22,8 @@ type Cursor = { version: 1; sourceVariantId: string; altIndex: number }
 type CompactAllele = {
   source_variant_id: string
   alt_index: number
+  ref_allele?: string | null
+  alt?: string | null
   allele_length: number | null
   ac: number
   an: number
@@ -122,6 +124,8 @@ const parseCompactAllele = (row: any): CompactAllele | null => {
   return {
     source_variant_id: row.source_variant_id,
     alt_index: altIndex,
+    ref_allele: typeof row.ref_allele === 'string' ? row.ref_allele : null,
+    alt: typeof row.alt === 'string' ? row.alt : null,
     allele_length: finiteNumber(row.allele_length),
     ac: Number(row.ac),
     an: Number(row.an),
@@ -532,7 +536,7 @@ const fetchLongReadTrLocusUncached = async ({
 
   const rawAlleleRows = await queryRows(
     `
-      SELECT source_variant_id, alt_index, allele_length, ac, an, af
+      SELECT source_variant_id, alt_index, ref_allele, alt, allele_length, ac, an, af
       FROM lr_y1_alleles
       WHERE run_id = {runId:String} AND release = 'y1'
         AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
@@ -568,6 +572,14 @@ const fetchLongReadTrLocusUncached = async ({
   })
   const completenessReason = validateCompleteAlleles(compactAlleles, sourceRecords)
   const completeAlleles = completenessReason ? [] : compactAlleles
+  const exactSequenceIndexWithinBound = responseWithinBound(
+    completeAlleles.map(({ source_variant_id, alt_index, ref_allele, alt }) => ({
+      source_variant_id,
+      alt_index,
+      ref_allele,
+      alt,
+    }))
+  )
 
   const rawFrequencyRows = completeAlleles.length
     ? await queryRows(
@@ -724,6 +736,8 @@ const fetchLongReadTrLocusUncached = async ({
       source_variant_id: row.source_variant_id,
       alt_index: row.alt_index,
       alt_count: summary.alt_count,
+      ref: exactSequenceIndexWithinBound ? row.ref_allele || null : null,
+      alt: exactSequenceIndexWithinBound ? row.alt || null : null,
       length: row.allele_length,
       repeat_count: alignedMc,
       repeat_count_source: repeatCountSource(alignedMc),
@@ -898,7 +912,7 @@ const fetchLongReadTrLocusUncached = async ({
 export const fetchLongReadTrLocus = withCache(
   fetchLongReadTrLocusUncached,
   ({ id, cohort, first = DEFAULT_TR_LOCUS_PAGE_SIZE, after, selectedAllele, source }) =>
-    `lr_tr_locus:v3:${cohort}:${source.database}:${source.run_id}:${
+    `lr_tr_locus:v4:${cohort}:${source.database}:${source.run_id}:${
       source.metadata_run_id || 'no-metadata'
     }:${source.chrom}:${id}:${first}:${after || 'first'}:${selectedAllele || 'none'}`,
   { expiration: 300 }

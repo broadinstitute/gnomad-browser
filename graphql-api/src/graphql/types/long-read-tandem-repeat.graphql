@@ -27,8 +27,8 @@ type LongReadTrSourceRecord {
   region: String
 }
 
-# Compact exact-ALT index node. Full REF/ALT sequence is intentionally only
-# returned by LongReadTandemRepeatLocus.selected_allele.
+# Bounded exact-ALT index node. REF/ALT are returned only when the complete
+# locus sequence index fits the aggregate response bound.
 type LongReadTrAllele {
   variant_id: String!
   source_variant_id: String!

@@ -15,6 +15,7 @@ import {
 import { Sex, logScaleAllowed } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
 import { longReadAncestryGroupDisplayName } from '../LongReadVariantPage/longReadAncestryGroups'
 import ExactTrAltMotifStructure from '../VariantPage/ExactTrAltMotifStructure'
+import { decomposeExactTrAlt } from '../Haplotypes/trAlleleStructureData'
 import {
   AlleleBin,
   AlleleNavigation,
@@ -73,6 +74,8 @@ const SelectionLink = ({
   style?: React.CSSProperties
   title?: string
   'aria-label'?: string
+  'data-called-alleles'?: number
+  'data-point-diameter'?: number
 }) => (
   <Link
     {...linkProps}
@@ -594,6 +597,7 @@ const LengthBinAllelePicker = ({
 const PurityPointLink = styled(SelectionLink)`
   position: absolute;
   display: block;
+  box-sizing: border-box;
   padding: 0;
   border: 2px solid #fff;
   border-radius: 50%;
@@ -614,6 +618,16 @@ const PurityPointLink = styled(SelectionLink)`
     z-index: 3;
   }
 `
+
+export const purityPointDiameter = (value: number, minimum: number, maximum: number) => {
+  if (minimum === maximum) return 16
+  const normalized = Math.max(0, Math.min(1, (value - minimum) / (maximum - minimum)))
+  const minimumDiameter = 8
+  const maximumDiameter = 26
+  return Math.sqrt(
+    minimumDiameter ** 2 + normalized * (maximumDiameter ** 2 - minimumDiameter ** 2)
+  )
+}
 
 export const purityDomain = (values: number[]): [number, number] => {
   const minimum = Math.min(...values)
@@ -666,6 +680,8 @@ const PurityScatter = ({
   }, new Map<string, number>())
   const overlapIndexes = new Map<string, number>()
   const coincidentPoints = [...overlapCounts.values()].some((count) => count > 1)
+  const minimumCalledAlleles = Math.min(...points.map((point) => point.called_alleles))
+  const maximumCalledAlleles = Math.max(...points.map((point) => point.called_alleles))
 
   return (
     <>
@@ -716,7 +732,11 @@ const PurityScatter = ({
           const left =
             minDelta === maxDelta ? 50 : 6 + ((point.delta - minDelta) / (maxDelta - minDelta)) * 88
           const bottom = 6 + ((point.motif_purity - domainMinimum) / domainSpan) * 88
-          const size = Math.min(26, 14 + Math.sqrt(point.called_alleles))
+          const size = purityPointDiameter(
+            point.called_alleles,
+            minimumCalledAlleles,
+            maximumCalledAlleles
+          )
           const overlapKey = `${point.delta}\u0000${point.motif_purity}`
           const overlapIndex = overlapIndexes.get(overlapKey) || 0
           overlapIndexes.set(overlapKey, overlapIndex + 1)
@@ -736,6 +756,8 @@ const PurityScatter = ({
               )} bp, purity ${point.motif_purity.toFixed(4)}, ${
                 point.called_alleles
               } called copies`}
+              data-called-alleles={point.called_alleles}
+              data-point-diameter={size}
               style={{
                 left: `${left}%`,
                 bottom: `${bottom}%`,
@@ -783,6 +805,54 @@ const PurityScatter = ({
           Source purity
         </span>
       </div>
+      <div
+        aria-label={`Point size represents exact allele AC from ${minimumCalledAlleles} to ${maximumCalledAlleles}`}
+        style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#566168', fontSize: 11 }}
+      >
+        <strong>AC</strong>
+        <span
+          aria-hidden="true"
+          style={{
+            boxSizing: 'border-box',
+            width: purityPointDiameter(
+              minimumCalledAlleles,
+              minimumCalledAlleles,
+              maximumCalledAlleles
+            ),
+            height: purityPointDiameter(
+              minimumCalledAlleles,
+              minimumCalledAlleles,
+              maximumCalledAlleles
+            ),
+            borderRadius: '50%',
+            background: '#7953aa',
+          }}
+        />
+        <span>{minimumCalledAlleles.toLocaleString()}</span>
+        {minimumCalledAlleles !== maximumCalledAlleles && (
+          <>
+            <span
+              aria-hidden="true"
+              style={{
+                boxSizing: 'border-box',
+                width: purityPointDiameter(
+                  maximumCalledAlleles,
+                  minimumCalledAlleles,
+                  maximumCalledAlleles
+                ),
+                height: purityPointDiameter(
+                  maximumCalledAlleles,
+                  minimumCalledAlleles,
+                  maximumCalledAlleles
+                ),
+                borderRadius: '50%',
+                background: '#7953aa',
+              }}
+            />
+            <span>{maximumCalledAlleles.toLocaleString()}</span>
+          </>
+        )}
+      </div>
       {coincidentPoints && (
         <div style={{ color: '#566168', fontSize: 11 }}>Coincident points offset.</div>
       )}
@@ -826,12 +896,14 @@ const PurityScatter = ({
 export const WholeRecordAlleleLandscape = ({
   landscape,
   alleles,
+  motifs,
   selectedAllele,
   navigation,
   selectedAlleleDetail,
 }: {
   landscape: WholeRecordAlleleLandscapeData
   alleles: LongReadTrAllele[]
+  motifs: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
   selectedAlleleDetail?: React.ReactNode
@@ -871,6 +943,7 @@ export const WholeRecordAlleleLandscape = ({
         <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
         <ExactAlleleIndex
           alleles={alleles}
+          motifs={motifs}
           selectedAllele={selectedAllele}
           navigation={navigation}
           selectedAlleleDetail={selectedAlleleDetail}
@@ -931,6 +1004,7 @@ export const WholeRecordAlleleLandscape = ({
       <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
       <ExactAlleleIndex
         alleles={alleles}
+        motifs={motifs}
         selectedAllele={selectedAllele}
         navigation={navigation}
         selectedAlleleDetail={selectedAlleleDetail}
@@ -1498,17 +1572,13 @@ const IndexSection = styled.section`
 
 const AlleleBrowserGrid = styled.div`
   display: grid;
-  grid-template-columns: minmax(390px, 42%) minmax(0, 58%);
+  grid-template-columns: minmax(0, 100%);
   align-items: start;
   gap: 1em;
-
-  @media (max-width: 900px) {
-    grid-template-columns: minmax(0, 100%);
-  }
 `
 
 const IndexPane = styled.div`
-  overflow-x: auto;
+  overflow-x: hidden;
   min-width: 0;
   border: 1px solid #d8dee2;
   border-radius: 4px;
@@ -1528,35 +1598,139 @@ const EmptySelectedAllele = styled.p`
   color: #566168;
 `
 
-const indexColumns = 'minmax(72px, 1.3fr) 68px 64px 54px 68px'
+const indexColumns = 'minmax(100px, 0.8fr) minmax(240px, 2.4fr) 76px 72px 54px 84px'
+const narrowIndexColumns = 'minmax(80px, 0.8fr) minmax(120px, 2fr) 72px 84px'
+const compactIndexColumns = 'minmax(80px, 1fr) 76px 90px'
+
+const NumericIndexCell = styled.span`
+  min-width: 0;
+  text-align: right;
+`
 
 const IndexHeader = styled.div`
   display: grid;
   grid-template-columns: ${indexColumns};
   align-items: center;
-  min-width: 390px;
+  box-sizing: border-box;
+  width: 100%;
   height: 36px;
   padding: 0 0.6em;
   border-bottom: 1px solid #bbb;
   background: #f7f9fa;
   font-weight: bold;
+
+  @media (max-width: 700px) {
+    grid-template-columns: ${narrowIndexColumns};
+
+    .lr-tr-index-purity,
+    .lr-tr-index-ac {
+      display: none;
+    }
+  }
+
+  @media (max-width: 420px) {
+    grid-template-columns: ${compactIndexColumns};
+
+    .lr-tr-index-preview {
+      display: none;
+    }
+  }
 `
 
 const IndexRow = styled.div<{ selected: boolean }>`
   display: grid;
   grid-template-columns: ${indexColumns};
   align-items: center;
-  min-width: 390px;
-  height: 36px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
   padding: 0 0.6em;
   border-bottom: 1px solid #ddd;
   background: ${(props) => (props.selected ? '#fff3e8' : '#fff')};
   outline: ${(props) => (props.selected ? '2px solid #a65310' : 'none')};
   outline-offset: -2px;
+
+  > span {
+    min-width: 0;
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: ${narrowIndexColumns};
+
+    .lr-tr-index-purity,
+    .lr-tr-index-ac {
+      display: none;
+    }
+  }
+
+  @media (max-width: 420px) {
+    grid-template-columns: ${compactIndexColumns};
+
+    .lr-tr-index-preview {
+      display: none;
+    }
+  }
 `
+
+const MotifPreview = styled.svg`
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: 18px;
+  border: 1px solid #d8dee2;
+  background: #fff;
+`
+
+const ExactAlleleMotifPreview = ({
+  allele,
+  motifs,
+}: {
+  allele: LongReadTrAllele
+  motifs: string[]
+}) => {
+  if (!allele.ref || !allele.alt) {
+    return (
+      <span aria-label={`${alleleLabel(allele.variant_id)} motif structure unavailable`}>—</span>
+    )
+  }
+  const decomposition = decomposeExactTrAlt({ ref: allele.ref, alt: allele.alt, motifs })
+  if (decomposition.status !== 'available') {
+    return (
+      <span aria-label={`${alleleLabel(allele.variant_id)} motif structure unavailable`}>—</span>
+    )
+  }
+  const totalBases = Math.max(1, decomposition.structure.sequence.length)
+  let offset = 0
+  return (
+    <MotifPreview
+      role="img"
+      aria-label={`${alleleLabel(allele.variant_id)} motif structure preview`}
+      viewBox={`0 0 ${totalBases} 18`}
+      preserveAspectRatio="none"
+    >
+      {decomposition.structure.tokens.map((token, tokenIndex) => {
+        const start = offset
+        offset += token.sequence.length
+        return (
+          <rect
+            // Sequence order is the stable identity for repeated motif tokens.
+            // eslint-disable-next-line react/no-array-index-key
+            key={tokenIndex}
+            x={start}
+            y={0}
+            width={Math.max(1, token.sequence.length)}
+            height={18}
+            fill={token.type === 'motif' ? motifColor(motifs[token.motifIndex]) : '#737b80'}
+          />
+        )
+      })}
+    </MotifPreview>
+  )
+}
 
 type ExactAlleleIndexRowData = {
   alleles: LongReadTrAllele[]
+  motifs: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
 }
@@ -1571,11 +1745,17 @@ const ExactAlleleIndexRow = ({
   data: ExactAlleleIndexRowData
 }) => {
   const allele = data.alleles[index]
+  const label = alleleLabel(allele.variant_id)
+  const length = allele.length == null ? '—' : `${signed(allele.length)} bp`
+  const purity = allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)
+  const ac = allele.freq.all.ac.toLocaleString()
+  const af = allele.freq.all.af.toPrecision(4)
   return (
     <IndexRow
       style={style}
       selected={allele.variant_id === data.selectedAllele}
       role="row"
+      aria-label={`${label}; Δ length ${length}; purity ${purity}; AC ${ac}; AF ${af}`}
       aria-selected={allele.variant_id === data.selectedAllele}
       aria-rowindex={index + 2}
       title={allele.variant_id}
@@ -1586,13 +1766,20 @@ const ExactAlleleIndexRow = ({
           navigation={data.navigation}
           selected={allele.variant_id === data.selectedAllele}
         >
-          {alleleLabel(allele.variant_id)}
+          {label}
         </SelectionLink>
       </span>
-      <span role="cell">{allele.length == null ? '—' : `${signed(allele.length)} bp`}</span>
-      <span role="cell">{allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)}</span>
-      <span role="cell">{allele.freq.all.ac.toLocaleString()}</span>
-      <span role="cell">{allele.freq.all.af.toPrecision(4)}</span>
+      <span className="lr-tr-index-preview" role="cell">
+        <ExactAlleleMotifPreview allele={allele} motifs={data.motifs} />
+      </span>
+      <NumericIndexCell role="cell">{length}</NumericIndexCell>
+      <NumericIndexCell className="lr-tr-index-purity" role="cell">
+        {purity}
+      </NumericIndexCell>
+      <NumericIndexCell className="lr-tr-index-ac" role="cell">
+        {ac}
+      </NumericIndexCell>
+      <NumericIndexCell role="cell">{af}</NumericIndexCell>
     </IndexRow>
   )
 }
@@ -1600,15 +1787,17 @@ const ExactAlleleIndexRow = ({
 export const ExactAlleleIndex = ({
   alleles,
   selectedAllele,
+  motifs,
   navigation,
   selectedAlleleDetail,
 }: {
   alleles: LongReadTrAllele[]
+  motifs: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
   selectedAlleleDetail?: React.ReactNode
 }) => {
-  const itemData = { alleles, selectedAllele, navigation }
+  const itemData = { alleles, motifs, selectedAllele, navigation }
   return (
     <IndexSection aria-labelledby="lr-tr-index-heading">
       <h3 id="lr-tr-index-heading">All exact ALTs ({alleles.length.toLocaleString()})</h3>
@@ -1620,18 +1809,25 @@ export const ExactAlleleIndex = ({
         >
           <IndexHeader role="row" aria-rowindex={1}>
             <span role="columnheader">Allele</span>
-            <span role="columnheader">Δ length</span>
-            <span role="columnheader">Purity</span>
-            <span role="columnheader">AC</span>
-            <span role="columnheader">AF</span>
+            <span className="lr-tr-index-preview" role="columnheader">
+              Motif preview
+            </span>
+            <NumericIndexCell role="columnheader">Δ length</NumericIndexCell>
+            <NumericIndexCell className="lr-tr-index-purity" role="columnheader">
+              Purity
+            </NumericIndexCell>
+            <NumericIndexCell className="lr-tr-index-ac" role="columnheader">
+              AC
+            </NumericIndexCell>
+            <NumericIndexCell role="columnheader">AF</NumericIndexCell>
           </IndexHeader>
           <FixedSizeList
             className="lr-tr-exact-index-scroll"
-            height={Math.min(360, Math.max(72, alleles.length * 36))}
+            height={Math.min(616, Math.max(88, alleles.length * 44))}
             itemCount={alleles.length}
             itemData={itemData}
             itemKey={(index: number) => alleles[index].variant_id}
-            itemSize={36}
+            itemSize={44}
             overscanCount={10}
             width="100%"
           >

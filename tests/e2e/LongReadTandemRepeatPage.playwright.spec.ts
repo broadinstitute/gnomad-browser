@@ -2,6 +2,7 @@ import { expect, test, type Page, type TestInfo } from '@playwright/test'
 
 const COMPOUND_LOCUS =
   '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
+const SPARSE_LOCUS = '1-121606499-121606508-AG+1-121606517-121606536-A'
 type Cohort = 'hgsvc_hprc' | 'aou'
 
 const datasetQuery = (cohort: Cohort) => `dataset=gnomad_r4_lr&lr_cohort=${cohort}`
@@ -54,7 +55,7 @@ const selectExactAllele = async (
 ) => {
   const { index } = exactIndexForCount(page, exactAlleleCount)
   const indexScroller = index.locator('.lr-tr-exact-index-scroll')
-  const requestedScrollTop = altIndex > 10 ? (altIndex - 1) * 36 : 0
+  const requestedScrollTop = altIndex > 10 ? (altIndex - 1) * 44 : 0
   const indexScrollTop = await indexScroller.evaluate((element, top) => {
     element.scrollTo({ top })
     return element.scrollTop
@@ -183,18 +184,29 @@ const selectExactAllele = async (
   return selected.variant_id as string
 }
 
-const attachAlleleBrowserScreenshot = async (page: Page, testInfo: TestInfo, name: string) => {
+const attachLocatorScreenshot = async (locator: any, testInfo: TestInfo, name: string) => {
   const screenshotPath = process.env.TR_SCREENSHOT_DIR
     ? `${process.env.TR_SCREENSHOT_DIR}/${name}`
     : undefined
   await testInfo.attach(name, {
-    body: await page.getByTestId('lr-tr-exact-allele-browser').screenshot({
-      animations: 'disabled',
-      path: screenshotPath,
-    }),
+    body: await locator.screenshot({ animations: 'disabled', path: screenshotPath }),
     contentType: 'image/png',
   })
 }
+
+const attachAlleleBrowserScreenshot = (page: Page, testInfo: TestInfo, name: string) =>
+  attachLocatorScreenshot(page.getByTestId('lr-tr-exact-allele-browser'), testInfo, name)
+
+const purityPointMetrics = (plot: any) =>
+  plot.locator('[data-called-alleles]').evaluateAll((points: HTMLElement[]) =>
+    points.map((point) => ({
+      ac: Number(point.dataset.calledAlleles),
+      diameter: Number(point.dataset.pointDiameter),
+      renderedWidth: point.getBoundingClientRect().width,
+      selected: point.getAttribute('aria-current') === 'true',
+      boxSizing: getComputedStyle(point).boxSizing,
+    }))
+  )
 
 const expectHistorySelection = async (
   page: Page,
@@ -281,23 +293,103 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(runtimeErrors).toEqual([])
   })
 
-  test('HTT keeps all 72 HGSVC and 497 AoU ALTs reachable beside in-place detail', async ({
+  test('HTT keeps all 72 HGSVC and 497 AoU ALTs reachable above in-place detail', async ({
     page,
   }, testInfo) => {
     test.setTimeout(120_000)
 
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
     const emptyDetail = page.getByText('Select an exact ALT to view its sequence and details.')
-    const wideIndexBox = await httIndex.boundingBox()
+    const indexTable = httIndex.getByRole('table', { name: 'Exact alternate allele index' })
+    const wideIndexBox = await indexTable.boundingBox()
     const wideDetailBox = await emptyDetail.boundingBox()
     expect(wideIndexBox).not.toBeNull()
     expect(wideDetailBox).not.toBeNull()
-    expect(wideIndexBox!.x).toBeLessThan(wideDetailBox!.x)
+    expect(wideDetailBox!.y).toBeGreaterThan(wideIndexBox!.y + wideIndexBox!.height - 2)
+
+    const indexMetrics = await indexTable.evaluate((table) => {
+      const scroller = table.querySelector<HTMLElement>('.lr-tr-exact-index-scroll')!
+      const scrollerBox = scroller.getBoundingClientRect()
+      const visibleRows = Array.from(scroller.querySelectorAll<HTMLElement>('[role="row"]')).filter(
+        (row) => {
+          const box = row.getBoundingClientRect()
+          return box.bottom > scrollerBox.top && box.top < scrollerBox.bottom
+        }
+      ).length
+      return {
+        clientWidth: table.clientWidth,
+        scrollWidth: table.scrollWidth,
+        scrollerHeight: scroller.clientHeight,
+        visibleRows,
+      }
+    })
+    expect(indexMetrics.scrollWidth).toBeLessThanOrEqual(indexMetrics.clientWidth)
+    expect(indexMetrics.scrollerHeight).toBe(616)
+    expect(indexMetrics.visibleRows).toBeGreaterThanOrEqual(14)
+
+    const headerCells = indexTable.locator(
+      '[role="row"][aria-rowindex="1"] > [role="columnheader"]'
+    )
+    const firstRowCells = indexTable.locator('[role="row"][aria-rowindex="2"] > [role="cell"]')
+    const columnBoxes = await Promise.all(
+      Array.from({ length: 6 }, async (_, column) => ({
+        header: await headerCells.nth(column).boundingBox(),
+        cell: await firstRowCells.nth(column).boundingBox(),
+      }))
+    )
+    columnBoxes.forEach(({ header, cell }) => {
+      expect(header).not.toBeNull()
+      expect(cell).not.toBeNull()
+      expect(Math.abs(header!.x - cell!.x)).toBeLessThanOrEqual(1)
+      expect(header!.x + header!.width).toBeLessThanOrEqual(
+        wideIndexBox!.x + wideIndexBox!.width + 1
+      )
+    })
+    await expect(
+      indexTable.getByRole('img', { name: 'ALT 1 motif structure preview' })
+    ).toBeVisible()
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-all-exact-alts-wide.png')
+    const httPurityPlot = page.getByRole('group', {
+      name: /exact alleles plotted by whole-record length difference and source purity/,
+    })
+    const httPointMetrics = await purityPointMetrics(httPurityPlot)
+    const httAcs = httPointMetrics.map(({ ac }: any) => ac)
+    expect(Math.max(...httAcs)).toBeGreaterThan(Math.min(...httAcs))
+    expect(Math.max(...httPointMetrics.map(({ diameter }: any) => diameter))).toBeGreaterThan(
+      Math.min(...httPointMetrics.map(({ diameter }: any) => diameter)) * 2
+    )
+    await testInfo.attach('htt-purity-ac-range.json', {
+      body: JSON.stringify({ minimum: Math.min(...httAcs), maximum: Math.max(...httAcs) }),
+      contentType: 'application/json',
+    })
+    await attachLocatorScreenshot(
+      httPurityPlot.locator('xpath=..'),
+      testInfo,
+      'htt-purity-ac-scale-wide.png'
+    )
 
     const httAlt72 = await selectExactAllele(page, COMPOUND_LOCUS, 72, 72)
     expect(httAlt72).toMatch(/~72$/)
     await expect(page.getByText(/ALT 72 of 72/)).toBeVisible()
+    const selectedPurityPoint = httPurityPlot.locator('[data-called-alleles][aria-current="true"]')
+    if ((await selectedPurityPoint.count()) > 0) {
+      const selectedMetric = await selectedPurityPoint.evaluate((point: HTMLElement) => ({
+        diameter: Number(point.dataset.pointDiameter),
+        renderedWidth: point.getBoundingClientRect().width,
+        boxSizing: getComputedStyle(point).boxSizing,
+      }))
+      expect(selectedMetric.boxSizing).toBe('border-box')
+      expect(Math.abs(selectedMetric.renderedWidth - selectedMetric.diameter)).toBeLessThanOrEqual(
+        1
+      )
+    }
+    const wideMotifGrid = page.getByLabel('Selected ALT motif structure grid')
+    await expect(wideMotifGrid).toBeVisible()
+    const wideMotifMetrics = await wideMotifGrid.evaluate((grid) => ({
+      clientWidth: grid.clientWidth,
+      scrollWidth: grid.scrollWidth,
+    }))
+    expect(wideMotifMetrics.scrollWidth).toBeLessThanOrEqual(wideMotifMetrics.clientWidth)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-wide.png')
 
     await page.setViewportSize({ width: 760, height: 900 })
@@ -308,7 +400,25 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(narrowIndexBox).not.toBeNull()
     expect(narrowDetailBox).not.toBeNull()
     expect(narrowDetailBox!.y).toBeGreaterThan(narrowIndexBox!.y + narrowIndexBox!.height - 2)
+    expect(await indexTable.evaluate((table) => table.scrollWidth)).toBeLessThanOrEqual(
+      await indexTable.evaluate((table) => table.clientWidth)
+    )
+    expect(await wideMotifGrid.evaluate((grid) => grid.scrollWidth)).toBeLessThanOrEqual(
+      await wideMotifGrid.evaluate((grid) => grid.clientWidth)
+    )
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-narrow.png')
+
+    await page.setViewportSize({ width: 390, height: 844 })
+    await expect(indexTable.getByRole('columnheader', { name: 'Purity' })).toBeHidden()
+    await expect(indexTable.getByRole('columnheader', { name: 'AC', exact: true })).toBeHidden()
+    await expect(
+      indexTable.getByRole('row', {
+        name: /ALT 72; Δ length .+; purity .+; AC .+; AF .+/,
+      })
+    ).toBeVisible()
+    expect(await indexTable.evaluate((table) => table.scrollWidth)).toBeLessThanOrEqual(
+      await indexTable.evaluate((table) => table.clientWidth)
+    )
 
     await page.setViewportSize({ width: 1280, height: 720 })
     await openLocus(page, COMPOUND_LOCUS, 497, 'aou')
@@ -316,5 +426,25 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(aouAlt497).toMatch(/~497$/)
     await expect(page.getByText(/ALT 497 of 497/)).toBeVisible()
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-497-aou-selected-detail-wide.png')
+
+    await openLocus(page, SPARSE_LOCUS, 9)
+    const sparsePurityPlot = page.getByRole('group', {
+      name: /exact alleles plotted by whole-record length difference and source purity/,
+    })
+    const sparseMetrics = await purityPointMetrics(sparsePurityPlot)
+    const sparseAcs = sparseMetrics.map(({ ac }: any) => ac)
+    expect(sparseAcs.length).toBeGreaterThan(0)
+    if (new Set(sparseAcs).size > 1) {
+      expect(new Set(sparseMetrics.map(({ diameter }: any) => diameter)).size).toBeGreaterThan(1)
+    }
+    await testInfo.attach('sparse-chr1-purity-ac-range.json', {
+      body: JSON.stringify({ minimum: Math.min(...sparseAcs), maximum: Math.max(...sparseAcs) }),
+      contentType: 'application/json',
+    })
+    await attachLocatorScreenshot(
+      sparsePurityPlot.locator('xpath=..'),
+      testInfo,
+      'sparse-chr1-purity-ac-scale-wide.png'
+    )
   })
 })

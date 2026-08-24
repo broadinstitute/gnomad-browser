@@ -13,7 +13,7 @@ import LongReadTandemRepeatPageContainer, {
   searchWithSelectedAllele,
   searchWithoutSelectedAllele,
 } from './LongReadTandemRepeatPageContainer'
-import { componentLanes } from './LongReadTrVisualizations'
+import { componentLanes, purityPointDiameter } from './LongReadTrVisualizations'
 
 jest.mock('../Link', () => ({ children, to, preserveSelectedDataset = true, ...props }: any) => {
   const href =
@@ -52,10 +52,24 @@ jest.mock('../Query', () => ({ children, variables, ...props }: any) => {
 })
 
 jest.mock('react-window', () => ({
-  FixedSizeList: ({ children: Row, className, itemCount, itemData }: any) => (
-    <div className={className} data-testid="virtual-exact-index" data-item-count={itemCount}>
+  FixedSizeList: ({
+    children: Row,
+    className,
+    height,
+    itemCount,
+    itemData,
+    itemSize,
+    width,
+  }: any) => (
+    <div
+      className={className}
+      data-testid="virtual-exact-index"
+      data-height={height}
+      data-item-count={itemCount}
+      style={{ height, width }}
+    >
       {Array.from({ length: itemCount }, (_, index) => (
-        <Row key={index} index={index} style={{ height: 36 }} data={itemData} />
+        <Row key={index} index={index} style={{ height: itemSize }} data={itemData} />
       ))}
     </div>
   ),
@@ -67,7 +81,7 @@ jest.mock('@gnomad/ui', () => ({
       {children}
     </button>
   ),
-  Page: ({ children }: any) => <main>{children}</main>,
+  Page: ({ children, ...props }: any) => <main {...props}>{children}</main>,
   PageHeading: ({ children }: any) => <h1>{children}</h1>,
   Select: ({ children, ...props }: any) => <select {...props}>{children}</select>,
   TooltipAnchor: ({ children }: any) => children,
@@ -96,6 +110,8 @@ const makeAllele = (altIndex: number) => ({
   source_variant_id: sourceVariantId,
   alt_index: altIndex,
   alt_count: 72,
+  ref: 'ACAGCAG',
+  alt: `A${'CAG'.repeat((altIndex % 5) + 1)}${altIndex % 2 ? 'CCG' : 'CAA'}`,
   length: alleleLength(altIndex),
   repeat_count: null,
   repeat_count_source: null,
@@ -456,10 +472,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(selectedBin?.compareDocumentPosition(genotypeHeading)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
-    expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(390px,42%) minmax(0,58%)')
-    expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
-      media: '(max-width:900px)',
-    })
+    expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)')
+    expect(index).toHaveStyleRule('overflow-x', 'hidden')
   })
 
   test('links to the explicit short-read dataset without preserving the long-read dataset', () => {
@@ -504,6 +518,22 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
   })
 
+  test('uses materially different point areas for heterogeneous exact-allele AC', () => {
+    renderPage()
+    const lowAcPoint = screen.getByRole('link', { name: /ALT 1.+40 called copies/ })
+    const highAcPoint = screen.getByRole('link', { name: /ALT 2.+120 called copies/ })
+    const lowDiameter = Number(lowAcPoint.getAttribute('data-point-diameter'))
+    const highDiameter = Number(highAcPoint.getAttribute('data-point-diameter'))
+
+    expect(highDiameter ** 2 / lowDiameter ** 2).toBeGreaterThan(4)
+    expect(purityPointDiameter(12, 12, 12)).toBe(16)
+    expect(highAcPoint.getAttribute('aria-current')).toBe('true')
+    expect(highAcPoint).toHaveStyleRule('box-sizing', 'border-box')
+    expect(
+      screen.getByLabelText('Point size represents exact allele AC from 40 to 120')
+    ).not.toBeNull()
+  })
+
   test('distinguishes reference identity from a zero-delta exact ALT in genotype pair detail', () => {
     renderPage()
     expect(
@@ -529,9 +559,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(heading.closest('details')).toBeNull()
     const virtualIndex = within(section as HTMLElement).getByTestId('virtual-exact-index')
     expect(virtualIndex.getAttribute('data-item-count')).toBe(String(count))
+    expect(virtualIndex.getAttribute('data-height')).toBe('616')
     expect(virtualIndex.classList.contains('lr-tr-exact-index-scroll')).toBe(true)
     const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
     expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
+    expect(
+      within(finalRow).getByRole('img', { name: `ALT ${count} motif structure preview` })
+    ).not.toBeNull()
+    expect(finalRow.getAttribute('aria-label')).toMatch(
+      new RegExp(`ALT ${count}; Δ length .+; purity .+; AC .+; AF .+`)
+    )
     expect(
       screen
         .getByRole('table', { name: 'Exact alternate allele index' })

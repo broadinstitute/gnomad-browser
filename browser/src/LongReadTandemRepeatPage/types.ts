@@ -13,6 +13,8 @@ export type LongReadTrAllele = {
   source_variant_id: string
   alt_index: number
   alt_count: number
+  ref: string | null
+  alt: string | null
   length: number | null
   repeat_count: number | null
   repeat_count_source: string | null
@@ -20,7 +22,7 @@ export type LongReadTrAllele = {
   freq: ExactAlleleFrequency
 }
 
-export type LongReadTrSelectedAllele = LongReadTrAllele & {
+export type LongReadTrSelectedAllele = Omit<LongReadTrAllele, 'ref' | 'alt'> & {
   ref: string
   alt: string
   motif_purity_source: string | null
