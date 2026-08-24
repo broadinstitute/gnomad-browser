@@ -6,7 +6,6 @@ import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocus
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
-import Link from '../Link'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   LongReadAlleleSizeDistributionSection,
@@ -21,6 +20,7 @@ import {
   signed,
   unavailableReason,
 } from './LongReadTrVisualizations'
+import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
 import { AlleleNavigation, LongReadTrLocus } from './types'
 
 const Header = styled.header`
@@ -158,7 +158,11 @@ const LongReadTandemRepeatPage = ({
   })
   const orderedMotifs = locus.components.map((component) => component.motif)
   const vocabulary = [...new Set(orderedMotifs)]
-  const knownLocus = locus.short_read_matches[0]
+  const authorizedHighlightedComponentIndex =
+    locus.short_read_context?.status === 'EXACT_UNIQUE' &&
+    locus.short_read_context.pathogenic_component_highlight
+      ? locus.short_read_context.matched_component_index
+      : null
   const deltaRange =
     locus.delta_min == null || locus.delta_max == null
       ? `Unavailable: ${unavailableReason(locus.delta_unavailable_reason)}`
@@ -247,20 +251,15 @@ const LongReadTandemRepeatPage = ({
               </React.Fragment>
             ))}
           </AttributeListItem>
-          {knownLocus && (
-            <AttributeListItem label="Short-read context">
-              <Link
-                to={`/short-tandem-repeat/${knownLocus.id}?dataset=gnomad_r4`}
-                preserveSelectedDataset={false}
-              >
-                {knownLocus.gene_symbol || knownLocus.id} short-read details
-              </Link>
-            </AttributeListItem>
-          )}
         </AttributeList>
       </SourceAttributes>
 
-      <LongReadTrComponentTrack locus={locus} />
+      <LongReadTrComponentTrack
+        locus={locus}
+        highlightedComponentIndex={authorizedHighlightedComponentIndex}
+      />
+
+      <ShortReadKnownLocusContext context={locus.short_read_context} />
 
       {repeatPlotsAvailable && (
         <Panel aria-labelledby="lr-tr-simple-measurement-heading">

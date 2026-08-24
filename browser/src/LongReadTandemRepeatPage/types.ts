@@ -117,6 +117,63 @@ export type RepeatCountPlots = {
   genotype_distribution: any[]
 }
 
+export type ShortReadCatalogDisease = {
+  name: string
+  symbol: string
+  omim_id: string | null
+  inheritance_mode: string
+  repeat_size_classifications: {
+    classification: string
+    min: number | null
+    max: number | null
+  }[]
+  notes: string | null
+}
+
+export type ShortReadCatalogRecord = {
+  id: string
+  gene: { ensembl_id: string; symbol: string; region: string }
+  associated_diseases: ShortReadCatalogDisease[]
+  stripy_id: string | null
+  strchive_id: string | null
+  main_reference_region: {
+    reference_genome: string
+    chrom: string
+    start: number
+    stop: number
+  }
+  reference_regions: {
+    reference_genome: string
+    chrom: string
+    start: number
+    stop: number
+  }[]
+  reference_repeat_unit: string
+  repeat_units: { repeat_unit: string; classification: string }[]
+}
+
+export type LongReadTrShortReadContext = {
+  status:
+    | 'EXACT_UNIQUE'
+    | 'NONE'
+    | 'AMBIGUOUS_CATALOG'
+    | 'AMBIGUOUS_COMPONENT'
+    | 'CATALOG_UNAVAILABLE'
+  reason_code: string | null
+  catalog_dataset: string
+  catalog_source: string
+  catalog_digest: string
+  catalog_record: ShortReadCatalogRecord | null
+  matched_component_index: number | null
+  matched_component: TrLocusComponent | null
+  matched_reference_region_index: number | null
+  pathogenic_component_highlight: boolean
+  lr_database: string | null
+  lr_release: string | null
+  lr_run_id: string | null
+  lr_cohort: LongReadCohort | null
+}
+
 export type LongReadTrLocus = {
   id: string
   source_trid: string
@@ -160,7 +217,7 @@ export type LongReadTrLocus = {
     source: string | null
     region: string | null
   }[]
-  short_read_matches: { id: string; gene_symbol: string | null }[]
+  short_read_context: LongReadTrShortReadContext | null
   whole_record_allele_landscape: WholeRecordAlleleLandscapeData
   whole_record_genotype_landscape: WholeRecordGenotypeLandscapeData
   repeat_count_plots: RepeatCountPlots

@@ -4,12 +4,23 @@ import { BaseTable, ExternalLink } from '@gnomad/ui'
 
 import { ShortTandemRepeat } from './ShortTandemRepeatPage'
 
-type Props = {
-  shortTandemRepeat: ShortTandemRepeat
-}
+export type ShortTandemRepeatAssociatedDisease = ShortTandemRepeat['associated_diseases'][number]
 
-const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }: Props) => {
-  const hasNotes = shortTandemRepeat.associated_diseases.some((disease) => disease.notes)
+type Props =
+  | {
+      shortTandemRepeat: Pick<ShortTandemRepeat, 'associated_diseases'>
+      associatedDiseases?: never
+      showSymbols?: boolean
+    }
+  | {
+      shortTandemRepeat?: never
+      associatedDiseases: ShortTandemRepeatAssociatedDisease[]
+      showSymbols?: boolean
+    }
+
+const ShortTandemRepeatAssociatedDiseasesTable = (props: Props) => {
+  const associatedDiseases = props.associatedDiseases || props.shortTandemRepeat.associated_diseases
+  const hasNotes = associatedDiseases.some((disease) => disease.notes)
   return (
     <BaseTable style={{ minWidth: '100%' }}>
       <thead>
@@ -22,10 +33,15 @@ const ShortTandemRepeatAssociatedDiseasesTable = ({ shortTandemRepeat }: Props) 
         </tr>
       </thead>
       <tbody>
-        {shortTandemRepeat.associated_diseases.map((disease) => {
+        {associatedDiseases.map((disease) => {
           return (
-            <tr key={disease.name}>
-              <th scope="row">{disease.name}</th>
+            <tr key={`${disease.name}-${disease.symbol}`}>
+              <th scope="row">
+                {disease.name}
+                {props.showSymbols && disease.symbol && disease.symbol !== disease.name
+                  ? ` (${disease.symbol})`
+                  : ''}
+              </th>
               <td>
                 {disease.omim_id && (
                   <ExternalLink href={`https://omim.org/entry/${disease.omim_id}`}>

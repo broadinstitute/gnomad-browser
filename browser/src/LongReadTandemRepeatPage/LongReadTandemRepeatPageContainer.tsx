@@ -42,7 +42,28 @@ query ${operationName}(
       record_index source_variant_id task_id attempt_id position alt_count
       non_reference_ac an non_reference_af source region
     }
-    short_read_matches { id gene_symbol reference_repeat_unit stripy_id strchive_id }
+    short_read_context {
+      status reason_code catalog_dataset catalog_source catalog_digest
+      catalog_record {
+        id
+        gene { ensembl_id symbol region }
+        associated_diseases {
+          name symbol omim_id inheritance_mode
+          repeat_size_classifications { classification min max }
+          notes
+        }
+        stripy_id strchive_id
+        main_reference_region { reference_genome chrom start stop }
+        reference_regions { reference_genome chrom start stop }
+        reference_repeat_unit
+        repeat_units { repeat_unit classification }
+      }
+      matched_component_index
+      matched_component { chrom start0 end0 motif }
+      matched_reference_region_index
+      pathogenic_component_highlight
+      lr_database lr_release lr_run_id lr_cohort
+    }
     whole_record_allele_landscape {
       status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
       exact_alt_count stratified_available stratified_unavailable_reason ancestry_groups sexes

@@ -76,11 +76,13 @@ jest.mock('react-window', () => ({
 }))
 
 jest.mock('@gnomad/ui', () => ({
+  BaseTable: ({ children, ...props }: any) => <table {...props}>{children}</table>,
   Button: ({ children, ...props }: any) => (
     <button type="button" {...props}>
       {children}
     </button>
   ),
+  ExternalLink: ({ children, href }: any) => <a href={href}>{children}</a>,
   Modal: ({ children, title }: any) => (
     <div role="dialog" aria-label={title}>
       {children}
@@ -197,7 +199,60 @@ const makeLocus = (count = 72) => {
         region: 'HTT',
       },
     ],
-    short_read_matches: [{ id: 'HTT', gene_symbol: 'HTT' }],
+    short_read_context: {
+      status: 'EXACT_UNIQUE' as const,
+      reason_code: null,
+      catalog_dataset: 'gnomad_r4',
+      catalog_source: 'gnomad-v4-known-str-catalog',
+      catalog_digest: 'catalog-test-digest',
+      catalog_record: {
+        id: 'HTT',
+        gene: { ensembl_id: 'ENSG00000197386', symbol: 'HTT', region: 'exon' },
+        associated_diseases: [
+          {
+            name: 'Huntington disease',
+            symbol: 'HD',
+            omim_id: '143100',
+            inheritance_mode: 'Autosomal dominant',
+            repeat_size_classifications: [
+              { classification: 'Normal', min: null, max: 26 },
+              { classification: 'Intermediate', min: 27, max: 35 },
+              { classification: 'Pathogenic', min: 36, max: null },
+            ],
+            notes: 'Catalog note copied verbatim.',
+          },
+        ],
+        stripy_id: 'HTT',
+        strchive_id: 'HTT',
+        main_reference_region: {
+          reference_genome: 'GRCh38',
+          chrom: '4',
+          start: 3074876,
+          stop: 3074933,
+        },
+        reference_regions: [
+          {
+            reference_genome: 'GRCh38',
+            chrom: '4',
+            start: 3074876,
+            stop: 3074933,
+          },
+        ],
+        reference_repeat_unit: 'CAG',
+        repeat_units: [
+          { repeat_unit: 'CAG', classification: 'pathogenic' },
+          { repeat_unit: 'CAA', classification: 'reference' },
+        ],
+      },
+      matched_component_index: 0,
+      matched_component: components[0],
+      matched_reference_region_index: 0,
+      pathogenic_component_highlight: true,
+      lr_database: 'gnomad_lr_y1_full_genome',
+      lr_release: 'y1',
+      lr_run_id: 'run-hgsvc',
+      lr_cohort: 'hgsvc_hprc' as const,
+    },
     whole_record_allele_landscape: {
       status: 'AVAILABLE' as const,
       reason_code: null,
@@ -410,7 +465,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
     expect(
       screen.getByRole('img', {
-        name: '6 ordered reference repeat components in 2 coordinate lanes',
+        name: /6 ordered reference repeat components in 2 coordinate lanes/,
       })
     ).not.toBeNull()
     expect(
@@ -482,12 +537,57 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(index).toHaveStyleRule('overflow-x', 'hidden')
   })
 
-  test('links to the explicit short-read dataset without preserving the long-read dataset', () => {
+  test('renders complete non-classifying short-read context with a fixed dataset link', () => {
     renderPage()
-    expect(screen.getByRole('link', { name: 'HTT short-read details' }).getAttribute('href')).toBe(
-      '/short-tandem-repeat/HTT?dataset=gnomad_r4'
-    )
+    const panel = screen
+      .getByRole('heading', { name: /Short-read known-locus context/ })
+      .closest('section') as HTMLElement
+    expect(
+      within(panel).getByRole('link', { name: 'HTT (HTT) short-read details' }).getAttribute('href')
+    ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
+    expect(within(panel).getByText('Huntington disease (HD)')).not.toBeNull()
+    expect(within(panel).getByText('143100')).not.toBeNull()
+    expect(within(panel).getByText('Autosomal dominant')).not.toBeNull()
+    expect(
+      within(panel).getByText(/Normal ≤ 26, Intermediate 27 - 35, Pathogenic ≥ 36/)
+    ).not.toBeNull()
+    expect(within(panel).getByText('Catalog note copied verbatim.')).not.toBeNull()
+    expect(within(panel).getAllByText(/CAG/).length).toBeGreaterThan(0)
+    expect(
+      within(panel).getByText(/Short-read known-locus ranges are reference context/)
+    ).not.toBeNull()
+    expect(within(panel).getByText(/not applied to long-read alleles/)).not.toBeNull()
+    expect(
+      screen.getByText(
+        (_text, element) =>
+          element?.tagName === 'P' &&
+          Boolean(element.textContent?.includes('Outlined component 1: catalog pathogenic motif'))
+      )
+    ).not.toBeNull()
+    const highlightedComponent = screen
+      .getByRole('img', { name: /component 1 is outlined/ })
+      .querySelector('[data-catalog-pathogenic-match="true"]')
+    expect(highlightedComponent).not.toBeNull()
   })
+
+  test.each(['NONE', 'AMBIGUOUS_CATALOG', 'AMBIGUOUS_COMPONENT', 'CATALOG_UNAVAILABLE'])(
+    'does not render short-read clinical context for %s',
+    (status) => {
+      const locus = makeLocus()
+      locus.short_read_context = {
+        ...locus.short_read_context,
+        status: status as any,
+        catalog_record: null,
+        matched_component_index: null,
+        matched_component: null,
+        pathogenic_component_highlight: false,
+      } as any
+      renderPage({ locus })
+      expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
+      expect(screen.queryByText(/Short-read known-locus ranges are reference context/)).toBeNull()
+      expect(screen.queryByText(/Outlined component/)).toBeNull()
+    }
+  )
 
   test('filters the primary index to every same-length identity and clears back to all', () => {
     renderPage()
@@ -848,6 +948,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('ref alt length')
     expect(longReadTandemRepeatLocusQuery).toContain('source_records {')
     expect(longReadTandemRepeatLocusQuery).toContain('repeat_count_plots')
+    expect(longReadTandemRepeatLocusQuery).toContain('short_read_context {')
+    expect(longReadTandemRepeatLocusQuery).toContain('pathogenic_component_highlight')
+    expect(longReadTandemRepeatLocusQuery).toContain('associated_diseases {')
+    expect(longReadTandemRepeatLocusQuery).not.toContain('short_read_matches')
     expect(longReadTandemRepeatLocusQuery).not.toContain('$after')
   })
 })

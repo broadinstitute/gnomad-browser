@@ -162,8 +162,18 @@ export const componentLanes = (components: LongReadTrLocus['components']) => {
   })
 }
 
-export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) => {
+export const LongReadTrComponentTrack = ({
+  locus,
+  highlightedComponentIndex = null,
+}: {
+  locus: LongReadTrLocus
+  highlightedComponentIndex?: number | null
+}) => {
   const { components, region } = locus
+  const hasAuthorizedHighlight =
+    highlightedComponentIndex != null &&
+    highlightedComponentIndex >= 0 &&
+    highlightedComponentIndex < components.length
   const lanes = componentLanes(components)
   const laneCount = Math.max(1, ...lanes.map((lane) => lane + 1))
   const width = 1000
@@ -188,6 +198,12 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
             labels remain separate components because interval order and duplicate motif identity
             are part of the source definition.
           </p>
+          <p>
+            An outlined component labeled &ldquo;catalog pathogenic motif; exact reference-component
+            match&rdquo; is shown only when authorized by the API&apos;s unique short-read catalog
+            match. The outline marks reference-component identity, not a pathogenic long-read
+            component.
+          </p>
           <p style={{ marginBottom: 0 }}>
             This track is not an inferred ALT sequence decomposition, an ALT repeat-count
             measurement, or a clinical interpretation.
@@ -199,7 +215,15 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
           viewBox={`0 0 ${width} ${85 + laneCount * 54}`}
           style={{ display: 'block', minWidth: 700, width: '100%' }}
           role="img"
-          aria-label={`${components.length} ordered reference repeat components in ${laneCount} coordinate lanes`}
+          aria-label={`${
+            components.length
+          } ordered reference repeat components in ${laneCount} coordinate lanes${
+            hasAuthorizedHighlight
+              ? `; component ${
+                  (highlightedComponentIndex as number) + 1
+                } is outlined as a catalog pathogenic motif with an exact reference-component match`
+              : ''
+          }`}
         >
           <line
             x1={left}
@@ -217,6 +241,10 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
               component.end0 - component.start0
             } bp`
             const compactLabel = componentWidth < 44
+            const highlighted = hasAuthorizedHighlight && index === highlightedComponentIndex
+            const accessibleLabel = highlighted
+              ? `${label}; catalog pathogenic motif; exact reference-component match; not a pathogenic long-read component`
+              : label
             return (
               // Source component order is identity-bearing, including exact duplicate components.
               // eslint-disable-next-line react/no-array-index-key
@@ -228,8 +256,12 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
                   height={28}
                   rx={3}
                   fill={motifColor(component.motif, locus.motifs)}
+                  stroke={highlighted ? '#111' : undefined}
+                  strokeWidth={highlighted ? 4 : undefined}
+                  strokeDasharray={highlighted ? '7 3' : undefined}
+                  data-catalog-pathogenic-match={highlighted ? 'true' : undefined}
                 >
-                  <title>{label}</title>
+                  <title>{accessibleLabel}</title>
                 </rect>
                 <text
                   x={x(component.start0) + componentWidth / 2}
@@ -269,6 +301,13 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
           </text>
         </svg>
       </div>
+      {hasAuthorizedHighlight && (
+        <p role="note">
+          <strong>Outlined component {(highlightedComponentIndex as number) + 1}:</strong> catalog
+          pathogenic motif; exact reference-component match. This is not a pathogenic long-read
+          component classification.
+        </p>
+      )}
       <MotifLegend aria-label="Repeat motif color legend">
         {[...new Set(components.map((component) => component.motif))].map((motif) => (
           <span key={motif}>
@@ -297,6 +336,9 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
               <strong>{component.motif}</strong> — chr{component.chrom}:
               {(component.start0 + 1).toLocaleString()}–{component.end0.toLocaleString()} (
               {component.end0 - component.start0} bp; lane {lanes[index] + 1})
+              {hasAuthorizedHighlight && index === highlightedComponentIndex
+                ? ' — catalog pathogenic motif; exact reference-component match'
+                : ''}
             </li>
           ))}
         </ol>

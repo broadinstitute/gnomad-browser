@@ -457,6 +457,38 @@ describe('long-read TR visualization fidelity', () => {
     ).not.toBeNull()
   })
 
+  test('outlines only the API-authorized component without changing motif fills', () => {
+    const locus = {
+      motifs: ['CAG', 'CCG'],
+      components: [
+        { chrom: '4', start0: 0, end0: 12, motif: 'CAG' },
+        { chrom: '4', start0: 12, end0: 24, motif: 'CCG' },
+        { chrom: '4', start0: 24, end0: 36, motif: 'CCG' },
+      ],
+      region: { chrom: '4', start0: 0, end0: 36, size: 36 },
+    } as LongReadTrLocus
+    render(<LongReadTrComponentTrack locus={locus} highlightedComponentIndex={0} />)
+
+    const track = screen.getByRole('img', { name: /component 1 is outlined/ })
+    const highlighted = track.querySelectorAll('[data-catalog-pathogenic-match="true"]')
+    expect(highlighted).toHaveLength(1)
+    expect(highlighted[0].getAttribute('fill')).toBe(motifColor('CAG', locus.motifs))
+    expect(highlighted[0].getAttribute('stroke')).toBe('#111')
+    expect(
+      screen.getByText(
+        (_text, element) =>
+          element?.tagName === 'P' &&
+          Boolean(
+            element.textContent?.includes(
+              'Outlined component 1: catalog pathogenic motif; exact reference-component match'
+            )
+          )
+      )
+    ).not.toBeNull()
+    expect(screen.queryByText(/Outlined component 2/)).toBeNull()
+    expect(screen.queryByText(/Outlined component 3/)).toBeNull()
+  })
+
   test('uses one stable color per motif and explains ordered reference components accessibly', () => {
     const locus = {
       motifs: ['CCG', 'CCT'],
