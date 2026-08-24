@@ -281,6 +281,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const indexTable = index.getByRole('table', { name: 'Exact alternate allele index' })
     await expect(indexTable.getByRole('img', { name: /motif structure preview/ })).toHaveCount(3)
     await expect(page.getByText(/Motif previews are unavailable/)).toHaveCount(0)
+    const simplePlots = page.getByTestId('lr-tr-repeat-count-grid')
+    await expect(simplePlots).toBeVisible()
+    expect(await simplePlots.locator('rect[fill="#9c27b0"]').count()).toBeGreaterThan(0)
+    await attachLocatorScreenshot(simplePlots, testInfo, 'simple-repeat-count-plots-purple.png')
 
     const referenceColor = await page
       .getByRole('img', { name: /ordered reference repeat components/ })
@@ -396,7 +400,41 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     ).toBeVisible()
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-all-exact-alts-wide.png')
 
-    const histogramButtons = page.getByTestId('whole-record-delta-histogram').getByRole('button')
+    const wholeRecordPlots = page.getByTestId('whole-record-allele-plot-grid')
+    const histogram = page.getByTestId('whole-record-delta-histogram')
+    const histogramButtons = histogram.getByRole('button')
+    const purpleBarColors = await histogramButtons.evaluateAll((buttons) =>
+      buttons
+        .filter((button) => Number(button.getAttribute('data-height-percent')) > 0)
+        .map((button) => getComputedStyle(button).backgroundColor)
+    )
+    expect(new Set(purpleBarColors)).toEqual(new Set(['rgb(156, 39, 176)']))
+    const deltaAxis = page.getByTestId('whole-record-delta-axis')
+    const signedTicks = await deltaAxis.locator('[data-delta]').evaluateAll((ticks) =>
+      ticks.map((tick) => ({
+        delta: Number((tick as HTMLElement).dataset.delta),
+        text: tick.textContent,
+      }))
+    )
+    expect(signedTicks.some((tick) => tick.delta < 0 && tick.text?.startsWith('−'))).toBe(true)
+    expect(signedTicks).toContainEqual({ delta: 0, text: '0' })
+    expect(signedTicks.some((tick) => tick.delta > 0 && tick.text?.startsWith('+'))).toBe(true)
+    const firstBarCenter = await histogramButtons
+      .first()
+      .evaluate((bar) => bar.getBoundingClientRect().left + bar.getBoundingClientRect().width / 2)
+    const firstTickCenter = await deltaAxis
+      .locator('[data-delta]')
+      .first()
+      .evaluate(
+        (tick) => tick.getBoundingClientRect().left + tick.getBoundingClientRect().width / 2
+      )
+    expect(Math.abs(firstBarCenter - firstTickCenter)).toBeLessThanOrEqual(1)
+    await attachLocatorScreenshot(
+      wholeRecordPlots,
+      testInfo,
+      'compound-whole-record-plots-purple.png'
+    )
+
     const histogramLabels = await histogramButtons.evaluateAll((buttons) =>
       buttons.map((button) => button.getAttribute('aria-label') || '')
     )
@@ -412,6 +450,13 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const filteredDelta = multiIdentityMatch[1]
     const filteredCount = Number(multiIdentityMatch[2].replace(/,/g, ''))
     await histogramButtons.nth(multiIdentityBinIndex).click()
+    expect(
+      await histogramButtons
+        .nth(multiIdentityBinIndex)
+        .evaluate((button) => getComputedStyle(button).backgroundColor)
+    ).toBe('rgb(233, 120, 28)')
+    const filteredNumericDelta = Number(filteredDelta.replace('−', '-').replace('+', ''))
+    await expect(deltaAxis.locator(`[data-delta="${filteredNumericDelta}"]`)).toBeVisible()
     await expect(
       page.getByRole('heading', {
         name: `${filteredCount.toLocaleString()} of 72 exact ALTs at ${filteredDelta} bp`,
@@ -485,6 +530,33 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-narrow.png')
 
     await page.setViewportSize({ width: 390, height: 844 })
+    const histogramScroller = page.getByTestId('whole-record-delta-histogram-scroller')
+    const narrowHistogramMetrics = await histogramScroller.evaluate((scroller) => {
+      const scrollElement = scroller as HTMLElement
+      scrollElement.scrollLeft = scrollElement.scrollWidth
+      return {
+        clientWidth: scrollElement.clientWidth,
+        scrollLeft: scrollElement.scrollLeft,
+        scrollWidth: scrollElement.scrollWidth,
+      }
+    })
+    expect(narrowHistogramMetrics.clientWidth).toBeGreaterThan(0)
+    expect(narrowHistogramMetrics.scrollWidth).toBeGreaterThanOrEqual(
+      narrowHistogramMetrics.clientWidth
+    )
+    if (narrowHistogramMetrics.scrollWidth > narrowHistogramMetrics.clientWidth) {
+      expect(narrowHistogramMetrics.scrollLeft).toBeGreaterThan(0)
+    }
+    const lastBarCenter = await histogramButtons
+      .last()
+      .evaluate((bar) => bar.getBoundingClientRect().left + bar.getBoundingClientRect().width / 2)
+    const lastTickCenter = await deltaAxis
+      .locator('[data-delta]')
+      .last()
+      .evaluate(
+        (tick) => tick.getBoundingClientRect().left + tick.getBoundingClientRect().width / 2
+      )
+    expect(Math.abs(lastBarCenter - lastTickCenter)).toBeLessThanOrEqual(1)
     await expect(indexTable.getByRole('columnheader', { name: 'Purity' })).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'AC', exact: true })).toBeHidden()
     const compactAlt72 = indexTable.getByRole('row', {

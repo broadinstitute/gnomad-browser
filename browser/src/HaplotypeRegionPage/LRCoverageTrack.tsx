@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 
 import CoverageTrack, { MetricOptions } from '../CoverageTrack'
+import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 
 const LR_COVERAGE_QUERY = `
   query LRCoverage($chrom: String!, $start: Int!, $stop: Int!, $lrCohort: LongReadCohort!) {
@@ -117,18 +118,15 @@ const LRCoverageTrack = ({
   }, [chrom, start, stop, lrCohort, scope])
 
   const visibleCoverageData = useMemo(
-    () => (coverageData || []).filter(
-      (bucket) => bucket.pos >= viewStart && bucket.pos <= viewStop
-    ),
+    () =>
+      (coverageData || []).filter((bucket) => bucket.pos >= viewStart && bucket.pos <= viewStop),
     [coverageData, viewStart, viewStop]
   )
 
   let status = error
   if (!status) {
     if (!coverageData) {
-      status = `Updating long-read coverage for ${
-        lrCohort === 'aou' ? 'All of Us' : 'HGSVC/HPRC'
-      }…`
+      status = `Updating long-read coverage for ${lrCohort === 'aou' ? 'All of Us' : 'HGSVC/HPRC'}…`
     } else if (coverageData.length === 0) {
       status = 'No long-read coverage is available for this region.'
     }
@@ -144,13 +142,11 @@ const LRCoverageTrack = ({
         coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
         metric={MetricOptions.median}
         maxCoverage={MAX_DEPTH_BY_COHORT[lrCohort]}
-        filenameForExport={() =>
-          `${chrom}-${start}-${stop}_gnomad_long_read_coverage_${lrCohort}`
-        }
+        filenameForExport={() => `${chrom}-${start}-${stop}_gnomad_long_read_coverage_${lrCohort}`}
         metricControlId="lr-coverage-metric"
         datasets={[
           {
-            color: '#9c27b0',
+            color: LONG_READ_PRIMARY_PLOT_COLOR,
             buckets: visibleCoverageData,
             name: `Long-read coverage — ${lrCohort === 'aou' ? 'All of Us' : 'HGSVC/HPRC'}`,
             opacity: 0.7,

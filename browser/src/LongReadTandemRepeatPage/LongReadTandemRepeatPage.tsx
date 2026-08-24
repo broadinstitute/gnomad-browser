@@ -5,6 +5,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
+import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import Link from '../Link'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
@@ -263,7 +264,27 @@ const LongReadTandemRepeatPage = ({
 
       {repeatPlotsAvailable && (
         <Panel aria-labelledby="lr-tr-simple-measurement-heading">
-          <h2 id="lr-tr-simple-measurement-heading">Simple-locus repeat counts</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <h2 id="lr-tr-simple-measurement-heading" style={{ marginRight: 0 }}>
+              Simple-locus repeat counts
+            </h2>
+            <HaplotypeHelpButton title="About simple-locus repeat counts">
+              <p style={{ marginTop: 0 }}>
+                These plots appear only when the source data provide one unambiguous repeat unit and
+                an admitted exact repeat count for this locus. Compound loci and loci without an
+                exact component measurement use whole-record ALT − REF length instead.
+              </p>
+              <p>
+                The allele plot groups called chromosome copies by repeat count. The genotype plot
+                groups people by their shorter and longer called allele repeat counts; darker
+                squares represent more people.
+              </p>
+              <p style={{ marginBottom: 0 }}>
+                Population and sex controls filter called observations. These admitted histograms do
+                not provide a no-call denominator and are not a clinical interpretation.
+              </p>
+            </HaplotypeHelpButton>
+          </div>
           <SimpleLocusPlotGrid data-testid="lr-tr-repeat-count-grid">
             <SimpleLocusPlotCard>
               <LongReadAlleleSizeDistributionSection

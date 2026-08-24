@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import InfoButton from '../help/InfoButton'
+import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import ControlSection from '../VariantPage/ControlSection'
 import ShortTandemRepeatAlleleSizeDistributionPlot, {
   AlleleSizeDistributionCohort,
@@ -200,6 +201,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           repeatUnit={repeatUnit}
           scaleType={selectedScaleType}
           populationDisplayConfig={longReadPopulationDisplayConfig}
+          baseColor={LONG_READ_PRIMARY_PLOT_COLOR}
         />
       </div>
       <ControlSection
@@ -338,6 +340,7 @@ export const LongReadGenotypeDistributionSection = ({
           onSelectBin={() => {}}
           selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
+          baseColor={LONG_READ_PRIMARY_PLOT_COLOR}
         />
       </div>
       {explainGenotypes && maximumCount > 0 && (

@@ -1,12 +1,14 @@
 import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 
+import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import LRCoverageTrack from './LRCoverageTrack'
 
 jest.mock('../CoverageTrack', () => {
   const CoverageTrackMock = ({ coverageOverThresholds, datasets, maxCoverage, metric }: any) => (
     <div
       data-coverage-over-thresholds={coverageOverThresholds.join(',')}
+      data-color={datasets[0].color}
       data-max-coverage={maxCoverage}
       data-metric={metric}
     >
@@ -46,6 +48,7 @@ describe('LRCoverageTrack cohort routing', () => {
 
       const coverageTrack = await screen.findByText(label)
       expect(coverageTrack.getAttribute('data-metric')).toBe('median')
+      expect(coverageTrack.getAttribute('data-color')).toBe(LONG_READ_PRIMARY_PLOT_COLOR)
       expect(coverageTrack.getAttribute('data-max-coverage')).toBe(maxCoverage)
       expect(coverageTrack.getAttribute('data-coverage-over-thresholds')).toBe(
         '1,5,10,15,20,25,30,50,100'
@@ -63,7 +66,9 @@ describe('LRCoverageTrack cohort routing', () => {
     expect(
       (await screen.findByText('Long-read coverage — HGSVC/HPRC')).getAttribute('data-metric')
     ).toBe('median')
-    expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
+    expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).variables.lrCohort).toBe(
+      'hgsvc_hprc'
+    )
 
     rerender(<LRCoverageTrack chrom="22" start={1} stop={100} lrCohort="aou" />)
     expect(
@@ -77,16 +82,16 @@ describe('LRCoverageTrack cohort routing', () => {
       (await screen.findByText('Long-read coverage — HGSVC/HPRC')).getAttribute('data-metric')
     ).toBe('median')
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3))
-    expect(JSON.parse(String(fetchMock.mock.calls[2][1]?.body)).variables.lrCohort).toBe('hgsvc_hprc')
+    expect(JSON.parse(String(fetchMock.mock.calls[2][1]?.body)).variables.lrCohort).toBe(
+      'hgsvc_hprc'
+    )
   })
 
   test('requests coverage for regions over 1 Mb without changing the requested bounds', async () => {
     const fetchMock = jest.fn().mockResolvedValue({ json: async () => response })
     ;(global as any).fetch = fetchMock
 
-    render(
-      <LRCoverageTrack chrom="22" start={1} stop={1_000_002} lrCohort="hgsvc_hprc" />
-    )
+    render(<LRCoverageTrack chrom="22" start={1} stop={1_000_002} lrCohort="hgsvc_hprc" />)
     await screen.findByText('Long-read coverage — HGSVC/HPRC')
 
     expect(JSON.parse(String(fetchMock.mock.calls[0][1]?.body)).variables).toEqual({

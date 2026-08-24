@@ -36,6 +36,7 @@ type Props = {
   size: { width: number }
   selectedPopulation: PopulationId | null
   selectedSex: Sex | null
+  baseColor?: string
 }
 
 export type Bin = {
@@ -57,6 +58,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     xRanges = [],
     yRanges = [],
     onSelectBin = () => {},
+    baseColor = '#73ab3d',
   }: Props) => {
     const height = Math.min(width, 500)
 
@@ -232,7 +234,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
                         y={yScale(d.yBinIndex)}
                         width={xBandwidth}
                         height={yBandwidth}
-                        fill="#73ab3d"
+                        fill={baseColor}
                         opacity={d.count === 0 ? 0 : opacityScale(d.count)}
                         stroke="#333"
                         onClick={() => {

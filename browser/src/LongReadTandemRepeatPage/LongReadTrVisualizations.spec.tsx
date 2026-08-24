@@ -1,9 +1,11 @@
 import React from 'react'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
+import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import {
   aggregateGenotypePairs,
   ExactAlleleIndex,
+  histogramDeltaAxisTicks,
   histogramHeightPercent,
   LongReadTrComponentTrack,
   motifColor,
@@ -228,6 +230,14 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByLabelText('XX stack color').getAttribute('data-stack-color')).toBe('#F7C3CC')
   })
 
+  test('keeps signed delta ticks adaptive while retaining endpoints, zero, and selection', () => {
+    const deltas = Array.from({ length: 41 }, (_, index) => index - 20)
+    const ticks = histogramDeltaAxisTicks(deltas, 14, 2, 7)
+    expect(ticks.map((tick) => tick.delta)).toEqual(expect.arrayContaining([-20, 0, 7, 20]))
+    expect(ticks.length).toBeLessThan(deltas.length)
+    expect(ticks.every((tick) => tick.lane >= 0)).toBe(true)
+  })
+
   test('uses proportional histogram heights with truthful zero, linear, log, and capped domains', () => {
     expect(histogramHeightPercent(0, 100, 'linear')).toBe(0)
     expect(histogramHeightPercent(25, 100, 'linear')).toBe(25)
@@ -254,7 +264,17 @@ describe('long-read TR visualization fidelity', () => {
 
     const histogram = screen.getByLabelText('Whole-record delta histogram')
     expect(window.getComputedStyle(histogram).paddingTop).toBe('18px')
-    expect(histogram.parentElement?.parentElement?.getAttribute('data-bin-count')).toBe('3')
+    const deltaAxis = screen.getByTestId('whole-record-delta-axis')
+    expect(within(deltaAxis).getByLabelText('−6 bp tick').textContent).toBe('−6')
+    expect(within(deltaAxis).getByLabelText('0 bp tick').textContent).toBe('0')
+    expect(within(deltaAxis).getByLabelText('+12 bp tick').textContent).toBe('+12')
+    expect(deltaAxis.getAttribute('aria-label')).toMatch(/−6 bp.*0 bp.*\+12 bp/)
+    expect(
+      window.getComputedStyle(
+        screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
+      ).backgroundColor
+    ).toBe('rgb(156, 39, 176)')
+    expect(histogram.closest('[data-bin-count]')?.getAttribute('data-bin-count')).toBe('3')
     expect(
       screen
         .getByRole('button', { name: /−6 bp, 100 called allele copies/ })
@@ -262,6 +282,11 @@ describe('long-read TR visualization fidelity', () => {
     ).toBe('48')
 
     fireEvent.click(screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ }))
+    expect(
+      window.getComputedStyle(
+        screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
+      ).backgroundColor
+    ).toBe('rgb(233, 120, 28)')
     expect(screen.getByRole('heading', { name: '1 of 3 exact ALTs at −6 bp' })).toHaveFocus()
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('2')
 
@@ -369,6 +394,7 @@ describe('long-read TR visualization fidelity', () => {
       name: /Select ALT 3, \+12 bp, purity 1.0000/,
     })
     expect(point.getAttribute('href')).toBe(`?allele=${alleles[2].variant_id}`)
+    expect(window.getComputedStyle(point).backgroundColor).toBe('rgb(156, 39, 176)')
     expect(point.getAttribute('style')).toContain('bottom: 94%')
     fireEvent.click(point)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[2].variant_id)
@@ -409,6 +435,11 @@ describe('long-read TR visualization fidelity', () => {
 
     const heatmap = screen.getByRole('grid', { name: 'Whole-record genotype heatmap' })
     expect(heatmap.tagName.toLowerCase()).toBe('svg')
+    expect(
+      screen
+        .getByRole('gridcell', { name: '+12 bp longer, −6 bp shorter: 12 people' })
+        .getAttribute('fill')
+    ).toBe(LONG_READ_PRIMARY_PLOT_COLOR)
     expect(within(heatmap).getByText('Longer allele ALT − REF length (bp)')).not.toBeNull()
     expect(within(heatmap).getByText('Shorter allele ALT − REF length (bp)')).not.toBeNull()
     expect(screen.getByLabelText('Logarithmic people intensity legend')).not.toBeNull()

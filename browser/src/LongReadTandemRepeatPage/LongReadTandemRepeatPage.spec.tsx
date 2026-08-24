@@ -81,6 +81,11 @@ jest.mock('@gnomad/ui', () => ({
       {children}
     </button>
   ),
+  Modal: ({ children, title }: any) => (
+    <div role="dialog" aria-label={title}>
+      {children}
+    </div>
+  ),
   Page: ({ children, ...props }: any) => <main {...props}>{children}</main>,
   PageHeading: ({ children }: any) => <h1>{children}</h1>,
   Select: ({ children, ...props }: any) => <select {...props}>{children}</select>,
@@ -442,6 +447,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ])
     expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'About simple-locus repeat counts' }))
+    const help = screen.getByRole('dialog', { name: 'About simple-locus repeat counts' })
+    expect(within(help).getByText(/one unambiguous repeat unit/)).not.toBeNull()
+    expect(within(help).getByText(/groups called chromosome copies by repeat count/)).not.toBeNull()
+    expect(within(help).getByText(/not provide a no-call denominator/)).not.toBeNull()
     expect(screen.queryByRole('heading', { name: 'Whole-record genotype distribution' })).toBeNull()
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(0,calc(50% - 0.625em)))')
     expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {

@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import Link from '../Link'
+import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import ControlSection from '../VariantPage/ControlSection'
 import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
@@ -308,7 +309,7 @@ const HistogramChart = styled.div`
   display: grid;
   grid-template-columns: 48px calc(100% - 56px);
   gap: 8px;
-  margin: 1.8em 0 3.2em;
+  margin: 1.8em 0 1.2em;
 `
 
 const HistogramYScale = styled.div<{ $height: number }>`
@@ -319,8 +320,11 @@ const HistogramYScale = styled.div<{ $height: number }>`
 
 const HistogramScroller = styled.div`
   overflow-x: auto;
-  overflow-y: visible;
   min-width: 0;
+`
+
+const HistogramScrollContent = styled.div`
+  min-width: 100%;
 `
 
 const Histogram = styled.div<{ $height: number; $gap: number }>`
@@ -331,7 +335,6 @@ const Histogram = styled.div<{ $height: number; $gap: number }>`
   gap: ${(props) => props.$gap}px;
   height: ${(props) => props.$height}px;
   padding-top: 18px;
-  border-bottom: 1px solid #89939a;
 `
 
 const AxisTick = styled.span`
@@ -370,16 +373,16 @@ const BarButton = styled.button<{
   padding: 0;
   border: ${(props) => {
     if (props.$selected) return '3px solid #222'
-    return props.$hasValue ? '1px solid #397daf' : '0'
+    return props.$hasValue ? `1px solid ${LONG_READ_PRIMARY_PLOT_COLOR}` : '0'
   }};
   border-bottom: ${(props) => {
     if (props.$selected) return '3px solid #222'
-    return props.$hasValue ? '1px solid #397daf' : '1px solid #89939a'
+    return props.$hasValue ? `1px solid ${LONG_READ_PRIMARY_PLOT_COLOR}` : '1px solid #89939a'
   }};
   border-radius: 2px 2px 0 0;
   background: ${(props) => {
     if (!props.$hasValue) return 'transparent'
-    return props.$selected ? '#e9781c' : '#74a9cf'
+    return props.$selected ? '#e9781c' : LONG_READ_PRIMARY_PLOT_COLOR
   }};
   cursor: pointer;
 
@@ -400,13 +403,34 @@ const BarExactCount = styled.span`
   white-space: nowrap;
 `
 
-const BarDelta = styled.span`
-  position: absolute;
-  bottom: -2.2em;
-  left: 50%;
-  transform: translateX(-50%);
+const HistogramXAxis = styled.div<{ $height: number; $width: number }>`
+  position: relative;
+  box-sizing: border-box;
+  width: ${(props) => props.$width}px;
+  height: ${(props) => props.$height}px;
+  border-top: 1px solid #566168;
+  margin: 0 auto;
+  color: #3f484d;
   font-size: 10px;
+  font-variant-numeric: tabular-nums;
+`
+
+const HistogramXTick = styled.span<{ $lane: number; $left: number }>`
+  position: absolute;
+  top: ${(props) => 7 + props.$lane * 15}px;
+  left: ${(props) => props.$left}px;
+  transform: translateX(-50%);
   white-space: nowrap;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: ${(props) => -7 - props.$lane * 15}px;
+    left: 50%;
+    width: 1px;
+    height: ${(props) => 5 + props.$lane * 15}px;
+    background: #566168;
+  }
 `
 
 const BarSegments = styled.span`
@@ -512,6 +536,81 @@ const histogramTicks = (maxCount: number, scale: ScaleType) => {
   return [...new Set([0, 0.25, 0.5, 0.75, 1].map((part) => Math.round(domainMax * part)))]
 }
 
+type HistogramDeltaTick = {
+  delta: number
+  lane: number
+  left: number
+}
+
+const deltaTickWidth = (delta: number) => Math.max(20, signed(delta).length * 7 + 6)
+
+export const histogramDeltaAxisTicks = (
+  deltas: number[],
+  barWidth: number,
+  gap: number,
+  selectedDelta: number | null
+): HistogramDeltaTick[] => {
+  if (!deltas.length) return []
+
+  const centerForIndex = (index: number) => index * (barWidth + gap) + barWidth / 2
+  const required = new Map<number, number>()
+  required.set(deltas[0], centerForIndex(0))
+  required.set(deltas[deltas.length - 1], centerForIndex(deltas.length - 1))
+
+  const zeroIndex = deltas.indexOf(0)
+  if (zeroIndex >= 0) {
+    required.set(0, centerForIndex(zeroIndex))
+  } else if (Math.min(...deltas) < 0 && Math.max(...deltas) > 0) {
+    const lowerIndex = deltas.reduce(
+      (best, delta, index) => (delta < 0 && (best < 0 || delta > deltas[best]) ? index : best),
+      -1
+    )
+    const upperIndex = deltas.reduce(
+      (best, delta, index) => (delta > 0 && (best < 0 || delta < deltas[best]) ? index : best),
+      -1
+    )
+    if (lowerIndex >= 0 && upperIndex >= 0) {
+      const lower = deltas[lowerIndex]
+      const upper = deltas[upperIndex]
+      const fraction = Math.abs(lower) / (upper - lower)
+      required.set(
+        0,
+        centerForIndex(lowerIndex) +
+          fraction * (centerForIndex(upperIndex) - centerForIndex(lowerIndex))
+      )
+    }
+  }
+
+  if (selectedDelta != null) {
+    const selectedIndex = deltas.indexOf(selectedDelta)
+    if (selectedIndex >= 0) required.set(selectedDelta, centerForIndex(selectedIndex))
+  }
+
+  const chosen = [...required].map(([delta, left]) => ({ delta, left }))
+  const collides = (delta: number, left: number) =>
+    chosen.some(
+      (tick) =>
+        Math.abs(tick.left - left) < (deltaTickWidth(tick.delta) + deltaTickWidth(delta)) / 2 + 6
+    )
+
+  deltas.forEach((delta, index) => {
+    if (required.has(delta)) return
+    const left = centerForIndex(index)
+    if (!collides(delta, left)) chosen.push({ delta, left })
+  })
+
+  const laneEnds: number[] = []
+  return chosen
+    .sort((left, right) => left.left - right.left)
+    .map((tick) => {
+      const tickLeft = tick.left - deltaTickWidth(tick.delta) / 2
+      let lane = laneEnds.findIndex((end) => tickLeft >= end + 6)
+      if (lane < 0) lane = laneEnds.length
+      laneEnds[lane] = tick.left + deltaTickWidth(tick.delta) / 2
+      return { ...tick, lane }
+    })
+}
+
 const alleleLabel = (alleleId: string) => {
   const match = /~([1-9][0-9]*)$/.exec(alleleId)
   return match ? `ALT ${match[1]}` : alleleId
@@ -524,8 +623,8 @@ const PurityPointLink = styled(SelectionLink)`
   padding: 0;
   border: 2px solid #fff;
   border-radius: 50%;
-  background: #7953aa;
-  box-shadow: 0 0 0 1px #5f3d91;
+  background: ${LONG_READ_PRIMARY_PLOT_COLOR};
+  box-shadow: 0 0 0 1px #681875;
   cursor: pointer;
 
   &[aria-current='true'] {
@@ -748,7 +847,7 @@ const PurityScatter = ({
               maximumCalledAlleles
             ),
             borderRadius: '50%',
-            background: '#7953aa',
+            background: LONG_READ_PRIMARY_PLOT_COLOR,
           }}
         />
         <span>{minimumCalledAlleles.toLocaleString()}</span>
@@ -769,7 +868,7 @@ const PurityScatter = ({
                   maximumCalledAlleles
                 ),
                 borderRadius: '50%',
-                background: '#7953aa',
+                background: LONG_READ_PRIMARY_PLOT_COLOR,
               }}
             />
             <span>{maximumCalledAlleles.toLocaleString()}</span>
@@ -926,6 +1025,15 @@ export const WholeRecordAlleleLandscape = ({
   else if (bins.length <= 40) histogramLayout = { barWidth: 20, gap: 3, height: 240 }
   const histogramContentWidth =
     bins.length * histogramLayout.barWidth + Math.max(0, bins.length - 1) * histogramLayout.gap
+  const histogramSidePadding = 20
+  const histogramScrollableWidth = histogramContentWidth + histogramSidePadding * 2
+  const deltaAxisTicks = histogramDeltaAxisTicks(
+    bins.map((bin) => bin.delta),
+    histogramLayout.barWidth,
+    histogramLayout.gap,
+    selectedBin?.delta ?? null
+  )
+  const deltaAxisHeight = 25 + Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) * 15
 
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
@@ -1010,7 +1118,7 @@ export const WholeRecordAlleleLandscape = ({
           and tables.
         </p>
       )}
-      <PlotGrid>
+      <PlotGrid data-testid="whole-record-allele-plot-grid">
         <PlotCard>
           <h3>Whole-record length difference</h3>
           <HistogramChart data-bin-count={bins.length} data-bar-width={histogramLayout.barWidth}>
@@ -1027,60 +1135,82 @@ export const WholeRecordAlleleLandscape = ({
                 </AxisTick>
               ))}
             </HistogramYScale>
-            <HistogramScroller>
-              <Histogram
-                aria-label="Whole-record delta histogram"
-                data-testid="whole-record-delta-histogram"
-                $height={histogramLayout.height}
-                $gap={histogramLayout.gap}
-                style={{ minWidth: '100%', width: histogramContentWidth }}
-              >
-                {bins.map((bin, index) => {
-                  const count = counts[index]
-                  const height = histogramHeightPercent(count, maxCount, selectedScaleType)
-                  return (
-                    <BarButton
-                      key={bin.delta}
-                      type="button"
-                      $height={height}
-                      $hasValue={count > 0}
-                      $width={histogramLayout.barWidth}
-                      data-height-percent={height.toFixed(3)}
-                      data-bar-width={histogramLayout.barWidth}
-                      $selected={bin.delta === selectedBin?.delta}
-                      aria-pressed={bin.delta === selectedBin?.delta}
-                      aria-label={`${signed(
-                        bin.delta
-                      )} bp, ${count} called allele copies in this view, ${
-                        bin.exact_alt_count
-                      } exact ALTs globally`}
-                      title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
-                        bin.exact_alt_count
-                      } exact ALTs`}
-                      onClick={() => filterIndexToDelta(bin.delta)}
+            <HistogramScroller data-testid="whole-record-delta-histogram-scroller">
+              <HistogramScrollContent style={{ width: histogramScrollableWidth }}>
+                <Histogram
+                  aria-label="Whole-record delta histogram"
+                  data-testid="whole-record-delta-histogram"
+                  $height={histogramLayout.height}
+                  $gap={histogramLayout.gap}
+                >
+                  {bins.map((bin, index) => {
+                    const count = counts[index]
+                    const height = histogramHeightPercent(count, maxCount, selectedScaleType)
+                    return (
+                      <BarButton
+                        key={bin.delta}
+                        type="button"
+                        $height={height}
+                        $hasValue={count > 0}
+                        $width={histogramLayout.barWidth}
+                        data-height-percent={height.toFixed(3)}
+                        data-bar-width={histogramLayout.barWidth}
+                        $selected={bin.delta === selectedBin?.delta}
+                        aria-pressed={bin.delta === selectedBin?.delta}
+                        aria-label={`${signed(
+                          bin.delta
+                        )} bp, ${count} called allele copies in this view, ${
+                          bin.exact_alt_count
+                        } exact ALTs globally`}
+                        title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
+                          bin.exact_alt_count
+                        } exact ALTs`}
+                        onClick={() => filterIndexToDelta(bin.delta)}
+                      >
+                        {selectedColorBy && count > 0 && (
+                          <BarSegments aria-hidden="true">
+                            {segmentsForBin(bin).map((segment) => (
+                              <span
+                                key={segment.category}
+                                style={{
+                                  flexGrow: segment.count,
+                                  background: segment.color,
+                                  display: segment.count ? 'block' : 'none',
+                                }}
+                              />
+                            ))}
+                          </BarSegments>
+                        )}
+                        <BarExactCount title={`${bin.exact_alt_count} exact ALTs`}>
+                          {bin.exact_alt_count}
+                        </BarExactCount>
+                      </BarButton>
+                    )
+                  })}
+                </Histogram>
+                <HistogramXAxis
+                  role="group"
+                  aria-label={`Whole-record ALT minus REF length axis in base pairs; ticks ${deltaAxisTicks
+                    .map((tick) => `${signed(tick.delta)} bp`)
+                    .join(', ')}`}
+                  data-testid="whole-record-delta-axis"
+                  $height={deltaAxisHeight}
+                  $width={histogramScrollableWidth}
+                >
+                  {deltaAxisTicks.map((tick) => (
+                    <HistogramXTick
+                      key={tick.delta}
+                      aria-label={`${signed(tick.delta)} bp tick`}
+                      data-delta={tick.delta}
+                      data-testid="whole-record-delta-axis-tick"
+                      $lane={tick.lane}
+                      $left={tick.left + histogramSidePadding}
                     >
-                      {selectedColorBy && count > 0 && (
-                        <BarSegments aria-hidden="true">
-                          {segmentsForBin(bin).map((segment) => (
-                            <span
-                              key={segment.category}
-                              style={{
-                                flexGrow: segment.count,
-                                background: segment.color,
-                                display: segment.count ? 'block' : 'none',
-                              }}
-                            />
-                          ))}
-                        </BarSegments>
-                      )}
-                      <BarExactCount title={`${bin.exact_alt_count} exact ALTs`}>
-                        {bin.exact_alt_count}
-                      </BarExactCount>
-                      <BarDelta>{signed(bin.delta)}</BarDelta>
-                    </BarButton>
-                  )
-                })}
-              </Histogram>
+                      {signed(tick.delta)}
+                    </HistogramXTick>
+                  ))}
+                </HistogramXAxis>
+              </HistogramScrollContent>
             </HistogramScroller>
           </HistogramChart>
           <div style={{ color: '#566168', fontSize: 11, textAlign: 'center' }}>
@@ -1336,7 +1466,7 @@ export const WholeRecordGenotypeLandscape = ({
                           width={Math.max(1, band - 2)}
                           height={Math.max(1, band - 2)}
                           rx={Math.min(2, band / 8)}
-                          fill={cell ? '#1769aa' : '#f5f7f8'}
+                          fill={cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'}
                           fillOpacity={cell ? 0.15 + 0.85 * intensity : 1}
                           stroke={selected ? '#e9781c' : '#fff'}
                           strokeWidth={selected ? 4 : 1}
@@ -1358,7 +1488,7 @@ export const WholeRecordGenotypeLandscape = ({
                           <text
                             x={xFor(longer) + band / 2}
                             y={yFor(shorter) + band / 2 + 4}
-                            fill={intensity > 0.55 ? '#fff' : '#111'}
+                            fill={intensity > 0.78 ? '#fff' : '#111'}
                             fontSize={Math.min(11, band * 0.34)}
                             textAnchor="middle"
                             pointerEvents="none"
@@ -1439,7 +1569,7 @@ export const WholeRecordGenotypeLandscape = ({
                   width: 110,
                   height: 10,
                   border: '1px solid #bfc8ce',
-                  background: 'linear-gradient(90deg, rgba(23,105,170,.15), #1769aa)',
+                  background: `linear-gradient(90deg, rgba(156,39,176,.15), ${LONG_READ_PRIMARY_PLOT_COLOR})`,
                 }}
               />
               <span>More people (log intensity)</span>

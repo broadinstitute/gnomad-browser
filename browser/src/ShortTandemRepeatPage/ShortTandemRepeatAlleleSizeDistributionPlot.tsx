@@ -117,8 +117,6 @@ const fixedLegendLabels: Partial<Record<ColorBy, Record<string, string>>> = {
 
 const legendLabel = (colorBy: ColorBy, key: string) => fixedLegendLabels[colorBy]?.[key] || key
 
-const colorForValue = (colorBy: ColorBy | null, value: string) =>
-  (colorBy && colorMap[colorBy]?.[value]) || defaultColor
 const tickFormat = (n: number) => {
   if (n >= 1e9) {
     return `${(n / 1e9).toPrecision(3)}B`
@@ -155,6 +153,7 @@ type Props = {
   scaleType: ScaleType
   ranges?: Range[]
   populationDisplayConfig?: PopulationDisplayConfig
+  baseColor?: string
   size: { width: number }
 }
 
@@ -251,6 +250,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     scaleType = 'linear',
     ranges = [],
     populationDisplayConfig,
+    baseColor = defaultColor,
   }: Props) => {
     const height = 300
 
@@ -433,9 +433,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
               yScale={yScale}
               stroke="black"
               color={(key) =>
-                colorBy
-                  ? displayColor(colorBy, key.toString(), populationDisplayConfig)
-                  : colorForValue(null, key.toString())
+                colorBy ? displayColor(colorBy, key.toString(), populationDisplayConfig) : baseColor
               }
               x={(bin) => bin.index}
               y0={(point) => point[0] || 0}

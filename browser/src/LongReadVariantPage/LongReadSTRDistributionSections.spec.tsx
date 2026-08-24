@@ -1,10 +1,13 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 
+import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import ShortTandemRepeatAlleleSizeDistributionPlot from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
+import ShortTandemRepeatGenotypeDistributionPlot from '../ShortTandemRepeatPage/ShortTandemRepeatGenotypeDistributionPlot'
 import { consolidateAlleleSizeDistributions } from '../ShortTandemRepeatPage/shortTandemRepeatHelpers'
 import {
   genotypeCountExtent,
+  LongReadAlleleSizeDistributionSection,
   LongReadGenotypeDistributionSection,
   longReadAlleleSizeColorBy,
   longReadPopulationDisplayConfig,
@@ -12,6 +15,77 @@ import {
 } from './LongReadSTRDistributionSections'
 
 describe('long-read STR allele-size distribution', () => {
+  test('uses LR purple through optional plot themes while short-read defaults stay green', () => {
+    const alleleCohorts = [
+      {
+        ancestry_group: 'afr' as const,
+        sex: 'XX' as const,
+        repunit: 'T',
+        distribution: [{ repunit_count: 10, frequency: 7, colorByValue: null }],
+      },
+    ]
+    const genotypeCohorts = [
+      {
+        ancestry_group: 'afr',
+        sex: 'XX' as const,
+        short_allele_repunit: 'T',
+        long_allele_repunit: 'T',
+        distribution: [
+          { short_allele_repunit_count: 10, long_allele_repunit_count: 11, frequency: 7 },
+        ],
+      },
+    ]
+
+    const lrAlleles = render(
+      <LongReadAlleleSizeDistributionSection
+        variantId="lr-theme-alleles"
+        alleleSizeDistribution={alleleCohorts}
+        maxRepunits={12}
+      />
+    )
+    expect(
+      lrAlleles.container.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)
+    ).not.toBeNull()
+    lrAlleles.unmount()
+
+    const srAlleles = render(
+      <ShortTandemRepeatAlleleSizeDistributionPlot
+        maxRepeats={12}
+        alleleSizeDistribution={alleleCohorts[0].distribution}
+        colorBy={null}
+        repeatUnitLength={null}
+        scaleType="linear"
+      />
+    )
+    expect(srAlleles.container.querySelector('rect[fill="#73ab3d"]')).not.toBeNull()
+    srAlleles.unmount()
+
+    const lrGenotypes = render(
+      <LongReadGenotypeDistributionSection
+        variantId="lr-theme-genotypes"
+        genotypeDistribution={genotypeCohorts}
+      />
+    )
+    expect(
+      lrGenotypes.container.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)
+    ).not.toBeNull()
+    lrGenotypes.unmount()
+
+    const srGenotypes = render(
+      <ShortTandemRepeatGenotypeDistributionPlot
+        axisLabels={['longer allele', 'shorter allele']}
+        maxRepeats={[12, 12]}
+        genotypeDistribution={genotypeCohorts[0].distribution}
+        xRanges={[]}
+        yRanges={[]}
+        onSelectBin={() => {}}
+        selectedPopulation={null}
+        selectedSex={null}
+      />
+    )
+    expect(srGenotypes.container.querySelector('rect[fill="#73ab3d"]')).not.toBeNull()
+  })
+
   test('focuses domains on all observed counts with stable padding, including one-bin and outlier cases', () => {
     expect(observedRepeatDomain([])).toEqual([0, 0])
     expect(observedRepeatDomain([11])).toEqual([10, 12])
