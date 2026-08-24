@@ -383,10 +383,32 @@ exports[`Home Page has no unexpected changes 1`] = `
     >
       <a
         className="c11"
+        href="/long-read-tandem-repeat-reference"
+        onClick={[Function]}
+      >
+        Known STR loci in long-read data
+      </a>
+    </li>
+    <li
+      className="c10"
+    >
+      <a
+        className="c11"
         href="/long-read-literature-examples"
         onClick={[Function]}
       >
         Long-read literature workflows
+      </a>
+    </li>
+    <li
+      className="c10"
+    >
+      <a
+        className="c11"
+        href="/reference-sequence-context"
+        onClick={[Function]}
+      >
+        Chromosome 22 reference sequence-context regions
       </a>
     </li>
   </ul>

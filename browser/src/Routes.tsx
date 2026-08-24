@@ -34,6 +34,7 @@ const HaplotypeRegionPageContainer = lazy(
 const TrCatalogPage = lazy(() => import('./Haplotypes/TrCatalogPage'))
 const LongReadExamplesPage = lazy(() => import('./LongReadExamplesPage'))
 const LongReadExamples22Page = lazy(() => import('./LongReadExamples22Page'))
+const LongReadTandemRepeatReferencePage = lazy(() => import('./LongReadTandemRepeatReferencePage'))
 const LongReadLiteratureExamplesPage = lazy(() => import('./LongReadLiteratureExamplesPage'))
 const LongReadLiteratureWorkflowPage = lazy(() => import('./LongReadLiteratureWorkflowPage'))
 const ReferenceSequenceContextPage = lazy(() => import('./ReferenceSequenceContextPage'))
@@ -94,6 +95,11 @@ const Routes = () => {
 
       <Route exact path="/long-read-examples" component={LongReadExamplesPage} />
       <Route exact path="/long-read-examples-22" component={LongReadExamples22Page} />
+      <Route
+        exact
+        path="/long-read-tandem-repeat-reference"
+        component={LongReadTandemRepeatReferencePage}
+      />
       <Route
         exact
         path="/long-read-literature-examples"
