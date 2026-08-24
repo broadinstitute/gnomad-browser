@@ -20,7 +20,7 @@ const exactIndexForCount = (page: Page, exactAlleleCount: number) => {
   const heading = page.getByRole('heading', {
     name: `All exact ALTs (${exactAlleleCount})`,
   })
-  return { heading, index: heading.locator('xpath=..') }
+  return { heading, index: page.getByTestId('lr-tr-exact-allele-browser').locator('..') }
 }
 
 const openLocus = async (
@@ -34,6 +34,8 @@ const openLocus = async (
   const { heading, index } = exactIndexForCount(page, exactAlleleCount)
   await expect(heading).toBeVisible({ timeout: 30_000 })
   await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toBeVisible()
+  await expect(page.getByRole('table', { name: 'Exact alternate allele index' })).toHaveCount(1)
+  await expect(page.getByRole('table', { name: /Exact alleles at/ })).toHaveCount(0)
   await expect(index.locator('details')).toHaveCount(0)
   await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toHaveAttribute(
     'aria-rowcount',
@@ -56,14 +58,17 @@ const selectExactAllele = async (
 ) => {
   const { index } = exactIndexForCount(page, exactAlleleCount)
   const indexScroller = index.locator('.lr-tr-exact-index-scroll')
-  const requestedScrollTop = altIndex > 10 ? (altIndex - 1) * 44 : 0
+  const requestedScrollTop = altIndex > 10 ? (altIndex - 1) * 52 : 0
   const indexScrollTop = await indexScroller.evaluate((element, top) => {
     element.scrollTo({ top })
     return element.scrollTop
   }, requestedScrollTop)
   if (requestedScrollTop > 0) expect(indexScrollTop).toBeGreaterThan(0)
 
-  const exactLink = index.getByRole('link', { name: `ALT ${altIndex}`, exact: true }).first()
+  const exactRow = index.locator(`[role="row"][title$="~${altIndex}"]`)
+  const exactLink = exactRow.getByRole('link', {
+    name: new RegExp(`^(Select|Selected) ALT ${altIndex}$`),
+  })
   await expect(exactLink).toBeVisible()
   await exactLink.scrollIntoViewIfNeeded()
   if (activation === 'keyboard') await exactLink.focus()
@@ -157,7 +162,9 @@ const selectExactAllele = async (
   expect(selected.alt_index).toBe(altIndex)
   expect(selected.ref).toBeTruthy()
   expect(selected.alt).toBeTruthy()
-  await expect(page.getByRole('heading', { name: `ALT ${altIndex} exact detail` })).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: `${selected.variant_id} allele details` })
+  ).toBeVisible()
   const selectedScrollTop = await indexScroller.evaluate((element) => element.scrollTop)
   expect(Math.abs(selectedScrollTop - clickedScrollTop)).toBeLessThanOrEqual(1)
   expect(await page.evaluate(() => (window as any).__lrTrDocumentMarker)).toBe(documentMarker)
@@ -177,9 +184,7 @@ const selectExactAllele = async (
   await page.unroute('**/api/**', gateSelectedDetail)
   await expect(exactLink).toBeFocused()
   await expect(
-    page.getByRole('heading', {
-      name: new RegExp(`^[0-9,]+ of ${exactAlleleCount.toLocaleString()} exact ALTs at`),
-    })
+    page.getByRole('heading', { name: `All exact ALTs (${exactAlleleCount.toLocaleString()})` })
   ).toBeVisible()
 
   return selected.variant_id as string
@@ -354,15 +359,26 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       }
     })
     expect(indexMetrics.scrollWidth).toBeLessThanOrEqual(indexMetrics.clientWidth)
-    expect(indexMetrics.scrollerHeight).toBe(308)
-    expect(indexMetrics.visibleRows).toBeGreaterThanOrEqual(7)
+    expect(indexMetrics.scrollerHeight).toBe(312)
+    expect(indexMetrics.visibleRows).toBeGreaterThanOrEqual(6)
+
+    const acSort = indexTable.getByRole('button', { name: 'AC', exact: true })
+    await acSort.click()
+    await expect(acSort.locator('..')).toHaveAttribute('aria-sort', 'descending')
+    const renderedAcs = await indexTable
+      .locator('[role="row"][aria-rowindex]:not([aria-rowindex="1"])')
+      .evaluateAll((rows) =>
+        rows.map((row) => Number(row.querySelectorAll('[role="cell"]')[4].textContent))
+      )
+    expect(renderedAcs).toEqual([...renderedAcs].sort((left, right) => right - left))
+    await indexTable.getByRole('button', { name: 'Exact ALT / identity' }).click()
 
     const headerCells = indexTable.locator(
       '[role="row"][aria-rowindex="1"] > [role="columnheader"]'
     )
     const firstRowCells = indexTable.locator('[role="row"][aria-rowindex="2"] > [role="cell"]')
     const columnBoxes = await Promise.all(
-      Array.from({ length: 6 }, async (_, column) => ({
+      Array.from({ length: 7 }, async (_, column) => ({
         header: await headerCells.nth(column).boundingBox(),
         cell: await firstRowCells.nth(column).boundingBox(),
       }))
@@ -379,6 +395,36 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       indexTable.getByRole('img', { name: 'ALT 1 motif structure preview' })
     ).toBeVisible()
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-all-exact-alts-wide.png')
+
+    const histogramButtons = page.getByTestId('whole-record-delta-histogram').getByRole('button')
+    const histogramLabels = await histogramButtons.evaluateAll((buttons) =>
+      buttons.map((button) => button.getAttribute('aria-label') || '')
+    )
+    const multiIdentityBinIndex = histogramLabels.findIndex((label) => {
+      const match = label.match(/([0-9,]+) exact ALTs globally$/)
+      return match != null && Number(match[1].replace(/,/g, '')) > 1
+    })
+    expect(multiIdentityBinIndex).toBeGreaterThanOrEqual(0)
+    const multiIdentityLabel = histogramLabels[multiIdentityBinIndex]
+    const multiIdentityMatch = multiIdentityLabel.match(
+      /^([+−]?[0-9]+) bp, .+, ([0-9,]+) exact ALTs globally$/
+    )!
+    const filteredDelta = multiIdentityMatch[1]
+    const filteredCount = Number(multiIdentityMatch[2].replace(/,/g, ''))
+    await histogramButtons.nth(multiIdentityBinIndex).click()
+    await expect(
+      page.getByRole('heading', {
+        name: `${filteredCount.toLocaleString()} of 72 exact ALTs at ${filteredDelta} bp`,
+      })
+    ).toBeFocused()
+    await expect(indexTable).toHaveAttribute('aria-rowcount', String(filteredCount + 1))
+    await expect(page.getByRole('table', { name: 'Exact alternate allele index' })).toHaveCount(1)
+    await expect(page.getByRole('table', { name: /Exact alleles at/ })).toHaveCount(0)
+    await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-filtered-exact-alts-wide.png')
+    await page.getByRole('button', { name: 'Show all exact ALTs' }).click()
+    await expect(page.getByRole('heading', { name: 'All exact ALTs (72)' })).toBeFocused()
+    await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
+
     const httPurityPlot = page.getByRole('group', {
       name: /exact alleles plotted by whole-record length difference and source purity/,
     })
@@ -441,11 +487,11 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await page.setViewportSize({ width: 390, height: 844 })
     await expect(indexTable.getByRole('columnheader', { name: 'Purity' })).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'AC', exact: true })).toBeHidden()
-    await expect(
-      indexTable.getByRole('row', {
-        name: /ALT 72; Δ length .+; purity .+; AC .+; AF .+/,
-      })
-    ).toBeVisible()
+    const compactAlt72 = indexTable.getByRole('row', {
+      name: /ALT 72; .+~72; Δ length .+; purity .+; AC .+; AF .+/,
+    })
+    await expect(compactAlt72).toBeVisible()
+    await expect(compactAlt72.getByText(/~72$/)).toBeVisible()
     expect(await indexTable.evaluate((table) => table.scrollWidth)).toBeLessThanOrEqual(
       await indexTable.evaluate((table) => table.clientWidth)
     )

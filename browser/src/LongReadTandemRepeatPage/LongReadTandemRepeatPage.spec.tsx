@@ -401,9 +401,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.getByText('GRCh38 / hg38')).not.toBeNull()
-    expect(
-      screen.getByText(/72 exact ALT sequences; whole-record Δ length −24 to \+48 bp/)
-    ).not.toBeNull()
+    expect(screen.getByText(/72 alleles; −24 to \+48 bp/)).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
     expect(
       screen.getByRole('img', {
@@ -423,7 +421,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('states compound measurement limits and signed whole-record semantics', () => {
     renderPage()
     expect(screen.getAllByText(/Compound loci lack an admitted mapping/).length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/not a component repeat count/).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/not a component repeat count/)).toBeNull()
     expect(screen.queryByRole('heading', { name: 'Measurement availability' })).toBeNull()
     expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(
@@ -449,32 +447,27 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
       media: '(max-width:900px)',
     })
+    expect(grid.compareDocumentPosition(screen.getByTestId('lr-tr-exact-allele-browser'))).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
   })
 
-  test('puts the complete index and selected detail first in a responsive allele browser', () => {
+  test('renders one responsive allele table with selected detail immediately below it', () => {
     renderPage()
     const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')
     const browser = screen.getByTestId('lr-tr-exact-allele-browser')
-    const index = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    const alleleTables = screen.getAllByRole('table', { name: 'Exact alternate allele index' })
+    const index = alleleTables[0]
     const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
-    const selectedBin = screen
-      .getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })
-      .closest('section')
-    const genotypeHeading = screen.getByRole('heading', {
-      name: 'Whole-record genotype distribution',
-    })
+    const plotGrid = screen.getByText('Whole-record length difference').closest('div')
 
+    expect(alleleTables).toHaveLength(1)
+    expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
     expect(landscape?.contains(browser)).toBe(true)
     expect(browser.contains(index)).toBe(true)
     expect(browser.contains(selectedDetail)).toBe(true)
+    expect(plotGrid?.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(index.compareDocumentPosition(selectedDetail)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(selectedBin?.contains(selectedDetail)).toBe(false)
-    expect(selectedDetail.compareDocumentPosition(selectedBin as HTMLElement)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING
-    )
-    expect(selectedBin?.compareDocumentPosition(genotypeHeading)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING
-    )
     expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)')
     expect(index).toHaveStyleRule('overflow-x', 'hidden')
   })
@@ -486,23 +479,30 @@ describe('canonical long-read tandem-repeat locus page', () => {
     )
   })
 
-  test('bin subset is explicitly bounded and keeps identities, frequencies, and URL controls', () => {
+  test('filters the primary index to every same-length identity and clears back to all', () => {
     renderPage()
-    expect(screen.getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })).not.toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: /0 bp, 40 called allele copies/ }))
-    expect(screen.getByRole('heading', { name: '1 of 72 exact ALTs at 0 bp' })).not.toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: /−6 bp, 134 called allele copies/ }))
-    const table = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
-    const selectedControl = within(table).getByRole('link', { name: 'Select ALT 2' })
-    const otherControl = within(table).getByRole('link', { name: 'Select ALT 3' })
+    const table = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).not.toBeNull()
+    expect(table.getAttribute('aria-rowcount')).toBe('73')
 
+    fireEvent.click(screen.getByRole('button', { name: /−6 bp, 134 called allele copies/ }))
+    expect(screen.getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })).toHaveFocus()
+    expect(table.getAttribute('aria-rowcount')).toBe('3')
     expect(within(table).getByText(`${sourceVariantId}~2`)).not.toBeNull()
     expect(within(table).getByText(`${sourceVariantId}~3`)).not.toBeNull()
-    expect(within(table).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
-    expect(selectedControl.closest('tr')?.getAttribute('aria-selected')).toBe('true')
-    expect(otherControl.closest('tr')?.getAttribute('aria-selected')).toBe('false')
+    expect(screen.getAllByRole('table', { name: 'Exact alternate allele index' })).toHaveLength(1)
+    expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
+
+    const selectedControl = within(table).getByRole('link', { name: 'Selected ALT 2' })
+    const otherControl = within(table).getByRole('link', { name: 'Select ALT 3' })
+    expect(selectedControl.closest('[role="row"]')?.getAttribute('aria-selected')).toBe('true')
+    expect(otherControl.closest('[role="row"]')?.getAttribute('aria-selected')).toBe('false')
     expect(fireEvent.click(otherControl)).toBe(false)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
+    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).toHaveFocus()
+    expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
 
   test('links purity and exact detail and preserves source decomposition caveat', () => {
@@ -562,21 +562,42 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(heading.closest('details')).toBeNull()
     const virtualIndex = within(section as HTMLElement).getByTestId('virtual-exact-index')
     expect(virtualIndex.getAttribute('data-item-count')).toBe(String(count))
-    expect(virtualIndex.getAttribute('data-height')).toBe('308')
+    expect(virtualIndex.getAttribute('data-height')).toBe('312')
     expect(virtualIndex.classList.contains('lr-tr-exact-index-scroll')).toBe(true)
     const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
     expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
+    expect(within(finalRow).getByText(`${sourceVariantId}~${count}`)).not.toBeNull()
+    expect(within(finalRow).getByRole('link', { name: `Select ALT ${count}` })).not.toBeNull()
     expect(
       within(finalRow).getByRole('img', { name: `ALT ${count} motif structure preview` })
     ).not.toBeNull()
     expect(finalRow.getAttribute('aria-label')).toMatch(
-      new RegExp(`ALT ${count}; Δ length .+; purity .+; AC .+; AF .+`)
+      new RegExp(`ALT ${count}; ${sourceVariantId}~${count}; Δ length .+; purity .+; AC .+; AF .+`)
     )
     expect(
       screen
         .getByRole('table', { name: 'Exact alternate allele index' })
         .getAttribute('aria-rowcount')
     ).toBe(String(count + 1))
+  })
+
+  test('shows the complete allele identity and formats AC as an integer count', () => {
+    const locus = makeLocus()
+    locus.alleles.nodes[0].freq.all.ac = 20.00342
+    renderPage({ locus, selectedAllele: undefined })
+    const row = screen.getByTitle(`${sourceVariantId}~1`)
+    expect(within(row).getByText(`${sourceVariantId}~1`)).not.toBeNull()
+    expect(within(row).getByText('20')).not.toBeNull()
+    expect(within(row).queryByText('20.00342')).toBeNull()
+
+    const table = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    const acSort = within(table).getByRole('button', { name: 'AC' })
+    fireEvent.click(acSort)
+    expect(screen.getByTitle(`${sourceVariantId}~2`).getAttribute('aria-rowindex')).toBe('2')
+    expect(acSort.closest('[role="columnheader"]')?.getAttribute('aria-sort')).toBe('descending')
+    fireEvent.click(acSort)
+    expect(screen.getByTitle(`${sourceVariantId}~3`).getAttribute('aria-rowindex')).toBe('2')
+    expect(acSort.closest('[role="columnheader"]')?.getAttribute('aria-sort')).toBe('ascending')
   })
 
   test('reports invalid selection once and delegates URL cleanup', async () => {
@@ -624,7 +645,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       selectedAllele: exactId,
     })
 
-    expect(screen.getByRole('heading', { name: 'ALT 2 exact detail' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: `${exactId} allele details` })).not.toBeNull()
     expect(
       screen.getByText(
         (_text, element) =>
@@ -713,11 +734,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
     expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
     expect((global as any).__TR_QUERY_PROPS__.requestKey).toBe(`hgsvc_hprc:${staleLocus.id}`)
-    expect(screen.getByRole('heading', { name: 'ALT 2 exact detail' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: `${exactId} allele details` })).not.toBeNull()
     expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).not.toBeNull()
-    expect(screen.getAllByRole('link', { name: 'ALT 1' })[0].getAttribute('aria-current')).toBe(
-      'true'
-    )
+    expect(
+      within(screen.getByRole('table', { name: 'Exact alternate allele index' }))
+        .getByRole('link', { name: 'Selected ALT 1' })
+        .getAttribute('aria-current')
+    ).toBe('true')
     ;(global as any).__TR_QUERY_STATE__ = {
       data: { long_read_tandem_repeat_locus: freshLocus },
       requestVariables: { allele: nextAlleleId },
@@ -725,7 +748,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     rendered.rerender(React.cloneElement(page))
 
-    expect(screen.getByRole('heading', { name: 'ALT 1 exact detail' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: `${nextAlleleId} allele details` })).not.toBeNull()
     expect(screen.getByTestId('lr-tr-selected-detail')).not.toBe(document.activeElement)
     expect(scrollIntoView).not.toHaveBeenCalled()
   })
@@ -751,7 +774,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
         </ThemeProvider>
       </Router>
     )
-    fireEvent.click(screen.getAllByRole('link', { name: 'ALT 2' })[0])
+    fireEvent.click(
+      within(screen.getByRole('table', { name: 'Exact alternate allele index' })).getByRole(
+        'link',
+        { name: 'Select ALT 2' }
+      )
+    )
     expect(history.action).toBe('PUSH')
     expect(new URLSearchParams(history.location.search).get('allele')).toBe(exactId)
     expect(new URLSearchParams(history.location.search).get('keep')).toBe('1')

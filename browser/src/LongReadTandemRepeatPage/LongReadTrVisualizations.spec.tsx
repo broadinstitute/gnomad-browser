@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import {
   aggregateGenotypePairs,
@@ -238,7 +238,7 @@ describe('long-read TR visualization fidelity', () => {
     )
   })
 
-  test('keeps sparse bars compact and synchronizes the selected bin without hiding exact choices', async () => {
+  test('keeps sparse bars compact and filters the single exact index only on request', () => {
     const rendered = render(
       <WholeRecordAlleleLandscape
         landscape={alleleLandscape}
@@ -247,7 +247,10 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    expect(screen.getByRole('table', { name: 'Exact alleles at −6 bp' })).not.toBeNull()
+    const exactIndex = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    expect(screen.getByRole('heading', { name: 'All exact ALTs (3)' })).not.toBeNull()
+    expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
+    expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
 
     const histogram = screen.getByLabelText('Whole-record delta histogram')
     expect(window.getComputedStyle(histogram).paddingTop).toBe('18px')
@@ -258,6 +261,10 @@ describe('long-read TR visualization fidelity', () => {
         .getAttribute('data-bar-width')
     ).toBe('48')
 
+    fireEvent.click(screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ }))
+    expect(screen.getByRole('heading', { name: '1 of 3 exact ALTs at −6 bp' })).toHaveFocus()
+    expect(exactIndex.getAttribute('aria-rowcount')).toBe('2')
+
     rendered.rerender(
       <WholeRecordAlleleLandscape
         landscape={{ ...alleleLandscape, bins: [...(alleleLandscape.bins || [])] }}
@@ -266,17 +273,19 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    await waitFor(() =>
-      expect(screen.getByRole('table', { name: 'Exact alleles at +12 bp' })).not.toBeNull()
-    )
+    expect(screen.getByRole('heading', { name: '1 of 3 exact ALTs at −6 bp' })).not.toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: /0 bp, 25 called allele copies/ }))
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
-    const exactAlleles = screen.getByRole('table', { name: 'Exact alleles at 0 bp' })
-    const exactLink = within(exactAlleles).getByRole('link', { name: 'Select ALT 2' })
+    expect(screen.getByRole('heading', { name: '1 of 3 exact ALTs at 0 bp' })).toHaveFocus()
+    const exactLink = within(exactIndex).getByRole('link', { name: 'Select ALT 2' })
     expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
     fireEvent.click(exactLink)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
+    expect(screen.getByRole('heading', { name: 'All exact ALTs (3)' })).toHaveFocus()
+    expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
 
     const tallest = screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
     const shortest = screen.getByRole('button', { name: /\+12 bp, 5 called allele copies/ })
@@ -310,14 +319,17 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const picker = screen.getByRole('table', { name: 'Exact alleles at −6 bp' })
+    fireEvent.click(screen.getByRole('button', { name: /−6 bp, 107 called allele copies/ }))
+    expect(screen.getByRole('heading', { name: '2 of 4 exact ALTs at −6 bp' })).toHaveFocus()
+    const picker = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
     const links = within(picker).getAllByRole('link')
     expect(links).toHaveLength(2)
     expect(within(picker).getByText(`${sourceId}~1`)).not.toBeNull()
     expect(within(picker).getByText(`${sourceId}~4`)).not.toBeNull()
     expect(links.map((link) => link.textContent)).toEqual(['Selected', 'Select'])
     expect(links[0].getAttribute('aria-current')).toBe('true')
-    expect(links[0].closest('tr')?.getAttribute('aria-selected')).toBe('true')
+    expect(links[0].closest('[role="row"]')?.getAttribute('aria-selected')).toBe('true')
     fireEvent.keyDown(links[1], { key: 'Enter' })
     fireEvent.click(links[1])
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(sameLengthAllele.variant_id)

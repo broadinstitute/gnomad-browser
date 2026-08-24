@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { RefObject, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
@@ -422,36 +422,6 @@ const BarSegments = styled.span`
   }
 `
 
-const SelectedBin = styled.section`
-  padding: 1em;
-  border: 2px solid #b7d5e9;
-  border-radius: 5px;
-  margin-top: 1.25em;
-  background: #f7fbfe;
-`
-
-const SelectedBinHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1em;
-  margin-bottom: 0.65em;
-
-  h3 {
-    margin: 0;
-  }
-`
-
-const SelectedBinBadge = styled.span`
-  flex: 0 0 auto;
-  padding: 0.25em 0.55em;
-  border-radius: 3px;
-  background: #fff0ca;
-  color: #6e4900;
-  font-size: 12px;
-  font-weight: bold;
-`
-
 const SelectAlleleControl = styled(SelectionLink)`
   display: inline-block;
   padding: 0.3em 0.7em;
@@ -545,92 +515,6 @@ const histogramTicks = (maxCount: number, scale: ScaleType) => {
 const alleleLabel = (alleleId: string) => {
   const match = /~([1-9][0-9]*)$/.exec(alleleId)
   return match ? `ALT ${match[1]}` : alleleId
-}
-
-const LengthBinAllelePicker = ({
-  bin,
-  alleles,
-  selectedAllele,
-  totalExactAlts,
-  calledAllelesInView,
-  selectedDivision,
-  navigation,
-}: {
-  bin: AlleleBin
-  alleles: Map<string, LongReadTrAllele>
-  selectedAllele?: string
-  totalExactAlts: number
-  calledAllelesInView: number
-  selectedDivision?: string | null
-  navigation: AlleleNavigation
-}) => {
-  const rows = bin.allele_ids
-    .map((id) => ({ id, allele: alleles.get(id) }))
-    .map((row) => ({
-      ...row,
-      frequency: selectedDivision
-        ? row.allele?.freq.populations.find((frequency) => frequency.id === selectedDivision)
-        : row.allele?.freq.all,
-    }))
-    .sort(
-      (left, right) =>
-        (right.frequency?.ac || 0) - (left.frequency?.ac || 0) ||
-        (left.allele?.alt_index || 0) - (right.allele?.alt_index || 0)
-    )
-  return (
-    <SelectedBin aria-labelledby="lr-tr-selected-bin-heading">
-      <SelectedBinHeader aria-live="polite">
-        <h3 id="lr-tr-selected-bin-heading">
-          {bin.allele_ids.length.toLocaleString()} of {totalExactAlts.toLocaleString()} exact ALTs
-          at {signed(bin.delta)} bp
-        </h3>
-        <SelectedBinBadge>Selected length bin</SelectedBinBadge>
-      </SelectedBinHeader>
-      <div style={{ color: '#566168', marginBottom: '0.65em' }}>
-        {calledAllelesInView.toLocaleString()} called allele copies in this view
-      </div>
-      <ScrollTable>
-        <table aria-label={`Exact alleles at ${signed(bin.delta)} bp`}>
-          <thead>
-            <tr>
-              <th scope="col">Exact ALT</th>
-              <th scope="col">Exact identity</th>
-              <th scope="col">Purity</th>
-              <th scope="col">AC</th>
-              <th scope="col">AF</th>
-              <th scope="col">Select</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map(({ id, allele, frequency }) => {
-              const selected = id === selectedAllele
-              return (
-                <tr key={id} aria-selected={selected}>
-                  <th scope="row">{alleleLabel(id)}</th>
-                  <td>
-                    <code>{id}</code>
-                  </td>
-                  <td>{allele?.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)}</td>
-                  <td>{frequency ? frequency.ac.toLocaleString() : '—'}</td>
-                  <td>{frequency ? frequency.af.toPrecision(4) : '—'}</td>
-                  <td>
-                    <SelectAlleleControl
-                      alleleId={id}
-                      navigation={navigation}
-                      selected={selected}
-                      aria-label={`Select ${alleleLabel(id)}`}
-                    >
-                      {selected ? 'Selected' : 'Select'}
-                    </SelectAlleleControl>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </ScrollTable>
-    </SelectedBin>
-  )
 }
 
 const PurityPointLink = styled(SelectionLink)`
@@ -960,25 +844,26 @@ export const WholeRecordAlleleLandscape = ({
     () => new Map(alleles.map((allele) => [allele.variant_id, allele])),
     [alleles]
   )
-  const selectedAlleleDelta = selectedAllele ? alleleById.get(selectedAllele)?.length ?? null : null
-  const [selectedDelta, setSelectedDelta] = useState<number | null>(
-    selectedAlleleDelta ?? bins[0]?.delta ?? null
-  )
-  const binDeltas = bins.map((bin) => bin.delta).join(',')
-
-  useEffect(() => {
-    if (selectedAlleleDelta != null && bins.some((bin) => bin.delta === selectedAlleleDelta)) {
-      setSelectedDelta(selectedAlleleDelta)
-      return
-    }
-    setSelectedDelta((current) =>
-      bins.some((bin) => bin.delta === current) ? current : bins[0]?.delta ?? null
-    )
-    // binDeltas intentionally represents query reloads without depending on the unstable bins array.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [binDeltas, selectedAllele, selectedAlleleDelta])
-
-  const selectedBin = bins.find((bin) => bin.delta === selectedDelta) || bins[0]
+  const indexScope = `${landscape.exact_alt_count || alleles.length}:${
+    alleles[0]?.variant_id || 'none'
+  }`
+  const [indexFilter, setIndexFilter] = useState<{ scope: string; delta: number } | null>(null)
+  const indexHeading = useRef<HTMLHeadingElement>(null)
+  const selectedDelta = indexFilter?.scope === indexScope ? indexFilter.delta : null
+  const selectedBin = bins.find((bin) => bin.delta === selectedDelta)
+  const selectedBinAlleles = selectedBin ? new Set(selectedBin.allele_ids) : null
+  const indexedAlleles = selectedBinAlleles
+    ? alleles.filter((allele) => selectedBinAlleles.has(allele.variant_id))
+    : alleles
+  const focusIndex = () => indexHeading.current?.focus({ preventScroll: true })
+  const filterIndexToDelta = (delta: number) => {
+    setIndexFilter({ scope: indexScope, delta })
+    focusIndex()
+  }
+  const clearIndexFilter = () => {
+    setIndexFilter(null)
+    focusIndex()
+  }
 
   if (landscape.status !== 'AVAILABLE') {
     return (
@@ -1045,16 +930,6 @@ export const WholeRecordAlleleLandscape = ({
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
       <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
-      <ExactAlleleIndex
-        alleles={alleles}
-        motifs={motifs}
-        selectedAllele={selectedAllele}
-        navigation={navigation}
-        selectedAlleleDetail={selectedAlleleDetail}
-        sequencesAvailable={sequencesAvailable}
-        sequencesUnavailableReason={sequencesUnavailableReason}
-      />
-      <p>Whole-record ALT − REF length (bp); not a component repeat count.</p>
       <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '8px 16px' }}>
         {landscape.stratified_available && (
           <>
@@ -1182,7 +1057,7 @@ export const WholeRecordAlleleLandscape = ({
                       title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
                         bin.exact_alt_count
                       } exact ALTs`}
-                      onClick={() => setSelectedDelta(bin.delta)}
+                      onClick={() => filterIndexToDelta(bin.delta)}
                     >
                       {selectedColorBy && count > 0 && (
                         <BarSegments aria-hidden="true">
@@ -1227,17 +1102,20 @@ export const WholeRecordAlleleLandscape = ({
           )}
         </PlotCard>
       </PlotGrid>
-      {selectedBin && (
-        <LengthBinAllelePicker
-          bin={selectedBin}
-          alleles={alleleById}
-          selectedAllele={selectedAllele}
-          totalExactAlts={landscape.exact_alt_count || alleles.length}
-          calledAllelesInView={counts[bins.indexOf(selectedBin)] || 0}
-          selectedDivision={selectedDivision}
-          navigation={navigation}
-        />
-      )}
+      <ExactAlleleIndex
+        alleles={indexedAlleles}
+        totalExactAlts={landscape.exact_alt_count || alleles.length}
+        filteredDelta={selectedBin?.delta}
+        motifs={motifs}
+        selectedAllele={selectedAllele}
+        navigation={navigation}
+        selectedAlleleDetail={selectedAlleleDetail}
+        selectedDivision={selectedDivision}
+        sequencesAvailable={sequencesAvailable}
+        sequencesUnavailableReason={sequencesUnavailableReason}
+        headingRef={indexHeading}
+        onClearFilter={clearIndexFilter}
+      />
     </Panel>
   )
 }
@@ -1662,19 +1540,96 @@ const EmptySelectedAllele = styled.p`
   color: #566168;
 `
 
-const indexColumns = 'minmax(100px, 0.8fr) minmax(240px, 2.4fr) 76px 72px 54px 84px'
-const narrowIndexColumns = 'minmax(80px, 0.8fr) minmax(120px, 2fr) 72px 84px'
-const compactIndexColumns = 'minmax(80px, 1fr) 76px 90px'
+const indexColumns = 'minmax(280px, 1.7fr) minmax(150px, 2fr) 76px 72px 54px 80px 86px'
+const narrowIndexColumns = 'minmax(200px, 1fr) 72px 86px'
+const compactIndexColumns = 'minmax(170px, 1fr) 68px 78px'
+
+const ExactAlleleIdentity = styled.span`
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  gap: 0.45em;
+  line-height: 1.15;
+
+  strong {
+    flex: 0 0 auto;
+  }
+
+  code {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 11px;
+    white-space: normal;
+  }
+`
+
+const IndexTitle = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1em;
+  margin-bottom: 0.65em;
+
+  h3 {
+    margin: 0;
+  }
+`
+
+const ClearIndexFilter = styled.button`
+  flex: 0 0 auto;
+  padding: 0.35em 0.75em;
+  border: 1px solid #397daf;
+  border-radius: 3px;
+  background: #fff;
+  color: #185b8d;
+  cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background: #f1f8fc;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #111;
+    outline-offset: 2px;
+  }
+`
 
 const NumericIndexCell = styled.span`
   min-width: 0;
   text-align: right;
 `
 
+const SortableIndexHeader = styled.span<{ $numeric?: boolean }>`
+  min-width: 0;
+  text-align: ${(props) => (props.$numeric ? 'right' : 'left')};
+
+  button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    text-align: inherit;
+  }
+
+  button:hover {
+    color: #185b8d;
+    text-decoration: underline;
+  }
+
+  button:focus-visible {
+    outline: 3px solid #111;
+    outline-offset: 2px;
+  }
+`
+
 const IndexHeader = styled.div`
   display: grid;
   grid-template-columns: ${indexColumns};
   align-items: center;
+  column-gap: 0.75em;
   box-sizing: border-box;
   width: 100%;
   height: 36px;
@@ -1683,21 +1638,19 @@ const IndexHeader = styled.div`
   background: #f7f9fa;
   font-weight: bold;
 
-  @media (max-width: 700px) {
+  @media (max-width: 900px) {
     grid-template-columns: ${narrowIndexColumns};
 
+    .lr-tr-index-preview,
     .lr-tr-index-purity,
-    .lr-tr-index-ac {
+    .lr-tr-index-ac,
+    .lr-tr-index-af {
       display: none;
     }
   }
 
   @media (max-width: 420px) {
     grid-template-columns: ${compactIndexColumns};
-
-    .lr-tr-index-preview {
-      display: none;
-    }
   }
 `
 
@@ -1705,9 +1658,10 @@ const IndexRow = styled.div<{ selected: boolean }>`
   display: grid;
   grid-template-columns: ${indexColumns};
   align-items: center;
+  column-gap: 0.75em;
   box-sizing: border-box;
   width: 100%;
-  height: 44px;
+  height: 52px;
   padding: 0 0.6em;
   border-bottom: 1px solid #ddd;
   background: ${(props) => (props.selected ? '#fff3e8' : '#fff')};
@@ -1718,21 +1672,19 @@ const IndexRow = styled.div<{ selected: boolean }>`
     min-width: 0;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 900px) {
     grid-template-columns: ${narrowIndexColumns};
 
+    .lr-tr-index-preview,
     .lr-tr-index-purity,
-    .lr-tr-index-ac {
+    .lr-tr-index-ac,
+    .lr-tr-index-af {
       display: none;
     }
   }
 
   @media (max-width: 420px) {
     grid-template-columns: ${compactIndexColumns};
-
-    .lr-tr-index-preview {
-      display: none;
-    }
   }
 `
 
@@ -1796,12 +1748,21 @@ const ExactAlleleMotifPreview = ({
   )
 }
 
+type ExactAlleleSortKey = 'alt' | 'length' | 'purity' | 'ac' | 'af'
+type ExactAlleleSortDirection = 'ascending' | 'descending'
+
 type ExactAlleleIndexRowData = {
   alleles: LongReadTrAllele[]
   motifs: string[]
   selectedAllele?: string
+  selectedDivision?: string | null
   navigation: AlleleNavigation
 }
+
+const exactAlleleFrequency = (allele: LongReadTrAllele, selectedDivision?: string | null) =>
+  selectedDivision
+    ? allele.freq.populations.find((item) => item.id === selectedDivision)
+    : allele.freq.all
 
 const ExactAlleleIndexRow = ({
   index,
@@ -1813,30 +1774,27 @@ const ExactAlleleIndexRow = ({
   data: ExactAlleleIndexRowData
 }) => {
   const allele = data.alleles[index]
-  const label = alleleLabel(allele.variant_id)
+  const altLabel = alleleLabel(allele.variant_id)
   const length = allele.length == null ? '—' : `${signed(allele.length)} bp`
   const purity = allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)
-  const ac = allele.freq.all.ac.toLocaleString()
-  const af = allele.freq.all.af.toPrecision(4)
+  const frequency = exactAlleleFrequency(allele, data.selectedDivision)
+  const ac = frequency ? Math.round(frequency.ac).toLocaleString() : '—'
+  const af = frequency ? frequency.af.toPrecision(4) : '—'
+  const selected = allele.variant_id === data.selectedAllele
   return (
     <IndexRow
       style={style}
-      selected={allele.variant_id === data.selectedAllele}
+      selected={selected}
       role="row"
-      aria-label={`${label}; Δ length ${length}; purity ${purity}; AC ${ac}; AF ${af}`}
-      aria-selected={allele.variant_id === data.selectedAllele}
+      aria-label={`${altLabel}; ${allele.variant_id}; Δ length ${length}; purity ${purity}; AC ${ac}; AF ${af}`}
+      aria-selected={selected}
       aria-rowindex={index + 2}
       title={allele.variant_id}
     >
-      <span role="cell">
-        <SelectionLink
-          alleleId={allele.variant_id}
-          navigation={data.navigation}
-          selected={allele.variant_id === data.selectedAllele}
-        >
-          {label}
-        </SelectionLink>
-      </span>
+      <ExactAlleleIdentity role="cell">
+        <strong>{altLabel}</strong>
+        <code>{allele.variant_id}</code>
+      </ExactAlleleIdentity>
       <span className="lr-tr-index-preview" role="cell">
         <ExactAlleleMotifPreview allele={allele} motifs={data.motifs} />
       </span>
@@ -1847,37 +1805,129 @@ const ExactAlleleIndexRow = ({
       <NumericIndexCell className="lr-tr-index-ac" role="cell">
         {ac}
       </NumericIndexCell>
-      <NumericIndexCell role="cell">{af}</NumericIndexCell>
+      <NumericIndexCell className="lr-tr-index-af" role="cell">
+        {af}
+      </NumericIndexCell>
+      <span role="cell">
+        <SelectAlleleControl
+          alleleId={allele.variant_id}
+          navigation={data.navigation}
+          selected={selected}
+          aria-label={`${selected ? 'Selected' : 'Select'} ${altLabel}`}
+        >
+          {selected ? 'Selected' : 'Select'}
+        </SelectAlleleControl>
+      </span>
     </IndexRow>
   )
 }
 
 export const ExactAlleleIndex = ({
   alleles,
+  totalExactAlts = alleles.length,
+  filteredDelta,
   selectedAllele,
   motifs,
   navigation,
   selectedAlleleDetail,
+  selectedDivision,
   sequencesAvailable = true,
   sequencesUnavailableReason,
+  headingRef,
+  onClearFilter,
 }: {
   alleles: LongReadTrAllele[]
+  totalExactAlts?: number
+  filteredDelta?: number
   motifs: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
   selectedAlleleDetail?: React.ReactNode
+  selectedDivision?: string | null
   sequencesAvailable?: boolean
   sequencesUnavailableReason?: string | null
+  headingRef?: RefObject<HTMLHeadingElement>
+  onClearFilter?: () => void
 }) => {
-  const itemData = { alleles, motifs, selectedAllele, navigation }
+  const [sortKey, setSortKey] = useState<ExactAlleleSortKey>('alt')
+  const [sortDirection, setSortDirection] = useState<ExactAlleleSortDirection>('ascending')
+  const sortedAlleles = useMemo(() => {
+    const sortValue = (allele: LongReadTrAllele): number | null | undefined => {
+      if (sortKey === 'alt') return allele.alt_index
+      if (sortKey === 'length') return allele.length
+      if (sortKey === 'purity') return allele.motif_purity
+      const frequency = exactAlleleFrequency(allele, selectedDivision)
+      return sortKey === 'ac' ? frequency?.ac : frequency?.af
+    }
+    return [...alleles].sort((left, right) => {
+      const leftValue = sortValue(left)
+      const rightValue = sortValue(right)
+      if (leftValue == null && rightValue != null) return 1
+      if (leftValue != null && rightValue == null) return -1
+      const comparison = (leftValue || 0) - (rightValue || 0)
+      if (comparison !== 0) return sortDirection === 'ascending' ? comparison : -comparison
+      return left.alt_index - right.alt_index
+    })
+  }, [alleles, selectedDivision, sortDirection, sortKey])
+  const changeSort = (nextKey: ExactAlleleSortKey) => {
+    if (nextKey === sortKey) {
+      setSortDirection((current) => (current === 'ascending' ? 'descending' : 'ascending'))
+      return
+    }
+    setSortKey(nextKey)
+    setSortDirection(nextKey === 'alt' ? 'ascending' : 'descending')
+  }
+  const sortHeader = (
+    key: ExactAlleleSortKey,
+    label: string,
+    className?: string,
+    numeric = false
+  ) => {
+    const active = key === sortKey
+    return (
+      <SortableIndexHeader
+        className={className}
+        $numeric={numeric}
+        role="columnheader"
+        aria-sort={active ? sortDirection : 'none'}
+      >
+        <button type="button" onClick={() => changeSort(key)}>
+          {label}{' '}
+          {active && <span aria-hidden="true">{sortDirection === 'ascending' ? '↑' : '↓'}</span>}
+        </button>
+      </SortableIndexHeader>
+    )
+  }
+  const itemData = {
+    alleles: sortedAlleles,
+    motifs,
+    selectedAllele,
+    selectedDivision,
+    navigation,
+  }
   const hasMissingIndexSequence = alleles.some((allele) => !allele.ref || !allele.alt)
   const previewUnavailableMessage =
     hasMissingIndexSequence && !sequencesAvailable
       ? `Motif previews are unavailable: ${unavailableReason(sequencesUnavailableReason)}.`
       : null
+  const heading =
+    filteredDelta == null
+      ? `All exact ALTs (${totalExactAlts.toLocaleString()})`
+      : `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact ALTs at ${signed(
+          filteredDelta
+        )} bp`
   return (
     <IndexSection aria-labelledby="lr-tr-index-heading">
-      <h3 id="lr-tr-index-heading">All exact ALTs ({alleles.length.toLocaleString()})</h3>
+      <IndexTitle aria-live="polite">
+        <h3 id="lr-tr-index-heading" ref={headingRef} tabIndex={-1}>
+          {heading}
+        </h3>
+        {filteredDelta != null && (
+          <ClearIndexFilter type="button" onClick={onClearFilter}>
+            Show all exact ALTs
+          </ClearIndexFilter>
+        )}
+      </IndexTitle>
       {previewUnavailableMessage && <p role="status">{previewUnavailableMessage}</p>}
       <AlleleBrowserGrid data-testid="lr-tr-exact-allele-browser">
         <IndexPane
@@ -1886,26 +1936,23 @@ export const ExactAlleleIndex = ({
           aria-rowcount={alleles.length + 1}
         >
           <IndexHeader role="row" aria-rowindex={1}>
-            <span role="columnheader">Allele</span>
+            {sortHeader('alt', 'Exact ALT / identity')}
             <span className="lr-tr-index-preview" role="columnheader">
               Motif preview
             </span>
-            <NumericIndexCell role="columnheader">Δ length</NumericIndexCell>
-            <NumericIndexCell className="lr-tr-index-purity" role="columnheader">
-              Purity
-            </NumericIndexCell>
-            <NumericIndexCell className="lr-tr-index-ac" role="columnheader">
-              AC
-            </NumericIndexCell>
-            <NumericIndexCell role="columnheader">AF</NumericIndexCell>
+            {sortHeader('length', 'Δ length', undefined, true)}
+            {sortHeader('purity', 'Purity', 'lr-tr-index-purity', true)}
+            {sortHeader('ac', 'AC', 'lr-tr-index-ac', true)}
+            {sortHeader('af', 'AF', 'lr-tr-index-af', true)}
+            <span role="columnheader">Select</span>
           </IndexHeader>
           <FixedSizeList
             className="lr-tr-exact-index-scroll"
-            height={Math.min(308, Math.max(88, alleles.length * 44))}
+            height={Math.min(312, Math.max(104, alleles.length * 52))}
             itemCount={alleles.length}
             itemData={itemData}
-            itemKey={(index: number) => alleles[index].variant_id}
-            itemSize={44}
+            itemKey={(index: number) => sortedAlleles[index].variant_id}
+            itemSize={52}
             overscanCount={10}
             width="100%"
           >
@@ -1969,7 +2016,9 @@ export const SelectedExactAlleleDetail = React.forwardRef<
     aria-labelledby="lr-tr-selected-detail-heading"
     data-testid="lr-tr-selected-detail"
   >
-    <h3 id="lr-tr-selected-detail-heading">{alleleLabel(allele.variant_id)} exact detail</h3>
+    <h3 id="lr-tr-selected-detail-heading">
+      <code>{allele.variant_id}</code> allele details
+    </h3>
     <SelectedDetailGrid>
       <div>
         <ExactTrAltMotifStructure
@@ -1977,6 +2026,7 @@ export const SelectedExactAlleleDetail = React.forwardRef<
           altAllele={allele.alt}
           motifs={motifs}
           showHighlightedExactSequence
+          showHeading={false}
         />
         <p>
           <strong>Source decomposition:</strong> {allele.decomposition_reason}. Browser DP tokens
@@ -1990,12 +2040,6 @@ export const SelectedExactAlleleDetail = React.forwardRef<
       <ScrollTable>
         <table>
           <tbody>
-            <tr>
-              <th scope="row">Exact identity</th>
-              <td>
-                <code>{allele.variant_id}</code>
-              </td>
-            </tr>
             <tr>
               <th scope="row">Source record / ordinal</th>
               <td>

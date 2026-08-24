@@ -235,7 +235,7 @@ const LongReadTandemRepeatPage = ({
           </AttributeListItem>
           <AttributeListItem label="Observed alleles">
             {locus.exact_alt_count_complete
-              ? `${locus.exact_alt_count.toLocaleString()} exact ALT sequences; whole-record Δ length ${deltaRange}`
+              ? `${locus.exact_alt_count.toLocaleString()} alleles; ${deltaRange}`
               : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
           </AttributeListItem>
           <AttributeListItem label="Source record">
@@ -260,6 +260,37 @@ const LongReadTandemRepeatPage = ({
       </SourceAttributes>
 
       <LongReadTrComponentTrack locus={locus} />
+
+      {repeatPlotsAvailable && (
+        <Panel aria-labelledby="lr-tr-simple-measurement-heading">
+          <h2 id="lr-tr-simple-measurement-heading">Simple-locus repeat counts</h2>
+          <SimpleLocusPlotGrid data-testid="lr-tr-repeat-count-grid">
+            <SimpleLocusPlotCard>
+              <LongReadAlleleSizeDistributionSection
+                variantId={locus.id}
+                alleleSizeDistribution={locus.repeat_count_plots.allele_size_distribution}
+                maxRepunits={locus.repeat_count_plots.max_repunits || 0}
+                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
+                headingLevel="h3"
+                heading="Allele repeat-count distribution"
+                compact
+                focusObservedDomain
+              />
+            </SimpleLocusPlotCard>
+            <SimpleLocusPlotCard>
+              <LongReadGenotypeDistributionSection
+                variantId={locus.id}
+                genotypeDistribution={locus.repeat_count_plots.genotype_distribution}
+                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
+                headingLevel="h3"
+                heading="Genotype repeat-count distribution"
+                compact
+                focusObservedDomain
+              />
+            </SimpleLocusPlotCard>
+          </SimpleLocusPlotGrid>
+        </Panel>
+      )}
 
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}
@@ -293,37 +324,6 @@ const LongReadTandemRepeatPage = ({
           ) : undefined
         }
       />
-
-      {repeatPlotsAvailable && (
-        <Panel aria-labelledby="lr-tr-simple-measurement-heading">
-          <h2 id="lr-tr-simple-measurement-heading">Simple-locus repeat counts</h2>
-          <SimpleLocusPlotGrid data-testid="lr-tr-repeat-count-grid">
-            <SimpleLocusPlotCard>
-              <LongReadAlleleSizeDistributionSection
-                variantId={locus.id}
-                alleleSizeDistribution={locus.repeat_count_plots.allele_size_distribution}
-                maxRepunits={locus.repeat_count_plots.max_repunits || 0}
-                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
-                headingLevel="h3"
-                heading="Allele repeat-count distribution"
-                compact
-                focusObservedDomain
-              />
-            </SimpleLocusPlotCard>
-            <SimpleLocusPlotCard>
-              <LongReadGenotypeDistributionSection
-                variantId={locus.id}
-                genotypeDistribution={locus.repeat_count_plots.genotype_distribution}
-                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
-                headingLevel="h3"
-                heading="Genotype repeat-count distribution"
-                compact
-                focusObservedDomain
-              />
-            </SimpleLocusPlotCard>
-          </SimpleLocusPlotGrid>
-        </Panel>
-      )}
 
       {!repeatPlotsAvailable && (
         <WholeRecordGenotypeLandscape
