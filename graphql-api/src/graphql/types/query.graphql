@@ -58,5 +58,14 @@ type Query {
     allele: String
   ): LongReadTandemRepeatLocus @cost(value: 10)
 
+  long_read_tandem_repeat_reference(
+    first: Int = 50
+    after: String
+    query: String
+    chrom: String
+    match_status: LongReadTrReferenceMatchFilter = ALL
+    sort: LongReadTrReferenceSort = SHORT_ID_ASC
+  ): LongReadTrReferenceConnection! @cost(value: 10)
+
   meta: BrowserMetadata!
 }

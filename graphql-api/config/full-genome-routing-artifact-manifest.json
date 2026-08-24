@@ -63,6 +63,13 @@
       "sha256": "1abd3f37a2378f90a00d978dd1bed7edd6d206d2859091461c32ff7e499e9ef8",
       "bytes": 16861,
       "purpose": "audit-only; metadata admission is from DB ledger, not a path env"
+    },
+    {
+      "path": "graphql-api/config/long-read-tr-reference-crosswalk.json",
+      "target_in_image": "/app/graphql-api/config/long-read-tr-reference-crosswalk.json",
+      "sha256": "de637bc10757f62e7e46b67dcdc879f54128449bb2fc5d3b40dbdb8c3a4853f0",
+      "bytes": 176153,
+      "purpose": "runtime-validated bounded short-read STR to LR reference crosswalk"
     }
   ]
 }

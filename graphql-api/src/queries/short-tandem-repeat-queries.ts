@@ -21,42 +21,121 @@ const SUMMARY_FIELDS = [
   'value.reference_repeat_unit',
 ]
 
-export const exactShortTandemRepeatCatalogMatches = (
+type ExactComponent = { chrom: string; start0: number; end0: number; motif: string }
+
+export const classifyExactShortTandemRepeatCatalogContext = (
   tandemRepeats: any[],
-  components: { chrom: string; start0: number; end0: number; motif: string }[]
+  components: ExactComponent[]
 ) => {
-  const matchesByComponent = new Map<number, any[]>()
+  const candidates: { repeat: any; component_index: number; reference_region_index: number }[] = []
   tandemRepeats.forEach((repeat) => {
-    const regions = [
-      repeat.main_reference_region,
-      repeat.reference_region,
-      ...(Array.isArray(repeat.reference_regions) ? repeat.reference_regions : []),
-    ].filter(Boolean)
-    components.forEach((component, index) => {
-      const exact = regions.some(
-        (region: any) =>
-          String(region.chrom).replace(/^chr/i, '').toUpperCase() === component.chrom &&
+    // reference_regions is the provenance-bearing list when present. Older records
+    // expose only main_reference_region/reference_region, which is treated as index 0.
+    const regions = Array.isArray(repeat.reference_regions) && repeat.reference_regions.length
+      ? repeat.reference_regions
+      : [repeat.main_reference_region || repeat.reference_region].filter(Boolean)
+    components.forEach((component, componentIndex) => {
+      regions.forEach((region: any, referenceRegionIndex: number) => {
+        if (
+          region.reference_genome === 'GRCh38' &&
+          String(region.chrom).replace(/^chr/i, '').toUpperCase() ===
+            String(component.chrom).replace(/^chr/i, '').toUpperCase() &&
           Number(region.start) === component.start0 &&
-          Number(region.stop) === component.end0
-      )
-      if (exact && String(repeat.reference_repeat_unit || '').toUpperCase() === component.motif) {
-        const matches = matchesByComponent.get(index) || []
-        if (!matches.some((match) => match.id === repeat.id)) matches.push(repeat)
-        matchesByComponent.set(index, matches)
-      }
+          Number(region.stop) === component.end0 &&
+          repeat.reference_repeat_unit === component.motif &&
+          component.motif === component.motif.toUpperCase()
+        ) {
+          candidates.push({
+            repeat,
+            component_index: componentIndex,
+            reference_region_index: referenceRegionIndex,
+          })
+        }
+      })
     })
   })
+  candidates.sort(
+    (left, right) =>
+      left.component_index - right.component_index ||
+      String(left.repeat.id).localeCompare(String(right.repeat.id)) ||
+      left.reference_region_index - right.reference_region_index
+  )
+  if (!candidates.length) return { status: 'NONE', reason_code: 'NO_EXACT_COMPONENT', candidates }
 
-  // Ambiguous catalog identity fails closed for that component.
-  return Array.from(matchesByComponent.values())
-    .filter((matches) => matches.length === 1)
-    .map(([repeat]) => ({
+  const recordsByComponent = new Map<number, Set<string>>()
+  const componentsByRecord = new Map<string, Set<number>>()
+  for (const candidate of candidates) {
+    const records = recordsByComponent.get(candidate.component_index) || new Set<string>()
+    records.add(candidate.repeat.id)
+    recordsByComponent.set(candidate.component_index, records)
+    const indices = componentsByRecord.get(candidate.repeat.id) || new Set<number>()
+    indices.add(candidate.component_index)
+    componentsByRecord.set(candidate.repeat.id, indices)
+  }
+  if ([...recordsByComponent.values()].some((records) => records.size > 1)) {
+    return { status: 'AMBIGUOUS_CATALOG', reason_code: 'DUPLICATE_CATALOG_EXACT_KEY', candidates }
+  }
+  if (
+    candidates.length !== 1 ||
+    [...componentsByRecord.values()].some((indices) => indices.size > 1)
+  ) {
+    return {
+      status: 'AMBIGUOUS_COMPONENT',
+      reason_code: 'NON_BIJECTIVE_ORDERED_COMPONENT',
+      candidates,
+    }
+  }
+  return { status: 'EXACT_UNIQUE', reason_code: null, candidates }
+}
+
+export const exactShortTandemRepeatCatalogMatches = (
+  tandemRepeats: any[],
+  components: ExactComponent[]
+) => {
+  const context = classifyExactShortTandemRepeatCatalogContext(tandemRepeats, components)
+  if (context.status !== 'EXACT_UNIQUE') return []
+  const repeat = context.candidates[0].repeat
+  return [
+    {
       id: repeat.id,
       gene_symbol: repeat.gene?.symbol || null,
       reference_repeat_unit: repeat.reference_repeat_unit,
       stripy_id: repeat.stripy_id || null,
       strchive_id: repeat.strchive_id || null,
-    }))
+    },
+  ]
+}
+
+const requireShortTandemRepeatIndex = (datasetId: any) => {
+  // @ts-expect-error TS(7053) dataset IDs are validated by GraphQL at the public boundary.
+  const index = SHORT_TANDEM_REPEAT_INDICES[datasetId]
+  if (!index) {
+    throw new UserVisibleError(
+      // @ts-expect-error TS(7053) dataset IDs are validated by GraphQL at the public boundary.
+      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`
+    )
+  }
+  return index
+}
+
+export const SHORT_TANDEM_REPEAT_CATALOG_HARD_CEILING = 500
+
+export const fetchBoundedShortTandemRepeatCatalog = async (esClient: any, datasetId: any) => {
+  const response = await esClient.search({
+    index: requireShortTandemRepeatIndex(datasetId),
+    type: '_doc',
+    size: SHORT_TANDEM_REPEAT_CATALOG_HARD_CEILING + 1,
+    _source: SUMMARY_FIELDS,
+    body: {
+      query: { match_all: {} },
+      sort: [{ id: { order: 'asc' } }],
+    },
+  })
+  const hits = response.body.hits.hits
+  if (hits.length > SHORT_TANDEM_REPEAT_CATALOG_HARD_CEILING) {
+    throw new Error('SHORT_TANDEM_REPEAT_CATALOG_HARD_CEILING_EXCEEDED')
+  }
+  return hits.map((hit: any) => hit._source.value)
 }
 
 export const fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) => {

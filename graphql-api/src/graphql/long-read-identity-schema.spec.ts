@@ -48,6 +48,23 @@ const longReadTrLocusQuery = `
         decomposition_status decomposition_reason rsids filters major_consequence cadd_phred phylop
         source_release source_run_id freq { all { ac an af } populations { id ac an af } }
       }
+      short_read_context {
+        status reason_code catalog_dataset catalog_source catalog_digest
+        matched_component_index matched_reference_region_index pathogenic_component_highlight
+        matched_component { chrom start0 end0 motif }
+        candidates {
+          canonical_id matched_component_index matched_reference_region_index
+          matched_component { chrom start0 end0 motif }
+        }
+        catalog_record {
+          id reference_repeat_unit repeat_units { repeat_unit classification }
+          associated_diseases {
+            name symbol omim_id inheritance_mode notes
+            repeat_size_classifications { classification min max }
+          }
+        }
+        lr_database lr_release lr_run_id lr_cohort
+      }
       repeat_count_plots {
         status reason_code unit repeat_unit max_repunits
         identity {
@@ -69,6 +86,38 @@ const longReadTrLocusQuery = `
       alleles {
         nodes { variant_id source_variant_id alt_index alt_count repeat_count length freq { all { ac an af } } }
         page_info { has_next_page end_cursor }
+      }
+    }
+  }
+`
+
+const longReadTrReferenceQuery = `
+  query LongReadTrReference($after: String) {
+    long_read_tandem_repeat_reference(
+      first: 50
+      after: $after
+      query: "HTT"
+      chrom: "4"
+      match_status: BOTH
+      sort: GENOMIC_ASC
+    ) {
+      total_count
+      page_info { has_next_page end_cursor }
+      provenance {
+        dataset source compact_sha256 row_count catalog_available catalog_unavailable_reason
+        reference_genome coordinate_system motif_identity
+      }
+      nodes {
+        id gene_symbol reference_region { reference_genome chrom start stop }
+        reference_repeat_unit associated_diseases { name symbol omim_id }
+        short_record {
+          id gene { symbol } main_reference_region { reference_genome chrom start stop }
+          reference_repeat_unit associated_diseases { name omim_id }
+        }
+        hgsvc_hprc {
+          status reason_code source_database source_run_id canonical_ids candidates { canonical_id }
+        }
+        aou { status reason_code source_database source_run_id canonical_ids candidates { canonical_id } }
       }
     }
   }
@@ -104,6 +153,10 @@ describe('assembled LR identity GraphQL contract', () => {
 
   test('accepts the bounded canonical TR locus page query in the assembled schema', () => {
     expect(validate(schema, parse(longReadTrLocusQuery))).toEqual([])
+  })
+
+  test('accepts the bounded short-read to LR reference connection query', () => {
+    expect(validate(schema, parse(longReadTrReferenceQuery))).toEqual([])
   })
 
   test('publishes source/ALT identity through assembled-schema introspection', async () => {

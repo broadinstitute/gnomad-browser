@@ -1,0 +1,5781 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-24T00:00:00.000Z",
+  "catalog": {
+    "dataset": "gnomad_r4",
+    "source": "known disease-associated short-read TR catalog exposed on gnomAD v4 pages",
+    "endpoint": "https://gnomad.broadinstitute.org/api",
+    "queried_at": "2026-08-24",
+    "row_count": 78,
+    "compact_sha256": "8e3ca6a9e742d517f43b3217de5cc8cc15979a1862c5c3e3da26f091f5daab2c",
+    "hard_ceiling": 500
+  },
+  "provenance": {
+    "reference_genome": "GRCh38",
+    "coordinate_system": "0-based half-open",
+    "motif_identity": "exact uppercase stored string",
+    "candidate_window_bp": 1000,
+    "candidate_rows": 652,
+    "candidate_unique_loci": {
+      "aou": 422,
+      "hgsvc_hprc": 230
+    },
+    "primary_manifest_schema_version": 1,
+    "presentation_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803"
+  },
+  "reconciliation": {
+    "catalog_rows": 78,
+    "exact_unique": {
+      "hgsvc_hprc": 51,
+      "aou": 58
+    },
+    "absent_exact": {
+      "hgsvc_hprc": 27,
+      "aou": 20
+    }
+  },
+  "rows": [
+    {
+      "short": {
+        "id": "ABCD3",
+        "gene": {
+          "ensembl_id": "ENSG00000117528",
+          "symbol": "ABCD3",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Oculopharyngodistal myopathy",
+            "symbol": "OPDM",
+            "omim_id": null,
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 44
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 118,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ABCD3",
+        "strchive_id": "OPDM5_ABCD3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "1",
+          "start": 94418421,
+          "stop": 94418442
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "1-94418421-94418442-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "1",
+                "start0": 94418421,
+                "end0": 94418442,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "1-94418421-94418442-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "1",
+                "start0": 94418421,
+                "end0": 94418442,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "AFF2",
+        "gene": {
+          "ensembl_id": "ENSG00000155966",
+          "symbol": "AFF2",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "FRAXE mental retardation",
+            "symbol": "FRAXE",
+            "omim_id": "309548",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 39
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 200,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "AFF2",
+        "strchive_id": "FRAXE_AFF2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 148500631,
+          "stop": 148500691
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "AFF3",
+        "gene": {
+          "ensembl_id": "ENSG00000144218",
+          "symbol": "AFF3",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Intellectual disability associated with fragile site FRA2A",
+            "symbol": "FRA2A",
+            "omim_id": null,
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 20
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 300,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": null,
+        "strchive_id": "FRA2A_AFF3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "2",
+          "start": 100104798,
+          "stop": 100104822
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "AR",
+        "gene": {
+          "ensembl_id": "ENSG00000169083",
+          "symbol": "AR",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinal and bulbar muscular atrophy",
+            "symbol": "SBMA",
+            "omim_id": "313200",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 34
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 38,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "AR",
+        "strchive_id": "SBMA_AR",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 67545316,
+          "stop": 67545385
+        },
+        "reference_repeat_unit": "GCA"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ARX_1",
+        "gene": {
+          "ensembl_id": "ENSG00000004848",
+          "symbol": "ARX",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Developmental and epileptic encephalopathy 1",
+            "symbol": "DEE1",
+            "omim_id": "308350",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 16
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 23,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "X-linked mental retardation with or without seizures",
+            "symbol": "MRXARX",
+            "omim_id": "300419",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 16
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 17,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ARX_1",
+        "strchive_id": "PRTS_ARX",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 25013649,
+          "stop": 25013697
+        },
+        "reference_repeat_unit": "NGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-25013649-25013697-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 25013649,
+                "end0": 25013697,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-25013649-25013697-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 25013649,
+                "end0": 25013697,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ARX_2",
+        "gene": {
+          "ensembl_id": "ENSG00000004848",
+          "symbol": "ARX",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Developmental and epileptic encephalopathy-1",
+            "symbol": "DEE1",
+            "omim_id": "308350",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 12
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 20,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "Partington syndrome",
+            "symbol": "PRTS",
+            "omim_id": "309510",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 12
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 20,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "X-linked mental retardation with or without seizures",
+            "symbol": "MRXARX",
+            "omim_id": "300419",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 12
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 23,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ARX_2",
+        "strchive_id": "PRTS_ARX",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 25013529,
+          "stop": 25013565
+        },
+        "reference_repeat_unit": "NGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-25013529-25013565-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 25013529,
+                "end0": 25013565,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-25013529-25013565-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 25013529,
+                "end0": 25013565,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ATN1",
+        "gene": {
+          "ensembl_id": "ENSG00000111676",
+          "symbol": "ATN1",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Dentatorubral-pallidoluysian atrophy",
+            "symbol": "DRPLA",
+            "omim_id": "125370",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 35
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 48,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATN1",
+        "strchive_id": "DRPLA_ATN1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "12",
+          "start": 6936716,
+          "stop": 6936773
+        },
+        "reference_repeat_unit": "CAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ATXN1",
+        "gene": {
+          "ensembl_id": "ENSG00000124788",
+          "symbol": "ATXN1",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 1",
+            "symbol": "SCA1",
+            "omim_id": "164400",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 35
+              },
+              {
+                "classification": "Intermediate",
+                "min": 36,
+                "max": 38
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 39,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATXN1",
+        "strchive_id": "SCA1_ATXN1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "6",
+          "start": 16327633,
+          "stop": 16327723
+        },
+        "reference_repeat_unit": "TGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-16327633-16327723-TGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 16327633,
+                "end0": 16327723,
+                "motif": "TGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-16327633-16327723-TGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 16327633,
+                "end0": 16327723,
+                "motif": "TGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ATXN10",
+        "gene": {
+          "ensembl_id": "ENSG00000130638",
+          "symbol": "ATXN10",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 10",
+            "symbol": "SCA10",
+            "omim_id": "603516",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 32
+              },
+              {
+                "classification": "Intermediate",
+                "min": 30,
+                "max": 799
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 800,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATXN10",
+        "strchive_id": "SCA10_ATXN10",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "22",
+          "start": 45795354,
+          "stop": 45795424
+        },
+        "reference_repeat_unit": "ATTCT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "22-45795354-45795424-ATTCT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "22",
+                "start0": 45795354,
+                "end0": 45795424,
+                "motif": "ATTCT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr22-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "22-45795354-45795424-ATTCT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "22",
+                "start0": 45795354,
+                "end0": 45795424,
+                "motif": "ATTCT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ATXN2",
+        "gene": {
+          "ensembl_id": "ENSG00000204842",
+          "symbol": "ATXN2",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 2",
+            "symbol": "SCA2",
+            "omim_id": "183090",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 28
+              },
+              {
+                "classification": "Intermediate",
+                "min": 29,
+                "max": 34
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 35,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATXN2",
+        "strchive_id": "SCA2_ATXN2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "12",
+          "start": 111598949,
+          "stop": 111599018
+        },
+        "reference_repeat_unit": "GCT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-111598949-111599018-GCT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 111598949,
+                "end0": 111599018,
+                "motif": "GCT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-111598949-111599018-GCT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 111598949,
+                "end0": 111599018,
+                "motif": "GCT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ATXN3",
+        "gene": {
+          "ensembl_id": "ENSG00000066427",
+          "symbol": "ATXN3",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 3",
+            "symbol": "SCA3",
+            "omim_id": "109150",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 44
+              },
+              {
+                "classification": "Intermediate",
+                "min": 45,
+                "max": 55
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 60,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATXN3",
+        "strchive_id": "SCA3_ATXN3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "14",
+          "start": 92071010,
+          "stop": 92071040
+        },
+        "reference_repeat_unit": "CTG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr14-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "14-92071010-92071040-CTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "14",
+                "start0": 92071010,
+                "end0": 92071040,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr14-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "14-92071010-92071040-CTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "14",
+                "start0": 92071010,
+                "end0": 92071040,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ATXN7",
+        "gene": {
+          "ensembl_id": "ENSG00000163635",
+          "symbol": "ATXN7",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 7",
+            "symbol": "SCA7",
+            "omim_id": "164500",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 27
+              },
+              {
+                "classification": "Intermediate",
+                "min": 34,
+                "max": 36
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 37,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATXN7",
+        "strchive_id": "SCA7_ATXN7",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "3",
+          "start": 63912684,
+          "stop": 63912714
+        },
+        "reference_repeat_unit": "GCA"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
+          "candidates": [
+            {
+              "canonical_id": "3-63912684-63912714-GCA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "3",
+                "start0": 63912684,
+                "end0": 63912714,
+                "motif": "GCA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "3-63912684-63912714-GCA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "3",
+                "start0": 63912684,
+                "end0": 63912714,
+                "motif": "GCA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ATXN8OS",
+        "gene": {
+          "ensembl_id": "ENSG00000230223",
+          "symbol": "ATXN8OS",
+          "region": "3'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 8",
+            "symbol": "SCA8",
+            "omim_id": "608768",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 50
+              },
+              {
+                "classification": "Intermediate",
+                "min": 38,
+                "max": 79
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 71,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATXN8OS",
+        "strchive_id": "SCA8_ATXN8OS",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "13",
+          "start": 70139383,
+          "stop": 70139428
+        },
+        "reference_repeat_unit": "CTG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "13-70139353-70139383-CTA+13-70139383-70139428-CTG",
+              "matched_component_index": 1,
+              "matched_component": {
+                "chrom": "13",
+                "start0": 70139383,
+                "end0": 70139428,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr13-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "13-70139353-70139383-CTA+13-70139383-70139428-CTG",
+              "matched_component_index": 1,
+              "matched_component": {
+                "chrom": "13",
+                "start0": 70139383,
+                "end0": 70139428,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "BCLAF3",
+        "gene": {
+          "ensembl_id": "ENST00000379682",
+          "symbol": "BCLAF3",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [],
+        "stripy_id": null,
+        "strchive_id": null,
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 19990922,
+          "stop": 19990973
+        },
+        "reference_repeat_unit": "CCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "BEAN1",
+        "gene": {
+          "ensembl_id": "ENSG00000166546",
+          "symbol": "BEAN1",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 31",
+            "symbol": "SCA31",
+            "omim_id": "117210",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 110,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "BEAN1",
+        "strchive_id": "SCA31_BEAN1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "16",
+          "start": 66490398,
+          "stop": 66490453
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "C11ORF80",
+        "gene": {
+          "ensembl_id": "ENSG00000173715",
+          "symbol": "C11ORF80",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [],
+        "stripy_id": null,
+        "strchive_id": null,
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "11",
+          "start": 66744819,
+          "stop": 66744843
+        },
+        "reference_repeat_unit": "GGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr11-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "11-66744819-66744843-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "11",
+                "start0": 66744819,
+                "end0": 66744843,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr11-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "11-66744819-66744843-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "11",
+                "start0": 66744819,
+                "end0": 66744843,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "C9ORF72",
+        "gene": {
+          "ensembl_id": "ENSG00000147894",
+          "symbol": "C9ORF72",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Amyotrophic lateral sclerosis and/or frontotemporal dementia",
+            "symbol": "FTDALS1",
+            "omim_id": "105550",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 23
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 31,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "C9ORF72",
+        "strchive_id": "FTDALS1_C9ORF72",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "9",
+          "start": 27573528,
+          "stop": 27573546
+        },
+        "reference_repeat_unit": "GGCCCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "9-27573528-27573546-GGCCCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "9",
+                "start0": 27573528,
+                "end0": 27573546,
+                "motif": "GGCCCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "CACNA1A",
+        "gene": {
+          "ensembl_id": "ENSG00000141837",
+          "symbol": "CACNA1A",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 6",
+            "symbol": "SCA6",
+            "omim_id": "183086",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 18
+              },
+              {
+                "classification": "Intermediate",
+                "min": 19,
+                "max": 20
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 21,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "CACNA1A",
+        "strchive_id": "SCA6_CACNA1A",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "19",
+          "start": 13207858,
+          "stop": 13207897
+        },
+        "reference_repeat_unit": "CTG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "19-13207858-13207897-CTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "19",
+                "start0": 13207858,
+                "end0": 13207897,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "19-13207858-13207897-CTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "19",
+                "start0": 13207858,
+                "end0": 13207897,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "CBL",
+        "gene": {
+          "ensembl_id": "ENSG00000110395",
+          "symbol": "CBL",
+          "region": "promoter"
+        },
+        "associated_diseases": [
+          {
+            "name": "Jacobsen syndrome (FRAX11B fragile site)",
+            "symbol": "JBS",
+            "omim_id": null,
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 79
+              },
+              {
+                "classification": "Intermediate",
+                "min": 80,
+                "max": 100
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 101,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "CBL",
+        "strchive_id": "JBS_CBL",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "11",
+          "start": 119206289,
+          "stop": 119206322
+        },
+        "reference_repeat_unit": "CGG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr11-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "11-119206289-119206322-CGG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "11",
+                "start0": 119206289,
+                "end0": 119206322,
+                "motif": "CGG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr11-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "11-119206289-119206322-CGG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "11",
+                "start0": 119206289,
+                "end0": 119206322,
+                "motif": "CGG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "CNBP",
+        "gene": {
+          "ensembl_id": "ENSG00000169714",
+          "symbol": "CNBP",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Myotonic dystrophy 2",
+            "symbol": "DM2",
+            "omim_id": "602668",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 26
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 75,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "CNBP",
+        "strchive_id": "DM2_CNBP",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "3",
+          "start": 129172576,
+          "stop": 129172656
+        },
+        "reference_repeat_unit": "CAGG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
+          "candidates": [
+            {
+              "canonical_id": "3-129172576-129172656-CAGG+3-129172656-129172696-CAGA+3-129172691-129172693-AC+3-129172696-129172732-CA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "3",
+                "start0": 129172576,
+                "end0": 129172656,
+                "motif": "CAGG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "3-129172576-129172656-CAGG+3-129172656-129172696-CAGA+3-129172691-129172693-AC+3-129172696-129172732-CA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "3",
+                "start0": 129172576,
+                "end0": 129172656,
+                "motif": "CAGG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "COMP",
+        "gene": {
+          "ensembl_id": "ENSG00000105664",
+          "symbol": "COMP",
+          "region": "coding: poly-aspartic-acid"
+        },
+        "associated_diseases": [
+          {
+            "name": "Multiple epiphyseal dysplasia",
+            "symbol": "EDM1",
+            "omim_id": "132400",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 6,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "Pseudoachondroplasia",
+            "symbol": "PSACH",
+            "omim_id": "177170",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 7,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "COMP",
+        "strchive_id": "EDM1-PSACH_COMP",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "19",
+          "start": 18786034,
+          "stop": 18786049
+        },
+        "reference_repeat_unit": "GTC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "19-18786034-18786049-GTC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "19",
+                "start0": 18786034,
+                "end0": 18786049,
+                "motif": "GTC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "CSNK1E",
+        "gene": {
+          "ensembl_id": "ENST00000396832",
+          "symbol": "CSNK1E",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [],
+        "stripy_id": null,
+        "strchive_id": "EPM_CSNK1E",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "22",
+          "start": 38317282,
+          "stop": 38317306
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "22-38317282-38317306-GCC+22-38317394-38317410-GCCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "22",
+                "start0": 38317282,
+                "end0": 38317306,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr22-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "22-38317282-38317306-GCC+22-38317394-38317410-GCCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "22",
+                "start0": 38317282,
+                "end0": 38317306,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "CSTB",
+        "gene": {
+          "ensembl_id": "ENSG00000160213",
+          "symbol": "CSTB",
+          "region": "promoter"
+        },
+        "associated_diseases": [
+          {
+            "name": "Progressive myoclonic epilepsy type 1",
+            "symbol": "EPM1",
+            "omim_id": "254800",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 3
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 30,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "CSTB",
+        "strchive_id": "EPM1_CSTB",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "21",
+          "start": 43776443,
+          "stop": 43776479
+        },
+        "reference_repeat_unit": "CGCGGGGCGGGG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr21-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "21-43776443-43776479-CGCGGGGCGGGG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "21",
+                "start0": 43776443,
+                "end0": 43776479,
+                "motif": "CGCGGGGCGGGG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr21-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "21-43776443-43776479-CGCGGGGCGGGG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "21",
+                "start0": 43776443,
+                "end0": 43776479,
+                "motif": "CGCGGGGCGGGG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "DAB1",
+        "gene": {
+          "ensembl_id": "ENSG00000173406",
+          "symbol": "DAB1",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 37",
+            "symbol": "SCA37",
+            "omim_id": "615945",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 30
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 31,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "DAB1",
+        "strchive_id": "SCA37_DAB1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "1",
+          "start": 57367043,
+          "stop": 57367118
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "DIP2B",
+        "gene": {
+          "ensembl_id": "ENSG00000066084",
+          "symbol": "DIP2B",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Mental retardation, FRA12A type",
+            "symbol": "MRFRA12A",
+            "omim_id": "136630",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 23
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 273,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "DIP2B",
+        "strchive_id": "FRA12A_DIP2B",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "12",
+          "start": 50505001,
+          "stop": 50505022
+        },
+        "reference_repeat_unit": "GGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-50505001-50505022-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 50505001,
+                "end0": 50505022,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-50505001-50505022-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 50505001,
+                "end0": 50505022,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "DMD",
+        "gene": {
+          "ensembl_id": "ENSG00000198947",
+          "symbol": "DMD",
+          "region": "intron"
+        },
+        "associated_diseases": [],
+        "stripy_id": "DMD",
+        "strchive_id": "DMD_DMD",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 31284557,
+          "stop": 31284605
+        },
+        "reference_repeat_unit": "TTC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-31284557-31284605-TTC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 31284557,
+                "end0": 31284605,
+                "motif": "TTC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-31284557-31284605-TTC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 31284557,
+                "end0": 31284605,
+                "motif": "TTC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "DMPK",
+        "gene": {
+          "ensembl_id": "ENSG00000104936",
+          "symbol": "DMPK",
+          "region": "3'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Myotonic dystrophy 1",
+            "symbol": "DM1",
+            "omim_id": "160900",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 34
+              },
+              {
+                "classification": "Intermediate",
+                "min": 35,
+                "max": 49
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 50,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "DMPK",
+        "strchive_id": "DM1_DMPK",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "19",
+          "start": 45770204,
+          "stop": 45770264
+        },
+        "reference_repeat_unit": "CAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "19-45770204-45770264-CAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "19",
+                "start0": 45770204,
+                "end0": 45770264,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "EIF4A3",
+        "gene": {
+          "ensembl_id": "ENSG00000141543",
+          "symbol": "EIF4A3",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Richieri-Costa-Pereira syndrome",
+            "symbol": "RCPS",
+            "omim_id": "268305",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 12
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 14,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "EIF4A3",
+        "strchive_id": "RCPS_EIF4A3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "17",
+          "start": 80147059,
+          "stop": 80147139
+        },
+        "reference_repeat_unit": "CCTCGCTGTGCCGCTGCCGA"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr17-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "17-80147059-80147139-CCTCGCTGTGCCGCTGCCGA+17-80147176-80147202-CGTGCGTA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "17",
+                "start0": 80147059,
+                "end0": 80147139,
+                "motif": "CCTCGCTGTGCCGCTGCCGA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr17-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "17-80147059-80147139-CCTCGCTGTGCCGCTGCCGA+17-80147176-80147202-CGTGCGTA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "17",
+                "start0": 80147059,
+                "end0": 80147139,
+                "motif": "CCTCGCTGTGCCGCTGCCGA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "EP400",
+        "gene": {
+          "ensembl_id": "ENST00000389561",
+          "symbol": "EP400",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Cerebellar Ataxia",
+            "symbol": "EP400",
+            "omim_id": null,
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 55,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": null,
+        "strchive_id": null,
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "12",
+          "start": 132062548,
+          "stop": 132062611
+        },
+        "reference_repeat_unit": "CAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-132062548-132062611-CAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 132062548,
+                "end0": 132062611,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-132062548-132062611-CAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 132062548,
+                "end0": 132062611,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "FAM193B",
+        "gene": {
+          "ensembl_id": "ENSG00000146067",
+          "symbol": "FAM193B",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": " Oculopharyngodistal myopathy",
+            "symbol": "OPDM",
+            "omim_id": null,
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 190,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": null,
+        "strchive_id": "OPDM_FAM193B",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "5",
+          "start": 177554489,
+          "stop": 177554531
+        },
+        "reference_repeat_unit": "CGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "5-177554489-177554531-CGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "5",
+                "start0": 177554489,
+                "end0": 177554531,
+                "motif": "CGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "5-177554489-177554531-CGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "5",
+                "start0": 177554489,
+                "end0": 177554531,
+                "motif": "CGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "FGF14",
+        "gene": {
+          "ensembl_id": "ENSG00000102466",
+          "symbol": "FGF14",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 27B",
+            "symbol": "SCA27B",
+            "omim_id": "620174",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 179
+              },
+              {
+                "classification": "Intermediate",
+                "min": 250,
+                "max": 335
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 320,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "FGF14",
+        "strchive_id": "SCA27B_FGF14",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "13",
+          "start": 102161574,
+          "stop": 102161724
+        },
+        "reference_repeat_unit": "AAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "13-102161566-102161579-AAGA+13-102161574-102161724-AAG+13-102161829-102161844-A",
+              "matched_component_index": 1,
+              "matched_component": {
+                "chrom": "13",
+                "start0": 102161574,
+                "end0": 102161724,
+                "motif": "AAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr13-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "13-102161566-102161579-AAGA+13-102161574-102161724-AAG+13-102161829-102161844-A",
+              "matched_component_index": 1,
+              "matched_component": {
+                "chrom": "13",
+                "start0": 102161574,
+                "end0": 102161724,
+                "motif": "AAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "FMR1",
+        "gene": {
+          "ensembl_id": "ENSG00000102081",
+          "symbol": "FMR1",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Fragile X tremor/ataxia syndrome",
+            "symbol": "FXTAS",
+            "omim_id": "300623",
+            "inheritance_mode": "X-linked dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 44
+              },
+              {
+                "classification": "Intermediate",
+                "min": 41,
+                "max": 54
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 55,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "Fragile X syndrome",
+            "symbol": "FXS",
+            "omim_id": "300624",
+            "inheritance_mode": "X-linked dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 44
+              },
+              {
+                "classification": "Intermediate",
+                "min": 41,
+                "max": 54
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 201,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "FMR1",
+        "strchive_id": "FXS_FMR1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 147912050,
+          "stop": 147912110
+        },
+        "reference_repeat_unit": "CGG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "FOXL2",
+        "gene": {
+          "ensembl_id": "ENSG00000183770",
+          "symbol": "FOXL2",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Blepharophimosis, ptosis, and epicanthus inversus syndrome",
+            "symbol": "BPES",
+            "omim_id": "110100",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 14
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 15,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "FOXL2",
+        "strchive_id": "BPES_FOXL2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "3",
+          "start": 138946020,
+          "stop": 138946062
+        },
+        "reference_repeat_unit": "NGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
+          "candidates": [
+            {
+              "canonical_id": "3-138946020-138946062-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "3",
+                "start0": 138946020,
+                "end0": 138946062,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "3-138946020-138946062-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "3",
+                "start0": 138946020,
+                "end0": 138946062,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "FRA10AC1",
+        "gene": {
+          "ensembl_id": "ENSG00000148690",
+          "symbol": "FRA10AC1",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [],
+        "stripy_id": null,
+        "strchive_id": null,
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "10",
+          "start": 93702522,
+          "stop": 93702546
+        },
+        "reference_repeat_unit": "CCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr10-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "10-93702516-93702522-CCA+10-93702522-93702546-CCG",
+              "matched_component_index": 1,
+              "matched_component": {
+                "chrom": "10",
+                "start0": 93702522,
+                "end0": 93702546,
+                "motif": "CCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr10-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "10-93702516-93702522-CCA+10-93702522-93702546-CCG",
+              "matched_component_index": 1,
+              "matched_component": {
+                "chrom": "10",
+                "start0": 93702522,
+                "end0": 93702546,
+                "motif": "CCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "FXN",
+        "gene": {
+          "ensembl_id": "ENSG00000165060",
+          "symbol": "FXN",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Friedreich ataxia",
+            "symbol": "FRDA",
+            "omim_id": "229300",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 33
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 56,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "FXN",
+        "strchive_id": "FRDA_FXN",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "9",
+          "start": 69037286,
+          "stop": 69037304
+        },
+        "reference_repeat_unit": "GAA"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "GIPC1",
+        "gene": {
+          "ensembl_id": "ENSG00000123159",
+          "symbol": "GIPC1",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Oculopharyngodistal myopathy 2",
+            "symbol": "OPDM2",
+            "omim_id": "618940",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 32
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 73,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "GIPC1",
+        "strchive_id": "OPDM2_GIPC1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "19",
+          "start": 14496041,
+          "stop": 14496074
+        },
+        "reference_repeat_unit": "CCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "19-14496041-14496074-CCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "19",
+                "start0": 14496041,
+                "end0": 14496074,
+                "motif": "CCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "19-14496041-14496074-CCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "19",
+                "start0": 14496041,
+                "end0": 14496074,
+                "motif": "CCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "GLS",
+        "gene": {
+          "ensembl_id": "ENSG00000115419",
+          "symbol": "GLS",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Glutaminase deficiency with impaired intellectual development and progressive ataxia",
+            "symbol": "GD",
+            "omim_id": "618412",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 38
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 680,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "GLS",
+        "strchive_id": "GDPAG_GLS",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "2",
+          "start": 190880872,
+          "stop": 190880920
+        },
+        "reference_repeat_unit": "GCA"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-190880872-190880920-GCA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 190880872,
+                "end0": 190880920,
+                "motif": "GCA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-190880872-190880920-GCA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 190880872,
+                "end0": 190880920,
+                "motif": "GCA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "HOXA13_1",
+        "gene": {
+          "ensembl_id": "ENSG00000106031",
+          "symbol": "HOXA13",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Hand-foot-genital syndrome",
+            "symbol": "HFG",
+            "omim_id": "140000",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 14
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 22,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "HOXA13_1",
+        "strchive_id": "HFG_HOXA13-III",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "7",
+          "start": 27199924,
+          "stop": 27199966
+        },
+        "reference_repeat_unit": "NGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "7-27199924-27199966-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "7",
+                "start0": 27199924,
+                "end0": 27199966,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "7-27199924-27199966-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "7",
+                "start0": 27199924,
+                "end0": 27199966,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "HOXA13_2",
+        "gene": {
+          "ensembl_id": "ENSG00000106031",
+          "symbol": "HOXA13",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Hand-foot-genital syndrome",
+            "symbol": "HFG",
+            "omim_id": "140000",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 12
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 18,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "HOXA13_2",
+        "strchive_id": "HFG_HOXA13-III",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "7",
+          "start": 27199825,
+          "stop": 27199861
+        },
+        "reference_repeat_unit": "NGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "7-27199825-27199861-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "7",
+                "start0": 27199825,
+                "end0": 27199861,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "HOXA13_3",
+        "gene": {
+          "ensembl_id": "ENSG00000106031",
+          "symbol": "HOXA13",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Hand-foot-genital syndrome",
+            "symbol": "HFG",
+            "omim_id": "140000",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 18
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 22,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "HOXA13_3",
+        "strchive_id": "HFG_HOXA13-III",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "7",
+          "start": 27199678,
+          "stop": 27199732
+        },
+        "reference_repeat_unit": "NGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "7-27199678-27199732-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "7",
+                "start0": 27199678,
+                "end0": 27199732,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "7-27199678-27199732-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "7",
+                "start0": 27199678,
+                "end0": 27199732,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "HOXD13",
+        "gene": {
+          "ensembl_id": "ENSG00000128714",
+          "symbol": "HOXD13",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Synpolydactyly",
+            "symbol": "SPD",
+            "omim_id": "186300",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 15
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 22,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "HOXD13",
+        "strchive_id": "SD5_HOXD13",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "2",
+          "start": 176093058,
+          "stop": 176093103
+        },
+        "reference_repeat_unit": "GCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-176093058-176093103-GCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 176093058,
+                "end0": 176093103,
+                "motif": "GCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-176093058-176093103-GCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 176093058,
+                "end0": 176093103,
+                "motif": "GCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "HTT",
+        "gene": {
+          "ensembl_id": "ENSG00000197386",
+          "symbol": "HTT",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Huntington's disease",
+            "symbol": "HD",
+            "omim_id": "143100",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 26
+              },
+              {
+                "classification": "Intermediate",
+                "min": 27,
+                "max": 35
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 36,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "HTT",
+        "strchive_id": "HD_HTT",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "4",
+          "start": 3074876,
+          "stop": 3074933
+        },
+        "reference_repeat_unit": "CAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 3074876,
+                "end0": 3074933,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 3074876,
+                "end0": 3074933,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "JPH3",
+        "gene": {
+          "ensembl_id": "ENSG00000154118",
+          "symbol": "JPH3",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Huntington disease-like 2",
+            "symbol": "HDL2",
+            "omim_id": "606438",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 28
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 40,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "JPH3",
+        "strchive_id": "HDL2_JPH3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "16",
+          "start": 87604287,
+          "stop": 87604329
+        },
+        "reference_repeat_unit": "CTG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "16-87604287-87604329-CTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "16",
+                "start0": 87604287,
+                "end0": 87604329,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "16-87604287-87604329-CTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "16",
+                "start0": 87604287,
+                "end0": 87604329,
+                "motif": "CTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "LRP12",
+        "gene": {
+          "ensembl_id": "ENSG00000147650",
+          "symbol": "LRP12",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Oculopharyngodistal myopathy 1",
+            "symbol": "OPDM1",
+            "omim_id": "164310",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 45
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 85,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "LRP12",
+        "strchive_id": "OPDM1_LRP12",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "8",
+          "start": 104588970,
+          "stop": 104588997
+        },
+        "reference_repeat_unit": "CGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr8-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "8-104588911-104588922-GA+8-104588919-104588928-GAG+8-104588930-104588941-GGA+8-104588970-104588997-CGC+8-104589052-104589064-GCC+8-104589064-104589073-CG+8-104589072-104589094-CTCCCTC",
+              "matched_component_index": 3,
+              "matched_component": {
+                "chrom": "8",
+                "start0": 104588970,
+                "end0": 104588997,
+                "motif": "CGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr8-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "8-104588911-104588922-GA+8-104588919-104588928-GAG+8-104588930-104588941-GGA+8-104588970-104588997-CGC+8-104589052-104589064-GCC+8-104589064-104589073-CG+8-104589072-104589094-CTCCCTC",
+              "matched_component_index": 3,
+              "matched_component": {
+                "chrom": "8",
+                "start0": 104588970,
+                "end0": 104588997,
+                "motif": "CGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "MARCHF6",
+        "gene": {
+          "ensembl_id": "ENSG00000145495",
+          "symbol": "MARCHF6",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 3",
+            "symbol": "FAME3",
+            "omim_id": "613608",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 650,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "MARCHF6",
+        "strchive_id": "FAME3_MARCHF6",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "5",
+          "start": 10356346,
+          "stop": 10356411
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "NAXE",
+        "gene": {
+          "ensembl_id": "ENSG00000163382",
+          "symbol": "NAXE",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "NAXE-related mitochondrial encephalopathy",
+            "symbol": "NME",
+            "omim_id": "617186",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 7
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 200,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": null,
+        "strchive_id": "NME_NAXE",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "1",
+          "start": 156591765,
+          "stop": 156591780
+        },
+        "reference_repeat_unit": "GGGCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "1-156591765-156591780-GGGCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "1",
+                "start0": 156591765,
+                "end0": 156591780,
+                "motif": "GGGCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "1-156591765-156591780-GGGCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "1",
+                "start0": 156591765,
+                "end0": 156591780,
+                "motif": "GGGCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "NIPA1",
+        "gene": {
+          "ensembl_id": "ENSG00000170113",
+          "symbol": "NIPA1",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Amyotrophic lateral sclerosis",
+            "symbol": "ALS",
+            "omim_id": "105400",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 10
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 11,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "NIPA1",
+        "strchive_id": "ALS1_NIPA1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "15",
+          "start": 22786677,
+          "stop": 22786701
+        },
+        "reference_repeat_unit": "GCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr15-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "15-22786677-22786701-GCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "15",
+                "start0": 22786677,
+                "end0": 22786701,
+                "motif": "GCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr15-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "15-22786677-22786701-GCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "15",
+                "start0": 22786677,
+                "end0": 22786701,
+                "motif": "GCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "NOP56",
+        "gene": {
+          "ensembl_id": "ENSG00000101361",
+          "symbol": "NOP56",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 36",
+            "symbol": "SCA36",
+            "omim_id": "614153",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 14
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 650,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "NOP56",
+        "strchive_id": "SCA36_NOP56",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "20",
+          "start": 2652733,
+          "stop": 2652757
+        },
+        "reference_repeat_unit": "GGCCTG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr20-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "20-2652733-2652757-GGCCTG+20-2652757-2652775-CGCCTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "20",
+                "start0": 2652733,
+                "end0": 2652757,
+                "motif": "GGCCTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr20-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "20-2652733-2652757-GGCCTG+20-2652757-2652775-CGCCTG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "20",
+                "start0": 2652733,
+                "end0": 2652757,
+                "motif": "GGCCTG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "NOTCH2NLA",
+        "gene": {
+          "ensembl_id": "ENSG00000264343",
+          "symbol": "NOTCH2NLA",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [],
+        "stripy_id": null,
+        "strchive_id": null,
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "1",
+          "start": 146228800,
+          "stop": 146228821
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "NOTCH2NLC",
+        "gene": {
+          "ensembl_id": "ENSG00000286219",
+          "symbol": "NOTCH2NLC",
+          "region": "coding: polyglycine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Neuronal intranuclear inclusion disease",
+            "symbol": "NIID",
+            "omim_id": "603472",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 37
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 66,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "Hereditary essential tremor type 6",
+            "symbol": "ETM6",
+            "omim_id": "618866",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 41
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 60,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "NOTCH2NLC",
+        "strchive_id": "NIID_NOTCH2NLC",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "1",
+          "start": 149390802,
+          "stop": 149390841
+        },
+        "reference_repeat_unit": "GGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "1-149390802-149390841-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "1",
+                "start0": 149390802,
+                "end0": 149390841,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "NUTM2B-AS1",
+        "gene": {
+          "ensembl_id": "ENSG00000272447",
+          "symbol": "NUTM2B-AS1",
+          "region": "non-coding RNA"
+        },
+        "associated_diseases": [
+          {
+            "name": "Oculopharyngeal myopathy with leukoencephalopathy 1",
+            "symbol": "OPML1",
+            "omim_id": "618637",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 16
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 161,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "NUTM2B-AS1",
+        "strchive_id": "OPML1_NUTM2B-AS1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "10",
+          "start": 79826383,
+          "stop": 79826404
+        },
+        "reference_repeat_unit": "GGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr10-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "10-79826383-79826404-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "10",
+                "start0": 79826383,
+                "end0": 79826404,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr10-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "10-79826383-79826404-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "10",
+                "start0": 79826383,
+                "end0": 79826404,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "PABPN1",
+        "gene": {
+          "ensembl_id": "ENSG00000100836",
+          "symbol": "PABPN1",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Oculopharyngeal muscular dystrophy",
+            "symbol": "OPMD",
+            "omim_id": "164300",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 6
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 7,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "PABPN1",
+        "strchive_id": "OPMD_PABPN1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "14",
+          "start": 23321472,
+          "stop": 23321490
+        },
+        "reference_repeat_unit": "GCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr14-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr14-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "14-23321472-23321490-GCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "14",
+                "start0": 23321472,
+                "end0": 23321490,
+                "motif": "GCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "PHOX2B",
+        "gene": {
+          "ensembl_id": "ENSG00000109132",
+          "symbol": "PHOX2B",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Central hypoventilation syndrome",
+            "symbol": "CCHS",
+            "omim_id": "209880",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 20
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 26,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "PHOX2B",
+        "strchive_id": "CCHS_PHOX2B",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "4",
+          "start": 41745972,
+          "stop": 41746032
+        },
+        "reference_repeat_unit": "GCN"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-41745972-41746032-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 41745972,
+                "end0": 41746032,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-41745972-41746032-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 41745972,
+                "end0": 41746032,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "PPP2R2B",
+        "gene": {
+          "ensembl_id": "ENSG00000156475",
+          "symbol": "PPP2R2B",
+          "region": "coding: polyserine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 12",
+            "symbol": "SCA12",
+            "omim_id": "604326",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 32
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 51,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "PPP2R2B",
+        "strchive_id": "SCA12_PPP2R2B",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "5",
+          "start": 146878727,
+          "stop": 146878757
+        },
+        "reference_repeat_unit": "GCT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "5-146878727-146878757-GCT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "5",
+                "start0": 146878727,
+                "end0": 146878757,
+                "motif": "GCT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "5-146878727-146878757-GCT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "5",
+                "start0": 146878727,
+                "end0": 146878757,
+                "motif": "GCT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "PRDM12",
+        "gene": {
+          "ensembl_id": "ENSG00000130711",
+          "symbol": "PRDM12",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Hereditary sensory and autonomic neuropathy type 8",
+            "symbol": "HSAN8",
+            "omim_id": "616488",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 14
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 18,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "PRDM12",
+        "strchive_id": "HSAN-VIII_PRDM12",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "9",
+          "start": 130681606,
+          "stop": 130681639
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "9-130681606-130681639-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "9",
+                "start0": 130681606,
+                "end0": 130681639,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "9-130681606-130681639-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "9",
+                "start0": 130681606,
+                "end0": 130681639,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "PRE-MIR7-2",
+        "gene": {
+          "ensembl_id": "",
+          "symbol": "PRE-MIR7-2",
+          "region": "intergenic"
+        },
+        "associated_diseases": [
+          {
+            "name": "Nongoitrous congenital hypothyroidism-3",
+            "symbol": "CHNG3",
+            "omim_id": "609893",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 3,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": null,
+        "strchive_id": "CHNG3_MIR7-2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "15",
+          "start": 88569433,
+          "stop": 88569449
+        },
+        "reference_repeat_unit": "TTTG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr15-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr15-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "PRNP",
+        "gene": {
+          "ensembl_id": "ENSG00000171867",
+          "symbol": "PRNP",
+          "region": "coding: other"
+        },
+        "associated_diseases": [
+          {
+            "name": "Creutzfeldt-Jakob disease",
+            "symbol": "CJD",
+            "omim_id": "123400",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 4
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 9,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "PRNP",
+        "strchive_id": "CJD_PRNP",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "20",
+          "start": 4699397,
+          "stop": 4699493
+        },
+        "reference_repeat_unit": "CCTCATGGTGGTGGCTGGGGGCAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr20-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "20-4699397-4699493-CCTCATGGTGGTGGCTGGGGGCAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "20",
+                "start0": 4699397,
+                "end0": 4699493,
+                "motif": "CCTCATGGTGGTGGCTGGGGGCAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr20-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "20-4699397-4699493-CCTCATGGTGGTGGCTGGGGGCAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "20",
+                "start0": 4699397,
+                "end0": 4699493,
+                "motif": "CCTCATGGTGGTGGCTGGGGGCAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "RAI1",
+        "gene": {
+          "ensembl_id": "ENSG00000108557",
+          "symbol": "RAI1",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy type 8",
+            "symbol": "FAME8",
+            "omim_id": "601068",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 9,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": null,
+        "strchive_id": "FAME8_RAI1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "17",
+          "start": 17808358,
+          "stop": 17808460
+        },
+        "reference_repeat_unit": "TTTTA"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr17-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr17-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "RAPGEF2",
+        "gene": {
+          "ensembl_id": "ENSG00000109756",
+          "symbol": "RAPGEF2",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 7",
+            "symbol": "FAME7",
+            "omim_id": "618075",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 60,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "RAPGEF2",
+        "strchive_id": "FAME7_RAPGEF2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "4",
+          "start": 159342526,
+          "stop": 159342616
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "RFC1",
+        "gene": {
+          "ensembl_id": "ENSG00000035928",
+          "symbol": "RFC1",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Cerebellar ataxia, neuropathy, and vestibular areflexia syndrome",
+            "symbol": "CANVAS",
+            "omim_id": "614575",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 11
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 400,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "RFC1",
+        "strchive_id": "CANVAS_RFC1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "4",
+          "start": 39348424,
+          "stop": 39348479
+        },
+        "reference_repeat_unit": "AAAAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-39348424-39348479-AAAAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 39348424,
+                "end0": 39348479,
+                "motif": "AAAAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-39348424-39348479-AAAAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 39348424,
+                "end0": 39348479,
+                "motif": "AAAAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "RILPL1",
+        "gene": {
+          "ensembl_id": "ENSG00000188026",
+          "symbol": "RILPL1",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Oculopharyngodistal myopathy type 4",
+            "symbol": "OPDM4",
+            "omim_id": "619790",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 16
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 120,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "RILPL1",
+        "strchive_id": "OPDM4_RILPL1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "12",
+          "start": 123533720,
+          "stop": 123533750
+        },
+        "reference_repeat_unit": "GGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-123533720-123533750-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 123533720,
+                "end0": 123533750,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "12-123533720-123533750-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "12",
+                "start0": 123533720,
+                "end0": 123533750,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "RUNX2",
+        "gene": {
+          "ensembl_id": "ENSG00000124813",
+          "symbol": "RUNX2",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Cleidocranial dysplasia",
+            "symbol": "CCD",
+            "omim_id": "119600",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 14
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 17,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "RUNX2",
+        "strchive_id": "CCD_RUNX2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "6",
+          "start": 45422750,
+          "stop": 45422792
+        },
+        "reference_repeat_unit": "GCN"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-45422750-45422792-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 45422750,
+                "end0": 45422792,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-45422750-45422792-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 45422750,
+                "end0": 45422792,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "SAMD12",
+        "gene": {
+          "ensembl_id": "ENSG00000177570",
+          "symbol": "SAMD12",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 1",
+            "symbol": "FAME1",
+            "omim_id": "601068",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 97,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "SAMD12",
+        "strchive_id": "FAME1_SAMD12",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "8",
+          "start": 118366815,
+          "stop": 118366880
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr8-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr8-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "SOX3",
+        "gene": {
+          "ensembl_id": "ENSG00000134595",
+          "symbol": "SOX3",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "X-linked mental retardation with isolated growth hormone",
+            "symbol": "XLMR",
+            "omim_id": "300123",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 15
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 26,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "X-linked panhypopituitarism",
+            "symbol": "PHPX",
+            "omim_id": "312000",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 15
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 22,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "SOX3",
+        "strchive_id": "XLID_SOX3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 140504316,
+          "stop": 140504361
+        },
+        "reference_repeat_unit": "NGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-140504316-140504361-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 140504316,
+                "end0": 140504361,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-140504316-140504361-NGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 140504316,
+                "end0": 140504361,
+                "motif": "NGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "STARD7",
+        "gene": {
+          "ensembl_id": "ENSG00000084090",
+          "symbol": "STARD7",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 2",
+            "symbol": "FAME2",
+            "omim_id": "607876",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 274,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "STARD7",
+        "strchive_id": "FAME2_STARD7",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "2",
+          "start": 96197066,
+          "stop": 96197121
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-96197066-96197121-AAAAT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 96197066,
+                "end0": 96197121,
+                "motif": "AAAAT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-96197066-96197121-AAAAT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 96197066,
+                "end0": 96197121,
+                "motif": "AAAAT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "TBP",
+        "gene": {
+          "ensembl_id": "ENSG00000112592",
+          "symbol": "TBP",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 17",
+            "symbol": "SCA17",
+            "omim_id": "607136",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 40
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 49,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "TBP",
+        "strchive_id": "SCA17_TBP",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "6",
+          "start": 170561906,
+          "stop": 170562017
+        },
+        "reference_repeat_unit": "GCA"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-170561906-170562017-GCA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 170561906,
+                "end0": 170562017,
+                "motif": "GCA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-170561906-170562017-GCA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 170561906,
+                "end0": 170562017,
+                "motif": "GCA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "TBX1",
+        "gene": {
+          "ensembl_id": "ENSG00000184058",
+          "symbol": "TBX1",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Tetralogy of Fallot",
+            "symbol": "TOF",
+            "omim_id": "187500",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 15
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 25,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "TBX1",
+        "strchive_id": "TOF_TBX1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "22",
+          "start": 19766762,
+          "stop": 19766807
+        },
+        "reference_repeat_unit": "GCN"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "22-19766762-19766807-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "22",
+                "start0": 19766762,
+                "end0": 19766807,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr22-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "22-19766762-19766807-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "22",
+                "start0": 19766762,
+                "end0": 19766807,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "TCF4",
+        "gene": {
+          "ensembl_id": "ENSG00000196628",
+          "symbol": "TCF4",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Fuchs endothelial corneal dystrophy 3",
+            "symbol": "FECD3",
+            "omim_id": "613267",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 39
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 50,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "TCF4",
+        "strchive_id": "FECD3_TCF4",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "18",
+          "start": 55586155,
+          "stop": 55586227
+        },
+        "reference_repeat_unit": "CAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr18-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr18-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "THAP11",
+        "gene": {
+          "ensembl_id": "ENSG00000168286",
+          "symbol": "THAP11",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia",
+            "symbol": "SCA",
+            "omim_id": null,
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 38
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 45,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "THAP11",
+        "strchive_id": "SCA_THAP11",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "16",
+          "start": 67842863,
+          "stop": 67842950
+        },
+        "reference_repeat_unit": "CAG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "16-67842863-67842950-CAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "16",
+                "start0": 67842863,
+                "end0": 67842950,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "16-67842863-67842950-CAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "16",
+                "start0": 67842863,
+                "end0": 67842950,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "TMEM185A",
+        "gene": {
+          "ensembl_id": "ENSG00000269556",
+          "symbol": "TMEM185A",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [],
+        "stripy_id": null,
+        "strchive_id": null,
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 149631735,
+          "stop": 149631780
+        },
+        "reference_repeat_unit": "CGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "TNRC6A",
+        "gene": {
+          "ensembl_id": "ENSG00000090905",
+          "symbol": "TNRC6A",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 6",
+            "symbol": "FAME6",
+            "omim_id": "618074",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 1100,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "TNRC6A",
+        "strchive_id": "FAME6_TNRC6A",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "16",
+          "start": 24613439,
+          "stop": 24613529
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "VWA1",
+        "gene": {
+          "ensembl_id": "ENSG00000179403",
+          "symbol": "VWA1",
+          "region": "coding: other"
+        },
+        "associated_diseases": [
+          {
+            "name": "Hereditary motor neuropathy",
+            "symbol": "HMN",
+            "omim_id": "619216",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 2
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 3,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "VWA1",
+        "strchive_id": "HMNR7_VWA1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "1",
+          "start": 1435798,
+          "stop": 1435818
+        },
+        "reference_repeat_unit": "GGCGCGGAGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "1-1435798-1435818-GGCGCGGAGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "1",
+                "start0": 1435798,
+                "end0": 1435818,
+                "motif": "GGCGCGGAGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "XYLT1",
+        "gene": {
+          "ensembl_id": "ENSG00000103489",
+          "symbol": "XYLT1",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Desbuquois dysplasia 2",
+            "symbol": "DBQD2",
+            "omim_id": "615777",
+            "inheritance_mode": "Autosomal recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 20
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 72,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "XYLT1",
+        "strchive_id": "DBQD2_XYLT1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "16",
+          "start": 17470907,
+          "stop": 17470922
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "YEATS2",
+        "gene": {
+          "ensembl_id": "ENSG00000163872",
+          "symbol": "YEATS2",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 4",
+            "symbol": "FAME4",
+            "omim_id": "615127",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 1000,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "YEATS2",
+        "strchive_id": "FAME4_YEATS2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "3",
+          "start": 183712187,
+          "stop": 183712222
+        },
+        "reference_repeat_unit": "AAAAT"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
+          "candidates": []
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ZFHX3",
+        "gene": {
+          "ensembl_id": "ENST00000268489",
+          "symbol": "ZFHX3",
+          "region": "coding: polyglycine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 4",
+            "symbol": "SCA4",
+            "omim_id": "600223",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 26
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 46,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ZFHX3",
+        "strchive_id": "SCA4_ZFHX3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "16",
+          "start": 72787694,
+          "stop": 72787757
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "16-72787694-72787757-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "16",
+                "start0": 72787694,
+                "end0": 72787757,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "16-72787694-72787757-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "16",
+                "start0": 72787694,
+                "end0": 72787757,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ZIC2",
+        "gene": {
+          "ensembl_id": "ENSG00000043355",
+          "symbol": "ZIC2",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Holoprosencephaly 5",
+            "symbol": "HPE5",
+            "omim_id": "609637",
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 15
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 25,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ZIC2",
+        "strchive_id": "HPE5_ZIC2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "13",
+          "start": 99985448,
+          "stop": 99985493
+        },
+        "reference_repeat_unit": "GCN"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "13-99985448-99985493-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "13",
+                "start0": 99985448,
+                "end0": 99985493,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr13-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "13-99985448-99985493-GCN",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "13",
+                "start0": 99985448,
+                "end0": 99985493,
+                "motif": "GCN"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ZIC3",
+        "gene": {
+          "ensembl_id": "ENSG00000156925",
+          "symbol": "ZIC3",
+          "region": "coding: polyalanine"
+        },
+        "associated_diseases": [
+          {
+            "name": "X-linked VACTERL syndrome",
+            "symbol": "VACTERLX",
+            "omim_id": "314390",
+            "inheritance_mode": "X-linked recessive",
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 10
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 12,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ZIC3",
+        "strchive_id": "VACTERLX_ZIC3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 137566826,
+          "stop": 137566856
+        },
+        "reference_repeat_unit": "GCC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-137566826-137566856-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 137566826,
+                "end0": 137566856,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "X-137566826-137566856-GCC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "X",
+                "start0": 137566826,
+                "end0": 137566856,
+                "motif": "GCC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "short": {
+        "id": "ZNF713",
+        "gene": {
+          "ensembl_id": "ENSG00000178665",
+          "symbol": "ZNF713",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Autism spectrum disorder associated with fragile site FRA7A",
+            "symbol": "FRA7A",
+            "omim_id": null,
+            "inheritance_mode": "Autosomal dominant",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 450,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": null,
+        "strchive_id": "FRA7A_ZNF713",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "7",
+          "start": 55887600,
+          "stop": 55887639
+        },
+        "reference_repeat_unit": "GCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "7-55887600-55887639-GCG+7-55887713-55887809-GGCGGAGGCGGGG+7-55887803-55887847-GGGCGGC+7-55887839-55887856-GGC+7-55887848-55887870-GGCGGCG+7-55887862-55887888-GGC+7-55887871-55887903-GGCGGCGGCGGCGGCG+7-55887887-55887904-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "7",
+                "start0": 55887600,
+                "end0": 55887639,
+                "motif": "GCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "7-55887600-55887639-GCG+7-55887713-55887809-GGCGGAGGCGGGG+7-55887803-55887847-GGGCGGC+7-55887839-55887856-GGC+7-55887848-55887870-GGCGGCG+7-55887862-55887888-GGC+7-55887871-55887903-GGCGGCGGCGGCGGCG+7-55887887-55887904-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "7",
+                "start0": 55887600,
+                "end0": 55887639,
+                "motif": "GCG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

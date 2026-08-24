@@ -88,6 +88,127 @@ type LongReadTrCatalogMatch {
   strchive_id: String
 }
 
+enum LongReadTrShortReadContextStatus {
+  EXACT_UNIQUE
+  NONE
+  AMBIGUOUS_CATALOG
+  AMBIGUOUS_COMPONENT
+  CATALOG_UNAVAILABLE
+}
+
+enum LongReadTrReferenceStatus {
+  EXACT_UNIQUE
+  NONE
+  MULTIPLE
+  AMBIGUOUS_CATALOG
+  AMBIGUOUS_COMPONENT
+  UNAVAILABLE
+}
+
+enum LongReadTrReferenceMatchFilter {
+  ALL
+  EITHER
+  BOTH
+  HGSVC_HPRC_ONLY
+  AOU_ONLY
+  NONE
+  MULTIPLE
+  UNAVAILABLE_OR_AMBIGUOUS
+}
+
+enum LongReadTrReferenceSort {
+  SHORT_ID_ASC
+  GENOMIC_ASC
+  MOTIF_ASC
+  HGSVC_HPRC_STATUS
+  AOU_STATUS
+}
+
+type LongReadTrShortReadCandidate {
+  canonical_id: String!
+  matched_component_index: Int!
+  matched_component: LongReadTrLocusComponent!
+  matched_reference_region_index: Int!
+}
+
+type LongReadTrShortReadContext {
+  status: LongReadTrShortReadContextStatus!
+  reason_code: String
+  catalog_dataset: DatasetId!
+  catalog_source: String!
+  catalog_digest: String!
+  catalog_record: ShortTandemRepeatDetails
+  matched_component_index: Int
+  matched_component: LongReadTrLocusComponent
+  matched_reference_region_index: Int
+  pathogenic_component_highlight: Boolean!
+  candidates: [LongReadTrShortReadCandidate!]!
+  lr_database: String
+  lr_release: String
+  lr_run_id: String
+  lr_cohort: LongReadCohort
+}
+
+type LongReadTrReferenceShortRecord {
+  id: String!
+  gene: ShortTandemRepeatGene!
+  associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
+  stripy_id: String
+  strchive_id: String
+  main_reference_region: ShortTandemRepeatReferenceRegion!
+  reference_repeat_unit: String!
+}
+
+type LongReadTrReferenceCohortResult {
+  status: LongReadTrReferenceStatus!
+  reason_code: String
+  source_database: String!
+  source_release: String!
+  source_run_id: String!
+  canonical_ids: [String!]!
+  candidates: [LongReadTrShortReadCandidate!]!
+}
+
+type LongReadTrReferenceNode {
+  # Flat compact fields are the stable index contract. short_record is retained
+  # as a structured compatibility view over the same artifact bytes.
+  id: String!
+  gene_symbol: String
+  reference_region: ShortTandemRepeatReferenceRegion!
+  reference_repeat_unit: String!
+  associated_diseases: [ShortTandemRepeatAssociatedDisease!]!
+  short_record: LongReadTrReferenceShortRecord!
+  hgsvc_hprc: LongReadTrReferenceCohortResult!
+  aou: LongReadTrReferenceCohortResult!
+}
+
+type LongReadTrReferencePageInfo {
+  has_next_page: Boolean!
+  end_cursor: String
+}
+
+type LongReadTrReferenceProvenance {
+  dataset: DatasetId!
+  source: String!
+  endpoint: String!
+  queried_at: String!
+  row_count: Int!
+  compact_sha256: String!
+  hard_ceiling: Int!
+  reference_genome: String!
+  coordinate_system: String!
+  motif_identity: String!
+  catalog_available: Boolean!
+  catalog_unavailable_reason: String
+}
+
+type LongReadTrReferenceConnection {
+  nodes: [LongReadTrReferenceNode!]!
+  total_count: Int!
+  page_info: LongReadTrReferencePageInfo!
+  provenance: LongReadTrReferenceProvenance!
+}
+
 enum LongReadTrPlotStatus {
   AVAILABLE_EXACT
   UNAVAILABLE_ANCILLARY
@@ -250,6 +371,8 @@ type LongReadTandemRepeatLocus {
   whole_record_genotype_landscape: LongReadTrWholeRecordGenotypeLandscape!
   component_measurement_available: Boolean!
   component_measurement_unavailable_reason: String
+  short_read_context: LongReadTrShortReadContext!
+  # Deprecated compatibility field; resolved from the same exact, validated context.
   short_read_matches: [LongReadTrCatalogMatch!]!
   repeat_count_plots: LongReadTrRepeatCountPlots!
   alleles: LongReadTrAlleleConnection!
