@@ -38,14 +38,6 @@ const Header = styled.header`
   }
 `
 
-const Eyebrow = styled.div`
-  color: #0f4f81;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-`
-
 const CohortControl = styled.label`
   display: flex;
   flex-shrink: 0;
@@ -174,7 +166,7 @@ const LongReadTandemRepeatPage = ({
   const unavailableData: { label: string; reason: string }[] = []
   if (!locus.sequences_available) {
     unavailableData.push({
-      label: 'Exact ALT sequences',
+      label: 'Exact-ALT index motif previews',
       reason: unavailableReason(locus.sequences_unavailable_reason),
     })
   }
@@ -204,7 +196,6 @@ const LongReadTandemRepeatPage = ({
 
       <Header>
         <div>
-          <Eyebrow>Long-read tandem repeat</Eyebrow>
           <PageHeading>
             Tandem repeat at chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
             {envelope.end1.toLocaleString()}
@@ -276,6 +267,8 @@ const LongReadTandemRepeatPage = ({
         motifs={locus.motifs}
         selectedAllele={selectedAllele}
         navigation={navigation}
+        sequencesAvailable={locus.sequences_available}
+        sequencesUnavailableReason={locus.sequences_unavailable_reason}
         selectedAlleleDetail={
           locus.selected_allele ? (
             <SelectedExactAlleleDetail

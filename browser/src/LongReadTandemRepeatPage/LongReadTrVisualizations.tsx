@@ -15,6 +15,8 @@ import {
 import { Sex, logScaleAllowed } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
 import { longReadAncestryGroupDisplayName } from '../LongReadVariantPage/longReadAncestryGroups'
 import ExactTrAltMotifStructure from '../VariantPage/ExactTrAltMotifStructure'
+import HaplotypeHelpButton from '../Haplotypes/HelpButton'
+import { PATH_COLORS, SUPERPOPULATION_COLORS } from '../Haplotypes/colors'
 import { decomposeExactTrAlt } from '../Haplotypes/trAlleleStructureData'
 import {
   AlleleBin,
@@ -116,10 +118,28 @@ const knownMotifColors: Record<string, string> = {
 }
 const fallbackMotifColors = ['#1769aa', '#5f6b72', '#8b5a2b', '#7a6f21', '#4b7082']
 
-export const motifColor = (motif: string) => {
+export const motifColor = (motif: string, orderedMotifs?: readonly string[]) => {
+  const motifIndex = orderedMotifs?.indexOf(motif) ?? -1
+  if (motifIndex >= 0) return PATH_COLORS[motifIndex % PATH_COLORS.length]
   if (knownMotifColors[motif]) return knownMotifColors[motif]
   const hash = Array.from(motif).reduce((value, character) => value + character.charCodeAt(0), 0)
   return fallbackMotifColors[hash % fallbackMotifColors.length]
+}
+
+const UNKNOWN_STACK_COLOR = '#8C8C8C'
+const SEX_STACK_COLORS: Record<string, string> = {
+  XX: '#F7C3CC',
+  XY: '#6AA6CE',
+  unknown: UNKNOWN_STACK_COLOR,
+}
+
+export const stackColorFor = (colorBy: ColorBy | null, category: string) => {
+  if (colorBy === 'sex') return SEX_STACK_COLORS[category] || UNKNOWN_STACK_COLOR
+  if (colorBy === 'population') {
+    const superpopulation = category.toLowerCase() === 'nfe' ? 'EUR' : category.toUpperCase()
+    return SUPERPOPULATION_COLORS[superpopulation] || UNKNOWN_STACK_COLOR
+  }
+  return UNKNOWN_STACK_COLOR
 }
 
 const MotifLegend = styled.div`
@@ -153,13 +173,32 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
 
   return (
     <Panel aria-labelledby="lr-tr-components-heading">
-      <h2 id="lr-tr-components-heading">Source-defined repeat components</h2>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <h2 id="lr-tr-components-heading" style={{ marginRight: 0 }}>
+          Reference repeat components
+        </h2>
+        <HaplotypeHelpButton title="About reference repeat components">
+          <p style={{ marginTop: 0 }}>
+            These are the ordered reference intervals encoded by the source TRID. Coordinates are
+            displayed as one-based, inclusive genomic intervals.
+          </p>
+          <p>
+            Overlapping intervals are placed on separate lanes rather than merged. Repeated motif
+            labels remain separate components because interval order and duplicate motif identity
+            are part of the source definition.
+          </p>
+          <p style={{ marginBottom: 0 }}>
+            This track is not an inferred ALT sequence decomposition, an ALT repeat-count
+            measurement, or a clinical interpretation.
+          </p>
+        </HaplotypeHelpButton>
+      </div>
       <div style={{ overflowX: 'auto' }}>
         <svg
           viewBox={`0 0 ${width} ${85 + laneCount * 54}`}
           style={{ display: 'block', minWidth: 700, width: '100%' }}
           role="img"
-          aria-label={`${components.length} ordered source repeat components in ${laneCount} coordinate lanes`}
+          aria-label={`${components.length} ordered reference repeat components in ${laneCount} coordinate lanes`}
         >
           <line
             x1={left}
@@ -187,7 +226,7 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
                   width={componentWidth}
                   height={28}
                   rx={3}
-                  fill={motifColor(component.motif)}
+                  fill={motifColor(component.motif, locus.motifs)}
                 >
                   <title>{label}</title>
                 </rect>
@@ -240,7 +279,7 @@ export const LongReadTrComponentTrack = ({ locus }: { locus: LongReadTrLocus }) 
                 height: 10,
                 marginRight: 4,
                 borderRadius: 2,
-                background: motifColor(motif),
+                background: motifColor(motif, locus.motifs),
               }}
             />
             {motif}
@@ -896,17 +935,21 @@ const PurityScatter = ({
 export const WholeRecordAlleleLandscape = ({
   landscape,
   alleles,
-  motifs,
+  motifs = [],
   selectedAllele,
   navigation,
   selectedAlleleDetail,
+  sequencesAvailable = true,
+  sequencesUnavailableReason,
 }: {
   landscape: WholeRecordAlleleLandscapeData
   alleles: LongReadTrAllele[]
-  motifs: string[]
+  motifs?: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
   selectedAlleleDetail?: React.ReactNode
+  sequencesAvailable?: boolean
+  sequencesUnavailableReason?: string | null
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -947,6 +990,8 @@ export const WholeRecordAlleleLandscape = ({
           selectedAllele={selectedAllele}
           navigation={navigation}
           selectedAlleleDetail={selectedAlleleDetail}
+          sequencesAvailable={sequencesAvailable}
+          sequencesUnavailableReason={sequencesUnavailableReason}
         />
         <p role="status">
           Whole-record allele landscape unavailable: {unavailableReason(landscape.reason_code)}.
@@ -965,12 +1010,10 @@ export const WholeRecordAlleleLandscape = ({
   let colorCategories: string[] = []
   if (selectedColorBy === 'sex') colorCategories = landscape.sexes || []
   if (selectedColorBy === 'population') colorCategories = landscape.ancestry_groups || []
-  const stackColor = (index: number) =>
-    ['#6aa6ce', '#f7c3cc', '#8c8c8c', '#941494', '#ef1e24', '#128b44', '#fe9a10'][index % 7]
   const segmentsForBin = (bin: AlleleBin) =>
-    colorCategories.map((category, index) => ({
+    colorCategories.map((category) => ({
       category,
-      color: stackColor(index),
+      color: stackColorFor(selectedColorBy, category),
       count: bin.stacks
         .filter((stack) =>
           selectedColorBy === 'sex'
@@ -1008,6 +1051,8 @@ export const WholeRecordAlleleLandscape = ({
         selectedAllele={selectedAllele}
         navigation={navigation}
         selectedAlleleDetail={selectedAlleleDetail}
+        sequencesAvailable={sequencesAvailable}
+        sequencesUnavailableReason={sequencesUnavailableReason}
       />
       <p>Whole-record ALT − REF length (bp); not a component repeat count.</p>
       <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '8px 16px' }}>
@@ -1055,14 +1100,33 @@ export const WholeRecordAlleleLandscape = ({
         filtered view; {landscape.exact_alt_count?.toLocaleString() || 'no'} exact ALTs globally.
       </p>
       {selectedColorBy && (
-        <p>
+        <p aria-label="Stack color legend">
           <strong>Stack colors:</strong>{' '}
-          {colorCategories.map((category, index) => (
-            <React.Fragment key={category}>
-              {index > 0 && ', '}
-              <span style={{ borderBottom: `4px solid ${stackColor(index)}` }}>{category}</span>
-            </React.Fragment>
-          ))}
+          {colorCategories.map((category, index) => {
+            let label = category
+            if (selectedColorBy === 'population') label = longReadAncestryGroupDisplayName(category)
+            else if (category === 'unknown') label = 'Unknown'
+            const color = stackColorFor(selectedColorBy, category)
+            return (
+              <React.Fragment key={category}>
+                {index > 0 && ', '}
+                <span aria-label={`${label} stack color`} data-stack-color={color}>
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      display: 'inline-block',
+                      width: 10,
+                      height: 10,
+                      marginRight: 3,
+                      borderRadius: 2,
+                      background: color,
+                    }}
+                  />
+                  {label}
+                </span>
+              </React.Fragment>
+            )
+          })}
         </p>
       )}
       {clippedAt && counts.some((count) => count > clippedAt) && (
@@ -1690,13 +1754,17 @@ const ExactAlleleMotifPreview = ({
 }) => {
   if (!allele.ref || !allele.alt) {
     return (
-      <span aria-label={`${alleleLabel(allele.variant_id)} motif structure unavailable`}>—</span>
+      <span aria-label={`${alleleLabel(allele.variant_id)} motif preview unavailable`}>
+        Unavailable
+      </span>
     )
   }
   const decomposition = decomposeExactTrAlt({ ref: allele.ref, alt: allele.alt, motifs })
   if (decomposition.status !== 'available') {
     return (
-      <span aria-label={`${alleleLabel(allele.variant_id)} motif structure unavailable`}>—</span>
+      <span aria-label={`${alleleLabel(allele.variant_id)} motif preview unavailable`}>
+        Unavailable
+      </span>
     )
   }
   const totalBases = Math.max(1, decomposition.structure.sequence.length)
@@ -1720,7 +1788,7 @@ const ExactAlleleMotifPreview = ({
             y={0}
             width={Math.max(1, token.sequence.length)}
             height={18}
-            fill={token.type === 'motif' ? motifColor(motifs[token.motifIndex]) : '#737b80'}
+            fill={token.type === 'motif' ? motifColor(motifs[token.motifIndex], motifs) : '#737b80'}
           />
         )
       })}
@@ -1790,17 +1858,27 @@ export const ExactAlleleIndex = ({
   motifs,
   navigation,
   selectedAlleleDetail,
+  sequencesAvailable = true,
+  sequencesUnavailableReason,
 }: {
   alleles: LongReadTrAllele[]
   motifs: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
   selectedAlleleDetail?: React.ReactNode
+  sequencesAvailable?: boolean
+  sequencesUnavailableReason?: string | null
 }) => {
   const itemData = { alleles, motifs, selectedAllele, navigation }
+  const hasMissingIndexSequence = alleles.some((allele) => !allele.ref || !allele.alt)
+  const previewUnavailableMessage =
+    hasMissingIndexSequence && !sequencesAvailable
+      ? `Motif previews are unavailable: ${unavailableReason(sequencesUnavailableReason)}.`
+      : null
   return (
     <IndexSection aria-labelledby="lr-tr-index-heading">
       <h3 id="lr-tr-index-heading">All exact ALTs ({alleles.length.toLocaleString()})</h3>
+      {previewUnavailableMessage && <p role="status">{previewUnavailableMessage}</p>}
       <AlleleBrowserGrid data-testid="lr-tr-exact-allele-browser">
         <IndexPane
           role="table"
@@ -1823,7 +1901,7 @@ export const ExactAlleleIndex = ({
           </IndexHeader>
           <FixedSizeList
             className="lr-tr-exact-index-scroll"
-            height={Math.min(616, Math.max(88, alleles.length * 44))}
+            height={Math.min(308, Math.max(88, alleles.length * 44))}
             itemCount={alleles.length}
             itemData={itemData}
             itemKey={(index: number) => alleles[index].variant_id}
@@ -1894,9 +1972,12 @@ export const SelectedExactAlleleDetail = React.forwardRef<
     <h3 id="lr-tr-selected-detail-heading">{alleleLabel(allele.variant_id)} exact detail</h3>
     <SelectedDetailGrid>
       <div>
-        <h4>Exact ALT sequence ({allele.alt.length.toLocaleString()} bp)</h4>
-        <Sequence>{allele.alt}</Sequence>
-        <ExactTrAltMotifStructure refAllele={allele.ref} altAllele={allele.alt} motifs={motifs} />
+        <ExactTrAltMotifStructure
+          refAllele={allele.ref}
+          altAllele={allele.alt}
+          motifs={motifs}
+          showHighlightedExactSequence
+        />
         <p>
           <strong>Source decomposition:</strong> {allele.decomposition_reason}. Browser DP tokens
           are sequence motifs, not source-coordinate components.

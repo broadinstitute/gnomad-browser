@@ -2,6 +2,7 @@ import { expect, test, type Page, type TestInfo } from '@playwright/test'
 
 const COMPOUND_LOCUS =
   '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
+const SIMPLE_THREE_ALT_LOCUS = '1-143278475-143278486-T'
 const SPARSE_LOCUS = '1-121606499-121606508-AG+1-121606517-121606536-A'
 type Cohort = 'hgsvc_hprc' | 'aou'
 
@@ -267,6 +268,35 @@ const verifyLegacyRedirect = async (page: Page, locusId: string, alleleId: strin
 }
 
 test.describe('Long-read tandem-repeat locus exact navigation', () => {
+  test('three-ALT simple locus renders complete matching motif previews and exact sequence', async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(60_000)
+    const index = await openLocus(page, SIMPLE_THREE_ALT_LOCUS, 3)
+    const indexTable = index.getByRole('table', { name: 'Exact alternate allele index' })
+    await expect(indexTable.getByRole('img', { name: /motif structure preview/ })).toHaveCount(3)
+    await expect(page.getByText(/Motif previews are unavailable/)).toHaveCount(0)
+
+    const referenceColor = await page
+      .getByRole('img', { name: /ordered reference repeat components/ })
+      .locator('rect')
+      .first()
+      .getAttribute('fill')
+    const previewColor = await indexTable
+      .getByRole('img', { name: 'ALT 1 motif structure preview' })
+      .locator('rect')
+      .first()
+      .getAttribute('fill')
+    expect(previewColor).toBe(referenceColor)
+
+    const selected = await selectExactAllele(page, SIMPLE_THREE_ALT_LOCUS, 1, 3)
+    expect(selected).toBe('chr1-143278475-TRV-11~1')
+    await expect(page.getByTestId('motif-highlighted-sequence-text')).toHaveText('ATTTTTTTTTT')
+    await expect(page.getByLabel('Shared VCF anchor, 1 bp')).toHaveText('A')
+    await expect(page.getByLabel('Show all allele sequences')).toHaveCount(0)
+    await attachAlleleBrowserScreenshot(page, testInfo, 'simple-three-alt-motif-previews.png')
+  })
+
   test('canonical selection, history, and legacy redirects stay in place for HTT', async ({
     page,
   }) => {
@@ -324,8 +354,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       }
     })
     expect(indexMetrics.scrollWidth).toBeLessThanOrEqual(indexMetrics.clientWidth)
-    expect(indexMetrics.scrollerHeight).toBe(616)
-    expect(indexMetrics.visibleRows).toBeGreaterThanOrEqual(14)
+    expect(indexMetrics.scrollerHeight).toBe(308)
+    expect(indexMetrics.visibleRows).toBeGreaterThanOrEqual(7)
 
     const headerCells = indexTable.locator(
       '[role="row"][aria-rowindex="1"] > [role="columnheader"]'
@@ -421,7 +451,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     )
 
     await page.setViewportSize({ width: 1280, height: 720 })
-    await openLocus(page, COMPOUND_LOCUS, 497, 'aou')
+    const aouIndex = await openLocus(page, COMPOUND_LOCUS, 497, 'aou')
+    await expect(aouIndex.getByRole('img', { name: 'ALT 1 motif structure preview' })).toBeVisible()
     const aouAlt497 = await selectExactAllele(page, COMPOUND_LOCUS, 497, 497, 'aou')
     expect(aouAlt497).toMatch(/~497$/)
     await expect(page.getByText(/ALT 497 of 497/)).toBeVisible()

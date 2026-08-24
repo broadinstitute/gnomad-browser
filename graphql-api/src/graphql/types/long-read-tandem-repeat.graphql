@@ -239,6 +239,7 @@ type LongReadTandemRepeatLocus {
   called_allele_count: Int
   called_sample_count: Int
   unique_carrier_count: Int
+  # Complete exact-index REF/ALT payload; selected detail has an independent byte bound below.
   sequences_available: Boolean!
   sequences_unavailable_reason: String
   selected_allele_valid: Boolean

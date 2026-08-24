@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
-import { AlleleStructureGrid } from '../Haplotypes/TrAlleleStructure'
+import { AlleleStructureGrid, MotifHighlightedSequence } from '../Haplotypes/TrAlleleStructure'
 import { decomposeExactTrAlt } from '../Haplotypes/trAlleleStructureData'
 
 const Heading = ({ children }: { children: React.ReactNode }) => (
@@ -37,10 +37,12 @@ const ExactTrAltMotifStructure = ({
   refAllele,
   altAllele,
   motifs,
+  showHighlightedExactSequence = false,
 }: {
   refAllele: string
   altAllele: string
   motifs: string[] | null
+  showHighlightedExactSequence?: boolean
 }) => {
   const decomposition = useMemo(
     () => decomposeExactTrAlt({ ref: refAllele, alt: altAllele, motifs }),
@@ -54,6 +56,26 @@ const ExactTrAltMotifStructure = ({
         <p>{unavailableMessage(decomposition.reason)}</p>
       ) : (
         <>
+          {showHighlightedExactSequence && (
+            <section aria-labelledby="highlighted-exact-alt-heading">
+              <h4 id="highlighted-exact-alt-heading">
+                Highlighted exact ALT sequence ({altAllele.length.toLocaleString()} bp)
+              </h4>
+              <MotifHighlightedSequence
+                tokens={decomposition.structure.tokens}
+                motifs={decomposition.motifs}
+                leadingSequence={decomposition.sharedAnchorRemoved ? altAllele.slice(0, 1) : ''}
+                ariaLabel="Complete motif-highlighted exact ALT sequence"
+                wrap
+              />
+              {decomposition.sharedAnchorRemoved && (
+                <p style={{ marginTop: 4, color: '#4f5960', fontSize: 12 }}>
+                  Gray leading base: shared VCF anchor. Dark bases: interruptions or motif
+                  mismatches.
+                </p>
+              )}
+            </section>
+          )}
           <p style={{ maxWidth: 900 }}>
             Sequence-level decomposition of this selected ALT against{' '}
             {decomposition.motifs.length === 1 ? 'motif' : 'motifs'}{' '}
@@ -66,6 +88,7 @@ const ExactTrAltMotifStructure = ({
             flankPrefix={decomposition.flankPrefix}
             flankSuffix={decomposition.flankSuffix}
             showAssignedCopies={false}
+            showSequenceControls={!showHighlightedExactSequence}
             ariaLabel="Selected ALT motif structure grid"
           />
         </>

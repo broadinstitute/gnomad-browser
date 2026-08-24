@@ -3,10 +3,12 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 
 import {
   aggregateGenotypePairs,
+  ExactAlleleIndex,
   histogramHeightPercent,
   LongReadTrComponentTrack,
   motifColor,
   purityDomain,
+  stackColorFor,
   WholeRecordAlleleLandscape,
   WholeRecordGenotypeLandscape,
 } from './LongReadTrVisualizations'
@@ -30,7 +32,22 @@ jest.mock(
       )
 )
 jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions', () => () => null)
-jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect', () => () => null)
+jest.mock(
+  '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect',
+  () =>
+    ({ selectedColorBy, setSelectedColorBy }: any) =>
+      (
+        <select
+          aria-label="Color by"
+          value={selectedColorBy || ''}
+          onChange={(event) => setSelectedColorBy(event.target.value || null)}
+        >
+          <option value="">None</option>
+          <option value="population">Genetic ancestry group</option>
+          <option value="sex">Sex</option>
+        </select>
+      )
+)
 jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect', () => () => null)
 
 const sourceId = 'chr4-test'
@@ -39,6 +56,8 @@ const makeAllele = (altIndex: number, length: number, ac: number): LongReadTrAll
   source_variant_id: sourceId,
   alt_index: altIndex,
   alt_count: 3,
+  ref: null,
+  alt: null,
   length,
   repeat_count: null,
   repeat_count_source: null,
@@ -109,6 +128,106 @@ const duplicatePairs: GenotypePair[] = [
 beforeEach(() => (navigation.onSelectAllele as jest.Mock).mockClear())
 
 describe('long-read TR visualization fidelity', () => {
+  test('renders every bounded simple-locus preview and explicit compact unavailable states', () => {
+    const simpleAlleles = [
+      { ...makeAllele(1, -1, 100), ref: 'ATTT', alt: 'ATT' },
+      { ...makeAllele(2, 1, 25), ref: 'ATTT', alt: 'ATTTT' },
+      { ...makeAllele(3, 2, 5), ref: 'ATTT', alt: 'ATTTTT' },
+    ]
+    const rendered = render(
+      <ExactAlleleIndex
+        alleles={simpleAlleles}
+        motifs={['T']}
+        navigation={navigation}
+        sequencesAvailable
+      />
+    )
+    expect(screen.getAllByRole('img', { name: /motif structure preview/ })).toHaveLength(3)
+    expect(screen.queryByText(/Restart the GraphQL API/)).toBeNull()
+
+    rendered.rerender(
+      <ExactAlleleIndex
+        alleles={simpleAlleles.map((allele) => ({ ...allele, ref: null, alt: null }))}
+        motifs={['T']}
+        navigation={navigation}
+        sequencesAvailable
+      />
+    )
+    expect(screen.queryByRole('status')).toBeNull()
+    expect(screen.getAllByText('Unavailable')).toHaveLength(3)
+
+    rendered.rerender(
+      <ExactAlleleIndex
+        alleles={simpleAlleles.map((allele) => ({ ...allele, ref: null, alt: null }))}
+        motifs={['T']}
+        navigation={navigation}
+        sequencesAvailable={false}
+        sequencesUnavailableReason="ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED"
+      />
+    )
+    expect(screen.getByRole('status').textContent).toMatch(
+      /allele index sequence byte bound exceeded/
+    )
+    expect(screen.getByRole('status').textContent).not.toMatch(/Restart/)
+  })
+
+  test('maps ancestry and sex stack colors by canonical key, independent of API order', () => {
+    const ancestryOrder = ['sas', 'nfe', 'eas', 'asj', 'amr', 'afr', 'unknown']
+    expect(ancestryOrder.map((category) => stackColorFor('population', category))).toEqual([
+      '#FE9A10',
+      '#6AA6CE',
+      '#128B44',
+      '#FF7E4F',
+      '#EF1E24',
+      '#941494',
+      '#8C8C8C',
+    ])
+    expect(['unknown', 'XY', 'XX'].map((category) => stackColorFor('sex', category))).toEqual([
+      '#8C8C8C',
+      '#6AA6CE',
+      '#F7C3CC',
+    ])
+  })
+
+  test('labels canonical stack-color legends accessibly', () => {
+    const stratifiedLandscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      stratified_available: true,
+      ancestry_groups: ['nfe', 'afr'],
+      sexes: ['XY', 'XX'],
+      bins: (alleleLandscape.bins || []).map((bin) => ({
+        ...bin,
+        stacks: [
+          { ancestry_group: 'nfe', sex: null, called_alleles: 4 },
+          { ancestry_group: 'afr', sex: null, called_alleles: 3 },
+          { ancestry_group: null, sex: 'XY', called_alleles: 2 },
+          { ancestry_group: null, sex: 'XX', called_alleles: 1 },
+        ],
+      })),
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={stratifiedLandscape}
+        alleles={alleles}
+        motifs={['T']}
+        navigation={navigation}
+      />
+    )
+
+    const colorBy = screen.getByLabelText(/Color by/)
+    fireEvent.change(colorBy, { target: { value: 'population' } })
+    const ancestryLegend = screen.getByLabelText('Stack color legend')
+    expect(
+      within(ancestryLegend)
+        .getAllByLabelText(/stack color/)
+        .map((entry) => entry.getAttribute('data-stack-color'))
+    ).toEqual(['#6AA6CE', '#941494'])
+
+    fireEvent.change(colorBy, { target: { value: 'sex' } })
+    expect(screen.getByLabelText('XY stack color').getAttribute('data-stack-color')).toBe('#6AA6CE')
+    expect(screen.getByLabelText('XX stack color').getAttribute('data-stack-color')).toBe('#F7C3CC')
+  })
+
   test('uses proportional histogram heights with truthful zero, linear, log, and capped domains', () => {
     expect(histogramHeightPercent(0, 100, 'linear')).toBe(0)
     expect(histogramHeightPercent(25, 100, 'linear')).toBe(25)
@@ -295,8 +414,9 @@ describe('long-read TR visualization fidelity', () => {
     ).not.toBeNull()
   })
 
-  test('uses one stable color per motif and exposes a compact legend without inflated components', () => {
+  test('uses one stable color per motif and explains ordered reference components accessibly', () => {
     const locus = {
+      motifs: ['CCG', 'CCT'],
       components: [
         { chrom: '4', start0: 0, end0: 1, motif: 'CCG' },
         { chrom: '4', start0: 2, end0: 3, motif: 'CCT' },
@@ -308,11 +428,22 @@ describe('long-read TR visualization fidelity', () => {
 
     expect(motifColor('CCG')).toBe(motifColor('CCG'))
     expect(motifColor('CCG')).not.toBe(motifColor('CCT'))
+    expect(motifColor('CCG', locus.motifs)).toBe('#1f77b4')
+    expect(motifColor('CCT', locus.motifs)).toBe('#ff7f0e')
     const legend = screen.getByLabelText('Repeat motif color legend')
     expect(within(legend).getAllByText('CCG')).toHaveLength(1)
     expect(within(legend).getAllByText('CCT')).toHaveLength(1)
     expect(
       Number(screen.getByRole('img').querySelectorAll('rect')[0].getAttribute('width'))
     ).toBeCloseTo(8.8)
+    expect(screen.getByRole('heading', { name: 'Reference repeat components' })).not.toBeNull()
+    fireEvent.click(screen.getByLabelText('About reference repeat components'))
+    expect(
+      screen.getByText(/ordered reference intervals encoded by the source TRID/)
+    ).not.toBeNull()
+    expect(screen.getByText(/one-based, inclusive/)).not.toBeNull()
+    expect(screen.getByText(/Overlapping intervals are placed on separate lanes/)).not.toBeNull()
+    expect(screen.getByText(/duplicate motif identity/)).not.toBeNull()
+    expect(screen.getByText(/not an inferred ALT sequence decomposition/)).not.toBeNull()
   })
 })

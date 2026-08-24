@@ -22,6 +22,26 @@ describe('selected ALT motif structure', () => {
     expect(screen.getByText(/12bp/)).not.toBeNull()
   })
 
+  test('renders one complete selectable highlighted ALT including its neutral shared anchor', () => {
+    const alt = 'ACAGCAGT'
+    render(
+      <ExactTrAltMotifStructure
+        refAllele="ACAG"
+        altAllele={alt}
+        motifs={['CAG']}
+        showHighlightedExactSequence
+      />
+    )
+
+    const highlighted = screen.getByLabelText('Complete motif-highlighted exact ALT sequence')
+    expect(highlighted.textContent).toContain(alt)
+    expect(screen.getByTestId('motif-highlighted-sequence-text').textContent).toBe(alt)
+    expect(screen.getByLabelText('Shared VCF anchor, 1 bp').textContent).toBe('A')
+    expect(screen.getByText(/Gray leading base: shared VCF anchor/)).not.toBeNull()
+    expect(screen.queryByTitle('Show sequence')).toBeNull()
+    expect(screen.queryByLabelText('Show all allele sequences')).toBeNull()
+  })
+
   test('explains scope and decomposition terminology accessibly', () => {
     render(<ExactTrAltMotifStructure refAllele="ACAG" altAllele="ACAGCAG" motifs={['CAG']} />)
 

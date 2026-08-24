@@ -193,6 +193,8 @@ describe('long-read TR locus query contract', () => {
       called_allele_count: 584,
       called_sample_count: 292,
       unique_carrier_count: 291,
+      sequences_available: true,
+      sequences_unavailable_reason: null,
       selected_allele_valid: true,
       selected_allele_unavailable_reason: null,
       component_measurement_available: false,
@@ -256,6 +258,8 @@ describe('long-read TR locus query contract', () => {
           {
             source_variant_id: sourceVariantId,
             alt_index: 1,
+            ref_allele: 'C',
+            alt: overBoundAlt,
             allele_length: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES - 1,
             ac: 1,
             an: 2,
@@ -288,6 +292,8 @@ describe('long-read TR locus query contract', () => {
     })
 
     expect(locus).toMatchObject({
+      sequences_available: false,
+      sequences_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
       selected_allele_valid: true,
       selected_allele: null,
       selected_allele_unavailable_reason: 'SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED',
@@ -308,6 +314,84 @@ describe('long-read TR locus query contract', () => {
     expect(JSON.stringify(locus)).not.toContain('G'.repeat(100))
     const selectedRequest = mockQuery.mock.calls[3][0] as any
     expect(JSON.stringify(selectedRequest.query_params)).not.toContain(overBoundAlt)
+  })
+
+  test('keeps bounded selected detail when the cumulative exact-index sequence bound is exceeded', async () => {
+    const boundedAlt = `C${'G'.repeat(549_999)}`
+    const rows = [1, 2].map((altIndex) => ({
+      source_variant_id: sourceVariantId,
+      alt_index: altIndex,
+      ref_allele: 'C',
+      alt: boundedAlt,
+      allele_length: boundedAlt.length - 1,
+      ac: 1,
+      an: 2,
+      af: 0.5,
+    }))
+    mockQuery
+      .mockImplementationOnce(() => result([summary(2, 2)]))
+      .mockImplementationOnce(() => result(rows))
+      .mockImplementationOnce(() => result([]))
+      .mockImplementationOnce(() =>
+        result([
+          {
+            ...selectedAlt72,
+            ...rows[0],
+          },
+        ])
+      )
+
+    const locus = await fetchLongReadTrLocus({
+      id: httLocusId,
+      cohort: 'aou',
+      first: 50,
+      selectedAllele: `${sourceVariantId}~1`,
+      source: source('aou', { carriers: false }),
+    })
+
+    expect(locus).toMatchObject({
+      sequences_available: false,
+      sequences_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
+      selected_allele_unavailable_reason: null,
+      selected_allele: { variant_id: `${sourceVariantId}~1`, alt: boundedAlt },
+      alleles: {
+        nodes: [
+          expect.objectContaining({ ref: null, alt: null }),
+          expect.objectContaining({ ref: null, alt: null }),
+        ],
+      },
+    })
+  })
+
+  test('fails exact-index sequence availability closed when source sequence is truly absent', async () => {
+    mockQuery
+      .mockImplementationOnce(() => result([summary(1, 2)]))
+      .mockImplementationOnce(() =>
+        result([
+          {
+            source_variant_id: sourceVariantId,
+            alt_index: 1,
+            allele_length: 0,
+            ac: 1,
+            an: 2,
+            af: 0.5,
+          },
+        ])
+      )
+      .mockImplementationOnce(() => result([]))
+
+    const locus = await fetchLongReadTrLocus({
+      id: httLocusId,
+      cohort: 'aou',
+      first: 50,
+      source: source('aou', { carriers: false }),
+    })
+
+    expect(locus).toMatchObject({
+      sequences_available: false,
+      sequences_unavailable_reason: 'EXACT_ALLELE_SEQUENCE_NOT_AVAILABLE',
+      alleles: { nodes: [expect.objectContaining({ ref: null, alt: null })] },
+    })
   })
 
   test('keeps all 497 AoU exact IDs reachable but makes carrier-only genotype data explicit', async () => {

@@ -127,6 +127,7 @@ export const AlleleStructureGrid = ({
   flankPrefix,
   flankSuffix,
   showAssignedCopies = true,
+  showSequenceControls = true,
   ariaLabel = 'Tandem-repeat allele motif structures',
 }: {
   structures: AlleleStructure[]
@@ -134,6 +135,7 @@ export const AlleleStructureGrid = ({
   flankPrefix?: string
   flankSuffix?: string
   showAssignedCopies?: boolean
+  showSequenceControls?: boolean
   ariaLabel?: string
 }) => {
   const [showAll, setShowAll] = useState(false)
@@ -205,25 +207,27 @@ export const AlleleStructureGrid = ({
           <span style={{ width: 40, textAlign: 'right' }}>Units</span>
           <span style={{ width: 80, textAlign: 'right' }}>Interruptions</span>
           {showAssignedCopies && <span style={{ width: 120 }}>Assigned copies</span>}
-          <button
-            type="button"
-            aria-label={expandAllSeqs ? 'Hide all allele sequences' : 'Show all allele sequences'}
-            onClick={() => setExpandAllSeqs(!expandAllSeqs)}
-            style={{
-              fontSize: 8,
-              fontFamily: 'monospace',
-              fontWeight: 600,
-              lineHeight: 1,
-              padding: '1px 4px',
-              borderRadius: 2,
-              cursor: 'pointer',
-              color: expandAllSeqs ? '#1565c0' : '#999',
-              background: expandAllSeqs ? '#e3f2fd' : '#fafafa',
-              border: `1px solid ${expandAllSeqs ? '#90caf9' : '#e0e0e0'}`,
-            }}
-          >
-            {expandAllSeqs ? '▾ All Seq' : '▸ All Seq'}
-          </button>
+          {showSequenceControls && (
+            <button
+              type="button"
+              aria-label={expandAllSeqs ? 'Hide all allele sequences' : 'Show all allele sequences'}
+              onClick={() => setExpandAllSeqs(!expandAllSeqs)}
+              style={{
+                fontSize: 8,
+                fontFamily: 'monospace',
+                fontWeight: 600,
+                lineHeight: 1,
+                padding: '1px 4px',
+                borderRadius: 2,
+                cursor: 'pointer',
+                color: expandAllSeqs ? '#1565c0' : '#999',
+                background: expandAllSeqs ? '#e3f2fd' : '#fafafa',
+                border: `1px solid ${expandAllSeqs ? '#90caf9' : '#e0e0e0'}`,
+              }}
+            >
+              {expandAllSeqs ? '▾ All Seq' : '▸ All Seq'}
+            </button>
+          )}
         </div>
 
         {/* Rows */}
@@ -238,7 +242,8 @@ export const AlleleStructureGrid = ({
             flankPrefix={flankPrefix}
             flankSuffix={flankSuffix}
             motifs={motifs}
-            forceExpandSeq={expandAllSeqs}
+            forceExpandSeq={showSequenceControls && expandAllSeqs}
+            showSequenceControls={showSequenceControls}
           />
         ))}
 
@@ -326,23 +331,70 @@ const baseMatchesMotif = (token: SequenceToken, ci: number, motifs: string[]): b
   return token.sequence[ci].toUpperCase() === canonical[ci].toUpperCase()
 }
 
-const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: string[] }) => (
+export const MotifHighlightedSequence = ({
+  tokens,
+  motifs,
+  leadingSequence = '',
+  ariaLabel = 'Motif-highlighted sequence',
+  wrap = false,
+}: {
+  tokens: SequenceToken[]
+  motifs: string[]
+  leadingSequence?: string
+  ariaLabel?: string
+  wrap?: boolean
+}) => (
   <div
+    aria-label={ariaLabel}
     style={{
-      overflowX: 'auto',
+      overflowX: wrap ? 'visible' : 'auto',
       maxWidth: STRUCTURE_MAX_GRID_WIDTH + 260,
       padding: '4px 0 6px 2px',
       borderTop: '1px solid #eee',
     }}
   >
-    <div style={{ display: 'flex', flexWrap: 'nowrap', gap: 1 }}>
+    <div
+      data-testid="motif-highlighted-sequence-text"
+      style={{ display: 'flex', flexWrap: wrap ? 'wrap' : 'nowrap', gap: 1, userSelect: 'text' }}
+    >
+      {leadingSequence && (
+        <span
+          data-sequence-role="anchor"
+          aria-label={`Shared VCF anchor, ${leadingSequence.length} bp`}
+          title={`Shared VCF anchor (${leadingSequence.length}bp)`}
+          style={{ display: 'inline-flex', flexShrink: 0 }}
+        >
+          {leadingSequence.split('').map((ch, index) => (
+            <span
+              // Sequence position is stable and duplicate anchor bases are meaningful.
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              style={{
+                fontFamily: 'monospace',
+                fontSize: 10,
+                lineHeight: '14px',
+                width: 8,
+                textAlign: 'center',
+                background: '#d8dee2',
+                color: '#27323a',
+              }}
+            >
+              {ch}
+            </span>
+          ))}
+        </span>
+      )}
       {tokens.map((token, ti) => {
         const motifColor =
           token.type === 'motif' ? MOTIF_COLORS[token.motifIndex % MOTIF_COLORS.length] : null
         const label = token.type === 'motif' ? motifs[token.motifIndex] ?? '?' : 'int'
         return (
           <span
+            // Token sequence offset is stable and repeated motif tokens remain distinct.
+            // eslint-disable-next-line react/no-array-index-key
             key={ti}
+            data-sequence-role={token.type}
+            aria-label={`${label}, ${token.sequence.length} bp`}
             style={{ display: 'inline-flex', flexShrink: 0 }}
             title={`${label} (${token.sequence.length}bp)`}
           >
@@ -350,6 +402,8 @@ const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: 
               const matches = baseMatchesMotif(token, ci, motifs)
               return (
                 <span
+                  // Base position is stable and duplicate bases are meaningful.
+                  // eslint-disable-next-line react/no-array-index-key
                   key={ci}
                   style={{
                     fontFamily: 'monospace',
@@ -377,11 +431,12 @@ const SequenceFoldout = ({ tokens, motifs }: { tokens: SequenceToken[]; motifs: 
       })}
     </div>
     <div style={{ fontSize: 9, color: '#aaa', marginTop: 2 }}>
-      {tokens.reduce((s, t) => s + t.sequence.length, 0)}bp
+      {leadingSequence.length + tokens.reduce((s, t) => s + t.sequence.length, 0)}bp
       {' · '}
       {tokens.length} tokens
       {' · '}
       motifs: {motifs.join(', ')}
+      {leadingSequence && ' · neutral shared VCF anchor included'}
     </div>
   </div>
 )
@@ -396,6 +451,7 @@ const AlleleStructureRow = ({
   flankSuffix,
   motifs,
   forceExpandSeq = false,
+  showSequenceControls = true,
 }: {
   allele: AlleleStructure
   scale: number
@@ -406,10 +462,11 @@ const AlleleStructureRow = ({
   flankSuffix?: string
   motifs: string[]
   forceExpandSeq?: boolean
+  showSequenceControls?: boolean
 }) => {
   const [hovered, setHovered] = useState(false)
   const [showSeq, setShowSeq] = useState(false)
-  const seqVisible = showSeq || forceExpandSeq
+  const seqVisible = showSequenceControls && (showSeq || forceExpandSeq)
 
   const useBinnedView = allele.totalMotifUnits > 100 || allele.sequence.length > 2000
 
@@ -666,9 +723,11 @@ const AlleleStructureRow = ({
             </div>
           )}
           <AlgorithmBadge algorithm={allele.algorithm} />
-          <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
+          {showSequenceControls && (
+            <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
+          )}
         </div>
-        {seqVisible && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
+        {seqVisible && <MotifHighlightedSequence tokens={allele.tokens} motifs={motifs} />}
       </div>
     )
   }
@@ -847,9 +906,11 @@ const AlleleStructureRow = ({
           </div>
         )}
         <AlgorithmBadge algorithm={allele.algorithm} />
-        <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
+        {showSequenceControls && (
+          <SeqToggle active={showSeq} onClick={() => setShowSeq(!showSeq)} />
+        )}
       </div>
-      {seqVisible && <SequenceFoldout tokens={allele.tokens} motifs={motifs} />}
+      {seqVisible && <MotifHighlightedSequence tokens={allele.tokens} motifs={motifs} />}
     </div>
   )
 }

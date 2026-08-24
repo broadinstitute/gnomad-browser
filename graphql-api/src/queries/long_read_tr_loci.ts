@@ -572,14 +572,22 @@ const fetchLongReadTrLocusUncached = async ({
   })
   const completenessReason = validateCompleteAlleles(compactAlleles, sourceRecords)
   const completeAlleles = completenessReason ? [] : compactAlleles
-  const exactSequenceIndexWithinBound = responseWithinBound(
-    completeAlleles.map(({ source_variant_id, alt_index, ref_allele, alt }) => ({
-      source_variant_id,
-      alt_index,
-      ref_allele,
-      alt,
-    }))
+  const exactSequenceIndexComplete = completeAlleles.every(
+    ({ ref_allele, alt }) => Boolean(ref_allele) && Boolean(alt)
   )
+  const exactSequenceIndexWithinBound =
+    exactSequenceIndexComplete &&
+    responseWithinBound(
+      completeAlleles.map(({ source_variant_id, alt_index, ref_allele, alt }) => ({
+        source_variant_id,
+        alt_index,
+        ref_allele,
+        alt,
+      }))
+    )
+  const exactSequenceIndexUnavailableReason = exactSequenceIndexComplete
+    ? 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED'
+    : 'EXACT_ALLELE_SEQUENCE_NOT_AVAILABLE'
 
   const rawFrequencyRows = completeAlleles.length
     ? await queryRows(
@@ -883,8 +891,10 @@ const fetchLongReadTrLocusUncached = async ({
         ? wholeRecordGenotypeLandscape.called_samples
         : null,
     unique_carrier_count: uniqueCarrierCount,
-    sequences_available: !completenessReason,
-    sequences_unavailable_reason: completenessReason,
+    sequences_available: !completenessReason && exactSequenceIndexWithinBound,
+    sequences_unavailable_reason:
+      completenessReason ||
+      (exactSequenceIndexWithinBound ? null : exactSequenceIndexUnavailableReason),
     selected_allele_valid: selectedAllele ? Boolean(selectedAlleleValid) : null,
     selected_allele_unavailable_reason: selectedAlleleUnavailableReason,
     selected_allele: selectedAlleleDetail,

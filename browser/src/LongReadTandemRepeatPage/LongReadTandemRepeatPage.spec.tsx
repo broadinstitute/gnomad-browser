@@ -399,13 +399,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       screen.getByRole('heading', { name: 'Tandem repeat at chr4:3,074,877–3,075,040' })
     ).not.toBeNull()
+    expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.getByText('GRCh38 / hg38')).not.toBeNull()
     expect(
       screen.getByText(/72 exact ALT sequences; whole-record Δ length −24 to \+48 bp/)
     ).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
     expect(
-      screen.getByRole('img', { name: '6 ordered source repeat components in 2 coordinate lanes' })
+      screen.getByRole('img', {
+        name: '6 ordered reference repeat components in 2 coordinate lanes',
+      })
     ).not.toBeNull()
     expect(
       screen.getByText(
@@ -559,7 +562,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(heading.closest('details')).toBeNull()
     const virtualIndex = within(section as HTMLElement).getByTestId('virtual-exact-index')
     expect(virtualIndex.getAttribute('data-item-count')).toBe(String(count))
-    expect(virtualIndex.getAttribute('data-height')).toBe('616')
+    expect(virtualIndex.getAttribute('data-height')).toBe('308')
     expect(virtualIndex.classList.contains('lr-tr-exact-index-scroll')).toBe(true)
     const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
     expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
@@ -609,6 +612,28 @@ describe('canonical long-read tandem-repeat locus page', () => {
             'Selected exact sequence/detail: selected allele detail byte bound exceeded'
       )
     ).not.toBeNull()
+  })
+
+  test('scopes cumulative index bounds separately from available selected detail', () => {
+    renderPage({
+      locus: {
+        ...makeLocus(),
+        sequences_available: false,
+        sequences_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
+      },
+      selectedAllele: exactId,
+    })
+
+    expect(screen.getByRole('heading', { name: 'ALT 2 exact detail' })).not.toBeNull()
+    expect(
+      screen.getByText(
+        (_text, element) =>
+          element?.tagName === 'LI' &&
+          element.textContent ===
+            'Exact-ALT index motif previews: allele index sequence byte bound exceeded'
+      )
+    ).not.toBeNull()
+    expect(screen.queryByText(/^Exact ALT sequences:/)).toBeNull()
   })
 
   test('cohort selection delegates push/clear semantics to the container', () => {
