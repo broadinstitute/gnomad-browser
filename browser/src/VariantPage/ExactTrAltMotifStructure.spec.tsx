@@ -30,13 +30,18 @@ describe('selected ALT motif structure', () => {
         altAllele={alt}
         motifs={['CAG']}
         showHighlightedExactSequence
+        showHeading={false}
       />
     )
 
     const highlighted = screen.getByLabelText('Complete motif-highlighted exact ALT sequence')
+    const structure = screen.getByLabelText('Selected ALT motif structure grid')
     expect(highlighted.textContent).toContain(alt)
     expect(screen.getByTestId('motif-highlighted-sequence-text').textContent).toBe(alt)
     expect(screen.getByLabelText('Shared VCF anchor, 1 bp').textContent).toBe('A')
+    expect(screen.getByRole('heading', { name: 'Exact ALT sequence (8 bp)' })).not.toBeNull()
+    expect(structure.compareDocumentPosition(highlighted)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(screen.queryByRole('heading', { name: 'Selected ALT Motif Structure' })).toBeNull()
     expect(screen.getByText(/Gray leading base: shared VCF anchor/)).not.toBeNull()
     expect(screen.queryByTitle('Show sequence')).toBeNull()
     expect(screen.queryByLabelText('Show all allele sequences')).toBeNull()

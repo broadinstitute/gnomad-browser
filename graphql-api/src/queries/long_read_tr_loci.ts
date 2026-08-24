@@ -922,7 +922,7 @@ const fetchLongReadTrLocusUncached = async ({
 export const fetchLongReadTrLocus = withCache(
   fetchLongReadTrLocusUncached,
   ({ id, cohort, first = DEFAULT_TR_LOCUS_PAGE_SIZE, after, selectedAllele, source }) =>
-    `lr_tr_locus:v4:${cohort}:${source.database}:${source.run_id}:${
+    `lr_tr_locus:v5:${cohort}:${source.database}:${source.run_id}:${
       source.metadata_run_id || 'no-metadata'
     }:${source.chrom}:${id}:${first}:${after || 'first'}:${selectedAllele || 'none'}`,
   { expiration: 300 }

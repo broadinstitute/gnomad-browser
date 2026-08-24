@@ -38,11 +38,13 @@ const ExactTrAltMotifStructure = ({
   altAllele,
   motifs,
   showHighlightedExactSequence = false,
+  showHeading = true,
 }: {
   refAllele: string
   altAllele: string
   motifs: string[] | null
   showHighlightedExactSequence?: boolean
+  showHeading?: boolean
 }) => {
   const decomposition = useMemo(
     () => decomposeExactTrAlt({ ref: refAllele, alt: altAllele, motifs }),
@@ -51,15 +53,30 @@ const ExactTrAltMotifStructure = ({
 
   return (
     <>
-      <Heading>Selected ALT Motif Structure</Heading>
+      {showHeading && <Heading>Selected ALT Motif Structure</Heading>}
       {decomposition.status === 'unavailable' ? (
         <p>{unavailableMessage(decomposition.reason)}</p>
       ) : (
         <>
+          <p style={{ maxWidth: 900 }}>
+            Sequence-level decomposition against{' '}
+            {decomposition.motifs.length === 1 ? 'motif' : 'motifs'}{' '}
+            <span style={{ fontFamily: 'monospace' }}>{decomposition.motifs.join(', ')}</span>.
+            {decomposition.sharedAnchorRemoved && ' The shared VCF anchor base is omitted.'}
+          </p>
+          <AlleleStructureGrid
+            structures={[decomposition.structure]}
+            motifs={decomposition.motifs}
+            flankPrefix={decomposition.flankPrefix}
+            flankSuffix={decomposition.flankSuffix}
+            showAssignedCopies={false}
+            showSequenceControls={!showHighlightedExactSequence}
+            ariaLabel="Selected ALT motif structure grid"
+          />
           {showHighlightedExactSequence && (
             <section aria-labelledby="highlighted-exact-alt-heading">
-              <h4 id="highlighted-exact-alt-heading">
-                Highlighted exact ALT sequence ({altAllele.length.toLocaleString()} bp)
+              <h4 id="highlighted-exact-alt-heading" style={{ marginTop: '1.25em' }}>
+                Exact ALT sequence ({altAllele.length.toLocaleString()} bp)
               </h4>
               <MotifHighlightedSequence
                 tokens={decomposition.structure.tokens}
@@ -76,21 +93,6 @@ const ExactTrAltMotifStructure = ({
               )}
             </section>
           )}
-          <p style={{ maxWidth: 900 }}>
-            Sequence-level decomposition of this selected ALT against{' '}
-            {decomposition.motifs.length === 1 ? 'motif' : 'motifs'}{' '}
-            <span style={{ fontFamily: 'monospace' }}>{decomposition.motifs.join(', ')}</span>.
-            {decomposition.sharedAnchorRemoved && ' The shared VCF anchor base is omitted.'}
-          </p>
-          <AlleleStructureGrid
-            structures={[decomposition.structure]}
-            motifs={decomposition.motifs}
-            flankPrefix={decomposition.flankPrefix}
-            flankSuffix={decomposition.flankSuffix}
-            showAssignedCopies={false}
-            showSequenceControls={!showHighlightedExactSequence}
-            ariaLabel="Selected ALT motif structure grid"
-          />
         </>
       )}
     </>
