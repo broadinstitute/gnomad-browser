@@ -7,6 +7,7 @@ jest.mock('./short-tandem-repeat-queries', () => ({
 // eslint-disable-next-line import/first
 import {
   buildLongReadTrReferenceConnection,
+  compactCatalogSha256,
   longReadTrReferenceArtifactForTests,
   resolveLongReadTrShortReadContext,
 } from './long_read_tr_reference'
@@ -127,6 +128,21 @@ describe('bounded long-read TR reference crosswalk', () => {
     expect(atxn1.hgsvc_hprc.status).toBe('EXACT_UNIQUE')
     expect(atxn1.aou).toEqual(
       expect.objectContaining({ status: 'UNAVAILABLE', reason_code: 'SOURCE_PROVENANCE_MISMATCH' })
+    )
+  })
+
+  test('catalog digest is independent of Elasticsearch object key order', () => {
+    const reorderedRows = catalogRows.map((row: any) => ({
+      ...row,
+      main_reference_region: {
+        stop: row.main_reference_region.stop,
+        reference_genome: row.main_reference_region.reference_genome,
+        start: row.main_reference_region.start,
+        chrom: row.main_reference_region.chrom,
+      },
+    }))
+    expect(compactCatalogSha256(reorderedRows)).toBe(
+      longReadTrReferenceArtifactForTests.catalog.compact_sha256
     )
   })
 

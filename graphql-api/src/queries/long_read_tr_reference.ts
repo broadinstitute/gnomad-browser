@@ -99,7 +99,12 @@ export const normalizeShortCatalogRows = (rows: any[]) =>
       })),
       stripy_id: row.stripy_id || null,
       strchive_id: row.strchive_id || null,
-      main_reference_region: row.main_reference_region,
+      main_reference_region: {
+        reference_genome: row.main_reference_region?.reference_genome,
+        chrom: row.main_reference_region?.chrom,
+        start: Number(row.main_reference_region?.start),
+        stop: Number(row.main_reference_region?.stop),
+      },
       reference_repeat_unit: String(row.reference_repeat_unit),
     }))
     .sort((left, right) => left.id.localeCompare(right.id))
