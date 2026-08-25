@@ -281,24 +281,55 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const indexTable = index.getByRole('table', { name: 'Exact alternate allele index' })
     await expect(indexTable.getByRole('img', { name: /motif structure preview/ })).toHaveCount(3)
     await expect(page.getByText(/Motif previews are unavailable/)).toHaveCount(0)
-    const simplePlots = page.getByTestId('lr-tr-repeat-count-grid')
-    await expect(simplePlots).toBeVisible()
-    expect(await simplePlots.locator('rect[fill="#9c27b0"]').count()).toBeGreaterThan(0)
-    await attachLocatorScreenshot(simplePlots, testInfo, 'simple-repeat-count-plots-purple.png')
     const simpleLandscape = page.getByTestId('whole-record-allele-plot-grid')
-    const simpleLandscapeCards = await simpleLandscape.locator(':scope > div').all()
-    expect(simpleLandscapeCards).toHaveLength(2)
+    await expect(simpleLandscape).toHaveAttribute('data-plot-count', '4')
+    await expect(page.getByRole('heading', { name: 'Simple-locus repeat counts' })).toHaveCount(0)
+    expect(await simpleLandscape.locator('rect[fill="#9c27b0"]').count()).toBeGreaterThan(0)
+    const simpleLandscapeCards = await simpleLandscape.locator(':scope > [data-plot-card]').all()
+    expect(simpleLandscapeCards).toHaveLength(4)
     const simpleCardBoxes = await Promise.all(
       simpleLandscapeCards.map((card) => card.boundingBox())
     )
     simpleCardBoxes.forEach((box) => expect(box).not.toBeNull())
-    expect(Math.abs(simpleCardBoxes[0]!.width - simpleCardBoxes[1]!.width)).toBeLessThanOrEqual(2)
-    expect(simpleCardBoxes[0]!.width).toBeGreaterThan(500)
+    expect(Math.abs(simpleCardBoxes[0]!.y - simpleCardBoxes[1]!.y)).toBeLessThanOrEqual(2)
+    expect(Math.abs(simpleCardBoxes[2]!.y - simpleCardBoxes[3]!.y)).toBeLessThanOrEqual(2)
+    expect(
+      simpleCardBoxes[1]!.x - (simpleCardBoxes[0]!.x + simpleCardBoxes[0]!.width)
+    ).toBeGreaterThanOrEqual(24)
+    expect(
+      simpleCardBoxes[2]!.y - (simpleCardBoxes[0]!.y + simpleCardBoxes[0]!.height)
+    ).toBeGreaterThanOrEqual(24)
+    const wideGap = await simpleLandscape.evaluate((grid) => {
+      const style = getComputedStyle(grid)
+      return { column: Number.parseFloat(style.columnGap), row: Number.parseFloat(style.rowGap) }
+    })
+    expect(wideGap.column).toBeGreaterThanOrEqual(24)
+    expect(wideGap.column).toBeLessThanOrEqual(32)
+    expect(wideGap.row).toBeGreaterThanOrEqual(24)
+    expect(wideGap.row).toBeLessThanOrEqual(32)
     await attachLocatorScreenshot(
       simpleLandscape,
       testInfo,
-      'simple-allelic-landscape-two-panel-wide.png'
+      'simple-allelic-landscape-four-panel-wide.png'
     )
+
+    await page.setViewportSize({ width: 390, height: 844 })
+    const narrowSimpleBoxes = await Promise.all(
+      simpleLandscapeCards.map((card) => card.boundingBox())
+    )
+    narrowSimpleBoxes.forEach((box) => expect(box).not.toBeNull())
+    for (let cardIndex = 1; cardIndex < narrowSimpleBoxes.length; cardIndex += 1) {
+      expect(narrowSimpleBoxes[cardIndex]!.y).toBeGreaterThan(
+        narrowSimpleBoxes[cardIndex - 1]!.y + narrowSimpleBoxes[cardIndex - 1]!.height + 20
+      )
+    }
+    expect(narrowSimpleBoxes[0]!.width).toBeGreaterThan(280)
+    await attachLocatorScreenshot(
+      simpleLandscape,
+      testInfo,
+      'simple-allelic-landscape-four-panel-narrow.png'
+    )
+    await page.setViewportSize({ width: 1280, height: 720 })
 
     const referenceColor = await page
       .getByRole('img', { name: /ordered reference repeat components/ })
@@ -451,10 +482,25 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(wideGenotypeDetailBox!.y).toBeGreaterThan(
       Math.max(...wideCards.map((box) => box!.y + box!.height)) - 2
     )
-    const sharedFilters = page.getByRole('group', { name: 'Shared ancestry and sex filters' })
-    const alleleDisplay = page.getByRole('group', { name: 'Allele plot display controls' })
-    await expect(sharedFilters.getByText('Filter all three plots:')).toBeVisible()
-    await expect(alleleDisplay.getByText('Allele plots only:')).toBeVisible()
+    await expect(wholeRecordPlots).toHaveAttribute('data-plot-count', '3')
+    const compoundPlotCards = wholeRecordPlots.locator(':scope > [data-plot-card]')
+    await expect(compoundPlotCards).toHaveCount(3)
+    const compoundGap = await wholeRecordPlots.evaluate((grid) => {
+      const style = getComputedStyle(grid)
+      return { column: Number.parseFloat(style.columnGap), row: Number.parseFloat(style.rowGap) }
+    })
+    expect(compoundGap.column).toBeGreaterThanOrEqual(24)
+    expect(compoundGap.column).toBeLessThanOrEqual(32)
+    expect(compoundGap.row).toBeGreaterThanOrEqual(24)
+    expect(compoundGap.row).toBeLessThanOrEqual(32)
+    const sharedFilters = page.getByRole('group', {
+      name: 'Shared ancestry and sex filters for total-length plots',
+    })
+    const alleleDisplay = page.getByRole('group', {
+      name: 'Total-length allele plot display controls',
+    })
+    await expect(sharedFilters.getByText('Filter all three total-length plots:')).toBeVisible()
+    await expect(alleleDisplay.getByText('Total-length allele plots only:')).toBeVisible()
     await expect(genotypeCard.getByLabel('Color by')).toHaveCount(0)
     await expect(genotypeCard.getByLabel('y-Scale')).toHaveCount(0)
     await attachLocatorScreenshot(
@@ -605,19 +651,19 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-wide.png')
 
     await page.setViewportSize({ width: 760, height: 900 })
-    const narrowCards = await Promise.all([
+    const mediumCards = await Promise.all([
       histogramCard.boundingBox(),
       purityCard.boundingBox(),
       genotypeCard.boundingBox(),
     ])
-    narrowCards.forEach((box) => expect(box).not.toBeNull())
-    expect(narrowCards[1]!.y).toBeGreaterThan(narrowCards[0]!.y + narrowCards[0]!.height - 2)
-    expect(narrowCards[2]!.y).toBeGreaterThan(narrowCards[1]!.y + narrowCards[1]!.height - 2)
-    expect(narrowCards[2]!.width).toBeGreaterThan(600)
+    mediumCards.forEach((box) => expect(box).not.toBeNull())
+    expect(Math.abs(mediumCards[0]!.y - mediumCards[1]!.y)).toBeLessThanOrEqual(2)
+    expect(mediumCards[2]!.y).toBeGreaterThan(mediumCards[0]!.y + mediumCards[0]!.height + 20)
+    expect(mediumCards[2]!.width).toBeGreaterThan(280)
     await attachLocatorScreenshot(
       wholeRecordPlots,
       testInfo,
-      'allelic-landscape-three-panel-narrow.png'
+      'allelic-landscape-three-panel-medium.png'
     )
     const narrowIndexBox = await httIndex
       .getByRole('table', { name: 'Exact alternate allele index' })
@@ -635,6 +681,20 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-narrow.png')
 
     await page.setViewportSize({ width: 390, height: 844 })
+    const narrowCards = await Promise.all([
+      histogramCard.boundingBox(),
+      purityCard.boundingBox(),
+      genotypeCard.boundingBox(),
+    ])
+    narrowCards.forEach((box) => expect(box).not.toBeNull())
+    expect(narrowCards[1]!.y).toBeGreaterThan(narrowCards[0]!.y + narrowCards[0]!.height + 20)
+    expect(narrowCards[2]!.y).toBeGreaterThan(narrowCards[1]!.y + narrowCards[1]!.height + 20)
+    expect(narrowCards[2]!.width).toBeGreaterThan(280)
+    await attachLocatorScreenshot(
+      wholeRecordPlots,
+      testInfo,
+      'allelic-landscape-three-panel-narrow.png'
+    )
     const histogramScroller = page.getByTestId('whole-record-delta-histogram-scroller')
     const narrowHistogramMetrics = await histogramScroller.evaluate((scroller) => {
       const scrollElement = scroller as HTMLElement

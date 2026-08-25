@@ -5,12 +5,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
-import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
-import {
-  LongReadAlleleSizeDistributionSection,
-  LongReadGenotypeDistributionSection,
-} from '../LongReadVariantPage/LongReadSTRDistributionSections'
 import {
   LongReadTrComponentTrack,
   motifColor,
@@ -77,35 +72,6 @@ const ProvenanceDetails = styled.details`
   summary {
     cursor: pointer;
     font-weight: bold;
-  }
-`
-
-const SimpleLocusPlotGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, calc(50% - 0.625em)));
-  align-items: start;
-  gap: 1.25em;
-  margin-top: 1.25em;
-
-  @media (max-width: 900px) {
-    grid-template-columns: minmax(0, 100%);
-  }
-`
-
-const SimpleLocusPlotCard = styled.div`
-  min-width: 0;
-  padding: 1em;
-  border: 1px solid #d8dee2;
-  border-radius: 4px;
-  background: #fbfcfd;
-
-  h3 {
-    margin-top: 0;
-  }
-
-  > div:first-of-type {
-    margin-right: auto;
-    margin-left: auto;
   }
 `
 
@@ -301,60 +267,11 @@ const LongReadTandemRepeatPage = ({
 
       <ShortReadKnownLocusContext context={locus.short_read_context} />
 
-      {repeatPlotsAvailable && (
-        <Panel aria-labelledby="lr-tr-simple-measurement-heading">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-            <h2 id="lr-tr-simple-measurement-heading" style={{ marginRight: 0 }}>
-              Simple-locus repeat counts
-            </h2>
-            <HaplotypeHelpButton title="About simple-locus repeat counts">
-              <p style={{ marginTop: 0 }}>
-                These plots appear only when the source data provide one unambiguous repeat unit and
-                an exact repeat count for this locus. Compound loci and loci without that
-                measurement use total allele length change instead.
-              </p>
-              <p>
-                The allele plot groups called chromosome copies by repeat count. The genotype plot
-                groups people by their shorter and longer called allele repeat counts; darker
-                squares represent more people.
-              </p>
-              <p style={{ marginBottom: 0 }}>
-                Population and sex controls filter called observations. These histograms do not
-                include a no-call denominator and are not a clinical interpretation.
-              </p>
-            </HaplotypeHelpButton>
-          </div>
-          <SimpleLocusPlotGrid data-testid="lr-tr-repeat-count-grid">
-            <SimpleLocusPlotCard>
-              <LongReadAlleleSizeDistributionSection
-                variantId={locus.id}
-                alleleSizeDistribution={locus.repeat_count_plots.allele_size_distribution}
-                maxRepunits={locus.repeat_count_plots.max_repunits || 0}
-                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
-                headingLevel="h3"
-                heading="Allele repeat-count distribution"
-                compact
-                focusObservedDomain
-              />
-            </SimpleLocusPlotCard>
-            <SimpleLocusPlotCard>
-              <LongReadGenotypeDistributionSection
-                variantId={locus.id}
-                genotypeDistribution={locus.repeat_count_plots.genotype_distribution}
-                repeatUnit={locus.repeat_count_plots.repeat_unit || undefined}
-                headingLevel="h3"
-                heading="Genotype repeat-count distribution"
-                compact
-                focusObservedDomain
-              />
-            </SimpleLocusPlotCard>
-          </SimpleLocusPlotGrid>
-        </Panel>
-      )}
-
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}
         genotypeLandscape={repeatPlotsAvailable ? undefined : locus.whole_record_genotype_landscape}
+        repeatCountPlots={repeatPlotsAvailable ? locus.repeat_count_plots : undefined}
+        variantId={locus.id}
         alleles={locus.alleles.nodes}
         motifs={locus.motifs}
         selectedAllele={selectedAllele}

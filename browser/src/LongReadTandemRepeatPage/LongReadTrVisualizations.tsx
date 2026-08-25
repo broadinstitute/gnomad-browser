@@ -15,6 +15,10 @@ import {
 } from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
 import { Sex, logScaleAllowed } from '../ShortTandemRepeatPage/ShortTandemRepeatPage'
 import { longReadAncestryGroupDisplayName } from '../LongReadVariantPage/longReadAncestryGroups'
+import {
+  LongReadAlleleSizeDistributionSection,
+  LongReadGenotypeDistributionSection,
+} from '../LongReadVariantPage/LongReadSTRDistributionSections'
 import ExactTrAltMotifStructure from '../VariantPage/ExactTrAltMotifStructure'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import { PATH_COLORS, SUPERPOPULATION_COLORS } from '../Haplotypes/colors'
@@ -36,15 +40,30 @@ const Panel = styled.section`
   margin-top: 2.4em;
 `
 
-const PlotGrid = styled.div<{ $columns: 2 | 3 }>`
-  display: grid;
-  grid-template-columns: repeat(${(props) => props.$columns}, minmax(0, 1fr));
-  align-items: start;
-  gap: 1.25em;
+const desktopColumnCount = (plotCount: number) => {
+  if (plotCount === 3) return 3
+  if (plotCount === 4) return 2
+  return Math.min(2, Math.max(1, plotCount))
+}
 
-  @media (max-width: 1100px) {
-    grid-template-columns: minmax(0, 100%);
+const PlotGrid = styled.div<{ $plotCount: number }>`
+  /* stylelint-disable unit-whitelist -- CSS Grid fractional tracks preserve equal readable cards. */
+  display: grid;
+  grid-template-columns: repeat(
+    ${(props) => desktopColumnCount(props.$plotCount)},
+    minmax(280px, 1fr)
+  );
+  align-items: start;
+  gap: clamp(24px, 2vw, 32px);
+
+  @media (max-width: 1199px) {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
   }
+
+  @media (max-width: 700px) {
+    grid-template-columns: minmax(280px, 1fr);
+  }
+  /* stylelint-enable unit-whitelist */
 `
 
 const PlotCard = styled.div`
@@ -95,6 +114,25 @@ const UNAVAILABLE_REASON_COPY: Record<string, string> = {
 
 const unavailableReason = (reason: string | null | undefined) =>
   (reason && UNAVAILABLE_REASON_COPY[reason]) || 'the required source data are unavailable'
+
+const RepeatCountHelp = () => (
+  <HaplotypeHelpButton title="About simple-locus repeat counts">
+    <p style={{ marginTop: 0 }}>
+      These plots appear only when the source data provide one unambiguous repeat unit and an exact
+      repeat count for this locus. Compound loci and loci without that measurement use total allele
+      length change instead.
+    </p>
+    <p>
+      The allele plot groups called chromosome copies by repeat count. The genotype plot groups
+      people by their shorter and longer called allele repeat counts; darker squares represent more
+      people.
+    </p>
+    <p style={{ marginBottom: 0 }}>
+      Each repeat-count card has clearly scoped population, sex, color, or scale controls. Counts do
+      not include a no-call denominator and are not a clinical interpretation.
+    </p>
+  </HaplotypeHelpButton>
+)
 
 const TotalAlleleLengthHelp = () => (
   <HaplotypeHelpButton title="About total allele length change">
@@ -960,9 +998,59 @@ const PurityScatter = ({
   )
 }
 
+const RepeatCountPlotCards = ({
+  variantId,
+  repeatCountPlots,
+}: {
+  variantId: string
+  repeatCountPlots: LongReadTrLocus['repeat_count_plots']
+}) => {
+  if (repeatCountPlots.status !== 'AVAILABLE_EXACT') return null
+
+  return (
+    <>
+      <PlotCard
+        data-plot-card="allele-repeat-count"
+        data-testid="allele-repeat-count-card"
+        role="group"
+        aria-label="Allele repeat-count plot and controls"
+      >
+        <LongReadAlleleSizeDistributionSection
+          variantId={variantId}
+          alleleSizeDistribution={repeatCountPlots.allele_size_distribution}
+          maxRepunits={repeatCountPlots.max_repunits || 0}
+          repeatUnit={repeatCountPlots.repeat_unit || undefined}
+          headingLevel="h3"
+          heading="Allele repeat-count distribution"
+          compact
+          focusObservedDomain
+        />
+      </PlotCard>
+      <PlotCard
+        data-plot-card="genotype-repeat-count"
+        data-testid="genotype-repeat-count-card"
+        role="group"
+        aria-label="Genotype repeat-count plot and controls"
+      >
+        <LongReadGenotypeDistributionSection
+          variantId={variantId}
+          genotypeDistribution={repeatCountPlots.genotype_distribution}
+          repeatUnit={repeatCountPlots.repeat_unit || undefined}
+          headingLevel="h3"
+          heading="Genotype repeat-count distribution"
+          compact
+          focusObservedDomain
+        />
+      </PlotCard>
+    </>
+  )
+}
+
 export const WholeRecordAlleleLandscape = ({
   landscape,
   genotypeLandscape,
+  repeatCountPlots,
+  variantId,
   alleles,
   motifs = [],
   selectedAllele,
@@ -973,6 +1061,8 @@ export const WholeRecordAlleleLandscape = ({
 }: {
   landscape: WholeRecordAlleleLandscapeData
   genotypeLandscape?: WholeRecordGenotypeLandscapeData
+  repeatCountPlots?: LongReadTrLocus['repeat_count_plots']
+  variantId?: string
   alleles: LongReadTrAllele[]
   motifs?: string[]
   selectedAllele?: string
@@ -981,6 +1071,10 @@ export const WholeRecordAlleleLandscape = ({
   sequencesAvailable?: boolean
   sequencesUnavailableReason?: string | null
 }) => {
+  const admittedRepeatCountPlots =
+    repeatCountPlots?.status === 'AVAILABLE_EXACT' ? repeatCountPlots : undefined
+  const visiblePlotCount = admittedRepeatCountPlots ? 4 : 2 + (genotypeLandscape ? 1 : 0)
+  const repeatCountVariantId = variantId || 'lr-tr-locus'
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
   const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | null>(null)
@@ -1038,15 +1132,31 @@ export const WholeRecordAlleleLandscape = ({
   if (landscape.status !== 'AVAILABLE') {
     return (
       <Panel aria-labelledby="lr-tr-allele-landscape-heading">
-        <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
-        <PlotGrid $columns={genotypeLandscape ? 3 : 2} data-testid="whole-record-allele-plot-grid">
-          <PlotCard>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <h2 id="lr-tr-allele-landscape-heading" style={{ marginRight: 0 }}>
+            Allelic landscape
+          </h2>
+          <TotalAlleleLengthHelp />
+          {admittedRepeatCountPlots && <RepeatCountHelp />}
+        </div>
+        <PlotGrid
+          $plotCount={visiblePlotCount}
+          data-plot-count={visiblePlotCount}
+          data-testid="whole-record-allele-plot-grid"
+        >
+          {admittedRepeatCountPlots && (
+            <RepeatCountPlotCards
+              variantId={repeatCountVariantId}
+              repeatCountPlots={admittedRepeatCountPlots}
+            />
+          )}
+          <PlotCard data-plot-card="total-length-histogram">
             <h3>Total allele length change</h3>
             <p role="status">
               Allele length distribution unavailable: {unavailableReason(landscape.reason_code)}.
             </p>
           </PlotCard>
-          <PlotCard>
+          <PlotCard data-plot-card="motif-purity">
             <h3>Length change × motif purity</h3>
             <p role="status">
               Motif purity unavailable: {unavailableReason(landscape.reason_code)}.
@@ -1132,16 +1242,19 @@ export const WholeRecordAlleleLandscape = ({
           Allelic landscape
         </h2>
         <TotalAlleleLengthHelp />
+        {admittedRepeatCountPlots && <RepeatCountHelp />}
       </div>
       <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '10px 22px' }}>
         {landscape.stratified_available && (
           <>
             <div
               role="group"
-              aria-label="Shared ancestry and sex filters"
+              aria-label="Shared ancestry and sex filters for total-length plots"
               style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}
             >
-              <ControlGroupLabel>Filter all three plots:</ControlGroupLabel>
+              <ControlGroupLabel>
+                {genotypeLandscape ? 'Filter all three total-length plots:' : 'Total-length plots:'}
+              </ControlGroupLabel>
               <ShortTandemRepeatPopulationOptions
                 id="lr-tr-landscape"
                 populations={filterOptions.ancestries}
@@ -1154,10 +1267,10 @@ export const WholeRecordAlleleLandscape = ({
             </div>
             <div
               role="group"
-              aria-label="Allele plot display controls"
+              aria-label="Total-length allele plot display controls"
               style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}
             >
-              <ControlGroupLabel>Allele plots only:</ControlGroupLabel>
+              <ControlGroupLabel>Total-length allele plots only:</ControlGroupLabel>
               <ShortTandemRepeatColorBySelect
                 id="lr-tr-whole-record"
                 selectedColorBy={selectedColorBy}
@@ -1221,8 +1334,18 @@ export const WholeRecordAlleleLandscape = ({
           and tables.
         </p>
       )}
-      <PlotGrid $columns={genotypeLandscape ? 3 : 2} data-testid="whole-record-allele-plot-grid">
-        <PlotCard>
+      <PlotGrid
+        $plotCount={visiblePlotCount}
+        data-plot-count={visiblePlotCount}
+        data-testid="whole-record-allele-plot-grid"
+      >
+        {admittedRepeatCountPlots && (
+          <RepeatCountPlotCards
+            variantId={repeatCountVariantId}
+            repeatCountPlots={admittedRepeatCountPlots}
+          />
+        )}
+        <PlotCard data-plot-card="total-length-histogram">
           <h3>Total allele length change</h3>
           <HistogramChart data-bin-count={bins.length} data-bar-width={histogramLayout.barWidth}>
             <HistogramYScale aria-hidden="true" $height={histogramLayout.height}>
@@ -1320,7 +1443,7 @@ export const WholeRecordAlleleLandscape = ({
             Total allele length change (ALT − REF, bp) · numbers above bars are exact alleles
           </div>
         </PlotCard>
-        <PlotCard>
+        <PlotCard data-plot-card="motif-purity">
           <h3>Length change × motif purity</h3>
           {landscape.purity_available ? (
             <PurityScatter
@@ -1453,7 +1576,7 @@ export const WholeRecordGenotypeLandscape = ({
 
   if (landscape.status !== 'AVAILABLE') {
     return (
-      <PlotCard data-testid="genotype-length-card">
+      <PlotCard data-plot-card="total-length-genotype" data-testid="genotype-length-card">
         <h3>Genotype length distribution</h3>
         <p role="status">
           Genotype landscape unavailable: {unavailableReason(landscape.reason_code)}.
@@ -1522,7 +1645,7 @@ export const WholeRecordGenotypeLandscape = ({
 
   return (
     <>
-      <PlotCard data-testid="genotype-length-card">
+      <PlotCard data-plot-card="total-length-genotype" data-testid="genotype-length-card">
         <h3>Genotype length distribution</h3>
         <p aria-live="polite">
           <strong>{totalPeople.toLocaleString()} people</strong> with complete diploid genotypes in

@@ -519,31 +519,36 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByRole('button', { name: /\+48 bp, 5 called allele copies/ })).not.toBeNull()
   })
 
-  test('lays out simple-locus repeat-count plots compactly and responsively', () => {
+  test('uses one spacious responsive 2 × 2 grid for the four actually admitted simple plots', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
-    const grid = screen.getByTestId('lr-tr-repeat-count-grid')
+    const grid = screen.getByTestId('whole-record-allele-plot-grid')
     const headings = within(grid).getAllByRole('heading', { level: 3 })
 
     expect(headings.map((heading) => heading.textContent)).toEqual([
       expect.stringContaining('Allele repeat-count distribution'),
       expect.stringContaining('Genotype repeat-count distribution'),
+      'Total allele length change',
+      'Length change × motif purity',
     ])
+    expect(grid.getAttribute('data-plot-count')).toBe('4')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(4)
     expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Simple-locus repeat counts' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'About simple-locus repeat counts' }))
     const help = screen.getByRole('dialog', { name: 'About simple-locus repeat counts' })
     expect(within(help).getByText(/one unambiguous repeat unit/)).not.toBeNull()
     expect(within(help).getByText(/groups called chromosome copies by repeat count/)).not.toBeNull()
     expect(within(help).getByText(/do not include a no-call denominator/)).not.toBeNull()
     expect(screen.queryByRole('heading', { name: 'Genotype length distribution' })).toBeNull()
-    expect(screen.getByTestId('whole-record-allele-plot-grid')).toHaveStyleRule(
-      'grid-template-columns',
-      'repeat(2,minmax(0,1fr))'
-    )
-    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(0,calc(50% - 0.625em)))')
-    expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
-      media: '(max-width:900px)',
+    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat( 2,minmax(280px,1fr) )')
+    expect(grid).toHaveStyleRule('gap', 'clamp(24px,2vw,32px)')
+    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(280px,1fr))', {
+      media: '(max-width:1199px)',
+    })
+    expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(280px,1fr)', {
+      media: '(max-width:700px)',
     })
     expect(grid.compareDocumentPosition(screen.getByTestId('lr-tr-exact-allele-browser'))).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
@@ -580,9 +585,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
       Node.DOCUMENT_POSITION_FOLLOWING
     )
     expect(genotypeDetail.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat(3,minmax(0,1fr))')
-    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
-      media: '(max-width:1100px)',
+    expect(plotGrid.getAttribute('data-plot-count')).toBe('3')
+    expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat( 3,minmax(280px,1fr) )')
+    expect(plotGrid).toHaveStyleRule('gap', 'clamp(24px,2vw,32px)')
+    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(280px,1fr))', {
+      media: '(max-width:1199px)',
+    })
+    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'minmax(280px,1fr)', {
+      media: '(max-width:700px)',
     })
     expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)')
     expect(index).toHaveStyleRule('overflow-x', 'hidden')

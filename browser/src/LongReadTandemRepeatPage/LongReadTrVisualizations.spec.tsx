@@ -534,7 +534,9 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    const filters = screen.getByRole('group', { name: 'Shared ancestry and sex filters' })
+    const filters = screen.getByRole('group', {
+      name: 'Shared ancestry and sex filters for total-length plots',
+    })
     expect(within(filters).queryByRole('option', { name: 'nfe' })).toBeNull()
     fireEvent.change(within(filters).getByLabelText('Genetic ancestry group'), {
       target: { value: 'afr' },
