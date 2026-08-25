@@ -450,7 +450,7 @@ const variantTableColumns: VariantTableColumn[] = [
             </Link>
             <span
               style={{ marginLeft: '0.75ch', whiteSpace: 'nowrap' }}
-              title={row.long_read_tr_delta_unavailable_reason || 'Complete observed whole-record ALT minus REF range'}
+              title={row.long_read_tr_delta_unavailable_reason || 'Complete total allele length change (ALT − REF, bp) range'}
             >
               Δbp {row.long_read_tr_delta_label}
             </span>

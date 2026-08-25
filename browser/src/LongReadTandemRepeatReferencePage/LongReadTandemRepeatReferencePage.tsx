@@ -221,7 +221,8 @@ export const LongReadTandemRepeatReferencePage = ({ rows }: { rows: LongReadTrRe
       </Intro>
       <Boundary>
         These links identify the same reference component by exact coordinates and motif. They do
-        not classify long-read alleles, whole-record length changes, genotypes, or individuals.
+        not classify long-read alleles, total allele length changes (ALT − REF, bp), genotypes, or
+        individuals.
       </Boundary>
 
       <Filters aria-label="Reference index filters">

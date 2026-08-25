@@ -92,8 +92,8 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
           </p>
           <p>
             The catalog&apos;s repeat-count ranges and motif labels are copied as reference context.
-            The coordinate match does not classify a long-read allele, genotype, whole-record length
-            change, or individual.
+            The coordinate match does not classify a long-read allele, genotype, total allele length
+            change (ALT − REF, bp), or individual.
           </p>
           <p style={{ marginBottom: 0 }}>
             A component outline is shown only when the API authorizes it for the exact matching
@@ -162,7 +162,8 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
 
       <Disclaimer>
         <strong>Short-read known-locus ranges are reference context.</strong> They are not applied
-        to long-read alleles, whole-record length changes, genotypes, or individuals.
+        to long-read alleles, total allele length changes (ALT − REF, bp), genotypes, or
+        individuals.
       </Disclaimer>
 
       <details>

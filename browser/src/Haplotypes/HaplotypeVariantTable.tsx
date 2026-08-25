@@ -435,7 +435,7 @@ const getCompleteTrBounds = (alleles: any[]): CompleteTrBounds => {
     return {
       min: null,
       max: null,
-      unavailableReason: 'A complete finite whole-record ALT minus REF delta is unavailable.',
+      unavailableReason: 'A complete finite total allele length change (ALT − REF, bp) is unavailable.',
     }
   }
   if (!deltas.length) {
@@ -576,7 +576,7 @@ const TableRow = React.memo(function TableRow({
           case 'allele_type':
             return <td key={columnKey}><TypeDot $color={getAlleleTypeColor(v.allele_type)} />{v.is_tr ? 'TR' : v.allele_type}</td>
           case 'allele_length':
-            return <td key={columnKey} className="numeric"><span title={v.delta_unavailable_reason || 'Complete observed whole-record ALT minus REF range'}>{v.is_tr ? formatTrLengthRange(v.min_length_diff, v.max_length_diff) : v.allele_length}</span></td>
+            return <td key={columnKey} className="numeric"><span title={v.delta_unavailable_reason || 'Complete total allele length change (ALT − REF, bp) range'}>{v.is_tr ? formatTrLengthRange(v.min_length_diff, v.max_length_diff) : v.allele_length}</span></td>
           case 'lr_af':
             return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : formatLongReadFrequency(v.freq.af, 4)}</td>
           case 'ac':

@@ -255,7 +255,7 @@ const completeTrDeltaBounds = (variants: RawLongReadVariant[]): TrDeltaBounds =>
     return {
       min: null,
       max: null,
-      unavailableReason: 'A complete finite whole-record ALT minus REF delta is unavailable.',
+      unavailableReason: 'A complete finite total allele length change (ALT − REF, bp) is unavailable.',
     }
   }
   if (!deltas.length) {
@@ -481,7 +481,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
         long_read_tr_delta_max: deltaBounds.max,
         long_read_tr_delta_label: deltaLabel,
         long_read_tr_delta_unavailable_reason: deltaBounds.unavailableReason,
-        long_read_tr_tooltip: `${label}; observed whole-record delta ${deltaLabel}; ${
+        long_read_tr_tooltip: `${label}; total allele length change ${deltaLabel}; ${
           loadedAltCount
         } exact ALT allele${loadedAltCount === 1 ? '' : 's'} across ${
           sourceVariantIds.length
