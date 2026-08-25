@@ -1,4 +1,5 @@
 import React from 'react'
+import 'jest-styled-components'
 import { render, screen } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 
@@ -6,6 +7,7 @@ import LocalHaplotypeBackgroundsSection, {
   boundedRowExactAlleleIds,
   decomposeUniqueExactAlleles,
   ExactSequenceStrip,
+  LocalHaplotypeHorizontalScroller,
 } from './LocalHaplotypeBackgroundsSection'
 import type { LongReadTrAllele, LongReadTrLocus } from './types'
 
@@ -85,6 +87,32 @@ describe('local haplotype section availability', () => {
     })
     expect(screen.getByText(/Select an exact allele/)).not.toBeNull()
     expect((global as any).fetch).not.toHaveBeenCalled()
+  })
+})
+
+describe('local haplotype narrow-width scrolling', () => {
+  test('keeps fixed-width aligned content in a focusable horizontal region', () => {
+    render(
+      <LocalHaplotypeHorizontalScroller aria-label="Narrow local haplotype visualization">
+        <div style={{ width: 720 }}>Aligned cluster, genomic, and genealogy columns</div>
+      </LocalHaplotypeHorizontalScroller>
+    )
+
+    const scroller = screen.getByRole('region', {
+      name: 'Narrow local haplotype visualization',
+    })
+    expect(scroller.getAttribute('tabindex')).toBe('0')
+    expect(scroller).toHaveStyleRule('box-sizing', 'border-box')
+    expect(scroller).toHaveStyleRule('width', '100%')
+    expect(scroller).toHaveStyleRule('max-width', '100%')
+    expect(scroller).toHaveStyleRule('min-width', '0')
+    expect(scroller).toHaveStyleRule('overflow-x', 'auto')
+    expect(scroller).toHaveStyleRule('outline', '3px solid #111', {
+      modifier: ':focus-visible',
+    })
+
+    scroller.focus()
+    expect(document.activeElement).toBe(scroller)
   })
 })
 

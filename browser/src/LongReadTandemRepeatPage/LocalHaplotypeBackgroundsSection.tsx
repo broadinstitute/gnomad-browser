@@ -75,8 +75,23 @@ const ResolutionControl = styled.label`
   }
 `
 
-const TargetRows = styled.div`
+export const LocalHaplotypeHorizontalScroller = styled.div.attrs({
+  role: 'region',
+  tabIndex: 0,
+})`
+  box-sizing: border-box;
+  width: 100%;
   overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+  outline-offset: 2px;
+
+  &:focus-visible {
+    outline: 3px solid #111;
+  }
+`
+
+const TargetRows = styled(LocalHaplotypeHorizontalScroller)`
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -154,9 +169,8 @@ const LegendKey = styled.span`
   gap: 0.25em;
 `
 
-const ViewerShell = styled.div`
+const ViewerShell = styled(LocalHaplotypeHorizontalScroller)`
   margin-top: 0.75em;
-  overflow-x: auto;
 `
 
 const fetchTargetHaplotypePayload = async (
