@@ -79,13 +79,36 @@ const TableScroller = styled.div`
   overscroll-behavior-inline: contain;
 
   table {
-    min-width: 1180px;
+    width: 100%;
+    min-width: 1160px;
+    table-layout: fixed;
   }
 
   th,
   td {
-    padding: 0.55em;
+    padding: 0.65em;
     vertical-align: top;
+  }
+
+  th:nth-child(1) {
+    width: 12%;
+  }
+
+  th:nth-child(2) {
+    width: 18%;
+  }
+
+  th:nth-child(3) {
+    width: 9%;
+  }
+
+  th:nth-child(4) {
+    width: 19%;
+  }
+
+  th:nth-child(5),
+  th:nth-child(6) {
+    width: 21%;
   }
 `
 
@@ -97,37 +120,103 @@ const MachineTuple = styled.code`
   white-space: nowrap;
 `
 
+const CohortCell = styled.div`
+  display: grid;
+  align-content: start;
+  min-width: 0;
+  gap: 0.45em;
+`
+
 const Status = styled.strong<{
   $kind: 'exact' | 'multiple' | 'none' | 'unavailable' | 'ambiguous'
 }>`
   display: inline-block;
-  padding: 0.15em 0.45em;
+  justify-self: start;
+  padding: 0.2em 0.55em;
   border: 1px solid
     ${(props) =>
       ({
-        exact: '#357a38',
-        multiple: '#8a6d1d',
-        none: '#777',
-        unavailable: '#8a1c1c',
-        ambiguous: '#8a1c1c',
+        exact: '#82bd8a',
+        multiple: '#d7b14d',
+        none: '#aab2b9',
+        unavailable: '#d99090',
+        ambiguous: '#d99a68',
       }[props.$kind])};
-  border-radius: 3px;
-  margin-bottom: 0.35em;
-  color: inherit;
-  font-size: 0.85em;
+  border-radius: 999px;
+  background: ${(props) =>
+    ({
+      exact: '#edf8ef',
+      multiple: '#fff7dd',
+      none: '#f1f3f4',
+      unavailable: '#fceded',
+      ambiguous: '#fff1e7',
+    }[props.$kind])};
+  color: ${(props) =>
+    ({
+      exact: '#245f2b',
+      multiple: '#674d09',
+      none: '#3f4a53',
+      unavailable: '#7b1d1d',
+      ambiguous: '#74380d',
+    }[props.$kind])};
+  font-size: 0.82em;
+  line-height: 1.3;
+`
+
+const LocusIdentity = styled.span`
+  display: block;
+  margin-top: 0.15em;
+  color: #555;
+  font-size: 0.82em;
+  line-height: 1.35;
 `
 
 const CandidateList = styled.ul`
-  padding-left: 1.2em;
-  margin: 0.25em 0 0;
-  overflow-wrap: anywhere;
+  display: grid;
+  padding: 0;
+  margin: 0;
+  gap: 0.45em;
+  list-style: none;
+
+  li {
+    min-width: 0;
+  }
 `
 
-const ReasonCode = styled.small`
-  display: block;
-  margin-top: 0.25em;
+const Diagnostic = styled.div`
+  color: #444;
+  font-size: 0.82em;
+  line-height: 1.35;
+
+  strong,
+  span {
+    display: block;
+  }
+
+  strong {
+    color: #333;
+  }
+`
+
+const AuditDetails = styled.details`
   color: #555;
-  overflow-wrap: anywhere;
+  font-size: 0.78em;
+  line-height: 1.4;
+
+  summary {
+    width: max-content;
+    cursor: pointer;
+    color: #4c6072;
+  }
+
+  div {
+    margin-top: 0.3em;
+    overflow-wrap: anywhere;
+  }
+
+  code {
+    font-size: inherit;
+  }
 `
 
 const Pagination = styled.nav`
@@ -147,6 +236,77 @@ const shortTandemRepeatUrl = (id: string) =>
 
 const cohortLabel = { hgsvc_hprc: 'HGSVC/HPRC', aou: 'All of Us' } as const
 
+const diagnosticCopy: Record<string, { label: string; help: string }> = {
+  NO_EXACT_COMPONENT: {
+    label: 'No matching component',
+    help: 'No LR component has both these coordinates and repeat unit.',
+  },
+  OVERLAP_ONLY: {
+    label: 'Overlapping locus only',
+    help: 'A locus overlaps this region, but no component matches exactly.',
+  },
+  REGION_EQUAL_MOTIF_MISMATCH: {
+    label: 'Repeat unit differs',
+    help: 'Coordinates match an LR component, but its repeat unit differs.',
+  },
+  MULTIPLE_CONTAINING_LR_LOCI: {
+    label: 'More than one containing locus',
+    help: 'This component belongs to multiple canonical LR loci; none was selected.',
+  },
+  DUPLICATE_ORDERED_COMPONENT: {
+    label: 'Component mapping is duplicated',
+    help: 'The same ordered component was reported more than once.',
+  },
+  SHORT_RECORD_MATCHES_MULTIPLE_COMPONENTS: {
+    label: 'Matches multiple components',
+    help: 'This short reference identity matches more than one component in a locus.',
+  },
+  NON_BIJECTIVE_ORDERED_COMPONENT: {
+    label: 'Component mapping is not one-to-one',
+    help: 'The catalog record and ordered LR component do not form a unique pair.',
+  },
+  DUPLICATE_COMPONENT: {
+    label: 'Component maps more than once',
+    help: 'The same reference component belongs to multiple canonical LR loci.',
+  },
+  DUPLICATE_CATALOG_EXACT_KEY: {
+    label: 'Catalog identity is duplicated',
+    help: 'Multiple catalog records share this exact reference identity.',
+  },
+  DUPLICATE_CATALOG_KEY: {
+    label: 'Catalog identity is duplicated',
+    help: 'Multiple catalog records share this reference identity.',
+  },
+  SOURCE_UNAVAILABLE: {
+    label: 'Reference source unavailable',
+    help: 'This cohort reference source could not be queried.',
+  },
+  STALE_SOURCE: {
+    label: 'Reference source is out of date',
+    help: 'This result cannot be confirmed against the current source.',
+  },
+}
+
+const fallbackDiagnosticLabel = (code: string) => {
+  const words = code.toLocaleLowerCase().split('_').join(' ')
+  return `${words.charAt(0).toLocaleUpperCase()}${words.slice(1)}`
+}
+
+const locusIdentity = (canonicalId: string) => {
+  const components = canonicalId.split('+')
+  if (components.length > 1) return `${components.length}-component locus`
+
+  const [chrom, start, stop, ...motifParts] = components[0].split('-')
+  const numericStart = Number(start)
+  const numericStop = Number(stop)
+  if (!chrom || !Number.isFinite(numericStart) || !Number.isFinite(numericStop)) return 'LR locus'
+
+  const motif = motifParts.join('-')
+  return `chr${chrom}:${numericStart.toLocaleString('en-US')}–${numericStop.toLocaleString(
+    'en-US'
+  )}${motif ? ` · ${motif}` : ''}`
+}
+
 const CohortResult = ({
   cohort,
   result,
@@ -158,39 +318,82 @@ const CohortResult = ({
   let label: string
   if (isExact(result)) {
     kind = 'exact'
-    label = 'Exact reference-component match'
+    label = 'Exact match'
   } else if (isMultiple(result)) {
     kind = 'multiple'
-    label = 'Multiple containing LR loci'
+    label = `${result.candidates.length} possible ${
+      result.candidates.length === 1 ? 'locus' : 'loci'
+    }`
   } else if (result.status === 'NONE') {
     kind = 'none'
-    label = 'No exact component match'
+    label = 'No exact match'
   } else if (result.status.includes('UNAVAILABLE')) {
     kind = 'unavailable'
-    label = 'Cohort unavailable'
+    label = 'Unavailable'
   } else {
     kind = 'ambiguous'
-    label = 'Ambiguous identity'
+    label = 'Ambiguous'
   }
 
+  const diagnostic = result.reason_code
+    ? diagnosticCopy[result.reason_code] || {
+        label: fallbackDiagnosticLabel(result.reason_code),
+        help: 'Diagnostic reported by the reference index.',
+      }
+    : null
+  const sourceParts = [
+    result.source_database ? `Database: ${result.source_database}` : null,
+    result.source_release ? `Release: ${result.source_release}` : null,
+    result.source_run_id ? `Run: ${result.source_run_id}` : null,
+  ].filter(Boolean)
+  const hasDetails =
+    Boolean(result.reason_code) || result.candidates.length > 0 || sourceParts.length > 0
+
   return (
-    <div>
-      <Status $kind={kind}>{label}</Status>
+    <CohortCell>
+      <Status $kind={kind} title={`Machine status: ${result.status}`}>
+        {label}
+      </Status>
       {result.candidates.length > 0 && (
         <CandidateList aria-label={`${cohortLabel[cohort]} candidate loci`}>
-          {result.candidates.map((candidate) => (
+          {result.candidates.map((candidate, index) => (
             <li key={candidate.canonical_id}>
-              <Link preserveSelectedDataset={false} to={trLocusUrl(candidate.canonical_id, cohort)}>
-                {candidate.canonical_id}
+              <Link
+                aria-label={`Open ${cohortLabel[cohort]} LR locus: ${candidate.canonical_id}`}
+                preserveSelectedDataset={false}
+                title={candidate.canonical_id}
+                to={trLocusUrl(candidate.canonical_id, cohort)}
+              >
+                {isExact(result) ? 'Open LR locus' : `Open locus ${index + 1}`}
               </Link>
+              <LocusIdentity>{locusIdentity(candidate.canonical_id)}</LocusIdentity>
             </li>
           ))}
         </CandidateList>
       )}
-      {result.reason_code && kind !== 'exact' && (
-        <ReasonCode title={`Reason code: ${result.reason_code}`}>{result.reason_code}</ReasonCode>
+      {diagnostic && (
+        <Diagnostic title={`Reason code: ${result.reason_code}`}>
+          <strong>{diagnostic.label}</strong>
+          <span>{diagnostic.help}</span>
+        </Diagnostic>
       )}
-    </div>
+      {hasDetails && (
+        <AuditDetails>
+          <summary>Match details</summary>
+          {result.reason_code && (
+            <div>
+              Reason code: <code>{result.reason_code}</code>
+            </div>
+          )}
+          {result.candidates.map((candidate) => (
+            <div key={`canonical-id-${candidate.canonical_id}`}>
+              Canonical ID: <code>{candidate.canonical_id}</code>
+            </div>
+          ))}
+          {sourceParts.length > 0 && <div>{sourceParts.join(' · ')}</div>}
+        </AuditDetails>
+      )}
+    </CohortCell>
   )
 }
 
@@ -309,8 +512,8 @@ export const LongReadTandemRepeatReferencePage = ({ rows }: { rows: LongReadTrRe
                   <th scope="col">GRCh38 short reference component</th>
                   <th scope="col">Repeat unit</th>
                   <th scope="col">Associated disease(s)</th>
-                  <th scope="col">HGSVC/HPRC exact LR locus/status</th>
-                  <th scope="col">All of Us exact LR locus/status</th>
+                  <th scope="col">HGSVC/HPRC LR match</th>
+                  <th scope="col">All of Us LR match</th>
                 </tr>
               </thead>
               <tbody>

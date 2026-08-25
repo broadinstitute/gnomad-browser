@@ -52,15 +52,23 @@ const nodes = [
     result('EXACT_UNIQUE', [htt]),
     result('EXACT_UNIQUE', [htt])
   ),
-  row('FMR1', 'X', 147911990, 147912053, 'CGG', result('NONE'), result('NONE')),
+  row(
+    'FMR1',
+    'X',
+    147911990,
+    147912053,
+    'CGG',
+    result('NONE', [], 'NO_EXACT_COMPONENT'),
+    result('NONE', [], 'OVERLAP_ONLY')
+  ),
   row(
     'MULTI',
     '1',
     99,
     120,
     'AAA',
-    result('MULTIPLE', ['1-99-120-AAA', '1-90-130-A+1-99-120-AAA']),
-    result('AMBIGUOUS_COMPONENT', [], 'DUPLICATE_COMPONENT')
+    result('MULTIPLE', ['1-99-120-AAA', '1-90-130-A+1-99-120-AAA'], 'MULTIPLE_CONTAINING_LR_LOCI'),
+    result('AMBIGUOUS_COMPONENT', [], 'SHORT_RECORD_MATCHES_MULTIPLE_COMPONENTS')
   ),
   row(
     'OFFLINE',
@@ -69,7 +77,7 @@ const nodes = [
     320,
     'TTT',
     result('UNAVAILABLE', [], 'SOURCE_UNAVAILABLE'),
-    result('AMBIGUOUS_CATALOG', [], 'DUPLICATE_CATALOG_KEY')
+    result('AMBIGUOUS_CATALOG', [], 'DUPLICATE_CATALOG_EXACT_KEY')
   ),
   ...Array.from({ length: 73 }, (_, index) =>
     row(
@@ -124,7 +132,7 @@ test.describe('short-read STR to long-read reference index', () => {
     expect(requests[0].query).toContain('first: 100')
     if (process.env.REFERENCE_SCREENSHOT_DIR) {
       await page.screenshot({
-        path: `${process.env.REFERENCE_SCREENSHOT_DIR}/reference-index-wide.png`,
+        path: `${process.env.REFERENCE_SCREENSHOT_DIR}/reference-index-cohort-cells-desktop.png`,
         fullPage: true,
       })
     }
@@ -134,10 +142,18 @@ test.describe('short-read STR to long-read reference index', () => {
       'href',
       '/short-tandem-repeat/ATXN1?dataset=gnomad_r4'
     )
-    await expect(atxn1Row.getByRole('link', { name: atxn1 }).first()).toHaveAttribute(
+    const atxn1Locus = atxn1Row.getByRole('link', {
+      name: `Open HGSVC/HPRC LR locus: ${atxn1}`,
+    })
+    await expect(atxn1Locus).toHaveText('Open LR locus')
+    await expect(atxn1Locus).toHaveAttribute('title', atxn1)
+    await expect(atxn1Locus).toHaveAttribute(
       'href',
       `/tandem-repeat/${atxn1}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
+    await expect(atxn1Row.getByText('chr6:16,327,633–16,327,723 · TGC')).toHaveCount(2)
+    await expect(page.getByRole('columnheader', { name: 'HGSVC/HPRC LR match' })).toBeVisible()
+    await expect(page.getByRole('columnheader', { name: 'All of Us LR match' })).toBeVisible()
 
     await page.getByRole('button', { name: 'Next' }).click()
     await expect(page.getByText('Page 2 of 2')).toBeVisible()
@@ -154,17 +170,32 @@ test.describe('short-read STR to long-read reference index', () => {
     await page.getByLabel('Match status').selectOption('multiple')
     await expect(page.getByTestId('long-read-tr-reference-row')).toHaveCount(1)
     const multiple = page.getByRole('row', { name: /MULTI/ })
-    await expect(multiple.getByText('Multiple containing LR loci')).toBeVisible()
-    await expect(multiple.getByLabel('HGSVC/HPRC candidate loci').getByRole('link')).toHaveCount(2)
-    await expect(multiple.getByText('Ambiguous identity')).toBeVisible()
+    await expect(multiple.getByText('2 possible loci')).toBeVisible()
+    await expect(
+      multiple.getByLabel('HGSVC/HPRC candidate loci').getByRole('link', {
+        name: /Open HGSVC\/HPRC LR locus:/,
+      })
+    ).toHaveCount(2)
+    await expect(multiple.getByText('Ambiguous')).toBeVisible()
+    await expect(multiple.getByText('Matches multiple components')).toBeVisible()
 
     await page.getByLabel('Match status').selectOption('unavailable_ambiguous')
-    await expect(page.getByText('Cohort unavailable')).toBeVisible()
-    await expect(page.getByText('Ambiguous identity')).toHaveCount(2)
+    await expect(page.getByTitle('Machine status: UNAVAILABLE')).toHaveText('Unavailable')
+    await expect(page.getByTitle('Machine status: AMBIGUOUS_COMPONENT')).toHaveText('Ambiguous')
+    await expect(page.getByTitle('Machine status: AMBIGUOUS_CATALOG')).toHaveText('Ambiguous')
 
     await page.getByLabel('Match status').selectOption('none')
-    await expect(page.getByRole('row', { name: /FMR1/ })).toBeVisible()
-    await expect(page.getByText('No exact component match')).toHaveCount(2)
+    const noMatch = page.getByRole('row', { name: /FMR1/ })
+    await expect(noMatch).toBeVisible()
+    await expect(noMatch.getByTitle('Machine status: NONE')).toHaveCount(2)
+    await expect(noMatch.getByTitle('Machine status: NONE')).toHaveText([
+      'No exact match',
+      'No exact match',
+    ])
+    await expect(noMatch.getByText('No matching component')).toBeVisible()
+    await expect(noMatch.getByText('Overlapping locus only')).toBeVisible()
+    await noMatch.getByText('Match details').first().click()
+    await expect(noMatch.getByText('NO_EXACT_COMPONENT')).toBeVisible()
   })
 
   test('supports search, sort, direct reload, and a keyboard-scrollable table at 390px', async ({
@@ -176,19 +207,29 @@ test.describe('short-read STR to long-read reference index', () => {
     await page.reload()
     await expect(page.getByRole('heading', { name: /Short-read STR/ })).toBeVisible()
     const requestCountAfterReload = requests.length
-    if (process.env.REFERENCE_SCREENSHOT_DIR) {
-      await page.screenshot({
-        path: `${process.env.REFERENCE_SCREENSHOT_DIR}/reference-index-390px.png`,
-        fullPage: true,
-      })
-    }
 
     await page.getByRole('searchbox', { name: 'Search' }).fill('HTT disease')
     await expect(page.getByRole('status')).toContainText('1 matching loci')
-    await expect(page.getByRole('row', { name: /HTT/ })).toBeVisible()
+    const httRow = page.getByRole('row', { name: /HTT/ })
+    await expect(httRow).toBeVisible()
+    await expect(httRow.getByText('6-component locus')).toHaveCount(2)
+    await expect(httRow.getByRole('link', { name: /Open All of Us LR locus:/ })).toHaveText(
+      'Open LR locus'
+    )
     await page.getByLabel('Sort').selectOption('genomic')
 
     const scroller = page.getByTestId('long-read-tr-reference-table-scroller')
+    const horizontalOffset = await scroller.evaluate((element) => {
+      element.scrollTo(element.scrollWidth, 0)
+      return element.scrollLeft
+    })
+    expect(horizontalOffset).toBeGreaterThan(0)
+    if (process.env.REFERENCE_SCREENSHOT_DIR) {
+      await page.screenshot({
+        path: `${process.env.REFERENCE_SCREENSHOT_DIR}/reference-index-cohort-cells-390px.png`,
+        fullPage: true,
+      })
+    }
     await scroller.focus()
     await expect(scroller).toBeFocused()
     const geometry = await page.evaluate(() => ({
