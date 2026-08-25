@@ -19,6 +19,7 @@ const SUMMARY_FIELDS = [
   'value.reference_region',
   'value.reference_regions',
   'value.reference_repeat_unit',
+  'value.repeat_units',
 ]
 
 type ExactComponent = { chrom: string; start0: number; end0: number; motif: string }
@@ -31,9 +32,10 @@ export const classifyExactShortTandemRepeatCatalogContext = (
   tandemRepeats.forEach((repeat) => {
     // reference_regions is the provenance-bearing list when present. Older records
     // expose only main_reference_region/reference_region, which is treated as index 0.
-    const regions = Array.isArray(repeat.reference_regions) && repeat.reference_regions.length
-      ? repeat.reference_regions
-      : [repeat.main_reference_region || repeat.reference_region].filter(Boolean)
+    const regions =
+      Array.isArray(repeat.reference_regions) && repeat.reference_regions.length
+        ? repeat.reference_regions
+        : [repeat.main_reference_region || repeat.reference_region].filter(Boolean)
     components.forEach((component, componentIndex) => {
       regions.forEach((region: any, referenceRegionIndex: number) => {
         if (

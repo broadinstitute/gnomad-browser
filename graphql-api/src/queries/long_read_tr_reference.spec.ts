@@ -16,6 +16,8 @@ import {
   fetchBoundedShortTandemRepeatCatalog,
   fetchShortTandemRepeatById,
 } from './short-tandem-repeat-queries'
+// eslint-disable-next-line import/first
+import { parseTrLocusId } from '../../../dataset-metadata/longReadTrLocusId'
 
 const fetchAll = fetchBoundedShortTandemRepeatCatalog as jest.Mock
 const fetchById = fetchShortTandemRepeatById as jest.Mock
@@ -53,9 +55,9 @@ describe('bounded long-read TR reference crosswalk', () => {
     const getSource = jest.fn(sourceFor)
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, getSource)
     expect(result.total_count).toBe(78)
-    expect(result.nodes.filter((node: any) => node.hgsvc_hprc.status === 'EXACT_UNIQUE')).toHaveLength(
-      51
-    )
+    expect(
+      result.nodes.filter((node: any) => node.hgsvc_hprc.status === 'EXACT_UNIQUE')
+    ).toHaveLength(51)
     expect(result.nodes.filter((node: any) => node.aou.status === 'EXACT_UNIQUE')).toHaveLength(58)
     expect(result.nodes[0]).toEqual(
       expect.objectContaining({
@@ -63,9 +65,9 @@ describe('bounded long-read TR reference crosswalk', () => {
         reference_region: expect.objectContaining({ reference_genome: 'GRCh38' }),
       })
     )
-    expect((result.nodes.find((node: any) => node.id === 'ATXN1') as any).aou.canonical_ids).toEqual([
-      '6-16327633-16327723-TGC',
-    ])
+    expect(
+      (result.nodes.find((node: any) => node.id === 'ATXN1') as any).aou.canonical_ids
+    ).toEqual(['6-16327633-16327723-TGC'])
     expect(fetchAll).toHaveBeenCalledTimes(1)
     expect(fetchById).not.toHaveBeenCalled()
     // One source-snapshot lookup per cohort/chromosome, never per row or candidate.
@@ -88,9 +90,7 @@ describe('bounded long-read TR reference crosswalk', () => {
     )
     expect(htt.nodes).toHaveLength(1)
     expect(htt.nodes[0].short_record.id).toBe('HTT')
-    expect(htt.nodes[0].hgsvc_hprc.candidates[0].canonical_id).toContain(
-      '+4-3074927-3074936-CAA'
-    )
+    expect(htt.nodes[0].hgsvc_hprc.candidates[0].canonical_id).toContain('+4-3074927-3074936-CAA')
 
     const firstPage = await buildLongReadTrReferenceConnection(
       { first: 1, match_status: 'BOTH' },
@@ -131,56 +131,237 @@ describe('bounded long-read TR reference crosswalk', () => {
     )
   })
 
+  test('contains a source lookup exception to its cohort/chromosome cell', async () => {
+    const esClient = {}
+    const throwingAoU = async (cohort: 'hgsvc_hprc' | 'aou', chrom: string) => {
+      if (cohort === 'aou' && chrom.toUpperCase() === 'CHR6') throw new Error('lookup failed')
+      return sourceFor(cohort, chrom)
+    }
+    const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, throwingAoU)
+    expect(result.total_count).toBe(78)
+    expect(
+      result.nodes.filter((node: any) => node.hgsvc_hprc.status === 'EXACT_UNIQUE')
+    ).toHaveLength(51)
+    const atxn1 = result.nodes.find((node: any) => node.id === 'ATXN1') as any
+    expect(atxn1.hgsvc_hprc.status).toBe('EXACT_UNIQUE')
+    expect(atxn1.aou).toEqual(
+      expect.objectContaining({ status: 'UNAVAILABLE', reason_code: 'SOURCE_UNAVAILABLE' })
+    )
+  })
+
   test('catalog digest is independent of Elasticsearch object key order', () => {
     const reorderedRows = catalogRows.map((row: any) => ({
-      ...row,
+      repeat_units: row.repeat_units.map((unit: any) => ({
+        classification: unit.classification,
+        repeat_unit: unit.repeat_unit,
+      })),
+      reference_repeat_unit: row.reference_repeat_unit,
+      reference_regions: row.reference_regions.map((region: any) => ({
+        stop: region.stop,
+        chrom: region.chrom,
+        start: region.start,
+        reference_genome: region.reference_genome,
+      })),
       main_reference_region: {
         stop: row.main_reference_region.stop,
         reference_genome: row.main_reference_region.reference_genome,
         start: row.main_reference_region.start,
         chrom: row.main_reference_region.chrom,
       },
+      strchive_id: row.strchive_id,
+      stripy_id: row.stripy_id,
+      associated_diseases: row.associated_diseases.map((disease: any) => ({
+        notes: disease.notes,
+        repeat_size_classifications: disease.repeat_size_classifications.map(
+          (classification: any) => ({
+            max: classification.max,
+            classification: classification.classification,
+            min: classification.min,
+          })
+        ),
+        inheritance_mode: disease.inheritance_mode,
+        omim_id: disease.omim_id,
+        symbol: disease.symbol,
+        name: disease.name,
+      })),
+      gene: row.gene,
+      id: row.id,
     }))
     expect(compactCatalogSha256(reorderedRows)).toBe(
+      longReadTrReferenceArtifactForTests.catalog.compact_sha256
+    )
+    const compIndex = reorderedRows.findIndex((row: any) => row.id === 'COMP')
+    const driftedNotes = structuredClone(reorderedRows)
+    driftedNotes[compIndex].associated_diseases[1].notes = 'drifted clinical note'
+    expect(compactCatalogSha256(driftedNotes)).not.toBe(
+      longReadTrReferenceArtifactForTests.catalog.compact_sha256
+    )
+    const driftedUnits = structuredClone(reorderedRows)
+    driftedUnits[0].repeat_units[0].classification = 'benign'
+    expect(compactCatalogSha256(driftedUnits)).not.toBe(
       longReadTrReferenceArtifactForTests.catalog.compact_sha256
     )
   })
 
   test('fails all cohort cells closed when the catalog digest drifts', async () => {
     const esClient = {}
-    fetchAll.mockResolvedValue(catalogRows.map((row: any, index: number) =>
-      index === 0 ? { ...row, reference_repeat_unit: 'DRIFT' } : row
-    ))
+    fetchAll.mockResolvedValue(
+      catalogRows.map((row: any, index: number) =>
+        index === 0 ? { ...row, reference_repeat_unit: 'DRIFT' } : row
+      )
+    )
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, sourceFor)
     expect(result.provenance.catalog_available).toBe(false)
     expect(result.nodes.every((node: any) => node.aou.status === 'UNAVAILABLE')).toBe(true)
     expect(result.nodes[0].aou.reason_code).toBe('CATALOG_DIGEST_MISMATCH')
   })
 
-  test.each(['ATXN1', 'HTT'])('returns exact detail context and only the authorized component for %s', async (id) => {
+  test.each(['ATXN1', 'HTT'])(
+    'returns exact detail context and binds the full LR component tuple for %s',
+    async (id) => {
+      const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
+        (row: any) => row.short.id === id
+      ) as any
+      const result = artifactRow.cohorts.hgsvc_hprc
+      const candidate = result.candidates[0]
+      const parsed = parseTrLocusId(candidate.canonical_id)!
+      fetchById.mockResolvedValue(artifactRow.short)
+      const locus = {
+        id: candidate.canonical_id,
+        chrom: candidate.matched_component.chrom,
+        components: parsed.components,
+        lr_cohort: 'hgsvc_hprc',
+      }
+      const context = await resolveLongReadTrShortReadContext(locus, {}, sourceFor)
+      expect(context.status).toBe('EXACT_UNIQUE')
+      expect(context.catalog_record.id).toBe(id)
+      expect(context.matched_component_index).toBe(0)
+      expect(context.pathogenic_component_highlight).toBe(true)
+      expect(context.candidates).toHaveLength(1)
+      expect(parsed.components).toHaveLength(id === 'HTT' ? 6 : 1)
+      expect(fetchById).toHaveBeenCalledTimes(1)
+    }
+  )
+
+  test('rejects detail when a decision-bearing raw repeat classification drifts', async () => {
     const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
-      (row: any) => row.short.id === id
+      (row: any) => row.short.id === 'ATXN1'
     ) as any
-    const result = artifactRow.cohorts.hgsvc_hprc
-    const candidate = result.candidates[0]
+    const candidate = artifactRow.cohorts.hgsvc_hprc.candidates[0]
+    const parsed = parseTrLocusId(candidate.canonical_id)!
     fetchById.mockResolvedValue({
       ...artifactRow.short,
-      reference_regions: [artifactRow.short.main_reference_region],
-      repeat_units: [
-        { repeat_unit: artifactRow.short.reference_repeat_unit, classification: 'pathogenic' },
-      ],
+      repeat_units: artifactRow.short.repeat_units.map((unit: any, index: number) =>
+        index === 0 ? { ...unit, classification: 'drifted' } : unit
+      ),
     })
+    const context = await resolveLongReadTrShortReadContext(
+      {
+        id: candidate.canonical_id,
+        chrom: candidate.matched_component.chrom,
+        components: parsed.components,
+        lr_cohort: 'hgsvc_hprc',
+      },
+      {},
+      sourceFor
+    )
+    expect(context).toEqual(
+      expect.objectContaining({
+        status: 'CATALOG_UNAVAILABLE',
+        reason_code: 'CATALOG_DETAIL_DIGEST_MISMATCH',
+        pathogenic_component_highlight: false,
+      })
+    )
+  })
+
+  test('fails highlight closed when the authorized component tuple differs from the locus', async () => {
+    const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
+      (row: any) => row.short.id === 'ATXN1'
+    ) as any
+    const candidate = artifactRow.cohorts.hgsvc_hprc.candidates[0]
+    const parsed = parseTrLocusId(candidate.canonical_id)!
     const locus = {
       id: candidate.canonical_id,
       chrom: candidate.matched_component.chrom,
+      components: [{ ...parsed.components[0], motif: 'WRONG' }],
       lr_cohort: 'hgsvc_hprc',
     }
     const context = await resolveLongReadTrShortReadContext(locus, {}, sourceFor)
-    expect(context.status).toBe('EXACT_UNIQUE')
-    expect(context.catalog_record.id).toBe(id)
-    expect(context.matched_component_index).toBe(0)
-    expect(context.pathogenic_component_highlight).toBe(true)
-    expect(context.candidates).toHaveLength(1)
-    expect(fetchById).toHaveBeenCalledTimes(1)
+    expect(context).toEqual(
+      expect.objectContaining({
+        status: 'AMBIGUOUS_COMPONENT',
+        reason_code: 'LR_LOCUS_COMPONENT_MISMATCH',
+        pathogenic_component_highlight: false,
+      })
+    )
+    expect(context.catalog_record).toBeUndefined()
+    expect(fetchById).not.toHaveBeenCalled()
   })
+
+  test.each([
+    ['null', async () => null, 'SOURCE_UNAVAILABLE'],
+    ['throwing', async () => Promise.reject(new Error('source failed')), 'SOURCE_UNAVAILABLE'],
+    [
+      'stale',
+      async () => ({ ...(await sourceFor('hgsvc_hprc', 'chr6'))!, run_id: 'stale-run' }),
+      'SOURCE_PROVENANCE_MISMATCH',
+    ],
+  ])('validates a %s source before returning NONE detail', async (_label, getSource, reason) => {
+    const locus = {
+      id: '6-1-2-A',
+      chrom: '6',
+      components: [{ chrom: '6', start0: 1, end0: 2, motif: 'A' }],
+      lr_cohort: 'hgsvc_hprc',
+    }
+    const context = await resolveLongReadTrShortReadContext(locus, {}, getSource as any)
+    expect(context).toEqual(expect.objectContaining({ status: 'UNAVAILABLE', reason_code: reason }))
+  })
+
+  test.each([
+    ['MULTIPLE', 'MULTIPLE_CONTAINING_LR_LOCI'],
+    ['AMBIGUOUS_CATALOG', 'DUPLICATE_CATALOG_EXACT_KEY'],
+    ['AMBIGUOUS_COMPONENT', 'DUPLICATE_ORDERED_COMPONENT'],
+  ])(
+    'preserves %s detail status and all candidates without clinical context',
+    async (status, reason) => {
+      const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
+        (row: any) => row.short.id === 'ATXN1'
+      ) as any
+      const result = artifactRow.cohorts.hgsvc_hprc
+      const originalStatus = result.status
+      const originalReason = result.reason_code
+      const originalCandidates = result.candidates
+      const candidate = originalCandidates[0]
+      result.status = status
+      result.reason_code = reason
+      result.candidates = [candidate, { ...candidate }]
+      try {
+        const parsed = parseTrLocusId(candidate.canonical_id)!
+        const context = await resolveLongReadTrShortReadContext(
+          {
+            id: candidate.canonical_id,
+            chrom: candidate.matched_component.chrom,
+            components: parsed.components,
+            lr_cohort: 'hgsvc_hprc',
+          },
+          {},
+          sourceFor
+        )
+        expect(context).toEqual(
+          expect.objectContaining({
+            status,
+            reason_code: reason,
+            candidates: result.candidates,
+            pathogenic_component_highlight: false,
+          })
+        )
+        expect(context.catalog_record).toBeUndefined()
+        expect(fetchById).not.toHaveBeenCalled()
+      } finally {
+        result.status = originalStatus
+        result.reason_code = originalReason
+        result.candidates = originalCandidates
+      }
+    }
+  )
 })

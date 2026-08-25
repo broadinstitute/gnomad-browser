@@ -41,6 +41,13 @@ type ArtifactRow = {
   short: any
   cohorts: { hgsvc_hprc: CohortResult; aou: CohortResult }
 }
+type ExpectedSource = {
+  cohort: 'hgsvc_hprc' | 'aou'
+  chrom: string
+  source_database: string
+  source_release: string
+  source_run_id: string
+}
 type CrosswalkArtifact = {
   schema_version: number
   catalog: {
@@ -54,12 +61,13 @@ type CrosswalkArtifact = {
   }
   provenance: any
   reconciliation: any
+  sources: ExpectedSource[]
   rows: ArtifactRow[]
 }
 
 const artifact = JSON.parse(readFileSync(artifactPath, 'utf8')) as CrosswalkArtifact
 if (
-  artifact.schema_version !== 1 ||
+  artifact.schema_version !== 2 ||
   artifact.catalog.dataset !== 'gnomad_r4' ||
   artifact.catalog.row_count !== artifact.rows.length ||
   artifact.rows.length !== 78 ||
@@ -75,42 +83,110 @@ const exactRegion = (region: any, component: Component) =>
   Number(region.start) === component.start0 &&
   Number(region.stop) === component.end0
 
+const requireOwn = (value: any, key: string, context: string) => {
+  if (value == null || !Object.prototype.hasOwnProperty.call(value, key)) {
+    throw new Error(`${context} is missing required transfer field ${key}`)
+  }
+  return value[key]
+}
+
+const normalizeRegion = (region: any, context: string) => {
+  requireOwn(region, 'reference_genome', context)
+  requireOwn(region, 'chrom', context)
+  requireOwn(region, 'start', context)
+  requireOwn(region, 'stop', context)
+  return {
+    reference_genome: region.reference_genome,
+    chrom: region.chrom,
+    start: Number(region.start),
+    stop: Number(region.stop),
+  }
+}
+
 export const normalizeShortCatalogRows = (rows: any[]) =>
   rows
-    .map((row) => ({
-      id: String(row.id),
-      gene: {
-        ensembl_id: row.gene?.ensembl_id,
-        symbol: row.gene?.symbol,
-        region: row.gene?.region,
-      },
-      associated_diseases: (row.associated_diseases || []).map((disease: any) => ({
-        name: disease.name,
-        symbol: disease.symbol,
-        omim_id: disease.omim_id || null,
-        inheritance_mode: disease.inheritance_mode,
-        repeat_size_classifications: (disease.repeat_size_classifications || []).map(
-          (classification: any) => ({
-            classification: classification.classification,
-            min: classification.min == null ? null : Number(classification.min),
-            max: classification.max == null ? null : Number(classification.max),
-          })
+    .map((row, rowIndex) => {
+      const context = `catalog row ${row?.id || rowIndex}`
+      for (const key of [
+        'id',
+        'gene',
+        'associated_diseases',
+        'main_reference_region',
+        'reference_regions',
+        'reference_repeat_unit',
+        'repeat_units',
+      ]) {
+        requireOwn(row, key, context)
+      }
+      if (!Array.isArray(row.associated_diseases)) {
+        throw new Error(`${context} associated_diseases is not an array`)
+      }
+      if (!Array.isArray(row.reference_regions) || !row.reference_regions.length) {
+        throw new Error(`${context} reference_regions is not a non-empty array`)
+      }
+      if (!Array.isArray(row.repeat_units) || !row.repeat_units.length) {
+        throw new Error(`${context} repeat_units is not a non-empty array`)
+      }
+      return {
+        id: String(row.id),
+        gene: {
+          ensembl_id: requireOwn(row.gene, 'ensembl_id', `${context} gene`),
+          symbol: requireOwn(row.gene, 'symbol', `${context} gene`),
+          region: requireOwn(row.gene, 'region', `${context} gene`),
+        },
+        associated_diseases: row.associated_diseases.map((disease: any, diseaseIndex: number) => {
+          const diseaseContext = `${context} disease ${diseaseIndex}`
+          for (const key of ['name', 'symbol', 'inheritance_mode', 'repeat_size_classifications']) {
+            requireOwn(disease, key, diseaseContext)
+          }
+          if (!Array.isArray(disease.repeat_size_classifications)) {
+            throw new Error(`${diseaseContext} repeat_size_classifications is not an array`)
+          }
+          return {
+            name: disease.name,
+            symbol: disease.symbol,
+            omim_id: disease.omim_id == null ? null : disease.omim_id,
+            inheritance_mode: disease.inheritance_mode,
+            notes: disease.notes == null ? null : disease.notes,
+            repeat_size_classifications: disease.repeat_size_classifications.map(
+              (classification: any, classificationIndex: number) => {
+                const classificationContext = `${diseaseContext} classification ${classificationIndex}`
+                requireOwn(classification, 'classification', classificationContext)
+                if (
+                  !Object.prototype.hasOwnProperty.call(classification, 'min') &&
+                  !Object.prototype.hasOwnProperty.call(classification, 'max')
+                ) {
+                  throw new Error(`${classificationContext} is missing both min and max`)
+                }
+                return {
+                  classification: classification.classification,
+                  min: classification.min == null ? null : Number(classification.min),
+                  max: classification.max == null ? null : Number(classification.max),
+                }
+              }
+            ),
+          }
+        }),
+        stripy_id: row.stripy_id == null ? null : row.stripy_id,
+        strchive_id: row.strchive_id == null ? null : row.strchive_id,
+        main_reference_region: normalizeRegion(row.main_reference_region, `${context} main region`),
+        reference_regions: row.reference_regions.map((region: any, index: number) =>
+          normalizeRegion(region, `${context} reference region ${index}`)
         ),
-      })),
-      stripy_id: row.stripy_id || null,
-      strchive_id: row.strchive_id || null,
-      main_reference_region: {
-        reference_genome: row.main_reference_region?.reference_genome,
-        chrom: row.main_reference_region?.chrom,
-        start: Number(row.main_reference_region?.start),
-        stop: Number(row.main_reference_region?.stop),
-      },
-      reference_repeat_unit: String(row.reference_repeat_unit),
-    }))
+        reference_repeat_unit: String(row.reference_repeat_unit),
+        repeat_units: row.repeat_units.map((unit: any, index: number) => {
+          requireOwn(unit, 'repeat_unit', `${context} repeat unit ${index}`)
+          requireOwn(unit, 'classification', `${context} repeat unit ${index}`)
+          return { repeat_unit: unit.repeat_unit, classification: unit.classification }
+        }),
+      }
+    })
     .sort((left, right) => left.id.localeCompare(right.id))
 
 export const compactCatalogSha256 = (rows: any[]) =>
-  createHash('sha256').update(JSON.stringify(normalizeShortCatalogRows(rows))).digest('hex')
+  createHash('sha256')
+    .update(JSON.stringify(normalizeShortCatalogRows(rows)))
+    .digest('hex')
 
 type CatalogState = { available: boolean; reason: string | null; rows: any[] }
 const catalogCache = new WeakMap<object, { expires: number; promise: Promise<CatalogState> }>()
@@ -148,12 +224,35 @@ const loadCatalogState = async (esClient: object): Promise<CatalogState> => {
   return promise
 }
 
-const sourceMatches = (result: CohortResult, source: Y1SourceSnapshot | null) =>
+const sourceKey = (cohort: string, chrom: string) => `${cohort}\u0000chr${normalizedChrom(chrom)}`
+
+const expectedSources = new Map<string, ExpectedSource>()
+for (const source of artifact.sources || []) {
+  const key = sourceKey(source.cohort, source.chrom)
+  if (expectedSources.has(key)) throw new Error(`Duplicate crosswalk source identity ${key}`)
+  expectedSources.set(key, source)
+}
+if (expectedSources.size !== 48) {
+  throw new Error('Invalid long-read TR reference source identity bundle')
+}
+
+const sourceMatches = (
+  result: Pick<CohortResult, 'source_database' | 'source_release' | 'source_run_id'>,
+  source: Y1SourceSnapshot | null
+) =>
   !!source &&
   source.reference_genome === 'GRCh38' &&
   source.database === result.source_database &&
   source.release === result.source_release &&
   source.run_id === result.source_run_id
+
+const componentMatches = (left: any, right: Component | undefined) =>
+  !!left &&
+  !!right &&
+  normalizedChrom(left.chrom) === normalizedChrom(right.chrom) &&
+  Number(left.start0) === right.start0 &&
+  Number(left.end0) === right.end0 &&
+  String(left.motif) === right.motif
 
 const unavailableResult = (result: CohortResult, reason_code: string) => ({
   ...result,
@@ -211,7 +310,14 @@ const matchesStatusFilter = (row: ArtifactRow, filter?: string | null) => {
 
 const cursorFingerprint = (args: any) =>
   createHash('sha256')
-    .update(JSON.stringify([args.query || '', args.chrom || '', args.match_status || '', args.sort || 'SHORT_ID_ASC']))
+    .update(
+      JSON.stringify([
+        args.query || '',
+        args.chrom || '',
+        args.match_status || '',
+        args.sort || 'SHORT_ID_ASC',
+      ])
+    )
     .digest('hex')
     .slice(0, 16)
 
@@ -286,15 +392,24 @@ export const buildLongReadTrReferenceConnection = async (
     throw new UserVisibleError(`first must be between 1 and ${LONG_READ_TR_REFERENCE_MAX_FIRST}`)
   }
   const catalogState = await loadCatalogState(esClient)
-  const sourceKeys = new Map<string, Promise<Y1SourceSnapshot | null>>()
+  type SourceLookup = { source: Y1SourceSnapshot | null; failed: boolean }
+  const sourceKeys = new Map<string, Promise<SourceLookup>>()
   for (const row of artifact.rows) {
     const chrom = `chr${normalizedChrom(row.short.main_reference_region.chrom)}`
     for (const cohort of ['hgsvc_hprc', 'aou'] as const) {
-      const key = `${cohort}\u0000${chrom}`
-      if (!sourceKeys.has(key)) sourceKeys.set(key, getSource(cohort, chrom))
+      const key = sourceKey(cohort, chrom)
+      if (!sourceKeys.has(key)) {
+        sourceKeys.set(
+          key,
+          Promise.resolve()
+            .then(() => getSource(cohort, chrom))
+            .then((source) => ({ source, failed: false }))
+            .catch(() => ({ source: null, failed: true }))
+        )
+      }
     }
   }
-  const sources = new Map<string, Y1SourceSnapshot | null>()
+  const sources = new Map<string, SourceLookup>()
   await Promise.all(
     [...sourceKeys].map(async ([key, promise]) => {
       sources.set(key, await promise)
@@ -310,23 +425,30 @@ export const buildLongReadTrReferenceConnection = async (
         if (!catalogState.available) {
           validated = unavailableResult(result, catalogState.reason || 'CATALOG_UNAVAILABLE')
         } else {
-          const source = sources.get(`${cohort}\u0000${chrom}`) || null
-          validated = sourceMatches(result, source)
+          const lookup = sources.get(sourceKey(cohort, chrom)) || { source: null, failed: true }
+          validated = sourceMatches(result, lookup.source)
             ? result
-            : unavailableResult(result, source ? 'SOURCE_PROVENANCE_MISMATCH' : 'SOURCE_UNAVAILABLE')
+            : unavailableResult(
+                result,
+                lookup.source ? 'SOURCE_PROVENANCE_MISMATCH' : 'SOURCE_UNAVAILABLE'
+              )
         }
         return [
           cohort,
           {
             ...validated,
-            canonical_ids: [...new Set(validated.candidates.map((candidate) => candidate.canonical_id))],
+            canonical_ids: [
+              ...new Set(validated.candidates.map((candidate) => candidate.canonical_id)),
+            ],
           },
         ]
       })
     ) as unknown as { hgsvc_hprc: ValidatedCohortResult; aou: ValidatedCohortResult }
     return { ...row, cohorts }
   })
-  const query = String(args.query || '').trim().toLowerCase()
+  const query = String(args.query || '')
+    .trim()
+    .toLowerCase()
   if (query) rows = rows.filter((row) => rowSearchText(row).includes(query))
   if (args.chrom) {
     const chrom = normalizedChrom(args.chrom)
@@ -388,39 +510,86 @@ export const resolveLongReadTrShortReadContext = (
     if (!catalogState.available) {
       return { ...base, status: 'CATALOG_UNAVAILABLE', reason_code: catalogState.reason }
     }
+
+    const cohort = locus.lr_cohort as 'hgsvc_hprc' | 'aou'
+    const chrom = `chr${normalizedChrom(locus.chrom)}`
+    const expectedSource = expectedSources.get(sourceKey(cohort, chrom))
     let source: Y1SourceSnapshot | null
     try {
-      source = await getSource(locus.lr_cohort, `chr${normalizedChrom(locus.chrom)}`)
+      source = await getSource(cohort, chrom)
     } catch {
-      return { ...base, status: 'CATALOG_UNAVAILABLE', reason_code: 'SOURCE_UNAVAILABLE' }
+      return { ...base, status: 'UNAVAILABLE', reason_code: 'SOURCE_UNAVAILABLE' }
     }
+    if (!expectedSource || !source) {
+      return { ...base, status: 'UNAVAILABLE', reason_code: 'SOURCE_UNAVAILABLE' }
+    }
+    if (!sourceMatches(expectedSource, source)) {
+      return { ...base, status: 'UNAVAILABLE', reason_code: 'SOURCE_PROVENANCE_MISMATCH' }
+    }
+
     const containing = artifact.rows.flatMap((row) => {
-      const result = row.cohorts[locus.lr_cohort as 'hgsvc_hprc' | 'aou']
-      return result.candidates
-        .filter((candidate) => candidate.canonical_id === locus.id)
-        .map((candidate) => ({ row, result, candidate }))
+      const result = row.cohorts[cohort]
+      return result.candidates.some((candidate) => candidate.canonical_id === locus.id)
+        ? [{ row, result }]
+        : []
     })
     if (!containing.length) return { ...base, status: 'NONE', reason_code: 'NO_EXACT_COMPONENT' }
-    if (!source || containing.some(({ result }) => !sourceMatches(result, source))) {
+
+    const candidates = containing.flatMap(({ result }) => result.candidates)
+    if (containing.some(({ result }) => !sourceMatches(result, source))) {
       return {
         ...base,
-        status: 'CATALOG_UNAVAILABLE',
-        reason_code: source ? 'SOURCE_PROVENANCE_MISMATCH' : 'SOURCE_UNAVAILABLE',
-        candidates: containing.map(({ candidate }) => candidate),
+        status: 'UNAVAILABLE',
+        reason_code: 'SOURCE_PROVENANCE_MISMATCH',
+        candidates,
       }
     }
-    const valid = containing.filter(({ result }) => result.status === 'EXACT_UNIQUE')
-    if (valid.length !== 1 || containing.length !== 1) {
+    const nonExactStatus = (['MULTIPLE', 'AMBIGUOUS_CATALOG', 'AMBIGUOUS_COMPONENT'] as const).find(
+      (status) => containing.some(({ result }) => result.status === status)
+    )
+    if (nonExactStatus) {
+      const reasons = [
+        ...new Set(containing.map(({ result }) => result.reason_code).filter(Boolean)),
+      ]
       return {
         ...base,
-        status: containing.some(({ result }) => result.status === 'AMBIGUOUS_CATALOG')
-          ? 'AMBIGUOUS_CATALOG'
-          : 'AMBIGUOUS_COMPONENT',
+        status: nonExactStatus,
+        reason_code: reasons.length === 1 ? reasons[0] : 'NON_BIJECTIVE_EXACT_IDENTITY',
+        candidates,
+      }
+    }
+
+    const valid = containing.flatMap(({ row, result }) =>
+      result.status === 'EXACT_UNIQUE'
+        ? result.candidates
+            .filter((candidate) => candidate.canonical_id === locus.id)
+            .map((candidate) => ({ row, result, candidate }))
+        : []
+    )
+    if (valid.length !== 1 || containing.length !== 1 || candidates.length !== 1) {
+      return {
+        ...base,
+        status: 'AMBIGUOUS_COMPONENT',
         reason_code: 'NON_BIJECTIVE_EXACT_IDENTITY',
-        candidates: containing.map(({ candidate }) => candidate),
+        candidates,
       }
     }
     const { row, candidate } = valid[0]
+    if (
+      !Number.isInteger(candidate.matched_component_index) ||
+      !componentMatches(
+        locus.components?.[candidate.matched_component_index],
+        candidate.matched_component
+      )
+    ) {
+      return {
+        ...base,
+        status: 'AMBIGUOUS_COMPONENT',
+        reason_code: 'LR_LOCUS_COMPONENT_MISMATCH',
+        candidates: [candidate],
+      }
+    }
+
     let record: any
     try {
       record = await fetchShortTandemRepeatById(esClient, 'gnomad_r4', row.short.id)
@@ -430,19 +599,30 @@ export const resolveLongReadTrShortReadContext = (
     if (!record) {
       return { ...base, status: 'CATALOG_UNAVAILABLE', reason_code: 'CATALOG_DETAIL_UNAVAILABLE' }
     }
-    if (JSON.stringify(normalizeShortCatalogRows([record])[0]) !== JSON.stringify(row.short)) {
-      return { ...base, status: 'CATALOG_UNAVAILABLE', reason_code: 'CATALOG_DETAIL_DIGEST_MISMATCH' }
+    let normalizedRecord: any
+    try {
+      normalizedRecord = normalizeShortCatalogRows([record])[0]
+    } catch {
+      return {
+        ...base,
+        status: 'CATALOG_UNAVAILABLE',
+        reason_code: 'CATALOG_DETAIL_DIGEST_MISMATCH',
+      }
     }
-    const regions = Array.isArray(record.reference_regions) && record.reference_regions.length
-      ? record.reference_regions
-      : [record.main_reference_region]
-    const exactIndices = regions.flatMap((region: any, index: number) =>
+    if (JSON.stringify(normalizedRecord) !== JSON.stringify(row.short)) {
+      return {
+        ...base,
+        status: 'CATALOG_UNAVAILABLE',
+        reason_code: 'CATALOG_DETAIL_DIGEST_MISMATCH',
+      }
+    }
+    const exactIndices = normalizedRecord.reference_regions.flatMap((region: any, index: number) =>
       exactRegion(region, candidate.matched_component) &&
-      record.reference_repeat_unit === candidate.matched_component.motif
+      normalizedRecord.reference_repeat_unit === candidate.matched_component.motif
         ? [index]
         : []
     )
-    if (exactIndices.length !== 1) {
+    if (exactIndices.length !== 1 || exactIndices[0] !== candidate.matched_reference_region_index) {
       return {
         ...base,
         status: 'AMBIGUOUS_COMPONENT',
@@ -451,10 +631,11 @@ export const resolveLongReadTrShortReadContext = (
       }
     }
     const pathogenic =
-      record.reference_repeat_unit === candidate.matched_component.motif &&
-      (record.repeat_units || []).some(
+      normalizedRecord.reference_repeat_unit === candidate.matched_component.motif &&
+      normalizedRecord.repeat_units.some(
         (unit: any) =>
-          unit.repeat_unit === candidate.matched_component.motif && unit.classification === 'pathogenic'
+          unit.repeat_unit === candidate.matched_component.motif &&
+          unit.classification === 'pathogenic'
       )
     return {
       ...base,
@@ -466,10 +647,10 @@ export const resolveLongReadTrShortReadContext = (
       matched_reference_region_index: exactIndices[0],
       pathogenic_component_highlight: pathogenic,
       candidates: [candidate],
-      lr_database: source!.database,
-      lr_release: source!.release,
-      lr_run_id: source!.run_id,
-      lr_cohort: source!.cohort,
+      lr_database: source.database,
+      lr_release: source.release,
+      lr_run_id: source.run_id,
+      lr_cohort: source.cohort,
     }
   })()
   contextCache.set(locus, promise)

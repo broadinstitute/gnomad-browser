@@ -18,3 +18,4 @@
 !graphql-api/config/completion-receipt-str-hgsvc_hprc.json
 !graphql-api/config/sample-total-completion-receipt.json
 !graphql-api/config/terminal-metadata-receipt.json
+!graphql-api/config/long-read-tr-reference-crosswalk.json

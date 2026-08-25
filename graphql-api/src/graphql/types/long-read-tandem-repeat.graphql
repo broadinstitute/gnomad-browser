@@ -91,9 +91,11 @@ type LongReadTrCatalogMatch {
 enum LongReadTrShortReadContextStatus {
   EXACT_UNIQUE
   NONE
+  MULTIPLE
   AMBIGUOUS_CATALOG
   AMBIGUOUS_COMPONENT
   CATALOG_UNAVAILABLE
+  UNAVAILABLE
 }
 
 enum LongReadTrReferenceStatus {

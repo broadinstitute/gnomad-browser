@@ -45,5 +45,6 @@ COPY --chown=node:node graphql-api/config/completion-receipt-str-aou.json /app/g
 COPY --chown=node:node graphql-api/config/completion-receipt-str-hgsvc_hprc.json /app/graphql-api/config/completion-receipt-str-hgsvc_hprc.json
 COPY --chown=node:node graphql-api/config/sample-total-completion-receipt.json /app/graphql-api/config/sample-total-completion-receipt.json
 COPY --chown=node:node graphql-api/config/terminal-metadata-receipt.json /app/graphql-api/config/terminal-metadata-receipt.json
+COPY --chown=node:node graphql-api/config/long-read-tr-reference-crosswalk.json /app/graphql-api/config/long-read-tr-reference-crosswalk.json
 
 CMD ["node", "graphql-api/src/app.js"]

@@ -23,6 +23,7 @@ EXPECTED_ARTIFACTS = {
     "completion-receipt-str-hgsvc_hprc.json",
     "sample-total-completion-receipt.json",
     "terminal-metadata-receipt.json",
+    "long-read-tr-reference-crosswalk.json",
 }
 EXPECTED_JOINED_ROUTE = {
     "database": "gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3",
@@ -60,7 +61,7 @@ def main() -> None:
     require(manifest.get("schema_version") == 1, "unexpected artifact manifest schema")
     artifacts = manifest.get("artifacts", [])
     names = {Path(item["path"]).name for item in artifacts}
-    require(len(artifacts) == 9 and names == EXPECTED_ARTIFACTS, "artifact allowlist is not the exact nine-file bundle")
+    require(len(artifacts) == 10 and names == EXPECTED_ARTIFACTS, "artifact allowlist is not the exact ten-file bundle")
 
     for item in artifacts:
         relative = Path(item["path"])
@@ -111,6 +112,7 @@ def main() -> None:
     packaging_test = (SCRIPT_DIR / "test-api-production-emit.sh").read_text()
     require("tsconfig.build.json" in packaging_test, "API packaging regression does not run the production emit")
     require("NODE_ENV=production" in packaging_test and "node -" in packaging_test, "API packaging regression does not load output with raw Node")
+    require("long_read_tr_reference.js" in packaging_test, "API packaging regression does not load the crosswalk artifact consumer")
 
     browser_dockerfile = (ROOT / "deploy/dockerfiles/browser/browser.dockerfile").read_text()
     require("ARG LR_Y1_ENABLED=false" in browser_dockerfile, "browser LR_Y1_ENABLED build input is not explicit")
@@ -160,7 +162,7 @@ def main() -> None:
     for path in [MANIFEST_PATH, API_ENV_PATH]:
         require("/Users/" not in path.read_text(), f"local absolute path leaked into {path.relative_to(ROOT)}")
 
-    print(f"verified 9 artifacts; routing manifest sha256={sha256(MANIFEST_PATH)}")
+    print(f"verified 10 artifacts; routing manifest sha256={sha256(MANIFEST_PATH)}")
     print(f"verified approved API env sha256={EXPECTED_ENV_SHA256}")
 
 

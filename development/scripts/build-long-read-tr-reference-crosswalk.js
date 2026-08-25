@@ -10,7 +10,8 @@ const parseArgs = (argv) => {
   for (let index = 0; index < argv.length; index += 2) {
     const key = argv[index]
     const value = argv[index + 1]
-    if (!key || !key.startsWith('--') || value == null) throw new Error(`Invalid argument ${key || ''}`)
+    if (!key || !key.startsWith('--') || value == null)
+      throw new Error(`Invalid argument ${key || ''}`)
     args[key.slice(2)] = value
   }
   for (const required of ['catalog', 'inventory', 'manifests', 'database', 'out']) {
@@ -22,43 +23,145 @@ const parseArgs = (argv) => {
 const readJson = (filename) => JSON.parse(fs.readFileSync(filename, 'utf8'))
 const normalizedChrom = (value) => String(value).replace(/^chr/i, '').toUpperCase()
 const regionKey = (region, motif) =>
-  [normalizedChrom(region.chrom), Number(region.start), Number(region.stop), String(motif).toUpperCase()].join('\u0000')
+  [
+    normalizedChrom(region.chrom),
+    Number(region.start),
+    Number(region.stop),
+    String(motif).toUpperCase(),
+  ].join('\u0000')
 
+const requireOwn = (value, key, context) => {
+  if (value == null || !Object.prototype.hasOwnProperty.call(value, key)) {
+    throw new Error(`${context} is missing required transfer field ${key}`)
+  }
+  return value[key]
+}
+
+const normalizeRegion = (region, context) => {
+  requireOwn(region, 'reference_genome', context)
+  requireOwn(region, 'chrom', context)
+  requireOwn(region, 'start', context)
+  requireOwn(region, 'stop', context)
+  return {
+    reference_genome: region.reference_genome,
+    chrom: region.chrom,
+    start: Number(region.start),
+    stop: Number(region.stop),
+  }
+}
+
+// This is the complete catalog surface transferred into the compact artifact and
+// compared again at runtime. Optional scalar values become explicit nulls, while
+// every decision-bearing array/object must be present so a build cannot weaken the digest.
 const normalizeCatalogRows = (rows) =>
   rows
-    .map((row) => ({
-      id: String(row.id),
-      gene: {
-        ensembl_id: row.gene?.ensembl_id,
-        symbol: row.gene?.symbol,
-        region: row.gene?.region,
-      },
-      associated_diseases: (row.associated_diseases || []).map((disease) => ({
-        name: disease.name,
-        symbol: disease.symbol,
-        omim_id: disease.omim_id || null,
-        inheritance_mode: disease.inheritance_mode,
-        repeat_size_classifications: (disease.repeat_size_classifications || []).map(
-          (classification) => ({
-            classification: classification.classification,
-            min: classification.min == null ? null : Number(classification.min),
-            max: classification.max == null ? null : Number(classification.max),
-          })
+    .map((row, rowIndex) => {
+      const context = `catalog row ${row?.id || rowIndex}`
+      for (const key of [
+        'id',
+        'gene',
+        'associated_diseases',
+        'main_reference_region',
+        'reference_regions',
+        'reference_repeat_unit',
+        'repeat_units',
+      ]) {
+        requireOwn(row, key, context)
+      }
+      if (!Array.isArray(row.associated_diseases)) {
+        throw new Error(`${context} associated_diseases is not an array`)
+      }
+      if (!Array.isArray(row.reference_regions) || !row.reference_regions.length) {
+        throw new Error(`${context} reference_regions is not a non-empty array`)
+      }
+      if (!Array.isArray(row.repeat_units) || !row.repeat_units.length) {
+        throw new Error(`${context} repeat_units is not a non-empty array`)
+      }
+      return {
+        id: String(row.id),
+        gene: {
+          ensembl_id: requireOwn(row.gene, 'ensembl_id', `${context} gene`),
+          symbol: requireOwn(row.gene, 'symbol', `${context} gene`),
+          region: requireOwn(row.gene, 'region', `${context} gene`),
+        },
+        associated_diseases: row.associated_diseases.map((disease, diseaseIndex) => {
+          const diseaseContext = `${context} disease ${diseaseIndex}`
+          for (const key of ['name', 'symbol', 'inheritance_mode', 'repeat_size_classifications']) {
+            requireOwn(disease, key, diseaseContext)
+          }
+          if (!Array.isArray(disease.repeat_size_classifications)) {
+            throw new Error(`${diseaseContext} repeat_size_classifications is not an array`)
+          }
+          return {
+            name: disease.name,
+            symbol: disease.symbol,
+            omim_id: disease.omim_id == null ? null : disease.omim_id,
+            inheritance_mode: disease.inheritance_mode,
+            notes: disease.notes == null ? null : disease.notes,
+            repeat_size_classifications: disease.repeat_size_classifications.map(
+              (classification, classificationIndex) => {
+                const classificationContext = `${diseaseContext} classification ${classificationIndex}`
+                requireOwn(classification, 'classification', classificationContext)
+                if (
+                  !Object.prototype.hasOwnProperty.call(classification, 'min') &&
+                  !Object.prototype.hasOwnProperty.call(classification, 'max')
+                ) {
+                  throw new Error(`${classificationContext} is missing both min and max`)
+                }
+                return {
+                  classification: classification.classification,
+                  min: classification.min == null ? null : Number(classification.min),
+                  max: classification.max == null ? null : Number(classification.max),
+                }
+              }
+            ),
+          }
+        }),
+        stripy_id: row.stripy_id == null ? null : row.stripy_id,
+        strchive_id: row.strchive_id == null ? null : row.strchive_id,
+        main_reference_region: normalizeRegion(row.main_reference_region, `${context} main region`),
+        reference_regions: row.reference_regions.map((region, index) =>
+          normalizeRegion(region, `${context} reference region ${index}`)
         ),
-      })),
-      stripy_id: row.stripy_id || null,
-      strchive_id: row.strchive_id || null,
-      main_reference_region: {
-        reference_genome: row.main_reference_region?.reference_genome,
-        chrom: row.main_reference_region?.chrom,
-        start: Number(row.main_reference_region?.start),
-        stop: Number(row.main_reference_region?.stop),
-      },
-      reference_repeat_unit: String(row.reference_repeat_unit),
-    }))
+        reference_repeat_unit: String(row.reference_repeat_unit),
+        repeat_units: row.repeat_units.map((unit, index) => {
+          requireOwn(unit, 'repeat_unit', `${context} repeat unit ${index}`)
+          requireOwn(unit, 'classification', `${context} repeat unit ${index}`)
+          return { repeat_unit: unit.repeat_unit, classification: unit.classification }
+        }),
+      }
+    })
     .sort((left, right) => left.id.localeCompare(right.id))
 
-const sha256Json = (value) => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex')
+const parseCanonicalId = (canonicalId) =>
+  String(canonicalId)
+    .split('+')
+    .map((part) => {
+      const match = /^([^-]+)-(\d+)-(\d+)-(.+)$/.exec(part)
+      if (!match) throw new Error(`Invalid canonical LR locus ID ${canonicalId}`)
+      return { chrom: match[1], start0: Number(match[2]), end0: Number(match[3]), motif: match[4] }
+    })
+
+const assertCanonicalComponents = (cohort, locus) => {
+  if (!Array.isArray(locus.components) || !locus.components.length) {
+    throw new Error(`${cohort}/${locus.canonical_id} has no ordered components`)
+  }
+  const parsed = parseCanonicalId(locus.canonical_id)
+  const stored = locus.components.map((component) => ({
+    chrom: String(component.chrom),
+    start0: Number(component.start0),
+    end0: Number(component.end0),
+    motif: String(component.motif),
+  }))
+  if (JSON.stringify(parsed) !== JSON.stringify(stored)) {
+    throw new Error(
+      `${cohort}/${locus.canonical_id} canonical ID does not equal its ordered components`
+    )
+  }
+}
+
+const sha256Json = (value) =>
+  crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex')
 
 const main = () => {
   const args = parseArgs(process.argv.slice(2))
@@ -80,7 +183,10 @@ const main = () => {
     if (row.main_reference_region?.reference_genome !== 'GRCh38') {
       throw new Error(`${row.id} main reference region is not GRCh38`)
     }
-    if (!row.reference_repeat_unit || row.reference_repeat_unit !== row.reference_repeat_unit.toUpperCase()) {
+    if (
+      !row.reference_repeat_unit ||
+      row.reference_repeat_unit !== row.reference_repeat_unit.toUpperCase()
+    ) {
       throw new Error(`${row.id} repeat unit is not a non-empty stored uppercase motif`)
     }
   }
@@ -97,6 +203,35 @@ const main = () => {
   }
 
   const cohortNames = ['hgsvc_hprc', 'aou']
+  for (const cohort of cohortNames) {
+    const source = inventory.cohorts[cohort]
+    if (!source || !Array.isArray(source.loci))
+      throw new Error(`Missing inventory cohort ${cohort}`)
+    source.loci.forEach((locus) => assertCanonicalComponents(cohort, locus))
+  }
+  const sources = manifestBundle.entries
+    .filter((entry) => cohortNames.includes(entry.cohort))
+    .map((entry) => ({
+      cohort: entry.cohort,
+      chrom: entry.chrom,
+      source_database: args.database,
+      source_release: 'y1',
+      source_run_id: entry.run_id,
+    }))
+    .sort(
+      (left, right) =>
+        left.cohort.localeCompare(right.cohort) ||
+        Number(normalizedChrom(left.chrom).replace('X', '23').replace('Y', '24')) -
+          Number(normalizedChrom(right.chrom).replace('X', '23').replace('Y', '24'))
+    )
+  if (
+    sources.length !== 48 ||
+    new Set(sources.map((source) => `${source.cohort}\u0000${source.chrom}`)).size !== 48
+  ) {
+    throw new Error(
+      `Expected 48 unique cohort/chromosome source identities, found ${sources.length}`
+    )
+  }
   const rows = shortRows.map((short) => {
     const cohortResults = {}
     for (const cohort of cohortNames) {
@@ -108,11 +243,16 @@ const main = () => {
         for (const edge of locus.exact_edges || []) {
           if (edge.short_id !== short.id) continue
           const component = locus.components[edge.component_index]
-          if (!component || regionKey(
-            { chrom: component.chrom, start: component.start0, stop: component.end0 },
-            component.motif
-          ) !== regionKey(short.main_reference_region, short.reference_repeat_unit)) {
-            throw new Error(`${cohort}/${short.id} exact edge violates the GRCh38/coordinate/motif contract`)
+          if (
+            !component ||
+            regionKey(
+              { chrom: component.chrom, start: component.start0, stop: component.end0 },
+              component.motif
+            ) !== regionKey(short.main_reference_region, short.reference_repeat_unit)
+          ) {
+            throw new Error(
+              `${cohort}/${short.id} exact edge violates the GRCh38/coordinate/motif contract`
+            )
           }
           exact.push({
             canonical_id: locus.canonical_id,
@@ -124,7 +264,9 @@ const main = () => {
         coordinateMismatch ||= (locus.coordinate_equal_motif_mismatches || []).some(
           (edge) => edge.short_id === short.id
         )
-        overlapOnly ||= (locus.overlap_non_equal_edges || []).some((edge) => edge.short_id === short.id)
+        overlapOnly ||= (locus.overlap_non_equal_edges || []).some(
+          (edge) => edge.short_id === short.id
+        )
       }
       exact.sort(
         (left, right) =>
@@ -134,9 +276,9 @@ const main = () => {
       const chrom = `chr${normalizedChrom(short.main_reference_region.chrom)}`
       const manifest = manifestByKey.get(`${cohort}\u0000${chrom}`)
       if (!manifest) throw new Error(`Missing presentation manifest for ${cohort}/${chrom}`)
-      const duplicateCatalogKey = catalogIdsByKey.get(
-        regionKey(short.main_reference_region, short.reference_repeat_unit)
-      ).length > 1
+      const duplicateCatalogKey =
+        catalogIdsByKey.get(regionKey(short.main_reference_region, short.reference_repeat_unit))
+          .length > 1
       const canonicalIds = new Set(exact.map((candidate) => candidate.canonical_id))
       const componentKeys = new Set(
         exact.map(
@@ -147,8 +289,8 @@ const main = () => {
       let reasonCode = coordinateMismatch
         ? 'REGION_EQUAL_MOTIF_MISMATCH'
         : overlapOnly
-          ? 'OVERLAP_ONLY'
-          : 'NO_EXACT_COMPONENT'
+        ? 'OVERLAP_ONLY'
+        : 'NO_EXACT_COMPONENT'
       if (duplicateCatalogKey) {
         status = 'AMBIGUOUS_CATALOG'
         reasonCode = 'DUPLICATE_CATALOG_EXACT_KEY'
@@ -188,7 +330,7 @@ const main = () => {
   }
 
   const artifact = {
-    schema_version: 1,
+    schema_version: 2,
     generated_at: /^\d{4}-\d{2}-\d{2}$/.test(catalogInput.queried_at)
       ? `${catalogInput.queried_at}T00:00:00.000Z`
       : catalogInput.queried_at,
@@ -219,6 +361,7 @@ const main = () => {
         aou: shortRows.length - exactCounts.aou,
       },
     },
+    sources,
     rows,
   }
   fs.mkdirSync(path.dirname(args.out), { recursive: true })
@@ -229,4 +372,6 @@ const main = () => {
   )
 }
 
-main()
+if (require.main === module) main()
+
+module.exports = { assertCanonicalComponents, normalizeCatalogRows, parseCanonicalId }

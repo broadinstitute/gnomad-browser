@@ -1,13 +1,13 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-08-24T00:00:00.000Z",
+  "schema_version": 2,
+  "generated_at": "2026-08-25T00:18:17.612719+00:00",
   "catalog": {
     "dataset": "gnomad_r4",
     "source": "known disease-associated short-read TR catalog exposed on gnomAD v4 pages",
-    "endpoint": "https://gnomad.broadinstitute.org/api",
-    "queried_at": "2026-08-24",
+    "endpoint": "http://localhost:9200/gnomad_v3_short_tandem_repeats (read-only local Elasticsearch)",
+    "queried_at": "2026-08-25T00:18:17.612719+00:00",
     "row_count": 78,
-    "compact_sha256": "8e3ca6a9e742d517f43b3217de5cc8cc15979a1862c5c3e3da26f091f5daab2c",
+    "compact_sha256": "638cb10c4d834af1fced0f73af28f4bd7d7ef018ce50aa218b612ca24bb03a43",
     "hard_ceiling": 500
   },
   "provenance": {
@@ -21,7 +21,7 @@
       "hgsvc_hprc": 230
     },
     "primary_manifest_schema_version": 1,
-    "presentation_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803"
+    "presentation_database": "gnomad_lr_y1_scratch_v5_current"
   },
   "reconciliation": {
     "catalog_rows": 78,
@@ -34,6 +34,344 @@
       "aou": 20
     }
   },
+  "sources": [
+    {
+      "cohort": "aou",
+      "chrom": "chr1",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr2",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr3",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr4",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr5",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr6",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr7",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr8",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr8-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr9",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr10",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr10-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr11",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr11-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr12",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr13",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr13-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr14",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr14-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr15",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr15-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr16",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr17",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr17-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr18",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr18-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr19",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr20",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr20-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr21",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr21-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chr22",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chr22-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chrX",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1"
+    },
+    {
+      "cohort": "aou",
+      "chrom": "chrY",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-aou-chrY-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr1",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr2",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr3",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr4",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr5",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr6",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr7",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr8",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr8-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr9",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr10",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr10-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr11",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr11-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr12",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr13",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr14",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr14-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr15",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr15-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr16",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr17",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr17-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr18",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr18-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr19",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr20",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr20-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr21",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr21-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chr22",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chrX",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1"
+    },
+    {
+      "cohort": "hgsvc_hprc",
+      "chrom": "chrY",
+      "source_database": "gnomad_lr_y1_scratch_v5_current",
+      "source_release": "y1",
+      "source_run_id": "y1-full-prototype-hgsvc-hprc-chrY-aggregate-20260803T214532Z-4f2676-r1"
+    }
+  ],
   "rows": [
     {
       "short": {
@@ -49,6 +387,7 @@
             "symbol": "OPDM",
             "omim_id": null,
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -71,13 +410,27 @@
           "start": 94418421,
           "stop": 94418442
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "1",
+            "start": 94418421,
+            "stop": 94418442
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
           "candidates": [
@@ -97,7 +450,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": [
@@ -130,6 +483,7 @@
             "symbol": "FRAXE",
             "omim_id": "309548",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -152,13 +506,27 @@
           "start": 148500631,
           "stop": 148500691
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 148500631,
+            "stop": 148500691
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": []
@@ -166,7 +534,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
@@ -187,6 +555,7 @@
             "symbol": "FRA2A",
             "omim_id": null,
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -209,13 +578,27 @@
           "start": 100104798,
           "stop": 100104822
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "2",
+            "start": 100104798,
+            "stop": 100104822
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
           "candidates": []
@@ -223,7 +606,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
           "candidates": []
@@ -244,6 +627,7 @@
             "symbol": "SBMA",
             "omim_id": "313200",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -266,13 +650,27 @@
           "start": 67545316,
           "stop": 67545385
         },
-        "reference_repeat_unit": "GCA"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 67545316,
+            "stop": 67545385
+          }
+        ],
+        "reference_repeat_unit": "GCA",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCA",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": []
@@ -280,7 +678,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
@@ -301,6 +699,7 @@
             "symbol": "DEE1",
             "omim_id": "308350",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -319,6 +718,7 @@
             "symbol": "MRXARX",
             "omim_id": "300419",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -341,13 +741,27 @@
           "start": 25013649,
           "stop": 25013697
         },
-        "reference_repeat_unit": "NGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 25013649,
+            "stop": 25013697
+          }
+        ],
+        "reference_repeat_unit": "NGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "NGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": [
@@ -367,7 +781,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": [
@@ -400,6 +814,7 @@
             "symbol": "DEE1",
             "omim_id": "308350",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -418,6 +833,7 @@
             "symbol": "PRTS",
             "omim_id": "309510",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -436,6 +852,7 @@
             "symbol": "MRXARX",
             "omim_id": "300419",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -458,13 +875,27 @@
           "start": 25013529,
           "stop": 25013565
         },
-        "reference_repeat_unit": "NGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 25013529,
+            "stop": 25013565
+          }
+        ],
+        "reference_repeat_unit": "NGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "NGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": [
@@ -484,7 +915,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": [
@@ -517,6 +948,7 @@
             "symbol": "DRPLA",
             "omim_id": "125370",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -539,13 +971,27 @@
           "start": 6936716,
           "stop": 6936773
         },
-        "reference_repeat_unit": "CAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "12",
+            "start": 6936716,
+            "stop": 6936773
+          }
+        ],
+        "reference_repeat_unit": "CAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
           "candidates": []
@@ -553,7 +999,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
           "candidates": []
@@ -574,6 +1020,7 @@
             "symbol": "SCA1",
             "omim_id": "164400",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -601,13 +1048,27 @@
           "start": 16327633,
           "stop": 16327723
         },
-        "reference_repeat_unit": "TGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "6",
+            "start": 16327633,
+            "stop": 16327723
+          }
+        ],
+        "reference_repeat_unit": "TGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "TGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
           "candidates": [
@@ -627,7 +1088,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1",
           "candidates": [
@@ -660,6 +1121,7 @@
             "symbol": "SCA10",
             "omim_id": "603516",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -687,13 +1149,27 @@
           "start": 45795354,
           "stop": 45795424
         },
-        "reference_repeat_unit": "ATTCT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "22",
+            "start": 45795354,
+            "stop": 45795424
+          }
+        ],
+        "reference_repeat_unit": "ATTCT",
+        "repeat_units": [
+          {
+            "repeat_unit": "ATTCT",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1",
           "candidates": [
@@ -713,7 +1189,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr22-20260728-r1",
           "candidates": [
@@ -746,6 +1222,7 @@
             "symbol": "SCA2",
             "omim_id": "183090",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -773,13 +1250,27 @@
           "start": 111598949,
           "stop": 111599018
         },
-        "reference_repeat_unit": "GCT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "12",
+            "start": 111598949,
+            "stop": 111599018
+          }
+        ],
+        "reference_repeat_unit": "GCT",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCT",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
           "candidates": [
@@ -799,7 +1290,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
           "candidates": [
@@ -832,6 +1323,7 @@
             "symbol": "SCA3",
             "omim_id": "109150",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -859,13 +1351,27 @@
           "start": 92071010,
           "stop": 92071040
         },
-        "reference_repeat_unit": "CTG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "14",
+            "start": 92071010,
+            "stop": 92071040
+          }
+        ],
+        "reference_repeat_unit": "CTG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CTG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr14-20260728-r1",
           "candidates": [
@@ -885,7 +1391,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr14-20260728-r1",
           "candidates": [
@@ -918,6 +1424,7 @@
             "symbol": "SCA7",
             "omim_id": "164500",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -945,13 +1452,33 @@
           "start": 63912684,
           "stop": 63912714
         },
-        "reference_repeat_unit": "GCA"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 63912684,
+            "stop": 63912714
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 63912714,
+            "stop": 63912726
+          }
+        ],
+        "reference_repeat_unit": "GCA",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCA",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
           "candidates": [
@@ -971,7 +1498,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
           "candidates": [
@@ -1004,6 +1531,7 @@
             "symbol": "SCA8",
             "omim_id": "608768",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1031,13 +1559,33 @@
           "start": 70139383,
           "stop": 70139428
         },
-        "reference_repeat_unit": "CTG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "13",
+            "start": 70139353,
+            "stop": 70139383
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "13",
+            "start": 70139383,
+            "stop": 70139428
+          }
+        ],
+        "reference_repeat_unit": "CTG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CTG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1",
           "candidates": [
@@ -1057,7 +1605,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr13-20260728-r1",
           "candidates": [
@@ -1093,13 +1641,27 @@
           "start": 19990922,
           "stop": 19990973
         },
-        "reference_repeat_unit": "CCG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 19990922,
+            "stop": 19990973
+          }
+        ],
+        "reference_repeat_unit": "CCG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CCG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": []
@@ -1107,7 +1669,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
@@ -1128,6 +1690,7 @@
             "symbol": "SCA31",
             "omim_id": "117210",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -1145,13 +1708,83 @@
           "start": 66490398,
           "stop": 66490453
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "16",
+            "start": 66490398,
+            "stop": 66490453
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAATG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AGAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "ATAAG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAAAA",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "TAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAACA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TACAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAGAA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TCAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TGCAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TGGAA",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
           "candidates": []
@@ -1159,7 +1792,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": []
@@ -1183,13 +1816,27 @@
           "start": 66744819,
           "stop": 66744843
         },
-        "reference_repeat_unit": "GGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "11",
+            "start": 66744819,
+            "stop": 66744843
+          }
+        ],
+        "reference_repeat_unit": "GGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr11-20260728-r1",
           "candidates": [
@@ -1209,7 +1856,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr11-20260728-r1",
           "candidates": [
@@ -1242,6 +1889,7 @@
             "symbol": "FTDALS1",
             "omim_id": "105550",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1264,13 +1912,27 @@
           "start": 27573528,
           "stop": 27573546
         },
-        "reference_repeat_unit": "GGCCCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "9",
+            "start": 27573528,
+            "stop": 27573546
+          }
+        ],
+        "reference_repeat_unit": "GGCCCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGCCCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1",
           "candidates": []
@@ -1278,7 +1940,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1",
           "candidates": [
@@ -1311,6 +1973,7 @@
             "symbol": "SCA6",
             "omim_id": "183086",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1338,13 +2001,27 @@
           "start": 13207858,
           "stop": 13207897
         },
-        "reference_repeat_unit": "CTG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "19",
+            "start": 13207858,
+            "stop": 13207897
+          }
+        ],
+        "reference_repeat_unit": "CTG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CTG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
           "candidates": [
@@ -1364,7 +2041,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
           "candidates": [
@@ -1397,6 +2074,7 @@
             "symbol": "JBS",
             "omim_id": null,
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1424,13 +2102,27 @@
           "start": 119206289,
           "stop": 119206322
         },
-        "reference_repeat_unit": "CGG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "11",
+            "start": 119206289,
+            "stop": 119206322
+          }
+        ],
+        "reference_repeat_unit": "CGG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CGG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr11-20260728-r1",
           "candidates": [
@@ -1450,7 +2142,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr11-20260728-r1",
           "candidates": [
@@ -1483,6 +2175,7 @@
             "symbol": "DM2",
             "omim_id": "602668",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1505,13 +2198,39 @@
           "start": 129172576,
           "stop": 129172656
         },
-        "reference_repeat_unit": "CAGG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 129172576,
+            "stop": 129172656
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 129172656,
+            "stop": 129172696
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 129172696,
+            "stop": 129172732
+          }
+        ],
+        "reference_repeat_unit": "CAGG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAGG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
           "candidates": [
@@ -1531,7 +2250,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
           "candidates": [
@@ -1564,6 +2283,7 @@
             "symbol": "EDM1",
             "omim_id": "132400",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -1577,6 +2297,7 @@
             "symbol": "PSACH",
             "omim_id": "177170",
             "inheritance_mode": "Autosomal dominant",
+            "notes": "5 repeats are normal. Contractions to 4 repeats are also pathogenic.",
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -1594,13 +2315,27 @@
           "start": 18786034,
           "stop": 18786049
         },
-        "reference_repeat_unit": "GTC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "19",
+            "start": 18786034,
+            "stop": 18786049
+          }
+        ],
+        "reference_repeat_unit": "GTC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GTC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
           "candidates": []
@@ -1608,7 +2343,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
           "candidates": [
@@ -1644,13 +2379,27 @@
           "start": 38317282,
           "stop": 38317306
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "22",
+            "start": 38317282,
+            "stop": 38317306
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1",
           "candidates": [
@@ -1670,7 +2419,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr22-20260728-r1",
           "candidates": [
@@ -1703,6 +2452,7 @@
             "symbol": "EPM1",
             "omim_id": "254800",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1725,13 +2475,27 @@
           "start": 43776443,
           "stop": 43776479
         },
-        "reference_repeat_unit": "CGCGGGGCGGGG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "21",
+            "start": 43776443,
+            "stop": 43776479
+          }
+        ],
+        "reference_repeat_unit": "CGCGGGGCGGGG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CGCGGGGCGGGG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr21-20260728-r1",
           "candidates": [
@@ -1751,7 +2515,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr21-20260728-r1",
           "candidates": [
@@ -1784,6 +2548,7 @@
             "symbol": "SCA37",
             "omim_id": "615945",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1806,13 +2571,43 @@
           "start": 57367043,
           "stop": 57367118
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "1",
+            "start": 57367043,
+            "stop": 57367118
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAT",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "GAAAT",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
           "candidates": []
@@ -1820,7 +2615,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": []
@@ -1841,6 +2636,7 @@
             "symbol": "MRFRA12A",
             "omim_id": "136630",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -1863,13 +2659,27 @@
           "start": 50505001,
           "stop": 50505022
         },
-        "reference_repeat_unit": "GGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "12",
+            "start": 50505001,
+            "stop": 50505022
+          }
+        ],
+        "reference_repeat_unit": "GGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
           "candidates": [
@@ -1889,7 +2699,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
           "candidates": [
@@ -1925,13 +2735,27 @@
           "start": 31284557,
           "stop": 31284605
         },
-        "reference_repeat_unit": "TTC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 31284557,
+            "stop": 31284605
+          }
+        ],
+        "reference_repeat_unit": "TTC",
+        "repeat_units": [
+          {
+            "repeat_unit": "TTC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": [
@@ -1951,7 +2775,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": [
@@ -1984,6 +2808,7 @@
             "symbol": "DM1",
             "omim_id": "160900",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2011,13 +2836,27 @@
           "start": 45770204,
           "stop": 45770264
         },
-        "reference_repeat_unit": "CAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "19",
+            "start": 45770204,
+            "stop": 45770264
+          }
+        ],
+        "reference_repeat_unit": "CAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
           "candidates": []
@@ -2025,7 +2864,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
           "candidates": [
@@ -2058,6 +2897,7 @@
             "symbol": "RCPS",
             "omim_id": "268305",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2080,13 +2920,47 @@
           "start": 80147059,
           "stop": 80147139
         },
-        "reference_repeat_unit": "CCTCGCTGTGCCGCTGCCGA"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "17",
+            "start": 80147059,
+            "stop": 80147139
+          }
+        ],
+        "reference_repeat_unit": "CCTCGCTGTGCCGCTGCCGA",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "C",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "G",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "CCTCGCTGCGCCGCTGCCGA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "CCTCGCTGTGCCGCTGCCGA",
+            "classification": "benign"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr17-20260728-r1",
           "candidates": [
@@ -2106,7 +2980,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr17-20260728-r1",
           "candidates": [
@@ -2139,6 +3013,7 @@
             "symbol": "EP400",
             "omim_id": null,
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -2156,13 +3031,27 @@
           "start": 132062548,
           "stop": 132062611
         },
-        "reference_repeat_unit": "CAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "12",
+            "start": 132062548,
+            "stop": 132062611
+          }
+        ],
+        "reference_repeat_unit": "CAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
           "candidates": [
@@ -2182,7 +3071,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
           "candidates": [
@@ -2215,6 +3104,7 @@
             "symbol": "OPDM",
             "omim_id": null,
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -2232,13 +3122,27 @@
           "start": 177554489,
           "stop": 177554531
         },
-        "reference_repeat_unit": "CGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "5",
+            "start": 177554489,
+            "stop": 177554531
+          }
+        ],
+        "reference_repeat_unit": "CGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "CGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1",
           "candidates": [
@@ -2258,7 +3162,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1",
           "candidates": [
@@ -2291,6 +3195,7 @@
             "symbol": "SCA27B",
             "omim_id": "620174",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2318,13 +3223,27 @@
           "start": 102161574,
           "stop": 102161724
         },
-        "reference_repeat_unit": "AAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "13",
+            "start": 102161574,
+            "stop": 102161724
+          }
+        ],
+        "reference_repeat_unit": "AAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "AAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1",
           "candidates": [
@@ -2344,7 +3263,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr13-20260728-r1",
           "candidates": [
@@ -2377,6 +3296,7 @@
             "symbol": "FXTAS",
             "omim_id": "300623",
             "inheritance_mode": "X-linked dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2400,6 +3320,7 @@
             "symbol": "FXS",
             "omim_id": "300624",
             "inheritance_mode": "X-linked dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2427,13 +3348,27 @@
           "start": 147912050,
           "stop": 147912110
         },
-        "reference_repeat_unit": "CGG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 147912050,
+            "stop": 147912110
+          }
+        ],
+        "reference_repeat_unit": "CGG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CGG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": []
@@ -2441,7 +3376,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
@@ -2462,6 +3397,7 @@
             "symbol": "BPES",
             "omim_id": "110100",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2484,13 +3420,27 @@
           "start": 138946020,
           "stop": 138946062
         },
-        "reference_repeat_unit": "NGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 138946020,
+            "stop": 138946062
+          }
+        ],
+        "reference_repeat_unit": "NGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "NGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
           "candidates": [
@@ -2510,7 +3460,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
           "candidates": [
@@ -2546,13 +3496,33 @@
           "start": 93702522,
           "stop": 93702546
         },
-        "reference_repeat_unit": "CCG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "10",
+            "start": 93702516,
+            "stop": 93702522
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "10",
+            "start": 93702522,
+            "stop": 93702546
+          }
+        ],
+        "reference_repeat_unit": "CCG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CCG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr10-20260728-r1",
           "candidates": [
@@ -2572,7 +3542,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr10-20260728-r1",
           "candidates": [
@@ -2605,6 +3575,7 @@
             "symbol": "FRDA",
             "omim_id": "229300",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2627,13 +3598,33 @@
           "start": 69037286,
           "stop": 69037304
         },
-        "reference_repeat_unit": "GAA"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "9",
+            "start": 69037261,
+            "stop": 69037286
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "9",
+            "start": 69037286,
+            "stop": 69037304
+          }
+        ],
+        "reference_repeat_unit": "GAA",
+        "repeat_units": [
+          {
+            "repeat_unit": "GAA",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1",
           "candidates": []
@@ -2641,7 +3632,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1",
           "candidates": []
@@ -2662,6 +3653,7 @@
             "symbol": "OPDM2",
             "omim_id": "618940",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2684,13 +3676,27 @@
           "start": 14496041,
           "stop": 14496074
         },
-        "reference_repeat_unit": "CCG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "19",
+            "start": 14496041,
+            "stop": 14496074
+          }
+        ],
+        "reference_repeat_unit": "CCG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CCG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
           "candidates": [
@@ -2710,7 +3716,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
           "candidates": [
@@ -2743,6 +3749,7 @@
             "symbol": "GD",
             "omim_id": "618412",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2765,13 +3772,27 @@
           "start": 190880872,
           "stop": 190880920
         },
-        "reference_repeat_unit": "GCA"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "2",
+            "start": 190880872,
+            "stop": 190880920
+          }
+        ],
+        "reference_repeat_unit": "GCA",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCA",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
           "candidates": [
@@ -2791,7 +3812,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
           "candidates": [
@@ -2824,6 +3845,7 @@
             "symbol": "HFG",
             "omim_id": "140000",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2846,13 +3868,27 @@
           "start": 27199924,
           "stop": 27199966
         },
-        "reference_repeat_unit": "NGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "7",
+            "start": 27199924,
+            "stop": 27199966
+          }
+        ],
+        "reference_repeat_unit": "NGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "NGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
           "candidates": [
@@ -2872,7 +3908,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
           "candidates": [
@@ -2905,6 +3941,7 @@
             "symbol": "HFG",
             "omim_id": "140000",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2927,13 +3964,27 @@
           "start": 27199825,
           "stop": 27199861
         },
-        "reference_repeat_unit": "NGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "7",
+            "start": 27199825,
+            "stop": 27199861
+          }
+        ],
+        "reference_repeat_unit": "NGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "NGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
           "candidates": []
@@ -2941,7 +3992,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
           "candidates": [
@@ -2974,6 +4025,7 @@
             "symbol": "HFG",
             "omim_id": "140000",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -2996,13 +4048,27 @@
           "start": 27199678,
           "stop": 27199732
         },
-        "reference_repeat_unit": "NGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "7",
+            "start": 27199678,
+            "stop": 27199732
+          }
+        ],
+        "reference_repeat_unit": "NGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "NGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
           "candidates": [
@@ -3022,7 +4088,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
           "candidates": [
@@ -3055,6 +4121,7 @@
             "symbol": "SPD",
             "omim_id": "186300",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3077,13 +4144,27 @@
           "start": 176093058,
           "stop": 176093103
         },
-        "reference_repeat_unit": "GCG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "2",
+            "start": 176093058,
+            "stop": 176093103
+          }
+        ],
+        "reference_repeat_unit": "GCG",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
           "candidates": [
@@ -3103,7 +4184,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
           "candidates": [
@@ -3136,6 +4217,7 @@
             "symbol": "HD",
             "omim_id": "143100",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3163,13 +4245,33 @@
           "start": 3074876,
           "stop": 3074933
         },
-        "reference_repeat_unit": "CAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074876,
+            "stop": 3074933
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074939,
+            "stop": 3074966
+          }
+        ],
+        "reference_repeat_unit": "CAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
           "candidates": [
@@ -3189,7 +4291,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
           "candidates": [
@@ -3222,6 +4324,7 @@
             "symbol": "HDL2",
             "omim_id": "606438",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3244,13 +4347,27 @@
           "start": 87604287,
           "stop": 87604329
         },
-        "reference_repeat_unit": "CTG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "16",
+            "start": 87604287,
+            "stop": 87604329
+          }
+        ],
+        "reference_repeat_unit": "CTG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CTG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
           "candidates": [
@@ -3270,7 +4387,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": [
@@ -3303,6 +4420,7 @@
             "symbol": "OPDM1",
             "omim_id": "164310",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3325,13 +4443,27 @@
           "start": 104588970,
           "stop": 104588997
         },
-        "reference_repeat_unit": "CGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "8",
+            "start": 104588970,
+            "stop": 104588997
+          }
+        ],
+        "reference_repeat_unit": "CGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "CGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr8-20260728-r1",
           "candidates": [
@@ -3351,7 +4483,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr8-20260728-r1",
           "candidates": [
@@ -3384,6 +4516,7 @@
             "symbol": "FAME3",
             "omim_id": "613608",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -3401,13 +4534,55 @@
           "start": 10356346,
           "stop": 10356411
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "5",
+            "start": 10356346,
+            "stop": 10356411
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "ATGTT",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "ATTTC",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "ATTTT",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "GTTTT",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TTTAG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TTTTT",
+            "classification": "unknown"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1",
           "candidates": []
@@ -3415,7 +4590,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1",
           "candidates": []
@@ -3436,6 +4611,7 @@
             "symbol": "NME",
             "omim_id": "617186",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3458,13 +4634,27 @@
           "start": 156591765,
           "stop": 156591780
         },
-        "reference_repeat_unit": "GGGCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "1",
+            "start": 156591765,
+            "stop": 156591780
+          }
+        ],
+        "reference_repeat_unit": "GGGCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGGCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
           "candidates": [
@@ -3484,7 +4674,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": [
@@ -3517,6 +4707,7 @@
             "symbol": "ALS",
             "omim_id": "105400",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3539,13 +4730,27 @@
           "start": 22786677,
           "stop": 22786701
         },
-        "reference_repeat_unit": "GCG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "15",
+            "start": 22786677,
+            "stop": 22786701
+          }
+        ],
+        "reference_repeat_unit": "GCG",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr15-20260728-r1",
           "candidates": [
@@ -3565,7 +4770,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr15-20260728-r1",
           "candidates": [
@@ -3598,6 +4803,7 @@
             "symbol": "SCA36",
             "omim_id": "614153",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3620,13 +4826,33 @@
           "start": 2652733,
           "stop": 2652757
         },
-        "reference_repeat_unit": "GGCCTG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "20",
+            "start": 2652733,
+            "stop": 2652757
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "20",
+            "start": 2652757,
+            "stop": 2652775
+          }
+        ],
+        "reference_repeat_unit": "GGCCTG",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGCCTG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr20-20260728-r1",
           "candidates": [
@@ -3646,7 +4872,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr20-20260728-r1",
           "candidates": [
@@ -3682,13 +4908,27 @@
           "start": 146228800,
           "stop": 146228821
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "1",
+            "start": 146228800,
+            "stop": 146228821
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
           "candidates": []
@@ -3696,7 +4936,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": []
@@ -3717,6 +4957,7 @@
             "symbol": "NIID",
             "omim_id": "603472",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3735,6 +4976,7 @@
             "symbol": "ETM6",
             "omim_id": "618866",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3757,13 +4999,27 @@
           "start": 149390802,
           "stop": 149390841
         },
-        "reference_repeat_unit": "GGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "1",
+            "start": 149390802,
+            "stop": 149390841
+          }
+        ],
+        "reference_repeat_unit": "GGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
           "candidates": []
@@ -3771,7 +5027,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": [
@@ -3804,6 +5060,7 @@
             "symbol": "OPML1",
             "omim_id": "618637",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3826,13 +5083,27 @@
           "start": 79826383,
           "stop": 79826404
         },
-        "reference_repeat_unit": "GGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "10",
+            "start": 79826383,
+            "stop": 79826404
+          }
+        ],
+        "reference_repeat_unit": "GGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr10-20260728-r1",
           "candidates": [
@@ -3852,7 +5123,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr10-20260728-r1",
           "candidates": [
@@ -3885,6 +5156,7 @@
             "symbol": "OPMD",
             "omim_id": "164300",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3907,13 +5179,27 @@
           "start": 23321472,
           "stop": 23321490
         },
-        "reference_repeat_unit": "GCG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "14",
+            "start": 23321472,
+            "stop": 23321490
+          }
+        ],
+        "reference_repeat_unit": "GCG",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr14-20260728-r1",
           "candidates": []
@@ -3921,7 +5207,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr14-20260728-r1",
           "candidates": [
@@ -3954,6 +5240,7 @@
             "symbol": "CCHS",
             "omim_id": "209880",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -3976,13 +5263,27 @@
           "start": 41745972,
           "stop": 41746032
         },
-        "reference_repeat_unit": "GCN"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 41745972,
+            "stop": 41746032
+          }
+        ],
+        "reference_repeat_unit": "GCN",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCN",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
           "candidates": [
@@ -4002,7 +5303,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
           "candidates": [
@@ -4035,6 +5336,7 @@
             "symbol": "SCA12",
             "omim_id": "604326",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4057,13 +5359,27 @@
           "start": 146878727,
           "stop": 146878757
         },
-        "reference_repeat_unit": "GCT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "5",
+            "start": 146878727,
+            "stop": 146878757
+          }
+        ],
+        "reference_repeat_unit": "GCT",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCT",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr5-20260728-r1",
           "candidates": [
@@ -4083,7 +5399,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1",
           "candidates": [
@@ -4116,6 +5432,7 @@
             "symbol": "HSAN8",
             "omim_id": "616488",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4138,13 +5455,27 @@
           "start": 130681606,
           "stop": 130681639
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "9",
+            "start": 130681606,
+            "stop": 130681639
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr9-20260728-r1",
           "candidates": [
@@ -4164,7 +5495,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1",
           "candidates": [
@@ -4197,6 +5528,7 @@
             "symbol": "CHNG3",
             "omim_id": "609893",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -4214,13 +5546,27 @@
           "start": 88569433,
           "stop": 88569449
         },
-        "reference_repeat_unit": "TTTG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "15",
+            "start": 88569433,
+            "stop": 88569449
+          }
+        ],
+        "reference_repeat_unit": "TTTG",
+        "repeat_units": [
+          {
+            "repeat_unit": "TTTG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr15-20260728-r1",
           "candidates": []
@@ -4228,7 +5574,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr15-20260728-r1",
           "candidates": []
@@ -4249,6 +5595,7 @@
             "symbol": "CJD",
             "omim_id": "123400",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4271,13 +5618,33 @@
           "start": 4699397,
           "stop": 4699493
         },
-        "reference_repeat_unit": "CCTCATGGTGGTGGCTGGGGGCAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "20",
+            "start": 4699370,
+            "stop": 4699397
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "20",
+            "start": 4699397,
+            "stop": 4699493
+          }
+        ],
+        "reference_repeat_unit": "CCTCATGGTGGTGGCTGGGGGCAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CCTCATGGTGGTGGCTGGGGGCAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr20-20260728-r1",
           "candidates": [
@@ -4297,7 +5664,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr20-20260728-r1",
           "candidates": [
@@ -4330,6 +5697,7 @@
             "symbol": "FAME8",
             "omim_id": "601068",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -4347,13 +5715,39 @@
           "start": 17808358,
           "stop": 17808460
         },
-        "reference_repeat_unit": "TTTTA"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "17",
+            "start": 17808358,
+            "stop": 17808460
+          }
+        ],
+        "reference_repeat_unit": "TTTTA",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "ATTTC",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TTTTA",
+            "classification": "benign"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr17-20260728-r1",
           "candidates": []
@@ -4361,7 +5755,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr17-20260728-r1",
           "candidates": []
@@ -4382,6 +5776,7 @@
             "symbol": "FAME7",
             "omim_id": "618075",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -4399,13 +5794,47 @@
           "start": 159342526,
           "stop": 159342616
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 159342526,
+            "stop": 159342616
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "TTATG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TTTCA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TTTTA",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "TTTTT",
+            "classification": "unknown"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
           "candidates": []
@@ -4413,7 +5842,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
           "candidates": []
@@ -4434,6 +5863,7 @@
             "symbol": "CANVAS",
             "omim_id": "614575",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4456,13 +5886,111 @@
           "start": 39348424,
           "stop": 39348479
         },
-        "reference_repeat_unit": "AAAAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 39348424,
+            "stop": 39348479
+          }
+        ],
+        "reference_repeat_unit": "AAAAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "G",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAG",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "AACGG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAGAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAGAG",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "AAGGC",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AAGGG",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AAGGT",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AGAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AGAGG",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AGGGC",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AGGGG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GAAAG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GGACA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "GGACG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GGTGA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAGA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAGGA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GGAAAG",
+            "classification": "benign"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
           "candidates": [
@@ -4482,7 +6010,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
           "candidates": [
@@ -4515,6 +6043,7 @@
             "symbol": "OPDM4",
             "omim_id": "619790",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4537,13 +6066,27 @@
           "start": 123533720,
           "stop": 123533750
         },
-        "reference_repeat_unit": "GGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "12",
+            "start": 123533720,
+            "stop": 123533750
+          }
+        ],
+        "reference_repeat_unit": "GGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr12-20260728-r1",
           "candidates": [
@@ -4563,7 +6106,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
           "candidates": [
@@ -4596,6 +6139,7 @@
             "symbol": "CCD",
             "omim_id": "119600",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4618,13 +6162,27 @@
           "start": 45422750,
           "stop": 45422792
         },
-        "reference_repeat_unit": "GCN"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "6",
+            "start": 45422750,
+            "stop": 45422792
+          }
+        ],
+        "reference_repeat_unit": "GCN",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCN",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
           "candidates": [
@@ -4644,7 +6202,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1",
           "candidates": [
@@ -4677,6 +6235,7 @@
             "symbol": "FAME1",
             "omim_id": "601068",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -4694,13 +6253,59 @@
           "start": 118366815,
           "stop": 118366880
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "8",
+            "start": 118366815,
+            "stop": 118366880
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAAAA",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "TAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAACA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TACAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TCAAA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TGAAA",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr8-20260728-r1",
           "candidates": []
@@ -4708,7 +6313,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "OVERLAP_ONLY",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr8-20260728-r1",
           "candidates": []
@@ -4729,6 +6334,7 @@
             "symbol": "XLMR",
             "omim_id": "300123",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4747,6 +6353,7 @@
             "symbol": "PHPX",
             "omim_id": "312000",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4769,13 +6376,27 @@
           "start": 140504316,
           "stop": 140504361
         },
-        "reference_repeat_unit": "NGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 140504316,
+            "stop": 140504361
+          }
+        ],
+        "reference_repeat_unit": "NGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "NGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": [
@@ -4795,7 +6416,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": [
@@ -4828,6 +6449,7 @@
             "symbol": "FAME2",
             "omim_id": "607876",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -4845,13 +6467,79 @@
           "start": 96197066,
           "stop": 96197121
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "2",
+            "start": 96197066,
+            "stop": 96197121
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAT",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "AAACC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAACG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAACT",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AACTC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AACTG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AATAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AATAG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "ATAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GAAAT",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
           "candidates": [
@@ -4871,7 +6559,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
           "candidates": [
@@ -4904,6 +6592,7 @@
             "symbol": "SCA17",
             "omim_id": "607136",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -4926,13 +6615,27 @@
           "start": 170561906,
           "stop": 170562017
         },
-        "reference_repeat_unit": "GCA"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "6",
+            "start": 170561906,
+            "stop": 170562017
+          }
+        ],
+        "reference_repeat_unit": "GCA",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCA",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
           "candidates": [
@@ -4952,7 +6655,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1",
           "candidates": [
@@ -4985,6 +6688,7 @@
             "symbol": "TOF",
             "omim_id": "187500",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5007,13 +6711,27 @@
           "start": 19766762,
           "stop": 19766807
         },
-        "reference_repeat_unit": "GCN"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "22",
+            "start": 19766762,
+            "stop": 19766807
+          }
+        ],
+        "reference_repeat_unit": "GCN",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCN",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr22-20260728-r1",
           "candidates": [
@@ -5033,7 +6751,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr22-20260728-r1",
           "candidates": [
@@ -5066,6 +6784,7 @@
             "symbol": "FECD3",
             "omim_id": "613267",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5088,13 +6807,27 @@
           "start": 55586155,
           "stop": 55586227
         },
-        "reference_repeat_unit": "CAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "18",
+            "start": 55586155,
+            "stop": 55586227
+          }
+        ],
+        "reference_repeat_unit": "CAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr18-20260728-r1",
           "candidates": []
@@ -5102,7 +6835,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr18-20260728-r1",
           "candidates": []
@@ -5123,6 +6856,7 @@
             "symbol": "SCA",
             "omim_id": null,
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5145,13 +6879,27 @@
           "start": 67842863,
           "stop": 67842950
         },
-        "reference_repeat_unit": "CAG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "16",
+            "start": 67842863,
+            "stop": 67842950
+          }
+        ],
+        "reference_repeat_unit": "CAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
           "candidates": [
@@ -5171,7 +6919,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": [
@@ -5207,13 +6955,33 @@
           "start": 149631735,
           "stop": 149631780
         },
-        "reference_repeat_unit": "CGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 149631723,
+            "stop": 149631735
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 149631735,
+            "stop": 149631780
+          }
+        ],
+        "reference_repeat_unit": "CGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "CGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": []
@@ -5221,7 +6989,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
@@ -5242,6 +7010,7 @@
             "symbol": "FAME6",
             "omim_id": "618074",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -5259,13 +7028,43 @@
           "start": 24613439,
           "stop": 24613529
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "16",
+            "start": 24613439,
+            "stop": 24613529
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "TTTCA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TTTTA",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "TTTTT",
+            "classification": "unknown"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
           "candidates": []
@@ -5273,7 +7072,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": []
@@ -5294,6 +7093,7 @@
             "symbol": "HMN",
             "omim_id": "619216",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5316,13 +7116,27 @@
           "start": 1435798,
           "stop": 1435818
         },
-        "reference_repeat_unit": "GGCGCGGAGC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "1",
+            "start": 1435798,
+            "stop": 1435818
+          }
+        ],
+        "reference_repeat_unit": "GGCGCGGAGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGCGCGGAGC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
           "candidates": []
@@ -5330,7 +7144,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": [
@@ -5363,6 +7177,7 @@
             "symbol": "DBQD2",
             "omim_id": "615777",
             "inheritance_mode": "Autosomal recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5385,13 +7200,27 @@
           "start": 17470907,
           "stop": 17470922
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "16",
+            "start": 17470907,
+            "stop": 17470922
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
           "candidates": []
@@ -5399,7 +7228,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "NO_EXACT_COMPONENT",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": []
@@ -5420,6 +7249,7 @@
             "symbol": "FAME4",
             "omim_id": "615127",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -5437,13 +7267,47 @@
           "start": 183712187,
           "stop": 183712222
         },
-        "reference_repeat_unit": "AAAAT"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 183712187,
+            "stop": 183712222
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "TGTTA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TTTCA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TTTTA",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "TTTTT",
+            "classification": "unknown"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
           "candidates": []
@@ -5451,7 +7315,7 @@
         "aou": {
           "status": "NONE",
           "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
           "candidates": []
@@ -5472,6 +7336,7 @@
             "symbol": "SCA4",
             "omim_id": "600223",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5494,13 +7359,27 @@
           "start": 72787694,
           "stop": 72787757
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "16",
+            "start": 72787694,
+            "stop": 72787757
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
           "candidates": [
@@ -5520,7 +7399,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": [
@@ -5553,6 +7432,7 @@
             "symbol": "HPE5",
             "omim_id": "609637",
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5575,13 +7455,27 @@
           "start": 99985448,
           "stop": 99985493
         },
-        "reference_repeat_unit": "GCN"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "13",
+            "start": 99985448,
+            "stop": 99985493
+          }
+        ],
+        "reference_repeat_unit": "GCN",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCN",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr13-20260728-r1",
           "candidates": [
@@ -5601,7 +7495,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr13-20260728-r1",
           "candidates": [
@@ -5634,6 +7528,7 @@
             "symbol": "VACTERLX",
             "omim_id": "314390",
             "inheritance_mode": "X-linked recessive",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Normal",
@@ -5656,13 +7551,27 @@
           "start": 137566826,
           "stop": 137566856
         },
-        "reference_repeat_unit": "GCC"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 137566826,
+            "stop": 137566856
+          }
+        ],
+        "reference_repeat_unit": "GCC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCC",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
           "candidates": [
@@ -5682,7 +7591,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": [
@@ -5715,6 +7624,7 @@
             "symbol": "FRA7A",
             "omim_id": null,
             "inheritance_mode": "Autosomal dominant",
+            "notes": null,
             "repeat_size_classifications": [
               {
                 "classification": "Pathogenic",
@@ -5732,13 +7642,27 @@
           "start": 55887600,
           "stop": 55887639
         },
-        "reference_repeat_unit": "GCG"
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "7",
+            "start": 55887600,
+            "stop": 55887639
+          }
+        ],
+        "reference_repeat_unit": "GCG",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCG",
+            "classification": "pathogenic"
+          }
+        ]
       },
       "cohorts": {
         "hgsvc_hprc": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-hgsvc-hprc-chr7-20260728-r1",
           "candidates": [
@@ -5758,7 +7682,7 @@
         "aou": {
           "status": "EXACT_UNIQUE",
           "reason_code": null,
-          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_database": "gnomad_lr_y1_scratch_v5_current",
           "source_release": "y1",
           "source_run_id": "y1-full-prototype-aou-chr7-20260728-r1",
           "candidates": [

@@ -21,6 +21,8 @@ mkdir -p "$APP/graphql-api"
 cp -R "$REPO_ROOT/dataset-metadata" "$APP/dataset-metadata"
 cp -R "$REPO_ROOT/graphql-api/src" "$APP/graphql-api/src"
 cp -R "$REPO_ROOT/graphql-api/static_data" "$APP/static_data"
+mkdir -p "$APP/graphql-api/config"
+cp "$REPO_ROOT/graphql-api/config/long-read-tr-reference-crosswalk.json" "$APP/graphql-api/config/"
 cp "$REPO_ROOT/tsconfig.json" "$APP/graphql-api/tsconfig.json"
 cp "$REPO_ROOT/tsconfig.build.json" "$APP/graphql-api/tsconfig.build.json"
 ln -s "$REPO_ROOT/graphql-api/node_modules" "$APP/graphql-api/node_modules"
@@ -37,6 +39,7 @@ modules=(
   graphql-api/src/graphql/resolvers/variants.js
   graphql-api/src/graphql/resolvers/long_read_variants.js
   graphql-api/src/queries/long_read_variants.js
+  graphql-api/src/queries/long_read_tr_reference.js
 )
 for module in "${modules[@]}"; do
   [[ -f "$APP/$module" ]] || { echo "production emit omitted $module" >&2; exit 1; }
