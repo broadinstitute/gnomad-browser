@@ -32,7 +32,11 @@ import {
 } from '../LongReadVariantPage/longReadAncestryGroups'
 import { formatLongReadAlleleDisplay } from '../LongReadVariantPage/formatLongReadVariantId'
 import { computeDistanceMatrix, buildUPGMATree } from './genealogy-math'
-import DeckGLLollipopTrack, { DeckGLLollipopTrackHandle, HAPLOTYPE_VIEWPORT_HEIGHT } from './DeckGLLollipopTrack'
+import DeckGLLollipopTrack, {
+  DeckGLLollipopTrackHandle,
+  HAPLOTYPE_VIEWPORT_HEIGHT,
+  type LocalTargetTrackOverlay,
+} from './DeckGLLollipopTrack'
 import ChromosomePainterTrack from './ChromosomePainterTrack'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
 import { createMinimumAlleleFrequencyScale } from './minimumAlleleFrequency'
@@ -1244,6 +1248,8 @@ type HaplotypeTrackProps = {
   variantMatchesSearch?: VariantMatchPredicate
   showOnlyMatchingHaplotypes?: boolean
   ambiguousUnphasedRows?: number
+  anonymizeSampleIdentifiers?: boolean
+  localTargetOverlay?: LocalTargetTrackOverlay
 }
 
 export type HaplotypeTrackHandle = DeckGLLollipopTrackHandle
@@ -2312,6 +2318,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
   variantMatchesSearch,
   showOnlyMatchingHaplotypes = false,
   ambiguousUnphasedRows = 0,
+  anonymizeSampleIdentifiers = false,
+  localTargetOverlay,
 }, ref) {
   const isClusteredView = groupingMode === 'similarity'
   const isDiploidView = groupingMode === 'diploid'
@@ -2645,6 +2653,8 @@ const HaplotypeTrack = forwardRef<HaplotypeTrackHandle, HaplotypeTrackProps>(fun
             selectedVariantPos={selectedVariantPos}
             typeFilters={typeFilters}
             variantMatchesSearch={variantMatchesSearch}
+            anonymizeSampleIdentifiers={anonymizeSampleIdentifiers}
+            localTargetOverlay={localTargetOverlay}
           />
           {resolvedViewportStatus && (
             <HaplotypeViewportStatus

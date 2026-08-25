@@ -18,6 +18,7 @@ import {
 } from './LongReadTrVisualizations'
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
 import ShortReadReferenceCohortSection from './ShortReadReferenceCohortSection'
+import LocalHaplotypeBackgroundsSection from './LocalHaplotypeBackgroundsSection'
 import { AlleleNavigation, LongReadTrLocus } from './types'
 
 const Header = styled.header`
@@ -362,6 +363,8 @@ const LongReadTandemRepeatPage = ({
         sequencesUnavailableReason={locus.sequences_unavailable_reason}
         selectedAlleleDetail={selectedAlleleDetail}
       />
+
+      <LocalHaplotypeBackgroundsSection locus={locus} selectedAlleleId={selectedAllele} />
 
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (

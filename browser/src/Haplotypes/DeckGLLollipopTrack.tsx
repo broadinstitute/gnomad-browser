@@ -302,6 +302,22 @@ function computePopulationStats(
   }
 }
 
+export type LocalTargetTrackOverlay = {
+  envelope: { start: number; stop: number }
+  rows: Array<{
+    clusterId: string
+    label: string
+    representedCopyCount: number
+    selectedCopyCount: number
+    strips: Array<{
+      exactId: string
+      label: string
+      selected: boolean
+      segments: Array<{ weight: number; color: [number, number, number, number] }>
+    }>
+  }>
+}
+
 type DeckGLLollipopTrackProps = {
   displayGroups: HaplotypeGroup[]
   viewportHeight?: number
@@ -347,6 +363,8 @@ type DeckGLLollipopTrackProps = {
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
   typeFilters?: Record<string, boolean>
+  anonymizeSampleIdentifiers?: boolean
+  localTargetOverlay?: LocalTargetTrackOverlay
 }
 
 export type DeckGLLollipopTrackHandle = {
@@ -398,6 +416,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
   highlightedVariantIds,
   selectedVariantPos,
   typeFilters,
+  anonymizeSampleIdentifiers = false,
+  localTargetOverlay,
 }, ref) {
   const [hovered, setHovered] = useState<{
     x: number
@@ -807,6 +827,8 @@ const DeckGLLollipopTrack = forwardRef<DeckGLLollipopTrackHandle, DeckGLLollipop
           selectedVariantPos={selectedVariantPos}
           typeFilters={typeFilters}
           variantMatchesSearch={variantMatchesSearch}
+          anonymizeSampleIdentifiers={anonymizeSampleIdentifiers}
+          localTargetOverlay={localTargetOverlay}
         />
 
         {/* Threshold drag overlay — positioned over right panel, scrolls natively */}
@@ -896,6 +918,8 @@ type DeckGLCanvasProps = {
   highlightedVariantIds?: Set<string> | null
   selectedVariantPos?: number | null
   typeFilters?: Record<string, boolean>
+  anonymizeSampleIdentifiers: boolean
+  localTargetOverlay?: LocalTargetTrackOverlay
 }
 
 /** Compute alpha for cluster consensus AF: filter < 0.5, scale 50-255 for 0.5-0.9, 255 for >= 0.9 */
@@ -966,6 +990,8 @@ function DeckGLLollipopCanvas({
   highlightedVariantIds,
   selectedVariantPos,
   typeFilters,
+  anonymizeSampleIdentifiers,
+  localTargetOverlay,
 }: DeckGLCanvasProps) {
   const canvasWidth = width
   const { mapper } = useContext(AccordionContext)
@@ -999,6 +1025,9 @@ function DeckGLLollipopCanvas({
     const memberHoverTargets: LeftPanelMemberHoverTarget[] = []
     const treeLines: LeftPanelTreeLine[] = []
     const sampleLabels: LeftPanelText[] = []
+    const localTargetRowByClusterId = new Map(
+      (localTargetOverlay?.rows || []).map((row) => [row.clusterId, row])
+    )
     // Compute total cohort size for diplotype percentage display
     const cohortTotal = isDiploidView
       ? rowItems.reduce((sum, item) => sum + (item.type === 'diplotype' ? item.group.samples.length : 0), 0)
@@ -1139,6 +1168,23 @@ function DeckGLLollipopCanvas({
           clusterId: cluster.cluster_id,
         })
 
+        const localTargetRow = localTargetRowByClusterId.get(cluster.cluster_id)
+        if (localTargetRow) {
+          texts.push({
+            position: [24, y - 8, 0],
+            text: localTargetRow.label,
+            color: [0, 0, 0, 255],
+            size: 9,
+            tooltipText: `${localTargetRow.representedCopyCount} represented copies; ${localTargetRow.selectedCopyCount} selected exact-allele copies`,
+          })
+          texts.push({
+            position: [24, y + 8, 0],
+            text: `selected ${localTargetRow.selectedCopyCount}/${localTargetRow.representedCopyCount}`,
+            color: [45, 45, 45, 255],
+            size: 8,
+          })
+        }
+
         {
           // Stacked population bar for cluster
           const popStats = populationStatsByRow[i]
@@ -1215,7 +1261,9 @@ function DeckGLLollipopCanvas({
               [leftPanelWidth, y + ROW_CENTER_Y],
               [barX, y + ROW_CENTER_Y],
             ],
-            tooltipText: formatExpandedMemberSampleTooltip(group.samples),
+            tooltipText: anonymizeSampleIdentifiers
+              ? `${group.samples.length} represented haplotype copies`
+              : formatExpandedMemberSampleTooltip(group.samples),
           })
         } else if (popStats && popStats.totalSamples > 0) {
           // Standalone exact-match groups retain their existing numeric summaries.
@@ -1326,7 +1374,7 @@ function DeckGLLollipopCanvas({
     }
 
     return { leftPanelCircles: circles, leftPanelTexts: texts, leftPanelHitboxes: hitboxes, leftPanelPopBars: popBars, leftPanelSampleHoverTargets: sampleHoverTargets, leftPanelMemberHoverTargets: memberHoverTargets, leftPanelTreeLines: treeLines, leftPanelSampleLabels: sampleLabels }
-  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, showCompoundHetAnnotations, sampleMetadata, leftPanelWidth])
+  }, [rowItems, rowOffsets, expandedClusterIds, sampleColorScale, variantColorScale, populationStatsByRow, isDiploidView, showCompoundHetAnnotations, sampleMetadata, leftPanelWidth, anonymizeSampleIdentifiers, localTargetOverlay])
 
   // Left panel DeckGL layers
   const leftPanelLayers = useMemo(() => {
@@ -3017,6 +3065,97 @@ function DeckGLLollipopCanvas({
     })
   }, [selectedVariantPos, scalePosition, totalHeight])
 
+  // Display-only exact target sequences are overlaid after clustering. Their data are
+  // keyed to the existing cluster cut and never feed signatures, distance, or row order.
+  const localTargetLayers = useMemo(() => {
+    if (!localTargetOverlay) return []
+    const rawStart = scalePosition(localTargetOverlay.envelope.start)
+    const rawStop = scalePosition(localTargetOverlay.envelope.stop)
+    const rawLeft = Math.min(rawStart, rawStop)
+    const rawRight = Math.max(rawStart, rawStop)
+    const center = (rawLeft + rawRight) / 2
+    const bandLeft = Math.max(0, rawRight - rawLeft < 60 ? center - 30 : rawLeft)
+    const bandRight = Math.min(canvasWidth, rawRight - rawLeft < 60 ? center + 30 : rawRight)
+    const rowIndexByCluster = new Map<string, number>()
+    rowItems.forEach((item, index) => {
+      if (item.type === 'cluster') rowIndexByCluster.set(item.cluster.cluster_id, index)
+    })
+
+    type TargetSegment = {
+      polygon: [number, number][]
+      color: [number, number, number, number]
+      tooltipText: string
+    }
+    type TargetOutline = {
+      sourcePosition: [number, number, number]
+      targetPosition: [number, number, number]
+    }
+    const segments: TargetSegment[] = []
+    const selectedOutlines: TargetOutline[] = []
+    localTargetOverlay.rows.forEach((row) => {
+      const rowIndex = rowIndexByCluster.get(row.clusterId)
+      if (rowIndex === undefined) return
+      const rowCenter = rowOffsets[rowIndex] + ROW_CENTER_Y
+      row.strips.forEach((strip, stripIndex) => {
+        const y = rowCenter + (stripIndex - (row.strips.length - 1) / 2) * 6
+        const totalWeight = strip.segments.reduce((total, segment) => total + segment.weight, 0)
+        const visibleSegments = strip.segments.length > 0
+          ? strip.segments
+          : [{ weight: 1, color: [150, 150, 150, 255] as [number, number, number, number] }]
+        let cursor = bandLeft
+        visibleSegments.forEach((segment) => {
+          const segmentWidth = totalWeight > 0
+            ? ((bandRight - bandLeft) * segment.weight) / totalWeight
+            : bandRight - bandLeft
+          segments.push({
+            polygon: [[cursor, y - 2], [cursor + segmentWidth, y - 2], [cursor + segmentWidth, y + 2], [cursor, y + 2]],
+            color: segment.color,
+            tooltipText: `${strip.label} — ${strip.exactId}; observed exact allele, not a cluster consensus`,
+          })
+          cursor += segmentWidth
+        })
+        if (strip.selected) {
+          selectedOutlines.push(
+            { sourcePosition: [bandLeft, y - 3, 0], targetPosition: [bandRight, y - 3, 0] },
+            { sourcePosition: [bandRight, y - 3, 0], targetPosition: [bandRight, y + 3, 0] },
+            { sourcePosition: [bandRight, y + 3, 0], targetPosition: [bandLeft, y + 3, 0] },
+            { sourcePosition: [bandLeft, y + 3, 0], targetPosition: [bandLeft, y - 3, 0] }
+          )
+        }
+      })
+    })
+
+    const targetLayers: any[] = [new SolidPolygonLayer({
+      id: 'target-band-background',
+      data: [{ polygon: [[bandLeft, 0], [bandRight, 0], [bandRight, totalHeight], [bandLeft, totalHeight]] }],
+      getPolygon: (item: any) => item.polygon,
+      getFillColor: [244, 240, 250, 85],
+      pickable: false,
+    })]
+    if (segments.length > 0) {
+      targetLayers.push(new SolidPolygonLayer({
+        id: 'target-sequence-segments',
+        data: segments,
+        getPolygon: (segment: TargetSegment) => segment.polygon,
+        getFillColor: (segment: TargetSegment) => segment.color,
+        pickable: true,
+        onHover,
+      }))
+    }
+    if (selectedOutlines.length > 0) {
+      targetLayers.push(new LineLayer({
+        id: 'target-selected-outlines',
+        data: selectedOutlines,
+        getSourcePosition: (line: TargetOutline) => line.sourcePosition,
+        getTargetPosition: (line: TargetOutline) => line.targetPosition,
+        getColor: [15, 15, 15, 255],
+        getWidth: 2,
+        widthUnits: 'pixels' as const,
+      }))
+    }
+    return targetLayers
+  }, [canvasWidth, localTargetOverlay, onHover, rowItems, rowOffsets, scalePosition, totalHeight])
+
   // Multi-view: the genomic center starts exactly at RegionViewer's panel boundary,
   // matching the stacked SVG summary tracks above it.
   const views = useMemo(
@@ -3054,7 +3193,7 @@ function DeckGLLollipopCanvas({
         ref={deckRef}
         views={views}
         viewState={viewState}
-        layers={[...layers, ...(crosshairLayer ? [crosshairLayer] : []), ...(selectedCrosshairLayer ? [selectedCrosshairLayer] : []), ...leftPanelLayers, ...treeLayers]}
+        layers={[...localTargetLayers.slice(0, 1), ...layers, ...localTargetLayers.slice(1), ...(crosshairLayer ? [crosshairLayer] : []), ...(selectedCrosshairLayer ? [selectedCrosshairLayer] : []), ...leftPanelLayers, ...treeLayers]}
         layerFilter={({ layer, viewport }) => {
           const layerId = layer.id
           if (layerId.startsWith('left-panel-')) return viewport.id === 'left-panel'

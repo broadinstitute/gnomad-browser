@@ -14,6 +14,10 @@ import {
   fetchTrvCarrierAlts,
 } from './queries/haplotype-queries'
 import { buildVariantsAndCarrierMap, deriveAutoDefaults } from './queries/haplotype-grouping'
+import {
+  excludeTargetVariantsForAutoDefaults,
+  parseRestHaplotypeTargetDescriptor,
+} from './haplotypeTargetDescriptor'
 import { fetchY1HaplotypeRows } from './queries/long_read_y1_haplotypes'
 import {
   getY1SourceSnapshot,
@@ -146,6 +150,19 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
     if (lrCohort !== 'hgsvc_hprc') {
       return res.status(400).json({ code: 'UNAVAILABLE', error: 'Haplotype View is available only for HGSVC/HPRC' })
     }
+    let targetDescriptor
+    try {
+      targetDescriptor = parseRestHaplotypeTargetDescriptor(req.query.target_descriptor, {
+        chrom: rawChrom,
+        start,
+        stop,
+      })
+    } catch {
+      return res.status(400).json({
+        code: 'INVALID_TARGET_DESCRIPTOR',
+        error: 'valid target_descriptor required',
+      })
+    }
 
     let distinctVariants: any[]
     let trvCarriers: any[]
@@ -179,10 +196,19 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       trvCarriers as any,
     )
 
-    // Compute auto defaults server-side (Phase 4)
+    // Target-aware requests must not let target ALT frequency/assignment influence
+    // display defaults any more than they influence signatures or distance in the worker.
+    const autoDefaultInput = excludeTargetVariantsForAutoDefaults(
+      result.variants,
+      result.carrier_variant_indices,
+      targetDescriptor
+    )
     const regionSize = stop - start
     const autoDefaults = deriveAutoDefaults(
-      result.variants, result.carrier_variant_indices, regionSize, result.trv_alts
+      autoDefaultInput.variants,
+      autoDefaultInput.carrierVariantIndices,
+      regionSize,
+      result.trv_alts
     )
 
     const ms = performance.now() - t0
@@ -193,6 +219,7 @@ app.get('/api/lr/haplotype-groups', async (req: any, res: any) => {
       // and FORMAT/PS without changing the compatibility map above.
       carriers: result.carriers,
       trv_alts: result.trv_alts,
+      ...(targetDescriptor ? { target_descriptor: targetDescriptor } : {}),
       auto_defaults: autoDefaults,
       _phase_summary: phaseSummary,
       provenance: source ? {
