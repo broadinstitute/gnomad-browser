@@ -1,0 +1,2332 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-08-25T10:32:57.473984+00:00",
+  "baseline": {
+    "head": "2b23cad116c4fe7e2bda3558db4c43b61f08b1cb",
+    "branch": "gnomad-lr",
+    "initial_status": "clean"
+  },
+  "inputs": {
+    "crosswalk_path": "graphql-api/config/long-read-tr-reference-crosswalk.json",
+    "crosswalk_sha256": "539ba6668d353c3a6442d9c831bb11a65e4b3b84c1fb8d93ee9bfe25df406f03",
+    "crosswalk_schema_version": 2,
+    "catalog_dataset": "gnomad_r4",
+    "catalog_row_count": 78,
+    "catalog_compact_sha256": "638cb10c4d834af1fced0f73af28f4bd7d7ef018ce50aa218b612ca24bb03a43",
+    "distribution_index": "gnomad_v3_short_tandem_repeats",
+    "distribution_concrete_index": "gnomad_v3_short_tandem_repeats-2026-07-29--20-42",
+    "distribution_index_uuid": "-I0qNVPKSF-xUsIMbCZbqQ",
+    "distribution_index_creation_date_epoch_ms": "1785357757456",
+    "distribution_surface": ["allele_size_distribution", "genotype_distribution"],
+    "distribution_canonicalization": "SHA-256 of UTF-8 compact JSON with keys allele_size_distribution then genotype_distribution; source array and object-key order preserved.",
+    "privacy": "Aggregate histogram rows only; no sample IDs or carrier rows requested or stored."
+  },
+  "reconciliation": {
+    "catalog_rows": 78,
+    "exact_unique": {
+      "hgsvc_hprc": 51,
+      "aou": 58
+    },
+    "absent_exact": {
+      "hgsvc_hprc": 27,
+      "aou": 20
+    }
+  },
+  "distribution_inventory": {
+    "row_count": 78,
+    "rows_sha256": "4601442c76f0602fa4932896e4b823527b60df542168679ed3b18484c8835a5f",
+    "summary": {
+      "min_json_bytes_compact": 13219,
+      "median_json_bytes_compact": 114506.0,
+      "p95_json_bytes_compact_index_73_of_78": 525348,
+      "max_json_bytes_compact": 928685,
+      "max_json_bytes_locus": "RFC1",
+      "max_allele_rows": 620,
+      "max_allele_rows_locus": "RFC1",
+      "max_genotype_rows": 740,
+      "max_genotype_rows_locus": "RFC1",
+      "max_allele_bins": 4953,
+      "max_allele_bins_locus": "RFC1",
+      "max_genotype_bins": 6907,
+      "max_genotype_bins_locus": "RFC1",
+      "max_total_bins": 11860,
+      "max_total_bins_locus": "RFC1"
+    },
+    "rows": [
+      {
+        "id": "ABCD3",
+        "sha256": "8c1e35630bf958309db36bb288a9eda4314465fa85db80d07136988586134472",
+        "json_bytes_compact": 35017,
+        "allele_rows": 46,
+        "genotype_rows": 46,
+        "allele_bins": 188,
+        "genotype_bins": 196
+      },
+      {
+        "id": "AFF2",
+        "sha256": "611fd0f6797cfa952404191a6a6eccb021037457e7c1170d73bac80fcfd2266c",
+        "json_bytes_compact": 209308,
+        "allele_rows": 173,
+        "genotype_rows": 173,
+        "allele_bins": 1046,
+        "genotype_bins": 1541
+      },
+      {
+        "id": "AFF3",
+        "sha256": "9212cee6f94cf021563ddd90c27a172c7a82c7da773dc490b697cdd6042fe7d4",
+        "json_bytes_compact": 278596,
+        "allele_rows": 145,
+        "genotype_rows": 145,
+        "allele_bins": 1599,
+        "genotype_bins": 2268
+      },
+      {
+        "id": "AR",
+        "sha256": "8a4048536ea4946a8004d9186dcffcc0dab6fc8e0e2557d8c5cb326f73f129f8",
+        "json_bytes_compact": 145232,
+        "allele_rows": 96,
+        "genotype_rows": 96,
+        "allele_bins": 614,
+        "genotype_bins": 1190
+      },
+      {
+        "id": "ARX_1",
+        "sha256": "dccf34147a58247998a1ccf2cf748f7d097d8ed98c5de311497492fd50a42196",
+        "json_bytes_compact": 36198,
+        "allele_rows": 75,
+        "genotype_rows": 75,
+        "allele_bins": 145,
+        "genotype_bins": 126
+      },
+      {
+        "id": "ARX_2",
+        "sha256": "356fdc3e1b6efea0cf780c38c4958ace30b0c57bf2660c60edb495e2d3edb5e5",
+        "json_bytes_compact": 46083,
+        "allele_rows": 92,
+        "genotype_rows": 92,
+        "allele_bins": 200,
+        "genotype_bins": 170
+      },
+      {
+        "id": "ATN1",
+        "sha256": "a5ab1ba54c7cb49a3078eaef5843dc821ea72c53de1a23dda41fc5a32293d54f",
+        "json_bytes_compact": 125405,
+        "allele_rows": 58,
+        "genotype_rows": 58,
+        "allele_bins": 410,
+        "genotype_bins": 1164
+      },
+      {
+        "id": "ATXN1",
+        "sha256": "1113a1a7469805f46082fc82af7b516a414f70ab0a6f1f0dfce606afe8caafd3",
+        "json_bytes_compact": 155533,
+        "allele_rows": 114,
+        "genotype_rows": 114,
+        "allele_bins": 621,
+        "genotype_bins": 1254
+      },
+      {
+        "id": "ATXN10",
+        "sha256": "d8725e201a3c8f667cb499b1fcdf08c8d1daed3199554c571a11697698cee478",
+        "json_bytes_compact": 113098,
+        "allele_rows": 101,
+        "genotype_rows": 101,
+        "allele_bins": 423,
+        "genotype_bins": 856
+      },
+      {
+        "id": "ATXN2",
+        "sha256": "b9984e15f811272389fa2f844c52089551982de3a53cfcf128934478fad82bed",
+        "json_bytes_compact": 71635,
+        "allele_rows": 90,
+        "genotype_rows": 90,
+        "allele_bins": 336,
+        "genotype_bins": 425
+      },
+      {
+        "id": "ATXN3",
+        "sha256": "a365bfc3bcaef371c109ab3b86a8513803eb5c8bd12d0e942c0fa1227f867b66",
+        "json_bytes_compact": 173712,
+        "allele_rows": 71,
+        "genotype_rows": 71,
+        "allele_bins": 565,
+        "genotype_bins": 1648
+      },
+      {
+        "id": "ATXN7",
+        "sha256": "c3239b8170f1dc1984a7a1f558f7ab2a89b2ce194bf5b696c7f6d1fb788f0e0c",
+        "json_bytes_compact": 71202,
+        "allele_rows": 86,
+        "genotype_rows": 86,
+        "allele_bins": 298,
+        "genotype_bins": 452
+      },
+      {
+        "id": "ATXN8OS",
+        "sha256": "9feac34d4657913015fe1d487d43fb74907828cc1139d9e80336b238361f3af6",
+        "json_bytes_compact": 206907,
+        "allele_rows": 101,
+        "genotype_rows": 101,
+        "allele_bins": 866,
+        "genotype_bins": 1832
+      },
+      {
+        "id": "BCLAF3",
+        "sha256": "b62861c7381b1e82b59ea5580e5585f3d0b9508686e65b315b5b8c419b7834f2",
+        "json_bytes_compact": 67135,
+        "allele_rows": 49,
+        "genotype_rows": 49,
+        "allele_bins": 347,
+        "genotype_bins": 506
+      },
+      {
+        "id": "BEAN1",
+        "sha256": "54390a69036b3b2c73e9957ba71f4c9b4d8c23e002e53e5812490fbf2c0e5227",
+        "json_bytes_compact": 630580,
+        "allele_rows": 323,
+        "genotype_rows": 341,
+        "allele_bins": 2794,
+        "genotype_bins": 5405
+      },
+      {
+        "id": "C11ORF80",
+        "sha256": "e2323fb5999fb0cd01e39f023684571e34aaff4da354ec1419e564a62bd529fd",
+        "json_bytes_compact": 57689,
+        "allele_rows": 50,
+        "genotype_rows": 50,
+        "allele_bins": 298,
+        "genotype_bins": 413
+      },
+      {
+        "id": "C9ORF72",
+        "sha256": "8ff8662591de658c603f30db5d929671e68105a9656ec4b55b82e73b199178cd",
+        "json_bytes_compact": 117716,
+        "allele_rows": 76,
+        "genotype_rows": 76,
+        "allele_bins": 538,
+        "genotype_bins": 965
+      },
+      {
+        "id": "CACNA1A",
+        "sha256": "28d356e70f7aa3ddd0e360ba89d7b83110295232d88b69352fbbbe16b2a5ca31",
+        "json_bytes_compact": 60735,
+        "allele_rows": 45,
+        "genotype_rows": 45,
+        "allele_bins": 230,
+        "genotype_bins": 495
+      },
+      {
+        "id": "CBL",
+        "sha256": "0f774ac2eab55c34fb811cac5c178476697ccbbd304ecbeb6bdacddcd85ed8ed",
+        "json_bytes_compact": 85439,
+        "allele_rows": 45,
+        "genotype_rows": 45,
+        "allele_bins": 383,
+        "genotype_bins": 731
+      },
+      {
+        "id": "CNBP",
+        "sha256": "6178e72ceb3b4b61b6f197525e44770ac7597738cdca1656998526921572b608",
+        "json_bytes_compact": 149873,
+        "allele_rows": 113,
+        "genotype_rows": 113,
+        "allele_bins": 670,
+        "genotype_bins": 1164
+      },
+      {
+        "id": "COMP",
+        "sha256": "91a6d5d9038a6ea77cd70fe7e0e48875125dfc9ecb910f160114baaddcea6d22",
+        "json_bytes_compact": 13879,
+        "allele_rows": 35,
+        "genotype_rows": 35,
+        "allele_bins": 38,
+        "genotype_bins": 35
+      },
+      {
+        "id": "CSNK1E",
+        "sha256": "e200ca58ece2609ac3e5927a653db7bdecb2f0a3966c177cd9833ba3ac7bb9e5",
+        "json_bytes_compact": 53655,
+        "allele_rows": 84,
+        "genotype_rows": 84,
+        "allele_bins": 270,
+        "genotype_bins": 258
+      },
+      {
+        "id": "CSTB",
+        "sha256": "601b3a685fc2194a1d78f06a8742817d99e6f02131d8e899d5b5fdae71848c95",
+        "json_bytes_compact": 53643,
+        "allele_rows": 88,
+        "genotype_rows": 88,
+        "allele_bins": 259,
+        "genotype_bins": 226
+      },
+      {
+        "id": "DAB1",
+        "sha256": "a4a1dd96e8ab50e940d6b53d8c9a792294af5bf35eabdad02089a6177db75068",
+        "json_bytes_compact": 389246,
+        "allele_rows": 165,
+        "genotype_rows": 166,
+        "allele_bins": 1957,
+        "genotype_bins": 3380
+      },
+      {
+        "id": "DIP2B",
+        "sha256": "258f15b74f99ba5b44c7d477d9aff66f303a8cb77583d158ba66428cc801df82",
+        "json_bytes_compact": 135538,
+        "allele_rows": 79,
+        "genotype_rows": 79,
+        "allele_bins": 631,
+        "genotype_bins": 1134
+      },
+      {
+        "id": "DMD",
+        "sha256": "ae6aa85764f9e8be219fa6b82b96d21e458b6fa59b1bff06b77bf2977552672b",
+        "json_bytes_compact": 242428,
+        "allele_rows": 90,
+        "genotype_rows": 90,
+        "allele_bins": 1073,
+        "genotype_bins": 2204
+      },
+      {
+        "id": "DMPK",
+        "sha256": "f0b4b6da2f8733a58bba6eb83340f1e9035507f3bd268b0f149fb7de5b88fbb4",
+        "json_bytes_compact": 139141,
+        "allele_rows": 45,
+        "genotype_rows": 45,
+        "allele_bins": 506,
+        "genotype_bins": 1346
+      },
+      {
+        "id": "EIF4A3",
+        "sha256": "1b1a59ebb781961f73c13c40ddc037273608c71276781efd9732e4ed84912001",
+        "json_bytes_compact": 176539,
+        "allele_rows": 162,
+        "genotype_rows": 162,
+        "allele_bins": 791,
+        "genotype_bins": 1206
+      },
+      {
+        "id": "EP400",
+        "sha256": "cae948ea5dd8d51d3adce13343f7fdeff9bc98178ee67566815ec9a5e22d85b8",
+        "json_bytes_compact": 93904,
+        "allele_rows": 106,
+        "genotype_rows": 106,
+        "allele_bins": 440,
+        "genotype_bins": 604
+      },
+      {
+        "id": "FAM193B",
+        "sha256": "c0b3deaa449e876fe8e72ec4e161327a7fa34f4b56a0a4300de24381aa4a6bff",
+        "json_bytes_compact": 212927,
+        "allele_rows": 113,
+        "genotype_rows": 113,
+        "allele_bins": 839,
+        "genotype_bins": 1877
+      },
+      {
+        "id": "FGF14",
+        "sha256": "49ffd2b0273063df1808548ece831ebe1493da9d7077476f92e161911a8b97e6",
+        "json_bytes_compact": 728076,
+        "allele_rows": 229,
+        "genotype_rows": 229,
+        "allele_bins": 3832,
+        "genotype_bins": 6529
+      },
+      {
+        "id": "FMR1",
+        "sha256": "2ea275178c0815baf1d4f39c09fa234eed191ff1a84bb018efb3c8dc6222d462",
+        "json_bytes_compact": 283396,
+        "allele_rows": 249,
+        "genotype_rows": 249,
+        "allele_bins": 1464,
+        "genotype_bins": 2010
+      },
+      {
+        "id": "FOXL2",
+        "sha256": "61772a77dd84d2f92269532bcc9a038ce70c3c2f29b5beae5bbe4cc46c06caa6",
+        "json_bytes_compact": 33480,
+        "allele_rows": 71,
+        "genotype_rows": 71,
+        "allele_bins": 129,
+        "genotype_bins": 113
+      },
+      {
+        "id": "FRA10AC1",
+        "sha256": "6ea022c4e85a45efa0b17ae7111677097454d3cb6ff659975ff8034739911c58",
+        "json_bytes_compact": 128503,
+        "allele_rows": 74,
+        "genotype_rows": 74,
+        "allele_bins": 632,
+        "genotype_bins": 1067
+      },
+      {
+        "id": "FXN",
+        "sha256": "062f8577863627abceaaf97c8d5f368239c79c4323f9d73502d6e3bbb67d5957",
+        "json_bytes_compact": 150580,
+        "allele_rows": 126,
+        "genotype_rows": 126,
+        "allele_bins": 697,
+        "genotype_bins": 1139
+      },
+      {
+        "id": "GIPC1",
+        "sha256": "0eec33455b71b5bfb48ee32a4654b8b7b5b0e86495b77c0cfdc19022f638be63",
+        "json_bytes_compact": 136181,
+        "allele_rows": 79,
+        "genotype_rows": 79,
+        "allele_bins": 628,
+        "genotype_bins": 1136
+      },
+      {
+        "id": "GLS",
+        "sha256": "1169dd6e6f2e18d551b0fe392e142d3f75a9edb046e26b4df5e6015c756a1d8b",
+        "json_bytes_compact": 122038,
+        "allele_rows": 48,
+        "genotype_rows": 48,
+        "allele_bins": 405,
+        "genotype_bins": 1167
+      },
+      {
+        "id": "HOXA13_1",
+        "sha256": "712996d5d8cbc2f20f9d6db46371ed5cf0603289dd1699449cb1dc46964b7f04",
+        "json_bytes_compact": 113530,
+        "allele_rows": 126,
+        "genotype_rows": 126,
+        "allele_bins": 706,
+        "genotype_bins": 659
+      },
+      {
+        "id": "HOXA13_2",
+        "sha256": "9504db3af249cd280fb6487d28ac11e147fc24147ff55f74159e04a1428564c6",
+        "json_bytes_compact": 115482,
+        "allele_rows": 113,
+        "genotype_rows": 113,
+        "allele_bins": 748,
+        "genotype_bins": 708
+      },
+      {
+        "id": "HOXA13_3",
+        "sha256": "b53fc9c9d2f8d81e494baf5f13cac6413ca73bd4c9d269def1abc8d8bfa04229",
+        "json_bytes_compact": 132641,
+        "allele_rows": 144,
+        "genotype_rows": 144,
+        "allele_bins": 819,
+        "genotype_bins": 784
+      },
+      {
+        "id": "HOXD13",
+        "sha256": "63a60f52c7cae0c73a934e2b51a1f4240f63a25207e416f8d7836c14ae3a58a1",
+        "json_bytes_compact": 24853,
+        "allele_rows": 52,
+        "genotype_rows": 52,
+        "allele_bins": 102,
+        "genotype_bins": 84
+      },
+      {
+        "id": "HTT",
+        "sha256": "c3dfc92b9d83fa1246b50f90be1fc33d3fd2fc6674b418b33b1bdc02a08ea8d3",
+        "json_bytes_compact": 166278,
+        "allele_rows": 71,
+        "genotype_rows": 71,
+        "allele_bins": 560,
+        "genotype_bins": 1560
+      },
+      {
+        "id": "JPH3",
+        "sha256": "16ce20dc6e8acda9b5af9338a2a54424a0181f7677946e913a7518904687c37d",
+        "json_bytes_compact": 71603,
+        "allele_rows": 33,
+        "genotype_rows": 33,
+        "allele_bins": 261,
+        "genotype_bins": 653
+      },
+      {
+        "id": "LRP12",
+        "sha256": "87ce0e6d00ad3817c762f4be486835d123e08d6b090f7a74972333261fc60719",
+        "json_bytes_compact": 129716,
+        "allele_rows": 82,
+        "genotype_rows": 82,
+        "allele_bins": 475,
+        "genotype_bins": 1122
+      },
+      {
+        "id": "MARCHF6",
+        "sha256": "74335ba8bd8a33af1780862247f07281bc0a51ef25fd169be35061861fea4874",
+        "json_bytes_compact": 166377,
+        "allele_rows": 138,
+        "genotype_rows": 139,
+        "allele_bins": 761,
+        "genotype_bins": 1233
+      },
+      {
+        "id": "NAXE",
+        "sha256": "16f327a4833a3e3cc7bbd66e0f19dcc679c570b40e6280d2c6063ed08d3123ad",
+        "json_bytes_compact": 33411,
+        "allele_rows": 54,
+        "genotype_rows": 54,
+        "allele_bins": 154,
+        "genotype_bins": 162
+      },
+      {
+        "id": "NIPA1",
+        "sha256": "8f26017ed7e56247404d0997eed2a876b6ee816213537de819504326d6ec55f6",
+        "json_bytes_compact": 47816,
+        "allele_rows": 74,
+        "genotype_rows": 74,
+        "allele_bins": 211,
+        "genotype_bins": 250
+      },
+      {
+        "id": "NOP56",
+        "sha256": "4f6a15d92c97526dec48d8e197a0a2f35ce293273d291a738ca098ae9fb2e566",
+        "json_bytes_compact": 60679,
+        "allele_rows": 50,
+        "genotype_rows": 50,
+        "allele_bins": 241,
+        "genotype_bins": 476
+      },
+      {
+        "id": "NOTCH2NLA",
+        "sha256": "3faba29449f1f6e6d476b1c310a50428651df813de50d61b7687aed38369077b",
+        "json_bytes_compact": 61348,
+        "allele_rows": 69,
+        "genotype_rows": 69,
+        "allele_bins": 371,
+        "genotype_bins": 362
+      },
+      {
+        "id": "NOTCH2NLC",
+        "sha256": "122cda2812a8c1a3ed44f8ccd1a490433969b4f7c14873e2a7eed6a89b900644",
+        "json_bytes_compact": 300269,
+        "allele_rows": 153,
+        "genotype_rows": 153,
+        "allele_bins": 1150,
+        "genotype_bins": 2678
+      },
+      {
+        "id": "NUTM2B-AS1",
+        "sha256": "7f75b6d7d34ff7175de70e6c1ae2ed021a3e3929d5e1fcfe2d75379a803f17dc",
+        "json_bytes_compact": 80609,
+        "allele_rows": 68,
+        "genotype_rows": 68,
+        "allele_bins": 306,
+        "genotype_bins": 630
+      },
+      {
+        "id": "PABPN1",
+        "sha256": "db2cc32eadd2a8b762aa82ddee0bca0761a4edf796cb7181da08656cece32cf2",
+        "json_bytes_compact": 23099,
+        "allele_rows": 52,
+        "genotype_rows": 52,
+        "allele_bins": 90,
+        "genotype_bins": 70
+      },
+      {
+        "id": "PHOX2B",
+        "sha256": "95c146e8f63b10c98a60f625b903494585c8d879b7a11623a957c79e0f3d2e06",
+        "json_bytes_compact": 61097,
+        "allele_rows": 115,
+        "genotype_rows": 115,
+        "allele_bins": 285,
+        "genotype_bins": 239
+      },
+      {
+        "id": "PPP2R2B",
+        "sha256": "8c309ca5d9500358c795c27c67a33a510a2e84cec2b19a902e16afb09d6df092",
+        "json_bytes_compact": 87864,
+        "allele_rows": 50,
+        "genotype_rows": 50,
+        "allele_bins": 322,
+        "genotype_bins": 771
+      },
+      {
+        "id": "PRDM12",
+        "sha256": "f4d7096a70323a625c776b5bf244b5fcf9f4c6492659a210bf11e339a844d5ad",
+        "json_bytes_compact": 59683,
+        "allele_rows": 62,
+        "genotype_rows": 62,
+        "allele_bins": 255,
+        "genotype_bins": 414
+      },
+      {
+        "id": "PRE-MIR7-2",
+        "sha256": "0afd0f5871edb6f1532f6a98d5376b97ede368c10294214b790cf12f69271748",
+        "json_bytes_compact": 15447,
+        "allele_rows": 38,
+        "genotype_rows": 38,
+        "allele_bins": 49,
+        "genotype_bins": 39
+      },
+      {
+        "id": "PRNP",
+        "sha256": "120dfb035bbbf4c79f86752ab83c8184fc7dbed36e1144b4cd9a881146ebe89a",
+        "json_bytes_compact": 54869,
+        "allele_rows": 94,
+        "genotype_rows": 94,
+        "allele_bins": 203,
+        "genotype_bins": 195
+      },
+      {
+        "id": "RAI1",
+        "sha256": "198a190201e8defc88504a8511fca431466ad9cd0473b3ce357b8048e8b53a53",
+        "json_bytes_compact": 251219,
+        "allele_rows": 172,
+        "genotype_rows": 172,
+        "allele_bins": 1236,
+        "genotype_bins": 1952
+      },
+      {
+        "id": "RAPGEF2",
+        "sha256": "24b820f22a359f1d1b20094050c8470862604a99d54b7c24f69a5834d2d63033",
+        "json_bytes_compact": 284682,
+        "allele_rows": 173,
+        "genotype_rows": 175,
+        "allele_bins": 1182,
+        "genotype_bins": 2380
+      },
+      {
+        "id": "RFC1",
+        "sha256": "beb11523d230f22df9c4ea4a230c061a4cb0c67b466a0e70548f53569299d2b7",
+        "json_bytes_compact": 928685,
+        "allele_rows": 620,
+        "genotype_rows": 740,
+        "allele_bins": 4953,
+        "genotype_bins": 6907
+      },
+      {
+        "id": "RILPL1",
+        "sha256": "c100483600266d4903d9729149ca605fce55c323d11b23c5bd926bbb3550a9f7",
+        "json_bytes_compact": 38749,
+        "allele_rows": 63,
+        "genotype_rows": 63,
+        "allele_bins": 186,
+        "genotype_bins": 180
+      },
+      {
+        "id": "RUNX2",
+        "sha256": "4f6ba24e88cd1953a633663b78e5f94aef8e93f7c98463ea647565f85c2e87ca",
+        "json_bytes_compact": 61685,
+        "allele_rows": 93,
+        "genotype_rows": 93,
+        "allele_bins": 329,
+        "genotype_bins": 302
+      },
+      {
+        "id": "SAMD12",
+        "sha256": "9e897cc1c5adfee144af80e7332d89d25f24d9bd4647ef8788e6c45d9f68996c",
+        "json_bytes_compact": 441011,
+        "allele_rows": 237,
+        "genotype_rows": 262,
+        "allele_bins": 2064,
+        "genotype_bins": 3664
+      },
+      {
+        "id": "SOX3",
+        "sha256": "51f30bef7cb62d7653629130ae0184a6b4812c8293f99641be245eee08d56750",
+        "json_bytes_compact": 39428,
+        "allele_rows": 72,
+        "genotype_rows": 72,
+        "allele_bins": 189,
+        "genotype_bins": 160
+      },
+      {
+        "id": "STARD7",
+        "sha256": "008c2bd4f37d3c82ff09fdc485c82ec87d15211741ab0e756e0a3a6dc8909363",
+        "json_bytes_compact": 525348,
+        "allele_rows": 463,
+        "genotype_rows": 559,
+        "allele_bins": 2518,
+        "genotype_bins": 3563
+      },
+      {
+        "id": "TBP",
+        "sha256": "4225f2c6310f87aadbc590fa3c0d26989b03b1b2e2d42043b8e737a85b9a8b01",
+        "json_bytes_compact": 188376,
+        "allele_rows": 155,
+        "genotype_rows": 155,
+        "allele_bins": 816,
+        "genotype_bins": 1434
+      },
+      {
+        "id": "TBX1",
+        "sha256": "ddcd4432537d3cee6cd6531b716c49bca648ca01f9dfdcb8933d4e30e8970ab8",
+        "json_bytes_compact": 41624,
+        "allele_rows": 81,
+        "genotype_rows": 81,
+        "allele_bins": 183,
+        "genotype_bins": 156
+      },
+      {
+        "id": "TCF4",
+        "sha256": "02045e6208c61ccaaa687ff03c8734b542e2aebf3678a54413dd7d16c0946700",
+        "json_bytes_compact": 319323,
+        "allele_rows": 132,
+        "genotype_rows": 132,
+        "allele_bins": 1523,
+        "genotype_bins": 2821
+      },
+      {
+        "id": "THAP11",
+        "sha256": "9dd7fc83118f22cc77a3a3ae0de4ee433964be1bb151c40e5c1956423d9a61d8",
+        "json_bytes_compact": 83241,
+        "allele_rows": 101,
+        "genotype_rows": 101,
+        "allele_bins": 386,
+        "genotype_bins": 510
+      },
+      {
+        "id": "TMEM185A",
+        "sha256": "4463346de544c7e179593396bee70f404d3ce50c0e031eef95ad3f1bf24bd6bb",
+        "json_bytes_compact": 84189,
+        "allele_rows": 48,
+        "genotype_rows": 48,
+        "allele_bins": 435,
+        "genotype_bins": 687
+      },
+      {
+        "id": "TNRC6A",
+        "sha256": "3754a33a2f3f5cb9b9e8c9b72388dd249cfd5b60dd441d10a530b8b5d071bd42",
+        "json_bytes_compact": 151750,
+        "allele_rows": 100,
+        "genotype_rows": 100,
+        "allele_bins": 651,
+        "genotype_bins": 1235
+      },
+      {
+        "id": "VWA1",
+        "sha256": "475b43570cee45ce3eb13dd997a24987f81a9c5664b1cd5880efab811284ccff",
+        "json_bytes_compact": 13219,
+        "allele_rows": 31,
+        "genotype_rows": 31,
+        "allele_bins": 38,
+        "genotype_bins": 32
+      },
+      {
+        "id": "XYLT1",
+        "sha256": "b822d542f5357ddaff79e70b44ee051308c2f33b5ab48da15c6e17b46564da0b",
+        "json_bytes_compact": 436243,
+        "allele_rows": 188,
+        "genotype_rows": 188,
+        "allele_bins": 2814,
+        "genotype_bins": 3531
+      },
+      {
+        "id": "YEATS2",
+        "sha256": "810a8cb8aa1df48ffc28e1eff4dc9a6675fe495c6e2bb838de086b0a3f41c620",
+        "json_bytes_compact": 529284,
+        "allele_rows": 316,
+        "genotype_rows": 333,
+        "allele_bins": 2617,
+        "genotype_bins": 4280
+      },
+      {
+        "id": "ZFHX3",
+        "sha256": "8b0564694c7cebe74aaa735db094aa2d8c94163d488e563ccfc518b412a1c073",
+        "json_bytes_compact": 71408,
+        "allele_rows": 94,
+        "genotype_rows": 94,
+        "allele_bins": 306,
+        "genotype_bins": 423
+      },
+      {
+        "id": "ZIC2",
+        "sha256": "563d7939f761e73169828df46a8e9cd284ef4bd337910f363e0db8d35dd7442c",
+        "json_bytes_compact": 47293,
+        "allele_rows": 86,
+        "genotype_rows": 86,
+        "allele_bins": 232,
+        "genotype_bins": 190
+      },
+      {
+        "id": "ZIC3",
+        "sha256": "29af7c73c4e73ad852904676bac56b9e9b46499a4d173a854f8d6c8b4f492f8a",
+        "json_bytes_compact": 15066,
+        "allele_rows": 30,
+        "genotype_rows": 30,
+        "allele_bins": 60,
+        "genotype_bins": 56
+      },
+      {
+        "id": "ZNF713",
+        "sha256": "3370bb81076703b7cbdca1dd7260ed6014cbe0058041d895ff446e46fdea4a17",
+        "json_bytes_compact": 127803,
+        "allele_rows": 65,
+        "genotype_rows": 65,
+        "allele_bins": 534,
+        "genotype_bins": 1122
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "EIF4A3",
+      "concern": "exact benign reference motif and one-base-different pathogenic catalog motif",
+      "short": {
+        "id": "EIF4A3",
+        "gene": {
+          "ensembl_id": "ENSG00000141543",
+          "symbol": "EIF4A3",
+          "region": "5'-UTR"
+        },
+        "associated_diseases": [
+          {
+            "name": "Richieri-Costa-Pereira syndrome",
+            "symbol": "RCPS",
+            "omim_id": "268305",
+            "inheritance_mode": "Autosomal recessive",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 12
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 14,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "EIF4A3",
+        "strchive_id": "RCPS_EIF4A3",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "17",
+          "start": 80147059,
+          "stop": 80147139
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "17",
+            "start": 80147059,
+            "stop": 80147139
+          }
+        ],
+        "reference_repeat_unit": "CCTCGCTGTGCCGCTGCCGA",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "C",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "G",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "CCTCGCTGCGCCGCTGCCGA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "CCTCGCTGTGCCGCTGCCGA",
+            "classification": "benign"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr17-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "17-80147059-80147139-CCTCGCTGTGCCGCTGCCGA+17-80147176-80147202-CGTGCGTA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "17",
+                "start0": 80147059,
+                "end0": 80147139,
+                "motif": "CCTCGCTGTGCCGCTGCCGA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr17-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "17-80147059-80147139-CCTCGCTGTGCCGCTGCCGA+17-80147176-80147202-CGTGCGTA",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "17",
+                "start0": 80147059,
+                "end0": 80147139,
+                "motif": "CCTCGCTGTGCCGCTGCCGA"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      },
+      "diagnostic_components": []
+    },
+    {
+      "id": "HTT",
+      "concern": "compound exact CAG match with repeated CCG motif at distinct coordinates",
+      "short": {
+        "id": "HTT",
+        "gene": {
+          "ensembl_id": "ENSG00000197386",
+          "symbol": "HTT",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Huntington's disease",
+            "symbol": "HD",
+            "omim_id": "143100",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 26
+              },
+              {
+                "classification": "Intermediate",
+                "min": 27,
+                "max": 35
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 36,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "HTT",
+        "strchive_id": "HD_HTT",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "4",
+          "start": 3074876,
+          "stop": 3074933
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074876,
+            "stop": 3074933
+          },
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074939,
+            "stop": 3074966
+          }
+        ],
+        "reference_repeat_unit": "CAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "CAG",
+            "classification": "pathogenic"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 3074876,
+                "end0": 3074933,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 3074876,
+                "end0": 3074933,
+                "motif": "CAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      },
+      "diagnostic_components": []
+    },
+    {
+      "id": "ATXN1",
+      "concern": "exact TGC source orientation",
+      "short": {
+        "id": "ATXN1",
+        "gene": {
+          "ensembl_id": "ENSG00000124788",
+          "symbol": "ATXN1",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 1",
+            "symbol": "SCA1",
+            "omim_id": "164400",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 35
+              },
+              {
+                "classification": "Intermediate",
+                "min": 36,
+                "max": 38
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 39,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "ATXN1",
+        "strchive_id": "SCA1_ATXN1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "6",
+          "start": 16327633,
+          "stop": 16327723
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "6",
+            "start": 16327633,
+            "stop": 16327723
+          }
+        ],
+        "reference_repeat_unit": "TGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "TGC",
+            "classification": "pathogenic"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-16327633-16327723-TGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 16327633,
+                "end0": 16327723,
+                "motif": "TGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr6-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "6-16327633-16327723-TGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "6",
+                "start0": 16327633,
+                "end0": 16327723,
+                "motif": "TGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      },
+      "diagnostic_components": []
+    },
+    {
+      "id": "RFC1",
+      "concern": "exact benign reference motif",
+      "short": {
+        "id": "RFC1",
+        "gene": {
+          "ensembl_id": "ENSG00000035928",
+          "symbol": "RFC1",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Cerebellar ataxia, neuropathy, and vestibular areflexia syndrome",
+            "symbol": "CANVAS",
+            "omim_id": "614575",
+            "inheritance_mode": "Autosomal recessive",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 11
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 400,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "RFC1",
+        "strchive_id": "CANVAS_RFC1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "4",
+          "start": 39348424,
+          "stop": 39348479
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 39348424,
+            "stop": 39348479
+          }
+        ],
+        "reference_repeat_unit": "AAAAG",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "G",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAG",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "AACGG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAGAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAGAG",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "AAGGC",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AAGGG",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AAGGT",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AGAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AGAGG",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AGGGC",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "AGGGG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GAAAG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GGACA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "GGACG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GGTGA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAGA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAGGA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GGAAAG",
+            "classification": "benign"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-39348424-39348479-AAAAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 39348424,
+                "end0": 39348479,
+                "motif": "AAAAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "4-39348424-39348479-AAAAG",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "4",
+                "start0": 39348424,
+                "end0": 39348479,
+                "motif": "AAAAG"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      },
+      "diagnostic_components": []
+    },
+    {
+      "id": "STARD7",
+      "concern": "exact benign reference motif",
+      "short": {
+        "id": "STARD7",
+        "gene": {
+          "ensembl_id": "ENSG00000084090",
+          "symbol": "STARD7",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 2",
+            "symbol": "FAME2",
+            "omim_id": "607876",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 274,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "STARD7",
+        "strchive_id": "FAME2_STARD7",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "2",
+          "start": 96197066,
+          "stop": 96197121
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "2",
+            "start": 96197066,
+            "stop": 96197121
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAT",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "AAACC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAACG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAACT",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AACTC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AACTG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AATAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AATAG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "ATAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "GAAAT",
+            "classification": "pathogenic"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-96197066-96197121-AAAAT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 96197066,
+                "end0": 96197121,
+                "motif": "AAAAT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "2-96197066-96197121-AAAAT",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "2",
+                "start0": 96197066,
+                "end0": 96197121,
+                "motif": "AAAAT"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      },
+      "diagnostic_components": []
+    },
+    {
+      "id": "COMP",
+      "concern": "AoU-only exact match with two diseases and range notes",
+      "short": {
+        "id": "COMP",
+        "gene": {
+          "ensembl_id": "ENSG00000105664",
+          "symbol": "COMP",
+          "region": "coding: poly-aspartic-acid"
+        },
+        "associated_diseases": [
+          {
+            "name": "Multiple epiphyseal dysplasia",
+            "symbol": "EDM1",
+            "omim_id": "132400",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 6,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "Pseudoachondroplasia",
+            "symbol": "PSACH",
+            "omim_id": "177170",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": "5 repeats are normal. Contractions to 4 repeats are also pathogenic.",
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 7,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "COMP",
+        "strchive_id": "EDM1-PSACH_COMP",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "19",
+          "start": 18786034,
+          "stop": 18786049
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "19",
+            "start": 18786034,
+            "stop": 18786049
+          }
+        ],
+        "reference_repeat_unit": "GTC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GTC",
+            "classification": "pathogenic"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr19-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr19-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "19-18786034-18786049-GTC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "19",
+                "start0": 18786034,
+                "end0": 18786049,
+                "motif": "GTC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      },
+      "diagnostic_components": []
+    },
+    {
+      "id": "NOTCH2NLC",
+      "concern": "AoU-only exact match with two diseases and distinct ranges",
+      "short": {
+        "id": "NOTCH2NLC",
+        "gene": {
+          "ensembl_id": "ENSG00000286219",
+          "symbol": "NOTCH2NLC",
+          "region": "coding: polyglycine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Neuronal intranuclear inclusion disease",
+            "symbol": "NIID",
+            "omim_id": "603472",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 37
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 66,
+                "max": null
+              }
+            ]
+          },
+          {
+            "name": "Hereditary essential tremor type 6",
+            "symbol": "ETM6",
+            "omim_id": "618866",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 41
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 60,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "NOTCH2NLC",
+        "strchive_id": "NIID_NOTCH2NLC",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "1",
+          "start": 149390802,
+          "stop": 149390841
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "1",
+            "start": 149390802,
+            "stop": 149390841
+          }
+        ],
+        "reference_repeat_unit": "GGC",
+        "repeat_units": [
+          {
+            "repeat_unit": "GGC",
+            "classification": "pathogenic"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "NO_EXACT_COMPONENT",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr1-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "EXACT_UNIQUE",
+          "reason_code": null,
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
+          "candidates": [
+            {
+              "canonical_id": "1-149390802-149390841-GGC",
+              "matched_component_index": 0,
+              "matched_component": {
+                "chrom": "1",
+                "start0": 149390802,
+                "end0": 149390841,
+                "motif": "GGC"
+              },
+              "matched_reference_region_index": 0
+            }
+          ]
+        }
+      },
+      "diagnostic_components": []
+    },
+    {
+      "id": "BEAN1",
+      "concern": "coordinate-equal cyclic rotation remains a non-match",
+      "short": {
+        "id": "BEAN1",
+        "gene": {
+          "ensembl_id": "ENSG00000166546",
+          "symbol": "BEAN1",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinocerebellar ataxia 31",
+            "symbol": "SCA31",
+            "omim_id": "117210",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 110,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "BEAN1",
+        "strchive_id": "SCA31_BEAN1",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "16",
+          "start": 66490398,
+          "stop": 66490453
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "16",
+            "start": 66490398,
+            "stop": 66490453
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "AAAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AAATG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "AGAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "ATAAG",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAAAA",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "TAAAC",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAACA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TACAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TAGAA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TCAAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TGCAA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TGGAA",
+            "classification": "pathogenic"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "candidates": []
+        }
+      },
+      "diagnostic_components": [
+        {
+          "chrom": "16",
+          "start0": 66490398,
+          "end0": 66490453,
+          "motif": "TAAAA"
+        }
+      ]
+    },
+    {
+      "id": "YEATS2",
+      "concern": "coordinate-equal reverse-complement/rotation remains a non-match",
+      "short": {
+        "id": "YEATS2",
+        "gene": {
+          "ensembl_id": "ENSG00000163872",
+          "symbol": "YEATS2",
+          "region": "intron"
+        },
+        "associated_diseases": [
+          {
+            "name": "Familial adult myoclonic epilepsy 4",
+            "symbol": "FAME4",
+            "omim_id": "615127",
+            "inheritance_mode": "Autosomal dominant",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Pathogenic",
+                "min": 1000,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "YEATS2",
+        "strchive_id": "FAME4_YEATS2",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "3",
+          "start": 183712187,
+          "stop": 183712222
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "3",
+            "start": 183712187,
+            "stop": 183712222
+          }
+        ],
+        "reference_repeat_unit": "AAAAT",
+        "repeat_units": [
+          {
+            "repeat_unit": "A",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "T",
+            "classification": "reference"
+          },
+          {
+            "repeat_unit": "TGTTA",
+            "classification": "unknown"
+          },
+          {
+            "repeat_unit": "TTTCA",
+            "classification": "pathogenic"
+          },
+          {
+            "repeat_unit": "TTTTA",
+            "classification": "benign"
+          },
+          {
+            "repeat_unit": "TTTTT",
+            "classification": "unknown"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr3-20260803-recovery-r2",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "REGION_EQUAL_MOTIF_MISMATCH",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
+          "candidates": []
+        }
+      },
+      "diagnostic_components": [
+        {
+          "chrom": "3",
+          "start0": 183712187,
+          "end0": 183712222,
+          "motif": "TTTTA"
+        }
+      ]
+    },
+    {
+      "id": "AR",
+      "concern": "overlap without exact bounds remains a non-match",
+      "short": {
+        "id": "AR",
+        "gene": {
+          "ensembl_id": "ENSG00000169083",
+          "symbol": "AR",
+          "region": "coding: polyglutamine"
+        },
+        "associated_diseases": [
+          {
+            "name": "Spinal and bulbar muscular atrophy",
+            "symbol": "SBMA",
+            "omim_id": "313200",
+            "inheritance_mode": "X-linked recessive",
+            "notes": null,
+            "repeat_size_classifications": [
+              {
+                "classification": "Normal",
+                "min": null,
+                "max": 34
+              },
+              {
+                "classification": "Pathogenic",
+                "min": 38,
+                "max": null
+              }
+            ]
+          }
+        ],
+        "stripy_id": "AR",
+        "strchive_id": "SBMA_AR",
+        "main_reference_region": {
+          "reference_genome": "GRCh38",
+          "chrom": "X",
+          "start": 67545316,
+          "stop": 67545385
+        },
+        "reference_regions": [
+          {
+            "reference_genome": "GRCh38",
+            "chrom": "X",
+            "start": 67545316,
+            "stop": 67545385
+          }
+        ],
+        "reference_repeat_unit": "GCA",
+        "repeat_units": [
+          {
+            "repeat_unit": "GCA",
+            "classification": "pathogenic"
+          }
+        ]
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chrX-aggregate-20260803T214532Z-4f2676-r1",
+          "candidates": []
+        },
+        "aou": {
+          "status": "NONE",
+          "reason_code": "OVERLAP_ONLY",
+          "source_database": "gnomad_lr_y1_scratch_demo_full_genome_20260803",
+          "source_release": "y1",
+          "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
+          "candidates": []
+        }
+      },
+      "diagnostic_components": [
+        {
+          "chrom": "X",
+          "start0": 67545306,
+          "end0": 67545318,
+          "motif": "TGC"
+        },
+        {
+          "chrom": "X",
+          "start0": 67545400,
+          "end0": 67545419,
+          "motif": "GCA"
+        }
+      ]
+    }
+  ],
+  "synthetic_cases": [
+    {
+      "id": "duplicate_ordered_component",
+      "catalog_records": [
+        {
+          "id": "HTT",
+          "gene": {
+            "ensembl_id": "ENSG00000197386",
+            "symbol": "HTT",
+            "region": "coding: polyglutamine"
+          },
+          "associated_diseases": [
+            {
+              "name": "Huntington's disease",
+              "symbol": "HD",
+              "omim_id": "143100",
+              "inheritance_mode": "Autosomal dominant",
+              "notes": null,
+              "repeat_size_classifications": [
+                {
+                  "classification": "Normal",
+                  "min": null,
+                  "max": 26
+                },
+                {
+                  "classification": "Intermediate",
+                  "min": 27,
+                  "max": 35
+                },
+                {
+                  "classification": "Pathogenic",
+                  "min": 36,
+                  "max": null
+                }
+              ]
+            }
+          ],
+          "stripy_id": "HTT",
+          "strchive_id": "HD_HTT",
+          "main_reference_region": {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074876,
+            "stop": 3074933
+          },
+          "reference_regions": [
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074876,
+              "stop": 3074933
+            },
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074939,
+              "stop": 3074966
+            }
+          ],
+          "reference_repeat_unit": "CAG",
+          "repeat_units": [
+            {
+              "repeat_unit": "CAG",
+              "classification": "pathogenic"
+            }
+          ]
+        }
+      ],
+      "components": [
+        {
+          "chrom": "4",
+          "start0": 3074876,
+          "end0": 3074933,
+          "motif": "CAG"
+        },
+        {
+          "chrom": "4",
+          "start0": 3074876,
+          "end0": 3074933,
+          "motif": "CAG"
+        }
+      ],
+      "expected_status": "AMBIGUOUS_COMPONENT",
+      "expected_reason_code": "NON_BIJECTIVE_ORDERED_COMPONENT"
+    },
+    {
+      "id": "duplicate_catalog_exact_key",
+      "catalog_records": [
+        {
+          "id": "HTT",
+          "gene": {
+            "ensembl_id": "ENSG00000197386",
+            "symbol": "HTT",
+            "region": "coding: polyglutamine"
+          },
+          "associated_diseases": [
+            {
+              "name": "Huntington's disease",
+              "symbol": "HD",
+              "omim_id": "143100",
+              "inheritance_mode": "Autosomal dominant",
+              "notes": null,
+              "repeat_size_classifications": [
+                {
+                  "classification": "Normal",
+                  "min": null,
+                  "max": 26
+                },
+                {
+                  "classification": "Intermediate",
+                  "min": 27,
+                  "max": 35
+                },
+                {
+                  "classification": "Pathogenic",
+                  "min": 36,
+                  "max": null
+                }
+              ]
+            }
+          ],
+          "stripy_id": "HTT",
+          "strchive_id": "HD_HTT",
+          "main_reference_region": {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074876,
+            "stop": 3074933
+          },
+          "reference_regions": [
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074876,
+              "stop": 3074933
+            },
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074939,
+              "stop": 3074966
+            }
+          ],
+          "reference_repeat_unit": "CAG",
+          "repeat_units": [
+            {
+              "repeat_unit": "CAG",
+              "classification": "pathogenic"
+            }
+          ]
+        },
+        {
+          "id": "HTT_DUPLICATE",
+          "gene": {
+            "ensembl_id": "ENSG00000197386",
+            "symbol": "HTT",
+            "region": "coding: polyglutamine"
+          },
+          "associated_diseases": [
+            {
+              "name": "Huntington's disease",
+              "symbol": "HD",
+              "omim_id": "143100",
+              "inheritance_mode": "Autosomal dominant",
+              "notes": null,
+              "repeat_size_classifications": [
+                {
+                  "classification": "Normal",
+                  "min": null,
+                  "max": 26
+                },
+                {
+                  "classification": "Intermediate",
+                  "min": 27,
+                  "max": 35
+                },
+                {
+                  "classification": "Pathogenic",
+                  "min": 36,
+                  "max": null
+                }
+              ]
+            }
+          ],
+          "stripy_id": "HTT",
+          "strchive_id": "HD_HTT",
+          "main_reference_region": {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074876,
+            "stop": 3074933
+          },
+          "reference_regions": [
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074876,
+              "stop": 3074933
+            },
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074939,
+              "stop": 3074966
+            }
+          ],
+          "reference_repeat_unit": "CAG",
+          "repeat_units": [
+            {
+              "repeat_unit": "CAG",
+              "classification": "pathogenic"
+            }
+          ]
+        }
+      ],
+      "components": [
+        {
+          "chrom": "4",
+          "start0": 3074876,
+          "end0": 3074933,
+          "motif": "CAG"
+        }
+      ],
+      "expected_status": "AMBIGUOUS_CATALOG",
+      "expected_reason_code": "DUPLICATE_CATALOG_EXACT_KEY"
+    },
+    {
+      "id": "duplicate_reference_region",
+      "catalog_records": [
+        {
+          "id": "HTT",
+          "gene": {
+            "ensembl_id": "ENSG00000197386",
+            "symbol": "HTT",
+            "region": "coding: polyglutamine"
+          },
+          "associated_diseases": [
+            {
+              "name": "Huntington's disease",
+              "symbol": "HD",
+              "omim_id": "143100",
+              "inheritance_mode": "Autosomal dominant",
+              "notes": null,
+              "repeat_size_classifications": [
+                {
+                  "classification": "Normal",
+                  "min": null,
+                  "max": 26
+                },
+                {
+                  "classification": "Intermediate",
+                  "min": 27,
+                  "max": 35
+                },
+                {
+                  "classification": "Pathogenic",
+                  "min": 36,
+                  "max": null
+                }
+              ]
+            }
+          ],
+          "stripy_id": "HTT",
+          "strchive_id": "HD_HTT",
+          "main_reference_region": {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074876,
+            "stop": 3074933
+          },
+          "reference_regions": [
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074876,
+              "stop": 3074933
+            },
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074876,
+              "stop": 3074933
+            }
+          ],
+          "reference_repeat_unit": "CAG",
+          "repeat_units": [
+            {
+              "repeat_unit": "CAG",
+              "classification": "pathogenic"
+            }
+          ]
+        }
+      ],
+      "components": [
+        {
+          "chrom": "4",
+          "start0": 3074876,
+          "end0": 3074933,
+          "motif": "CAG"
+        }
+      ],
+      "expected_status": "AMBIGUOUS_COMPONENT",
+      "expected_reason_code": "NON_BIJECTIVE_ORDERED_COMPONENT"
+    },
+    {
+      "id": "multiple_containing_loci",
+      "catalog_records": [
+        {
+          "id": "HTT",
+          "gene": {
+            "ensembl_id": "ENSG00000197386",
+            "symbol": "HTT",
+            "region": "coding: polyglutamine"
+          },
+          "associated_diseases": [
+            {
+              "name": "Huntington's disease",
+              "symbol": "HD",
+              "omim_id": "143100",
+              "inheritance_mode": "Autosomal dominant",
+              "notes": null,
+              "repeat_size_classifications": [
+                {
+                  "classification": "Normal",
+                  "min": null,
+                  "max": 26
+                },
+                {
+                  "classification": "Intermediate",
+                  "min": 27,
+                  "max": 35
+                },
+                {
+                  "classification": "Pathogenic",
+                  "min": 36,
+                  "max": null
+                }
+              ]
+            }
+          ],
+          "stripy_id": "HTT",
+          "strchive_id": "HD_HTT",
+          "main_reference_region": {
+            "reference_genome": "GRCh38",
+            "chrom": "4",
+            "start": 3074876,
+            "stop": 3074933
+          },
+          "reference_regions": [
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074876,
+              "stop": 3074933
+            },
+            {
+              "reference_genome": "GRCh38",
+              "chrom": "4",
+              "start": 3074939,
+              "stop": 3074966
+            }
+          ],
+          "reference_repeat_unit": "CAG",
+          "repeat_units": [
+            {
+              "repeat_unit": "CAG",
+              "classification": "pathogenic"
+            }
+          ]
+        }
+      ],
+      "components": [
+        {
+          "chrom": "4",
+          "start0": 3074876,
+          "end0": 3074933,
+          "motif": "CAG"
+        }
+      ],
+      "candidate_canonical_ids": [
+        "4-3074876-3074933-CAG",
+        "4-3074876-3074933-CAG+4-3074939-3074966-CCG"
+      ],
+      "expected_status": "MULTIPLE",
+      "expected_reason_code": "MULTIPLE_CONTAINING_LR_LOCI",
+      "note": "Crosswalk-build ambiguity frozen for resolver tests; the direct component matcher does not classify containing-locus multiplicity."
+    }
+  ]
+}
