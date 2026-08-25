@@ -46,11 +46,14 @@ import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import { useStableScrollbarGutter } from './scrollbarGutter'
 import { SEARCHED_POSITION_GUIDE_STYLE } from './searchedPositionGuideStyle'
 import {
-  LOCAL_TARGET_MOTIF_SEPARATOR_STYLE,
+  LOCAL_TARGET_MOTIF_SEGMENT_POLYGONS_STROKED,
   localTargetBandBounds,
+  localTargetMotifBoundaryLines,
+  localTargetMotifSeparatorLayerProps,
   localTargetStripLayout,
   localTargetVariantColor,
   truncateLocalTargetLabel,
+  type LocalTargetMotifBoundaryLine,
 } from './localTargetPresentation'
 import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
@@ -3190,6 +3193,7 @@ function DeckGLLollipopCanvas({
       targetPosition: [number, number, number]
     }
     const segments: TargetSegment[] = []
+    const motifSeparators: LocalTargetMotifBoundaryLine[] = []
     const selectedOutlines: TargetOutline[] = []
     localTargetOverlay.groups.forEach((row) => {
       const rowIndex = rowIndexByGroupHash.get(row.groupHash)
@@ -3221,6 +3225,13 @@ function DeckGLLollipopCanvas({
           })
           cursor += segmentWidth
         })
+        motifSeparators.push(...localTargetMotifBoundaryLines({
+          weights: visibleSegments.map((segment) => segment.weight),
+          bandLeft,
+          bandRight,
+          yTop: y - stripHalfHeight,
+          yBottom: y + stripHalfHeight,
+        }))
         if (strip.selected) {
           selectedOutlines.push(
             { sourcePosition: [bandLeft, y - stripHalfHeight - 1, 0], targetPosition: [bandRight, y - stripHalfHeight - 1, 0] },
@@ -3254,13 +3265,13 @@ function DeckGLLollipopCanvas({
         data: segments,
         getPolygon: (segment: TargetSegment) => segment.polygon,
         getFillColor: (segment: TargetSegment) => segment.color,
-        getLineColor: LOCAL_TARGET_MOTIF_SEPARATOR_STYLE.color,
-        getLineWidth: LOCAL_TARGET_MOTIF_SEPARATOR_STYLE.width,
-        lineWidthUnits: 'pixels' as const,
-        stroked: true,
+        stroked: LOCAL_TARGET_MOTIF_SEGMENT_POLYGONS_STROKED,
         pickable: true,
         onHover,
       }))
+    }
+    if (motifSeparators.length > 0) {
+      targetLayers.push(new LineLayer(localTargetMotifSeparatorLayerProps(motifSeparators)))
     }
     if (selectedOutlines.length > 0) {
       targetLayers.push(new LineLayer({
