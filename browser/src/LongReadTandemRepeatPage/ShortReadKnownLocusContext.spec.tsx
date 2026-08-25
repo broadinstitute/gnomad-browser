@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
 import { LongReadTrShortReadContext } from './types'
@@ -57,12 +57,14 @@ const exactContext: LongReadTrShortReadContext = {
     repeat_units: [
       { repeat_unit: 'CAG', classification: 'pathogenic' },
       { repeat_unit: 'CAA', classification: 'reference' },
+      { repeat_unit: 'A', classification: 'reference' },
     ],
   },
   matched_component_index: 0,
   matched_component: { chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' },
   matched_reference_region_index: 0,
-  pathogenic_component_highlight: true,
+  exact_reference_component_outline_authorized: true,
+  matched_reference_repeat_unit_classifications: ['pathogenic'],
   lr_database: 'gnomad_lr_y1_full_genome',
   lr_release: 'y1',
   lr_run_id: 'run-hgsvc',
@@ -78,18 +80,27 @@ describe('ShortReadKnownLocusContext', () => {
       .closest('section') as HTMLElement
     expect(within(panel).getByText('Exact reference-component match')).not.toBeNull()
     expect(within(panel).getByText(/Component 1: chr4:3,074,877–3,074,933/)).not.toBeNull()
-    expect(within(panel).getByText('Huntington disease (HD)')).not.toBeNull()
-    expect(within(panel).getByText('Source note.')).not.toBeNull()
     expect(
       within(panel).getByText(
-        (_text, element) =>
-          element?.tagName === 'LI' && Boolean(element.textContent?.includes('CAA — reference'))
+        (_text, element) => element?.tagName === 'DD' && element.textContent === 'CAG — pathogenic'
       )
     ).not.toBeNull()
+    expect(within(panel).getByText('Huntington disease (HD)')).not.toBeNull()
+    expect(within(panel).getByText('Source note.')).not.toBeNull()
+    const primaryMotifs = within(panel).getByRole('table', {
+      name: 'Primary short-read catalog repeat units',
+    })
+    expect(within(primaryMotifs).getByText('Matched catalog reference repeat unit')).not.toBeNull()
+    expect(within(primaryMotifs).getByText('Other catalog motif')).not.toBeNull()
+    expect(within(primaryMotifs).queryByText('A')).toBeNull()
+    fireEvent.click(within(panel).getByText('All catalog motifs (3)'))
     expect(
-      within(panel).getByText(/Short-read known-locus ranges are reference context/)
+      within(within(panel).getByRole('table', { name: 'All short-read catalog motifs' })).getByText(
+        'A'
+      )
     ).not.toBeNull()
-    expect(within(panel).getByText(/not applied to.*long-read alleles/i)).not.toBeNull()
+    expect(within(panel).getByText(/Short-read reference context only/)).not.toBeNull()
+    expect(within(panel).getByText(/do not classify any.*LR allele/i)).not.toBeNull()
     expect(
       within(panel)
         .getByRole('link', { name: /HTT.*short-read details/ })
@@ -104,15 +115,12 @@ describe('ShortReadKnownLocusContext', () => {
     'AMBIGUOUS_COMPONENT',
     'CATALOG_UNAVAILABLE',
     'UNAVAILABLE',
-  ])(
-    'renders no panel for %s',
-    (status) => {
-      const { container } = render(
-        <ShortReadKnownLocusContext
-          context={{ ...exactContext, status: status as LongReadTrShortReadContext['status'] }}
-        />
-      )
-      expect(container.childElementCount).toBe(0)
-    }
-  )
+  ])('renders no panel for %s', (status) => {
+    const { container } = render(
+      <ShortReadKnownLocusContext
+        context={{ ...exactContext, status: status as LongReadTrShortReadContext['status'] }}
+      />
+    )
+    expect(container.childElementCount).toBe(0)
+  })
 })

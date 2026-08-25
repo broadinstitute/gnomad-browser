@@ -50,7 +50,9 @@ const longReadTrLocusQuery = `
       }
       short_read_context {
         status reason_code catalog_dataset catalog_source catalog_digest
-        matched_component_index matched_reference_region_index pathogenic_component_highlight
+        matched_component_index matched_reference_region_index
+        exact_reference_component_outline_authorized
+        matched_reference_repeat_unit_classifications
         matched_component { chrom start0 end0 motif }
         candidates {
           canonical_id matched_component_index matched_reference_region_index
@@ -163,11 +165,21 @@ describe('assembled LR identity GraphQL contract', () => {
     const result = await graphql({ schema, source: getIntrospectionQuery() })
     expect(result.errors).toBeUndefined()
 
-    const detailsType = (result.data as any).__schema.types.find(
-      (type: any) => type.name === 'LongReadVariantDetails'
-    )
+    const types = (result.data as any).__schema.types
+    const detailsType = types.find((type: any) => type.name === 'LongReadVariantDetails')
     expect(detailsType.fields.map((field: any) => field.name)).toEqual(
       expect.arrayContaining(['source_variant_id', 'alt_index', 'alt_count'])
     )
+
+    const contextType = types.find((type: any) => type.name === 'LongReadTrShortReadContext')
+    expect(contextType.fields.map((field: any) => field.name)).toEqual(
+      expect.arrayContaining([
+        'exact_reference_component_outline_authorized',
+        'matched_reference_repeat_unit_classifications',
+      ])
+    )
+    expect(
+      contextType.fields.find((field: any) => field.name === 'pathogenic_component_highlight')
+    ).toEqual(expect.objectContaining({ isDeprecated: true }))
   })
 })

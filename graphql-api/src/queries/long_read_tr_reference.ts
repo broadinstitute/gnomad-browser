@@ -505,6 +505,9 @@ export const resolveLongReadTrShortReadContext = (
       catalog_source: artifact.catalog.source,
       catalog_digest: artifact.catalog.compact_sha256,
       candidates: [] as Candidate[],
+      exact_reference_component_outline_authorized: false,
+      matched_reference_repeat_unit_classifications: [] as string[],
+      // Deprecated compatibility field. New clients authorize the neutral identity outline above.
       pathogenic_component_highlight: false,
     }
     if (!catalogState.available) {
@@ -622,7 +625,8 @@ export const resolveLongReadTrShortReadContext = (
         ? [index]
         : []
     )
-    if (exactIndices.length !== 1 || exactIndices[0] !== candidate.matched_reference_region_index) {
+    // The validated detail record's unique exact index is authoritative for the response.
+    if (exactIndices.length !== 1) {
       return {
         ...base,
         status: 'AMBIGUOUS_COMPONENT',
@@ -630,13 +634,14 @@ export const resolveLongReadTrShortReadContext = (
         candidates: [candidate],
       }
     }
-    const pathogenic =
-      normalizedRecord.reference_repeat_unit === candidate.matched_component.motif &&
-      normalizedRecord.repeat_units.some(
-        (unit: any) =>
-          unit.repeat_unit === candidate.matched_component.motif &&
-          unit.classification === 'pathogenic'
-      )
+    const validatedCandidate = {
+      ...candidate,
+      matched_reference_region_index: exactIndices[0],
+    }
+    const matchedReferenceRepeatUnitClassifications = normalizedRecord.repeat_units
+      .filter((unit: any) => unit.repeat_unit === candidate.matched_component.motif)
+      .map((unit: any) => unit.classification)
+    const pathogenic = matchedReferenceRepeatUnitClassifications.includes('pathogenic')
     return {
       ...base,
       status: 'EXACT_UNIQUE',
@@ -645,8 +650,10 @@ export const resolveLongReadTrShortReadContext = (
       matched_component_index: candidate.matched_component_index,
       matched_component: candidate.matched_component,
       matched_reference_region_index: exactIndices[0],
+      exact_reference_component_outline_authorized: true,
+      matched_reference_repeat_unit_classifications: matchedReferenceRepeatUnitClassifications,
       pathogenic_component_highlight: pathogenic,
-      candidates: [candidate],
+      candidates: [validatedCandidate],
       lr_database: source.database,
       lr_release: source.release,
       lr_run_id: source.run_id,

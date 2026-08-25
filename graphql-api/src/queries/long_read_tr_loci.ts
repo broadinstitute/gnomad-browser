@@ -813,7 +813,7 @@ const fetchLongReadTrLocusUncached = async ({
       decomposition_reason:
         locus.components.length === 1
           ? 'No admitted source decomposition is available for this exact allele'
-          : 'Observed sequence tokens cannot be assigned to coordinate-defined source components',
+          : 'Observed sequence tokens cannot be assigned to coordinate-defined LR reference components',
       freq: {
         all: { ac: Number(row.ac), an: Number(row.an), af: Number(row.af) },
         populations: frequencies.get(compactAlleleKey(row.source_variant_id, altIndex)) || [],
@@ -852,8 +852,8 @@ const fetchLongReadTrLocusUncached = async ({
   if (!alignedSourceComponentCountsAvailable) {
     componentMeasurementUnavailableReason =
       locus.components.length === 1
-        ? 'No complete aligned source component counts are available; exact repeat-count plots remain separately fail-closed'
-        : 'Compound loci lack an admitted mapping from whole-record sequence to source components'
+        ? 'No complete aligned LR reference component counts are available; exact repeat-count plots remain separately fail-closed'
+        : 'Compound loci lack an admitted mapping from whole-record sequence to LR reference components'
   }
   const envelopeStart0 = Math.min(...locus.components.map((component) => component.start0))
   const envelopeEnd0 = Math.max(...locus.components.map((component) => component.end0))

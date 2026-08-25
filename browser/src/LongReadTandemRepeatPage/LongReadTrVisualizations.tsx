@@ -40,6 +40,25 @@ const Panel = styled.section`
   margin-top: 2.4em;
 `
 
+const ComponentLegend = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45em;
+  margin-top: 0.5em;
+  color: #38434a;
+  font-size: 0.9em;
+`
+
+const ExactReferenceOutlineKey = styled.span`
+  display: inline-block;
+  box-sizing: border-box;
+  width: 2.2em;
+  height: 1em;
+  border: 2px dotted #111;
+  background: #d8dee2;
+`
+
 const desktopColumnCount = (plotCount: number) => {
   if (plotCount === 3) return 3
   if (plotCount === 4) return 2
@@ -137,9 +156,8 @@ const RepeatCountHelp = () => (
 const TotalAlleleLengthHelp = () => (
   <HaplotypeHelpButton title="About total allele length change">
     <p style={{ marginTop: 0 }}>
-      Total allele length change is the length of the complete source ALT sequence minus the length
-      of the complete source REF sequence, in base pairs. It spans every repeat component and
-      interruption in the source record.
+      Total allele length change (ALT − REF, bp) is the exact allele&apos;s complete ALT length
+      minus its complete REF length. It spans every LR reference component and interruption.
     </p>
     <p style={{ marginBottom: 0 }}>
       It is not a component repeat count or a clinical classification. Different exact alleles can
@@ -241,16 +259,16 @@ export const componentLanes = (components: LongReadTrLocus['components']) => {
 
 export const LongReadTrComponentTrack = ({
   locus,
-  highlightedComponentIndex = null,
+  exactReferenceComponentIndex = null,
 }: {
   locus: LongReadTrLocus
-  highlightedComponentIndex?: number | null
+  exactReferenceComponentIndex?: number | null
 }) => {
   const { components, region } = locus
-  const hasAuthorizedHighlight =
-    highlightedComponentIndex != null &&
-    highlightedComponentIndex >= 0 &&
-    highlightedComponentIndex < components.length
+  const hasAuthorizedExactReferenceOutline =
+    exactReferenceComponentIndex != null &&
+    exactReferenceComponentIndex >= 0 &&
+    exactReferenceComponentIndex < components.length
   const lanes = componentLanes(components)
   const laneCount = Math.max(1, ...lanes.map((lane) => lane + 1))
   const width = 1000
@@ -263,25 +281,22 @@ export const LongReadTrComponentTrack = ({
     <Panel aria-labelledby="lr-tr-components-heading">
       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <h2 id="lr-tr-components-heading" style={{ marginRight: 0 }}>
-          Reference repeat components
+          LR reference components
         </h2>
-        <HaplotypeHelpButton title="About reference repeat components">
+        <HaplotypeHelpButton title="About LR reference components">
           <p style={{ marginTop: 0 }}>
-            These are the ordered reference intervals in the source tandem-repeat definition.
-            Coordinates are one-based, inclusive genomic intervals.
+            <strong>What this shows.</strong> LR reference components are the callset&apos;s ordered
+            coordinate-and-motif intervals. Coordinates are one-based, inclusive genomic intervals.
           </p>
           <p>
-            Overlapping intervals use separate lanes rather than being merged. Repeated motifs
-            remain separate because their interval and order are scientifically meaningful.
-          </p>
-          <p>
-            An outlined component marks the one exact coordinate-and-motif match to a pathogenic
-            motif in the short-read catalog. It does not classify the long-read component as
-            pathogenic.
+            <strong>How to use it.</strong> Read components in number order. Overlapping intervals
+            use separate lanes, and repeated motifs remain separate because interval and order are
+            part of their identity. A neutral black dotted outline marks an API-authorized exact
+            short-read catalog reference match.
           </p>
           <p style={{ marginBottom: 0 }}>
-            This reference track does not infer an alternate sequence or repeat count and is not a
-            clinical interpretation.
+            <strong>What it does not show.</strong> Motif fills and outlines do not classify an LR
+            component, exact allele, genotype, person, or total allele length change.
           </p>
         </HaplotypeHelpButton>
       </div>
@@ -292,11 +307,11 @@ export const LongReadTrComponentTrack = ({
           role="img"
           aria-label={`${
             components.length
-          } ordered reference repeat components in ${laneCount} coordinate lanes${
-            hasAuthorizedHighlight
+          } ordered LR reference components in ${laneCount} coordinate lanes${
+            hasAuthorizedExactReferenceOutline
               ? `; component ${
-                  (highlightedComponentIndex as number) + 1
-                } is outlined as a catalog pathogenic motif with an exact reference-component match`
+                  (exactReferenceComponentIndex as number) + 1
+                } has a neutral dotted outline for an exact short-read catalog reference match`
               : ''
           }`}
         >
@@ -316,9 +331,10 @@ export const LongReadTrComponentTrack = ({
               component.end0 - component.start0
             } bp`
             const compactLabel = componentWidth < 44
-            const highlighted = hasAuthorizedHighlight && index === highlightedComponentIndex
-            const accessibleLabel = highlighted
-              ? `${label}; catalog pathogenic motif; exact reference-component match; not a pathogenic long-read component`
+            const exactReferenceMatch =
+              hasAuthorizedExactReferenceOutline && index === exactReferenceComponentIndex
+            const accessibleLabel = exactReferenceMatch
+              ? `${label}; exact short-read catalog reference match; neutral identity outline; no clinical classification`
               : label
             return (
               // Source component order is identity-bearing, including exact duplicate components.
@@ -333,10 +349,10 @@ export const LongReadTrComponentTrack = ({
                   fill={motifColor(component.motif, locus.motifs)}
                   data-component-motif={component.motif}
                   data-motif-color={motifColor(component.motif, locus.motifs)}
-                  stroke={highlighted ? '#111' : undefined}
-                  strokeWidth={highlighted ? 4 : undefined}
-                  strokeDasharray={highlighted ? '7 3' : undefined}
-                  data-catalog-pathogenic-match={highlighted ? 'true' : undefined}
+                  stroke={exactReferenceMatch ? '#111' : undefined}
+                  strokeWidth={exactReferenceMatch ? 4 : undefined}
+                  strokeDasharray={exactReferenceMatch ? '2 4' : undefined}
+                  data-exact-reference-component-match={exactReferenceMatch ? 'true' : undefined}
                 >
                   <title>{accessibleLabel}</title>
                 </rect>
@@ -378,9 +394,15 @@ export const LongReadTrComponentTrack = ({
           </text>
         </svg>
       </div>
+      {hasAuthorizedExactReferenceOutline && (
+        <ComponentLegend aria-label="LR reference component legend">
+          <ExactReferenceOutlineKey aria-hidden="true" />
+          <span>Exact short-read catalog reference match (identity only)</span>
+        </ComponentLegend>
+      )}
       <details>
-        <summary>Source component coordinates ({components.length})</summary>
-        <ol aria-label="Ordered source component details">
+        <summary>LR reference component coordinates ({components.length})</summary>
+        <ol aria-label="Ordered LR reference component details">
           {components.map((component, index) => (
             // Source component order is identity-bearing, including exact duplicate components.
             // eslint-disable-next-line react/no-array-index-key
@@ -388,8 +410,8 @@ export const LongReadTrComponentTrack = ({
               <strong>{component.motif}</strong> — chr{component.chrom}:
               {(component.start0 + 1).toLocaleString()}–{component.end0.toLocaleString()} (
               {component.end0 - component.start0} bp; lane {lanes[index] + 1})
-              {hasAuthorizedHighlight && index === highlightedComponentIndex
-                ? ' — catalog pathogenic motif; exact reference-component match'
+              {hasAuthorizedExactReferenceOutline && index === exactReferenceComponentIndex
+                ? ' — exact short-read catalog reference match'
                 : ''}
             </li>
           ))}
@@ -2431,8 +2453,8 @@ export const SelectedExactAlleleDetail = React.forwardRef<
           <summary>Sequence analysis details</summary>
           <p>
             Browser motif analysis used {sequenceAnalysisMethod(allele.ref, allele.alt, motifs)}.
-            Motif units were aligned from sequence and do not represent the source component
-            coordinates. Source note: <code>{allele.decomposition_reason}</code>.
+            Motif units were aligned from sequence and do not represent the LR reference component
+            coordinates. Analysis note: <code>{allele.decomposition_reason}</code>.
           </p>
         </details>
         <details>

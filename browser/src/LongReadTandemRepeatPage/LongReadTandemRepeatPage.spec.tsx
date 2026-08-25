@@ -167,7 +167,7 @@ const makeLocus = (count = 72) => {
       motif_purity_source: 'source_ap_allele',
       decomposition_status: 'UNAVAILABLE_COMPOUND_LOCUS',
       decomposition_reason:
-        'Observed sequence tokens cannot be assigned to coordinate-defined source components',
+        'Observed sequence tokens cannot be assigned to coordinate-defined LR reference components',
       rsids: ['rs-test'],
       filters: [],
       major_consequence: 'intron_variant',
@@ -181,7 +181,7 @@ const makeLocus = (count = 72) => {
     },
     component_measurement_available: false,
     component_measurement_unavailable_reason:
-      'Compound loci lack an admitted mapping from whole-record sequence to source components',
+      'Compound loci lack an admitted mapping from whole-record sequence to LR reference components',
     components,
     source_records: [
       {
@@ -247,7 +247,8 @@ const makeLocus = (count = 72) => {
       matched_component_index: 0,
       matched_component: components[0],
       matched_reference_region_index: 0,
-      pathogenic_component_highlight: true,
+      exact_reference_component_outline_authorized: true,
+      matched_reference_repeat_unit_classifications: ['pathogenic'],
       lr_database: 'gnomad_lr_y1_full_genome',
       lr_release: 'y1',
       lr_run_id: 'run-hgsvc',
@@ -466,7 +467,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
     expect(
       screen.getByRole('img', {
-        name: /6 ordered reference repeat components in 2 coordinate lanes/,
+        name: /6 ordered LR reference components in 2 coordinate lanes/,
       })
     ).not.toBeNull()
     expect(
@@ -507,7 +508,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'About total allele length change' }))
     const help = screen.getByRole('dialog', { name: 'About total allele length change' })
-    expect(within(help).getByText(/complete source ALT sequence minus the length/)).not.toBeNull()
+    expect(within(help).getByText(/exact allele.*complete ALT length minus/)).not.toBeNull()
     expect(
       within(help).getByText(/not a component repeat count or a clinical classification/)
     ).not.toBeNull()
@@ -615,14 +616,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(within(panel).getByText('Catalog note copied verbatim.')).not.toBeNull()
     expect(within(panel).getAllByText(/CAG/).length).toBeGreaterThan(0)
-    expect(
-      within(panel).getByText(/Short-read known-locus ranges are reference context/)
-    ).not.toBeNull()
-    expect(within(panel).getByText(/not applied to long-read alleles/)).not.toBeNull()
+    expect(within(panel).getByText(/Short-read reference context only/)).not.toBeNull()
+    expect(within(panel).getByText(/do not classify any LR allele/)).not.toBeNull()
     expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
     const highlightedComponent = screen
-      .getByRole('img', { name: /component 1 is outlined/ })
-      .querySelector('[data-catalog-pathogenic-match="true"]')
+      .getByRole('img', { name: /component 1 has a neutral dotted outline/ })
+      .querySelector('[data-exact-reference-component-match="true"]')
     expect(highlightedComponent).not.toBeNull()
   })
 
@@ -641,7 +640,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
       catalog_record: null,
       matched_component_index: null,
       matched_component: null,
-      pathogenic_component_highlight: false,
+      exact_reference_component_outline_authorized: false,
+      matched_reference_repeat_unit_classifications: [],
     } as any
     renderPage({ locus })
     expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
@@ -687,7 +687,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(detail).getByText(exactId)).not.toBeNull()
     expect(within(detail).getByText(/source_ap_allele/)).not.toBeNull()
     expect(
-      within(detail).getByText(/do not represent the source component coordinates/)
+      within(detail).getByText(/do not represent the LR reference component coordinates/)
     ).not.toBeNull()
     expect(within(detail).getByLabelText('Selected ALT motif structure grid')).not.toBeNull()
     expect(screen.getByTestId('selected-motif-structure-boundaries')).toHaveStyleRule(
@@ -1051,7 +1051,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('source_records {')
     expect(longReadTandemRepeatLocusQuery).toContain('repeat_count_plots')
     expect(longReadTandemRepeatLocusQuery).toContain('short_read_context {')
-    expect(longReadTandemRepeatLocusQuery).toContain('pathogenic_component_highlight')
+    expect(longReadTandemRepeatLocusQuery).toContain('exact_reference_component_outline_authorized')
+    expect(longReadTandemRepeatLocusQuery).toContain(
+      'matched_reference_repeat_unit_classifications'
+    )
+    expect(longReadTandemRepeatLocusQuery).not.toContain('pathogenic_component_highlight')
     expect(longReadTandemRepeatLocusQuery).toContain('associated_diseases {')
     expect(longReadTandemRepeatLocusQuery).not.toContain('short_read_matches')
     expect(longReadTandemRepeatLocusQuery).not.toContain('$after')

@@ -43,13 +43,17 @@ const TableScroller = styled.div`
   overflow-x: auto;
 `
 
-const MotifList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4em 1.25em;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+const MotifTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.45em 0.6em;
+    border-bottom: 1px solid #d8dee2;
+    text-align: left;
+    vertical-align: top;
+  }
 `
 
 const Disclaimer = styled.p`
@@ -62,6 +66,46 @@ const Disclaimer = styled.p`
 type Props = {
   context: LongReadTrShortReadContext | null
 }
+
+type MotifRow = { repeat_unit: string; classification: string }
+
+const CatalogMotifTable = ({
+  rows,
+  label,
+  referenceRepeatUnit,
+}: {
+  rows: MotifRow[]
+  label: string
+  referenceRepeatUnit: string
+}) => (
+  <TableScroller>
+    <MotifTable aria-label={label}>
+      <thead>
+        <tr>
+          <th scope="col">Repeat unit</th>
+          <th scope="col">Role</th>
+          <th scope="col">Catalog label</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row, index) => {
+          const matched = row.repeat_unit === referenceRepeatUnit
+          return (
+            // Raw catalog order and duplicate entries are provenance-bearing.
+            // eslint-disable-next-line react/no-array-index-key
+            <tr key={`${row.repeat_unit}-${row.classification}-${index}`}>
+              <th scope="row">
+                <code>{row.repeat_unit}</code>
+              </th>
+              <td>{matched ? 'Matched catalog reference repeat unit' : 'Other catalog motif'}</td>
+              <td>{row.classification}</td>
+            </tr>
+          )
+        })}
+      </tbody>
+    </MotifTable>
+  </TableScroller>
+)
 
 const ShortReadKnownLocusContext = ({ context }: Props) => {
   if (
@@ -76,6 +120,13 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
   const record = context.catalog_record
   const component = context.matched_component
   const componentNumber = context.matched_component_index + 1
+  const primaryMotifs = record.repeat_units.filter(
+    (unit) => unit.repeat_unit === record.reference_repeat_unit || unit.repeat_unit.length > 1
+  )
+  const matchedClassifications = context.matched_reference_repeat_unit_classifications
+  const matchedClassificationText = matchedClassifications.length
+    ? matchedClassifications.join(', ')
+    : 'No catalog label'
 
   return (
     <ContextPanel aria-labelledby="lr-tr-short-read-context-heading">
@@ -86,24 +137,23 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
         </h2>
         <HaplotypeHelpButton title="About short-read known-locus context">
           <p style={{ marginTop: 0 }}>
-            This panel appears only for an API-validated, unique GRCh38 match between one short-read
-            catalog reference region and one ordered long-read reference component. Coordinates and
-            the stored motif must match exactly.
+            <strong>What this shows.</strong> Data copied from the short-read catalog record whose
+            GRCh38 reference region and stored repeat unit exactly match one LR reference component.
           </p>
           <p>
-            The catalog&apos;s repeat-count ranges and motif labels are copied as reference context.
-            The coordinate match does not classify a long-read allele, genotype, total allele length
-            change (ALT − REF, bp), or individual.
+            <strong>How to use it.</strong> Follow the known-locus link for short-read details, then
+            read the matched component, disease records, repeat-count ranges, and motif labels here.
+            Expand the disclosures for every raw catalog motif and provenance.
           </p>
           <p style={{ marginBottom: 0 }}>
-            A component outline is shown only when the API authorizes it for the exact matching
-            catalog motif. It marks reference identity, not a pathogenic long-read component.
+            <strong>What it does not show.</strong> This coordinate-and-motif identity is not a
+            clinical interpretation of LR observations.
           </p>
         </HaplotypeHelpButton>
       </HeadingRow>
 
       <AttributeList>
-        <AttributeListItem label="Known locus">
+        <AttributeListItem label="Known STR locus">
           <Link
             to={`/short-tandem-repeat/${record.id}?dataset=gnomad_r4`}
             preserveSelectedDataset={false}
@@ -112,45 +162,19 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
             {record.gene?.symbol ? ` (${record.gene.symbol})` : ''} short-read details
           </Link>
         </AttributeListItem>
-        <AttributeListItem label="Exact matched component">
+        <AttributeListItem label="Matched LR reference component">
           Component {componentNumber}: chr{component.chrom}:
           {(component.start0 + 1).toLocaleString()}–{component.end0.toLocaleString()} (
           {component.motif}; {component.end0 - component.start0} bp)
         </AttributeListItem>
-        <AttributeListItem label="Catalog reference source">
-          Known disease-associated short-read TR catalog exposed on gnomAD v4 pages
-          {context.matched_reference_region_index == null
-            ? ''
-            : `; reference region ${context.matched_reference_region_index + 1}`}
+        <AttributeListItem label="Catalog reference repeat unit">
+          <code>{record.reference_repeat_unit}</code> — {matchedClassificationText}
         </AttributeListItem>
       </AttributeList>
 
-      <h3>Catalog repeat-unit labels</h3>
-      <p>
-        Reference repeat unit: <code>{record.reference_repeat_unit}</code>
-      </p>
-      {record.repeat_units.length > 0 ? (
-        <MotifList aria-label="Short-read catalog repeat-unit classifications">
-          {record.repeat_units.map((repeatUnit, index) => (
-            // Raw catalog order and duplicate entries are provenance-bearing.
-            // eslint-disable-next-line react/no-array-index-key
-            <li key={`${repeatUnit.repeat_unit}-${repeatUnit.classification}-${index}`}>
-              <code>{repeatUnit.repeat_unit}</code> — {repeatUnit.classification}
-              {repeatUnit.repeat_unit === record.reference_repeat_unit ? ' (reference motif)' : ''}
-            </li>
-          ))}
-        </MotifList>
-      ) : (
-        <p>No catalog repeat-unit labels are available.</p>
-      )}
-
       {record.associated_diseases.length > 0 && (
         <>
-          <h3>Associated diseases and short-read catalog ranges</h3>
-          <p>
-            Ranges below use the short-read catalog&apos;s repeat-unit-count definition and are
-            copied from that catalog record.
-          </p>
+          <h3>Disease, inheritance, and repeat-count ranges</h3>
           <TableScroller>
             <ShortTandemRepeatAssociatedDiseasesTable
               associatedDiseases={record.associated_diseases}
@@ -160,10 +184,29 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
         </>
       )}
 
+      <h3>Catalog repeat units</h3>
+      {primaryMotifs.length > 0 ? (
+        <CatalogMotifTable
+          rows={primaryMotifs}
+          label="Primary short-read catalog repeat units"
+          referenceRepeatUnit={record.reference_repeat_unit}
+        />
+      ) : (
+        <p>No catalog repeat-unit labels are available.</p>
+      )}
+
+      <details>
+        <summary>All catalog motifs ({record.repeat_units.length})</summary>
+        <CatalogMotifTable
+          rows={record.repeat_units}
+          label="All short-read catalog motifs"
+          referenceRepeatUnit={record.reference_repeat_unit}
+        />
+      </details>
+
       <Disclaimer>
-        <strong>Short-read known-locus ranges are reference context.</strong> They are not applied
-        to long-read alleles, total allele length changes (ALT − REF, bp), genotypes, or
-        individuals.
+        <strong>Short-read reference context only:</strong> these catalog data do not classify any
+        LR allele, genotype, component, person, or total allele length change.
       </Disclaimer>
 
       <details>

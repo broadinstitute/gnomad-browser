@@ -152,9 +152,9 @@ const LongReadTandemRepeatPage = ({
   })
   const orderedMotifs = locus.components.map((component) => component.motif)
   const vocabulary = [...new Set(locus.motifs.length ? locus.motifs : orderedMotifs)]
-  const authorizedHighlightedComponentIndex =
+  const authorizedExactReferenceComponentIndex =
     locus.short_read_context?.status === 'EXACT_UNIQUE' &&
-    locus.short_read_context.pathogenic_component_highlight
+    locus.short_read_context.exact_reference_component_outline_authorized
       ? locus.short_read_context.matched_component_index
       : null
   const deltaRange =
@@ -256,13 +256,15 @@ const LongReadTandemRepeatPage = ({
               ? `${locus.exact_alt_count.toLocaleString()} exact alternate alleles`
               : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
           </AttributeListItem>
-          <AttributeListItem label="Total allele length change">{deltaRange}</AttributeListItem>
+          <AttributeListItem label="Total allele length change (ALT − REF, bp)">
+            {deltaRange}
+          </AttributeListItem>
         </AttributeList>
       </SourceAttributes>
 
       <LongReadTrComponentTrack
         locus={locus}
-        highlightedComponentIndex={authorizedHighlightedComponentIndex}
+        exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
       />
 
       <ShortReadKnownLocusContext context={locus.short_read_context} />

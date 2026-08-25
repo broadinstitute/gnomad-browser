@@ -216,9 +216,15 @@ describe('bounded long-read TR reference crosswalk', () => {
     expect(result.nodes[0].aou.reason_code).toBe('CATALOG_DIGEST_MISMATCH')
   })
 
-  test.each(['ATXN1', 'HTT'])(
-    'returns exact detail context and binds the full LR component tuple for %s',
-    async (id) => {
+  test.each([
+    ['ATXN1', 'pathogenic'],
+    ['HTT', 'pathogenic'],
+    ['EIF4A3', 'benign'],
+    ['RFC1', 'benign'],
+    ['STARD7', 'benign'],
+  ])(
+    'authorizes exact reference identity independently of the %s catalog classification',
+    async (id, expectedClassification) => {
       const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
         (row: any) => row.short.id === id
       ) as any
@@ -236,10 +242,72 @@ describe('bounded long-read TR reference crosswalk', () => {
       expect(context.status).toBe('EXACT_UNIQUE')
       expect(context.catalog_record.id).toBe(id)
       expect(context.matched_component_index).toBe(0)
-      expect(context.pathogenic_component_highlight).toBe(true)
+      expect(context.exact_reference_component_outline_authorized).toBe(true)
+      expect(context.matched_reference_repeat_unit_classifications).toContain(
+        expectedClassification
+      )
       expect(context.candidates).toHaveLength(1)
-      expect(parsed.components).toHaveLength(id === 'HTT' ? 6 : 1)
+      const expectedComponentCounts: Record<string, number> = { HTT: 6, EIF4A3: 2 }
+      expect(parsed.components).toHaveLength(expectedComponentCounts[id] || 1)
+      if (id === 'EIF4A3') {
+        expect(context.matched_component.motif).toBe('CCTCGCTGTGCCGCTGCCGA')
+        expect(context.matched_reference_repeat_unit_classifications).toEqual(['benign'])
+        expect(
+          context.catalog_record.repeat_units.find(
+            (unit: any) => unit.classification === 'pathogenic'
+          ).repeat_unit
+        ).toBe('CCTCGCTGCGCCGCTGCCGA')
+      }
       expect(fetchById).toHaveBeenCalledTimes(1)
+    }
+  )
+
+  test.each([
+    ['hgsvc_hprc', 51],
+    ['aou', 58],
+  ] as const)(
+    'authorizes one neutral exact-reference outline for all %s cohort matches (expected %i)',
+    async (cohort, expectedCount) => {
+      const exactRows = longReadTrReferenceArtifactForTests.rows.filter(
+        (row: any) => row.cohorts[cohort].status === 'EXACT_UNIQUE'
+      ) as any[]
+      fetchById.mockImplementation(async (_client, _dataset, id) =>
+        catalogRows.find((row: any) => row.id === id)
+      )
+      const contexts = await Promise.all(
+        exactRows.map((row) => {
+          const candidate = row.cohorts[cohort].candidates[0]
+          const parsed = parseTrLocusId(candidate.canonical_id)!
+          return resolveLongReadTrShortReadContext(
+            {
+              id: candidate.canonical_id,
+              chrom: candidate.matched_component.chrom,
+              components: parsed.components,
+              lr_cohort: cohort,
+            },
+            {},
+            sourceFor
+          )
+        })
+      )
+      expect(contexts).toHaveLength(expectedCount)
+      expect(
+        contexts.flatMap((context, index) =>
+          context.status === 'EXACT_UNIQUE' &&
+          context.exact_reference_component_outline_authorized &&
+          context.candidates[0].matched_reference_region_index ===
+            context.matched_reference_region_index
+            ? []
+            : [
+                {
+                  id: exactRows[index].short.id,
+                  status: context.status,
+                  reason_code: context.reason_code,
+                  authorized: context.exact_reference_component_outline_authorized,
+                },
+              ]
+        )
+      ).toEqual([])
     }
   )
 
@@ -269,12 +337,14 @@ describe('bounded long-read TR reference crosswalk', () => {
       expect.objectContaining({
         status: 'CATALOG_UNAVAILABLE',
         reason_code: 'CATALOG_DETAIL_DIGEST_MISMATCH',
+        exact_reference_component_outline_authorized: false,
+        matched_reference_repeat_unit_classifications: [],
         pathogenic_component_highlight: false,
       })
     )
   })
 
-  test('fails highlight closed when the authorized component tuple differs from the locus', async () => {
+  test('fails the exact-reference outline closed when the authorized component tuple differs', async () => {
     const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
       (row: any) => row.short.id === 'ATXN1'
     ) as any
@@ -291,6 +361,8 @@ describe('bounded long-read TR reference crosswalk', () => {
       expect.objectContaining({
         status: 'AMBIGUOUS_COMPONENT',
         reason_code: 'LR_LOCUS_COMPONENT_MISMATCH',
+        exact_reference_component_outline_authorized: false,
+        matched_reference_repeat_unit_classifications: [],
         pathogenic_component_highlight: false,
       })
     )
@@ -352,6 +424,8 @@ describe('bounded long-read TR reference crosswalk', () => {
             status,
             reason_code: reason,
             candidates: result.candidates,
+            exact_reference_component_outline_authorized: false,
+            matched_reference_repeat_unit_classifications: [],
             pathogenic_component_highlight: false,
           })
         )

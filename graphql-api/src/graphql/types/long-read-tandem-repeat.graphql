@@ -143,7 +143,12 @@ type LongReadTrShortReadContext {
   matched_component_index: Int
   matched_component: LongReadTrLocusComponent
   matched_reference_region_index: Int
+  exact_reference_component_outline_authorized: Boolean!
+  matched_reference_repeat_unit_classifications: [String!]!
   pathogenic_component_highlight: Boolean!
+    @deprecated(
+      reason: "Use exact_reference_component_outline_authorized for neutral reference identity"
+    )
   candidates: [LongReadTrShortReadCandidate!]!
   lr_database: String
   lr_release: String

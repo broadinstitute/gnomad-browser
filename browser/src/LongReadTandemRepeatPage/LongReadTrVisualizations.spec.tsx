@@ -621,7 +621,7 @@ describe('long-read TR visualization fidelity', () => {
     ).not.toBeNull()
   })
 
-  test('outlines only the API-authorized component without changing motif fills', () => {
+  test('neutrally outlines only the API-authorized exact reference component', () => {
     const locus = {
       motifs: ['CAG', 'CCG'],
       components: [
@@ -631,20 +631,22 @@ describe('long-read TR visualization fidelity', () => {
       ],
       region: { chrom: '4', start0: 0, end0: 36, size: 36 },
     } as LongReadTrLocus
-    render(<LongReadTrComponentTrack locus={locus} highlightedComponentIndex={0} />)
+    render(<LongReadTrComponentTrack locus={locus} exactReferenceComponentIndex={0} />)
 
-    const track = screen.getByRole('img', { name: /component 1 is outlined/ })
-    const highlighted = track.querySelectorAll('[data-catalog-pathogenic-match="true"]')
-    expect(highlighted).toHaveLength(1)
-    expect(highlighted[0].getAttribute('fill')).toBe(motifColor('CAG', locus.motifs))
-    expect(highlighted[0].getAttribute('stroke')).toBe('#111')
-    expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
-    expect(highlighted[0].textContent).toContain('not a pathogenic long-read component')
-    expect(screen.queryByText(/Outlined component 2/)).toBeNull()
-    expect(screen.queryByText(/Outlined component 3/)).toBeNull()
+    const track = screen.getByRole('img', { name: /component 1 has a neutral dotted outline/ })
+    const outlined = track.querySelectorAll('[data-exact-reference-component-match="true"]')
+    expect(outlined).toHaveLength(1)
+    expect(outlined[0].getAttribute('fill')).toBe(motifColor('CAG', locus.motifs))
+    expect(outlined[0].getAttribute('stroke')).toBe('#111')
+    expect(outlined[0].getAttribute('stroke-dasharray')).toBe('2 4')
+    expect(outlined[0].textContent).toContain('no clinical classification')
+    expect(screen.getByLabelText('LR reference component legend').textContent).toContain(
+      'Exact short-read catalog reference match (identity only)'
+    )
+    expect(track.querySelector('[data-catalog-pathogenic-match]')).toBeNull()
   })
 
-  test('uses one stable color per motif and explains ordered reference components accessibly', () => {
+  test('uses one stable color per motif and explains LR reference components accessibly', () => {
     const locus = {
       motifs: ['CCG', 'CCT'],
       components: [
@@ -664,14 +666,12 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       Number(screen.getByRole('img').querySelectorAll('rect')[0].getAttribute('width'))
     ).toBeCloseTo(8.8)
-    expect(screen.getByRole('heading', { name: 'Reference repeat components' })).not.toBeNull()
-    fireEvent.click(screen.getByLabelText('About reference repeat components'))
-    expect(
-      screen.getByText(/ordered reference intervals in the source tandem-repeat definition/)
-    ).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'LR reference components' })).not.toBeNull()
+    fireEvent.click(screen.getByLabelText('About LR reference components'))
+    expect(screen.getByText(/callset.*ordered coordinate-and-motif intervals/)).not.toBeNull()
     expect(screen.getByText(/one-based, inclusive/)).not.toBeNull()
     expect(screen.getByText(/Overlapping intervals use separate lanes/)).not.toBeNull()
-    expect(screen.getByText(/interval and order are scientifically meaningful/)).not.toBeNull()
-    expect(screen.getByText(/does not infer an alternate sequence or repeat count/)).not.toBeNull()
+    expect(screen.getByText(/interval and order are part of their identity/)).not.toBeNull()
+    expect(screen.getByText(/do not classify an LR component/)).not.toBeNull()
   })
 })

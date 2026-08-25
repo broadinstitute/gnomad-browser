@@ -61,7 +61,8 @@ query ${operationName}(
       matched_component_index
       matched_component { chrom start0 end0 motif }
       matched_reference_region_index
-      pathogenic_component_highlight
+      exact_reference_component_outline_authorized
+      matched_reference_repeat_unit_classifications
       lr_database lr_release lr_run_id lr_cohort
     }
     whole_record_allele_landscape {
