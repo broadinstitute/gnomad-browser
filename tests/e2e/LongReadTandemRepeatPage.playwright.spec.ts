@@ -18,7 +18,7 @@ const waitForLocusResponse = (page: Page) =>
 
 const exactIndexForCount = (page: Page, exactAlleleCount: number) => {
   const heading = page.getByRole('heading', {
-    name: `All exact ALTs (${exactAlleleCount})`,
+    name: `${exactAlleleCount} of ${exactAlleleCount} exact alleles`,
   })
   return { heading, index: page.getByTestId('lr-tr-exact-allele-browser').locator('..') }
 }
@@ -184,7 +184,9 @@ const selectExactAllele = async (
   await page.unroute('**/api/**', gateSelectedDetail)
   await expect(exactLink).toBeFocused()
   await expect(
-    page.getByRole('heading', { name: `All exact ALTs (${exactAlleleCount.toLocaleString()})` })
+    page.getByRole('heading', {
+      name: `${exactAlleleCount.toLocaleString()} of ${exactAlleleCount.toLocaleString()} exact alleles`,
+    })
   ).toBeVisible()
 
   return selected.variant_id as string
@@ -209,7 +211,7 @@ const purityPointMetrics = (plot: any) =>
       ac: Number(point.dataset.calledAlleles),
       diameter: Number(point.dataset.pointDiameter),
       renderedWidth: point.getBoundingClientRect().width,
-      selected: point.getAttribute('aria-current') === 'true',
+      selected: point.dataset.selectedAllele === 'true',
       boxSizing: getComputedStyle(point).boxSizing,
     }))
   )
@@ -514,11 +516,11 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await selectableGenotypeCell.click()
     await expect(
       page.getByRole('heading', {
-        name: /of 72 exact ALTs in selected genotype cell \(.+ bp × .+ bp\)/,
+        name: /of 72 exact alleles in selected genotype cell \(.+ bp × .+ bp\)/,
       })
     ).toBeFocused()
-    await page.getByRole('button', { name: 'Show all exact ALTs' }).click()
-    await expect(page.getByRole('heading', { name: 'All exact ALTs (72)' })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all exact alleles' }).click()
+    await expect(page.getByRole('heading', { name: '72 of 72 exact alleles' })).toBeFocused()
 
     const histogram = page.getByTestId('whole-record-delta-histogram')
     const histogramButtons = histogram.getByRole('button')
@@ -558,13 +560,13 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       buttons.map((button) => button.getAttribute('aria-label') || '')
     )
     const multiIdentityBinIndex = histogramLabels.findIndex((label) => {
-      const match = label.match(/([0-9,]+) exact ALTs globally$/)
+      const match = label.match(/([0-9,]+) exact alleles globally$/)
       return match != null && Number(match[1].replace(/,/g, '')) > 1
     })
     expect(multiIdentityBinIndex).toBeGreaterThanOrEqual(0)
     const multiIdentityLabel = histogramLabels[multiIdentityBinIndex]
     const multiIdentityMatch = multiIdentityLabel.match(
-      /^([+−]?[0-9]+) bp, .+, ([0-9,]+) exact ALTs globally$/
+      /^([+−]?[0-9]+) bp, .+, ([0-9,]+) exact alleles globally$/
     )!
     const filteredDelta = multiIdentityMatch[1]
     const filteredCount = Number(multiIdentityMatch[2].replace(/,/g, ''))
@@ -578,15 +580,15 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(deltaAxis.locator(`[data-delta="${filteredNumericDelta}"]`)).toBeVisible()
     await expect(
       page.getByRole('heading', {
-        name: `${filteredCount.toLocaleString()} of 72 exact ALTs at ${filteredDelta} bp`,
+        name: `${filteredCount.toLocaleString()} of 72 exact alleles at ${filteredDelta} bp`,
       })
     ).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', String(filteredCount + 1))
     await expect(page.getByRole('table', { name: 'Exact alternate allele index' })).toHaveCount(1)
     await expect(page.getByRole('table', { name: /Exact alleles at/ })).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-filtered-exact-alts-wide.png')
-    await page.getByRole('button', { name: 'Show all exact ALTs' }).click()
-    await expect(page.getByRole('heading', { name: 'All exact ALTs (72)' })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all exact alleles' }).click()
+    await expect(page.getByRole('heading', { name: '72 of 72 exact alleles' })).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
 
     const httPurityPlot = page.getByRole('group', {
@@ -608,10 +610,49 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       'htt-purity-ac-scale-wide.png'
     )
 
+    const purityFilterPoint = httPurityPlot.getByRole('button').first()
+    const filterBefore = {
+      ...(await page.evaluate(() => ({
+        url: window.location.href,
+        historyLength: window.history.length,
+        navigationCount: performance.getEntriesByType('navigation').length,
+        scrollY: window.scrollY,
+      }))),
+      indexScrollTop: await indexTable
+        .locator('.lr-tr-exact-index-scroll')
+        .evaluate((element) => element.scrollTop),
+    }
+    await purityFilterPoint.click()
+    await expect(purityFilterPoint).toHaveAttribute('aria-pressed', 'true')
+    await expect(
+      page.getByRole('heading', { name: /1 of 72 exact alleles in ALT [0-9]+/ })
+    ).toBeFocused()
+    await expect(indexTable).toHaveAttribute('aria-rowcount', '2')
+    expect(await page.evaluate(() => window.location.href)).toBe(filterBefore.url)
+    expect(await page.evaluate(() => window.history.length)).toBe(filterBefore.historyLength)
+    expect(await page.evaluate(() => performance.getEntriesByType('navigation').length)).toBe(
+      filterBefore.navigationCount
+    )
+    expect(
+      Math.abs((await page.evaluate(() => window.scrollY)) - filterBefore.scrollY)
+    ).toBeLessThanOrEqual(1)
+    expect(
+      Math.abs(
+        (await indexTable
+          .locator('.lr-tr-exact-index-scroll')
+          .evaluate((element) => element.scrollTop)) - filterBefore.indexScrollTop
+      )
+    ).toBeLessThanOrEqual(1)
+    await purityFilterPoint.focus()
+    await purityFilterPoint.press('Enter')
+    await expect(page.getByRole('heading', { name: '72 of 72 exact alleles' })).toBeFocused()
+
     const httAlt72 = await selectExactAllele(page, COMPOUND_LOCUS, 72, 72)
     expect(httAlt72).toMatch(/~72$/)
     await expect(page.getByText(/ALT 72 of 72/)).toBeVisible()
-    const selectedPurityPoint = httPurityPlot.locator('[data-called-alleles][aria-current="true"]')
+    const selectedPurityPoint = httPurityPlot.locator(
+      '[data-called-alleles][data-selected-allele="true"]'
+    )
     if ((await selectedPurityPoint.count()) > 0) {
       const selectedMetric = await selectedPurityPoint.evaluate((point: HTMLElement) => ({
         diameter: Number(point.dataset.pointDiameter),

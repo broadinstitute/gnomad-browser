@@ -274,6 +274,11 @@ const LongReadTandemRepeatPage = ({
         genotypeLandscape={repeatPlotsAvailable ? undefined : locus.whole_record_genotype_landscape}
         repeatCountPlots={repeatPlotsAvailable ? locus.repeat_count_plots : undefined}
         variantId={locus.id}
+        markFilterScope={{
+          locusId: locus.id,
+          cohort: locus.lr_cohort,
+          sourceRunId: locus.source_run_id,
+        }}
         alleles={locus.alleles.nodes}
         motifs={locus.motifs}
         selectedAllele={selectedAllele}

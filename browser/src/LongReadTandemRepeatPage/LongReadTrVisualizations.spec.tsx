@@ -308,7 +308,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     const exactIndex = screen.getByRole('table', { name: 'Exact alternate allele index' })
-    expect(screen.getByRole('heading', { name: 'All exact ALTs (3)' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: '3 of 3 exact alleles' })).not.toBeNull()
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
 
@@ -338,7 +338,7 @@ describe('long-read TR visualization fidelity', () => {
       ).backgroundColor
     ).toBe('rgb(233, 120, 28)')
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 exact ALTs at −6 bp' })
+      screen.getByRole('heading', { name: '1 of 3 exact alleles at −6 bp' })
     )
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('2')
 
@@ -350,20 +350,22 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    expect(screen.getByRole('heading', { name: '1 of 3 exact ALTs at −6 bp' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: '1 of 3 exact alleles at −6 bp' })).not.toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: /0 bp, 25 called allele copies/ }))
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 exact ALTs at 0 bp' })
+      screen.getByRole('heading', { name: '1 of 3 exact alleles at 0 bp' })
     )
     const exactLink = within(exactIndex).getByRole('link', { name: 'Select ALT 2' })
     expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
     fireEvent.click(exactLink)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
-    expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'All exact ALTs (3)' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show all exact alleles' }))
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: '3 of 3 exact alleles' })
+    )
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
 
     const tallest = screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
@@ -400,7 +402,7 @@ describe('long-read TR visualization fidelity', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /−6 bp, 107 called allele copies/ }))
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '2 of 4 exact ALTs at −6 bp' })
+      screen.getByRole('heading', { name: '2 of 4 exact alleles at −6 bp' })
     )
     const picker = screen.getByRole('table', { name: 'Exact alternate allele index' })
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
@@ -416,7 +418,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(sameLengthAllele.variant_id)
   })
 
-  test('pads and uniquely formats constant-purity axes and makes every point selectable', () => {
+  test('pads constant-purity axes and makes coincident points separate local filter buttons', () => {
     expect(purityDomain([1, 1, 1])).toEqual([0.99, 1])
     const landscape: WholeRecordAlleleLandscapeData = {
       ...alleleLandscape,
@@ -446,14 +448,29 @@ describe('long-read TR visualization fidelity', () => {
     expect(new Set(tickLabels).size).toBe(3)
     expect(tickLabels).toEqual(['0.9900', '0.9950', '1.0000'])
 
-    const point = within(scatter).getByRole('link', {
-      name: /Select ALT 3, \+12 bp, purity 1.0000/,
+    const points = within(scatter).getAllByRole('button', {
+      name: /Filter exact alleles to ALT/,
     })
-    expect(point.getAttribute('href')).toBe(`?allele=${alleles[2].variant_id}`)
+    expect(points).toHaveLength(3)
+    const point = within(scatter).getByRole('button', {
+      name: /Filter exact alleles to ALT 3, \+12 bp, purity 1.0000/,
+    })
+    expect(point.getAttribute('aria-pressed')).toBe('false')
     expect(window.getComputedStyle(point).backgroundColor).toBe('rgb(156, 39, 176)')
     expect(point.getAttribute('style')).toContain('bottom: 94%')
+    const sameDeltaBar = screen.getByRole('button', { name: /\+12 bp, 5 called allele copies/ })
+    fireEvent.click(sameDeltaBar)
+    expect(sameDeltaBar.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.keyDown(point, { key: 'Enter' })
     fireEvent.click(point)
-    expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[2].variant_id)
+    expect(sameDeltaBar.getAttribute('aria-pressed')).toBe('false')
+    expect(point.getAttribute('aria-pressed')).toBe('true')
+    expect(navigation.onSelectAllele).not.toHaveBeenCalled()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: '1 of 3 exact alleles in ALT 3' })
+    )
+    fireEvent.click(point)
+    expect(screen.getByRole('heading', { name: '3 of 3 exact alleles' })).not.toBeNull()
   })
 
   test('aggregates stratum rows into reconciled unique exact pairs', () => {
@@ -473,6 +490,66 @@ describe('long-read TR visualization fidelity', () => {
         unphased_people: 0,
       },
     ])
+  })
+
+  test('keeps a reference/reference genotype mark active with an empty exact index', () => {
+    const referenceId = '__REFERENCE__'
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: referenceId,
+      called_samples: 1,
+      called_alleles: 2,
+      ancestry_groups: ['afr'],
+      sexes: ['XX'],
+      cells: [
+        {
+          shorter_delta: 0,
+          longer_delta: 0,
+          people: 1,
+          pairs: [
+            {
+              shorter_allele_id: referenceId,
+              longer_allele_id: referenceId,
+              ancestry_group: 'afr',
+              sex: 'XX',
+              people: 1,
+              phased_people: 0,
+              unphased_people: 1,
+            },
+          ],
+        },
+      ],
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        genotypeLandscape={genotypeLandscape}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+    const cell = screen.getByRole('gridcell', {
+      name: '0 bp longer, 0 bp shorter: 1 people',
+    })
+    fireEvent.keyDown(cell, { key: 'Enter' })
+    expect(cell.getAttribute('aria-selected')).toBe('true')
+    expect(
+      screen.getByRole('heading', {
+        name: '0 of 3 exact alleles in selected genotype cell (0 bp × 0 bp)',
+      })
+    ).toBe(document.activeElement)
+    expect(
+      screen
+        .getByRole('table', { name: 'Exact alternate allele index' })
+        .getAttribute('aria-rowcount')
+    ).toBe('1')
+    expect(screen.getByText(/1 person across 1 exact allele pair/)).not.toBeNull()
+    fireEvent.keyDown(cell, { key: ' ' })
+    expect(screen.getByRole('heading', { name: '3 of 3 exact alleles' })).toBe(
+      document.activeElement
+    )
   })
 
   test('reconciles one controlled ancestry and sex filter across all three plots', async () => {
@@ -576,6 +653,67 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByText('12 people')).not.toBeNull()
   })
 
+  test('intersects bin contributors with positive stratum AC and clears a stale source scope', async () => {
+    const stratifiedAlleles = alleles.map((allele, index) => ({
+      ...allele,
+      freq: {
+        ...allele.freq,
+        populations: [{ id: 'afr', ac: index === 0 ? 2 : 0, an: 20, af: index === 0 ? 0.1 : 0 }],
+      },
+    }))
+    const landscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      stratified_available: true,
+      ancestry_groups: ['afr'],
+      sexes: [],
+      bins: [
+        {
+          ...(alleleLandscape.bins || [])[0],
+          exact_alt_count: 2,
+          allele_ids: [stratifiedAlleles[0].variant_id, stratifiedAlleles[1].variant_id],
+          stacks: [{ ancestry_group: 'afr', sex: null, called_alleles: 2 }],
+        },
+        ...(alleleLandscape.bins || []).slice(1),
+      ],
+      purity_available: true,
+      purity_points: stratifiedAlleles.slice(0, 2).map((allele) => ({
+        allele_id: allele.variant_id,
+        delta: allele.length as number,
+        motif_purity: allele.motif_purity as number,
+        called_alleles: allele.freq.all.ac,
+      })),
+    }
+    const scope = { locusId: 'locus-a', cohort: 'hgsvc_hprc', sourceRunId: 'run-a' }
+    const rendered = render(
+      <WholeRecordAlleleLandscape
+        landscape={landscape}
+        markFilterScope={scope}
+        alleles={stratifiedAlleles}
+        navigation={navigation}
+      />
+    )
+    fireEvent.change(screen.getByLabelText('Genetic ancestry group'), {
+      target: { value: 'afr' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /−6 bp, 2 called allele copies/ }))
+    expect(screen.getByRole('heading', { name: '1 of 3 exact alleles at −6 bp' })).not.toBeNull()
+    const index = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    expect(within(index).getByText(stratifiedAlleles[0].variant_id)).not.toBeNull()
+    expect(within(index).queryByText(stratifiedAlleles[1].variant_id)).toBeNull()
+
+    rendered.rerender(
+      <WholeRecordAlleleLandscape
+        landscape={landscape}
+        markFilterScope={{ ...scope, sourceRunId: 'run-b' }}
+        alleles={stratifiedAlleles}
+        navigation={navigation}
+      />
+    )
+    await waitFor(() => {
+      expect(screen.getByRole('heading', { name: '3 of 3 exact alleles' })).not.toBeNull()
+    })
+  })
+
   test('shows the full responsive heatmap context, axes, zero, intensity, and aggregated detail', () => {
     const landscape: WholeRecordGenotypeLandscapeData = {
       status: 'AVAILABLE',
@@ -611,7 +749,7 @@ describe('long-read TR visualization fidelity', () => {
       screen
         .getByRole('gridcell', { name: '+12 bp longer, −6 bp shorter: 12 people' })
         .getAttribute('aria-selected')
-    ).toBe('true')
+    ).toBe('false')
     expect(
       screen.getByText(
         (_text, element) =>

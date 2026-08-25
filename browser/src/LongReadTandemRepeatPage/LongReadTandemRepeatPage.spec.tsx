@@ -515,7 +515,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('heading', { name: 'Measurement availability' })).toBeNull()
     expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(
-      screen.getByRole('button', { name: /−6 bp, 134 called allele copies.*2 exact ALTs/ })
+      screen.getByRole('button', { name: /−6 bp, 134 called allele copies.*2 exact alleles/ })
     ).not.toBeNull()
     expect(screen.getByRole('button', { name: /\+48 bp, 5 called allele copies/ })).not.toBeNull()
   })
@@ -652,12 +652,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('filters the primary index to every same-length identity and clears back to all', () => {
     renderPage()
     const table = screen.getByRole('table', { name: 'Exact alternate allele index' })
-    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).not.toBeNull()
+    const allAllelesHeading = screen.getByRole('heading', {
+      name: '72 of 72 exact alleles',
+    })
+    expect(allAllelesHeading).not.toBeNull()
+    expect(allAllelesHeading.closest('header')).toHaveStyleRule('flex-wrap', 'wrap')
     expect(table.getAttribute('aria-rowcount')).toBe('73')
 
     fireEvent.click(screen.getByRole('button', { name: /−6 bp, 134 called allele copies/ }))
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })
+      screen.getByRole('heading', { name: '2 of 72 exact alleles at −6 bp' })
     )
     expect(table.getAttribute('aria-rowcount')).toBe('3')
     expect(within(table).getByText(`${sourceVariantId}~2`)).not.toBeNull()
@@ -672,9 +676,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(fireEvent.click(otherControl)).toBe(false)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show all exact alleles' }))
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: 'All exact ALTs (72)' })
+      screen.getByRole('heading', { name: '72 of 72 exact alleles' })
     )
     expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
@@ -709,14 +713,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('uses materially different point areas for heterogeneous exact-allele AC', () => {
     renderPage()
-    const lowAcPoint = screen.getByRole('link', { name: /ALT 1.+40 called copies/ })
-    const highAcPoint = screen.getByRole('link', { name: /ALT 2.+120 called copies/ })
+    const lowAcPoint = screen.getByRole('button', { name: /ALT 1.+40 called copies/ })
+    const highAcPoint = screen.getByRole('button', { name: /ALT 2.+120 called copies/ })
     const lowDiameter = Number(lowAcPoint.getAttribute('data-point-diameter'))
     const highDiameter = Number(highAcPoint.getAttribute('data-point-diameter'))
 
     expect(highDiameter ** 2 / lowDiameter ** 2).toBeGreaterThan(4)
     expect(purityPointDiameter(12, 12, 12)).toBe(16)
-    expect(highAcPoint.getAttribute('aria-current')).toBe('true')
+    expect(highAcPoint.getAttribute('data-selected-allele')).toBe('true')
     expect(highAcPoint).toHaveStyleRule('box-sizing', 'border-box')
     expect(
       screen.getByLabelText('Point size represents exact allele AC from 40 to 120')
@@ -746,7 +750,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     fireEvent.click(zeroDeltaCell)
     expect(document.activeElement).toBe(
       screen.getByRole('heading', {
-        name: '1 of 72 exact ALTs in selected genotype cell (0 bp × 0 bp)',
+        name: '1 of 72 exact alleles in selected genotype cell (0 bp × 0 bp)',
       })
     )
     expect(
@@ -754,15 +758,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
         .getByRole('table', { name: 'Exact alternate allele index' })
         .getAttribute('aria-rowcount')
     ).toBe('2')
-    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
-    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).toBe(
+    fireEvent.click(screen.getByRole('button', { name: 'Show all exact alleles' }))
+    expect(screen.getByRole('heading', { name: '72 of 72 exact alleles' })).toBe(
       document.activeElement
     )
   })
 
-  test.each([72, 497])('shows all %s exact ALTs in the primary virtualized browser', (count) => {
+  test.each([72, 497])('shows all %s exact alleles in the primary virtualized browser', (count) => {
     renderPage({ locus: makeLocus(count), selectedAllele: undefined })
-    const heading = screen.getByRole('heading', { name: `All exact ALTs (${count})` })
+    const heading = screen.getByRole('heading', { name: `${count} of ${count} exact alleles` })
     const section = heading.closest('section')
     expect(section).not.toBeNull()
     expect(heading.closest('details')).toBeNull()
@@ -947,7 +951,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
     expect((global as any).__TR_QUERY_PROPS__.requestKey).toBe(`hgsvc_hprc:${staleLocus.id}`)
     expect(screen.getByRole('heading', { name: `${exactId} allele details` })).not.toBeNull()
-    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: '72 of 72 exact alleles' })).not.toBeNull()
     expect(
       within(screen.getByRole('table', { name: 'Exact alternate allele index' }))
         .getByRole('link', { name: 'Selected ALT 1' })

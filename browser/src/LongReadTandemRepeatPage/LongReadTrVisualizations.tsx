@@ -752,7 +752,7 @@ const alleleLabel = (alleleId: string) => {
   return match ? `ALT ${match[1]}` : alleleId
 }
 
-const PurityPointLink = styled(SelectionLink)`
+const PurityPointButton = styled.button`
   position: absolute;
   display: block;
   box-sizing: border-box;
@@ -763,11 +763,16 @@ const PurityPointLink = styled(SelectionLink)`
   box-shadow: 0 0 0 1px #681875;
   cursor: pointer;
 
-  &[aria-current='true'] {
-    z-index: 2;
+  &[data-selected-allele='true'] {
     border: 3px solid #111;
     background: #e9781c;
     box-shadow: 0 0 0 2px #fff;
+  }
+
+  &[aria-pressed='true'] {
+    z-index: 2;
+    outline: 3px solid #111;
+    outline-offset: 2px;
   }
 
   &:focus-visible {
@@ -815,11 +820,13 @@ const purityDecimals = (domainMinimum: number, domainMaximum: number) => {
 const PurityScatter = ({
   points,
   selectedAllele,
-  navigation,
+  activeAllele,
+  onActivatePoint,
 }: {
   points: PurityPoint[]
   selectedAllele?: string
-  navigation: AlleleNavigation
+  activeAllele?: string
+  onActivatePoint: (point: PurityPoint) => void
 }) => {
   if (!points.length) return <p>Motif purity is unavailable.</p>
   const minDelta = Math.min(...points.map((point) => point.delta))
@@ -901,21 +908,23 @@ const PurityScatter = ({
           const overlapCount = overlapCounts.get(overlapKey) || 1
           const overlapOffset = (overlapIndex - (overlapCount - 1) / 2) * 10
           return (
-            <PurityPointLink
+            <PurityPointButton
               key={point.allele_id}
-              alleleId={point.allele_id}
-              navigation={navigation}
-              selected={point.allele_id === selectedAllele}
+              type="button"
+              aria-pressed={point.allele_id === activeAllele}
+              data-selected-allele={point.allele_id === selectedAllele}
               title={`${alleleLabel(point.allele_id)}: ${signed(
                 point.delta
               )} bp, purity ${point.motif_purity.toFixed(4)}, AC ${point.called_alleles}`}
-              aria-label={`Select ${alleleLabel(point.allele_id)}, ${signed(
+              aria-label={`Filter exact alleles to ${alleleLabel(point.allele_id)}, ${signed(
                 point.delta
               )} bp, purity ${point.motif_purity.toFixed(4)}, ${
                 point.called_alleles
               } called copies`}
+              data-allele-id={point.allele_id}
               data-called-alleles={point.called_alleles}
               data-point-diameter={size}
+              onClick={() => onActivatePoint(point)}
               style={{
                 left: `${left}%`,
                 bottom: `${bottom}%`,
@@ -925,7 +934,7 @@ const PurityScatter = ({
               }}
             >
               <span aria-hidden="true" />
-            </PurityPointLink>
+            </PurityPointButton>
           )
         })}
         {minDelta === maxDelta ? (
@@ -1068,11 +1077,41 @@ const RepeatCountPlotCards = ({
   )
 }
 
+export type ExactIndexMarkFilterScope = {
+  locusId: string
+  cohort: string
+  sourceRunId: string
+}
+
+export type ExactIndexMarkFilter =
+  | {
+      scope: ExactIndexMarkFilterScope
+      kind: 'total-length-bin'
+      markId: string
+      delta: number
+    }
+  | {
+      scope: ExactIndexMarkFilterScope
+      kind: 'purity-point'
+      markId: string
+      alleleId: string
+    }
+  | {
+      scope: ExactIndexMarkFilterScope
+      kind: 'genotype-length-cell'
+      markId: string
+      label: string
+      shorterDelta: number
+      longerDelta: number
+      exactPairs: ExactGenotypePair[]
+    }
+
 export const WholeRecordAlleleLandscape = ({
   landscape,
   genotypeLandscape,
   repeatCountPlots,
   variantId,
+  markFilterScope,
   alleles,
   motifs = [],
   selectedAllele,
@@ -1085,6 +1124,7 @@ export const WholeRecordAlleleLandscape = ({
   genotypeLandscape?: WholeRecordGenotypeLandscapeData
   repeatCountPlots?: LongReadTrLocus['repeat_count_plots']
   variantId?: string
+  markFilterScope?: ExactIndexMarkFilterScope
   alleles: LongReadTrAllele[]
   motifs?: string[]
   selectedAllele?: string
@@ -1116,40 +1156,139 @@ export const WholeRecordAlleleLandscape = ({
     () => new Map(alleles.map((allele) => [allele.variant_id, allele])),
     [alleles]
   )
-  const indexScope = `${landscape.exact_alt_count || alleles.length}:${
-    alleles[0]?.variant_id || 'none'
-  }`
-  const [indexFilter, setIndexFilter] = useState<
-    | { scope: string; kind: 'delta'; delta: number }
-    | { scope: string; kind: 'genotype'; label: string; alleleIds: string[] }
-    | null
-  >(null)
+  const scope = markFilterScope || {
+    locusId: variantId || alleles[0]?.source_variant_id || 'lr-tr-locus',
+    cohort: 'unknown',
+    sourceRunId: 'unknown',
+  }
+  const scopeKey = `${scope.locusId}\u0000${scope.cohort}\u0000${scope.sourceRunId}`
+  const previousScopeKey = useRef(scopeKey)
+  const [indexFilter, setIndexFilter] = useState<ExactIndexMarkFilter | null>(null)
   const indexHeading = useRef<HTMLHeadingElement>(null)
-  const activeIndexFilter = indexFilter?.scope === indexScope ? indexFilter : null
-  const selectedDelta = activeIndexFilter?.kind === 'delta' ? activeIndexFilter.delta : null
+  const selectedDivision =
+    selectedPopulation && selectedSex
+      ? `${selectedPopulation}_${selectedSex}`
+      : selectedPopulation || selectedSex
+  const frequencyFor = (allele: LongReadTrAllele | undefined) => {
+    if (!allele) return undefined
+    return selectedDivision
+      ? allele.freq.populations.find((frequency) => frequency.id === selectedDivision)
+      : allele.freq.all
+  }
+  const filteredPurityPoints = (landscape.purity_points || []).flatMap((point) => {
+    const frequency = frequencyFor(alleleById.get(point.allele_id))
+    if (!frequency || frequency.ac <= 0) return []
+    return selectedDivision ? [{ ...point, called_alleles: frequency.ac }] : [point]
+  })
+  const filterScopeKey = indexFilter
+    ? `${indexFilter.scope.locusId}\u0000${indexFilter.scope.cohort}\u0000${indexFilter.scope.sourceRunId}`
+    : null
+  const activeIndexFilter = filterScopeKey === scopeKey ? indexFilter : null
+  const selectedDelta =
+    activeIndexFilter?.kind === 'total-length-bin' ? activeIndexFilter.delta : null
   const selectedBin = bins.find((bin) => bin.delta === selectedDelta)
-  const selectedBinAlleles = selectedBin ? new Set(selectedBin.allele_ids) : null
-  const selectedGenotypeAlleles =
-    activeIndexFilter?.kind === 'genotype' ? new Set(activeIndexFilter.alleleIds) : null
-  let indexedAlleles = alleles
-  if (selectedBinAlleles) {
-    indexedAlleles = alleles.filter((allele) => selectedBinAlleles.has(allele.variant_id))
-  } else if (selectedGenotypeAlleles) {
-    indexedAlleles = alleles.filter((allele) => selectedGenotypeAlleles.has(allele.variant_id))
+  const activePurityAllele =
+    activeIndexFilter?.kind === 'purity-point' ? activeIndexFilter.alleleId : undefined
+  const activeGenotypeCell =
+    activeIndexFilter?.kind === 'genotype-length-cell' ? activeIndexFilter : null
+  const activeGenotypeSourceCell = genotypeLandscape?.cells?.find(
+    (cell) =>
+      cell.shorter_delta === activeGenotypeCell?.shorterDelta &&
+      cell.longer_delta === activeGenotypeCell?.longerDelta
+  )
+  const activeGenotypePairs = (activeGenotypeSourceCell?.pairs || []).filter(
+    (pair) =>
+      (!selectedPopulation || pair.ancestry_group === selectedPopulation) &&
+      (!selectedSex || pair.sex === selectedSex) &&
+      pair.people > 0
+  )
+  let activeAlleleIds: string[] | null = null
+  if (selectedBin) {
+    activeAlleleIds = selectedBin.allele_ids.filter((alleleId) => {
+      const allele = alleleById.get(alleleId)
+      return allele ? (frequencyFor(allele)?.ac || 0) > 0 : false
+    })
+  } else if (activePurityAllele) {
+    activeAlleleIds = filteredPurityPoints.some((point) => point.allele_id === activePurityAllele)
+      ? [activePurityAllele]
+      : []
+  } else if (activeGenotypeCell) {
+    activeAlleleIds = [
+      ...new Set(
+        activeGenotypePairs.flatMap((pair) => [pair.shorter_allele_id, pair.longer_allele_id])
+      ),
+    ].filter((alleleId) => alleleId !== genotypeLandscape?.reference_allele_id)
   }
+  const activeAlleleSet = activeAlleleIds ? new Set(activeAlleleIds) : null
+  const indexedAlleles = activeAlleleSet
+    ? alleles.filter((allele) => activeAlleleSet.has(allele.variant_id))
+    : alleles
   const focusIndex = () => indexHeading.current?.focus({ preventScroll: true })
-  const filterIndexToDelta = (delta: number) => {
-    setIndexFilter({ scope: indexScope, kind: 'delta', delta })
+  const activateIndexFilter = (next: ExactIndexMarkFilter) => {
+    setIndexFilter((current) =>
+      current &&
+      `${current.scope.locusId}\u0000${current.scope.cohort}\u0000${current.scope.sourceRunId}` ===
+        scopeKey &&
+      current.kind === next.kind &&
+      current.markId === next.markId
+        ? null
+        : next
+    )
     focusIndex()
   }
-  const filterIndexToGenotype = (label: string, alleleIds: string[]) => {
-    setIndexFilter({ scope: indexScope, kind: 'genotype', label, alleleIds })
-    focusIndex()
-  }
+  const filterIndexToDelta = (delta: number) =>
+    activateIndexFilter({
+      scope,
+      kind: 'total-length-bin',
+      markId: `total-length:${delta}`,
+      delta,
+    })
+  const filterIndexToPurityPoint = (point: PurityPoint) =>
+    activateIndexFilter({
+      scope,
+      kind: 'purity-point',
+      markId: `purity:${point.allele_id}`,
+      alleleId: point.allele_id,
+    })
+  const filterIndexToGenotype = (
+    markId: string,
+    label: string,
+    shorterDelta: number,
+    longerDelta: number,
+    exactPairs: ExactGenotypePair[]
+  ) =>
+    activateIndexFilter({
+      scope,
+      kind: 'genotype-length-cell',
+      markId,
+      label,
+      shorterDelta,
+      longerDelta,
+      exactPairs,
+    })
   const clearIndexFilter = () => {
     setIndexFilter(null)
     focusIndex()
   }
+  useEffect(() => {
+    if (previousScopeKey.current !== scopeKey) {
+      previousScopeKey.current = scopeKey
+      setIndexFilter(null)
+    }
+  }, [scopeKey])
+  useEffect(() => {
+    if (
+      (activeIndexFilter?.kind === 'purity-point' && activeAlleleIds?.length === 0) ||
+      (activeIndexFilter?.kind === 'genotype-length-cell' && activeGenotypePairs.length === 0)
+    ) {
+      setIndexFilter(null)
+    }
+  }, [
+    activeAlleleIds?.length,
+    activeGenotypePairs.length,
+    activeIndexFilter?.kind,
+    selectedDivision,
+  ])
 
   if (landscape.status !== 'AVAILABLE') {
     return (
@@ -1228,17 +1367,6 @@ export const WholeRecordAlleleLandscape = ({
         )
         .reduce((sum, stack) => sum + stack.called_alleles, 0),
     }))
-  const selectedDivision =
-    selectedPopulation && selectedSex
-      ? `${selectedPopulation}_${selectedSex}`
-      : selectedPopulation || selectedSex
-  const filteredPurityPoints = (landscape.purity_points || []).flatMap((point) => {
-    if (!selectedDivision) return [point]
-    const frequency = alleleById
-      .get(point.allele_id)
-      ?.freq.populations.find((item) => item.id === selectedDivision)
-    return frequency && frequency.ac > 0 ? [{ ...point, called_alleles: frequency.ac }] : []
-  })
   const clippedAt = scaleCap(selectedScaleType)
   const totalInView = counts.reduce((sum, count) => sum + count, 0)
   let histogramLayout = { barWidth: 14, gap: 2, height: 260 }
@@ -1256,6 +1384,12 @@ export const WholeRecordAlleleLandscape = ({
     selectedBin?.delta ?? null
   )
   const deltaAxisHeight = 25 + Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) * 15
+  let activeFilterDescription: string | undefined
+  if (activeIndexFilter?.kind === 'genotype-length-cell') {
+    activeFilterDescription = activeIndexFilter.label
+  } else if (activeIndexFilter?.kind === 'purity-point') {
+    activeFilterDescription = alleleLabel(activeIndexFilter.alleleId)
+  }
 
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
@@ -1409,10 +1543,10 @@ export const WholeRecordAlleleLandscape = ({
                           bin.delta
                         )} bp, ${count} called allele copies in this view, ${
                           bin.exact_alt_count
-                        } exact ALTs globally`}
+                        } exact alleles globally`}
                         title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
                           bin.exact_alt_count
-                        } exact ALTs`}
+                        } exact alleles`}
                         onClick={() => filterIndexToDelta(bin.delta)}
                       >
                         {selectedColorBy && count > 0 && (
@@ -1429,7 +1563,7 @@ export const WholeRecordAlleleLandscape = ({
                             ))}
                           </BarSegments>
                         )}
-                        <BarExactCount title={`${bin.exact_alt_count} exact ALTs`}>
+                        <BarExactCount title={`${bin.exact_alt_count} exact alleles`}>
                           {bin.exact_alt_count}
                         </BarExactCount>
                       </BarButton>
@@ -1471,7 +1605,8 @@ export const WholeRecordAlleleLandscape = ({
             <PurityScatter
               points={filteredPurityPoints}
               selectedAllele={selectedAllele}
-              navigation={navigation}
+              activeAllele={activePurityAllele}
+              onActivatePoint={filterIndexToPurityPoint}
             />
           ) : (
             <p role="status">
@@ -1485,6 +1620,7 @@ export const WholeRecordAlleleLandscape = ({
             navigation={navigation}
             selectedPopulation={selectedPopulation}
             selectedSex={selectedSex}
+            activeCellKey={activeGenotypeCell?.markId}
             onSelectCell={filterIndexToGenotype}
           />
         )}
@@ -1493,9 +1629,7 @@ export const WholeRecordAlleleLandscape = ({
         alleles={indexedAlleles}
         totalExactAlts={landscape.exact_alt_count || alleles.length}
         filteredDelta={selectedBin?.delta}
-        filterDescription={
-          activeIndexFilter?.kind === 'genotype' ? activeIndexFilter.label : undefined
-        }
+        filterDescription={activeFilterDescription}
         motifs={motifs}
         selectedAllele={selectedAllele}
         navigation={navigation}
@@ -1541,10 +1675,13 @@ const IntensityKey = styled.div`
 
 const filteredPairs = (pairs: GenotypePair[], population: PopulationId | null, sex: Sex | null) =>
   pairs.filter(
-    (pair) => (!population || pair.ancestry_group === population) && (!sex || pair.sex === sex)
+    (pair) =>
+      (!population || pair.ancestry_group === population) &&
+      (!sex || pair.sex === sex) &&
+      pair.people > 0
   )
 
-type ExactGenotypePair = Pick<
+export type ExactGenotypePair = Pick<
   GenotypePair,
   'shorter_allele_id' | 'longer_allele_id' | 'people' | 'phased_people' | 'unphased_people'
 >
@@ -1586,13 +1723,21 @@ export const WholeRecordGenotypeLandscape = ({
   navigation,
   selectedPopulation,
   selectedSex,
+  activeCellKey,
   onSelectCell,
 }: {
   landscape: WholeRecordGenotypeLandscapeData
   navigation: AlleleNavigation
   selectedPopulation: PopulationId | null
   selectedSex: Sex | null
-  onSelectCell?: (label: string, alleleIds: string[]) => void
+  activeCellKey?: string
+  onSelectCell?: (
+    markId: string,
+    label: string,
+    shorterDelta: number,
+    longerDelta: number,
+    exactPairs: ExactGenotypePair[]
+  ) => void
 }) => {
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
@@ -1654,14 +1799,12 @@ export const WholeRecordGenotypeLandscape = ({
   )
   const selectCell = (cell: (typeof cells)[number], key: string) => {
     setSelectedKey(key)
-    const alleleIds = [
-      ...new Set(
-        cell.selectedPairs.flatMap((pair) => [pair.shorter_allele_id, pair.longer_allele_id])
-      ),
-    ].filter((alleleId) => alleleId !== landscape.reference_allele_id)
     onSelectCell?.(
+      `genotype-length:${key}`,
       `selected genotype cell (${signed(cell.longer_delta)} bp × ${signed(cell.shorter_delta)} bp)`,
-      alleleIds
+      cell.shorter_delta,
+      cell.longer_delta,
+      cell.selectedPairs
     )
   }
 
@@ -1709,7 +1852,8 @@ export const WholeRecordGenotypeLandscape = ({
                 {values.map((longer) => {
                   const cell = byCoordinate.get(`${shorter}/${longer}`)
                   const key = `${shorter}/${longer}`
-                  const selected = Boolean(cell && selectedCell && key === keyFor(selectedCell))
+                  const markId = `genotype-length:${key}`
+                  const selected = Boolean(cell && activeCellKey === markId)
                   const intensity = cell
                     ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
                     : 0
@@ -1952,6 +2096,7 @@ const ExactAlleleIdentity = styled.span`
 
 const IndexTitle = styled.header`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1em;
@@ -2319,11 +2464,11 @@ export const ExactAlleleIndex = ({
     hasMissingIndexSequence && !sequencesAvailable
       ? `Motif previews are unavailable because ${unavailableReason(sequencesUnavailableReason)}.`
       : null
-  let heading = `All exact ALTs (${totalExactAlts.toLocaleString()})`
+  let heading = `${totalExactAlts.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact alleles`
   if (filterDescription) {
-    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact ALTs in ${filterDescription}`
+    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact alleles in ${filterDescription}`
   } else if (filteredDelta != null) {
-    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact ALTs at ${signed(
+    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact alleles at ${signed(
       filteredDelta
     )} bp`
   }
@@ -2335,7 +2480,7 @@ export const ExactAlleleIndex = ({
         </h3>
         {(filteredDelta != null || filterDescription) && (
           <ClearIndexFilter type="button" onClick={onClearFilter}>
-            Show all exact ALTs
+            Show all exact alleles
           </ClearIndexFilter>
         )}
       </IndexTitle>
