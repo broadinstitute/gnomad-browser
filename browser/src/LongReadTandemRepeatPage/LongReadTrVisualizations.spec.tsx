@@ -1,4 +1,5 @@
 import React from 'react'
+import 'jest-styled-components'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
@@ -144,7 +145,14 @@ describe('long-read TR visualization fidelity', () => {
         sequencesAvailable
       />
     )
-    expect(screen.getAllByRole('img', { name: /motif structure preview/ })).toHaveLength(3)
+    const previews = screen.getAllByRole('img', { name: /motif structure preview/ })
+    expect(previews).toHaveLength(3)
+    const previewUnit = previews[0].querySelector('[data-motif-unit="true"]')
+    expect(previewUnit).not.toBeNull()
+    expect(previewUnit?.getAttribute('stroke')).toBe('#36454f')
+    expect(previewUnit?.getAttribute('stroke-width')).toBe('1')
+    expect(previewUnit?.getAttribute('vector-effect')).toBe('non-scaling-stroke')
+    expect(previewUnit?.getAttribute('shape-rendering')).toBe('crispEdges')
     expect(screen.queryByText(/Restart the GraphQL API/)).toBeNull()
 
     rendered.rerender(
@@ -168,7 +176,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     expect(screen.getByRole('status').textContent).toMatch(
-      /allele index sequence byte bound exceeded/
+      /allele sequences are too large to preview safely/
     )
     expect(screen.getByRole('status').textContent).not.toMatch(/Restart/)
   })
@@ -262,7 +270,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
 
-    const histogram = screen.getByLabelText('Whole-record delta histogram')
+    const histogram = screen.getByLabelText('Total allele length change histogram')
     expect(window.getComputedStyle(histogram).paddingTop).toBe('18px')
     const deltaAxis = screen.getByTestId('whole-record-delta-axis')
     expect(within(deltaAxis).getByLabelText('−6 bp tick').textContent).toBe('−6')
@@ -317,7 +325,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(Number(tallest.getAttribute('data-height-percent'))).toBeGreaterThan(
       Number(shortest.getAttribute('data-height-percent'))
     )
-    expect(screen.getByText(/numbers above bars are exact ALTs/)).not.toBeNull()
+    expect(screen.getByText(/numbers above bars are exact alleles/)).not.toBeNull()
   })
 
   test('lists every same-length exact ALT as a keyboard-operable selection link', () => {
@@ -433,15 +441,15 @@ describe('long-read TR visualization fidelity', () => {
     }
     render(<WholeRecordGenotypeLandscape landscape={landscape} navigation={navigation} />)
 
-    const heatmap = screen.getByRole('grid', { name: 'Whole-record genotype heatmap' })
+    const heatmap = screen.getByRole('grid', { name: 'Genotype length-change heatmap' })
     expect(heatmap.tagName.toLowerCase()).toBe('svg')
     expect(
       screen
         .getByRole('gridcell', { name: '+12 bp longer, −6 bp shorter: 12 people' })
         .getAttribute('fill')
     ).toBe(LONG_READ_PRIMARY_PLOT_COLOR)
-    expect(within(heatmap).getByText('Longer allele ALT − REF length (bp)')).not.toBeNull()
-    expect(within(heatmap).getByText('Shorter allele ALT − REF length (bp)')).not.toBeNull()
+    expect(within(heatmap).getByText('Longer allele length change (bp)')).not.toBeNull()
+    expect(within(heatmap).getByText('Shorter allele length change (bp)')).not.toBeNull()
     expect(screen.getByLabelText('Logarithmic people intensity legend')).not.toBeNull()
     expect(
       screen
@@ -474,17 +482,8 @@ describe('long-read TR visualization fidelity', () => {
     expect(highlighted).toHaveLength(1)
     expect(highlighted[0].getAttribute('fill')).toBe(motifColor('CAG', locus.motifs))
     expect(highlighted[0].getAttribute('stroke')).toBe('#111')
-    expect(
-      screen.getByText(
-        (_text, element) =>
-          element?.tagName === 'P' &&
-          Boolean(
-            element.textContent?.includes(
-              'Outlined component 1: catalog pathogenic motif; exact reference-component match'
-            )
-          )
-      )
-    ).not.toBeNull()
+    expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
+    expect(highlighted[0].textContent).toContain('not a pathogenic long-read component')
     expect(screen.queryByText(/Outlined component 2/)).toBeNull()
     expect(screen.queryByText(/Outlined component 3/)).toBeNull()
   })
@@ -505,20 +504,18 @@ describe('long-read TR visualization fidelity', () => {
     expect(motifColor('CCG')).not.toBe(motifColor('CCT'))
     expect(motifColor('CCG', locus.motifs)).toBe('#1f77b4')
     expect(motifColor('CCT', locus.motifs)).toBe('#ff7f0e')
-    const legend = screen.getByLabelText('Repeat motif color legend')
-    expect(within(legend).getAllByText('CCG')).toHaveLength(1)
-    expect(within(legend).getAllByText('CCT')).toHaveLength(1)
+    expect(screen.queryByLabelText('Repeat motif color legend')).toBeNull()
     expect(
       Number(screen.getByRole('img').querySelectorAll('rect')[0].getAttribute('width'))
     ).toBeCloseTo(8.8)
     expect(screen.getByRole('heading', { name: 'Reference repeat components' })).not.toBeNull()
     fireEvent.click(screen.getByLabelText('About reference repeat components'))
     expect(
-      screen.getByText(/ordered reference intervals encoded by the source TRID/)
+      screen.getByText(/ordered reference intervals in the source tandem-repeat definition/)
     ).not.toBeNull()
     expect(screen.getByText(/one-based, inclusive/)).not.toBeNull()
-    expect(screen.getByText(/Overlapping intervals are placed on separate lanes/)).not.toBeNull()
-    expect(screen.getByText(/duplicate motif identity/)).not.toBeNull()
-    expect(screen.getByText(/not an inferred ALT sequence decomposition/)).not.toBeNull()
+    expect(screen.getByText(/Overlapping intervals use separate lanes/)).not.toBeNull()
+    expect(screen.getByText(/interval and order are scientifically meaningful/)).not.toBeNull()
+    expect(screen.getByText(/does not infer an alternate sequence or repeat count/)).not.toBeNull()
   })
 })

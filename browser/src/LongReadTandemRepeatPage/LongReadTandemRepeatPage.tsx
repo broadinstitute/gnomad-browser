@@ -13,6 +13,7 @@ import {
 } from '../LongReadVariantPage/LongReadSTRDistributionSections'
 import {
   LongReadTrComponentTrack,
+  motifColor,
   Panel,
   SelectedExactAlleleDetail,
   WholeRecordAlleleLandscape,
@@ -49,6 +50,22 @@ const CohortControl = styled.label`
 
 const SourceAttributes = styled.div`
   margin-top: 1em;
+`
+
+const RepeatMotifBadges = styled.span`
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+`
+
+const RepeatMotifBadge = styled.span`
+  display: inline-block;
+  padding: 0.12em 0.48em;
+  border: 1px solid rgb(0 0 0 / 18%);
+  border-radius: 0.3em;
+  font-family: monospace;
+  font-weight: bold;
+  line-height: 1.35;
 `
 
 const UnavailableList = styled.ul`
@@ -95,6 +112,18 @@ const SimpleLocusPlotCard = styled.div`
 
 const cohortName = (cohort: LongReadCohort) =>
   cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
+
+const badgeTextColor = (background: string) => {
+  const channels = background
+    .slice(1)
+    .match(/.{2}/g)!
+    .map((channel) => parseInt(channel, 16) / 255)
+    .map((channel) => (channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4))
+  const luminance = 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
+  const whiteContrast = 1.05 / (luminance + 0.05)
+  const blackContrast = (luminance + 0.05) / 0.05
+  return whiteContrast >= blackContrast ? '#fff' : '#111'
+}
 
 const LongReadTandemRepeatPage = ({
   datasetId: _datasetId,
@@ -157,7 +186,7 @@ const LongReadTandemRepeatPage = ({
     sourceTrid: locus.source_trid,
   })
   const orderedMotifs = locus.components.map((component) => component.motif)
-  const vocabulary = [...new Set(orderedMotifs)]
+  const vocabulary = [...new Set(locus.motifs.length ? locus.motifs : orderedMotifs)]
   const authorizedHighlightedComponentIndex =
     locus.short_read_context?.status === 'EXACT_UNIQUE' &&
     locus.short_read_context.pathogenic_component_highlight
@@ -171,13 +200,13 @@ const LongReadTandemRepeatPage = ({
   const unavailableData: { label: string; reason: string }[] = []
   if (!locus.sequences_available) {
     unavailableData.push({
-      label: 'Exact-ALT index motif previews',
+      label: 'Allele motif previews',
       reason: unavailableReason(locus.sequences_unavailable_reason),
     })
   }
   if (selectedAllele && locus.selected_allele_valid !== false && !locus.selected_allele) {
     unavailableData.push({
-      label: 'Selected exact sequence/detail',
+      label: 'Selected allele sequence and details',
       reason: unavailableReason(locus.selected_allele_unavailable_reason),
     })
   }
@@ -185,8 +214,9 @@ const LongReadTandemRepeatPage = ({
     unavailableData.push({
       label: 'Component repeat counts',
       reason:
-        locus.component_measurement_unavailable_reason ||
-        unavailableReason(locus.repeat_count_plots.reason_code),
+        locus.components.length > 1
+          ? 'compound loci do not have one unambiguous component repeat count'
+          : unavailableReason(locus.repeat_count_plots.reason_code),
     })
   }
 
@@ -229,7 +259,25 @@ const LongReadTandemRepeatPage = ({
             {locus.region.size.toLocaleString()} bp
           </AttributeListItem>
           <AttributeListItem label="Repeat motifs">
-            {vocabulary.join(', ') || 'Unavailable'}
+            {vocabulary.length ? (
+              <RepeatMotifBadges aria-label={`Repeat motifs: ${vocabulary.join(', ')}`}>
+                {vocabulary.map((motif) => {
+                  const color = motifColor(motif, locus.motifs)
+                  return (
+                    <RepeatMotifBadge
+                      key={motif}
+                      data-motif-badge={motif}
+                      data-motif-color={color}
+                      style={{ backgroundColor: color, color: badgeTextColor(color) }}
+                    >
+                      {motif}
+                    </RepeatMotifBadge>
+                  )
+                })}
+              </RepeatMotifBadges>
+            ) : (
+              'Unavailable'
+            )}
           </AttributeListItem>
           <AttributeListItem label="Cohort">
             {cohortName(locus.lr_cohort)}
@@ -240,17 +288,10 @@ const LongReadTandemRepeatPage = ({
           </AttributeListItem>
           <AttributeListItem label="Observed alleles">
             {locus.exact_alt_count_complete
-              ? `${locus.exact_alt_count.toLocaleString()} alleles; ${deltaRange}`
+              ? `${locus.exact_alt_count.toLocaleString()} exact alternate alleles`
               : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
           </AttributeListItem>
-          <AttributeListItem label="Source record">
-            {locus.source_records.map((record, index) => (
-              <React.Fragment key={record.source_variant_id}>
-                {index > 0 && ', '}
-                <code>{record.source_variant_id}</code>
-              </React.Fragment>
-            ))}
-          </AttributeListItem>
+          <AttributeListItem label="Total allele length change">{deltaRange}</AttributeListItem>
         </AttributeList>
       </SourceAttributes>
 
@@ -270,8 +311,8 @@ const LongReadTandemRepeatPage = ({
             <HaplotypeHelpButton title="About simple-locus repeat counts">
               <p style={{ marginTop: 0 }}>
                 These plots appear only when the source data provide one unambiguous repeat unit and
-                an admitted exact repeat count for this locus. Compound loci and loci without an
-                exact component measurement use whole-record ALT − REF length instead.
+                an exact repeat count for this locus. Compound loci and loci without that
+                measurement use total allele length change instead.
               </p>
               <p>
                 The allele plot groups called chromosome copies by repeat count. The genotype plot
@@ -279,8 +320,8 @@ const LongReadTandemRepeatPage = ({
                 squares represent more people.
               </p>
               <p style={{ marginBottom: 0 }}>
-                Population and sex controls filter called observations. These admitted histograms do
-                not provide a no-call denominator and are not a clinical interpretation.
+                Population and sex controls filter called observations. These histograms do not
+                include a no-call denominator and are not a clinical interpretation.
               </p>
             </HaplotypeHelpButton>
           </div>
@@ -355,9 +396,9 @@ const LongReadTandemRepeatPage = ({
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (
         <p role="alert">
-          Exact-ALT limit exceeded: the response contains{' '}
-          {locus.alleles.nodes.length.toLocaleString()} of {locus.total_alleles.toLocaleString()}{' '}
-          alternate alleles. Landscapes are unavailable to avoid truncation.
+          This locus has more alternate alleles than the page can display safely. Showing{' '}
+          {locus.alleles.nodes.length.toLocaleString()} of {locus.total_alleles.toLocaleString()};
+          distributions are hidden rather than calculated from incomplete data.
         </p>
       )}
 
@@ -375,21 +416,21 @@ const LongReadTandemRepeatPage = ({
       )}
 
       <ProvenanceDetails>
-        <summary>Source provenance</summary>
+        <summary>Data source details</summary>
         <AttributeList>
-          <AttributeListItem label="Source TRID">
+          <AttributeListItem label="Tandem-repeat identifier">
             <code>{locus.source_trid}</code>
           </AttributeListItem>
-          <AttributeListItem label="Source records">
+          <AttributeListItem label="Variant records">
             {locus.source_records.map((record, index) => (
               <React.Fragment key={record.source_variant_id}>
                 {index > 0 && ', '}
                 <code>{record.source_variant_id}</code> (record {record.record_index};{' '}
-                {record.alt_count.toLocaleString()} ALTs)
+                {record.alt_count.toLocaleString()} alternate alleles)
               </React.Fragment>
             ))}
           </AttributeListItem>
-          <AttributeListItem label="Release / run">
+          <AttributeListItem label="Release / processing run">
             {locus.source_release} / <code>{locus.source_run_id}</code>
           </AttributeListItem>
         </AttributeList>

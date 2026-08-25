@@ -375,7 +375,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         rows.map((row) => Number(row.querySelectorAll('[role="cell"]')[4].textContent))
       )
     expect(renderedAcs).toEqual([...renderedAcs].sort((left, right) => right - left))
-    await indexTable.getByRole('button', { name: 'Exact ALT / identity' }).click()
+    await indexTable.getByRole('button', { name: 'Exact allele' }).click()
 
     const headerCells = indexTable.locator(
       '[role="row"][aria-rowindex="1"] > [role="columnheader"]'
@@ -395,9 +395,23 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         wideIndexBox!.x + wideIndexBox!.width + 1
       )
     })
-    await expect(
-      indexTable.getByRole('img', { name: 'ALT 1 motif structure preview' })
-    ).toBeVisible()
+    const compactPreview = indexTable.getByRole('img', {
+      name: 'ALT 1 motif structure preview',
+    })
+    await expect(compactPreview).toBeVisible()
+    const compactBoundary = await compactPreview
+      .locator('[data-motif-unit]')
+      .first()
+      .evaluate((unit) => ({
+        fill: unit.getAttribute('fill'),
+        stroke: getComputedStyle(unit).stroke,
+        strokeWidth: getComputedStyle(unit).strokeWidth,
+        vectorEffect: getComputedStyle(unit).getPropertyValue('vector-effect'),
+      }))
+    expect(compactBoundary.fill).toBeTruthy()
+    expect(compactBoundary.stroke).toBe('rgb(54, 69, 79)')
+    expect(compactBoundary.strokeWidth).toBe('1px')
+    expect(compactBoundary.vectorEffect).toBe('non-scaling-stroke')
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-all-exact-alts-wide.png')
 
     const wholeRecordPlots = page.getByTestId('whole-record-allele-plot-grid')
@@ -471,7 +485,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
 
     const httPurityPlot = page.getByRole('group', {
-      name: /exact alleles plotted by whole-record length difference and source purity/,
+      name: /exact alleles plotted by total allele length change and motif purity/,
     })
     const httPointMetrics = await purityPointMetrics(httPurityPlot)
     const httAcs = httPointMetrics.map(({ ac }: any) => ac)
@@ -506,6 +520,24 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     }
     const wideMotifGrid = page.getByLabel('Selected ALT motif structure grid')
     await expect(wideMotifGrid).toBeVisible()
+    await expect(wideMotifGrid.getByText('DP', { exact: true })).toBeHidden()
+    await page.getByText('Sequence analysis details', { exact: true }).click()
+    await expect(
+      page.getByText(/Browser motif analysis used dynamic-programming sequence alignment/)
+    ).toBeVisible()
+    const selectedBoundary = await wideMotifGrid
+      .locator('svg rect[stroke="white"]')
+      .first()
+      .evaluate((unit) => ({
+        fill: unit.getAttribute('fill'),
+        stroke: getComputedStyle(unit).stroke,
+        strokeWidth: getComputedStyle(unit).strokeWidth,
+        vectorEffect: getComputedStyle(unit).getPropertyValue('vector-effect'),
+      }))
+    expect(selectedBoundary.fill).toBeTruthy()
+    expect(selectedBoundary.stroke).toBe('rgb(54, 69, 79)')
+    expect(selectedBoundary.strokeWidth).toBe('1px')
+    expect(selectedBoundary.vectorEffect).toBe('non-scaling-stroke')
     const wideMotifMetrics = await wideMotifGrid.evaluate((grid) => ({
       clientWidth: grid.clientWidth,
       scrollWidth: grid.scrollWidth,
@@ -560,7 +592,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(indexTable.getByRole('columnheader', { name: 'Purity' })).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'AC', exact: true })).toBeHidden()
     const compactAlt72 = indexTable.getByRole('row', {
-      name: /ALT 72; .+~72; Δ length .+; purity .+; AC .+; AF .+/,
+      name: /ALT 72; .+~72; total allele length change .+; purity .+; AC .+; AF .+/,
     })
     await expect(compactAlt72).toBeVisible()
     await expect(compactAlt72.getByText(/~72$/)).toBeVisible()
@@ -578,7 +610,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     await openLocus(page, SPARSE_LOCUS, 9)
     const sparsePurityPlot = page.getByRole('group', {
-      name: /exact alleles plotted by whole-record length difference and source purity/,
+      name: /exact alleles plotted by total allele length change and motif purity/,
     })
     const sparseMetrics = await purityPointMetrics(sparsePurityPlot)
     const sparseAcs = sparseMetrics.map(({ ac }: any) => ac)

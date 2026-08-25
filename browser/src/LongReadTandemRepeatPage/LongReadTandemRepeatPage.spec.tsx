@@ -461,7 +461,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.getByText('GRCh38 / hg38')).not.toBeNull()
-    expect(screen.getByText(/72 alleles; −24 to \+48 bp/)).not.toBeNull()
+    expect(screen.getByText('72 exact alternate alleles')).not.toBeNull()
+    expect(screen.getByText('−24 to +48 bp')).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
     expect(
       screen.getByRole('img', {
@@ -478,10 +479,38 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
 
-  test('states compound measurement limits and signed whole-record semantics', () => {
+  test('uses the shared motif palette for ordered vocabulary badges and components', () => {
     renderPage()
-    expect(screen.getAllByText(/Compound loci lack an admitted mapping/).length).toBeGreaterThan(0)
-    expect(screen.queryByText(/not a component repeat count/)).toBeNull()
+    const expectedMotifs = ['CAG', 'CAA', 'CCG', 'CCT', 'GCC']
+    const badges = screen.getByLabelText(`Repeat motifs: ${expectedMotifs.join(', ')}`)
+
+    expect(
+      within(badges)
+        .getAllByText(/^(CAG|CAA|CCG|CCT|GCC)$/)
+        .map((badge) => badge.textContent)
+    ).toEqual(expectedMotifs)
+    expectedMotifs.forEach((motif) => {
+      const badge = within(badges).getByText(motif)
+      const component = document.querySelector(`[data-component-motif="${motif}"]`)
+      expect(component).not.toBeNull()
+      expect(badge.getAttribute('data-motif-color')).toBe(component?.getAttribute('fill'))
+      expect(badge.getAttribute('style')).toMatch(/background-color: rgb\(/)
+      expect(badge.getAttribute('style')).toMatch(/color: (rgb\(17, 17, 17\)|rgb\(255, 255, 255\))/)
+    })
+    expect(screen.queryByLabelText('Repeat motif color legend')).toBeNull()
+  })
+
+  test('states compound measurement limits and signed total-length semantics', () => {
+    renderPage()
+    expect(
+      screen.getByText(/compound loci do not have one unambiguous component repeat count/)
+    ).not.toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'About total allele length change' }))
+    const help = screen.getByRole('dialog', { name: 'About total allele length change' })
+    expect(within(help).getByText(/complete source ALT sequence minus the length/)).not.toBeNull()
+    expect(
+      within(help).getByText(/not a component repeat count or a clinical classification/)
+    ).not.toBeNull()
     expect(screen.queryByRole('heading', { name: 'Measurement availability' })).toBeNull()
     expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(
@@ -490,7 +519,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByRole('button', { name: /\+48 bp, 5 called allele copies/ })).not.toBeNull()
   })
 
-  test('lays out admitted simple-locus repeat-count plots compactly and responsively', () => {
+  test('lays out simple-locus repeat-count plots compactly and responsively', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
     const grid = screen.getByTestId('lr-tr-repeat-count-grid')
@@ -506,8 +535,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const help = screen.getByRole('dialog', { name: 'About simple-locus repeat counts' })
     expect(within(help).getByText(/one unambiguous repeat unit/)).not.toBeNull()
     expect(within(help).getByText(/groups called chromosome copies by repeat count/)).not.toBeNull()
-    expect(within(help).getByText(/not provide a no-call denominator/)).not.toBeNull()
-    expect(screen.queryByRole('heading', { name: 'Whole-record genotype distribution' })).toBeNull()
+    expect(within(help).getByText(/do not include a no-call denominator/)).not.toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Genotype length distribution' })).toBeNull()
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(0,calc(50% - 0.625em)))')
     expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
       media: '(max-width:900px)',
@@ -524,7 +553,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const alleleTables = screen.getAllByRole('table', { name: 'Exact alternate allele index' })
     const index = alleleTables[0]
     const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
-    const plotGrid = screen.getByText('Whole-record length difference').closest('div')
+    const plotGrid = screen
+      .getByRole('heading', { level: 3, name: 'Total allele length change' })
+      .closest('div')
 
     expect(alleleTables).toHaveLength(1)
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
@@ -557,13 +588,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(panel).getByText(/Short-read known-locus ranges are reference context/)
     ).not.toBeNull()
     expect(within(panel).getByText(/not applied to long-read alleles/)).not.toBeNull()
-    expect(
-      screen.getByText(
-        (_text, element) =>
-          element?.tagName === 'P' &&
-          Boolean(element.textContent?.includes('Outlined component 1: catalog pathogenic motif'))
-      )
-    ).not.toBeNull()
+    expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
     const highlightedComponent = screen
       .getByRole('img', { name: /component 1 is outlined/ })
       .querySelector('[data-catalog-pathogenic-match="true"]')
@@ -622,11 +647,23 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
     expect(within(detail).getByText(exactId)).not.toBeNull()
     expect(within(detail).getByText(/source_ap_allele/)).not.toBeNull()
-    expect(within(detail).getByText(/not source-coordinate components/)).not.toBeNull()
+    expect(
+      within(detail).getByText(/do not represent the source component coordinates/)
+    ).not.toBeNull()
     expect(within(detail).getByLabelText('Selected ALT motif structure grid')).not.toBeNull()
+    expect(screen.getByTestId('selected-motif-structure-boundaries')).toHaveStyleRule(
+      'stroke',
+      '#36454f!important',
+      { modifier: "& [aria-label='Selected ALT motif structure grid'] svg rect[stroke='white']" }
+    )
+    expect(screen.getByTestId('selected-motif-structure-boundaries')).toHaveStyleRule(
+      'stroke-width',
+      '1px!important',
+      { modifier: "& [aria-label='Selected ALT motif structure grid'] svg rect[stroke='white']" }
+    )
     expect(
       screen.getByRole('group', {
-        name: /exact alleles plotted by whole-record length difference and source purity/,
+        name: /exact alleles plotted by total allele length change and motif purity/,
       })
     ).not.toBeNull()
   })
@@ -652,7 +689,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       screen.getByText(
         (_text, element) =>
-          Boolean(element?.textContent?.includes('Reference (Δ 0) is an explicit identity')),
+          Boolean(
+            element?.textContent?.includes(
+              'The reference allele (0 bp) remains distinct from an alternate allele'
+            )
+          ),
         { selector: 'p' }
       )
     ).not.toBeNull()
@@ -682,7 +723,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(finalRow).getByRole('img', { name: `ALT ${count} motif structure preview` })
     ).not.toBeNull()
     expect(finalRow.getAttribute('aria-label')).toMatch(
-      new RegExp(`ALT ${count}; ${sourceVariantId}~${count}; Δ length .+; purity .+; AC .+; AF .+`)
+      new RegExp(
+        `ALT ${count}; ${sourceVariantId}~${count}; total allele length change .+; purity .+; AC .+; AF .+`
+      )
     )
     expect(
       screen
@@ -740,7 +783,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
         (_text, element) =>
           element?.tagName === 'LI' &&
           element.textContent ===
-            'Selected exact sequence/detail: selected allele detail byte bound exceeded'
+            'Selected allele sequence and details: the selected allele sequence is too large to display safely'
       )
     ).not.toBeNull()
   })
@@ -761,7 +804,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
         (_text, element) =>
           element?.tagName === 'LI' &&
           element.textContent ===
-            'Exact-ALT index motif previews: allele index sequence byte bound exceeded'
+            'Allele motif previews: the allele sequences are too large to preview safely'
       )
     ).not.toBeNull()
     expect(screen.queryByText(/^Exact ALT sequences:/)).toBeNull()
@@ -776,7 +819,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('keeps source provenance compact and accessible', () => {
     renderPage()
-    const provenance = screen.getByText('Source provenance').closest('details')
+    const provenance = screen.getByText('Data source details').closest('details')
     expect(provenance).not.toBeNull()
     expect(provenance?.hasAttribute('open')).toBe(false)
     expect(
@@ -801,9 +844,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
     } as any
     renderPage({ locus })
     expect(
-      screen.getByText(/Whole-record allele landscape unavailable: bound exceeded/)
+      screen.getByText(/Allele length distribution unavailable: the result is too large/)
     ).not.toBeNull()
-    expect(screen.getByText(/Genotype landscape unavailable: no metadata/)).not.toBeNull()
+    expect(
+      screen.getByText(
+        /Genotype landscape unavailable: the source does not include the required metadata/
+      )
+    ).not.toBeNull()
   })
 
   test('container retains the displayed locus and selection until new exact detail arrives', () => {
