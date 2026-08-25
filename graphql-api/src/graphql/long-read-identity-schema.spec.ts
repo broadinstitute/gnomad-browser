@@ -1,4 +1,5 @@
 import { getIntrospectionQuery, graphql, parse, validate } from 'graphql'
+import { longReadTrShortReadDistributionSingleSelectionRule } from './long-read-tr-short-read-distribution-validation'
 
 process.env.ELASTICSEARCH_URL = process.env.ELASTICSEARCH_URL || 'http://127.0.0.1:9200'
 process.env.LR_Y1_ENABLED = 'false'
@@ -195,6 +196,50 @@ describe('assembled LR identity GraphQL contract', () => {
       .getFields().long_read_tandem_repeat_short_read_distributions
     const cost = field.astNode.directives.find((directive: any) => directive.name.value === 'cost')
     expect(cost.arguments[0].value.value).toBe('5')
+  })
+
+  test('rejects GraphQL alias amplification around the bounded distribution response', () => {
+    const repeatedNestedList = longReadTrShortReadDistributionsQuery.replace(
+      'distributions {\n          ancestry_group sex repunit quality_description q_score',
+      'first: distributions { ancestry_group }\n        second: distributions {\n          ancestry_group sex repunit quality_description q_score'
+    )
+    expect(
+      validate(schema, parse(repeatedNestedList), [
+        longReadTrShortReadDistributionSingleSelectionRule,
+      ]).map((error) => error.message)
+    ).toContain(
+      'LongReadTrShortReadAlleleDistributionPart.distributions may be selected only once per GraphQL document'
+    )
+
+    const aliasedNestedScalar = longReadTrShortReadDistributionsQuery.replace(
+      'ancestry_group sex repunit quality_description q_score',
+      'copy: ancestry_group sex repunit quality_description q_score'
+    )
+    expect(
+      validate(schema, parse(aliasedNestedScalar), [
+        longReadTrShortReadDistributionSingleSelectionRule,
+      ]).map((error) => error.message)
+    ).toContain(
+      'Aliases are not allowed inside the bounded long_read_tandem_repeat_short_read_distributions response'
+    )
+
+    const repeatedRoot = `
+      query RepeatedRoot($id: String!, $cohort: LongReadCohort!) {
+        first: long_read_tandem_repeat_short_read_distributions(id: $id, lr_cohort: $cohort) {
+          status
+        }
+        second: long_read_tandem_repeat_short_read_distributions(id: $id, lr_cohort: $cohort) {
+          status
+        }
+      }
+    `
+    expect(
+      validate(schema, parse(repeatedRoot), [
+        longReadTrShortReadDistributionSingleSelectionRule,
+      ]).map((error) => error.message)
+    ).toContain(
+      'long_read_tandem_repeat_short_read_distributions may be selected only once per GraphQL document'
+    )
   })
 
   test('publishes source/ALT identity through assembled-schema introspection', async () => {

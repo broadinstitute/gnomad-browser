@@ -13,6 +13,7 @@ import {
   joinedMethylationPublicCode,
 } from './joined-phased-methylation-errors'
 import { joinedPhasedMethylationSingleFieldRule } from './joined-phased-methylation-validation'
+import { longReadTrShortReadDistributionSingleSelectionRule } from './long-read-tr-short-read-distribution-validation'
 import schema from './schema'
 
 const customParseFn = (...args: Parameters<typeof parse>) => {
@@ -161,6 +162,7 @@ const graphQLApi = ({ context }: any) =>
 
     validationRules: [
       joinedPhasedMethylationSingleFieldRule,
+      longReadTrShortReadDistributionSingleSelectionRule,
       queryComplexity({
         maximumComplexity: config.MAX_QUERY_COST,
         variables: requestParams && requestParams.variables ? requestParams.variables : undefined,

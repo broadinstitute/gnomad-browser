@@ -126,6 +126,11 @@ describe('long-read STR allele-size distribution', () => {
       />
     )
     expect(screen.queryByRole('button', { name: /Filter by 10 repeats/ })).toBeNull()
+    expect(
+      screen.getByRole('img', {
+        name: /Allele repeat-count distribution.*10 repeats: 7 allele copies/,
+      })
+    ).not.toBeNull()
   })
 
   test('adds optional keyboard genotype-bin activation and selected semantics', () => {
@@ -171,6 +176,11 @@ describe('long-read STR allele-size distribution', () => {
       />
     )
     expect(screen.queryByRole('button', { name: /11 repeats in longer allele/ })).toBeNull()
+    expect(
+      screen.getByRole('img', {
+        name: /Genotype repeat-count distribution.*11 repeats in longer allele.*10 repeats in shorter allele: 7 people/,
+      })
+    ).not.toBeNull()
   })
 
   test('focuses domains on all observed counts with stable padding, including one-bin and outlier cases', () => {

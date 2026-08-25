@@ -412,8 +412,8 @@ export const MotifHighlightedSequence = ({
                     width: 8,
                     textAlign: 'center',
                     background: matches ? motifColor! : INTERRUPTION_COLOR,
-                    color: matches ? '#fff' : '#aaa',
-                    opacity: matches ? 1 : 0.7,
+                    color: '#fff',
+                    opacity: 1,
                     borderRadius:
                       ci === 0
                         ? '2px 0 0 2px'

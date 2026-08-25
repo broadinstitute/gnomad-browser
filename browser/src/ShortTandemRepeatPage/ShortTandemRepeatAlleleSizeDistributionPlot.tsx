@@ -311,6 +311,18 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       return Object.values(binsByColorByValue)
     }, [alleleSizeDistribution, binSize, domainMin, emptyBins])
 
+    const staticDistributionLabel = `Allele repeat-count distribution. ${data
+      .filter((bin) => bin.fullFrequency > 0)
+      .map(
+        (bin) =>
+          `${bin.label} ${
+            bin.label === '1' ? 'repeat' : 'repeats'
+          }: ${bin.fullFrequency.toLocaleString()} allele ${
+            bin.fullFrequency === 1 ? 'copy' : 'copies'
+          }`
+      )
+      .join('; ')}`
+
     const keys = useMemo(() => {
       const presentKeys: Record<string, boolean> = data
         .flatMap((bin) => Object.keys(bin))
@@ -367,7 +379,12 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     return (
       <GraphWrapper>
         <LegendFromColorBy colorBy={colorBy} populationDisplayConfig={populationDisplayConfig} />
-        <svg height={binSize === 1 ? height - 20 : height} width={width}>
+        <svg
+          height={binSize === 1 ? height - 20 : height}
+          width={width}
+          role={onSelectBin ? undefined : 'img'}
+          aria-label={onSelectBin ? undefined : staticDistributionLabel}
+        >
           <AxisBottom
             label={repeatUnit ? `Repeats of ${repeatUnit}` : 'Repeats'}
             labelOffset={binSize === 1 ? 10 : 30}

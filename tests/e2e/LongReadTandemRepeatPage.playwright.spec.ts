@@ -33,11 +33,11 @@ const openLocus = async (
   await page.goto(`/tandem-repeat/${locusId}?${datasetQuery(cohort)}`)
   const { heading, index } = exactIndexForCount(page, exactAlleleCount)
   await expect(heading).toBeVisible({ timeout: 30_000 })
-  await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toBeVisible()
-  await expect(page.getByRole('table', { name: 'Exact alternate allele index' })).toHaveCount(1)
+  await expect(index.getByRole('table', { name: 'Exact allele index' })).toBeVisible()
+  await expect(page.getByRole('table', { name: 'Exact allele index' })).toHaveCount(1)
   await expect(page.getByRole('table', { name: /Exact alleles at/ })).toHaveCount(0)
   await expect(index.locator('details')).toHaveCount(0)
-  await expect(index.getByRole('table', { name: 'Exact alternate allele index' })).toHaveAttribute(
+  await expect(index.getByRole('table', { name: 'Exact allele index' })).toHaveAttribute(
     'aria-rowcount',
     String(exactAlleleCount + 1)
   )
@@ -210,7 +210,8 @@ const purityPointMetrics = (plot: any) =>
     points.map((point) => ({
       ac: Number(point.dataset.calledAlleles),
       diameter: Number(point.dataset.pointDiameter),
-      renderedWidth: point.getBoundingClientRect().width,
+      targetWidth: point.getBoundingClientRect().width,
+      visualWidth: point.querySelector('span')!.getBoundingClientRect().width,
       selected: point.dataset.selectedAllele === 'true',
       boxSizing: getComputedStyle(point).boxSizing,
     }))
@@ -280,7 +281,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
   }, testInfo) => {
     test.setTimeout(60_000)
     const index = await openLocus(page, SIMPLE_THREE_ALT_LOCUS, 3)
-    const indexTable = index.getByRole('table', { name: 'Exact alternate allele index' })
+    const indexTable = index.getByRole('table', { name: 'Exact allele index' })
     await expect(indexTable.getByRole('img', { name: /motif structure preview/ })).toHaveCount(3)
     await expect(page.getByText(/Motif previews are unavailable/)).toHaveCount(0)
     const simpleLandscape = page.getByTestId('whole-record-allele-plot-grid')
@@ -334,7 +335,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await page.setViewportSize({ width: 1280, height: 720 })
 
     const referenceColor = await page
-      .getByRole('img', { name: /ordered reference repeat components/ })
+      .getByRole('img', { name: /ordered LR reference components/ })
       .locator('rect')
       .first()
       .getAttribute('fill')
@@ -386,7 +387,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
     const emptyDetail = page.getByText('Select an exact ALT to view its sequence and details.')
-    const indexTable = httIndex.getByRole('table', { name: 'Exact alternate allele index' })
+    const indexTable = httIndex.getByRole('table', { name: 'Exact allele index' })
     const wideIndexBox = await indexTable.boundingBox()
     const wideDetailBox = await emptyDetail.boundingBox()
     expect(wideIndexBox).not.toBeNull()
@@ -499,10 +500,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       name: 'Shared ancestry and sex filters for total-length plots',
     })
     const alleleDisplay = page.getByRole('group', {
-      name: 'Total-length allele plot display controls',
+      name: 'Total-length histogram display controls',
     })
     await expect(sharedFilters.getByText('Filter all three total-length plots:')).toBeVisible()
-    await expect(alleleDisplay.getByText('Total-length allele plots only:')).toBeVisible()
+    await expect(alleleDisplay.getByText('Total-length histogram display:')).toBeVisible()
     await expect(genotypeCard.getByLabel('Color by')).toHaveCount(0)
     await expect(genotypeCard.getByLabel('y-Scale')).toHaveCount(0)
     await attachLocatorScreenshot(
@@ -511,8 +512,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       'allelic-landscape-three-panel-wide.png'
     )
     const selectableGenotypeCell = genotypeCard
-      .locator('[role="gridcell"]:not([aria-disabled="true"])')
+      .locator('[role="button"][aria-label*="filter the exact allele index to this square"]')
       .first()
+    const genotypeTargetBox = await selectableGenotypeCell.boundingBox()
+    expect(genotypeTargetBox).not.toBeNull()
+    expect(genotypeTargetBox!.width).toBeGreaterThanOrEqual(24)
+    expect(genotypeTargetBox!.height).toBeGreaterThanOrEqual(24)
     await selectableGenotypeCell.click()
     await expect(
       page.getByRole('heading', {
@@ -584,7 +589,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       })
     ).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', String(filteredCount + 1))
-    await expect(page.getByRole('table', { name: 'Exact alternate allele index' })).toHaveCount(1)
+    await expect(page.getByRole('table', { name: 'Exact allele index' })).toHaveCount(1)
     await expect(page.getByRole('table', { name: /Exact alleles at/ })).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-filtered-exact-alts-wide.png')
     await page.getByRole('button', { name: 'Show all exact alleles' }).click()
@@ -656,13 +661,13 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     if ((await selectedPurityPoint.count()) > 0) {
       const selectedMetric = await selectedPurityPoint.evaluate((point: HTMLElement) => ({
         diameter: Number(point.dataset.pointDiameter),
-        renderedWidth: point.getBoundingClientRect().width,
+        targetWidth: point.getBoundingClientRect().width,
+        visualWidth: point.querySelector('span')!.getBoundingClientRect().width,
         boxSizing: getComputedStyle(point).boxSizing,
       }))
       expect(selectedMetric.boxSizing).toBe('border-box')
-      expect(Math.abs(selectedMetric.renderedWidth - selectedMetric.diameter)).toBeLessThanOrEqual(
-        1
-      )
+      expect(selectedMetric.targetWidth).toBeGreaterThanOrEqual(24)
+      expect(Math.abs(selectedMetric.visualWidth - selectedMetric.diameter)).toBeLessThanOrEqual(1)
     }
     const wideMotifGrid = page.getByLabel('Selected ALT motif structure grid')
     await expect(wideMotifGrid).toBeVisible()
@@ -707,7 +712,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       'allelic-landscape-three-panel-medium.png'
     )
     const narrowIndexBox = await httIndex
-      .getByRole('table', { name: 'Exact alternate allele index' })
+      .getByRole('table', { name: 'Exact allele index' })
       .boundingBox()
     const narrowDetailBox = await page.getByTestId('lr-tr-selected-detail').boundingBox()
     expect(narrowIndexBox).not.toBeNull()

@@ -2,6 +2,7 @@ import React from 'react'
 import 'jest-styled-components'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 
+import { MotifHighlightedSequence } from '../Haplotypes/TrAlleleStructure'
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import {
   aggregateGenotypePairs,
@@ -458,7 +459,11 @@ describe('long-read TR visualization fidelity', () => {
       name: /Filter exact alleles to ALT 3, \+12 bp, purity 1.0000/,
     })
     expect(point.getAttribute('aria-pressed')).toBe('false')
-    expect(window.getComputedStyle(point).backgroundColor).toBe('rgb(156, 39, 176)')
+    expect(point).toHaveStyleRule('width', '24px')
+    expect(point).toHaveStyleRule('height', '24px')
+    expect(window.getComputedStyle(point.firstElementChild as Element).backgroundColor).toBe(
+      'rgb(156, 39, 176)'
+    )
     expect(point.getAttribute('style')).toContain('bottom: 94%')
     const sameDeltaBar = screen.getByRole('button', { name: /\+12 bp, 5 called allele copies/ })
     fireEvent.click(sameDeltaBar)
@@ -747,7 +752,10 @@ describe('long-read TR visualization fidelity', () => {
     const cell = screen.getByRole('button', {
       name: /\+12 bp longer, −6 bp shorter: 12 people; filter the exact allele index/,
     })
-    expect(cell.getAttribute('fill')).toBe(LONG_READ_PRIMARY_PLOT_COLOR)
+    expect(cell.getAttribute('fill')).toBe('transparent')
+    expect(cell.getAttribute('width')).toBe('34')
+    expect(cell.getAttribute('height')).toBe('34')
+    expect(heatmap.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)).not.toBeNull()
     expect(within(heatmap).getByText('Longer allele: ALT − REF (bp)')).not.toBeNull()
     expect(within(heatmap).getByText('Shorter allele: ALT − REF (bp)')).not.toBeNull()
     expect(screen.getByLabelText('Logarithmic people intensity legend')).not.toBeNull()
@@ -759,6 +767,20 @@ describe('long-read TR visualization fidelity', () => {
           Boolean(element.textContent?.includes('12 people across 2 exact allele pairs'))
       )
     ).not.toBeNull()
+  })
+
+  test('keeps mismatch bases opaque with readable selected-sequence contrast', () => {
+    render(
+      <MotifHighlightedSequence
+        motifs={['CAG']}
+        tokens={[{ type: 'motif', motifIndex: 0, sequence: 'CAT' }]}
+      />
+    )
+    const motifToken = screen.getByLabelText('CAG, 3 bp')
+    const mismatch = motifToken.children[2] as HTMLElement
+    expect(mismatch.style.background).toBe('rgb(51, 51, 51)')
+    expect(mismatch.style.color).toBe('rgb(255, 255, 255)')
+    expect(mismatch.style.opacity).toBe('1')
   })
 
   test('neutrally outlines only the API-authorized exact reference component', () => {

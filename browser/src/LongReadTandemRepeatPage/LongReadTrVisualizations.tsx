@@ -559,7 +559,7 @@ const BarButton = styled.button<{
 }>`
   position: relative;
   flex: 0 0 ${(props) => props.$width}px;
-  min-width: 12px;
+  min-width: 24px;
   max-width: 48px;
   height: ${(props) => props.$height}%;
   min-height: ${(props) => (props.$hasValue ? '3px' : '1px')};
@@ -578,6 +578,17 @@ const BarButton = styled.button<{
     return props.$selected ? '#e9781c' : LONG_READ_PRIMARY_PLOT_COLOR
   }};
   cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    min-width: 24px;
+    height: max(24px, 100%);
+    transform: translateX(-50%);
+  }
 
   &:focus-visible {
     outline: 3px solid #111;
@@ -829,18 +840,33 @@ const alleleLabel = (alleleId: string) => {
   return match ? `ALT ${match[1]}` : alleleId
 }
 
-const PurityPointButton = styled.button`
+const PurityPointButton = styled.button<{ $diameter: number }>`
   position: absolute;
   display: block;
   box-sizing: border-box;
+  width: 24px;
+  height: 24px;
   padding: 0;
-  border: 2px solid #fff;
+  border: 0;
   border-radius: 50%;
-  background: ${LONG_READ_PRIMARY_PLOT_COLOR};
-  box-shadow: 0 0 0 1px #681875;
+  background: transparent;
   cursor: pointer;
 
-  &[data-selected-allele='true'] {
+  > span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    box-sizing: border-box;
+    width: ${(props) => props.$diameter}px;
+    height: ${(props) => props.$diameter}px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: ${LONG_READ_PRIMARY_PLOT_COLOR};
+    box-shadow: 0 0 0 1px #681875;
+  }
+
+  &[data-selected-allele='true'] > span {
     border: 3px solid #111;
     background: #e9781c;
     box-shadow: 0 0 0 2px #fff;
@@ -853,9 +879,9 @@ const PurityPointButton = styled.button`
   }
 
   &:focus-visible {
+    z-index: 3;
     outline: 3px solid #111;
     outline-offset: 3px;
-    z-index: 3;
   }
 `
 
@@ -983,11 +1009,12 @@ const PurityScatter = ({
           const overlapIndex = overlapIndexes.get(overlapKey) || 0
           overlapIndexes.set(overlapKey, overlapIndex + 1)
           const overlapCount = overlapCounts.get(overlapKey) || 1
-          const overlapOffset = (overlapIndex - (overlapCount - 1) / 2) * 10
+          const overlapOffset = (overlapIndex - (overlapCount - 1) / 2) * 24
           return (
             <PurityPointButton
               key={point.allele_id}
               type="button"
+              $diameter={size}
               aria-pressed={point.allele_id === activeAllele}
               data-selected-allele={point.allele_id === selectedAllele}
               title={`${alleleLabel(point.allele_id)}: ${signed(
@@ -1005,8 +1032,6 @@ const PurityScatter = ({
               style={{
                 left: `${left}%`,
                 bottom: `${bottom}%`,
-                width: size,
-                height: size,
                 transform: `translate(calc(-50% + ${overlapOffset}px), 50%)`,
               }}
             >
@@ -1448,10 +1473,10 @@ export const WholeRecordAlleleLandscape = ({
     }))
   const clippedAt = scaleCap(selectedScaleType)
   const totalInView = counts.reduce((sum, count) => sum + count, 0)
-  let histogramLayout = { barWidth: 14, gap: 2, height: 260 }
+  let histogramLayout = { barWidth: 24, gap: 2, height: 260 }
   if (bins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
   else if (bins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
-  else if (bins.length <= 40) histogramLayout = { barWidth: 20, gap: 3, height: 240 }
+  else if (bins.length <= 40) histogramLayout = { barWidth: 24, gap: 3, height: 240 }
   const histogramContentWidth =
     bins.length * histogramLayout.barWidth + Math.max(0, bins.length - 1) * histogramLayout.gap
   const histogramSidePadding = 20
@@ -1726,13 +1751,15 @@ export const WholeRecordAlleleLandscape = ({
 }
 
 const HeatmapFigure = styled.figure`
+  overflow-x: auto;
+  max-width: 100%;
   margin: 0;
 `
 
 const HeatmapSvg = styled.svg`
   display: block;
-  width: 100%;
-  max-width: 520px;
+  width: 520px;
+  min-width: 520px;
   height: auto;
   min-height: 300px;
   margin: 0 auto;
@@ -1901,7 +1928,11 @@ export const WholeRecordGenotypeLandscape = ({
           Select a square to filter the exact allele table. Reference (0 bp) remains distinct from
           an exact allele with 0 bp length change.
         </p>
-        <HeatmapFigure>
+        <HeatmapFigure
+          role="region"
+          aria-label="Scrollable genotype length distribution"
+          tabIndex={0}
+        >
           <HeatmapSvg
             viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
             role="group"
@@ -1941,16 +1972,6 @@ export const WholeRecordGenotypeLandscape = ({
                   return (
                     <React.Fragment key={key}>
                       <rect
-                        role={cell ? 'button' : undefined}
-                        tabIndex={cell ? 0 : undefined}
-                        aria-pressed={cell ? selected : undefined}
-                        aria-label={
-                          cell
-                            ? `${signed(longer)} bp longer, ${signed(shorter)} bp shorter: ${
-                                cell.selectedPeople
-                              } people; filter the exact allele index to this square`
-                            : undefined
-                        }
                         x={xFor(longer) + 1}
                         y={yFor(shorter) + 1}
                         width={Math.max(1, band - 2)}
@@ -1960,20 +1981,9 @@ export const WholeRecordGenotypeLandscape = ({
                         fillOpacity={cell ? 0.15 + 0.85 * intensity : 1}
                         stroke={selected ? '#e9781c' : '#fff'}
                         strokeWidth={selected ? 4 : 1}
-                        cursor={cell ? 'pointer' : 'default'}
-                        onClick={() => cell && selectCell(cell, key)}
-                        onKeyDown={(event) => {
-                          if (cell && (event.key === 'Enter' || event.key === ' ')) {
-                            event.preventDefault()
-                            selectCell(cell, key)
-                          }
-                        }}
-                      >
-                        <title>
-                          {signed(longer)} bp × {signed(shorter)} bp: {cell?.selectedPeople || 0}{' '}
-                          people
-                        </title>
-                      </rect>
+                        pointerEvents="none"
+                        aria-hidden="true"
+                      />
                       {cell && band >= 24 && (
                         <text
                           x={xFor(longer) + band / 2}
@@ -1986,6 +1996,38 @@ export const WholeRecordGenotypeLandscape = ({
                         >
                           {cell.selectedPeople}
                         </text>
+                      )}
+                      {cell && (
+                        <rect
+                          role="button"
+                          tabIndex={0}
+                          aria-pressed={selected}
+                          aria-label={`${signed(longer)} bp longer, ${signed(
+                            shorter
+                          )} bp shorter: ${
+                            cell.selectedPeople
+                          } people; filter the exact allele index to this square`}
+                          data-testid="genotype-length-cell-target"
+                          x={xFor(longer) + band / 2 - 17}
+                          y={yFor(shorter) + band / 2 - 17}
+                          width={34}
+                          height={34}
+                          rx={2}
+                          fill="transparent"
+                          stroke="transparent"
+                          cursor="pointer"
+                          onClick={() => selectCell(cell, key)}
+                          onKeyDown={(event) => {
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault()
+                              selectCell(cell, key)
+                            }
+                          }}
+                        >
+                          <title>
+                            {signed(longer)} bp × {signed(shorter)} bp: {cell.selectedPeople} people
+                          </title>
+                        </rect>
                       )}
                     </React.Fragment>
                   )

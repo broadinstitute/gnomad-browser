@@ -120,6 +120,14 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
       }
     )
 
+    const staticDistributionLabel = `Genotype repeat-count distribution. ${data
+      .filter((bin) => bin.count > 0)
+      .map(
+        (bin) =>
+          `${bin.label}: ${bin.count.toLocaleString()} ${bin.count === 1 ? 'person' : 'people'}`
+      )
+      .join('; ')}`
+
     const xScale = scaleBand<number>()
       .domain(Array.from(Array(xNumBins).keys()))
       .range([0, plotWidth])
@@ -161,7 +169,12 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
 
     return (
       <GraphWrapper>
-        <svg height={xBinSize === 1 ? height - 20 : height} width={width}>
+        <svg
+          height={xBinSize === 1 ? height - 20 : height}
+          width={width}
+          role={onSelectBin ? undefined : 'img'}
+          aria-label={onSelectBin ? undefined : staticDistributionLabel}
+        >
           <AxisBottom
             label={`Repeats in ${axisLabels[0]}`}
             labelOffset={xBinSize === 1 ? 10 : 30}
