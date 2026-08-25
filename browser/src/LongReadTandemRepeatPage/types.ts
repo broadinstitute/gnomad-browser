@@ -156,9 +156,11 @@ export type LongReadTrShortReadContext = {
   status:
     | 'EXACT_UNIQUE'
     | 'NONE'
+    | 'MULTIPLE'
     | 'AMBIGUOUS_CATALOG'
     | 'AMBIGUOUS_COMPONENT'
     | 'CATALOG_UNAVAILABLE'
+    | 'UNAVAILABLE'
   reason_code: string | null
   catalog_dataset: string
   catalog_source: string

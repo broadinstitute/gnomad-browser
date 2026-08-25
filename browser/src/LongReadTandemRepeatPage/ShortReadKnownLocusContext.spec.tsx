@@ -97,7 +97,14 @@ describe('ShortReadKnownLocusContext', () => {
     ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
   })
 
-  test.each(['NONE', 'AMBIGUOUS_CATALOG', 'AMBIGUOUS_COMPONENT', 'CATALOG_UNAVAILABLE'])(
+  test.each([
+    'NONE',
+    'MULTIPLE',
+    'AMBIGUOUS_CATALOG',
+    'AMBIGUOUS_COMPONENT',
+    'CATALOG_UNAVAILABLE',
+    'UNAVAILABLE',
+  ])(
     'renders no panel for %s',
     (status) => {
       const { container } = render(

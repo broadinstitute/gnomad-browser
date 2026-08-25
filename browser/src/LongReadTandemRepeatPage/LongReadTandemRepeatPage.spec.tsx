@@ -595,7 +595,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(highlightedComponent).not.toBeNull()
   })
 
-  test.each(['NONE', 'AMBIGUOUS_CATALOG', 'AMBIGUOUS_COMPONENT', 'CATALOG_UNAVAILABLE'])(
+  test.each([
+    'NONE',
+    'MULTIPLE',
+    'AMBIGUOUS_CATALOG',
+    'AMBIGUOUS_COMPONENT',
+    'CATALOG_UNAVAILABLE',
+    'UNAVAILABLE',
+  ])(
     'does not render short-read clinical context for %s',
     (status) => {
       const locus = makeLocus()
