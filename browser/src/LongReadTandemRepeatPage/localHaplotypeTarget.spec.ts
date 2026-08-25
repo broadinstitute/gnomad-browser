@@ -122,7 +122,9 @@ describe('local tandem-repeat haplotype target', () => {
         representedCopyCount: 2,
         selectedCopyCount: 1,
         selectedFraction: 0.5,
+        unknownCopyCount: 0,
         exactAlleleIds: ['target~7', 'target~8'],
+        exactAlleleVectors: [['target~7'], ['target~8']],
         assignmentStatus: 'mixed',
       }),
       expect.objectContaining({
@@ -130,14 +132,75 @@ describe('local tandem-repeat haplotype target', () => {
         label: 'Cluster 2',
         representedCopyCount: 1,
         selectedCopyCount: 0,
+        unknownCopyCount: 0,
         exactAlleleIds: ['target~8'],
+        exactAlleleVectors: [['target~8']],
         assignmentStatus: 'homogeneous',
       }),
     ])
     expect(JSON.stringify(rows)).not.toContain('hidden-')
   })
 
-  test('fails closed unless descriptor, complete sources, selected identity, and provenance match', () => {
+  test('preserves assignment vectors and reports partial rather than mislabeling unknown copies', () => {
+    const groups = [
+      group(10, [
+        { sample_id: 'copy-a', vcf_strand: 1, phase_set: null },
+        { sample_id: 'copy-b', vcf_strand: 2, phase_set: null },
+      ]),
+      group(20, [
+        { sample_id: 'copy-c', vcf_strand: 1, phase_set: null },
+        { sample_id: 'copy-d', vcf_strand: 2, phase_set: null },
+      ]),
+    ]
+    const descriptor = buildLocalHaplotypeTargetDescriptor({
+      chrom: '4',
+      envelopeStart: 100,
+      envelopeStop: 110,
+      sourceVariantIds: ['source-a', 'source-b'],
+      selectedExactAlleleId: 'source-a~1',
+    })
+    const assignment = (sample_id: string, vcf_strand: number, exact_allele_ids: string[]) => ({
+      sample_id,
+      vcf_strand,
+      phase_set: null,
+      exact_allele_ids,
+      assignment_status: exact_allele_ids.length ? 'assigned' : 'unknown',
+      is_selected_exact_allele: exact_allele_ids.includes('source-a~1'),
+      flanking_signature_status: 'usable',
+    })
+    const sidecar = {
+      descriptor,
+      by_carrier: {
+        a: assignment('copy-a', 1, ['source-a~1', 'source-b~2']),
+        b: assignment('copy-b', 2, ['source-b~2', 'source-a~1']),
+        c: assignment('copy-c', 1, ['source-a~1']),
+        d: assignment('copy-d', 2, []),
+      },
+      counts: {},
+    } as unknown as TargetDisplaySidecar
+
+    const rows = localTargetRows({
+      groups,
+      clusters: [cluster('same-vector', ['10']), cluster('partial', ['20'])],
+      sidecar,
+    })
+    expect(rows[0]).toEqual(
+      expect.objectContaining({
+        exactAlleleVectors: [['source-a~1', 'source-b~2']],
+        unknownCopyCount: 0,
+        assignmentStatus: 'homogeneous',
+      })
+    )
+    expect(rows[1]).toEqual(
+      expect.objectContaining({
+        exactAlleleVectors: [['source-a~1']],
+        unknownCopyCount: 1,
+        assignmentStatus: 'partial',
+      })
+    )
+  })
+
+  test('fails closed unless descriptor, complete sources, selected identity, source AC, and provenance match', () => {
     const descriptor = buildLocalHaplotypeTargetDescriptor({
       chrom: '22',
       envelopeStart: 100,
@@ -150,6 +213,7 @@ describe('local tandem-repeat haplotype target', () => {
       variants: {
         source_variant_id: ['target-a', 'target-b'],
         alt_index: [1, 2],
+        freq_ac: [3, 7],
       },
       provenance: {
         available: true,
@@ -157,6 +221,7 @@ describe('local tandem-repeat haplotype target', () => {
         release: 'v1',
         run_id: 'run-1',
         cohort: 'hgsvc_hprc',
+        reference_genome: 'GRCh38',
         chromosome: 'chr22',
       },
     } as any
@@ -167,17 +232,19 @@ describe('local tandem-repeat haplotype target', () => {
         descriptor,
         expectedRunId: 'run-1',
         expectedRelease: 'v1',
+        expectedSelectedAc: 7,
       })
     ).not.toThrow()
     expect(() =>
       validateLocalHaplotypePayload({
         payload: {
           ...payload,
-          variants: { source_variant_id: ['target-b'], alt_index: [2] },
+          variants: { source_variant_id: ['target-b'], alt_index: [2], freq_ac: [7] },
         },
         descriptor,
         expectedRunId: 'run-1',
         expectedRelease: 'v1',
+        expectedSelectedAc: 7,
       })
     ).toThrow('incomplete target source-record set')
     expect(() =>
@@ -186,8 +253,18 @@ describe('local tandem-repeat haplotype target', () => {
         descriptor,
         expectedRunId: 'another-run',
         expectedRelease: 'v1',
+        expectedSelectedAc: 7,
       })
     ).toThrow('provenance')
+    expect(() =>
+      validateLocalHaplotypePayload({
+        payload,
+        descriptor,
+        expectedRunId: 'run-1',
+        expectedRelease: 'v1',
+        expectedSelectedAc: 8,
+      })
+    ).toThrow('allele count')
   })
 
   test('bounds serialized descriptors rather than truncating them', () => {

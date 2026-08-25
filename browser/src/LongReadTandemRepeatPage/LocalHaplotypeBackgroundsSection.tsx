@@ -29,6 +29,8 @@ const LocalHaplotypeTrack = React.lazy(() => import('./LocalHaplotypeTrack'))
 
 const MAX_EXACT_SEQUENCE_BASES = 2_000
 const MAX_EXACT_SEQUENCE_TOKENS = 256
+const MAX_MOTIF_COUNT = 64
+const MAX_MOTIF_BASES = 1_000
 const MAX_MIXED_STRIPS = 3
 
 const Heading = styled.div`
@@ -100,10 +102,14 @@ const TargetRow = styled.div`
   border-top: 1px solid #eee;
 `
 
-const ClusterSummary = styled.div`
+const ClusterSummary = styled.div<{ $containsSelected: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0.15em;
+  padding: 3px 5px;
+  border: ${({ $containsSelected }) =>
+    $containsSelected ? '2px solid #111' : '1px solid transparent'};
+  border-radius: 3px;
 `
 
 const StripStack = styled.div`
@@ -215,12 +221,43 @@ const boundedExactTrDecomposition = (
   allele: LongReadTrAllele | undefined,
   motifs: readonly string[]
 ) => {
-  if (!allele?.ref || !allele.alt || allele.alt.length > MAX_EXACT_SEQUENCE_BASES) return null
+  if (
+    !allele?.ref ||
+    !allele.alt ||
+    allele.ref.length > MAX_EXACT_SEQUENCE_BASES ||
+    allele.alt.length > MAX_EXACT_SEQUENCE_BASES ||
+    motifs.length === 0 ||
+    motifs.length > MAX_MOTIF_COUNT ||
+    motifs.some((motif) => !motif || motif.length > MAX_MOTIF_BASES) ||
+    motifs.reduce((total, motif) => total + motif.length, 0) > MAX_MOTIF_BASES
+  )
+    return null
   const result = decomposeExactTrAlt({ ref: allele.ref, alt: allele.alt, motifs })
   if (result.status !== 'available' || result.structure.tokens.length > MAX_EXACT_SEQUENCE_TOKENS) {
     return null
   }
   return result
+}
+
+export const boundedRowExactAlleleIds = (
+  exactAlleleIds: readonly string[],
+  selectedExactAlleleId: string | undefined,
+  limit = MAX_MIXED_STRIPS
+) => {
+  if (limit < 1) return { displayed: [] as string[], omitted: [...exactAlleleIds] }
+  const displayed = exactAlleleIds.slice(0, limit)
+  if (
+    selectedExactAlleleId &&
+    exactAlleleIds.includes(selectedExactAlleleId) &&
+    !displayed.includes(selectedExactAlleleId)
+  ) {
+    displayed[displayed.length - 1] = selectedExactAlleleId
+  }
+  const displayedSet = new Set(displayed)
+  return {
+    displayed,
+    omitted: exactAlleleIds.filter((exactId) => !displayedSet.has(exactId)),
+  }
 }
 
 export const decomposeUniqueExactAlleles = ({
@@ -315,9 +352,9 @@ export const ExactSequenceStrip = ({
 const LocalSimilarityHelp = () => (
   <HaplotypeHelpButton title="About local haplotype similarity">
     <p style={{ marginTop: 0 }}>
-      Rows are local flanking-variant similarity clusters in the fixed canonical envelope ±50 kb.
-      Every source record at the target tandem-repeat locus is excluded before Jaccard distance and
-      UPGMA clustering are computed.
+      Rows are local flanking-variant similarity clusters in the fixed, contig-clipped canonical
+      envelope ±50 kb. Every source record at the target tandem-repeat locus is excluded before
+      Jaccard distance and UPGMA clustering are computed.
     </p>
     <p>
       The selected exact target allele and observed sequence strips are joined after clustering by
@@ -353,6 +390,7 @@ const LocalHaplotypeBackgroundsSection = ({
     locus.selected_allele ||
     locus.alleles.nodes.find((allele) => allele.variant_id === selectedAlleleId) ||
     null
+  const selectedSourceAc = selected?.freq.all.ac ?? null
   const descriptor = useMemo(() => {
     if (!selected || locus.lr_cohort !== 'hgsvc_hprc') return null
     return buildLocalHaplotypeTargetDescriptor({
@@ -391,6 +429,7 @@ const LocalHaplotypeBackgroundsSection = ({
           descriptor,
           expectedRunId: locus.source_run_id,
           expectedRelease: locus.source_release,
+          expectedSelectedAc: selectedSourceAc!,
         })
         try {
           worker = workerModule.createHaplotypeWorker()
@@ -460,7 +499,7 @@ const LocalHaplotypeBackgroundsSection = ({
       worker?.terminate()
       if (workerRef.current === worker) workerRef.current = null
     }
-  }, [descriptor, locus.source_release, locus.source_run_id])
+  }, [descriptor, locus.source_release, locus.source_run_id, selectedSourceAc])
 
   const changeResolution = (next: number) => {
     setResolution(next)
@@ -508,7 +547,10 @@ const LocalHaplotypeBackgroundsSection = ({
         label: row.label,
         representedCopyCount: row.representedCopyCount,
         selectedCopyCount: row.selectedCopyCount,
-        strips: row.exactAlleleIds.slice(0, MAX_MIXED_STRIPS).map((exactId) => {
+        strips: boundedRowExactAlleleIds(
+          row.exactAlleleIds,
+          descriptor?.selected_exact_allele_id
+        ).displayed.map((exactId) => {
           const decomposition = decompositionByExactId.get(exactId)
           return {
             exactId,
@@ -606,7 +648,11 @@ const LocalHaplotypeBackgroundsSection = ({
   if (!data || !descriptor || !accordionMapper) {
     return statusPanel(<p role="status">{status || 'Loading local haplotypes…'}</p>)
   }
-  if (!counts?.selected_exact_allele_ac_reconciled) {
+  if (
+    !counts?.selected_exact_allele_ac_reconciled ||
+    counts.selected_exact_allele_source_ac !== selectedSourceAc ||
+    counts.selected_exact_allele_assigned_copy_count !== selectedSourceAc
+  ) {
     return statusPanel(
       <p role="alert">
         Local haplotype backgrounds unavailable: selected exact-allele assignments do not reconcile
@@ -648,12 +694,16 @@ const LocalHaplotypeBackgroundsSection = ({
         <TargetRows aria-label="Observed exact target alleles by local similarity cluster">
           <TargetHeader>
             <span>Cluster and selected exact allele</span>
-            <span>Fixed ±50 kb region · observed target sequence band</span>
+            <span>Fixed, contig-clipped ±50 kb region · observed target sequence band</span>
             <span>Local haplotype similarity</span>
           </TargetHeader>
           {rows.map((row) => (
             <TargetRow key={row.clusterId} data-cluster-label={row.label}>
-              <ClusterSummary>
+              <ClusterSummary
+                $containsSelected={row.selectedCopyCount > 0}
+                data-selected-exact-allele={row.selectedCopyCount > 0 ? 'true' : 'false'}
+                aria-label={`${row.label}; ${row.selectedCopyCount} selected exact-allele copies`}
+              >
                 <strong>{row.label}</strong>
                 <span>{row.representedCopyCount} represented copies</span>
                 <span>
@@ -662,32 +712,50 @@ const LocalHaplotypeBackgroundsSection = ({
                 </span>
               </ClusterSummary>
               <StripStack
-                aria-label={`${row.label}: ${row.assignmentStatus} observed exact target alleles`}
+                aria-label={`${row.label}: ${row.assignmentStatus} observed exact target assignments`}
               >
-                {row.exactAlleleIds.slice(0, MAX_MIXED_STRIPS).map((exactId) => (
-                  <ExactSequenceStrip
-                    key={exactId}
-                    allele={alleleByExactId.get(exactId)}
-                    exactId={exactId}
-                    motifs={locus.motifs}
-                    selected={exactId === selectedExactId}
-                    precomputedDecomposition={decompositionByExactId.get(exactId) || null}
-                  />
-                ))}
+                {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).displayed.map(
+                  (exactId) => (
+                    <ExactSequenceStrip
+                      key={exactId}
+                      allele={alleleByExactId.get(exactId)}
+                      exactId={exactId}
+                      motifs={locus.motifs}
+                      selected={exactId === selectedExactId}
+                      precomputedDecomposition={decompositionByExactId.get(exactId) || null}
+                    />
+                  )
+                )}
                 {row.exactAlleleIds.length === 0 && (
                   <span>Target assignment unavailable; absence is not rendered as REF.</span>
                 )}
-                {row.exactAlleleIds.length > MAX_MIXED_STRIPS && (
-                  <span>
-                    +{row.exactAlleleIds.length - MAX_MIXED_STRIPS} exact alleles in row expansion
-                  </span>
+                {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).omitted.length >
+                  0 && (
+                  <details>
+                    <summary>
+                      +
+                      {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).omitted.length}{' '}
+                      additional exact allele identities omitted from the compact band
+                    </summary>
+                    <ul>
+                      {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).omitted.map(
+                        (exactId) => (
+                          <li key={exactId}>
+                            <code>{exactAlleleLabel(alleleByExactId.get(exactId), exactId)}</code> (
+                            <code>{exactId}</code>)
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </details>
                 )}
               </StripStack>
               <span>
                 {
                   {
-                    mixed: 'Mixed exact alleles; no consensus',
-                    homogeneous: 'One observed exact allele',
+                    mixed: 'Different observed assignment vectors; no consensus',
+                    homogeneous: 'One observed assignment vector',
+                    partial: `${row.unknownCopyCount} represented copies have unknown target assignment; absence is not REF`,
                     unassigned: 'No deterministic assignment',
                   }[row.assignmentStatus]
                 }
@@ -714,7 +782,7 @@ const LocalHaplotypeBackgroundsSection = ({
           </Legend>
         )}
 
-        <ViewerShell aria-label="Fixed ±50 kb local flanking haplotype view">
+        <ViewerShell aria-label="Fixed, contig-clipped ±50 kb local flanking haplotype view">
           <React.Suspense fallback={<p role="status">Loading local haplotype track…</p>}>
             <LocalHaplotypeTrack
               mapper={accordionMapper}

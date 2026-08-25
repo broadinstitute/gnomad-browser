@@ -77,11 +77,13 @@ export const validateLocalHaplotypePayload = ({
   descriptor,
   expectedRunId,
   expectedRelease,
+  expectedSelectedAc,
 }: {
   payload: RawPayload
   descriptor: HaplotypeTargetDescriptor
   expectedRunId: string
   expectedRelease: string
+  expectedSelectedAc: number
 }) => {
   const echoed = payload.target_descriptor
   if (
@@ -100,15 +102,21 @@ export const validateLocalHaplotypePayload = ({
   const altIndices = payload.variants.alt_index || []
   const presentSourceIds = new Set(sourceIds.filter((id): id is string => Boolean(id)))
   const missingSourceIds = descriptor.source_variant_ids.filter((id) => !presentSourceIds.has(id))
-  const selectedMatchCount = sourceIds.filter(
-    (sourceId, index) =>
-      sourceId != null &&
-      altIndices[index] != null &&
-      exactAlleleIdentity(sourceId, Number(altIndices[index])) ===
-        descriptor.selected_exact_allele_id
-  ).length
-  if (missingSourceIds.length > 0 || selectedMatchCount !== 1) {
+  const selectedIndices = sourceIds.flatMap((sourceId, index) =>
+    sourceId != null &&
+    altIndices[index] != null &&
+    exactAlleleIdentity(sourceId, Number(altIndices[index])) === descriptor.selected_exact_allele_id
+      ? [index]
+      : []
+  )
+  if (missingSourceIds.length > 0 || selectedIndices.length !== 1) {
     throw new Error('Haplotype response has an incomplete target source-record set')
+  }
+  if (
+    !Number.isFinite(expectedSelectedAc) ||
+    payload.variants.freq_ac?.[selectedIndices[0]] !== expectedSelectedAc
+  ) {
+    throw new Error('Haplotype response selected source allele count does not match the locus')
   }
 
   const provenance = (
@@ -119,6 +127,7 @@ export const validateLocalHaplotypePayload = ({
         release?: string
         run_id?: string | null
         cohort?: string
+        reference_genome?: string
         chromosome?: string
       }
     }
@@ -129,6 +138,7 @@ export const validateLocalHaplotypePayload = ({
     provenance.run_id !== expectedRunId ||
     provenance.release !== expectedRelease ||
     provenance.cohort !== 'hgsvc_hprc' ||
+    provenance.reference_genome !== 'GRCh38' ||
     normalizedChrom(provenance.chromosome || '') !== descriptor.fixed_window.chrom
   ) {
     throw new Error('Haplotype response provenance does not match the tandem-repeat locus')
@@ -151,8 +161,10 @@ export type LocalTargetClusterRow = Readonly<{
   representedCopyCount: number
   selectedCopyCount: number
   selectedFraction: number
+  unknownCopyCount: number
   exactAlleleIds: readonly string[]
-  assignmentStatus: 'homogeneous' | 'mixed' | 'unassigned'
+  exactAlleleVectors: readonly (readonly string[])[]
+  assignmentStatus: 'homogeneous' | 'mixed' | 'partial' | 'unassigned'
 }>
 
 /**
@@ -178,19 +190,27 @@ export const localTargetRows = ({
     cluster.member_group_hashes.forEach((hash) => {
       groupByHash.get(String(hash))?.samples.forEach((sample) => copyKeys.add(copyIdentity(sample)))
     })
-    const assignments = [...copyKeys]
-      .map((key) => assignmentByCopy.get(key))
-      .filter((assignment): assignment is NonNullable<typeof assignment> => assignment != null)
-    const exactAlleleIds = [
-      ...new Set(assignments.flatMap((assignment) => assignment.exact_allele_ids)),
-    ].sort()
+    const assignments = [...copyKeys].map((key) => assignmentByCopy.get(key))
+    const assignedVectors = assignments.flatMap((assignment) =>
+      assignment?.assignment_status === 'assigned' && assignment.exact_allele_ids.length > 0
+        ? [[...assignment.exact_allele_ids].sort()]
+        : []
+    )
+    const exactAlleleVectors = [
+      ...new Map(assignedVectors.map((vector) => [JSON.stringify(vector), vector])).values(),
+    ].sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)))
+    const exactAlleleIds = [...new Set(exactAlleleVectors.flat())].sort()
     const selectedCopyCount = assignments.filter(
-      (assignment) => assignment.is_selected_exact_allele
+      (assignment) => assignment?.is_selected_exact_allele
     ).length
     const representedCopyCount = copyKeys.size
+    const unknownCopyCount = assignments.filter(
+      (assignment) => assignment?.assignment_status !== 'assigned'
+    ).length
     let assignmentStatus: LocalTargetClusterRow['assignmentStatus'] = 'mixed'
-    if (exactAlleleIds.length === 0) assignmentStatus = 'unassigned'
-    else if (exactAlleleIds.length === 1) assignmentStatus = 'homogeneous'
+    if (assignedVectors.length === 0) assignmentStatus = 'unassigned'
+    else if (unknownCopyCount > 0) assignmentStatus = 'partial'
+    else if (exactAlleleVectors.length === 1) assignmentStatus = 'homogeneous'
 
     return {
       clusterId: cluster.cluster_id,
@@ -198,7 +218,9 @@ export const localTargetRows = ({
       representedCopyCount,
       selectedCopyCount,
       selectedFraction: representedCopyCount ? selectedCopyCount / representedCopyCount : 0,
+      unknownCopyCount,
       exactAlleleIds,
+      exactAlleleVectors,
       assignmentStatus,
     }
   })

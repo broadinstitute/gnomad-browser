@@ -1,3 +1,5 @@
+import { canonicalY1ContigLengths } from './y1_admission_config'
+
 export type RestHaplotypeTargetDescriptor = {
   canonical_envelope: { chrom: string; start: number; stop: number }
   source_variant_ids: string[]
@@ -55,6 +57,10 @@ export const parseRestHaplotypeTargetDescriptor = (
   const envelope = descriptor?.canonical_envelope
   const window = descriptor?.fixed_window
   const sourceIds = descriptor?.source_variant_ids
+  const contigLength =
+    typeof window?.chrom === 'string'
+      ? canonicalY1ContigLengths.get(`chr${bareChrom(window.chrom)}`)
+      : undefined
   if (
     !envelope ||
     !window ||
@@ -70,6 +76,10 @@ export const parseRestHaplotypeTargetDescriptor = (
     window.stop < envelope.stop ||
     window.start > envelope.start ||
     window.flank_size !== 50_000 ||
+    !contigLength ||
+    envelope.stop > contigLength ||
+    window.start !== Math.max(1, envelope.start - 50_000) ||
+    window.stop !== Math.min(contigLength, envelope.stop + 50_000) ||
     bareChrom(envelope.chrom) !== bareChrom(window.chrom) ||
     bareChrom(window.chrom) !== bareChrom(request.chrom) ||
     window.start !== request.start ||

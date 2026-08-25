@@ -22,6 +22,38 @@ describe('REST haplotype target descriptor', () => {
     ).toEqual(descriptor)
   })
 
+  test('enforces an exact contig-clipped ±50 kb window even when request and descriptor agree', () => {
+    const arbitraryWindow = {
+      ...descriptor,
+      fixed_window: { ...descriptor.fixed_window, start: 60_000, stop: 140_100 },
+    }
+    expect(() =>
+      parseRestHaplotypeTargetDescriptor(JSON.stringify(arbitraryWindow), {
+        chrom: '22',
+        start: 60_000,
+        stop: 140_100,
+      })
+    ).toThrow('invalid target_descriptor')
+
+    const clipped = {
+      ...descriptor,
+      canonical_envelope: { chrom: '22', start: 50_818_450, stop: 50_818_468 },
+      fixed_window: {
+        chrom: '22',
+        start: 50_768_450,
+        stop: 50_818_468,
+        flank_size: 50_000 as const,
+      },
+    }
+    expect(
+      parseRestHaplotypeTargetDescriptor(JSON.stringify(clipped), {
+        chrom: 'chr22',
+        start: 50_768_450,
+        stop: 50_818_468,
+      })
+    ).toEqual(clipped)
+  })
+
   test('excludes every target source record and remaps carrier indices for auto-defaults', () => {
     expect(
       excludeTargetVariantsForAutoDefaults(
