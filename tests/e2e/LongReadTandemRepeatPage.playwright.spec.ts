@@ -285,6 +285,20 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(simplePlots).toBeVisible()
     expect(await simplePlots.locator('rect[fill="#9c27b0"]').count()).toBeGreaterThan(0)
     await attachLocatorScreenshot(simplePlots, testInfo, 'simple-repeat-count-plots-purple.png')
+    const simpleLandscape = page.getByTestId('whole-record-allele-plot-grid')
+    const simpleLandscapeCards = await simpleLandscape.locator(':scope > div').all()
+    expect(simpleLandscapeCards).toHaveLength(2)
+    const simpleCardBoxes = await Promise.all(
+      simpleLandscapeCards.map((card) => card.boundingBox())
+    )
+    simpleCardBoxes.forEach((box) => expect(box).not.toBeNull())
+    expect(Math.abs(simpleCardBoxes[0]!.width - simpleCardBoxes[1]!.width)).toBeLessThanOrEqual(2)
+    expect(simpleCardBoxes[0]!.width).toBeGreaterThan(500)
+    await attachLocatorScreenshot(
+      simpleLandscape,
+      testInfo,
+      'simple-allelic-landscape-two-panel-wide.png'
+    )
 
     const referenceColor = await page
       .getByRole('img', { name: /ordered reference repeat components/ })
@@ -415,6 +429,51 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-all-exact-alts-wide.png')
 
     const wholeRecordPlots = page.getByTestId('whole-record-allele-plot-grid')
+    const histogramCard = page
+      .getByRole('heading', { level: 3, name: 'Total allele length change' })
+      .locator('..')
+    const purityCard = page
+      .getByRole('heading', { level: 3, name: 'Length change × motif purity' })
+      .locator('..')
+    const genotypeCard = page.getByTestId('genotype-length-card')
+    const genotypeDetail = page.getByTestId('genotype-pair-detail')
+    const wideCards = await Promise.all([
+      histogramCard.boundingBox(),
+      purityCard.boundingBox(),
+      genotypeCard.boundingBox(),
+    ])
+    wideCards.forEach((box) => expect(box).not.toBeNull())
+    expect(
+      Math.max(...wideCards.map((box) => box!.y)) - Math.min(...wideCards.map((box) => box!.y))
+    ).toBeLessThanOrEqual(2)
+    const wideGenotypeDetailBox = await genotypeDetail.boundingBox()
+    expect(wideGenotypeDetailBox).not.toBeNull()
+    expect(wideGenotypeDetailBox!.y).toBeGreaterThan(
+      Math.max(...wideCards.map((box) => box!.y + box!.height)) - 2
+    )
+    const sharedFilters = page.getByRole('group', { name: 'Shared ancestry and sex filters' })
+    const alleleDisplay = page.getByRole('group', { name: 'Allele plot display controls' })
+    await expect(sharedFilters.getByText('Filter all three plots:')).toBeVisible()
+    await expect(alleleDisplay.getByText('Allele plots only:')).toBeVisible()
+    await expect(genotypeCard.getByLabel('Color by')).toHaveCount(0)
+    await expect(genotypeCard.getByLabel('y-Scale')).toHaveCount(0)
+    await attachLocatorScreenshot(
+      wholeRecordPlots,
+      testInfo,
+      'allelic-landscape-three-panel-wide.png'
+    )
+    const selectableGenotypeCell = genotypeCard
+      .locator('[role="gridcell"]:not([aria-disabled="true"])')
+      .first()
+    await selectableGenotypeCell.click()
+    await expect(
+      page.getByRole('heading', {
+        name: /of 72 exact ALTs in selected genotype cell \(.+ bp × .+ bp\)/,
+      })
+    ).toBeFocused()
+    await page.getByRole('button', { name: 'Show all exact ALTs' }).click()
+    await expect(page.getByRole('heading', { name: 'All exact ALTs (72)' })).toBeFocused()
+
     const histogram = page.getByTestId('whole-record-delta-histogram')
     const histogramButtons = histogram.getByRole('button')
     const purpleBarColors = await histogramButtons.evaluateAll((buttons) =>
@@ -546,6 +605,20 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-wide.png')
 
     await page.setViewportSize({ width: 760, height: 900 })
+    const narrowCards = await Promise.all([
+      histogramCard.boundingBox(),
+      purityCard.boundingBox(),
+      genotypeCard.boundingBox(),
+    ])
+    narrowCards.forEach((box) => expect(box).not.toBeNull())
+    expect(narrowCards[1]!.y).toBeGreaterThan(narrowCards[0]!.y + narrowCards[0]!.height - 2)
+    expect(narrowCards[2]!.y).toBeGreaterThan(narrowCards[1]!.y + narrowCards[1]!.height - 2)
+    expect(narrowCards[2]!.width).toBeGreaterThan(600)
+    await attachLocatorScreenshot(
+      wholeRecordPlots,
+      testInfo,
+      'allelic-landscape-three-panel-narrow.png'
+    )
     const narrowIndexBox = await httIndex
       .getByRole('table', { name: 'Exact alternate allele index' })
       .boundingBox()

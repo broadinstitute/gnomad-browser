@@ -1,4 +1,4 @@
-import React, { RefObject, useMemo, useRef, useState } from 'react'
+import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import styled from 'styled-components'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
@@ -36,13 +36,14 @@ const Panel = styled.section`
   margin-top: 2.4em;
 `
 
-const PlotGrid = styled.div`
+const PlotGrid = styled.div<{ $columns: 2 | 3 }>`
   display: grid;
-  grid-template-columns: minmax(440px, calc(61.5% - 0.625em)) minmax(300px, calc(38.5% - 0.625em));
+  grid-template-columns: repeat(${(props) => props.$columns}, minmax(0, 1fr));
+  align-items: start;
   gap: 1.25em;
 
-  @media (max-width: 900px) {
-    grid-template-columns: 100%;
+  @media (max-width: 1100px) {
+    grid-template-columns: minmax(0, 100%);
   }
 `
 
@@ -52,6 +53,28 @@ const PlotCard = styled.div`
   border: 1px solid #d8dee2;
   border-radius: 4px;
   background: #fbfcfd;
+
+  h3 {
+    margin-top: 0;
+  }
+`
+
+const GenotypePairDetail = styled.div`
+  grid-column: 1 / -1;
+  min-width: 0;
+  padding: 0.7em 1em;
+  border: 1px solid #d8dee2;
+  border-radius: 4px;
+  background: #fbfcfd;
+
+  summary {
+    cursor: pointer;
+  }
+`
+
+const ControlGroupLabel = styled.strong`
+  align-self: center;
+  white-space: nowrap;
 `
 
 const signed = (value: number) => {
@@ -538,6 +561,26 @@ const binCount = (bin: AlleleBin, ancestry: PopulationId | null, sex: Sex | null
     .reduce((sum, stack) => sum + stack.called_alleles, 0)
 }
 
+export const reconciledFilterOptions = (
+  alleleLandscape: WholeRecordAlleleLandscapeData,
+  genotypeLandscape?: WholeRecordGenotypeLandscapeData
+) => {
+  const genotypeAvailable = genotypeLandscape?.status === 'AVAILABLE'
+  const alleleAncestries = alleleLandscape.ancestry_groups || []
+  const alleleSexes = alleleLandscape.sexes || []
+  const genotypeAncestries = genotypeAvailable ? genotypeLandscape.ancestry_groups || [] : []
+  const genotypeSexes = genotypeAvailable ? genotypeLandscape.sexes || [] : []
+  const shared = (alleleValues: string[], genotypeValues: string[]) =>
+    genotypeAvailable
+      ? alleleValues.filter((value) => genotypeValues.includes(value))
+      : alleleValues
+
+  return {
+    ancestries: shared(alleleAncestries, genotypeAncestries) as PopulationId[],
+    sexes: shared(alleleSexes, genotypeSexes) as Sex[],
+  }
+}
+
 const scaleCap = (scale: ScaleType) =>
   ((
     {
@@ -919,6 +962,7 @@ const PurityScatter = ({
 
 export const WholeRecordAlleleLandscape = ({
   landscape,
+  genotypeLandscape,
   alleles,
   motifs = [],
   selectedAllele,
@@ -928,6 +972,7 @@ export const WholeRecordAlleleLandscape = ({
   sequencesUnavailableReason,
 }: {
   landscape: WholeRecordAlleleLandscapeData
+  genotypeLandscape?: WholeRecordGenotypeLandscapeData
   alleles: LongReadTrAllele[]
   motifs?: string[]
   selectedAllele?: string
@@ -940,6 +985,16 @@ export const WholeRecordAlleleLandscape = ({
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
   const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | null>(null)
   const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
+  const filterOptions = useMemo(
+    () => reconciledFilterOptions(landscape, genotypeLandscape),
+    [genotypeLandscape, landscape]
+  )
+  useEffect(() => {
+    if (selectedPopulation && !filterOptions.ancestries.includes(selectedPopulation)) {
+      setSelectedPopulation(null)
+    }
+    if (selectedSex && !filterOptions.sexes.includes(selectedSex)) setSelectedSex(null)
+  }, [filterOptions, selectedPopulation, selectedSex])
   const bins = landscape.bins || []
   const alleleById = useMemo(
     () => new Map(alleles.map((allele) => [allele.variant_id, allele])),
@@ -948,17 +1003,31 @@ export const WholeRecordAlleleLandscape = ({
   const indexScope = `${landscape.exact_alt_count || alleles.length}:${
     alleles[0]?.variant_id || 'none'
   }`
-  const [indexFilter, setIndexFilter] = useState<{ scope: string; delta: number } | null>(null)
+  const [indexFilter, setIndexFilter] = useState<
+    | { scope: string; kind: 'delta'; delta: number }
+    | { scope: string; kind: 'genotype'; label: string; alleleIds: string[] }
+    | null
+  >(null)
   const indexHeading = useRef<HTMLHeadingElement>(null)
-  const selectedDelta = indexFilter?.scope === indexScope ? indexFilter.delta : null
+  const activeIndexFilter = indexFilter?.scope === indexScope ? indexFilter : null
+  const selectedDelta = activeIndexFilter?.kind === 'delta' ? activeIndexFilter.delta : null
   const selectedBin = bins.find((bin) => bin.delta === selectedDelta)
   const selectedBinAlleles = selectedBin ? new Set(selectedBin.allele_ids) : null
-  const indexedAlleles = selectedBinAlleles
-    ? alleles.filter((allele) => selectedBinAlleles.has(allele.variant_id))
-    : alleles
+  const selectedGenotypeAlleles =
+    activeIndexFilter?.kind === 'genotype' ? new Set(activeIndexFilter.alleleIds) : null
+  let indexedAlleles = alleles
+  if (selectedBinAlleles) {
+    indexedAlleles = alleles.filter((allele) => selectedBinAlleles.has(allele.variant_id))
+  } else if (selectedGenotypeAlleles) {
+    indexedAlleles = alleles.filter((allele) => selectedGenotypeAlleles.has(allele.variant_id))
+  }
   const focusIndex = () => indexHeading.current?.focus({ preventScroll: true })
   const filterIndexToDelta = (delta: number) => {
-    setIndexFilter({ scope: indexScope, delta })
+    setIndexFilter({ scope: indexScope, kind: 'delta', delta })
+    focusIndex()
+  }
+  const filterIndexToGenotype = (label: string, alleleIds: string[]) => {
+    setIndexFilter({ scope: indexScope, kind: 'genotype', label, alleleIds })
     focusIndex()
   }
   const clearIndexFilter = () => {
@@ -970,6 +1039,28 @@ export const WholeRecordAlleleLandscape = ({
     return (
       <Panel aria-labelledby="lr-tr-allele-landscape-heading">
         <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
+        <PlotGrid $columns={genotypeLandscape ? 3 : 2} data-testid="whole-record-allele-plot-grid">
+          <PlotCard>
+            <h3>Total allele length change</h3>
+            <p role="status">
+              Allele length distribution unavailable: {unavailableReason(landscape.reason_code)}.
+            </p>
+          </PlotCard>
+          <PlotCard>
+            <h3>Length change × motif purity</h3>
+            <p role="status">
+              Motif purity unavailable: {unavailableReason(landscape.reason_code)}.
+            </p>
+          </PlotCard>
+          {genotypeLandscape && (
+            <WholeRecordGenotypeLandscape
+              landscape={genotypeLandscape}
+              navigation={navigation}
+              selectedPopulation={selectedPopulation}
+              selectedSex={selectedSex}
+            />
+          )}
+        </PlotGrid>
         <ExactAlleleIndex
           alleles={alleles}
           motifs={motifs}
@@ -979,9 +1070,6 @@ export const WholeRecordAlleleLandscape = ({
           sequencesAvailable={sequencesAvailable}
           sequencesUnavailableReason={sequencesUnavailableReason}
         />
-        <p role="status">
-          Allele length distribution unavailable: {unavailableReason(landscape.reason_code)}.
-        </p>
       </Panel>
     )
   }
@@ -1045,31 +1133,45 @@ export const WholeRecordAlleleLandscape = ({
         </h2>
         <TotalAlleleLengthHelp />
       </div>
-      <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '8px 16px' }}>
+      <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '10px 22px' }}>
         {landscape.stratified_available && (
           <>
-            <ShortTandemRepeatPopulationOptions
-              id="lr-tr-whole-record"
-              populations={(landscape.ancestry_groups || []) as PopulationId[]}
-              selectedPopulation={selectedPopulation}
-              selectedSex={selectedSex}
-              setSelectedPopulation={setSelectedPopulation}
-              setSelectedSex={setSelectedSex}
-              ancestryGroupName={longReadAncestryGroupDisplayName}
-            />
-            <ShortTandemRepeatColorBySelect
-              id="lr-tr-whole-record"
-              selectedColorBy={selectedColorBy}
-              setSelectedColorBy={setSelectedColorBy}
-              setSelectedScaleType={setSelectedScaleType}
-              allowedColorBys={['sex', 'population']}
-            />
-            <ShortTandemRepeatScaleSelect
-              id="lr-tr-whole-record"
-              selectedScaleType={selectedScaleType}
-              setSelectedScaleType={setSelectedScaleType}
-              selectedColorBy={selectedColorBy}
-            />
+            <div
+              role="group"
+              aria-label="Shared ancestry and sex filters"
+              style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}
+            >
+              <ControlGroupLabel>Filter all three plots:</ControlGroupLabel>
+              <ShortTandemRepeatPopulationOptions
+                id="lr-tr-landscape"
+                populations={filterOptions.ancestries}
+                selectedPopulation={selectedPopulation}
+                selectedSex={selectedSex}
+                setSelectedPopulation={setSelectedPopulation}
+                setSelectedSex={setSelectedSex}
+                ancestryGroupName={longReadAncestryGroupDisplayName}
+              />
+            </div>
+            <div
+              role="group"
+              aria-label="Allele plot display controls"
+              style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}
+            >
+              <ControlGroupLabel>Allele plots only:</ControlGroupLabel>
+              <ShortTandemRepeatColorBySelect
+                id="lr-tr-whole-record"
+                selectedColorBy={selectedColorBy}
+                setSelectedColorBy={setSelectedColorBy}
+                setSelectedScaleType={setSelectedScaleType}
+                allowedColorBys={['sex', 'population']}
+              />
+              <ShortTandemRepeatScaleSelect
+                id="lr-tr-whole-record"
+                selectedScaleType={selectedScaleType}
+                setSelectedScaleType={setSelectedScaleType}
+                selectedColorBy={selectedColorBy}
+              />
+            </div>
           </>
         )}
       </ControlSection>
@@ -1119,7 +1221,7 @@ export const WholeRecordAlleleLandscape = ({
           and tables.
         </p>
       )}
-      <PlotGrid data-testid="whole-record-allele-plot-grid">
+      <PlotGrid $columns={genotypeLandscape ? 3 : 2} data-testid="whole-record-allele-plot-grid">
         <PlotCard>
           <h3>Total allele length change</h3>
           <HistogramChart data-bin-count={bins.length} data-bar-width={histogramLayout.barWidth}>
@@ -1219,7 +1321,7 @@ export const WholeRecordAlleleLandscape = ({
           </div>
         </PlotCard>
         <PlotCard>
-          <h3>Length change and motif purity</h3>
+          <h3>Length change × motif purity</h3>
           {landscape.purity_available ? (
             <PurityScatter
               points={filteredPurityPoints}
@@ -1232,11 +1334,23 @@ export const WholeRecordAlleleLandscape = ({
             </p>
           )}
         </PlotCard>
+        {genotypeLandscape && (
+          <WholeRecordGenotypeLandscape
+            landscape={genotypeLandscape}
+            navigation={navigation}
+            selectedPopulation={selectedPopulation}
+            selectedSex={selectedSex}
+            onSelectCell={filterIndexToGenotype}
+          />
+        )}
       </PlotGrid>
       <ExactAlleleIndex
         alleles={indexedAlleles}
         totalExactAlts={landscape.exact_alt_count || alleles.length}
         filteredDelta={selectedBin?.delta}
+        filterDescription={
+          activeIndexFilter?.kind === 'genotype' ? activeIndexFilter.label : undefined
+        }
         motifs={motifs}
         selectedAllele={selectedAllele}
         navigation={navigation}
@@ -1258,8 +1372,10 @@ const HeatmapFigure = styled.figure`
 const HeatmapSvg = styled.svg`
   display: block;
   width: 100%;
+  max-width: 520px;
   height: auto;
   min-height: 300px;
+  margin: 0 auto;
 
   [role='gridcell']:focus-visible {
     outline: none;
@@ -1323,22 +1439,26 @@ const pairName = (id: string, referenceId: string | null) =>
 export const WholeRecordGenotypeLandscape = ({
   landscape,
   navigation,
+  selectedPopulation,
+  selectedSex,
+  onSelectCell,
 }: {
   landscape: WholeRecordGenotypeLandscapeData
   navigation: AlleleNavigation
+  selectedPopulation: PopulationId | null
+  selectedSex: Sex | null
+  onSelectCell?: (label: string, alleleIds: string[]) => void
 }) => {
-  const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
-  const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
   if (landscape.status !== 'AVAILABLE') {
     return (
-      <Panel aria-labelledby="lr-tr-genotype-heading">
-        <h2 id="lr-tr-genotype-heading">Genotype length distribution</h2>
+      <PlotCard data-testid="genotype-length-card">
+        <h3>Genotype length distribution</h3>
         <p role="status">
           Genotype landscape unavailable: {unavailableReason(landscape.reason_code)}.
         </p>
-      </Panel>
+      </PlotCard>
     )
   }
 
@@ -1387,252 +1507,246 @@ export const WholeRecordGenotypeLandscape = ({
       value === selectedCell?.shorter_delta ||
       value === selectedCell?.longer_delta
   )
+  const selectCell = (cell: (typeof cells)[number], key: string) => {
+    setSelectedKey(key)
+    const alleleIds = [
+      ...new Set(
+        cell.selectedPairs.flatMap((pair) => [pair.shorter_allele_id, pair.longer_allele_id])
+      ),
+    ].filter((alleleId) => alleleId !== landscape.reference_allele_id)
+    onSelectCell?.(
+      `selected genotype cell (${signed(cell.longer_delta)} bp × ${signed(cell.shorter_delta)} bp)`,
+      alleleIds
+    )
+  }
 
   return (
-    <Panel aria-labelledby="lr-tr-genotype-heading">
-      <h2 id="lr-tr-genotype-heading">Genotype length distribution</h2>
-      <p>
-        Each square combines the longer and shorter allele length changes; darker squares represent
-        more people. The reference allele (0 bp) remains distinct from an alternate allele that also
-        has 0 bp total length change.
-      </p>
-      <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap' }}>
-        <ShortTandemRepeatPopulationOptions
-          id="lr-tr-whole-record-genotypes"
-          populations={(landscape.ancestry_groups || []) as PopulationId[]}
-          selectedPopulation={selectedPopulation}
-          selectedSex={selectedSex}
-          setSelectedPopulation={setSelectedPopulation}
-          setSelectedSex={setSelectedSex}
-          ancestryGroupName={longReadAncestryGroupDisplayName}
-        />
-      </ControlSection>
-      <p aria-live="polite">
-        <strong>{totalPeople.toLocaleString()} people</strong> with complete diploid genotypes in
-        this view.
-      </p>
-      <PlotGrid>
-        <PlotCard>
-          <HeatmapFigure>
-            <HeatmapSvg
-              viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
-              role="grid"
-              aria-label="Genotype length-change heatmap"
-            >
-              <title>Genotype distribution by longer and shorter total allele length change</title>
-              {valueIndex.has(0) && (
-                <>
-                  <line
-                    x1={xFor(0)}
-                    y1={heatmapTop}
-                    x2={xFor(0)}
-                    y2={heatmapTop + plotSize}
-                    stroke="#89939a"
-                    strokeDasharray="4 4"
-                  />
-                  <line
-                    x1={heatmapLeft}
-                    y1={yFor(0) + band}
-                    x2={heatmapLeft + plotSize}
-                    y2={yFor(0) + band}
-                    stroke="#89939a"
-                    strokeDasharray="4 4"
-                  />
-                </>
-              )}
-              {[...values].reverse().map((shorter) => (
-                <g key={shorter} role="row" aria-label={`${signed(shorter)} bp shorter allele row`}>
-                  {values.map((longer) => {
-                    const cell = byCoordinate.get(`${shorter}/${longer}`)
-                    const key = `${shorter}/${longer}`
-                    const selected = Boolean(cell && selectedCell && key === keyFor(selectedCell))
-                    const intensity = cell
-                      ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
-                      : 0
-                    return (
-                      <React.Fragment key={key}>
-                        <rect
-                          role="gridcell"
-                          tabIndex={cell ? 0 : undefined}
-                          aria-disabled={!cell || undefined}
-                          aria-selected={selected}
-                          aria-label={`${signed(longer)} bp longer, ${signed(
-                            shorter
-                          )} bp shorter: ${cell?.selectedPeople || 0} people`}
-                          x={xFor(longer) + 1}
-                          y={yFor(shorter) + 1}
-                          width={Math.max(1, band - 2)}
-                          height={Math.max(1, band - 2)}
-                          rx={Math.min(2, band / 8)}
-                          fill={cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'}
-                          fillOpacity={cell ? 0.15 + 0.85 * intensity : 1}
-                          stroke={selected ? '#e9781c' : '#fff'}
-                          strokeWidth={selected ? 4 : 1}
-                          cursor={cell ? 'pointer' : 'default'}
-                          onClick={() => cell && setSelectedKey(key)}
-                          onKeyDown={(event) => {
-                            if (cell && (event.key === 'Enter' || event.key === ' ')) {
-                              event.preventDefault()
-                              setSelectedKey(key)
-                            }
-                          }}
+    <>
+      <PlotCard data-testid="genotype-length-card">
+        <h3>Genotype length distribution</h3>
+        <p aria-live="polite">
+          <strong>{totalPeople.toLocaleString()} people</strong> with complete diploid genotypes in
+          this view.
+        </p>
+        <p style={{ color: '#566168', fontSize: 11 }}>
+          Select a square to filter the exact allele table. Reference (0 bp) remains distinct from a
+          0 bp exact ALT.
+        </p>
+        <HeatmapFigure>
+          <HeatmapSvg
+            viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
+            role="grid"
+            aria-label="Genotype length-change heatmap"
+          >
+            <title>Genotype distribution by longer and shorter total allele length change</title>
+            {valueIndex.has(0) && (
+              <>
+                <line
+                  x1={xFor(0)}
+                  y1={heatmapTop}
+                  x2={xFor(0)}
+                  y2={heatmapTop + plotSize}
+                  stroke="#89939a"
+                  strokeDasharray="4 4"
+                />
+                <line
+                  x1={heatmapLeft}
+                  y1={yFor(0) + band}
+                  x2={heatmapLeft + plotSize}
+                  y2={yFor(0) + band}
+                  stroke="#89939a"
+                  strokeDasharray="4 4"
+                />
+              </>
+            )}
+            {[...values].reverse().map((shorter) => (
+              <g key={shorter} role="row" aria-label={`${signed(shorter)} bp shorter allele row`}>
+                {values.map((longer) => {
+                  const cell = byCoordinate.get(`${shorter}/${longer}`)
+                  const key = `${shorter}/${longer}`
+                  const selected = Boolean(cell && selectedCell && key === keyFor(selectedCell))
+                  const intensity = cell
+                    ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
+                    : 0
+                  return (
+                    <React.Fragment key={key}>
+                      <rect
+                        role="gridcell"
+                        tabIndex={cell ? 0 : undefined}
+                        aria-disabled={!cell || undefined}
+                        aria-selected={selected}
+                        aria-label={`${signed(longer)} bp longer, ${signed(shorter)} bp shorter: ${
+                          cell?.selectedPeople || 0
+                        } people`}
+                        x={xFor(longer) + 1}
+                        y={yFor(shorter) + 1}
+                        width={Math.max(1, band - 2)}
+                        height={Math.max(1, band - 2)}
+                        rx={Math.min(2, band / 8)}
+                        fill={cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'}
+                        fillOpacity={cell ? 0.15 + 0.85 * intensity : 1}
+                        stroke={selected ? '#e9781c' : '#fff'}
+                        strokeWidth={selected ? 4 : 1}
+                        cursor={cell ? 'pointer' : 'default'}
+                        onClick={() => cell && selectCell(cell, key)}
+                        onKeyDown={(event) => {
+                          if (cell && (event.key === 'Enter' || event.key === ' ')) {
+                            event.preventDefault()
+                            selectCell(cell, key)
+                          }
+                        }}
+                      >
+                        <title>
+                          {signed(longer)} bp × {signed(shorter)} bp: {cell?.selectedPeople || 0}{' '}
+                          people
+                        </title>
+                      </rect>
+                      {cell && band >= 24 && (
+                        <text
+                          x={xFor(longer) + band / 2}
+                          y={yFor(shorter) + band / 2 + 4}
+                          fill={intensity > 0.78 ? '#fff' : '#111'}
+                          fontSize={Math.min(11, band * 0.34)}
+                          textAnchor="middle"
+                          pointerEvents="none"
+                          aria-hidden="true"
                         >
-                          <title>
-                            {signed(longer)} bp × {signed(shorter)} bp: {cell?.selectedPeople || 0}{' '}
-                            people
-                          </title>
-                        </rect>
-                        {cell && band >= 24 && (
-                          <text
-                            x={xFor(longer) + band / 2}
-                            y={yFor(shorter) + band / 2 + 4}
-                            fill={intensity > 0.78 ? '#fff' : '#111'}
-                            fontSize={Math.min(11, band * 0.34)}
-                            textAnchor="middle"
-                            pointerEvents="none"
-                            aria-hidden="true"
-                          >
-                            {cell.selectedPeople}
-                          </text>
-                        )}
-                      </React.Fragment>
-                    )
-                  })}
-                </g>
-              ))}
-              {axisValues.map((value) => (
-                <React.Fragment key={value}>
-                  <text
-                    x={xFor(value) + band / 2}
-                    y={heatmapTop + plotSize + 15}
-                    fill="#566168"
-                    fontSize={10}
-                    textAnchor="end"
-                    transform={`rotate(-48 ${xFor(value) + band / 2} ${
-                      heatmapTop + plotSize + 15
-                    })`}
-                  >
-                    {signed(value)}
-                  </text>
-                  <text
-                    x={heatmapLeft - 7}
-                    y={yFor(value) + band / 2 + 3}
-                    fill="#566168"
-                    fontSize={10}
-                    textAnchor="end"
-                  >
-                    {signed(value)}
-                  </text>
-                </React.Fragment>
-              ))}
-              <line
-                x1={heatmapLeft}
-                y1={heatmapTop + plotSize}
-                x2={heatmapLeft + plotSize}
-                y2={heatmapTop + plotSize}
-                stroke="#89939a"
-              />
-              <line
-                x1={heatmapLeft}
-                y1={heatmapTop}
-                x2={heatmapLeft}
-                y2={heatmapTop + plotSize}
-                stroke="#89939a"
-              />
-              <text
-                x={heatmapLeft + plotSize / 2}
-                y={heatmapHeight - 8}
-                fill="#566168"
-                fontSize={11}
-                textAnchor="middle"
-              >
-                Longer allele length change (bp)
-              </text>
-              <text
-                x={15}
-                y={heatmapTop + plotSize / 2}
-                fill="#566168"
-                fontSize={11}
-                textAnchor="middle"
-                transform={`rotate(-90 15 ${heatmapTop + plotSize / 2})`}
-              >
-                Shorter allele length change (bp)
-              </text>
-            </HeatmapSvg>
-            <IntensityKey aria-label="Logarithmic people intensity legend">
-              <span>Fewer people</span>
-              <span
-                aria-hidden="true"
-                style={{
-                  width: 110,
-                  height: 10,
-                  border: '1px solid #bfc8ce',
-                  background: `linear-gradient(90deg, rgba(156,39,176,.15), ${LONG_READ_PRIMARY_PLOT_COLOR})`,
-                }}
-              />
-              <span>More people (log intensity)</span>
-            </IntensityKey>
-          </HeatmapFigure>
-        </PlotCard>
-        <PlotCard aria-live="polite">
-          {selectedCell ? (
-            <>
-              <h3>
+                          {cell.selectedPeople}
+                        </text>
+                      )}
+                    </React.Fragment>
+                  )
+                })}
+              </g>
+            ))}
+            {axisValues.map((value) => (
+              <React.Fragment key={value}>
+                <text
+                  x={xFor(value) + band / 2}
+                  y={heatmapTop + plotSize + 15}
+                  fill="#566168"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform={`rotate(-48 ${xFor(value) + band / 2} ${heatmapTop + plotSize + 15})`}
+                >
+                  {signed(value)}
+                </text>
+                <text
+                  x={heatmapLeft - 7}
+                  y={yFor(value) + band / 2 + 3}
+                  fill="#566168"
+                  fontSize={10}
+                  textAnchor="end"
+                >
+                  {signed(value)}
+                </text>
+              </React.Fragment>
+            ))}
+            <line
+              x1={heatmapLeft}
+              y1={heatmapTop + plotSize}
+              x2={heatmapLeft + plotSize}
+              y2={heatmapTop + plotSize}
+              stroke="#89939a"
+            />
+            <line
+              x1={heatmapLeft}
+              y1={heatmapTop}
+              x2={heatmapLeft}
+              y2={heatmapTop + plotSize}
+              stroke="#89939a"
+            />
+            <text
+              x={heatmapLeft + plotSize / 2}
+              y={heatmapHeight - 8}
+              fill="#566168"
+              fontSize={11}
+              textAnchor="middle"
+            >
+              Longer allele length change (bp)
+            </text>
+            <text
+              x={15}
+              y={heatmapTop + plotSize / 2}
+              fill="#566168"
+              fontSize={11}
+              textAnchor="middle"
+              transform={`rotate(-90 15 ${heatmapTop + plotSize / 2})`}
+            >
+              Shorter allele length change (bp)
+            </text>
+          </HeatmapSvg>
+          <IntensityKey aria-label="Logarithmic people intensity legend">
+            <span>Fewer people</span>
+            <span
+              aria-hidden="true"
+              style={{
+                width: 110,
+                height: 10,
+                border: '1px solid #bfc8ce',
+                background: `linear-gradient(90deg, rgba(156,39,176,.15), ${LONG_READ_PRIMARY_PLOT_COLOR})`,
+              }}
+            />
+            <span>More people (log intensity)</span>
+          </IntensityKey>
+        </HeatmapFigure>
+      </PlotCard>
+      <GenotypePairDetail aria-live="polite" data-testid="genotype-pair-detail">
+        {selectedCell ? (
+          <details>
+            <summary>
+              <strong>
                 {signed(selectedCell.longer_delta)} bp × {signed(selectedCell.shorter_delta)} bp
-              </h3>
-              <p>
-                <strong>{selectedCell.selectedPeople.toLocaleString()} people</strong> across{' '}
-                {selectedCell.selectedPairs.length.toLocaleString()} unique exact allele{' '}
-                {selectedCell.selectedPairs.length === 1 ? 'pair' : 'pairs'}.
-              </p>
-              <ScrollTable>
-                <table>
-                  <thead>
-                    <tr>
-                      <th scope="col">Exact pair</th>
-                      <th scope="col">People</th>
-                      <th scope="col">Phased</th>
-                      <th scope="col">Unphased</th>
+              </strong>{' '}
+              — {selectedCell.selectedPeople.toLocaleString()}{' '}
+              {selectedCell.selectedPeople === 1 ? 'person' : 'people'} across{' '}
+              {selectedCell.selectedPairs.length.toLocaleString()} exact allele{' '}
+              {selectedCell.selectedPairs.length === 1 ? 'pair' : 'pairs'}
+            </summary>
+            <ScrollTable>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Exact pair</th>
+                    <th scope="col">People</th>
+                    <th scope="col">Phased</th>
+                    <th scope="col">Unphased</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedCell.selectedPairs.map((pair) => (
+                    <tr key={`${pair.shorter_allele_id}/${pair.longer_allele_id}`}>
+                      <td>
+                        {pair.shorter_allele_id === landscape.reference_allele_id ? (
+                          pairName(pair.shorter_allele_id, landscape.reference_allele_id)
+                        ) : (
+                          <SelectionLink alleleId={pair.shorter_allele_id} navigation={navigation}>
+                            {pairName(pair.shorter_allele_id, landscape.reference_allele_id)}
+                          </SelectionLink>
+                        )}
+                        {' × '}
+                        {pair.longer_allele_id === landscape.reference_allele_id ? (
+                          pairName(pair.longer_allele_id, landscape.reference_allele_id)
+                        ) : (
+                          <SelectionLink alleleId={pair.longer_allele_id} navigation={navigation}>
+                            {pairName(pair.longer_allele_id, landscape.reference_allele_id)}
+                          </SelectionLink>
+                        )}
+                      </td>
+                      <td>{pair.people.toLocaleString()}</td>
+                      <td>{pair.phased_people.toLocaleString()}</td>
+                      <td>{pair.unphased_people.toLocaleString()}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {selectedCell.selectedPairs.map((pair) => (
-                      <tr key={`${pair.shorter_allele_id}/${pair.longer_allele_id}`}>
-                        <td>
-                          {pair.shorter_allele_id === landscape.reference_allele_id ? (
-                            pairName(pair.shorter_allele_id, landscape.reference_allele_id)
-                          ) : (
-                            <SelectionLink
-                              alleleId={pair.shorter_allele_id}
-                              navigation={navigation}
-                            >
-                              {pairName(pair.shorter_allele_id, landscape.reference_allele_id)}
-                            </SelectionLink>
-                          )}
-                          {' × '}
-                          {pair.longer_allele_id === landscape.reference_allele_id ? (
-                            pairName(pair.longer_allele_id, landscape.reference_allele_id)
-                          ) : (
-                            <SelectionLink alleleId={pair.longer_allele_id} navigation={navigation}>
-                              {pairName(pair.longer_allele_id, landscape.reference_allele_id)}
-                            </SelectionLink>
-                          )}
-                        </td>
-                        <td>{pair.people.toLocaleString()}</td>
-                        <td>{pair.phased_people.toLocaleString()}</td>
-                        <td>{pair.unphased_people.toLocaleString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </ScrollTable>
-            </>
-          ) : (
-            <p>No complete diploid genotypes match these filters.</p>
-          )}
-        </PlotCard>
-      </PlotGrid>
-    </Panel>
+                  ))}
+                </tbody>
+              </table>
+            </ScrollTable>
+          </details>
+        ) : (
+          <p>No complete diploid genotypes match these filters.</p>
+        )}
+      </GenotypePairDetail>
+    </>
   )
 }
 
@@ -1974,6 +2088,7 @@ export const ExactAlleleIndex = ({
   alleles,
   totalExactAlts = alleles.length,
   filteredDelta,
+  filterDescription,
   selectedAllele,
   motifs,
   navigation,
@@ -1987,6 +2102,7 @@ export const ExactAlleleIndex = ({
   alleles: LongReadTrAllele[]
   totalExactAlts?: number
   filteredDelta?: number
+  filterDescription?: string
   motifs: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
@@ -2058,19 +2174,21 @@ export const ExactAlleleIndex = ({
     hasMissingIndexSequence && !sequencesAvailable
       ? `Motif previews are unavailable because ${unavailableReason(sequencesUnavailableReason)}.`
       : null
-  const heading =
-    filteredDelta == null
-      ? `All exact ALTs (${totalExactAlts.toLocaleString()})`
-      : `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact ALTs at ${signed(
-          filteredDelta
-        )} bp`
+  let heading = `All exact ALTs (${totalExactAlts.toLocaleString()})`
+  if (filterDescription) {
+    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact ALTs in ${filterDescription}`
+  } else if (filteredDelta != null) {
+    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact ALTs at ${signed(
+      filteredDelta
+    )} bp`
+  }
   return (
     <IndexSection aria-labelledby="lr-tr-index-heading">
       <IndexTitle aria-live="polite">
         <h3 id="lr-tr-index-heading" ref={headingRef} tabIndex={-1}>
           {heading}
         </h3>
-        {filteredDelta != null && (
+        {(filteredDelta != null || filterDescription) && (
           <ClearIndexFilter type="button" onClick={onClearFilter}>
             Show all exact ALTs
           </ClearIndexFilter>

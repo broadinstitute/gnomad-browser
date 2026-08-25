@@ -537,6 +537,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(help).getByText(/groups called chromosome copies by repeat count/)).not.toBeNull()
     expect(within(help).getByText(/do not include a no-call denominator/)).not.toBeNull()
     expect(screen.queryByRole('heading', { name: 'Genotype length distribution' })).toBeNull()
+    expect(screen.getByTestId('whole-record-allele-plot-grid')).toHaveStyleRule(
+      'grid-template-columns',
+      'repeat(2,minmax(0,1fr))'
+    )
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(0,calc(50% - 0.625em)))')
     expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
       media: '(max-width:900px)',
@@ -553,42 +557,48 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const alleleTables = screen.getAllByRole('table', { name: 'Exact alternate allele index' })
     const index = alleleTables[0]
     const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
-    const plotGrid = screen
-      .getByRole('heading', { level: 3, name: 'Total allele length change' })
-      .closest('div')
+    const plotGrid = screen.getByTestId('whole-record-allele-plot-grid')
+    const genotypeCard = screen.getByTestId('genotype-length-card')
+    const genotypeDetail = screen.getByTestId('genotype-pair-detail')
 
     expect(alleleTables).toHaveLength(1)
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
     expect(landscape?.contains(browser)).toBe(true)
     expect(browser.contains(index)).toBe(true)
     expect(browser.contains(selectedDetail)).toBe(true)
-    expect(plotGrid?.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(index.compareDocumentPosition(selectedDetail)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(
+      within(plotGrid)
+        .getAllByRole('heading', { level: 3 })
+        .map((heading) => heading.textContent)
+    ).toEqual([
+      'Total allele length change',
+      'Length change × motif purity',
+      'Genotype length distribution',
+    ])
+    expect(plotGrid.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(genotypeCard.compareDocumentPosition(genotypeDetail)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+    expect(genotypeDetail.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat(3,minmax(0,1fr))')
+    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)', {
+      media: '(max-width:1100px)',
+    })
     expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)')
     expect(index).toHaveStyleRule('overflow-x', 'hidden')
   })
 
-  test('renders complete non-classifying short-read context with a fixed dataset link', () => {
+  test('puts one fixed short-read details link in the information list', () => {
     renderPage()
-    const panel = screen
-      .getByRole('heading', { name: /Short-read known-locus context/ })
-      .closest('section') as HTMLElement
-    expect(
-      within(panel).getByRole('link', { name: 'HTT (HTT) short-read details' }).getAttribute('href')
-    ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
-    expect(within(panel).getByText('Huntington disease (HD)')).not.toBeNull()
-    expect(within(panel).getByText('143100')).not.toBeNull()
-    expect(within(panel).getByText('Autosomal dominant')).not.toBeNull()
-    expect(
-      within(panel).getByText(/Normal ≤ 26, Intermediate 27 - 35, Pathogenic ≥ 36/)
-    ).not.toBeNull()
-    expect(within(panel).getByText('Catalog note copied verbatim.')).not.toBeNull()
-    expect(within(panel).getAllByText(/CAG/).length).toBeGreaterThan(0)
-    expect(
-      within(panel).getByText(/Short-read known-locus ranges are reference context/)
-    ).not.toBeNull()
-    expect(within(panel).getByText(/not applied to long-read alleles/)).not.toBeNull()
-    expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
+    const link = screen.getByRole('link', { name: 'HTT (HTT) short-read details' })
+    const informationList = screen.getByText('GRCh38 / hg38').closest('dl')
+
+    expect(link.getAttribute('href')).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
+    expect(informationList?.contains(link)).toBe(true)
+    expect(link.getAttribute('title')).toMatch(/Exact reference-component match/)
+    expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
+    expect(screen.queryByText('Huntington disease (HD)')).toBeNull()
+    expect(screen.queryByText('Catalog note copied verbatim.')).toBeNull()
     const highlightedComponent = screen
       .getByRole('img', { name: /component 1 is outlined/ })
       .querySelector('[data-catalog-pathogenic-match="true"]')
@@ -602,24 +612,21 @@ describe('canonical long-read tandem-repeat locus page', () => {
     'AMBIGUOUS_COMPONENT',
     'CATALOG_UNAVAILABLE',
     'UNAVAILABLE',
-  ])(
-    'does not render short-read clinical context for %s',
-    (status) => {
-      const locus = makeLocus()
-      locus.short_read_context = {
-        ...locus.short_read_context,
-        status: status as any,
-        catalog_record: null,
-        matched_component_index: null,
-        matched_component: null,
-        pathogenic_component_highlight: false,
-      } as any
-      renderPage({ locus })
-      expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
-      expect(screen.queryByText(/Short-read known-locus ranges are reference context/)).toBeNull()
-      expect(screen.queryByText(/Outlined component/)).toBeNull()
-    }
-  )
+  ])('does not render short-read clinical context for %s', (status) => {
+    const locus = makeLocus()
+    locus.short_read_context = {
+      ...locus.short_read_context,
+      status: status as any,
+      catalog_record: null,
+      matched_component_index: null,
+      matched_component: null,
+      pathogenic_component_highlight: false,
+    } as any
+    renderPage({ locus })
+    expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
+    expect(screen.queryByText(/Short-read known-locus ranges are reference context/)).toBeNull()
+    expect(screen.queryByText(/Outlined component/)).toBeNull()
+  })
 
   test('filters the primary index to every same-length identity and clears back to all', () => {
     renderPage()
@@ -702,7 +709,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
         (_text, element) =>
           Boolean(
             element?.textContent?.includes(
-              'The reference allele (0 bp) remains distinct from an alternate allele'
+              'Reference (0 bp) remains distinct from a 0 bp exact ALT'
             )
           ),
         { selector: 'p' }
@@ -714,6 +721,22 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     expect(zeroDeltaCell).not.toBeNull()
     expect(zeroDeltaCell.closest('[role="row"]')).not.toBeNull()
+
+    fireEvent.click(zeroDeltaCell)
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', {
+        name: '1 of 72 exact ALTs in selected genotype cell (0 bp × 0 bp)',
+      })
+    )
+    expect(
+      screen
+        .getByRole('table', { name: 'Exact alternate allele index' })
+        .getAttribute('aria-rowcount')
+    ).toBe('2')
+    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
+    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).toBe(
+      document.activeElement
+    )
   })
 
   test.each([72, 497])('shows all %s exact ALTs in the primary virtualized browser', (count) => {

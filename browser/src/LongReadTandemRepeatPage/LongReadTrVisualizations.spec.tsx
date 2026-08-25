@@ -1,6 +1,6 @@
 import React from 'react'
 import 'jest-styled-components'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import {
@@ -11,6 +11,7 @@ import {
   LongReadTrComponentTrack,
   motifColor,
   purityDomain,
+  reconciledFilterOptions,
   stackColorFor,
   WholeRecordAlleleLandscape,
   WholeRecordGenotypeLandscape,
@@ -34,7 +35,48 @@ jest.mock(
         </a>
       )
 )
-jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions', () => () => null)
+jest.mock(
+  '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions',
+  () =>
+    ({
+      populations,
+      selectedPopulation,
+      selectedSex,
+      setSelectedPopulation,
+      setSelectedSex,
+    }: any) =>
+      (
+        <>
+          <label>
+            Genetic ancestry group
+            <select
+              aria-label="Genetic ancestry group"
+              value={selectedPopulation || ''}
+              onChange={(event) => setSelectedPopulation(event.target.value || null)}
+            >
+              <option value="">Global</option>
+              {populations.map((population: string) => (
+                <option key={population} value={population}>
+                  {population}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Sex
+            <select
+              aria-label="Sex"
+              value={selectedSex || ''}
+              onChange={(event) => setSelectedSex(event.target.value || null)}
+            >
+              <option value="">All</option>
+              <option value="XX">XX</option>
+              <option value="XY">XY</option>
+            </select>
+          </label>
+        </>
+      )
+)
 jest.mock(
   '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect',
   () =>
@@ -321,9 +363,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
 
     fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
-    expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: 'All exact ALTs (3)' })
-    )
+    expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'All exact ALTs (3)' }))
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
 
     const tallest = screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
@@ -435,6 +475,105 @@ describe('long-read TR visualization fidelity', () => {
     ])
   })
 
+  test('reconciles one controlled ancestry and sex filter across all three plots', async () => {
+    const stratifiedAlleles = alleles.map((allele) => ({
+      ...allele,
+      freq: {
+        ...allele.freq,
+        populations: [
+          { id: 'afr', ac: 2, an: 20, af: 0.1 },
+          { id: 'afr_XX', ac: 1, an: 10, af: 0.1 },
+          { id: 'nfe', ac: 3, an: 20, af: 0.15 },
+        ],
+      },
+    }))
+    const stratifiedLandscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      stratified_available: true,
+      stratified_unavailable_reason: null,
+      ancestry_groups: ['afr', 'nfe'],
+      sexes: ['XX', 'XY'],
+      bins: (alleleLandscape.bins || []).map((bin) => ({
+        ...bin,
+        stacks: [
+          { ancestry_group: 'afr', sex: null, called_alleles: 2 },
+          { ancestry_group: 'afr', sex: 'XX', called_alleles: 1 },
+          { ancestry_group: 'nfe', sex: null, called_alleles: 3 },
+        ],
+      })),
+      purity_available: true,
+      purity_unavailable_reason: null,
+      purity_points: stratifiedAlleles.map((allele) => ({
+        allele_id: allele.variant_id,
+        delta: allele.length as number,
+        motif_purity: allele.motif_purity as number,
+        called_alleles: allele.freq.all.ac,
+      })),
+    }
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: '__REFERENCE__',
+      called_samples: 12,
+      called_alleles: 24,
+      ancestry_groups: ['afr'],
+      sexes: ['XX'],
+      cells: [{ shorter_delta: -6, longer_delta: 12, people: 12, pairs: duplicatePairs }],
+    }
+    expect(reconciledFilterOptions(stratifiedLandscape, genotypeLandscape)).toEqual({
+      ancestries: ['afr'],
+      sexes: ['XX'],
+    })
+
+    const rendered = render(
+      <WholeRecordAlleleLandscape
+        landscape={stratifiedLandscape}
+        genotypeLandscape={genotypeLandscape}
+        alleles={stratifiedAlleles}
+        navigation={navigation}
+      />
+    )
+    const filters = screen.getByRole('group', { name: 'Shared ancestry and sex filters' })
+    expect(within(filters).queryByRole('option', { name: 'nfe' })).toBeNull()
+    fireEvent.change(within(filters).getByLabelText('Genetic ancestry group'), {
+      target: { value: 'afr' },
+    })
+    expect(screen.getByText('6 people')).not.toBeNull()
+    expect(
+      screen.getByRole('gridcell', { name: '+12 bp longer, −6 bp shorter: 6 people' })
+    ).not.toBeNull()
+    expect(
+      screen.getByRole('button', { name: /−6 bp, 2 called allele copies in this view/ })
+    ).not.toBeNull()
+
+    fireEvent.change(within(filters).getByLabelText('Sex'), { target: { value: 'XX' } })
+    expect(
+      screen.getByRole('button', { name: /−6 bp, 1 called allele copies in this view/ })
+    ).not.toBeNull()
+    expect(screen.getByText('6 people')).not.toBeNull()
+
+    rendered.rerender(
+      <WholeRecordAlleleLandscape
+        landscape={stratifiedLandscape}
+        genotypeLandscape={{
+          ...genotypeLandscape,
+          ancestry_groups: ['nfe'],
+          sexes: ['XY'],
+        }}
+        alleles={stratifiedAlleles}
+        navigation={navigation}
+      />
+    )
+    await waitFor(() => {
+      expect(
+        (within(filters).getByLabelText('Genetic ancestry group') as HTMLSelectElement).value
+      ).toBe('')
+      expect((within(filters).getByLabelText('Sex') as HTMLSelectElement).value).toBe('')
+    })
+    expect(screen.getByText('12 people')).not.toBeNull()
+  })
+
   test('shows the full responsive heatmap context, axes, zero, intensity, and aggregated detail', () => {
     const landscape: WholeRecordGenotypeLandscapeData = {
       status: 'AVAILABLE',
@@ -447,7 +586,14 @@ describe('long-read TR visualization fidelity', () => {
       sexes: ['XX', 'XY'],
       cells: [{ shorter_delta: -6, longer_delta: 12, people: 12, pairs: duplicatePairs }],
     }
-    render(<WholeRecordGenotypeLandscape landscape={landscape} navigation={navigation} />)
+    render(
+      <WholeRecordGenotypeLandscape
+        landscape={landscape}
+        navigation={navigation}
+        selectedPopulation={null}
+        selectedSex={null}
+      />
+    )
 
     const heatmap = screen.getByRole('grid', { name: 'Genotype length-change heatmap' })
     expect(heatmap.tagName.toLowerCase()).toBe('svg')
@@ -467,8 +613,8 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       screen.getByText(
         (_text, element) =>
-          element?.tagName.toLowerCase() === 'p' &&
-          Boolean(element.textContent?.includes('12 people across 2 unique exact allele pairs'))
+          element?.tagName.toLowerCase() === 'summary' &&
+          Boolean(element.textContent?.includes('12 people across 2 exact allele pairs'))
       )
     ).not.toBeNull()
   })

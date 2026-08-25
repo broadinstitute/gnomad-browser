@@ -17,7 +17,6 @@ import {
   Panel,
   SelectedExactAlleleDetail,
   WholeRecordAlleleLandscape,
-  WholeRecordGenotypeLandscape,
   signed,
   unavailableReason,
 } from './LongReadTrVisualizations'
@@ -292,6 +291,14 @@ const LongReadTandemRepeatPage = ({
               : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
           </AttributeListItem>
           <AttributeListItem label="Total allele length change">{deltaRange}</AttributeListItem>
+          {locus.short_read_context?.status === 'EXACT_UNIQUE' &&
+            locus.short_read_context.catalog_record &&
+            locus.short_read_context.matched_component_index != null &&
+            locus.short_read_context.matched_component && (
+              <AttributeListItem label="Short-read known locus">
+                <ShortReadKnownLocusContext context={locus.short_read_context} />
+              </AttributeListItem>
+            )}
         </AttributeList>
       </SourceAttributes>
 
@@ -299,8 +306,6 @@ const LongReadTandemRepeatPage = ({
         locus={locus}
         highlightedComponentIndex={authorizedHighlightedComponentIndex}
       />
-
-      <ShortReadKnownLocusContext context={locus.short_read_context} />
 
       {repeatPlotsAvailable && (
         <Panel aria-labelledby="lr-tr-simple-measurement-heading">
@@ -355,6 +360,7 @@ const LongReadTandemRepeatPage = ({
 
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}
+        genotypeLandscape={repeatPlotsAvailable ? undefined : locus.whole_record_genotype_landscape}
         alleles={locus.alleles.nodes}
         motifs={locus.motifs}
         selectedAllele={selectedAllele}
@@ -385,13 +391,6 @@ const LongReadTandemRepeatPage = ({
           ) : undefined
         }
       />
-
-      {!repeatPlotsAvailable && (
-        <WholeRecordGenotypeLandscape
-          landscape={locus.whole_record_genotype_landscape}
-          navigation={navigation}
-        />
-      )}
 
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (
