@@ -42,5 +42,5 @@ COPY deploy/dockerfiles/browser/browser.proxy_cache.conf /etc/nginx/browser.prox
 COPY deploy/dockerfiles/browser/browser.nginx.conf /etc/nginx/browser.nginx.conf.template
 
 CMD REAL_IP_CONFIG=$([ -z "${PROXY_IPS:-}" ] || echo "$PROXY_IPS" | awk 'BEGIN { RS="," } { print "set_real_ip_from " $1 ";" }') \
-  envsubst "\$API_URL \$REAL_IP_CONFIG" < /etc/nginx/browser.nginx.conf.template > /etc/nginx/conf.d/default.conf && \
+  envsubst "\$API_URL \$REAL_IP_CONFIG \$GCP_PROJECT" < /etc/nginx/browser.nginx.conf.template > /etc/nginx/conf.d/default.conf && \
   nginx -g "daemon off;"

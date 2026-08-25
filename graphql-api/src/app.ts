@@ -1,4 +1,3 @@
-import compression from 'compression'
 import cors from 'cors'
 import { randomUUID } from 'crypto'
 import express from 'express'
@@ -12,8 +11,33 @@ import { requestStore } from './request-context'
 import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
 
+// Extract the original trace ID from the request for Node's logs.
+// NGINX independently extracts the same ID for its own logs, so both logs
+// can be correlated to the original request. Prefer W3C Trace Context and
+// fall back to Google's legacy X-Cloud-Trace-Context header.
+const getGcpTraceId = (request: any) => {
+  // Prefer W3C Trace Context.
+  // Matches: 00-<32 hex>-<16 hex>-<2 hex>.
+  // Capture group 1 (inside parentheses) is the 32-character trace ID.
+  const traceParentMatch = request
+    .get('traceparent')
+    ?.match(/^00-([\da-f]{32})-[\da-f]{16}-[\da-f]{2}$/i)
+
+  if (traceParentMatch) {
+    return traceParentMatch[1]
+  }
+
+  // Fall back to Google's legacy trace context header.
+  // Matches: <32 hex>, followed by "/" and legacy span ID and options.
+  // Capture group 1 (inside parentheses) is the 32-character trace ID.
+  const cloudTraceMatch = request
+    .get('X-Cloud-Trace-Context')
+    ?.match(/^([\da-f]{32})(?:\/|$)/i)
+
+  return cloudTraceMatch?.[1]
+}
+
 const app = express()
-app.use(compression())
 app.use(cors())
 app.use(express.json())
 
@@ -27,12 +51,20 @@ app.get('/health/ready', (_req: any, res: any) => {
 })
 
 app.use((req: any, res: any, next: any) => {
+  const traceId = config.GCP_PROJECT
+    ? getGcpTraceId(req)
+    : null
+
   const store = {
     requestId: randomUUID(),
     startAt: performance.now(),
     startCpu: process.cpuUsage(),
     startHeapUsed: process.memoryUsage().heapUsed,
+    trace: traceId
+      ? `projects/${config.GCP_PROJECT}/traces/${traceId}`
+      : null,
   }
+
   res.setHeader('x-request-id', store.requestId)
   requestStore.run(store, () => {
     logger.info({
@@ -67,36 +99,39 @@ app.use((req: any, res: any, next: any) => {
   onFinished(res, () => {
     if (!ctx) return
 
-    // Process-wide resources consumed while this request was in flight.
-    // Concurrent requests contribute to these values (both cpu/memory)!
-    const memory = process.memoryUsage()
-    const cpu = process.cpuUsage(ctx.startCpu)
-    logger.info({
-      requestId: ctx.requestId,
-      event: 'requestEnd',
-      latencyMs: performance.now() - ctx.startAt,
-      cpuUserMicros: cpu.user,
-      cpuSystemMicros: cpu.system,
-      heapUsed: memory.heapUsed,
-      heapDeltaBytes:  memory.heapUsed - ctx.startHeapUsed,
-      httpRequest: {
-        requestMethod: req.method,
-        requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
-        userAgent: req.headers['user-agent'],
-        remoteIp: req.ip,
-        referer: req.headers.referer || req.headers.referrer,
-        protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
-        status: res.statusCode,
-        responseSizeBytes: res.getHeader('content-length')
-      },
-      graphqlRequest: req.graphqlParams
-        ? {
-            graphqlQueryOperationName: req.graphqlParams.operationName,
-            graphqlQueryString: req.graphqlParams.query,
-            graphqlQueryVariables: req.graphqlParams.variables,
-            graphqlQueryCost: req.graphqlQueryCost,
-          }
-        : undefined,
+    requestStore.run(ctx, () => {
+      // Process-wide resources consumed while this request was in flight.
+      // Concurrent requests contribute to these values (both cpu/memory)!
+      const memory = process.memoryUsage()
+      const cpu = process.cpuUsage(ctx.startCpu)
+
+      logger.info({
+        requestId: ctx.requestId,
+        event: 'requestEnd',
+        latencyMs: performance.now() - ctx.startAt,
+        cpuUserMicros: cpu.user,
+        cpuSystemMicros: cpu.system,
+        heapUsed: memory.heapUsed,
+        heapDeltaBytes:  memory.heapUsed - ctx.startHeapUsed,
+        httpRequest: {
+          requestMethod: req.method,
+          requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
+          userAgent: req.headers['user-agent'],
+          remoteIp: req.ip,
+          referer: req.headers.referer || req.headers.referrer,
+          protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
+          status: res.statusCode,
+          responseSizeBytes: res.getHeader('content-length')
+        },
+        graphqlRequest: req.graphqlParams
+          ? {
+              graphqlQueryOperationName: req.graphqlParams.operationName,
+              graphqlQueryString: req.graphqlParams.query,
+              graphqlQueryVariables: req.graphqlParams.variables,
+              graphqlQueryCost: req.graphqlQueryCost,
+            }
+          : undefined,
+      })
     })
   })
   next()
