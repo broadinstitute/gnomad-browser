@@ -67,8 +67,8 @@
     {
       "path": "graphql-api/config/long-read-tr-reference-crosswalk.json",
       "target_in_image": "/app/graphql-api/config/long-read-tr-reference-crosswalk.json",
-      "sha256": "8b96e8042ac18db29567313c2303c11d2e260213556849aaec9bf31eb6f761d0",
-      "bytes": 223294,
+      "sha256": "539ba6668d353c3a6442d9c831bb11a65e4b3b84c1fb8d93ee9bfe25df406f03",
+      "bytes": 226292,
       "purpose": "runtime-validated bounded short-read STR to LR reference crosswalk"
     }
   ]

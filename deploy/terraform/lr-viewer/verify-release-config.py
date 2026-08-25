@@ -85,6 +85,25 @@ def main() -> None:
     require(json.loads(api_env["LR_Y1_RUN_MAP"])["hgsvc_hprc"]["chr3"].endswith("recovery-r2"), "approved chr3 recovery route is missing")
     require_exact_joined_route(api_env)
 
+    crosswalk = json.loads((CONFIG_DIR / "long-read-tr-reference-crosswalk.json").read_text())
+    expected_database = api_env["LR_Y1_CLICKHOUSE_DATABASE"]
+    require(
+        crosswalk.get("provenance", {}).get("presentation_database") == expected_database,
+        "STR crosswalk presentation database differs from the approved API route",
+    )
+    require(
+        all(source.get("source_database") == expected_database for source in crosswalk.get("sources", [])),
+        "STR crosswalk source identity differs from the approved API route",
+    )
+    require(
+        all(
+            result.get("source_database") == expected_database
+            for row in crosswalk.get("rows", [])
+            for result in row.get("cohorts", {}).values()
+        ),
+        "STR crosswalk row source differs from the approved API route",
+    )
+
     api_dockerfile = (ROOT / "deploy/dockerfiles/browser/api.dockerfile").read_text()
     api_ignore = (ROOT / "deploy/dockerfiles/browser/api.dockerfile.dockerignore").read_text().splitlines()
     config_negations = {line[1:] for line in api_ignore if line.startswith("!graphql-api/config/")}
