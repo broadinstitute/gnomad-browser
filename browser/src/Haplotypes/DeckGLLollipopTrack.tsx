@@ -45,6 +45,7 @@ import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import { useStableScrollbarGutter } from './scrollbarGutter'
 import { SEARCHED_POSITION_GUIDE_STYLE } from './searchedPositionGuideStyle'
+import { localTargetBandBounds } from './localTargetPresentation'
 import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSearchFiltering'
@@ -302,19 +303,46 @@ function computePopulationStats(
   }
 }
 
+type LocalTargetAssignmentStatus = 'homogeneous' | 'mixed' | 'partial' | 'unassigned'
+
+const describeLocalTargetAssignment = (
+  status: LocalTargetAssignmentStatus,
+  unknownCopyCount: number
+) => {
+  if (status === 'mixed') return 'different observed exact-allele vectors; no consensus'
+  if (status === 'partial') {
+    return `${unknownCopyCount} unknown assignments; absence is not REF`
+  }
+  if (status === 'unassigned') return 'target assignment unavailable; absence is not REF'
+  return 'one observed exact-allele vector'
+}
+
+type LocalTargetExactStrip = {
+  exactId: string
+  label: string
+  selected: boolean
+  segments: Array<{ weight: number; color: [number, number, number, number] }>
+}
+
 export type LocalTargetTrackOverlay = {
   envelope: { start: number; stop: number }
-  rows: Array<{
+  minimumBandFraction?: number
+  clusters: Array<{
     clusterId: string
     label: string
     representedCopyCount: number
     selectedCopyCount: number
-    strips: Array<{
-      exactId: string
-      label: string
-      selected: boolean
-      segments: Array<{ weight: number; color: [number, number, number, number] }>
-    }>
+    assignmentStatus: LocalTargetAssignmentStatus
+    unknownCopyCount: number
+  }>
+  groups: Array<{
+    groupHash: string
+    representedCopyCount: number
+    selectedCopyCount: number
+    assignmentStatus: LocalTargetAssignmentStatus
+    unknownCopyCount: number
+    omittedExactAlleleCount: number
+    strips: LocalTargetExactStrip[]
   }>
 }
 
@@ -1026,7 +1054,10 @@ function DeckGLLollipopCanvas({
     const treeLines: LeftPanelTreeLine[] = []
     const sampleLabels: LeftPanelText[] = []
     const localTargetRowByClusterId = new Map(
-      (localTargetOverlay?.rows || []).map((row) => [row.clusterId, row])
+      (localTargetOverlay?.clusters || []).map((row) => [row.clusterId, row])
+    )
+    const localTargetRowByGroupHash = new Map(
+      (localTargetOverlay?.groups || []).map((row) => [row.groupHash, row])
     )
     // Compute total cohort size for diplotype percentage display
     const cohortTotal = isDiploidView
@@ -1170,23 +1201,26 @@ function DeckGLLollipopCanvas({
 
         const localTargetRow = localTargetRowByClusterId.get(cluster.cluster_id)
         if (localTargetRow) {
+          const assignmentSummary = describeLocalTargetAssignment(
+            localTargetRow.assignmentStatus,
+            localTargetRow.unknownCopyCount
+          )
           texts.push({
             position: [24, y - 8, 0],
-            text: localTargetRow.label,
+            text: `${localTargetRow.label} · ${localTargetRow.representedCopyCount} copies`,
             color: [0, 0, 0, 255],
             size: 9,
-            tooltipText: `${localTargetRow.representedCopyCount} represented copies; ${localTargetRow.selectedCopyCount} selected exact-allele copies`,
+            tooltipText: `${localTargetRow.representedCopyCount} represented copies; ${localTargetRow.selectedCopyCount} selected exact-allele copies; ${assignmentSummary}`,
           })
           texts.push({
             position: [24, y + 8, 0],
             text: `selected ${localTargetRow.selectedCopyCount}/${localTargetRow.representedCopyCount}`,
             color: [45, 45, 45, 255],
             size: 8,
+            tooltipText: assignmentSummary,
           })
-        }
-
-        {
-          // Stacked population bar for cluster
+        } else {
+          // Ordinary Haplotype View keeps its existing ancestry composition bar.
           const popStats = populationStatsByRow[i]
           if (popStats && popStats.totalSamples > 0) {
             const { barX, barWidth, countX, countTextAnchor } = getCollapsedClusterLabelLayout(leftPanelWidth)
@@ -1212,7 +1246,6 @@ function DeckGLLollipopCanvas({
               tooltipText: `${popStats.totalSamples} haplotype copies, ${cluster.member_group_hashes.length} exact groups`,
             })
           } else {
-            // Fallback when no population metadata
             const sampleColor = cssColorToRgba(sampleColorScale(cluster.sample_count))
             circles.push({ position: [20, y, 0], color: sampleColor, radius: 5, tooltipText: `${cluster.sample_count} haplotype copies, ${cluster.member_group_hashes.length} exact groups` })
             texts.push({
@@ -1229,42 +1262,74 @@ function DeckGLLollipopCanvas({
         const popStats = populationStatsByRow[i]
 
         if (item.isChild) {
-          // Expanded similarity-cluster members keep only their population bar.
-          // A full-row hover target replaces the redundant sample/variant numbers.
-          const { barX, barWidth } = getExpandedMemberBarLayout(leftPanelWidth, 24)
-          const barH = 10
-          const barTop = y - barH / 2
-
-          if (popStats && popStats.totalSamples > 0) {
-            const sortedPops = Object.entries(popStats.counts).sort((a, b) => b[1] - a[1])
-            let accX = barX
-            for (const [pop, count] of sortedPops) {
-              const w = (count / popStats.totalSamples) * barWidth
-              const color = cssColorToRgba(SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A'])
-              popBars.push({
-                polygon: [[accX, barTop], [accX + w, barTop], [accX + w, barTop + barH], [accX, barTop + barH]],
-                color,
-              })
-              accX += w
-            }
+          const localTargetRow = localTargetRowByGroupHash.get(String(group.hash))
+          if (localTargetRow) {
+            const assignmentSummary = describeLocalTargetAssignment(
+              localTargetRow.assignmentStatus,
+              localTargetRow.unknownCopyCount
+            )
+            texts.push(
+              {
+                position: [24, y - 7, 0],
+                text: `Haplotype group · ${localTargetRow.representedCopyCount} copies`,
+                color: [35, 35, 35, 255],
+                size: 8,
+                tooltipText: assignmentSummary,
+              },
+              {
+                position: [24, y + 7, 0],
+                text: `selected ${localTargetRow.selectedCopyCount}/${localTargetRow.representedCopyCount}`,
+                color: [80, 80, 80, 255],
+                size: 8,
+                tooltipText: assignmentSummary,
+              }
+            )
+            memberHoverTargets.push({
+              polygon: [
+                [22, y - ROW_CENTER_Y],
+                [leftPanelWidth, y - ROW_CENTER_Y],
+                [leftPanelWidth, y + ROW_CENTER_Y],
+                [22, y + ROW_CENTER_Y],
+              ],
+              tooltipText: assignmentSummary,
+            })
           } else {
-            popBars.push({
-              polygon: [[barX, barTop], [barX + barWidth, barTop], [barX + barWidth, barTop + barH], [barX, barTop + barH]],
-              color: cssColorToRgba(SUPERPOPULATION_COLORS['N/A']),
+            // Ordinary Haplotype View keeps ancestry bars on expanded members.
+            const { barX, barWidth } = getExpandedMemberBarLayout(leftPanelWidth, 24)
+            const barH = 10
+            const barTop = y - barH / 2
+
+            if (popStats && popStats.totalSamples > 0) {
+              const sortedPops = Object.entries(popStats.counts).sort((a, b) => b[1] - a[1])
+              let accX = barX
+              for (const [pop, count] of sortedPops) {
+                const w = (count / popStats.totalSamples) * barWidth
+                const color = cssColorToRgba(SUPERPOPULATION_COLORS[pop] || SUPERPOPULATION_COLORS['N/A'])
+                popBars.push({
+                  polygon: [[accX, barTop], [accX + w, barTop], [accX + w, barTop + barH], [accX, barTop + barH]],
+                  color,
+                })
+                accX += w
+              }
+            } else {
+              popBars.push({
+                polygon: [[barX, barTop], [barX + barWidth, barTop], [barX + barWidth, barTop + barH], [barX, barTop + barH]],
+                color: cssColorToRgba(SUPERPOPULATION_COLORS['N/A']),
+              })
+            }
+
+            memberHoverTargets.push({
+              polygon: [
+                [barX, y - ROW_CENTER_Y],
+                [leftPanelWidth, y - ROW_CENTER_Y],
+                [leftPanelWidth, y + ROW_CENTER_Y],
+                [barX, y + ROW_CENTER_Y],
+              ],
+              tooltipText: anonymizeSampleIdentifiers
+                ? `${group.samples.length} represented haplotype copies`
+                : formatExpandedMemberSampleTooltip(group.samples),
             })
           }
-
-          memberHoverTargets.push({
-            polygon: [
-              [barX, y - ROW_CENTER_Y],
-              [leftPanelWidth, y - ROW_CENTER_Y],
-              [leftPanelWidth, y + ROW_CENTER_Y],
-              [barX, y + ROW_CENTER_Y],
-            ],
-            tooltipText: anonymizeSampleIdentifiers
-              ? `${group.samples.length} represented haplotype copies`
-              : formatExpandedMemberSampleTooltip(group.samples),
-          })
         } else if (popStats && popStats.totalSamples > 0) {
           // Standalone exact-match groups retain their existing numeric summaries.
           const variantCount = group.variants?.variants?.length ?? 0
@@ -3065,20 +3130,22 @@ function DeckGLLollipopCanvas({
     })
   }, [selectedVariantPos, scalePosition, totalHeight])
 
-  // Display-only exact target sequences are overlaid after clustering. Their data are
-  // keyed to the existing cluster cut and never feed signatures, distance, or row order.
+  // Display-only exact target sequences are overlaid after clustering. Collapsed
+  // cluster rows deliberately have no motif diagram: expanding a cluster reveals
+  // only the observed assignments on its child haplotype-group rows.
   const localTargetLayers = useMemo(() => {
     if (!localTargetOverlay) return []
-    const rawStart = scalePosition(localTargetOverlay.envelope.start)
-    const rawStop = scalePosition(localTargetOverlay.envelope.stop)
-    const rawLeft = Math.min(rawStart, rawStop)
-    const rawRight = Math.max(rawStart, rawStop)
-    const center = (rawLeft + rawRight) / 2
-    const bandLeft = Math.max(0, rawRight - rawLeft < 60 ? center - 30 : rawLeft)
-    const bandRight = Math.min(canvasWidth, rawRight - rawLeft < 60 ? center + 30 : rawRight)
-    const rowIndexByCluster = new Map<string, number>()
+    const { bandLeft, bandRight } = localTargetBandBounds({
+      rawStart: scalePosition(localTargetOverlay.envelope.start),
+      rawStop: scalePosition(localTargetOverlay.envelope.stop),
+      canvasWidth,
+      minimumBandFraction: localTargetOverlay.minimumBandFraction,
+    })
+    const rowIndexByGroupHash = new Map<string, number>()
     rowItems.forEach((item, index) => {
-      if (item.type === 'cluster') rowIndexByCluster.set(item.cluster.cluster_id, index)
+      if (item.type === 'group' && item.isChild) {
+        rowIndexByGroupHash.set(String(item.group.hash), index)
+      }
     })
 
     type TargetSegment = {
@@ -3092,12 +3159,18 @@ function DeckGLLollipopCanvas({
     }
     const segments: TargetSegment[] = []
     const selectedOutlines: TargetOutline[] = []
-    localTargetOverlay.rows.forEach((row) => {
-      const rowIndex = rowIndexByCluster.get(row.clusterId)
+    localTargetOverlay.groups.forEach((row) => {
+      const rowIndex = rowIndexByGroupHash.get(row.groupHash)
       if (rowIndex === undefined) return
       const rowCenter = rowOffsets[rowIndex] + ROW_CENTER_Y
+      const unknownStrip = row.unknownCopyCount > 0 || row.assignmentStatus === 'unassigned'
+      const displayStripCount = row.strips.length + (unknownStrip ? 1 : 0)
+      const assignmentSummary = describeLocalTargetAssignment(
+        row.assignmentStatus,
+        row.unknownCopyCount
+      )
       row.strips.forEach((strip, stripIndex) => {
-        const y = rowCenter + (stripIndex - (row.strips.length - 1) / 2) * 6
+        const y = rowCenter + (stripIndex - (displayStripCount - 1) / 2) * 6
         const totalWeight = strip.segments.reduce((total, segment) => total + segment.weight, 0)
         const visibleSegments = strip.segments.length > 0
           ? strip.segments
@@ -3110,7 +3183,7 @@ function DeckGLLollipopCanvas({
           segments.push({
             polygon: [[cursor, y - 2], [cursor + segmentWidth, y - 2], [cursor + segmentWidth, y + 2], [cursor, y + 2]],
             color: segment.color,
-            tooltipText: `${strip.label} — ${strip.exactId}; observed exact allele, not a cluster consensus`,
+            tooltipText: `${strip.label} — ${strip.exactId}; observed exact allele, not a cluster consensus or REF inference; ${assignmentSummary}${row.omittedExactAlleleCount > 0 ? `; ${row.omittedExactAlleleCount} additional exact identities omitted` : ''}`,
           })
           cursor += segmentWidth
         })
@@ -3123,13 +3196,22 @@ function DeckGLLollipopCanvas({
           )
         }
       })
+      if (unknownStrip) {
+        const unknownIndex = row.strips.length
+        const y = rowCenter + (unknownIndex - (displayStripCount - 1) / 2) * 6
+        segments.push({
+          polygon: [[bandLeft, y - 2], [bandRight, y - 2], [bandRight, y + 2], [bandLeft, y + 2]],
+          color: [185, 185, 185, 255],
+          tooltipText: `Target assignment unavailable for ${row.unknownCopyCount || row.representedCopyCount} represented copies; absence is unknown and is not rendered as REF`,
+        })
+      }
     })
 
     const targetLayers: any[] = [new SolidPolygonLayer({
       id: 'target-band-background',
       data: [{ polygon: [[bandLeft, 0], [bandRight, 0], [bandRight, totalHeight], [bandLeft, totalHeight]] }],
       getPolygon: (item: any) => item.polygon,
-      getFillColor: [244, 240, 250, 85],
+      getFillColor: [244, 240, 250, 105],
       pickable: false,
     })]
     if (segments.length > 0) {

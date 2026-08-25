@@ -37,7 +37,7 @@ const LocalHaplotypeTrack = ({
   onToggleClusterExpansion: (clusterId: string) => void
   targetOverlay: LocalTargetTrackOverlay
 }) => (
-  <RegionViewer leftPanelWidth={190} rightPanelWidth={250} regions={[window as any]} width={width}>
+  <RegionViewer leftPanelWidth={175} rightPanelWidth={210} regions={[window as any]} width={width}>
     <AccordionRegionViewer mapper={mapper} originalRegion={window}>
       <HaplotypeTrack
         height={height}

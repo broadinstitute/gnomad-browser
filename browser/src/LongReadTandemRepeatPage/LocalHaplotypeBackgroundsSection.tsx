@@ -20,6 +20,7 @@ import type { LongReadTrAllele, LongReadTrLocus } from './types'
 import {
   buildLocalHaplotypeTargetDescriptor,
   exactAlleleIdentity,
+  localTargetGroupRows,
   localTargetRows,
   serializeTargetDescriptor,
   validateLocalHaplotypePayload,
@@ -91,68 +92,9 @@ export const LocalHaplotypeHorizontalScroller = styled.div.attrs({
   }
 `
 
-const TargetRows = styled(LocalHaplotypeHorizontalScroller)`
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 0.8rem;
-`
-
-const TargetHeader = styled.div`
-  display: grid;
-  grid-template-columns: minmax(165px, 0.9fr) minmax(300px, 3fr) minmax(170px, 1fr);
-  gap: 0.75em;
-  min-width: 720px;
-  padding: 0.4em 0.65em;
-  background: #f7f7f7;
-  font-weight: bold;
-`
-
-const TargetRow = styled.div`
-  display: grid;
-  grid-template-columns: minmax(165px, 0.9fr) minmax(300px, 3fr) minmax(170px, 1fr);
-  gap: 0.75em;
-  align-items: center;
-  min-width: 720px;
-  padding: 0.45em 0.65em;
-  border-top: 1px solid #eee;
-`
-
-const ClusterSummary = styled.div<{ $containsSelected: boolean }>`
-  display: flex;
-  flex-direction: column;
-  gap: 0.15em;
-  padding: 3px 5px;
-  border: ${({ $containsSelected }) =>
-    $containsSelected ? '2px solid #111' : '1px solid transparent'};
-  border-radius: 3px;
-`
-
-const StripStack = styled.div`
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 3px;
-`
-
-const SequenceStrip = styled.div<{ $selected: boolean }>`
-  display: grid;
-  grid-template-columns: minmax(100px, max-content) minmax(100px, 1fr);
-  align-items: center;
-  gap: 0.5em;
-  min-width: 0;
-  padding: 2px 4px;
-  border: ${({ $selected }) => ($selected ? '2px solid #111' : '1px solid #bbb')};
-  border-radius: 3px;
-  background: #fff;
-`
-
-const TokenBar = styled.span`
-  display: flex;
-  min-width: 100px;
-  height: 10px;
-  overflow: hidden;
-  border-radius: 2px;
-  background: #ddd;
+const PresentationNote = styled.span`
+  color: #666;
+  font-size: 0.78rem;
 `
 
 const Legend = styled.div`
@@ -231,7 +173,7 @@ const exactAlleleLabel = (allele: LongReadTrAllele | undefined, exactId: string)
   return `ALT ${allele.alt_index}${delta == null ? '' : ` · ${signed(delta)} bp`}`
 }
 
-const boundedExactTrDecomposition = (
+export const boundedExactTrDecomposition = (
   allele: LongReadTrAllele | undefined,
   motifs: readonly string[]
 ) => {
@@ -290,77 +232,6 @@ export const decomposeUniqueExactAlleles = ({
     decompositions.set(exactId, decompose(alleleByExactId.get(exactId), motifs))
   })
   return decompositions
-}
-
-export const ExactSequenceStrip = ({
-  allele,
-  exactId,
-  motifs,
-  selected,
-  precomputedDecomposition,
-}: {
-  allele: LongReadTrAllele | undefined
-  exactId: string
-  motifs: readonly string[]
-  selected: boolean
-  precomputedDecomposition?: ReturnType<typeof boundedExactTrDecomposition>
-}) => {
-  const decomposition = useMemo(
-    () =>
-      precomputedDecomposition === undefined
-        ? boundedExactTrDecomposition(allele, motifs)
-        : precomputedDecomposition,
-    [allele, motifs, precomputedDecomposition]
-  )
-  const label = exactAlleleLabel(allele, exactId)
-  const tokensWithOffsets = decomposition
-    ? decomposition.structure.tokens.map((token, index, tokens) => ({
-        token,
-        offset: tokens
-          .slice(0, index)
-          .reduce((total, previous) => total + previous.sequence.length, 0),
-      }))
-    : []
-
-  return (
-    <SequenceStrip
-      $selected={selected}
-      data-exact-allele-id={exactId}
-      data-selected-exact-allele={selected ? 'true' : 'false'}
-      tabIndex={0}
-      aria-label={`${label}; observed exact allele${selected ? '; selected' : ''}${
-        decomposition ? '; motif-highlighted sequence' : '; exact sequence preview unavailable'
-      }`}
-      title={`${exactId} — observed exact allele, not a cluster consensus`}
-    >
-      <code>
-        {label}
-        {selected ? ' · Selected' : ''}
-      </code>
-      {decomposition ? (
-        <TokenBar aria-hidden="true">
-          {tokensWithOffsets.map(({ token, offset }) => (
-            <span
-              // Tokens are an ordered decomposition of one exact observed sequence.
-              // Their widths encode bases only; they are not component repeat counts.
-              key={`${offset}-${token.type}-${token.sequence}`}
-              style={{
-                flexGrow: token.sequence.length,
-                flexBasis: 0,
-                minWidth: 1,
-                backgroundColor:
-                  token.type === 'motif'
-                    ? PATH_COLORS[token.motifIndex % PATH_COLORS.length]
-                    : '#444',
-              }}
-            />
-          ))}
-        </TokenBar>
-      ) : (
-        <span>Exact identity / length glyph (sequence preview unavailable)</span>
-      )}
-    </SequenceStrip>
-  )
 }
 
 const LocalSimilarityHelp = () => (
@@ -534,6 +405,13 @@ const LocalHaplotypeBackgroundsSection = ({
       sidecar: data.target_display_sidecar,
     })
   }, [data?.clusters, data?.target_display_sidecar, haplotypeGroups])
+  const groupRows = useMemo(() => {
+    if (!data?.target_display_sidecar) return []
+    return localTargetGroupRows({
+      groups: haplotypeGroups,
+      sidecar: data.target_display_sidecar,
+    })
+  }, [data?.target_display_sidecar, haplotypeGroups])
   const alleleByExactId = useMemo(() => {
     const alleles = [...locus.alleles.nodes]
     if (locus.selected_allele) alleles.push(locus.selected_allele)
@@ -547,43 +425,57 @@ const LocalHaplotypeBackgroundsSection = ({
   const decompositionByExactId = useMemo(
     () =>
       decomposeUniqueExactAlleles({
-        exactAlleleIds: rows.flatMap((row) => row.exactAlleleIds),
+        exactAlleleIds: groupRows.flatMap((row) => row.exactAlleleIds),
         alleleByExactId,
         motifs: locus.motifs,
       }),
-    [alleleByExactId, locus.motifs, rows]
+    [alleleByExactId, groupRows, locus.motifs]
   )
   const targetTrackOverlay = useMemo(
     () => ({
       envelope: descriptor?.canonical_envelope || { start: 0, stop: 0 },
-      rows: rows.map((row) => ({
+      minimumBandFraction: 0.62,
+      clusters: rows.map((row) => ({
         clusterId: row.clusterId,
         label: row.label,
         representedCopyCount: row.representedCopyCount,
         selectedCopyCount: row.selectedCopyCount,
-        strips: boundedRowExactAlleleIds(
+        assignmentStatus: row.assignmentStatus,
+        unknownCopyCount: row.unknownCopyCount,
+      })),
+      groups: groupRows.map((row) => {
+        const bounded = boundedRowExactAlleleIds(
           row.exactAlleleIds,
           descriptor?.selected_exact_allele_id
-        ).displayed.map((exactId) => {
-          const decomposition = decompositionByExactId.get(exactId)
-          return {
-            exactId,
-            label: exactAlleleLabel(alleleByExactId.get(exactId), exactId),
-            selected: exactId === descriptor?.selected_exact_allele_id,
-            segments: decomposition
-              ? decomposition.structure.tokens.map((token) => ({
-                  weight: token.sequence.length,
-                  color:
-                    token.type === 'motif'
-                      ? deckColor(PATH_COLORS[token.motifIndex % PATH_COLORS.length])
-                      : ([68, 68, 68, 255] as [number, number, number, number]),
-                }))
-              : [],
-          }
-        }),
-      })),
+        )
+        return {
+          groupHash: row.groupHash,
+          representedCopyCount: row.representedCopyCount,
+          selectedCopyCount: row.selectedCopyCount,
+          assignmentStatus: row.assignmentStatus,
+          unknownCopyCount: row.unknownCopyCount,
+          omittedExactAlleleCount: bounded.omitted.length,
+          strips: bounded.displayed.map((exactId) => {
+            const decomposition = decompositionByExactId.get(exactId)
+            return {
+              exactId,
+              label: exactAlleleLabel(alleleByExactId.get(exactId), exactId),
+              selected: exactId === descriptor?.selected_exact_allele_id,
+              segments: decomposition
+                ? decomposition.structure.tokens.map((token) => ({
+                    weight: token.sequence.length,
+                    color:
+                      token.type === 'motif'
+                        ? deckColor(PATH_COLORS[token.motifIndex % PATH_COLORS.length])
+                        : ([68, 68, 68, 255] as [number, number, number, number]),
+                  }))
+                : [],
+            }
+          }),
+        }
+      }),
     }),
-    [alleleByExactId, decompositionByExactId, descriptor, rows]
+    [alleleByExactId, decompositionByExactId, descriptor, groupRows, rows]
   )
   const representedSuperpopulations = useMemo(() => {
     const ids = new Set<string>()
@@ -624,7 +516,6 @@ const LocalHaplotypeBackgroundsSection = ({
     })
   }
 
-  const selectedExactId = descriptor?.selected_exact_allele_id
   const counts = data?.target_display_sidecar?.counts
   const viewerWidth = Math.max(720, Math.min(1360, windowWidth - 64))
   const sectionHeading = (
@@ -703,80 +594,11 @@ const LocalHaplotypeBackgroundsSection = ({
               {resolution.toFixed(2)} · {rows.length} clusters
             </output>
           </ResolutionControl>
+          <PresentationNote>
+            Fixed, contig-clipped ±50 kb query · target motif diagrams enlarged and not to genomic
+            scale
+          </PresentationNote>
         </ControlBar>
-
-        <TargetRows aria-label="Observed exact target alleles by local similarity cluster">
-          <TargetHeader>
-            <span>Cluster and selected exact allele</span>
-            <span>Fixed, contig-clipped ±50 kb region · observed target sequence band</span>
-            <span>Local haplotype similarity</span>
-          </TargetHeader>
-          {rows.map((row) => (
-            <TargetRow key={row.clusterId} data-cluster-label={row.label}>
-              <ClusterSummary
-                $containsSelected={row.selectedCopyCount > 0}
-                data-selected-exact-allele={row.selectedCopyCount > 0 ? 'true' : 'false'}
-                aria-label={`${row.label}; ${row.selectedCopyCount} selected exact-allele copies`}
-              >
-                <strong>{row.label}</strong>
-                <span>{row.representedCopyCount} represented copies</span>
-                <span>
-                  Selected: {row.selectedCopyCount}/{row.representedCopyCount} (
-                  {Math.round(row.selectedFraction * 100)}%)
-                </span>
-              </ClusterSummary>
-              <StripStack
-                aria-label={`${row.label}: ${row.assignmentStatus} observed exact target assignments`}
-              >
-                {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).displayed.map(
-                  (exactId) => (
-                    <ExactSequenceStrip
-                      key={exactId}
-                      allele={alleleByExactId.get(exactId)}
-                      exactId={exactId}
-                      motifs={locus.motifs}
-                      selected={exactId === selectedExactId}
-                      precomputedDecomposition={decompositionByExactId.get(exactId) || null}
-                    />
-                  )
-                )}
-                {row.exactAlleleIds.length === 0 && (
-                  <span>Target assignment unavailable; absence is not rendered as REF.</span>
-                )}
-                {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).omitted.length >
-                  0 && (
-                  <details>
-                    <summary>
-                      +
-                      {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).omitted.length}{' '}
-                      additional exact allele identities omitted from the compact band
-                    </summary>
-                    <ul>
-                      {boundedRowExactAlleleIds(row.exactAlleleIds, selectedExactId).omitted.map(
-                        (exactId) => (
-                          <li key={exactId}>
-                            <code>{exactAlleleLabel(alleleByExactId.get(exactId), exactId)}</code> (
-                            <code>{exactId}</code>)
-                          </li>
-                        )
-                      )}
-                    </ul>
-                  </details>
-                )}
-              </StripStack>
-              <span>
-                {
-                  {
-                    mixed: 'Different observed assignment vectors; no consensus',
-                    homogeneous: 'One observed assignment vector',
-                    partial: `${row.unknownCopyCount} represented copies have unknown target assignment; absence is not REF`,
-                    unassigned: 'No deterministic assignment',
-                  }[row.assignmentStatus]
-                }
-              </span>
-            </TargetRow>
-          ))}
-        </TargetRows>
 
         {representedSuperpopulations.length > 0 && (
           <Legend aria-label="Genetic ancestry colors">

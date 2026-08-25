@@ -3,6 +3,7 @@ import type { TargetDisplaySidecar } from '../Haplotypes/haplotypeCompute'
 import {
   buildLocalHaplotypeTargetDescriptor,
   exactAlleleIdentity,
+  localTargetGroupRows,
   localTargetRows,
   serializeTargetDescriptor,
   validateLocalHaplotypePayload,
@@ -198,6 +199,75 @@ describe('local tandem-repeat haplotype target', () => {
         assignmentStatus: 'partial',
       })
     )
+  })
+
+  test('keeps observed, mixed, and unknown semantics on expanded haplotype-group rows', () => {
+    const groups = [
+      group(10, [
+        { sample_id: 'copy-a', vcf_strand: 1, phase_set: null },
+        { sample_id: 'copy-b', vcf_strand: 2, phase_set: null },
+      ]),
+      group(20, [{ sample_id: 'copy-c', vcf_strand: 1, phase_set: null }]),
+    ]
+    const descriptor = buildLocalHaplotypeTargetDescriptor({
+      chrom: '4',
+      envelopeStart: 100,
+      envelopeStop: 110,
+      sourceVariantIds: ['source-a', 'source-b'],
+      selectedExactAlleleId: 'source-a~1',
+    })
+    const sidecar = {
+      descriptor,
+      by_carrier: {
+        a: {
+          sample_id: 'copy-a',
+          vcf_strand: 1,
+          phase_set: null,
+          exact_allele_ids: ['source-a~1'],
+          assignment_status: 'assigned',
+          is_selected_exact_allele: true,
+          flanking_signature_status: 'usable',
+        },
+        b: {
+          sample_id: 'copy-b',
+          vcf_strand: 2,
+          phase_set: null,
+          exact_allele_ids: ['source-b~2'],
+          assignment_status: 'assigned',
+          is_selected_exact_allele: false,
+          flanking_signature_status: 'usable',
+        },
+        c: {
+          sample_id: 'copy-c',
+          vcf_strand: 1,
+          phase_set: null,
+          exact_allele_ids: [],
+          assignment_status: 'unknown',
+          is_selected_exact_allele: false,
+          flanking_signature_status: 'usable',
+        },
+      },
+      counts: {},
+    } as unknown as TargetDisplaySidecar
+
+    expect(localTargetGroupRows({ groups, sidecar })).toEqual([
+      expect.objectContaining({
+        groupHash: '10',
+        representedCopyCount: 2,
+        selectedCopyCount: 1,
+        exactAlleleIds: ['source-a~1', 'source-b~2'],
+        assignmentStatus: 'mixed',
+        unknownCopyCount: 0,
+      }),
+      expect.objectContaining({
+        groupHash: '20',
+        representedCopyCount: 1,
+        selectedCopyCount: 0,
+        exactAlleleIds: [],
+        assignmentStatus: 'unassigned',
+        unknownCopyCount: 1,
+      }),
+    ])
   })
 
   test('fails closed unless descriptor, complete sources, selected identity, source AC, and provenance match', () => {

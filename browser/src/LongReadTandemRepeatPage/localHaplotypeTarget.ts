@@ -155,9 +155,7 @@ const copyIdentity = ({
   phase_set?: string | number | null
 }) => `${sampleId}\u0000${strand ?? ''}\u0000${phaseSet ?? ''}`
 
-export type LocalTargetClusterRow = Readonly<{
-  clusterId: string
-  label: string
+type LocalTargetAssignmentSummary = Readonly<{
   representedCopyCount: number
   selectedCopyCount: number
   selectedFraction: number
@@ -166,6 +164,54 @@ export type LocalTargetClusterRow = Readonly<{
   exactAlleleVectors: readonly (readonly string[])[]
   assignmentStatus: 'homogeneous' | 'mixed' | 'partial' | 'unassigned'
 }>
+
+export type LocalTargetClusterRow = LocalTargetAssignmentSummary &
+  Readonly<{
+    clusterId: string
+    label: string
+  }>
+
+export type LocalTargetGroupRow = LocalTargetAssignmentSummary &
+  Readonly<{
+    groupHash: string
+  }>
+
+const summarizeTargetAssignments = (
+  copyKeys: ReadonlySet<string>,
+  assignmentByCopy: ReadonlyMap<string, TargetDisplaySidecar['by_carrier'][string]>
+): LocalTargetAssignmentSummary => {
+  const assignments = [...copyKeys].map((key) => assignmentByCopy.get(key))
+  const assignedVectors = assignments.flatMap((assignment) =>
+    assignment?.assignment_status === 'assigned' && assignment.exact_allele_ids.length > 0
+      ? [[...assignment.exact_allele_ids].sort()]
+      : []
+  )
+  const exactAlleleVectors = [
+    ...new Map(assignedVectors.map((vector) => [JSON.stringify(vector), vector])).values(),
+  ].sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)))
+  const exactAlleleIds = [...new Set(exactAlleleVectors.flat())].sort()
+  const selectedCopyCount = assignments.filter(
+    (assignment) => assignment?.is_selected_exact_allele
+  ).length
+  const representedCopyCount = copyKeys.size
+  const unknownCopyCount = assignments.filter(
+    (assignment) => assignment?.assignment_status !== 'assigned'
+  ).length
+  let assignmentStatus: LocalTargetAssignmentSummary['assignmentStatus'] = 'mixed'
+  if (assignedVectors.length === 0) assignmentStatus = 'unassigned'
+  else if (unknownCopyCount > 0) assignmentStatus = 'partial'
+  else if (exactAlleleVectors.length === 1) assignmentStatus = 'homogeneous'
+
+  return {
+    representedCopyCount,
+    selectedCopyCount,
+    selectedFraction: representedCopyCount ? selectedCopyCount / representedCopyCount : 0,
+    unknownCopyCount,
+    exactAlleleIds,
+    exactAlleleVectors,
+    assignmentStatus,
+  }
+}
 
 /**
  * Join display-only target assignments to an already computed cluster cut.
@@ -190,38 +236,34 @@ export const localTargetRows = ({
     cluster.member_group_hashes.forEach((hash) => {
       groupByHash.get(String(hash))?.samples.forEach((sample) => copyKeys.add(copyIdentity(sample)))
     })
-    const assignments = [...copyKeys].map((key) => assignmentByCopy.get(key))
-    const assignedVectors = assignments.flatMap((assignment) =>
-      assignment?.assignment_status === 'assigned' && assignment.exact_allele_ids.length > 0
-        ? [[...assignment.exact_allele_ids].sort()]
-        : []
-    )
-    const exactAlleleVectors = [
-      ...new Map(assignedVectors.map((vector) => [JSON.stringify(vector), vector])).values(),
-    ].sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right)))
-    const exactAlleleIds = [...new Set(exactAlleleVectors.flat())].sort()
-    const selectedCopyCount = assignments.filter(
-      (assignment) => assignment?.is_selected_exact_allele
-    ).length
-    const representedCopyCount = copyKeys.size
-    const unknownCopyCount = assignments.filter(
-      (assignment) => assignment?.assignment_status !== 'assigned'
-    ).length
-    let assignmentStatus: LocalTargetClusterRow['assignmentStatus'] = 'mixed'
-    if (assignedVectors.length === 0) assignmentStatus = 'unassigned'
-    else if (unknownCopyCount > 0) assignmentStatus = 'partial'
-    else if (exactAlleleVectors.length === 1) assignmentStatus = 'homogeneous'
-
     return {
       clusterId: cluster.cluster_id,
       label: `Cluster ${index + 1}`,
-      representedCopyCount,
-      selectedCopyCount,
-      selectedFraction: representedCopyCount ? selectedCopyCount / representedCopyCount : 0,
-      unknownCopyCount,
-      exactAlleleIds,
-      exactAlleleVectors,
-      assignmentStatus,
+      ...summarizeTargetAssignments(copyKeys, assignmentByCopy),
+    }
+  })
+}
+
+/**
+ * Materialize display-only exact target assignments for expanded haplotype-group rows.
+ * These summaries use the same immutable sidecar join as cluster summaries, but never
+ * feed clustering, consensus variants, or row order.
+ */
+export const localTargetGroupRows = ({
+  groups,
+  sidecar,
+}: {
+  groups: readonly HaplotypeGroup[]
+  sidecar: TargetDisplaySidecar
+}): LocalTargetGroupRow[] => {
+  const assignmentByCopy = new Map(
+    Object.values(sidecar.by_carrier).map((assignment) => [copyIdentity(assignment), assignment])
+  )
+  return groups.map((group) => {
+    const copyKeys = new Set(group.samples.map((sample) => copyIdentity(sample)))
+    return {
+      groupHash: String(group.hash),
+      ...summarizeTargetAssignments(copyKeys, assignmentByCopy),
     }
   })
 }

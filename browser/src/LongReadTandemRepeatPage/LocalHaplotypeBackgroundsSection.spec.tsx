@@ -4,9 +4,9 @@ import { render, screen } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 
 import LocalHaplotypeBackgroundsSection, {
+  boundedExactTrDecomposition,
   boundedRowExactAlleleIds,
   decomposeUniqueExactAlleles,
-  ExactSequenceStrip,
   LocalHaplotypeHorizontalScroller,
 } from './LocalHaplotypeBackgroundsSection'
 import type { LongReadTrAllele, LongReadTrLocus } from './types'
@@ -25,15 +25,6 @@ const allele = (overrides: Partial<LongReadTrAllele> = {}): LongReadTrAllele => 
   freq: { all: { ac: 2, an: 100, af: 0.02 }, populations: [] },
   ...overrides,
 })
-
-const renderStrip = (props: React.ComponentProps<typeof ExactSequenceStrip>) =>
-  render(
-    <ThemeProvider
-      theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
-    >
-      <ExactSequenceStrip {...props} />
-    </ThemeProvider>
-  )
 
 describe('local haplotype section availability', () => {
   const originalFetch = (global as any).fetch
@@ -116,7 +107,7 @@ describe('local haplotype narrow-width scrolling', () => {
   })
 })
 
-describe('local haplotype exact target sequence strip', () => {
+describe('local haplotype exact target motif diagrams', () => {
   test('always keeps the selected identity in the bounded strip set and exposes all omissions', () => {
     expect(
       boundedRowExactAlleleIds(['source~1', 'source~2', 'source~3', 'source~7'], 'source~7')
@@ -143,48 +134,19 @@ describe('local haplotype exact target sequence strip', () => {
     expect(result.size).toBe(2)
   })
 
-  test('motif-highlights one observed exact identity and marks selection with text and outline state', () => {
-    renderStrip({
-      allele: allele(),
-      exactId: 'source-record~7',
-      motifs: ['CAG'],
-      selected: true,
-    })
-
-    const strip = screen.getByLabelText(/ALT 7 · \+6 bp; observed exact allele; selected/)
-    expect(strip.getAttribute('data-exact-allele-id')).toBe('source-record~7')
-    expect(strip.getAttribute('data-selected-exact-allele')).toBe('true')
-    expect(strip.textContent).toContain('Selected')
-    expect(strip.getAttribute('title')).toContain('not a cluster consensus')
+  test('fails closed before decomposing unavailable or over-large exact sequences', () => {
+    expect(
+      boundedExactTrDecomposition(
+        allele({ alt: `C${'AG'.repeat(1_100)}`, length: 2_198 }),
+        ['CAG']
+      )
+    ).toBeNull()
+    expect(boundedExactTrDecomposition(allele({ alt: null }), ['CAG'])).toBeNull()
+    expect(
+      boundedExactTrDecomposition(
+        allele(),
+        Array.from({ length: 65 }, (_, index) => `C${index}G`)
+      )
+    ).toBeNull()
   })
-
-  test('falls back to an ordinary exact identity/length glyph instead of truncating unreadable sequence', () => {
-    renderStrip({
-      allele: allele({ alt: `C${'AG'.repeat(1_100)}`, length: 2_198 }),
-      exactId: 'source-record~7',
-      motifs: ['CAG'],
-      selected: false,
-    })
-
-    expect(screen.getByText(/Exact identity \/ length glyph/)).not.toBeNull()
-    expect(screen.getByLabelText(/exact sequence preview unavailable/)).not.toBeNull()
-  })
-
-  test.each([
-    { allele: allele({ alt: null }), motifs: [] },
-    { allele: allele({ ref: `C${'AG'.repeat(1_100)}` }), motifs: ['CAG'] },
-    { allele: allele(), motifs: Array.from({ length: 65 }, (_, index) => `C${index}G`) },
-  ])(
-    'fails to the same glyph before decomposing an unavailable or over-bounded input',
-    ({ allele: exactAllele, motifs }) => {
-      renderStrip({
-        allele: exactAllele,
-        exactId: 'source-record~7',
-        motifs,
-        selected: false,
-      })
-
-      expect(screen.getByText(/sequence preview unavailable/)).not.toBeNull()
-    }
-  )
 })
