@@ -588,17 +588,27 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(index).toHaveStyleRule('overflow-x', 'hidden')
   })
 
-  test('puts one fixed short-read details link in the information list', () => {
+  test('renders complete non-classifying short-read context with a fixed dataset link', () => {
     renderPage()
-    const link = screen.getByRole('link', { name: 'HTT (HTT) short-read details' })
-    const informationList = screen.getByText('GRCh38 / hg38').closest('dl')
-
-    expect(link.getAttribute('href')).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
-    expect(informationList?.contains(link)).toBe(true)
-    expect(link.getAttribute('title')).toMatch(/Exact reference-component match/)
-    expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
-    expect(screen.queryByText('Huntington disease (HD)')).toBeNull()
-    expect(screen.queryByText('Catalog note copied verbatim.')).toBeNull()
+    const panel = screen
+      .getByRole('heading', { name: /Short-read known-locus context/ })
+      .closest('section') as HTMLElement
+    expect(
+      within(panel).getByRole('link', { name: 'HTT (HTT) short-read details' }).getAttribute('href')
+    ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
+    expect(within(panel).getByText('Huntington disease (HD)')).not.toBeNull()
+    expect(within(panel).getByText('143100')).not.toBeNull()
+    expect(within(panel).getByText('Autosomal dominant')).not.toBeNull()
+    expect(
+      within(panel).getByText(/Normal ≤ 26, Intermediate 27 - 35, Pathogenic ≥ 36/)
+    ).not.toBeNull()
+    expect(within(panel).getByText('Catalog note copied verbatim.')).not.toBeNull()
+    expect(within(panel).getAllByText(/CAG/).length).toBeGreaterThan(0)
+    expect(
+      within(panel).getByText(/Short-read known-locus ranges are reference context/)
+    ).not.toBeNull()
+    expect(within(panel).getByText(/not applied to long-read alleles/)).not.toBeNull()
+    expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
     const highlightedComponent = screen
       .getByRole('img', { name: /component 1 is outlined/ })
       .querySelector('[data-catalog-pathogenic-match="true"]')

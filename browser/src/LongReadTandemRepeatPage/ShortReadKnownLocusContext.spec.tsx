@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
 import { LongReadTrShortReadContext } from './types'
@@ -70,16 +70,31 @@ const exactContext: LongReadTrShortReadContext = {
 }
 
 describe('ShortReadKnownLocusContext', () => {
-  test('renders only the fixed short-read details link for an exact match', () => {
-    const { container } = render(<ShortReadKnownLocusContext context={exactContext} />)
+  test('renders copied catalog context and the mandatory non-classification disclaimer', () => {
+    render(<ShortReadKnownLocusContext context={exactContext} />)
 
-    const link = screen.getByRole('link', { name: 'HTT (HTT) short-read details' })
-    expect(link.getAttribute('href')).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
-    expect(link.getAttribute('title')).toMatch(/Exact reference-component match/)
-    expect(link.getAttribute('title')).toMatch(/not applied to long-read alleles/)
-    expect(container.textContent).toBe('HTT (HTT) short-read details')
-    expect(screen.queryByText('Huntington disease (HD)')).toBeNull()
-    expect(screen.queryByText(/Component 1:/)).toBeNull()
+    const panel = screen
+      .getByRole('heading', { name: /Short-read known-locus context/ })
+      .closest('section') as HTMLElement
+    expect(within(panel).getByText('Exact reference-component match')).not.toBeNull()
+    expect(within(panel).getByText(/Component 1: chr4:3,074,877–3,074,933/)).not.toBeNull()
+    expect(within(panel).getByText('Huntington disease (HD)')).not.toBeNull()
+    expect(within(panel).getByText('Source note.')).not.toBeNull()
+    expect(
+      within(panel).getByText(
+        (_text, element) =>
+          element?.tagName === 'LI' && Boolean(element.textContent?.includes('CAA — reference'))
+      )
+    ).not.toBeNull()
+    expect(
+      within(panel).getByText(/Short-read known-locus ranges are reference context/)
+    ).not.toBeNull()
+    expect(within(panel).getByText(/not applied to.*long-read alleles/i)).not.toBeNull()
+    expect(
+      within(panel)
+        .getByRole('link', { name: /HTT.*short-read details/ })
+        .getAttribute('href')
+    ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
   })
 
   test.each([
@@ -89,12 +104,15 @@ describe('ShortReadKnownLocusContext', () => {
     'AMBIGUOUS_COMPONENT',
     'CATALOG_UNAVAILABLE',
     'UNAVAILABLE',
-  ])('renders no link for %s', (status) => {
-    const { container } = render(
-      <ShortReadKnownLocusContext
-        context={{ ...exactContext, status: status as LongReadTrShortReadContext['status'] }}
-      />
-    )
-    expect(container.childElementCount).toBe(0)
-  })
+  ])(
+    'renders no panel for %s',
+    (status) => {
+      const { container } = render(
+        <ShortReadKnownLocusContext
+          context={{ ...exactContext, status: status as LongReadTrShortReadContext['status'] }}
+        />
+      )
+      expect(container.childElementCount).toBe(0)
+    }
+  )
 })
