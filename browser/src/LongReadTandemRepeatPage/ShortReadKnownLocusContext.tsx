@@ -17,10 +17,15 @@ const ContextPanel = styled.section`
 
 const HeadingRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.35em;
 
   h2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35em;
     margin-right: 0;
   }
 `
@@ -78,7 +83,7 @@ const CatalogMotifTable = ({
   label: string
   referenceRepeatUnit: string
 }) => (
-  <TableScroller>
+  <TableScroller role="region" aria-label={`${label} table`} tabIndex={0}>
     <MotifTable aria-label={label}>
       <thead>
         <tr>
@@ -143,7 +148,7 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
           <p>
             <strong>How to use it.</strong> Follow the known-locus link for short-read details, then
             read the matched component, disease records, repeat-count ranges, and motif labels here.
-            Expand the disclosures for every raw catalog motif and provenance.
+            Expand the disclosures for all catalog motifs and technical provenance.
           </p>
           <p style={{ marginBottom: 0 }}>
             <strong>What it does not show.</strong> This coordinate-and-motif identity is not a
@@ -175,7 +180,11 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
       {record.associated_diseases.length > 0 && (
         <>
           <h3>Disease, inheritance, and repeat-count ranges</h3>
-          <TableScroller>
+          <TableScroller
+            role="region"
+            aria-label="Disease, inheritance, and repeat-count ranges table"
+            tabIndex={0}
+          >
             <ShortTandemRepeatAssociatedDiseasesTable
               associatedDiseases={record.associated_diseases}
               showSymbols

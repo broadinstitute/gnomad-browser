@@ -20,12 +20,16 @@ const ModalEventBoundary = styled.span``
 
 const Button = styled.button.attrs({ type: 'button' })`
   display: inline-flex;
+  justify-content: center;
   align-items: center;
-  padding: 0 3px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
   border: none;
   background: none;
   cursor: pointer;
   outline: none;
+
   img {
     position: relative;
     top: 0.13em;
@@ -33,9 +37,11 @@ const Button = styled.button.attrs({ type: 'button' })`
     height: 14px;
     border-radius: 7px;
   }
+
   &:hover img {
     opacity: 0.7;
   }
+
   &:focus img {
     box-shadow: 0 0 0 0.2em rgba(70, 130, 180, 0.5);
   }

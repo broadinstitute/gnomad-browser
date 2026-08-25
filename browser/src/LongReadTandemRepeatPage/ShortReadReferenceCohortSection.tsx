@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { Button } from '@gnomad/ui'
 
+import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import Query from '../Query'
 import ShortReadStrDistributionPanel, {
   ShortReadDistributionPart,
@@ -47,9 +48,16 @@ const Section = styled.section`
   border-radius: 8px;
   margin: 2em 0;
   background: #f4faef;
+`
 
-  > h2 {
-    margin-top: 0;
+const SectionHeading = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+
+  h2 {
+    margin: 0;
     color: #315d20;
   }
 `
@@ -71,6 +79,36 @@ type DistributionResponse = {
   allele: ShortReadDistributionPart<V3AlleleSizeDistributionCohort>
   genotype: ShortReadDistributionPart<GenotypeDistributionCohort>
 }
+
+const ShortReadReferenceHelp = () => (
+  <HaplotypeHelpButton title="About the short-read reference cohort">
+    <p style={{ marginTop: 0 }}>
+      <strong>What this shows.</strong> Green aggregate repeat-count distributions for the exact
+      matched repeat unit in the short-read reference cohort.
+    </p>
+    <div>
+      <strong>How to use it.</strong>
+      <h4>Short-read allele repeat-count distribution</h4>
+      <p>
+        Bars count short-read allele copies. Use the independent ancestry, sex, color, scale, and
+        catalog-range controls for this green plot.
+      </p>
+      <h4>Short-read genotype repeat-count distribution</h4>
+      <p>
+        Squares count people by their shorter and longer repeat counts. Use the independent
+        short-read ancestry, sex, and catalog-range controls.
+      </p>
+      <p>
+        Choose <strong>Load short-read distributions</strong> to request these plots.
+      </p>
+    </div>
+    <p style={{ marginBottom: 0 }}>
+      <strong>What it does not show.</strong> This separate assay and cohort is not combined with
+      the long-read Allelic landscape (shown in purple). Its marks and ranges do not filter, select,
+      or classify LR observations.
+    </p>
+  </HaplotypeHelpButton>
+)
 
 const Unavailable = ({ reasonCode }: { reasonCode: string | null }) => (
   <p role="status" data-reason-code={reasonCode || undefined}>
@@ -106,7 +144,10 @@ const ShortReadReferenceCohortSection = ({
   ) {
     return (
       <Section aria-labelledby="short-read-reference-cohort-heading">
-        <h2 id="short-read-reference-cohort-heading">Short-read reference cohort unavailable</h2>
+        <SectionHeading>
+          <h2 id="short-read-reference-cohort-heading">Short-read reference cohort unavailable</h2>
+          <ShortReadReferenceHelp />
+        </SectionHeading>
         <Unavailable reasonCode="EXACT_CONTEXT_INCOMPLETE" />
       </Section>
     )
@@ -118,14 +159,13 @@ const ShortReadReferenceCohortSection = ({
       data-assay="short-read"
       data-theme="short-read-green"
     >
-      <h2 id="short-read-reference-cohort-heading">
-        Short-read reference cohort — {shortId} {motif}
-      </h2>
-      <p>
-        Aggregate repeat-count distributions from the matched short-read cohort. This is a separate
-        assay and cohort from the purple LR Allelic landscape below. Its counts, controls, ranges,
-        and plots do not filter or select LR exact alleles.
-      </p>
+      <SectionHeading>
+        <h2 id="short-read-reference-cohort-heading">
+          Short-read reference cohort — {shortId} {motif}
+        </h2>
+        <ShortReadReferenceHelp />
+      </SectionHeading>
+      <p>Green short-read repeat-count plots for this exact matched reference repeat unit.</p>
 
       {!requested ? (
         <Button type="button" onClick={() => setRequested(true)}>

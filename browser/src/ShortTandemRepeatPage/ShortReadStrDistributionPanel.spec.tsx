@@ -243,7 +243,7 @@ describe('ShortReadStrDistributionPanel', () => {
     (id, first, second) => {
       renderPanel({ id, diseases: [first, second] })
 
-      const rangeSelect = screen.getByLabelText('Short-read catalog ranges')
+      const rangeSelect = screen.getByLabelText('Catalog ranges for short-read plots')
       expect((rangeSelect as HTMLSelectElement).value).toBe('')
       expect(screen.queryByText(/Catalog context for/)).toBeNull()
       expect(screen.getByTestId('short-allele-plot').getAttribute('data-ranges')).toBe('[]')
@@ -310,7 +310,7 @@ describe('ShortReadStrDistributionPanel', () => {
       media: '(max-width:800px)',
     })
 
-    const rangeSelect = screen.getByLabelText('Short-read catalog ranges')
+    const rangeSelect = screen.getByLabelText('Catalog ranges for short-read plots')
     rangeSelect.focus()
     expect(document.activeElement).toBe(rangeSelect)
     expect(screen.getByRole('button', { name: 'Hide ranges' })).not.toBeNull()

@@ -143,6 +143,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   compact = false,
   calledCountDistributions,
   focusObservedDomain = false,
+  showHelp = true,
 }: {
   variantId: string
   alleleSizeDistribution: AlleleSizeDistributionCohort[]
@@ -153,6 +154,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   compact?: boolean
   calledCountDistributions?: CalledCountDistributions
   focusObservedDomain?: boolean
+  showHelp?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -178,7 +180,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   return (
     <>
       <Heading>
-        {heading} <InfoButton topic="str-allele-size-distribution" />
+        {heading} {showHelp && <InfoButton topic="str-allele-size-distribution" />}
       </Heading>
       {/* The responsive plot wrapper uses height: 100%. Give it an explicit
           containing height so its SVG participates in document flow instead
@@ -275,6 +277,7 @@ export const LongReadGenotypeDistributionSection = ({
   calledCountDistributions,
   focusObservedDomain = false,
   explainGenotypes = false,
+  showHelp = true,
 }: {
   variantId: string
   genotypeDistribution: GenotypeDistributionCohort[]
@@ -285,6 +288,7 @@ export const LongReadGenotypeDistributionSection = ({
   calledCountDistributions?: CalledCountDistributions
   focusObservedDomain?: boolean
   explainGenotypes?: boolean
+  showHelp?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -307,7 +311,7 @@ export const LongReadGenotypeDistributionSection = ({
   return (
     <>
       <Heading>
-        {heading} <InfoButton topic="str-genotype-distribution" />
+        {heading} {showHelp && <InfoButton topic="str-genotype-distribution" />}
       </Heading>
       {explainGenotypes && (
         <p>

@@ -5,6 +5,7 @@ import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
+import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   LongReadTrComponentTrack,
@@ -32,6 +33,18 @@ const Header = styled.header`
 
   @media (max-width: 700px) {
     display: block;
+  }
+`
+
+const HeadingWithHelp = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+
+  h1,
+  h2 {
+    margin-right: 0;
   }
 `
 
@@ -75,6 +88,41 @@ const ProvenanceDetails = styled.details`
     font-weight: bold;
   }
 `
+
+const LocusOverviewHelp = () => (
+  <HaplotypeHelpButton title="About this tandem-repeat locus">
+    <p style={{ marginTop: 0 }}>
+      <strong>What this shows.</strong> The canonical long-read locus, its ordered LR reference
+      components, observed exact alleles, aggregate plots, and any exact short-read catalog context.
+    </p>
+    <p>
+      <strong>How to use it.</strong> Choose a long-read cohort, review the component track and
+      assay-specific plots, then filter or select an exact allele in the Allelic landscape. Expand
+      data source details only when technical provenance is needed.
+    </p>
+    <p style={{ marginBottom: 0 }}>
+      <strong>What it does not show.</strong> Short-read catalog labels and ranges do not classify
+      long-read alleles, genotypes, components, people, or total allele length change.
+    </p>
+  </HaplotypeHelpButton>
+)
+
+const UnavailableDataHelp = () => (
+  <HaplotypeHelpButton title="About unavailable data">
+    <p style={{ marginTop: 0 }}>
+      <strong>What this shows.</strong> Features that could not be displayed from the available data
+      for this locus and cohort.
+    </p>
+    <p>
+      <strong>How to use it.</strong> Read each reason, and continue using the sections that remain
+      available. Changing the long-read cohort may change availability.
+    </p>
+    <p style={{ marginBottom: 0 }}>
+      <strong>What it does not show.</strong> Unavailable values are not zero and are never inferred
+      from another measurement.
+    </p>
+  </HaplotypeHelpButton>
+)
 
 const cohortName = (cohort: LongReadCohort) =>
   cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
@@ -164,18 +212,6 @@ const LongReadTandemRepeatPage = ({
       : `${signed(locus.delta_min)} to ${signed(locus.delta_max)} bp`
   const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
   const unavailableData: { label: string; reason: string }[] = []
-  if (!locus.sequences_available) {
-    unavailableData.push({
-      label: 'Allele motif previews',
-      reason: unavailableReason(locus.sequences_unavailable_reason),
-    })
-  }
-  if (selectedAllele && locus.selected_allele_valid !== false && !locus.selected_allele) {
-    unavailableData.push({
-      label: 'Selected allele sequence and details',
-      reason: unavailableReason(locus.selected_allele_unavailable_reason),
-    })
-  }
   if (!repeatPlotsAvailable) {
     unavailableData.push({
       label: 'Component repeat counts',
@@ -184,6 +220,37 @@ const LongReadTandemRepeatPage = ({
           ? 'compound loci do not have one unambiguous component repeat count'
           : unavailableReason(locus.repeat_count_plots.reason_code),
     })
+  }
+  let selectedAlleleDetail: React.ReactNode
+  if (locus.selected_allele) {
+    selectedAlleleDetail = (
+      <SelectedExactAlleleDetail
+        ref={setDetail}
+        allele={{
+          ...locus.selected_allele,
+          repeat_count:
+            locus.selected_allele.repeat_count ||
+            alleleById.get(locus.selected_allele.variant_id)?.repeat_count ||
+            null,
+          repeat_count_source:
+            locus.selected_allele.repeat_count_source ||
+            alleleById.get(locus.selected_allele.variant_id)?.repeat_count_source ||
+            null,
+          motif_purity:
+            locus.selected_allele.motif_purity ??
+            alleleById.get(locus.selected_allele.variant_id)?.motif_purity ??
+            null,
+        }}
+        motifs={locus.motifs}
+      />
+    )
+  } else if (selectedAllele && locus.selected_allele_valid !== false) {
+    selectedAlleleDetail = (
+      <p role="status">
+        Exact allele details unavailable:{' '}
+        {unavailableReason(locus.selected_allele_unavailable_reason)}.
+      </p>
+    )
   }
 
   return (
@@ -196,12 +263,13 @@ const LongReadTandemRepeatPage = ({
       )}
 
       <Header>
-        <div>
+        <HeadingWithHelp>
           <PageHeading>
             Tandem repeat at chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
             {envelope.end1.toLocaleString()}
           </PageHeading>
-        </div>
+          <LocusOverviewHelp />
+        </HeadingWithHelp>
         <CohortControl htmlFor="lr-tr-cohort">
           Long-read cohort
           <Select
@@ -254,7 +322,7 @@ const LongReadTandemRepeatPage = ({
           </AttributeListItem>
           <AttributeListItem label="Observed alleles">
             {locus.exact_alt_count_complete
-              ? `${locus.exact_alt_count.toLocaleString()} exact alternate alleles`
+              ? `${locus.exact_alt_count.toLocaleString()} exact alleles`
               : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
           </AttributeListItem>
           <AttributeListItem label="Total allele length change (ALT − REF, bp)">
@@ -292,35 +360,13 @@ const LongReadTandemRepeatPage = ({
         navigation={navigation}
         sequencesAvailable={locus.sequences_available}
         sequencesUnavailableReason={locus.sequences_unavailable_reason}
-        selectedAlleleDetail={
-          locus.selected_allele ? (
-            <SelectedExactAlleleDetail
-              ref={setDetail}
-              allele={{
-                ...locus.selected_allele,
-                repeat_count:
-                  locus.selected_allele.repeat_count ||
-                  alleleById.get(locus.selected_allele.variant_id)?.repeat_count ||
-                  null,
-                repeat_count_source:
-                  locus.selected_allele.repeat_count_source ||
-                  alleleById.get(locus.selected_allele.variant_id)?.repeat_count_source ||
-                  null,
-                motif_purity:
-                  locus.selected_allele.motif_purity ??
-                  alleleById.get(locus.selected_allele.variant_id)?.motif_purity ??
-                  null,
-              }}
-              motifs={locus.motifs}
-            />
-          ) : undefined
-        }
+        selectedAlleleDetail={selectedAlleleDetail}
       />
 
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (
         <p role="alert">
-          This locus has more alternate alleles than the page can display safely. Showing{' '}
+          This locus has more exact alleles than the page can display safely. Showing{' '}
           {locus.alleles.nodes.length.toLocaleString()} of {locus.total_alleles.toLocaleString()};
           distributions are hidden rather than calculated from incomplete data.
         </p>
@@ -328,7 +374,10 @@ const LongReadTandemRepeatPage = ({
 
       {unavailableData.length > 0 && (
         <Panel aria-labelledby="lr-tr-unavailable-heading">
-          <h2 id="lr-tr-unavailable-heading">Unavailable data</h2>
+          <HeadingWithHelp>
+            <h2 id="lr-tr-unavailable-heading">Unavailable data</h2>
+            <UnavailableDataHelp />
+          </HeadingWithHelp>
           <UnavailableList>
             {unavailableData.map(({ label, reason }) => (
               <li key={label}>

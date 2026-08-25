@@ -307,12 +307,14 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    const exactIndex = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    const exactIndex = screen.getByRole('table', { name: 'Exact allele index' })
     expect(screen.getByRole('heading', { name: '3 of 3 exact alleles' })).not.toBeNull()
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
 
-    const histogram = screen.getByLabelText('Total allele length change histogram')
+    const histogram = screen.getByLabelText(
+      'Total allele length change (ALT minus REF, bp) histogram'
+    )
     expect(window.getComputedStyle(histogram).paddingTop).toBe('18px')
     const deltaAxis = screen.getByTestId('whole-record-delta-axis')
     expect(within(deltaAxis).getByLabelText('−6 bp tick').textContent).toBe('−6')
@@ -373,7 +375,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(Number(tallest.getAttribute('data-height-percent'))).toBeGreaterThan(
       Number(shortest.getAttribute('data-height-percent'))
     )
-    expect(screen.getByText(/numbers above bars are exact alleles/)).not.toBeNull()
+    expect(screen.getByText(/Numbers above bars show exact alleles/)).not.toBeNull()
   })
 
   test('lists every same-length exact ALT as a keyboard-operable selection link', () => {
@@ -404,15 +406,15 @@ describe('long-read TR visualization fidelity', () => {
     expect(document.activeElement).toBe(
       screen.getByRole('heading', { name: '2 of 4 exact alleles at −6 bp' })
     )
-    const picker = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    const picker = screen.getByRole('table', { name: 'Exact allele index' })
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
     const links = within(picker).getAllByRole('link')
     expect(links).toHaveLength(2)
     expect(within(picker).getByText(`${sourceId}~1`)).not.toBeNull()
     expect(within(picker).getByText(`${sourceId}~4`)).not.toBeNull()
     expect(links.map((link) => link.textContent)).toEqual(['Selected', 'Select'])
-    expect(links[0].getAttribute('aria-current')).toBe('true')
-    expect(links[0].closest('[role="row"]')?.getAttribute('aria-selected')).toBe('true')
+    expect(links[0].getAttribute('aria-current')).toBe('page')
+    expect(links[0].closest('[role="row"]')?.getAttribute('aria-selected')).toBeNull()
     fireEvent.keyDown(links[1], { key: 'Enter' })
     fireEvent.click(links[1])
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(sameLengthAllele.variant_id)
@@ -530,20 +532,18 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    const cell = screen.getByRole('gridcell', {
-      name: '0 bp longer, 0 bp shorter: 1 people',
+    const cell = screen.getByRole('button', {
+      name: /0 bp longer, 0 bp shorter: 1 people; filter the exact allele index/,
     })
     fireEvent.keyDown(cell, { key: 'Enter' })
-    expect(cell.getAttribute('aria-selected')).toBe('true')
+    expect(cell.getAttribute('aria-pressed')).toBe('true')
     expect(
       screen.getByRole('heading', {
         name: '0 of 3 exact alleles in selected genotype cell (0 bp × 0 bp)',
       })
     ).toBe(document.activeElement)
     expect(
-      screen
-        .getByRole('table', { name: 'Exact alternate allele index' })
-        .getAttribute('aria-rowcount')
+      screen.getByRole('table', { name: 'Exact allele index' }).getAttribute('aria-rowcount')
     ).toBe('1')
     expect(screen.getByText(/1 person across 1 exact allele pair/)).not.toBeNull()
     fireEvent.keyDown(cell, { key: ' ' })
@@ -614,13 +614,18 @@ describe('long-read TR visualization fidelity', () => {
     const filters = screen.getByRole('group', {
       name: 'Shared ancestry and sex filters for total-length plots',
     })
+    expect(
+      screen.getByRole('group', { name: 'Total-length histogram display controls' })
+    ).not.toBeNull()
     expect(within(filters).queryByRole('option', { name: 'nfe' })).toBeNull()
     fireEvent.change(within(filters).getByLabelText('Genetic ancestry group'), {
       target: { value: 'afr' },
     })
     expect(screen.getByText('6 people')).not.toBeNull()
     expect(
-      screen.getByRole('gridcell', { name: '+12 bp longer, −6 bp shorter: 6 people' })
+      screen.getByRole('button', {
+        name: /\+12 bp longer, −6 bp shorter: 6 people; filter the exact allele index/,
+      })
     ).not.toBeNull()
     expect(
       screen.getByRole('button', { name: /−6 bp, 2 called allele copies in this view/ })
@@ -697,7 +702,7 @@ describe('long-read TR visualization fidelity', () => {
     })
     fireEvent.click(screen.getByRole('button', { name: /−6 bp, 2 called allele copies/ }))
     expect(screen.getByRole('heading', { name: '1 of 3 exact alleles at −6 bp' })).not.toBeNull()
-    const index = screen.getByRole('table', { name: 'Exact alternate allele index' })
+    const index = screen.getByRole('table', { name: 'Exact allele index' })
     expect(within(index).getByText(stratifiedAlleles[0].variant_id)).not.toBeNull()
     expect(within(index).queryByText(stratifiedAlleles[1].variant_id)).toBeNull()
 
@@ -735,21 +740,18 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const heatmap = screen.getByRole('grid', { name: 'Genotype length-change heatmap' })
+    const heatmap = screen.getByRole('group', {
+      name: 'Genotype distribution by total allele length change',
+    })
     expect(heatmap.tagName.toLowerCase()).toBe('svg')
-    expect(
-      screen
-        .getByRole('gridcell', { name: '+12 bp longer, −6 bp shorter: 12 people' })
-        .getAttribute('fill')
-    ).toBe(LONG_READ_PRIMARY_PLOT_COLOR)
-    expect(within(heatmap).getByText('Longer allele length change (bp)')).not.toBeNull()
-    expect(within(heatmap).getByText('Shorter allele length change (bp)')).not.toBeNull()
+    const cell = screen.getByRole('button', {
+      name: /\+12 bp longer, −6 bp shorter: 12 people; filter the exact allele index/,
+    })
+    expect(cell.getAttribute('fill')).toBe(LONG_READ_PRIMARY_PLOT_COLOR)
+    expect(within(heatmap).getByText('Longer allele: ALT − REF (bp)')).not.toBeNull()
+    expect(within(heatmap).getByText('Shorter allele: ALT − REF (bp)')).not.toBeNull()
     expect(screen.getByLabelText('Logarithmic people intensity legend')).not.toBeNull()
-    expect(
-      screen
-        .getByRole('gridcell', { name: '+12 bp longer, −6 bp shorter: 12 people' })
-        .getAttribute('aria-selected')
-    ).toBe('false')
+    expect(cell.getAttribute('aria-pressed')).toBe('false')
     expect(
       screen.getByText(
         (_text, element) =>

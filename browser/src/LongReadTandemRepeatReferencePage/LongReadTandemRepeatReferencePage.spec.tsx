@@ -116,10 +116,10 @@ describe('LongReadTandemRepeatReferencePage', () => {
     )
     expect(atxn1.getByText('chr6:16,327,634–16,327,723')).not.toBeNull()
     const atxn1LocusLink = atxn1.getByRole('link', {
-      name: `Open HGSVC/HPRC LR locus: ${exactAtxn1}`,
+      name: 'Open HGSVC/HPRC long-read locus 1',
     })
     expect(atxn1LocusLink.textContent).toBe('Open LR locus')
-    expect(atxn1LocusLink.getAttribute('title')).toBe(exactAtxn1)
+    expect(atxn1LocusLink.getAttribute('title')).toBeNull()
     expect(atxn1LocusLink.getAttribute('href')).toBe(
       `/tandem-repeat/${exactAtxn1}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
@@ -127,7 +127,7 @@ describe('LongReadTandemRepeatReferencePage', () => {
     expect(atxn1.getByText('(6, 16327633, 16327723, TGC)')).not.toBeNull()
 
     const httRow = within(screen.getByRole('row', { name: /HTT/ }))
-    const httLinks = httRow.getAllByRole('link', { name: /Open .* LR locus:/ })
+    const httLinks = httRow.getAllByRole('link', { name: /Open .* long-read locus/ })
     expect(httLinks).toHaveLength(2)
     expect(httLinks[1].getAttribute('href')).toContain(`dataset=gnomad_r4_lr&lr_cohort=aou`)
     expect(httRow.getAllByText('6-component locus')).toHaveLength(2)
@@ -167,7 +167,7 @@ describe('LongReadTandemRepeatReferencePage', () => {
     expect(screen.getByText('Overlapping locus only')).not.toBeNull()
     expect(screen.getByText('Repeat unit differs')).not.toBeNull()
     expect(screen.getByText('Future source state')).not.toBeNull()
-    expect(screen.getByTitle('Reason code: REGION_EQUAL_MOTIF_MISMATCH')).not.toBeNull()
+    expect(screen.queryByTitle('Reason code: REGION_EQUAL_MOTIF_MISMATCH')).toBeNull()
 
     const mismatch = within(screen.getByRole('row', { name: /DIAGNOSTIC2/ }))
     fireEvent.click(mismatch.getAllByText('Match details')[0])
@@ -212,7 +212,7 @@ describe('LongReadTandemRepeatReferencePage', () => {
     expect(screen.getAllByLabelText('HGSVC/HPRC candidate loci')[0].children).toHaveLength(2)
     expect(
       within(screen.getByRole('row', { name: /MULTI/ })).getAllByRole('link', {
-        name: /Open HGSVC\/HPRC LR locus:/,
+        name: /Open HGSVC\/HPRC long-read locus/,
       })
     ).toHaveLength(2)
 

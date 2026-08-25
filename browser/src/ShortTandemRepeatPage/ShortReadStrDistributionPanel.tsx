@@ -86,6 +86,18 @@ const DiseaseControls = styled.div`
   align-items: center;
   gap: 0.75em;
   margin-top: 1em;
+
+  label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-width: 0;
+    gap: 0.35em;
+  }
+
+  select {
+    max-width: 100%;
+  }
 `
 
 const RangeContext = styled.div`
@@ -104,8 +116,8 @@ const UnavailableCard = ({ kind, reasonCode }: { kind: string; reasonCode: strin
   <PlotCard data-distribution-status="unavailable" data-reason-code={reasonCode || undefined}>
     <h3>{kind}</h3>
     <p role="status">
-      The short-read {kind.toLowerCase()} is unavailable independently; no values were inferred or
-      substituted.
+      This short-read {kind.toLowerCase()} is unavailable for the exact matched repeat unit. No
+      values were inferred or substituted.
     </p>
   </PlotCard>
 )
@@ -240,7 +252,7 @@ const ShortReadStrDistributionPanel = ({
 
   return (
     <div data-testid="short-read-distribution-panel">
-      <SharedControls aria-label="Short-read cohort filters">
+      <SharedControls aria-label="Short-read ancestry and sex controls">
         <strong>Short-read cohort controls</strong>
         {(alleleAvailable || genotypeAvailable) && (
           <ControlSection style={{ marginTop: '0.5em' }}>
@@ -276,7 +288,7 @@ const ShortReadStrDistributionPanel = ({
             Catalog ranges:{' '}
             <Select
               id={`${safeId}-catalog-ranges`}
-              aria-label="Short-read catalog ranges"
+              aria-label="Catalog ranges for short-read plots"
               value={selectedDiseaseName}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
                 setSelectedDiseaseName(event.target.value)
@@ -350,10 +362,6 @@ const ShortReadStrDistributionPanel = ({
                 selectedColorBy={selectedColorBy}
               />
             </ControlSection>
-            <p>
-              <strong>{totals.alleleCopies.toLocaleString()} allele copies</strong> in this
-              short-read view.
-            </p>
           </PlotCard>
         ) : (
           <UnavailableCard
@@ -378,9 +386,6 @@ const ShortReadStrDistributionPanel = ({
                 selectedSex={selectedSex}
               />
             </GenotypePlotFrame>
-            <p>
-              <strong>{totals.people.toLocaleString()} people</strong> in this short-read view.
-            </p>
           </PlotCard>
         ) : (
           <UnavailableCard

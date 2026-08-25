@@ -5,6 +5,7 @@ import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { BaseTable, Page, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
+import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
@@ -17,6 +18,17 @@ import {
   isMultiple,
 } from './referencePageHelpers'
 import { LongReadTrReferenceCohortResult, LongReadTrReferenceRow, ReferenceFilters } from './types'
+
+const HeadingWithHelp = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35em;
+
+  h1 {
+    margin-right: 0;
+  }
+`
 
 const Intro = styled.p`
   max-width: 920px;
@@ -231,6 +243,24 @@ const Pagination = styled.nav`
   }
 `
 
+const ReferenceIndexHelp = () => (
+  <HaplotypeHelpButton title="About the short-read to long-read reference index">
+    <p style={{ marginTop: 0 }}>
+      <strong>What this shows.</strong> Known short-read STR loci and any long-read locus whose LR
+      reference component has the same GRCh38 coordinates and stored repeat unit.
+    </p>
+    <p>
+      <strong>How to use it.</strong> Search or filter the table, then open a known STR or an exact
+      cohort match. Expand match or technical identity details only when provenance is needed. On a
+      narrow screen, scroll the results table horizontally.
+    </p>
+    <p style={{ marginBottom: 0 }}>
+      <strong>What it does not show.</strong> An exact reference identity does not classify a
+      long-read allele, genotype, component, person, or total allele length change.
+    </p>
+  </HaplotypeHelpButton>
+)
+
 const shortTandemRepeatUrl = (id: string) =>
   `/short-tandem-repeat/${encodeURIComponent(id)}?dataset=gnomad_r4`
 
@@ -351,17 +381,14 @@ const CohortResult = ({
 
   return (
     <CohortCell>
-      <Status $kind={kind} title={`Machine status: ${result.status}`}>
-        {label}
-      </Status>
+      <Status $kind={kind}>{label}</Status>
       {result.candidates.length > 0 && (
         <CandidateList aria-label={`${cohortLabel[cohort]} candidate loci`}>
           {result.candidates.map((candidate, index) => (
             <li key={candidate.canonical_id}>
               <Link
-                aria-label={`Open ${cohortLabel[cohort]} LR locus: ${candidate.canonical_id}`}
+                aria-label={`Open ${cohortLabel[cohort]} long-read locus ${index + 1}`}
                 preserveSelectedDataset={false}
-                title={candidate.canonical_id}
                 to={trLocusUrl(candidate.canonical_id, cohort)}
               >
                 {isExact(result) ? 'Open LR locus' : `Open locus ${index + 1}`}
@@ -372,7 +399,7 @@ const CohortResult = ({
         </CandidateList>
       )}
       {diagnostic && (
-        <Diagnostic title={`Reason code: ${result.reason_code}`}>
+        <Diagnostic>
           <strong>{diagnostic.label}</strong>
           <span>{diagnostic.help}</span>
         </Diagnostic>
@@ -417,7 +444,10 @@ export const LongReadTandemRepeatReferencePage = ({ rows }: { rows: LongReadTrRe
   return (
     <Page>
       <DocumentTitle title="Short-read STR ↔ long-read locus reference" />
-      <PageHeading>Short-read STR ↔ long-read locus reference</PageHeading>
+      <HeadingWithHelp>
+        <PageHeading>Short-read STR ↔ long-read locus reference</PageHeading>
+        <ReferenceIndexHelp />
+      </HeadingWithHelp>
       <Intro>
         Explore exact GRCh38 reference-component matches between known disease-associated short-read
         tandem-repeat catalog records and canonical long-read tandem-repeat loci.
@@ -531,10 +561,13 @@ export const LongReadTandemRepeatReferencePage = ({ rows }: { rows: LongReadTrRe
                       <td>
                         chr{region.chrom}:{(region.start + 1).toLocaleString('en-US')}–
                         {region.stop.toLocaleString('en-US')}
-                        <MachineTuple>
-                          ({region.chrom}, {region.start}, {region.stop},{' '}
-                          {record.reference_repeat_unit})
-                        </MachineTuple>
+                        <AuditDetails>
+                          <summary>Technical reference identity</summary>
+                          <MachineTuple>
+                            ({region.chrom}, {region.start}, {region.stop},{' '}
+                            {record.reference_repeat_unit})
+                          </MachineTuple>
+                        </AuditDetails>
                       </td>
                       <td>
                         <code>{record.reference_repeat_unit}</code> (
@@ -629,7 +662,10 @@ const LongReadTandemRepeatReferencePageContainer = () => (
         return (
           <Page>
             <DocumentTitle title="Short-read STR ↔ long-read locus reference" />
-            <PageHeading>Short-read STR ↔ long-read locus reference</PageHeading>
+            <HeadingWithHelp>
+              <PageHeading>Short-read STR ↔ long-read locus reference</PageHeading>
+              <ReferenceIndexHelp />
+            </HeadingWithHelp>
             <StatusMessage>
               The bounded reference index response was incomplete. Match availability cannot be
               determined.
