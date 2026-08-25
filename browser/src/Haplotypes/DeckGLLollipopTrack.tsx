@@ -45,7 +45,13 @@ import { getRowBackgroundRects } from './haplotypeBackgrounds'
 import { getGenealogyPanelLayout } from './genealogyPanelLayout'
 import { useStableScrollbarGutter } from './scrollbarGutter'
 import { SEARCHED_POSITION_GUIDE_STYLE } from './searchedPositionGuideStyle'
-import { localTargetBandBounds } from './localTargetPresentation'
+import {
+  LOCAL_TARGET_MOTIF_SEPARATOR_STYLE,
+  localTargetBandBounds,
+  localTargetStripLayout,
+  localTargetVariantColor,
+  truncateLocalTargetLabel,
+} from './localTargetPresentation'
 import { longReadAncestryGroupDisplayId } from '../LongReadVariantPage/longReadAncestryGroups'
 import type { RowBackgroundRect } from './haplotypeBackgrounds'
 import type { VariantMatchPredicate } from '../LongReadVariantPage/haplotypeSearchFiltering'
@@ -225,6 +231,7 @@ type PhantomLabel = {
   genomicPos: number
   endOffset: number
   centerY: number
+  color: [number, number, number, number]
 }
 
 // Wrapper that adapts the shared getVariantRgbaColor to the old call-site signature
@@ -1205,19 +1212,20 @@ function DeckGLLollipopCanvas({
             localTargetRow.assignmentStatus,
             localTargetRow.unknownCopyCount
           )
+          const primaryLabel = `${localTargetRow.label} · ${localTargetRow.representedCopyCount} copies`
           texts.push({
-            position: [24, y - 8, 0],
-            text: `${localTargetRow.label} · ${localTargetRow.representedCopyCount} copies`,
+            position: [26, y - 6, 0],
+            text: truncateLocalTargetLabel(primaryLabel),
             color: [0, 0, 0, 255],
-            size: 9,
-            tooltipText: `${localTargetRow.representedCopyCount} represented copies; ${localTargetRow.selectedCopyCount} selected exact-allele copies; ${assignmentSummary}`,
+            size: 11,
+            tooltipText: `${primaryLabel}; ${localTargetRow.selectedCopyCount} selected exact-allele copies; ${assignmentSummary}`,
           })
           texts.push({
-            position: [24, y + 8, 0],
-            text: `selected ${localTargetRow.selectedCopyCount}/${localTargetRow.representedCopyCount}`,
+            position: [26, y + 7, 0],
+            text: `Selected ${localTargetRow.selectedCopyCount}/${localTargetRow.representedCopyCount}`,
             color: [45, 45, 45, 255],
-            size: 8,
-            tooltipText: assignmentSummary,
+            size: 10,
+            tooltipText: `${primaryLabel}; ${assignmentSummary}`,
           })
         } else {
           // Ordinary Haplotype View keeps its existing ancestry composition bar.
@@ -1268,20 +1276,21 @@ function DeckGLLollipopCanvas({
               localTargetRow.assignmentStatus,
               localTargetRow.unknownCopyCount
             )
+            const primaryLabel = `Haplotype group · ${localTargetRow.representedCopyCount} copies`
             texts.push(
               {
-                position: [24, y - 7, 0],
-                text: `Haplotype group · ${localTargetRow.representedCopyCount} copies`,
-                color: [35, 35, 35, 255],
-                size: 8,
-                tooltipText: assignmentSummary,
+                position: [26, y - 6, 0],
+                text: truncateLocalTargetLabel(primaryLabel),
+                color: [25, 25, 25, 255],
+                size: 11,
+                tooltipText: `${primaryLabel}; ${assignmentSummary}`,
               },
               {
-                position: [24, y + 7, 0],
-                text: `selected ${localTargetRow.selectedCopyCount}/${localTargetRow.representedCopyCount}`,
-                color: [80, 80, 80, 255],
-                size: 8,
-                tooltipText: assignmentSummary,
+                position: [26, y + 7, 0],
+                text: `Selected ${localTargetRow.selectedCopyCount}/${localTargetRow.representedCopyCount}`,
+                color: [65, 65, 65, 255],
+                size: 10,
+                tooltipText: `${primaryLabel}; ${assignmentSummary}`,
               }
             )
             memberHoverTargets.push({
@@ -1828,7 +1837,11 @@ function DeckGLLollipopCanvas({
       if (alleleType !== 'trv' && !isIns && Math.abs(variant.allele_length || 0) < 50) return false
 
       const effectiveLength = Math.min(Math.max(Math.abs(variant.allele_length || 0), 1), locus.maxPhantomLength)
-      const accentColor = cssColorToRgba(ALLELE_TYPE_COLORS[alleleType] || '#888888')
+      const accentColor = localTargetVariantColor(
+        cssColorToRgba(ALLELE_TYPE_COLORS[alleleType] || '#888888'),
+        variant.allele_type,
+        Boolean(localTargetOverlay)
+      )
 
       allPhantomBars.push({
         genomicPos: variant.pos,
@@ -1853,6 +1866,11 @@ function DeckGLLollipopCanvas({
             genomicPos: variant.pos,
             endOffset: effectiveLength,
             centerY,
+            color: localTargetVariantColor(
+              [255, 255, 255, 220],
+              variant.allele_type,
+              Boolean(localTargetOverlay)
+            ),
           })
         }
       }
@@ -2004,9 +2022,14 @@ function DeckGLLollipopCanvas({
               variant, colorMode, start, stop, sampleMetadata, undefined,
               locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
             )
-            const color: [number, number, number, number] = opacity < 1
+            const strandColor: [number, number, number, number] = opacity < 1
               ? [baseColor[0], baseColor[1], baseColor[2], Math.round(baseColor[3] * opacity)]
               : baseColor
+            const color = localTargetVariantColor(
+              strandColor,
+              variant.allele_type,
+              Boolean(localTargetOverlay)
+            )
 
             // Accordion phantom bar for eligible insertions/TRs
             if (tryPhantomBar(variant, baseline, color, phantomCarriers)) continue
@@ -2050,11 +2073,11 @@ function DeckGLLollipopCanvas({
 
             if ((cat === 'deletion' || cat === 'sv') && isLargeBt && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
               const endPos = variant.end ?? (variant.pos + span)
-              allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color: [128, 128, 128, 100], variant, groupHash: dg.hash })
+              allSpanningRects.push({ start: variant.pos, end: endPos, rowY: baseline - ROW_CENTER_Y, color: localTargetVariantColor([128, 128, 128, 100], variant.allele_type, Boolean(localTargetOverlay)), variant, groupHash: dg.hash })
             } else if (cat === 'deletion') {
-              allDeletionLines.push({ position: variant.pos, yTop: baseline - 4.5, yBottom: baseline + 4.5, color: [128, 128, 128, 100], width: 1, variant })
+              allDeletionLines.push({ position: variant.pos, yTop: baseline - 4.5, yBottom: baseline + 4.5, color: localTargetVariantColor([128, 128, 128, 100], variant.allele_type, Boolean(localTargetOverlay)), width: 1, variant })
             } else {
-              const point: VariantPoint = { position: variant.pos, y: baseline, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: dg.hash }
+              const point: VariantPoint = { position: variant.pos, y: baseline, radius: 1.5, color: localTargetVariantColor([128, 128, 128, 100], variant.allele_type, Boolean(localTargetOverlay)), variant, groupHash: dg.hash }
               if (accordionActive) {
                 if (cat === 'insertion' || cat === 'tr' || cat === 'sv') {
                   const locus = phantomLociByPos.get(variant.pos)
@@ -2298,7 +2321,11 @@ function DeckGLLollipopCanvas({
             variant, colorMode, start, stop, sampleMetadata, undefined,
             locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
           )
-          const color: [number, number, number, number] = [baseColor[0], baseColor[1], baseColor[2], alpha]
+          const color = localTargetVariantColor(
+            [baseColor[0], baseColor[1], baseColor[2], alpha],
+            variant.allele_type,
+            Boolean(localTargetOverlay)
+          )
 
           // Accordion phantom bar for eligible insertions/TRs
           if (tryPhantomBar(variant, rowY + ROW_CENTER_Y, color, clusterPhantomCarriers)) continue
@@ -2343,11 +2370,11 @@ function DeckGLLollipopCanvas({
 
           if ((cat === 'deletion' || cat === 'sv') && isLargeBt && !INSERTION_TYPES.has((variant.allele_type || '').toLowerCase())) {
             const endPos = variant.end ?? (variant.pos + span)
-            allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color: [128, 128, 128, 100], variant, groupHash: group.hash })
+            allSpanningRects.push({ start: variant.pos, end: endPos, rowY, color: localTargetVariantColor([128, 128, 128, 100], variant.allele_type, Boolean(localTargetOverlay)), variant, groupHash: group.hash })
           } else if (cat === 'deletion') {
-            allDeletionLines.push({ position: variant.pos, yTop: rowY + 8, yBottom: rowY + 17, color: [128, 128, 128, 100], width: 1, variant })
+            allDeletionLines.push({ position: variant.pos, yTop: rowY + 8, yBottom: rowY + 17, color: localTargetVariantColor([128, 128, 128, 100], variant.allele_type, Boolean(localTargetOverlay)), width: 1, variant })
           } else {
-            const point: VariantPoint = { position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: [128, 128, 128, 100], variant, groupHash: group.hash }
+            const point: VariantPoint = { position: variant.pos, y: rowY + ROW_CENTER_Y, radius: 1.5, color: localTargetVariantColor([128, 128, 128, 100], variant.allele_type, Boolean(localTargetOverlay)), variant, groupHash: group.hash }
             if (accordionActive) {
               if (cat === 'insertion' || cat === 'tr' || cat === 'sv') {
                 const locus = phantomLociByPos.get(variant.pos)
@@ -2368,9 +2395,13 @@ function DeckGLLollipopCanvas({
           const isLarge = getVariantSpan(variant) >= 50
           if ((cat === 'insertion' || cat === 'deletion') && !isLarge && !lod.showSmallIndels) continue
 
-          const color = getVariantColor(
-            variant, colorMode, start, stop, sampleMetadata, group,
-            locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
+          const color = localTargetVariantColor(
+            getVariantColor(
+              variant, colorMode, start, stop, sampleMetadata, group,
+              locusCounts.get(variant.variant_id) || 0, haplotypeGroups.length || 1
+            ),
+            variant.allele_type,
+            Boolean(localTargetOverlay)
           )
 
           // Accordion phantom bar for eligible insertions/TRs
@@ -2708,7 +2739,7 @@ function DeckGLLollipopCanvas({
             0,
           ],
           getSize: 10,
-          getColor: [255, 255, 255, 220],
+          getColor: (d: PhantomLabel) => d.color,
           getTextAnchor: 'middle',
           getAlignmentBaseline: 'center',
           fontWeight: 700,
@@ -3096,6 +3127,7 @@ function DeckGLLollipopCanvas({
     highlightedVariantIds,
     typeFilters,
     variantMatchesSearch,
+    localTargetOverlay,
   ])
 
   // Crosshair layer — decoupled so hover doesn't rebuild all variant layers
@@ -3169,8 +3201,10 @@ function DeckGLLollipopCanvas({
         row.assignmentStatus,
         row.unknownCopyCount
       )
+      const { stripHeight, stripSpacing } = localTargetStripLayout(displayStripCount)
+      const stripHalfHeight = stripHeight / 2
       row.strips.forEach((strip, stripIndex) => {
-        const y = rowCenter + (stripIndex - (displayStripCount - 1) / 2) * 6
+        const y = rowCenter + (stripIndex - (displayStripCount - 1) / 2) * stripSpacing
         const totalWeight = strip.segments.reduce((total, segment) => total + segment.weight, 0)
         const visibleSegments = strip.segments.length > 0
           ? strip.segments
@@ -3181,7 +3215,7 @@ function DeckGLLollipopCanvas({
             ? ((bandRight - bandLeft) * segment.weight) / totalWeight
             : bandRight - bandLeft
           segments.push({
-            polygon: [[cursor, y - 2], [cursor + segmentWidth, y - 2], [cursor + segmentWidth, y + 2], [cursor, y + 2]],
+            polygon: [[cursor, y - stripHalfHeight], [cursor + segmentWidth, y - stripHalfHeight], [cursor + segmentWidth, y + stripHalfHeight], [cursor, y + stripHalfHeight]],
             color: segment.color,
             tooltipText: `${strip.label} — ${strip.exactId}; observed exact allele, not a cluster consensus or REF inference; ${assignmentSummary}${row.omittedExactAlleleCount > 0 ? `; ${row.omittedExactAlleleCount} additional exact identities omitted` : ''}`,
           })
@@ -3189,18 +3223,18 @@ function DeckGLLollipopCanvas({
         })
         if (strip.selected) {
           selectedOutlines.push(
-            { sourcePosition: [bandLeft, y - 3, 0], targetPosition: [bandRight, y - 3, 0] },
-            { sourcePosition: [bandRight, y - 3, 0], targetPosition: [bandRight, y + 3, 0] },
-            { sourcePosition: [bandRight, y + 3, 0], targetPosition: [bandLeft, y + 3, 0] },
-            { sourcePosition: [bandLeft, y + 3, 0], targetPosition: [bandLeft, y - 3, 0] }
+            { sourcePosition: [bandLeft, y - stripHalfHeight - 1, 0], targetPosition: [bandRight, y - stripHalfHeight - 1, 0] },
+            { sourcePosition: [bandRight, y - stripHalfHeight - 1, 0], targetPosition: [bandRight, y + stripHalfHeight + 1, 0] },
+            { sourcePosition: [bandRight, y + stripHalfHeight + 1, 0], targetPosition: [bandLeft, y + stripHalfHeight + 1, 0] },
+            { sourcePosition: [bandLeft, y + stripHalfHeight + 1, 0], targetPosition: [bandLeft, y - stripHalfHeight - 1, 0] }
           )
         }
       })
       if (unknownStrip) {
         const unknownIndex = row.strips.length
-        const y = rowCenter + (unknownIndex - (displayStripCount - 1) / 2) * 6
+        const y = rowCenter + (unknownIndex - (displayStripCount - 1) / 2) * stripSpacing
         segments.push({
-          polygon: [[bandLeft, y - 2], [bandRight, y - 2], [bandRight, y + 2], [bandLeft, y + 2]],
+          polygon: [[bandLeft, y - stripHalfHeight], [bandRight, y - stripHalfHeight], [bandRight, y + stripHalfHeight], [bandLeft, y + stripHalfHeight]],
           color: [185, 185, 185, 255],
           tooltipText: `Target assignment unavailable for ${row.unknownCopyCount || row.representedCopyCount} represented copies; absence is unknown and is not rendered as REF`,
         })
@@ -3220,6 +3254,10 @@ function DeckGLLollipopCanvas({
         data: segments,
         getPolygon: (segment: TargetSegment) => segment.polygon,
         getFillColor: (segment: TargetSegment) => segment.color,
+        getLineColor: LOCAL_TARGET_MOTIF_SEPARATOR_STYLE.color,
+        getLineWidth: LOCAL_TARGET_MOTIF_SEPARATOR_STYLE.width,
+        lineWidthUnits: 'pixels' as const,
+        stroked: true,
         pickable: true,
         onHover,
       }))

@@ -97,11 +97,14 @@ const PresentationNote = styled.span`
   font-size: 0.78rem;
 `
 
-const Legend = styled.div`
+export const LocalAncestryLegend = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.35em 0.8em;
   margin-top: 0.6em;
+  padding-right: 0.75rem;
+  text-align: right;
   font-size: 0.75rem;
 `
 
@@ -595,13 +598,13 @@ const LocalHaplotypeBackgroundsSection = ({
             </output>
           </ResolutionControl>
           <PresentationNote>
-            Fixed, contig-clipped ±50 kb query · target motif diagrams enlarged and not to genomic
-            scale
+            Fixed, contig-clipped ±50 kb query · non-TR evidence faded · target motif diagrams
+            enlarged and not to genomic scale
           </PresentationNote>
         </ControlBar>
 
         {representedSuperpopulations.length > 0 && (
-          <Legend aria-label="Genetic ancestry colors">
+          <LocalAncestryLegend aria-label="Genetic ancestry colors">
             {representedSuperpopulations.map((population) => (
               <LegendKey key={population}>
                 <span
@@ -615,7 +618,7 @@ const LocalHaplotypeBackgroundsSection = ({
                 {population}
               </LegendKey>
             ))}
-          </Legend>
+          </LocalAncestryLegend>
         )}
 
         <ViewerShell aria-label="Fixed, contig-clipped ±50 kb local flanking haplotype view">

@@ -4,6 +4,7 @@ import RegionViewer from '../RegionViewer/RegionViewer'
 import HaplotypeTrack, { type HaplotypeCluster, type HaplotypeGroup } from '../Haplotypes'
 import type { AccordionCoordinateMapper } from '../Haplotypes/AccordionCoordinateMapper'
 import type { LocalTargetTrackOverlay } from '../Haplotypes/DeckGLLollipopTrack'
+import { LOCAL_TARGET_LABEL_PANEL_WIDTH } from '../Haplotypes/localTargetPresentation'
 import AccordionRegionViewer from '../Haplotypes/AccordionRegionViewer'
 import { AccordionPositionAxisTrack } from '../Haplotypes/AccordionPositionAxis'
 import type { SampleMetadataMap } from '../HaplotypeRegionPage/HaplotypeRegionPage'
@@ -37,7 +38,12 @@ const LocalHaplotypeTrack = ({
   onToggleClusterExpansion: (clusterId: string) => void
   targetOverlay: LocalTargetTrackOverlay
 }) => (
-  <RegionViewer leftPanelWidth={175} rightPanelWidth={210} regions={[window as any]} width={width}>
+  <RegionViewer
+    leftPanelWidth={LOCAL_TARGET_LABEL_PANEL_WIDTH}
+    rightPanelWidth={210}
+    regions={[window as any]}
+    width={width}
+  >
     <AccordionRegionViewer mapper={mapper} originalRegion={window}>
       <HaplotypeTrack
         height={height}

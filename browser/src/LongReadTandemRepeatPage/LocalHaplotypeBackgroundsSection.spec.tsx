@@ -7,6 +7,7 @@ import LocalHaplotypeBackgroundsSection, {
   boundedExactTrDecomposition,
   boundedRowExactAlleleIds,
   decomposeUniqueExactAlleles,
+  LocalAncestryLegend,
   LocalHaplotypeHorizontalScroller,
 } from './LocalHaplotypeBackgroundsSection'
 import type { LongReadTrAllele, LongReadTrLocus } from './types'
@@ -107,6 +108,22 @@ describe('local haplotype narrow-width scrolling', () => {
   })
 })
 
+describe('local haplotype ancestry legend placement', () => {
+  test('right-justifies the legend above the local genealogy panel', () => {
+    render(
+      <LocalAncestryLegend aria-label="Local ancestry legend">
+        <span>AFR</span>
+        <span>EUR</span>
+      </LocalAncestryLegend>
+    )
+
+    const legend = screen.getByLabelText('Local ancestry legend')
+    expect(legend).toHaveStyleRule('justify-content', 'flex-end')
+    expect(legend).toHaveStyleRule('text-align', 'right')
+    expect(legend).toHaveStyleRule('padding-right', '0.75rem')
+  })
+})
+
 describe('local haplotype exact target motif diagrams', () => {
   test('always keeps the selected identity in the bounded strip set and exposes all omissions', () => {
     expect(
@@ -136,10 +153,7 @@ describe('local haplotype exact target motif diagrams', () => {
 
   test('fails closed before decomposing unavailable or over-large exact sequences', () => {
     expect(
-      boundedExactTrDecomposition(
-        allele({ alt: `C${'AG'.repeat(1_100)}`, length: 2_198 }),
-        ['CAG']
-      )
+      boundedExactTrDecomposition(allele({ alt: `C${'AG'.repeat(1_100)}`, length: 2_198 }), ['CAG'])
     ).toBeNull()
     expect(boundedExactTrDecomposition(allele({ alt: null }), ['CAG'])).toBeNull()
     expect(
