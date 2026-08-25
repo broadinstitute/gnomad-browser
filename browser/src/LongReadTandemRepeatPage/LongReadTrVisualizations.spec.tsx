@@ -295,7 +295,9 @@ describe('long-read TR visualization fidelity', () => {
         screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
       ).backgroundColor
     ).toBe('rgb(233, 120, 28)')
-    expect(screen.getByRole('heading', { name: '1 of 3 exact ALTs at −6 bp' })).toHaveFocus()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: '1 of 3 exact ALTs at −6 bp' })
+    )
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('2')
 
     rendered.rerender(
@@ -310,14 +312,18 @@ describe('long-read TR visualization fidelity', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /0 bp, 25 called allele copies/ }))
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
-    expect(screen.getByRole('heading', { name: '1 of 3 exact ALTs at 0 bp' })).toHaveFocus()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: '1 of 3 exact ALTs at 0 bp' })
+    )
     const exactLink = within(exactIndex).getByRole('link', { name: 'Select ALT 2' })
     expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
     fireEvent.click(exactLink)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
 
     fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
-    expect(screen.getByRole('heading', { name: 'All exact ALTs (3)' })).toHaveFocus()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: 'All exact ALTs (3)' })
+    )
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
 
     const tallest = screen.getByRole('button', { name: /−6 bp, 100 called allele copies/ })
@@ -353,7 +359,9 @@ describe('long-read TR visualization fidelity', () => {
     )
 
     fireEvent.click(screen.getByRole('button', { name: /−6 bp, 107 called allele copies/ }))
-    expect(screen.getByRole('heading', { name: '2 of 4 exact ALTs at −6 bp' })).toHaveFocus()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: '2 of 4 exact ALTs at −6 bp' })
+    )
     const picker = screen.getByRole('table', { name: 'Exact alternate allele index' })
     expect(screen.queryByRole('table', { name: /Exact alleles at/ })).toBeNull()
     const links = within(picker).getAllByRole('link')

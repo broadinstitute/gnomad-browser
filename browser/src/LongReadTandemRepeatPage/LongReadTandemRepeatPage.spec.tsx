@@ -628,7 +628,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(table.getAttribute('aria-rowcount')).toBe('73')
 
     fireEvent.click(screen.getByRole('button', { name: /−6 bp, 134 called allele copies/ }))
-    expect(screen.getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })).toHaveFocus()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: '2 of 72 exact ALTs at −6 bp' })
+    )
     expect(table.getAttribute('aria-rowcount')).toBe('3')
     expect(within(table).getByText(`${sourceVariantId}~2`)).not.toBeNull()
     expect(within(table).getByText(`${sourceVariantId}~3`)).not.toBeNull()
@@ -643,7 +645,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
 
     fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALTs' }))
-    expect(screen.getByRole('heading', { name: 'All exact ALTs (72)' })).toHaveFocus()
+    expect(document.activeElement).toBe(
+      screen.getByRole('heading', { name: 'All exact ALTs (72)' })
+    )
     expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
 
