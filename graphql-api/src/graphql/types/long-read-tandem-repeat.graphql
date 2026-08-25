@@ -216,6 +216,63 @@ type LongReadTrReferenceConnection {
   provenance: LongReadTrReferenceProvenance!
 }
 
+enum LongReadTrShortReadDistributionStatus {
+  AVAILABLE
+  NONE
+  UNAVAILABLE
+}
+
+enum LongReadTrShortReadDistributionPartStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+type LongReadTrShortReadAlleleDistributionPart {
+  status: LongReadTrShortReadDistributionPartStatus!
+  reason_code: String
+  source_rows: Int
+  source_bins: Int
+  returned_rows: Int!
+  returned_bins: Int!
+  serialized_bytes: Int!
+  distributions: [ShortTandemRepeatAlleleSizeDistributionCohort!]!
+}
+
+type LongReadTrShortReadGenotypeDistributionPart {
+  status: LongReadTrShortReadDistributionPartStatus!
+  reason_code: String
+  source_rows: Int
+  source_bins: Int
+  returned_rows: Int!
+  returned_bins: Int!
+  serialized_bytes: Int!
+  distributions: [ShortTandemRepeatGenotypeDistributionCohort!]!
+}
+
+# Lazy aggregate-only short-read distributions admitted for one exact unique
+# catalog main region and its exact stored repeat-unit orientation.
+type LongReadTrShortReadDistributions {
+  status: LongReadTrShortReadDistributionStatus!
+  reason_code: String
+  catalog_dataset: DatasetId!
+  catalog_source: String!
+  catalog_digest: String!
+  distribution_digest: String
+  distribution_source_index: String!
+  distribution_concrete_index: String!
+  distribution_index_uuid: String!
+  short_id: String
+  matched_component_index: Int
+  matched_component: LongReadTrLocusComponent
+  main_reference_region: ShortTandemRepeatReferenceRegion
+  reference_repeat_unit: String
+  reference_repeat_count: Int
+  source_serialized_bytes: Int
+  source_total_bins: Int
+  allele: LongReadTrShortReadAlleleDistributionPart!
+  genotype: LongReadTrShortReadGenotypeDistributionPart!
+}
+
 enum LongReadTrPlotStatus {
   AVAILABLE_EXACT
   UNAVAILABLE_ANCILLARY

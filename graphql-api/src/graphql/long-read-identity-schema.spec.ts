@@ -126,6 +126,32 @@ const longReadTrReferenceQuery = `
   }
 `
 
+const longReadTrShortReadDistributionsQuery = `
+  query LongReadTrShortReadDistributions($id: String!, $cohort: LongReadCohort!) {
+    long_read_tandem_repeat_short_read_distributions(id: $id, lr_cohort: $cohort) {
+      status reason_code catalog_dataset catalog_source catalog_digest distribution_digest
+      distribution_source_index distribution_concrete_index distribution_index_uuid short_id
+      matched_component_index matched_component { chrom start0 end0 motif }
+      main_reference_region { reference_genome chrom start stop }
+      reference_repeat_unit reference_repeat_count source_serialized_bytes source_total_bins
+      allele {
+        status reason_code source_rows source_bins returned_rows returned_bins serialized_bytes
+        distributions {
+          ancestry_group sex repunit quality_description q_score
+          distribution { repunit_count frequency }
+        }
+      }
+      genotype {
+        status reason_code source_rows source_bins returned_rows returned_bins serialized_bytes
+        distributions {
+          ancestry_group sex short_allele_repunit long_allele_repunit quality_description q_score
+          distribution { short_allele_repunit_count long_allele_repunit_count frequency }
+        }
+      }
+    }
+  }
+`
+
 const longReadVariantPageIdentityQuery = `
   query LongReadVariantPageIdentity(
     $datasetId: DatasetId!
@@ -160,6 +186,15 @@ describe('assembled LR identity GraphQL contract', () => {
 
   test('accepts the bounded short-read to LR reference connection query', () => {
     expect(validate(schema, parse(longReadTrReferenceQuery))).toEqual([])
+  })
+
+  test('accepts and explicitly costs the lazy exact-context short-read distribution query', () => {
+    expect(validate(schema, parse(longReadTrShortReadDistributionsQuery))).toEqual([])
+    const field: any = schema
+      .getQueryType()
+      .getFields().long_read_tandem_repeat_short_read_distributions
+    const cost = field.astNode.directives.find((directive: any) => directive.name.value === 'cost')
+    expect(cost.arguments[0].value.value).toBe('5')
   })
 
   test('publishes source/ALT identity through assembled-schema introspection', async () => {

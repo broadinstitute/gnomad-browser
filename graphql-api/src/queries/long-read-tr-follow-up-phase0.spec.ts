@@ -55,7 +55,13 @@ describe('long-read TR follow-up Phase 0 fixture freeze', () => {
       'AR',
     ])
     fixture.cases.forEach((item: any) => {
-      expect(currentRows.get(item.id)).toEqual({ short: item.short, cohorts: item.cohorts })
+      expect(currentRows.get(item.id)).toEqual(
+        expect.objectContaining({
+          short: item.short,
+          cohorts: item.cohorts,
+          distribution_receipt: expect.objectContaining({ sha256: expect.any(String) }),
+        })
+      )
     })
   })
 
@@ -166,6 +172,28 @@ describe('long-read TR follow-up Phase 0 fixture freeze', () => {
     expect(inventory.rows.map((row: any) => row.id)).toEqual(
       crosswalk.rows.map((row: any) => row.short.id).sort()
     )
+    const inventoryById = new Map(inventory.rows.map((row: any) => [row.id, row]))
+    expect(
+      crosswalk.rows
+        .map((row: any) => {
+          const expected: any = inventoryById.get(row.short.id)
+          return row.distribution_receipt.sha256 === expected.sha256 &&
+            row.distribution_receipt.serialized_bytes === expected.json_bytes_compact &&
+            row.distribution_receipt.allele_source_rows === expected.allele_rows &&
+            row.distribution_receipt.genotype_source_rows === expected.genotype_rows &&
+            row.distribution_receipt.allele_bins === expected.allele_bins &&
+            row.distribution_receipt.genotype_bins === expected.genotype_bins
+            ? null
+            : row.short.id
+        })
+        .filter(Boolean)
+    ).toEqual([])
+    expect(crosswalk.distribution.limits).toEqual({
+      max_serialized_bytes: 2 * 1024 * 1024,
+      max_total_bins: 20000,
+      max_allele_source_rows: 1000,
+      max_genotype_source_rows: 1000,
+    })
     expect(inventory.rows.every((row: any) => /^[0-9a-f]{64}$/.test(row.sha256))).toBe(true)
     expect(inventory.summary).toEqual({
       min_json_bytes_compact: 13219,

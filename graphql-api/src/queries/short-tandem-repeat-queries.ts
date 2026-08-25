@@ -166,31 +166,34 @@ export const fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) 
   return hits.map((hit: any) => hit._source.value)
 }
 
+export const fetchShortTandemRepeatDetailReceipt = async (
+  esClient: any,
+  datasetId: any,
+  shortTandemRepeatId: any
+) => {
+  const index = requireShortTandemRepeatIndex(datasetId)
+  try {
+    const response = await esClient.get({
+      index,
+      type: '_doc',
+      id: shortTandemRepeatId,
+    })
+    return {
+      record: response.body._source.value,
+      concrete_index: response.body._index || null,
+    }
+  } catch (err) {
+    return catchNotFound(err)
+  }
+}
+
 export const fetchShortTandemRepeatById = async (
   esClient: any,
   datasetId: any,
   shortTandemRepeatId: any
 ) => {
-  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-  if (!SHORT_TANDEM_REPEAT_INDICES[datasetId]) {
-    throw new UserVisibleError(
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      `Tandem repeat data is not available for ${DATASET_LABELS[datasetId]}`
-    )
-  }
-
-  try {
-    const response = await esClient.get({
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
-      type: '_doc',
-      id: shortTandemRepeatId,
-    })
-
-    return response.body._source.value
-  } catch (err) {
-    return catchNotFound(err)
-  }
+  const detail = await fetchShortTandemRepeatDetailReceipt(esClient, datasetId, shortTandemRepeatId)
+  return detail?.record
 }
 
 export const fetchShortTandemRepeatsByGene = async (

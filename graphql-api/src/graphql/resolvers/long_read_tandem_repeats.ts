@@ -3,6 +3,7 @@ import { UserVisibleError } from '../../errors'
 import { fetchLongReadTrRepeatCountPlots } from '../../queries/long_read_tr_histograms'
 import { fetchLongReadTrLocus, MAX_TR_LOCUS_PAGE_SIZE } from '../../queries/long_read_tr_loci'
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
+import { resolveLongReadTrShortReadDistributions } from '../../queries/long_read_tr_short_read_distributions'
 import {
   buildLongReadTrReferenceConnection,
   legacyMatchesFromContext,
@@ -49,6 +50,8 @@ export default {
     long_read_tandem_repeat_locus: resolveLongReadTandemRepeatLocus,
     long_read_tandem_repeat_reference: (_obj: any, args: any, ctx: any) =>
       buildLongReadTrReferenceConnection(args, ctx.esClient, getY1SourceSnapshot),
+    long_read_tandem_repeat_short_read_distributions: (_obj: any, args: any, ctx: any) =>
+      resolveLongReadTrShortReadDistributions(args, ctx.esClient, getY1SourceSnapshot),
   },
   LongReadTandemRepeatLocus: {
     short_read_context: (locus: any, _args: any, ctx: any) => shortReadContext(locus, ctx),

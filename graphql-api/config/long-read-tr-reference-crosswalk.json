@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "generated_at": "2026-08-24T00:00:00.000Z",
   "catalog": {
     "dataset": "gnomad_r4",
@@ -467,6 +467,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "8c1e35630bf958309db36bb288a9eda4314465fa85db80d07136988586134472",
+        "serialized_bytes": 35017,
+        "allele_source_rows": 46,
+        "genotype_source_rows": 46,
+        "allele_bins": 188,
+        "genotype_bins": 196
       }
     },
     {
@@ -539,6 +547,14 @@
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "611fd0f6797cfa952404191a6a6eccb021037457e7c1170d73bac80fcfd2266c",
+        "serialized_bytes": 209308,
+        "allele_source_rows": 173,
+        "genotype_source_rows": 173,
+        "allele_bins": 1046,
+        "genotype_bins": 1541
       }
     },
     {
@@ -611,6 +627,14 @@
           "source_run_id": "y1-full-prototype-aou-chr2-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "9212cee6f94cf021563ddd90c27a172c7a82c7da773dc490b697cdd6042fe7d4",
+        "serialized_bytes": 278596,
+        "allele_source_rows": 145,
+        "genotype_source_rows": 145,
+        "allele_bins": 1599,
+        "genotype_bins": 2268
       }
     },
     {
@@ -683,6 +707,14 @@
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "8a4048536ea4946a8004d9186dcffcc0dab6fc8e0e2557d8c5cb326f73f129f8",
+        "serialized_bytes": 145232,
+        "allele_source_rows": 96,
+        "genotype_source_rows": 96,
+        "allele_bins": 614,
+        "genotype_bins": 1190
       }
     },
     {
@@ -798,6 +830,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "dccf34147a58247998a1ccf2cf748f7d097d8ed98c5de311497492fd50a42196",
+        "serialized_bytes": 36198,
+        "allele_source_rows": 75,
+        "genotype_source_rows": 75,
+        "allele_bins": 145,
+        "genotype_bins": 126
       }
     },
     {
@@ -932,6 +972,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "356fdc3e1b6efea0cf780c38c4958ace30b0c57bf2660c60edb495e2d3edb5e5",
+        "serialized_bytes": 46083,
+        "allele_source_rows": 92,
+        "genotype_source_rows": 92,
+        "allele_bins": 200,
+        "genotype_bins": 170
       }
     },
     {
@@ -1004,6 +1052,14 @@
           "source_run_id": "y1-full-prototype-aou-chr12-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "a5ab1ba54c7cb49a3078eaef5843dc821ea72c53de1a23dda41fc5a32293d54f",
+        "serialized_bytes": 125405,
+        "allele_source_rows": 58,
+        "genotype_source_rows": 58,
+        "allele_bins": 410,
+        "genotype_bins": 1164
       }
     },
     {
@@ -1105,6 +1161,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "1113a1a7469805f46082fc82af7b516a414f70ab0a6f1f0dfce606afe8caafd3",
+        "serialized_bytes": 155533,
+        "allele_source_rows": 114,
+        "genotype_source_rows": 114,
+        "allele_bins": 621,
+        "genotype_bins": 1254
       }
     },
     {
@@ -1206,6 +1270,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "d8725e201a3c8f667cb499b1fcdf08c8d1daed3199554c571a11697698cee478",
+        "serialized_bytes": 113098,
+        "allele_source_rows": 101,
+        "genotype_source_rows": 101,
+        "allele_bins": 423,
+        "genotype_bins": 856
       }
     },
     {
@@ -1307,6 +1379,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "b9984e15f811272389fa2f844c52089551982de3a53cfcf128934478fad82bed",
+        "serialized_bytes": 71635,
+        "allele_source_rows": 90,
+        "genotype_source_rows": 90,
+        "allele_bins": 336,
+        "genotype_bins": 425
       }
     },
     {
@@ -1408,6 +1488,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "a365bfc3bcaef371c109ab3b86a8513803eb5c8bd12d0e942c0fa1227f867b66",
+        "serialized_bytes": 173712,
+        "allele_source_rows": 71,
+        "genotype_source_rows": 71,
+        "allele_bins": 565,
+        "genotype_bins": 1648
       }
     },
     {
@@ -1515,6 +1603,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "c3239b8170f1dc1984a7a1f558f7ab2a89b2ce194bf5b696c7f6d1fb788f0e0c",
+        "serialized_bytes": 71202,
+        "allele_source_rows": 86,
+        "genotype_source_rows": 86,
+        "allele_bins": 298,
+        "genotype_bins": 452
       }
     },
     {
@@ -1622,6 +1718,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "9feac34d4657913015fe1d487d43fb74907828cc1139d9e80336b238361f3af6",
+        "serialized_bytes": 206907,
+        "allele_source_rows": 101,
+        "genotype_source_rows": 101,
+        "allele_bins": 866,
+        "genotype_bins": 1832
       }
     },
     {
@@ -1674,6 +1778,14 @@
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "b62861c7381b1e82b59ea5580e5585f3d0b9508686e65b315b5b8c419b7834f2",
+        "serialized_bytes": 67135,
+        "allele_source_rows": 49,
+        "genotype_source_rows": 49,
+        "allele_bins": 347,
+        "genotype_bins": 506
       }
     },
     {
@@ -1797,6 +1909,14 @@
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "54390a69036b3b2c73e9957ba71f4c9b4d8c23e002e53e5812490fbf2c0e5227",
+        "serialized_bytes": 630580,
+        "allele_source_rows": 323,
+        "genotype_source_rows": 341,
+        "allele_bins": 2794,
+        "genotype_bins": 5405
       }
     },
     {
@@ -1873,6 +1993,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "e2323fb5999fb0cd01e39f023684571e34aaff4da354ec1419e564a62bd529fd",
+        "serialized_bytes": 57689,
+        "allele_source_rows": 50,
+        "genotype_source_rows": 50,
+        "allele_bins": 298,
+        "genotype_bins": 413
       }
     },
     {
@@ -1957,6 +2085,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "8ff8662591de658c603f30db5d929671e68105a9656ec4b55b82e73b199178cd",
+        "serialized_bytes": 117716,
+        "allele_source_rows": 76,
+        "genotype_source_rows": 76,
+        "allele_bins": 538,
+        "genotype_bins": 965
       }
     },
     {
@@ -2058,6 +2194,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "28d356e70f7aa3ddd0e360ba89d7b83110295232d88b69352fbbbe16b2a5ca31",
+        "serialized_bytes": 60735,
+        "allele_source_rows": 45,
+        "genotype_source_rows": 45,
+        "allele_bins": 230,
+        "genotype_bins": 495
       }
     },
     {
@@ -2159,6 +2303,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "0f774ac2eab55c34fb811cac5c178476697ccbbd304ecbeb6bdacddcd85ed8ed",
+        "serialized_bytes": 85439,
+        "allele_source_rows": 45,
+        "genotype_source_rows": 45,
+        "allele_bins": 383,
+        "genotype_bins": 731
       }
     },
     {
@@ -2267,6 +2419,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "6178e72ceb3b4b61b6f197525e44770ac7597738cdca1656998526921572b608",
+        "serialized_bytes": 149873,
+        "allele_source_rows": 113,
+        "genotype_source_rows": 113,
+        "allele_bins": 670,
+        "genotype_bins": 1164
       }
     },
     {
@@ -2360,6 +2520,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "91a6d5d9038a6ea77cd70fe7e0e48875125dfc9ecb910f160114baaddcea6d22",
+        "serialized_bytes": 13879,
+        "allele_source_rows": 35,
+        "genotype_source_rows": 35,
+        "allele_bins": 38,
+        "genotype_bins": 35
       }
     },
     {
@@ -2436,6 +2604,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "e200ca58ece2609ac3e5927a653db7bdecb2f0a3966c177cd9833ba3ac7bb9e5",
+        "serialized_bytes": 53655,
+        "allele_source_rows": 84,
+        "genotype_source_rows": 84,
+        "allele_bins": 270,
+        "genotype_bins": 258
       }
     },
     {
@@ -2532,6 +2708,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "601b3a685fc2194a1d78f06a8742817d99e6f02131d8e899d5b5fdae71848c95",
+        "serialized_bytes": 53643,
+        "allele_source_rows": 88,
+        "genotype_source_rows": 88,
+        "allele_bins": 259,
+        "genotype_bins": 226
       }
     },
     {
@@ -2620,6 +2804,14 @@
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "a4a1dd96e8ab50e940d6b53d8c9a792294af5bf35eabdad02089a6177db75068",
+        "serialized_bytes": 389246,
+        "allele_source_rows": 165,
+        "genotype_source_rows": 166,
+        "allele_bins": 1957,
+        "genotype_bins": 3380
       }
     },
     {
@@ -2716,6 +2908,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "258f15b74f99ba5b44c7d477d9aff66f303a8cb77583d158ba66428cc801df82",
+        "serialized_bytes": 135538,
+        "allele_source_rows": 79,
+        "genotype_source_rows": 79,
+        "allele_bins": 631,
+        "genotype_bins": 1134
       }
     },
     {
@@ -2792,6 +2992,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "ae6aa85764f9e8be219fa6b82b96d21e458b6fa59b1bff06b77bf2977552672b",
+        "serialized_bytes": 242428,
+        "allele_source_rows": 90,
+        "genotype_source_rows": 90,
+        "allele_bins": 1073,
+        "genotype_bins": 2204
       }
     },
     {
@@ -2881,6 +3089,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "f0b4b6da2f8733a58bba6eb83340f1e9035507f3bd268b0f149fb7de5b88fbb4",
+        "serialized_bytes": 139141,
+        "allele_source_rows": 45,
+        "genotype_source_rows": 45,
+        "allele_bins": 506,
+        "genotype_bins": 1346
       }
     },
     {
@@ -2997,6 +3213,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "1b1a59ebb781961f73c13c40ddc037273608c71276781efd9732e4ed84912001",
+        "serialized_bytes": 176539,
+        "allele_source_rows": 162,
+        "genotype_source_rows": 162,
+        "allele_bins": 791,
+        "genotype_bins": 1206
       }
     },
     {
@@ -3088,6 +3312,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "cae948ea5dd8d51d3adce13343f7fdeff9bc98178ee67566815ec9a5e22d85b8",
+        "serialized_bytes": 93904,
+        "allele_source_rows": 106,
+        "genotype_source_rows": 106,
+        "allele_bins": 440,
+        "genotype_bins": 604
       }
     },
     {
@@ -3179,6 +3411,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "c0b3deaa449e876fe8e72ec4e161327a7fa34f4b56a0a4300de24381aa4a6bff",
+        "serialized_bytes": 212927,
+        "allele_source_rows": 113,
+        "genotype_source_rows": 113,
+        "allele_bins": 839,
+        "genotype_bins": 1877
       }
     },
     {
@@ -3280,6 +3520,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "49ffd2b0273063df1808548ece831ebe1493da9d7077476f92e161911a8b97e6",
+        "serialized_bytes": 728076,
+        "allele_source_rows": 229,
+        "genotype_source_rows": 229,
+        "allele_bins": 3832,
+        "genotype_bins": 6529
       }
     },
     {
@@ -3381,6 +3629,14 @@
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "2ea275178c0815baf1d4f39c09fa234eed191ff1a84bb018efb3c8dc6222d462",
+        "serialized_bytes": 283396,
+        "allele_source_rows": 249,
+        "genotype_source_rows": 249,
+        "allele_bins": 1464,
+        "genotype_bins": 2010
       }
     },
     {
@@ -3477,6 +3733,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "61772a77dd84d2f92269532bcc9a038ce70c3c2f29b5beae5bbe4cc46c06caa6",
+        "serialized_bytes": 33480,
+        "allele_source_rows": 71,
+        "genotype_source_rows": 71,
+        "allele_bins": 129,
+        "genotype_bins": 113
       }
     },
     {
@@ -3559,6 +3823,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "6ea022c4e85a45efa0b17ae7111677097454d3cb6ff659975ff8034739911c58",
+        "serialized_bytes": 128503,
+        "allele_source_rows": 74,
+        "genotype_source_rows": 74,
+        "allele_bins": 632,
+        "genotype_bins": 1067
       }
     },
     {
@@ -3637,6 +3909,14 @@
           "source_run_id": "y1-full-prototype-aou-chr9-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "062f8577863627abceaaf97c8d5f368239c79c4323f9d73502d6e3bbb67d5957",
+        "serialized_bytes": 150580,
+        "allele_source_rows": 126,
+        "genotype_source_rows": 126,
+        "allele_bins": 697,
+        "genotype_bins": 1139
       }
     },
     {
@@ -3733,6 +4013,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "0eec33455b71b5bfb48ee32a4654b8b7b5b0e86495b77c0cfdc19022f638be63",
+        "serialized_bytes": 136181,
+        "allele_source_rows": 79,
+        "genotype_source_rows": 79,
+        "allele_bins": 628,
+        "genotype_bins": 1136
       }
     },
     {
@@ -3829,6 +4117,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "1169dd6e6f2e18d551b0fe392e142d3f75a9edb046e26b4df5e6015c756a1d8b",
+        "serialized_bytes": 122038,
+        "allele_source_rows": 48,
+        "genotype_source_rows": 48,
+        "allele_bins": 405,
+        "genotype_bins": 1167
       }
     },
     {
@@ -3925,6 +4221,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "712996d5d8cbc2f20f9d6db46371ed5cf0603289dd1699449cb1dc46964b7f04",
+        "serialized_bytes": 113530,
+        "allele_source_rows": 126,
+        "genotype_source_rows": 126,
+        "allele_bins": 706,
+        "genotype_bins": 659
       }
     },
     {
@@ -4009,6 +4313,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "9504db3af249cd280fb6487d28ac11e147fc24147ff55f74159e04a1428564c6",
+        "serialized_bytes": 115482,
+        "allele_source_rows": 113,
+        "genotype_source_rows": 113,
+        "allele_bins": 748,
+        "genotype_bins": 708
       }
     },
     {
@@ -4105,6 +4417,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "b53fc9c9d2f8d81e494baf5f13cac6413ca73bd4c9d269def1abc8d8bfa04229",
+        "serialized_bytes": 132641,
+        "allele_source_rows": 144,
+        "genotype_source_rows": 144,
+        "allele_bins": 819,
+        "genotype_bins": 784
       }
     },
     {
@@ -4201,6 +4521,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "63a60f52c7cae0c73a934e2b51a1f4240f63a25207e416f8d7836c14ae3a58a1",
+        "serialized_bytes": 24853,
+        "allele_source_rows": 52,
+        "genotype_source_rows": 52,
+        "allele_bins": 102,
+        "genotype_bins": 84
       }
     },
     {
@@ -4308,6 +4636,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "c3dfc92b9d83fa1246b50f90be1fc33d3fd2fc6674b418b33b1bdc02a08ea8d3",
+        "serialized_bytes": 166278,
+        "allele_source_rows": 71,
+        "genotype_source_rows": 71,
+        "allele_bins": 560,
+        "genotype_bins": 1560
       }
     },
     {
@@ -4404,6 +4740,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "16ce20dc6e8acda9b5af9338a2a54424a0181f7677946e913a7518904687c37d",
+        "serialized_bytes": 71603,
+        "allele_source_rows": 33,
+        "genotype_source_rows": 33,
+        "allele_bins": 261,
+        "genotype_bins": 653
       }
     },
     {
@@ -4500,6 +4844,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "87ce0e6d00ad3817c762f4be486835d123e08d6b090f7a74972333261fc60719",
+        "serialized_bytes": 129716,
+        "allele_source_rows": 82,
+        "genotype_source_rows": 82,
+        "allele_bins": 475,
+        "genotype_bins": 1122
       }
     },
     {
@@ -4595,6 +4947,14 @@
           "source_run_id": "y1-full-prototype-aou-chr5-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "74335ba8bd8a33af1780862247f07281bc0a51ef25fd169be35061861fea4874",
+        "serialized_bytes": 166377,
+        "allele_source_rows": 138,
+        "genotype_source_rows": 139,
+        "allele_bins": 761,
+        "genotype_bins": 1233
       }
     },
     {
@@ -4691,6 +5051,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "16f327a4833a3e3cc7bbd66e0f19dcc679c570b40e6280d2c6063ed08d3123ad",
+        "serialized_bytes": 33411,
+        "allele_source_rows": 54,
+        "genotype_source_rows": 54,
+        "allele_bins": 154,
+        "genotype_bins": 162
       }
     },
     {
@@ -4787,6 +5155,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "8f26017ed7e56247404d0997eed2a876b6ee816213537de819504326d6ec55f6",
+        "serialized_bytes": 47816,
+        "allele_source_rows": 74,
+        "genotype_source_rows": 74,
+        "allele_bins": 211,
+        "genotype_bins": 250
       }
     },
     {
@@ -4889,6 +5265,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "4f6a15d92c97526dec48d8e197a0a2f35ce293273d291a738ca098ae9fb2e566",
+        "serialized_bytes": 60679,
+        "allele_source_rows": 50,
+        "genotype_source_rows": 50,
+        "allele_bins": 241,
+        "genotype_bins": 476
       }
     },
     {
@@ -4941,6 +5325,14 @@
           "source_run_id": "y1-full-prototype-aou-chr1-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "3faba29449f1f6e6d476b1c310a50428651df813de50d61b7687aed38369077b",
+        "serialized_bytes": 61348,
+        "allele_source_rows": 69,
+        "genotype_source_rows": 69,
+        "allele_bins": 371,
+        "genotype_bins": 362
       }
     },
     {
@@ -5044,6 +5436,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "122cda2812a8c1a3ed44f8ccd1a490433969b4f7c14873e2a7eed6a89b900644",
+        "serialized_bytes": 300269,
+        "allele_source_rows": 153,
+        "genotype_source_rows": 153,
+        "allele_bins": 1150,
+        "genotype_bins": 2678
       }
     },
     {
@@ -5140,6 +5540,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "7f75b6d7d34ff7175de70e6c1ae2ed021a3e3929d5e1fcfe2d75379a803f17dc",
+        "serialized_bytes": 80609,
+        "allele_source_rows": 68,
+        "genotype_source_rows": 68,
+        "allele_bins": 306,
+        "genotype_bins": 630
       }
     },
     {
@@ -5224,6 +5632,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "db2cc32eadd2a8b762aa82ddee0bca0761a4edf796cb7181da08656cece32cf2",
+        "serialized_bytes": 23099,
+        "allele_source_rows": 52,
+        "genotype_source_rows": 52,
+        "allele_bins": 90,
+        "genotype_bins": 70
       }
     },
     {
@@ -5320,6 +5736,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "95c146e8f63b10c98a60f625b903494585c8d879b7a11623a957c79e0f3d2e06",
+        "serialized_bytes": 61097,
+        "allele_source_rows": 115,
+        "genotype_source_rows": 115,
+        "allele_bins": 285,
+        "genotype_bins": 239
       }
     },
     {
@@ -5416,6 +5840,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "8c309ca5d9500358c795c27c67a33a510a2e84cec2b19a902e16afb09d6df092",
+        "serialized_bytes": 87864,
+        "allele_source_rows": 50,
+        "genotype_source_rows": 50,
+        "allele_bins": 322,
+        "genotype_bins": 771
       }
     },
     {
@@ -5512,6 +5944,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "f4d7096a70323a625c776b5bf244b5fcf9f4c6492659a210bf11e339a844d5ad",
+        "serialized_bytes": 59683,
+        "allele_source_rows": 62,
+        "genotype_source_rows": 62,
+        "allele_bins": 255,
+        "genotype_bins": 414
       }
     },
     {
@@ -5579,6 +6019,14 @@
           "source_run_id": "y1-full-prototype-aou-chr15-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "0afd0f5871edb6f1532f6a98d5376b97ede368c10294214b790cf12f69271748",
+        "serialized_bytes": 15447,
+        "allele_source_rows": 38,
+        "genotype_source_rows": 38,
+        "allele_bins": 49,
+        "genotype_bins": 39
       }
     },
     {
@@ -5681,6 +6129,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "120dfb035bbbf4c79f86752ab83c8184fc7dbed36e1144b4cd9a881146ebe89a",
+        "serialized_bytes": 54869,
+        "allele_source_rows": 94,
+        "genotype_source_rows": 94,
+        "allele_bins": 203,
+        "genotype_bins": 195
       }
     },
     {
@@ -5760,6 +6216,14 @@
           "source_run_id": "y1-full-prototype-aou-chr17-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "198a190201e8defc88504a8511fca431466ad9cd0473b3ce357b8048e8b53a53",
+        "serialized_bytes": 251219,
+        "allele_source_rows": 172,
+        "genotype_source_rows": 172,
+        "allele_bins": 1236,
+        "genotype_bins": 1952
       }
     },
     {
@@ -5847,6 +6311,14 @@
           "source_run_id": "y1-full-prototype-aou-chr4-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "24b820f22a359f1d1b20094050c8470862604a99d54b7c24f69a5834d2d63033",
+        "serialized_bytes": 284682,
+        "allele_source_rows": 173,
+        "genotype_source_rows": 175,
+        "allele_bins": 1182,
+        "genotype_bins": 2380
       }
     },
     {
@@ -6027,6 +6499,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "beb11523d230f22df9c4ea4a230c061a4cb0c67b466a0e70548f53569299d2b7",
+        "serialized_bytes": 928685,
+        "allele_source_rows": 620,
+        "genotype_source_rows": 740,
+        "allele_bins": 4953,
+        "genotype_bins": 6907
       }
     },
     {
@@ -6123,6 +6603,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "c100483600266d4903d9729149ca605fce55c323d11b23c5bd926bbb3550a9f7",
+        "serialized_bytes": 38749,
+        "allele_source_rows": 63,
+        "genotype_source_rows": 63,
+        "allele_bins": 186,
+        "genotype_bins": 180
       }
     },
     {
@@ -6219,6 +6707,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "4f6ba24e88cd1953a633663b78e5f94aef8e93f7c98463ea647565f85c2e87ca",
+        "serialized_bytes": 61685,
+        "allele_source_rows": 93,
+        "genotype_source_rows": 93,
+        "allele_bins": 329,
+        "genotype_bins": 302
       }
     },
     {
@@ -6318,6 +6814,14 @@
           "source_run_id": "y1-full-prototype-aou-chr8-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "9e897cc1c5adfee144af80e7332d89d25f24d9bd4647ef8788e6c45d9f68996c",
+        "serialized_bytes": 441011,
+        "allele_source_rows": 237,
+        "genotype_source_rows": 262,
+        "allele_bins": 2064,
+        "genotype_bins": 3664
       }
     },
     {
@@ -6433,6 +6937,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "51f30bef7cb62d7653629130ae0184a6b4812c8293f99641be245eee08d56750",
+        "serialized_bytes": 39428,
+        "allele_source_rows": 72,
+        "genotype_source_rows": 72,
+        "allele_bins": 189,
+        "genotype_bins": 160
       }
     },
     {
@@ -6576,6 +7088,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "008c2bd4f37d3c82ff09fdc485c82ec87d15211741ab0e756e0a3a6dc8909363",
+        "serialized_bytes": 525348,
+        "allele_source_rows": 463,
+        "genotype_source_rows": 559,
+        "allele_bins": 2518,
+        "genotype_bins": 3563
       }
     },
     {
@@ -6672,6 +7192,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "4225f2c6310f87aadbc590fa3c0d26989b03b1b2e2d42043b8e737a85b9a8b01",
+        "serialized_bytes": 188376,
+        "allele_source_rows": 155,
+        "genotype_source_rows": 155,
+        "allele_bins": 816,
+        "genotype_bins": 1434
       }
     },
     {
@@ -6768,6 +7296,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "ddcd4432537d3cee6cd6531b716c49bca648ca01f9dfdcb8933d4e30e8970ab8",
+        "serialized_bytes": 41624,
+        "allele_source_rows": 81,
+        "genotype_source_rows": 81,
+        "allele_bins": 183,
+        "genotype_bins": 156
       }
     },
     {
@@ -6840,6 +7376,14 @@
           "source_run_id": "y1-full-prototype-aou-chr18-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "02045e6208c61ccaaa687ff03c8734b542e2aebf3678a54413dd7d16c0946700",
+        "serialized_bytes": 319323,
+        "allele_source_rows": 132,
+        "genotype_source_rows": 132,
+        "allele_bins": 1523,
+        "genotype_bins": 2821
       }
     },
     {
@@ -6936,6 +7480,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "9dd7fc83118f22cc77a3a3ae0de4ee433964be1bb151c40e5c1956423d9a61d8",
+        "serialized_bytes": 83241,
+        "allele_source_rows": 101,
+        "genotype_source_rows": 101,
+        "allele_bins": 386,
+        "genotype_bins": 510
       }
     },
     {
@@ -6994,6 +7546,14 @@
           "source_run_id": "y1-full-prototype-aou-chrX-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "4463346de544c7e179593396bee70f404d3ce50c0e031eef95ad3f1bf24bd6bb",
+        "serialized_bytes": 84189,
+        "allele_source_rows": 48,
+        "genotype_source_rows": 48,
+        "allele_bins": 435,
+        "genotype_bins": 687
       }
     },
     {
@@ -7077,6 +7637,14 @@
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "3754a33a2f3f5cb9b9e8c9b72388dd249cfd5b60dd441d10a530b8b5d071bd42",
+        "serialized_bytes": 151750,
+        "allele_source_rows": 100,
+        "genotype_source_rows": 100,
+        "allele_bins": 651,
+        "genotype_bins": 1235
       }
     },
     {
@@ -7161,6 +7729,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "475b43570cee45ce3eb13dd997a24987f81a9c5664b1cd5880efab811284ccff",
+        "serialized_bytes": 13219,
+        "allele_source_rows": 31,
+        "genotype_source_rows": 31,
+        "allele_bins": 38,
+        "genotype_bins": 32
       }
     },
     {
@@ -7233,6 +7809,14 @@
           "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "b822d542f5357ddaff79e70b44ee051308c2f33b5ab48da15c6e17b46564da0b",
+        "serialized_bytes": 436243,
+        "allele_source_rows": 188,
+        "genotype_source_rows": 188,
+        "allele_bins": 2814,
+        "genotype_bins": 3531
       }
     },
     {
@@ -7320,6 +7904,14 @@
           "source_run_id": "y1-full-prototype-aou-chr3-20260728-r1",
           "candidates": []
         }
+      },
+      "distribution_receipt": {
+        "sha256": "810a8cb8aa1df48ffc28e1eff4dc9a6675fe495c6e2bb838de086b0a3f41c620",
+        "serialized_bytes": 529284,
+        "allele_source_rows": 316,
+        "genotype_source_rows": 333,
+        "allele_bins": 2617,
+        "genotype_bins": 4280
       }
     },
     {
@@ -7416,6 +8008,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "8b0564694c7cebe74aaa735db094aa2d8c94163d488e563ccfc518b412a1c073",
+        "serialized_bytes": 71408,
+        "allele_source_rows": 94,
+        "genotype_source_rows": 94,
+        "allele_bins": 306,
+        "genotype_bins": 423
       }
     },
     {
@@ -7512,6 +8112,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "563d7939f761e73169828df46a8e9cd284ef4bd337910f363e0db8d35dd7442c",
+        "serialized_bytes": 47293,
+        "allele_source_rows": 86,
+        "genotype_source_rows": 86,
+        "allele_bins": 232,
+        "genotype_bins": 190
       }
     },
     {
@@ -7608,6 +8216,14 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "29af7c73c4e73ad852904676bac56b9e9b46499a4d173a854f8d6c8b4f492f8a",
+        "serialized_bytes": 15066,
+        "allele_source_rows": 30,
+        "genotype_source_rows": 30,
+        "allele_bins": 60,
+        "genotype_bins": 56
       }
     },
     {
@@ -7699,7 +8315,33 @@
             }
           ]
         }
+      },
+      "distribution_receipt": {
+        "sha256": "3370bb81076703b7cbdca1dd7260ed6014cbe0058041d895ff446e46fdea4a17",
+        "serialized_bytes": 127803,
+        "allele_source_rows": 65,
+        "genotype_source_rows": 65,
+        "allele_bins": 534,
+        "genotype_bins": 1122
       }
     }
-  ]
+  ],
+  "distribution": {
+    "source_index": "gnomad_v3_short_tandem_repeats",
+    "concrete_index": "gnomad_v3_short_tandem_repeats-2026-07-29--20-42",
+    "index_uuid": "-I0qNVPKSF-xUsIMbCZbqQ",
+    "queried_at": "2026-08-25T10:32:57.473984+00:00",
+    "surface": [
+      "allele_size_distribution",
+      "genotype_distribution"
+    ],
+    "canonicalization": "SHA-256 of UTF-8 compact JSON with keys allele_size_distribution then genotype_distribution; source array and object-key order preserved.",
+    "inventory_sha256": "57beae8be8c1b817b8921f153cde6f171f26e14df562bcfc39845de03964fc71",
+    "limits": {
+      "max_serialized_bytes": 2097152,
+      "max_total_bins": 20000,
+      "max_allele_source_rows": 1000,
+      "max_genotype_source_rows": 1000
+    }
+  }
 }

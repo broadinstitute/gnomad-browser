@@ -67,5 +67,10 @@ type Query {
     sort: LongReadTrReferenceSort = SHORT_ID_ASC
   ): LongReadTrReferenceConnection! @cost(value: 10)
 
+  long_read_tandem_repeat_short_read_distributions(
+    id: String!
+    lr_cohort: LongReadCohort!
+  ): LongReadTrShortReadDistributions! @cost(value: 5)
+
   meta: BrowserMetadata!
 }

@@ -8,8 +8,8 @@
   },
   "inputs": {
     "crosswalk_path": "graphql-api/config/long-read-tr-reference-crosswalk.json",
-    "crosswalk_sha256": "539ba6668d353c3a6442d9c831bb11a65e4b3b84c1fb8d93ee9bfe25df406f03",
-    "crosswalk_schema_version": 2,
+    "crosswalk_sha256": "ed92bb1c454b7461abf6dd8f60cff78f06e73dc8c07c7c94479d4c6a5d82f164",
+    "crosswalk_schema_version": 3,
     "catalog_dataset": "gnomad_r4",
     "catalog_row_count": 78,
     "catalog_compact_sha256": "638cb10c4d834af1fced0f73af28f4bd7d7ef018ce50aa218b612ca24bb03a43",
@@ -17,7 +17,10 @@
     "distribution_concrete_index": "gnomad_v3_short_tandem_repeats-2026-07-29--20-42",
     "distribution_index_uuid": "-I0qNVPKSF-xUsIMbCZbqQ",
     "distribution_index_creation_date_epoch_ms": "1785357757456",
-    "distribution_surface": ["allele_size_distribution", "genotype_distribution"],
+    "distribution_surface": [
+      "allele_size_distribution",
+      "genotype_distribution"
+    ],
     "distribution_canonicalization": "SHA-256 of UTF-8 compact JSON with keys allele_size_distribution then genotype_distribution; source array and object-key order preserved.",
     "privacy": "Aggregate histogram rows only; no sample IDs or carrier rows requested or stored."
   },
@@ -37,7 +40,7 @@
     "rows_sha256": "4601442c76f0602fa4932896e4b823527b60df542168679ed3b18484c8835a5f",
     "summary": {
       "min_json_bytes_compact": 13219,
-      "median_json_bytes_compact": 114506.0,
+      "median_json_bytes_compact": 114506,
       "p95_json_bytes_compact_index_73_of_78": 525348,
       "max_json_bytes_compact": 928685,
       "max_json_bytes_locus": "RFC1",

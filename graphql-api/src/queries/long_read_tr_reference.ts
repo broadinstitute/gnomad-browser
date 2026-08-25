@@ -39,6 +39,14 @@ type ValidatedCohortResult = CohortResult & { canonical_ids: string[] }
 
 type ArtifactRow = {
   short: any
+  distribution_receipt: {
+    sha256: string
+    serialized_bytes: number
+    allele_source_rows: number
+    genotype_source_rows: number
+    allele_bins: number
+    genotype_bins: number
+  }
   cohorts: { hgsvc_hprc: CohortResult; aou: CohortResult }
 }
 type ExpectedSource = {
@@ -59,6 +67,7 @@ type CrosswalkArtifact = {
     compact_sha256: string
     hard_ceiling: number
   }
+  distribution: any
   provenance: any
   reconciliation: any
   sources: ExpectedSource[]
@@ -67,11 +76,14 @@ type CrosswalkArtifact = {
 
 const artifact = JSON.parse(readFileSync(artifactPath, 'utf8')) as CrosswalkArtifact
 if (
-  artifact.schema_version !== 2 ||
+  artifact.schema_version !== 3 ||
   artifact.catalog.dataset !== 'gnomad_r4' ||
   artifact.catalog.row_count !== artifact.rows.length ||
   artifact.rows.length !== 78 ||
-  artifact.catalog.hard_ceiling > 500
+  artifact.catalog.hard_ceiling > 500 ||
+  artifact.distribution?.limits?.max_serialized_bytes !== 2 * 1024 * 1024 ||
+  artifact.distribution?.limits?.max_total_bins !== 20000 ||
+  artifact.rows.some((row) => !/^[0-9a-f]{64}$/.test(row.distribution_receipt?.sha256 || ''))
 ) {
   throw new Error('Invalid long-read TR reference crosswalk artifact')
 }

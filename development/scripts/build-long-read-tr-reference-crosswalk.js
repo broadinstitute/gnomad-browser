@@ -14,7 +14,16 @@ const parseArgs = (argv) => {
       throw new Error(`Invalid argument ${key || ''}`)
     args[key.slice(2)] = value
   }
-  for (const required of ['catalog', 'inventory', 'manifests', 'database', 'out']) {
+  for (const required of [
+    'catalog',
+    'inventory',
+    'manifests',
+    'database',
+    'distribution-concrete-index',
+    'distribution-index-uuid',
+    'distribution-queried-at',
+    'out',
+  ]) {
     if (!args[required]) throw new Error(`Missing --${required}`)
   }
   return args
@@ -163,12 +172,60 @@ const assertCanonicalComponents = (cohort, locus) => {
 const sha256Json = (value) =>
   crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex')
 
+const DISTRIBUTION_LIMITS = {
+  max_serialized_bytes: 2 * 1024 * 1024,
+  max_total_bins: 20000,
+  max_allele_source_rows: 1000,
+  max_genotype_source_rows: 1000,
+}
+
+const distributionReceipt = (row) => {
+  const context = `catalog row ${row?.id || 'unknown'} distributions`
+  const allele = requireOwn(row, 'allele_size_distribution', context)
+  const genotype = requireOwn(row, 'genotype_distribution', context)
+  if (!Array.isArray(allele) || !Array.isArray(genotype)) {
+    throw new Error(`${context} fields are not arrays`)
+  }
+  const payload = { allele_size_distribution: allele, genotype_distribution: genotype }
+  const serialized = JSON.stringify(payload)
+  const receipt = {
+    sha256: crypto.createHash('sha256').update(serialized).digest('hex'),
+    serialized_bytes: Buffer.byteLength(serialized),
+    allele_source_rows: allele.length,
+    genotype_source_rows: genotype.length,
+    allele_bins: allele.reduce(
+      (total, item) => total + (Array.isArray(item?.distribution) ? item.distribution.length : 0),
+      0
+    ),
+    genotype_bins: genotype.reduce(
+      (total, item) => total + (Array.isArray(item?.distribution) ? item.distribution.length : 0),
+      0
+    ),
+  }
+  if (receipt.serialized_bytes > DISTRIBUTION_LIMITS.max_serialized_bytes) {
+    throw new Error(`${context} exceeds the serialized-byte limit`)
+  }
+  if (receipt.allele_bins + receipt.genotype_bins > DISTRIBUTION_LIMITS.max_total_bins) {
+    throw new Error(`${context} exceeds the total-bin limit`)
+  }
+  if (
+    receipt.allele_source_rows > DISTRIBUTION_LIMITS.max_allele_source_rows ||
+    receipt.genotype_source_rows > DISTRIBUTION_LIMITS.max_genotype_source_rows
+  ) {
+    throw new Error(`${context} exceeds a source-row limit`)
+  }
+  return receipt
+}
+
 const main = () => {
   const args = parseArgs(process.argv.slice(2))
   const catalogInput = readJson(args.catalog)
   const inventory = readJson(args.inventory)
   const manifestBundle = readJson(args.manifests)
   const shortRows = normalizeCatalogRows(catalogInput.rows)
+  const distributionReceipts = new Map(
+    catalogInput.rows.map((row) => [String(row.id), distributionReceipt(row)])
+  )
 
   if (catalogInput.dataset !== 'gnomad_r4' || catalogInput.count !== shortRows.length) {
     throw new Error('Catalog dataset/count mismatch')
@@ -316,7 +373,11 @@ const main = () => {
         candidates: exact,
       }
     }
-    return { short, cohorts: cohortResults }
+    return {
+      short,
+      distribution_receipt: distributionReceipts.get(short.id),
+      cohorts: cohortResults,
+    }
   })
 
   const exactCounts = Object.fromEntries(
@@ -329,8 +390,11 @@ const main = () => {
     throw new Error(`Reviewed reconciliation changed: ${JSON.stringify(exactCounts)}`)
   }
 
+  const receiptRows = rows
+    .map((row) => ({ id: row.short.id, ...row.distribution_receipt }))
+    .sort((left, right) => left.id.localeCompare(right.id))
   const artifact = {
-    schema_version: 2,
+    schema_version: 3,
     generated_at: /^\d{4}-\d{2}-\d{2}$/.test(catalogInput.queried_at)
       ? `${catalogInput.queried_at}T00:00:00.000Z`
       : catalogInput.queried_at,
@@ -342,6 +406,17 @@ const main = () => {
       row_count: shortRows.length,
       compact_sha256: sha256Json(shortRows),
       hard_ceiling: 500,
+    },
+    distribution: {
+      source_index: 'gnomad_v3_short_tandem_repeats',
+      concrete_index: args['distribution-concrete-index'] || null,
+      index_uuid: args['distribution-index-uuid'] || null,
+      queried_at: args['distribution-queried-at'],
+      surface: ['allele_size_distribution', 'genotype_distribution'],
+      canonicalization:
+        'SHA-256 of UTF-8 compact JSON with keys allele_size_distribution then genotype_distribution; source array and object-key order preserved.',
+      inventory_sha256: sha256Json(receiptRows),
+      limits: DISTRIBUTION_LIMITS,
     },
     provenance: {
       reference_genome: 'GRCh38',
@@ -374,4 +449,10 @@ const main = () => {
 
 if (require.main === module) main()
 
-module.exports = { assertCanonicalComponents, normalizeCatalogRows, parseCanonicalId }
+module.exports = {
+  DISTRIBUTION_LIMITS,
+  assertCanonicalComponents,
+  distributionReceipt,
+  normalizeCatalogRows,
+  parseCanonicalId,
+}
