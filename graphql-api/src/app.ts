@@ -30,9 +30,7 @@ const getGcpTraceId = (request: any) => {
   // Fall back to Google's legacy trace context header.
   // Matches: <32 hex>, followed by "/" and legacy span ID and options.
   // Capture group 1 (inside parentheses) is the 32-character trace ID.
-  const cloudTraceMatch = request
-    .get('X-Cloud-Trace-Context')
-    ?.match(/^([\da-f]{32})(?:\/|$)/i)
+  const cloudTraceMatch = request.get('X-Cloud-Trace-Context')?.match(/^([\da-f]{32})(?:\/|$)/i)
 
   return cloudTraceMatch?.[1]
 }
@@ -51,18 +49,14 @@ app.get('/health/ready', (_req: any, res: any) => {
 })
 
 app.use((req: any, res: any, next: any) => {
-  const traceId = config.GCP_PROJECT
-    ? getGcpTraceId(req)
-    : null
+  const traceId = config.GCP_PROJECT ? getGcpTraceId(req) : null
 
   const store = {
     requestId: randomUUID(),
     startAt: performance.now(),
     startCpu: process.cpuUsage(),
     startHeapUsed: process.memoryUsage().heapUsed,
-    trace: traceId
-      ? `projects/${config.GCP_PROJECT}/traces/${traceId}`
-      : null,
+    trace: traceId ? `projects/${config.GCP_PROJECT}/traces/${traceId}` : null,
   }
 
   res.setHeader('x-request-id', store.requestId)
@@ -85,7 +79,7 @@ app.use((req: any, res: any, next: any) => {
               operationName: req.body.operationName ?? null,
               query: req.body.query ?? null,
               variables: req.body.variables ?? null,
-            }
+            },
           }
         : null,
     })
@@ -112,7 +106,7 @@ app.use((req: any, res: any, next: any) => {
         cpuUserMicros: cpu.user,
         cpuSystemMicros: cpu.system,
         heapUsed: memory.heapUsed,
-        heapDeltaBytes:  memory.heapUsed - ctx.startHeapUsed,
+        heapDeltaBytes: memory.heapUsed - ctx.startHeapUsed,
         httpRequest: {
           requestMethod: req.method,
           requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
@@ -121,7 +115,7 @@ app.use((req: any, res: any, next: any) => {
           referer: req.headers.referer || req.headers.referrer,
           protocol: `HTTP/${req.httpVersionMajor}.${req.httpVersionMinor}`,
           status: res.statusCode,
-          responseSizeBytes: res.getHeader('content-length')
+          responseSizeBytes: res.getHeader('content-length'),
         },
         graphqlRequest: req.graphqlParams
           ? {
@@ -139,7 +133,8 @@ app.use((req: any, res: any, next: any) => {
 
 loadWhitelist()
 
-app.use('/api/',
+app.use(
+  '/api/',
   graphQLApi({
     context: {
       esClient,
