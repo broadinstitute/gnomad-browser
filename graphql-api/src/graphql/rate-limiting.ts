@@ -4,7 +4,7 @@ import { UserVisibleError } from '../errors'
 import logger from '../logger'
 import { isWhitelistedIP } from '../whitelist'
 
-let rateLimitDb: Redis | undefined;
+let rateLimitDb: Redis | undefined
 
 if (config.REDIS_HOST && config.REDIS_USE_SENTINEL) {
   rateLimitDb = new Redis({
