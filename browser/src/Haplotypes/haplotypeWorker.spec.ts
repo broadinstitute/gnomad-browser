@@ -228,6 +228,93 @@ describe('haplotype worker VCF carrier identity', () => {
     expect(ready.data.clusters).toBeDefined()
   })
 
+  test('passes a target descriptor through INIT and returns display-only assignments', async () => {
+    jest.resetModules()
+    const postMessage = jest.fn()
+    Object.defineProperty(globalThis, 'postMessage', {
+      value: postMessage,
+      configurable: true,
+      writable: true,
+    })
+
+    // eslint-disable-next-line global-require
+    require('./haplotypeWorker')
+    const onmessage = (globalThis as any).onmessage
+    const targetVariants = {
+      ...variants,
+      variant_id: ['flank~1', 'not-selected-by-variant-id'],
+      source_variant_id: ['flank', 'target-source'],
+      alt_index: [1, 2],
+      alt_count: [1, 2],
+      pos: [100, 150],
+      allele_type: ['snv', 'trv'],
+      allele_length: [0, 3],
+      freq_af: [0.5, 0.25],
+      freq_ac: [1, 2],
+    }
+
+    onmessage({
+      data: {
+        type: 'INIT',
+        rawData: {
+          variants: targetVariants,
+          carrier_variant_indices: {
+            'sample-with-flanks:1': [0, 1],
+            'sample-without-flanks:1': [1],
+          },
+          target_descriptor: {
+            canonical_envelope: { chrom: 'chr22', start: 150, stop: 151 },
+            source_variant_ids: ['target-source'],
+            selected_exact_allele_id: 'target-source~2',
+            fixed_window: {
+              chrom: 'chr22', start: 0, stop: 50_151, flank_size: 50_000,
+            },
+          },
+        },
+        minAf: 0,
+        isClusteredView: true,
+        sortBy: 'similarity_score',
+        isDiploidView: false,
+        distanceMetric: 'all',
+        regionSize: 50_151,
+      },
+    })
+
+    const ready = postMessage.mock.calls
+      .map(([message]) => message as any)
+      .find((message) => message.type === 'READY')
+    expect(ready.data.groups).toHaveLength(1)
+    expect(ready.data.groups[0].variants.variants.map((entry: any) => entry.variant_id))
+      .toEqual(['flank~1'])
+    expect(ready.data.target_display_sidecar).toMatchObject({
+      by_carrier: {
+        'sample-with-flanks:1': {
+          exact_allele_ids: ['target-source~2'],
+          is_selected_exact_allele: true,
+          flanking_signature_status: 'usable',
+        },
+        'sample-without-flanks:1': {
+          exact_allele_ids: ['target-source~2'],
+          is_selected_exact_allele: true,
+          flanking_signature_status: 'no_usable_flanking_signature',
+        },
+      },
+      counts: {
+        selected_exact_allele_assigned_copy_count: 2,
+        selected_exact_allele_no_usable_flanking_signature_copy_count: 1,
+      },
+    })
+
+    const cloned = await cloneThroughMessageChannel(ready.data)
+    expect(Object.isFrozen(cloned.target_display_sidecar)).toBe(false)
+    const normalized = normalizeHaplotypeWorkerData(cloned)
+    expect(Object.isFrozen(normalized.target_display_sidecar)).toBe(true)
+    expect(Object.isFrozen(normalized.target_display_sidecar?.descriptor.fixed_window)).toBe(true)
+    expect(Object.isFrozen(
+      normalized.target_display_sidecar?.by_carrier['sample-with-flanks:1'].exact_allele_ids
+    )).toBe(true)
+  })
+
   test('reports malformed payload failures instead of leaving the last progress message stuck', () => {
     jest.resetModules()
     const postMessage = jest.fn()

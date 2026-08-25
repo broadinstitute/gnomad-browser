@@ -193,11 +193,52 @@ export function freezePhaseSetSidecar(sidecar: PhaseSetSidecar): PhaseSetSidecar
   })
 }
 
+export type HaplotypeTargetDescriptor = Readonly<{
+  canonical_envelope: Readonly<{
+    chrom: string
+    start: number
+    stop: number
+  }>
+  source_variant_ids: readonly string[]
+  selected_exact_allele_id: string
+  fixed_window: Readonly<{
+    chrom: string
+    start: number
+    stop: number
+    flank_size: 50_000
+  }>
+}>
+
+export type TargetCarrierAssignment = Readonly<HaplotypeCarrierIdentity & {
+  exact_allele_ids: readonly string[]
+  assignment_status: 'assigned' | 'unknown'
+  is_selected_exact_allele: boolean
+  flanking_signature_status: 'usable' | 'no_usable_flanking_signature'
+}>
+
+export type TargetDisplaySidecar = Readonly<{
+  descriptor: HaplotypeTargetDescriptor
+  by_carrier: Readonly<Record<string, TargetCarrierAssignment>>
+  counts: Readonly<{
+    represented_copy_count: number
+    assigned_target_copy_count: number
+    unknown_target_copy_count: number
+    usable_flanking_signature_copy_count: number
+    no_usable_flanking_signature_copy_count: number
+    selected_exact_allele_source_ac: number
+    selected_exact_allele_assigned_copy_count: number
+    selected_exact_allele_ac_reconciled: boolean
+    selected_exact_allele_usable_flanking_signature_copy_count: number
+    selected_exact_allele_no_usable_flanking_signature_copy_count: number
+  }>
+}>
+
 export type RawPayload = {
   variants: SoAVariants
   carrier_variant_indices: Record<string, number[]>
   carriers?: StructuredCarrier[]
   trv_alts?: Record<string, Record<number, string>>
+  target_descriptor?: HaplotypeTargetDescriptor
   auto_defaults?: AutoDefaults
   _phase_summary?: {
     total_carrier_rows: number
@@ -269,6 +310,37 @@ export type ComputedHaplotypeData = {
   clusters?: HaplotypeCluster[]
   tree_json?: string
   phase_set_sidecar: PhaseSetSidecar
+  target_display_sidecar?: TargetDisplaySidecar
+}
+
+export function freezeTargetDisplaySidecar(
+  sidecar: TargetDisplaySidecar
+): TargetDisplaySidecar {
+  const byCarrier: Record<string, TargetCarrierAssignment> = {}
+  Object.entries(sidecar.by_carrier).forEach(([carrierId, assignment]) => {
+    byCarrier[carrierId] = Object.freeze({
+      sample_id: assignment.sample_id,
+      vcf_strand: assignment.vcf_strand,
+      phase_set: assignment.phase_set,
+      exact_allele_ids: Object.freeze([...assignment.exact_allele_ids]),
+      assignment_status: assignment.assignment_status,
+      is_selected_exact_allele: assignment.is_selected_exact_allele,
+      flanking_signature_status: assignment.flanking_signature_status,
+    })
+  })
+
+  const descriptor = Object.freeze({
+    canonical_envelope: Object.freeze({ ...sidecar.descriptor.canonical_envelope }),
+    source_variant_ids: Object.freeze([...sidecar.descriptor.source_variant_ids]),
+    selected_exact_allele_id: sidecar.descriptor.selected_exact_allele_id,
+    fixed_window: Object.freeze({ ...sidecar.descriptor.fixed_window }),
+  })
+
+  return Object.freeze({
+    descriptor,
+    by_carrier: Object.freeze(byCarrier),
+    counts: Object.freeze({ ...sidecar.counts }),
+  })
 }
 
 export function normalizeHaplotypeWorkerData(
@@ -277,6 +349,9 @@ export function normalizeHaplotypeWorkerData(
   return {
     ...data,
     phase_set_sidecar: freezePhaseSetSidecar(data.phase_set_sidecar),
+    ...(data.target_display_sidecar == null
+      ? {}
+      : { target_display_sidecar: freezeTargetDisplaySidecar(data.target_display_sidecar) }),
   }
 }
 
@@ -312,6 +387,147 @@ const hashString = (str: string): string => {
     hash = (Math.imul(31, hash) + str.charCodeAt(i)) | 0
   }
   return hash.toString()
+}
+
+const exactAlleleIdFor = (variant: LRVariant): string | null => {
+  if (
+    !variant.source_variant_id ||
+    !Number.isInteger(variant.alt_index) ||
+    Number(variant.alt_index) < 1
+  ) return null
+  return `${variant.source_variant_id}~${variant.alt_index}`
+}
+
+const validateTargetDescriptor = (descriptor: HaplotypeTargetDescriptor) => {
+  const { canonical_envelope: envelope, fixed_window: window } = descriptor
+  if (
+    !envelope.chrom || !window.chrom || envelope.chrom !== window.chrom ||
+    !Number.isFinite(envelope.start) || !Number.isFinite(envelope.stop) ||
+    !Number.isFinite(window.start) || !Number.isFinite(window.stop) ||
+    envelope.start < 0 || envelope.stop <= envelope.start ||
+    window.start < 0 || window.stop <= window.start ||
+    window.start > envelope.start || window.stop < envelope.stop ||
+    window.flank_size !== 50_000
+  ) {
+    throw new Error('Invalid target descriptor envelope or fixed ±50 kb window')
+  }
+
+  const sourceIds = new Set(descriptor.source_variant_ids)
+  if (
+    sourceIds.size === 0 ||
+    sourceIds.size !== descriptor.source_variant_ids.length ||
+    descriptor.source_variant_ids.some((id) => !id) ||
+    !descriptor.selected_exact_allele_id
+  ) {
+    throw new Error('Invalid target descriptor source or selected exact-allele identity')
+  }
+}
+
+export function targetVariantIndicesFor(
+  variants: LRVariant[],
+  descriptor: HaplotypeTargetDescriptor
+): ReadonlySet<number> {
+  validateTargetDescriptor(descriptor)
+  const sourceIds = new Set(descriptor.source_variant_ids)
+  const presentSourceIds = new Set<string>()
+  const exactAlleleIds = new Set<string>()
+  const indices = new Set<number>()
+  let selectedMatchCount = 0
+
+  variants.forEach((variant, index) => {
+    if (!variant.source_variant_id || !sourceIds.has(variant.source_variant_id)) return
+    const exactAlleleId = exactAlleleIdFor(variant)
+    if (exactAlleleId == null) {
+      throw new Error(`Target variant ${variant.variant_id} lacks source_variant_id~alt_index identity`)
+    }
+    if (exactAlleleIds.has(exactAlleleId)) {
+      throw new Error(`Duplicate target exact-allele identity: ${exactAlleleId}`)
+    }
+    exactAlleleIds.add(exactAlleleId)
+    presentSourceIds.add(variant.source_variant_id)
+    indices.add(index)
+    if (exactAlleleId === descriptor.selected_exact_allele_id) selectedMatchCount += 1
+  })
+
+  const missingSourceIds = [...sourceIds].filter((id) => !presentSourceIds.has(id))
+  if (missingSourceIds.length > 0) {
+    throw new Error(`Target source records are absent from the haplotype payload: ${missingSourceIds.join(', ')}`)
+  }
+  if (selectedMatchCount !== 1) {
+    throw new Error('Selected exact allele must match exactly one source_variant_id~alt_index')
+  }
+  return indices
+}
+
+function targetDisplaySidecarFor(
+  variants: LRVariant[],
+  carrierVariantIndices: Record<string, number[]>,
+  carrierMetadata: CarrierMetadata,
+  minAf: number,
+  descriptor: HaplotypeTargetDescriptor,
+  targetVariantIndices: ReadonlySet<number>
+): TargetDisplaySidecar {
+  const byCarrier: Record<string, TargetCarrierAssignment> = {}
+  let assignedTargetCopies = 0
+  let unknownTargetCopies = 0
+  let usableFlankingCopies = 0
+  let noUsableFlankingCopies = 0
+  let selectedCopies = 0
+  let selectedUsableFlankingCopies = 0
+  let selectedNoUsableFlankingCopies = 0
+  const selectedSourceAc = variants.find(
+    (variant) => exactAlleleIdFor(variant) === descriptor.selected_exact_allele_id
+  )!.freq.ac
+
+  Object.entries(carrierVariantIndices).forEach(([carrierId, variantIndices]) => {
+    const identity = identityForCarrier(carrierId, carrierMetadata)
+    const exactAlleleIds = [...new Set(variantIndices
+      .filter((index) => targetVariantIndices.has(index))
+      .map((index) => exactAlleleIdFor(variants[index]))
+      .filter((id): id is string => id != null))].sort()
+    const hasUsableFlankingSignature = variantIndices.some(
+      (index) => !targetVariantIndices.has(index) && variants[index].freq.af >= minAf
+    )
+    const isSelected = exactAlleleIds.includes(descriptor.selected_exact_allele_id)
+
+    if (exactAlleleIds.length > 0) assignedTargetCopies += 1
+    else unknownTargetCopies += 1
+    if (hasUsableFlankingSignature) usableFlankingCopies += 1
+    else noUsableFlankingCopies += 1
+    if (isSelected) {
+      selectedCopies += 1
+      if (hasUsableFlankingSignature) selectedUsableFlankingCopies += 1
+      else selectedNoUsableFlankingCopies += 1
+    }
+
+    byCarrier[carrierId] = {
+      ...identity,
+      exact_allele_ids: exactAlleleIds,
+      assignment_status: exactAlleleIds.length > 0 ? 'assigned' : 'unknown',
+      is_selected_exact_allele: isSelected,
+      flanking_signature_status: hasUsableFlankingSignature
+        ? 'usable'
+        : 'no_usable_flanking_signature',
+    }
+  })
+
+  return freezeTargetDisplaySidecar({
+    descriptor,
+    by_carrier: byCarrier,
+    counts: {
+      represented_copy_count: Object.keys(carrierVariantIndices).length,
+      assigned_target_copy_count: assignedTargetCopies,
+      unknown_target_copy_count: unknownTargetCopies,
+      usable_flanking_signature_copy_count: usableFlankingCopies,
+      no_usable_flanking_signature_copy_count: noUsableFlankingCopies,
+      selected_exact_allele_source_ac: selectedSourceAc,
+      selected_exact_allele_assigned_copy_count: selectedCopies,
+      selected_exact_allele_ac_reconciled: selectedSourceAc === selectedCopies,
+      selected_exact_allele_usable_flanking_signature_copy_count: selectedUsableFlankingCopies,
+      selected_exact_allele_no_usable_flanking_signature_copy_count:
+        selectedNoUsableFlankingCopies,
+    },
+  })
 }
 
 // ---- UPGMA Tree (optimized: two-pointer Jaccard + SLINK-style min tracking) ----
@@ -351,7 +567,8 @@ export const computeSVDistanceMatrix = (
   groups: LightweightGroup[],
   variants: LRVariant[],
   distanceMetric: DistanceMetric = 'auto',
-  regionSize?: number
+  regionSize?: number,
+  excludedVariantIndices: ReadonlySet<number> = new Set()
 ): number[][] => {
   const minLen = getMinSVLength(regionSize)
 
@@ -359,6 +576,7 @@ export const computeSVDistanceMatrix = (
   const allSVIds = new Map<string, number>()
   for (const g of groups) {
     for (const idx of g.variantIndices) {
+      if (excludedVariantIndices.has(idx)) continue
       const v = variants[idx]
       if (isSV(v, minLen) && !allSVIds.has(v.variant_id)) {
         allSVIds.set(v.variant_id, allSVIds.size)
@@ -376,6 +594,7 @@ export const computeSVDistanceMatrix = (
   const filteredIds = new Map<string, number>()
   for (const g of groups) {
     for (const idx of g.variantIndices) {
+      if (excludedVariantIndices.has(idx)) continue
       const v = variants[idx]
       if (useMode === 'sv' && !isSV(v, minLen)) continue
       if (useMode === 'snv' && !isSNV(v)) continue
@@ -626,11 +845,12 @@ export type LightweightGroup = {
 export function groupCarriersLightweight(
   variants: LRVariant[],
   carrierVariantIndices: Record<string, number[]>,
-  minAf: number
+  minAf: number,
+  excludedVariantIndices: ReadonlySet<number> = new Set()
 ): LightweightGroup[] {
   const passingIndices = new Set<number>()
   for (let i = 0; i < variants.length; i++) {
-    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+    if (!excludedVariantIndices.has(i) && variants[i].freq.af >= minAf) passingIndices.add(i)
   }
 
   const signatureToCarriers = new Map<string, string[]>()
@@ -674,7 +894,8 @@ export function inflateGroups(
   carrierVariantIndices: Record<string, number[]>,
   trvAlts: Record<string, Record<number, string>> | undefined,
   skipBelowThreshold: boolean,
-  carrierMetadata: CarrierMetadata = {}
+  carrierMetadata: CarrierMetadata = {},
+  excludedVariantIndices: ReadonlySet<number> = new Set()
 ): HaplotypeGroup[] {
   return lightGroups.map((lg) => {
     const aboveVariants = lg.variantIndices.map((i) => variants[i])
@@ -714,7 +935,7 @@ export function inflateGroups(
         const identity = identityForCarrier(carrierId, carrierMetadata)
         const allIdxs = carrierVariantIndices[carrierId]
         for (const idx of allIdxs) {
-          if (!passingSet.has(idx)) {
+          if (!excludedVariantIndices.has(idx) && !passingSet.has(idx)) {
             const existing = belowMap.get(idx)
             if (existing) {
               existing.push(identity)
@@ -969,12 +1190,13 @@ export function groupDiplotypes(
   carrierVariantIndices: Record<string, number[]>,
   minAf: number,
   carrierMetadata: CarrierMetadata = {},
-  trvAlts: Record<string, Record<number, string>> | undefined = undefined
+  trvAlts: Record<string, Record<number, string>> | undefined = undefined,
+  excludedVariantIndices: ReadonlySet<number> = new Set()
 ): DiplotypeGroup[] {
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
   for (let i = 0; i < variants.length; i++) {
-    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+    if (!excludedVariantIndices.has(i) && variants[i].freq.af >= minAf) passingIndices.add(i)
   }
 
   type CarrierStrand = HaplotypeCarrierIdentity & {
@@ -989,7 +1211,9 @@ export function groupDiplotypes(
       ...identity,
       carrierId,
       indices: variantIdxs.filter((i) => passingIndices.has(i)),
-      below: variantIdxs.filter((i) => !passingIndices.has(i)),
+      below: variantIdxs.filter(
+        (i) => !excludedVariantIndices.has(i) && !passingIndices.has(i)
+      ),
     }
     const entry = sampleStrands.get(identity.sample_id)
     if (entry) entry.push(strand)
@@ -1222,35 +1446,55 @@ export function computeHaplotypeView(
   distanceMetric: DistanceMetric = 'auto',
   regionSize?: number,
   carrierMetadata: CarrierMetadata = {},
+  targetDescriptor?: HaplotypeTargetDescriptor,
   onProgress?: (status: string) => void
 ): ComputedHaplotypeData {
   const phase_set_sidecar = phaseSetSidecarFor(variants, carrierMetadata)
+  const targetVariantIndices = targetDescriptor == null
+    ? new Set<number>()
+    : targetVariantIndicesFor(variants, targetDescriptor)
+  const target_display_sidecar = targetDescriptor == null
+    ? undefined
+    : targetDisplaySidecarFor(
+      variants, carrierVariantIndices, carrierMetadata, minAf,
+      targetDescriptor, targetVariantIndices
+    )
+  const sidecars = {
+    phase_set_sidecar,
+    ...(target_display_sidecar == null ? {} : { target_display_sidecar }),
+  }
   if (isDiploidView) {
     const diplotypes = groupDiplotypes(
-      variants, carrierVariantIndices, minAf, carrierMetadata, trvAlts
+      variants, carrierVariantIndices, minAf, carrierMetadata, trvAlts,
+      targetVariantIndices
     )
     const sorted = sortDiplotypes(diplotypes, sortBy)
-    return { groups: sorted, phase_set_sidecar }
+    return { groups: sorted, ...sidecars }
   }
 
   const skipBelow = (regionSize || 0) > 200_000
 
   // Tier 1: Lightweight grouping (no TR alt spreading, no below-threshold, no variant_sets)
   let t0 = Date.now()
-  const lightGroups = groupCarriersLightweight(variants, carrierVariantIndices, minAf)
+  const lightGroups = groupCarriersLightweight(
+    variants, carrierVariantIndices, minAf, targetVariantIndices
+  )
   const tGroup = Date.now() - t0
 
   if (lightGroups.length < 2) {
     const inflated = inflateGroups(
-      lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow, carrierMetadata
+      lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow, carrierMetadata,
+      targetVariantIndices
     )
-    return { groups: sortGroups(inflated, sortBy), phase_set_sidecar }
+    return { groups: sortGroups(inflated, sortBy), ...sidecars }
   }
 
   // Distance matrix + UPGMA on lightweight groups
   onProgress?.(`Computing distances for ${lightGroups.length} haplotypes…`)
   t0 = Date.now()
-  const distMatrix = computeSVDistanceMatrix(lightGroups, variants, distanceMetric, regionSize)
+  const distMatrix = computeSVDistanceMatrix(
+    lightGroups, variants, distanceMetric, regionSize, targetVariantIndices
+  )
   const tDist = Date.now() - t0
   onProgress?.(`Building UPGMA tree (${lightGroups.length} haplotypes)…`)
   t0 = Date.now()
@@ -1263,7 +1507,8 @@ export function computeHaplotypeView(
   // Tier 2: Inflate to full HaplotypeGroup[] for rendering
   t0 = Date.now()
   const inflated = inflateGroups(
-    lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow, carrierMetadata
+    lightGroups, variants, carrierVariantIndices, trvAlts, skipBelow, carrierMetadata,
+    targetVariantIndices
   )
   const tInflate = Date.now() - t0
   const sorted = sortGroups(inflated, sortBy)
@@ -1274,7 +1519,7 @@ export function computeHaplotypeView(
     groups: sorted,
     clusters,
     tree_json: JSON.stringify(tree),
-    phase_set_sidecar,
+    ...sidecars,
   }
 }
 
