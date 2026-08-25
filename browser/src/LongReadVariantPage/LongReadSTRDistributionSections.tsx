@@ -337,7 +337,6 @@ export const LongReadGenotypeDistributionSection = ({
           genotypeDistribution={selectedDistribution}
           xRanges={[]}
           yRanges={[]}
-          onSelectBin={() => {}}
           selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
           baseColor={LONG_READ_PRIMARY_PLOT_COLOR}

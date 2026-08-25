@@ -69,6 +69,7 @@ const longReadTrLocusQuery = `
       }
       repeat_count_plots {
         status reason_code unit repeat_unit max_repunits
+        interaction { interaction_status reason }
         identity {
           ancillary_run_id primary_database primary_run_id primary_task_id primary_attempt_id
           source_variant_id component { chrom start0 end0 motif }

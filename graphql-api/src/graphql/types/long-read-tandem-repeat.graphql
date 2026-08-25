@@ -254,6 +254,18 @@ type LongReadTrPlotStratumCallability {
   no_call_rate_status: String!
 }
 
+enum LongReadTrRepeatInteractionStatus {
+  UNAVAILABLE_PLOTS
+  UNAVAILABLE_SOURCE_IDENTITIES
+}
+
+# Kept separate from the generic short-read distributions: an admitted static
+# histogram does not certify exact long-read contributor identity.
+type LongReadTrRepeatCountInteraction {
+  interaction_status: LongReadTrRepeatInteractionStatus!
+  reason: String!
+}
+
 type LongReadTrRepeatCountPlots {
   status: LongReadTrPlotStatus!
   reason_code: String
@@ -265,6 +277,7 @@ type LongReadTrRepeatCountPlots {
   allele_size_distribution: [ShortTandemRepeatAlleleSizeDistributionCohort!]!
   genotype_distribution: [ShortTandemRepeatGenotypeDistributionCohort!]!
   max_repunits: Float
+  interaction: LongReadTrRepeatCountInteraction!
 }
 
 enum LongReadTrDataStatus {

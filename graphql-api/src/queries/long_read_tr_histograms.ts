@@ -7,6 +7,15 @@ import type { LongReadCohort } from './long_read_y1_variants'
 export const MAX_LONG_READ_TR_HISTOGRAM_BYTES = 200 * 1024
 
 const NO_CALL_STATUS = 'UNAVAILABLE_NOT_IN_ADMITTED_HISTOGRAM_CONTRACT'
+const UNAVAILABLE_SOURCE_INTERACTION = Object.freeze({
+  interaction_status: 'UNAVAILABLE_SOURCE_IDENTITIES',
+  reason:
+    'The admitted histogram source contains aggregate count bins only; exact contributor identities are unavailable.',
+})
+const UNAVAILABLE_PLOT_INTERACTION = Object.freeze({
+  interaction_status: 'UNAVAILABLE_PLOTS',
+  reason: 'Contributor interaction is unavailable because the repeat-count plots are unavailable.',
+})
 
 type SourceRecord = {
   source_variant_id?: unknown
@@ -61,6 +70,7 @@ const unavailable = (status: string, reason_code: string) => ({
   allele_size_distribution: [],
   genotype_distribution: [],
   max_repunits: null,
+  interaction: UNAVAILABLE_PLOT_INTERACTION,
 })
 
 const invariant = (message: string): never => {
@@ -376,6 +386,10 @@ const parseExactRow = (row: any, expected: ExactHistogramIdentity) => {
       q_score: 0,
     })),
     max_repunits: maxRepeats,
+    // The admitted af_histograms.tsv row is already aggregated. It contains no
+    // per-observation exact ALT identity or genotype pair, so do not join these
+    // bins to the primary VCF's MC/length/motif fields.
+    interaction: UNAVAILABLE_SOURCE_INTERACTION,
   }
   if (Buffer.byteLength(JSON.stringify(response), 'utf8') > MAX_LONG_READ_TR_HISTOGRAM_BYTES) {
     invariant('parsed histogram payload exceeds the 200 KiB cap')

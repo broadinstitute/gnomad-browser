@@ -115,6 +115,10 @@ export type RepeatCountPlots = {
   max_repunits: number | null
   allele_size_distribution: any[]
   genotype_distribution: any[]
+  interaction: {
+    interaction_status: 'UNAVAILABLE_PLOTS' | 'UNAVAILABLE_SOURCE_IDENTITIES'
+    reason: string
+  }
 }
 
 export type ShortReadCatalogDisease = {

@@ -154,12 +154,16 @@ type Props = {
   ranges?: Range[]
   populationDisplayConfig?: PopulationDisplayConfig
   baseColor?: string
+  onSelectBin?: (bin: AlleleSizeBin) => void
+  isBinSelected?: (bin: AlleleSizeBin) => boolean
   size: { width: number }
 }
 
-type Bin = Partial<Record<ColorByValue | '', number>> & {
+export type AlleleSizeBin = Partial<Record<ColorByValue | '', number>> & {
   index: number
   label: string
+  start: number
+  stop: number
   fullFrequency: number
 }
 
@@ -223,7 +227,7 @@ const LegendFromColorBy = ({
 }
 
 const tooltipContent = (
-  data: Bin,
+  data: AlleleSizeBin,
   colorBy: ColorBy | null,
   key: ColorByValue | '',
   populationDisplayConfig?: PopulationDisplayConfig
@@ -251,6 +255,8 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     ranges = [],
     populationDisplayConfig,
     baseColor = defaultColor,
+    onSelectBin,
+    isBinSelected,
   }: Props) => {
     const height = 300
 
@@ -276,21 +282,26 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       return binSize === 1 ? `${start}` : `${start} - ${stop}`
     })
 
-    const emptyBins: Bin[] = Array.from(Array(nBins)).map((_, binIndex) => ({
-      label: binLabels[binIndex],
-      index: binIndex,
-      fullFrequency: 0,
-    }))
+    const emptyBins: AlleleSizeBin[] = Array.from(Array(nBins)).map((_, binIndex) => {
+      const start = domainMin + binIndex * binSize
+      return {
+        label: binLabels[binIndex],
+        index: binIndex,
+        start,
+        stop: Math.min(domainMax, start + binSize - 1),
+        fullFrequency: 0,
+      }
+    })
 
-    const data: Bin[] = useMemo(() => {
+    const data: AlleleSizeBin[] = useMemo(() => {
       const binsByColorByValue = alleleSizeDistribution.reduce((acc, item) => {
         const binIndex = Math.floor((item.repunit_count - domainMin) / binSize)
-        const oldBin: Bin | undefined = acc[binIndex]
+        const oldBin: AlleleSizeBin | undefined = acc[binIndex]
         if (!oldBin) return acc
         const frequencyKey = item.colorByValue || ''
         const oldFrequency = oldBin[frequencyKey] || 0
         const newFrequency = oldFrequency + item.frequency
-        const newBin: Bin = {
+        const newBin: AlleleSizeBin = {
           ...oldBin,
           [frequencyKey]: newFrequency,
           fullFrequency: oldBin.fullFrequency + item.frequency,
@@ -464,6 +475,48 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
                 )
               }
             </BarStack>
+            {onSelectBin &&
+              data
+                .filter((bin) => bin.fullFrequency > 0)
+                .map((bin) => {
+                  const repeatText = bin.label === '1' ? '1 repeat' : `${bin.label} repeats`
+                  const alleleText =
+                    bin.fullFrequency === 1
+                      ? '1 allele'
+                      : `${bin.fullFrequency.toLocaleString()} alleles`
+                  const selected = Boolean(isBinSelected?.(bin))
+                  const y = yScale(bin.fullFrequency)
+                  return (
+                    <TooltipAnchor
+                      key={`selectable-bin-${bin.start}-${bin.stop}`}
+                      // @ts-expect-error
+                      tooltip={`${repeatText}: ${alleleText}`}
+                    >
+                      <rect
+                        data-testid="selectable-allele-size-bin"
+                        x={xScale(bin.index)}
+                        y={y}
+                        width={xBandwidth}
+                        height={Math.max(1, plotHeight - y)}
+                        fill="transparent"
+                        stroke={selected ? '#111' : 'transparent'}
+                        strokeWidth={selected ? 3 : 1}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={`Filter by ${repeatText}: ${alleleText}`}
+                        aria-pressed={selected}
+                        onClick={() => onSelectBin(bin)}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' || event.key === ' ') {
+                            event.preventDefault()
+                            onSelectBin(bin)
+                          }
+                        }}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </TooltipAnchor>
+                  )
+                })}
           </g>
 
           <g transform={`translate(${margin.left}, 0)`}>

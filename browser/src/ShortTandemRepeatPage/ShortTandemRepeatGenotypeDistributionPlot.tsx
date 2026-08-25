@@ -32,7 +32,8 @@ type Props = {
   genotypeDistribution: GenotypeDistributionItem[]
   xRanges: PlotRange[]
   yRanges: PlotRange[]
-  onSelectBin: (bin: Bin) => void
+  onSelectBin?: (bin: Bin) => void
+  isBinSelected?: (bin: Bin) => boolean
   size: { width: number }
   selectedPopulation: PopulationId | null
   selectedSex: Sex | null
@@ -57,7 +58,8 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     size: { width },
     xRanges = [],
     yRanges = [],
-    onSelectBin = () => {},
+    onSelectBin,
+    isBinSelected,
     baseColor = '#73ab3d',
   }: Props) => {
     const height = Math.min(width, 500)
@@ -223,9 +225,10 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
                         <>
                           {d.label}
                           <br /> {d.count.toLocaleString()} individual{d.count === 1 ? '' : 's'}
-                          {(d.xRange[0] !== d.xRange[1] || d.yRange[0] !== d.yRange[1]) && (
-                            <p style={{ marginBottom: 0 }}>Click for details</p>
-                          )}
+                          {onSelectBin &&
+                            (d.xRange[0] !== d.xRange[1] || d.yRange[0] !== d.yRange[1]) && (
+                              <p style={{ marginBottom: 0 }}>Activate for details</p>
+                            )}
                         </>
                       }
                     >
@@ -237,9 +240,28 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
                         fill={baseColor}
                         opacity={d.count === 0 ? 0 : opacityScale(d.count)}
                         stroke="#333"
-                        onClick={() => {
-                          onSelectBin(d)
-                        }}
+                        role={onSelectBin ? 'button' : undefined}
+                        tabIndex={onSelectBin ? 0 : undefined}
+                        aria-label={
+                          onSelectBin
+                            ? `${d.label}; ${d.count.toLocaleString()} individual${
+                                d.count === 1 ? '' : 's'
+                              }`
+                            : undefined
+                        }
+                        aria-pressed={onSelectBin ? Boolean(isBinSelected?.(d)) : undefined}
+                        onClick={onSelectBin ? () => onSelectBin(d) : undefined}
+                        onKeyDown={
+                          onSelectBin
+                            ? (event) => {
+                                if (event.key === 'Enter' || event.key === ' ') {
+                                  event.preventDefault()
+                                  onSelectBin(d)
+                                }
+                              }
+                            : undefined
+                        }
+                        style={onSelectBin ? { cursor: 'pointer' } : undefined}
                       />
                     </TooltipAnchor>
                   </React.Fragment>
@@ -425,7 +447,6 @@ ShortTandemRepeatGenotypeDistributionPlot.displayName = 'ShortTandemRepeatGenoty
 ShortTandemRepeatGenotypeDistributionPlot.defaultProps = {
   xRanges: [],
   yRanges: [],
-  onSelectBin: () => {},
 }
 
 export default ShortTandemRepeatGenotypeDistributionPlot

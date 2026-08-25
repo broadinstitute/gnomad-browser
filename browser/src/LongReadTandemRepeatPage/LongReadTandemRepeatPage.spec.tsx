@@ -356,6 +356,10 @@ const makeLocus = (count = 72) => {
       max_repunits: null,
       allele_size_distribution: [],
       genotype_distribution: [],
+      interaction: {
+        interaction_status: 'UNAVAILABLE_PLOTS' as const,
+        reason: 'Repeat-count plots and contributor interaction are unavailable.',
+      },
     },
     alleles: { nodes: alleles, page_info: { has_next_page: false } },
   }
@@ -372,6 +376,10 @@ const makeSimpleLocus = () => ({
     reason_code: null,
     repeat_unit: 'CAG',
     max_repunits: 13,
+    interaction: {
+      interaction_status: 'UNAVAILABLE_SOURCE_IDENTITIES' as const,
+      reason: 'Aggregate histogram source has no exact contributor identities.',
+    },
     allele_size_distribution: [
       {
         ancestry_group: 'afr',
@@ -536,12 +544,21 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(4)
     expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
+    expect(
+      screen.getByTestId('allele-repeat-count-card').getAttribute('data-interaction-status')
+    ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
+    expect(
+      screen.getByTestId('genotype-repeat-count-card').getAttribute('data-interaction-status')
+    ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
     expect(screen.queryByRole('heading', { name: 'Simple-locus repeat counts' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'About simple-locus repeat counts' }))
     const help = screen.getByRole('dialog', { name: 'About simple-locus repeat counts' })
     expect(within(help).getByText(/one unambiguous repeat unit/)).not.toBeNull()
     expect(within(help).getByText(/groups called chromosome copies by repeat count/)).not.toBeNull()
     expect(within(help).getByText(/do not include a no-call denominator/)).not.toBeNull()
+    expect(
+      within(help).getByText(/aggregate source does not identify the exact alleles/)
+    ).not.toBeNull()
     expect(screen.queryByRole('heading', { name: 'Genotype length distribution' })).toBeNull()
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat( 2,minmax(280px,1fr) )')
     expect(grid).toHaveStyleRule('gap', 'clamp(24px,2vw,32px)')
@@ -1054,6 +1071,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('ref alt length')
     expect(longReadTandemRepeatLocusQuery).toContain('source_records {')
     expect(longReadTandemRepeatLocusQuery).toContain('repeat_count_plots')
+    expect(longReadTandemRepeatLocusQuery).toContain('interaction { interaction_status reason }')
     expect(longReadTandemRepeatLocusQuery).toContain('short_read_context {')
     expect(longReadTandemRepeatLocusQuery).toContain('exact_reference_component_outline_authorized')
     expect(longReadTandemRepeatLocusQuery).toContain(

@@ -94,6 +94,7 @@ query ${operationName}(
     }
     repeat_count_plots {
       status reason_code unit repeat_unit max_repunits
+      interaction { interaction_status reason }
       allele_size_distribution {
         ancestry_group sex repunit distribution { repunit_count frequency }
       }

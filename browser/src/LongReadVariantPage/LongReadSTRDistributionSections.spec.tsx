@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import ShortTandemRepeatAlleleSizeDistributionPlot from '../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot'
@@ -84,6 +84,93 @@ describe('long-read STR allele-size distribution', () => {
       />
     )
     expect(srGenotypes.container.querySelector('rect[fill="#73ab3d"]')).not.toBeNull()
+  })
+
+  test('adds one optional keyboard target per stacked allele bin without changing the static default', () => {
+    const distribution = [
+      { repunit_count: 10, frequency: 3, colorByValue: 'afr' as const },
+      { repunit_count: 10, frequency: 4, colorByValue: 'nfe' as const },
+    ]
+    const onSelectBin = jest.fn()
+    const interactive = render(
+      <ShortTandemRepeatAlleleSizeDistributionPlot
+        minRepeats={10}
+        maxRepeats={10}
+        alleleSizeDistribution={distribution}
+        colorBy="population"
+        repeatUnitLength={null}
+        scaleType="linear"
+        onSelectBin={onSelectBin}
+        isBinSelected={(bin) => bin.start === 10}
+      />
+    )
+    const bars = screen.getAllByRole('button', { name: /Filter by 10 repeats.*7 alleles/ })
+    expect(bars).toHaveLength(1)
+    const [bar] = bars
+    expect(bar.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(bar)
+    fireEvent.keyDown(bar, { key: 'Enter' })
+    fireEvent.keyDown(bar, { key: ' ' })
+    expect(onSelectBin).toHaveBeenCalledTimes(3)
+    expect(onSelectBin.mock.calls[0][0]).toMatchObject({ start: 10, stop: 10, fullFrequency: 7 })
+    interactive.unmount()
+
+    render(
+      <ShortTandemRepeatAlleleSizeDistributionPlot
+        minRepeats={10}
+        maxRepeats={10}
+        alleleSizeDistribution={distribution}
+        colorBy="population"
+        repeatUnitLength={null}
+        scaleType="linear"
+      />
+    )
+    expect(screen.queryByRole('button', { name: /Filter by 10 repeats/ })).toBeNull()
+  })
+
+  test('adds optional keyboard genotype-bin activation and selected semantics', () => {
+    const onSelectBin = jest.fn()
+    const distribution = [
+      { short_allele_repunit_count: 10, long_allele_repunit_count: 11, frequency: 7 },
+    ]
+    const interactive = render(
+      <ShortTandemRepeatGenotypeDistributionPlot
+        axisLabels={['longer allele', 'shorter allele']}
+        minRepeats={[11, 10]}
+        maxRepeats={[11, 10]}
+        genotypeDistribution={distribution}
+        xRanges={[]}
+        yRanges={[]}
+        onSelectBin={onSelectBin}
+        isBinSelected={() => true}
+        selectedPopulation={null}
+        selectedSex={null}
+      />
+    )
+    const cell = screen.getByRole('button', {
+      name: /11 repeats in longer allele.*10 repeats in shorter allele.*7 individuals/,
+    })
+    expect(cell.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(cell)
+    fireEvent.keyDown(cell, { key: 'Enter' })
+    fireEvent.keyDown(cell, { key: ' ' })
+    expect(onSelectBin).toHaveBeenCalledTimes(3)
+    expect(onSelectBin.mock.calls[0][0]).toMatchObject({ xRange: [11, 11], yRange: [10, 10] })
+    interactive.unmount()
+
+    render(
+      <ShortTandemRepeatGenotypeDistributionPlot
+        axisLabels={['longer allele', 'shorter allele']}
+        minRepeats={[11, 10]}
+        maxRepeats={[11, 10]}
+        genotypeDistribution={distribution}
+        xRanges={[]}
+        yRanges={[]}
+        selectedPopulation={null}
+        selectedSex={null}
+      />
+    )
+    expect(screen.queryByRole('button', { name: /11 repeats in longer allele/ })).toBeNull()
   })
 
   test('focuses domains on all observed counts with stable padding, including one-bin and outlier cases', () => {

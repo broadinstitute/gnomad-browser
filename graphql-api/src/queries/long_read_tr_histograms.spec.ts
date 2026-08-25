@@ -119,6 +119,10 @@ describe('exact long-read TR locus histogram contract', () => {
         },
       ],
       max_repunits: 11,
+      interaction: {
+        interaction_status: 'UNAVAILABLE_SOURCE_IDENTITIES',
+        reason: expect.stringContaining('aggregate count bins only'),
+      },
     })
     const requests = mockQuery.mock.calls.map(([request]) => request as any)
     expect(requests[0].query).toContain('FROM lr_y1_str_histogram_mapping')
@@ -163,6 +167,7 @@ describe('exact long-read TR locus histogram contract', () => {
     await expect(fetchLongReadTrRepeatCountPlots(locus(), route)).resolves.toMatchObject({
       status: 'UNAVAILABLE_NO_EXACT_MAPPING',
       allele_size_distribution: [],
+      interaction: { interaction_status: 'UNAVAILABLE_PLOTS' },
     })
 
     await expect(fetchLongReadTrRepeatCountPlots(locus(), null)).resolves.toMatchObject({
@@ -225,6 +230,48 @@ describe('exact long-read TR locus histogram contract', () => {
         status: 'AVAILABLE_EXACT',
         overall: { called_alleles: alleles, called_diploid_genotypes: genotypes },
       })
+    }
+  )
+
+  test.each([
+    ['ATXN1', '12x:2,20x:2', [21, 35], 12, 20],
+    ['RFC1', '5x:2,6x:2', [11, 100], 5, 6],
+  ])(
+    'keeps %s static and interaction-unavailable instead of joining unrelated source MC counts',
+    async (_locusName, alleleHistogram, primaryMcCounts, minRepeats, maxRepeats) => {
+      const histogramRow = row({
+        allele_size_histogram: alleleHistogram,
+        biallelic_histogram: `${minRepeats}/${maxRepeats}:2`,
+        min_repeats: minRepeats,
+        mode_repeats: minRepeats,
+        mean_repeats: (minRepeats + maxRepeats) / 2,
+        stdev_repeats: 1,
+        median_repeats: (minRepeats + maxRepeats) / 2,
+        p99_repeats: maxRepeats,
+        max_repeats: maxRepeats,
+        populations: {
+          'AlleleSizeHistogram:afr:female': alleleHistogram,
+          'BiallelicHistogram:afr:female': `${minRepeats}/${maxRepeats}:2`,
+        },
+      })
+      mockQuery
+        .mockImplementationOnce(() => result([mapping()]))
+        .mockImplementationOnce(() => result([histogramRow]))
+
+      const plots = await fetchLongReadTrRepeatCountPlots(
+        locus({ primary_exact_alt_source_mc_counts: primaryMcCounts }),
+        route
+      )
+
+      expect(plots.status).toBe('AVAILABLE_EXACT')
+      expect(plots.allele_size_distribution).not.toHaveLength(0)
+      expect(plots.genotype_distribution).not.toHaveLength(0)
+      expect(plots.interaction).toEqual({
+        interaction_status: 'UNAVAILABLE_SOURCE_IDENTITIES',
+        reason:
+          'The admitted histogram source contains aggregate count bins only; exact contributor identities are unavailable.',
+      })
+      expect(JSON.stringify(plots)).not.toContain('primary_exact_alt_source_mc_counts')
     }
   )
 

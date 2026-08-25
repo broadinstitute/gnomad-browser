@@ -146,9 +146,13 @@ const RepeatCountHelp = () => (
       people by their shorter and longer called allele repeat counts; darker squares represent more
       people.
     </p>
-    <p style={{ marginBottom: 0 }}>
+    <p>
       Each repeat-count card has clearly scoped population, sex, color, or scale controls. Counts do
       not include a no-call denominator and are not a clinical interpretation.
+    </p>
+    <p style={{ marginBottom: 0 }}>
+      The aggregate source does not identify the exact alleles in each bar or square, so these two
+      plots do not filter the exact-allele list.
     </p>
   </HaplotypeHelpButton>
 )
@@ -1043,6 +1047,7 @@ const RepeatCountPlotCards = ({
       <PlotCard
         data-plot-card="allele-repeat-count"
         data-testid="allele-repeat-count-card"
+        data-interaction-status={repeatCountPlots.interaction.interaction_status}
         role="group"
         aria-label="Allele repeat-count plot and controls"
       >
@@ -1060,6 +1065,7 @@ const RepeatCountPlotCards = ({
       <PlotCard
         data-plot-card="genotype-repeat-count"
         data-testid="genotype-repeat-count-card"
+        data-interaction-status={repeatCountPlots.interaction.interaction_status}
         role="group"
         aria-label="Genotype repeat-count plot and controls"
       >
