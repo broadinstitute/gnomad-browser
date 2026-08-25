@@ -635,6 +635,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(panel).getAllByText(/CAG/).length).toBeGreaterThan(0)
     expect(within(panel).getByText(/Short-read reference context only/)).not.toBeNull()
     expect(within(panel).getByText(/do not classify any LR allele/)).not.toBeNull()
+    const shortCohort = screen
+      .getByRole('heading', { name: 'Short-read reference cohort — HTT CAG' })
+      .closest('section') as HTMLElement
+    const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')!
+    expect(panel.compareDocumentPosition(shortCohort)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(shortCohort.compareDocumentPosition(landscape)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(
+      within(shortCohort).getByRole('button', { name: 'Load short-read distributions' })
+    ).not.toBeNull()
+    expect(within(shortCohort).getByText(/separate assay and cohort/)).not.toBeNull()
     expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
     const highlightedComponent = screen
       .getByRole('img', { name: /component 1 has a neutral dotted outline/ })
@@ -662,6 +672,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     } as any
     renderPage({ locus })
     expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
+    expect(screen.queryByRole('heading', { name: /Short-read reference cohort/ })).toBeNull()
     expect(screen.queryByText(/Short-read known-locus ranges are reference context/)).toBeNull()
     expect(screen.queryByText(/Outlined component/)).toBeNull()
   })

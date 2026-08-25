@@ -16,6 +16,7 @@ import {
   unavailableReason,
 } from './LongReadTrVisualizations'
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
+import ShortReadReferenceCohortSection from './ShortReadReferenceCohortSection'
 import { AlleleNavigation, LongReadTrLocus } from './types'
 
 const Header = styled.header`
@@ -268,6 +269,12 @@ const LongReadTandemRepeatPage = ({
       />
 
       <ShortReadKnownLocusContext context={locus.short_read_context} />
+
+      <ShortReadReferenceCohortSection
+        locusId={locus.id}
+        lrCohort={locus.lr_cohort}
+        context={locus.short_read_context}
+      />
 
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}

@@ -92,7 +92,10 @@ export const consolidateAlleleSizeDistributions = <T extends AlleleSizeDistribut
   return Object.values(itemsByRepunitCount)
 }
 
-const v3ColorBy: ColorByFn<V3AlleleSizeDistributionCohort> = (cohort, colorBy) => {
+export const shortReadAlleleSizeColorBy: ColorByFn<V3AlleleSizeDistributionCohort> = (
+  cohort,
+  colorBy
+) => {
   if (colorBy === 'quality_description') {
     return cohort.quality_description
   }
@@ -108,15 +111,33 @@ const v3ColorBy: ColorByFn<V3AlleleSizeDistributionCohort> = (cohort, colorBy) =
   return null
 }
 
-export const getSelectedAlleleSizeDistribution = (
-  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
+export const selectShortReadAlleleSizeDistribution = (
+  alleleSizeDistribution: V3AlleleSizeDistributionCohort[],
   {
     selectedPopulation,
     selectedSex,
     selectedColorBy,
     selectedRepeatUnit,
-  }: AlleleSizeDistributionParams
+  }: AlleleSizeDistributionParams,
+  matchingRepunits: Set<string> | null = selectedRepeatUnit === null
+    ? null
+    : new Set([selectedRepeatUnit])
+): AlleleSizeDistributionItem[] =>
+  consolidateAlleleSizeDistributions(
+    alleleSizeDistribution,
+    shortReadAlleleSizeColorBy,
+    selectedPopulation,
+    selectedSex,
+    selectedColorBy,
+    selectedRepeatUnit,
+    matchingRepunits
+  )
+
+export const getSelectedAlleleSizeDistribution = (
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
+  params: AlleleSizeDistributionParams
 ): AlleleSizeDistributionItem[] => {
+  const { selectedRepeatUnit } = params
   const matchingRepunits: Set<string> =
     selectedRepeatUnit !== null &&
     selectedRepeatUnit.startsWith('classification') &&
@@ -124,13 +145,9 @@ export const getSelectedAlleleSizeDistribution = (
       ? repunitsWithClassification(shortTandemRepeatOrAdjacentRepeat, selectedRepeatUnit.slice(15))
       : new Set([selectedRepeatUnit!])
 
-  return consolidateAlleleSizeDistributions(
+  return selectShortReadAlleleSizeDistribution(
     shortTandemRepeatOrAdjacentRepeat.allele_size_distribution,
-    v3ColorBy,
-    selectedPopulation,
-    selectedSex,
-    selectedColorBy,
-    selectedRepeatUnit,
+    params,
     matchingRepunits
   )
 }
@@ -152,20 +169,18 @@ const addCohortToGenotypeDistribution = (
     return { ...acc, [key]: newItem }
   }, distribution)
 
-export const getSelectedGenotypeDistribution = (
-  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
-  {
-    selectedRepeatUnits,
-    selectedPopulation,
-    selectedSex,
-  }: {
-    selectedRepeatUnits: string[] | null
-    selectedPopulation: string | null
-    selectedSex: Sex | null
-  }
+type GenotypeDistributionParams = {
+  selectedRepeatUnits: string[] | null
+  selectedPopulation: string | null
+  selectedSex: Sex | null
+}
+
+export const selectShortReadGenotypeDistribution = (
+  genotypeDistribution: GenotypeDistributionCohort[],
+  { selectedRepeatUnits, selectedPopulation, selectedSex }: GenotypeDistributionParams
 ): GenotypeDistributionItem[] => {
   const itemsByRepunitCounts: Record<string, GenotypeDistributionItem> =
-    shortTandemRepeatOrAdjacentRepeat.genotype_distribution.reduce((acc, cohort) => {
+    genotypeDistribution.reduce((acc, cohort) => {
       if (selectedPopulation !== null && cohort.ancestry_group !== selectedPopulation) {
         return acc
       }
@@ -183,6 +198,15 @@ export const getSelectedGenotypeDistribution = (
     }, {})
   return Object.values(itemsByRepunitCounts)
 }
+
+export const getSelectedGenotypeDistribution = (
+  shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
+  params: GenotypeDistributionParams
+): GenotypeDistributionItem[] =>
+  selectShortReadGenotypeDistribution(
+    shortTandemRepeatOrAdjacentRepeat.genotype_distribution,
+    params
+  )
 
 export const getGenotypeDistributionPlotAxisLabels = (
   shortTandemRepeatOrAdjacentRepeat: ShortTandemRepeat | ShortTandemRepeatAdjacentRepeat,
