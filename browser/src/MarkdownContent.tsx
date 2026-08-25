@@ -22,7 +22,7 @@ const MarkdownContentWrapper = styled.div`
   p {
     margin-top: 15px;
     margin-bottom: 15px;
-    line-height: 1.4;
+    line-height: 1.6;
   }
 
   a {
@@ -41,6 +41,34 @@ const MarkdownContentWrapper = styled.div`
     line-height: 1.4;
   }
 
+  code {
+    padding: 0.15em 0.35em;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.3em;
+    background: #eef0f3;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.9em;
+  }
+
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+    padding: 1em;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 1.25em 0;
+    border-radius: 0.4em;
+    background: #eef0f3;
+    line-height: 1.5;
+  }
+
+  pre code {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    font-size: 0.875em;
+  }
+
   ol,
   ul {
     padding-left: 20px;
@@ -49,6 +77,7 @@ const MarkdownContentWrapper = styled.div`
 
   li {
     margin-bottom: 0.5em;
+    line-height: 1.6;
   }
 
   table {
@@ -60,6 +89,7 @@ const MarkdownContentWrapper = styled.div`
     padding: 0.5em 10px 0.5em 0;
     border-bottom: 1px solid #ccc;
     font-weight: normal;
+    line-height: 1.6;
     text-align: left;
   }
 
@@ -69,6 +99,7 @@ const MarkdownContentWrapper = styled.div`
     background-position: center right;
     background-repeat: no-repeat;
     font-weight: bold;
+    line-height: 1.6;
   }
 `
 
