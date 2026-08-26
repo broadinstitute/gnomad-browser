@@ -5,7 +5,8 @@ import { Track } from '@gnomad/region-viewer'
 import { Button, Checkbox, Modal, ExternalLink } from '@gnomad/ui'
 import CategoryFilterControl from '../CategoryFilterControl'
 import InfoButton from '../help/InfoButton'
-import { TrackPageSection } from '../TrackPage'
+import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import { PageType, TrackPageSection } from '../TrackPage'
 import {
   VEP_CONSEQUENCE_CATEGORIES,
   VEP_CONSEQUENCE_CATEGORY_LABELS,
@@ -21,8 +22,10 @@ import {
 import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
 import ClinvarVariantDetails from './ClinvarVariantDetails'
+import formatClinvarDate from './formatClinvarDate'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
+import { ReferenceGenome } from '../../../dataset-metadata/metadata'
 
 const TopPanel = styled.div`
   display: flex;
@@ -98,7 +101,7 @@ type Props = {
   variants: ClinvarVariant[]
 }
 
-const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) => {
+const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) => {
   const [selectedVariant, setSelectedVariant] = useState(null)
 
   const [includedClinicalSignificanceCategories, setIncludedClinicalSignificanceCategories] =
@@ -289,4 +292,50 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
   )
 }
 
-export default React.memo(ClinvarVariantTrack)
+export const ClinvarVariantTrack = React.memo(UnmemoizedClinvarVariantTrack)
+
+type ClinvarVariantsProps = {
+  clinvarVariants: ClinvarVariant[]
+  clinvarReleaseDate: string
+  referenceGenome: ReferenceGenome
+  transcripts: Transcript[]
+  zoomRegion?: { start: number; stop: number } | null
+  pageType: PageType
+}
+
+const ClinvarVariants = ({
+  clinvarVariants,
+  clinvarReleaseDate,
+  referenceGenome,
+  transcripts,
+  zoomRegion = null,
+  pageType,
+}: ClinvarVariantsProps) => {
+  const clinvarVariantTrack = (
+    <>
+      <ClinvarVariantTrack
+        referenceGenome={referenceGenome}
+        transcripts={transcripts}
+        variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
+      />
+      <TrackPageSection as="p">
+        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
+      </TrackPageSection>
+    </>
+  )
+
+  const noClinvarVariantsFoundMessage = (
+    <TrackPageSection as="p">{`No ClinVar variants found in this ${pageType}.`}</TrackPageSection>
+  )
+
+  return (
+    <>
+      <TrackPageSection>
+        <h2>ClinVar variants</h2>
+      </TrackPageSection>
+      {clinvarVariants.length > 0 ? clinvarVariantTrack : noClinvarVariantsFoundMessage}
+    </>
+  )
+}
+
+export default ClinvarVariants
