@@ -1,11 +1,9 @@
 import React from 'react'
 
 import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
-import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
-import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
 
@@ -44,24 +42,14 @@ const VariantsInRegion = ({
 
   return (
     <>
-      <TrackPageSection>
-        <h2>ClinVar variants</h2>
-      </TrackPageSection>
-      {clinvarVariants.length > 0 ? (
-        <>
-          <ClinvarVariantTrack
-            referenceGenome={referenceGenome(datasetId)}
-            transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
-            variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
-          />
-          <TrackPageSection as="p">
-            Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
-            release.
-          </TrackPageSection>
-        </>
-      ) : (
-        <TrackPageSection as="p">No ClinVar variants found in this region.</TrackPageSection>
-      )}
+      <ClinvarVariants
+        clinvarVariants={clinvarVariants}
+        clinvarReleaseDate={clinvarReleaseDate}
+        referenceGenome={referenceGenome(datasetId)}
+        transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
+        zoomRegion={zoomRegion}
+        pageType="region"
+      />
 
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}
