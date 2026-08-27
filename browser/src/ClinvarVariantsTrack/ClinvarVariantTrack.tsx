@@ -295,7 +295,7 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
 export const ClinvarVariantTrack = React.memo(UnmemoizedClinvarVariantTrack)
 
 type ClinvarVariantsProps = {
-  clinvarVariants: ClinvarVariant[]
+  clinvarVariants: ClinvarVariant[] | null | undefined
   clinvarReleaseDate: string
   referenceGenome: ReferenceGenome
   transcripts: Transcript[]
@@ -311,6 +311,27 @@ const ClinvarVariants = ({
   zoomRegion = null,
   pageType,
 }: ClinvarVariantsProps) => {
+  const heading = (
+    <TrackPageSection>
+      <h2>ClinVar variants</h2>
+    </TrackPageSection>
+  )
+
+  const clinvarUnavailableMessage = (
+    <TrackPageSection as="p">
+      ClinVar variants could not be loaded. Other data on this page is unaffected.
+    </TrackPageSection>
+  )
+
+  if (!clinvarVariants) {
+    return (
+      <>
+        {heading}
+        {clinvarUnavailableMessage}
+      </>
+    )
+  }
+
   const clinvarVariantTrack = (
     <>
       <ClinvarVariantTrack
@@ -330,9 +351,7 @@ const ClinvarVariants = ({
 
   return (
     <>
-      <TrackPageSection>
-        <h2>ClinVar variants</h2>
-      </TrackPageSection>
+      {heading}
       {clinvarVariants.length > 0 ? clinvarVariantTrack : noClinvarVariantsFoundMessage}
     </>
   )
