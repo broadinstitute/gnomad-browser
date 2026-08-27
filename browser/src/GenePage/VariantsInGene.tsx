@@ -3,14 +3,13 @@ import React, { useState } from 'react'
 import { Badge, List, ListItem, Modal, TextButton } from '@gnomad/ui'
 
 import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
-import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
-import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Gene } from './GenePage'
 
 type TranscriptsModalProps = {
@@ -50,7 +49,7 @@ const TranscriptsModal = ({ gene, onRequestClose }: TranscriptsModalProps) => (
 
 type OwnVariantsInGeneProps = {
   clinvarReleaseDate: string
-  clinvarVariants?: any[]
+  clinvarVariants?: ClinvarVariant[] | null
   datasetId: DatasetId
   gene: {
     gene_id: string
@@ -104,24 +103,14 @@ const VariantsInGene = ({
 
   return (
     <>
-      <TrackPageSection>
-        <h2>ClinVar variants</h2>
-      </TrackPageSection>
-      {clinvarVariants.length > 0 ? (
-        <>
-          <ClinvarVariantTrack
-            referenceGenome={referenceGenome(datasetId)}
-            transcripts={gene.transcripts}
-            variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
-          />
-          <TrackPageSection as="p">
-            Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
-            release.
-          </TrackPageSection>
-        </>
-      ) : (
-        <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
-      )}
+      <ClinvarVariants
+        clinvarVariants={clinvarVariants}
+        clinvarReleaseDate={clinvarReleaseDate}
+        referenceGenome={referenceGenome(datasetId)}
+        transcripts={gene.transcripts}
+        zoomRegion={zoomRegion}
+        pageType="gene"
+      />
 
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}
